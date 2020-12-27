@@ -627,6 +627,18 @@
             <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Filter Description" />
             </securityRole>
+            <securityRole securityRoleName="FilterEntranceStep" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Filter Entrance Step" />
+            </securityRole>
+            <securityRole securityRoleName="FilterStep" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Filter Step" />
+            </securityRole>
+            <securityRole securityRoleName="FilterStepDestination" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Filter Step Destination" />
+            </securityRole>
+            <securityRole securityRoleName="FilterStepElement" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Filter Step Element" />
+            </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="FilterAdjustmentSource" parentSecurityRoleGroupName="FilterComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Filter Adjustment Source" />
@@ -7317,6 +7329,10 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="Filter" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Filter" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Filter" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Filter" securityRoleName="FilterEntranceStep" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Filter" securityRoleName="FilterStep" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Filter" securityRoleName="FilterStepDestination" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Filter" securityRoleName="FilterStepElement" />
             <partySecurityRoleTemplateRole securityRoleGroupName="FilterAdjustmentSource" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="FilterAdjustmentSource" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="FilterAdjustmentSource" securityRoleName="Review" />
