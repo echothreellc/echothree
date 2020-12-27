@@ -556,12 +556,6 @@
         <securityRoleGroup securityRoleGroupName="FilterComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Filter Component" />
         </securityRoleGroup>
-        <securityRoleGroup securityRoleGroupName="Filter" parentSecurityRoleGroupName="FilterComponent" isDefault="false" sortOrder="1">
-            <securityRoleGroupDescription languageIsoName="en" description="Filter" />
-            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Filter List" />
-            </securityRole>
-        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="FilterKind" parentSecurityRoleGroupName="FilterComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Filter Kind" />
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
@@ -608,6 +602,12 @@
             </securityRole>
             <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Filter Type Description" />
+            </securityRole>
+        </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="Filter" parentSecurityRoleGroupName="FilterComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Filter" />
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Filter List" />
             </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="FilterAdjustmentSource" parentSecurityRoleGroupName="FilterComponent" isDefault="false" sortOrder="1">
@@ -7245,7 +7245,6 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityAttributeGroup" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityAttributeGroup" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Event" securityRoleName="List" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="Filter" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="FilterKind" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="FilterKind" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="FilterKind" securityRoleName="Delete" />
@@ -7260,6 +7259,7 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="FilterType" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="FilterType" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="FilterType" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Filter" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="FilterAdjustmentSource" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="FilterAdjustmentSource" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="FilterAdjustmentSource" securityRoleName="Review" />
