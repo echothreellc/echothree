@@ -18,6 +18,9 @@ package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.SetDefaultFilterAdjustmentForm;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.filter.server.entity.FilterKind;
 import com.echothree.model.data.filter.server.value.FilterAdjustmentDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -26,6 +29,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
@@ -33,19 +39,27 @@ import java.util.List;
 
 public class SetDefaultFilterAdjustmentCommand
         extends BaseSimpleCommand<SetDefaultFilterAdjustmentForm> {
-    
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-            new FieldDefinition("FilterKindName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("FilterAdjustmentName", FieldType.ENTITY_NAME, true, null, null)
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.FilterAdjustment.name(), SecurityRoles.Edit.name())
+                ))
         ));
+
+        FORM_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("FilterKindName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("FilterAdjustmentName", FieldType.ENTITY_NAME, true, null, null)
+        );
     }
     
     /** Creates a new instance of SetDefaultFilterAdjustmentCommand */
     public SetDefaultFilterAdjustmentCommand(UserVisitPK userVisitPK, SetDefaultFilterAdjustmentForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
