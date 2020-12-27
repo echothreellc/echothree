@@ -3160,7 +3160,7 @@ public class FilterControl
             filterStepDescription = FilterStepDescriptionFactory.getInstance().create(filterStep, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(filterStep.getPrimaryKey(), EventTypes.MODIFY.name(), filterStepDescription.getPrimaryKey(),
+            sendEventUsingNames(filterStep.getLastDetail().getFilter().getPrimaryKey(), EventTypes.MODIFY.name(), filterStepDescription.getPrimaryKey(),
                     EventTypes.MODIFY.name(), updatedBy);
         }
     }
@@ -3168,7 +3168,7 @@ public class FilterControl
     public void deleteFilterStepDescription(FilterStepDescription filterStepDescription, BasePK deletedBy) {
         filterStepDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(filterStepDescription.getFilterStepPK(), EventTypes.MODIFY.name(),
+        sendEventUsingNames(filterStepDescription.getFilterStep().getLastDetail().getFilter().getPrimaryKey(), EventTypes.MODIFY.name(),
                 filterStepDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
         
     }
@@ -3906,14 +3906,14 @@ public class FilterControl
             filterStepElementDescription = FilterStepElementDescriptionFactory.getInstance().create(filterStepElement,
                     language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(filterStepElement.getPrimaryKey(), EventTypes.MODIFY.name(), filterStepElementDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(filterStepElement.getLastDetail().getFilterStep().getLastDetail().getFilterPK(), EventTypes.MODIFY.name(), filterStepElementDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
         }
     }
     
     public void deleteFilterStepElementDescription(FilterStepElementDescription filterStepElementDescription, BasePK deletedBy) {
         filterStepElementDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(filterStepElementDescription.getFilterStepElementPK(), EventTypes.MODIFY.name(), filterStepElementDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(filterStepElementDescription.getFilterStepElement().getLastDetail().getFilterStep().getLastDetail().getFilterPK(), EventTypes.MODIFY.name(), filterStepElementDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
         
     }
     
