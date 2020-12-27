@@ -23,7 +23,10 @@ import com.echothree.control.user.filter.common.result.EditFilterDescriptionResu
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.control.user.filter.common.spec.FilterDescriptionSpec;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.filter.server.entity.FilterDescription;
 import com.echothree.model.data.filter.server.entity.FilterKind;
@@ -31,39 +34,48 @@ import com.echothree.model.data.filter.server.entity.FilterType;
 import com.echothree.model.data.filter.server.value.FilterDescriptionValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class EditFilterDescriptionCommand
         extends BaseEditCommand<FilterDescriptionSpec, FilterDescriptionEdit> {
-    
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
     
     static {
-        SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-            new FieldDefinition("FilterKindName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("FilterTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("FilterName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.Filter.name(), SecurityRoles.Description.name())
+                ))
         ));
+
+        SPEC_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("FilterKindName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("FilterTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("FilterName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
+        );
         
-        EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-            new FieldDefinition("Description", FieldType.STRING, true, 1L, 80L)
-        ));
+        EDIT_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("Description", FieldType.STRING, true, 1L, 80L)
+        );
     }
     
     /** Creates a new instance of EditFilterDescriptionCommand */
     public EditFilterDescriptionCommand(UserVisitPK userVisitPK, EditFilterDescriptionForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override
