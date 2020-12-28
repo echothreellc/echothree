@@ -1,5 +1,20 @@
 # Changelog
 
+## 2020-12-27-01
+
+* GraphQL Objects for Filter Adjustment Sources [148](https://gitlab.echothree.com/echothree/echothree/-/issues/148)
+* GraphQL Objects for Filter Adjustment Types [149](https://gitlab.echothree.com/echothree/echothree/-/issues/149)
+* GraphQL Objects for Selector Types [151](https://gitlab.echothree.com/echothree/echothree/-/issues/151)
+* ClassGraph 4.8.95 Upgrade [188](https://gitlab.echothree.com/echothree/echothree/-/issues/188)
+* WildFly 21.0.2 Upgrade [189](https://gitlab.echothree.com/echothree/echothree/-/issues/189)
+* Add @GraphQLName to GraphQL Mutations Beginning with "set" [190](https://gitlab.echothree.com/echothree/echothree/-/issues/190)
+* Use GraphQLID for IDs [198](https://gitlab.echothree.com/echothree/echothree/-/issues/198)
+* Add GitLab Insights Configuration [241](https://gitlab.echothree.com/echothree/echothree/-/issues/241)
+* Bootstrap 4.5.3 Upgrade [245](https://gitlab.echothree.com/echothree/echothree/-/issues/245)
+* jQuery 3.5.1 Upgrade [246](https://gitlab.echothree.com/echothree/echothree/-/issues/246)
+* Popper 2.6.0 Upgrade [247](https://gitlab.echothree.com/echothree/echothree/-/issues/247)
+* Security for Filter Component [262](https://gitlab.echothree.com/echothree/echothree/-/issues/262)
+
 ## 2020-12-13-01
 
 * GraphQL Objects for Filter Types [154](https://gitlab.echothree.com/echothree/echothree/-/issues/154)
