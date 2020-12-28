@@ -556,12 +556,6 @@
         <securityRoleGroup securityRoleGroupName="FilterComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Filter Component" />
         </securityRoleGroup>
-        <securityRoleGroup securityRoleGroupName="Filter" parentSecurityRoleGroupName="FilterComponent" isDefault="false" sortOrder="1">
-            <securityRoleGroupDescription languageIsoName="en" description="Filter" />
-            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Filter List" />
-            </securityRole>
-        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="FilterKind" parentSecurityRoleGroupName="FilterComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Filter Kind" />
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
@@ -610,6 +604,42 @@
                 <securityRoleDescription languageIsoName="en" description="Filter Type Description" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="Filter" parentSecurityRoleGroupName="FilterComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Filter" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Filter Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Filter Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Filter Delete" />
+            </securityRole>
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Filter List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Filter Review" />
+            </securityRole>
+            <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Filter Choices" />
+            </securityRole>
+            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Filter Description" />
+            </securityRole>
+            <securityRole securityRoleName="FilterEntranceStep" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Filter Entrance Step" />
+            </securityRole>
+            <securityRole securityRoleName="FilterStep" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Filter Step" />
+            </securityRole>
+            <securityRole securityRoleName="FilterStepDestination" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Filter Step Destination" />
+            </securityRole>
+            <securityRole securityRoleName="FilterStepElement" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Filter Step Element" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="FilterAdjustmentSource" parentSecurityRoleGroupName="FilterComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Filter Adjustment Source" />
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
@@ -644,6 +674,39 @@
             </securityRole>
             <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Filter Adjustment Type Description" />
+            </securityRole>
+        </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="FilterAdjustment" parentSecurityRoleGroupName="FilterComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Filter Adjustment" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Filter Adjustment Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Filter Adjustment Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Filter Adjustment Delete" />
+            </securityRole>
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Filter Adjustment List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Filter Adjustment Review" />
+            </securityRole>
+            <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Filter Adjustment Choices" />
+            </securityRole>
+            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Filter Adjustment Description" />
+            </securityRole>
+            <securityRole securityRoleName="FilterAdjustmentAmount" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Filter Adjustment Amount" />
+            </securityRole>
+            <securityRole securityRoleName="FilterAdjustmentFixedAmount" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Filter Adjustment Fixed Amount" />
+            </securityRole>
+            <securityRole securityRoleName="FilterAdjustmentPercent" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Filter Adjustment Percent" />
             </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="IndexComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
@@ -7245,7 +7308,6 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityAttributeGroup" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityAttributeGroup" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Event" securityRoleName="List" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="Filter" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="FilterKind" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="FilterKind" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="FilterKind" securityRoleName="Delete" />
@@ -7260,6 +7322,17 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="FilterType" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="FilterType" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="FilterType" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Filter" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Filter" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Filter" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Filter" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Filter" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Filter" securityRoleName="Choices" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Filter" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Filter" securityRoleName="FilterEntranceStep" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Filter" securityRoleName="FilterStep" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Filter" securityRoleName="FilterStepDestination" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Filter" securityRoleName="FilterStepElement" />
             <partySecurityRoleTemplateRole securityRoleGroupName="FilterAdjustmentSource" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="FilterAdjustmentSource" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="FilterAdjustmentSource" securityRoleName="Review" />
@@ -7270,6 +7343,16 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="FilterAdjustmentType" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="FilterAdjustmentType" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="FilterAdjustmentType" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="FilterAdjustment" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="FilterAdjustment" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="FilterAdjustment" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="FilterAdjustment" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="FilterAdjustment" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="FilterAdjustment" securityRoleName="Choices" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="FilterAdjustment" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="FilterAdjustment" securityRoleName="FilterAdjustmentAmount" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="FilterAdjustment" securityRoleName="FilterAdjustmentFixedAmount" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="FilterAdjustment" securityRoleName="FilterAdjustmentPercent" />
             <partySecurityRoleTemplateRole securityRoleGroupName="IndexType" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="IndexType" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="IndexType" securityRoleName="Delete" />
