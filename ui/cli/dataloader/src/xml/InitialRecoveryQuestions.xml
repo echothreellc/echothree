@@ -28,7 +28,7 @@
         <recoveryQuestion recoveryQuestionName="FAVORITE_ANIME_CHARACTER" isDefault="false" sortOrder="1">
             <recoveryQuestionDescription languageIsoName="en" description="Who is your favorite anime character?" />
         </recoveryQuestion>
-        <recoveryQuestion recoveryQuestionName="MOTHER_MADEN_NAME" isDefault="false" sortOrder="1">
+        <recoveryQuestion recoveryQuestionName="MOTHER_MAIDEN_NAME" isDefault="false" sortOrder="1">
             <recoveryQuestionDescription languageIsoName="en" description="What is your mother's maiden name?" />
         </recoveryQuestion>
         <recoveryQuestion recoveryQuestionName="FATHER_MIDDLE_NAME" isDefault="false" sortOrder="1">
@@ -40,7 +40,7 @@
         <recoveryQuestion recoveryQuestionName="PARTNER_NICKNAME" isDefault="false" sortOrder="1">
             <recoveryQuestionDescription languageIsoName="en" description="What is your partner's nickname?" />
         </recoveryQuestion>
-        <recoveryQuestion recoveryQuestionName="REFRIDGERATOR_MAKE" isDefault="false" sortOrder="1">
+        <recoveryQuestion recoveryQuestionName="REFRIGERATOR_MAKE" isDefault="false" sortOrder="1">
             <recoveryQuestionDescription languageIsoName="en" description="What make is your refrigerator?" />
         </recoveryQuestion>
         <recoveryQuestion recoveryQuestionName="DREAM_VACATION" isDefault="false" sortOrder="1">
@@ -57,6 +57,90 @@
         </recoveryQuestion>
         <recoveryQuestion recoveryQuestionName="PET_COUNT" isDefault="false" sortOrder="1">
             <recoveryQuestionDescription languageIsoName="en" description="How many pets do you have?" />
+        </recoveryQuestion>
+        <recoveryQuestion recoveryQuestionName="FIRST_MOVIE" isDefault="false" sortOrder="1">
+            <recoveryQuestionDescription languageIsoName="en" description="What is the first movie you saw in a theater?" />
+        </recoveryQuestion>
+        <recoveryQuestion recoveryQuestionName="FIRST_CONCERT" isDefault="false" sortOrder="1">
+            <recoveryQuestionDescription languageIsoName="en" description="What is the first concert you attended?" />
+        </recoveryQuestion>
+        <recoveryQuestion recoveryQuestionName="FIRST_COOK" isDefault="false" sortOrder="1">
+            <recoveryQuestionDescription languageIsoName="en" description="What is the first thing you learned to cook?" />
+        </recoveryQuestion>
+        <recoveryQuestion recoveryQuestionName="FIRST_BEACH" isDefault="false" sortOrder="1">
+            <recoveryQuestionDescription languageIsoName="en" description="What is the first beach you visited?" />
+        </recoveryQuestion>
+        <recoveryQuestion recoveryQuestionName="FIRST_ALBUM" isDefault="false" sortOrder="1">
+            <recoveryQuestionDescription languageIsoName="en" description="What is the first album you purchased?" />
+        </recoveryQuestion>
+        <recoveryQuestion recoveryQuestionName="FAVORITE_HIGH_SCHOOL_BOOK" isDefault="false" sortOrder="1">
+            <recoveryQuestionDescription languageIsoName="en" description="What was the name of your favorite book in high school?" />
+        </recoveryQuestion>
+        <recoveryQuestion recoveryQuestionName="FIRST_PURCHASE_ONLINE" isDefault="false" sortOrder="1">
+            <recoveryQuestionDescription languageIsoName="en" description="What is the first purchase you made online?" />
+        </recoveryQuestion>
+        <recoveryQuestion recoveryQuestionName="FAVORITE_COLLEGE_RESTAURANT" isDefault="false" sortOrder="1">
+            <recoveryQuestionDescription languageIsoName="en" description="What was the name of your favorite restaurant in college?" />
+        </recoveryQuestion>
+        <recoveryQuestion recoveryQuestionName="FIRST_CITY_BY_PLANE" isDefault="false" sortOrder="1">
+            <recoveryQuestionDescription languageIsoName="en" description="What was the name of the first city you visited by plane?" />
+        </recoveryQuestion>
+        <recoveryQuestion recoveryQuestionName="FAVORITE_COLLEGE_COURSE" isDefault="false" sortOrder="1">
+            <recoveryQuestionDescription languageIsoName="en" description="What was your least favorite college course?" />
+        </recoveryQuestion>
+        <recoveryQuestion recoveryQuestionName="YOUNGEST_SIBLING_NAME" isDefault="false" sortOrder="1">
+            <recoveryQuestionDescription languageIsoName="en" description="What is the middle name of your youngest sibling?" />
+        </recoveryQuestion>
+        <recoveryQuestion recoveryQuestionName="CHILDHOOD_BEST_FRIEND_NAME" isDefault="false" sortOrder="1">
+            <recoveryQuestionDescription languageIsoName="en" description="What is the last name of your childhood best friend?" />
+        </recoveryQuestion>
+        <recoveryQuestion recoveryQuestionName="FIRST_GRADE_TEACHER_NAME" isDefault="false" sortOrder="1">
+            <recoveryQuestionDescription languageIsoName="en" description="What is the name of your first grade teacher?" />
+        </recoveryQuestion>
+        <recoveryQuestion recoveryQuestionName="FIRST_CAR_MAKE_OR_MODEL" isDefault="false" sortOrder="1">
+            <recoveryQuestionDescription languageIsoName="en" description="What is the make or model of your first car?" />
+        </recoveryQuestion>
+        <recoveryQuestion recoveryQuestionName="ELDEST_COUSIN_NAME" isDefault="false" sortOrder="1">
+            <recoveryQuestionDescription languageIsoName="en" description="What is the name of your eldest cousin?" />
+        </recoveryQuestion>
+        <recoveryQuestion recoveryQuestionName="MATERNAL_GRANDMOTHER_FIRST_NAME" isDefault="false" sortOrder="1">
+            <recoveryQuestionDescription languageIsoName="en" description="What is your maternal grandmother's first name?" />
+        </recoveryQuestion>
+        <recoveryQuestion recoveryQuestionName="CHILDHOOD_NICKNAME" isDefault="false" sortOrder="1">
+            <recoveryQuestionDescription languageIsoName="en" description="What was your childhood nickname?" />
+        </recoveryQuestion>
+        <recoveryQuestion recoveryQuestionName="FIRST_CHILD_HOSPITAL_NAME" isDefault="false" sortOrder="1">
+            <recoveryQuestionDescription languageIsoName="en" description="What is the name of the hospital where your 1st child was born?" />
+        </recoveryQuestion>
+        <recoveryQuestion recoveryQuestionName="FIRST_VIDEO_GAME_PLAYED" isDefault="false" sortOrder="1">
+            <recoveryQuestionDescription languageIsoName="en" description="What was the first video game you played?" />
+        </recoveryQuestion>
+        <recoveryQuestion recoveryQuestionName="FIRST_JOB_MANAGER_LAST_NAME" isDefault="false" sortOrder="1">
+            <recoveryQuestionDescription languageIsoName="en" description="What was the last name of the manager at your first job?" />
+        </recoveryQuestion>
+        <recoveryQuestion recoveryQuestionName="HIGH_SCHOOL_BEST_FRIEND_NAME" isDefault="false" sortOrder="1">
+            <recoveryQuestionDescription languageIsoName="en" description="What was the name of your best friend in high school?" />
+        </recoveryQuestion>
+        <recoveryQuestion recoveryQuestionName="FIRST_ROOMMATE_NAME" isDefault="false" sortOrder="1">
+            <recoveryQuestionDescription languageIsoName="en" description="What was the first name of your first roommate?" />
+        </recoveryQuestion>
+        <recoveryQuestion recoveryQuestionName="FIRST_BANK_NAME" isDefault="false" sortOrder="1">
+            <recoveryQuestionDescription languageIsoName="en" description="What is the name of the first bank where you held an account?" />
+        </recoveryQuestion>
+        <recoveryQuestion recoveryQuestionName="FAVORITE_ATHLETE" isDefault="false" sortOrder="1">
+            <recoveryQuestionDescription languageIsoName="en" description="Who is your favorite athlete?" />
+        </recoveryQuestion>
+        <recoveryQuestion recoveryQuestionName="FAVORITE_GRADE_SCHOOL_TEACHER_NAME" isDefault="false" sortOrder="1">
+            <recoveryQuestionDescription languageIsoName="en" description="What was the name of your favorite grade school teacher?" />
+        </recoveryQuestion>
+        <recoveryQuestion recoveryQuestionName="WEDDING_REHEARSAL_DINNER_LOCATION" isDefault="false" sortOrder="1">
+            <recoveryQuestionDescription languageIsoName="en" description="Where was your wedding rehearsal dinner held?" />
+        </recoveryQuestion>
+        <recoveryQuestion recoveryQuestionName="BEST_MAN_LAST_NAME" isDefault="false" sortOrder="1">
+            <recoveryQuestionDescription languageIsoName="en" description="What was your best man's last name?" />
+        </recoveryQuestion>
+        <recoveryQuestion recoveryQuestionName="MADE_OF_HONOR_FIRST_NAME" isDefault="false" sortOrder="1">
+            <recoveryQuestionDescription languageIsoName="en" description="What was the first name of your maid of honor?" />
         </recoveryQuestion>
     </recoveryQuestions>
 </initialData>
