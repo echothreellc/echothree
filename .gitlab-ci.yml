@@ -16,13 +16,13 @@ build:
     - ant complete
   artifacts:
     paths:
-      - echothree/build/ears/echothree.ear
-      - echothree/build/jars/echothree-client.jar
-      - echothree/build/lib/mysql-connector-java.jar
-      - echothree/build/ui/web/cms/war/cms.war
-      - echothree/build/ui/web/letter/war/letter.war
-      - echothree/build/ui/web/main/war/main.war
-      - echothree/build/service/graphql/war/graphql.war
-      - echothree/build/service/job/jar/echothree-job.jar
+      - build/ears/echothree.ear
+      - build/jars/echothree-client.jar
+      - build/lib/mysql-connector-java.jar
+      - build/ui/web/cms/war/cms.war
+      - build/ui/web/letter/war/letter.war
+      - build/ui/web/main/war/main.war
+      - build/service/graphql/war/graphql.war
+      - build/service/job/jar/echothree-job.jar
     expire_in: 1 week
 
