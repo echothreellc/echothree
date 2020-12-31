@@ -1,0 +1,28 @@
+image: echothree/build:latest
+
+variables:
+  ANT_OPTS: "-Xmx5120m"
+
+stages:
+  - build
+
+build:
+  stage: build
+  script:
+    - pushd ..
+    - ln -s $WILDFLY_HOME wildfly-latest
+    - popd
+    - ant setup-ivy
+    - ant complete
+  artifacts:
+    paths:
+      - build/ears/echothree.ear
+      - build/jars/echothree-client.jar
+      - build/lib/mysql-connector-java.jar
+      - build/ui/web/cms/war/cms.war
+      - build/ui/web/letter/war/letter.war
+      - build/ui/web/main/war/main.war
+      - build/service/graphql/war/graphql.war
+      - build/service/job/jar/echothree-job.jar
+    expire_in: 1 week
+
