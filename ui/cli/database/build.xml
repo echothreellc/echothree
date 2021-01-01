@@ -21,19 +21,24 @@
         <property name="metadata.dir" value="${component.home}/src/metadata"/>
 
         <property name="home.dir" value="../../.." />
+        <property name="src.dir" value="${home.dir}/src" />
+        <property name="build.dir" value="${home.dir}/build/ui/cli/database" />
+
         <property name="lib.dir" value="${home.dir}/lib" />
         <property name="build.lib.dir" value="${home.dir}/build/lib" />
 
+        <property name="ui.cli.database.javadir" value="${src.dir}/java" />
+        <property name="ui.cli.database.metadatadir" value="${src.dir}/metadata" />
+        <property name="ui.cli.database.xmldir" value="${src.dir}/xml" />
+
         <property name="ui.cli.database.generateddir" value="${home.dir}/generated/data" />
 
-        <property name="ui.cli.database.builddir" value="${home.dir}/build/ui/cli/database" />
-        <property name="ui.cli.database.classbindir" value="${ui.cli.database.builddir}/classes" />
-        <property name="ui.cli.database.jardir" value="${ui.cli.database.builddir}/jar" />
+        <property name="ui.cli.database.classbindir" value="${build.dir}/classes" />
+        <property name="ui.cli.database.jardir" value="${build.dir}/jar" />
         <property name="ui.cli.database.jarfile" value="${ui.cli.database.jardir}/database.war" />
     </target>
 
     <target name="prepare" depends="init">
-        <mkdir dir="${ui.cli.database.builddir}" />
         <mkdir dir="${ui.cli.database.classbindir}" />
         <mkdir dir="${ui.cli.database.jardir}" />
     </target>
@@ -169,7 +174,7 @@
     <target name="clean-build">
         <echo message="Deleting directory build" />
         <delete includeemptydirs="true" quiet="true">
-            <fileset dir="${ui.cli.database.builddir}">
+            <fileset dir="${build.dir}">
                 <include name="**" />
             </fileset>
         </delete>
