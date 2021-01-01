@@ -14,13 +14,29 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.ui.cli.database;
+package com.echothree.ui.cli.database.util.current;
 
-public class DatabaseUtilitiesForOracle {
+import java.util.HashMap;
+import java.util.Map;
+
+public class CurrentDatabase {
+
+    private Map<String, CurrentTable> tables = new HashMap<>();
+
+    public Map<String, CurrentTable> getTables() {
+        return tables;
+    }
+
+    public void setTables(Map<String, CurrentTable> tables) {
+        this.tables = tables;
+    }
     
-    /** Creates new DatabaseUtilitiesForOracle */
-    /** Creates a new instance of DatabaseUtilitiesForOracle */
-    public DatabaseUtilitiesForOracle() {
+    public void addTable(CurrentTable table) {
+        tables.put(table.getTableName(), table);
+    }
+    
+    public CurrentTable getTable(String tableName) {
+        return tables.get(tableName);
     }
     
 }

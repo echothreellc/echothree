@@ -95,9 +95,6 @@
 
     <target name="jar" depends="compile">
         <jar jarfile="${ui.cli.database.jarfile}">
-            <manifest>
-                <attribute name="Main-Class" value="DatabaseUtility"/>
-            </manifest>
             <fileset dir="${ui.cli.database.classbindir}">
                 <include name="**/*" />
             </fileset>
@@ -106,7 +103,7 @@
 
     <target name="GenerateJava" depends="jar">
         <java classpathref="runtime.classpath"
-              classname="DatabaseUtility"
+              classname="com.echothree.ui.cli.database.Database"
               fork="true">
             <arg value="--java"/>
             <arg value="--generated"/>
@@ -116,7 +113,7 @@
         
     <target name="GenerateDatabase" depends="jar">
         <java classpathref="runtime.classpath"
-              classname="DatabaseUtility"
+              classname="com.echothree.ui.cli.database.Database"
               fork="true">
             <arg value="--structure"/>
             <arg value="--verbose"/>
@@ -125,7 +122,7 @@
         
     <target name="RegenerateDatabase" depends="jar">
         <java classpathref="runtime.classpath"
-              classname="DatabaseUtility"
+              classname="com.echothree.ui.cli.database.Database"
               fork="true">
             <arg value="--empty"/>
             <arg value="--structure"/>
@@ -134,7 +131,7 @@
     
     <target name="SetCharacterSetAndCollation" depends="jar">
         <java classpathref="runtime.classpath"
-              classname="DatabaseUtility"
+              classname="com.echothree.ui.cli.database.Database"
               fork="true">
             <arg value="--charset"/>
         </java>
@@ -142,7 +139,7 @@
     
     <target name="RegenerateReporting" depends="jar">
         <java classpathref="runtime.classpath"
-              classname="DatabaseUtility"
+              classname="com.echothree.ui.cli.database.Database"
               fork="true">
             <arg value="--reporting"/>
         </java>

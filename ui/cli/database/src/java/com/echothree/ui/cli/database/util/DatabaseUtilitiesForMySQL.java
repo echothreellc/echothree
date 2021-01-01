@@ -14,9 +14,9 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.ui.cli.database;
+package com.echothree.ui.cli.database.util;
 
-import com.echothree.ui.cli.database.current.CurrentColumn;
+import com.echothree.ui.cli.database.util.current.CurrentColumn;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.Statement;

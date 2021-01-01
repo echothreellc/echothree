@@ -14,12 +14,12 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.ui.cli.database;
+package com.echothree.ui.cli.database.util;
 
-import com.echothree.ui.cli.database.current.CurrentColumn;
-import com.echothree.ui.cli.database.current.CurrentForeignKey;
-import com.echothree.ui.cli.database.current.CurrentIndex;
-import com.echothree.ui.cli.database.current.CurrentTable;
+import com.echothree.ui.cli.database.util.current.CurrentColumn;
+import com.echothree.ui.cli.database.util.current.CurrentForeignKey;
+import com.echothree.ui.cli.database.util.current.CurrentIndex;
+import com.echothree.ui.cli.database.util.current.CurrentTable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
