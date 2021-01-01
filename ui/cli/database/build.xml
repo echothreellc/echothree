@@ -23,11 +23,22 @@
         <property name="home.dir" value="../../.." />
         <property name="lib.dir" value="${home.dir}/lib" />
         <property name="build.lib.dir" value="${home.dir}/build/lib" />
+
+        <property name="ui.cli.database.generateddir" value="${home.dir}/generated/data" />
+
+        <property name="ui.cli.database.builddir" value="${home.dir}/build/ui/cli/database" />
+        <property name="ui.cli.database.classbindir" value="${ui.cli.database.builddir}/classes" />
+        <property name="ui.cli.database.jardir" value="${ui.cli.database.builddir}/jar" />
+        <property name="ui.cli.database.jarfile" value="${ui.cli.database.jardir}/database.war" />
     </target>
 
-    <target name="compile" depends="init">
-        <mkdir dir="build"/>
-        <mkdir dir="build/classes"/>
+    <target name="prepare" depends="init">
+        <mkdir dir="${ui.cli.database.builddir}" />
+        <mkdir dir="${ui.cli.database.classbindir}" />
+        <mkdir dir="${ui.cli.database.jardir}" />
+    </target>
+
+    <target name="compile" depends="prepare">
         <path id="processorpath.ref">
             <pathelement location="${build.lib.dir}/error_prone_core-with-dependencies.jar"/>
             <pathelement location="${build.lib.dir}/failureaccess.jar"/>
@@ -37,7 +48,7 @@
         <javac
             debug="true"
             srcdir="./src/java"
-            destdir="./build/classes"
+            destdir="${ui.cli.database.classbindir}"
             includeAntRuntime="false">
             <classpath>
                 <pathelement location="./"/>
@@ -57,19 +68,23 @@
             <!-- <compilerarg value="-Xlint:unchecked" /> -->
         </javac>
     </target>
+
+    <target name="jar" depends="compile">
+
+    </target>
     
     <target name="GenerateJava" depends="compile">
         <java classname="DatabaseUtility" fork="true">
             <arg value="--java"/>
             <arg value="--generated"/>
-            <arg value="../../../generated/data"/>
+            <arg value="${ui.cli.database.generateddir}"/>
             <classpath>
                 <pathelement path="${metadata.dir}" />
-                <pathelement location="./build/classes"/>
-                <fileset dir="../../../lib">
+                <pathelement location="${ui.cli.database.classbindir}"/>
+                <fileset dir="${lib.dir}">
                     <include name="**/*.jar"/>
                 </fileset>
-                <fileset dir="../../../build/lib">
+                <fileset dir="${build.lib.dir}">
                     <include name="**/*.jar"/>
                 </fileset>
             </classpath>
@@ -82,11 +97,11 @@
             <arg value="--verbose"/>
             <classpath>
                 <pathelement path="${metadata.dir}" />
-                <pathelement location="./build/classes"/>
-                <fileset dir="../../../lib">
+                <pathelement location="${ui.cli.database.classbindir}"/>
+                <fileset dir="${lib.dir}">
                     <include name="**/*.jar"/>
                 </fileset>
-                <fileset dir="../../../build/lib">
+                <fileset dir="${build.lib.dir}">
                     <include name="**/*.jar"/>
                 </fileset>
             </classpath>
@@ -99,11 +114,11 @@
             <arg value="--structure"/>
             <classpath>
                 <pathelement path="${metadata.dir}" />
-                <pathelement location="./build/classes"/>
-                <fileset dir="../../../lib">
+                <pathelement location="${ui.cli.database.classbindir}"/>
+                <fileset dir="${lib.dir}">
                     <include name="**/*.jar"/>
                 </fileset>
-                <fileset dir="../../../build/lib">
+                <fileset dir="${build.lib.dir}">
                     <include name="**/*.jar"/>
                 </fileset>
             </classpath>
@@ -115,11 +130,11 @@
             <arg value="--charset"/>
             <classpath>
                 <pathelement path="${metadata.dir}" />
-                <pathelement location="./build/classes"/>
-                <fileset dir="../../../lib">
+                <pathelement location="${ui.cli.database.classbindir}"/>
+                <fileset dir="${lib.dir}">
                     <include name="**/*.jar"/>
                 </fileset>
-                <fileset dir="../../../build/lib">
+                <fileset dir="${build.lib.dir}">
                     <include name="**/*.jar"/>
                 </fileset>
             </classpath>
@@ -131,11 +146,11 @@
             <arg value="--reporting"/>
             <classpath>
                 <pathelement path="${metadata.dir}" />
-                <pathelement location="./build/classes"/>
-                <fileset dir="../../../lib">
+                <pathelement location="${ui.cli.database.classbindir}"/>
+                <fileset dir="${lib.dir}">
                     <include name="**/*.jar"/>
                 </fileset>
-                <fileset dir="../../../build/lib">
+                <fileset dir="${build.lib.dir}">
                     <include name="**/*.jar"/>
                 </fileset>
             </classpath>
@@ -143,9 +158,9 @@
     </target>
     
    <target name="clean-generated">
-        <echo message="Deleting directory ../../../generated/data" />
+        <echo message="Deleting directory generated code" />
         <delete includeemptydirs="true" quiet="true">
-            <fileset dir="../../../generated/data">
+            <fileset dir="${ui.cli.database.generateddir}">
                 <include name="**" />
             </fileset>
         </delete>
@@ -154,13 +169,13 @@
     <target name="clean-build">
         <echo message="Deleting directory build" />
         <delete includeemptydirs="true" quiet="true">
-            <fileset dir="build">
+            <fileset dir="${ui.cli.database.builddir}">
                 <include name="**" />
             </fileset>
         </delete>
     </target>
 
-    <target name="clean">
+    <target name="clean" depends="init">
         <parallel>
             <ant target="clean-generated"/>
             <ant target="clean-build"/>
