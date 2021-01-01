@@ -75,7 +75,7 @@
             <!-- <compilerarg value="-Xlint:unchecked" /> -->
         </javac>
 
-        <copy todir="${ui.cli.database.resourcesdir}">
+        <copy todir="${ui.cli.database.classbindir}">
             <fileset dir="${ui.cli.database.metadatadir}" />
             <fileset dir="${ui.cli.database.xmldir}" />
         </copy>
@@ -87,15 +87,8 @@
                 <attribute name="Main-Class" value="DatabaseUtility"/>
             </manifest>
             <fileset dir="${ui.cli.database.classbindir}">
-                <include name="**/*.class" />
-                <include name="com/echothree/model/control/*/common/**/*.class" />
-                <include name="com/echothree/model/data/*/common/**/*.class" />
-                <include name="com/echothree/util/common/**/*.class" />
-                <include name="com/echothree/view/common/**/*.class" />
+                <include name="**/*" />
             </fileset>
-            <metainf dir="${ui.cli.database.resourcesdir}">
-                <include name="**" />
-            </metainf>
         </jar>
     </target>
     
