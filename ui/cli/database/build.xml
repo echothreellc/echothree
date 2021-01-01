@@ -21,7 +21,7 @@
         <property name="metadata.dir" value="${component.home}/src/metadata"/>
 
         <property name="home.dir" value="../../.." />
-        <property name="src.dir" value="${home.dir}/src" />
+        <property name="src.dir" value="${component.home}/src" />
         <property name="build.dir" value="${home.dir}/build/ui/cli/database" />
 
         <property name="lib.dir" value="${home.dir}/lib" />
@@ -34,12 +34,14 @@
         <property name="ui.cli.database.generateddir" value="${home.dir}/generated/data" />
 
         <property name="ui.cli.database.classbindir" value="${build.dir}/classes" />
+        <property name="ui.cli.database.resourcesdir" value="${build.dir}/resources" />
         <property name="ui.cli.database.jardir" value="${build.dir}/jar" />
         <property name="ui.cli.database.jarfile" value="${ui.cli.database.jardir}/database.war" />
     </target>
 
     <target name="prepare" depends="init">
         <mkdir dir="${ui.cli.database.classbindir}" />
+        <mkdir dir="${ui.cli.database.resourcesdir}" />
         <mkdir dir="${ui.cli.database.jardir}" />
     </target>
 
@@ -72,20 +74,38 @@
             <!-- <compilerarg value="-Xlint:deprecation" /> -->
             <!-- <compilerarg value="-Xlint:unchecked" /> -->
         </javac>
+
+        <copy todir="${ui.cli.database.resourcesdir}">
+            <fileset dir="${ui.cli.database.metadatadir}" />
+            <fileset dir="${ui.cli.database.xmldir}" />
+        </copy>
     </target>
 
     <target name="jar" depends="compile">
-
+        <jar jarfile="${ui.cli.database.jarfile}">
+            <manifest>
+                <attribute name="Main-Class" value="DatabaseUtility"/>
+            </manifest>
+            <fileset dir="${ui.cli.database.classbindir}">
+                <include name="**/*.class" />
+                <include name="com/echothree/model/control/*/common/**/*.class" />
+                <include name="com/echothree/model/data/*/common/**/*.class" />
+                <include name="com/echothree/util/common/**/*.class" />
+                <include name="com/echothree/view/common/**/*.class" />
+            </fileset>
+            <metainf dir="${ui.cli.database.resourcesdir}">
+                <include name="**" />
+            </metainf>
+        </jar>
     </target>
     
-    <target name="GenerateJava" depends="compile">
+    <target name="GenerateJava" depends="jar">
         <java classname="DatabaseUtility" fork="true">
             <arg value="--java"/>
             <arg value="--generated"/>
             <arg value="${ui.cli.database.generateddir}"/>
             <classpath>
-                <pathelement path="${metadata.dir}" />
-                <pathelement location="${ui.cli.database.classbindir}"/>
+                <file file="${ui.cli.database.jarfile}" />
                 <fileset dir="${lib.dir}">
                     <include name="**/*.jar"/>
                 </fileset>
@@ -96,13 +116,12 @@
         </java>
     </target>
         
-    <target name="GenerateDatabase" depends="compile">
+    <target name="GenerateDatabase" depends="jar">
         <java classname="DatabaseUtility" fork="true">
             <arg value="--structure"/>
             <arg value="--verbose"/>
             <classpath>
-                <pathelement path="${metadata.dir}" />
-                <pathelement location="${ui.cli.database.classbindir}"/>
+                <file file="${ui.cli.database.jarfile}" />
                 <fileset dir="${lib.dir}">
                     <include name="**/*.jar"/>
                 </fileset>
@@ -113,13 +132,12 @@
         </java>
     </target>
         
-    <target name="RegenerateDatabase" depends="compile">
+    <target name="RegenerateDatabase" depends="jar">
         <java classname="DatabaseUtility" fork="true">
             <arg value="--empty"/>
             <arg value="--structure"/>
             <classpath>
-                <pathelement path="${metadata.dir}" />
-                <pathelement location="${ui.cli.database.classbindir}"/>
+                <file file="${ui.cli.database.jarfile}" />
                 <fileset dir="${lib.dir}">
                     <include name="**/*.jar"/>
                 </fileset>
@@ -130,12 +148,11 @@
         </java>
     </target>
     
-    <target name="SetCharacterSetAndCollation" depends="compile">
+    <target name="SetCharacterSetAndCollation" depends="jar">
         <java classname="DatabaseUtility" fork="true">
             <arg value="--charset"/>
             <classpath>
-                <pathelement path="${metadata.dir}" />
-                <pathelement location="${ui.cli.database.classbindir}"/>
+                <file file="${ui.cli.database.jarfile}" />
                 <fileset dir="${lib.dir}">
                     <include name="**/*.jar"/>
                 </fileset>
@@ -146,12 +163,11 @@
         </java>
     </target>
     
-    <target name="RegenerateReporting" depends="compile">
+    <target name="RegenerateReporting" depends="jar">
         <java classname="DatabaseUtility" fork="true">
             <arg value="--reporting"/>
             <classpath>
-                <pathelement path="${metadata.dir}" />
-                <pathelement location="${ui.cli.database.classbindir}"/>
+                <file file="${ui.cli.database.jarfile}" />
                 <fileset dir="${lib.dir}">
                     <include name="**/*.jar"/>
                 </fileset>
@@ -163,7 +179,7 @@
     </target>
     
    <target name="clean-generated">
-        <echo message="Deleting directory generated code" />
+        <echo message="Deleting ${ui.cli.database.generateddir}" />
         <delete includeemptydirs="true" quiet="true">
             <fileset dir="${ui.cli.database.generateddir}">
                 <include name="**" />
@@ -172,7 +188,7 @@
     </target>
 
     <target name="clean-build">
-        <echo message="Deleting directory build" />
+        <echo message="Deleting ${build.dir}" />
         <delete includeemptydirs="true" quiet="true">
             <fileset dir="${build.dir}">
                 <include name="**" />

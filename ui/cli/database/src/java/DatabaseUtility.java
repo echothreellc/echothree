@@ -53,7 +53,7 @@ public class DatabaseUtility {
         Configuration result = null;
 
         try {
-            result = new DefaultConfigurationBuilder("config.xml").getConfiguration();
+            result = new DefaultConfigurationBuilder(DatabaseUtility.class.getResource("META-INF/config.xml")).getConfiguration();
         } catch(ConfigurationException ex) {
             log.error(ex);
         }
