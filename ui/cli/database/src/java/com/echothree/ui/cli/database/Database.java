@@ -77,7 +77,7 @@ public class Database {
             Databases theDatabases = new Databases();
 
             DatabaseDefinitionParser databaseDefinitionParser = new DatabaseDefinitionParser(theDatabases);
-            databaseDefinitionParser.parse("src/xml/DatabaseDefinition.xml");
+            databaseDefinitionParser.parse("/DatabaseDefinition.xml");
 
             com.echothree.ui.cli.database.util.Database echothreeDatabase = theDatabases.getDatabase("echothree");
 
