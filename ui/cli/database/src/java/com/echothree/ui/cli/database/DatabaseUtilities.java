@@ -51,10 +51,9 @@ public abstract class DatabaseUtilities {
     Connection myConnection = null;
     DatabaseMetaData myDatabaseMetaData = null;
     
-    /** Creates new DatabaseUtilities
+    /** Creates a new instance of DatabaseUtilities
      */
-    /** Creates a new instance of DatabaseUtilities */
-    public DatabaseUtilities(boolean verbose, Database theDatabase, String connectionClass, String connectionUrl, String connectionUser,
+    protected DatabaseUtilities(boolean verbose, Database theDatabase, String connectionClass, String connectionUrl, String connectionUser,
             String connectionPassword, String connectionCharacterSet, String connectionCollation) {
         this.verbose = verbose;
         myDatabase = theDatabase;
