@@ -16,11 +16,25 @@
 
 package com.echothree.ui.cli.database;
 
-public class DatabaseUtilitiesForOracle {
-    
-    /** Creates new DatabaseUtilitiesForOracle */
-    /** Creates a new instance of DatabaseUtilitiesForOracle */
-    public DatabaseUtilitiesForOracle() {
+import com.echothree.ui.cli.database.util.DatabaseDefinitionParser;
+import java.io.IOException;
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
+
+public class CustomEntityResolver implements EntityResolver {
+
+    private static final String DATABASE_DEFINITION_DTD = "/DatabaseDefinition.dtd";
+
+    @Override
+    public InputSource resolveEntity(String publicId, String systemId)
+            throws IOException {
+        // If we don't handle this special case there, the parser will attempt to retrieve the
+        // DTD from a file instead of a resource.
+        if (systemId.contains(DATABASE_DEFINITION_DTD)) {
+            return new InputSource(DatabaseDefinitionParser.class.getResource(DATABASE_DEFINITION_DTD).openStream());
+        } else {
+            return null;
+        }
     }
-    
+
 }

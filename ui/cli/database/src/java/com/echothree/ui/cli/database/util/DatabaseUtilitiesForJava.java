@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.ui.cli.database;
+package com.echothree.ui.cli.database.util;
 
 import static com.google.common.base.Charsets.UTF_8;
 import java.io.BufferedWriter;

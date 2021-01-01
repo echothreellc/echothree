@@ -14,21 +14,24 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.ui.cli.database;
+package com.echothree.ui.cli.database.util;
 
+import com.echothree.ui.cli.database.CustomEntityResolver;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.SAXNotSupportedException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
-import org.xml.sax.helpers.XMLReaderFactory;
 
 public class DatabaseDefinitionParser
         extends DefaultHandler {
@@ -611,9 +614,14 @@ public class DatabaseDefinitionParser
         myDatabases = theDatabases;
         
     }
+
+    public void parseResource(XMLReader parser, String arg)
+            throws IOException, SAXException {
+        parser.parse(new InputSource(DatabaseDefinitionParser.class.getResource(arg).openStream()));
+    }
     
     public void parse(String arg)
-    throws Exception {
+            throws Exception {
         XMLReader parser = null;
 
         // create parser
@@ -669,11 +677,12 @@ public class DatabaseDefinitionParser
         // parse file
         parser.setContentHandler(this);
         parser.setErrorHandler(this);
+        parser.setEntityResolver(new CustomEntityResolver());
 
-        parser.parse(arg);
-        
-        for(String i: myFiles) {
-            parser.parse(i);
+        parseResource(parser, arg);
+
+        for(String i : myFiles) {
+            parseResource(parser, i);
         }
     }
     

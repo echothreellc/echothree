@@ -14,11 +14,10 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.ui.cli.database;
+package com.echothree.ui.cli.database.util;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Splitter;
-import java.util.List;
 
 public class Column {
     

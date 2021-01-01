@@ -14,14 +14,14 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.ui.cli.database;
+package com.echothree.ui.cli.database.util;
 
-import com.echothree.ui.cli.database.current.CurrentColumn;
-import com.echothree.ui.cli.database.current.CurrentDatabase;
-import com.echothree.ui.cli.database.current.CurrentDatabaseUtils;
-import com.echothree.ui.cli.database.current.CurrentForeignKey;
-import com.echothree.ui.cli.database.current.CurrentIndex;
-import com.echothree.ui.cli.database.current.CurrentTable;
+import com.echothree.ui.cli.database.util.current.CurrentColumn;
+import com.echothree.ui.cli.database.util.current.CurrentDatabase;
+import com.echothree.ui.cli.database.util.current.CurrentDatabaseUtils;
+import com.echothree.ui.cli.database.util.current.CurrentForeignKey;
+import com.echothree.ui.cli.database.util.current.CurrentIndex;
+import com.echothree.ui.cli.database.util.current.CurrentTable;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
@@ -51,10 +51,9 @@ public abstract class DatabaseUtilities {
     Connection myConnection = null;
     DatabaseMetaData myDatabaseMetaData = null;
     
-    /** Creates new DatabaseUtilities
+    /** Creates a new instance of DatabaseUtilities
      */
-    /** Creates a new instance of DatabaseUtilities */
-    public DatabaseUtilities(boolean verbose, Database theDatabase, String connectionClass, String connectionUrl, String connectionUser,
+    protected DatabaseUtilities(boolean verbose, Database theDatabase, String connectionClass, String connectionUrl, String connectionUser,
             String connectionPassword, String connectionCharacterSet, String connectionCollation) {
         this.verbose = verbose;
         myDatabase = theDatabase;

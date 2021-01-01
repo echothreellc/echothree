@@ -21,13 +21,43 @@
         <property name="metadata.dir" value="${component.home}/src/metadata"/>
 
         <property name="home.dir" value="../../.." />
+        <property name="src.dir" value="${component.home}/src" />
+        <property name="build.dir" value="${home.dir}/build/ui/cli/database" />
+
         <property name="lib.dir" value="${home.dir}/lib" />
         <property name="build.lib.dir" value="${home.dir}/build/lib" />
+
+        <property name="ui.cli.database.javadir" value="${src.dir}/java" />
+        <property name="ui.cli.database.metadatadir" value="${src.dir}/metadata" />
+        <property name="ui.cli.database.xmldir" value="${src.dir}/xml" />
+
+        <property name="ui.cli.database.generateddir" value="${home.dir}/generated/data" />
+
+        <property name="ui.cli.database.classbindir" value="${build.dir}/classes" />
+        <property name="ui.cli.database.resourcesdir" value="${build.dir}/resources" />
+        <property name="ui.cli.database.jardir" value="${build.dir}/jar" />
+        <property name="ui.cli.database.jarfile" value="${ui.cli.database.jardir}/database.jar" />
+
+        <path id="runtime.classpath">
+            <file file="${build.lib.dir}/mysql-connector-java.jar"/>
+            <file file="${build.lib.dir}/guava.jar"/>
+            <file file="${build.lib.dir}/commons-cli.jar"/>
+            <file file="${build.lib.dir}/commons-lang.jar"/>
+            <file file="${build.lib.dir}/commons-configuration.jar"/>
+            <file file="${build.lib.dir}/commons-beanutils.jar"/>
+            <file file="${build.lib.dir}/commons-logging.jar"/>
+            <file file="${build.lib.dir}/commons-collections.jar"/>
+            <file file="${ui.cli.database.jardir}/database.jar"/>
+        </path>
     </target>
 
-    <target name="compile" depends="init">
-        <mkdir dir="build"/>
-        <mkdir dir="build/classes"/>
+    <target name="prepare" depends="init">
+        <mkdir dir="${ui.cli.database.classbindir}" />
+        <mkdir dir="${ui.cli.database.resourcesdir}" />
+        <mkdir dir="${ui.cli.database.jardir}" />
+    </target>
+
+    <target name="compile" depends="prepare">
         <path id="processorpath.ref">
             <pathelement location="${build.lib.dir}/error_prone_core-with-dependencies.jar"/>
             <pathelement location="${build.lib.dir}/failureaccess.jar"/>
@@ -37,7 +67,7 @@
         <javac
             debug="true"
             srcdir="./src/java"
-            destdir="./build/classes"
+            destdir="${ui.cli.database.classbindir}"
             includeAntRuntime="false">
             <classpath>
                 <pathelement location="./"/>
@@ -56,111 +86,84 @@
             <!-- <compilerarg value="-Xlint:deprecation" /> -->
             <!-- <compilerarg value="-Xlint:unchecked" /> -->
         </javac>
+
+        <copy todir="${ui.cli.database.classbindir}">
+            <fileset dir="${ui.cli.database.metadatadir}" />
+            <fileset dir="${ui.cli.database.xmldir}" />
+        </copy>
     </target>
-    
-    <target name="GenerateJava" depends="compile">
-        <java classname="DatabaseUtility" fork="true">
+
+    <target name="jar" depends="compile">
+        <jar jarfile="${ui.cli.database.jarfile}">
+            <fileset dir="${ui.cli.database.classbindir}">
+                <include name="**/*" />
+            </fileset>
+        </jar>
+    </target>
+
+    <target name="GenerateJava" depends="jar">
+        <java classpathref="runtime.classpath"
+              classname="com.echothree.ui.cli.database.Database"
+              fork="true">
             <arg value="--java"/>
             <arg value="--generated"/>
-            <arg value="../../../generated/data"/>
-            <classpath>
-                <pathelement path="${metadata.dir}" />
-                <pathelement location="./build/classes"/>
-                <fileset dir="../../../lib">
-                    <include name="**/*.jar"/>
-                </fileset>
-                <fileset dir="../../../build/lib">
-                    <include name="**/*.jar"/>
-                </fileset>
-            </classpath>
+            <arg value="${ui.cli.database.generateddir}"/>
         </java>
     </target>
         
-    <target name="GenerateDatabase" depends="compile">
-        <java classname="DatabaseUtility" fork="true">
+    <target name="GenerateDatabase" depends="jar">
+        <java classpathref="runtime.classpath"
+              classname="com.echothree.ui.cli.database.Database"
+              fork="true">
             <arg value="--structure"/>
             <arg value="--verbose"/>
-            <classpath>
-                <pathelement path="${metadata.dir}" />
-                <pathelement location="./build/classes"/>
-                <fileset dir="../../../lib">
-                    <include name="**/*.jar"/>
-                </fileset>
-                <fileset dir="../../../build/lib">
-                    <include name="**/*.jar"/>
-                </fileset>
-            </classpath>
         </java>
     </target>
         
-    <target name="RegenerateDatabase" depends="compile">
-        <java classname="DatabaseUtility" fork="true">
+    <target name="RegenerateDatabase" depends="jar">
+        <java classpathref="runtime.classpath"
+              classname="com.echothree.ui.cli.database.Database"
+              fork="true">
             <arg value="--empty"/>
             <arg value="--structure"/>
-            <classpath>
-                <pathelement path="${metadata.dir}" />
-                <pathelement location="./build/classes"/>
-                <fileset dir="../../../lib">
-                    <include name="**/*.jar"/>
-                </fileset>
-                <fileset dir="../../../build/lib">
-                    <include name="**/*.jar"/>
-                </fileset>
-            </classpath>
         </java>
     </target>
     
-    <target name="SetCharacterSetAndCollation" depends="compile">
-        <java classname="DatabaseUtility" fork="true">
+    <target name="SetCharacterSetAndCollation" depends="jar">
+        <java classpathref="runtime.classpath"
+              classname="com.echothree.ui.cli.database.Database"
+              fork="true">
             <arg value="--charset"/>
-            <classpath>
-                <pathelement path="${metadata.dir}" />
-                <pathelement location="./build/classes"/>
-                <fileset dir="../../../lib">
-                    <include name="**/*.jar"/>
-                </fileset>
-                <fileset dir="../../../build/lib">
-                    <include name="**/*.jar"/>
-                </fileset>
-            </classpath>
         </java>
     </target>
     
-    <target name="RegenerateReporting" depends="compile">
-        <java classname="DatabaseUtility" fork="true">
+    <target name="RegenerateReporting" depends="jar">
+        <java classpathref="runtime.classpath"
+              classname="com.echothree.ui.cli.database.Database"
+              fork="true">
             <arg value="--reporting"/>
-            <classpath>
-                <pathelement path="${metadata.dir}" />
-                <pathelement location="./build/classes"/>
-                <fileset dir="../../../lib">
-                    <include name="**/*.jar"/>
-                </fileset>
-                <fileset dir="../../../build/lib">
-                    <include name="**/*.jar"/>
-                </fileset>
-            </classpath>
         </java>
     </target>
     
    <target name="clean-generated">
-        <echo message="Deleting directory ../../../generated/data" />
+        <echo message="Deleting ${ui.cli.database.generateddir}" />
         <delete includeemptydirs="true" quiet="true">
-            <fileset dir="../../../generated/data">
+            <fileset dir="${ui.cli.database.generateddir}">
                 <include name="**" />
             </fileset>
         </delete>
     </target>
 
     <target name="clean-build">
-        <echo message="Deleting directory build" />
+        <echo message="Deleting ${build.dir}" />
         <delete includeemptydirs="true" quiet="true">
-            <fileset dir="build">
+            <fileset dir="${build.dir}">
                 <include name="**" />
             </fileset>
         </delete>
     </target>
 
-    <target name="clean">
+    <target name="clean" depends="init">
         <parallel>
             <ant target="clean-generated"/>
             <ant target="clean-build"/>
