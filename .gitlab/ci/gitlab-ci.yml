@@ -23,7 +23,7 @@ build:
       - build/ui/web/main/war/main.war
       - build/service/graphql/war/graphql.war
       - build/service/job/jar/echothree-job.jar
-      - build/ui/cli/database/jar/database.war
+      - build/ui/cli/database/jar/database.jar
       - build/lib/mysql-connector-java.jar
       - build/lib/guava.jar
       - build/lib/commons-cli.jar

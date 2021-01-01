@@ -36,7 +36,7 @@
         <property name="ui.cli.database.classbindir" value="${build.dir}/classes" />
         <property name="ui.cli.database.resourcesdir" value="${build.dir}/resources" />
         <property name="ui.cli.database.jardir" value="${build.dir}/jar" />
-        <property name="ui.cli.database.jarfile" value="${ui.cli.database.jardir}/database.war" />
+        <property name="ui.cli.database.jarfile" value="${ui.cli.database.jardir}/database.jar" />
     </target>
 
     <target name="prepare" depends="init">
