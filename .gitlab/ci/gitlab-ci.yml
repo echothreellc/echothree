@@ -18,11 +18,19 @@ build:
     paths:
       - build/ears/echothree.ear
       - build/jars/echothree-client.jar
-      - build/lib/mysql-connector-java.jar
       - build/ui/web/cms/war/cms.war
       - build/ui/web/letter/war/letter.war
       - build/ui/web/main/war/main.war
       - build/service/graphql/war/graphql.war
       - build/service/job/jar/echothree-job.jar
+      - build/ui/cli/database/jar/database.war
+      - build/lib/mysql-connector-java.jar
+      - build/lib/guava.jar
+      - build/lib/commons-cli.jar
+      - build/lib/commons-lang.jar
+      - build/lib/commons-configuration.jar
+      - build/lib/commons-beanutils.jar
+      - build/lib/commons-logging.jar
+      - build/lib/commons-collections.jar
     expire_in: 1 week
 
