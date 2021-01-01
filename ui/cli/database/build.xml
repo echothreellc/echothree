@@ -37,6 +37,18 @@
         <property name="ui.cli.database.resourcesdir" value="${build.dir}/resources" />
         <property name="ui.cli.database.jardir" value="${build.dir}/jar" />
         <property name="ui.cli.database.jarfile" value="${ui.cli.database.jardir}/database.jar" />
+
+        <path id="runtime.classpath">
+            <file file="${build.lib.dir}/mysql-connector-java.jar"/>
+            <file file="${build.lib.dir}/guava.jar"/>
+            <file file="${build.lib.dir}/commons-cli.jar"/>
+            <file file="${build.lib.dir}/commons-lang.jar"/>
+            <file file="${build.lib.dir}/commons-configuration.jar"/>
+            <file file="${build.lib.dir}/commons-beanutils.jar"/>
+            <file file="${build.lib.dir}/commons-logging.jar"/>
+            <file file="${build.lib.dir}/commons-collections.jar"/>
+            <file file="${ui.cli.database.jardir}/database.jar"/>
+        </path>
     </target>
 
     <target name="prepare" depends="init">
@@ -91,83 +103,48 @@
             </fileset>
         </jar>
     </target>
-    
+
     <target name="GenerateJava" depends="jar">
-        <java classname="DatabaseUtility" fork="true">
+        <java classpathref="runtime.classpath"
+              classname="DatabaseUtility"
+              fork="true">
             <arg value="--java"/>
             <arg value="--generated"/>
             <arg value="${ui.cli.database.generateddir}"/>
-            <classpath>
-                <file file="${ui.cli.database.jarfile}" />
-                <fileset dir="${lib.dir}">
-                    <include name="**/*.jar"/>
-                </fileset>
-                <fileset dir="${build.lib.dir}">
-                    <include name="**/*.jar"/>
-                </fileset>
-            </classpath>
         </java>
     </target>
         
     <target name="GenerateDatabase" depends="jar">
-        <java classname="DatabaseUtility" fork="true">
+        <java classpathref="runtime.classpath"
+              classname="DatabaseUtility"
+              fork="true">
             <arg value="--structure"/>
             <arg value="--verbose"/>
-            <classpath>
-                <file file="${ui.cli.database.jarfile}" />
-                <fileset dir="${lib.dir}">
-                    <include name="**/*.jar"/>
-                </fileset>
-                <fileset dir="${build.lib.dir}">
-                    <include name="**/*.jar"/>
-                </fileset>
-            </classpath>
         </java>
     </target>
         
     <target name="RegenerateDatabase" depends="jar">
-        <java classname="DatabaseUtility" fork="true">
+        <java classpathref="runtime.classpath"
+              classname="DatabaseUtility"
+              fork="true">
             <arg value="--empty"/>
             <arg value="--structure"/>
-            <classpath>
-                <file file="${ui.cli.database.jarfile}" />
-                <fileset dir="${lib.dir}">
-                    <include name="**/*.jar"/>
-                </fileset>
-                <fileset dir="${build.lib.dir}">
-                    <include name="**/*.jar"/>
-                </fileset>
-            </classpath>
         </java>
     </target>
     
     <target name="SetCharacterSetAndCollation" depends="jar">
-        <java classname="DatabaseUtility" fork="true">
+        <java classpathref="runtime.classpath"
+              classname="DatabaseUtility"
+              fork="true">
             <arg value="--charset"/>
-            <classpath>
-                <file file="${ui.cli.database.jarfile}" />
-                <fileset dir="${lib.dir}">
-                    <include name="**/*.jar"/>
-                </fileset>
-                <fileset dir="${build.lib.dir}">
-                    <include name="**/*.jar"/>
-                </fileset>
-            </classpath>
         </java>
     </target>
     
     <target name="RegenerateReporting" depends="jar">
-        <java classname="DatabaseUtility" fork="true">
+        <java classpathref="runtime.classpath"
+              classname="DatabaseUtility"
+              fork="true">
             <arg value="--reporting"/>
-            <classpath>
-                <file file="${ui.cli.database.jarfile}" />
-                <fileset dir="${lib.dir}">
-                    <include name="**/*.jar"/>
-                </fileset>
-                <fileset dir="${build.lib.dir}">
-                    <include name="**/*.jar"/>
-                </fileset>
-            </classpath>
         </java>
     </target>
     
