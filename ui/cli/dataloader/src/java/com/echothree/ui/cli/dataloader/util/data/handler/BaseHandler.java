@@ -38,7 +38,7 @@ public abstract class BaseHandler {
     private static boolean doVerbose = false;
     
     /** Creates a new instance of BaseHandler */
-    public BaseHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
+    protected BaseHandler(InitialDataParser initialDataParser, BaseHandler parentHandler) {
         this.initialDataParser = initialDataParser;
         this.parentHandler = parentHandler;
     }
