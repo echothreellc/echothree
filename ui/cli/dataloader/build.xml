@@ -24,6 +24,9 @@
         <property name="src.dir" value="${component.home}/src" />
         <property name="build.dir" value="${home.dir}/build/ui/cli/dataloader" />
 
+        <property name="e3.jardir" value="${home.dir}/build/jars" />
+        <property name="e3.client.jarfile" value="${e3.jardir}/echothree-client.jar" />
+
         <property name="lib.dir" value="${home.dir}/lib" />
         <property name="build.lib.dir" value="${home.dir}/build/lib" />
 
@@ -51,8 +54,8 @@
             <file file="${build.lib.dir}/slf4j-api.jar"/>
             <file file="${build.lib.dir}/slf4j-log4j12.jar"/>
             <file file="${build.lib.dir}/wildfly-client-all.jar"/>
-            <file file="../../../build/jars/echothree-client.jar"/>
-            <file file="${ui.cli.dataloader.jardir}/dataloader.jar"/>
+            <file file="${e3.client.jarfile}"/>
+            <file file="${ui.cli.dataloader.jarfile}"/>
         </path>
     </target>
 
