@@ -15,13 +15,11 @@
 <!-- limitations under the License.                                                   -->
 <!--                                                                                  -->
 <project name="dataloader" default="Help" basedir=".">
-
-    <property file="build.properties"/>
-    <property file="${component.home}/environment.properties"/>
-    <property name="metadata.dir" value="src/metadata"/>
-
+    
     <target name="init">
         <property name="home.dir" value="../../.." />
+        <property name="metadata.dir" value="src/metadata"/>
+
         <property name="lib.dir" value="${home.dir}/lib" />
         <property name="build.lib.dir" value="${home.dir}/build/lib" />
     </target>
@@ -82,9 +80,6 @@
             <classpath>
                 <pathelement path="${metadata.dir}" />
                 <pathelement location="./build/classes"/>
-                <fileset dir="../../../${wildfly.home.modules}">
-                    <include name="**/*.jar"/>
-                </fileset>
                 <fileset dir="../../../lib">
                     <include name="**/*.jar"/>
                 </fileset>
@@ -105,9 +100,6 @@
             <classpath>
                 <pathelement path="${metadata.dir}" />
                 <pathelement location="./build/classes"/>
-                <fileset dir="../../../${wildfly.home.modules}">
-                    <include name="**/*.jar"/>
-                </fileset>
                 <fileset dir="../../../lib">
                     <include name="**/*.jar"/>
                 </fileset>
@@ -128,9 +120,6 @@
             <classpath>
                 <pathelement path="${metadata.dir}" />
                 <pathelement location="./build/classes"/>
-                <fileset dir="../../../${wildfly.home.modules}">
-                    <include name="**/*.jar"/>
-                </fileset>
                 <fileset dir="../../../lib">
                     <include name="**/*.jar"/>
                 </fileset>
@@ -144,12 +133,6 @@
         </java>
     </target>
     
-    <target name="LoadAll" depends="compile">
-        <ant target="Load"/>
-        <ant target="LoadZipCodes"/>
-        <ant target="LoadHarmonizedTariffCodes"/>
-    </target>
-    
     <target name="LoadZipCodes" depends="compile">
         <java classname="com.echothree.ui.cli.dataloader.DataLoader" fork="true">
             <arg value="--zipcode"/>
@@ -157,9 +140,6 @@
             <classpath>
                 <pathelement path="${metadata.dir}" />
                 <pathelement location="./build/classes"/>
-                <fileset dir="../../../${wildfly.home.modules}">
-                    <include name="**/*.jar"/>
-                </fileset>
                 <fileset dir="../../../lib">
                     <include name="**/*.jar"/>
                 </fileset>
@@ -180,9 +160,6 @@
             <classpath>
                 <pathelement path="${metadata.dir}" />
                 <pathelement location="./build/classes"/>
-                <fileset dir="../../../${wildfly.home.modules}">
-                    <include name="**/*.jar"/>
-                </fileset>
                 <fileset dir="../../../lib">
                     <include name="**/*.jar"/>
                 </fileset>
@@ -194,6 +171,12 @@
                 </fileset>
             </classpath>
         </java>
+    </target>
+
+    <target name="LoadAll" depends="compile">
+        <ant target="Load"/>
+        <ant target="LoadZipCodes"/>
+        <ant target="LoadHarmonizedTariffCodes"/>
     </target>
 
     <target name="clean">
