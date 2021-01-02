@@ -46,7 +46,7 @@
             <file file="${build.lib.dir}/commons-beanutils.jar"/>
             <file file="${build.lib.dir}/commons-logging.jar"/>
             <file file="${build.lib.dir}/commons-collections.jar"/>
-            <file file="${ui.cli.database.jardir}/database.jar"/>
+            <file file="${ui.cli.database.jarfile}"/>
         </path>
     </target>
 
