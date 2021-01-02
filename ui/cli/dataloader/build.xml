@@ -77,7 +77,7 @@
     </target>
     
     <target name="Load" depends="compile">
-        <java classname="DataLoaderUtility" fork="true">
+        <java classname="com.echothree.ui.cli.dataloader.DataLoader" fork="true">
             <arg value="--initial"/>
             <classpath>
                 <pathelement path="${metadata.dir}" />
@@ -99,7 +99,7 @@
     </target>
     
     <target name="LoadKeys" depends="compile">
-        <java classname="DataLoaderUtility" fork="true">
+        <java classname="com.echothree.ui.cli.dataloader.DataLoader" fork="true">
             <arg value="--file"/>
             <arg value="src/xml/LoadKeys.xml"/>
             <classpath>
@@ -122,7 +122,7 @@
     </target>
     
     <target name="ChangeKeys" depends="compile">
-        <java classname="DataLoaderUtility" fork="true">
+        <java classname="com.echothree.ui.cli.dataloader.DataLoader" fork="true">
             <arg value="--file"/>
             <arg value="src/xml/ChangeKeys.xml"/>
             <classpath>
@@ -151,7 +151,7 @@
     </target>
     
     <target name="LoadZipCodes" depends="compile">
-        <java classname="DataLoaderUtility" fork="true">
+        <java classname="com.echothree.ui.cli.dataloader.DataLoader" fork="true">
             <arg value="--zipcode"/>
             <arg value="src/text/city-state-product.txt"/>
             <classpath>
@@ -174,7 +174,7 @@
     </target>
     
     <target name="LoadHarmonizedTariffCodes" depends="compile">
-        <java classname="DataLoaderUtility" fork="true">
+        <java classname="com.echothree.ui.cli.dataloader.DataLoader" fork="true">
             <arg value="--hts"/>
             <arg value="src/text/harmonized-tariff-schedule"/>
             <classpath>
