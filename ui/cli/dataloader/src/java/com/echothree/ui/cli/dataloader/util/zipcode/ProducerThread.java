@@ -23,18 +23,17 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.List;
 
 public class ProducerThread
         extends Thread {
     
-    private final SmartQueue queue;
+    private final SmartQueue<List<ZipCodeData>> queue;
     private final String filename;
     
     /** Creates a new instance of ProducerThread */
-    public ProducerThread(SmartQueue queue, String filename) {
+    public ProducerThread(SmartQueue<List<ZipCodeData>> queue, String filename) {
         this.queue=queue;
         this.filename=filename;
     }
@@ -42,31 +41,26 @@ public class ProducerThread
     @Override
     public void run() {
         try {
-            HashMap zipCodeDataByState = new HashMap(75);
+            var zipCodeDataByState = new HashMap<String, List<ZipCodeData>>(75);
             
             try (BufferedReader in = Files.newBufferedReader(Paths.get(filename), UTF_8)) {
                 for(String zipCodeLine = in.readLine(); zipCodeLine != null; zipCodeLine = in.readLine()) {
-                    ZipCodeData zipCodeData = new ZipCodeData(zipCodeLine);
+                    var zipCodeData = new ZipCodeData(zipCodeLine);
                     
-                    if(zipCodeData.getCopyrightDetailCode().equals("D")) {
-                        if(zipCodeData.getCityStateMailingNameIndicator().equals("Y")) {
-                            String stateAbbreviation = zipCodeData.getStateAbbreviation();
-                            ArrayList stateZipCodeList = (ArrayList)zipCodeDataByState.get(stateAbbreviation);
-                            
-                            if(stateZipCodeList == null) {
-                                stateZipCodeList = new ArrayList();
-                                zipCodeDataByState.put(stateAbbreviation, stateZipCodeList);
-                            }
-                            
+                    if("D".equals(zipCodeData.getCopyrightDetailCode())) {
+                        if("Y".equals(zipCodeData.getCityStateMailingNameIndicator())) {
+                            var stateAbbreviation = zipCodeData.getStateAbbreviation();
+                            var stateZipCodeList = zipCodeDataByState.computeIfAbsent(stateAbbreviation, k -> new ArrayList<>());
+
                             stateZipCodeList.add(zipCodeData);
                         }
                     }
                 }
             }
             
-            Collection zipCodeArrays = zipCodeDataByState.values();
-            for(Iterator iter = zipCodeArrays.iterator(); iter.hasNext();) {
-                queue.put(iter.next());
+            var zipCodeLists = zipCodeDataByState.values();
+            for(var zipCodeList : zipCodeLists) {
+                queue.put(zipCodeList);
             }
         } catch (IOException ioe) {
             ioe.printStackTrace();
