@@ -34,18 +34,22 @@ public class ZipCodeData {
         
         try {
             copyrightDetailCode = zipCodeLine.substring(0, 1);
-            zipCode = zipCodeLine.substring(1, 6).trim();
-            cityStateName = zipCodeLine.substring(13, 41).trim();
-            cityStateNameFacilityCode = zipCodeLine.substring(54, 55);
-            cityStateMailingNameIndicator = zipCodeLine.substring(55, 56);
-            preferredLastLineCityStateName = zipCodeLine.substring(62, 90).trim();
-            stateAbbreviation = zipCodeLine.substring(99, 101);
-            if(length > 101) {
-                countyNumber = zipCodeLine.substring(101, 104);
-                countyName = zipCodeLine.substring(104).trim();
-            } else {
-                countyNumber = null;
-                countyName = null;
+
+            if("D".equals(copyrightDetailCode)) {
+                zipCode = zipCodeLine.substring(1, 6).trim();
+                cityStateName = zipCodeLine.substring(13, 41).trim();
+                cityStateNameFacilityCode = zipCodeLine.substring(54, 55);
+                cityStateMailingNameIndicator = zipCodeLine.substring(55, 56);
+                preferredLastLineCityStateName = zipCodeLine.substring(62, 90).trim();
+                stateAbbreviation = zipCodeLine.substring(99, 101);
+
+                if(length > 101) {
+                    countyNumber = zipCodeLine.substring(101, 104);
+                    countyName = zipCodeLine.substring(104).trim();
+                } else {
+                    countyNumber = null;
+                    countyName = null;
+                }
             }
         } catch (StringIndexOutOfBoundsException sioobe) {
             System.err.println("StringIndexOutOfBoundsException: \"" + zipCodeLine + "\", length = " + length);
