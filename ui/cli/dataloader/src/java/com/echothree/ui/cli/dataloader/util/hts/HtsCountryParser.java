@@ -58,8 +58,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class HtsCountryParser<H extends Object> {
     
@@ -71,9 +71,9 @@ public abstract class HtsCountryParser<H extends Object> {
     protected String countryName;
     
     Map<String, HarmonizedTariffScheduleCodeTransfer> existingCodes;
-    
-    private Log log = LogFactory.getLog(this.getClass());
-    
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
     public void execute(UserVisitPK userVisitPK, GeoService geoService, ItemService itemService, File htsDirectory, CountryTransfer country)
             throws IOException {
         this.userVisitPK = userVisitPK;
@@ -112,7 +112,7 @@ public abstract class HtsCountryParser<H extends Object> {
             
             harmonizedTariffScheduleCodes = result.getHarmonizedTariffScheduleCodes();
         } else {
-            log.error(commandResult);
+            logger.error(commandResult.toString());
         }
         
         return harmonizedTariffScheduleCodes;
@@ -122,25 +122,25 @@ public abstract class HtsCountryParser<H extends Object> {
         Map<String, H> uniqueCodes = new HashMap<>();
         uniqueCodes.putAll(importCodes);
         uniqueCodes.putAll(exportCodes);
-        log.info(uniqueCodes.size() + " unique code" + (uniqueCodes.size() == 1 ? "" : "s"));
+        logger.info(uniqueCodes.size() + " unique code" + (uniqueCodes.size() == 1 ? "" : "s"));
         
         existingCodes = convertHtsListToMap(getHarmonizedTariffScheduleCodes(countryName));
-        log.info(existingCodes.size() + " existing code" + (existingCodes.size() == 1 ? "" : "s"));
+        logger.info(existingCodes.size() + " existing code" + (existingCodes.size() == 1 ? "" : "s"));
         
         Set<String> codesToCreate = new HashSet<>();
         codesToCreate.addAll(uniqueCodes.keySet());
         codesToCreate.removeAll(existingCodes.keySet());
-        log.info(codesToCreate.size() + " code" + (codesToCreate.size() == 1 ? "" : "s") + " to create");
+        logger.info(codesToCreate.size() + " code" + (codesToCreate.size() == 1 ? "" : "s") + " to create");
         
         Set<String> codesToDelete = new HashSet<>();
         codesToDelete.addAll(existingCodes.keySet());
         codesToDelete.removeAll(uniqueCodes.keySet());
-        log.info(codesToDelete.size() + " code" + (codesToDelete.size() == 1 ? "" : "s") + " to delete");
+        logger.info(codesToDelete.size() + " code" + (codesToDelete.size() == 1 ? "" : "s") + " to delete");
         
         Set<String> codesToCheck = new HashSet<>();
         codesToCheck.addAll(uniqueCodes.keySet());
         codesToCheck.retainAll(existingCodes.keySet());
-        log.info(codesToCheck.size() + " code" + (codesToCheck.size() == 1 ? "" : "s") + " to check");
+        logger.info(codesToCheck.size() + " code" + (codesToCheck.size() == 1 ? "" : "s") + " to check");
         
         createCodes(codesToCreate, importCodes, exportCodes, uniqueCodes);
         deleteCodes(codesToDelete);
@@ -169,7 +169,7 @@ public abstract class HtsCountryParser<H extends Object> {
             commandForm.setHarmonizedTariffScheduleCodeUseTypeName(harmonizedTariffScheduleCodeUseName);
             return commandForm;
         }).map((commandForm) -> itemService.createHarmonizedTariffScheduleCodeUse(userVisitPK, commandForm)).filter((commandResult) -> commandResult.hasErrors()).forEach((commandResult) -> {
-            log.error(commandResult);
+            logger.error(commandResult.toString());
         });
     }
     
@@ -185,7 +185,7 @@ public abstract class HtsCountryParser<H extends Object> {
             CommandResult commandResult = itemService.createHarmonizedTariffScheduleCode(userVisitPK, commandForm);
 
             if(commandResult.hasErrors()) {
-                log.error(commandResult);
+                logger.error(commandResult.toString());
             } else {
                 createUses(commandForm, getHarmonizedTariffScheduleCodeUses(importCodes, exportCodes, htsc));
             }
@@ -201,7 +201,7 @@ public abstract class HtsCountryParser<H extends Object> {
             commandForm.setHarmonizedTariffScheduleCodeName(harmonizedTariffScheduleCodeName);
             return harmonizedTariffScheduleCodeName;
         }).map((_item) -> itemService.deleteHarmonizedTariffScheduleCode(userVisitPK, commandForm)).filter((commandResult) -> commandResult.hasErrors()).forEach((commandResult) -> {
-            log.error(commandResult);
+            logger.error(commandResult.toString());
         });
     }
     
@@ -232,7 +232,7 @@ public abstract class HtsCountryParser<H extends Object> {
         
         CommandResult commandResult = itemService.getHarmonizedTariffScheduleCodeTranslation(userVisitPK, getCodeTranslationForm);
         if(commandResult.hasErrors()) {
-            log.error(commandResult);
+            logger.error(commandResult.toString());
         } else {
             ExecutionResult executionResult = commandResult.getExecutionResult();
             GetHarmonizedTariffScheduleCodeTranslationResult editResult = (GetHarmonizedTariffScheduleCodeTranslationResult)executionResult.getResult();
@@ -267,10 +267,10 @@ public abstract class HtsCountryParser<H extends Object> {
                     commandResult = itemService.editHarmonizedTariffScheduleCodeTranslation(userVisitPK, editCodeTranslationForm);
 
                     if(commandResult.hasErrors()) {
-                        log.error("  editHarmonizedTariffScheduleCodeTranslation update failed for " + code + ": " + commandResult);
+                        logger.error("  editHarmonizedTariffScheduleCodeTranslation update failed for " + code + ": " + commandResult);
                     }
                 } else {
-                    log.error("  editHarmonizedTariffScheduleCodeTranslation lock failed for " + code + ": " + commandResult);
+                    logger.error("  editHarmonizedTariffScheduleCodeTranslation lock failed for " + code + ": " + commandResult);
                 }
             }
         }
@@ -287,7 +287,7 @@ public abstract class HtsCountryParser<H extends Object> {
 
                 CommandResult commandResult = itemService.createHarmonizedTariffScheduleCodeUse(userVisitPK, createCodeUseForm);
                 if(commandResult.hasErrors()) {
-                    log.error(commandResult);
+                    logger.error(commandResult.toString());
                 }
             }
         } else if(isCurrentlyUsed) {
@@ -298,7 +298,7 @@ public abstract class HtsCountryParser<H extends Object> {
             
             CommandResult commandResult = itemService.deleteHarmonizedTariffScheduleCodeUse(userVisitPK, deleteCodeUseForm);
             if(commandResult.hasErrors()) {
-                log.error(commandResult);
+                logger.error(commandResult.toString());
             }
         }
     }
@@ -312,7 +312,7 @@ public abstract class HtsCountryParser<H extends Object> {
     
         CommandResult commandResult = itemService.getHarmonizedTariffScheduleCodeUses(userVisitPK, getCodeUsesForm);
         if(commandResult.hasErrors()) {
-            log.error(commandResult);
+            logger.error(commandResult.toString());
         } else {
             ExecutionResult executionResult = commandResult.getExecutionResult();
             GetHarmonizedTariffScheduleCodeUsesResult editResult = (GetHarmonizedTariffScheduleCodeUsesResult)executionResult.getResult();
@@ -376,10 +376,10 @@ public abstract class HtsCountryParser<H extends Object> {
                 commandResult = itemService.editHarmonizedTariffScheduleCode(userVisitPK, editCodeForm);
 
                 if(commandResult.hasErrors()) {
-                    log.error("  editHarmonizedTariffScheduleCode update failed for " + code + ": " + commandResult);
+                    logger.error("  editHarmonizedTariffScheduleCode update failed for " + code + ": " + commandResult);
                 }
             } else {
-                log.error("  editHarmonizedTariffScheduleCode lock failed for " + code + ": " + commandResult);
+                logger.error("  editHarmonizedTariffScheduleCode lock failed for " + code + ": " + commandResult);
             }
         }
         

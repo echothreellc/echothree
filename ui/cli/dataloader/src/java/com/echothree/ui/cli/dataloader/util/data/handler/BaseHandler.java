@@ -22,8 +22,8 @@ import com.echothree.util.common.string.StringUtils;
 import java.util.HashMap;
 import java.util.Map;
 import javax.naming.NamingException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -31,8 +31,8 @@ public abstract class BaseHandler {
     
     protected InitialDataParser initialDataParser;
     protected BaseHandler parentHandler;
-    
-    private Log log = null;
+
+    private static Logger logger = null;
     
     private static boolean doErrors = false;
     private static boolean doVerbose = false;
@@ -66,12 +66,12 @@ public abstract class BaseHandler {
         // Ignored
     }
     
-    protected Log getLog() {
-        if(log == null) {
-            log = LogFactory.getLog(this.getClass());
+    protected Logger getLogger() {
+        if(logger == null) {
+            logger = LoggerFactory.getLogger(this.getClass());
         }
         
-        return log;
+        return logger;
     }
     
     protected void checkCommandResult(CommandResult commandResult) {
@@ -79,9 +79,9 @@ public abstract class BaseHandler {
             var executionResult = commandResult.getExecutionResult();
             
             if(commandResult.hasErrors())
-                getLog().error(executionResult);
+                getLogger().error(executionResult.toString());
             else
-                getLog().info(executionResult);
+                getLogger().info(executionResult.toString());
         }
     }
     

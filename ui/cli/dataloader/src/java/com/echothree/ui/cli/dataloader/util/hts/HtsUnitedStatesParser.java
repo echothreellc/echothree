@@ -32,13 +32,13 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class HtsUnitedStatesParser
         extends HtsCountryParser<HtsUnitedStatesCode> {
-    
-    private final Log log = LogFactory.getLog(this.getClass());
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
     
     @Override
     public void execute(UserVisitPK userVisitPK, GeoService geoService, ItemService itemService, File htsDirectory, CountryTransfer country)
@@ -46,9 +46,9 @@ public class HtsUnitedStatesParser
         super.execute(userVisitPK, geoService, itemService, htsDirectory, country);
         
         Map<String, HtsUnitedStatesCode> importCodes = readCodes(new File(htsDirectory.getAbsolutePath() + File.separator + "impaes.txt"));
-        log.info(importCodes.size() + " import codes");
+        logger.info(importCodes.size() + " import codes");
         Map<String, HtsUnitedStatesCode> exportCodes = readCodes(new File(htsDirectory.getAbsolutePath() + File.separator + "expaes.txt"));
-        log.info(exportCodes.size() + " export codes");
+        logger.info(exportCodes.size() + " export codes");
         
         determineAndApplyChanges(importCodes, exportCodes);
     }

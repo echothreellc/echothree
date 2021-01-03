@@ -16,15 +16,15 @@
 
 package com.echothree.ui.cli.dataloader.util.hts;
 
-import com.echothree.control.user.authentication.common.AuthenticationUtil;
 import com.echothree.control.user.authentication.common.AuthenticationService;
-import com.echothree.control.user.geo.common.GeoUtil;
+import com.echothree.control.user.authentication.common.AuthenticationUtil;
 import com.echothree.control.user.geo.common.GeoService;
+import com.echothree.control.user.geo.common.GeoUtil;
 import com.echothree.control.user.geo.common.form.GeoFormFactory;
 import com.echothree.control.user.geo.common.form.GetCountryForm;
 import com.echothree.control.user.geo.common.result.GetCountryResult;
-import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.common.ItemService;
+import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.model.control.geo.common.GeoConstants;
 import com.echothree.model.control.geo.common.GeoOptions;
 import com.echothree.model.control.geo.common.transfer.CountryTransfer;
@@ -42,14 +42,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.naming.NamingException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class HtsParser {
     
     private String htsDirectory;
-    
-    private Log log = LogFactory.getLog(this.getClass());
+
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
     
     private AuthenticationService authenticationService;
     private GeoService geoService;
@@ -113,7 +113,7 @@ public class HtsParser {
             GetCountryResult getCountryResult = (GetCountryResult)executionResult.getResult();
             country = getCountryResult.getCountry();
         } else {
-            log.error(commandResult);
+            logger.error(commandResult.toString());
         }
         
         return country;
@@ -146,7 +146,7 @@ public class HtsParser {
             
             fileList = Arrays.asList(files);
         } else {
-            log.error(htsDirectory + " isn't a directory.");
+            logger.error(htsDirectory + " isn't a directory.");
         }
         
         return fileList;
@@ -172,7 +172,7 @@ public class HtsParser {
                 try {
                     htsCountryParsers.get(countryName).execute(userVisitPK, geoService, itemService, countryDirectory, country);
                 } catch(IOException ioe) {
-                    log.error(ioe);
+                    logger.error("An Exception occurred:", ioe);
                 }
             });
             
@@ -180,12 +180,12 @@ public class HtsParser {
         }
     }
     
-    public Log getLog() {
-        return log;
+    public Logger getLog() {
+        return logger;
     }
     
-    public void setLog(Log log) {
-        this.log = log;
+    public void setLog(Logger logger) {
+        this.logger = logger;
     }
     
     public AuthenticationService getAuthenticationService() {

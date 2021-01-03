@@ -75,10 +75,10 @@ public class IndexTypesHandler
                     commandResult = indexService.createIndexType(initialDataParser.getUserVisit(), createForm);
                     
                     if(commandResult.hasErrors()) {
-                        getLog().error(commandResult);
+                        getLogger().error(commandResult.toString());
                     }
                 } else {
-                    getLog().error(commandResult);
+                    getLogger().error(commandResult.toString());
                 }
             } else {
                 ExecutionResult executionResult = commandResult.getExecutionResult();
@@ -123,7 +123,7 @@ public class IndexTypesHandler
                         commandResult = indexService.editIndexType(initialDataParser.getUserVisit(), editForm);
 
                         if(commandResult.hasErrors()) {
-                            getLog().error(commandResult);
+                            getLogger().error(commandResult.toString());
                         }
                     } else {
                         editForm.setEdit(null);
@@ -132,7 +132,7 @@ public class IndexTypesHandler
                         commandResult = indexService.editIndexType(initialDataParser.getUserVisit(), editForm);
 
                         if(commandResult.hasErrors()) {
-                            getLog().error(commandResult);
+                            getLogger().error(commandResult.toString());
                         }
                     }
                 }

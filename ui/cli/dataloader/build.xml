@@ -48,7 +48,6 @@
             <file file="${build.lib.dir}/commons-lang.jar"/>
             <file file="${build.lib.dir}/commons-configuration.jar"/>
             <file file="${build.lib.dir}/commons-beanutils.jar"/>
-            <file file="${build.lib.dir}/commons-logging.jar"/>
             <file file="${build.lib.dir}/commons-collections.jar"/>
             <file file="${build.lib.dir}/log4j.jar"/>
             <file file="${build.lib.dir}/slf4j-api.jar"/>

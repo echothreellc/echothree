@@ -82,10 +82,10 @@ public class SearchKindHandler
                     commandResult = searchService.createSearchKindDescription(initialDataParser.getUserVisit(), createForm);
                     
                     if(commandResult.hasErrors()) {
-                        getLog().error(commandResult);
+                        getLogger().error(commandResult.toString());
                     }
                 } else {
-                    getLog().error(commandResult);
+                    getLogger().error(commandResult.toString());
                 }
             } else {
                 ExecutionResult executionResult = commandResult.getExecutionResult();
@@ -108,7 +108,7 @@ public class SearchKindHandler
                         commandResult = searchService.editSearchKindDescription(initialDataParser.getUserVisit(), editForm);
 
                         if(commandResult.hasErrors()) {
-                            getLog().error(commandResult);
+                            getLogger().error(commandResult.toString());
                         }
                     } else {
                         editForm.setEdit(null);
@@ -117,7 +117,7 @@ public class SearchKindHandler
                         commandResult = searchService.editSearchKindDescription(initialDataParser.getUserVisit(), editForm);
 
                         if(commandResult.hasErrors()) {
-                            getLog().error(commandResult);
+                            getLogger().error(commandResult.toString());
                         }
                     }
                 }

@@ -1,19 +1,35 @@
-package com.echothree.ui.cli.dataloader;// --------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
+// Copyright 2002-2021 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.ui.cli.dataloader;
 
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import com.echothree.ui.cli.dataloader.util.hts.HtsParser;
 import com.echothree.ui.cli.dataloader.util.zipcode.ZipCodeParser;
 import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DataLoader {
     
-    private static final Log log = LogFactory.getLog(DataLoader.class);
+    private static Logger logger = LoggerFactory.getLogger(DataLoader.class);
     
     static CommandLine getCommandLine(String args[])
             throws ParseException {
@@ -39,33 +55,33 @@ public class DataLoader {
         BaseHandler.setDoVerbose(line.hasOption("v"));
         
         if(doInitial) {
-            log.info("Loading initial data into database...");
+            logger.info("Loading initial data into database...");
             new InitialDataParser("/InitialData.xml").execute();
-            log.info("   ...done.");
+            logger.info("   ...done.");
         }
         
         if(doFile) {
             String filename = line.getOptionValue("f");
 
-            log.info("Loading data from \"" + filename + "\" into database...");
+            logger.info("Loading data from \"" + filename + "\" into database...");
             new InitialDataParser(filename).execute();
-            log.info("   ...done.");
+            logger.info("   ...done.");
         }
         
         if(doZipCode) {
             String filename = line.getOptionValue("z");
 
-            log.info("Loading zip code data from \"" + filename + "\" into database...");
+            logger.info("Loading zip code data from \"" + filename + "\" into database...");
             new ZipCodeParser(filename).execute();
-            log.info("   ...done.");
+            logger.info("   ...done.");
         }
         
         if(doHts) {
             String htsDirectory = line.getOptionValue("h");
 
-            log.info("Loading harmonized tariff schedules from \"" + htsDirectory + "\" into database...");
+            logger.info("Loading harmonized tariff schedules from \"" + htsDirectory + "\" into database...");
             new HtsParser(htsDirectory).execute();
-            log.info("   ...done.");
+            logger.info("   ...done.");
         }
     }
 }

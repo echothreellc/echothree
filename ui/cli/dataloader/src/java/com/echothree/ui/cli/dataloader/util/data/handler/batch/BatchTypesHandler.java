@@ -47,7 +47,7 @@ public class BatchTypesHandler
             var commandResult = batchService.createBatchType(initialDataParser.getUserVisit(), commandForm);
 
             if(commandResult.hasErrors()) {
-                getLog().error(commandResult);
+                getLogger().error(commandResult.toString());
             }
 
             initialDataParser.pushHandler(new BatchTypeHandler(initialDataParser, this, commandForm.getBatchTypeName()));
