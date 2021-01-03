@@ -31,8 +31,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import javax.naming.NamingException;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXNotRecognizedException;
 import org.xml.sax.SAXNotSupportedException;
@@ -90,7 +92,7 @@ public class InitialDataParser
     // ContentHandler methods
     //
     
-    String filename;
+    String name;
     UserVisitPK userVisitPK;
     
     /** Start document. */
@@ -315,20 +317,21 @@ public class InitialDataParser
     //
     
     /** Creates a new instance of InitialDataParser */
-    public InitialDataParser(final String filename)
+    public InitialDataParser(final String name)
             throws Exception {
-        this.filename = filename;
+        this.name = name;
     }
 
     public void execute()
-            throws IOException, SAXException {
-        XMLReader parser = null;
+            throws IOException, SAXException, ParserConfigurationException {
+        XMLReader parser;
 
         // create parser
         try {
             parser = SAXParserFactory.newInstance().newSAXParser().getXMLReader();
         } catch(Exception e) {
             System.err.println("error: Unable to instantiate parser");
+            throw e;
         }
 
         // set parser features
@@ -381,7 +384,7 @@ public class InitialDataParser
         // handlers
         setupHandlers();
 
-        parser.parse(filename);
+        parser.parse(new InputSource(InitialDataParser.class.getResource(name).openStream()));
     }
     
 }

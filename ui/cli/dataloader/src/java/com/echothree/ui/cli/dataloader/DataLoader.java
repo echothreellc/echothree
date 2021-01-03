@@ -40,7 +40,7 @@ public class DataLoader {
         
         if(doInitial) {
             log.info("Loading initial data into database...");
-            new InitialDataParser("src/xml/InitialData.xml").execute();
+            new InitialDataParser("/InitialData.xml").execute();
             log.info("   ...done.");
         }
         
