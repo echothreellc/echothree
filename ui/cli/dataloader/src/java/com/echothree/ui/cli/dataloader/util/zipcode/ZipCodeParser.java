@@ -29,6 +29,7 @@ import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.ExecutionResult;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.naming.NamingException;
 import org.apache.commons.logging.Log;
@@ -108,12 +109,12 @@ public class ZipCodeParser {
     public void execute()
         throws InterruptedException {
         if(setup()) {
-            SmartQueue queue = new SmartQueue(false, false, 8, null);
-            ProducerThread prod = new ProducerThread(queue, filename);
-            ConsumerThread cons1 = new ConsumerThread(queue, this);
-            ConsumerThread cons2 = new ConsumerThread(queue, this);
-            ConsumerThread cons3 = new ConsumerThread(queue, this);
-            ConsumerThread cons4 = new ConsumerThread(queue, this);
+            var queue = new SmartQueue<List<ZipCodeData>>(false, false, 8, null);
+            var prod = new ProducerThread(queue, filename);
+            var cons1 = new ConsumerThread(queue, this);
+            var cons2 = new ConsumerThread(queue, this);
+            var cons3 = new ConsumerThread(queue, this);
+            var cons4 = new ConsumerThread(queue, this);
             
             prod.setName("Producer");
             cons1.setName("Consumer 1");
