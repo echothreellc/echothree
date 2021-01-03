@@ -39,8 +39,6 @@ public class ZipCodeParser {
     
     private Log log = LogFactory.getLog(this.getClass());
     
-    private String filename;
-    
     private AuthenticationService authenticationService = null;
     private GeoService geoService = null;
     private UserVisitPK userVisitPK = null;
@@ -101,16 +99,14 @@ public class ZipCodeParser {
     }
     
     /** Creates a new instance of ZipCodeParser */
-    public ZipCodeParser(String filename)
-            throws Exception {
-        this.filename = filename;
+    public ZipCodeParser() {
     }
     
     public void execute()
         throws InterruptedException {
         if(setup()) {
             var queue = new SmartQueue<List<ZipCodeData>>(false, false, 8, null);
-            var prod = new ProducerThread(queue, filename);
+            var prod = new ProducerThread(queue);
             var cons1 = new ConsumerThread(queue, this);
             var cons2 = new ConsumerThread(queue, this);
             var cons3 = new ConsumerThread(queue, this);

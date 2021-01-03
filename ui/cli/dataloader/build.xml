@@ -32,6 +32,7 @@
 
         <property name="ui.cli.dataloader.javadir" value="${src.dir}/java" />
         <property name="ui.cli.dataloader.metadatadir" value="${src.dir}/metadata" />
+        <property name="ui.cli.dataloader.textdir" value="${src.dir}/text" />
         <property name="ui.cli.dataloader.xmldir" value="${src.dir}/xml" />
 
         <property name="ui.cli.dataloader.generateddir" value="${home.dir}/generated/data" />
@@ -98,6 +99,7 @@
 
         <copy todir="${ui.cli.dataloader.classbindir}">
             <fileset dir="${ui.cli.dataloader.metadatadir}" />
+            <fileset dir="${ui.cli.dataloader.textdir}" />
             <fileset dir="${ui.cli.dataloader.xmldir}" />
         </copy>
     </target>
@@ -151,7 +153,6 @@
               classname="com.echothree.ui.cli.dataloader.DataLoader"
               fork="true">
             <arg value="--zipcode"/>
-            <arg value="src/text/city-state-product/city-state-product.txt"/>
         </java>
     </target>
     

@@ -36,7 +36,7 @@ public class DataLoader {
         return new DefaultParser().parse(new Options()
                 .addOption("i", "initial", false, "load initial data into database")
                 .addOption("f", "file", true, "load data into database from specified file")
-                .addOption("z", "zipcode", true, "load zip code data from specified file")
+                .addOption("z", "zipcode", false, "load zip code data from specified file")
                 .addOption("h", "hts", true, "load harmonized tariff schedule codes from specified directory")
                 .addOption("e", "errors", true, "show command result when an error is returned")
                 .addOption("v", "verbose", true, "verbose command results"), args);
@@ -69,10 +69,8 @@ public class DataLoader {
         }
         
         if(doZipCode) {
-            String filename = line.getOptionValue("z");
-
-            logger.info("Loading zip code data from \"" + filename + "\" into database...");
-            new ZipCodeParser(filename).execute();
+            logger.info("Loading zip code data into database...");
+            new ZipCodeParser().execute();
             logger.info("   ...done.");
         }
         
