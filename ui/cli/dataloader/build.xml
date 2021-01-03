@@ -128,7 +128,7 @@
         </java>
     </target>
     
-    <target name="LoadKeys" depends="compile">
+    <target name="LoadKeys" depends="jar">
         <java classpathref="runtime.classpath"
               classname="com.echothree.ui.cli.dataloader.DataLoader"
               fork="true">
@@ -137,7 +137,7 @@
         </java>
     </target>
     
-    <target name="ChangeKeys" depends="compile">
+    <target name="ChangeKeys" depends="jar">
         <java classpathref="runtime.classpath"
               classname="com.echothree.ui.cli.dataloader.DataLoader"
               fork="true">
@@ -146,7 +146,7 @@
         </java>
     </target>
     
-    <target name="LoadZipCodes" depends="compile">
+    <target name="LoadZipCodes" depends="jar">
         <java classpathref="runtime.classpath"
               classname="com.echothree.ui.cli.dataloader.DataLoader"
               fork="true">
@@ -155,7 +155,7 @@
         </java>
     </target>
     
-    <target name="LoadHarmonizedTariffCodes" depends="compile">
+    <target name="LoadHarmonizedTariffCodes" depends="jar">
         <java classpathref="runtime.classpath"
               classname="com.echothree.ui.cli.dataloader.DataLoader"
               fork="true">
@@ -164,7 +164,7 @@
         </java>
     </target>
 
-    <target name="LoadAll" depends="compile">
+    <target name="LoadAll" depends="jar">
         <ant target="Load"/>
         <ant target="LoadZipCodes"/>
         <ant target="LoadHarmonizedTariffCodes"/>
