@@ -33,9 +33,9 @@ build:
       - build/lib/commons-beanutils.jar
       - build/lib/commons-logging.jar
       - build/lib/commons-collections.jar
-      - build/lib/log4j.jar"/>
-      - build/lib/slf4j-api.jar"/>
-      - build/lib/slf4j-log4j12.jar"/>
-      - build/lib/wildfly-client-all.jar"/>
+      - build/lib/log4j.jar
+      - build/lib/slf4j-api.jar
+      - build/lib/slf4j-log4j12.jar
+      - build/lib/wildfly-client-all.jar
     expire_in: 1 week
 
