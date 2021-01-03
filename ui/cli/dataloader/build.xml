@@ -16,19 +16,55 @@
 <!--                                                                                  -->
 <project name="dataloader" default="Help" basedir=".">
 
-    <property file="build.properties"/>
-    <property file="${component.home}/environment.properties"/>
-    <property name="metadata.dir" value="src/metadata"/>
-
     <target name="init">
+        <property name="component.home" value="./"/>
+        <property name="metadata.dir" value="${component.home}/src/metadata"/>
+
         <property name="home.dir" value="../../.." />
+        <property name="src.dir" value="${component.home}/src" />
+        <property name="build.dir" value="${home.dir}/build/ui/cli/dataloader" />
+
+        <property name="e3.jardir" value="${home.dir}/build/jars" />
+        <property name="e3.client.jarfile" value="${e3.jardir}/echothree-client.jar" />
+
         <property name="lib.dir" value="${home.dir}/lib" />
         <property name="build.lib.dir" value="${home.dir}/build/lib" />
+
+        <property name="ui.cli.dataloader.javadir" value="${src.dir}/java" />
+        <property name="ui.cli.dataloader.metadatadir" value="${src.dir}/metadata" />
+        <property name="ui.cli.dataloader.textdir" value="${src.dir}/text" />
+        <property name="ui.cli.dataloader.xmldir" value="${src.dir}/xml" />
+
+        <property name="ui.cli.dataloader.generateddir" value="${home.dir}/generated/data" />
+
+        <property name="ui.cli.dataloader.classbindir" value="${build.dir}/classes" />
+        <property name="ui.cli.dataloader.jardir" value="${build.dir}/jar" />
+        <property name="ui.cli.dataloader.jarfile" value="${ui.cli.dataloader.jardir}/dataloader.jar" />
+
+        <path id="runtime.classpath">
+            <file file="${build.lib.dir}/mysql-connector-java.jar"/>
+            <file file="${build.lib.dir}/guava.jar"/>
+            <file file="${build.lib.dir}/icu4j.jar"/>
+            <file file="${build.lib.dir}/commons-cli.jar"/>
+            <file file="${build.lib.dir}/commons-lang.jar"/>
+            <file file="${build.lib.dir}/commons-configuration.jar"/>
+            <file file="${build.lib.dir}/commons-beanutils.jar"/>
+            <file file="${build.lib.dir}/commons-collections.jar"/>
+            <file file="${build.lib.dir}/log4j.jar"/>
+            <file file="${build.lib.dir}/slf4j-api.jar"/>
+            <file file="${build.lib.dir}/slf4j-log4j12.jar"/>
+            <file file="${build.lib.dir}/wildfly-client-all.jar"/>
+            <file file="${e3.client.jarfile}"/>
+            <file file="${ui.cli.dataloader.jarfile}"/>
+        </path>
     </target>
 
-    <target name="compile" depends="init">
-        <mkdir dir="build"/>
-        <mkdir dir="build/classes"/>
+    <target name="prepare" depends="init">
+        <mkdir dir="${ui.cli.dataloader.classbindir}" />
+        <mkdir dir="${ui.cli.dataloader.jardir}" />
+    </target>
+
+    <target name="compile" depends="prepare">
         <path id="processorpath.ref">
             <pathelement location="${build.lib.dir}/error_prone_core-with-dependencies.jar"/>
             <pathelement location="${build.lib.dir}/failureaccess.jar"/>
@@ -38,7 +74,7 @@
         <javac
             debug="true"
             srcdir="./src/java"
-            destdir="./build/classes"
+            destdir="${ui.cli.dataloader.classbindir}"
             includeAntRuntime="false">
             <classpath>
                 <pathelement location="./"/>
@@ -60,151 +96,89 @@
             <!-- <compilerarg value="-Xlint:deprecation" /> -->
             <!-- <compilerarg value="-Xlint:unchecked" /> -->
         </javac>
+
+        <copy todir="${ui.cli.dataloader.classbindir}">
+            <fileset dir="${ui.cli.dataloader.metadatadir}" />
+            <fileset dir="${ui.cli.dataloader.textdir}" />
+            <fileset dir="${ui.cli.dataloader.xmldir}" />
+        </copy>
     </target>
-    
-    <target name="generated_directory" depends="compile">
-        <mkdir dir="generated"/>
+
+    <target name="jar" depends="compile">
+        <jar jarfile="${ui.cli.dataloader.jarfile}">
+            <fileset dir="${ui.cli.dataloader.classbindir}">
+                <include name="**/*" />
+            </fileset>
+        </jar>
     </target>
-    
-    <target name="Reload" depends="compile">
+
+    <target name="Reload" depends="jar">
         <ant dir="../database" target="RegenerateDatabase"/>
         <ant target="Load"/>
     </target>
     
-    <target name="ReloadAll" depends="compile">
+    <target name="ReloadAll" depends="jar">
         <ant target="Reload"/>
         <ant target="LoadAll"/>
     </target>
     
-    <target name="Load" depends="compile">
-        <java classname="DataLoaderUtility" fork="true">
+    <target name="Load" depends="jar">
+        <java classpathref="runtime.classpath"
+              classname="com.echothree.ui.cli.dataloader.DataLoader"
+              fork="true">
             <arg value="--initial"/>
-            <classpath>
-                <pathelement path="${metadata.dir}" />
-                <pathelement location="./build/classes"/>
-                <fileset dir="../../../${wildfly.home.modules}">
-                    <include name="**/*.jar"/>
-                </fileset>
-                <fileset dir="../../../lib">
-                    <include name="**/*.jar"/>
-                </fileset>
-                <fileset dir="../../../build/lib">
-                    <include name="**/*.jar"/>
-                </fileset>
-                <fileset dir="../../../build/jars">
-                    <include name="echothree-client.jar"/>
-                </fileset>
-            </classpath>
         </java>
     </target>
     
-    <target name="LoadKeys" depends="compile">
-        <java classname="DataLoaderUtility" fork="true">
+    <target name="LoadKeys" depends="jar">
+        <java classpathref="runtime.classpath"
+              classname="com.echothree.ui.cli.dataloader.DataLoader"
+              fork="true">
             <arg value="--file"/>
-            <arg value="src/xml/LoadKeys.xml"/>
-            <classpath>
-                <pathelement path="${metadata.dir}" />
-                <pathelement location="./build/classes"/>
-                <fileset dir="../../../${wildfly.home.modules}">
-                    <include name="**/*.jar"/>
-                </fileset>
-                <fileset dir="../../../lib">
-                    <include name="**/*.jar"/>
-                </fileset>
-                <fileset dir="../../../build/lib">
-                    <include name="**/*.jar"/>
-                </fileset>
-                <fileset dir="../../../build/jars">
-                    <include name="echothree-client.jar"/>
-                </fileset>
-            </classpath>
+            <arg value="/LoadKeys.xml"/>
         </java>
     </target>
     
-    <target name="ChangeKeys" depends="compile">
-        <java classname="DataLoaderUtility" fork="true">
+    <target name="ChangeKeys" depends="jar">
+        <java classpathref="runtime.classpath"
+              classname="com.echothree.ui.cli.dataloader.DataLoader"
+              fork="true">
             <arg value="--file"/>
-            <arg value="src/xml/ChangeKeys.xml"/>
-            <classpath>
-                <pathelement path="${metadata.dir}" />
-                <pathelement location="./build/classes"/>
-                <fileset dir="../../../${wildfly.home.modules}">
-                    <include name="**/*.jar"/>
-                </fileset>
-                <fileset dir="../../../lib">
-                    <include name="**/*.jar"/>
-                </fileset>
-                <fileset dir="../../../build/lib">
-                    <include name="**/*.jar"/>
-                </fileset>
-                <fileset dir="../../../build/jars">
-                    <include name="echothree-client.jar"/>
-                </fileset>
-            </classpath>
+            <arg value="/ChangeKeys.xml"/>
         </java>
     </target>
     
-    <target name="LoadAll" depends="compile">
+    <target name="LoadZipCodes" depends="jar">
+        <java classpathref="runtime.classpath"
+              classname="com.echothree.ui.cli.dataloader.DataLoader"
+              fork="true">
+            <arg value="--zipcode"/>
+        </java>
+    </target>
+    
+    <target name="LoadHarmonizedTariffCodes" depends="jar">
+        <java classpathref="runtime.classpath"
+              classname="com.echothree.ui.cli.dataloader.DataLoader"
+              fork="true">
+            <arg value="--hts"/>
+        </java>
+    </target>
+
+    <target name="LoadAll" depends="jar">
         <ant target="Load"/>
         <ant target="LoadZipCodes"/>
         <ant target="LoadHarmonizedTariffCodes"/>
     </target>
-    
-    <target name="LoadZipCodes" depends="compile">
-        <java classname="DataLoaderUtility" fork="true">
-            <arg value="--zipcode"/>
-            <arg value="src/text/city-state-product.txt"/>
-            <classpath>
-                <pathelement path="${metadata.dir}" />
-                <pathelement location="./build/classes"/>
-                <fileset dir="../../../${wildfly.home.modules}">
-                    <include name="**/*.jar"/>
-                </fileset>
-                <fileset dir="../../../lib">
-                    <include name="**/*.jar"/>
-                </fileset>
-                <fileset dir="../../../build/lib">
-                    <include name="**/*.jar"/>
-                </fileset>
-                <fileset dir="../../../build/jars">
-                    <include name="echothree-client.jar"/>
-                </fileset>
-            </classpath>
-        </java>
-    </target>
-    
-    <target name="LoadHarmonizedTariffCodes" depends="compile">
-        <java classname="DataLoaderUtility" fork="true">
-            <arg value="--hts"/>
-            <arg value="src/text/harmonized-tariff-schedule"/>
-            <classpath>
-                <pathelement path="${metadata.dir}" />
-                <pathelement location="./build/classes"/>
-                <fileset dir="../../../${wildfly.home.modules}">
-                    <include name="**/*.jar"/>
-                </fileset>
-                <fileset dir="../../../lib">
-                    <include name="**/*.jar"/>
-                </fileset>
-                <fileset dir="../../../build/lib">
-                    <include name="**/*.jar"/>
-                </fileset>
-                <fileset dir="../../../build/jars">
-                    <include name="echothree-client.jar"/>
-                </fileset>
-            </classpath>
-        </java>
-    </target>
 
-    <target name="clean">
-        <echo message="Deleting directory build" />
+    <target name="clean" depends="init">
+        <echo message="Deleting ${build.dir}" />
         <delete includeemptydirs="true" quiet="true">
-            <fileset dir="build">
+            <fileset dir="${build.dir}">
                 <include name="**" />
             </fileset>
         </delete>
     </target>
-        
+
     <target name="Help">
         <echo>+---------------------------------------------+</echo>
         <echo>+ Available targets for dataloader utilities: +</echo>

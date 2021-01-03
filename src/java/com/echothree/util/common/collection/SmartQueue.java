@@ -28,16 +28,18 @@ public class SmartQueue<E> {
     
     Log log = LogFactory.getLog(this.getClass());
 
-    private boolean monitorQueue;
-    private int queueLen;
+    private final boolean monitorQueue;
+    private final int queueLen;
     private final AtomicLong estimatedTotal;
-    private List<E> list;
-    private boolean eof = false;
+    private final boolean monitorProgress;
 
-    private boolean monitorProgress;
+    private final List<E> list;
+
     private NumberFormat percentFormat;
     private final AtomicLong produced = new AtomicLong(0);
     private final AtomicLong consumed = new AtomicLong(0);
+
+    private boolean eof = false;
 
     /** Creates a new instance of SmartQueue */
     public SmartQueue(final boolean monitorQueue, final boolean monitorProgress, final int queueLen, final Long estimatedTotal) {
@@ -61,7 +63,7 @@ public class SmartQueue<E> {
                 }
 
                 wait();
-            } catch(InterruptedException ie) {
+            } catch(InterruptedException ignored) {
             }
         }
 
@@ -92,14 +94,14 @@ public class SmartQueue<E> {
     public synchronized E take() {
         E obj = null;
 
-        while(list.size() <= 0 && (eof != true)) {
+        while(list.size() <= 0 && !eof) {
             try {
                 if(monitorQueue) {
                     log.info("Waiting to consume data");
                 }
 
                 wait();
-            } catch(InterruptedException ie) {
+            } catch(InterruptedException ignored) {
             }
         }
 
@@ -108,20 +110,20 @@ public class SmartQueue<E> {
                 obj = list.remove(0);
 
                 if(estimatedTotal != null) {
-                    long consumedTotal = consumed.incrementAndGet();
+                    var consumedTotal = consumed.incrementAndGet();
 
                     if(monitorProgress) {
                         if(consumedTotal > estimatedTotal.get()) {
                             estimatedTotal.set(consumedTotal);
                         }
 
-                        long myEstimatedTotal = estimatedTotal.get();
+                        var myEstimatedTotal = estimatedTotal.get();
                         if(consumedTotal % 20 == 0 || consumedTotal == myEstimatedTotal) {
                             log.info("Consumed progress: " + consumedTotal + " of " + myEstimatedTotal + " completed (" + percentFormat.format(consumedTotal * 1.0 / myEstimatedTotal) + ").");
                         }
                     }
                 }
-            } catch(IndexOutOfBoundsException ioobe) {
+            } catch(IndexOutOfBoundsException ignored) {
                 // obj stays null.
             }
         } else {

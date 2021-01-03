@@ -34,7 +34,6 @@
         <property name="ui.cli.database.generateddir" value="${home.dir}/generated/data" />
 
         <property name="ui.cli.database.classbindir" value="${build.dir}/classes" />
-        <property name="ui.cli.database.resourcesdir" value="${build.dir}/resources" />
         <property name="ui.cli.database.jardir" value="${build.dir}/jar" />
         <property name="ui.cli.database.jarfile" value="${ui.cli.database.jardir}/database.jar" />
 
@@ -47,13 +46,12 @@
             <file file="${build.lib.dir}/commons-beanutils.jar"/>
             <file file="${build.lib.dir}/commons-logging.jar"/>
             <file file="${build.lib.dir}/commons-collections.jar"/>
-            <file file="${ui.cli.database.jardir}/database.jar"/>
+            <file file="${ui.cli.database.jarfile}"/>
         </path>
     </target>
 
     <target name="prepare" depends="init">
         <mkdir dir="${ui.cli.database.classbindir}" />
-        <mkdir dir="${ui.cli.database.resourcesdir}" />
         <mkdir dir="${ui.cli.database.jardir}" />
     </target>
 

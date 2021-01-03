@@ -24,6 +24,7 @@ build:
       - build/service/graphql/war/graphql.war
       - build/service/job/jar/echothree-job.jar
       - build/ui/cli/database/jar/database.jar
+      - build/ui/cli/dataloader/jar/dataloader.jar
       - build/lib/mysql-connector-java.jar
       - build/lib/guava.jar
       - build/lib/commons-cli.jar
@@ -32,5 +33,9 @@ build:
       - build/lib/commons-beanutils.jar
       - build/lib/commons-logging.jar
       - build/lib/commons-collections.jar
+      - build/lib/log4j.jar
+      - build/lib/slf4j-api.jar
+      - build/lib/slf4j-log4j12.jar
+      - build/lib/wildfly-client-all.jar
     expire_in: 1 week
 
