@@ -25,9 +25,8 @@ import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.string.StringUtils;
 import static com.google.common.base.Charsets.UTF_8;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -41,26 +40,26 @@ public class HtsUnitedStatesParser
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     
     @Override
-    public void execute(UserVisitPK userVisitPK, GeoService geoService, ItemService itemService, File htsDirectory, CountryTransfer country)
+    public void execute(UserVisitPK userVisitPK, GeoService geoService, ItemService itemService, CountryTransfer country)
             throws IOException {
-        super.execute(userVisitPK, geoService, itemService, htsDirectory, country);
+        super.execute(userVisitPK, geoService, itemService, country);
         
-        Map<String, HtsUnitedStatesCode> importCodes = readCodes(new File(htsDirectory.getAbsolutePath() + File.separator + "impaes.txt"));
+        var importCodes = readCodes("/harmonized-tariff-schedule/us/impaes.txt");
         logger.info(importCodes.size() + " import codes");
-        Map<String, HtsUnitedStatesCode> exportCodes = readCodes(new File(htsDirectory.getAbsolutePath() + File.separator + "expaes.txt"));
+        var exportCodes = readCodes("/harmonized-tariff-schedule/us/expaes.txt");
         logger.info(exportCodes.size() + " export codes");
         
         determineAndApplyChanges(importCodes, exportCodes);
     }
     
     
-    private Map<String, HtsUnitedStatesCode> readCodes(File codes)
+    private Map<String, HtsUnitedStatesCode> readCodes(String codes)
             throws IOException {
-        Map<String, HtsUnitedStatesCode> htsUnitedStatesCodes = new HashMap<>();
+        var htsUnitedStatesCodes = new HashMap<String, HtsUnitedStatesCode>();
         
-        try (BufferedReader in = Files.newBufferedReader(codes.toPath(), UTF_8)) {
-            for(String codeLine = in.readLine(); codeLine != null; codeLine = in.readLine()) {
-                HtsUnitedStatesCode husc = new HtsUnitedStatesCode(codeLine);
+        try (var in = new BufferedReader(new InputStreamReader(HtsUnitedStatesParser.class.getResource(codes).openStream(), UTF_8))) {
+            for(var codeLine = in.readLine(); codeLine != null; codeLine = in.readLine()) {
+                var husc = new HtsUnitedStatesCode(codeLine);
                 
                 htsUnitedStatesCodes.put(husc.getCommodity(), husc);
             }
@@ -71,8 +70,8 @@ public class HtsUnitedStatesParser
     
     @Override
     public Set<String> getHarmonizedTariffScheduleCodeUses(Map<String, HtsUnitedStatesCode> importCodes, Map<String, HtsUnitedStatesCode> exportCodes, HtsUnitedStatesCode htsc) {
-        Set<String> harmonizedTariffScheduleCodeUseNames = new HashSet<>();
-        String harmonizedTariffScheduleCodeName = htsc.getCommodity();
+        var harmonizedTariffScheduleCodeUseNames = new HashSet<String>();
+        var harmonizedTariffScheduleCodeName = htsc.getCommodity();
         
         if(importCodes.containsKey(harmonizedTariffScheduleCodeName)) {
             harmonizedTariffScheduleCodeUseNames.add(ItemConstants.HarmonizedTariffScheduleCodeUseType_IMPORT);

@@ -21,7 +21,6 @@ import com.echothree.control.user.authentication.common.AuthenticationUtil;
 import com.echothree.control.user.geo.common.GeoService;
 import com.echothree.control.user.geo.common.GeoUtil;
 import com.echothree.control.user.geo.common.form.GeoFormFactory;
-import com.echothree.control.user.geo.common.form.GetCountryForm;
 import com.echothree.control.user.geo.common.result.GetCountryResult;
 import com.echothree.control.user.item.common.ItemService;
 import com.echothree.control.user.item.common.ItemUtil;
@@ -29,26 +28,16 @@ import com.echothree.model.control.geo.common.GeoConstants;
 import com.echothree.model.control.geo.common.GeoOptions;
 import com.echothree.model.control.geo.common.transfer.CountryTransfer;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
-import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import javax.naming.NamingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class HtsParser {
     
-    private String htsDirectory;
-
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     
     private AuthenticationService authenticationService;
@@ -93,24 +82,24 @@ public class HtsParser {
     }
     
     /** Creates a new instance of HtsParser */
-    public HtsParser(String htsDirectory) {
-        this.htsDirectory = htsDirectory;
+    public HtsParser() {
     }
     
     public CountryTransfer getCountry(String iso2LetterName) {
-        GetCountryForm commandForm = GeoFormFactory.getGetCountryForm();
+        var commandForm = GeoFormFactory.getGetCountryForm();
         CountryTransfer country = null;
-        
+
         commandForm.setIso2Letter(iso2LetterName);
-        
-        Set<String> options = new HashSet<>();
+
+        var options = new HashSet<String>();
         options.add(GeoOptions.CountryIncludeAliases);
         commandForm.setOptions(options);
 
-        CommandResult commandResult = getGeoService().getCountry(getUserVisit(), commandForm);
+        var commandResult = getGeoService().getCountry(getUserVisit(), commandForm);
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetCountryResult getCountryResult = (GetCountryResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var getCountryResult = (GetCountryResult)executionResult.getResult();
+
             country = getCountryResult.getCountry();
         } else {
             logger.error(commandResult.toString());
@@ -119,60 +108,35 @@ public class HtsParser {
         return country;
     }
     
-    Map<String, CountryTransfer> countries = new HashMap<>();
-    
-    FileFilter countryFileFilter = (File file) -> {
-        boolean keepIt = false;
-        String name = file.getName();
-        
-        if(file.isDirectory() && !name.startsWith(".")) {
-            CountryTransfer country = getCountry(name.toUpperCase());
-            
-            if(country != null) {
-                countries.put(name, country);
-                keepIt = true;
-            }
-        }
-        
-        return keepIt;
-    };
-
-    public List<File> getCountryDirectories() {
-        File directory = new File(htsDirectory);
-        List<File> fileList = Collections.emptyList();
-        
-        if(directory.isDirectory()) {
-            File[] files = directory.listFiles(countryFileFilter);
-            
-            fileList = Arrays.asList(files);
-        } else {
-            logger.error(htsDirectory + " isn't a directory.");
-        }
-        
-        return fileList;
+    public List<String> getCountryList() {
+        return List.of(
+                "us"
+        );
     }
     
     private static Map<String, HtsCountryParser> htsCountryParsers;
 
     static {
-        Map<String, HtsCountryParser> htsCountryParsersMap = new HashMap<>(1);
-
-        htsCountryParsersMap.put(GeoConstants.CountryName_UNITED_STATES, new HtsUnitedStatesParser());
-        htsCountryParsers = Collections.unmodifiableMap(htsCountryParsersMap);
+        htsCountryParsers = Map.of(
+                GeoConstants.CountryName_UNITED_STATES, new HtsUnitedStatesParser()
+        );
     }
     
     public void execute() {
         if(setup()) {
-            List<File> countryDirectories = getCountryDirectories();
+            var countryList = getCountryList();
             
-            countryDirectories.stream().forEach((countryDirectory) -> {
-                CountryTransfer country = countries.get(countryDirectory.getName());
-                String countryName = country.getGeoCodeAliases().getMap().get(GeoConstants.GeoCodeAliasType_COUNTRY_NAME).getAlias();
-                
-                try {
-                    htsCountryParsers.get(countryName).execute(userVisitPK, geoService, itemService, countryDirectory, country);
-                } catch(IOException ioe) {
-                    logger.error("An Exception occurred:", ioe);
+            countryList.forEach((countryDirectory) -> {
+                var country = getCountry(countryDirectory.toUpperCase());
+
+                if(country != null) {
+                    var countryName = country.getGeoCodeAliases().getMap().get(GeoConstants.GeoCodeAliasType_COUNTRY_NAME).getAlias();
+
+                    try {
+                        htsCountryParsers.get(countryName).execute(userVisitPK, geoService, itemService, country);
+                    } catch(IOException ioe) {
+                        logger.error("An Exception occurred:", ioe);
+                    }
                 }
             });
             

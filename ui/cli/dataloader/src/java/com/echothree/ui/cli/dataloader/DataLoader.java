@@ -37,9 +37,9 @@ public class DataLoader {
                 .addOption("i", "initial", false, "load initial data into database")
                 .addOption("f", "file", true, "load data into database from specified file")
                 .addOption("z", "zipcode", false, "load zip code data from specified file")
-                .addOption("h", "hts", true, "load harmonized tariff schedule codes from specified directory")
-                .addOption("e", "errors", true, "show command result when an error is returned")
-                .addOption("v", "verbose", true, "verbose command results"), args);
+                .addOption("h", "hts", false, "load harmonized tariff schedule codes from specified directory")
+                .addOption("e", "errors", false, "show command result when an error is returned")
+                .addOption("v", "verbose", false, "verbose command results"), args);
     }
     
     public static void main(String args[])
@@ -75,10 +75,8 @@ public class DataLoader {
         }
         
         if(doHts) {
-            String htsDirectory = line.getOptionValue("h");
-
-            logger.info("Loading harmonized tariff schedules from \"" + htsDirectory + "\" into database...");
-            new HtsParser(htsDirectory).execute();
+            logger.info("Loading harmonized tariff schedules into database...");
+            new HtsParser().execute();
             logger.info("   ...done.");
         }
     }

@@ -161,7 +161,6 @@
               classname="com.echothree.ui.cli.dataloader.DataLoader"
               fork="true">
             <arg value="--hts"/>
-            <arg value="src/text/harmonized-tariff-schedule"/>
         </java>
     </target>
 

@@ -66,7 +66,6 @@ public abstract class HtsCountryParser<H extends Object> {
     protected UserVisitPK userVisitPK;
     protected GeoService geoService;
     protected ItemService itemService;
-    protected File htsDirectory;
     protected CountryTransfer country;
     protected String countryName;
     
@@ -74,12 +73,11 @@ public abstract class HtsCountryParser<H extends Object> {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    public void execute(UserVisitPK userVisitPK, GeoService geoService, ItemService itemService, File htsDirectory, CountryTransfer country)
+    public void execute(UserVisitPK userVisitPK, GeoService geoService, ItemService itemService, CountryTransfer country)
             throws IOException {
         this.userVisitPK = userVisitPK;
         this.geoService = geoService;
         this.itemService = itemService;
-        this.htsDirectory = htsDirectory;
         this.country = country;
         
         countryName = country.getGeoCodeAliases().getMap().get(GeoConstants.GeoCodeAliasType_COUNTRY_NAME).getAlias();
