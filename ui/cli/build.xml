@@ -19,8 +19,8 @@
     <target name="compile">
         <parallel>
             <ant dir="amazon" target="compile"/>
-            <ant dir="database" target="compile"/>
-            <ant dir="dataloader" target="compile"/>
+            <ant dir="database" target="jar"/>
+            <ant dir="dataloader" target="jar"/>
             <ant dir="form" target="compile"/>
             <ant dir="logging" target="compile"/>
             <ant dir="mailtransfer" target="compile"/>
