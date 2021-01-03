@@ -151,7 +151,7 @@
               classname="com.echothree.ui.cli.dataloader.DataLoader"
               fork="true">
             <arg value="--zipcode"/>
-            <arg value="src/text/city-state-product.txt"/>
+            <arg value="src/text/city-state-product/city-state-product.txt"/>
         </java>
     </target>
     
