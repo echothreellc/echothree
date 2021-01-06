@@ -14,7 +14,7 @@ package com.echothree.ui.cli.mailtransfer;// -----------------------------------
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-import com.echothree.ui.cli.mailtransfer.util.MailTransfer;
+import com.echothree.ui.cli.mailtransfer.util.MailTransferUtility;
 import com.echothree.ui.cli.mailtransfer.util.blogentry.BlogEntryTransfer;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
@@ -26,9 +26,9 @@ import org.apache.commons.configuration.DefaultConfigurationBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class MailTransferUtility {
+public class MailTransfer {
 
-    private static Log log = LogFactory.getLog(MailTransferUtility.class);
+    private static Log log = LogFactory.getLog(MailTransfer.class);
     private static Configuration configuration = loadConfiguration();
 
     private static CommandLine getCommandLine(String args[])
@@ -59,10 +59,10 @@ public class MailTransferUtility {
         boolean doBlogEntries = line.hasOption("b");
 
         if(doCommunicationsEvents) {
-            MailTransfer mailTransfer = new MailTransfer();
+            var mailTransferUtility = new MailTransferUtility();
 
-            mailTransfer.setDoVerbose(doVerbose);
-            mailTransfer.transfer();
+            mailTransferUtility.setDoVerbose(doVerbose);
+            mailTransferUtility.transfer();
         }
 
         if(doBlogEntries) {

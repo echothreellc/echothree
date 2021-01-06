@@ -47,7 +47,7 @@ import org.apache.commons.net.pop3.POP3;
 import org.apache.commons.net.pop3.POP3Client;
 import org.apache.commons.net.pop3.POP3MessageInfo;
 
-public class MailTransfer {
+public class MailTransferUtility {
     
     private boolean doVerbose;
     
