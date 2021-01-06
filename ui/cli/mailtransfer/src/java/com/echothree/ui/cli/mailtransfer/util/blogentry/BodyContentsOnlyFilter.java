@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.ui.cli.mailtransfer.blogentry;
+package com.echothree.ui.cli.mailtransfer.util.blogentry;
 
 import org.apache.xerces.xni.Augmentations;
 import org.apache.xerces.xni.QName;

@@ -14,29 +14,23 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.ui.cli.mailtransfer.blogentry;
+package com.echothree.ui.cli.mailtransfer.util.blogentry;
 
-import com.echothree.ui.cli.mailtransfer.blogentry.BlogEntryTransfer.CollectedParts.CapturedMessageAttachment;
-import java.util.Map;
 import org.apache.xerces.xni.Augmentations;
 import org.apache.xerces.xni.QName;
 import org.apache.xerces.xni.XMLAttributes;
 import org.apache.xerces.xni.XNIException;
 import org.cyberneko.html.filters.DefaultFilter;
 
-public class ImageSourceTransformFilter
+public class CmsTransformFilter
         extends DefaultFilter {
 
-    String cmsServlet;
-    String forumMessageName;
-    Map<String, CapturedMessageAttachment> capturedMessageAttachmentsByCid;
+    String cmsBaseUrl;
 
-    ImageSourceTransformFilter(String cmsServlet, String forumMessageName, Map<String, CapturedMessageAttachment> capturedMessageAttachmentsByCid) {
+    CmsTransformFilter(String cmsBaseUrl) {
         super();
 
-        this.cmsServlet = cmsServlet;
-        this.forumMessageName = forumMessageName;
-        this.capturedMessageAttachmentsByCid = capturedMessageAttachmentsByCid;
+        this.cmsBaseUrl = cmsBaseUrl;
     }
 
     @Override
@@ -53,14 +47,11 @@ public class ImageSourceTransformFilter
                 if(aname.toLowerCase().equals("src")) {
                     String imgSrc = attributes.getValue(i);
 
-                    if(imgSrc.startsWith("cid:") && imgSrc.length() > 4) {
-                        String contentId = "<" + imgSrc.substring(4) + ">";
-                        CapturedMessageAttachment capturedMessageAttachment = capturedMessageAttachmentsByCid.get(contentId);
-                        String transformedUrl = "/" + cmsServlet + "/action/ForumMessageAttachment?ForumMessageName=" + forumMessageName
-                                + "&ForumMessageAttachmentSequence=" + capturedMessageAttachment.forumMessageAttachmentSequence;
-
-                        attributes.setValue(i, transformedUrl);
+                    if(imgSrc.startsWith("/cms/")) {
+                        attributes.setValue(i, cmsBaseUrl + imgSrc);
                     }
+
+                    // attributes.setValue(i, transformedURL);
                 }
             }
         }

@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.ui.cli.mailtransfer;
+package com.echothree.ui.cli.mailtransfer.util;
 
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
 import com.echothree.control.user.authentication.common.AuthenticationService;

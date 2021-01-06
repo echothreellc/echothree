@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.ui.cli.mailtransfer.blogentry;
+package com.echothree.ui.cli.mailtransfer.util.blogentry;
 
 import com.echothree.control.user.authentication.common.AuthenticationService;
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
@@ -31,7 +31,7 @@ import com.echothree.control.user.forum.common.spec.ForumMessageSpec;
 import com.echothree.model.control.core.common.MimeTypes;
 import com.echothree.model.control.party.common.Languages;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.ui.cli.mailtransfer.blogentry.BlogEntryTransfer.CollectedParts.CapturedMessageAttachment;
+import com.echothree.ui.cli.mailtransfer.util.blogentry.BlogEntryTransfer.CollectedParts.CapturedMessageAttachment;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.command.ExecutionResult;
@@ -703,7 +703,7 @@ public class BlogEntryTransfer {
                                                 
                                                 if(foundDomainName.equals(domainName)) {
                                                     String foundForumName = recipientSplit[0];
-                                                    String configurationKey = "com.echothree.ui.cli.mailtransfer.blogentry.forumName." + foundForumName;
+                                                    String configurationKey = "com.echothree.ui.cli.mailtransfer.util.blogentry.forumName." + foundForumName;
                                                     String configurationValue = configuration.getString(configurationKey);
                                                     String forumName = configurationValue == null ? foundForumName : configurationValue;
                                                     

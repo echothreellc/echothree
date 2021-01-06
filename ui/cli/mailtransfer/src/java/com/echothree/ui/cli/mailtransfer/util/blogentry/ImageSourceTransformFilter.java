@@ -14,23 +14,29 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.ui.cli.mailtransfer.blogentry;
+package com.echothree.ui.cli.mailtransfer.util.blogentry;
 
+import com.echothree.ui.cli.mailtransfer.util.blogentry.BlogEntryTransfer.CollectedParts.CapturedMessageAttachment;
+import java.util.Map;
 import org.apache.xerces.xni.Augmentations;
 import org.apache.xerces.xni.QName;
 import org.apache.xerces.xni.XMLAttributes;
 import org.apache.xerces.xni.XNIException;
 import org.cyberneko.html.filters.DefaultFilter;
 
-public class CmsTransformFilter
+public class ImageSourceTransformFilter
         extends DefaultFilter {
 
-    String cmsBaseUrl;
+    String cmsServlet;
+    String forumMessageName;
+    Map<String, CapturedMessageAttachment> capturedMessageAttachmentsByCid;
 
-    CmsTransformFilter(String cmsBaseUrl) {
+    ImageSourceTransformFilter(String cmsServlet, String forumMessageName, Map<String, CapturedMessageAttachment> capturedMessageAttachmentsByCid) {
         super();
 
-        this.cmsBaseUrl = cmsBaseUrl;
+        this.cmsServlet = cmsServlet;
+        this.forumMessageName = forumMessageName;
+        this.capturedMessageAttachmentsByCid = capturedMessageAttachmentsByCid;
     }
 
     @Override
@@ -47,11 +53,14 @@ public class CmsTransformFilter
                 if(aname.toLowerCase().equals("src")) {
                     String imgSrc = attributes.getValue(i);
 
-                    if(imgSrc.startsWith("/cms/")) {
-                        attributes.setValue(i, cmsBaseUrl + imgSrc);
-                    }
+                    if(imgSrc.startsWith("cid:") && imgSrc.length() > 4) {
+                        String contentId = "<" + imgSrc.substring(4) + ">";
+                        CapturedMessageAttachment capturedMessageAttachment = capturedMessageAttachmentsByCid.get(contentId);
+                        String transformedUrl = "/" + cmsServlet + "/action/ForumMessageAttachment?ForumMessageName=" + forumMessageName
+                                + "&ForumMessageAttachmentSequence=" + capturedMessageAttachment.forumMessageAttachmentSequence;
 
-                    // attributes.setValue(i, transformedURL);
+                        attributes.setValue(i, transformedUrl);
+                    }
                 }
             }
         }

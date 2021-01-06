@@ -1,4 +1,4 @@
-// --------------------------------------------------------------------------------
+package com.echothree.ui.cli.mailtransfer;// --------------------------------------------------------------------------------
 // Copyright 2002-2021 Echo Three, LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +14,8 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-import com.echothree.ui.cli.mailtransfer.MailTransfer;
-import com.echothree.ui.cli.mailtransfer.blogentry.BlogEntryTransfer;
+import com.echothree.ui.cli.mailtransfer.util.MailTransfer;
+import com.echothree.ui.cli.mailtransfer.util.blogentry.BlogEntryTransfer;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;

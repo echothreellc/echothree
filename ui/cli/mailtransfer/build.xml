@@ -63,7 +63,7 @@
     </target>
     
     <target depends="compile" name="BlogEntries">
-        <java classname="MailTransferUtility" fork="true">
+        <java classname="com.echothree.ui.cli.mailtransfer.MailTransferUtility" fork="true">
             <arg value="--blogentries"/>
             <arg value="--verbose"/>
             <classpath>
@@ -86,7 +86,7 @@
     </target>
 
     <target depends="compile" name="CommunicationEvents">
-        <java classname="MailTransferUtility" fork="true">
+        <java classname="com.echothree.ui.cli.mailtransfer.MailTransferUtility" fork="true">
             <arg value="--communicationevents"/>
             <arg value="--verbose"/>
             <classpath>
