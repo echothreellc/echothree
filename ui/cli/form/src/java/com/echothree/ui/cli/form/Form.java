@@ -14,14 +14,16 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-import com.echothree.ui.cli.form.FormUtils;
+package com.echothree.ui.cli.form;
+
+import com.echothree.ui.cli.form.util.FormUtils;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.DefaultParser;
 
-public class FormUtility {
+public class Form {
 
     static Options getOptions() {
         Options options = new Options();
