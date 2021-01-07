@@ -21,11 +21,35 @@
         <property name="metadata.dir" value="${component.home}/src/metadata"/>
 
         <property name="home.dir" value="../../.." />
+        <property name="src.dir" value="${component.home}/src" />
+        <property name="build.dir" value="${home.dir}/build/ui/cli/form" />
+
         <property name="lib.dir" value="${home.dir}/lib" />
         <property name="build.lib.dir" value="${home.dir}/build/lib" />
+
+        <property name="ui.cli.form.javadir" value="${src.dir}/java" />
+        <property name="ui.cli.form.metadatadir" value="${src.dir}/metadata" />
+
+        <property name="ui.cli.form.srcdir" value="${home.dir}/src" />
+        <property name="ui.cli.form.generateddir" value="${home.dir}/generated/form" />
+
+        <property name="ui.cli.form.classbindir" value="${build.dir}/classes" />
+        <property name="ui.cli.form.jardir" value="${build.dir}/jar" />
+        <property name="ui.cli.form.jarfile" value="${ui.cli.form.jardir}/form.jar" />
+
+        <path id="runtime.classpath">
+            <file file="${build.lib.dir}/guava.jar"/>
+            <file file="${build.lib.dir}/commons-cli.jar"/>
+            <file file="${ui.cli.form.jarfile}"/>
+        </path>
     </target>
 
-    <target name="compile" depends="init">
+    <target name="prepare" depends="init">
+        <mkdir dir="${ui.cli.form.classbindir}" />
+        <mkdir dir="${ui.cli.form.jardir}" />
+    </target>
+
+    <target name="compile" depends="prepare">
         <mkdir dir="build"/>
         <mkdir dir="build/classes"/>
         <path id="processorpath.ref">
@@ -37,7 +61,7 @@
         <javac
             debug="true"
             srcdir="./src/java"
-            destdir="./build/classes"
+            destdir="${ui.cli.form.classbindir}"
             includeAntRuntime="false">
             <classpath>
                 <pathelement location="./"/>
@@ -56,40 +80,44 @@
             <!-- <compilerarg value="-Xlint:deprecation" /> -->
             <!-- <compilerarg value="-Xlint:unchecked" /> -->
         </javac>
+
+        <copy todir="${ui.cli.form.classbindir}">
+            <fileset dir="${ui.cli.form.metadatadir}" />
+        </copy>
     </target>
-    
-    <target name="Generate" depends="compile">
-        <java classname="FormUtility" fork="true">
-            <arg value="--generated"/>
-            <arg value="../../../generated/form"/>
+
+    <target name="jar" depends="compile">
+        <jar jarfile="${ui.cli.form.jarfile}">
+            <fileset dir="${ui.cli.form.classbindir}">
+                <include name="**/*" />
+            </fileset>
+        </jar>
+    </target>
+
+    <target name="Generate" depends="jar">
+        <java classpathref="runtime.classpath"
+              classname="com.echothree.ui.cli.form.Form"
+              fork="true">
             <arg value="--source"/>
-            <arg value="../../../src"/>
-            <classpath>
-                <pathelement path="${metadata.dir}" />
-                <pathelement location="./build/classes"/>
-                <fileset dir="../../../lib">
-                    <include name="**/*.jar"/>
-                </fileset>
-                <fileset dir="../../../build/lib">
-                    <include name="**/*.jar"/>
-                </fileset>
-            </classpath>
+            <arg value="${ui.cli.form.srcdir}"/>
+            <arg value="--generated"/>
+            <arg value="${ui.cli.form.generateddir}"/>
         </java>
     </target>
     
-   <target name="clean-generated">
-        <echo message="Deleting directory ../../../generated/form" />
-        <delete includeemptydirs="true" quiet="true">
-            <fileset dir="../../../generated/form">
-                <include name="**" />
-            </fileset>
-        </delete>
+   <target name="clean-generated" depends="init">
+       <echo message="Deleting ${ui.cli.form.generateddir}" />
+       <delete includeemptydirs="true" quiet="true">
+           <fileset dir="${ui.cli.form.generateddir}">
+               <include name="**" />
+           </fileset>
+       </delete>
     </target>
 
-    <target name="clean-build">
-        <echo message="Deleting directory build" />
+    <target name="clean-build" depends="init">
+        <echo message="Deleting ${build.dir}" />
         <delete includeemptydirs="true" quiet="true">
-            <fileset dir="build">
+            <fileset dir="${build.dir}">
                 <include name="**" />
             </fileset>
         </delete>

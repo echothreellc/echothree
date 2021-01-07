@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.ui.cli.form;
+package com.echothree.ui.cli.form.util;
 
 import static com.google.common.base.Charsets.UTF_8;
 import java.io.BufferedWriter;
