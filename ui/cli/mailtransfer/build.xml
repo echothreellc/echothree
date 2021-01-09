@@ -16,17 +16,52 @@
 <!--                                                                                  -->
 <project basedir="." default="Help" name="mailtransfer">
 
-    <property file="build.properties"/>
-    <property file="${component.home}/environment.properties"/>
-    <property name="metadata.dir" value="src/metadata"/>
-
     <target name="init">
+        <property name="component.home" value="./"/>
+        <property name="metadata.dir" value="${component.home}/src/metadata"/>
+
         <property name="home.dir" value="../../.." />
+        <property name="src.dir" value="${component.home}/src" />
+        <property name="build.dir" value="${home.dir}/build/ui/cli/mailtransfer" />
+
+        <property name="e3.jardir" value="${home.dir}/build/jars" />
+        <property name="e3.client.jarfile" value="${e3.jardir}/echothree-client.jar" />
+
         <property name="lib.dir" value="${home.dir}/lib" />
         <property name="build.lib.dir" value="${home.dir}/build/lib" />
+
+        <property name="ui.cli.mailtransfer.javadir" value="${src.dir}/java" />
+        <property name="ui.cli.mailtransfer.metadatadir" value="${src.dir}/metadata" />
+
+        <property name="ui.cli.mailtransfer.generateddir" value="${home.dir}/generated/data" />
+
+        <property name="ui.cli.mailtransfer.classbindir" value="${build.dir}/classes" />
+        <property name="ui.cli.mailtransfer.jardir" value="${build.dir}/jar" />
+        <property name="ui.cli.mailtransfer.jarfile" value="${ui.cli.mailtransfer.jardir}/mailtransfer.jar" />
+
+        <path id="runtime.classpath">
+            <file file="${build.lib.dir}/guava.jar"/>
+            <file file="${build.lib.dir}/icu4j.jar"/>
+            <file file="${build.lib.dir}/commons-cli.jar"/>
+            <file file="${build.lib.dir}/commons-lang.jar"/>
+            <file file="${build.lib.dir}/commons-configuration.jar"/>
+            <file file="${build.lib.dir}/commons-beanutils.jar"/>
+            <file file="${build.lib.dir}/commons-collections.jar"/>
+            <file file="${build.lib.dir}/log4j.jar"/>
+            <file file="${build.lib.dir}/slf4j-api.jar"/>
+            <file file="${build.lib.dir}/slf4j-log4j12.jar"/>
+            <file file="${build.lib.dir}/wildfly-client-all.jar"/>
+            <file file="${e3.client.jarfile}"/>
+            <file file="${ui.cli.mailtransfer.jarfile}"/>
+        </path>
     </target>
 
-    <target name="compile" depends="init">
+    <target name="prepare" depends="init">
+        <mkdir dir="${ui.cli.mailtransfer.classbindir}" />
+        <mkdir dir="${ui.cli.mailtransfer.jardir}" />
+    </target>
+
+    <target name="compile" depends="prepare">
         <mkdir dir="build"/>
         <mkdir dir="build/classes"/>
         <path id="processorpath.ref">
@@ -37,7 +72,7 @@
         </path>
         <javac
             debug="on"
-            destdir="./build/classes"
+            destdir="${ui.cli.mailtransfer.classbindir}"
             srcdir="./src/java"
             includeAntRuntime="false">
             <classpath>
@@ -60,51 +95,35 @@
             <!-- <compilerarg value="-Xlint:deprecation" /> -->
             <!-- <compilerarg value="-Xlint:unchecked" /> -->
         </javac>
+
+        <copy todir="${ui.cli.mailtransfer.classbindir}">
+            <fileset dir="${ui.cli.mailtransfer.metadatadir}" />
+        </copy>
     </target>
-    
-    <target depends="compile" name="BlogEntries">
-        <java classname="com.echothree.ui.cli.mailtransfer.MailTransfer" fork="true">
+
+    <target name="jar" depends="compile">
+        <jar jarfile="${ui.cli.mailtransfer.jarfile}">
+            <fileset dir="${ui.cli.mailtransfer.classbindir}">
+                <include name="**/*" />
+            </fileset>
+        </jar>
+    </target>
+
+    <target depends="jar" name="BlogEntries">
+        <java classname="com.echothree.ui.cli.mailtransfer.MailTransfer"
+              classpathref="runtime.classpath"
+              fork="true">
             <arg value="--blogentries"/>
             <arg value="--verbose"/>
-            <classpath>
-                <pathelement path="${metadata.dir}"/>
-                <pathelement location="./build/classes"/>
-                <fileset dir="../../../${wildfly.home.modules}">
-                    <include name="**/*.jar"/>
-                </fileset>
-                <fileset dir="../../../lib">
-                    <include name="**/*.jar"/>
-                </fileset>
-                <fileset dir="../../../build/lib">
-                    <include name="**/*.jar"/>
-                </fileset>
-                <fileset dir="../../../build/jars">
-                    <include name="echothree-client.jar"/>
-                </fileset>
-            </classpath>
         </java>
     </target>
 
-    <target depends="compile" name="CommunicationEvents">
-        <java classname="com.echothree.ui.cli.mailtransfer.MailTransfer" fork="true">
+    <target depends="jar" name="CommunicationEvents">
+        <java classname="com.echothree.ui.cli.mailtransfer.MailTransfer"
+              classpathref="runtime.classpath"
+              fork="true">
             <arg value="--communicationevents"/>
             <arg value="--verbose"/>
-            <classpath>
-                <pathelement path="${metadata.dir}"/>
-                <pathelement location="./build/classes"/>
-                <fileset dir="../../../${wildfly.home.modules}">
-                    <include name="**/*.jar"/>
-                </fileset>
-                <fileset dir="../../../lib">
-                    <include name="**/*.jar"/>
-                </fileset>
-                <fileset dir="../../../build/lib">
-                    <include name="**/*.jar"/>
-                </fileset>
-                <fileset dir="../../../build/jars">
-                    <include name="echothree-client.jar"/>
-                </fileset>
-            </classpath>
         </java>
     </target>
 
