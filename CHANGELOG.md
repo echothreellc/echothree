@@ -1,5 +1,14 @@
 # Changelog
 
+## 2021-01-10-01
+
+* Additional Password Recovery Questions [235](https://gitlab.echothree.com/echothree/echothree/-/issues/235)
+* Package Form CLI Application as Self-Contained JAR [259](https://gitlab.echothree.com/echothree/echothree/-/issues/259)
+* Package Data Loader CLI Application as Self-Contained JAR [260](https://gitlab.echothree.com/echothree/echothree/-/issues/260)
+* Package Database CLI Application as Self-Contained JAR [261](https://gitlab.echothree.com/echothree/echothree/-/issues/261)
+* Add Compilation Smoke Test Using docker-build Image [263](https://gitlab.echothree.com/echothree/echothree/-/issues/263)
+* 2021 Copyright Update [274](https://gitlab.echothree.com/echothree/echothree/-/issues/274)
+
 ## 2020-12-27-01
 
 * GraphQL Objects for Filter Adjustment Sources [148](https://gitlab.echothree.com/echothree/echothree/-/issues/148)
