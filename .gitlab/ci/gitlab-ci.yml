@@ -1,5 +1,9 @@
 image: echothree/build:latest
 
+cache:
+  paths:
+    - .ivy2/cache
+
 variables:
   ANT_OPTS: "-Xmx5120m"
 
