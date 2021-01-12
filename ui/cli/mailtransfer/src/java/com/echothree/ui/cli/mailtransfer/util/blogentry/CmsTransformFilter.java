@@ -44,7 +44,7 @@ public class CmsTransformFilter
             for(int i = 0; i < attributeCount; i++) {
                 String aname = attributes.getQName(i).toLowerCase();
 
-                if(aname.toLowerCase().equals("src")) {
+                if(aname.equalsIgnoreCase("src")) {
                     String imgSrc = attributes.getValue(i);
 
                     if(imgSrc.startsWith("/cms/")) {

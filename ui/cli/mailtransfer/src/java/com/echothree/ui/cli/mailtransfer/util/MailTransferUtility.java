@@ -16,10 +16,10 @@
 
 package com.echothree.ui.cli.mailtransfer.util;
 
-import com.echothree.control.user.authentication.common.AuthenticationUtil;
 import com.echothree.control.user.authentication.common.AuthenticationService;
-import com.echothree.control.user.communication.common.CommunicationUtil;
+import com.echothree.control.user.authentication.common.AuthenticationUtil;
 import com.echothree.control.user.communication.common.CommunicationService;
+import com.echothree.control.user.communication.common.CommunicationUtil;
 import com.echothree.control.user.communication.common.form.CommunicationFormFactory;
 import com.echothree.control.user.communication.common.form.CreateCommunicationEventForm;
 import com.echothree.control.user.communication.common.form.GetCommunicationSourcesForm;
@@ -41,11 +41,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import javax.naming.NamingException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.commons.net.pop3.POP3;
 import org.apache.commons.net.pop3.POP3Client;
 import org.apache.commons.net.pop3.POP3MessageInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MailTransferUtility {
     
@@ -58,8 +58,8 @@ public class MailTransferUtility {
     public void setDoVerbose(boolean doVerbose) {
         this.doVerbose = doVerbose;
     }
-    
-    private Log log = LogFactory.getLog(this.getClass());
+
+    private static Logger logger = LoggerFactory.getLogger(MailTransferUtility.class);
     private UserVisitPK userVisitPK = null;
     
     private AuthenticationService getAuthenticationService()
@@ -140,8 +140,8 @@ public class MailTransferUtility {
                 
                 if(pop3Client.getState() == POP3.TRANSACTION_STATE) {
                     POP3MessageInfo[] pop3MessageInfos = pop3Client.listMessages();
-                    
-                    log.info("message count: " + pop3MessageInfos.length);
+
+                    logger.info("message count: " + pop3MessageInfos.length);
                     
                     if(pop3MessageInfos.length > 0) {
                         int successfulMessages = 0;
@@ -152,8 +152,8 @@ public class MailTransferUtility {
                             Reader reader = pop3Client.retrieveMessage(messageId);
                             BufferedReader bufferedReader = new BufferedReader(reader);
                             StringBuilder stringBuilder = new StringBuilder();
-                            
-                            log.info("message " + pop3MessageInfo.number + ", size = " + pop3MessageInfo.size);
+
+                            logger.info("message " + pop3MessageInfo.number + ", size = " + pop3MessageInfo.size);
                             
                             for(String line = bufferedReader.readLine(); line != null; line = bufferedReader.readLine()) {
                                 stringBuilder.append(line);
@@ -172,22 +172,22 @@ public class MailTransferUtility {
                                 successfulMessages++;
                                 pop3Client.deleteMessage(messageId);
                             } else {
-                                log.error(commandResult);
+                                logger.error(commandResult.toString());
                             }
                         }
                     }
                     
                     pop3Client.logout();
                 } else {
-                    log.error("login to " + username + "@" + serverName + " failed");
+                    logger.error("login to " + username + "@" + serverName + " failed");
                 }
             } else {
-                log.error("connection to " + serverName + " failed");
+                logger.error("connection to " + serverName + " failed");
             }
         } catch(SocketException se) {
-            se.printStackTrace();
+            logger.error("An Exception occurred:", se);
         } catch(IOException ioe) {
-            ioe.printStackTrace();
+            logger.error("An Exception occurred:", ioe);
         } finally {
             if(pop3Client != null) {
                 try {
@@ -197,7 +197,7 @@ public class MailTransferUtility {
                     
                     pop3Client.disconnect();
                 } catch(IOException ioe) {
-                    ioe.printStackTrace();
+                    logger.error("An Exception occurred:", ioe);
                 }
             }
         }

@@ -17,18 +17,18 @@ package com.echothree.ui.cli.mailtransfer;// -----------------------------------
 import com.echothree.ui.cli.mailtransfer.util.MailTransferUtility;
 import com.echothree.ui.cli.mailtransfer.util.blogentry.BlogEntryTransfer;
 import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.DefaultConfigurationBuilder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MailTransfer {
 
-    private static Log log = LogFactory.getLog(MailTransfer.class);
+    private static Logger logger = LoggerFactory.getLogger(MailTransfer.class);
     private static Configuration configuration = loadConfiguration();
 
     private static CommandLine getCommandLine(String args[])
@@ -44,8 +44,8 @@ public class MailTransfer {
 
         try {
             result = new DefaultConfigurationBuilder("config.xml").getConfiguration();
-        } catch(ConfigurationException ex) {
-            log.error(ex);
+        } catch(ConfigurationException ce) {
+            logger.error("An Exception occurred:", ce);
         }
 
         return result;

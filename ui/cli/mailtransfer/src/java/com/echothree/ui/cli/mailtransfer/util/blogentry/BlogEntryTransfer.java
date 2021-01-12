@@ -31,6 +31,7 @@ import com.echothree.control.user.forum.common.spec.ForumMessageSpec;
 import com.echothree.model.control.core.common.MimeTypes;
 import com.echothree.model.control.party.common.Languages;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.ui.cli.mailtransfer.MailTransfer;
 import com.echothree.ui.cli.mailtransfer.util.blogentry.BlogEntryTransfer.CollectedParts.CapturedMessageAttachment;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
@@ -83,9 +84,13 @@ import org.apache.xerces.xni.parser.XMLDocumentFilter;
 import org.apache.xerces.xni.parser.XMLInputSource;
 import org.apache.xerces.xni.parser.XMLParserConfiguration;
 import org.cyberneko.html.HTMLConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BlogEntryTransfer {
-    
+
+    private static Logger logger = LoggerFactory.getLogger(BlogEntryTransfer.class);
+
     private final boolean doVerbose;
     private final Configuration configuration;
 
@@ -108,7 +113,7 @@ public class BlogEntryTransfer {
             try {
                 userVisitPK = getAuthenticationService().getDataLoaderUserVisit();
             } catch (NamingException ne) {
-                System.err.println("Unable to locate authentication service");
+                logger.error("Unable to locate authentication service");
             }
         }
         
@@ -121,7 +126,7 @@ public class BlogEntryTransfer {
                 getAuthenticationService().invalidateUserVisit(userVisitPK);
                 userVisitPK = null;
             } catch (NamingException ne) {
-                System.err.println("Unable to locate authentication service");
+                logger.error("Unable to locate authentication service");
             }
             
             userVisitPK = null;
