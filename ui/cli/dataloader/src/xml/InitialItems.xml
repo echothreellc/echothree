@@ -314,6 +314,9 @@
         <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="THS" isDefault="false" sortOrder="0">
             <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Thousand" />
         </harmonizedTariffScheduleCodeUnit>
+        <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="W" isDefault="false" sortOrder="0">
+            <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Watts" />
+        </harmonizedTariffScheduleCodeUnit>
         <harmonizedTariffScheduleCodeUnit harmonizedTariffScheduleCodeUnitName="X" isDefault="true" sortOrder="0">
             <harmonizedTariffScheduleCodeUnitDescription languageIsoName="en" description="Quantity Not Required (valid only for HTS statistical reporting)" />
         </harmonizedTariffScheduleCodeUnit>
