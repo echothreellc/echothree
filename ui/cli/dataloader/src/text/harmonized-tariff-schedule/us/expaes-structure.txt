@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------
 
-2013 Schedule B (AES Filer) Record Layout
+The Schedule B (AES Filer) Record Layout
 
 ----------------------------------------------------------------------
 
@@ -13,8 +13,7 @@ Character  Name        Description of Field
 
 ----------------------------------------------------------------------
 NOTE: This structure applies to the file EXPAES.TXT found online at 
-http://www.census.gov/foreign-trade/aes/documentlibrary/index.html#concordance
+https://www.census.gov/foreign-trade/aes/documentlibrary/index.html#concordance
 
-Update: This file was last updated on 31 December 2012
 Source: U.S. Census Bureau, Foreign Trade Division, Washington, DC 20233
 --------------------------------------------------------------------------------------
