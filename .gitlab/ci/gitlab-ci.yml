@@ -27,6 +27,11 @@ build:
       - build/ui/cli/dataloader/jar/dataloader.jar
       - build/ui/cli/mailtransfer/jar/mailtransfer.jar
       - build/lib/mysql-connector-java.jar
+      - build/lib/nekohtml.jar
+      - build/lib/javax.mail.jar
+      - build/lib/activation.jar
+      - build/lib/javax.activation-api.jar
+      - build/lib/xercesImpl.jar
       - build/lib/guava.jar
       - build/lib/commons-cli.jar
       - build/lib/commons-lang.jar

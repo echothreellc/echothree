@@ -40,6 +40,11 @@
         <property name="ui.cli.mailtransfer.jarfile" value="${ui.cli.mailtransfer.jardir}/mailtransfer.jar" />
 
         <path id="runtime.classpath">
+            <file file="${build.lib.dir}/nekohtml.jar"/>
+            <file file="${build.lib.dir}/javax.mail.jar"/>
+            <file file="${build.lib.dir}/activation.jar"/>
+            <file file="${build.lib.dir}/javax.activation-api.jar"/>
+            <file file="${build.lib.dir}/xercesImpl.jar"/>
             <file file="${build.lib.dir}/guava.jar"/>
             <file file="${build.lib.dir}/icu4j.jar"/>
             <file file="${build.lib.dir}/commons-cli.jar"/>
@@ -62,8 +67,6 @@
     </target>
 
     <target name="compile" depends="prepare">
-        <mkdir dir="build"/>
-        <mkdir dir="build/classes"/>
         <path id="processorpath.ref">
             <pathelement location="${build.lib.dir}/error_prone_core-with-dependencies.jar"/>
             <pathelement location="${build.lib.dir}/failureaccess.jar"/>
@@ -127,10 +130,10 @@
         </java>
     </target>
 
-    <target name="clean">
-        <echo message="Deleting directory build" />
+    <target name="clean" depends="init">
+        <echo message="Deleting ${build.dir}" />
         <delete includeemptydirs="true" quiet="true">
-            <fileset dir="build">
+            <fileset dir="${build.dir}">
                 <include name="**" />
             </fileset>
         </delete>
