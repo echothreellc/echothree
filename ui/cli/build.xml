@@ -23,7 +23,7 @@
             <ant dir="dataloader" target="jar"/>
             <ant dir="form" target="compile"/>
             <ant dir="logging" target="compile"/>
-            <ant dir="mailtransfer" target="compile"/>
+            <ant dir="mailtransfer" target="jar"/>
         </parallel>
     </target>
     
