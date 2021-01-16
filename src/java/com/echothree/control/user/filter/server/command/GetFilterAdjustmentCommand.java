@@ -18,29 +18,26 @@ package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.GetFilterAdjustmentForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
-import com.echothree.control.user.filter.common.result.GetFilterAdjustmentResult;
+import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.filter.server.entity.FilterAdjustment;
-import com.echothree.model.data.filter.server.entity.FilterKind;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class GetFilterAdjustmentCommand
-        extends BaseSimpleCommand<GetFilterAdjustmentForm> {
+        extends BaseSingleEntityCommand<FilterAdjustment, GetFilterAdjustmentForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -63,28 +60,43 @@ public class GetFilterAdjustmentCommand
     public GetFilterAdjustmentCommand(UserVisitPK userVisitPK, GetFilterAdjustmentForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+
     @Override
-    protected BaseResult execute() {
+    protected FilterAdjustment getEntity() {
         var filterControl = Session.getModelController(FilterControl.class);
-        GetFilterAdjustmentResult result = FilterResultFactory.getGetFilterAdjustmentResult();
-        String filterKindName = form.getFilterKindName();
-        FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
-        
+        var filterKindName = form.getFilterKindName();
+        var filterKind = filterControl.getFilterKindByName(filterKindName);
+        FilterAdjustment filterAdjustment = null;
+
         if(filterKind != null) {
-            String filterAdjustmentName = form.getFilterAdjustmentName();
-            FilterAdjustment filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
-            
+            var filterAdjustmentName = form.getFilterAdjustmentName();
+
+            filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
+
             if(filterAdjustment != null) {
-                result.setFilterAdjustment(filterControl.getFilterAdjustmentTransfer(getUserVisit(), filterAdjustment));
+                sendEventUsingNames(filterAdjustment.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownFilterAdjustmentName.name(), filterAdjustmentName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownFilterKindName.name(), filterKindName);
         }
-        
+
+        return filterAdjustment;
+    }
+
+    @Override
+    protected BaseResult getTransfer(FilterAdjustment filterAdjustment) {
+        var result = FilterResultFactory.getGetFilterAdjustmentResult();
+
+        if(filterAdjustment != null) {
+            var filterControl = Session.getModelController(FilterControl.class);
+
+            result.setFilterAdjustment(filterControl.getFilterAdjustmentTransfer(getUserVisit(), filterAdjustment));
+        }
+
         return result;
     }
-    
+
 }

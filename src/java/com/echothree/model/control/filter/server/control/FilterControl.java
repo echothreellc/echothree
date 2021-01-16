@@ -1516,7 +1516,7 @@ public class FilterControl
         return getFilterTransferCaches(userVisit).getFilterAdjustmentTransferCache().getTransfer(filterAdjustment);
     }
     
-    public List<FilterAdjustmentTransfer> getFilterAdjustmentTransfers(UserVisit userVisit,  List<FilterAdjustment> filterAdjustments) {
+    public List<FilterAdjustmentTransfer> getFilterAdjustmentTransfers(UserVisit userVisit,  Collection<FilterAdjustment> filterAdjustments) {
         List<FilterAdjustmentTransfer> filterAdjustmentTransfers = new ArrayList<>(filterAdjustments.size());
         FilterAdjustmentTransferCache filterAdjustmentTransferCache = getFilterTransferCaches(userVisit).getFilterAdjustmentTransferCache();
         
