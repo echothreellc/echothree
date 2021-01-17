@@ -3706,7 +3706,7 @@ public class FilterControl
     }
     
     public long countFilterStepElementsBySelector(Selector selector) {
-        return session.queryForInteger(
+        return session.queryForLong(
                 "SELECT COUNT(*) " +
                 "FROM filterstepelementdetails " +
                 "WHERE fltstpedt_filteritemselectorid = ? AND fltstpedt_thrutime = ?",
@@ -3714,7 +3714,7 @@ public class FilterControl
     }
     
     public long countFilterStepElementsByFilterAdjustment(FilterAdjustment filterAdjustment) {
-        return session.queryForInteger(
+        return session.queryForLong(
                 "SELECT COUNT(*) " +
                 "FROM filterstepelementdetails " +
                 "WHERE fltstpedt_flta_filteradjustmentid = ?",
