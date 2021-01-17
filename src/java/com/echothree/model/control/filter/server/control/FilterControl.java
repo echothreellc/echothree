@@ -2557,16 +2557,16 @@ public class FilterControl
         return getFilterTransfers(userVisit, getFilters(filterType));
     }
     
-    public int countFiltersBySelector(Selector selector) {
-        return session.queryForInteger(
+    public long countFiltersBySelector(Selector selector) {
+        return session.queryForLong(
                 "SELECT COUNT(*) " +
                 "FROM filterdetails " +
                 "WHERE fltdt_filteritemselectorid = ? AND fltdt_thrutime = ?",
                 selector, Session.MAX_TIME);
     }
     
-    public int countFiltersByFilterAdjustment(FilterAdjustment filterAdjustment) {
-        return session.queryForInteger(
+    public long countFiltersByFilterAdjustment(FilterAdjustment filterAdjustment) {
+        return session.queryForLong(
                 "SELECT COUNT(*) " +
                 "FROM filterdetails " +
                 "WHERE fltdt_initialfilteradjustmentid = ? AND fltdt_thrutime = ?",

@@ -73,7 +73,7 @@ public class DeleteFilterAdjustmentCommand
             FilterAdjustment filterAdjustment = filterControl.getFilterAdjustmentByNameForUpdate(filterKind, filterAdjustmentName);
             
             if(filterAdjustment != null) {
-                int count = filterControl.countFiltersByFilterAdjustment(filterAdjustment);
+                var count = filterControl.countFiltersByFilterAdjustment(filterAdjustment);
                 
                 count += filterControl.countFilterStepElementsByFilterAdjustment(filterAdjustment);
                 
