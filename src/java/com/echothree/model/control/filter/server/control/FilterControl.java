@@ -3705,7 +3705,7 @@ public class FilterControl
         return getFilterTransferCaches(userVisit).getFilterStepElementTransferCache().getTransfer(filterStepElement);
     }
     
-    public int countFilterStepElementsBySelector(Selector selector) {
+    public long countFilterStepElementsBySelector(Selector selector) {
         return session.queryForInteger(
                 "SELECT COUNT(*) " +
                 "FROM filterstepelementdetails " +
@@ -3713,7 +3713,7 @@ public class FilterControl
                 selector, Session.MAX_TIME);
     }
     
-    public int countFilterStepElementsByFilterAdjustment(FilterAdjustment filterAdjustment) {
+    public long countFilterStepElementsByFilterAdjustment(FilterAdjustment filterAdjustment) {
         return session.queryForInteger(
                 "SELECT COUNT(*) " +
                 "FROM searchresults " +
