@@ -21,6 +21,7 @@ import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.filter.common.exception.CannotDeleteFilterAdjustmentInUseException;
 import com.echothree.model.control.filter.common.exception.DuplicateFilterAdjustmentNameException;
 import com.echothree.model.control.filter.common.exception.UnknownDefaultFilterKindException;
 import com.echothree.model.control.filter.common.exception.UnknownDefaultFilterAdjustmentException;
@@ -202,6 +203,16 @@ public class FilterAdjustmentLogic
             final BasePK deletedBy) {
         var filterControl = Session.getModelController(FilterControl.class);
 
-        filterControl.deleteFilterAdjustment(filterAdjustment, deletedBy);
+        if(filterControl.countFiltersByFilterAdjustment(filterAdjustment) == 0
+                && filterControl.countFilterStepElementsByFilterAdjustment(filterAdjustment) == 0) {
+            filterControl.deleteFilterAdjustment(filterAdjustment, deletedBy);
+        } else {
+            var filterAdjustmentDetail = filterAdjustment.getLastDetail();
+
+            handleExecutionError(CannotDeleteFilterAdjustmentInUseException.class, eea, ExecutionErrors.CannotDeleteFilterAdjustmentInUse.name(),
+                    filterAdjustmentDetail.getFilterKind().getLastDetail().getFilterKindName(),
+                    filterAdjustmentDetail.getFilterAdjustmentName());
+        }
+
     }
 }
