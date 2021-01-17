@@ -66,6 +66,18 @@ public class FilterAdjustmentObject
     }
 
     @GraphQLField
+    @GraphQLDescription("filter adjustment source")
+    public FilterAdjustmentSourceObject getFilterAdjustmentSource(final DataFetchingEnvironment env) {
+        return FilterSecurityUtils.getInstance().getHasFilterAdjustmentSourceAccess(env) ? new FilterAdjustmentSourceObject(getFilterAdjustmentDetail().getFilterAdjustmentSource()) : null;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("filter adjustment type")
+    public FilterAdjustmentTypeObject getFilterAdjustmentType(final DataFetchingEnvironment env) {
+        return FilterSecurityUtils.getInstance().getHasFilterAdjustmentTypeAccess(env) ? new FilterAdjustmentTypeObject(getFilterAdjustmentDetail().getFilterAdjustmentType()) : null;
+    }
+
+    @GraphQLField
     @GraphQLDescription("is default")
     @GraphQLNonNull
     public boolean getIsDefault() {
