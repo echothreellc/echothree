@@ -3716,8 +3716,8 @@ public class FilterControl
     public long countFilterStepElementsByFilterAdjustment(FilterAdjustment filterAdjustment) {
         return session.queryForInteger(
                 "SELECT COUNT(*) " +
-                "FROM searchresults " +
-                "WHERE srchr_srch_searchid = ?",
+                "FROM filterstepelementdetails " +
+                "WHERE fltstpedt_flta_filteradjustmentid = ?",
                 filterAdjustment, Session.MAX_TIME);
     }
     
