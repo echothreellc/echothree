@@ -21,6 +21,9 @@ import com.echothree.control.user.content.common.ContentUtil;
 import com.echothree.control.user.content.common.result.CreateContentPageLayoutResult;
 import com.echothree.control.user.content.common.result.EditContentPageLayoutResult;
 import com.echothree.control.user.core.common.CoreUtil;
+import com.echothree.control.user.filter.common.FilterUtil;
+import com.echothree.control.user.filter.common.result.CreateFilterAdjustmentResult;
+import com.echothree.control.user.filter.common.result.EditFilterAdjustmentResult;
 import com.echothree.control.user.inventory.common.InventoryUtil;
 import com.echothree.control.user.inventory.common.result.CreateInventoryConditionResult;
 import com.echothree.control.user.inventory.common.result.EditInventoryConditionResult;
@@ -70,8 +73,6 @@ import com.echothree.control.user.user.common.result.EditUserLoginResult;
 import com.echothree.model.control.graphql.server.graphql.CommandResultObject;
 import com.echothree.model.control.graphql.server.graphql.CommandResultWithIdObject;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.common.validation.FieldType;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLID;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -84,6 +85,149 @@ import javax.naming.NamingException;
 @GraphQLName("mutation")
 public class GraphQlMutations
         extends BaseGraphQl {
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultWithIdObject createFilterAdjustment(final DataFetchingEnvironment env,
+            @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
+            @GraphQLName("filterAdjustmentName") @GraphQLNonNull final String filterAdjustmentName,
+            @GraphQLName("filterAdjustmentSourceName") @GraphQLNonNull final String filterAdjustmentSourceName,
+            @GraphQLName("filterAdjustmentTypeName") final String filterAdjustmentTypeName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var commandResultObject = new CommandResultWithIdObject();
+
+        try {
+            var commandForm = FilterUtil.getHome().getCreateFilterAdjustmentForm();
+
+            commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterAdjustmentName(filterAdjustmentName);
+            commandForm.setFilterAdjustmentSourceName(filterAdjustmentSourceName);
+            commandForm.setFilterAdjustmentTypeName(filterAdjustmentTypeName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            var commandResult = FilterUtil.getHome().createFilterAdjustment(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateFilterAdjustmentResult)commandResult.getExecutionResult().getResult();
+
+                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject deleteFilterAdjustment(final DataFetchingEnvironment env,
+            @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
+            @GraphQLName("filterAdjustmentName") @GraphQLNonNull final String filterAdjustmentName) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = FilterUtil.getHome().getDeleteFilterAdjustmentForm();
+
+            commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterAdjustmentName(filterAdjustmentName);
+
+            var commandResult = FilterUtil.getHome().deleteFilterAdjustment(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultWithIdObject editFilterAdjustment(final DataFetchingEnvironment env,
+            @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
+            @GraphQLName("originalFilterAdjustmentName") final String originalFilterAdjustmentName,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("filterAdjustmentName") final String filterAdjustmentName,
+            @GraphQLName("filterAdjustmentSourceName") final String filterAdjustmentSourceName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var commandResultObject = new CommandResultWithIdObject();
+
+        try {
+            var spec = FilterUtil.getHome().getFilterAdjustmentUniversalSpec();
+
+            spec.setFilterKindName(filterKindName);
+            spec.setFilterAdjustmentName(originalFilterAdjustmentName);
+            spec.setUlid(id);
+
+            var commandForm = FilterUtil.getHome().getEditFilterAdjustmentForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = FilterUtil.getHome().editFilterAdjustment(getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditFilterAdjustmentResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                commandResultObject.setEntityInstanceFromEntityRef(result.getFilterAdjustment().getEntityInstance().getEntityRef());
+
+                if(arguments.containsKey("filterAdjustmentName"))
+                    edit.setFilterAdjustmentName(filterAdjustmentName);
+                if(arguments.containsKey("filterAdjustmentSourceName"))
+                    edit.setFilterAdjustmentSourceName(filterAdjustmentSourceName);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = FilterUtil.getHome().editFilterAdjustment(getUserVisitPK(env), commandForm);
+            }
+
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    @GraphQLName("setDefaultFilterAdjustment")
+    public static CommandResultObject setDefaultFilterAdjustment(final DataFetchingEnvironment env,
+            @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
+            @GraphQLName("filterAdjustmentName") @GraphQLNonNull final String filterAdjustmentName) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = FilterUtil.getHome().getSetDefaultFilterAdjustmentForm();
+
+            commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterAdjustmentName(filterAdjustmentName);
+
+            var commandResult = FilterUtil.getHome().setDefaultFilterAdjustment(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
 
     @GraphQLField
     @GraphQLRelayMutation
