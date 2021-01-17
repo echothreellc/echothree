@@ -62,7 +62,7 @@ public class FilterAdjustmentLogic
             final BasePK createdBy) {
         var filterKind = FilterKindLogic.getInstance().getFilterKindByName(eea, filterKindName);
         var filterAdjustmentSource = FilterAdjustmentSourceLogic.getInstance().getFilterAdjustmentSourceByName(eea, filterAdjustmentSourceName);
-        var filterAdjustmentType = FilterAdjustmentTypeLogic.getInstance().getFilterAdjustmentTypeByName(eea, filterAdjustmentTypeName);
+        var filterAdjustmentType = filterAdjustmentTypeName == null ? null : FilterAdjustmentTypeLogic.getInstance().getFilterAdjustmentTypeByName(eea, filterAdjustmentTypeName);
         FilterAdjustment filterAdjustment = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
