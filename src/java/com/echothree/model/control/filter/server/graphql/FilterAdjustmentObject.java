@@ -74,7 +74,9 @@ public class FilterAdjustmentObject
     @GraphQLField
     @GraphQLDescription("filter adjustment type")
     public FilterAdjustmentTypeObject getFilterAdjustmentType(final DataFetchingEnvironment env) {
-        return FilterSecurityUtils.getInstance().getHasFilterAdjustmentTypeAccess(env) ? new FilterAdjustmentTypeObject(getFilterAdjustmentDetail().getFilterAdjustmentType()) : null;
+        var filterAdjustmentType = getFilterAdjustmentDetail().getFilterAdjustmentType();
+
+        return filterAdjustmentType == null ? null : FilterSecurityUtils.getInstance().getHasFilterAdjustmentTypeAccess(env) ? new FilterAdjustmentTypeObject(filterAdjustmentType) : null;
     }
 
     @GraphQLField
