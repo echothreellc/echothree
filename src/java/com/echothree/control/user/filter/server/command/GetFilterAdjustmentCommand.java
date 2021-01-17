@@ -20,13 +20,13 @@ import com.echothree.control.user.filter.common.form.GetFilterAdjustmentForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.logic.FilterAdjustmentLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.filter.server.entity.FilterAdjustment;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
@@ -51,8 +51,12 @@ public class GetFilterAdjustmentCommand
         ));
 
         FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("FilterKindName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("FilterAdjustmentName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("FilterKindName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("FilterAdjustmentName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
         );
     }
     
@@ -64,23 +68,10 @@ public class GetFilterAdjustmentCommand
 
     @Override
     protected FilterAdjustment getEntity() {
-        var filterControl = Session.getModelController(FilterControl.class);
-        var filterKindName = form.getFilterKindName();
-        var filterKind = filterControl.getFilterKindByName(filterKindName);
-        FilterAdjustment filterAdjustment = null;
+        var filterAdjustment = FilterAdjustmentLogic.getInstance().getFilterAdjustmentByUniversalSpec(this, form, true);
 
-        if(filterKind != null) {
-            var filterAdjustmentName = form.getFilterAdjustmentName();
-
-            filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
-
-            if(filterAdjustment != null) {
-                sendEventUsingNames(filterAdjustment.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
-            } else {
-                addExecutionError(ExecutionErrors.UnknownFilterAdjustmentName.name(), filterAdjustmentName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownFilterKindName.name(), filterKindName);
+        if(filterAdjustment != null) {
+            sendEventUsingNames(filterAdjustment.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
         }
 
         return filterAdjustment;

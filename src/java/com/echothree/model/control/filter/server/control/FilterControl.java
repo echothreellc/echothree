@@ -1370,7 +1370,22 @@ public class FilterControl
         
         return filterAdjustment;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.FilterAdjustment */
+    public FilterAdjustment getFilterAdjustmentByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new FilterAdjustmentPK(entityInstance.getEntityUniqueId());
+
+        return FilterAdjustmentFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public FilterAdjustment getFilterAdjustmentByEntityInstance(EntityInstance entityInstance) {
+        return getFilterAdjustmentByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public FilterAdjustment getFilterAdjustmentByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getFilterAdjustmentByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     public List<FilterAdjustment> getFilterAdjustments() {
         PreparedStatement ps = FilterAdjustmentFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
@@ -1420,7 +1435,7 @@ public class FilterControl
         return getFilterAdjustmentsByFilterKind(filterKind, EntityPermission.READ_WRITE);
     }
     
-    private FilterAdjustment getDefaultFilterAdjustment(FilterKind filterKind, EntityPermission entityPermission) {
+    public FilterAdjustment getDefaultFilterAdjustment(FilterKind filterKind, EntityPermission entityPermission) {
         FilterAdjustment filterAdjustment;
         
         try {
@@ -1462,8 +1477,8 @@ public class FilterControl
     public FilterAdjustmentDetailValue getDefaultFilterAdjustmentDetailValueForUpdate(FilterKind filterKind) {
         return getDefaultFilterAdjustmentForUpdate(filterKind).getLastDetailForUpdate().getFilterAdjustmentDetailValue().clone();
     }
-    
-    private FilterAdjustment getFilterAdjustmentByName(FilterKind filterKind, String filterAdjustmentName,
+
+    public FilterAdjustment getFilterAdjustmentByName(FilterKind filterKind, String filterAdjustmentName,
             EntityPermission entityPermission) {
         FilterAdjustment filterAdjustment;
         
