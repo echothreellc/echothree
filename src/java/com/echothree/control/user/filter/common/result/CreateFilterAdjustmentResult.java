@@ -14,13 +14,18 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.filter.common.form;
+package com.echothree.control.user.filter.common.result;
 
-import com.echothree.control.user.filter.common.spec.FilterAdjustmentUniversalSpec;
+import com.echothree.control.user.filter.common.spec.FilterAdjustmentSpec;
+import com.echothree.model.control.filter.common.transfer.FilterAdjustmentTransfer;
+import com.echothree.model.control.filter.common.transfer.FilterKindTransfer;
+import com.echothree.util.common.command.BaseResult;
+import java.util.List;
 
-public interface GetFilterAdjustmentForm
-        extends FilterAdjustmentUniversalSpec {
-    
-    // Nothing addtiional beyond FilterAdjustmentUniversalSpec
-    
+public interface CreateFilterAdjustmentResult
+        extends FilterAdjustmentSpec, BaseResult {
+
+    String getEntityRef();
+    void setEntityRef(String entityRef);
+
 }

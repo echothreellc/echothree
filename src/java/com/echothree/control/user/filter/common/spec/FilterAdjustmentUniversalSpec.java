@@ -14,13 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.filter.common.form;
+package com.echothree.control.user.filter.common.spec;
 
-import com.echothree.control.user.filter.common.spec.FilterAdjustmentUniversalSpec;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetFilterAdjustmentForm
-        extends FilterAdjustmentUniversalSpec {
+public interface FilterAdjustmentUniversalSpec
+        extends FilterAdjustmentSpec, UniversalEntitySpec {
     
-    // Nothing addtiional beyond FilterAdjustmentUniversalSpec
+    // Nothing additional beyond FilterAdjustmentSpec, UniversalEntitySpec
     
 }

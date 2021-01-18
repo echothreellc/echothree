@@ -26,7 +26,10 @@ public interface GetFilterAdjustmentsResult
     
     FilterKindTransfer getFilterKind();
     void setFilterKind(FilterKindTransfer filterKind);
-    
+
+    Long getFilterAdjustmentCount();
+    void setFilterAdjustmentCount(Long filterAdjustmentCount);
+
     List<FilterAdjustmentTransfer> getFilterAdjustments();
     void setFilterAdjustments(List<FilterAdjustmentTransfer> filterAdjustments);
     

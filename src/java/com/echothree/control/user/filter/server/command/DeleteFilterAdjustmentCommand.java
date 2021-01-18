@@ -18,6 +18,8 @@ package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.DeleteFilterAdjustmentForm;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.logic.FilterAdjustmentLogic;
+import com.echothree.model.control.filter.server.logic.FilterKindLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -64,31 +66,15 @@ public class DeleteFilterAdjustmentCommand
     
     @Override
     protected BaseResult execute() {
-        var filterControl = Session.getModelController(FilterControl.class);
-        String filterKindName = form.getFilterKindName();
-        FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
-        
-        if(filterKind != null) {
-            String filterAdjustmentName = form.getFilterAdjustmentName();
-            FilterAdjustment filterAdjustment = filterControl.getFilterAdjustmentByNameForUpdate(filterKind, filterAdjustmentName);
-            
-            if(filterAdjustment != null) {
-                int count = filterControl.countFiltersByFilterAdjustment(filterAdjustment);
-                
-                count += filterControl.countFilterStepElementsByFilterAdjustment(filterAdjustment);
-                
-                if(count == 0) {
-                    filterControl.deleteFilterAdjustment(filterAdjustment, getPartyPK());
-                } else {
-                    addExecutionError(ExecutionErrors.CannotDeleteFilterAdjustmentInUse.name());
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownFilterAdjustmentName.name(), filterAdjustmentName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownFilterKindName.name(), filterKindName);
+        var filterKindName = form.getFilterKindName();
+        var filterAdjustmentName = form.getFilterAdjustmentName();
+        var filterAdjustment = FilterAdjustmentLogic.getInstance().getFilterAdjustmentByNameForUpdate(this,
+                filterKindName, filterAdjustmentName);
+
+        if(!hasExecutionErrors()) {
+            FilterAdjustmentLogic.getInstance().deleteFilterAdjustment(this, filterAdjustment, getPartyPK());
         }
-        
+
         return null;
     }
     

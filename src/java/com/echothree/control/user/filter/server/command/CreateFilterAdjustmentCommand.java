@@ -17,27 +17,22 @@
 package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.CreateFilterAdjustmentForm;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.control.user.filter.common.result.FilterResultFactory;
+import com.echothree.control.user.party.common.result.CreateVendorResult;
+import com.echothree.control.user.party.common.result.PartyResultFactory;
+import com.echothree.model.control.filter.server.logic.FilterAdjustmentLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.filter.server.entity.FilterAdjustment;
-import com.echothree.model.data.filter.server.entity.FilterAdjustmentSource;
-import com.echothree.model.data.filter.server.entity.FilterAdjustmentType;
-import com.echothree.model.data.filter.server.entity.FilterKind;
-import com.echothree.model.data.party.server.entity.Language;
+import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class CreateFilterAdjustmentCommand
@@ -72,50 +67,29 @@ public class CreateFilterAdjustmentCommand
     
     @Override
     protected BaseResult execute() {
-        var filterControl = Session.getModelController(FilterControl.class);
-        String filterKindName = form.getFilterKindName();
-        FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
-        
-        if(filterKind != null) {
-            String filterAdjustmentName = form.getFilterAdjustmentName();
-            FilterAdjustment filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
-            
-            if(filterAdjustment == null) {
-                String filterAdjustmentSourceName = form.getFilterAdjustmentSourceName();
-                FilterAdjustmentSource filterAdjustmentSource = filterControl.getFilterAdjustmentSourceByName(filterAdjustmentSourceName);
-                
-                if(filterAdjustmentSource != null) {
-                    String filterAdjustmentTypeName = form.getFilterAdjustmentTypeName();
-                    FilterAdjustmentType filterAdjustmentType = filterAdjustmentTypeName == null? null: filterControl.getFilterAdjustmentTypeByName(filterAdjustmentTypeName);
-                    
-                    if(filterAdjustmentTypeName == null || filterAdjustmentType != null) {
-                        var partyPK = getPartyPK();
-                        var isDefault = Boolean.valueOf(form.getIsDefault());
-                        var sortOrder = Integer.valueOf(form.getSortOrder());
-                        var description = form.getDescription();
-                        
-                        filterAdjustment = filterControl.createFilterAdjustment(filterKind, filterAdjustmentName,
-                                filterAdjustmentSource, filterAdjustmentType, isDefault, sortOrder, partyPK);
-                        
-                        if(description != null) {
-                            Language language = getPreferredLanguage();
-                            
-                            filterControl.createFilterAdjustmentDescription(filterAdjustment, language, description, partyPK);
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownFilterAdjustmentTypeName.name(), filterAdjustmentTypeName);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownFilterAdjustmentSourceName.name(), filterAdjustmentSourceName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.DuplicateFilterAdjustmentName.name(), filterAdjustmentName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownFilterKindName.name(), filterKindName);
+        var result = FilterResultFactory.getCreateFilterAdjustmentResult();
+        var filterKindName = form.getFilterKindName();
+        var filterAdjustmentName = form.getFilterAdjustmentName();
+        var filterAdjustmentSourceName = form.getFilterAdjustmentSourceName();
+        var filterAdjustmentTypeName = form.getFilterAdjustmentTypeName();
+        var isDefault = Boolean.valueOf(form.getIsDefault());
+        var sortOrder = Integer.valueOf(form.getSortOrder());
+        var description = form.getDescription();
+
+        var filterAdjustment = FilterAdjustmentLogic.getInstance().createFilterAdjustment(this, filterKindName, filterAdjustmentName,
+                filterAdjustmentSourceName, filterAdjustmentTypeName, isDefault, sortOrder, getPreferredLanguage(),
+                description, getPartyPK());
+
+
+        if(filterAdjustment != null) {
+            var filterAdjustmentDetail = filterAdjustment.getLastDetail();
+
+            result.setEntityRef(filterAdjustment.getPrimaryKey().getEntityRef());
+            result.setFilterKindName(filterAdjustmentDetail.getFilterKind().getLastDetail().getFilterKindName());
+            result.setFilterAdjustmentName(filterAdjustmentDetail.getFilterAdjustmentName());
         }
-        
-        return null;
+
+        return result;
     }
     
 }

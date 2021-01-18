@@ -18,29 +18,26 @@ package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.GetFilterAdjustmentForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
-import com.echothree.control.user.filter.common.result.GetFilterAdjustmentResult;
+import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.logic.FilterAdjustmentLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.filter.server.entity.FilterAdjustment;
-import com.echothree.model.data.filter.server.entity.FilterKind;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class GetFilterAdjustmentCommand
-        extends BaseSimpleCommand<GetFilterAdjustmentForm> {
+        extends BaseSingleEntityCommand<FilterAdjustment, GetFilterAdjustmentForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -54,8 +51,12 @@ public class GetFilterAdjustmentCommand
         ));
 
         FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("FilterKindName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("FilterAdjustmentName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("FilterKindName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("FilterAdjustmentName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
         );
     }
     
@@ -63,28 +64,30 @@ public class GetFilterAdjustmentCommand
     public GetFilterAdjustmentCommand(UserVisitPK userVisitPK, GetFilterAdjustmentForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+
     @Override
-    protected BaseResult execute() {
-        var filterControl = Session.getModelController(FilterControl.class);
-        GetFilterAdjustmentResult result = FilterResultFactory.getGetFilterAdjustmentResult();
-        String filterKindName = form.getFilterKindName();
-        FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
-        
-        if(filterKind != null) {
-            String filterAdjustmentName = form.getFilterAdjustmentName();
-            FilterAdjustment filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
-            
-            if(filterAdjustment != null) {
-                result.setFilterAdjustment(filterControl.getFilterAdjustmentTransfer(getUserVisit(), filterAdjustment));
-            } else {
-                addExecutionError(ExecutionErrors.UnknownFilterAdjustmentName.name(), filterAdjustmentName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownFilterKindName.name(), filterKindName);
+    protected FilterAdjustment getEntity() {
+        var filterAdjustment = FilterAdjustmentLogic.getInstance().getFilterAdjustmentByUniversalSpec(this, form, true);
+
+        if(filterAdjustment != null) {
+            sendEventUsingNames(filterAdjustment.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
         }
-        
+
+        return filterAdjustment;
+    }
+
+    @Override
+    protected BaseResult getTransfer(FilterAdjustment filterAdjustment) {
+        var result = FilterResultFactory.getGetFilterAdjustmentResult();
+
+        if(filterAdjustment != null) {
+            var filterControl = Session.getModelController(FilterControl.class);
+
+            result.setFilterAdjustment(filterControl.getFilterAdjustmentTransfer(getUserVisit(), filterAdjustment));
+        }
+
         return result;
     }
-    
+
 }
