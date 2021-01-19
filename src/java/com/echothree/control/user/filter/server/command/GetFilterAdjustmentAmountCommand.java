@@ -16,11 +16,8 @@
 
 package com.echothree.control.user.filter.server.command;
 
-import com.echothree.control.user.filter.common.form.DeleteFilterAdjustmentAmountForm;
 import com.echothree.control.user.filter.common.form.GetFilterAdjustmentAmountForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
-import com.echothree.control.user.filter.common.result.GetFilterAdjustmentFixedAmountsResult;
-import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.accounting.server.logic.CurrencyLogic;
 import com.echothree.model.control.filter.common.FilterConstants;
 import com.echothree.model.control.filter.server.control.FilterControl;
@@ -28,13 +25,7 @@ import com.echothree.model.control.filter.server.logic.FilterAdjustmentLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.filter.server.entity.FilterAdjustment;
-import com.echothree.model.data.filter.server.entity.FilterAdjustmentAmount;
-import com.echothree.model.data.filter.server.entity.FilterKind;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
+import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -45,7 +36,6 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import com.google.common.base.Splitter;
 import java.util.List;
 
 public class GetFilterAdjustmentAmountCommand
@@ -86,51 +76,27 @@ public class GetFilterAdjustmentAmountCommand
             
         if(!hasExecutionErrors()) {
             if(filterAdjustment.getLastDetail().getFilterAdjustmentType().getFilterAdjustmentTypeName().equals(FilterConstants.FilterAdjustmentType_AMOUNT)) {
-                var uomControl = Session.getModelController(UomControl.class);
-                var unitOfMeasureName = form.getUnitOfMeasureName();
-                String unitOfMeasureKindName = null;
-                String unitOfMeasureTypeName = null;
+                String unitOfMeasureName = form.getUnitOfMeasureName();
+                String unitOfMeasureKindName = form.getUnitOfMeasureKindName();
+                String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
 
-                if(unitOfMeasureName == null) {
-                    unitOfMeasureKindName = form.getUnitOfMeasureKindName();
-                    unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
-                } else {
-                    String splitUomName[] = Splitter.on(':').trimResults().omitEmptyStrings().splitToList(unitOfMeasureName).toArray(new String[0]);
+                var unitOfMeasureType = UnitOfMeasureTypeLogic.getInstance().getUnitOfMeasureTypeByName(this,
+                        unitOfMeasureName, unitOfMeasureKindName, unitOfMeasureTypeName);
 
-                    if(splitUomName.length == 2) {
-                        unitOfMeasureKindName = splitUomName[0];
-                        unitOfMeasureTypeName = splitUomName[1];
-                    }
-                }
+                if(!hasExecutionErrors()) {
+                    var currencyIsoName = form.getCurrencyIsoName();
+                    var currency = CurrencyLogic.getInstance().getCurrencyByName(this, currencyIsoName);
 
-                if(unitOfMeasureKindName != null && unitOfMeasureTypeName != null) {
-                    var unitOfMeasureKind = uomControl.getUnitOfMeasureKindByName(unitOfMeasureKindName);
+                    if(!hasExecutionErrors()) {
+                        var filterControl = Session.getModelController(FilterControl.class);
+                        var filterAdjustmentAmount = filterControl.getFilterAdjustmentAmount(filterAdjustment, unitOfMeasureType, currency);
 
-                    if(unitOfMeasureKind != null) {
-                        var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
-
-                        if(unitOfMeasureType != null) {
-                            var currencyIsoName = form.getCurrencyIsoName();
-                            var currency = CurrencyLogic.getInstance().getCurrencyByName(this, currencyIsoName);
-
-                            if(!hasExecutionErrors()) {
-                                var filterControl = Session.getModelController(FilterControl.class);
-                                var filterAdjustmentAmount = filterControl.getFilterAdjustmentAmount(filterAdjustment, unitOfMeasureType, currency);
-
-                                if(filterAdjustmentAmount != null) {
-                                    result.setFilterAdjustmentAmount(filterControl.getFilterAdjustmentAmountTransfer(getUserVisit(), filterAdjustmentAmount));
-                                } else {
-                                    addExecutionError(ExecutionErrors.UnknownFilterAdjustmentAmount.name());
-                                }
-                            }
+                        if(filterAdjustmentAmount != null) {
+                            result.setFilterAdjustmentAmount(filterControl.getFilterAdjustmentAmountTransfer(getUserVisit(), filterAdjustmentAmount));
                         } else {
-                            addExecutionError(ExecutionErrors.UnknownUnitOfMeasureTypeName.name(), unitOfMeasureTypeName);
+                            addExecutionError(ExecutionErrors.UnknownFilterAdjustmentAmount.name());
                         }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownUnitOfMeasureKindName.name(), unitOfMeasureKindName);
                     }
-                } else {
-                    addExecutionError(ExecutionErrors.InvalidUnitOfMeasureSpecification.name());
                 }
             } else {
                 addExecutionError(ExecutionErrors.InvalidFilterAdjustmentType.name());

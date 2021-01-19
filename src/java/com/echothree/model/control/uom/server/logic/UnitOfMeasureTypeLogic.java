@@ -19,6 +19,7 @@ package com.echothree.model.control.uom.server.logic;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.uom.common.exception.InvalidUnitOfMeasureSpecificationException;
 import com.echothree.model.control.uom.common.exception.UnknownUnitOfMeasureKindUseException;
 import com.echothree.model.control.uom.common.exception.UnknownUnitOfMeasureTypeNameException;
 import com.echothree.model.control.uom.server.control.UomControl;
@@ -32,6 +33,7 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import com.google.common.base.Splitter;
 
 public class UnitOfMeasureTypeLogic
     extends BaseLogic {
@@ -48,7 +50,8 @@ public class UnitOfMeasureTypeLogic
         return UnitOfMeasureTypeLogicHolder.instance;
     }
     
-    public UnitOfMeasureType getUnitOfMeasureTypeByName(final ExecutionErrorAccumulator eea, final UnitOfMeasureKind unitOfMeasureKind, final String unitOfMeasureTypeName) {
+    public UnitOfMeasureType getUnitOfMeasureTypeByName(final ExecutionErrorAccumulator eea, final UnitOfMeasureKind unitOfMeasureKind,
+            final String unitOfMeasureTypeName) {
         var uomControl = Session.getModelController(UomControl.class);
         UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
 
@@ -60,7 +63,8 @@ public class UnitOfMeasureTypeLogic
         return unitOfMeasureType;
     }
 
-    public UnitOfMeasureType getUnitOfMeasureTypeByName(final ExecutionErrorAccumulator eea, final String unitOfMeasureKindName, final String unitOfMeasureTypeName) {
+    public UnitOfMeasureType getUnitOfMeasureTypeByName(final ExecutionErrorAccumulator eea, final String unitOfMeasureKindName,
+            final String unitOfMeasureTypeName) {
         UnitOfMeasureKind unitOfMeasureKind = UnitOfMeasureKindLogic.getInstance().getUnitOfMeasureKindByName(eea, unitOfMeasureKindName);
         UnitOfMeasureType unitOfMeasureType = null;
 
@@ -68,6 +72,28 @@ public class UnitOfMeasureTypeLogic
             unitOfMeasureType = getUnitOfMeasureTypeByName(eea, unitOfMeasureKind, unitOfMeasureTypeName);
         }
         
+        return unitOfMeasureType;
+    }
+
+    public UnitOfMeasureType getUnitOfMeasureTypeByName(final ExecutionErrorAccumulator eea, final String unitOfMeasureName,
+            String unitOfMeasureKindName, String unitOfMeasureTypeName) {
+        UnitOfMeasureType unitOfMeasureType = null;
+
+        if(unitOfMeasureName != null) {
+            String[] splitUomName = Splitter.on(':').trimResults().omitEmptyStrings().splitToList(unitOfMeasureName).toArray(new String[0]);
+
+            if(splitUomName.length == 2) {
+                unitOfMeasureKindName = splitUomName[0];
+                unitOfMeasureTypeName = splitUomName[1];
+            }
+        }
+
+        if(unitOfMeasureKindName != null && unitOfMeasureTypeName != null) {
+            unitOfMeasureType = getUnitOfMeasureTypeByName(eea, unitOfMeasureKindName, unitOfMeasureTypeName);
+        } else {
+            handleExecutionError(InvalidUnitOfMeasureSpecificationException.class, eea, ExecutionErrors.InvalidUnitOfMeasureSpecification.name());
+        }
+
         return unitOfMeasureType;
     }
 
