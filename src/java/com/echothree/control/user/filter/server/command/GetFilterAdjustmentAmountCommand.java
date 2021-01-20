@@ -26,12 +26,13 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
+import com.echothree.model.data.filter.server.entity.FilterAdjustmentAmount;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -39,7 +40,7 @@ import com.echothree.util.server.persistence.Session;
 import java.util.List;
 
 public class GetFilterAdjustmentAmountCommand
-        extends BaseSimpleCommand<GetFilterAdjustmentAmountForm> {
+        extends BaseSingleEntityCommand<FilterAdjustmentAmount, GetFilterAdjustmentAmountForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -66,20 +67,19 @@ public class GetFilterAdjustmentAmountCommand
     public GetFilterAdjustmentAmountCommand(UserVisitPK userVisitPK, GetFilterAdjustmentAmountForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = FilterResultFactory.getGetFilterAdjustmentAmountResult();
+    protected FilterAdjustmentAmount getEntity() {
         var filterKindName = form.getFilterKindName();
         var filterAdjustmentName = form.getFilterAdjustmentName();
         var filterAdjustment = FilterAdjustmentLogic.getInstance().getFilterAdjustmentByName(this, filterKindName, filterAdjustmentName);
-            
+        FilterAdjustmentAmount filterAdjustmentAmount = null;
+
         if(!hasExecutionErrors()) {
             if(filterAdjustment.getLastDetail().getFilterAdjustmentType().getFilterAdjustmentTypeName().equals(FilterConstants.FilterAdjustmentType_AMOUNT)) {
-                String unitOfMeasureName = form.getUnitOfMeasureName();
-                String unitOfMeasureKindName = form.getUnitOfMeasureKindName();
-                String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
-
+                var unitOfMeasureName = form.getUnitOfMeasureName();
+                var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
+                var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
                 var unitOfMeasureType = UnitOfMeasureTypeLogic.getInstance().getUnitOfMeasureTypeByName(this,
                         unitOfMeasureName, unitOfMeasureKindName, unitOfMeasureTypeName);
 
@@ -89,11 +89,10 @@ public class GetFilterAdjustmentAmountCommand
 
                     if(!hasExecutionErrors()) {
                         var filterControl = Session.getModelController(FilterControl.class);
-                        var filterAdjustmentAmount = filterControl.getFilterAdjustmentAmount(filterAdjustment, unitOfMeasureType, currency);
 
-                        if(filterAdjustmentAmount != null) {
-                            result.setFilterAdjustmentAmount(filterControl.getFilterAdjustmentAmountTransfer(getUserVisit(), filterAdjustmentAmount));
-                        } else {
+                        filterAdjustmentAmount = filterControl.getFilterAdjustmentAmount(filterAdjustment, unitOfMeasureType, currency);
+
+                        if(filterAdjustmentAmount == null) {
                             addExecutionError(ExecutionErrors.UnknownFilterAdjustmentAmount.name());
                         }
                     }
@@ -103,7 +102,20 @@ public class GetFilterAdjustmentAmountCommand
             }
         }
 
+        return filterAdjustmentAmount;
+    }
+
+    @Override
+    protected BaseResult getTransfer(FilterAdjustmentAmount entity) {
+        var result = FilterResultFactory.getGetFilterAdjustmentAmountResult();
+
+        if(entity != null) {
+            var filterControl = Session.getModelController(FilterControl.class);
+
+            result.setFilterAdjustmentAmount(filterControl.getFilterAdjustmentAmountTransfer(getUserVisit(), entity));
+        }
+
         return result;
     }
-    
+
 }
