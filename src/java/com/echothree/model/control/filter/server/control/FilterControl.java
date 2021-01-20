@@ -3717,7 +3717,7 @@ public class FilterControl
         return session.queryForLong(
                 "SELECT COUNT(*) " +
                 "FROM filterstepelementdetails " +
-                "WHERE fltstpedt_flta_filteradjustmentid = ?",
+                "WHERE fltstpedt_flta_filteradjustmentid = ? AND fltstpedt_thrutime = ?",
                 filterAdjustment, Session.MAX_TIME);
     }
     
