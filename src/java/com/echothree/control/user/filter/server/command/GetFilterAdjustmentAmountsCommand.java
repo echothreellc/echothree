@@ -21,6 +21,7 @@ import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.control.user.filter.common.result.GetFilterAdjustmentAmountsResult;
 import com.echothree.model.control.filter.common.FilterConstants;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.logic.FilterAdjustmentLogic;
 import com.echothree.model.control.filter.server.logic.FilterKindLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -75,23 +76,14 @@ public class GetFilterAdjustmentAmountsCommand
     protected Collection<FilterAdjustmentAmount> getEntities() {
         var filterControl = Session.getModelController(FilterControl.class);
         var filterKindName = form.getFilterKindName();
+        var filterAdjustmentName = form.getFilterAdjustmentName();
+        var filterAdjustment = FilterAdjustmentLogic.getInstance().getFilterAdjustmentByName(this,
+                filterKindName, filterAdjustmentName);
 
-        filterKind = filterControl.getFilterKindByName(filterKindName);
-
-        if(filterKind != null) {
-            var filterAdjustmentName = form.getFilterAdjustmentName();
-
-            filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
-
-            if(filterAdjustment != null) {
-                if(!filterAdjustment.getLastDetail().getFilterAdjustmentType().getFilterAdjustmentTypeName().equals(FilterConstants.FilterAdjustmentType_AMOUNT)) {
-                    addExecutionError(ExecutionErrors.InvalidFilterAdjustmentType.name());
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownFilterAdjustmentName.name(), filterAdjustmentName);
+        if(!hasExecutionErrors()) {
+            if(!filterAdjustment.getLastDetail().getFilterAdjustmentType().getFilterAdjustmentTypeName().equals(FilterConstants.FilterAdjustmentType_AMOUNT)) {
+                addExecutionError(ExecutionErrors.InvalidFilterAdjustmentType.name());
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownFilterKindName.name(), filterKindName);
         }
 
         return hasExecutionErrors() ? null : filterControl.getFilterAdjustmentAmounts(filterAdjustment);
