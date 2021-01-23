@@ -878,6 +878,10 @@ public final class GraphQlQueries
 
             commandForm.setFilterKindName(filterKindName);
             commandForm.setFilterAdjustmentName(filterAdjustmentName);
+            commandForm.setUnitOfMeasureName(unitOfMeasureName);
+            commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
+            commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
+            commandForm.setCurrencyIsoName(currencyIsoName);
 
             filterAdjustmentAmount = new GetFilterAdjustmentAmountCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
