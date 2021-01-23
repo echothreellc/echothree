@@ -16,7 +16,8 @@
 
 package com.echothree.control.user.filter.server.command;
 
-import com.echothree.control.user.filter.common.form.CreateFilterAdjustmentAmountForm;
+import com.echothree.control.user.filter.common.form.GetFilterAdjustmentAmountForm;
+import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.model.control.accounting.server.logic.CurrencyLogic;
 import com.echothree.model.control.filter.common.FilterConstants;
 import com.echothree.model.control.filter.server.control.FilterControl;
@@ -25,28 +26,25 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
+import com.echothree.model.data.filter.server.entity.FilterAdjustmentAmount;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import com.echothree.util.server.validation.Validator;
 import java.util.List;
 
-public class CreateFilterAdjustmentAmountCommand
-        extends BaseSimpleCommand<CreateFilterAdjustmentAmountForm> {
+public class GetFilterAdjustmentAmountCommand
+        extends BaseSingleEntityCommand<FilterAdjustmentAmount, GetFilterAdjustmentAmountForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    private final static List<FieldDefinition> costFormFieldDefinitions;
-    private final static List<FieldDefinition> priceFormFieldDefinitions;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -63,53 +61,25 @@ public class CreateFilterAdjustmentAmountCommand
                 new FieldDefinition("UnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("CurrencyIsoName", FieldType.ENTITY_NAME, true, null, null)
         );
-        
-        costFormFieldDefinitions = List.of(
-                new FieldDefinition("Amount:CurrencyIsoName,CurrencyIsoName", FieldType.COST_UNIT, true, null, null)
-        );
-        
-        priceFormFieldDefinitions = List.of(
-                new FieldDefinition("Amount:CurrencyIsoName,CurrencyIsoName", FieldType.PRICE_UNIT, true, null, null)
-        );
     }
-    
-    /** Creates a new instance of CreateFilterAdjustmentAmountCommand */
-    public CreateFilterAdjustmentAmountCommand(UserVisitPK userVisitPK, CreateFilterAdjustmentAmountForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, null, false);
+
+    /** Creates a new instance of DeleteFilterAdjustmentAmountCommand */
+    public GetFilterAdjustmentAmountCommand(UserVisitPK userVisitPK, GetFilterAdjustmentAmountForm form) {
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
-    
+
     @Override
-    protected ValidationResult validate() {
-        Validator validator = new Validator(this);
-        ValidationResult validationResult = validator.validate(form, FORM_FIELD_DEFINITIONS);
-        
-        if(!validationResult.getHasErrors()) {
-            String filterKindName = form.getFilterKindName();
-            
-            if(filterKindName.equals(FilterConstants.FilterKind_COST)) {
-                validationResult = validator.validate(form, costFormFieldDefinitions);
-            } else if(filterKindName.equals(FilterConstants.FilterKind_PRICE)) {
-                validationResult = validator.validate(form, priceFormFieldDefinitions);
-            } else {
-                addExecutionError(ExecutionErrors.UnknownFilterKindName.name(), filterKindName);
-            }
-        }
-        
-        return validationResult;
-    }
-    
-    @Override
-    protected BaseResult execute() {
+    protected FilterAdjustmentAmount getEntity() {
         var filterKindName = form.getFilterKindName();
         var filterAdjustmentName = form.getFilterAdjustmentName();
         var filterAdjustment = FilterAdjustmentLogic.getInstance().getFilterAdjustmentByName(this, filterKindName, filterAdjustmentName);
+        FilterAdjustmentAmount filterAdjustmentAmount = null;
 
         if(!hasExecutionErrors()) {
             if(filterAdjustment.getLastDetail().getFilterAdjustmentType().getFilterAdjustmentTypeName().equals(FilterConstants.FilterAdjustmentType_AMOUNT)) {
-                String unitOfMeasureName = form.getUnitOfMeasureName();
-                String unitOfMeasureKindName = form.getUnitOfMeasureKindName();
-                String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
-
+                var unitOfMeasureName = form.getUnitOfMeasureName();
+                var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
+                var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
                 var unitOfMeasureType = UnitOfMeasureTypeLogic.getInstance().getUnitOfMeasureTypeByName(this,
                         unitOfMeasureName, unitOfMeasureKindName, unitOfMeasureTypeName);
 
@@ -119,16 +89,11 @@ public class CreateFilterAdjustmentAmountCommand
 
                     if(!hasExecutionErrors()) {
                         var filterControl = Session.getModelController(FilterControl.class);
-                        var filterAdjustmentAmount = filterControl.getFilterAdjustmentAmount(filterAdjustment,
-                                unitOfMeasureType, currency);
+
+                        filterAdjustmentAmount = filterControl.getFilterAdjustmentAmount(filterAdjustment, unitOfMeasureType, currency);
 
                         if(filterAdjustmentAmount == null) {
-                            var amount = Long.valueOf(form.getAmount());
-
-                            filterControl.createFilterAdjustmentAmount(filterAdjustment, unitOfMeasureType, currency,
-                                    amount, getPartyPK());
-                        } else {
-                            addExecutionError(ExecutionErrors.DuplicateFilterAdjustmentAmount.name());
+                            addExecutionError(ExecutionErrors.UnknownFilterAdjustmentAmount.name());
                         }
                     }
                 }
@@ -137,7 +102,20 @@ public class CreateFilterAdjustmentAmountCommand
             }
         }
 
-        return null;
+        return filterAdjustmentAmount;
     }
-    
+
+    @Override
+    protected BaseResult getTransfer(FilterAdjustmentAmount entity) {
+        var result = FilterResultFactory.getGetFilterAdjustmentAmountResult();
+
+        if(entity != null) {
+            var filterControl = Session.getModelController(FilterControl.class);
+
+            result.setFilterAdjustmentAmount(filterControl.getFilterAdjustmentAmountTransfer(getUserVisit(), entity));
+        }
+
+        return result;
+    }
+
 }

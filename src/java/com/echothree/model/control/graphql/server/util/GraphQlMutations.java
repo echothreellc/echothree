@@ -23,6 +23,7 @@ import com.echothree.control.user.content.common.result.EditContentPageLayoutRes
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.filter.common.FilterUtil;
 import com.echothree.control.user.filter.common.result.CreateFilterAdjustmentResult;
+import com.echothree.control.user.filter.common.result.EditFilterAdjustmentAmountResult;
 import com.echothree.control.user.filter.common.result.EditFilterAdjustmentResult;
 import com.echothree.control.user.inventory.common.InventoryUtil;
 import com.echothree.control.user.inventory.common.result.CreateInventoryConditionResult;
@@ -221,6 +222,122 @@ public class GraphQlMutations
             commandForm.setFilterAdjustmentName(filterAdjustmentName);
 
             var commandResult = FilterUtil.getHome().setDefaultFilterAdjustment(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject createFilterAdjustmentAmount(final DataFetchingEnvironment env,
+            @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
+            @GraphQLName("filterAdjustmentName") @GraphQLNonNull final String filterAdjustmentName,
+            @GraphQLName("unitOfMeasureName") final String unitOfMeasureName,
+            @GraphQLName("unitOfMeasureKindName") final String unitOfMeasureKindName,
+            @GraphQLName("unitOfMeasureTypeName") final String unitOfMeasureTypeName,
+            @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName,
+            @GraphQLName("amount") @GraphQLNonNull final String amount) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = FilterUtil.getHome().getCreateFilterAdjustmentAmountForm();
+
+            commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterAdjustmentName(filterAdjustmentName);
+            commandForm.setUnitOfMeasureName(unitOfMeasureName);
+            commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
+            commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
+            commandForm.setCurrencyIsoName(currencyIsoName);
+            commandForm.setAmount(amount);
+
+            var commandResult = FilterUtil.getHome().createFilterAdjustmentAmount(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject deleteFilterAdjustmentAmount(final DataFetchingEnvironment env,
+            @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
+            @GraphQLName("filterAdjustmentName") @GraphQLNonNull final String filterAdjustmentName,
+            @GraphQLName("unitOfMeasureName") final String unitOfMeasureName,
+            @GraphQLName("unitOfMeasureKindName") final String unitOfMeasureKindName,
+            @GraphQLName("unitOfMeasureTypeName") final String unitOfMeasureTypeName,
+            @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = FilterUtil.getHome().getDeleteFilterAdjustmentAmountForm();
+
+            commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterAdjustmentName(filterAdjustmentName);
+            commandForm.setUnitOfMeasureName(unitOfMeasureName);
+            commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
+            commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
+            commandForm.setCurrencyIsoName(currencyIsoName);
+
+            var commandResult = FilterUtil.getHome().deleteFilterAdjustmentAmount(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultWithIdObject editFilterAdjustmentAmount(final DataFetchingEnvironment env,
+            @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
+            @GraphQLName("filterAdjustmentName") @GraphQLNonNull final String filterAdjustmentName,
+            @GraphQLName("unitOfMeasureName") final String unitOfMeasureName,
+            @GraphQLName("unitOfMeasureKindName") final String unitOfMeasureKindName,
+            @GraphQLName("unitOfMeasureTypeName") final String unitOfMeasureTypeName,
+            @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName,
+            @GraphQLName("amount") @GraphQLNonNull final String amount) {
+        var commandResultObject = new CommandResultWithIdObject();
+
+        try {
+            var spec = FilterUtil.getHome().getFilterAdjustmentAmountSpec();
+
+            spec.setFilterKindName(filterKindName);
+            spec.setFilterAdjustmentName(filterAdjustmentName);
+            spec.setUnitOfMeasureName(unitOfMeasureName);
+            spec.setUnitOfMeasureKindName(unitOfMeasureKindName);
+            spec.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
+            spec.setCurrencyIsoName(currencyIsoName);
+
+            var commandForm = FilterUtil.getHome().getEditFilterAdjustmentAmountForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = FilterUtil.getHome().editFilterAdjustmentAmount(getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditFilterAdjustmentAmountResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                commandResultObject.setEntityInstanceFromEntityRef(result.getFilterAdjustmentAmount().getEntityInstance().getEntityRef());
+
+                if(arguments.containsKey("amount"))
+                    edit.setAmount(amount);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = FilterUtil.getHome().editFilterAdjustmentAmount(getUserVisitPK(env), commandForm);
+            }
+
             commandResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);

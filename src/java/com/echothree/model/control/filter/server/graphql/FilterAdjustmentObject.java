@@ -28,6 +28,8 @@ import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @GraphQLDescription("filter adjustment object")
 @GraphQLName("FilterAdjustment")
@@ -103,5 +105,24 @@ public class FilterAdjustmentObject
 
         return filterControl.getBestFilterAdjustmentDescription(filterAdjustment, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
     }
-    
+
+    @GraphQLField
+    @GraphQLDescription("filter adjustment amounts")
+    public Collection<FilterAdjustmentAmountObject> getFilterAdjustmentAmounts(final DataFetchingEnvironment env) {
+        Collection<FilterAdjustmentAmountObject> filterAdjustmentAmountObjects = null;
+
+        if(FilterSecurityUtils.getInstance().getHasFilterAdjustmentAmountAccess(env)) {
+            var filterControl = Session.getModelController(FilterControl.class);
+            var filterAdjustmentAmounts = filterControl.getFilterAdjustmentAmounts(filterAdjustment);
+
+            filterAdjustmentAmountObjects = new ArrayList<>(filterAdjustmentAmounts.size());
+
+            filterAdjustmentAmounts.stream()
+                    .map(FilterAdjustmentAmountObject::new)
+                    .forEachOrdered(filterAdjustmentAmountObjects::add);
+        }
+
+        return filterAdjustmentAmountObjects;
+    }
+
 }

@@ -1779,19 +1779,22 @@ public class FilterControl
             FilterAdjustmentAmount filterAdjustmentAmount) {
         return getFilterTransferCaches(userVisit).getFilterAdjustmentAmountTransferCache().getTransfer(filterAdjustmentAmount);
     }
-    
-    public List<FilterAdjustmentAmountTransfer> getFilterAdjustmentAmountTransfers(UserVisit userVisit, FilterAdjustment filterAdjustment) {
-        List<FilterAdjustmentAmount> filterAdjustmentAmounts = getFilterAdjustmentAmounts(filterAdjustment);
+
+    public List<FilterAdjustmentAmountTransfer> getFilterAdjustmentAmountTransfers(UserVisit userVisit, Collection<FilterAdjustmentAmount> filterAdjustmentAmounts) {
         List<FilterAdjustmentAmountTransfer> filterAdjustmentAmountTransfers = new ArrayList<>(filterAdjustmentAmounts.size());
         FilterAdjustmentAmountTransferCache filterAdjustmentAmountTransferCache = getFilterTransferCaches(userVisit).getFilterAdjustmentAmountTransferCache();
-        
+
         filterAdjustmentAmounts.forEach((filterAdjustmentAmount) ->
                 filterAdjustmentAmountTransfers.add(filterAdjustmentAmountTransferCache.getTransfer(filterAdjustmentAmount))
         );
-        
+
         return filterAdjustmentAmountTransfers;
     }
-    
+
+    public List<FilterAdjustmentAmountTransfer> getFilterAdjustmentAmountTransfers(UserVisit userVisit, FilterAdjustment filterAdjustment) {
+        return getFilterAdjustmentAmountTransfers(userVisit, getFilterAdjustmentAmounts(filterAdjustment));
+    }
+
     public void updateFilterAdjustmentAmountFromValue(FilterAdjustmentAmountValue filterAdjustmentAmountValue, BasePK updatedBy) {
         if(filterAdjustmentAmountValue.hasBeenModified()) {
             FilterAdjustmentAmount filterAdjustmentAmount = FilterAdjustmentAmountFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
@@ -3717,7 +3720,7 @@ public class FilterControl
         return session.queryForLong(
                 "SELECT COUNT(*) " +
                 "FROM filterstepelementdetails " +
-                "WHERE fltstpedt_flta_filteradjustmentid = ?",
+                "WHERE fltstpedt_flta_filteradjustmentid = ? AND fltstpedt_thrutime = ?",
                 filterAdjustment, Session.MAX_TIME);
     }
     
