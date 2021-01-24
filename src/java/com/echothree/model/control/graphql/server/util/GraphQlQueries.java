@@ -77,6 +77,8 @@ import com.echothree.control.user.filter.server.command.GetFilterAdjustmentAmoun
 import com.echothree.control.user.filter.server.command.GetFilterAdjustmentCommand;
 import com.echothree.control.user.filter.server.command.GetFilterAdjustmentFixedAmountCommand;
 import com.echothree.control.user.filter.server.command.GetFilterAdjustmentFixedAmountsCommand;
+import com.echothree.control.user.filter.server.command.GetFilterAdjustmentPercentCommand;
+import com.echothree.control.user.filter.server.command.GetFilterAdjustmentPercentsCommand;
 import com.echothree.control.user.filter.server.command.GetFilterAdjustmentSourceCommand;
 import com.echothree.control.user.filter.server.command.GetFilterAdjustmentSourcesCommand;
 import com.echothree.control.user.filter.server.command.GetFilterAdjustmentTypeCommand;
@@ -196,6 +198,7 @@ import com.echothree.model.control.core.server.graphql.TextTransformationObject;
 import com.echothree.model.control.filter.server.graphql.FilterAdjustmentAmountObject;
 import com.echothree.model.control.filter.server.graphql.FilterAdjustmentFixedAmountObject;
 import com.echothree.model.control.filter.server.graphql.FilterAdjustmentObject;
+import com.echothree.model.control.filter.server.graphql.FilterAdjustmentPercentObject;
 import com.echothree.model.control.filter.server.graphql.FilterAdjustmentSourceObject;
 import com.echothree.model.control.filter.server.graphql.FilterAdjustmentTypeObject;
 import com.echothree.model.control.filter.server.graphql.FilterKindObject;
@@ -269,6 +272,7 @@ import com.echothree.model.data.core.server.entity.TextTransformation;
 import com.echothree.model.data.filter.server.entity.FilterAdjustment;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentAmount;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentFixedAmount;
+import com.echothree.model.data.filter.server.entity.FilterAdjustmentPercent;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentSource;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentType;
 import com.echothree.model.data.filter.server.entity.FilterKind;
@@ -986,6 +990,67 @@ public final class GraphQlQueries
         }
 
         return filterAdjustmentFixedAmountObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("filterAdjustmentPercent")
+    public static FilterAdjustmentPercentObject filterAdjustmentPercent(final DataFetchingEnvironment env,
+            @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
+            @GraphQLName("filterAdjustmentName") @GraphQLNonNull final String filterAdjustmentName,
+            @GraphQLName("unitOfMeasureName") final String unitOfMeasureName,
+            @GraphQLName("unitOfMeasureKindName") final String unitOfMeasureKindName,
+            @GraphQLName("unitOfMeasureTypeName") final String unitOfMeasureTypeName,
+            @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName) {
+        FilterAdjustmentPercent filterAdjustmentPercent;
+
+        try {
+            var commandForm = FilterUtil.getHome().getGetFilterAdjustmentPercentForm();
+
+            commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterAdjustmentName(filterAdjustmentName);
+            commandForm.setUnitOfMeasureName(unitOfMeasureName);
+            commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
+            commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
+            commandForm.setCurrencyIsoName(currencyIsoName);
+
+            filterAdjustmentPercent = new GetFilterAdjustmentPercentCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return filterAdjustmentPercent == null ? null : new FilterAdjustmentPercentObject(filterAdjustmentPercent);
+    }
+
+    @GraphQLField
+    @GraphQLName("filterAdjustmentPercents")
+    public static Collection<FilterAdjustmentPercentObject> filterAdjustmentPercents(final DataFetchingEnvironment env,
+            @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
+            @GraphQLName("filterAdjustmentName") @GraphQLNonNull final String filterAdjustmentName) {
+        Collection<FilterAdjustmentPercent> filterAdjustmentPercents;
+        Collection<FilterAdjustmentPercentObject> filterAdjustmentPercentObjects;
+
+        try {
+            var commandForm = FilterUtil.getHome().getGetFilterAdjustmentPercentsForm();
+
+            commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterAdjustmentName(filterAdjustmentName);
+
+            filterAdjustmentPercents = new GetFilterAdjustmentPercentsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(filterAdjustmentPercents == null) {
+            filterAdjustmentPercentObjects = emptyList();
+        } else {
+            filterAdjustmentPercentObjects = new ArrayList<>(filterAdjustmentPercents.size());
+
+            filterAdjustmentPercents.stream()
+                    .map(FilterAdjustmentPercentObject::new)
+                    .forEachOrdered(filterAdjustmentPercentObjects::add);
+        }
+
+        return filterAdjustmentPercentObjects;
     }
 
     @GraphQLField
