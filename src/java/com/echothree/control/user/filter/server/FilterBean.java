@@ -339,12 +339,17 @@ public class FilterBean
     public CommandResult createFilterAdjustmentFixedAmount(UserVisitPK userVisitPK, CreateFilterAdjustmentFixedAmountForm form) {
         return new CreateFilterAdjustmentFixedAmountCommand(userVisitPK, form).run();
     }
-    
+
     @Override
     public CommandResult getFilterAdjustmentFixedAmounts(UserVisitPK userVisitPK, GetFilterAdjustmentFixedAmountsForm form) {
         return new GetFilterAdjustmentFixedAmountsCommand(userVisitPK, form).run();
     }
-    
+
+    @Override
+    public CommandResult getFilterAdjustmentFixedAmount(UserVisitPK userVisitPK, GetFilterAdjustmentFixedAmountForm form) {
+        return new GetFilterAdjustmentFixedAmountCommand(userVisitPK, form).run();
+    }
+
     @Override
     public CommandResult editFilterAdjustmentFixedAmount(UserVisitPK userVisitPK, EditFilterAdjustmentFixedAmountForm form) {
         return new EditFilterAdjustmentFixedAmountCommand(userVisitPK, form).run();

@@ -17,18 +17,12 @@
 package com.echothree.control.user.filter.common.result;
 
 import com.echothree.model.control.filter.common.transfer.FilterAdjustmentFixedAmountTransfer;
-import com.echothree.model.control.filter.common.transfer.FilterAdjustmentTransfer;
-import com.echothree.model.control.filter.common.transfer.FilterKindTransfer;
 import com.echothree.util.common.command.BaseResult;
-import java.util.List;
 
-public interface GetFilterAdjustmentFixedAmountsResult
+public interface GetFilterAdjustmentFixedAmountResult
         extends BaseResult {
-    
-    FilterAdjustmentTransfer getFilterAdjustment();
-    void setFilterAdjustment(FilterAdjustmentTransfer filterAdjustment);
-    
-    List<FilterAdjustmentFixedAmountTransfer> getFilterAdjustmentFixedAmounts();
-    void setFilterAdjustmentFixedAmounts(List<FilterAdjustmentFixedAmountTransfer> filterAdjustmentFixedAmounts);
-    
+
+    FilterAdjustmentFixedAmountTransfer getFilterAdjustmentFixedAmount();
+    void setFilterAdjustmentFixedAmount(FilterAdjustmentFixedAmountTransfer filterAdjustmentFixedAmount);
+
 }

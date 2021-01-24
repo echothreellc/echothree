@@ -45,7 +45,6 @@ import com.echothree.model.control.filter.common.transfer.FilterTypeDescriptionT
 import com.echothree.model.control.filter.common.transfer.FilterTypeTransfer;
 import com.echothree.model.control.filter.server.transfer.FilterAdjustmentAmountTransferCache;
 import com.echothree.model.control.filter.server.transfer.FilterAdjustmentDescriptionTransferCache;
-import com.echothree.model.control.filter.server.transfer.FilterAdjustmentFixedAmountTransferCache;
 import com.echothree.model.control.filter.server.transfer.FilterAdjustmentPercentTransferCache;
 import com.echothree.model.control.filter.server.transfer.FilterAdjustmentTransferCache;
 import com.echothree.model.control.filter.server.transfer.FilterDescriptionTransferCache;
@@ -1956,19 +1955,22 @@ public class FilterControl
             FilterAdjustmentFixedAmount filterAdjustmentFixedAmount) {
         return getFilterTransferCaches(userVisit).getFilterAdjustmentFixedAmountTransferCache().getTransfer(filterAdjustmentFixedAmount);
     }
-    
-    public List<FilterAdjustmentFixedAmountTransfer> getFilterAdjustmentFixedAmountTransfers(UserVisit userVisit, FilterAdjustment filterAdjustment) {
-        List<FilterAdjustmentFixedAmount> filterAdjustmentFixedAmounts = getFilterAdjustmentFixedAmounts(filterAdjustment);
-        List<FilterAdjustmentFixedAmountTransfer> filterAdjustmentFixedAmountTransfers = new ArrayList<>(filterAdjustmentFixedAmounts.size());
-        FilterAdjustmentFixedAmountTransferCache filterAdjustmentFixedAmountTransferCache = getFilterTransferCaches(userVisit).getFilterAdjustmentFixedAmountTransferCache();
-        
+
+    public List<FilterAdjustmentFixedAmountTransfer> getFilterAdjustmentFixedAmountTransfers(UserVisit userVisit, Collection<FilterAdjustmentFixedAmount> filterAdjustmentFixedAmounts) {
+        var filterAdjustmentFixedAmountTransfers = new ArrayList<FilterAdjustmentFixedAmountTransfer>(filterAdjustmentFixedAmounts.size());
+        var filterAdjustmentFixedAmountTransferCache = getFilterTransferCaches(userVisit).getFilterAdjustmentFixedAmountTransferCache();
+
         filterAdjustmentFixedAmounts.forEach((filterAdjustmentFixedAmount) ->
                 filterAdjustmentFixedAmountTransfers.add(filterAdjustmentFixedAmountTransferCache.getTransfer(filterAdjustmentFixedAmount))
         );
-        
+
         return filterAdjustmentFixedAmountTransfers;
     }
-    
+
+    public List<FilterAdjustmentFixedAmountTransfer> getFilterAdjustmentFixedAmountTransfers(UserVisit userVisit, FilterAdjustment filterAdjustment) {
+        return getFilterAdjustmentFixedAmountTransfers(userVisit, getFilterAdjustmentFixedAmounts(filterAdjustment));
+    }
+
     public void updateFilterAdjustmentFixedAmountFromValue(FilterAdjustmentFixedAmountValue filterAdjustmentFixedAmountValue, BasePK updatedBy) {
         if(filterAdjustmentFixedAmountValue.hasBeenModified()) {
             FilterAdjustmentFixedAmount filterAdjustmentFixedAmount = FilterAdjustmentFixedAmountFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,

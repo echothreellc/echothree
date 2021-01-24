@@ -18,6 +18,7 @@ package com.echothree.model.control.filter.server.graphql;
 
 import com.echothree.control.user.filter.server.command.GetFilterAdjustmentAmountCommand;
 import com.echothree.control.user.filter.server.command.GetFilterAdjustmentCommand;
+import com.echothree.control.user.filter.server.command.GetFilterAdjustmentFixedAmountCommand;
 import com.echothree.control.user.filter.server.command.GetFilterAdjustmentSourceCommand;
 import com.echothree.control.user.filter.server.command.GetFilterAdjustmentTypeCommand;
 import com.echothree.control.user.filter.server.command.GetFilterCommand;
@@ -58,6 +59,10 @@ public final class FilterSecurityUtils {
 
     public boolean getHasFilterAdjustmentAmountAccess(final DataFetchingEnvironment env) {
         return env.<GraphQlContext>getContext().hasAccess(GetFilterAdjustmentAmountCommand.class);
+    }
+
+    public boolean getHasFilterAdjustmentFixedAmountAccess(final DataFetchingEnvironment env) {
+        return env.<GraphQlContext>getContext().hasAccess(GetFilterAdjustmentFixedAmountCommand.class);
     }
 
 //    public boolean getHasFilterAccess(final DataFetchingEnvironment env) {
