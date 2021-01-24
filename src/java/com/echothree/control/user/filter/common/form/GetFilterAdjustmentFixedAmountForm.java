@@ -14,21 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.filter.common.result;
+package com.echothree.control.user.filter.common.form;
 
-import com.echothree.model.control.filter.common.transfer.FilterAdjustmentAmountTransfer;
-import com.echothree.model.control.filter.common.transfer.FilterAdjustmentTransfer;
-import com.echothree.model.control.filter.common.transfer.FilterKindTransfer;
-import com.echothree.util.common.command.BaseResult;
-import java.util.List;
+import com.echothree.control.user.filter.common.spec.FilterAdjustmentFixedAmountSpec;
 
-public interface GetFilterAdjustmentAmountsResult
-        extends BaseResult {
+public interface GetFilterAdjustmentFixedAmountForm
+        extends FilterAdjustmentFixedAmountSpec {
     
-    FilterAdjustmentTransfer getFilterAdjustment();
-    void setFilterAdjustment(FilterAdjustmentTransfer filterAdjustment);
-    
-    List<FilterAdjustmentAmountTransfer> getFilterAdjustmentAmounts();
-    void setFilterAdjustmentAmounts(List<FilterAdjustmentAmountTransfer> filterAdjustmentAmounts);
+    // Nothing additional beyond FilterAdjustmentFixedAmountSpec
     
 }

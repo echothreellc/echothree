@@ -66,7 +66,6 @@ public class MainAction
             ExecutionResult executionResult = commandResult.getExecutionResult();
             GetFilterAdjustmentFixedAmountsResult result = (GetFilterAdjustmentFixedAmountsResult)executionResult.getResult();
             
-            request.setAttribute(AttributeConstants.FILTER_KIND, result.getFilterKind());
             request.setAttribute(AttributeConstants.FILTER_ADJUSTMENT, result.getFilterAdjustment());
             request.setAttribute(AttributeConstants.FILTER_ADJUSTMENT_FIXED_AMOUNTS, result.getFilterAdjustmentFixedAmounts());
             forwardKey = ForwardConstants.DISPLAY;

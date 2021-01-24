@@ -69,7 +69,6 @@ public class GetFilterAdjustmentAmountsCommand
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
-    FilterKind filterKind;
     FilterAdjustment filterAdjustment;
 
     @Override
@@ -77,8 +76,8 @@ public class GetFilterAdjustmentAmountsCommand
         var filterControl = Session.getModelController(FilterControl.class);
         var filterKindName = form.getFilterKindName();
         var filterAdjustmentName = form.getFilterAdjustmentName();
-        var filterAdjustment = FilterAdjustmentLogic.getInstance().getFilterAdjustmentByName(this,
-                filterKindName, filterAdjustmentName);
+
+        filterAdjustment = FilterAdjustmentLogic.getInstance().getFilterAdjustmentByName(this, filterKindName, filterAdjustmentName);
 
         if(!hasExecutionErrors()) {
             if(!filterAdjustment.getLastDetail().getFilterAdjustmentType().getFilterAdjustmentTypeName().equals(FilterConstants.FilterAdjustmentType_AMOUNT)) {
@@ -96,7 +95,6 @@ public class GetFilterAdjustmentAmountsCommand
         if(entities != null) {
             var filterControl = Session.getModelController(FilterControl.class);
 
-            result.setFilterKind(filterControl.getFilterKindTransfer(getUserVisit(), filterKind));
             result.setFilterAdjustment(filterControl.getFilterAdjustmentTransfer(getUserVisit(), filterAdjustment));
             result.setFilterAdjustmentAmounts(filterControl.getFilterAdjustmentAmountTransfers(getUserVisit(), entities));
         }
