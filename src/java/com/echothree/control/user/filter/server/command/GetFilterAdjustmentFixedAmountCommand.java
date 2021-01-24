@@ -78,7 +78,7 @@ public class GetFilterAdjustmentFixedAmountCommand
         FilterAdjustmentFixedAmount filterAdjustmentFixedAmount = null;
 
         if(!hasExecutionErrors()) {
-            if(filterAdjustment.getLastDetail().getFilterAdjustmentType().getFilterAdjustmentTypeName().equals(FilterConstants.FilterAdjustmentType_AMOUNT)) {
+            if(filterAdjustment.getLastDetail().getFilterAdjustmentType().getFilterAdjustmentTypeName().equals(FilterConstants.FilterAdjustmentType_FIXED_AMOUNT)) {
                 var unitOfMeasureName = form.getUnitOfMeasureName();
                 var unitOfMeasureKindName = form.getUnitOfMeasureKindName();
                 var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
