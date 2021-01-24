@@ -2132,19 +2132,22 @@ public class FilterControl
             FilterAdjustmentPercent filterAdjustmentPercent) {
         return getFilterTransferCaches(userVisit).getFilterAdjustmentPercentTransferCache().getTransfer(filterAdjustmentPercent);
     }
-    
-    public List<FilterAdjustmentPercentTransfer> getFilterAdjustmentPercentTransfers(UserVisit userVisit, FilterAdjustment filterAdjustment) {
-        List<FilterAdjustmentPercent> filterAdjustmentPercents = getFilterAdjustmentPercents(filterAdjustment);
-        List<FilterAdjustmentPercentTransfer> filterAdjustmentPercentTransfers = new ArrayList<>(filterAdjustmentPercents.size());
-        FilterAdjustmentPercentTransferCache filterAdjustmentPercentTransferCache = getFilterTransferCaches(userVisit).getFilterAdjustmentPercentTransferCache();
-        
+
+    public List<FilterAdjustmentPercentTransfer> getFilterAdjustmentPercentTransfers(UserVisit userVisit, Collection<FilterAdjustmentPercent> filterAdjustmentPercents) {
+        var filterAdjustmentPercentTransfers = new ArrayList<FilterAdjustmentPercentTransfer>(filterAdjustmentPercents.size());
+        var filterAdjustmentPercentTransferCache = getFilterTransferCaches(userVisit).getFilterAdjustmentPercentTransferCache();
+
         filterAdjustmentPercents.forEach((filterAdjustmentPercent) ->
                 filterAdjustmentPercentTransfers.add(filterAdjustmentPercentTransferCache.getTransfer(filterAdjustmentPercent))
         );
-        
+
         return filterAdjustmentPercentTransfers;
     }
-    
+
+    public List<FilterAdjustmentPercentTransfer> getFilterAdjustmentPercentTransfers(UserVisit userVisit, FilterAdjustment filterAdjustment) {
+        return getFilterAdjustmentPercentTransfers(userVisit, getFilterAdjustmentPercents(filterAdjustment));
+    }
+
     public void updateFilterAdjustmentPercentFromValue(FilterAdjustmentPercentValue filterAdjustmentPercentValue, BasePK updatedBy) {
         if(filterAdjustmentPercentValue.hasBeenModified()) {
             FilterAdjustmentPercent filterAdjustmentPercent = FilterAdjustmentPercentFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
