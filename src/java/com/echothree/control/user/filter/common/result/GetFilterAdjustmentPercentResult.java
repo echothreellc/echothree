@@ -17,18 +17,12 @@
 package com.echothree.control.user.filter.common.result;
 
 import com.echothree.model.control.filter.common.transfer.FilterAdjustmentPercentTransfer;
-import com.echothree.model.control.filter.common.transfer.FilterAdjustmentTransfer;
-import com.echothree.model.control.filter.common.transfer.FilterKindTransfer;
 import com.echothree.util.common.command.BaseResult;
-import java.util.List;
 
-public interface GetFilterAdjustmentPercentsResult
+public interface GetFilterAdjustmentPercentResult
         extends BaseResult {
-    
-    FilterAdjustmentTransfer getFilterAdjustment();
-    void setFilterAdjustment(FilterAdjustmentTransfer filterAdjustment);
-    
-    List<FilterAdjustmentPercentTransfer> getFilterAdjustmentPercents();
-    void setFilterAdjustmentPercents(List<FilterAdjustmentPercentTransfer> filterAdjustmentPercents);
-    
+
+    FilterAdjustmentPercentTransfer getFilterAdjustmentPercent();
+    void setFilterAdjustmentPercent(FilterAdjustmentPercentTransfer filterAdjustmentPercent);
+
 }

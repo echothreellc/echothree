@@ -144,4 +144,23 @@ public class FilterAdjustmentObject
         return filterAdjustmentFixedAmountObjects;
     }
 
+    @GraphQLField
+    @GraphQLDescription("filter adjustment percents")
+    public Collection<FilterAdjustmentPercentObject> getFilterAdjustmentPercents(final DataFetchingEnvironment env) {
+        Collection<FilterAdjustmentPercentObject> filterAdjustmentPercentObjects = null;
+
+        if(FilterSecurityUtils.getInstance().getHasFilterAdjustmentPercentAccess(env)) {
+            var filterControl = Session.getModelController(FilterControl.class);
+            var filterAdjustmentPercents = filterControl.getFilterAdjustmentPercents(filterAdjustment);
+
+            filterAdjustmentPercentObjects = new ArrayList<>(filterAdjustmentPercents.size());
+
+            filterAdjustmentPercents.stream()
+                    .map(FilterAdjustmentPercentObject::new)
+                    .forEachOrdered(filterAdjustmentPercentObjects::add);
+        }
+
+        return filterAdjustmentPercentObjects;
+    }
+
 }

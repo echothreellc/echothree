@@ -66,7 +66,6 @@ public class MainAction
             ExecutionResult executionResult = commandResult.getExecutionResult();
             GetFilterAdjustmentPercentsResult result = (GetFilterAdjustmentPercentsResult)executionResult.getResult();
             
-            request.setAttribute(AttributeConstants.FILTER_KIND, result.getFilterKind());
             request.setAttribute(AttributeConstants.FILTER_ADJUSTMENT, result.getFilterAdjustment());
             request.setAttribute(AttributeConstants.FILTER_ADJUSTMENT_PERCENTS, result.getFilterAdjustmentPercents());
             forwardKey = ForwardConstants.DISPLAY;
