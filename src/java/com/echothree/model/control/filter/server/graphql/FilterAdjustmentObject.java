@@ -125,4 +125,23 @@ public class FilterAdjustmentObject
         return filterAdjustmentAmountObjects;
     }
 
+    @GraphQLField
+    @GraphQLDescription("filter adjustment amounts")
+    public Collection<FilterAdjustmentFixedAmountObject> getFilterAdjustmentFixedAmounts(final DataFetchingEnvironment env) {
+        Collection<FilterAdjustmentFixedAmountObject> filterAdjustmentFixedAmountObjects = null;
+
+        if(FilterSecurityUtils.getInstance().getHasFilterAdjustmentFixedAmountAccess(env)) {
+            var filterControl = Session.getModelController(FilterControl.class);
+            var filterAdjustmentFixedAmounts = filterControl.getFilterAdjustmentFixedAmounts(filterAdjustment);
+
+            filterAdjustmentFixedAmountObjects = new ArrayList<>(filterAdjustmentFixedAmounts.size());
+
+            filterAdjustmentFixedAmounts.stream()
+                    .map(FilterAdjustmentFixedAmountObject::new)
+                    .forEachOrdered(filterAdjustmentFixedAmountObjects::add);
+        }
+
+        return filterAdjustmentFixedAmountObjects;
+    }
+
 }
