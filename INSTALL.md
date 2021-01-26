@@ -15,7 +15,7 @@ deploying these applications.
 * CentOS 6
 * Amazon Corretto 11 (11.0.9.12.1)
 * Apache Ant 1.10 (1.10.9)
-* MySQL 8.0 (8.0.22 GA)
+* MySQL 8.0 (8.0.23 GA)
 * WildFly 20 (21.0.2)
 
 The full version numbers in parentheses are the most recent versions used for testing.
