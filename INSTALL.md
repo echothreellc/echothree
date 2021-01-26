@@ -117,22 +117,22 @@ CREATE DATABASE reporting
 
 Creating the `echothree` user:
 ```
+CREATE USER 'echothree'@'127.0.0.1' IDENTIFIED BY '$Exampl3Passw0rd#';
+GRANT XA_RECOVER_ADMIN ON *.* TO 'echothree'@'127.0.0.1';
 GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER,INDEX,REFERENCES
     ON echothree.*
-    TO 'echothree'@'127.0.0.1'
-    IDENTIFIED BY '$Exampl3Passw0rd#';
+    TO 'echothree'@'127.0.0.1';
 GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,CREATE VIEW,DROP,ALTER,INDEX,REFERENCES
     ON reporting.*
-    TO 'echothree'@'127.0.0.1'
-    IDENTIFIED BY '$Exampl3Passw0rd#';
+    TO 'echothree'@'127.0.0.1';
 ```
 
 Optionally create a `backup` user with permission to dump the `echothree` database:
 ```
-GRANT SELECT, LOCK TABLES
+CREATE USER 'backup'@'localhost' IDENTIFIED BY '$Exampl3Passw0rd#';
+GRANT SELECT,LOCK TABLES
     ON echothree.*
-    TO 'backup'@'localhost'
-    IDENTIFIED BY '$Exampl3Passw0rd#';
+    TO 'backup'@'localhost';
 ```
 
 ## Apache Configuration
