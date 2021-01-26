@@ -87,6 +87,25 @@ public class FilterKindObject
     }
 
     @GraphQLField
+    @GraphQLDescription("filter types")
+    public Collection<FilterTypeObject> getFilterTypes(final DataFetchingEnvironment env) {
+        Collection<FilterTypeObject> filterTypeObjects = null;
+
+        if(FilterSecurityUtils.getInstance().getHasFilterTypesAccess(env)) {
+            var filterControl = Session.getModelController(FilterControl.class);
+            var filterTypes = filterControl.getFilterTypes(filterKind);
+
+            filterTypeObjects = new ArrayList<>(filterTypes.size());
+
+            filterTypes.stream()
+                    .map(FilterTypeObject::new)
+                    .forEachOrdered(filterTypeObjects::add);
+        }
+
+        return filterTypeObjects;
+    }
+
+    @GraphQLField
     @GraphQLDescription("filter adjustments")
     public Collection<FilterAdjustmentObject> getFilterAdjustments(final DataFetchingEnvironment env) {
         Collection<FilterAdjustmentObject> filterAdjustmentObjects = null;
