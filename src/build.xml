@@ -332,6 +332,13 @@ ${javadoc.copyright}
                 <pathelement path="java"/>
             </sourcepath>
         </javadoc>
+        <jar
+                jarfile="${dir.home}/build/jars/echothree-client-javadoc.jar"
+                zip64Mode="always">
+            <fileset dir="${dir.home}/generated/javadoc">
+                <include name="**" />
+            </fileset>
+        </jar>
     </target>
         
     <path id="pmd.classpath">
