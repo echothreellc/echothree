@@ -2397,7 +2397,22 @@ public class FilterControl
         
         return filter;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Filter */
+    public Filter getFilterByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new FilterPK(entityInstance.getEntityUniqueId());
+
+        return FilterFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Filter getFilterByEntityInstance(EntityInstance entityInstance) {
+        return getFilterByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Filter getFilterByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getFilterByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     private List<Filter> getFilters(FilterType filterType, EntityPermission entityPermission) {
         List<Filter> filters;
         
@@ -2466,7 +2481,7 @@ public class FilterControl
         return getDefaultFilterForUpdate(filterType).getLastDetailForUpdate().getFilterDetailValue().clone();
     }
     
-    private Filter getFilterByName(FilterType filterType, String filterName, EntityPermission entityPermission) {
+    public Filter getFilterByName(FilterType filterType, String filterName, EntityPermission entityPermission) {
         Filter filter;
         
         try {
