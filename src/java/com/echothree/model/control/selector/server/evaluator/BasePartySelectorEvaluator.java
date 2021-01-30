@@ -18,9 +18,9 @@ package com.echothree.model.control.selector.server.evaluator;
 
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.control.selector.common.SelectorConstants;
-import com.echothree.model.control.training.server.control.TrainingControl;
+import com.echothree.model.control.selector.common.SelectorNodeTypes;
 import com.echothree.model.control.training.common.training.PartyTrainingClassStatusConstants;
+import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.employee.server.entity.PartyResponsibility;
 import com.echothree.model.data.employee.server.entity.PartySkill;
@@ -80,11 +80,11 @@ public class BasePartySelectorEvaluator
             SelectorNodeType snt = snd.getSelectorNodeType();
             String sntn = snt.getSelectorNodeTypeName();
             
-            if(sntn.equals(SelectorConstants.SelectorNodeType_RESPONSIBILITY_TYPE)) {
+            if(sntn.equals(SelectorNodeTypes.RESPONSIBILITY_TYPE.name())) {
                 result = evaluateResponsibilityType(snd);
-            } else if(sntn.equals(SelectorConstants.SelectorNodeType_SKILL_TYPE)) {
+            } else if(sntn.equals(SelectorNodeTypes.SKILL_TYPE.name())) {
                 result = evaluateSkillType(snd);
-            } else if(sntn.equals(SelectorConstants.SelectorNodeType_TRAINING_CLASS)) {
+            } else if(sntn.equals(SelectorNodeTypes.TRAINING_CLASS.name())) {
                 result = evaluateTrainingClass(snd);
             } else {
                 result = super.evaluateSelectorNode(snd);

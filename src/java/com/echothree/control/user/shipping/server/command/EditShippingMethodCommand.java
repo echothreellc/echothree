@@ -25,7 +25,8 @@ import com.echothree.control.user.shipping.common.spec.ShippingMethodSpec;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.selector.common.SelectorConstants;
+import com.echothree.model.control.selector.common.SelectorKinds;
+import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.control.shipping.server.control.ShippingControl;
 import com.echothree.model.data.selector.server.entity.Selector;
@@ -37,10 +38,10 @@ import com.echothree.model.data.shipping.server.entity.ShippingMethodDetail;
 import com.echothree.model.data.shipping.server.value.ShippingMethodDescriptionValue;
 import com.echothree.model.data.shipping.server.value.ShippingMethodDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -159,19 +160,19 @@ public class EditShippingMethodCommand
 
             if(geoCodeSelectorName != null) {
                 var selectorControl = Session.getModelController(SelectorControl.class);
-                SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorConstants.SelectorKind_ITEM);
+                SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
 
                 if(selectorKind != null) {
                     SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind,
-                            SelectorConstants.SelectorType_CARRIER);
+                            SelectorTypes.CARRIER.name());
 
                     if(selectorType != null) {
                         geoCodeSelector = selectorControl.getSelectorByName(selectorType, geoCodeSelectorName);
                     } else {
-                        addExecutionError(ExecutionErrors.UnknownSelectorTypeName.name(), SelectorConstants.SelectorType_SHIPPING_METHOD);
+                        addExecutionError(ExecutionErrors.UnknownSelectorTypeName.name(), SelectorTypes.SHIPPING_METHOD.name());
                     }
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownSelectorKindName.name(), SelectorConstants.SelectorKind_ITEM);
+                    addExecutionError(ExecutionErrors.UnknownSelectorKindName.name(), SelectorKinds.ITEM.name());
                 }
             }
 
@@ -180,19 +181,19 @@ public class EditShippingMethodCommand
 
                 if(itemSelectorName != null) {
                     var selectorControl = Session.getModelController(SelectorControl.class);
-                    SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorConstants.SelectorKind_ITEM);
+                    SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
 
                     if(selectorKind != null) {
                         SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind,
-                                SelectorConstants.SelectorType_CARRIER);
+                                SelectorTypes.CARRIER.name());
 
                         if(selectorType != null) {
                             itemSelector = selectorControl.getSelectorByName(selectorType, itemSelectorName);
                         } else {
-                            addExecutionError(ExecutionErrors.UnknownSelectorTypeName.name(), SelectorConstants.SelectorType_SHIPPING_METHOD);
+                            addExecutionError(ExecutionErrors.UnknownSelectorTypeName.name(), SelectorTypes.SHIPPING_METHOD.name());
                         }
                     } else {
-                        addExecutionError(ExecutionErrors.UnknownSelectorKindName.name(), SelectorConstants.SelectorKind_ITEM);
+                        addExecutionError(ExecutionErrors.UnknownSelectorKindName.name(), SelectorKinds.ITEM.name());
                     }
                 }
 

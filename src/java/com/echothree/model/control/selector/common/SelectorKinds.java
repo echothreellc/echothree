@@ -14,21 +14,18 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.filter.server.evaluator;
+package com.echothree.model.control.selector.common;
 
-import com.echothree.model.control.filter.common.FilterKinds;
-import com.echothree.model.control.filter.common.FilterTypes;
-import com.echothree.model.control.selector.common.SelectorTypes;
-import com.echothree.util.common.persistence.BasePK;
-import com.echothree.util.server.persistence.Session;
+public enum SelectorKinds {
 
-public class CouponFilterEvaluator
-        extends BaseFilterEvaluator {
-    
-    /** Creates a new instance of CouponFilterEvaluator */
-    public CouponFilterEvaluator(Session session, BasePK evaluatedBy) {
-        super(session, evaluatedBy, OfferItemPriceFilterEvaluator.class, FilterKinds.PRICE.name(),
-                FilterTypes.COUPON.name(), SelectorTypes.FILTER.name());
-    }
+    CUSTOMER,
+    EMPLOYEE,
+    INVOICE,
+    ITEM,
+    ORDER,
+    POSTAL_ADDRESS,
+    SALES_ORDER_ITEM,
+    SHIPMENT,
+    VENDOR,
     
 }

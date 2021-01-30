@@ -19,7 +19,8 @@ package com.echothree.model.control.filter.server.logic;
 import com.echothree.model.control.filter.common.exception.DuplicateFilterNameException;
 import com.echothree.model.control.filter.common.exception.UnknownFilterNameException;
 import com.echothree.model.control.filter.server.control.FilterControl;
-import com.echothree.model.control.selector.common.SelectorConstants;
+import com.echothree.model.control.selector.common.SelectorKinds;
+import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.model.control.selector.server.logic.SelectorLogic;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.filter.server.entity.FilterAdjustment;
@@ -61,8 +62,8 @@ public class FilterLogic
 
             if(eea == null || !eea.hasExecutionErrors()) {
                 var filterItemSelector = filterItemSelectorName == null ? null :
-                        SelectorLogic.getInstance().getSelectorByName(eea, SelectorConstants.SelectorKind_ITEM,
-                                SelectorConstants.SelectorType_FILTER, filterItemSelectorName);
+                        SelectorLogic.getInstance().getSelectorByName(eea, SelectorKinds.ITEM.name(),
+                                SelectorTypes.FILTER.name(), filterItemSelectorName);
 
                 if(eea == null || !eea.hasExecutionErrors()) {
                     filter = createFilter(eea, filterType, filterName, initialFilterAdjustment, filterItemSelector,

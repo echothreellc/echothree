@@ -23,7 +23,8 @@ import com.echothree.control.user.selector.common.SelectorUtil;
 import com.echothree.control.user.selector.common.form.GetSelectorChoicesForm;
 import com.echothree.control.user.selector.common.result.GetSelectorChoicesResult;
 import com.echothree.model.control.payment.common.choice.PaymentProcessorChoicesBean;
-import com.echothree.model.control.selector.common.SelectorConstants;
+import com.echothree.model.control.selector.common.SelectorKinds;
+import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.model.control.selector.common.choice.SelectorChoicesBean;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.ExecutionResult;
@@ -101,8 +102,8 @@ public class Step2ActionForm
             try {
                 GetSelectorChoicesForm form = SelectorUtil.getHome().getGetSelectorChoicesForm();
 
-                form.setSelectorKindName(SelectorConstants.SelectorKind_ITEM);
-                form.setSelectorTypeName(SelectorConstants.SelectorType_PAYMENT_METHOD);
+                form.setSelectorKindName(SelectorKinds.ITEM.name());
+                form.setSelectorTypeName(SelectorTypes.PAYMENT_METHOD.name());
                 form.setDefaultSelectorChoice(itemSelectorChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
 
@@ -126,8 +127,8 @@ public class Step2ActionForm
             try {
                 GetSelectorChoicesForm form = SelectorUtil.getHome().getGetSelectorChoicesForm();
 
-                form.setSelectorKindName(SelectorConstants.SelectorKind_SALES_ORDER_ITEM);
-                form.setSelectorTypeName(SelectorConstants.SelectorType_PAYMENT_METHOD);
+                form.setSelectorKindName(SelectorKinds.SALES_ORDER_ITEM.name());
+                form.setSelectorTypeName(SelectorTypes.PAYMENT_METHOD.name());
                 form.setDefaultSelectorChoice(salesOrderItemSelectorChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
 

@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.selector.server.evaluator;
 
-import com.echothree.model.control.selector.common.SelectorConstants;
+import com.echothree.model.control.selector.common.SelectorKinds;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.selector.server.entity.SelectorDetail;
@@ -74,19 +74,19 @@ public class CachedSelector {
         cacheSelectorNodeEntityListItems();
         cacheSelectorNodeWorkflowSteps();
         
-        if(selectorKindName.equals(SelectorConstants.SelectorKind_CUSTOMER) ||
-                selectorKindName.equals(SelectorConstants.SelectorKind_EMPLOYEE) ||
-                selectorKindName.equals(SelectorConstants.SelectorKind_VENDOR)) {
+        if(selectorKindName.equals(SelectorKinds.CUSTOMER.name()) ||
+                selectorKindName.equals(SelectorKinds.EMPLOYEE.name()) ||
+                selectorKindName.equals(SelectorKinds.VENDOR.name())) {
             cacheSelectorNodeResponsibilityTypes();
             cacheSelectorNodeSkillTypes();
             cacheSelectorNodeTrainingClasses();
         }
         
-        if(selectorKindName.equals(SelectorConstants.SelectorKind_POSTAL_ADDRESS)) {
+        if(selectorKindName.equals(SelectorKinds.POSTAL_ADDRESS.name())) {
             cacheSelectorNodeGeoCodes();
         }
         
-        if(selectorKindName.equals(SelectorConstants.SelectorKind_ITEM)) {
+        if(selectorKindName.equals(SelectorKinds.ITEM.name())) {
             cacheSelectorNodeItemCategories();
             cacheSelectorNodeItemAccountingCategories();
             cacheSelectorNodeItemPurchasingCategories();

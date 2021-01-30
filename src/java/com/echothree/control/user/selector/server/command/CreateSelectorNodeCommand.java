@@ -24,7 +24,7 @@ import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.payment.server.control.PaymentMethodControl;
 import com.echothree.model.control.payment.server.control.PaymentProcessorControl;
-import com.echothree.model.control.selector.common.SelectorConstants;
+import com.echothree.model.control.selector.common.SelectorNodeTypes;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.control.selector.server.logic.SelectorNodeTypeLogic;
 import com.echothree.model.control.training.server.control.TrainingControl;
@@ -168,41 +168,43 @@ public class CreateSelectorNodeCommand
             SelectorNodeType selectorNodeType = SelectorNodeTypeLogic.getInstance().getSelectorNodeTypeByName(this, form.getSelectorNodeTypeName());
             
             if(!hasExecutionErrors()) {
-                switch (selectorNodeType.getSelectorNodeTypeName()) {
-                    case SelectorConstants.SelectorNodeType_BOOLEAN:
+                var selectorNodeTypeEnum = SelectorNodeTypes.valueOf(selectorNodeType.getSelectorNodeTypeName());
+                
+                switch (selectorNodeTypeEnum) {
+                    case BOOLEAN:
                         validationResult = validator.validate(form, booleanFormFieldDefinitions);
                         break;
-                    case SelectorConstants.SelectorNodeType_ENTITY_LIST_ITEM:
+                    case ENTITY_LIST_ITEM:
                         validationResult = validator.validate(form, entityListItemFormFieldDefinitions);
                         break;
-                    case SelectorConstants.SelectorNodeType_RESPONSIBILITY_TYPE:
+                    case RESPONSIBILITY_TYPE:
                         validationResult = validator.validate(form, responsibilityTypeFormFieldDefinitions);
                         break;
-                    case SelectorConstants.SelectorNodeType_SKILL_TYPE:
+                    case SKILL_TYPE:
                         validationResult = validator.validate(form, skillTypeFormFieldDefinitions);
                         break;
-                    case SelectorConstants.SelectorNodeType_TRAINING_CLASS:
+                    case TRAINING_CLASS:
                         validationResult = validator.validate(form, trainingClassFormFieldDefinitions);
                         break;
-                    case SelectorConstants.SelectorNodeType_WORKFLOW_STEP:
+                    case WORKFLOW_STEP:
                         validationResult = validator.validate(form, workflowStepFormFieldDefinitions);
                         break;
-                    case SelectorConstants.SelectorNodeType_ITEM_CATEGORY:
+                    case ITEM_CATEGORY:
                         validationResult = validator.validate(form, itemCategoryFormFieldDefinitions);
                         break;
-                    case SelectorConstants.SelectorNodeType_ITEM_ACCOUNTING_CATEGORY:
+                    case ITEM_ACCOUNTING_CATEGORY:
                         validationResult = validator.validate(form, itemAccountingCategoryFormFieldDefinitions);
                         break;
-                    case SelectorConstants.SelectorNodeType_ITEM_PURCHASING_CATEGORY:
+                    case ITEM_PURCHASING_CATEGORY:
                         validationResult = validator.validate(form, itemPurchasingCategoryFormFieldDefinitions);
                         break;
-                    case SelectorConstants.SelectorNodeType_PAYMENT_METHOD:
+                    case PAYMENT_METHOD:
                         validationResult = validator.validate(form, paymentMethodFormFieldDefinitions);
                         break;
-                    case SelectorConstants.SelectorNodeType_PAYMENT_PROCESSOR:
+                    case PAYMENT_PROCESSOR:
                         validationResult = validator.validate(form, paymentProcessorFormFieldDefinitions);
                         break;
-                    case SelectorConstants.SelectorNodeType_GEO_CODE:
+                    case GEO_CODE:
                         validationResult = validator.validate(form, geoCodeFormFieldDefinitions);
                         break;
                     default:
@@ -327,7 +329,7 @@ public class CreateSelectorNodeCommand
         SelectorNode rightSelectorNode = null;
         
         public BooleanNodeType(SelectorControl selectorControl, Selector selector) {
-            super(selectorControl, SelectorConstants.SelectorNodeType_BOOLEAN);
+            super(selectorControl, SelectorNodeTypes.BOOLEAN.name());
             
             if(!hasExecutionErrors()) {
                 String selectorBooleanTypeName = form.getSelectorBooleanTypeName();
@@ -372,7 +374,7 @@ public class CreateSelectorNodeCommand
         EntityListItem entityListItem = null;
         
         public EntityListItemNodeType(SelectorControl selectorControl) {
-            super(selectorControl, SelectorConstants.SelectorNodeType_ENTITY_LIST_ITEM);
+            super(selectorControl, SelectorNodeTypes.ENTITY_LIST_ITEM.name());
             
             if(!hasExecutionErrors()) {
                 String componentVendorName = form.getComponentVendorName();
@@ -416,7 +418,7 @@ public class CreateSelectorNodeCommand
         private ResponsibilityType responsiblityType = null;
         
         public ResponsibilityNodeType(SelectorControl selectorControl) {
-            super(selectorControl, SelectorConstants.SelectorNodeType_RESPONSIBILITY_TYPE);
+            super(selectorControl, SelectorNodeTypes.RESPONSIBILITY_TYPE.name());
             
             if(!hasExecutionErrors()) {
                 String responsiblityTypeName = form.getResponsibilityTypeName();
@@ -440,7 +442,7 @@ public class CreateSelectorNodeCommand
         private SkillType skillType = null;
         
         public SkillNodeType(SelectorControl selectorControl) {
-            super(selectorControl, SelectorConstants.SelectorNodeType_SKILL_TYPE);
+            super(selectorControl, SelectorNodeTypes.SKILL_TYPE.name());
             
             if(!hasExecutionErrors()) {
                 String skillTypeName = form.getSkillTypeName();
@@ -464,7 +466,7 @@ public class CreateSelectorNodeCommand
         private TrainingClass trainingClass = null;
         
         public TrainingClassNodeType(SelectorControl selectorControl) {
-            super(selectorControl, SelectorConstants.SelectorNodeType_TRAINING_CLASS);
+            super(selectorControl, SelectorNodeTypes.TRAINING_CLASS.name());
             
             if(!hasExecutionErrors()) {
                 String trainingClassName = form.getTrainingClassName();
@@ -488,7 +490,7 @@ public class CreateSelectorNodeCommand
         private WorkflowStep workflowStep = null;
         
         public WorkflowStepNodeType(SelectorControl selectorControl) {
-            super(selectorControl, SelectorConstants.SelectorNodeType_TRAINING_CLASS);
+            super(selectorControl, SelectorNodeTypes.TRAINING_CLASS.name());
             
             if(!hasExecutionErrors()) {
                 String workflowName = form.getWorkflowName();
@@ -519,7 +521,7 @@ public class CreateSelectorNodeCommand
         private ItemCategory itemCategory = null;
         
         public ItemCategoryNodeType(SelectorControl selectorControl) {
-            super(selectorControl, SelectorConstants.SelectorNodeType_ITEM_CATEGORY);
+            super(selectorControl, SelectorNodeTypes.ITEM_CATEGORY.name());
             
             if(!hasExecutionErrors()) {
                 String itemCategoryName = form.getItemCategoryName();
@@ -545,7 +547,7 @@ public class CreateSelectorNodeCommand
         private ItemAccountingCategory itemAccountingCategory = null;
         
         public ItemAccountingCategoryNodeType(SelectorControl selectorControl) {
-            super(selectorControl, SelectorConstants.SelectorNodeType_ITEM_ACCOUNTING_CATEGORY);
+            super(selectorControl, SelectorNodeTypes.ITEM_ACCOUNTING_CATEGORY.name());
             
             if(!hasExecutionErrors()) {
                 String itemAccountingCategoryName = form.getItemAccountingCategoryName();
@@ -571,7 +573,7 @@ public class CreateSelectorNodeCommand
         private ItemPurchasingCategory itemPurchasingCategory = null;
         
         public ItemPurchasingCategoryNodeType(SelectorControl selectorControl) {
-            super(selectorControl, SelectorConstants.SelectorNodeType_ITEM_PURCHASING_CATEGORY);
+            super(selectorControl, SelectorNodeTypes.ITEM_PURCHASING_CATEGORY.name());
             
             if(!hasExecutionErrors()) {
                 String itemPurchasingCategoryName = form.getItemPurchasingCategoryName();
@@ -597,7 +599,7 @@ public class CreateSelectorNodeCommand
         private PaymentMethod paymentMethod = null;
         
         public PaymentMethodNodeType(SelectorControl selectorControl) {
-            super(selectorControl, SelectorConstants.SelectorNodeType_PAYMENT_METHOD);
+            super(selectorControl, SelectorNodeTypes.PAYMENT_METHOD.name());
             
             if(!hasExecutionErrors()) {
                 String paymentMethodName = form.getPaymentMethodName();
@@ -621,7 +623,7 @@ public class CreateSelectorNodeCommand
         private PaymentProcessor paymentProcessor = null;
         
         public PaymentProcessorNodeType(SelectorControl selectorControl) {
-            super(selectorControl, SelectorConstants.SelectorNodeType_PAYMENT_PROCESSOR);
+            super(selectorControl, SelectorNodeTypes.PAYMENT_PROCESSOR.name());
             
             if(!hasExecutionErrors()) {
                 String paymentProcessorName = form.getPaymentProcessorName();
@@ -645,7 +647,7 @@ public class CreateSelectorNodeCommand
         private GeoCode geoCode = null;
         
         public GeoCodeNodeType(SelectorControl selectorControl) {
-            super(selectorControl, SelectorConstants.SelectorNodeType_PAYMENT_PROCESSOR);
+            super(selectorControl, SelectorNodeTypes.PAYMENT_PROCESSOR.name());
             
             if(!hasExecutionErrors()) {
                 String geoCodeName = form.getGeoCodeName();
@@ -705,43 +707,44 @@ public class CreateSelectorNodeCommand
                                 selectorNodeTypeName = selectorNodeType.getSelectorNodeTypeName();
                                 
                                 if(selectorControl.getSelectorNodeTypeUse(selectorKind, selectorNodeType) != null) {
+                                    var selectorNodeTypeEnum = SelectorNodeTypes.valueOf(selectorNodeTypeName);
                                     BaseSelectorNodeType baseSelectorNodeType = null;
 
-                                    switch (selectorNodeTypeName) {
-                                        case SelectorConstants.SelectorNodeType_BOOLEAN:
+                                    switch (selectorNodeTypeEnum) {
+                                        case BOOLEAN:
                                             baseSelectorNodeType = new BooleanNodeType(selectorControl, selector);
                                             break;
-                                        case SelectorConstants.SelectorNodeType_ENTITY_LIST_ITEM:
+                                        case ENTITY_LIST_ITEM:
                                             baseSelectorNodeType = new EntityListItemNodeType(selectorControl);
                                             break;
-                                        case SelectorConstants.SelectorNodeType_RESPONSIBILITY_TYPE:
+                                        case RESPONSIBILITY_TYPE:
                                             baseSelectorNodeType = new ResponsibilityNodeType(selectorControl);
                                             break;
-                                        case SelectorConstants.SelectorNodeType_SKILL_TYPE:
+                                        case SKILL_TYPE:
                                             baseSelectorNodeType = new SkillNodeType(selectorControl);
                                             break;
-                                        case SelectorConstants.SelectorNodeType_TRAINING_CLASS:
+                                        case TRAINING_CLASS:
                                             baseSelectorNodeType = new TrainingClassNodeType(selectorControl);
                                             break;
-                                        case SelectorConstants.SelectorNodeType_WORKFLOW_STEP:
+                                        case WORKFLOW_STEP:
                                             baseSelectorNodeType = new WorkflowStepNodeType(selectorControl);
                                             break;
-                                        case SelectorConstants.SelectorNodeType_ITEM_CATEGORY:
+                                        case ITEM_CATEGORY:
                                             baseSelectorNodeType = new ItemCategoryNodeType(selectorControl);
                                             break;
-                                        case SelectorConstants.SelectorNodeType_ITEM_ACCOUNTING_CATEGORY:
+                                        case ITEM_ACCOUNTING_CATEGORY:
                                             baseSelectorNodeType = new ItemAccountingCategoryNodeType(selectorControl);
                                             break;
-                                        case SelectorConstants.SelectorNodeType_ITEM_PURCHASING_CATEGORY:
+                                        case ITEM_PURCHASING_CATEGORY:
                                             baseSelectorNodeType = new ItemPurchasingCategoryNodeType(selectorControl);
                                             break;
-                                        case SelectorConstants.SelectorNodeType_PAYMENT_METHOD:
+                                        case PAYMENT_METHOD:
                                             baseSelectorNodeType = new PaymentMethodNodeType(selectorControl);
                                             break;
-                                        case SelectorConstants.SelectorNodeType_PAYMENT_PROCESSOR:
+                                        case PAYMENT_PROCESSOR:
                                             baseSelectorNodeType = new PaymentProcessorNodeType(selectorControl);
                                             break;
-                                        case SelectorConstants.SelectorNodeType_GEO_CODE:
+                                        case GEO_CODE:
                                             baseSelectorNodeType = new GeoCodeNodeType(selectorControl);
                                             break;
                                         default:

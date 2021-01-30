@@ -30,7 +30,8 @@ import com.echothree.model.control.offer.server.logic.OfferLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.selector.common.SelectorConstants;
+import com.echothree.model.control.selector.common.SelectorKinds;
+import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
@@ -165,19 +166,19 @@ public class EditOfferCommand
                         
                         if(offerItemSelectorName != null) {
                             var selectorControl = Session.getModelController(SelectorControl.class);
-                            SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorConstants.SelectorKind_ITEM);
+                            SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
                             
                             if(selectorKind != null) {
                                 SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind,
-                                        SelectorConstants.SelectorType_OFFER);
+                                        SelectorTypes.OFFER.name());
                                 
                                 if(selectorType != null) {
                                     offerItemSelector = selectorControl.getSelectorByName(selectorType, offerItemSelectorName);
                                 } else {
-                                    addExecutionError(ExecutionErrors.UnknownSelectorTypeName.name(), SelectorConstants.SelectorType_OFFER);
+                                    addExecutionError(ExecutionErrors.UnknownSelectorTypeName.name(), SelectorTypes.OFFER.name());
                                 }
                             } else {
-                                addExecutionError(ExecutionErrors.UnknownSelectorKindName.name(), SelectorConstants.SelectorKind_ITEM);
+                                addExecutionError(ExecutionErrors.UnknownSelectorKindName.name(), SelectorKinds.ITEM.name());
                             }
                         }
                         

@@ -23,7 +23,8 @@ import com.echothree.control.user.selector.common.SelectorUtil;
 import com.echothree.control.user.selector.common.form.GetSelectorChoicesForm;
 import com.echothree.control.user.selector.common.result.GetSelectorChoicesResult;
 import com.echothree.model.control.filter.common.choice.FilterAdjustmentChoicesBean;
-import com.echothree.model.control.selector.common.SelectorConstants;
+import com.echothree.model.control.selector.common.SelectorKinds;
+import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.model.control.selector.common.choice.SelectorChoicesBean;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.ExecutionResult;
@@ -73,8 +74,8 @@ public class AddActionForm
         if(filterItemSelectorChoices == null) {
             GetSelectorChoicesForm form = SelectorUtil.getHome().getGetSelectorChoicesForm();
 
-            form.setSelectorKindName(SelectorConstants.SelectorKind_ITEM);
-            form.setSelectorTypeName(SelectorConstants.SelectorType_FILTER);
+            form.setSelectorKindName(SelectorKinds.ITEM.name());
+            form.setSelectorTypeName(SelectorTypes.FILTER.name());
             form.setDefaultSelectorChoice(filterItemSelectorChoice);
             form.setAllowNullChoice(Boolean.TRUE.toString());
 

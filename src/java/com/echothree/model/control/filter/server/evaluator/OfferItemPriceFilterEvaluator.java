@@ -20,7 +20,7 @@ import com.echothree.model.control.filter.common.FilterAdjustmentSources;
 import com.echothree.model.control.filter.common.FilterAdjustmentTypes;
 import com.echothree.model.control.filter.common.FilterKinds;
 import com.echothree.model.control.filter.common.FilterTypes;
-import com.echothree.model.control.selector.common.SelectorConstants;
+import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.model.control.selector.server.evaluator.FilterItemSelectorEvaluator;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.filter.server.entity.Filter;
@@ -59,7 +59,7 @@ public class OfferItemPriceFilterEvaluator
     /** Creates a new instance of OfferItemPriceFilterEvaluator */
     public OfferItemPriceFilterEvaluator(Session session, BasePK evaluatedBy) {
         super(session, evaluatedBy, OfferItemPriceFilterEvaluator.class, FilterKinds.PRICE.name(),
-                FilterTypes.OFFER_ITEM_PRICE.name(), SelectorConstants.SelectorType_FILTER);
+                FilterTypes.OFFER_ITEM_PRICE.name(), SelectorTypes.FILTER.name());
         
         filterItemSelectorEvaluator = new FilterItemSelectorEvaluator(session, evaluatedBy);
     }

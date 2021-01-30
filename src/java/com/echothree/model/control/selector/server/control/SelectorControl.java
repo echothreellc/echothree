@@ -18,7 +18,7 @@ package com.echothree.model.control.selector.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.security.server.control.SecurityControl;
-import com.echothree.model.control.selector.common.SelectorConstants;
+import com.echothree.model.control.selector.common.SelectorNodeTypes;
 import com.echothree.model.control.selector.common.choice.SelectorBooleanTypeChoicesBean;
 import com.echothree.model.control.selector.common.choice.SelectorChoicesBean;
 import com.echothree.model.control.selector.common.choice.SelectorComparisonTypeChoicesBean;
@@ -51,9 +51,6 @@ import com.echothree.model.data.employee.common.pk.ResponsibilityTypePK;
 import com.echothree.model.data.employee.common.pk.SkillTypePK;
 import com.echothree.model.data.employee.server.entity.ResponsibilityType;
 import com.echothree.model.data.employee.server.entity.SkillType;
-import com.echothree.model.data.filter.common.pk.FilterKindPK;
-import com.echothree.model.data.filter.server.entity.FilterKind;
-import com.echothree.model.data.filter.server.factory.FilterKindFactory;
 import com.echothree.model.data.geo.common.pk.GeoCodePK;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.item.common.pk.ItemCategoryPK;
@@ -2438,29 +2435,29 @@ public class SelectorControl
         
         deleteSelectorNodeDescriptionsBySelectorNode(selectorNode, deletedBy);
         
-        if(selectorNodeTypeName.equals(SelectorConstants.SelectorNodeType_BOOLEAN)) {
+        if(selectorNodeTypeName.equals(SelectorNodeTypes.BOOLEAN.name())) {
             deleteSelectorNodeBoolean(getSelectorNodeBooleanForUpdate(selectorNode), deletedBy);
-        } else if(selectorNodeTypeName.equals(SelectorConstants.SelectorNodeType_WORKFLOW_STEP)) {
+        } else if(selectorNodeTypeName.equals(SelectorNodeTypes.WORKFLOW_STEP.name())) {
             deleteSelectorNodeWorkflowStep(getSelectorNodeWorkflowStepForUpdate(selectorNode), deletedBy);
-        } else if(selectorNodeTypeName.equals(SelectorConstants.SelectorNodeType_ENTITY_LIST_ITEM)) {
+        } else if(selectorNodeTypeName.equals(SelectorNodeTypes.ENTITY_LIST_ITEM.name())) {
             deleteSelectorNodeEntityListItem(getSelectorNodeEntityListItemForUpdate(selectorNode), deletedBy);
-        } else if(selectorNodeTypeName.equals(SelectorConstants.SelectorNodeType_RESPONSIBILITY_TYPE)) {
+        } else if(selectorNodeTypeName.equals(SelectorNodeTypes.RESPONSIBILITY_TYPE.name())) {
             deleteSelectorNodeResponsibilityType(getSelectorNodeResponsibilityTypeForUpdate(selectorNode), deletedBy);
-        } else if(selectorNodeTypeName.equals(SelectorConstants.SelectorNodeType_TRAINING_CLASS)) {
+        } else if(selectorNodeTypeName.equals(SelectorNodeTypes.TRAINING_CLASS.name())) {
             deleteSelectorNodeTrainingClass(getSelectorNodeTrainingClassForUpdate(selectorNode), deletedBy);
-        } else if(selectorNodeTypeName.equals(SelectorConstants.SelectorNodeType_SKILL_TYPE)) {
+        } else if(selectorNodeTypeName.equals(SelectorNodeTypes.SKILL_TYPE.name())) {
             deleteSelectorNodeSkillType(getSelectorNodeSkillTypeForUpdate(selectorNode), deletedBy);
-        } else if(selectorNodeTypeName.equals(SelectorConstants.SelectorNodeType_ITEM_CATEGORY)) {
+        } else if(selectorNodeTypeName.equals(SelectorNodeTypes.ITEM_CATEGORY.name())) {
             deleteSelectorNodeItemCategory(getSelectorNodeItemCategoryForUpdate(selectorNode), deletedBy);
-        } else if(selectorNodeTypeName.equals(SelectorConstants.SelectorNodeType_ITEM_ACCOUNTING_CATEGORY)) {
+        } else if(selectorNodeTypeName.equals(SelectorNodeTypes.ITEM_ACCOUNTING_CATEGORY.name())) {
             deleteSelectorNodeItemAccountingCategory(getSelectorNodeItemAccountingCategoryForUpdate(selectorNode), deletedBy);
-        } else if(selectorNodeTypeName.equals(SelectorConstants.SelectorNodeType_ITEM_PURCHASING_CATEGORY)) {
+        } else if(selectorNodeTypeName.equals(SelectorNodeTypes.ITEM_PURCHASING_CATEGORY.name())) {
             deleteSelectorNodeItemPurchasingCategory(getSelectorNodeItemPurchasingCategoryForUpdate(selectorNode), deletedBy);
-        } else if(selectorNodeTypeName.equals(SelectorConstants.SelectorNodeType_GEO_CODE)) {
+        } else if(selectorNodeTypeName.equals(SelectorNodeTypes.GEO_CODE.name())) {
             deleteSelectorNodeGeoCode(getSelectorNodeGeoCodeForUpdate(selectorNode), deletedBy);
-        } else if(selectorNodeTypeName.equals(SelectorConstants.SelectorNodeType_PAYMENT_METHOD)) {
+        } else if(selectorNodeTypeName.equals(SelectorNodeTypes.PAYMENT_METHOD.name())) {
             deleteSelectorNodePaymentMethod(getSelectorNodePaymentMethodForUpdate(selectorNode), deletedBy);
-        } else if(selectorNodeTypeName.equals(SelectorConstants.SelectorNodeType_PAYMENT_PROCESSOR)) {
+        } else if(selectorNodeTypeName.equals(SelectorNodeTypes.PAYMENT_PROCESSOR.name())) {
             deleteSelectorNodePaymentProcessor(getSelectorNodePaymentProcessorForUpdate(selectorNode), deletedBy);
         }
         

@@ -18,7 +18,7 @@ package com.echothree.model.control.selector.server.evaluator;
 
 import com.echothree.model.control.geo.common.GeoConstants;
 import com.echothree.model.control.geo.server.control.GeoControl;
-import com.echothree.model.control.selector.common.SelectorConstants;
+import com.echothree.model.control.selector.common.SelectorNodeTypes;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;
 import com.echothree.model.data.contact.server.entity.ContactPostalAddress;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -83,7 +83,7 @@ public class PostalAddressSelectorEvaluator
             SelectorNodeType snt = snd.getSelectorNodeType();
             String sntn = snt.getSelectorNodeTypeName();
             
-            if(sntn.equals(SelectorConstants.SelectorNodeType_GEO_CODE)) {
+            if(sntn.equals(SelectorNodeTypes.GEO_CODE.name())) {
                 result = evaluateGeoCode(snd);
             } else {
                 result = super.evaluateSelectorNode(snd);

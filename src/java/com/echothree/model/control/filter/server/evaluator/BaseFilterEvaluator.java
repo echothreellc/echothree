@@ -17,7 +17,7 @@
 package com.echothree.model.control.filter.server.evaluator;
 
 import com.echothree.model.control.filter.server.control.FilterControl;
-import com.echothree.model.control.selector.common.SelectorConstants;
+import com.echothree.model.control.selector.common.SelectorKinds;
 import com.echothree.model.control.selector.server.evaluator.SelectorCache;
 import com.echothree.model.control.selector.server.evaluator.SelectorCacheFactory;
 import com.echothree.util.common.persistence.BasePK;
@@ -52,7 +52,7 @@ public class BaseFilterEvaluator {
         
         filterControl = Session.getModelController(FilterControl.class);
         filterCache = FilterCacheFactory.getInstance().getFilterCache(session, filterKindName, filterTypeName);
-        selectorCache = SelectorCacheFactory.getInstance().getSelectorCache(session, SelectorConstants.SelectorKind_ITEM,
+        selectorCache = SelectorCacheFactory.getInstance().getSelectorCache(session, SelectorKinds.ITEM.name(),
                 selectorTypeName);
         
         if(BaseFilterEvaluatorDebugFlags.OfferItemPriceFilterEvaluator)

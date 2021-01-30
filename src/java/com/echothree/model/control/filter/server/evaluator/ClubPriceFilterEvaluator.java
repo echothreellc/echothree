@@ -18,17 +18,17 @@ package com.echothree.model.control.filter.server.evaluator;
 
 import com.echothree.model.control.filter.common.FilterKinds;
 import com.echothree.model.control.filter.common.FilterTypes;
-import com.echothree.model.control.selector.common.SelectorConstants;
+import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.Session;
 
 public class ClubPriceFilterEvaluator
         extends BaseFilterEvaluator {
-    
+
     /** Creates a new instance of ClubPriceFilterEvaluator */
     public ClubPriceFilterEvaluator(Session session, BasePK evaluatedBy) {
         super(session, evaluatedBy, OfferItemPriceFilterEvaluator.class, FilterKinds.PRICE.name(),
-                FilterTypes.CLUB.name(), SelectorConstants.SelectorType_FILTER);
+                FilterTypes.CLUB.name(), SelectorTypes.FILTER.name());
     }
     
 }

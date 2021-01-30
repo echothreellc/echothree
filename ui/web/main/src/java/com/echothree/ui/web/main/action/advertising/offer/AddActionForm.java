@@ -28,7 +28,8 @@ import com.echothree.control.user.sequence.common.result.GetSequenceChoicesResul
 import com.echothree.model.control.filter.common.FilterKinds;
 import com.echothree.model.control.filter.common.FilterTypes;
 import com.echothree.model.control.filter.common.choice.FilterChoicesBean;
-import com.echothree.model.control.selector.common.SelectorConstants;
+import com.echothree.model.control.selector.common.SelectorKinds;
+import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.model.control.selector.common.choice.SelectorChoicesBean;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.common.choice.SequenceChoicesBean;
@@ -90,8 +91,8 @@ public class AddActionForm
             try {
                 GetSelectorChoicesForm form = SelectorUtil.getHome().getGetSelectorChoicesForm();
                 
-                form.setSelectorKindName(SelectorConstants.SelectorKind_ITEM);
-                form.setSelectorTypeName(SelectorConstants.SelectorType_OFFER);
+                form.setSelectorKindName(SelectorKinds.ITEM.name());
+                form.setSelectorTypeName(SelectorTypes.OFFER.name());
                 form.setDefaultSelectorChoice(offerItemSelectorChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
                 

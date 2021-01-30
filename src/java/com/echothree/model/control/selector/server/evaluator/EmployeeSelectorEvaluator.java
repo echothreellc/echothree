@@ -20,7 +20,7 @@ import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.PartyLogic;
-import com.echothree.model.control.selector.common.SelectorConstants;
+import com.echothree.model.control.selector.common.SelectorKinds;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityTime;
@@ -192,7 +192,7 @@ public class EmployeeSelectorEvaluator
             EntityType entityType = coreControl.getEntityTypeByName(componentVendor, EntityTypes.Party.name());
             
             if(entityType != null) {
-                SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorConstants.SelectorKind_EMPLOYEE);
+                SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.EMPLOYEE.name());
                 List<Selector> employeeSelectors = selectorControl.getSelectorsBySelectorKind(selectorKind);
                 
                 for(var employeeSelector : employeeSelectors) {

@@ -21,7 +21,8 @@ import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.selector.common.SelectorConstants;
+import com.echothree.model.control.selector.common.SelectorKinds;
+import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.carrier.server.entity.Carrier;
 import com.echothree.model.data.carrier.server.entity.CarrierOption;
@@ -32,10 +33,10 @@ import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.model.data.selector.server.entity.SelectorType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -101,10 +102,10 @@ public class CreateCarrierServiceOptionCommand
                     
                     if(carrierServiceOption == null) {
                         var selectorControl = Session.getModelController(SelectorControl.class);
-                        SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorConstants.SelectorKind_POSTAL_ADDRESS);
+                        SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.POSTAL_ADDRESS.name());
 
                         if(selectorKind != null) {
-                            SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorConstants.SelectorType_CARRIER_SERVICE_OPTION);
+                            SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorTypes.CARRIER_SERVICE_OPTION.name());
 
                             if(selectorType != null) {
                                 String recommendedGeoCodeSelectorName = form.getRecommendedGeoCodeSelectorName();
@@ -123,10 +124,10 @@ public class CreateCarrierServiceOptionCommand
                                     }
 
                                     if(requiredGeoCodeSelectorName == null || requiredGeoCodeSelector != null) {
-                                        selectorKind = selectorControl.getSelectorKindByName(SelectorConstants.SelectorKind_ITEM);
+                                        selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
 
                                         if(selectorKind != null) {
-                                            selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorConstants.SelectorType_CARRIER_SERVICE_OPTION);
+                                            selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorTypes.CARRIER_SERVICE_OPTION.name());
 
                                             if(selectorType != null) {
                                                 String recommendedItemSelectorName = form.getRecommendedItemSelectorName();
@@ -145,10 +146,10 @@ public class CreateCarrierServiceOptionCommand
                                                     }
 
                                                     if(requiredItemSelectorName == null || requiredItemSelector != null) {
-                                                        selectorKind = selectorControl.getSelectorKindByName(SelectorConstants.SelectorKind_ORDER);
+                                                        selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ORDER.name());
 
                                                         if(selectorKind != null) {
-                                                            selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorConstants.SelectorType_CARRIER_SERVICE_OPTION);
+                                                            selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorTypes.CARRIER_SERVICE_OPTION.name());
 
                                                             if(selectorType != null) {
                                                                 String recommendedOrderSelectorName = form.getRecommendedOrderSelectorName();
@@ -167,10 +168,10 @@ public class CreateCarrierServiceOptionCommand
                                                                     }
 
                                                                     if(requiredOrderSelectorName == null || requiredOrderSelector != null) {
-                                                                        selectorKind = selectorControl.getSelectorKindByName(SelectorConstants.SelectorKind_SHIPMENT);
+                                                                        selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.SHIPMENT.name());
 
                                                                         if(selectorKind != null) {
-                                                                            selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorConstants.SelectorType_CARRIER_SERVICE_OPTION);
+                                                                            selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorTypes.CARRIER_SERVICE_OPTION.name());
 
                                                                             if(selectorType != null) {
                                                                                 String recommendedShipmentSelectorName = form.getRecommendedShipmentSelectorName();
@@ -207,12 +208,12 @@ public class CreateCarrierServiceOptionCommand
                                                                                 }
                                                                             } else {
                                                                                 addExecutionError(ExecutionErrors.UnknownSelectorTypeName.name(),
-                                                                                        SelectorConstants.SelectorKind_SHIPMENT,
-                                                                                        SelectorConstants.SelectorType_CARRIER_SERVICE_OPTION);
+                                                                                        SelectorKinds.SHIPMENT.name(),
+                                                                                        SelectorTypes.CARRIER_SERVICE_OPTION.name());
                                                                             }
                                                                         } else {
                                                                             addExecutionError(ExecutionErrors.UnknownSelectorKindName.name(),
-                                                                                    SelectorConstants.SelectorKind_SHIPMENT);
+                                                                                    SelectorKinds.SHIPMENT.name());
                                                                         }
                                                                     } else {
                                                                         addExecutionError(ExecutionErrors.UnknownRequiredOrderSelectorName.name(), requiredOrderSelectorName);
@@ -222,11 +223,11 @@ public class CreateCarrierServiceOptionCommand
                                                                 }
                                                             } else {
                                                                 addExecutionError(ExecutionErrors.UnknownSelectorTypeName.name(),
-                                                                        SelectorConstants.SelectorKind_ORDER,
-                                                                        SelectorConstants.SelectorType_CARRIER_SERVICE_OPTION);
+                                                                        SelectorKinds.ORDER.name(),
+                                                                        SelectorTypes.CARRIER_SERVICE_OPTION.name());
                                                             }
                                                         } else {
-                                                            addExecutionError(ExecutionErrors.UnknownSelectorKindName.name(), SelectorConstants.SelectorKind_ORDER);
+                                                            addExecutionError(ExecutionErrors.UnknownSelectorKindName.name(), SelectorKinds.ORDER.name());
                                                         }
                                                     } else {
                                                         addExecutionError(ExecutionErrors.UnknownRequiredItemSelectorName.name(), requiredItemSelectorName);
@@ -235,11 +236,11 @@ public class CreateCarrierServiceOptionCommand
                                                     addExecutionError(ExecutionErrors.UnknownRecommendedItemSelectorName.name(), recommendedItemSelectorName);
                                                 }
                                             } else {
-                                                addExecutionError(ExecutionErrors.UnknownSelectorTypeName.name(), SelectorConstants.SelectorKind_ITEM,
-                                                        SelectorConstants.SelectorType_CARRIER_SERVICE_OPTION);
+                                                addExecutionError(ExecutionErrors.UnknownSelectorTypeName.name(), SelectorKinds.ITEM.name(),
+                                                        SelectorTypes.CARRIER_SERVICE_OPTION.name());
                                             }
                                         } else {
-                                            addExecutionError(ExecutionErrors.UnknownSelectorKindName.name(), SelectorConstants.SelectorKind_ITEM);
+                                            addExecutionError(ExecutionErrors.UnknownSelectorKindName.name(), SelectorKinds.ITEM.name());
                                         }
                                     } else {
                                         addExecutionError(ExecutionErrors.UnknownRequiredGeoCodeSelectorName.name(), requiredGeoCodeSelectorName);
@@ -248,11 +249,11 @@ public class CreateCarrierServiceOptionCommand
                                     addExecutionError(ExecutionErrors.UnknownRecommendedGeoCodeSelectorName.name(), recommendedGeoCodeSelectorName);
                                 }
                             } else {
-                                addExecutionError(ExecutionErrors.UnknownSelectorTypeName.name(), SelectorConstants.SelectorKind_POSTAL_ADDRESS,
-                                        SelectorConstants.SelectorType_CARRIER_OPTION);
+                                addExecutionError(ExecutionErrors.UnknownSelectorTypeName.name(), SelectorKinds.POSTAL_ADDRESS.name(),
+                                        SelectorTypes.CARRIER_OPTION.name());
                             }
                         } else {
-                            addExecutionError(ExecutionErrors.UnknownSelectorKindName.name(), SelectorConstants.SelectorKind_POSTAL_ADDRESS);
+                            addExecutionError(ExecutionErrors.UnknownSelectorKindName.name(), SelectorKinds.POSTAL_ADDRESS.name());
                         }
                     } else {
                         addExecutionError(ExecutionErrors.DuplicateCarrierServiceOption.name(), carrierName, carrierServiceName, carrierOptionName);
