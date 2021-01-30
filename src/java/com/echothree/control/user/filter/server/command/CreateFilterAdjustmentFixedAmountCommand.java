@@ -18,7 +18,8 @@ package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.CreateFilterAdjustmentFixedAmountForm;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.filter.common.FilterConstants;
+import com.echothree.model.control.filter.common.FilterAdjustmentTypes;
+import com.echothree.model.control.filter.common.FilterKinds;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -31,11 +32,11 @@ import com.echothree.model.data.filter.server.entity.FilterKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -43,8 +44,6 @@ import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
 import com.google.common.base.Splitter;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class CreateFilterAdjustmentFixedAmountCommand
@@ -94,9 +93,9 @@ public class CreateFilterAdjustmentFixedAmountCommand
         if(!validationResult.getHasErrors()) {
             String filterKindName = form.getFilterKindName();
             
-            if(filterKindName.equals(FilterConstants.FilterKind_COST)) {
+            if(filterKindName.equals(FilterKinds.COST.name())) {
                 validationResult = validator.validate(form, costFormFieldDefinitions);
-            } else if(filterKindName.equals(FilterConstants.FilterKind_PRICE)) {
+            } else if(filterKindName.equals(FilterKinds.PRICE.name())) {
                 validationResult = validator.validate(form, priceFormFieldDefinitions);
             }
         }
@@ -117,7 +116,7 @@ public class CreateFilterAdjustmentFixedAmountCommand
             if(filterAdjustment != null) {
                 String filterAdjustmentTypeName = filterAdjustment.getLastDetail().getFilterAdjustmentType().getFilterAdjustmentTypeName();
                 
-                if(filterAdjustmentTypeName.equals(FilterConstants.FilterAdjustmentType_FIXED_AMOUNT)) {
+                if(filterAdjustmentTypeName.equals(FilterAdjustmentTypes.FIXED_AMOUNT.name())) {
                     var uomControl = Session.getModelController(UomControl.class);
                     String unitOfMeasureName = form.getUnitOfMeasureName();
                     String unitOfMeasureKindName = null;

@@ -18,7 +18,7 @@ package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.DeleteFilterAdjustmentPercentForm;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.filter.common.FilterConstants;
+import com.echothree.model.control.filter.common.FilterAdjustmentTypes;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -83,7 +83,7 @@ public class DeleteFilterAdjustmentPercentCommand
             FilterAdjustment filterAdjustment = filterControl.getFilterAdjustmentByName(filterKind, filterAdjustmentName);
             
             if(filterAdjustment != null) {
-                if(filterAdjustment.getLastDetail().getFilterAdjustmentType().getFilterAdjustmentTypeName().equals(FilterConstants.FilterAdjustmentType_PERCENT)) {
+                if(filterAdjustment.getLastDetail().getFilterAdjustmentType().getFilterAdjustmentTypeName().equals(FilterAdjustmentTypes.PERCENT.name())) {
                     var uomControl = Session.getModelController(UomControl.class);
                     String unitOfMeasureName = form.getUnitOfMeasureName();
                     String unitOfMeasureKindName = null;

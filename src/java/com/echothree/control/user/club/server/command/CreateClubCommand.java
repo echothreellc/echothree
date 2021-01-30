@@ -19,7 +19,8 @@ package com.echothree.control.user.club.server.command;
 import com.echothree.control.user.club.common.form.CreateClubForm;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.club.server.control.ClubControl;
-import com.echothree.model.control.filter.common.FilterConstants;
+import com.echothree.model.control.filter.common.FilterKinds;
+import com.echothree.model.control.filter.common.FilterTypes;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.subscription.common.SubscriptionConstants;
 import com.echothree.model.control.subscription.server.control.SubscriptionControl;
@@ -31,10 +32,10 @@ import com.echothree.model.data.filter.server.entity.FilterType;
 import com.echothree.model.data.subscription.server.entity.SubscriptionKind;
 import com.echothree.model.data.subscription.server.entity.SubscriptionType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -84,8 +85,8 @@ public class CreateClubCommand
                     
                     if(clubPriceFilterName != null) {
                         var filterControl = Session.getModelController(FilterControl.class);
-                        FilterKind filterKind = filterControl.getFilterKindByName(FilterConstants.FilterKind_PRICE);
-                        FilterType filterType = filterControl.getFilterTypeByName(filterKind, FilterConstants.FilterType_CLUB);
+                        FilterKind filterKind = filterControl.getFilterKindByName(FilterKinds.PRICE.name());
+                        FilterType filterType = filterControl.getFilterTypeByName(filterKind, FilterTypes.CLUB.name());
                         
                         if(filterType != null) {
                             clubPriceFilter = filterControl.getFilterByName(filterType, clubPriceFilterName);

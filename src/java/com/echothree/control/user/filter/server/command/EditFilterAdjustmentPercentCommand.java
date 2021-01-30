@@ -23,7 +23,7 @@ import com.echothree.control.user.filter.common.result.EditFilterAdjustmentPerce
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.control.user.filter.common.spec.FilterAdjustmentPercentSpec;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.filter.common.FilterConstants;
+import com.echothree.model.control.filter.common.FilterAdjustmentTypes;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -108,7 +108,7 @@ public class EditFilterAdjustmentPercentCommand
             if(filterAdjustment != null) {
                 String filterAdjustmentTypeName = filterAdjustment.getLastDetail().getFilterAdjustmentType().getFilterAdjustmentTypeName();
                 
-                if(filterAdjustmentTypeName.equals(FilterConstants.FilterAdjustmentType_PERCENT)) {
+                if(filterAdjustmentTypeName.equals(FilterAdjustmentTypes.PERCENT.name())) {
                     var uomControl = Session.getModelController(UomControl.class);
                     String unitOfMeasureName = spec.getUnitOfMeasureName();
                     String unitOfMeasureKindName = null;

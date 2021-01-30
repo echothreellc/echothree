@@ -23,7 +23,8 @@ import com.echothree.control.user.filter.common.result.EditFilterAdjustmentFixed
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.control.user.filter.common.spec.FilterAdjustmentFixedAmountSpec;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.filter.common.FilterConstants;
+import com.echothree.model.control.filter.common.FilterAdjustmentTypes;
+import com.echothree.model.control.filter.common.FilterKinds;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -37,12 +38,12 @@ import com.echothree.model.data.filter.server.value.FilterAdjustmentFixedAmountV
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
-import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.form.BaseForm;
+import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -51,8 +52,6 @@ import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
 import com.echothree.util.server.validation.Validator;
 import com.google.common.base.Splitter;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class EditFilterAdjustmentFixedAmountCommand
@@ -102,9 +101,9 @@ public class EditFilterAdjustmentFixedAmountCommand
         
         validator.setCurrency(accountingControl.getCurrencyByIsoName(currencyIsoName));
         
-        if(filterKindName.equals(FilterConstants.FilterKind_COST)) {
+        if(filterKindName.equals(FilterKinds.COST.name())) {
             setEditFieldDefinitions(costEditFieldDefinitions);
-        } else if(filterKindName.equals(FilterConstants.FilterKind_PRICE)) {
+        } else if(filterKindName.equals(FilterKinds.PRICE.name())) {
             setEditFieldDefinitions(priceEditFieldDefinitions);
         } else {
             addExecutionError(ExecutionErrors.UnknownFilterKindName.name(), filterKindName);
@@ -125,7 +124,7 @@ public class EditFilterAdjustmentFixedAmountCommand
             if(filterAdjustment != null) {
                 String filterAdjustmentTypeName = filterAdjustment.getLastDetail().getFilterAdjustmentType().getFilterAdjustmentTypeName();
                 
-                if(filterAdjustmentTypeName.equals(FilterConstants.FilterAdjustmentType_FIXED_AMOUNT)) {
+                if(filterAdjustmentTypeName.equals(FilterAdjustmentTypes.FIXED_AMOUNT.name())) {
                     var uomControl = Session.getModelController(UomControl.class);
                     String unitOfMeasureName = spec.getUnitOfMeasureName();
                     String unitOfMeasureKindName = null;
@@ -167,9 +166,9 @@ public class EditFilterAdjustmentFixedAmountCommand
                                                 edit = FilterEditFactory.getFilterAdjustmentFixedAmountEdit();
                                                 result.setEdit(edit);
                                                 
-                                                if(filterKindName.equals(FilterConstants.FilterKind_COST)) {
+                                                if(filterKindName.equals(FilterKinds.COST.name())) {
                                                     edit.setUnitAmount(AmountUtils.getInstance().formatCostUnit(currency, filterAdjustmentFixedAmount.getUnitAmount()));
-                                                } else if(filterKindName.equals(FilterConstants.FilterKind_PRICE)) {
+                                                } else if(filterKindName.equals(FilterKinds.PRICE.name())) {
                                                     edit.setUnitAmount(AmountUtils.getInstance().formatPriceUnit(currency, filterAdjustmentFixedAmount.getUnitAmount()));
                                                 }
                                             } else {

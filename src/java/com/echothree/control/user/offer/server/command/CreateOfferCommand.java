@@ -18,7 +18,8 @@ package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.CreateOfferForm;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
-import com.echothree.model.control.filter.common.FilterConstants;
+import com.echothree.model.control.filter.common.FilterKinds;
+import com.echothree.model.control.filter.common.FilterTypes;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.offer.server.logic.OfferLogic;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -154,8 +155,8 @@ public class CreateOfferCommand
 
                             if(offerItemPriceFilterName != null) {
                                 var filterControl = Session.getModelController(FilterControl.class);
-                                FilterKind filterKind = filterControl.getFilterKindByName(FilterConstants.FilterKind_PRICE);
-                                FilterType filterType = filterControl.getFilterTypeByName(filterKind, FilterConstants.FilterType_OFFER_ITEM_PRICE);
+                                FilterKind filterKind = filterControl.getFilterKindByName(FilterKinds.PRICE.name());
+                                FilterType filterType = filterControl.getFilterTypeByName(filterKind, FilterTypes.OFFER_ITEM_PRICE.name());
 
                                 if(filterType != null) {
                                     offerItemPriceFilter = filterControl.getFilterByName(filterType, offerItemPriceFilterName);
