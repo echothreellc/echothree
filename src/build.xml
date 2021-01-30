@@ -205,19 +205,6 @@
                 <patternset refid="all.properties" />
             </fileset>
         </copy>
-        <jar
-            jarfile="${dir.home}/build/jars/echothree-client-sources.jar"
-            zip64Mode="always">
-            <fileset dir="${dir.home}/generated/data/java">
-                <include name="**" />
-            </fileset>
-            <fileset dir="${dir.home}/generated/form/java">
-                <include name="**" />
-            </fileset>
-            <fileset dir="java">
-                <include name="**" />
-            </fileset>
-        </jar>
     </target>
 
     <target name="server_jar">
@@ -245,7 +232,7 @@
                 <include name="*.properties" />
             </metainf>
         </jar>
-    </target>  
+    </target>
 
     <target name="client_jar">
         <jar jarfile="${dir.home}/build/jars/echothree-client.jar">
@@ -260,6 +247,30 @@
                 <include name="com/echothree/model/data/*/client/**/*.class" />
                 <include name="com/echothree/util/client/**/*.class" />
                 <include name="com/echothree/view/client/**/*.class" />
+            </fileset>
+        </jar>
+    </target>
+
+    <target name="client_sources_jar" depends="generated">
+        <jar jarfile="${dir.home}/build/jars/echothree-client-sources.jar"
+             zip64Mode="always">
+            <fileset dir="${dir.home}/generated/data/java">
+                <include name="**" />
+            </fileset>
+            <fileset dir="${dir.home}/generated/form/java">
+                <include name="**" />
+            </fileset>
+            <fileset dir="java">
+                <include name="**" />
+            </fileset>
+        </jar>
+    </target>
+
+    <target name="client_javadoc_jar" depends="generated">
+        <jar jarfile="${dir.home}/build/jars/echothree-client-javadoc.jar"
+             zip64Mode="always">
+            <fileset dir="${dir.home}/generated/javadoc">
+                <include name="**" />
             </fileset>
         </jar>
     </target>
@@ -312,7 +323,7 @@
         <copy file="${dir.home}/build/ears/echothree.ear" todir="../${wildfly.home.deploy}" />
     </target>
     
-    <target name="javadoc" depends="generated">
+    <target name="generate_javadoc" depends="generated">
         <javadoc
             packagenames="${javadoc.packagenames}"
             destdir="${dir.home}/generated/javadoc"
@@ -344,13 +355,13 @@ ${javadoc.copyright}
                 <pathelement path="java"/>
             </sourcepath>
         </javadoc>
-        <jar
-            jarfile="${dir.home}/build/jars/echothree-client-javadoc.jar"
-            zip64Mode="always">
-            <fileset dir="${dir.home}/generated/javadoc">
-                <include name="**" />
-            </fileset>
-        </jar>
+    </target>
+
+    <target name="javadoc" depends="generate_javadoc">
+        <parallel>
+            <ant target="client_sources_jar"/>
+            <ant target="client_javadoc_jar"/>
+        </parallel>
     </target>
         
     <path id="pmd.classpath">
