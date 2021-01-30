@@ -16,22 +16,14 @@
 
 package com.echothree.model.control.filter.server.logic;
 
-import com.echothree.control.user.filter.common.spec.FilterUniversalSpec;
-import com.echothree.model.control.core.common.ComponentVendors;
-import com.echothree.model.control.core.common.EntityTypes;
-import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
-import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
-import com.echothree.model.control.filter.common.exception.CannotDeleteFilterInUseException;
 import com.echothree.model.control.filter.common.exception.DuplicateFilterNameException;
-import com.echothree.model.control.filter.common.exception.UnknownDefaultFilterException;
-import com.echothree.model.control.filter.common.exception.UnknownDefaultFilterKindException;
 import com.echothree.model.control.filter.common.exception.UnknownFilterNameException;
 import com.echothree.model.control.filter.server.control.FilterControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.model.control.selector.common.SelectorConstants;
+import com.echothree.model.control.selector.server.logic.SelectorLogic;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.filter.server.entity.FilterAdjustment;
 import com.echothree.model.data.filter.server.entity.FilterType;
-import com.echothree.model.data.filter.server.entity.FilterKind;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -40,7 +32,6 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
-import com.echothree.util.server.validation.ParameterUtils;
 
 public class FilterLogic
         extends BaseLogic {
@@ -57,22 +48,34 @@ public class FilterLogic
         return FilterLogic.FilterLogicHolder.instance;
     }
 
-//    public Filter createFilter(final ExecutionErrorAccumulator eea, final String filterKindName, final String filterTypeName,
-//            final String filterName, final Boolean isDefault, final Integer sortOrder, final Language language,
-//            final String description, final BasePK createdBy) {
-//        var filterType = FilterTypeLogic.getInstance().getFilterTypeByName(eea, filterKindName, filterTypeName);
-//        Filter filter = null;
-//
-//        if(eea == null || !eea.hasExecutionErrors()) {
-//            filter = createFilter(eea, filterType, filterName, filterSource,
-//                    filterType, isDefault, sortOrder, language, description, createdBy);
-//        }
-//
-//        return filter;
-//    }
+    public Filter createFilter(final ExecutionErrorAccumulator eea, final String filterKindName, final String filterTypeName,
+            final String filterName, final String initialFilterAdjustmentName, final String filterItemSelectorName,
+            final Boolean isDefault, final Integer sortOrder, final Language language, final String description,
+            final BasePK createdBy) {
+        var filterType = FilterTypeLogic.getInstance().getFilterTypeByName(eea, filterKindName, filterTypeName);
+        Filter filter = null;
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var initialFilterAdjustment = FilterAdjustmentLogic.getInstance().getFilterAdjustmentByName(eea,
+                    filterType.getLastDetail().getFilterKind(), initialFilterAdjustmentName);
+
+            if(eea == null || !eea.hasExecutionErrors()) {
+                var filterItemSelector = filterItemSelectorName == null ? null :
+                        SelectorLogic.getInstance().getSelectorByName(eea, SelectorConstants.SelectorKind_ITEM,
+                                SelectorConstants.SelectorType_FILTER, filterItemSelectorName);
+
+                if(eea == null || !eea.hasExecutionErrors()) {
+                    filter = createFilter(eea, filterType, filterName, initialFilterAdjustment, filterItemSelector,
+                            isDefault, sortOrder, language, description, createdBy);
+                }
+            }
+        }
+
+        return filter;
+    }
 
     public Filter createFilter(final ExecutionErrorAccumulator eea, final FilterType filterType, final String filterName,
-            FilterAdjustment initialFilterAdjustment, Selector filterItemSelector, final Boolean isDefault,
+            final FilterAdjustment initialFilterAdjustment, final Selector filterItemSelector, final Boolean isDefault,
             final Integer sortOrder, final Language language, final String description, final BasePK createdBy) {
         var filterControl = Session.getModelController(FilterControl.class);
         var filter = filterControl.getFilterByName(filterType, filterName);
