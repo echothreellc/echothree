@@ -118,12 +118,28 @@ public class OfferControl
         
         return offer;
     }
-    
+
     public long countOffers() {
         return session.queryForLong(
                 "SELECT COUNT(*) " +
                 "FROM offers, offerdetails " +
                 "WHERE ofr_activedetailid = ofrdt_offerdetailid");
+    }
+
+    public long countOffersBySelector(Selector selector) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM offers, offerdetails " +
+                "WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_offeritemselectorid = ?",
+                selector);
+    }
+
+    public long countOffersByFilter(Filter filter) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM offers, offerdetails " +
+                "WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_offeritempricefilterid = ?",
+                filter);
     }
 
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.Offer */
@@ -267,22 +283,6 @@ public class OfferControl
         return SelectorFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
     
-    public long countOffersBySelector(Selector selector) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM offers, offerdetails " +
-                "WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_offeritemselectorid = ?",
-                selector);
-    }
-
-    public long countOffersByFilter(Filter filter) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM offers, offerdetails " +
-                "WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_offeritempricefilterid = ?",
-                filter);
-    }
-
     public OfferTransfer getOfferTransfer(UserVisit userVisit, Offer offer) {
         return getOfferTransferCaches(userVisit).getOfferTransferCache().getOfferTransfer(offer);
     }

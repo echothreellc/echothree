@@ -16,12 +16,16 @@
 
 package com.echothree.model.control.filter.server.logic;
 
+import com.echothree.model.control.club.server.control.ClubControl;
+import com.echothree.model.control.filter.common.exception.CannotDeleteFilterInUseException;
 import com.echothree.model.control.filter.common.exception.DuplicateFilterNameException;
 import com.echothree.model.control.filter.common.exception.UnknownFilterNameException;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.selector.common.SelectorKinds;
 import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.model.control.selector.server.logic.SelectorLogic;
+import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.filter.server.entity.FilterAdjustment;
 import com.echothree.model.data.filter.server.entity.FilterType;
@@ -201,22 +205,27 @@ public class FilterLogic
 //            boolean allowDefault) {
 //        return getFilterByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
 //    }
-//
-//
-//    public void deleteFilter(final ExecutionErrorAccumulator eea, final Filter filter,
-//            final BasePK deletedBy) {
-//        var filterControl = Session.getModelController(FilterControl.class);
-//
-//        if(filterControl.countFiltersByFilter(filter) == 0
-//                && filterControl.countFilterStepElementsByFilter(filter) == 0) {
-//            filterControl.deleteFilter(filter, deletedBy);
-//        } else {
-//            var filterDetail = filter.getLastDetail();
-//
-//            handleExecutionError(CannotDeleteFilterInUseException.class, eea, ExecutionErrors.CannotDeleteFilterInUse.name(),
-//                    filterDetail.getFilterKind().getLastDetail().getFilterKindName(),
-//                    filterDetail.getFilterName());
-//        }
-//
-//    }
+
+    public void deleteFilter(final ExecutionErrorAccumulator eea, final Filter filter,
+            final BasePK deletedBy) {
+        var clubControl = Session.getModelController(ClubControl.class);
+        var offerControl = Session.getModelController(OfferControl.class);
+        var vendorControl = Session.getModelController(VendorControl.class);
+
+        if(clubControl.countClubsByFilter(filter) == 0
+                && offerControl.countOffersByFilter(filter) == 0
+                && vendorControl.countVendorByFilter(filter) == 0) {
+            var filterControl = Session.getModelController(FilterControl.class);
+
+            filterControl.deleteFilter(filter, deletedBy);
+        } else {
+            var filterDetail = filter.getLastDetail();
+
+            handleExecutionError(CannotDeleteFilterInUseException.class, eea, ExecutionErrors.CannotDeleteFilterInUse.name(),
+                    filterDetail.getFilterType().getLastDetail().getFilterKind().getLastDetail().getFilterKindName(),
+                    filterDetail.getFilterType().getLastDetail().getFilterTypeName(),
+                    filterDetail.getFilterName());
+        }
+
+    }
 }
