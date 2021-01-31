@@ -24,7 +24,7 @@ public abstract class UserVisitTestCase
         extends TestCase {
     
     /** Creates a new instance of UserVisitTestCase */
-    public UserVisitTestCase(String name) {
+    protected UserVisitTestCase(String name) {
         super(name);
     }
 
