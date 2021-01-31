@@ -200,12 +200,24 @@
             <!-- <compilerarg value="-Xlint:deprecation" /> -->
             <!-- <compilerarg value="-Xlint:unchecked" /> -->
         </javac>
-        
         <copy todir="${dir.home}/build/classes">
             <fileset dir="${component.src.java}">
                 <patternset refid="all.properties" />
             </fileset>
         </copy>
+        <jar
+            jarfile="${dir.home}/build/jars/echothree-client-sources.jar"
+            zip64Mode="always">
+            <fileset dir="${dir.home}/generated/data/java">
+                <include name="**" />
+            </fileset>
+            <fileset dir="${dir.home}/generated/form/java">
+                <include name="**" />
+            </fileset>
+            <fileset dir="java">
+                <include name="**" />
+            </fileset>
+        </jar>
     </target>
 
     <target name="server_jar">
@@ -332,6 +344,13 @@ ${javadoc.copyright}
                 <pathelement path="java"/>
             </sourcepath>
         </javadoc>
+        <jar
+            jarfile="${dir.home}/build/jars/echothree-client-javadoc.jar"
+            zip64Mode="always">
+            <fileset dir="${dir.home}/generated/javadoc">
+                <include name="**" />
+            </fileset>
+        </jar>
     </target>
         
     <path id="pmd.classpath">

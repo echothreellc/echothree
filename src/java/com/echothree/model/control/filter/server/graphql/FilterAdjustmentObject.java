@@ -111,7 +111,7 @@ public class FilterAdjustmentObject
     public Collection<FilterAdjustmentAmountObject> getFilterAdjustmentAmounts(final DataFetchingEnvironment env) {
         Collection<FilterAdjustmentAmountObject> filterAdjustmentAmountObjects = null;
 
-        if(FilterSecurityUtils.getInstance().getHasFilterAdjustmentAmountAccess(env)) {
+        if(FilterSecurityUtils.getInstance().getHasFilterAdjustmentAmountsAccess(env)) {
             var filterControl = Session.getModelController(FilterControl.class);
             var filterAdjustmentAmounts = filterControl.getFilterAdjustmentAmounts(filterAdjustment);
 
@@ -130,7 +130,7 @@ public class FilterAdjustmentObject
     public Collection<FilterAdjustmentFixedAmountObject> getFilterAdjustmentFixedAmounts(final DataFetchingEnvironment env) {
         Collection<FilterAdjustmentFixedAmountObject> filterAdjustmentFixedAmountObjects = null;
 
-        if(FilterSecurityUtils.getInstance().getHasFilterAdjustmentFixedAmountAccess(env)) {
+        if(FilterSecurityUtils.getInstance().getHasFilterAdjustmentFixedAmountsAccess(env)) {
             var filterControl = Session.getModelController(FilterControl.class);
             var filterAdjustmentFixedAmounts = filterControl.getFilterAdjustmentFixedAmounts(filterAdjustment);
 
@@ -149,7 +149,7 @@ public class FilterAdjustmentObject
     public Collection<FilterAdjustmentPercentObject> getFilterAdjustmentPercents(final DataFetchingEnvironment env) {
         Collection<FilterAdjustmentPercentObject> filterAdjustmentPercentObjects = null;
 
-        if(FilterSecurityUtils.getInstance().getHasFilterAdjustmentPercentAccess(env)) {
+        if(FilterSecurityUtils.getInstance().getHasFilterAdjustmentPercentsAccess(env)) {
             var filterControl = Session.getModelController(FilterControl.class);
             var filterAdjustmentPercents = filterControl.getFilterAdjustmentPercents(filterAdjustment);
 

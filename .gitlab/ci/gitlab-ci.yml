@@ -22,6 +22,8 @@ build:
     paths:
       - build/ears/echothree.ear
       - build/jars/echothree-client.jar
+      - build/jars/echothree-client-javadoc.jar
+      - build/jars/echothree-client-sources.jar
       - build/ui/web/cms/war/cms.war
       - build/ui/web/letter/war/letter.war
       - build/ui/web/main/war/main.war

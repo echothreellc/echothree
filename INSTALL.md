@@ -15,7 +15,7 @@ deploying these applications.
 * CentOS 6
 * Amazon Corretto 11 (11.0.9.12.1)
 * Apache Ant 1.10 (1.10.9)
-* MySQL 8.0 (8.0.22 GA)
+* MySQL 8.0 (8.0.23 GA)
 * WildFly 22 (22.0.0)
 
 The full version numbers in parentheses are the most recent versions used for testing.
@@ -117,22 +117,22 @@ CREATE DATABASE reporting
 
 Creating the `echothree` user:
 ```
+CREATE USER 'echothree'@'127.0.0.1' IDENTIFIED BY '$Exampl3Passw0rd#';
+GRANT XA_RECOVER_ADMIN ON *.* TO 'echothree'@'127.0.0.1';
 GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER,INDEX,REFERENCES
     ON echothree.*
-    TO 'echothree'@'127.0.0.1'
-    IDENTIFIED BY '$Exampl3Passw0rd#';
+    TO 'echothree'@'127.0.0.1';
 GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,CREATE VIEW,DROP,ALTER,INDEX,REFERENCES
     ON reporting.*
-    TO 'echothree'@'127.0.0.1'
-    IDENTIFIED BY '$Exampl3Passw0rd#';
+    TO 'echothree'@'127.0.0.1';
 ```
 
 Optionally create a `backup` user with permission to dump the `echothree` database:
 ```
-GRANT SELECT, LOCK TABLES
+CREATE USER 'backup'@'localhost' IDENTIFIED BY '$Exampl3Passw0rd#';
+GRANT SELECT,LOCK TABLES
     ON echothree.*
-    TO 'backup'@'localhost'
-    IDENTIFIED BY '$Exampl3Passw0rd#';
+    TO 'backup'@'localhost';
 ```
 
 ## Apache Configuration

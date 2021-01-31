@@ -28,6 +28,8 @@ import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @GraphQLDescription("filter kind object")
 @GraphQLName("FilterKind")
@@ -82,6 +84,44 @@ public class FilterKindObject
         GraphQlContext context = env.getContext();
         
         return filterControl.getBestFilterKindDescription(filterKind, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+    }
+
+    @GraphQLField
+    @GraphQLDescription("filter types")
+    public Collection<FilterTypeObject> getFilterTypes(final DataFetchingEnvironment env) {
+        Collection<FilterTypeObject> filterTypeObjects = null;
+
+        if(FilterSecurityUtils.getInstance().getHasFilterTypesAccess(env)) {
+            var filterControl = Session.getModelController(FilterControl.class);
+            var filterTypes = filterControl.getFilterTypes(filterKind);
+
+            filterTypeObjects = new ArrayList<>(filterTypes.size());
+
+            filterTypes.stream()
+                    .map(FilterTypeObject::new)
+                    .forEachOrdered(filterTypeObjects::add);
+        }
+
+        return filterTypeObjects;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("filter adjustments")
+    public Collection<FilterAdjustmentObject> getFilterAdjustments(final DataFetchingEnvironment env) {
+        Collection<FilterAdjustmentObject> filterAdjustmentObjects = null;
+
+        if(FilterSecurityUtils.getInstance().getHasFilterAdjustmentsAccess(env)) {
+            var filterControl = Session.getModelController(FilterControl.class);
+            var filterAdjustments = filterControl.getFilterAdjustmentsByFilterKind(filterKind);
+
+            filterAdjustmentObjects = new ArrayList<>(filterAdjustments.size());
+
+            filterAdjustments.stream()
+                    .map(FilterAdjustmentObject::new)
+                    .forEachOrdered(filterAdjustmentObjects::add);
+        }
+
+        return filterAdjustmentObjects;
     }
     
 }
