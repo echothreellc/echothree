@@ -16,9 +16,17 @@
 
 package com.echothree.model.control.filter.server.logic;
 
+import com.echothree.control.user.filter.common.spec.FilterUniversalSpec;
 import com.echothree.model.control.club.server.control.ClubControl;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.filter.common.exception.CannotDeleteFilterInUseException;
 import com.echothree.model.control.filter.common.exception.DuplicateFilterNameException;
+import com.echothree.model.control.filter.common.exception.UnknownDefaultFilterException;
+import com.echothree.model.control.filter.common.exception.UnknownDefaultFilterKindException;
+import com.echothree.model.control.filter.common.exception.UnknownDefaultFilterTypeException;
 import com.echothree.model.control.filter.common.exception.UnknownFilterNameException;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
@@ -28,6 +36,7 @@ import com.echothree.model.control.selector.server.logic.SelectorLogic;
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.filter.server.entity.FilterAdjustment;
+import com.echothree.model.data.filter.server.entity.FilterKind;
 import com.echothree.model.data.filter.server.entity.FilterType;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.selector.server.entity.Selector;
@@ -37,6 +46,7 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.validation.ParameterUtils;
 
 public class FilterLogic
         extends BaseLogic {
@@ -140,71 +150,89 @@ public class FilterLogic
         return getFilterByName(eea, filterKindName, filterTypeName, filterName, EntityPermission.READ_WRITE);
     }
 
-//    public Filter getFilterByUniversalSpec(final ExecutionErrorAccumulator eea, final FilterUniversalSpec universalSpec,
-//            final boolean allowDefault, final EntityPermission entityPermission) {
-//        var filterControl = Session.getModelController(FilterControl.class);
-//        var filterKindName = universalSpec.getFilterKindName();
-//        var filterTypeName = universalSpec.getFilterTypeName();
-//        var filterName = universalSpec.getFilterName();
-//        var nameParameterCount= ParameterUtils.getInstance().countNonNullParameters(filterKindName, filterTypeName, filterName);
-//        var possibleEntitySpecs= EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
-//        Filter filter = null;
-//
-//        if(nameParameterCount < 4 && possibleEntitySpecs == 0) {
-//            FilterKind filterKind = null;
-//
-//            if(filterKindName == null) {
-//                if(allowDefault) {
-//                    filterKind = filterControl.getDefaultFilterKind();
-//
-//                    if(filterKind == null) {
-//                        handleExecutionError(UnknownDefaultFilterKindException.class, eea, ExecutionErrors.UnknownDefaultFilterKind.name());
-//                    }
-//                } else {
-//                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-//                }
-//            } else {
-//                filterKind = FilterKindLogic.getInstance().getFilterKindByName(eea, filterKindName);
-//            }
-//
-//            if(!eea.hasExecutionErrors()) {
-//                if(filterName == null) {
-//                    if(allowDefault) {
-//                        filter = filterControl.getDefaultFilter(filterKind, entityPermission);
-//
-//                        if(filter == null) {
-//                            handleExecutionError(UnknownDefaultFilterException.class, eea, ExecutionErrors.UnknownDefaultFilter.name());
-//                        }
-//                    } else {
-//                        handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-//                    }
-//                } else {
-//                    filter = getFilterByName(eea, filterType, filterName, entityPermission);
-//                }
-//            }
-//        } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
-//            EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-//                    ComponentVendors.ECHOTHREE.name(), EntityTypes.Filter.name());
-//
-//            if(!eea.hasExecutionErrors()) {
-//                filter = filterControl.getFilterByEntityInstance(entityInstance, entityPermission);
-//            }
-//        } else {
-//            handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
-//        }
-//
-//        return filter;
-//    }
-//
-//    public Filter getFilterByUniversalSpec(final ExecutionErrorAccumulator eea, final FilterUniversalSpec universalSpec,
-//            boolean allowDefault) {
-//        return getFilterByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_ONLY);
-//    }
-//
-//    public Filter getFilterByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea, final FilterUniversalSpec universalSpec,
-//            boolean allowDefault) {
-//        return getFilterByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
-//    }
+    public Filter getFilterByUniversalSpec(final ExecutionErrorAccumulator eea, final FilterUniversalSpec universalSpec,
+            final boolean allowDefault, final EntityPermission entityPermission) {
+        var filterControl = Session.getModelController(FilterControl.class);
+        var filterKindName = universalSpec.getFilterKindName();
+        var filterTypeName = universalSpec.getFilterTypeName();
+        var filterName = universalSpec.getFilterName();
+        var nameParameterCount= ParameterUtils.getInstance().countNonNullParameters(filterKindName, filterTypeName, filterName);
+        var possibleEntitySpecs= EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        Filter filter = null;
+
+        if(nameParameterCount < 4 && possibleEntitySpecs == 0) {
+            FilterKind filterKind = null;
+            FilterType filterType = null;
+
+            if(filterKindName == null) {
+                if(allowDefault) {
+                    filterKind = filterControl.getDefaultFilterKind();
+
+                    if(filterKind == null) {
+                        handleExecutionError(UnknownDefaultFilterKindException.class, eea, ExecutionErrors.UnknownDefaultFilterKind.name());
+                    }
+                } else {
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                }
+            } else {
+                filterKind = FilterKindLogic.getInstance().getFilterKindByName(eea, filterKindName);
+            }
+
+            if(filterTypeName == null && !eea.hasExecutionErrors()) {
+                if(allowDefault) {
+                    filterType = filterControl.getDefaultFilterType(filterKind);
+
+                    if(filterType == null) {
+                        handleExecutionError(UnknownDefaultFilterTypeException.class, eea, ExecutionErrors.UnknownDefaultFilterKind.name(),
+                                filterKind.getLastDetail().getFilterKindName());
+                    }
+                } else {
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                }
+            } else {
+                filterType = FilterTypeLogic.getInstance().getFilterTypeByName(eea, filterKind, filterTypeName);
+            }
+
+            if(!eea.hasExecutionErrors()) {
+                if(filterName == null) {
+                    if(allowDefault) {
+                        filter = filterControl.getDefaultFilter(filterType, entityPermission);
+
+                        if(filter == null) {
+                            handleExecutionError(UnknownDefaultFilterException.class, eea, ExecutionErrors.UnknownDefaultFilter.name(),
+                                    filterKind.getLastDetail().getFilterKindName(),
+                                    filterType.getLastDetail().getFilterTypeName());
+                        }
+                    } else {
+                        handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                    }
+                } else {
+                    filter = getFilterByName(eea, filterType, filterName, entityPermission);
+                }
+            }
+        } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
+            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    ComponentVendors.ECHOTHREE.name(), EntityTypes.Filter.name());
+
+            if(!eea.hasExecutionErrors()) {
+                filter = filterControl.getFilterByEntityInstance(entityInstance, entityPermission);
+            }
+        } else {
+            handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        return filter;
+    }
+
+    public Filter getFilterByUniversalSpec(final ExecutionErrorAccumulator eea, final FilterUniversalSpec universalSpec,
+            boolean allowDefault) {
+        return getFilterByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_ONLY);
+    }
+
+    public Filter getFilterByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea, final FilterUniversalSpec universalSpec,
+            boolean allowDefault) {
+        return getFilterByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
+    }
 
     public void deleteFilter(final ExecutionErrorAccumulator eea, final Filter filter,
             final BasePK deletedBy) {

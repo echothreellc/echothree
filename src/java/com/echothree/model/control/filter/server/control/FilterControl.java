@@ -2440,7 +2440,7 @@ public class FilterControl
         return getFilters(filterType, EntityPermission.READ_WRITE);
     }
     
-    private Filter getDefaultFilter(FilterType filterType, EntityPermission entityPermission) {
+    public Filter getDefaultFilter(FilterType filterType, EntityPermission entityPermission) {
         Filter filter;
         
         try {
