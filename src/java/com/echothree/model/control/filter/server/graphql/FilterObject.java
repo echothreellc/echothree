@@ -19,68 +19,87 @@ package com.echothree.model.control.filter.server.graphql;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
-import com.echothree.model.control.sequence.server.graphql.SequenceSecurityUtils;
-import com.echothree.model.control.sequence.server.graphql.SequenceTypeObject;
+import com.echothree.model.control.selector.server.graphql.SelectorSecurityUtils;
 import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.data.filter.server.entity.FilterType;
-import com.echothree.model.data.filter.server.entity.FilterTypeDetail;
+import com.echothree.model.data.filter.server.entity.Filter;
+import com.echothree.model.data.filter.server.entity.FilterDetail;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
-import java.util.ArrayList;
-import java.util.Collection;
 
-@GraphQLDescription("filter type object")
-@GraphQLName("FilterType")
-public class FilterTypeObject
+@GraphQLDescription("filter object")
+@GraphQLName("Filter")
+public class FilterObject
         extends BaseEntityInstanceObject {
     
-    private final FilterType filterType; // Always Present
+    private final Filter filter; // Always Present
     
-    public FilterTypeObject(FilterType filterType) {
-        super(filterType.getPrimaryKey());
+    public FilterObject(Filter filter) {
+        super(filter.getPrimaryKey());
         
-        this.filterType = filterType;
+        this.filter = filter;
     }
 
-    private FilterTypeDetail filterTypeDetail; // Optional, use getFilterTypeDetail()
+    private FilterDetail filterDetail; // Optional, use getFilterDetail()
     
-    private FilterTypeDetail getFilterTypeDetail() {
-        if(filterTypeDetail == null) {
-            filterTypeDetail = filterType.getLastDetail();
+    private FilterDetail getFilterDetail() {
+        if(filterDetail == null) {
+            filterDetail = filter.getLastDetail();
         }
         
-        return filterTypeDetail;
+        return filterDetail;
     }
 
     @GraphQLField
-    @GraphQLDescription("filter kind")
-    public FilterKindObject getFilterKind(final DataFetchingEnvironment env) {
-        return FilterSecurityUtils.getInstance().getHasFilterKindAccess(env) ? new FilterKindObject(getFilterTypeDetail().getFilterKind()) : null;
+    @GraphQLDescription("filter type")
+    public FilterTypeObject getFilterType(final DataFetchingEnvironment env) {
+        return FilterSecurityUtils.getInstance().getHasFilterTypeAccess(env) ? new FilterTypeObject(getFilterDetail().getFilterType()) : null;
     }
 
     @GraphQLField
-    @GraphQLDescription("filter type name")
+    @GraphQLDescription("filter name")
     @GraphQLNonNull
-    public String getFilterTypeName() {
-        return getFilterTypeDetail().getFilterTypeName();
+    public String getFilterName() {
+        return getFilterDetail().getFilterName();
     }
-    
+
+    @GraphQLField
+    @GraphQLDescription("initial filter adjustment")
+    public FilterAdjustmentObject getInitialFilterAdjustment(final DataFetchingEnvironment env) {
+        return FilterSecurityUtils.getInstance().getHasFilterAdjustmentAccess(env) ? new FilterAdjustmentObject(getFilterDetail().getInitialFilterAdjustment()) : null;
+    }
+
+//    @GraphQLField
+//    @GraphQLDescription("filter item selector")
+//    public SelectorObject getFilterItemSelector(final DataFetchingEnvironment env) {
+//        SelectorObject result;
+//
+//        if(SelectorSecurityUtils.getInstance().getHasSelectorAccess(env)) {
+//            var selector = getFilterDetail().getFilterItemSelector();
+//
+//            result = selector == null ? null : new SelectorObject(selector);
+//        } else {
+//            result = null;
+//        }
+//
+//        return result;
+//    }
+
     @GraphQLField
     @GraphQLDescription("is default")
     @GraphQLNonNull
     public boolean getIsDefault() {
-        return getFilterTypeDetail().getIsDefault();
+        return getFilterDetail().getIsDefault();
     }
     
     @GraphQLField
     @GraphQLDescription("sort order")
     @GraphQLNonNull
     public int getSortOrder() {
-        return getFilterTypeDetail().getSortOrder();
+        return getFilterDetail().getSortOrder();
     }
     
     @GraphQLField
@@ -91,26 +110,7 @@ public class FilterTypeObject
         var userControl = Session.getModelController(UserControl.class);
         GraphQlContext context = env.getContext();
         
-        return filterControl.getBestFilterTypeDescription(filterType, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+        return filterControl.getBestFilterDescription(filter, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
     }
-
-    @GraphQLField
-    @GraphQLDescription("filters")
-    public Collection<FilterObject> getFilters(final DataFetchingEnvironment env) {
-        Collection<FilterObject> filterObjects = null;
-
-        if(FilterSecurityUtils.getInstance().getHasFiltersAccess(env)) {
-            var filterControl = Session.getModelController(FilterControl.class);
-            var filters = filterControl.getFilters(filterType);
-
-            filterObjects = new ArrayList<>(filters.size());
-
-            filters.stream()
-                    .map(FilterObject::new)
-                    .forEachOrdered(filterObjects::add);
-        }
-
-        return filterObjects;
-    }
-
+    
 }
