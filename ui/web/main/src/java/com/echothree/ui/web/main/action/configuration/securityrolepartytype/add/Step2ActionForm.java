@@ -19,7 +19,7 @@ package com.echothree.ui.web.main.action.configuration.securityrolepartytype.add
 import com.echothree.control.user.selector.common.SelectorUtil;
 import com.echothree.control.user.selector.common.form.GetSelectorChoicesForm;
 import com.echothree.control.user.selector.common.result.GetSelectorChoicesResult;
-import com.echothree.model.control.selector.common.SelectorConstants;
+import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.model.control.selector.common.choice.SelectorChoicesBean;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.ExecutionResult;
@@ -46,7 +46,7 @@ public class Step2ActionForm
                 GetSelectorChoicesForm form = SelectorUtil.getHome().getGetSelectorChoicesForm();
                 
                 form.setSelectorKindName(getPartyTypeName());
-                form.setSelectorTypeName(SelectorConstants.SelectorType_SECURITY_ROLE);
+                form.setSelectorTypeName(SelectorTypes.SECURITY_ROLE.name());
                 form.setDefaultSelectorChoice(partySelectorChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
                 

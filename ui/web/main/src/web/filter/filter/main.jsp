@@ -31,7 +31,7 @@
                 <a href="<c:url value="/action/Filter/Main" />">Filters</a> &gt;&gt;
                 <a href="<c:url value="/action/Filter/FilterKind/Main" />">Kinds</a> &gt;&gt;
                 <c:url var="filterTypesUrl" value="/action/Filter/FilterType/Main">
-                    <c:param name="FilterKindName" value="${filterKind.filterKindName}" />
+                    <c:param name="FilterKindName" value="${filterType.filterKind.filterKindName}" />
                 </c:url>
                 <a href="${filterTypesUrl}">Types</a> &gt;&gt;
                 Filters
@@ -39,7 +39,7 @@
         </div>
         <div id="Content">
             <c:url var="addUrl" value="/action/Filter/Filter/Add">
-                <c:param name="FilterKindName" value="${filterKind.filterKindName}" />
+                <c:param name="FilterKindName" value="${filterType.filterKind.filterKindName}" />
                 <c:param name="FilterTypeName" value="${filterType.filterTypeName}" />
             </c:url>
             <p><a href="${addUrl}">Add Filter.</a></p>

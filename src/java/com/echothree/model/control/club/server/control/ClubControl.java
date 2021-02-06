@@ -51,6 +51,7 @@ import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.item.common.pk.ItemPK;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.party.server.entity.Language;
+import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.subscription.common.pk.SubscriptionTypePK;
 import com.echothree.model.data.subscription.server.entity.SubscriptionType;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -121,7 +122,30 @@ public class ClubControl
         
         return club;
     }
-    
+
+    public long countClubs() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM clubs, clubdetails " +
+                "WHERE clb_activedetailid = clbdt_clubdetailid");
+    }
+
+    public long countClubsBySubscriptionType(SubscriptionType subscriptionType) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM clubs, clubdetails " +
+                "WHERE clb_activedetailid = clbdt_clubdetailid AND clbdt_subscrtyp_subscriptiontypeid = ?",
+                subscriptionType);
+    }
+
+    public long countClubsByFilter(Filter filter) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM clubs, clubdetails " +
+                "WHERE clb_activedetailid = clbdt_clubdetailid AND clbdt_clubpricefilterid = ?",
+                filter);
+    }
+
     private List<Club> getClubs(EntityPermission entityPermission) {
         String query = null;
         

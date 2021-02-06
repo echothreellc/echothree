@@ -23,7 +23,8 @@ import com.echothree.control.user.filter.common.result.EditFilterAdjustmentAmoun
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.control.user.filter.common.spec.FilterAdjustmentAmountSpec;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.filter.common.FilterConstants;
+import com.echothree.model.control.filter.common.FilterAdjustmentTypes;
+import com.echothree.model.control.filter.common.FilterKinds;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -100,9 +101,9 @@ public class EditFilterAdjustmentAmountCommand
         
         validator.setCurrency(accountingControl.getCurrencyByIsoName(currencyIsoName));
         
-        if(filterKindName.equals(FilterConstants.FilterKind_COST)) {
+        if(filterKindName.equals(FilterKinds.COST.name())) {
             setEditFieldDefinitions(costEditFieldDefinitions);
-        } else if(filterKindName.equals(FilterConstants.FilterKind_PRICE)) {
+        } else if(filterKindName.equals(FilterKinds.PRICE.name())) {
             setEditFieldDefinitions(priceEditFieldDefinitions);
         } else {
             addExecutionError(ExecutionErrors.UnknownFilterKindName.name(), filterKindName);
@@ -123,7 +124,7 @@ public class EditFilterAdjustmentAmountCommand
             if(filterAdjustment != null) {
                 String filterAdjustmentTypeName = filterAdjustment.getLastDetail().getFilterAdjustmentType().getFilterAdjustmentTypeName();
                 
-                if(filterAdjustmentTypeName.equals(FilterConstants.FilterAdjustmentType_AMOUNT)) {
+                if(filterAdjustmentTypeName.equals(FilterAdjustmentTypes.AMOUNT.name())) {
                     var uomControl = Session.getModelController(UomControl.class);
                     String unitOfMeasureName = spec.getUnitOfMeasureName();
                     String unitOfMeasureKindName = null;
@@ -165,9 +166,9 @@ public class EditFilterAdjustmentAmountCommand
                                                 edit = FilterEditFactory.getFilterAdjustmentAmountEdit();
                                                 result.setEdit(edit);
                                                 
-                                                if(filterKindName.equals(FilterConstants.FilterKind_COST)) {
+                                                if(filterKindName.equals(FilterKinds.COST.name())) {
                                                     edit.setAmount(AmountUtils.getInstance().formatCostUnit(currency, filterAdjustmentAmount.getAmount()));
-                                                } else if(filterKindName.equals(FilterConstants.FilterKind_PRICE)) {
+                                                } else if(filterKindName.equals(FilterKinds.PRICE.name())) {
                                                     edit.setAmount(AmountUtils.getInstance().formatPriceUnit(currency, filterAdjustmentAmount.getAmount()));
                                                 }
                                             } else {

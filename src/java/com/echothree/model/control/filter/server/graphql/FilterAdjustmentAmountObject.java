@@ -18,7 +18,7 @@ package com.echothree.model.control.filter.server.graphql;
 
 import com.echothree.model.control.accounting.server.graphql.AccountingSecurityUtils;
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
-import com.echothree.model.control.filter.common.FilterConstants;
+import com.echothree.model.control.filter.common.FilterKinds;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureTypeObject;
 import com.echothree.model.control.uom.server.graphql.UomSecurityUtils;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentAmount;
@@ -70,9 +70,9 @@ public class FilterAdjustmentAmountObject {
         var unformattedAmount = filterAdjustmentAmount.getAmount();
         String amount = null;
 
-        if(FilterConstants.FilterKind_COST.equals(filterKindName)) {
+        if(FilterKinds.COST.name().equals(filterKindName)) {
             amount = AmountUtils.getInstance().formatCostUnit(currency, unformattedAmount);
-        } else if(FilterConstants.FilterKind_PRICE.equals(filterKindName)) {
+        } else if(FilterKinds.PRICE.name().equals(filterKindName)) {
             amount = AmountUtils.getInstance().formatPriceUnit(currency, unformattedAmount);
         }
 

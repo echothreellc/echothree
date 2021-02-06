@@ -2397,7 +2397,46 @@ public class FilterControl
         
         return filter;
     }
-    
+
+    public long countFiltersByFilterType(FilterType filterType) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM filters, filterdetails " +
+                "WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ?",
+                filterType);
+    }
+
+    public long countFiltersBySelector(Selector selector) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM filters, filterdetails " +
+                "WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_filteritemselectorid = ?",
+                selector);
+    }
+
+    public long countFiltersByFilterAdjustment(FilterAdjustment filterAdjustment) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM filters, filterdetails " +
+                "WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_initialfilteradjustmentid = ?",
+                filterAdjustment);
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Filter */
+    public Filter getFilterByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new FilterPK(entityInstance.getEntityUniqueId());
+
+        return FilterFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Filter getFilterByEntityInstance(EntityInstance entityInstance) {
+        return getFilterByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Filter getFilterByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getFilterByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     private List<Filter> getFilters(FilterType filterType, EntityPermission entityPermission) {
         List<Filter> filters;
         
@@ -2425,7 +2464,7 @@ public class FilterControl
         return getFilters(filterType, EntityPermission.READ_WRITE);
     }
     
-    private Filter getDefaultFilter(FilterType filterType, EntityPermission entityPermission) {
+    public Filter getDefaultFilter(FilterType filterType, EntityPermission entityPermission) {
         Filter filter;
         
         try {
@@ -2466,7 +2505,7 @@ public class FilterControl
         return getDefaultFilterForUpdate(filterType).getLastDetailForUpdate().getFilterDetailValue().clone();
     }
     
-    private Filter getFilterByName(FilterType filterType, String filterName, EntityPermission entityPermission) {
+    public Filter getFilterByName(FilterType filterType, String filterName, EntityPermission entityPermission) {
         Filter filter;
         
         try {
@@ -2550,7 +2589,7 @@ public class FilterControl
         return getFilterTransferCaches(userVisit).getFilterTransferCache().getTransfer(filter);
     }
     
-    public List<FilterTransfer> getFilterTransfers(UserVisit userVisit, List<Filter> filters) {
+    public List<FilterTransfer> getFilterTransfers(UserVisit userVisit, Collection<Filter> filters) {
         List<FilterTransfer> filterTransfers = new ArrayList<>(filters.size());
         FilterTransferCache filterTransferCache = getFilterTransferCaches(userVisit).getFilterTransferCache();
         
@@ -2563,22 +2602,6 @@ public class FilterControl
     
     public List<FilterTransfer> getFilterTransfers(UserVisit userVisit, FilterType filterType) {
         return getFilterTransfers(userVisit, getFilters(filterType));
-    }
-    
-    public long countFiltersBySelector(Selector selector) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM filterdetails " +
-                "WHERE fltdt_filteritemselectorid = ? AND fltdt_thrutime = ?",
-                selector, Session.MAX_TIME);
-    }
-    
-    public long countFiltersByFilterAdjustment(FilterAdjustment filterAdjustment) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM filterdetails " +
-                "WHERE fltdt_initialfilteradjustmentid = ? AND fltdt_thrutime = ?",
-                filterAdjustment, Session.MAX_TIME);
     }
     
     private void updateFilterFromValue(FilterDetailValue filterDetailValue, boolean checkDefault, BasePK updatedBy) {

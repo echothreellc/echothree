@@ -627,7 +627,15 @@ public class VendorControl
         
         return vendor;
     }
-    
+
+    public long countVendorByFilter(Filter filter) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM vendors " +
+                "WHERE vndr_vendoritemcostfilterid = ? AND vndr_thrutime = ?",
+                filter, Session.MAX_TIME_LONG);
+    }
+
     private Vendor getVendor(Party party, EntityPermission entityPermission) {
         Vendor vendor;
         

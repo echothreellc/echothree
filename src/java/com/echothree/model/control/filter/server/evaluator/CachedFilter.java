@@ -17,7 +17,8 @@
 package com.echothree.model.control.filter.server.evaluator;
 
 import com.echothree.model.control.filter.server.control.FilterControl;
-import com.echothree.model.control.selector.common.SelectorConstants;
+import com.echothree.model.control.selector.common.SelectorKinds;
+import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.model.control.selector.server.evaluator.SelectorCache;
 import com.echothree.model.control.selector.server.evaluator.SelectorCacheFactory;
 import com.echothree.model.data.filter.server.entity.Filter;
@@ -59,8 +60,8 @@ public class CachedFilter {
         this.filter = filter;
         this.log = LogFactory.getLog(CachedFilter.class);
         
-        selectorCache = SelectorCacheFactory.getInstance().getSelectorCache(session, SelectorConstants.SelectorKind_ITEM,
-                SelectorConstants.SelectorType_FILTER);
+        selectorCache = SelectorCacheFactory.getInstance().getSelectorCache(session, SelectorKinds.ITEM.name(),
+                SelectorTypes.FILTER.name());
         
         if(filterItemSelector != null)
             selectorCache.getSelector(filterItemSelector);

@@ -26,7 +26,8 @@ import com.echothree.model.control.payment.server.control.PaymentProcessorContro
 import com.echothree.model.control.payment.server.logic.PaymentMethodTypeLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.selector.common.SelectorConstants;
+import com.echothree.model.control.selector.common.SelectorKinds;
+import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.payment.server.entity.PaymentMethod;
@@ -142,13 +143,13 @@ public class CreatePaymentMethodCommand
                 if(paymentProcessorName == null || paymentProcessor != null) {
                     var selectorControl = Session.getModelController(SelectorControl.class);
                     String itemSelectorName = form.getItemSelectorName();
-                    Selector itemSelector = itemSelectorName == null ? null : selectorControl.getSelectorUsingNames(this, SelectorConstants.SelectorKind_ITEM,
-                            SelectorConstants.SelectorType_PAYMENT_METHOD, itemSelectorName, ExecutionErrors.UnknownItemSelectorName.name());
+                    Selector itemSelector = itemSelectorName == null ? null : selectorControl.getSelectorUsingNames(this, SelectorKinds.ITEM.name(),
+                            SelectorTypes.PAYMENT_METHOD.name(), itemSelectorName, ExecutionErrors.UnknownItemSelectorName.name());
 
                     if(!hasExecutionErrors()) {
                         String salesOrderItemSelectorName = form.getSalesOrderItemSelectorName();
                         Selector salesOrderItemSelector = salesOrderItemSelectorName == null ? null : selectorControl.getSelectorUsingNames(this,
-                                SelectorConstants.SelectorKind_SALES_ORDER_ITEM, SelectorConstants.SelectorType_PAYMENT_METHOD, salesOrderItemSelectorName,
+                                SelectorKinds.SALES_ORDER_ITEM.name(), SelectorTypes.PAYMENT_METHOD.name(), salesOrderItemSelectorName,
                                 ExecutionErrors.UnknownSalesOrderItemSelectorName.name());
 
                         if(!hasExecutionErrors()) {

@@ -18,7 +18,7 @@ package com.echothree.model.control.filter.server.transfer;
 
 import com.echothree.model.control.accounting.common.transfer.CurrencyTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.filter.common.FilterConstants;
+import com.echothree.model.control.filter.common.FilterKinds;
 import com.echothree.model.control.filter.common.transfer.FilterAdjustmentAmountTransfer;
 import com.echothree.model.control.filter.common.transfer.FilterAdjustmentTransfer;
 import com.echothree.model.control.filter.server.control.FilterControl;
@@ -55,9 +55,9 @@ public class FilterAdjustmentAmountTransferCache
             String amount = null;
             
             String filterKindName = filterAdjustmentTransfer.getFilterKind().getFilterKindName();
-            if(FilterConstants.FilterKind_COST.equals(filterKindName)) {
+            if(FilterKinds.COST.name().equals(filterKindName)) {
                 amount = AmountUtils.getInstance().formatCostUnit(currency, unformattedAmount);
-            } else if(FilterConstants.FilterKind_PRICE.equals(filterKindName)) {
+            } else if(FilterKinds.PRICE.name().equals(filterKindName)) {
                 amount = AmountUtils.getInstance().formatPriceUnit(currency, unformattedAmount);
             }
             

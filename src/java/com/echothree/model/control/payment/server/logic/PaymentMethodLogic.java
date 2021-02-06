@@ -19,7 +19,8 @@ package com.echothree.model.control.payment.server.logic;
 import com.echothree.model.control.payment.common.exception.ItemNotAcceptibleForPaymentMethodException;
 import com.echothree.model.control.payment.common.exception.UnknownPaymentMethodNameException;
 import com.echothree.model.control.payment.server.control.PaymentMethodControl;
-import com.echothree.model.control.selector.common.SelectorConstants;
+import com.echothree.model.control.selector.common.SelectorKinds;
+import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.model.control.selector.server.evaluator.CachedSelector;
 import com.echothree.model.control.selector.server.evaluator.PaymentMethodItemSelectorEvaluator;
 import com.echothree.model.control.selector.server.evaluator.SelectorCache;
@@ -88,8 +89,8 @@ public class PaymentMethodLogic
         Selector selector = paymentMethod.getLastDetail().getItemSelector();
         
         if(selector != null) {
-            SelectorCache selectorCache = SelectorCacheFactory.getInstance().getSelectorCache(session, SelectorConstants.SelectorKind_ITEM,
-                    SelectorConstants.SelectorType_PAYMENT_METHOD);
+            SelectorCache selectorCache = SelectorCacheFactory.getInstance().getSelectorCache(session, SelectorKinds.ITEM.name(),
+                    SelectorTypes.PAYMENT_METHOD.name());
             
             checkAcceptanceOfItem(session, eea, selectorCache, paymentMethod, item, evaluatedBy);
         }
@@ -100,8 +101,8 @@ public class PaymentMethodLogic
         Selector selector = paymentMethod.getLastDetail().getItemSelector();
         
         if(selector != null) {
-            SelectorCache selectorCache = SelectorCacheFactory.getInstance().getSelectorCache(session, SelectorConstants.SelectorKind_ITEM,
-                    SelectorConstants.SelectorType_PAYMENT_METHOD);
+            SelectorCache selectorCache = SelectorCacheFactory.getInstance().getSelectorCache(session, SelectorKinds.ITEM.name(),
+                    SelectorTypes.PAYMENT_METHOD.name());
             
             items.forEach((item) -> {
                 checkAcceptanceOfItem(session, eea, selectorCache, paymentMethod, item, evaluatedBy);

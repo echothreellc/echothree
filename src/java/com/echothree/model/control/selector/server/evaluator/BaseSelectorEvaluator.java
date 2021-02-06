@@ -18,7 +18,8 @@ package com.echothree.model.control.selector.server.evaluator;
 
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.selector.common.SelectorConstants;
+import com.echothree.model.control.selector.common.SelectorBooleanTypes;
+import com.echothree.model.control.selector.common.SelectorNodeTypes;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
@@ -85,7 +86,7 @@ public class BaseSelectorEvaluator {
         String sbtn = sbt.getSelectorBooleanTypeName();
         boolean result = false;
         
-        if(sbtn.equals(SelectorConstants.SelectorBooleanType_AND)) {
+        if(sbtn.equals(SelectorBooleanTypes.AND.name())) {
             // If its an AND, don't evalute the right side if the left side is already false
             if(lrbv) {
                 SelectorNodeDetail rsnd = snb.getRightSelectorNode().getLastDetail(); // Right Selector Node Detail
@@ -93,7 +94,7 @@ public class BaseSelectorEvaluator {
                 
                 result = lrbv && rr;
             }
-        } else if(sbtn.equals(SelectorConstants.SelectorBooleanType_OR)) {
+        } else if(sbtn.equals(SelectorBooleanTypes.OR.name())) {
             // If its an OR, don't evaluate the right side if the left side is already true
             if(lrbv) {
                 result = true;
@@ -164,11 +165,11 @@ public class BaseSelectorEvaluator {
             SelectorNodeType snt = snd.getSelectorNodeType();
             String sntn = snt.getSelectorNodeTypeName();
             
-            if(sntn.equals(SelectorConstants.SelectorNodeType_BOOLEAN)) {
+            if(sntn.equals(SelectorNodeTypes.BOOLEAN.name())) {
                 result = evaluateBoolean(snd);
-            } else if(sntn.equals(SelectorConstants.SelectorNodeType_ENTITY_LIST_ITEM)) {
+            } else if(sntn.equals(SelectorNodeTypes.ENTITY_LIST_ITEM.name())) {
                 result = evaluateEntityListItem(snd);
-            } else if(sntn.equals(SelectorConstants.SelectorNodeType_WORKFLOW_STEP)) {
+            } else if(sntn.equals(SelectorNodeTypes.WORKFLOW_STEP.name())) {
                 result = evaluateWorkflowStep(snd);
             } else {
                 if(BaseSelectorEvaluatorDebugFlags.BaseSelectorEvaluator)

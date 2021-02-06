@@ -19,7 +19,8 @@ package com.echothree.control.user.communication.server.server;
 import com.echothree.control.user.communication.common.form.CreateCommunicationSourceForm;
 import com.echothree.model.control.communication.common.CommunicationConstants;
 import com.echothree.model.control.communication.server.control.CommunicationControl;
-import com.echothree.model.control.selector.common.SelectorConstants;
+import com.echothree.model.control.selector.common.SelectorKinds;
+import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.control.workeffort.common.workeffort.ReceiveCustomerEmailConstants;
 import com.echothree.model.control.workeffort.common.workeffort.SendCustomerEmailConstants;
@@ -34,11 +35,11 @@ import com.echothree.model.data.selector.server.entity.SelectorType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortScope;
 import com.echothree.model.data.workeffort.server.entity.WorkEffortType;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
@@ -131,18 +132,18 @@ public class CreateCommunicationSourceCommand
                                 
                                 if(reviewEmployeeSelectorName != null) {
                                     var selectorControl = Session.getModelController(SelectorControl.class);
-                                    SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorConstants.SelectorKind_EMPLOYEE);
+                                    SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.EMPLOYEE.name());
                                     
                                     if(selectorKind != null) {
-                                        SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorConstants.SelectorType_EMAIL_REVIEW);
+                                        SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorTypes.EMAIL_REVIEW.name());
                                         
                                         if(selectorType != null) {
                                             reviewEmployeeSelector = selectorControl.getSelectorByName(selectorType, reviewEmployeeSelectorName);
                                         } else {
-                                            addExecutionError(ExecutionErrors.UnknownSelectorTypeName.name(), SelectorConstants.SelectorType_EMAIL_REVIEW);
+                                            addExecutionError(ExecutionErrors.UnknownSelectorTypeName.name(), SelectorTypes.EMAIL_REVIEW.name());
                                         }
                                     } else {
-                                        addExecutionError(ExecutionErrors.UnknownSelectorKindName.name(), SelectorConstants.SelectorKind_EMPLOYEE);
+                                        addExecutionError(ExecutionErrors.UnknownSelectorKindName.name(), SelectorKinds.EMPLOYEE.name());
                                     }
                                 }
                                 

@@ -17,14 +17,11 @@
 package com.echothree.ui.web.main.action.filter.filter;
 
 import com.echothree.control.user.filter.common.FilterUtil;
-import com.echothree.control.user.filter.common.form.GetFiltersForm;
 import com.echothree.control.user.filter.common.result.GetFiltersResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -51,22 +48,21 @@ public class MainAction
     
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
-    throws Exception {
-        String forwardKey = null;
+            throws Exception {
+        String forwardKey ;
         
         try {
-            GetFiltersForm getFiltersForm = FilterUtil.getHome().getGetFiltersForm();
-            String filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
-            String filterTypeName = request.getParameter(ParameterConstants.FILTER_TYPE_NAME);
+            var getFiltersForm = FilterUtil.getHome().getGetFiltersForm();
+            var filterKindName = request.getParameter(ParameterConstants.FILTER_KIND_NAME);
+            var filterTypeName = request.getParameter(ParameterConstants.FILTER_TYPE_NAME);
             
             getFiltersForm.setFilterKindName(filterKindName);
             getFiltersForm.setFilterTypeName(filterTypeName);
+
+            var commandResult = FilterUtil.getHome().getFilters(getUserVisitPK(request), getFiltersForm);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetFiltersResult)executionResult.getResult();
             
-            CommandResult commandResult = FilterUtil.getHome().getFilters(getUserVisitPK(request), getFiltersForm);
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetFiltersResult result = (GetFiltersResult)executionResult.getResult();
-            
-            request.setAttribute(AttributeConstants.FILTER_KIND, result.getFilterKind());
             request.setAttribute(AttributeConstants.FILTER_TYPE, result.getFilterType());
             request.setAttribute(AttributeConstants.FILTERS, result.getFilters());
             forwardKey = ForwardConstants.DISPLAY;

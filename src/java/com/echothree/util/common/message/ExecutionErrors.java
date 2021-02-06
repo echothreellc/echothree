@@ -2237,5 +2237,6 @@ public enum ExecutionErrors {
     UnknownDefaultFilterAdjustmentType,
     UnknownDefaultFilterAdjustmentSource,
     UnknownDefaultFilterAdjustment,
+    UnknownDefaultFilter,
 
 }

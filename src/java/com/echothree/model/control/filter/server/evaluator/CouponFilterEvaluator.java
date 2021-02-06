@@ -16,8 +16,9 @@
 
 package com.echothree.model.control.filter.server.evaluator;
 
-import com.echothree.model.control.filter.common.FilterConstants;
-import com.echothree.model.control.selector.common.SelectorConstants;
+import com.echothree.model.control.filter.common.FilterKinds;
+import com.echothree.model.control.filter.common.FilterTypes;
+import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.Session;
 
@@ -26,8 +27,8 @@ public class CouponFilterEvaluator
     
     /** Creates a new instance of CouponFilterEvaluator */
     public CouponFilterEvaluator(Session session, BasePK evaluatedBy) {
-        super(session, evaluatedBy, OfferItemPriceFilterEvaluator.class, FilterConstants.FilterKind_PRICE,
-                FilterConstants.FilterType_COUPON, SelectorConstants.SelectorType_FILTER);
+        super(session, evaluatedBy, OfferItemPriceFilterEvaluator.class, FilterKinds.PRICE.name(),
+                FilterTypes.COUPON.name(), SelectorTypes.FILTER.name());
     }
     
 }

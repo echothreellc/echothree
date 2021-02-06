@@ -26,7 +26,8 @@ import com.echothree.model.control.carrier.server.control.CarrierControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.selector.common.SelectorConstants;
+import com.echothree.model.control.selector.common.SelectorKinds;
+import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.carrier.server.entity.Carrier;
 import com.echothree.model.data.carrier.server.entity.CarrierService;
@@ -39,10 +40,10 @@ import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.model.data.selector.server.entity.SelectorType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -175,20 +176,20 @@ public class EditCarrierServiceCommand
 
             if(geoCodeSelectorName != null) {
                 var selectorControl = Session.getModelController(SelectorControl.class);
-                SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorConstants.SelectorKind_POSTAL_ADDRESS);
+                SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.POSTAL_ADDRESS.name());
 
                 if(selectorKind != null) {
                     SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind,
-                            SelectorConstants.SelectorType_CARRIER);
+                            SelectorTypes.CARRIER.name());
 
                     if(selectorType != null) {
                         geoCodeSelector = selectorControl.getSelectorByName(selectorType, geoCodeSelectorName);
                     } else {
-                        addExecutionError(ExecutionErrors.UnknownSelectorTypeName.name(), SelectorConstants.SelectorKind_POSTAL_ADDRESS,
-                                SelectorConstants.SelectorType_CARRIER_SERVICE);
+                        addExecutionError(ExecutionErrors.UnknownSelectorTypeName.name(), SelectorKinds.POSTAL_ADDRESS.name(),
+                                SelectorTypes.CARRIER_SERVICE.name());
                     }
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownSelectorKindName.name(), SelectorConstants.SelectorKind_POSTAL_ADDRESS);
+                    addExecutionError(ExecutionErrors.UnknownSelectorKindName.name(), SelectorKinds.POSTAL_ADDRESS.name());
                 }
             }
 
@@ -197,20 +198,20 @@ public class EditCarrierServiceCommand
 
                 if(itemSelectorName != null) {
                     var selectorControl = Session.getModelController(SelectorControl.class);
-                    SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorConstants.SelectorKind_ITEM);
+                    SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
 
                     if(selectorKind != null) {
                         SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind,
-                                SelectorConstants.SelectorType_CARRIER);
+                                SelectorTypes.CARRIER.name());
 
                         if(selectorType != null) {
                             itemSelector = selectorControl.getSelectorByName(selectorType, itemSelectorName);
                         } else {
-                            addExecutionError(ExecutionErrors.UnknownSelectorTypeName.name(), SelectorConstants.SelectorKind_ITEM,
-                                    SelectorConstants.SelectorType_CARRIER_SERVICE);
+                            addExecutionError(ExecutionErrors.UnknownSelectorTypeName.name(), SelectorKinds.ITEM.name(),
+                                    SelectorTypes.CARRIER_SERVICE.name());
                         }
                     } else {
-                        addExecutionError(ExecutionErrors.UnknownSelectorKindName.name(), SelectorConstants.SelectorKind_ITEM);
+                        addExecutionError(ExecutionErrors.UnknownSelectorKindName.name(), SelectorKinds.ITEM.name());
                     }
                 }
 

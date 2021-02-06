@@ -21,7 +21,8 @@ import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.selector.common.SelectorConstants;
+import com.echothree.model.control.selector.common.SelectorKinds;
+import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.filter.server.entity.FilterKind;
@@ -95,18 +96,18 @@ public class CreateFilterStepCommand
                         
                         if(filterItemSelectorName != null) {
                             var selectorControl = Session.getModelController(SelectorControl.class);
-                            SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorConstants.SelectorKind_ITEM);
+                            SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
                             
                             if(selectorKind != null) {
-                                SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorConstants.SelectorType_FILTER);
+                                SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorTypes.FILTER.name());
                                 
                                 if(selectorType != null) {
                                     filterItemSelector = selectorControl.getSelectorByName(selectorType, filterItemSelectorName);
                                 } else {
-                                    addExecutionError(ExecutionErrors.UnknownSelectorTypeName.name(), SelectorConstants.SelectorType_FILTER);
+                                    addExecutionError(ExecutionErrors.UnknownSelectorTypeName.name(), SelectorTypes.FILTER.name());
                                 }
                             } else {
-                                addExecutionError(ExecutionErrors.UnknownSelectorKindName.name(), SelectorConstants.SelectorKind_ITEM);
+                                addExecutionError(ExecutionErrors.UnknownSelectorKindName.name(), SelectorKinds.ITEM.name());
                             }
                         }
                         

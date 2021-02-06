@@ -17,24 +17,18 @@
 package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.DeleteFilterForm;
-import com.echothree.model.control.filter.server.control.FilterControl;
-import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.filter.server.logic.FilterLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.filter.server.entity.Filter;
-import com.echothree.model.data.filter.server.entity.FilterKind;
-import com.echothree.model.data.filter.server.entity.FilterType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 
 public class DeleteFilterCommand
@@ -65,37 +59,15 @@ public class DeleteFilterCommand
     
     @Override
     protected BaseResult execute() {
-        var filterControl = Session.getModelController(FilterControl.class);
-        String filterKindName = form.getFilterKindName();
-        FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
-        
-        if(filterKind != null) {
-            String filterTypeName = form.getFilterTypeName();
-            FilterType filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
-            
-            if(filterType != null) {
-                String filterName = form.getFilterName();
-                Filter filter = filterControl.getFilterByNameForUpdate(filterType, filterName);
-                
-                if(filter != null) {
-                    var offerControl = Session.getModelController(OfferControl.class);
-                    long count = offerControl.countOffersByFilter(filter);
-                    
-                    if(count == 0) {
-                        filterControl.deleteFilter(filter, getPartyPK());
-                    } else {
-                        addExecutionError(ExecutionErrors.CannotDeleteFilterInUse.name(), filterKindName, filterTypeName, filterName);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownFilterName.name(), filterKindName, filterTypeName, filterName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownFilterTypeName.name(), filterKindName, filterTypeName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownFilterKindName.name(), filterKindName);
+        var filterKindName = form.getFilterKindName();
+        var filterTypeName = form.getFilterTypeName();
+        var filterName = form.getFilterName();
+        var filter = FilterLogic.getInstance().getFilterByNameForUpdate(this, filterKindName, filterTypeName, filterName);
+
+        if(!hasExecutionErrors()) {
+            FilterLogic.getInstance().deleteFilter(this, filter, getPartyPK());
         }
-        
+
         return null;
     }
     

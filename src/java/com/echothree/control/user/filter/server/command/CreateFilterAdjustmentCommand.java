@@ -80,7 +80,6 @@ public class CreateFilterAdjustmentCommand
                 filterAdjustmentSourceName, filterAdjustmentTypeName, isDefault, sortOrder, getPreferredLanguage(),
                 description, getPartyPK());
 
-
         if(filterAdjustment != null) {
             var filterAdjustmentDetail = filterAdjustment.getLastDetail();
 

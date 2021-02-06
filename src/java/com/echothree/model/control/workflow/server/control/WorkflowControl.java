@@ -17,7 +17,7 @@
 package com.echothree.model.control.workflow.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.selector.common.SelectorConstants;
+import com.echothree.model.control.selector.common.SelectorKinds;
 import com.echothree.model.control.selector.server.evaluator.CachedSelector;
 import com.echothree.model.control.selector.server.evaluator.PostalAddressSelectorEvaluator;
 import com.echothree.model.control.workflow.common.choice.BaseWorkflowChoicesBean;
@@ -4252,7 +4252,7 @@ public class WorkflowControl
             List<WorkflowEntranceSelector> workflowEntranceSelectors = getWorkflowEntranceSelectorsByWorkflow(workflow);
             String selectorKindName = selectorType.getLastDetail().getSelectorKind().getLastDetail().getSelectorKindName();
 
-            if(selectorKindName.equals(SelectorConstants.SelectorKind_POSTAL_ADDRESS)) {
+            if(selectorKindName.equals(SelectorKinds.POSTAL_ADDRESS.name())) {
                 PostalAddressSelectorEvaluator pase = new PostalAddressSelectorEvaluator(session, createdBy);
 
                 for(var workflowEntranceSelector : workflowEntranceSelectors) {

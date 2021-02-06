@@ -17,7 +17,7 @@
 package com.echothree.model.control.selector.server.evaluator;
 
 import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.control.selector.common.SelectorConstants;
+import com.echothree.model.control.selector.common.SelectorNodeTypes;
 import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.item.server.entity.Item;
@@ -143,11 +143,11 @@ public class BaseItemSelectorEvaluator
             SelectorNodeType snt = snd.getSelectorNodeType();
             String sntn = snt.getSelectorNodeTypeName();
             
-            if(sntn.equals(SelectorConstants.SelectorNodeType_ITEM_CATEGORY)) {
+            if(sntn.equals(SelectorNodeTypes.ITEM_CATEGORY.name())) {
                 result = evaluateItemCategory(snd);
-            } else if(sntn.equals(SelectorConstants.SelectorNodeType_ITEM_ACCOUNTING_CATEGORY)) {
+            } else if(sntn.equals(SelectorNodeTypes.ITEM_ACCOUNTING_CATEGORY.name())) {
                 result = evaluateItemAccountingCategory(snd);
-            } else if(sntn.equals(SelectorConstants.SelectorNodeType_ITEM_PURCHASING_CATEGORY)) {
+            } else if(sntn.equals(SelectorNodeTypes.ITEM_PURCHASING_CATEGORY.name())) {
                 result = evaluateItemPurchasingCategory(snd);
             } else {
                 result = super.evaluateSelectorNode(snd);

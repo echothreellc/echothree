@@ -16,8 +16,11 @@
 
 package com.echothree.model.control.filter.server.evaluator;
 
-import com.echothree.model.control.filter.common.FilterConstants;
-import com.echothree.model.control.selector.common.SelectorConstants;
+import com.echothree.model.control.filter.common.FilterAdjustmentSources;
+import com.echothree.model.control.filter.common.FilterAdjustmentTypes;
+import com.echothree.model.control.filter.common.FilterKinds;
+import com.echothree.model.control.filter.common.FilterTypes;
+import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.model.control.selector.server.evaluator.FilterItemSelectorEvaluator;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.filter.server.entity.Filter;
@@ -55,8 +58,8 @@ public class OfferItemPriceFilterEvaluator
     
     /** Creates a new instance of OfferItemPriceFilterEvaluator */
     public OfferItemPriceFilterEvaluator(Session session, BasePK evaluatedBy) {
-        super(session, evaluatedBy, OfferItemPriceFilterEvaluator.class, FilterConstants.FilterKind_PRICE,
-                FilterConstants.FilterType_OFFER_ITEM_PRICE, SelectorConstants.SelectorType_FILTER);
+        super(session, evaluatedBy, OfferItemPriceFilterEvaluator.class, FilterKinds.PRICE.name(),
+                FilterTypes.OFFER_ITEM_PRICE.name(), SelectorTypes.FILTER.name());
         
         filterItemSelectorEvaluator = new FilterItemSelectorEvaluator(session, evaluatedBy);
     }
@@ -76,17 +79,17 @@ public class OfferItemPriceFilterEvaluator
             log.info("--- filterAdjustmentSourceName = " + filterAdjustmentSourceName);
         }
 
-        if(filterAdjustmentSourceName.equals(FilterConstants.FilterAdjustmentSource_CURRENT)) {
+        if(filterAdjustmentSourceName.equals(FilterAdjustmentSources.CURRENT.name())) {
             // No source price changes.
-        } else if(filterAdjustmentSourceName.equals(FilterConstants.FilterAdjustmentSource_INVENTORY_COST)) {
+        } else if(filterAdjustmentSourceName.equals(FilterAdjustmentSources.INVENTORY_COST.name())) {
             // TODO
-        } else if(filterAdjustmentSourceName.equals(FilterConstants.FilterAdjustmentSource_ITEM_PRICE)) {
+        } else if(filterAdjustmentSourceName.equals(FilterAdjustmentSources.ITEM_PRICE.name())) {
             unitPrice = listUnitPrice;
-        } else if(filterAdjustmentSourceName.equals(FilterConstants.FilterAdjustmentSource_PRIMARY_VENDOR_COST)) {
+        } else if(filterAdjustmentSourceName.equals(FilterAdjustmentSources.PRIMARY_VENDOR_COST.name())) {
             // TODO
-        } else if(filterAdjustmentSourceName.equals(FilterConstants.FilterAdjustmentSource_VENDOR_COST)) {
+        } else if(filterAdjustmentSourceName.equals(FilterAdjustmentSources.VENDOR_COST.name())) {
             // TODO
-        } else if(filterAdjustmentSourceName.equals(FilterConstants.FilterAdjustmentSource_SET_AMOUNT)) {
+        } else if(filterAdjustmentSourceName.equals(FilterAdjustmentSources.SET_AMOUNT.name())) {
             // No change here, taken care of by filterAdjustmentType
             if(filterAdjustmentType == null)
                 throw new IllegalArgumentException("filterAdjustmentType is required when FilterAdjustmentSource_SET_AMOUNT");
@@ -100,7 +103,7 @@ public class OfferItemPriceFilterEvaluator
             
             if(BaseFilterEvaluatorDebugFlags.OfferItemPriceFilterEvaluator)
                 log.info("--- filterAdjustmentTypeName = " + filterAdjustmentTypeName);
-            if(filterAdjustmentTypeName.equals(FilterConstants.FilterAdjustmentType_AMOUNT)) {
+            if(filterAdjustmentTypeName.equals(FilterAdjustmentTypes.AMOUNT.name())) {
                 FilterAdjustmentAmount filterAdjustmentAmount = filterControl.getFilterAdjustmentAmount(filterAdjustment, unitOfMeasureType, currency);
                 
                 if(filterAdjustmentAmount != null) {
@@ -110,13 +113,13 @@ public class OfferItemPriceFilterEvaluator
                     if(unitPrice < 0)
                         unitPrice = 0;
                 }
-            } else if(filterAdjustmentTypeName.equals(FilterConstants.FilterAdjustmentType_FIXED_AMOUNT)) {
+            } else if(filterAdjustmentTypeName.equals(FilterAdjustmentTypes.FIXED_AMOUNT.name())) {
                 FilterAdjustmentFixedAmount filterAdjustmentFixedAmount = filterControl.getFilterAdjustmentFixedAmount(filterAdjustment, unitOfMeasureType, currency);
                 
                 if(filterAdjustmentFixedAmount != null) {
                     unitPrice = filterAdjustmentFixedAmount.getUnitAmount();
                 }
-            } else if(filterAdjustmentTypeName.equals(FilterConstants.FilterAdjustmentType_PERCENT)) {
+            } else if(filterAdjustmentTypeName.equals(FilterAdjustmentTypes.PERCENT.name())) {
                 FilterAdjustmentPercent filterAdjustmentPercent = filterControl.getFilterAdjustmentPercent(filterAdjustment, unitOfMeasureType, currency);
                 
                 if(filterAdjustmentPercent != null) {

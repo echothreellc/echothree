@@ -25,9 +25,11 @@ import com.echothree.control.user.selector.common.result.GetSelectorChoicesResul
 import com.echothree.control.user.sequence.common.SequenceUtil;
 import com.echothree.control.user.sequence.common.form.GetSequenceChoicesForm;
 import com.echothree.control.user.sequence.common.result.GetSequenceChoicesResult;
-import com.echothree.model.control.filter.common.FilterConstants;
+import com.echothree.model.control.filter.common.FilterKinds;
+import com.echothree.model.control.filter.common.FilterTypes;
 import com.echothree.model.control.filter.common.choice.FilterChoicesBean;
-import com.echothree.model.control.selector.common.SelectorConstants;
+import com.echothree.model.control.selector.common.SelectorKinds;
+import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.model.control.selector.common.choice.SelectorChoicesBean;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.common.choice.SequenceChoicesBean;
@@ -89,8 +91,8 @@ public class AddActionForm
             try {
                 GetSelectorChoicesForm form = SelectorUtil.getHome().getGetSelectorChoicesForm();
                 
-                form.setSelectorKindName(SelectorConstants.SelectorKind_ITEM);
-                form.setSelectorTypeName(SelectorConstants.SelectorType_OFFER);
+                form.setSelectorKindName(SelectorKinds.ITEM.name());
+                form.setSelectorTypeName(SelectorTypes.OFFER.name());
                 form.setDefaultSelectorChoice(offerItemSelectorChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
                 
@@ -114,8 +116,8 @@ public class AddActionForm
             try {
                 GetFilterChoicesForm form = FilterUtil.getHome().getGetFilterChoicesForm();
                 
-                form.setFilterKindName(FilterConstants.FilterKind_PRICE);
-                form.setFilterTypeName(FilterConstants.FilterType_OFFER_ITEM_PRICE);
+                form.setFilterKindName(FilterKinds.PRICE.name());
+                form.setFilterTypeName(FilterTypes.OFFER_ITEM_PRICE.name());
                 form.setDefaultFilterChoice(offerItemPriceFilterChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
                 

@@ -26,11 +26,12 @@ import com.echothree.control.user.workeffort.common.WorkEffortUtil;
 import com.echothree.control.user.workeffort.common.form.GetWorkEffortScopeChoicesForm;
 import com.echothree.control.user.workeffort.common.result.GetWorkEffortScopeChoicesResult;
 import com.echothree.model.control.core.common.choice.ServerChoicesBean;
-import com.echothree.model.control.selector.common.SelectorConstants;
+import com.echothree.model.control.selector.common.SelectorKinds;
+import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.model.control.selector.common.choice.SelectorChoicesBean;
+import com.echothree.model.control.workeffort.common.choice.WorkEffortScopeChoicesBean;
 import com.echothree.model.control.workeffort.common.workeffort.ReceiveCustomerEmailConstants;
 import com.echothree.model.control.workeffort.common.workeffort.SendCustomerEmailConstants;
-import com.echothree.model.control.workeffort.common.choice.WorkEffortScopeChoicesBean;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BaseActionForm;
@@ -134,8 +135,8 @@ public class AddActionForm
             try {
                 GetSelectorChoicesForm form = SelectorUtil.getHome().getGetSelectorChoicesForm();
                 
-                form.setSelectorKindName(SelectorConstants.SelectorKind_EMPLOYEE);
-                form.setSelectorTypeName(SelectorConstants.SelectorType_EMAIL_REVIEW);
+                form.setSelectorKindName(SelectorKinds.EMPLOYEE.name());
+                form.setSelectorTypeName(SelectorTypes.EMAIL_REVIEW.name());
                 form.setDefaultSelectorChoice(reviewEmployeeSelectorChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
                 

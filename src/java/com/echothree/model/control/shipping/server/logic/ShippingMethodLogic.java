@@ -16,7 +16,8 @@
 
 package com.echothree.model.control.shipping.server.logic;
 
-import com.echothree.model.control.selector.common.SelectorConstants;
+import com.echothree.model.control.selector.common.SelectorKinds;
+import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.model.control.selector.server.evaluator.CachedSelector;
 import com.echothree.model.control.selector.server.evaluator.SelectorCache;
 import com.echothree.model.control.selector.server.evaluator.SelectorCacheFactory;
@@ -90,8 +91,8 @@ public class ShippingMethodLogic
         Selector selector = shippingMethod.getLastDetail().getItemSelector();
         
         if(selector != null) {
-            SelectorCache selectorCache = SelectorCacheFactory.getInstance().getSelectorCache(session, SelectorConstants.SelectorKind_ITEM,
-                    SelectorConstants.SelectorType_SHIPPING_METHOD);
+            SelectorCache selectorCache = SelectorCacheFactory.getInstance().getSelectorCache(session, SelectorKinds.ITEM.name(),
+                    SelectorTypes.SHIPPING_METHOD.name());
             
             checkAcceptanceOfItem(session, eea, selectorCache, shippingMethod, item, evaluatedBy);
         }
@@ -102,8 +103,8 @@ public class ShippingMethodLogic
         Selector selector = shippingMethod.getLastDetail().getItemSelector();
         
         if(selector != null) {
-            SelectorCache selectorCache = SelectorCacheFactory.getInstance().getSelectorCache(session, SelectorConstants.SelectorKind_ITEM,
-                    SelectorConstants.SelectorType_SHIPPING_METHOD);
+            SelectorCache selectorCache = SelectorCacheFactory.getInstance().getSelectorCache(session, SelectorKinds.ITEM.name(),
+                    SelectorTypes.SHIPPING_METHOD.name());
             
             items.forEach((item) -> {
                 checkAcceptanceOfItem(session, eea, selectorCache, shippingMethod, item, evaluatedBy);

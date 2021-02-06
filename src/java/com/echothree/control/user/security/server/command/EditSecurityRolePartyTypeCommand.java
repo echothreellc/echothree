@@ -27,7 +27,7 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.security.server.control.SecurityControl;
-import com.echothree.model.control.selector.common.SelectorConstants;
+import com.echothree.model.control.selector.common.SelectorTypes;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.security.server.entity.SecurityRole;
@@ -38,10 +38,10 @@ import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.model.data.selector.server.entity.SelectorType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -167,17 +167,17 @@ public class EditSecurityRolePartyTypeCommand
                 SelectorKind selectorKind = selectorControl.getSelectorKindByName(partyTypeName);
 
                 if(selectorKind != null) {
-                    SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorConstants.SelectorType_SECURITY_ROLE);
+                    SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorTypes.SECURITY_ROLE.name());
 
                     if(selectorType != null) {
                         partySelector = selectorControl.getSelectorByName(selectorType, partySelectorName);
 
                         if(partySelector == null) {
-                            addExecutionError(ExecutionErrors.UnknownPartySelectorName.name(), partyTypeName, SelectorConstants.SelectorType_SECURITY_ROLE,
+                            addExecutionError(ExecutionErrors.UnknownPartySelectorName.name(), partyTypeName, SelectorTypes.SECURITY_ROLE.name(),
                                     partySelectorName);
                         }
                     } else {
-                        addExecutionError(ExecutionErrors.UnknownPartySelectorTypeName.name(), partyTypeName, SelectorConstants.SelectorType_SECURITY_ROLE);
+                        addExecutionError(ExecutionErrors.UnknownPartySelectorTypeName.name(), partyTypeName, SelectorTypes.SECURITY_ROLE.name());
                     }
                 } else {
                     addExecutionError(ExecutionErrors.UnknownPartySelectorKindName.name(), partyTypeName);

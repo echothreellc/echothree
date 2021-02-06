@@ -30,6 +30,7 @@ import com.echothree.control.user.filter.server.command.GetFilterCommand;
 import com.echothree.control.user.filter.server.command.GetFilterKindCommand;
 import com.echothree.control.user.filter.server.command.GetFilterTypeCommand;
 import com.echothree.control.user.filter.server.command.GetFilterTypesCommand;
+import com.echothree.control.user.filter.server.command.GetFiltersCommand;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import graphql.schema.DataFetchingEnvironment;
 
@@ -95,8 +96,12 @@ public final class FilterSecurityUtils {
         return env.<GraphQlContext>getContext().hasAccess(GetFilterAdjustmentPercentCommand.class);
     }
 
-//    public boolean getHasFilterAccess(final DataFetchingEnvironment env) {
-//        return env.<GraphQlContext>getContext().hasAccess(GetFilterCommand.class);
-//    }
+    public boolean getHasFiltersAccess(final DataFetchingEnvironment env) {
+        return env.<GraphQlContext>getContext().hasAccess(GetFiltersCommand.class);
+    }
+
+    public boolean getHasFilterAccess(final DataFetchingEnvironment env) {
+        return env.<GraphQlContext>getContext().hasAccess(GetFilterCommand.class);
+    }
 
 }
