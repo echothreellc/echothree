@@ -1,5 +1,14 @@
 # Changelog
 
+## 2021-02-07-01
+
+* GraphQL Objects and Mutations for Filters [155](https://gitlab.echothree.com/echothree/echothree/-/issues/155)
+* Create Sources JAR File [278](https://gitlab.echothree.com/echothree/echothree/-/issues/278)
+* Create Documentation JAR File [279](https://gitlab.echothree.com/echothree/echothree/-/issues/279)
+* WildFly 22.0.0 Upgrade [280](https://gitlab.echothree.com/echothree/echothree/-/issues/280)
+* MySQL Connector/J 8.0.23 Upgrade [281](https://gitlab.echothree.com/echothree/echothree/-/issues/281)
+* Add Filter Adjustments to Filter Kinds GraphQL Object [282](https://gitlab.echothree.com/echothree/echothree/-/issues/282)
+
 ## 2021-01-24-01
 
 * GraphQL Objects and Mutations for Filter Adjustments [156](https://gitlab.echothree.com/echothree/echothree/-/issues/156)
