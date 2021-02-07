@@ -18,7 +18,9 @@ package com.echothree.model.control.selector.server.graphql;
 
 import com.echothree.control.user.selector.server.command.GetSelectorCommand;
 import com.echothree.control.user.selector.server.command.GetSelectorKindCommand;
+import com.echothree.control.user.selector.server.command.GetSelectorKindsCommand;
 import com.echothree.control.user.selector.server.command.GetSelectorTypeCommand;
+import com.echothree.control.user.selector.server.command.GetSelectorTypesCommand;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import graphql.schema.DataFetchingEnvironment;
 
@@ -38,6 +40,10 @@ public final class SelectorSecurityUtils {
 
     public boolean getHasSelectorTypeAccess(final DataFetchingEnvironment env) {
         return env.<GraphQlContext>getContext().hasAccess(GetSelectorTypeCommand.class);
+    }
+
+    public boolean getHasSelectorTypesAccess(final DataFetchingEnvironment env) {
+        return env.<GraphQlContext>getContext().hasAccess(GetSelectorTypesCommand.class);
     }
 
 //    public boolean getHasSelectorAccess(final DataFetchingEnvironment env) {
