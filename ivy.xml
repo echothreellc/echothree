@@ -8,7 +8,7 @@
     </configurations>
     <dependencies>
         <dependency org="com.google.code.gson" name="gson" rev="2.8.6" conf="sources->sources" />
-        <dependency org="com.google.errorprone" name="error_prone_core" rev="2.4.0" conf="sources->sources" />
+        <dependency org="com.google.errorprone" name="error_prone_core" rev="2.5.1" conf="sources->sources" />
         <dependency org="com.google.guava" name="failureaccess" rev="1.0" conf="sources->sources" />
         <dependency org="com.google.guava" name="guava" rev="30.0-jre" conf="sources->sources" />
         <dependency org="com.graphql-java" name="graphql-java" rev="15.0" conf="sources->sources" />
@@ -57,11 +57,11 @@
         <dependency org="org.apache.httpcomponents" name="httpclient-cache" rev="4.5.12" conf="sources->sources" />
         <dependency org="org.apache.httpcomponents" name="httpcore" rev="4.4.13" conf="sources->sources" />
         <dependency org="org.apache.httpcomponents" name="httpmime" rev="4.5.12" conf="sources->sources" />
-        <dependency org="org.apache.lucene" name="lucene-analyzers-common" rev="8.7.0" conf="sources->sources" />
-        <dependency org="org.apache.lucene" name="lucene-analyzers-kuromoji" rev="8.7.0" conf="sources->sources" />
-        <dependency org="org.apache.lucene" name="lucene-core" rev="8.7.0" conf="sources->sources" />
-        <dependency org="org.apache.lucene" name="lucene-queryparser" rev="8.7.0" conf="sources->sources" />
-        <dependency org="org.apache.lucene" name="lucene-suggest" rev="8.7.0" conf="sources->sources" />
+        <dependency org="org.apache.lucene" name="lucene-analyzers-common" rev="8.8.0" conf="sources->sources" />
+        <dependency org="org.apache.lucene" name="lucene-analyzers-kuromoji" rev="8.8.0" conf="sources->sources" />
+        <dependency org="org.apache.lucene" name="lucene-core" rev="8.8.0" conf="sources->sources" />
+        <dependency org="org.apache.lucene" name="lucene-queryparser" rev="8.8.0" conf="sources->sources" />
+        <dependency org="org.apache.lucene" name="lucene-suggest" rev="8.8.0" conf="sources->sources" />
         <dependency org="org.apache.poi" name="poi" rev="3.17" conf="sources->sources" />
         <dependency org="org.assertj" name="assertj-core" rev="3.18.1" conf="sources->sources" />
         <dependency org="org.assertj" name="assertj-guava" rev="3.4.0" conf="sources->sources" />
@@ -92,7 +92,7 @@
         <dependency org="xml-apis" name="xml-apis" rev="1.4.01" conf="sources->sources" />
 
         <dependency org="com.google.code.gson" name="gson" rev="2.8.6" conf="javadoc->javadoc" />
-        <dependency org="com.google.errorprone" name="error_prone_core" rev="2.4.0" conf="javadoc->javadoc" />
+        <dependency org="com.google.errorprone" name="error_prone_core" rev="2.5.1" conf="javadoc->javadoc" />
         <dependency org="com.google.guava" name="failureaccess" rev="1.0" conf="javadoc->javadoc" />
         <dependency org="com.google.guava" name="guava" rev="30.0-jre" conf="javadoc->javadoc" />
         <dependency org="com.graphql-java" name="graphql-java" rev="15.0" conf="javadoc->javadoc" />
@@ -140,11 +140,11 @@
         <dependency org="org.apache.httpcomponents" name="httpclient-cache" rev="4.5.12" conf="javadoc->javadoc" />
         <dependency org="org.apache.httpcomponents" name="httpcore" rev="4.4.13" conf="javadoc->javadoc" />
         <dependency org="org.apache.httpcomponents" name="httpmime" rev="4.5.12" conf="javadoc->javadoc" />
-        <dependency org="org.apache.lucene" name="lucene-analyzers-common" rev="8.7.0" conf="javadoc->javadoc" />
-        <dependency org="org.apache.lucene" name="lucene-analyzers-kuromoji" rev="8.7.0" conf="javadoc->javadoc" />
-        <dependency org="org.apache.lucene" name="lucene-core" rev="8.7.0" conf="javadoc->javadoc" />
-        <dependency org="org.apache.lucene" name="lucene-queryparser" rev="8.7.0" conf="javadoc->javadoc" />
-        <dependency org="org.apache.lucene" name="lucene-suggest" rev="8.7.0" conf="javadoc->javadoc" />
+        <dependency org="org.apache.lucene" name="lucene-analyzers-common" rev="8.8.0" conf="javadoc->javadoc" />
+        <dependency org="org.apache.lucene" name="lucene-analyzers-kuromoji" rev="8.8.0" conf="javadoc->javadoc" />
+        <dependency org="org.apache.lucene" name="lucene-core" rev="8.8.0" conf="javadoc->javadoc" />
+        <dependency org="org.apache.lucene" name="lucene-queryparser" rev="8.8.0" conf="javadoc->javadoc" />
+        <dependency org="org.apache.lucene" name="lucene-suggest" rev="8.8.0" conf="javadoc->javadoc" />
         <dependency org="org.apache.poi" name="poi" rev="3.17" conf="javadoc->javadoc" />
         <dependency org="org.assertj" name="assertj-core" rev="3.18.1" conf="javadoc->javadoc" />
         <dependency org="org.assertj" name="assertj-guava" rev="3.4.0" conf="javadoc->javadoc" />
@@ -175,7 +175,7 @@
         <dependency org="xml-apis" name="xml-apis" rev="1.4.01" conf="javadoc->javadoc" />
 
         <dependency org="com.google.code.gson" name="gson" rev="2.8.6" conf="binaries->default" />
-        <dependency org="com.google.errorprone" name="error_prone_core" rev="2.4.0" conf="binaries->default">
+        <dependency org="com.google.errorprone" name="error_prone_core" rev="2.5.1" conf="binaries->default">
             <artifact name="error_prone_core" e:classifier="with-dependencies" ext="jar"/>
         </dependency>
         <dependency org="com.google.guava" name="failureaccess" rev="1.0" conf="binaries->default" />
@@ -228,11 +228,11 @@
         <dependency org="org.apache.httpcomponents" name="httpclient-cache" rev="4.5.12" conf="binaries->default" />
         <dependency org="org.apache.httpcomponents" name="httpcore" rev="4.4.13" conf="binaries->default" />
         <dependency org="org.apache.httpcomponents" name="httpmime" rev="4.5.12" conf="binaries->default" />
-        <dependency org="org.apache.lucene" name="lucene-analyzers-common" rev="8.7.0" conf="binaries->default" />
-        <dependency org="org.apache.lucene" name="lucene-analyzers-kuromoji" rev="8.7.0" conf="binaries->default" />
-        <dependency org="org.apache.lucene" name="lucene-core" rev="8.7.0" conf="binaries->default" />
-        <dependency org="org.apache.lucene" name="lucene-queryparser" rev="8.7.0" conf="binaries->default" />
-        <dependency org="org.apache.lucene" name="lucene-suggest" rev="8.7.0" conf="binaries->default" />
+        <dependency org="org.apache.lucene" name="lucene-analyzers-common" rev="8.8.0" conf="binaries->default" />
+        <dependency org="org.apache.lucene" name="lucene-analyzers-kuromoji" rev="8.8.0" conf="binaries->default" />
+        <dependency org="org.apache.lucene" name="lucene-core" rev="8.8.0" conf="binaries->default" />
+        <dependency org="org.apache.lucene" name="lucene-queryparser" rev="8.8.0" conf="binaries->default" />
+        <dependency org="org.apache.lucene" name="lucene-suggest" rev="8.8.0" conf="binaries->default" />
         <dependency org="org.apache.poi" name="poi" rev="3.17" conf="binaries->default" />
         <dependency org="org.assertj" name="assertj-core" rev="3.18.1" conf="binaries->default" />
         <dependency org="org.assertj" name="assertj-guava" rev="3.4.0" conf="binaries->default" />
