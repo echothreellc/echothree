@@ -13,7 +13,7 @@ deploying these applications.
 ## Prerequisites
 
 * CentOS 6
-* Amazon Corretto 11 (11.0.9.12.1)
+* Amazon Corretto 11 (11.0.10.9.1)
 * Apache Ant 1.10 (1.10.9)
 * MySQL 8.0 (8.0.23 GA)
 * WildFly 22 (22.0.0)
