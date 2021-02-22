@@ -1,5 +1,11 @@
 # Changelog
 
+## 2021-02-21-01
+
+* Error Prone 2.5.1 Upgrade [283](https://gitlab.echothree.com/echothree/echothree/-/issues/283)
+* Amazon Corretto 11.0.10.9.1 Upgrade [284](https://gitlab.echothree.com/echothree/echothree/-/issues/284)
+* Apache Lucene 8.8.0 Upgrade [285](https://gitlab.echothree.com/echothree/echothree/-/issues/285)
+
 ## 2021-02-07-01
 
 * GraphQL Objects and Mutations for Filters [155](https://gitlab.echothree.com/echothree/echothree/-/issues/155)
