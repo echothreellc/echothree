@@ -30,8 +30,8 @@
         <dependency org="commons-net" name="commons-net" rev="3.6" conf="sources->sources" />
         <dependency org="de.odysseus.juel" name="juel-api" rev="2.2.7" conf="sources->sources" />
         <dependency org="de.odysseus.juel" name="juel-impl" rev="2.2.7" conf="sources->sources" />
-        <dependency org="io.cucumber" name="cucumber-java8" rev="6.7.0" conf="sources->sources" />
-        <dependency org="io.cucumber" name="cucumber-junit" rev="6.7.0" conf="sources->sources" />
+        <dependency org="io.cucumber" name="cucumber-java8" rev="6.10.0" conf="sources->sources" />
+        <dependency org="io.cucumber" name="cucumber-junit" rev="6.10.0" conf="sources->sources" />
         <dependency org="io.github.classgraph" name="classgraph" rev="4.8.102" conf="sources->sources" />
         <dependency org="io.github.graphql-java" name="graphql-java-annotations" rev="8.3" conf="sources->sources" />
         <dependency org="javax.activation" name="activation" rev="1.1.1" conf="sources->sources" />
@@ -114,8 +114,8 @@
         <dependency org="commons-net" name="commons-net" rev="3.6" conf="javadoc->javadoc" />
         <dependency org="de.odysseus.juel" name="juel-api" rev="2.2.7" conf="javadoc->javadoc" />
         <dependency org="de.odysseus.juel" name="juel-impl" rev="2.2.7" conf="javadoc->javadoc" />
-        <dependency org="io.cucumber" name="cucumber-java8" rev="6.7.0" conf="javadoc->javadoc" />
-        <dependency org="io.cucumber" name="cucumber-junit" rev="6.7.0" conf="javadoc->javadoc" />
+        <dependency org="io.cucumber" name="cucumber-java8" rev="6.10.0" conf="javadoc->javadoc" />
+        <dependency org="io.cucumber" name="cucumber-junit" rev="6.10.0" conf="javadoc->javadoc" />
         <dependency org="io.github.classgraph" name="classgraph" rev="4.8.102" conf="javadoc->javadoc" />
         <dependency org="io.github.graphql-java" name="graphql-java-annotations" rev="8.3" conf="javadoc->javadoc" />
         <dependency org="javax.activation" name="activation" rev="1.1.1" conf="javadoc->javadoc" />
@@ -199,8 +199,8 @@
         <dependency org="commons-net" name="commons-net" rev="3.6" conf="binaries->default" />
         <dependency org="de.odysseus.juel" name="juel-api" rev="2.2.7" conf="binaries->default" />
         <dependency org="de.odysseus.juel" name="juel-impl" rev="2.2.7" conf="binaries->default" />
-        <dependency org="io.cucumber" name="cucumber-java8" rev="6.7.0" conf="binaries->default" />
-        <dependency org="io.cucumber" name="cucumber-junit" rev="6.7.0" conf="binaries->default" />
+        <dependency org="io.cucumber" name="cucumber-java8" rev="6.10.0" conf="binaries->default" />
+        <dependency org="io.cucumber" name="cucumber-junit" rev="6.10.0" conf="binaries->default" />
         <dependency org="io.github.classgraph" name="classgraph" rev="4.8.102" conf="binaries->default" />
         <dependency org="io.github.graphql-java" name="graphql-java-annotations" rev="8.3" conf="binaries->default" />
         <dependency org="javax.activation" name="activation" rev="1.1.1" conf="binaries->default" />
