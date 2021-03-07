@@ -1,5 +1,14 @@
 # Changelog
 
+## 2021-03-07-01
+
+* jOOQ 3.14.8 Upgrade [286](https://gitlab.echothree.com/echothree/echothree/-/issues/286)
+* Guava 30.1-jre Upgrade [287](https://gitlab.echothree.com/echothree/echothree/-/issues/287)
+* ClassGraph 4.8.102 Upgrade [288](https://gitlab.echothree.com/echothree/echothree/-/issues/288)
+* Apache Lucene 8.8.1 Upgrade [289](https://gitlab.echothree.com/echothree/echothree/-/issues/289)
+* cucumber-java8/cucumber-junit 6.10.0 Upgrade [290](https://gitlab.echothree.com/echothree/echothree/-/issues/290)
+* Apache Commons HttpCore 4.4.14 / HttpClient 4.5.13 Upgrade [291](https://gitlab.echothree.com/echothree/echothree/-/issues/291)
+
 ## 2021-02-21-01
 
 * Error Prone 2.5.1 Upgrade [283](https://gitlab.echothree.com/echothree/echothree/-/issues/283)
