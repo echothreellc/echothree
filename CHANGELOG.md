@@ -1,5 +1,13 @@
 # Changelog
 
+## 2021-05-02-01
+
+* jOOQ 3.14.9 Upgrade [293](https://gitlab.echothree.com/echothree/echothree/-/issues/293)
+* ClassGraph 4.8.104 Upgrade [294](https://gitlab.echothree.com/echothree/echothree/-/issues/294)
+* WildFly 23.0.1 Upgrade [295](https://gitlab.echothree.com/echothree/echothree/-/issues/295)
+* Guava 30.1.1-jre Upgrade [296](https://gitlab.echothree.com/echothree/echothree/-/issues/296)
+* Apache Lucene 8.8.2 Upgrade [297](https://gitlab.echothree.com/echothree/echothree/-/issues/297)
+
 ## 2021-04-04-01
 
 * WildFly 23.0.0 Upgrade [292](https://gitlab.echothree.com/echothree/echothree/-/issues/292)
