@@ -1,5 +1,9 @@
 # Changelog
 
+## 2021-05-16-01
+
+* WildFly 23.0.2 Upgrade [298](https://gitlab.echothree.com/echothree/echothree/-/issues/298)
+
 ## 2021-05-02-01
 
 * jOOQ 3.14.9 Upgrade [293](https://gitlab.echothree.com/echothree/echothree/-/issues/293)
