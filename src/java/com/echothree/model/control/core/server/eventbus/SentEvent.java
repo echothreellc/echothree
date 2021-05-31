@@ -20,10 +20,14 @@ import com.echothree.model.data.core.server.entity.Event;
 
 public class SentEvent {
 
-    Event event;
+    private Event event;
 
     public SentEvent(Event event) {
         this.event = event;
+    }
+
+    public Event getEvent() {
+        return event;
     }
 
 }
