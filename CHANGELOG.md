@@ -1,5 +1,14 @@
 # Changelog
 
+## 2021-05-30-01
+
+* MySQL Connector/J 8.0.25 Upgrade [299](https://gitlab.echothree.com/echothree/echothree/-/issues/299)
+* jOOQ 3.14.11 Upgrade [300](https://gitlab.echothree.com/echothree/echothree/-/issues/300)
+* Error Prone 2.7.1 Upgrade [301](https://gitlab.echothree.com/echothree/echothree/-/issues/301)
+* Gson 2.8.7 Upgrade [302](https://gitlab.echothree.com/echothree/echothree/-/issues/302)
+* ICU4J 69.1 Upgrade [303](https://gitlab.echothree.com/echothree/echothree/-/issues/303)
+* ClassGraph 4.8.106 Upgrade [304](https://gitlab.echothree.com/echothree/echothree/-/issues/304)
+
 ## 2021-05-16-01
 
 * WildFly 23.0.2 Upgrade [298](https://gitlab.echothree.com/echothree/echothree/-/issues/298)
