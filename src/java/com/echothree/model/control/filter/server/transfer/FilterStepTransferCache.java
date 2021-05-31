@@ -48,6 +48,8 @@ public class FilterStepTransferCache
             includeFilterStepElements = options.contains(FilterOptions.FilterStepIncludeFilterStepElements);
             includeFilterStepDestinations = options.contains(FilterOptions.FilterStepIncludeFilterStepDestinations);
         }
+
+        setIncludeEntityInstance(true);
     }
 
     @Override
