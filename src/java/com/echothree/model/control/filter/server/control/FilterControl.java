@@ -2863,11 +2863,26 @@ public class FilterControl
         filterStep.setLastDetail(filterStepDetail);
         filterStep.store();
         
-        sendEventUsingNames(filter.getPrimaryKey(), EventTypes.MODIFY.name(), filterStep.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(filterStep.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
         
         return filterStep;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.FilterStep */
+    public FilterStep getFilterStepByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new FilterStepPK(entityInstance.getEntityUniqueId());
+
+        return FilterStepFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public FilterStep getFilterStepByEntityInstance(EntityInstance entityInstance) {
+        return getFilterStepByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public FilterStep getFilterStepByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getFilterStepByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     private FilterStep getFilterStepByName(Filter filter, String filterStepName, EntityPermission entityPermission) {
         FilterStep filterStep;
         
@@ -3028,7 +3043,7 @@ public class FilterControl
             filterStep.setActiveDetail(filterStepDetail);
             filterStep.setLastDetail(filterStepDetail);
             
-            sendEventUsingNames(filterPK, EventTypes.MODIFY.name(), filterStepPK, EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(filterStepPK, EventTypes.MODIFY.name(), null, null, updatedBy);
         }
     }
     
@@ -3043,8 +3058,7 @@ public class FilterControl
         filterStep.setActiveDetail(null);
         filterStep.store();
         
-        sendEventUsingNames(filterStepDetail.getFilter().getPrimaryKey(), EventTypes.MODIFY.name(),
-                filterStep.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(filterStep.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
     }
     
     public void deleteFilterStepsByFilter(Filter filter, BasePK deletedBy) {
