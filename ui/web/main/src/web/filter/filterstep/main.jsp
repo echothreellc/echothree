@@ -49,6 +49,7 @@
                 <c:param name="FilterName" value="${filter.filterName}" />
             </c:url>
             <p><a href="${addUrl}">Add Step.</a></p>
+            <et:checkSecurityRoles securityRoles="Event.List" />
             <display:table name="filterSteps" id="filterStep" class="displaytag">
                 <display:column titleKey="columnTitle.name">
                     <c:url var="reviewUrl" value="/action/Filter/FilterStep/Review">
@@ -100,6 +101,14 @@
                     </c:url>
                     <a href="${deleteUrl}">Delete</a>
                 </display:column>
+                <et:hasSecurityRole securityRole="Event.List">
+                    <display:column>
+                        <c:url var="eventsUrl" value="/action/Core/Event/Main">
+                            <c:param name="EntityRef" value="${filterStep.entityInstance.entityRef}" />
+                        </c:url>
+                        <a href="${eventsUrl}">Events</a>
+                    </display:column>
+                </et:hasSecurityRole>
             </display:table>
         </div>
         <jsp:include page="../../include/userSession.jsp" />
