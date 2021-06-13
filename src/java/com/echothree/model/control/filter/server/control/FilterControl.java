@@ -2868,6 +2868,22 @@ public class FilterControl
         return filterStep;
     }
 
+    public long countFilterStepsByFilter(Filter filter) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM filtersteps, filterstepdetails " +
+                "WHERE fltstp_activedetailid = fltstpdt_filterstepdetailid AND fltstpdt_flt_filterid = ?",
+                filter);
+    }
+
+    public long countFilterStepsBySelector(Selector selector) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM filtersteps, filterstepdetails " +
+                "WHERE fltstp_activedetailid = fltstpdt_filterstepdetailid AND fltstpdt_filteritemselectorid = ?",
+                selector);
+    }
+
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.FilterStep */
     public FilterStep getFilterStepByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new FilterStepPK(entityInstance.getEntityUniqueId());
@@ -2883,7 +2899,7 @@ public class FilterControl
         return getFilterStepByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
-    private FilterStep getFilterStepByName(Filter filter, String filterStepName, EntityPermission entityPermission) {
+    public FilterStep getFilterStepByName(Filter filter, String filterStepName, EntityPermission entityPermission) {
         FilterStep filterStep;
         
         try {
@@ -3003,7 +3019,7 @@ public class FilterControl
         return new FilterStepChoicesBean(labels, values, defaultValue);
     }
     
-    public List<FilterStepTransfer> getFilterStepTransfers(UserVisit userVisit, List<FilterStep> filterSteps) {
+    public List<FilterStepTransfer> getFilterStepTransfers(UserVisit userVisit, Collection<FilterStep> filterSteps) {
         List<FilterStepTransfer> filterStepTransfers = new ArrayList<>(filterSteps.size());
         FilterStepTransferCache filterStepTransferCache = getFilterTransferCaches(userVisit).getFilterStepTransferCache();
         

@@ -17,6 +17,7 @@
 package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.CreateFilterStepForm;
+import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -74,9 +75,11 @@ public class CreateFilterStepCommand
     
     @Override
     protected BaseResult execute() {
+        var result = FilterResultFactory.getCreateFilterStepResult();
         var filterControl = Session.getModelController(FilterControl.class);
         String filterKindName = form.getFilterKindName();
         FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
+        FilterStep filterStep = null;
         
         if(filterKind != null) {
             String filterTypeName = form.getFilterTypeName();
@@ -88,7 +91,7 @@ public class CreateFilterStepCommand
                 
                 if(filter != null) {
                     String filterStepName = form.getFilterStepName();
-                    FilterStep filterStep = filterControl.getFilterStepByName(filter, filterStepName);
+                    filterStep = filterControl.getFilterStepByName(filter, filterStepName);
                     
                     if(filterStep == null) {
                         String filterItemSelectorName = form.getFilterItemSelectorName();
@@ -135,8 +138,20 @@ public class CreateFilterStepCommand
         } else {
             addExecutionError(ExecutionErrors.UnknownFilterKindName.name(), filterKindName);
         }
-        
-        return null;
+
+        if(filterStep != null) {
+            var filterStepDetail = filterStep.getLastDetail();
+            var filterDetail = filterStepDetail.getFilter().getLastDetail();
+            var filterTypeDetail = filterDetail.getFilterType().getLastDetail();
+
+            result.setEntityRef(filterStep.getPrimaryKey().getEntityRef());
+            result.setFilterKindName(filterTypeDetail.getFilterKind().getLastDetail().getFilterKindName());
+            result.setFilterTypeName(filterTypeDetail.getFilterTypeName());
+            result.setFilterName(filterDetail.getFilterName());
+            result.setFilterStepName(filterDetail.getFilterName());
+        }
+
+        return result;
     }
     
 }

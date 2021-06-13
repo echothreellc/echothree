@@ -79,10 +79,11 @@ public class GetFilterCommand
 
     @Override
     protected BaseResult getTransfer(Filter filter) {
-        var filterControl = Session.getModelController(FilterControl.class);
         var result = FilterResultFactory.getGetFilterResult();
 
         if(filter != null) {
+            var filterControl = Session.getModelController(FilterControl.class);
+
             result.setFilter(filterControl.getFilterTransfer(getUserVisit(), filter));
         }
 
