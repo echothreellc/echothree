@@ -1,5 +1,9 @@
 # Changelog
 
+## 2021-06-13-01
+
+* Implement an EventBus to Handle Filter Modifications [305](https://gitlab.echothree.com/echothree/echothree/-/issues/305)
+
 ## 2021-05-30-01
 
 * MySQL Connector/J 8.0.25 Upgrade [299](https://gitlab.echothree.com/echothree/echothree/-/issues/299)
