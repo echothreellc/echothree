@@ -21,16 +21,23 @@ import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.filter.common.exception.DuplicateFilterStepNameException;
 import com.echothree.model.control.filter.common.exception.UnknownDefaultFilterException;
 import com.echothree.model.control.filter.common.exception.UnknownDefaultFilterKindException;
 import com.echothree.model.control.filter.common.exception.UnknownDefaultFilterTypeException;
 import com.echothree.model.control.filter.common.exception.UnknownFilterStepNameException;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.selector.common.SelectorKinds;
+import com.echothree.model.control.selector.common.SelectorTypes;
+import com.echothree.model.control.selector.server.logic.SelectorLogic;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.filter.server.entity.FilterKind;
 import com.echothree.model.data.filter.server.entity.FilterStep;
 import com.echothree.model.data.filter.server.entity.FilterType;
+import com.echothree.model.data.party.server.entity.Language;
+import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
@@ -50,6 +57,43 @@ public class FilterStepLogic
 
     public static FilterStepLogic getInstance() {
         return FilterStepLogic.FilterStepLogicHolder.instance;
+    }
+
+    public FilterStep createFilterStep(final ExecutionErrorAccumulator eea, final String filterKindName,
+            final String filterTypeName, final String filterName, final String filterStepName,
+            final String filterItemSelectorName, final Language language, final String description,
+            final BasePK createdBy) {
+        var filter = FilterLogic.getInstance().getFilterByName(eea, filterKindName, filterTypeName, filterName);
+        FilterStep filterStep = null;
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var filterItemSelector = filterItemSelectorName == null ? null :
+                    SelectorLogic.getInstance().getSelectorByName(eea, SelectorKinds.ITEM.name(),
+                            SelectorTypes.FILTER.name(), filterItemSelectorName);
+
+            if(eea == null || !eea.hasExecutionErrors()) {
+                filterStep = createFilterStep(eea, filter, filterStepName, filterItemSelector, language, description, createdBy);
+            }
+        }
+
+        return filterStep;
+    }
+
+    public FilterStep createFilterStep(final ExecutionErrorAccumulator eea, final Filter filter, final String filterStepName,
+            final Selector filterItemSelector, final Language language, final String description, final BasePK createdBy) {
+        var filterControl = Session.getModelController(FilterControl.class);
+        var filterStep = filterControl.getFilterStepByName(filter, filterStepName);
+
+        if(filterStep == null) {
+            filterStep = filterControl.createFilterStep(filter, filterStepName, filterItemSelector, createdBy);
+
+            if(description != null) {
+                filterControl.createFilterStepDescription(filterStep, language, description, createdBy);
+            }
+        } else {
+            handleExecutionError(DuplicateFilterStepNameException.class, eea, ExecutionErrors.DuplicateFilterStepName.name(), filterStepName);
+        }
+        return filterStep;
     }
 
     public FilterStep getFilterStepByName(final ExecutionErrorAccumulator eea, final Filter filter, final String filterStepName,

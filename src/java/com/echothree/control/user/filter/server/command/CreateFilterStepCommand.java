@@ -18,30 +18,18 @@ package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.CreateFilterStepForm;
 import com.echothree.control.user.filter.common.result.FilterResultFactory;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.logic.FilterStepLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.selector.common.SelectorKinds;
-import com.echothree.model.control.selector.common.SelectorTypes;
-import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.data.filter.server.entity.Filter;
-import com.echothree.model.data.filter.server.entity.FilterKind;
-import com.echothree.model.data.filter.server.entity.FilterStep;
-import com.echothree.model.data.filter.server.entity.FilterType;
-import com.echothree.model.data.selector.server.entity.Selector;
-import com.echothree.model.data.selector.server.entity.SelectorKind;
-import com.echothree.model.data.selector.server.entity.SelectorType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 
 public class CreateFilterStepCommand
@@ -76,68 +64,15 @@ public class CreateFilterStepCommand
     @Override
     protected BaseResult execute() {
         var result = FilterResultFactory.getCreateFilterStepResult();
-        var filterControl = Session.getModelController(FilterControl.class);
-        String filterKindName = form.getFilterKindName();
-        FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
-        FilterStep filterStep = null;
-        
-        if(filterKind != null) {
-            String filterTypeName = form.getFilterTypeName();
-            FilterType filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
-            
-            if(filterType != null) {
-                String filterName = form.getFilterName();
-                Filter filter = filterControl.getFilterByName(filterType, filterName);
-                
-                if(filter != null) {
-                    String filterStepName = form.getFilterStepName();
-                    filterStep = filterControl.getFilterStepByName(filter, filterStepName);
-                    
-                    if(filterStep == null) {
-                        String filterItemSelectorName = form.getFilterItemSelectorName();
-                        Selector filterItemSelector = null;
-                        
-                        if(filterItemSelectorName != null) {
-                            var selectorControl = Session.getModelController(SelectorControl.class);
-                            SelectorKind selectorKind = selectorControl.getSelectorKindByName(SelectorKinds.ITEM.name());
-                            
-                            if(selectorKind != null) {
-                                SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind, SelectorTypes.FILTER.name());
-                                
-                                if(selectorType != null) {
-                                    filterItemSelector = selectorControl.getSelectorByName(selectorType, filterItemSelectorName);
-                                } else {
-                                    addExecutionError(ExecutionErrors.UnknownSelectorTypeName.name(), SelectorTypes.FILTER.name());
-                                }
-                            } else {
-                                addExecutionError(ExecutionErrors.UnknownSelectorKindName.name(), SelectorKinds.ITEM.name());
-                            }
-                        }
-                        
-                        if(filterItemSelectorName == null || filterItemSelector != null) {
-                            var partyPK = getPartyPK();
-                            var description = form.getDescription();
-                            
-                            filterStep = filterControl.createFilterStep(filter, filterStepName, filterItemSelector, partyPK);
-                            
-                            if(description != null) {
-                                filterControl.createFilterStepDescription(filterStep, getPreferredLanguage(), description, partyPK);
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownFilterItemSelectorName.name(), filterItemSelectorName);
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.DuplicateFilterStepName.name(), filterStepName);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownFilterName.name(), filterName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownFilterTypeName.name(), filterTypeName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownFilterKindName.name(), filterKindName);
-        }
+        var filterKindName = form.getFilterKindName();
+        var filterTypeName = form.getFilterTypeName();
+        var filterName = form.getFilterName();
+        var filterStepName = form.getFilterStepName();
+        var filterItemSelectorName = form.getFilterItemSelectorName();
+        var description = form.getDescription();
+
+        var filterStep = FilterStepLogic.getInstance().createFilterStep(this, filterKindName, filterTypeName,
+                filterName, filterStepName, filterItemSelectorName, getPreferredLanguage(), description, getPartyPK());
 
         if(filterStep != null) {
             var filterStepDetail = filterStep.getLastDetail();
