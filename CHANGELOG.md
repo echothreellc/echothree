@@ -1,5 +1,9 @@
 # Changelog
 
+## 2021-06-27-01
+
+* WildFly 24.0.0 Upgrade [306](https://gitlab.echothree.com/echothree/echothree/-/issues/306)
+
 ## 2021-06-13-01
 
 * Implement an EventBus to Handle Filter Modifications [305](https://gitlab.echothree.com/echothree/echothree/-/issues/305)
