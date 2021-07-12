@@ -75,7 +75,7 @@
                                 <td>
                                     <html:select property="filterItemSelectorChoice">
                                         <html:optionsCollection property="filterItemSelectorChoices" />
-                                    </html:select> (*)
+                                    </html:select>
                                     <et:validationErrors id="errorMessage" property="FilterItemSelectorName">
                                         <p><c:out value="${errorMessage}" /></p>
                                     </et:validationErrors>

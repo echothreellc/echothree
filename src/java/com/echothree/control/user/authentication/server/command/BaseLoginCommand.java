@@ -36,7 +36,6 @@ import com.echothree.model.data.party.common.pk.PartyRelationshipPK;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyRelationship;
 import com.echothree.model.data.party.server.entity.PartyTypePasswordStringPolicy;
-import com.echothree.model.data.party.server.entity.PartyTypePasswordStringPolicyDetail;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserKey;
@@ -98,8 +97,7 @@ public abstract class BaseLoginCommand<F extends BaseForm>
     // the recovered password should be deleted if the user logs in using their regular one. Changing a password should also
     // make sure a recovered password does not exist.
     protected boolean checkPasswords(UserLoginStatus userLoginStatus, String password, Party party, boolean doStatusChecks) {
-        UserControl userControl = getUserControl();
-        UserLoginPasswordString result = checkPassword(password, party, UserConstants.UserLoginPasswordType_STRING, false);
+        var result = checkPassword(password, party, UserConstants.UserLoginPasswordType_STRING, false);
         
         if(result == null) {
             result = checkPassword(password, party, UserConstants.UserLoginPasswordType_RECOVERED_STRING, true);
@@ -112,21 +110,21 @@ public abstract class BaseLoginCommand<F extends BaseForm>
             PartyTypePasswordStringPolicy partyTypePasswordStringPolicy = partyControl.getPartyTypePasswordStringPolicy(party.getLastDetail().getPartyType());
             
             if(partyTypePasswordStringPolicy != null) {
-                PartyTypePasswordStringPolicyDetail partyTypePasswordStringPolicyDetail = partyTypePasswordStringPolicy.getLastDetail();
-                Long maximumPasswordLifetime = partyTypePasswordStringPolicyDetail.getMaximumPasswordLifetime();
-                Integer expiredLoginsPermitted = partyTypePasswordStringPolicyDetail.getExpiredLoginsPermitted();
+                var partyTypePasswordStringPolicyDetail = partyTypePasswordStringPolicy.getLastDetail();
+                var maximumPasswordLifetime = partyTypePasswordStringPolicyDetail.getMaximumPasswordLifetime();
+                var expiredLoginsPermitted = partyTypePasswordStringPolicyDetail.getExpiredLoginsPermitted();
                 
                 if(maximumPasswordLifetime != null) {
-                    Long expirationWarningTime = partyTypePasswordStringPolicyDetail.getExpirationWarningTime();
-                    long changedTime = result.getChangedTime();
+                    var expirationWarningTime = partyTypePasswordStringPolicyDetail.getExpirationWarningTime();
+                    var changedTime = result.getChangedTime();
                     
                     if((session.START_TIME - changedTime) > maximumPasswordLifetime) {
                         userLoginStatus.setExpiredCount(userLoginStatus.getExpiredCount() + 1);
                         
                         addExecutionWarning(ExecutionWarnings.PasswordExpired.name());
                     } else if(expirationWarningTime != null) {
-                        long expirationTime = changedTime + maximumPasswordLifetime;
-                        long warningTime = expirationTime - expirationWarningTime;
+                        var expirationTime = changedTime + maximumPasswordLifetime;
+                        var warningTime = expirationTime - expirationWarningTime;
                         
                         if(session.START_TIME > warningTime) {
                             var uomControl = Session.getModelController(UomControl.class);

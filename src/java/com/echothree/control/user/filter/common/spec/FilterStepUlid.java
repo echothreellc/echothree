@@ -14,13 +14,14 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.filter.common.form;
+package com.echothree.control.user.filter.common.spec;
 
-import com.echothree.control.user.filter.common.spec.FilterStepUniversalSpec;
+import com.echothree.util.common.form.BaseSpec;
 
-public interface GetFilterStepForm
-        extends FilterStepUniversalSpec {
+public interface FilterStepUlid
+        extends BaseSpec {
     
-    // Nothing additional beyond FilterStepUniversalSpec
+    String getFilterStepUlid();
+    void setFilterStepUlid(String filterStepUlid);
     
 }

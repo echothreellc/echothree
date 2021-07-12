@@ -80,7 +80,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -292,24 +291,23 @@ public class SecureRequestUtils {
     public static StringBuilder createQueryStringFromMap(Map m, String ampersand) {
         StringBuilder aReturn = new StringBuilder("");
         Set aEntryS = m.entrySet();
-        Iterator aEntryI = aEntryS.iterator();
-        
-        while(aEntryI.hasNext()) {
-            Entry aEntry = (Entry) aEntryI.next();
+
+        for(final Object entry : aEntryS) {
+            var aEntry = (Map.Entry)entry;
             Object value = aEntry.getValue();
             String[] aValues = new String[1];
             if(value == null) {
                 aValues[0] = "";
             } else if(value instanceof List) { // Work around for Weblogic 6.1sp1
-                List aList = (List) value;
-                aValues = (String[]) aList.toArray(new String[aList.size()]);
+                List aList = (List)value;
+                aValues = (String[])aList.toArray(new String[aList.size()]);
             } else if(value instanceof String) {  // Single value from Struts tags
-                aValues[0] = (String) value;
+                aValues[0] = (String)value;
             } else { // String array, the standard returned from request.getParameterMap()
-                aValues = (String[]) value;  // This is the standard
+                aValues = (String[])value;  // This is the standard
             }
-            for(int i = 0; i < aValues.length; i++) {
-                append(aEntry.getKey(), aValues[i], aReturn, ampersand);
+            for(var aValue : aValues) {
+                append(aEntry.getKey(), aValue, aReturn, ampersand);
             }
         }
         

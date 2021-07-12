@@ -29,6 +29,8 @@ import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @GraphQLDescription("filter object")
 @GraphQLName("Filter")
@@ -112,5 +114,24 @@ public class FilterObject
         
         return filterControl.getBestFilterDescription(filter, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
     }
-    
+
+    @GraphQLField
+    @GraphQLDescription("filter steps")
+    public Collection<FilterStepObject> getFilterSteps(final DataFetchingEnvironment env) {
+        Collection<FilterStepObject> filterStepObjects = null;
+
+        if(FilterSecurityUtils.getInstance().getHasFilterStepsAccess(env)) {
+            var filterControl = Session.getModelController(FilterControl.class);
+            var filterSteps = filterControl.getFilterStepsByFilter(filter);
+
+            filterStepObjects = new ArrayList<>(filterSteps.size());
+
+            filterSteps.stream()
+                    .map(FilterStepObject::new)
+                    .forEachOrdered(filterStepObjects::add);
+        }
+
+        return filterStepObjects;
+    }
+
 }

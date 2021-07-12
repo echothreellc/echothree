@@ -42,7 +42,6 @@ import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
 import java.util.Collection;
 import java.util.List;
-import static java.util.List.of;
 
 public class GetOfferUsesCommand
         extends BaseMultipleEntitiesCommand<OfferUse, GetOfferUsesForm> {
@@ -51,14 +50,14 @@ public class GetOfferUsesCommand
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(of(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), of(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.OfferUse.name(), SecurityRoles.List.name())
                 ))
         ));
 
-        FORM_FIELD_DEFINITIONS = of(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("OfferName", FieldType.ENTITY_NAME, false, null, 20L),
                 new FieldDefinition("UseName", FieldType.ENTITY_NAME, false, null, 20L)
         );
