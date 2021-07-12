@@ -22,7 +22,7 @@ import com.echothree.control.user.contactlist.common.form.EditCustomerTypeContac
 import com.echothree.control.user.contactlist.common.result.ContactListResultFactory;
 import com.echothree.control.user.contactlist.common.result.EditCustomerTypeContactListResult;
 import com.echothree.control.user.contactlist.common.spec.CustomerTypeContactListSpec;
-import com.echothree.model.control.contactlist.server.ContactListControl;
+import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;

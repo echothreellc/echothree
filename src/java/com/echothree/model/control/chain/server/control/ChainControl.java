@@ -52,7 +52,7 @@ import com.echothree.model.control.chain.server.transfer.ChainKindTransferCache;
 import com.echothree.model.control.chain.server.transfer.ChainTransferCache;
 import com.echothree.model.control.chain.server.transfer.ChainTransferCaches;
 import com.echothree.model.control.chain.server.transfer.ChainTypeTransferCache;
-import com.echothree.model.control.contactlist.server.ContactListControl;
+import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.letter.server.control.LetterControl;
 import com.echothree.model.control.offer.server.control.OfferControl;

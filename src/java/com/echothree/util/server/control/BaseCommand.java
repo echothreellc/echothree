@@ -150,7 +150,8 @@ public abstract class BaseCommand
         
         return party == null? null: party.getPrimaryKey();
     }
-    
+
+    // Added a similar implementation to PartyLogic.
     public Party getParty() {
         if(party == null) {
             party = getUserControl().getPartyFromUserVisitPK(userVisitPK);

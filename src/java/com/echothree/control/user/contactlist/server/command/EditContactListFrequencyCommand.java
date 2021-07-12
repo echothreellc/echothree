@@ -22,7 +22,7 @@ import com.echothree.control.user.contactlist.common.form.EditContactListFrequen
 import com.echothree.control.user.contactlist.common.result.ContactListResultFactory;
 import com.echothree.control.user.contactlist.common.result.EditContactListFrequencyResult;
 import com.echothree.control.user.contactlist.common.spec.ContactListFrequencySpec;
-import com.echothree.model.control.contactlist.server.ContactListControl;
+import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -31,7 +31,6 @@ import com.echothree.model.data.contactlist.server.entity.ContactListFrequencyDe
 import com.echothree.model.data.contactlist.server.entity.ContactListFrequencyDetail;
 import com.echothree.model.data.contactlist.server.value.ContactListFrequencyDescriptionValue;
 import com.echothree.model.data.contactlist.server.value.ContactListFrequencyDetailValue;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;

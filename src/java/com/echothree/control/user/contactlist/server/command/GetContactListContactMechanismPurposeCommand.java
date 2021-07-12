@@ -20,7 +20,7 @@ import com.echothree.control.user.contactlist.common.form.GetContactListContactM
 import com.echothree.control.user.contactlist.common.result.ContactListResultFactory;
 import com.echothree.control.user.contactlist.common.result.GetContactListContactMechanismPurposeResult;
 import com.echothree.model.control.contact.server.logic.ContactMechanismPurposeLogic;
-import com.echothree.model.control.contactlist.server.ContactListControl;
+import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.contactlist.server.logic.ContactListLogic;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
