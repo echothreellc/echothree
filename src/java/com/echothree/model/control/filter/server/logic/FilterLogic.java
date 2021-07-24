@@ -234,8 +234,7 @@ public class FilterLogic
         return getFilterByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
     }
 
-    public void deleteFilter(final ExecutionErrorAccumulator eea, final Filter filter,
-            final BasePK deletedBy) {
+    public void deleteFilter(final ExecutionErrorAccumulator eea, final Filter filter, final BasePK deletedBy) {
         var clubControl = Session.getModelController(ClubControl.class);
         var offerControl = Session.getModelController(OfferControl.class);
         var vendorControl = Session.getModelController(VendorControl.class);
@@ -254,6 +253,6 @@ public class FilterLogic
                     filterDetail.getFilterType().getLastDetail().getFilterTypeName(),
                     filterDetail.getFilterName());
         }
-
     }
+
 }

@@ -232,4 +232,10 @@ public class FilterStepLogic
         return getFilterStepByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
     }
 
+    public void deleteFilterStep(final ExecutionErrorAccumulator eea, final FilterStep filterStep, final BasePK deletedBy) {
+        var filterControl = Session.getModelController(FilterControl.class);
+
+        filterControl.deleteFilterStep(filterStep, deletedBy);
+    }
+
 }

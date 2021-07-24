@@ -18,6 +18,8 @@ package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.DeleteFilterStepForm;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.control.filter.server.logic.FilterLogic;
+import com.echothree.model.control.filter.server.logic.FilterStepLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -66,37 +68,17 @@ public class DeleteFilterStepCommand
     
     @Override
     protected BaseResult execute() {
-        var filterControl = Session.getModelController(FilterControl.class);
-        String filterKindName = form.getFilterKindName();
-        FilterKind filterKind = filterControl.getFilterKindByName(filterKindName);
-        
-        if(filterKind != null) {
-            String filterTypeName = form.getFilterTypeName();
-            FilterType filterType = filterControl.getFilterTypeByName(filterKind, filterTypeName);
-            
-            if(filterType != null) {
-                String filterName = form.getFilterName();
-                Filter filter = filterControl.getFilterByName(filterType, filterName);
-                
-                if(filter != null) {
-                    String filterStepName = form.getFilterStepName();
-                    FilterStep filterStep = filterControl.getFilterStepByNameForUpdate(filter, filterStepName);
-                    
-                    if(filterStep != null) {
-                        filterControl.deleteFilterStep(filterStep, getPartyPK());
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownFilterStepName.name(), filterStepName);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownFilterName.name(), filterName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownFilterTypeName.name(), filterTypeName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownFilterKindName.name(), filterKindName);
+        var filterKindName = form.getFilterKindName();
+        var filterTypeName = form.getFilterTypeName();
+        var filterName = form.getFilterName();
+        var filterStepName = form.getFilterStepName();
+        var filterStep = FilterStepLogic.getInstance().getFilterStepByNameForUpdate(this, filterKindName, filterTypeName,
+                filterName, filterStepName);
+
+        if(!hasExecutionErrors()) {
+            FilterStepLogic.getInstance().deleteFilterStep(this, filterStep, getPartyPK());
         }
-        
+
         return null;
     }
     
