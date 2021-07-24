@@ -65,6 +65,22 @@ import com.echothree.control.user.core.common.spec.EntityAttributeEntityAttribut
 import com.echothree.control.user.core.common.spec.EntityAttributeGroupSpec;
 import com.echothree.control.user.core.common.spec.EntityAttributeSpec;
 import com.echothree.control.user.core.common.spec.EntityListItemSpec;
+import com.echothree.control.user.filter.common.edit.FilterEdit;
+import com.echothree.control.user.filter.common.edit.FilterKindEdit;
+import com.echothree.control.user.filter.common.edit.FilterStepEdit;
+import com.echothree.control.user.filter.common.edit.FilterTypeEdit;
+import com.echothree.control.user.filter.common.form.CreateFilterForm;
+import com.echothree.control.user.filter.common.form.CreateFilterKindForm;
+import com.echothree.control.user.filter.common.form.CreateFilterStepForm;
+import com.echothree.control.user.filter.common.form.CreateFilterTypeForm;
+import com.echothree.control.user.filter.common.form.DeleteFilterForm;
+import com.echothree.control.user.filter.common.form.DeleteFilterKindForm;
+import com.echothree.control.user.filter.common.form.DeleteFilterStepForm;
+import com.echothree.control.user.filter.common.form.DeleteFilterTypeForm;
+import com.echothree.control.user.filter.common.spec.FilterKindSpec;
+import com.echothree.control.user.filter.common.spec.FilterSpec;
+import com.echothree.control.user.filter.common.spec.FilterStepSpec;
+import com.echothree.control.user.filter.common.spec.FilterTypeSpec;
 import com.echothree.control.user.item.common.edit.ItemEdit;
 import com.echothree.control.user.item.common.edit.ItemPriceEdit;
 import com.echothree.control.user.item.common.edit.ItemUnitOfMeasureTypeEdit;
@@ -220,6 +236,32 @@ public class BasePersona {
 
     // Employee
     public String lastEmployeeName;
+
+    // Filter
+    public CreateFilterKindForm createFilterKindForm;
+    public DeleteFilterKindForm deleteFilterKindForm;
+    public FilterKindSpec filterKindSpec;
+    public FilterKindEdit filterKindEdit;
+
+    public CreateFilterTypeForm createFilterTypeForm;
+    public DeleteFilterTypeForm deleteFilterTypeForm;
+    public FilterTypeSpec filterTypeSpec;
+    public FilterTypeEdit filterTypeEdit;
+
+    public CreateFilterForm createFilterForm;
+    public DeleteFilterForm deleteFilterForm;
+    public FilterSpec filterSpec;
+    public FilterEdit filterEdit;
+
+    public CreateFilterStepForm createFilterStepForm;
+    public DeleteFilterStepForm deleteFilterStepForm;
+    public FilterStepSpec filterStepSpec;
+    public FilterStepEdit filterStepEdit;
+
+    public String lastFilterKindName;
+    public String lastFilterTypeName;
+    public String lastFilterName;
+    public String lastFilterStepName;
 
     // Item
     public CreateItemForm createItemForm;
