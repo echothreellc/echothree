@@ -34,9 +34,15 @@ public class FilterModificationEventRecorder {
     @Subscribe
     public void recordSentEvent(SentEvent se) {
         var event = se.getEvent();
-        var entityTypeName = event.getEntityInstance().getEntityType().getLastDetail().getEntityTypeName();
+        var entityInstance = event == null ? null : event.getEntityInstance();
+        var entityType = entityInstance == null ? null : entityInstance.getEntityType();
+        var lastEntityTypeDetail = entityType.getLastDetail();
+        var entityTypeName = entityType == null ? null : lastEntityTypeDetail.getEntityTypeName();
+        var componentVendor = lastEntityTypeDetail.getComponentVendor();
+        var componentVendorName = componentVendor == null ? null : componentVendor.getLastDetail().getComponentVendorName();
 
-        if(entityTypeName.equals(FilterStepConstants.ENTITY_TYPE_NAME)) {
+        if(FilterStepConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
+                && FilterStepConstants.ENTITY_TYPE_NAME.equals(entityTypeName)) {
             var coreControl = Session.getModelController(CoreControl.class);
             var filterControl = Session.getModelController(FilterControl.class);
             var filterStep = filterControl.getFilterStepByEntityInstance(event.getEntityInstance());
