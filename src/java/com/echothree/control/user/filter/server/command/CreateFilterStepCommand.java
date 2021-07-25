@@ -83,7 +83,7 @@ public class CreateFilterStepCommand
             result.setFilterKindName(filterTypeDetail.getFilterKind().getLastDetail().getFilterKindName());
             result.setFilterTypeName(filterTypeDetail.getFilterTypeName());
             result.setFilterName(filterDetail.getFilterName());
-            result.setFilterStepName(filterDetail.getFilterName());
+            result.setFilterStepName(filterStepDetail.getFilterStepName());
         }
 
         return result;
