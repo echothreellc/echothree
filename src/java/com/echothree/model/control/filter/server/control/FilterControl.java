@@ -3094,7 +3094,7 @@ public class FilterControl
                 description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(filterStep.getLastDetail().getFilter().getPrimaryKey(), EventTypes.MODIFY.name(),
+        sendEventUsingNames(filterStep.getPrimaryKey(), EventTypes.MODIFY.name(),
                 filterStepDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
         
         return filterStepDescription;
@@ -3236,7 +3236,7 @@ public class FilterControl
             filterStepDescription = FilterStepDescriptionFactory.getInstance().create(filterStep, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(filterStep.getLastDetail().getFilter().getPrimaryKey(), EventTypes.MODIFY.name(), filterStepDescription.getPrimaryKey(),
+            sendEventUsingNames(filterStep.getPrimaryKey(), EventTypes.MODIFY.name(), filterStepDescription.getPrimaryKey(),
                     EventTypes.MODIFY.name(), updatedBy);
         }
     }
@@ -3244,7 +3244,7 @@ public class FilterControl
     public void deleteFilterStepDescription(FilterStepDescription filterStepDescription, BasePK deletedBy) {
         filterStepDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(filterStepDescription.getFilterStep().getLastDetail().getFilter().getPrimaryKey(), EventTypes.MODIFY.name(),
+        sendEventUsingNames(filterStepDescription.getFilterStep().getPrimaryKey(), EventTypes.MODIFY.name(),
                 filterStepDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
         
     }
