@@ -60,7 +60,7 @@ public class FilterKindSteps implements En {
                     persona.createFilterKindForm = null;
                 });
 
-        When("^the user begins deleting an filter kind$",
+        When("^the user begins deleting a filter kind$",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -83,7 +83,7 @@ public class FilterKindSteps implements En {
                     persona.deleteFilterKindForm = null;
                 });
 
-        When("^the user begins specifying an filter kind to edit$",
+        When("^the user begins specifying a filter kind to edit$",
                 () -> {
                     var persona = CurrentPersona.persona;
 
