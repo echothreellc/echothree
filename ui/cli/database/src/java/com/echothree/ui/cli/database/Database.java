@@ -91,7 +91,7 @@ public class Database {
                 }
 
                 if(doCharacterSetAndCollation) {
-                    System.out.println("Set character set and collation for database, tables and columns...");
+                    System.out.println("Setting character set and collation for database, tables and columns...");
                     myUtilities.setCharacterSetAndCollection();
                     System.out.println("   ...done.");
                 }

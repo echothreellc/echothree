@@ -20,7 +20,7 @@ CREATE TABLE contentpagelayoutdetails (
   cntpldt_sortorder int(11) NOT NULL,
   cntpldt_fromtime bigint(20) NOT NULL,
   cntpldt_thrutime bigint(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 INSERT INTO contentpagelayoutdetails SELECT cntpl_contentpagelayoutid, cntpl_contentpagelayoutid, cntpl_contentpagelayoutname, cntpl_isdefault, cntpl_sortorder, 0, 9223372036854775807 FROM contentpagelayouts;
 ALTER TABLE contentpagelayoutdetails ADD PRIMARY KEY (cntpldt_contentpagelayoutdetailid);
