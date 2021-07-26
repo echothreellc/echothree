@@ -1,5 +1,11 @@
 # Changelog
 
+## 2021-07-25-01
+
+* GraphQL Objects and Mutations for Filter Steps [157](https://gitlab.echothree.com/echothree/echothree/-/issues/157)
+* MySQL Connector/J 8.0.26 Upgrade [311](https://gitlab.echothree.com/echothree/echothree/-/issues/311)
+* Switch MySQL Collation to utf8mb4_0900_ai_ci [312](https://gitlab.echothree.com/echothree/echothree/-/issues/312)
+
 ## 2021-07-11-01
 
 * ClassGraph 4.8.109 Upgrade [307](https://gitlab.echothree.com/echothree/echothree/-/issues/307)
