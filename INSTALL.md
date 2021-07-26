@@ -107,10 +107,10 @@ Connected to MySQL as root:
 ```
 CREATE DATABASE echothree
     DEFAULT CHARACTER SET utf8mb4
-    DEFAULT COLLATE utf8mb4_unicode_520_ci;
+    DEFAULT COLLATE utf8mb4_0900_ai_ci;
 CREATE DATABASE reporting
     DEFAULT CHARACTER SET utf8mb4
-    DEFAULT COLLATE utf8mb4_unicode_520_ci;
+    DEFAULT COLLATE utf8mb4_0900_ai_ci;
 ```
 
 ### Users
