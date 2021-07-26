@@ -17,6 +17,7 @@
 package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.CreateFilterTypeForm;
+import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.model.control.filter.server.logic.FilterTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -61,6 +62,7 @@ public class CreateFilterTypeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = FilterResultFactory.getCreateFilterTypeResult();
         var filterKindName = form.getFilterKindName();
         var filterTypeName = form.getFilterTypeName();
         var isDefault = Boolean.valueOf(form.getIsDefault());
@@ -68,10 +70,18 @@ public class CreateFilterTypeCommand
         var description = form.getDescription();
         var partyPK = getPartyPK();
 
-        FilterTypeLogic.getInstance().createFilterType(this, filterKindName, filterTypeName, isDefault, sortOrder,
+        var filterType = FilterTypeLogic.getInstance().createFilterType(this, filterKindName, filterTypeName, isDefault, sortOrder,
                 getPreferredLanguage(), description, partyPK);
 
-        return null;
+        if(filterType != null) {
+            var filterTypeDetail = filterType.getLastDetail();
+
+            result.setEntityRef(filterType.getPrimaryKey().getEntityRef());
+            result.setFilterKindName(filterTypeDetail.getFilterKind().getLastDetail().getFilterKindName());
+            result.setFilterTypeName(filterTypeDetail.getFilterTypeName());
+        }
+
+        return result;
     }
     
 }

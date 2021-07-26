@@ -87,6 +87,8 @@ import com.echothree.control.user.filter.server.command.GetFilterAdjustmentsComm
 import com.echothree.control.user.filter.server.command.GetFilterCommand;
 import com.echothree.control.user.filter.server.command.GetFilterKindCommand;
 import com.echothree.control.user.filter.server.command.GetFilterKindsCommand;
+import com.echothree.control.user.filter.server.command.GetFilterStepCommand;
+import com.echothree.control.user.filter.server.command.GetFilterStepsCommand;
 import com.echothree.control.user.filter.server.command.GetFilterTypeCommand;
 import com.echothree.control.user.filter.server.command.GetFilterTypesCommand;
 import com.echothree.control.user.filter.server.command.GetFiltersCommand;
@@ -205,6 +207,7 @@ import com.echothree.model.control.filter.server.graphql.FilterAdjustmentSourceO
 import com.echothree.model.control.filter.server.graphql.FilterAdjustmentTypeObject;
 import com.echothree.model.control.filter.server.graphql.FilterKindObject;
 import com.echothree.model.control.filter.server.graphql.FilterObject;
+import com.echothree.model.control.filter.server.graphql.FilterStepObject;
 import com.echothree.model.control.filter.server.graphql.FilterTypeObject;
 import com.echothree.model.control.inventory.server.graphql.InventoryConditionObject;
 import com.echothree.model.control.inventory.server.graphql.LotObject;
@@ -280,6 +283,7 @@ import com.echothree.model.data.filter.server.entity.FilterAdjustmentPercent;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentSource;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentType;
 import com.echothree.model.data.filter.server.entity.FilterKind;
+import com.echothree.model.data.filter.server.entity.FilterStep;
 import com.echothree.model.data.filter.server.entity.FilterType;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.inventory.server.entity.Lot;
@@ -784,6 +788,67 @@ public final class GraphQlQueries
         }
 
         return filterObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("filterStep")
+    public static FilterStepObject filterStep(final DataFetchingEnvironment env,
+            @GraphQLName("filterKindName") final String filterKindName,
+            @GraphQLName("filterTypeName") final String filterTypeName,
+            @GraphQLName("filterName") final String filterName,
+            @GraphQLName("filterStepName") final String filterStepName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        FilterStep filterStep;
+
+        try {
+            var commandForm = FilterUtil.getHome().getGetFilterStepForm();
+
+            commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterTypeName(filterTypeName);
+            commandForm.setFilterName(filterName);
+            commandForm.setFilterStepName(filterStepName);
+            commandForm.setUlid(id);
+
+            filterStep = new GetFilterStepCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return filterStep == null ? null : new FilterStepObject(filterStep);
+    }
+
+    @GraphQLField
+    @GraphQLName("filterSteps")
+    public static Collection<FilterStepObject> filterSteps(final DataFetchingEnvironment env,
+            @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
+            @GraphQLName("filterTypeName") @GraphQLNonNull final String filterTypeName,
+            @GraphQLName("filterName") final String filterName) {
+        Collection<FilterStep> filterSteps;
+        Collection<FilterStepObject> filterStepObjects;
+
+        try {
+            var commandForm = FilterUtil.getHome().getGetFilterStepsForm();
+
+            commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterTypeName(filterTypeName);
+            commandForm.setFilterName(filterName);
+
+            filterSteps = new GetFilterStepsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(filterSteps == null) {
+            filterStepObjects = emptyList();
+        } else {
+            filterStepObjects = new ArrayList<>(filterSteps.size());
+
+            filterSteps.stream()
+                    .map(FilterStepObject::new)
+                    .forEachOrdered(filterStepObjects::add);
+        }
+
+        return filterStepObjects;
     }
 
     @GraphQLField

@@ -17,6 +17,7 @@
 package com.echothree.control.user.filter.server.command;
 
 import com.echothree.control.user.filter.common.form.CreateFilterKindForm;
+import com.echothree.control.user.filter.common.result.FilterResultFactory;
 import com.echothree.model.control.filter.server.logic.FilterKindLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -60,16 +61,22 @@ public class CreateFilterKindCommand
     
     @Override
     protected BaseResult execute() {
+        var result = FilterResultFactory.getCreateFilterKindResult();
         var filterKindName = form.getFilterKindName();
         var isDefault = Boolean.valueOf(form.getIsDefault());
         var sortOrder = Integer.valueOf(form.getSortOrder());
         var description = form.getDescription();
         var partyPK = getPartyPK();
 
-        FilterKindLogic.getInstance().createFilterKind(this, filterKindName, isDefault, sortOrder,
+        var filterKind = FilterKindLogic.getInstance().createFilterKind(this, filterKindName, isDefault, sortOrder,
                 getPreferredLanguage(), description, partyPK);
 
-        return null;
+        if(filterKind != null) {
+            result.setEntityRef(filterKind.getPrimaryKey().getEntityRef());
+            result.setFilterKindName(filterKind.getLastDetail().getFilterKindName());
+        }
+
+        return result;
     }
     
 }

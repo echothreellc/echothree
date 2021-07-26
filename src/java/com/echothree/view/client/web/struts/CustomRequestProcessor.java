@@ -31,9 +31,7 @@ import org.apache.commons.logging.LogFactory;
  */
 public class CustomRequestProcessor
         extends SproutRequestProcessor {
-    private Log log = null;
-    
-    /** Creates new CustomRequestProcessor */
+
     /** Creates a new instance of CustomRequestProcessor */
     public CustomRequestProcessor() {
         log = LogFactory.getLog(CustomRequestProcessor.class);

@@ -2868,6 +2868,22 @@ public class FilterControl
         return filterStep;
     }
 
+    public long countFilterStepsByFilter(Filter filter) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM filtersteps, filterstepdetails " +
+                "WHERE fltstp_activedetailid = fltstpdt_filterstepdetailid AND fltstpdt_flt_filterid = ?",
+                filter);
+    }
+
+    public long countFilterStepsBySelector(Selector selector) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM filtersteps, filterstepdetails " +
+                "WHERE fltstp_activedetailid = fltstpdt_filterstepdetailid AND fltstpdt_filteritemselectorid = ?",
+                selector);
+    }
+
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.FilterStep */
     public FilterStep getFilterStepByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new FilterStepPK(entityInstance.getEntityUniqueId());
@@ -2883,7 +2899,7 @@ public class FilterControl
         return getFilterStepByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
-    private FilterStep getFilterStepByName(Filter filter, String filterStepName, EntityPermission entityPermission) {
+    public FilterStep getFilterStepByName(Filter filter, String filterStepName, EntityPermission entityPermission) {
         FilterStep filterStep;
         
         try {
@@ -3003,7 +3019,7 @@ public class FilterControl
         return new FilterStepChoicesBean(labels, values, defaultValue);
     }
     
-    public List<FilterStepTransfer> getFilterStepTransfers(UserVisit userVisit, List<FilterStep> filterSteps) {
+    public List<FilterStepTransfer> getFilterStepTransfers(UserVisit userVisit, Collection<FilterStep> filterSteps) {
         List<FilterStepTransfer> filterStepTransfers = new ArrayList<>(filterSteps.size());
         FilterStepTransferCache filterStepTransferCache = getFilterTransferCaches(userVisit).getFilterStepTransferCache();
         
@@ -3078,7 +3094,7 @@ public class FilterControl
                 description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(filterStep.getLastDetail().getFilter().getPrimaryKey(), EventTypes.MODIFY.name(),
+        sendEventUsingNames(filterStep.getPrimaryKey(), EventTypes.MODIFY.name(),
                 filterStepDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
         
         return filterStepDescription;
@@ -3220,7 +3236,7 @@ public class FilterControl
             filterStepDescription = FilterStepDescriptionFactory.getInstance().create(filterStep, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(filterStep.getLastDetail().getFilter().getPrimaryKey(), EventTypes.MODIFY.name(), filterStepDescription.getPrimaryKey(),
+            sendEventUsingNames(filterStep.getPrimaryKey(), EventTypes.MODIFY.name(), filterStepDescription.getPrimaryKey(),
                     EventTypes.MODIFY.name(), updatedBy);
         }
     }
@@ -3228,7 +3244,7 @@ public class FilterControl
     public void deleteFilterStepDescription(FilterStepDescription filterStepDescription, BasePK deletedBy) {
         filterStepDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(filterStepDescription.getFilterStep().getLastDetail().getFilter().getPrimaryKey(), EventTypes.MODIFY.name(),
+        sendEventUsingNames(filterStepDescription.getFilterStep().getPrimaryKey(), EventTypes.MODIFY.name(),
                 filterStepDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
         
     }
