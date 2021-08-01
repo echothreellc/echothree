@@ -296,9 +296,11 @@ public interface ItemService
     CommandResult getItemStatusChoices(UserVisitPK userVisitPK, GetItemStatusChoicesForm form);
     
     CommandResult setItemStatus(UserVisitPK userVisitPK, SetItemStatusForm form);
-    
+
     CommandResult getItem(UserVisitPK userVisitPK, GetItemForm form);
-    
+
+    CommandResult getItems(UserVisitPK userVisitPK, GetItemsForm form);
+
     CommandResult editItem(UserVisitPK userVisitPK, EditItemForm form);
     
     // -------------------------------------------------------------------------

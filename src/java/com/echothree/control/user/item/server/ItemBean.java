@@ -574,12 +574,17 @@ public class ItemBean
     public CommandResult setItemStatus(UserVisitPK userVisitPK, SetItemStatusForm form) {
         return new SetItemStatusCommand(userVisitPK, form).run();
     }
-    
+
     @Override
     public CommandResult getItem(UserVisitPK userVisitPK, GetItemForm form) {
         return new GetItemCommand(userVisitPK, form).run();
     }
-    
+
+    @Override
+    public CommandResult getItems(UserVisitPK userVisitPK, GetItemsForm form) {
+        return new GetItemsCommand(userVisitPK, form).run();
+    }
+
     @Override
     public CommandResult editItem(UserVisitPK userVisitPK, EditItemForm form) {
         return new EditItemCommand(userVisitPK, form).run();
