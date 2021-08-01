@@ -143,6 +143,7 @@ import com.echothree.control.user.queue.server.command.GetQueueTypeCommand;
 import com.echothree.control.user.queue.server.command.GetQueueTypesCommand;
 import com.echothree.control.user.search.common.SearchUtil;
 import com.echothree.control.user.search.server.command.GetCustomerResultsCommand;
+import com.echothree.control.user.search.server.command.GetItemResultsCommand;
 import com.echothree.control.user.selector.common.SelectorUtil;
 import com.echothree.control.user.selector.server.command.GetSelectorKindCommand;
 import com.echothree.control.user.selector.server.command.GetSelectorKindsCommand;
@@ -234,6 +235,7 @@ import com.echothree.model.control.payment.server.graphql.PaymentProcessorTypeCo
 import com.echothree.model.control.payment.server.graphql.PaymentProcessorTypeObject;
 import com.echothree.model.control.queue.server.graphql.QueueTypeObject;
 import com.echothree.model.control.search.server.graphql.CustomerResultsObject;
+import com.echothree.model.control.search.server.graphql.ItemResultsObject;
 import com.echothree.model.control.selector.server.graphql.SelectorKindObject;
 import com.echothree.model.control.selector.server.graphql.SelectorTypeObject;
 import com.echothree.model.control.sequence.server.graphql.SequenceChecksumTypeObject;
@@ -3318,26 +3320,47 @@ public final class GraphQlQueries
         
         return entityAttributeTypeObjects;
     }
-    
+
     @GraphQLField
     @GraphQLName("customerResults")
     public static CustomerResultsObject customerResults(final DataFetchingEnvironment env,
             @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName) {
         CustomerResultsObject customerResultsObject = new CustomerResultsObject();
-        
+
         try {
             var commandForm = SearchUtil.getHome().getGetCustomerResultsForm();
 
             commandForm.setSearchTypeName(searchTypeName);
-            
+
             if(new GetCustomerResultsCommand(getUserVisitPK(env), commandForm).canGetResultsForGraphQl()) {
                 customerResultsObject.setForm(commandForm);
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         return customerResultsObject;
+    }
+
+    @GraphQLField
+    @GraphQLName("itemResults")
+    public static ItemResultsObject itemResults(final DataFetchingEnvironment env,
+            @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName) {
+        ItemResultsObject itemResultsObject = new ItemResultsObject();
+
+        try {
+            var commandForm = SearchUtil.getHome().getGetItemResultsForm();
+
+            commandForm.setSearchTypeName(searchTypeName);
+
+            if(new GetItemResultsCommand(getUserVisitPK(env), commandForm).canGetResultsForGraphQl()) {
+                itemResultsObject.setForm(commandForm);
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return itemResultsObject;
     }
 
     @GraphQLField
