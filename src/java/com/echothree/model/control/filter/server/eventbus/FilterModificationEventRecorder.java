@@ -36,7 +36,7 @@ public class FilterModificationEventRecorder {
         var event = se.getEvent();
         var entityInstance = event == null ? null : event.getEntityInstance();
         var entityType = entityInstance == null ? null : entityInstance.getEntityType();
-        var lastEntityTypeDetail = entityType.getLastDetail();
+        var lastEntityTypeDetail = entityType == null ? null : entityType.getLastDetail();
         var entityTypeName = entityType == null ? null : lastEntityTypeDetail.getEntityTypeName();
         var componentVendor = lastEntityTypeDetail.getComponentVendor();
         var componentVendorName = componentVendor == null ? null : componentVendor.getLastDetail().getComponentVendorName();

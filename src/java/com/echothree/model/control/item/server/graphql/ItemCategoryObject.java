@@ -16,18 +16,26 @@
 
 package com.echothree.model.control.item.server.graphql;
 
+import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.graphql.EntityTypeObject;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.sequence.server.graphql.SequenceObject;
+import com.echothree.model.control.sequence.server.graphql.SequenceSecurityUtils;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.item.server.entity.ItemCategory;
 import com.echothree.model.data.item.server.entity.ItemCategoryDetail;
+import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("item category object")
 @GraphQLName("ItemCategory")
@@ -67,13 +75,17 @@ public class ItemCategoryObject
         return parentItemCategory == null ? null : new ItemCategoryObject(parentItemCategory);
     }
     
-//    @GraphQLField
-//    @GraphQLDescription("item sequence")
-//    public SequenceObject getItemSequence() {
-//        Sequence itemSequence = getItemCategoryDetail().getItemSequence();
-//        
-//        return new SequenceObject(itemSequence);
-//    }
+    @GraphQLField
+    @GraphQLDescription("item sequence")
+    public SequenceObject getItemSequence(final DataFetchingEnvironment env) {
+        if(SequenceSecurityUtils.getInstance().getHasSequenceAccess(env)) {
+            var itemSequence = getItemCategoryDetail().getItemSequence();
+
+            return itemSequence == null ? null : new SequenceObject(itemSequence);
+        } else {
+            return null;
+        }
+    }
 
     @GraphQLField
     @GraphQLDescription("is default")
@@ -99,5 +111,31 @@ public class ItemCategoryObject
         
         return itemControl.getBestItemCategoryDescription(itemCategory, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
     }
-    
+
+    @GraphQLField
+    @GraphQLDescription("items")
+    public List<ItemObject> getItems(final DataFetchingEnvironment env) {
+        if(ItemSecurityUtils.getInstance().getHasItemsAccess(env)) {
+            var itemControl = Session.getModelController(ItemControl.class);
+            var entities = itemControl.getItemsByItemCategory(itemCategory);
+            var items = entities.stream().map(ItemObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+            return items;
+        } else {
+            return null;
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("item count")
+    public Long getItemCount(final DataFetchingEnvironment env) {
+        if(ItemSecurityUtils.getInstance().getHasItemsAccess(env)) {
+            var itemControl = Session.getModelController(ItemControl.class);
+
+            return itemControl.countItemsByItemCategory(itemCategory);
+        } else {
+            return null;
+        }
+    }
+
 }

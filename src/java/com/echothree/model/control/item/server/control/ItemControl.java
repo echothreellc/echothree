@@ -103,6 +103,7 @@ import com.echothree.model.control.item.server.transfer.ItemKitMemberTransferCac
 import com.echothree.model.control.item.server.transfer.ItemPackCheckRequirementTransferCache;
 import com.echothree.model.control.item.server.transfer.ItemPriceTransferCache;
 import com.echothree.model.control.item.server.transfer.ItemPriceTypeTransferCache;
+import com.echothree.model.control.item.server.transfer.ItemTransferCache;
 import com.echothree.model.control.item.server.transfer.ItemTransferCaches;
 import com.echothree.model.control.item.server.transfer.ItemTypeTransferCache;
 import com.echothree.model.control.item.server.transfer.ItemUnitCustomerTypeLimitTransferCache;
@@ -1566,33 +1567,74 @@ public class ItemControl
 
     private List<Item> getItems(EntityPermission entityPermission) {
         String query = null;
-        
+
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
             query = "SELECT _ALL_ " +
                     "FROM items, itemdetails " +
                     "WHERE itm_activedetailid = itmdt_itemdetailid " +
-                    "ORDER BY itmdt_itemname";
+                    "ORDER BY itmdt_itemname " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM items, itemdetails " +
                     "WHERE itm_activedetailid = itmdt_itemdetailid " +
                     "FOR UPDATE";
         }
-        
+
         PreparedStatement ps = ItemFactory.getInstance().prepareStatement(query);
-        
+
         return ItemFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
     }
-    
-    
+
+
     public List<Item> getItems() {
         return getItems(EntityPermission.READ_ONLY);
     }
-    
+
     public List<Item> getItemsForUpdate() {
         return getItems(EntityPermission.READ_WRITE);
     }
-    
+
+    private List<Item> getItemsByItemCategory(EntityPermission entityPermission, ItemCategory itemCategory) {
+        List<Item> items;
+
+        try {
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM items, itemdetails " +
+                        "WHERE itm_activedetailid = itmdt_itemdetailid AND itmdt_ic_itemcategoryid = ? " +
+                        "ORDER BY itmdt_itemname " +
+                        "_LIMIT_";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM items, itemdetails " +
+                        "WHERE itm_activedetailid = itmdt_itemdetailid AND itmdt_ic_itemcategoryid = ? " +
+                        "FOR UPDATE";
+            }
+
+            PreparedStatement ps = ItemFactory.getInstance().prepareStatement(query);
+
+            ps.setLong(1, itemCategory.getPrimaryKey().getEntityId());
+
+            items = ItemFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return items;
+    }
+
+
+    public List<Item> getItemsByItemCategory(ItemCategory itemCategory) {
+        return getItemsByItemCategory(EntityPermission.READ_ONLY, itemCategory);
+    }
+
+    public List<Item> getItemsByItemCategoryForUpdate(ItemCategory itemCategory) {
+        return getItemsByItemCategory(EntityPermission.READ_WRITE, itemCategory);
+    }
+
     private Item getItemByName(String itemName, EntityPermission entityPermission) {
         Item item;
         
@@ -1659,11 +1701,26 @@ public class ItemControl
     public Item getItemByNameThenAliasForUpdate(String itemName) {
         return getItemByNameThenAlias(itemName, EntityPermission.READ_WRITE);
     }
-    
+
     public ItemTransfer getItemTransfer(UserVisit userVisit, Item item) {
         return getItemTransferCaches(userVisit).getItemTransferCache().getTransfer(item);
     }
-    
+
+    public List<ItemTransfer> getItemTransfers(UserVisit userVisit, Collection<Item> items) {
+        List<ItemTransfer> itemTransfers = new ArrayList<>(items.size());
+        ItemTransferCache itemTransferCache = getItemTransferCaches(userVisit).getItemTransferCache();
+
+        items.forEach((item) ->
+                itemTransfers.add(itemTransferCache.getTransfer(item))
+        );
+
+        return itemTransfers;
+    }
+
+    public List<ItemTransfer> getItemTransfers(UserVisit userVisit) {
+        return getItemTransfers(userVisit, getItems());
+    }
+
     public ItemStatusChoicesBean getItemStatusChoices(String defaultItemStatusChoice, Language language, boolean allowNullChoice,
             Item item, PartyPK partyPK) {
         var workflowControl = getWorkflowControl();
