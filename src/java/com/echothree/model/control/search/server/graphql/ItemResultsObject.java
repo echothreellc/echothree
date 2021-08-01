@@ -38,13 +38,6 @@ public class ItemResultsObject
     }
 
     @GraphQLField
-    @GraphQLDescription("count")
-    @GraphQLNonNull
-    public int getCount(final DataFetchingEnvironment env) {
-        return getCount(env);
-    }
-    
-    @GraphQLField
     @GraphQLDescription("items")
     @GraphQLNonNull
     public List<ItemResultObject> getItems(final DataFetchingEnvironment env) {

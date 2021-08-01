@@ -38,13 +38,6 @@ public class CustomerResultsObject
     }
 
     @GraphQLField
-    @GraphQLDescription("count")
-    @GraphQLNonNull
-    public int getCount(final DataFetchingEnvironment env) {
-        return getCount(env);
-    }
-    
-    @GraphQLField
     @GraphQLDescription("customers")
     @GraphQLNonNull
     public List<CustomerResultObject> getCustomers(final DataFetchingEnvironment env) {

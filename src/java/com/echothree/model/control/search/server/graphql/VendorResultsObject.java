@@ -38,13 +38,6 @@ public class VendorResultsObject
     }
 
     @GraphQLField
-    @GraphQLDescription("count")
-    @GraphQLNonNull
-    public int getCount(final DataFetchingEnvironment env) {
-        return getCount(env);
-    }
-    
-    @GraphQLField
     @GraphQLDescription("vendors")
     @GraphQLNonNull
     public List<VendorResultObject> getVendors(final DataFetchingEnvironment env) {

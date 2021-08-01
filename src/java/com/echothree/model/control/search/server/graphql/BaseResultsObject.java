@@ -66,6 +66,9 @@ public abstract class BaseResultsObject<F extends BaseGetResultsForm> {
         return userVisitSearch;
     }
 
+    @GraphQLField
+    @GraphQLDescription("count")
+    @GraphQLNonNull
     protected int getCount(final DataFetchingEnvironment env) {
         UserVisitSearch userVisitSearch = getUserVisitSearch(env);
 
