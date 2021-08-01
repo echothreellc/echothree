@@ -75,10 +75,9 @@ public class CustomerResultsObject {
     @GraphQLNonNull
     public List<CustomerResultObject> getCustomers(final DataFetchingEnvironment env) {
         List<CustomerResultObject> objects = null;
-        UserVisitSearch userVisitSearch = getUserVisitSearch(env);
+        var userVisitSearch = getUserVisitSearch(env);
 
         if(userVisitSearch != null) {
-            GraphQlContext context = env.getContext();
             var customerControl = Session.getModelController(CustomerControl.class);
 
             objects = customerControl.getCustomerResultObjects(userVisitSearch);
