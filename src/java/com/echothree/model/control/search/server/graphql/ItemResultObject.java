@@ -19,6 +19,7 @@ package com.echothree.model.control.search.server.graphql;
 import com.echothree.control.user.item.server.command.GetItemCommand;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.item.server.graphql.ItemObject;
+import com.echothree.model.control.item.server.graphql.ItemSecurityUtils;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
 import graphql.annotations.annotationTypes.GraphQLDescription;
@@ -41,12 +42,7 @@ public class ItemResultObject {
 
     private boolean getHasItemAccess(final DataFetchingEnvironment env) {
         if(hasItemAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetItemCommand(context.getUserVisitPK(), null);
-
-            baseSingleEntityCommand.security();
-
-            hasItemAccess = !baseSingleEntityCommand.hasSecurityMessages();
+            hasItemAccess = ItemSecurityUtils.getInstance().getHasItemAccess(env);
         }
 
         return hasItemAccess;
