@@ -32,12 +32,16 @@ import java.util.List;
 @GraphQLName("VendorResults")
 public class VendorResultsObject
         extends BaseResultsObject<GetVendorResultsForm> {
-    
+
+    public VendorResultsObject() {
+        super(SearchConstants.SearchKind_VENDOR);
+    }
+
     @GraphQLField
     @GraphQLDescription("count")
     @GraphQLNonNull
     public int getCount(final DataFetchingEnvironment env) {
-        return getCount(env, SearchConstants.SearchKind_VENDOR);
+        return getCount(env);
     }
     
     @GraphQLField
@@ -45,7 +49,7 @@ public class VendorResultsObject
     @GraphQLNonNull
     public List<VendorResultObject> getVendors(final DataFetchingEnvironment env) {
         List<VendorResultObject> objects = null;
-        var userVisitSearch = getUserVisitSearch(env, SearchConstants.SearchKind_VENDOR);
+        var userVisitSearch = getUserVisitSearch(env);
 
         if(userVisitSearch != null) {
             var vendorControl = Session.getModelController(VendorControl.class);

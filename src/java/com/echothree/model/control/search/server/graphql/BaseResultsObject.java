@@ -36,7 +36,13 @@ import java.util.List;
 
 public abstract class BaseResultsObject<F extends BaseGetResultsForm> {
 
+    private String searchKindName;
+
     private F form;
+
+    protected BaseResultsObject(String searchKindName) {
+        this.searchKindName = searchKindName;
+    }
 
     public void setForm(F form) {
         this.form = form;
@@ -44,7 +50,7 @@ public abstract class BaseResultsObject<F extends BaseGetResultsForm> {
 
     private UserVisitSearch userVisitSearch;
 
-    protected UserVisitSearch getUserVisitSearch(final DataFetchingEnvironment env, String searchKindName) {
+    protected UserVisitSearch getUserVisitSearch(final DataFetchingEnvironment env) {
         if(form != null && userVisitSearch == null) {
             try {
                 GraphQlContext context = env.getContext();
@@ -60,8 +66,8 @@ public abstract class BaseResultsObject<F extends BaseGetResultsForm> {
         return userVisitSearch;
     }
 
-    protected int getCount(final DataFetchingEnvironment env, String searchKindName) {
-        UserVisitSearch userVisitSearch = getUserVisitSearch(env, searchKindName);
+    protected int getCount(final DataFetchingEnvironment env) {
+        UserVisitSearch userVisitSearch = getUserVisitSearch(env);
 
         return userVisitSearch == null ? 0 : SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch());
     }
