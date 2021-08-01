@@ -21,9 +21,12 @@ import com.echothree.model.control.core.server.graphql.EntityTypeObject;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.sequence.server.graphql.SequenceObject;
+import com.echothree.model.control.sequence.server.graphql.SequenceSecurityUtils;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.item.server.entity.ItemCategory;
 import com.echothree.model.data.item.server.entity.ItemCategoryDetail;
+import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -72,13 +75,17 @@ public class ItemCategoryObject
         return parentItemCategory == null ? null : new ItemCategoryObject(parentItemCategory);
     }
     
-//    @GraphQLField
-//    @GraphQLDescription("item sequence")
-//    public SequenceObject getItemSequence() {
-//        Sequence itemSequence = getItemCategoryDetail().getItemSequence();
-//        
-//        return new SequenceObject(itemSequence);
-//    }
+    @GraphQLField
+    @GraphQLDescription("item sequence")
+    public SequenceObject getItemSequence(final DataFetchingEnvironment env) {
+        if(SequenceSecurityUtils.getInstance().getHasSequenceAccess(env)) {
+            var itemSequence = getItemCategoryDetail().getItemSequence();
+
+            return itemSequence == null ? null : new SequenceObject(itemSequence);
+        } else {
+            return null;
+        }
+    }
 
     @GraphQLField
     @GraphQLDescription("is default")
