@@ -16,6 +16,8 @@
 
 package com.echothree.model.control.item.server.graphql;
 
+import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.graphql.EntityTypeObject;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.item.server.control.ItemControl;
@@ -28,6 +30,9 @@ import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("item category object")
 @GraphQLName("ItemCategory")
@@ -99,5 +104,31 @@ public class ItemCategoryObject
         
         return itemControl.getBestItemCategoryDescription(itemCategory, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
     }
-    
+
+    @GraphQLField
+    @GraphQLDescription("items")
+    public List<ItemObject> getItems(final DataFetchingEnvironment env) {
+        if(ItemSecurityUtils.getInstance().getHasItemsAccess(env)) {
+            var itemControl = Session.getModelController(ItemControl.class);
+            var entities = itemControl.getItemsByItemCategory(itemCategory);
+            var items = entities.stream().map(ItemObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+            return items;
+        } else {
+            return null;
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("item count")
+    public Long getItemCount(final DataFetchingEnvironment env) {
+        if(ItemSecurityUtils.getInstance().getHasItemsAccess(env)) {
+            var itemControl = Session.getModelController(ItemControl.class);
+
+            return itemControl.countItemsByItemCategory(itemCategory);
+        } else {
+            return null;
+        }
+    }
+
 }
