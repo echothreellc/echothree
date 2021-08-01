@@ -52,7 +52,7 @@ public class VendorResultsObject {
                 UserVisit userVisit = context.getUserVisit();
                 
                 userVisitSearch = SearchLogic.getInstance().getUserVisitSearchByName(null, userVisit,
-                        SearchConstants.SearchKind_CUSTOMER, form.getSearchTypeName());
+                        SearchConstants.SearchKind_VENDOR, form.getSearchTypeName());
             } catch (BaseSearchException bse) {
                 // Leave userVisitSearch null.
             }
