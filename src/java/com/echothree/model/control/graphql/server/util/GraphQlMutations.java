@@ -67,8 +67,10 @@ import com.echothree.control.user.payment.common.result.EditPaymentProcessorType
 import com.echothree.control.user.search.common.SearchUtil;
 import com.echothree.control.user.search.common.result.SearchCustomersResult;
 import com.echothree.control.user.search.common.result.SearchItemsResult;
+import com.echothree.control.user.search.common.result.SearchVendorsResult;
 import com.echothree.control.user.search.server.graphql.SearchCustomersResultObject;
 import com.echothree.control.user.search.server.graphql.SearchItemsResultObject;
+import com.echothree.control.user.search.server.graphql.SearchVendorsResultObject;
 import com.echothree.control.user.sequence.common.SequenceUtil;
 import com.echothree.control.user.sequence.common.result.CreateSequenceResult;
 import com.echothree.control.user.sequence.common.result.CreateSequenceTypeResult;
@@ -3186,6 +3188,69 @@ public class GraphQlMutations
             commandForm.setSearchTypeName(searchTypeName);
 
             var commandResult = SearchUtil.getHome().clearItemResults(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static SearchVendorsResultObject searchVendors(final DataFetchingEnvironment env,
+            @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName,
+            @GraphQLName("firstName") final String firstName,
+            @GraphQLName("firstNameSoundex") final String firstNameSoundex,
+            @GraphQLName("middleName") final String middleName,
+            @GraphQLName("middleNameSoundex") final String middleNameSoundex,
+            @GraphQLName("lastName") final String lastName,
+            @GraphQLName("lastNameSoundex") final String lastNameSoundex,
+            @GraphQLName("name") final String name,
+            @GraphQLName("vendorName") final String vendorName,
+            @GraphQLName("createdSince") final String createdSince,
+            @GraphQLName("modifiedSince") final String modifiedSince,
+            @GraphQLName("fields") final String fields) {
+        var commandResultObject = new SearchVendorsResultObject();
+
+        try {
+            var commandForm = SearchUtil.getHome().getSearchVendorsForm();
+
+            commandForm.setSearchTypeName(searchTypeName);
+            commandForm.setFirstName(firstName);
+            commandForm.setFirstNameSoundex(firstNameSoundex);
+            commandForm.setMiddleName(middleName);
+            commandForm.setMiddleNameSoundex(middleNameSoundex);
+            commandForm.setLastName(lastName);
+            commandForm.setLastNameSoundex(lastNameSoundex);
+            commandForm.setName(name);
+            commandForm.setVendorName(vendorName);
+            commandForm.setCreatedSince(createdSince);
+            commandForm.setModifiedSince(modifiedSince);
+            commandForm.setFields(fields);
+
+            var commandResult = SearchUtil.getHome().searchVendors(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+            commandResultObject.setResult(commandResult.hasErrors() ? null : (SearchVendorsResult)commandResult.getExecutionResult().getResult());
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject clearVendorResults(final DataFetchingEnvironment env,
+            @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = SearchUtil.getHome().getClearVendorResultsForm();
+
+            commandForm.setSearchTypeName(searchTypeName);
+
+            var commandResult = SearchUtil.getHome().clearVendorResults(getUserVisitPK(env), commandForm);
             commandResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);

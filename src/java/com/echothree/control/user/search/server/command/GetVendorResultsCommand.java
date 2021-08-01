@@ -17,25 +17,18 @@
 package com.echothree.control.user.search.server.command;
 
 import com.echothree.control.user.search.common.form.GetVendorResultsForm;
-import com.echothree.control.user.search.common.result.GetVendorResultsResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.search.common.SearchConstants;
-import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.vendor.server.control.VendorControl;
-import com.echothree.model.data.search.server.entity.SearchKind;
-import com.echothree.model.data.search.server.entity.SearchType;
-import com.echothree.model.data.search.server.entity.UserVisitSearch;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseGetResultsCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -45,7 +38,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class GetVendorResultsCommand
-        extends BaseSimpleCommand<GetVendorResultsForm> {
+        extends BaseGetResultsCommand<GetVendorResultsForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -70,34 +63,20 @@ public class GetVendorResultsCommand
     
     @Override
     protected BaseResult execute() {
-        GetVendorResultsResult result = SearchResultFactory.getGetVendorResultsResult();
-        var searchControl = Session.getModelController(SearchControl.class);
-        SearchKind searchKind = searchControl.getSearchKindByName(SearchConstants.SearchKind_VENDOR);
-        
-        if(searchKind != null) {
-            String searchTypeName = form.getSearchTypeName();
-            SearchType searchType = searchControl.getSearchTypeByName(searchKind, searchTypeName);
-            
-            if(searchType != null) {
-                UserVisit userVisit = getUserVisit();
-                UserVisitSearch userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
-                
-                if(userVisitSearch != null) {
-                    var vendorControl = Session.getModelController(VendorControl.class);
+        var result = SearchResultFactory.getGetVendorResultsResult();
+        var searchTypeName = form.getSearchTypeName();
+        var userVisit = getUserVisit();
+        var userVisitSearch = SearchLogic.getInstance().getUserVisitSearchByName(this, userVisit,
+                SearchConstants.SearchKind_VENDOR, searchTypeName);
 
-                    if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
-                        result.setVendorResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));
-                    }
+        if(!hasExecutionErrors()) {
+            var vendorControl = Session.getModelController(VendorControl.class);
 
-                    result.setVendorResults(vendorControl.getVendorResultTransfers(userVisit, userVisitSearch));
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownUserVisitSearch.name());
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownSearchTypeName.name(), SearchConstants.SearchKind_VENDOR, searchTypeName);
+            if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
+                result.setVendorResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownSearchKindName.name(), SearchConstants.SearchKind_VENDOR);
+
+            result.setVendorResults(vendorControl.getVendorResultTransfers(userVisit, userVisitSearch));
         }
         
         return result;

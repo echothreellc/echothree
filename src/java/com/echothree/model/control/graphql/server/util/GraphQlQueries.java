@@ -144,6 +144,7 @@ import com.echothree.control.user.queue.server.command.GetQueueTypesCommand;
 import com.echothree.control.user.search.common.SearchUtil;
 import com.echothree.control.user.search.server.command.GetCustomerResultsCommand;
 import com.echothree.control.user.search.server.command.GetItemResultsCommand;
+import com.echothree.control.user.search.server.command.GetVendorResultsCommand;
 import com.echothree.control.user.selector.common.SelectorUtil;
 import com.echothree.control.user.selector.server.command.GetSelectorKindCommand;
 import com.echothree.control.user.selector.server.command.GetSelectorKindsCommand;
@@ -236,6 +237,7 @@ import com.echothree.model.control.payment.server.graphql.PaymentProcessorTypeOb
 import com.echothree.model.control.queue.server.graphql.QueueTypeObject;
 import com.echothree.model.control.search.server.graphql.CustomerResultsObject;
 import com.echothree.model.control.search.server.graphql.ItemResultsObject;
+import com.echothree.model.control.search.server.graphql.VendorResultsObject;
 import com.echothree.model.control.selector.server.graphql.SelectorKindObject;
 import com.echothree.model.control.selector.server.graphql.SelectorTypeObject;
 import com.echothree.model.control.sequence.server.graphql.SequenceChecksumTypeObject;
@@ -3361,6 +3363,27 @@ public final class GraphQlQueries
         }
 
         return itemResultsObject;
+    }
+
+    @GraphQLField
+    @GraphQLName("vendorResults")
+    public static VendorResultsObject vendorResults(final DataFetchingEnvironment env,
+            @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName) {
+        VendorResultsObject vendorResultsObject = new VendorResultsObject();
+
+        try {
+            var commandForm = SearchUtil.getHome().getGetVendorResultsForm();
+
+            commandForm.setSearchTypeName(searchTypeName);
+
+            if(new GetVendorResultsCommand(getUserVisitPK(env), commandForm).canGetResultsForGraphQl()) {
+                vendorResultsObject.setForm(commandForm);
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return vendorResultsObject;
     }
 
     @GraphQLField
