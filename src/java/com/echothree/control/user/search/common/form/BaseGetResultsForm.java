@@ -16,9 +16,12 @@
 
 package com.echothree.control.user.search.common.form;
 
-public interface GetVendorResultsForm
-        extends BaseGetResultsForm {
+import com.echothree.util.common.form.BaseForm;
+
+public interface BaseGetResultsForm
+        extends BaseForm {
     
-    // Nothing additional beyond BaseGetResultsForm
+    String getSearchTypeName();
+    void setSearchTypeName(String searchTypeName);
     
 }

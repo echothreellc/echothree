@@ -61,11 +61,11 @@ public class SearchVendorsCommand
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("SearchTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("FirstName", FieldType.STRING, false, 1L, 20L),
-                new FieldDefinition("FirstNameSoundex", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("FirstNameSoundex", FieldType.BOOLEAN, false, null, null),
                 new FieldDefinition("MiddleName", FieldType.STRING, false, 1L, 20L),
-                new FieldDefinition("MiddleNameSoundex", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("MiddleNameSoundex", FieldType.BOOLEAN, false, null, null),
                 new FieldDefinition("LastName", FieldType.STRING, false, 1L, 20L),
-                new FieldDefinition("LastNameSoundex", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("LastNameSoundex", FieldType.BOOLEAN, false, null, null),
                 new FieldDefinition("Name", FieldType.STRING, false, null, null),
                 new FieldDefinition("VendorName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("CreatedSince", FieldType.DATE_TIME, false, null, null),
@@ -100,11 +100,11 @@ public class SearchVendorsCommand
                 String fields = form.getFields();
                 
                 vendorSearchEvaluator.setFirstName(form.getFirstName());
-                vendorSearchEvaluator.setFirstNameSoundex(Boolean.valueOf(form.getFirstNameSoundex()));
+                vendorSearchEvaluator.setFirstNameSoundex(Boolean.parseBoolean(form.getFirstNameSoundex()));
                 vendorSearchEvaluator.setMiddleName(form.getMiddleName());
-                vendorSearchEvaluator.setMiddleNameSoundex(Boolean.valueOf(form.getMiddleNameSoundex()));
+                vendorSearchEvaluator.setMiddleNameSoundex(Boolean.parseBoolean(form.getMiddleNameSoundex()));
                 vendorSearchEvaluator.setLastName(form.getLastName());
-                vendorSearchEvaluator.setLastNameSoundex(Boolean.valueOf(form.getLastNameSoundex()));
+                vendorSearchEvaluator.setLastNameSoundex(Boolean.parseBoolean(form.getLastNameSoundex()));
                 vendorSearchEvaluator.setQ(this, form.getName());
                 vendorSearchEvaluator.setVendorName(form.getVendorName());
                 vendorSearchEvaluator.setCreatedSince(createdSince == null ? null : Long.valueOf(createdSince));
