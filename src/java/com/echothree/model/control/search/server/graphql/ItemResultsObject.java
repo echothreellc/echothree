@@ -17,13 +17,8 @@
 package com.echothree.model.control.search.server.graphql;
 
 import com.echothree.control.user.search.common.form.GetItemResultsForm;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.search.common.SearchConstants;
-import com.echothree.model.control.search.common.exception.BaseSearchException;
-import com.echothree.model.control.search.server.logic.SearchLogic;
-import com.echothree.model.data.search.server.entity.UserVisitSearch;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -35,39 +30,14 @@ import java.util.List;
 
 @GraphQLDescription("item results object")
 @GraphQLName("ItemResults")
-public class ItemResultsObject {
-    
-    private GetItemResultsForm form;
-    
-    public void setForm(GetItemResultsForm form) {
-        this.form = form;
-    }
-    
-    private UserVisitSearch userVisitSearch;
-    
-    private UserVisitSearch getUserVisitSearch(final DataFetchingEnvironment env) {
-        if(form != null && userVisitSearch == null) {
-            try {
-                GraphQlContext context = env.getContext();
-                UserVisit userVisit = context.getUserVisit();
-                
-                userVisitSearch = SearchLogic.getInstance().getUserVisitSearchByName(null, userVisit,
-                        SearchConstants.SearchKind_ITEM, form.getSearchTypeName());
-            } catch (BaseSearchException bse) {
-                // Leave userVisitSearch null.
-            }
-        }
-        
-        return userVisitSearch;
-    }
+public class ItemResultsObject
+        extends BaseResultsObject<GetItemResultsForm> {
     
     @GraphQLField
     @GraphQLDescription("count")
     @GraphQLNonNull
     public int getCount(final DataFetchingEnvironment env) {
-        UserVisitSearch userVisitSearch = getUserVisitSearch(env);
-        
-        return userVisitSearch == null ? 0 : SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch());
+        return getCount(env, SearchConstants.SearchKind_ITEM);
     }
     
     @GraphQLField
@@ -75,7 +45,7 @@ public class ItemResultsObject {
     @GraphQLNonNull
     public List<ItemResultObject> getItems(final DataFetchingEnvironment env) {
         List<ItemResultObject> objects = null;
-        var userVisitSearch = getUserVisitSearch(env);
+        var userVisitSearch = getUserVisitSearch(env, SearchConstants.SearchKind_ITEM);
 
         if(userVisitSearch != null) {
             var itemControl = Session.getModelController(ItemControl.class);
