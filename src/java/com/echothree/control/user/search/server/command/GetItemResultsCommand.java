@@ -17,36 +17,27 @@
 package com.echothree.control.user.search.server.command;
 
 import com.echothree.control.user.search.common.form.GetItemResultsForm;
-import com.echothree.control.user.search.common.result.GetItemResultsResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.search.common.SearchConstants;
-import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.logic.SearchLogic;
-import com.echothree.model.data.search.server.entity.SearchKind;
-import com.echothree.model.data.search.server.entity.SearchType;
-import com.echothree.model.data.search.server.entity.UserVisitSearch;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseGetResultsCommand;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class GetItemResultsCommand
-        extends BaseSimpleCommand<GetItemResultsForm> {
+        extends BaseGetResultsCommand<GetItemResultsForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SearchTypeName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+        );
     }
 
     /** Creates a new instance of GetItemResultsCommand */
@@ -56,36 +47,22 @@ public class GetItemResultsCommand
     
     @Override
     protected BaseResult execute() {
-        GetItemResultsResult result = SearchResultFactory.getGetItemResultsResult();
-        var searchControl = Session.getModelController(SearchControl.class);
-        SearchKind searchKind = searchControl.getSearchKindByName(SearchConstants.SearchKind_ITEM);
-        
-        if(searchKind != null) {
-            String searchTypeName = form.getSearchTypeName();
-            SearchType searchType = searchControl.getSearchTypeByName(searchKind, searchTypeName);
-            
-            if(searchType != null) {
-                UserVisit userVisit = getUserVisit();
-                UserVisitSearch userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
-                
-                if(userVisitSearch != null) {
-                    var itemControl = Session.getModelController(ItemControl.class);
+        var result = SearchResultFactory.getGetItemResultsResult();
+        var searchTypeName = form.getSearchTypeName();
+        var userVisit = getUserVisit();
+        var userVisitSearch = SearchLogic.getInstance().getUserVisitSearchByName(this, userVisit,
+                SearchConstants.SearchKind_ITEM, searchTypeName);
 
-                    if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
-                        result.setItemResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));
-                    }
-                    
-                    result.setItemResults(itemControl.getItemResultTransfers(userVisitSearch));
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownUserVisitSearch.name());
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownSearchTypeName.name(), SearchConstants.SearchKind_ITEM, searchTypeName);
+        if(!hasExecutionErrors()) {
+            var itemControl = Session.getModelController(ItemControl.class);
+
+            if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
+                result.setItemResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownSearchKindName.name(), SearchConstants.SearchKind_ITEM);
+
+            result.setItemResults(itemControl.getItemResultTransfers(userVisitSearch));
         }
-        
+
         return result;
     }
 }

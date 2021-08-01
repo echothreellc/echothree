@@ -17,7 +17,6 @@
 package com.echothree.control.user.search.server.command;
 
 import com.echothree.control.user.search.common.form.GetCustomerResultsForm;
-import com.echothree.control.user.search.common.result.GetCustomerResultsResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -25,9 +24,7 @@ import com.echothree.model.control.search.common.SearchConstants;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.search.server.entity.UserVisitSearch;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -36,8 +33,6 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class GetCustomerResultsCommand
@@ -47,16 +42,16 @@ public class GetCustomerResultsCommand
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Customer.name(), SecurityRoles.Search.name())
-                        )))
-                )));
+                ))
+        ));
         
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SearchTypeName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+        );
     }
 
     /** Creates a new instance of GetCustomerResultsCommand */
@@ -66,10 +61,11 @@ public class GetCustomerResultsCommand
     
     @Override
     protected BaseResult execute() {
-        GetCustomerResultsResult result = SearchResultFactory.getGetCustomerResultsResult();
-        String searchTypeName = form.getSearchTypeName();
-        UserVisit userVisit = getUserVisit();
-        UserVisitSearch userVisitSearch = SearchLogic.getInstance().getUserVisitSearchByName(this, userVisit, SearchConstants.SearchKind_CUSTOMER, searchTypeName);
+        var result = SearchResultFactory.getGetCustomerResultsResult();
+        var searchTypeName = form.getSearchTypeName();
+        var userVisit = getUserVisit();
+        var userVisitSearch = SearchLogic.getInstance().getUserVisitSearchByName(this, userVisit,
+                SearchConstants.SearchKind_CUSTOMER, searchTypeName);
         
         if(!hasExecutionErrors()) {
             var customerControl = Session.getModelController(CustomerControl.class);
