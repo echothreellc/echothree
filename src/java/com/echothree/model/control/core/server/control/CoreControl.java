@@ -13121,10 +13121,10 @@ public class CoreControl
                     }
                 }
             }
+
+            SentEventEventBus.eventBus.post(new SentEvent(event));
         }
 
-        SentEventEventBus.eventBus.post(new SentEvent(event));
-        
         return event;
     }
 

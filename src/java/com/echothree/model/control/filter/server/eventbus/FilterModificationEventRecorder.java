@@ -34,12 +34,12 @@ public class FilterModificationEventRecorder {
     @Subscribe
     public void recordSentEvent(SentEvent se) {
         var event = se.getEvent();
-        var entityInstance = event == null ? null : event.getEntityInstance();
-        var entityType = entityInstance == null ? null : entityInstance.getEntityType();
-        var lastEntityTypeDetail = entityType == null ? null : entityType.getLastDetail();
-        var entityTypeName = entityType == null ? null : lastEntityTypeDetail.getEntityTypeName();
+        var entityInstance = event.getEntityInstance();
+        var entityType = entityInstance.getEntityType();
+        var lastEntityTypeDetail = entityType.getLastDetail();
+        var entityTypeName = lastEntityTypeDetail.getEntityTypeName();
         var componentVendor = lastEntityTypeDetail.getComponentVendor();
-        var componentVendorName = componentVendor == null ? null : componentVendor.getLastDetail().getComponentVendorName();
+        var componentVendorName = componentVendor.getLastDetail().getComponentVendorName();
 
         if(FilterStepConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
                 && FilterStepConstants.ENTITY_TYPE_NAME.equals(entityTypeName)) {
