@@ -19,6 +19,8 @@ package com.echothree.model.control.offer.server.graphql;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.sequence.server.graphql.SequenceObject;
+import com.echothree.model.control.sequence.server.graphql.SequenceSecurityUtils;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferDetail;
@@ -59,7 +61,17 @@ public class OfferObject
         return getOfferDetail().getOfferName();
     }
 
-    // TODO: SalesOrderSequence
+    @GraphQLField
+    @GraphQLDescription("sales order sequence")
+    public SequenceObject getSalesOrderSequence(final DataFetchingEnvironment env) {
+        if(SequenceSecurityUtils.getInstance().getHasSequenceAccess(env)) {
+            var salesOrderSequence = getOfferDetail().getSalesOrderSequence();
+
+            return salesOrderSequence == null ? null : new SequenceObject(salesOrderSequence);
+        } else {
+            return null;
+        }
+    }
 
     // TODO: DepartmentParty
 
