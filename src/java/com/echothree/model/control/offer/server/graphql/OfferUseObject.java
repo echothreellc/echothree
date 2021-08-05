@@ -17,18 +17,13 @@
 package com.echothree.model.control.offer.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
-import com.echothree.model.control.offer.server.control.UseControl;
-import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.control.sequence.server.graphql.SequenceObject;
+import com.echothree.model.control.sequence.server.graphql.SequenceSecurityUtils;
 import com.echothree.model.data.offer.server.entity.OfferUse;
 import com.echothree.model.data.offer.server.entity.OfferUseDetail;
-import com.echothree.model.data.offer.server.entity.Use;
-import com.echothree.model.data.offer.server.entity.UseDetail;
-import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("offer use object")
@@ -66,10 +61,16 @@ public class OfferUseObject
         return OfferSecurityUtils.getInstance().getHasUseAccess(env) ? new UseObject(getOfferUseDetail().getUse()) : null;
     }
     
-//    @GraphQLField
-//    @GraphQLDescription("sales order sequence")
-//    public SequenceObject getSalesOrderSequence(final DataFetchingEnvironment env) {
-//        return SequenceSecurityUtils.getInstance().getHasSequenceAccess(env) ? new SequenceObject(getOfferSequenceDetail().getSequence()) : null;
-//    }
+    @GraphQLField
+    @GraphQLDescription("sales order sequence")
+    public SequenceObject getSalesOrderSequence(final DataFetchingEnvironment env) {
+        if(SequenceSecurityUtils.getInstance().getHasSequenceAccess(env)) {
+            var salesOrderSequence = getOfferUseDetail().getSalesOrderSequence();
+
+            return salesOrderSequence == null ? null : new SequenceObject(salesOrderSequence);
+        } else {
+            return null;
+        }
+    }
 
 }
