@@ -14,30 +14,44 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.search.server.graphql;
+package com.echothree.model.control.customer.server.graphql;
 
-import com.echothree.model.control.customer.server.graphql.CustomerObject;
+import com.echothree.model.control.customer.server.control.CustomerControl;
+import com.echothree.model.control.party.server.graphql.BasePartyObject;
+import com.echothree.model.data.customer.server.entity.Customer;
 import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 
-@GraphQLDescription("customer result object")
-@GraphQLName("CustomerResult")
-public class CustomerResultObject {
-    
-    private final Party party;
-    
-    public CustomerResultObject(Party party) {
-        this.party = party;
+@GraphQLDescription("customer object")
+@GraphQLName("Customer")
+public class CustomerObject
+        extends BasePartyObject {
+
+    public CustomerObject(Party party) {
+        super(party);
     }
-    
+
+    private Customer customer;  // Optional, use getCustomer()
+
+    protected Customer getCustomer() {
+        if(customer == null) {
+            var customerControl = Session.getModelController(CustomerControl.class);
+
+            customer = customerControl.getCustomer(party);
+        }
+
+        return customer;
+    }
+
     @GraphQLField
-    @GraphQLDescription("customer")
+    @GraphQLDescription("customer name")
     @GraphQLNonNull
-    public CustomerObject getCustomer() {
-        return new CustomerObject(party);
+    public String getCustomerName() {
+        return getCustomer().getCustomerName();
     }
-    
+
 }

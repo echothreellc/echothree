@@ -43,7 +43,7 @@ import graphql.schema.DataFetchingEnvironment;
 public class BasePartyObject
         extends BaseEntityInstanceObject {
 
-    private final Party party; // Always Present
+    protected final Party party; // Always Present
 
     public BasePartyObject(Party party) {
         super(party.getPrimaryKey());
@@ -52,8 +52,8 @@ public class BasePartyObject
     }
 
     private PartyDetail partyDetail; // Optional, use getPartyDetail()
-    
-    private PartyDetail getPartyDetail() {
+
+    protected PartyDetail getPartyDetail() {
         if(partyDetail == null) {
             partyDetail = party.getLastDetail();
         }
