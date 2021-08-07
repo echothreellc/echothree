@@ -20,17 +20,24 @@ import com.echothree.control.user.party.common.form.GetPartyForm;
 import com.echothree.control.user.party.common.result.GetPartyResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.party.server.logic.PartyLogic;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.user.server.logic.UserLoginLogic;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserLogin;
+import com.echothree.util.common.command.SecurityResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
@@ -39,36 +46,60 @@ import java.util.List;
 public class GetPartyCommand
         extends BaseSimpleCommand<GetPartyForm> {
 
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.CUSTOMER.name(), null),
+                new PartyTypeDefinition(PartyTypes.VENDOR.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.Vendor.name(), SecurityRoles.Review.name())
+                ))
+        ));
+
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("Username", FieldType.STRING, false, 1L, 80L)
-                ));
+        );
     }
 
     /** Creates a new instance of GetPartyCommand */
     public GetPartyCommand(UserVisitPK userVisitPK, GetPartyForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+    }
+
+    String partyName;
+    String username;
+    int parameterCount;
+
+    @Override
+    protected SecurityResult security() {
+        var securityResult = super.security();
+
+        partyName = form.getPartyName();
+        username = form.getUsername();
+        parameterCount = (partyName == null ? 0 : 1) + (username == null ? 0 : 1);
+
+        if(!canSpecifyParty() && parameterCount != 0) {
+            securityResult = getInsufficientSecurityResult();
+        }
+
+        return securityResult;
     }
 
     @Override
     protected BaseResult execute() {
-        GetPartyResult result = PartyResultFactory.getGetPartyResult();
-        String partyName = form.getPartyName();
-        String username = form.getUsername();
-        int parameterCount = (partyName == null ? 0 : 1) + (username == null ? 0 : 1);
+        var result = PartyResultFactory.getGetPartyResult();
 
-        if(parameterCount == 1) {
-            Party party = null;
+        if(parameterCount < 2) {
+            Party party = parameterCount == 0 ? getParty() : null;
 
             if(partyName != null) {
                 party = PartyLogic.getInstance().getPartyByName(this, partyName);
-            }
-
-            if(username != null) {
-                UserLogin userLogin = UserLoginLogic.getInstance().getUserLoginByUsername(this, username);
+            } else if(username != null) {
+                var userLogin = UserLoginLogic.getInstance().getUserLoginByUsername(this, username);
 
                 if(!hasExecutionErrors()) {
                     party = userLogin.getParty();

@@ -23,16 +23,22 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.customer.server.entity.Customer;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.common.command.SecurityResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
@@ -40,29 +46,54 @@ import java.util.List;
 
 public class GetCustomerCommand
         extends BaseSimpleCommand<GetCustomerForm> {
-    
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.CUSTOMER.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.Vendor.name(), SecurityRoles.Review.name())
+                ))
+        ));
+
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CustomerName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null)
-                ));
+        );
     }
     
     /** Creates a new instance of GetCustomerCommand */
     public GetCustomerCommand(UserVisitPK userVisitPK, GetCustomerForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    String customerName ;
+    String partyName;
+    int parameterCount;
+
+    @Override
+    protected SecurityResult security() {
+        var securityResult = super.security();
+
+        customerName = form.getCustomerName();
+        partyName = form.getPartyName();
+        parameterCount = (customerName == null ? 0 : 1) + (partyName == null ? 0 : 1);
+
+        if(!canSpecifyParty() && parameterCount != 0) {
+            securityResult = getInsufficientSecurityResult();
+        }
+
+        return securityResult;
+    }
+
     @Override
     protected BaseResult execute() {
-        GetCustomerResult result = CustomerResultFactory.getGetCustomerResult();
-        String customerName = form.getCustomerName();
-        String partyName = form.getPartyName();
-        int parameterCount = (customerName == null? 0: 1) + (partyName == null? 0: 1);
-        
-        if(parameterCount == 1) {
+        var result = CustomerResultFactory.getGetCustomerResult();
+
+        if(parameterCount < 2) {
             var customerControl = Session.getModelController(CustomerControl.class);
             Customer customer = null;
             Party party = null;
@@ -75,14 +106,14 @@ public class GetCustomerCommand
                 } else {
                     addExecutionError(ExecutionErrors.UnknownCustomerName.name(), customerName);
                 }
-            } else if(partyName != null) {
+            } else {
                 var partyControl = Session.getModelController(PartyControl.class);
                 
-                party = partyControl.getPartyByName(partyName);
+                party = partyName == null ? getParty() : partyControl.getPartyByName(partyName);
                 
                 if(party != null) {
                     if(party.getLastDetail().getPartyType().getPartyTypeName().equals(PartyTypes.CUSTOMER.name())) {
-                    customer = customerControl.getCustomer(party);
+                        customer = customerControl.getCustomer(party);
                     } else {
                         addExecutionError(ExecutionErrors.InvalidPartyType.name());
                     }
@@ -92,8 +123,8 @@ public class GetCustomerCommand
             }
             
             if(customer != null) {
-                UserVisit userVisit = getUserVisit();
-                Party companyParty = getCompanyParty();
+                var userVisit = getUserVisit();
+                var companyParty = getCompanyParty();
 
                 result.setCustomer(customerControl.getCustomerTransfer(userVisit, customer));
 

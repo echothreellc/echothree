@@ -27,6 +27,7 @@ import com.echothree.model.control.vendor.server.logic.VendorLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.vendor.server.entity.Vendor;
 import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.SecurityResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
@@ -45,17 +46,18 @@ public class GetVendorCommand
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.VENDOR.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Vendor.name(), SecurityRoles.Review.name())
-                        )))
-                )));
+                ))
+        ));
         
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("VendorName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null)
-                ));
+        );
     }
     
     /** Creates a new instance of GetVendorCommand */
@@ -63,11 +65,40 @@ public class GetVendorCommand
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
+    String vendorName;
+    String partyName;
+    int parameterCount;
+
+    @Override
+    public SecurityResult security() {
+        var securityResult = super.security();
+
+        vendorName = form.getVendorName();
+        partyName = form.getPartyName();
+        parameterCount = (vendorName == null ? 0 : 1) + (partyName == null ? 0 : 1);
+
+        if(!canSpecifyParty() && parameterCount != 0) {
+            securityResult = getInsufficientSecurityResult();
+        }
+
+        return securityResult;
+    }
+
     @Override
     protected Vendor getEntity() {
-        var vendorName = form.getVendorName();
-        var partyName = form.getPartyName();
-        var vendor = VendorLogic.getInstance().getVendorByName(this, vendorName, partyName);
+        Vendor vendor = null;
+
+        if(parameterCount == 0) {
+            var party = getParty();
+
+            if(PartyTypes.VENDOR.name().equals(party.getLastDetail().getPartyType().getPartyTypeName())) {
+                var vendorControl = Session.getModelController(VendorControl.class);
+
+                vendor = vendorControl.getVendor(party);
+            }
+        } else {
+            vendor = VendorLogic.getInstance().getVendorByName(this, vendorName, partyName);
+        }
 
         if(vendor != null) {
             sendEventUsingNames(vendor.getPartyPK(), EventTypes.READ.name(), null, null, getPartyPK());
