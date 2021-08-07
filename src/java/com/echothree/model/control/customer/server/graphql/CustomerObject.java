@@ -17,6 +17,8 @@
 package com.echothree.model.control.customer.server.graphql;
 
 import com.echothree.model.control.customer.server.control.CustomerControl;
+import com.echothree.model.control.offer.server.graphql.OfferSecurityUtils;
+import com.echothree.model.control.offer.server.graphql.OfferUseObject;
 import com.echothree.model.control.party.server.graphql.BasePartyObject;
 import com.echothree.model.data.customer.server.entity.Customer;
 import com.echothree.model.data.party.server.entity.Party;
@@ -25,6 +27,7 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("customer object")
 @GraphQLName("Customer")
@@ -52,6 +55,91 @@ public class CustomerObject
     @GraphQLNonNull
     public String getCustomerName() {
         return getCustomer().getCustomerName();
+    }
+
+//    @GraphQLField
+//    @GraphQLDescription("customer type")
+//    @GraphQLNonNull
+//    public CustomerTypeObject getCustomerType(final DataFetchingEnvironment env) {
+//        return CustomerSecurityUtils.getInstance().getHasCustomerTypeAccess(env) ?
+//                new CustomerTypeObject(getCustomer().getCustomerType()) : null;
+//    }
+
+    @GraphQLField
+    @GraphQLDescription("initial offer use")
+    @GraphQLNonNull
+    public OfferUseObject getInitialOfferUse(final DataFetchingEnvironment env) {
+        return OfferSecurityUtils.getInstance().getHasOfferUseAccess(env) ?
+                new OfferUseObject(getCustomer().getInitialOfferUse()) : null;
+    }
+
+//    @GraphQLField
+//    @GraphQLDescription("cancellation policy")
+//    public CancellationPolicyObject getCancellationPolicy(final DataFetchingEnvironment env) {
+//        return CancellationPolicySecurityUtils.getInstance().getHasCancellationPolicyAccess(env) ?
+//                new CancellationPolicyObject(getCustomer().getCancellationPolicy()) : null;
+//    }
+//
+//    @GraphQLField
+//    @GraphQLDescription("return policy")
+//    public ReturnPolicyObject getReturnPolicy(final DataFetchingEnvironment env) {
+//        return ReturnPolicySecurityUtils.getInstance().getHasReturnPolicyAccess(env) ?
+//                new ReturnPolicyObject(getCustomer().getReturnPolicy()) : null;
+//    }
+//
+//    @GraphQLField
+//    @GraphQLDescription("AR GL account")
+//    public GlAccountObject getArGlAccount(final DataFetchingEnvironment env) {
+//        return AccountingSecurityUtils.getInstance().getHasGlAccountAccess(env) ?
+//                new GlAccountObject(getCustomer().getArGlAccount()) : null;
+//    }
+
+    @GraphQLField
+    @GraphQLDescription("hold until complete")
+    @GraphQLNonNull
+    public boolean getHoldUntilComplete() {
+        return getCustomer().getHoldUntilComplete();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("allow backorders")
+    @GraphQLNonNull
+    public boolean getAllowBackorders() {
+        return getCustomer().getAllowBackorders();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("allow substitutions")
+    @GraphQLNonNull
+    public boolean getAllowSubstitutions() {
+        return getCustomer().getAllowSubstitutions();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("allow combining shipments")
+    @GraphQLNonNull
+    public boolean getAllowCombiningShipments() {
+        return getCustomer().getAllowCombiningShipments();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("require reference")
+    @GraphQLNonNull
+    public boolean getRequireReference() {
+        return getCustomer().getRequireReference();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("allow reference duplicates")
+    @GraphQLNonNull
+    public boolean getAllowReferenceDuplicates() {
+        return getCustomer().getAllowReferenceDuplicates();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("reference validation pattern")
+    public String getReferenceValidationPattern() {
+        return getCustomer().getReferenceValidationPattern();
     }
 
 }
