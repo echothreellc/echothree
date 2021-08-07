@@ -17,25 +17,21 @@
 package com.echothree.model.control.user.server.graphql;
 
 import com.echothree.control.user.accounting.server.command.GetCurrencyCommand;
-import com.echothree.control.user.associate.server.command.GetAssociateReferralCommand;
-import com.echothree.control.user.offer.server.command.GetOfferUseCommand;
 import com.echothree.control.user.party.server.command.GetDateTimeFormatCommand;
 import com.echothree.control.user.party.server.command.GetLanguageCommand;
 import com.echothree.control.user.party.server.command.GetTimeZoneCommand;
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
+import com.echothree.model.control.offer.server.graphql.OfferSecurityUtils;
+import com.echothree.model.control.offer.server.graphql.OfferUseObject;
 import com.echothree.model.control.party.server.graphql.DateTimeFormatObject;
 import com.echothree.model.control.party.server.graphql.LanguageObject;
 import com.echothree.model.control.party.server.graphql.TimeZoneObject;
 import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.associate.server.entity.AssociateReferral;
-import com.echothree.model.data.offer.server.entity.OfferUse;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.TimeZone;
-import com.echothree.model.data.user.server.entity.UserKey;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.data.user.server.entity.UserVisitGroup;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.string.DateUtils;
 import graphql.annotations.annotationTypes.GraphQLDescription;
@@ -112,21 +108,6 @@ public class UserVisitObject {
         }
 
         return hasDateTimeFormatAccess;
-    }
-
-    private Boolean hasOfferUseAccess;
-
-    private boolean getHasOfferUseAccess(final DataFetchingEnvironment env) {
-        if(hasOfferUseAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetOfferUseCommand(context.getUserVisitPK(), null);
-
-            baseSingleEntityCommand.security();
-
-            hasOfferUseAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-
-        return hasOfferUseAccess;
     }
 
 //    private Boolean hasAssociateReferralAccess;
@@ -208,14 +189,13 @@ public class UserVisitObject {
         return DateUtils.getInstance().formatTypicalDateTime(context.getUserVisit(), userVisit.getLastCommandTime());
     }
     
-//    @GraphQLField
-//    @GraphQLDescription("offer use")
-//    public OfferUseObject getOfferUse() {
-//        OfferUse offerUse = userVisit.getOfferUse();
-//
-//        return offerUse != null && getHasOfferUseAccess(env) ? new OfferUseObject(offerUse) : null;
-//    }
-//
+    @GraphQLField
+    @GraphQLDescription("offer use")
+    public OfferUseObject getOfferUse(final DataFetchingEnvironment env) {
+        return OfferSecurityUtils.getInstance().getHasOfferUseAccess(env) ?
+                new OfferUseObject(userVisit.getOfferUse()) : null;
+    }
+
 //    @GraphQLField
 //    @GraphQLDescription("associate referral")
 //    public AssociateReferralObject getAssociateReferral() {
