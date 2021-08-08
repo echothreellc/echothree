@@ -38,6 +38,12 @@ public class CustomerObject
         super(party);
     }
 
+    public CustomerObject(Customer customer) {
+        super(customer.getParty());
+
+        this.customer = customer;
+    }
+
     private Customer customer;  // Optional, use getCustomer()
 
     protected Customer getCustomer() {

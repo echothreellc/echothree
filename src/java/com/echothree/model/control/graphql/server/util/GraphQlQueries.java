@@ -71,6 +71,9 @@ import com.echothree.control.user.core.server.command.GetTextDecorationCommand;
 import com.echothree.control.user.core.server.command.GetTextDecorationsCommand;
 import com.echothree.control.user.core.server.command.GetTextTransformationCommand;
 import com.echothree.control.user.core.server.command.GetTextTransformationsCommand;
+import com.echothree.control.user.customer.common.CustomerUtil;
+import com.echothree.control.user.customer.server.command.GetCustomerCommand;
+import com.echothree.control.user.customer.server.command.GetCustomersCommand;
 import com.echothree.control.user.filter.common.FilterUtil;
 import com.echothree.control.user.filter.server.command.GetFilterAdjustmentAmountCommand;
 import com.echothree.control.user.filter.server.command.GetFilterAdjustmentAmountsCommand;
@@ -202,6 +205,7 @@ import com.echothree.model.control.core.server.graphql.MimeTypeObject;
 import com.echothree.model.control.core.server.graphql.MimeTypeUsageTypeObject;
 import com.echothree.model.control.core.server.graphql.TextDecorationObject;
 import com.echothree.model.control.core.server.graphql.TextTransformationObject;
+import com.echothree.model.control.customer.server.graphql.CustomerObject;
 import com.echothree.model.control.filter.server.graphql.FilterAdjustmentAmountObject;
 import com.echothree.model.control.filter.server.graphql.FilterAdjustmentFixedAmountObject;
 import com.echothree.model.control.filter.server.graphql.FilterAdjustmentObject;
@@ -280,6 +284,7 @@ import com.echothree.model.data.core.server.entity.MimeTypeFileExtension;
 import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
 import com.echothree.model.data.core.server.entity.TextDecoration;
 import com.echothree.model.data.core.server.entity.TextTransformation;
+import com.echothree.model.data.customer.server.entity.Customer;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.filter.server.entity.FilterAdjustment;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentAmount;
@@ -3909,6 +3914,54 @@ public final class GraphQlQueries
         }
         
         return timeZoneObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("customer")
+    public static CustomerObject customer(final DataFetchingEnvironment env,
+            @GraphQLName("customerName") final String customerName,
+            @GraphQLName("partyName") final String partyName) {
+        Customer customer;
+
+        try {
+            var commandForm = CustomerUtil.getHome().getGetCustomerForm();
+
+            commandForm.setCustomerName(customerName);
+            commandForm.setPartyName(partyName);
+
+            customer = new GetCustomerCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return customer == null ? null : new CustomerObject(customer);
+    }
+
+    @GraphQLField
+    @GraphQLName("customers")
+    public static Collection<CustomerObject> customers(final DataFetchingEnvironment env) {
+        Collection<Customer> customers;
+        Collection<CustomerObject> customerObjects;
+
+        try {
+            var commandForm = CustomerUtil.getHome().getGetCustomersForm();
+
+            customers = new GetCustomersCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(customers == null) {
+            customerObjects = emptyList();
+        } else {
+            customerObjects = new ArrayList<>(customers.size());
+
+            customers.stream()
+                    .map(CustomerObject::new)
+                    .forEachOrdered(customerObjects::add);
+        }
+
+        return customerObjects;
     }
 
     @GraphQLField
