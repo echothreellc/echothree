@@ -16,9 +16,12 @@
 
 package com.echothree.model.control.customer.server.logic;
 
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.customer.common.exception.CannotSpecifyCustomerNameAndPartyNameException;
-import com.echothree.model.control.customer.common.exception.MustSpecifyCustomerNameOrPartyNameException;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.customer.common.exception.UnknownCustomerNameException;
 import com.echothree.model.control.customer.common.exception.UnknownCustomerStatusChoiceException;
 import com.echothree.model.control.customer.common.workflow.CustomerStatusConstants;
@@ -61,12 +64,15 @@ public class CustomerLogic
         return CustomerLogicHolder.instance;
     }
 
-    public Customer getCustomerByName(final ExecutionErrorAccumulator eea, final String customerName, final String partyName) {
-        int parameterCount = (customerName == null? 0: 1) + (partyName == null? 0: 1);
+    public Customer getCustomerByName(final ExecutionErrorAccumulator eea, final String customerName, final String partyName,
+            final UniversalEntitySpec universalEntitySpec) {
+        int parameterCount = (customerName == null? 0: 1) + (partyName == null? 0: 1) +
+                EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalEntitySpec);
         Customer customer = null;
 
         if(parameterCount == 1) {
             var customerControl = Session.getModelController(CustomerControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
 
             if(customerName != null) {
                 customer = customerControl.getCustomerByName(customerName);
@@ -74,8 +80,7 @@ public class CustomerLogic
                 if(customer == null) {
                     handleExecutionError(UnknownCustomerNameException.class, eea, ExecutionErrors.UnknownCustomerName.name(), customerName);
                 }
-            } else {
-                var partyControl = Session.getModelController(PartyControl.class);
+            } else if(partyName != null) {
                 var party = partyControl.getPartyByName(partyName);
 
                 if(party != null) {
@@ -85,13 +90,20 @@ public class CustomerLogic
                 } else {
                     handleExecutionError(UnknownPartyNameException.class, eea, ExecutionErrors.UnknownPartyName.name(), partyName);
                 }
+            } else {
+                EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalEntitySpec,
+                        ComponentVendors.ECHOTHREE.name(), EntityTypes.Party.name());
+
+                if(!eea.hasExecutionErrors()) {
+                    var party = partyControl.getPartyByEntityInstance(entityInstance);
+
+                    PartyLogic.getInstance().checkPartyType(eea, party, PartyTypes.CUSTOMER.name());
+
+                    customer = customerControl.getCustomer(party);
+                }
             }
         } else {
-            if(parameterCount == 2) {
-                handleExecutionError(CannotSpecifyCustomerNameAndPartyNameException.class, eea, ExecutionErrors.CannotSpecifyCustomerNameAndPartyName.name());
-            } else {
-                handleExecutionError(MustSpecifyCustomerNameOrPartyNameException.class, eea, ExecutionErrors.MustSpecifyCustomerNameOrPartyName.name());
-            }
+            handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return customer;

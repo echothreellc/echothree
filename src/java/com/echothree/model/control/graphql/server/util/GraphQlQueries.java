@@ -3920,7 +3920,8 @@ public final class GraphQlQueries
     @GraphQLName("customer")
     public static CustomerObject customer(final DataFetchingEnvironment env,
             @GraphQLName("customerName") final String customerName,
-            @GraphQLName("partyName") final String partyName) {
+            @GraphQLName("partyName") final String partyName,
+            @GraphQLName("id") @GraphQLID final String id) {
         Customer customer;
 
         try {
@@ -3928,6 +3929,7 @@ public final class GraphQlQueries
 
             commandForm.setCustomerName(customerName);
             commandForm.setPartyName(partyName);
+            commandForm.setUlid(id);
 
             customer = new GetCustomerCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {

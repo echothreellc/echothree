@@ -1915,8 +1915,6 @@ public enum ExecutionErrors {
     PartyRequired,
     EmployeeNotActive,
     VendorNotActive,
-    CannotSpecifyCustomerNameAndPartyName,
-    MustSpecifyCustomerNameOrPartyName,
     CannotSpecifyVendorNameAndPartyName,
     MustSpecifyVendorNameOrPartyName,
     UnknownChainKindDescription,

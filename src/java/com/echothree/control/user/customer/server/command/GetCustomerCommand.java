@@ -16,12 +16,15 @@
 
 package com.echothree.control.user.customer.server.command;
 
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 import com.echothree.control.user.customer.common.form.GetCustomerForm;
 import com.echothree.control.user.customer.common.result.CustomerResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.customer.server.logic.CustomerLogic;
 import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.customer.server.entity.Customer;
@@ -54,7 +57,11 @@ public class GetCustomerCommand
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CustomerName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null)
+                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
         );
     }
 
@@ -65,6 +72,7 @@ public class GetCustomerCommand
 
     String customerName;
     String partyName;
+    UniversalEntitySpec universalEntitySpec;
     int parameterCount;
 
     @Override
@@ -73,7 +81,9 @@ public class GetCustomerCommand
 
         customerName = form.getCustomerName();
         partyName = form.getPartyName();
-        parameterCount = (customerName == null ? 0 : 1) + (partyName == null ? 0 : 1);
+        universalEntitySpec = form;
+        parameterCount = (customerName == null ? 0 : 1) + (partyName == null ? 0 : 1) +
+                EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(!canSpecifyParty() && parameterCount != 0) {
             securityResult = getInsufficientSecurityResult();
@@ -89,13 +99,15 @@ public class GetCustomerCommand
         if(parameterCount == 0) {
             var party = getParty();
 
-            if(PartyTypes.CUSTOMER.name().equals(party.getLastDetail().getPartyType().getPartyTypeName())) {
+            PartyLogic.getInstance().checkPartyType(this, party, PartyTypes.CUSTOMER.name());
+
+            if(!hasExecutionErrors()) {
                 var customerControl = Session.getModelController(CustomerControl.class);
 
                 customer = customerControl.getCustomer(party);
             }
         } else {
-            customer = CustomerLogic.getInstance().getCustomerByName(this, customerName, partyName);
+            customer = CustomerLogic.getInstance().getCustomerByName(this, customerName, partyName, universalEntitySpec);
         }
 
         if(customer != null) {
