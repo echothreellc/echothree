@@ -16,100 +16,118 @@
 
 package com.echothree.control.user.customer.server.command;
 
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 import com.echothree.control.user.customer.common.form.GetCustomerForm;
 import com.echothree.control.user.customer.common.result.CustomerResultFactory;
-import com.echothree.control.user.customer.common.result.GetCustomerResult;
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.customer.server.control.CustomerControl;
+import com.echothree.model.control.customer.server.logic.CustomerLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.control.wishlist.server.control.WishlistControl;
+import com.echothree.model.control.party.server.logic.PartyLogic;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.customer.server.entity.Customer;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.SecurityResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class GetCustomerCommand
-        extends BaseSimpleCommand<GetCustomerForm> {
-    
+        extends BaseSingleEntityCommand<Customer, GetCustomerForm> {
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.CUSTOMER.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.Customer.name(), SecurityRoles.Review.name())
+                ))
+        ));
+
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CustomerName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null)
-                ));
+                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
+        );
     }
-    
+
     /** Creates a new instance of GetCustomerCommand */
     public GetCustomerCommand(UserVisitPK userVisitPK, GetCustomerForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    String customerName;
+    String partyName;
+    UniversalEntitySpec universalEntitySpec;
+    int parameterCount;
+
     @Override
-    protected BaseResult execute() {
-        GetCustomerResult result = CustomerResultFactory.getGetCustomerResult();
-        String customerName = form.getCustomerName();
-        String partyName = form.getPartyName();
-        int parameterCount = (customerName == null? 0: 1) + (partyName == null? 0: 1);
-        
-        if(parameterCount == 1) {
-            var customerControl = Session.getModelController(CustomerControl.class);
-            Customer customer = null;
-            Party party = null;
-            
-            if(customerName != null) {
-                customer = customerControl.getCustomerByName(customerName);
-                
-                if(customer != null) {
-                    party = customer.getParty();
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownCustomerName.name(), customerName);
-                }
-            } else if(partyName != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
-                
-                party = partyControl.getPartyByName(partyName);
-                
-                if(party != null) {
-                    if(party.getLastDetail().getPartyType().getPartyTypeName().equals(PartyTypes.CUSTOMER.name())) {
-                    customer = customerControl.getCustomer(party);
-                    } else {
-                        addExecutionError(ExecutionErrors.InvalidPartyType.name());
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
-                }
-            }
-            
-            if(customer != null) {
-                UserVisit userVisit = getUserVisit();
-                Party companyParty = getCompanyParty();
+    public SecurityResult security() {
+        var securityResult = super.security();
 
-                result.setCustomer(customerControl.getCustomerTransfer(userVisit, customer));
+        customerName = form.getCustomerName();
+        partyName = form.getPartyName();
+        universalEntitySpec = form;
+        parameterCount = (customerName == null ? 0 : 1) + (partyName == null ? 0 : 1) +
+                EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
-                if(companyParty != null) {
-                    var wishlistControl = Session.getModelController(WishlistControl.class);
+        if(!canSpecifyParty() && parameterCount != 0) {
+            securityResult = getInsufficientSecurityResult();
+        }
 
-                    result.setWishlists(wishlistControl.getWishlistTransfers(userVisit, companyParty, party));
-                }
+        return securityResult;
+    }
 
-                sendEventUsingNames(party.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+    @Override
+    protected Customer getEntity() {
+        Customer customer = null;
+
+        if(parameterCount == 0) {
+            var party = getParty();
+
+            PartyLogic.getInstance().checkPartyType(this, party, PartyTypes.CUSTOMER.name());
+
+            if(!hasExecutionErrors()) {
+                var customerControl = Session.getModelController(CustomerControl.class);
+
+                customer = customerControl.getCustomer(party);
             }
         } else {
-            addExecutionError(ExecutionErrors.InvalidParameterCount.name());
+            customer = CustomerLogic.getInstance().getCustomerByName(this, customerName, partyName, universalEntitySpec);
         }
-        
+
+        if(customer != null) {
+            sendEventUsingNames(customer.getPartyPK(), EventTypes.READ.name(), null, null, getPartyPK());
+        }
+
+        return customer;
+    }
+
+    @Override
+    protected BaseResult getTransfer(Customer customer) {
+        var result = CustomerResultFactory.getGetCustomerResult();
+
+        if(customer != null) {
+            var customerControl = Session.getModelController(CustomerControl.class);
+
+            result.setCustomer(customerControl.getCustomerTransfer(getUserVisit(), customer));
+        }
+
         return result;
     }
-    
+
 }

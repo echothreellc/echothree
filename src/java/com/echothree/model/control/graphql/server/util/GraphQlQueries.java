@@ -71,6 +71,9 @@ import com.echothree.control.user.core.server.command.GetTextDecorationCommand;
 import com.echothree.control.user.core.server.command.GetTextDecorationsCommand;
 import com.echothree.control.user.core.server.command.GetTextTransformationCommand;
 import com.echothree.control.user.core.server.command.GetTextTransformationsCommand;
+import com.echothree.control.user.customer.common.CustomerUtil;
+import com.echothree.control.user.customer.server.command.GetCustomerCommand;
+import com.echothree.control.user.customer.server.command.GetCustomersCommand;
 import com.echothree.control.user.filter.common.FilterUtil;
 import com.echothree.control.user.filter.server.command.GetFilterAdjustmentAmountCommand;
 import com.echothree.control.user.filter.server.command.GetFilterAdjustmentAmountsCommand;
@@ -101,6 +104,7 @@ import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.server.command.GetItemCategoriesCommand;
 import com.echothree.control.user.item.server.command.GetItemCategoryCommand;
 import com.echothree.control.user.item.server.command.GetItemCommand;
+import com.echothree.control.user.item.server.command.GetItemsCommand;
 import com.echothree.control.user.offer.common.OfferUtil;
 import com.echothree.control.user.offer.server.command.GetOfferCommand;
 import com.echothree.control.user.offer.server.command.GetOfferNameElementCommand;
@@ -201,6 +205,7 @@ import com.echothree.model.control.core.server.graphql.MimeTypeObject;
 import com.echothree.model.control.core.server.graphql.MimeTypeUsageTypeObject;
 import com.echothree.model.control.core.server.graphql.TextDecorationObject;
 import com.echothree.model.control.core.server.graphql.TextTransformationObject;
+import com.echothree.model.control.customer.server.graphql.CustomerObject;
 import com.echothree.model.control.filter.server.graphql.FilterAdjustmentAmountObject;
 import com.echothree.model.control.filter.server.graphql.FilterAdjustmentFixedAmountObject;
 import com.echothree.model.control.filter.server.graphql.FilterAdjustmentObject;
@@ -279,6 +284,7 @@ import com.echothree.model.data.core.server.entity.MimeTypeFileExtension;
 import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
 import com.echothree.model.data.core.server.entity.TextDecoration;
 import com.echothree.model.data.core.server.entity.TextTransformation;
+import com.echothree.model.data.customer.server.entity.Customer;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.filter.server.entity.FilterAdjustment;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentAmount;
@@ -3911,6 +3917,56 @@ public final class GraphQlQueries
     }
 
     @GraphQLField
+    @GraphQLName("customer")
+    public static CustomerObject customer(final DataFetchingEnvironment env,
+            @GraphQLName("customerName") final String customerName,
+            @GraphQLName("partyName") final String partyName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        Customer customer;
+
+        try {
+            var commandForm = CustomerUtil.getHome().getGetCustomerForm();
+
+            commandForm.setCustomerName(customerName);
+            commandForm.setPartyName(partyName);
+            commandForm.setUlid(id);
+
+            customer = new GetCustomerCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return customer == null ? null : new CustomerObject(customer);
+    }
+
+    @GraphQLField
+    @GraphQLName("customers")
+    public static Collection<CustomerObject> customers(final DataFetchingEnvironment env) {
+        Collection<Customer> customers;
+        Collection<CustomerObject> customerObjects;
+
+        try {
+            var commandForm = CustomerUtil.getHome().getGetCustomersForm();
+
+            customers = new GetCustomersCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(customers == null) {
+            customerObjects = emptyList();
+        } else {
+            customerObjects = new ArrayList<>(customers.size());
+
+            customers.stream()
+                    .map(CustomerObject::new)
+                    .forEachOrdered(customerObjects::add);
+        }
+
+        return customerObjects;
+    }
+
+    @GraphQLField
     @GraphQLName("item")
     public static ItemObject item(final DataFetchingEnvironment env,
             @GraphQLName("itemName") final String itemName,
@@ -3932,7 +3988,34 @@ public final class GraphQlQueries
         
         return item == null ? null : new ItemObject(item);
     }
-    
+
+    @GraphQLField
+    @GraphQLName("items")
+    public static Collection<ItemObject> items(final DataFetchingEnvironment env) {
+        Collection<Item> items;
+        Collection<ItemObject> itemObjects;
+
+        try {
+            var commandForm = ItemUtil.getHome().getGetItemsForm();
+
+            items = new GetItemsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(items == null) {
+            itemObjects = emptyList();
+        } else {
+            itemObjects = new ArrayList<>(items.size());
+
+            items.stream()
+                    .map(ItemObject::new)
+                    .forEachOrdered(itemObjects::add);
+        }
+
+        return itemObjects;
+    }
+
     @GraphQLField
     @GraphQLName("itemCategory")
     public static ItemCategoryObject itemCategory(final DataFetchingEnvironment env,

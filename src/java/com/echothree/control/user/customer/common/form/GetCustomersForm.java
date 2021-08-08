@@ -16,13 +16,11 @@
 
 package com.echothree.control.user.customer.common.form;
 
-import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
-import com.echothree.control.user.customer.common.spec.CustomerSpec;
-import com.echothree.control.user.party.common.spec.PartySpec;
+import com.echothree.util.common.form.BaseForm;
 
-public interface GetCustomerForm
-        extends CustomerSpec, PartySpec, UniversalEntitySpec {
+public interface GetCustomersForm
+        extends BaseForm {
     
-    // Nothing additional beyond CustomerSpec, PartySpec, UniversalEntitySpec
+    // Nothing additional beyond BaseForm
     
 }

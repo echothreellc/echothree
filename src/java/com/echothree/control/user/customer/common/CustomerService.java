@@ -32,9 +32,11 @@ public interface CustomerService
     // -------------------------------------------------------------------------
     //   Customers
     // -------------------------------------------------------------------------
-    
+
+    CommandResult getCustomers(UserVisitPK userVisitPK, GetCustomersForm form);
+
     CommandResult getCustomer(UserVisitPK userVisitPK, GetCustomerForm form);
-    
+
     CommandResult editCustomer(UserVisitPK userVisitPK, EditCustomerForm form);
     
     CommandResult getCustomerStatusChoices(UserVisitPK userVisitPK, GetCustomerStatusChoicesForm form);

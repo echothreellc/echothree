@@ -604,15 +604,14 @@ public abstract class BaseCommand
     //   Security Utilities
     // --------------------------------------------------------------------------------
 
-    protected SecurityResult selfOnly(PartySpec spec) {
-        var hasInsufficientSecurity = false;
+    protected boolean canSpecifyParty() {
         var partyTypeName = getPartyType().getPartyTypeName();
 
-        if(partyTypeName.equals(PartyTypes.CUSTOMER.name()) || partyTypeName.equals(PartyTypes.VENDOR.name())) {
-            if(spec.getPartyName() != null) {
-                hasInsufficientSecurity = true;
-            }
-        }
+        return !(partyTypeName.equals(PartyTypes.CUSTOMER.name()) || partyTypeName.equals(PartyTypes.VENDOR.name()));
+    }
+
+    protected SecurityResult selfOnly(PartySpec spec) {
+        var hasInsufficientSecurity = !canSpecifyParty() && spec.getPartyName() != null;
 
         return hasInsufficientSecurity ? getInsufficientSecurityResult() : null;
     }

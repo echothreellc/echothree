@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.search.server.graphql;
 
-import com.echothree.model.control.party.server.graphql.PartyObject;
+import com.echothree.model.control.customer.server.graphql.CustomerObject;
 import com.echothree.model.data.party.server.entity.Party;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -36,8 +36,8 @@ public class CustomerResultObject {
     @GraphQLField
     @GraphQLDescription("customer")
     @GraphQLNonNull
-    public PartyObject getCustomer() {
-        return new PartyObject(party);
+    public CustomerObject getCustomer() {
+        return new CustomerObject(party);
     }
     
 }

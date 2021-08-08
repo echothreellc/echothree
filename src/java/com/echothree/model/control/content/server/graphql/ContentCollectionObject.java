@@ -19,6 +19,8 @@ package com.echothree.model.control.content.server.graphql;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
+import com.echothree.model.control.offer.server.graphql.OfferSecurityUtils;
+import com.echothree.model.control.offer.server.graphql.OfferUseObject;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.content.server.entity.ContentCollection;
@@ -28,8 +30,8 @@ import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.schema.DataFetchingEnvironment;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,11 +65,13 @@ public class ContentCollectionObject
         return getContentCollectionDetail().getContentCollectionName();
     }
 
-//    @GraphQLField
-//    @GraphQLDescription("default offer use")
-//    public OfferUseObject getDefaultOfferUse(final DataFetchingEnvironment env) {
-//        return getHasOfferUseAccess(env) ? new OfferUseObject(getContentCollectionDetail().getDefaultOfferUse()) : null;
-//    }
+    @GraphQLField
+    @GraphQLDescription("default offer use")
+    @GraphQLNonNull
+    public OfferUseObject getDefaultOfferUse(final DataFetchingEnvironment env) {
+        return OfferSecurityUtils.getInstance().getHasOfferUseAccess(env) ?
+                new OfferUseObject(getContentCollectionDetail().getDefaultOfferUse()) : null;
+    }
 
     @GraphQLField
     @GraphQLDescription("description")

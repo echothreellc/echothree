@@ -77,7 +77,6 @@ import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class CustomerTransferCache
         extends BaseCustomerTransferCache<Party, CustomerTransfer> {
@@ -171,11 +170,11 @@ public class CustomerTransferCache
         hasCommunicationEventLimits = session.hasLimit(CommunicationEventFactory.class);
     }
 
-    public CustomerTransfer getCustomerTransfer(Customer customer) {
-        return getCustomerTransfer(customer.getParty());
+    public CustomerTransfer getTransfer(Customer customer) {
+        return getTransfer(customer.getParty());
     }
 
-    public CustomerTransfer getCustomerTransfer(Party party) {
+    public CustomerTransfer getTransfer(Party party) {
         CustomerTransfer customerTransfer = get(party);
 
         if(customerTransfer == null) {

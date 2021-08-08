@@ -14,15 +14,19 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.customer.common.form;
+package com.echothree.control.user.customer.common.result;
 
-import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
-import com.echothree.control.user.customer.common.spec.CustomerSpec;
-import com.echothree.control.user.party.common.spec.PartySpec;
+import com.echothree.model.control.customer.common.transfer.CustomerTransfer;
+import com.echothree.util.common.command.BaseResult;
+import java.util.List;
 
-public interface GetCustomerForm
-        extends CustomerSpec, PartySpec, UniversalEntitySpec {
-    
-    // Nothing additional beyond CustomerSpec, PartySpec, UniversalEntitySpec
+public interface GetCustomersResult
+        extends BaseResult {
+
+    Long getCustomerCount();
+    void setCustomerCount(Long customerCount);
+
+    List<CustomerTransfer> getCustomers();
+    void setCustomers(List<CustomerTransfer> customers);
     
 }
