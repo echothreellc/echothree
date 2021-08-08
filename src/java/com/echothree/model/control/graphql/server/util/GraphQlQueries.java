@@ -101,6 +101,7 @@ import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.server.command.GetItemCategoriesCommand;
 import com.echothree.control.user.item.server.command.GetItemCategoryCommand;
 import com.echothree.control.user.item.server.command.GetItemCommand;
+import com.echothree.control.user.item.server.command.GetItemsCommand;
 import com.echothree.control.user.offer.common.OfferUtil;
 import com.echothree.control.user.offer.server.command.GetOfferCommand;
 import com.echothree.control.user.offer.server.command.GetOfferNameElementCommand;
@@ -3932,7 +3933,34 @@ public final class GraphQlQueries
         
         return item == null ? null : new ItemObject(item);
     }
-    
+
+    @GraphQLField
+    @GraphQLName("items")
+    public static Collection<ItemObject> items(final DataFetchingEnvironment env) {
+        Collection<Item> items;
+        Collection<ItemObject> itemObjects;
+
+        try {
+            var commandForm = ItemUtil.getHome().getGetItemsForm();
+
+            items = new GetItemsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(items == null) {
+            itemObjects = emptyList();
+        } else {
+            itemObjects = new ArrayList<>(items.size());
+
+            items.stream()
+                    .map(ItemObject::new)
+                    .forEachOrdered(itemObjects::add);
+        }
+
+        return itemObjects;
+    }
+
     @GraphQLField
     @GraphQLName("itemCategory")
     public static ItemCategoryObject itemCategory(final DataFetchingEnvironment env,
