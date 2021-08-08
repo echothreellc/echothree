@@ -82,22 +82,28 @@ public class CustomerObject
 //    @GraphQLField
 //    @GraphQLDescription("cancellation policy")
 //    public CancellationPolicyObject getCancellationPolicy(final DataFetchingEnvironment env) {
-//        return CancellationPolicySecurityUtils.getInstance().getHasCancellationPolicyAccess(env) ?
-//                new CancellationPolicyObject(getCustomer().getCancellationPolicy()) : null;
+//        var cancellationPolicy = getCustomer().getCancellationPolicy();
+//
+//        return cancellationPolicy == null ? null : CancellationPolicySecurityUtils.getInstance().getHasCancellationPolicyAccess(env) ?
+//                new CancellationPolicyObject(cancellationPolicy) : null;
 //    }
 //
 //    @GraphQLField
 //    @GraphQLDescription("return policy")
 //    public ReturnPolicyObject getReturnPolicy(final DataFetchingEnvironment env) {
-//        return ReturnPolicySecurityUtils.getInstance().getHasReturnPolicyAccess(env) ?
-//                new ReturnPolicyObject(getCustomer().getReturnPolicy()) : null;
+//        var returnPolicy = getCustomer().getReturnPolicy();
+//
+//        return returnPolicy == null ? null : ReturnPolicySecurityUtils.getInstance().getHasReturnPolicyAccess(env) ?
+//                new ReturnPolicyObject(returnPolicy) : null;
 //    }
 //
 //    @GraphQLField
 //    @GraphQLDescription("AR GL account")
 //    public GlAccountObject getArGlAccount(final DataFetchingEnvironment env) {
-//        return AccountingSecurityUtils.getInstance().getHasGlAccountAccess(env) ?
-//                new GlAccountObject(getCustomer().getArGlAccount()) : null;
+//        var arGlAccount = getCustomer().getArGlAccount();
+//
+//        return arGlAccount == null ? null : AccountingSecurityUtils.getInstance().getHasGlAccountAccess(env) ?
+//                new GlAccountObject(getVendor().getArGlAccount()) : null;
 //    }
 
     @GraphQLField

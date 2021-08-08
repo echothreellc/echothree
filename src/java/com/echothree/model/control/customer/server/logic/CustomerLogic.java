@@ -90,8 +90,8 @@ public class CustomerLogic
                 } else {
                     handleExecutionError(UnknownPartyNameException.class, eea, ExecutionErrors.UnknownPartyName.name(), partyName);
                 }
-            } else {
-                EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalEntitySpec,
+            } else if(universalEntitySpec != null) {
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalEntitySpec,
                         ComponentVendors.ECHOTHREE.name(), EntityTypes.Party.name());
 
                 if(!eea.hasExecutionErrors()) {

@@ -16,7 +16,12 @@
 
 package com.echothree.model.control.vendor.server.logic;
 
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.common.exception.UnknownPartyNameException;
 import com.echothree.model.control.party.server.control.PartyControl;
@@ -26,8 +31,6 @@ import com.echothree.model.control.sequence.common.exception.MissingDefaultSeque
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.control.user.server.logic.UserKeyLogic;
 import com.echothree.model.control.user.server.logic.UserSessionLogic;
-import com.echothree.model.control.vendor.common.exception.CannotSpecifyVendorNameAndPartyNameException;
-import com.echothree.model.control.vendor.common.exception.MustSpecifyVendorNameOrPartyNameException;
 import com.echothree.model.control.vendor.common.exception.UnknownVendorNameException;
 import com.echothree.model.control.vendor.common.exception.UnknownVendorStatusChoiceException;
 import com.echothree.model.control.vendor.common.workflow.VendorStatusConstants;
@@ -108,12 +111,15 @@ public class VendorLogic
                 vendorItemSelector, vendorItemCostFilter, createdBy);
     }
 
-    public Vendor getVendorByName(final ExecutionErrorAccumulator eea, final String vendorName, final String partyName) {
-        int parameterCount = (vendorName == null? 0: 1) + (partyName == null? 0: 1);
+    public Vendor getVendorByName(final ExecutionErrorAccumulator eea, final String vendorName, final String partyName,
+            final UniversalEntitySpec universalEntitySpec) {
+        int parameterCount = (vendorName == null? 0: 1) + (partyName == null? 0: 1) +
+                EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalEntitySpec);
         Vendor vendor = null;
 
         if(parameterCount == 1) {
             var vendorControl = Session.getModelController(VendorControl.class);
+            var partyControl = Session.getModelController(PartyControl.class);
 
             if(vendorName != null) {
                 vendor = vendorControl.getVendorByName(vendorName);
@@ -121,24 +127,30 @@ public class VendorLogic
                 if(vendor == null) {
                     handleExecutionError(UnknownVendorNameException.class, eea, ExecutionErrors.UnknownVendorName.name(), vendorName);
                 }
-            } else {
-                var partyControl = Session.getModelController(PartyControl.class);
+            } else if(partyName != null) {
                 var party = partyControl.getPartyByName(partyName);
 
                 if(party != null) {
-                    PartyLogic.getInstance().checkPartyType(eea, party, PartyTypes.VENDOR.name());
+                    PartyLogic.getInstance().checkPartyType(eea, party, PartyTypes.CUSTOMER.name());
 
                     vendor = vendorControl.getVendor(party);
                 } else {
                     handleExecutionError(UnknownPartyNameException.class, eea, ExecutionErrors.UnknownPartyName.name(), partyName);
                 }
+            } else if(universalEntitySpec != null){
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalEntitySpec,
+                        ComponentVendors.ECHOTHREE.name(), EntityTypes.Party.name());
+
+                if(!eea.hasExecutionErrors()) {
+                    var party = partyControl.getPartyByEntityInstance(entityInstance);
+
+                    PartyLogic.getInstance().checkPartyType(eea, party, PartyTypes.CUSTOMER.name());
+
+                    vendor = vendorControl.getVendor(party);
+                }
             }
         } else {
-            if(parameterCount == 2) {
-                handleExecutionError(CannotSpecifyVendorNameAndPartyNameException.class, eea, ExecutionErrors.CannotSpecifyVendorNameAndPartyName.name());
-            } else {
-                handleExecutionError(MustSpecifyVendorNameOrPartyNameException.class, eea, ExecutionErrors.MustSpecifyVendorNameOrPartyName.name());
-            }
+            handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return vendor;

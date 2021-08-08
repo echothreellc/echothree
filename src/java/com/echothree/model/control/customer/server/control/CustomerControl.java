@@ -646,7 +646,7 @@ public class CustomerControl
     }
 
     private List<Customer> getCustomers(EntityPermission entityPermission) {
-        List<Customer> customers = null;
+        List<Customer> customers;
 
         try {
             String query = null;

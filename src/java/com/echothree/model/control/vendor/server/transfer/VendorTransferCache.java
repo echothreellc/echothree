@@ -76,7 +76,6 @@ import com.echothree.model.data.vendor.server.factory.VendorItemFactory;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.AmountUtils;
-import java.util.Set;
 
 public class VendorTransferCache
         extends BaseVendorTransferCache<Party, VendorTransfer> {
@@ -163,11 +162,11 @@ public class VendorTransferCache
         hasCommunicationEventLimits = session.hasLimit(CommunicationEventFactory.class);
     }
 
-    public VendorTransfer getVendorTransfer(Vendor vendor) {
-        return getVendorTransfer(vendor.getParty());
+    public VendorTransfer getTransfer(Vendor vendor) {
+        return getTransfer(vendor.getParty());
     }
 
-    public VendorTransfer getVendorTransfer(Party party) {
+    public VendorTransfer getTransfer(Party party) {
         VendorTransfer vendorTransfer = get(party);
 
         if(vendorTransfer == null) {
