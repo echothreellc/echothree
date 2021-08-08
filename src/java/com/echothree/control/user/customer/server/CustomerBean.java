@@ -40,12 +40,17 @@ public class CustomerBean
     // -------------------------------------------------------------------------
     //   Customers
     // -------------------------------------------------------------------------
-    
+
+    @Override
+    public CommandResult getCustomers(UserVisitPK userVisitPK, GetCustomersForm form) {
+        return new GetCustomersCommand(userVisitPK, form).run();
+    }
+
     @Override
     public CommandResult getCustomer(UserVisitPK userVisitPK, GetCustomerForm form) {
         return new GetCustomerCommand(userVisitPK, form).run();
     }
-    
+
     @Override
     public CommandResult editCustomer(UserVisitPK userVisitPK, EditCustomerForm form) {
         return new EditCustomerCommand(userVisitPK, form).run();
