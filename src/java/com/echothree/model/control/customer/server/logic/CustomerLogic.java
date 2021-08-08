@@ -76,7 +76,7 @@ public class CustomerLogic
                 }
             } else {
                 var partyControl = Session.getModelController(PartyControl.class);
-                Party party = partyControl.getPartyByName(partyName);
+                var party = partyControl.getPartyByName(partyName);
 
                 if(party != null) {
                     PartyLogic.getInstance().checkPartyType(eea, party, PartyTypes.CUSTOMER.name());
