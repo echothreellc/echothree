@@ -179,6 +179,9 @@ import com.echothree.control.user.user.common.UserUtil;
 import com.echothree.control.user.user.server.command.GetRecoveryQuestionCommand;
 import com.echothree.control.user.user.server.command.GetRecoveryQuestionsCommand;
 import com.echothree.control.user.user.server.command.GetUserLoginCommand;
+import com.echothree.control.user.vendor.common.VendorUtil;
+import com.echothree.control.user.vendor.server.command.GetVendorCommand;
+import com.echothree.control.user.vendor.server.command.GetVendorsCommand;
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
 import com.echothree.model.control.content.server.graphql.ContentCatalogItemObject;
 import com.echothree.model.control.content.server.graphql.ContentCatalogObject;
@@ -258,6 +261,7 @@ import com.echothree.model.control.user.server.graphql.RecoveryQuestionObject;
 import com.echothree.model.control.user.server.graphql.UserLoginObject;
 import com.echothree.model.control.user.server.graphql.UserSessionObject;
 import com.echothree.model.control.user.server.graphql.UserVisitObject;
+import com.echothree.model.control.vendor.server.graphql.VendorObject;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.content.server.entity.ContentCatalogItem;
@@ -334,6 +338,7 @@ import com.echothree.model.data.user.server.entity.RecoveryQuestion;
 import com.echothree.model.data.user.server.entity.UserLogin;
 import com.echothree.model.data.user.server.entity.UserSession;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.model.data.vendor.server.entity.Vendor;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLID;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -3964,6 +3969,56 @@ public final class GraphQlQueries
         }
 
         return customerObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("vendor")
+    public static VendorObject vendor(final DataFetchingEnvironment env,
+            @GraphQLName("vendorName") final String vendorName,
+            @GraphQLName("partyName") final String partyName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        Vendor vendor;
+
+        try {
+            var commandForm = VendorUtil.getHome().getGetVendorForm();
+
+            commandForm.setVendorName(vendorName);
+            commandForm.setPartyName(partyName);
+            commandForm.setUlid(id);
+
+            vendor = new GetVendorCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return vendor == null ? null : new VendorObject(vendor);
+    }
+
+    @GraphQLField
+    @GraphQLName("vendors")
+    public static Collection<VendorObject> vendors(final DataFetchingEnvironment env) {
+        Collection<Vendor> vendors;
+        Collection<VendorObject> vendorObjects;
+
+        try {
+            var commandForm = VendorUtil.getHome().getGetVendorsForm();
+
+            vendors = new GetVendorsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(vendors == null) {
+            vendorObjects = emptyList();
+        } else {
+            vendorObjects = new ArrayList<>(vendors.size());
+
+            vendors.stream()
+                    .map(VendorObject::new)
+                    .forEachOrdered(vendorObjects::add);
+        }
+
+        return vendorObjects;
     }
 
     @GraphQLField

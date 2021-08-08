@@ -202,7 +202,7 @@ public class PurchaseOrderLogic
             final String vendorName, final String termName, final String strHoldUntilComplete, final String strAllowBackorders,
             final String strAllowSubstitutions, final String strAllowCombiningShipments, final String reference, final String freeOnBoardName,
             final String workflowEntranceName, final Party createdByParty) {
-        var vendor = VendorLogic.getInstance().getVendorByName(eea, vendorName, null);
+        var vendor = VendorLogic.getInstance().getVendorByName(eea, vendorName, null, null);
         var term = termName == null ? null : TermLogic.getInstance().getTermByName(eea, termName);
         var freeOnBoard = freeOnBoardName == null ? null : FreeOnBoardLogic.getInstance().getFreeOnBoardByName(eea, freeOnBoardName);
         Order order = null;

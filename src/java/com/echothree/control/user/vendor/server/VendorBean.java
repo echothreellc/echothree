@@ -108,12 +108,17 @@ public class VendorBean
     // -------------------------------------------------------------------------
     //   Vendors
     // -------------------------------------------------------------------------
-    
+
     @Override
     public CommandResult getVendor(UserVisitPK userVisitPK, GetVendorForm form) {
         return new GetVendorCommand(userVisitPK, form).run();
     }
-    
+
+    @Override
+    public CommandResult getVendors(UserVisitPK userVisitPK, GetVendorsForm form) {
+        return new GetVendorsCommand(userVisitPK, form).run();
+    }
+
     @Override
     public CommandResult editVendor(UserVisitPK userVisitPK, EditVendorForm form) {
         return new EditVendorCommand(userVisitPK, form).run();

@@ -64,9 +64,11 @@ public interface VendorService
     // -------------------------------------------------------------------------
     //   Vendors
     // -------------------------------------------------------------------------
-    
+
     CommandResult getVendor(UserVisitPK userVisitPK, GetVendorForm form);
-    
+
+    CommandResult getVendors(UserVisitPK userVisitPK, GetVendorsForm form);
+
     CommandResult editVendor(UserVisitPK userVisitPK, EditVendorForm form);
     
     // -------------------------------------------------------------------------
