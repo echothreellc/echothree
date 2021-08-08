@@ -1,5 +1,14 @@
 # Changelog
 
+## 2021-08-08-01
+
+* GraphQL Objects and Mutations for Item Search [212](https://gitlab.echothree.com/echothree/echothree/-/issues/212)
+* GraphQL Objects and Mutations for Vendor Search [218](https://gitlab.echothree.com/echothree/echothree/-/issues/218)
+* Add itemCount and items Fields to Item Category GraphQL Objects [313](https://gitlab.echothree.com/echothree/echothree/-/issues/313)
+* Stop Sending Null Events to SentEventEventBus [316](https://gitlab.echothree.com/echothree/echothree/-/issues/316)
+* GraphQL Objects for Customers [320](https://gitlab.echothree.com/echothree/echothree/-/issues/320)
+* Add salesOrderSequence Field to Offer and Offer Use GraphQL Objects [321](https://gitlab.echothree.com/echothree/echothree/-/issues/321)
+
 ## 2021-07-25-01
 
 * GraphQL Objects and Mutations for Filter Steps [157](https://gitlab.echothree.com/echothree/echothree/-/issues/157)
