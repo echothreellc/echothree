@@ -17,38 +17,53 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.GetCompaniesForm;
-import com.echothree.control.user.party.common.result.GetCompaniesResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.customer.server.factory.CustomerFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class GetCompaniesCommand
         extends BaseSimpleCommand<GetCompaniesForm> {
-    
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                ));
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.Company.name(), SecurityRoles.List.name())
+                ))
+        ));
+
+        FORM_FIELD_DEFINITIONS = List.of();
     }
 
     /** Creates a new instance of GetCompaniesCommand */
     public GetCompaniesCommand(UserVisitPK userVisitPK, GetCompaniesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
     protected BaseResult execute() {
-        GetCompaniesResult result = PartyResultFactory.getGetCompaniesResult();
+        var result = PartyResultFactory.getGetCompaniesResult();
         var partyControl = Session.getModelController(PartyControl.class);
-        
+
+        if(session.hasLimit(CustomerFactory.class)) {
+            result.setCompanyCount(partyControl.countPartyCompanies());
+        }
+
         result.setCompanies(partyControl.getCompanyTransfers(getUserVisit()));
         
         return result;
