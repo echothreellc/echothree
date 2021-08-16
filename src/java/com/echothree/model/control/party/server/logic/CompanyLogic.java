@@ -16,9 +16,8 @@
 
 package com.echothree.model.control.party.server.logic;
 
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.common.exception.CannotSpecifyCompanyNameAndPartyNameException;
-import com.echothree.model.control.party.common.exception.MustSpecifyCompanyNameOrPartyNameException;
 import com.echothree.model.control.party.common.exception.UnknownCompanyNameException;
 import com.echothree.model.control.party.common.exception.UnknownPartyNameException;
 import com.echothree.model.control.party.server.control.PartyControl;
@@ -69,11 +68,7 @@ public class CompanyLogic
                 }
             }
         } else {
-            if(parameterCount == 2) {
-                handleExecutionError(CannotSpecifyCompanyNameAndPartyNameException.class, eea, ExecutionErrors.CannotSpecifyCompanyNameAndPartyName.name());
-            } else if(required) {
-                handleExecutionError(MustSpecifyCompanyNameOrPartyNameException.class, eea, ExecutionErrors.MustSpecifyCompanyNameOrPartyName.name());
-            }
+            handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return partyCompany;

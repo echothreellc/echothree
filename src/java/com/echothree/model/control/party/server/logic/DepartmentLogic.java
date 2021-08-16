@@ -16,9 +16,8 @@
 
 package com.echothree.model.control.party.server.logic;
 
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.common.exception.CannotSpecifyDepartmentNameAndPartyNameException;
-import com.echothree.model.control.party.common.exception.MustSpecifyDepartmentNameOrPartyNameException;
 import com.echothree.model.control.party.common.exception.UnknownDepartmentNameException;
 import com.echothree.model.control.party.common.exception.UnknownPartyNameException;
 import com.echothree.model.control.party.common.exception.UseOfDepartmentNameRequiresDivisionNameException;
@@ -80,11 +79,7 @@ public class DepartmentLogic
                     }
                 }
             } else {
-                if(parameterCount == 2) {
-                    handleExecutionError(CannotSpecifyDepartmentNameAndPartyNameException.class, eea, ExecutionErrors.CannotSpecifyDepartmentNameAndPartyName.name());
-                } else if (required) {
-                    handleExecutionError(MustSpecifyDepartmentNameOrPartyNameException.class, eea, ExecutionErrors.MustSpecifyDepartmentNameOrPartyName.name());
-                }
+                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
             }
         }
 
