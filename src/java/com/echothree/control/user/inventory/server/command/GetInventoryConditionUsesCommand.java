@@ -57,7 +57,7 @@ public class GetInventoryConditionUsesCommand
         GetInventoryConditionUsesResult result = InventoryResultFactory.getGetInventoryConditionUsesResult();
         String inventoryConditionName = form.getInventoryConditionName();
         String inventoryConditionUseTypeName = form.getInventoryConditionUseTypeName();
-        int parameterCount = (inventoryConditionName == null? 0: 1) + (inventoryConditionUseTypeName == null? 0: 1);
+        var parameterCount = (inventoryConditionName == null ? 0 : 1) + (inventoryConditionUseTypeName == null ? 0 : 1);
         
         if(parameterCount == 1) {
             UserVisit userVisit = getUserVisit();

@@ -74,7 +74,7 @@ public class GetPartyReturnPoliciesCommand
         String partyName = form.getPartyName();
         String returnKindName = form.getReturnKindName();
         String returnPolicyName = form.getReturnPolicyName();
-        int parameterCount = (partyName != null ? 1 : 0) + (returnKindName != null && returnPolicyName != null ? 1 : 0);
+        var parameterCount = (partyName != null ? 1 : 0) + (returnKindName != null && returnPolicyName != null ? 1 : 0);
 
         if(parameterCount == 1) {
             if(partyName != null) {

@@ -64,7 +64,7 @@ public class GetSymbolPositionCommand
         var accountingControl = Session.getModelController(AccountingControl.class);
         SymbolPosition symbolPosition = null;
         String symbolPositionName = form.getSymbolPositionName();
-        int parameterCount = (symbolPositionName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (symbolPositionName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         switch(parameterCount) {
             case 0:

@@ -84,7 +84,7 @@ public class GetRecoveryQuestionCommand
         String customerName = form.getCustomerName();
         String vendorName = form.getVendorName();
         int nameOrEntitySpecsCount = (recoveryQuestionName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
-        int parameterCount = nameOrEntitySpecsCount + (username == null ? 0 : 1) + (partyName == null ? 0 : 1)
+        var parameterCount = nameOrEntitySpecsCount + (username == null ? 0 : 1) + (partyName == null ? 0 : 1)
                 + (employeeName == null ? 0 : 1) + (customerName == null ? 0 : 1) + (vendorName == null ? 0 : 1);
 
         if(parameterCount < 2) {

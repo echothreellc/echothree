@@ -62,10 +62,10 @@ public class CreatePartyTypeLockoutPolicyCommand
     protected BaseResult execute() {
         String rawResetFailureCountTime = form.getResetFailureCountTime();
         String resetFailureCountTimeUnitOfMeasureTypeName = form.getResetFailureCountTimeUnitOfMeasureTypeName();
-        int resetFailureCountTimeParameterCount = (rawResetFailureCountTime == null? 0: 1) + (resetFailureCountTimeUnitOfMeasureTypeName == null? 0: 1);
+        int resetFailureCountTimeParameterCount = (rawResetFailureCountTime == null ? 0 : 1) + (resetFailureCountTimeUnitOfMeasureTypeName == null ? 0 : 1);
         String rawLockoutInactiveTime = form.getLockoutInactiveTime();
         String lockoutInactiveTimeUnitOfMeasureTypeName = form.getLockoutInactiveTimeUnitOfMeasureTypeName();
-        int lockoutInactiveTimeParameterCount = (rawLockoutInactiveTime == null? 0: 1) + (lockoutInactiveTimeUnitOfMeasureTypeName == null? 0: 1);
+        int lockoutInactiveTimeParameterCount = (rawLockoutInactiveTime == null ? 0 : 1) + (lockoutInactiveTimeUnitOfMeasureTypeName == null ? 0 : 1);
         
         if((resetFailureCountTimeParameterCount == 0 || resetFailureCountTimeParameterCount == 2) &&
                 (lockoutInactiveTimeParameterCount == 0 || lockoutInactiveTimeParameterCount == 2)) {

@@ -65,7 +65,7 @@ public class RecoverPasswordCommand
         GetPartyResult result = PartyResultFactory.getGetPartyResult();
         String partyName = form.getPartyName();
         String username = form.getUsername();
-        int parameterCount = (partyName == null ? 0 : 1) + (username == null ? 0 : 1);
+        var parameterCount = (partyName == null ? 0 : 1) + (username == null ? 0 : 1);
 
         if(parameterCount == 1) {
             Party party = null;

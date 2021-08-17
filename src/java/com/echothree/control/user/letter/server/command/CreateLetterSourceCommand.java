@@ -88,7 +88,7 @@ public class CreateLetterSourceCommand
         if(letterSource == null) {
             String partyName = form.getPartyName();
             String companyName = form.getCompanyName();
-            int parameterCount = (partyName != null? 1: 0) + (companyName != null? 1: 0);
+            var parameterCount = (partyName != null? 1: 0) + (companyName != null? 1: 0);
             
             if(parameterCount == 1) {
                 var partyControl = Session.getModelController(PartyControl.class);

@@ -65,7 +65,7 @@ public class GetWorkRequirementScopesCommand
             UserVisit userVisit = getUserVisit();
             String workEffortScopeName = form.getWorkEffortScopeName();
             String workRequirementTypeName = form.getWorkRequirementTypeName();
-            int parameterCount = (workEffortScopeName == null? 0: 1) + (workRequirementTypeName == null? 0: 1);
+            var parameterCount = (workEffortScopeName == null ? 0 : 1) + (workRequirementTypeName == null ? 0 : 1);
             
             result.setWorkEffortType(workEffortControl.getWorkEffortTypeTransfer(userVisit, workEffortType));
             

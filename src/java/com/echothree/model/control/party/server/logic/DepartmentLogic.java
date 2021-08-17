@@ -46,7 +46,7 @@ public class DepartmentLogic
 
     public PartyDepartment getPartyDepartmentByName(final ExecutionErrorAccumulator eea, final Party divisionParty, final String departmentName,
             final String partyName, boolean required) {
-        int parameterCount = (departmentName == null? 0: 1) + (partyName == null? 0: 1);
+        var parameterCount = (departmentName == null ? 0 : 1) + (partyName == null ? 0 : 1);
         PartyDepartment partyDepartment = null;
 
         if(divisionParty != null) {

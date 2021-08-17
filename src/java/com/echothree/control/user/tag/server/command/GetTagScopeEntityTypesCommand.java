@@ -73,7 +73,7 @@ public class GetTagScopeEntityTypesCommand
         String tagScopeName = form.getTagScopeName();
         String componentVendorName = form.getComponentVendorName();
         String entityTypeName = form.getEntityTypeName();
-        int parameterCount = (tagScopeName == null? 0: 1) + (componentVendorName == null && entityTypeName == null? 0: 1);
+        var parameterCount = (tagScopeName == null ? 0 : 1) + (componentVendorName == null && entityTypeName == null ? 0 : 1);
         
         if(parameterCount == 1) {
             var tagControl = Session.getModelController(TagControl.class);

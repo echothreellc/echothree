@@ -81,7 +81,7 @@ public class GetStateCommand
         GeoCode geoCode = null;
         var stateName = form.getStateName();
         var postal2Letter = form.getPostal2Letter();
-        var parameterCount = (stateName == null? 0: 1) + (postal2Letter == null? 0: 1);
+        var parameterCount = (stateName == null ? 0 : 1) + (postal2Letter == null ? 0 : 1);
 
         if(GeoDebugFlags.GetStateCommand) {
             log.info("parameterCount = " + parameterCount);

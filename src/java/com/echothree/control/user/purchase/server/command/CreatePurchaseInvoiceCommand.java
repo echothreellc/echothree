@@ -101,7 +101,7 @@ public class CreatePurchaseInvoiceCommand
                 var vendorControl = Session.getModelController(VendorControl.class);
                 var vendorName = form.getVendorName();
                 var billFromPartyName = form.getBillFromPartyName();
-                var parameterCount = (vendorName == null? 0: 1) + (billFromPartyName == null? 0: 1);
+                var parameterCount = (vendorName == null ? 0 : 1) + (billFromPartyName == null ? 0 : 1);
 
                 if(parameterCount == 1) {
                     var partyControl = Session.getModelController(PartyControl.class);
@@ -136,7 +136,7 @@ public class CreatePurchaseInvoiceCommand
                             var companyName = form.getCompanyName();
                             var billToPartyName = form.getBillToPartyName();
 
-                            parameterCount = (companyName == null? 0: 1) + (billToPartyName == null? 0: 1);
+                            parameterCount = (companyName == null ? 0 : 1) + (billToPartyName == null ? 0 : 1);
 
                             if(parameterCount < 2) {
                                 Party billTo = null;

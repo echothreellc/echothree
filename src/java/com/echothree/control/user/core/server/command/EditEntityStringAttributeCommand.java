@@ -77,7 +77,7 @@ public class EditEntityStringAttributeCommand
     @Override
     protected BaseResult execute() {
         EditEntityStringAttributeResult result = CoreResultFactory.getEditEntityStringAttributeResult();
-        int parameterCount = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(spec);
+        var parameterCount = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(spec);
 
         if(parameterCount == 1) {
             EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, spec);

@@ -94,7 +94,7 @@ public class UseNameElementLogic
             final UseNameElementUniversalSpec universalSpec, final EntityPermission entityPermission) {
         var useNameElementControl = Session.getModelController(UseNameElementControl.class);
         var useNameElementName = universalSpec.getUseNameElementName();
-        int parameterCount = (useNameElementName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (useNameElementName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
         UseNameElement useNameElement = null;
 
         if(parameterCount == 1) {

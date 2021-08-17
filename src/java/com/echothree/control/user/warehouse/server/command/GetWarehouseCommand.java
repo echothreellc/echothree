@@ -59,7 +59,7 @@ public class GetWarehouseCommand
         GetWarehouseResult result = WarehouseResultFactory.getGetWarehouseResult();
         String warehouseName = form.getWarehouseName();
         String partyName = form.getPartyName();
-        int parameterCount = (warehouseName == null? 0: 1) + (partyName == null? 0: 1);
+        var parameterCount = (warehouseName == null ? 0 : 1) + (partyName == null ? 0 : 1);
         
         if(parameterCount == 1) {
             var warehouseControl = Session.getModelController(WarehouseControl.class);

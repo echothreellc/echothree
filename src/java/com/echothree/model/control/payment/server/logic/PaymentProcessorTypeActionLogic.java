@@ -145,7 +145,7 @@ public class PaymentProcessorTypeActionLogic
         var paymentProcessorTypeName = universalSpec.getPaymentProcessorTypeName();
         var paymentProcessorActionTypeName = universalSpec.getPaymentProcessorActionTypeName();
         var fullySpecifiedName = paymentProcessorTypeName != null && paymentProcessorActionTypeName != null;
-        int parameterCount = (fullySpecifiedName ? 1 : 0) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (fullySpecifiedName ? 1 : 0) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0:

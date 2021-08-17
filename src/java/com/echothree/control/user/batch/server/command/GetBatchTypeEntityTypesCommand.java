@@ -58,7 +58,7 @@ public class GetBatchTypeEntityTypesCommand
         String batchTypeName = form.getBatchTypeName();
         String componentVendorName = form.getComponentVendorName();
         String entityTypeName = form.getEntityTypeName();
-        int parameterCount = (batchTypeName == null? 0: 1) + (componentVendorName == null && entityTypeName == null? 0: 1);
+        var parameterCount = (batchTypeName == null ? 0 : 1) + (componentVendorName == null && entityTypeName == null ? 0 : 1);
 
         if(parameterCount == 1) {
             var batchControl = Session.getModelController(BatchControl.class);

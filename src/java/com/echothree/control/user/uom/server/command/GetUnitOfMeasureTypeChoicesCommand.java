@@ -70,7 +70,7 @@ public class GetUnitOfMeasureTypeChoicesCommand
         String vendorName = form.getVendorName();
         String vendorItemName = form.getVendorItemName();
         String itemName = form.getItemName();
-        int parameterCount = (unitOfMeasureKindName != null? 1: 0) + (unitOfMeasureKindUseTypeName != null? 1: 0)
+        var parameterCount = (unitOfMeasureKindName != null? 1: 0) + (unitOfMeasureKindUseTypeName != null? 1: 0)
                 + (vendorName != null && vendorItemName != null? 1: 0) + (itemName != null? 1: 0);
         
         if(parameterCount == 1) {

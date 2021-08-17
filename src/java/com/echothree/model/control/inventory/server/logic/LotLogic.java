@@ -104,7 +104,7 @@ public class LotLogic
         Lot lot = null;
         var lotControl = Session.getModelController(LotControl.class);
         String lotName = universalSpec.getLotName();
-        int parameterCount = (lotName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (lotName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 1:

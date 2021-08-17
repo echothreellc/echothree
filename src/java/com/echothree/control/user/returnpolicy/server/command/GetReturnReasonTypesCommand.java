@@ -72,7 +72,7 @@ public class GetReturnReasonTypesCommand
         GetReturnReasonTypesResult result = ReturnPolicyResultFactory.getGetReturnReasonTypesResult();
         String returnReasonName = form.getReturnReasonName();
         String returnTypeName = form.getReturnTypeName();
-        int parameterCount = (returnReasonName != null? 1: 0) + (returnTypeName != null? 1: 0);
+        var parameterCount = (returnReasonName != null? 1: 0) + (returnTypeName != null? 1: 0);
         
         if(parameterCount == 1) {
             String returnKindName = form.getReturnKindName();

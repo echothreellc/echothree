@@ -122,10 +122,10 @@ public class EditPartyTypeLockoutPolicyCommand
                         if(partyTypeLockoutPolicyDetailValue != null) {
                             String rawResetFailureCountTime = edit.getResetFailureCountTime();
                             String resetFailureCountTimeUnitOfMeasureTypeName = edit.getResetFailureCountTimeUnitOfMeasureTypeName();
-                            int resetFailureCountTimeParameterCount = (rawResetFailureCountTime == null? 0: 1) + (resetFailureCountTimeUnitOfMeasureTypeName == null? 0: 1);
+                            int resetFailureCountTimeParameterCount = (rawResetFailureCountTime == null ? 0 : 1) + (resetFailureCountTimeUnitOfMeasureTypeName == null ? 0 : 1);
                             String rawLockoutInactiveTime = edit.getLockoutInactiveTime();
                             String lockoutInactiveTimeUnitOfMeasureTypeName = edit.getLockoutInactiveTimeUnitOfMeasureTypeName();
-                            int lockoutInactiveTimeParameterCount = (rawLockoutInactiveTime == null? 0: 1) + (lockoutInactiveTimeUnitOfMeasureTypeName == null? 0: 1);
+                            int lockoutInactiveTimeParameterCount = (rawLockoutInactiveTime == null ? 0 : 1) + (lockoutInactiveTimeUnitOfMeasureTypeName == null ? 0 : 1);
                             
                             if((resetFailureCountTimeParameterCount == 0 || resetFailureCountTimeParameterCount == 2) &&
                                     (lockoutInactiveTimeParameterCount == 0 || lockoutInactiveTimeParameterCount == 2)) {

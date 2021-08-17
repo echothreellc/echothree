@@ -62,7 +62,7 @@ public class GetFontWeightCommand
         var coreControl = getCoreControl();
         FontWeight fontWeight = null;
         String fontWeightName = form.getFontWeightName();
-        int parameterCount = (fontWeightName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (fontWeightName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
             if(fontWeightName == null) {

@@ -102,7 +102,7 @@ public class PaymentProcessorTransactionLogic
         PaymentProcessorTransaction paymentProcessorTransaction = null;
         var paymentProcessorTransactionControl = Session.getModelController(PaymentProcessorTransactionControl.class);
         String paymentProcessorTransactionName = universalSpec.getPaymentProcessorTransactionName();
-        int parameterCount = (paymentProcessorTransactionName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (paymentProcessorTransactionName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 1:

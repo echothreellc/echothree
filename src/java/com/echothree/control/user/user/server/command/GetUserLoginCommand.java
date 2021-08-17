@@ -79,7 +79,7 @@ public class GetUserLoginCommand
         UserLogin userLogin = null;
         String username = form.getUsername();
         String partyName = form.getPartyName();
-        int parameterCount = (username == null ? 0 : 1) + (partyName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (username == null ? 0 : 1) + (partyName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
             Party party = null;

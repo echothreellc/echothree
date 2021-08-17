@@ -75,7 +75,7 @@ public class GetWorkflowSelectorKindsCommand
     protected Collection<WorkflowSelectorKind> getEntities() {
         var workflowName = form.getWorkflowName();
         var selectorKindName = form.getSelectorKindName();
-        int parameterCount = (workflowName == null ? 0 : 1) + (selectorKindName == null ? 0 : 1);
+        var parameterCount = (workflowName == null ? 0 : 1) + (selectorKindName == null ? 0 : 1);
         Collection<WorkflowSelectorKind> workflowSelectorKinds = null;
 
         if(parameterCount == 1) {

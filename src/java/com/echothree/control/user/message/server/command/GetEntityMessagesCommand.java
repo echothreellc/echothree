@@ -65,7 +65,7 @@ public class GetEntityMessagesCommand
         String messageTypeName = form.getMessageTypeName();
         String messageName = form.getMessageName();
         String entityRef = form.getEntityRef();
-        int parameterCount = (componentVendorName == null && entityTypeName == null && messageTypeName == null && messageName == null? 0: 1) + (entityRef == null? 0: 1);
+        var parameterCount = (componentVendorName == null && entityTypeName == null && messageTypeName == null && messageName == null ? 0 : 1) + (entityRef == null ? 0 : 1);
         
         if(parameterCount == 1) {
             var coreControl = getCoreControl();

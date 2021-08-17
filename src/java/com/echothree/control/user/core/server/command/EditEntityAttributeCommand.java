@@ -276,7 +276,7 @@ public class EditEntityAttributeCommand
             if(!hasExecutionErrors()) {
                 String unitOfMeasureKindName = edit.getUnitOfMeasureKindName();
                 String unitOfMeasureTypeName = edit.getUnitOfMeasureTypeName();
-                int parameterCount = (unitOfMeasureKindName == null ? 0 : 1) + (unitOfMeasureTypeName == null ? 0 : 1);
+                var parameterCount = (unitOfMeasureKindName == null ? 0 : 1) + (unitOfMeasureTypeName == null ? 0 : 1);
                 
                 if(parameterCount == 0 || parameterCount == 2) {
                     if(parameterCount == 2) {

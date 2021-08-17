@@ -72,7 +72,7 @@ public class GetVendorItemCommand
         GetVendorItemResult result = VendorResultFactory.getGetVendorItemResult();
         String vendorName = form.getVendorName();
         String partyName = form.getPartyName();
-        int parameterCount = (vendorName == null? 0: 1) + (partyName == null? 0: 1);
+        var parameterCount = (vendorName == null ? 0 : 1) + (partyName == null ? 0 : 1);
 
         if(parameterCount == 1) {
             var vendorControl = Session.getModelController(VendorControl.class);

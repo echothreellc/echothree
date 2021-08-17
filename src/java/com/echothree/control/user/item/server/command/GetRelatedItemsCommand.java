@@ -59,7 +59,7 @@ public class GetRelatedItemsCommand
         GetRelatedItemsResult result = ItemResultFactory.getGetRelatedItemsResult();
         String fromItemName = form.getFromItemName();
         String toItemName = form.getToItemName();
-        int parameterCount = (fromItemName == null ? 0 : 1) + (toItemName == null ? 0 : 1);
+        var parameterCount = (fromItemName == null ? 0 : 1) + (toItemName == null ? 0 : 1);
 
         if(parameterCount == 1) {
             String relatedItemTypeName = form.getRelatedItemTypeName();

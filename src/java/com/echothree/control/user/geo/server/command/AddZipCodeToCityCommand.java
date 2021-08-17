@@ -74,7 +74,7 @@ public class AddZipCodeToCityCommand
     protected BaseResult execute() {
         String zipCodeGeoCodeName = form.getZipCodeGeoCodeName();
         String zipCodeName = form.getZipCodeName();
-        int parameterCount = (zipCodeGeoCodeName == null? 0: 1) + (zipCodeName == null? 0: 1);
+        var parameterCount = (zipCodeGeoCodeName == null ? 0 : 1) + (zipCodeName == null ? 0 : 1);
         
         if(parameterCount == 1) {
             var geoControl = Session.getModelController(GeoControl.class);

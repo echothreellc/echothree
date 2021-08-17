@@ -70,7 +70,7 @@ public class GetPartyTrainingClassesCommand
         GetPartyTrainingClassesResult result = TrainingResultFactory.getGetPartyTrainingClassesResult();
         String partyName = form.getPartyName();
         String trainingClassName = form.getTrainingClassName();
-        int parameterCount = (partyName == null? 0: 1) + (trainingClassName == null? 0: 1);
+        var parameterCount = (partyName == null ? 0 : 1) + (trainingClassName == null ? 0 : 1);
         
         if(parameterCount == 1) {
             var trainingControl = Session.getModelController(TrainingControl.class);

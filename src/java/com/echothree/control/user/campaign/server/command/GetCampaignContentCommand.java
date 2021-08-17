@@ -75,7 +75,7 @@ public class GetCampaignContentCommand
     protected BaseResult execute() {
         GetCampaignContentResult result = CampaignResultFactory.getGetCampaignContentResult();
         String campaignContentName = form.getCampaignContentName();
-        int parameterCount = (campaignContentName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (campaignContentName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
             var campaignControl = Session.getModelController(CampaignControl.class);

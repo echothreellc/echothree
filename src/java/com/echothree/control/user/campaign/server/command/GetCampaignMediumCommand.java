@@ -75,7 +75,7 @@ public class GetCampaignMediumCommand
     protected BaseResult execute() {
         GetCampaignMediumResult result = CampaignResultFactory.getGetCampaignMediumResult();
         String campaignMediumName = form.getCampaignMediumName();
-        int parameterCount = (campaignMediumName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (campaignMediumName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
             var campaignControl = Session.getModelController(CampaignControl.class);

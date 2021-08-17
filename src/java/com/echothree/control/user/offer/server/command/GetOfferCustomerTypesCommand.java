@@ -75,7 +75,7 @@ public class GetOfferCustomerTypesCommand
         var offerControl = Session.getModelController(OfferControl.class);
         String offerName = form.getOfferName();
         String customerTypeName = form.getCustomerTypeName();
-        int parameterCount = (offerName != null ? 1 : 0) + (customerTypeName != null ? 1 : 0);
+        var parameterCount = (offerName != null ? 1 : 0) + (customerTypeName != null ? 1 : 0);
         Collection<OfferCustomerType> offerCustomerTypes = null;
 
         if(parameterCount == 1) {

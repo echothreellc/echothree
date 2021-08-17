@@ -44,7 +44,7 @@ public class CompanyLogic
     }
 
     public PartyCompany getPartyCompanyByName(final ExecutionErrorAccumulator eea, final String companyName, final String partyName, boolean required) {
-        int parameterCount = (companyName == null? 0: 1) + (partyName == null? 0: 1);
+        var parameterCount = (companyName == null ? 0 : 1) + (partyName == null ? 0 : 1);
         PartyCompany partyCompany = null;
 
         if(parameterCount == 1) {

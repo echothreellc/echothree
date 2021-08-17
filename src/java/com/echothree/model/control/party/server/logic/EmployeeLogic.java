@@ -60,7 +60,7 @@ public class EmployeeLogic
     }
 
     public PartyEmployee getPartyEmployeeByName(final ExecutionErrorAccumulator eea, final String employeeName, final String partyName) {
-        int parameterCount = (employeeName == null? 0: 1) + (partyName == null? 0: 1);
+        var parameterCount = (employeeName == null ? 0 : 1) + (partyName == null ? 0 : 1);
         PartyEmployee partyEmployee = null;
 
         if(parameterCount == 1) {

@@ -64,7 +64,7 @@ public class GetCurrencyCommand
         var accountingControl = Session.getModelController(AccountingControl.class);
         Currency currency = null;
         String currencyIsoName = form.getCurrencyIsoName();
-        int parameterCount = (currencyIsoName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (currencyIsoName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         switch(parameterCount) {
             case 0:

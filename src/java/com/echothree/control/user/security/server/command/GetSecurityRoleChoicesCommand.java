@@ -71,7 +71,7 @@ public class GetSecurityRoleChoicesCommand
         GetSecurityRoleChoicesResult result = SecurityResultFactory.getGetSecurityRoleChoicesResult();
         String securityRoleGroupName = form.getSecurityRoleGroupName();
         String workflowName = form.getWorkflowName();
-        int parameterCount = (securityRoleGroupName == null? 0: 1) + (workflowName == null? 0: 1);
+        var parameterCount = (securityRoleGroupName == null ? 0 : 1) + (workflowName == null ? 0 : 1);
         
         if(parameterCount == 1) {
             var securityControl = Session.getModelController(SecurityControl.class);

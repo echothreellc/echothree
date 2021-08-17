@@ -50,7 +50,7 @@ public class BaseKeys
     }
     
     public int getBaseKeyCount() {
-        return (baseKey1 == null? 0: 1) + (baseKey2 == null? 0: 1) + (baseKey3 == null? 0: 1);
+        return (baseKey1 == null ? 0 : 1) + (baseKey2 == null ? 0 : 1) + (baseKey3 == null ? 0 : 1);
     }
     
     public BaseKey getBaseKey1() {

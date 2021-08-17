@@ -63,7 +63,7 @@ public class GetRatingTypeListItemChoicesCommand
         String entityTypeName = form.getEntityTypeName();
         String ratingTypeName = form.getRatingTypeName();
         String ratingName = form.getRatingName();
-        int parameterCount = (componentVendorName == null && entityTypeName == null && ratingTypeName == null ? 0 : 1) + (ratingName == null ? 0 : 1);
+        var parameterCount = (componentVendorName == null && entityTypeName == null && ratingTypeName == null ? 0 : 1) + (ratingName == null ? 0 : 1);
         
         if(parameterCount == 1) {
             RatingType ratingType = null;

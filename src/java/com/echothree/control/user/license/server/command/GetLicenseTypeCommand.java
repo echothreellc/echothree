@@ -75,7 +75,7 @@ public class GetLicenseTypeCommand
     protected BaseResult execute() {
         GetLicenseTypeResult result = LicenseResultFactory.getGetLicenseTypeResult();
         String licenseTypeName = form.getLicenseTypeName();
-        int parameterCount = (licenseTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (licenseTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
             var licenseControl = Session.getModelController(LicenseControl.class);

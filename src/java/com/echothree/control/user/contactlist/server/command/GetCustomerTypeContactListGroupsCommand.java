@@ -71,7 +71,7 @@ public class GetCustomerTypeContactListGroupsCommand
         GetCustomerTypeContactListGroupsResult result = ContactListResultFactory.getGetCustomerTypeContactListGroupsResult();
         String customerTypeName = form.getCustomerTypeName();
         String contactListGroupName = form.getContactListGroupName();
-        int parameterCount = (customerTypeName != null? 1: 0) + (contactListGroupName != null? 1: 0);
+        var parameterCount = (customerTypeName != null? 1: 0) + (contactListGroupName != null? 1: 0);
         
         if(parameterCount == 1) {
             var contactListControl = Session.getModelController(ContactListControl.class);

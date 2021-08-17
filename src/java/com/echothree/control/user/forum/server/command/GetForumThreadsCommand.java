@@ -65,7 +65,7 @@ public class GetForumThreadsCommand
     protected BaseResult execute() {
         GetForumThreadsResult result = ForumResultFactory.getGetForumThreadsResult();
         String forumName = form.getForumName();
-        int parameterCount = (forumName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (forumName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
             var forumControl = Session.getModelController(ForumControl.class);

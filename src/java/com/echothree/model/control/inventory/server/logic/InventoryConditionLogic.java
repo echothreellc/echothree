@@ -94,7 +94,7 @@ public class InventoryConditionLogic
         InventoryCondition inventoryCondition = null;
         var inventoryControl = Session.getModelController(InventoryControl.class);
         String inventoryConditionName = universalSpec.getInventoryConditionName();
-        int parameterCount = (inventoryConditionName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (inventoryConditionName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0:

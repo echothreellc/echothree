@@ -108,7 +108,7 @@ public class EditUserLoginCommand
     public UserLogin getEntity(EditUserLoginResult result) {
         UserLogin userLogin = null;
         String partyName = spec.getPartyName();
-        int parameterCount = (partyName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(spec);
+        var parameterCount = (partyName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(spec);
 
         if(parameterCount == 1) {
             Party party = null;

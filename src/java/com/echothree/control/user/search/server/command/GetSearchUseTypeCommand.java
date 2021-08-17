@@ -75,7 +75,7 @@ public class GetSearchUseTypeCommand
     protected BaseResult execute() {
         GetSearchUseTypeResult result = SearchResultFactory.getGetSearchUseTypeResult();
         String searchUseTypeName = form.getSearchUseTypeName();
-        int parameterCount = (searchUseTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (searchUseTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
             var searchControl = Session.getModelController(SearchControl.class);

@@ -56,7 +56,7 @@ public class GetPartyResponsibilitiesCommand
         GetPartyResponsibilitiesResult result = EmployeeResultFactory.getGetPartyResponsibilitiesResult();
         String partyName = form.getPartyName();
         String responsibilityTypeName = form.getResponsibilityTypeName();
-        int parameterCount = (partyName == null? 0: 1) + (responsibilityTypeName == null? 0: 1);
+        var parameterCount = (partyName == null ? 0 : 1) + (responsibilityTypeName == null ? 0 : 1);
         
         if(parameterCount == 1) {
             var employeeControl = Session.getModelController(EmployeeControl.class);

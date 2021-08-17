@@ -63,7 +63,7 @@ public class GetContentSectionCommand
     protected ContentSection getEntity() {
         String contentWebAddressName = form.getContentWebAddressName();
         String contentCollectionName = form.getContentCollectionName();
-        int parameterCount = (contentWebAddressName == null ? 0 : 1) + (contentCollectionName == null ? 0 : 1);
+        var parameterCount = (contentWebAddressName == null ? 0 : 1) + (contentCollectionName == null ? 0 : 1);
         ContentSection contentSection = null;
 
         if(parameterCount == 1) {

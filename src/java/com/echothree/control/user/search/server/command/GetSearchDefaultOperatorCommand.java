@@ -75,7 +75,7 @@ public class GetSearchDefaultOperatorCommand
     protected BaseResult execute() {
         GetSearchDefaultOperatorResult result = SearchResultFactory.getGetSearchDefaultOperatorResult();
         String searchDefaultOperatorName = form.getSearchDefaultOperatorName();
-        int parameterCount = (searchDefaultOperatorName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (searchDefaultOperatorName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
             var searchControl = Session.getModelController(SearchControl.class);

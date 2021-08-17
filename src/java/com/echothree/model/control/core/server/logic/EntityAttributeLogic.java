@@ -360,7 +360,7 @@ public class EntityAttributeLogic
         EntityAttribute entityAttribute = null;
         String entityAttributeName = spec.getEntityAttributeName();
         String entityAttributeUlid = ulid.getEntityAttributeUlid();
-        int parameterCount = (entityAttributeName == null ? 0 : 1) + (entityAttributeUlid == null ? 0 : 1);
+        var parameterCount = (entityAttributeName == null ? 0 : 1) + (entityAttributeUlid == null ? 0 : 1);
 
         if (parameterCount == 1) {
             entityAttribute = entityAttributeName == null
@@ -624,7 +624,7 @@ public class EntityAttributeLogic
         EntityListItem entityListItem = null;
         String entityListItemName = spec.getEntityListItemName();
         String entityListItemUlid = ulid.getEntityListItemUlid();
-        int parameterCount = (entityListItemName == null ? 0 : 1) + (entityListItemUlid == null ? 0 : 1);
+        var parameterCount = (entityListItemName == null ? 0 : 1) + (entityListItemUlid == null ? 0 : 1);
 
         if (parameterCount == 1) {
             entityListItem = entityListItemName == null

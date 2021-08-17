@@ -76,7 +76,7 @@ public class GetQueueTypeCommand
     protected QueueType getEntity() {
         String queueTypeName = form.getQueueTypeName();
         QueueType queueType = null;
-        int parameterCount = (queueTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (queueTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
             var queueControl = Session.getModelController(QueueControl.class);

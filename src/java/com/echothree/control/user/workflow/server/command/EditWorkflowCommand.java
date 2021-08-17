@@ -146,7 +146,7 @@ public class EditWorkflowCommand
                         var selectorControl = Session.getModelController(SelectorControl.class);
                         String selectorKindName = edit.getSelectorKindName();
                         String selectorTypeName = edit.getSelectorTypeName();
-                        int parameterCount = (selectorKindName == null? 0: 1) + (selectorTypeName == null? 0: 1);
+                        var parameterCount = (selectorKindName == null ? 0 : 1) + (selectorTypeName == null ? 0 : 1);
 
                         if(parameterCount == 0 || parameterCount == 2) {
                             SelectorKind selectorKind = selectorKindName == null? null: selectorControl.getSelectorKindByName(selectorKindName);

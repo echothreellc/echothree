@@ -66,7 +66,7 @@ public class CreateAssociatePartyContactMechanismCommand
         String contactMechanismName = form.getContactMechanismName();
         String contactMechanismAliasTypeName = form.getContactMechanismAliasTypeName();
         String alias = form.getAlias();
-        int parameterCount = (contactMechanismName == null? 0: 1) + (contactMechanismAliasTypeName == null && alias == null? 0: 1);
+        var parameterCount = (contactMechanismName == null ? 0 : 1) + (contactMechanismAliasTypeName == null && alias == null ? 0 : 1);
         
         if(parameterCount == 1) {
             var associateControl = Session.getModelController(AssociateControl.class);

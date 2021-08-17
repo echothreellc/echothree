@@ -75,7 +75,7 @@ public class GetSearchCheckSpellingActionTypeCommand
     protected BaseResult execute() {
         GetSearchCheckSpellingActionTypeResult result = SearchResultFactory.getGetSearchCheckSpellingActionTypeResult();
         String searchCheckSpellingActionTypeName = form.getSearchCheckSpellingActionTypeName();
-        int parameterCount = (searchCheckSpellingActionTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (searchCheckSpellingActionTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
             var searchControl = Session.getModelController(SearchControl.class);

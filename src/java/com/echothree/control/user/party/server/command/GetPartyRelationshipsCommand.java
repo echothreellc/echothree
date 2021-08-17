@@ -62,8 +62,8 @@ public class GetPartyRelationshipsCommand
         String fromRoleTypeName = form.getFromRoleTypeName();
         String toPartyName = form.getToPartyName();
         String toRoleTypeName = form.getToRoleTypeName();
-        int fromParameterCount = (fromPartyName == null? 0: 1) + (fromRoleTypeName == null? 0: 1);
-        int toParameterCount = (toPartyName == null? 0: 1) + (toRoleTypeName == null? 0: 1);
+        int fromParameterCount = (fromPartyName == null ? 0 : 1) + (fromRoleTypeName == null ? 0 : 1);
+        int toParameterCount = (toPartyName == null ? 0 : 1) + (toRoleTypeName == null ? 0 : 1);
         
         if((fromParameterCount == 2 && toParameterCount == 0) || (fromParameterCount == 0 && toParameterCount == 2)) {
             var partyControl = Session.getModelController(PartyControl.class);

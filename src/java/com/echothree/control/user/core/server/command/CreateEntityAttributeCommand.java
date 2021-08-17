@@ -260,7 +260,7 @@ public class CreateEntityAttributeCommand
         if(!hasExecutionErrors()) {
             String unitOfMeasureKindName = form.getUnitOfMeasureKindName();
             String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
-            int parameterCount = (unitOfMeasureKindName == null ? 0 : 1) + (unitOfMeasureTypeName == null ? 0 : 1);
+            var parameterCount = (unitOfMeasureKindName == null ? 0 : 1) + (unitOfMeasureTypeName == null ? 0 : 1);
 
             if(parameterCount == 0 || parameterCount == 2) {
                 String componentVendorName = form.getComponentVendorName();

@@ -73,7 +73,7 @@ public class GetItemHarmonizedTariffScheduleCodesCommand
         String itemName = form.getItemName();
         String countryName = form.getCountryName();
         String harmonizedTariffScheduleCodeUseTypeName = form.getHarmonizedTariffScheduleCodeUseTypeName();
-        int parameterCount = (itemName == null ? 0 : 1) + (countryName == null ? 0 : 1) + (harmonizedTariffScheduleCodeUseTypeName == null ? 0 : 1);
+        var parameterCount = (itemName == null ? 0 : 1) + (countryName == null ? 0 : 1) + (harmonizedTariffScheduleCodeUseTypeName == null ? 0 : 1);
 
         if(parameterCount == 1) {
             var itemControl = Session.getModelController(ItemControl.class);

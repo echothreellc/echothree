@@ -74,7 +74,7 @@ public class GetVendorItemsCommand
         GetVendorItemsResult result = VendorResultFactory.getGetVendorItemsResult();
         String vendorName = form.getVendorName();
         String itemName = form.getItemName();
-        int parameterCount = (vendorName == null? 0: 1) + (itemName == null? 0: 1);
+        var parameterCount = (vendorName == null ? 0 : 1) + (itemName == null ? 0 : 1);
         
         if(parameterCount == 1) {
             UserVisit userVisit = getUserVisit();

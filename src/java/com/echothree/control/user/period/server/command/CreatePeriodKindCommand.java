@@ -73,7 +73,7 @@ public class CreatePeriodKindCommand
         var periodControl = Session.getModelController(PeriodControl.class);
         String workflowName = form.getWorkflowName();
         String workflowEntranceName = form.getWorkflowEntranceName();
-        int parameterCount = (workflowName == null ? 0 : 1) + (workflowEntranceName == null ? 0 : 1);
+        var parameterCount = (workflowName == null ? 0 : 1) + (workflowEntranceName == null ? 0 : 1);
 
         if(parameterCount == 0 || parameterCount == 2) {
             String periodKindName = form.getPeriodKindName();

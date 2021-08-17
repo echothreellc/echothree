@@ -64,7 +64,7 @@ public class GetLanguageCommand
         var partyControl = Session.getModelController(PartyControl.class);
         Language language = null;
         String languageIsoName = form.getLanguageIsoName();
-        int parameterCount = (languageIsoName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (languageIsoName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         switch(parameterCount) {
             case 0:

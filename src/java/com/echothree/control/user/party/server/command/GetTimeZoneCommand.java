@@ -64,7 +64,7 @@ public class GetTimeZoneCommand
         var partyControl = Session.getModelController(PartyControl.class);
         TimeZone timeZone = null;
         String timeZoneName = form.getJavaTimeZoneName();
-        int parameterCount = (timeZoneName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (timeZoneName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         switch(parameterCount) {
             case 0:

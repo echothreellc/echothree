@@ -74,7 +74,7 @@ public class GetEntityAttributeEntityTypesCommand
         String entityAttributeName = form.getEntityAttributeName();
         String allowedComponentVendorName = form.getAllowedComponentVendorName();
         String allowedEntityTypeName = form.getAllowedEntityTypeName();
-        int parameterCount = (componentVendorName == null && entityTypeName == null && entityAttributeName == null && allowedComponentVendorName != null && allowedEntityTypeName != null ? 0 : 1)
+        var parameterCount = (componentVendorName == null && entityTypeName == null && entityAttributeName == null && allowedComponentVendorName != null && allowedEntityTypeName != null ? 0 : 1)
                 + (componentVendorName != null && entityTypeName != null && entityAttributeName != null && allowedComponentVendorName == null && allowedEntityTypeName == null ? 0 : 1);
 
         if(parameterCount == 1) {

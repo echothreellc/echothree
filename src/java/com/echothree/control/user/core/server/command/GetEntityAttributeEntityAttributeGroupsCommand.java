@@ -73,7 +73,7 @@ public class GetEntityAttributeEntityAttributeGroupsCommand
         String entityTypeName = form.getEntityTypeName();
         String entityAttributeName = form.getEntityAttributeName();
         String entityAttributeGroupName = form.getEntityAttributeGroupName();
-        int parameterCount = ((componentVendorName != null) && (entityTypeName != null) && (entityAttributeName != null) ? 1 : 0)
+        var parameterCount = ((componentVendorName != null) && (entityTypeName != null) && (entityAttributeName != null) ? 1 : 0)
                 + (entityAttributeGroupName != null ? 1 : 0);
 
         if(parameterCount == 1) {

@@ -71,7 +71,7 @@ public class GetGeoCodeAliasTypeChoicesCommand
         GetGeoCodeAliasTypeChoicesResult result = GeoResultFactory.getGetGeoCodeAliasTypeChoicesResult();
         String geoCodeTypeName = form.getGeoCodeTypeName();
         String geoCodeName = form.getGeoCodeName();
-        int parameterCount = (geoCodeTypeName == null ? 0 : 1) + (geoCodeName == null ? 0 : 1);
+        var parameterCount = (geoCodeTypeName == null ? 0 : 1) + (geoCodeName == null ? 0 : 1);
         
         if(parameterCount == 1) {
             GeoCodeType geoCodeType = null;

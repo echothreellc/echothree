@@ -139,7 +139,7 @@ public class CreateBlogEntryCommand
                                             if(!hasExecutionErrors()) {
                                                 String feedSummaryMimeTypeName = form.getFeedSummaryMimeTypeName();
                                                 String feedSummary = form.getFeedSummary();
-                                                int feedSummaryParameterCount = (feedSummaryMimeTypeName == null? 0: 1) + (feedSummary == null? 0: 1);
+                                                int feedSummaryParameterCount = (feedSummaryMimeTypeName == null ? 0 : 1) + (feedSummary == null ? 0 : 1);
 
                                                 if(feedSummaryParameterCount == 0 || feedSummaryParameterCount == 2) {
                                                     var coreControl = getCoreControl();
@@ -151,7 +151,7 @@ public class CreateBlogEntryCommand
                                                         if(feedSummaryMimeType == null || forumMimeType != null) {
                                                             String summaryMimeTypeName = form.getSummaryMimeTypeName();
                                                             String summary = form.getSummary();
-                                                            int summaryParameterCount = (summaryMimeTypeName == null? 0: 1) + (summary == null? 0: 1);
+                                                            int summaryParameterCount = (summaryMimeTypeName == null ? 0 : 1) + (summary == null ? 0 : 1);
 
                                                             if(summaryParameterCount == 0 || summaryParameterCount == 2) {
                                                                 MimeType summaryMimeType = summaryMimeTypeName == null? null: coreControl.getMimeTypeByName(summaryMimeTypeName);

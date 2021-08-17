@@ -62,7 +62,7 @@ public class GetTextDecorationCommand
         var coreControl = getCoreControl();
         TextDecoration textDecoration = null;
         String textDecorationName = form.getTextDecorationName();
-        int parameterCount = (textDecorationName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (textDecorationName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
             if(textDecorationName == null) {

@@ -46,7 +46,7 @@ public class DivisionLogic
 
     public PartyDivision getPartyDivisionByName(final ExecutionErrorAccumulator eea, final Party companyParty, final String divisionName,
             final String partyName, boolean required) {
-        int parameterCount = (divisionName == null? 0: 1) + (partyName == null? 0: 1);
+        var parameterCount = (divisionName == null ? 0 : 1) + (partyName == null ? 0 : 1);
         PartyDivision partyDivision = null;
 
         if(companyParty != null) {

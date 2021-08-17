@@ -92,7 +92,7 @@ public class ContentPageAreaTypeLogic
         ContentPageAreaType contentPageAreaType = null;
         var contentControl = Session.getModelController(ContentControl.class);
         String contentPageAreaTypeName = universalSpec.getContentPageAreaTypeName();
-        int parameterCount = (contentPageAreaTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (contentPageAreaTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 1:

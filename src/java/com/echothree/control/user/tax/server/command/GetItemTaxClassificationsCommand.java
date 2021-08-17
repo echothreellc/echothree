@@ -71,7 +71,7 @@ public class GetItemTaxClassificationsCommand
         GetItemTaxClassificationsResult result = TaxResultFactory.getGetItemTaxClassificationsResult();
         String itemName = form.getItemName();
         String countryName = form.getCountryName();
-        int parameterCount = (itemName == null ? 0 : 1) + (countryName == null ? 0 : 1);
+        var parameterCount = (itemName == null ? 0 : 1) + (countryName == null ? 0 : 1);
 
         if(parameterCount == 1) {
             var taxControl = Session.getModelController(TaxControl.class);

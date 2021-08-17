@@ -74,7 +74,7 @@ public class GetPartyCancellationPoliciesCommand
         String partyName = form.getPartyName();
         String cancellationKindName = form.getCancellationKindName();
         String cancellationPolicyName = form.getCancellationPolicyName();
-        int parameterCount = (partyName != null ? 1 : 0) + (cancellationKindName != null && cancellationPolicyName != null ? 1 : 0);
+        var parameterCount = (partyName != null ? 1 : 0) + (cancellationKindName != null && cancellationPolicyName != null ? 1 : 0);
 
         if(parameterCount == 1) {
             if(partyName != null) {

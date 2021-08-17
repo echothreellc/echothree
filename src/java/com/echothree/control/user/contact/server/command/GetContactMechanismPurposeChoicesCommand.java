@@ -61,7 +61,7 @@ public class GetContactMechanismPurposeChoicesCommand
         String contactMechanismName = form.getContactMechanismName();
         String contactMechanismTypeName = form.getContactMechanismTypeName();
         String contactListName = form.getContactListName();
-        int parameterCount = (contactMechanismName == null? 0: 1) + (contactMechanismTypeName == null? 0: 1) + (contactListName == null? 0: 1);
+        var parameterCount = (contactMechanismName == null ? 0 : 1) + (contactMechanismTypeName == null ? 0 : 1) + (contactListName == null ? 0 : 1);
         
         if(parameterCount < 2) {
             var contactControl = Session.getModelController(ContactControl.class);
