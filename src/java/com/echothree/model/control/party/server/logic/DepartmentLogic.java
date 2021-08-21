@@ -79,7 +79,9 @@ public class DepartmentLogic
                     }
                 }
             } else {
-                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                if(required) {
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                }
             }
         }
 

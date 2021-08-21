@@ -68,7 +68,9 @@ public class CompanyLogic
                 }
             }
         } else {
-            handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+            if(required) {
+                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+            }
         }
 
         return partyCompany;
