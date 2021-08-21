@@ -48,7 +48,7 @@ public class CompanyLogic
     }
 
     public PartyCompany getPartyCompanyByName(final ExecutionErrorAccumulator eea, final String companyName,
-            final String partyName, final UniversalEntitySpec universalEntitySpec, boolean required) {
+            final String partyName, final UniversalEntitySpec universalEntitySpec, final boolean required) {
         var parameterCount = (companyName == null ? 0 : 1) + (partyName == null ? 0 : 1) +
                 EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalEntitySpec);
         PartyCompany partyCompany = null;

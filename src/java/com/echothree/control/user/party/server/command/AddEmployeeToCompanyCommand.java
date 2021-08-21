@@ -58,7 +58,7 @@ public class AddEmployeeToCompanyCommand
         
         if(!hasExecutionErrors()) {
             String companyName = form.getCompanyName();
-            PartyCompany partyCompany = CompanyLogic.getInstance().getPartyCompanyByName(this, companyName, null, true);
+            PartyCompany partyCompany = CompanyLogic.getInstance().getPartyCompanyByName(this, companyName, null, null, true);
 
             if(!hasExecutionErrors()) {
                 Party companyParty = partyCompany.getParty();
