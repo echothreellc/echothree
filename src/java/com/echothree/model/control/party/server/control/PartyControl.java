@@ -3401,7 +3401,7 @@ public class PartyControl
         return new CompanyChoicesBean(labels, values, defaultValue);
     }
     
-    private List<CompanyTransfer> getCompanyTransfers(UserVisit userVisit, List<PartyCompany> partyCompanies) {
+    public List<CompanyTransfer> getCompanyTransfers(UserVisit userVisit, Collection<PartyCompany> partyCompanies) {
         List<CompanyTransfer> companyTransfers = new ArrayList<>(partyCompanies.size());
         CompanyTransferCache companyTransferCache = getPartyTransferCaches(userVisit).getCompanyTransferCache();
         
