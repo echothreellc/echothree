@@ -16,12 +16,13 @@
 
 package com.echothree.control.user.party.common.form;
 
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 import com.echothree.control.user.party.common.spec.DivisionSpec;
 import com.echothree.control.user.party.common.spec.PartySpec;
 
 public interface GetDivisionForm
-        extends DivisionSpec, PartySpec {
+        extends DivisionSpec, PartySpec, UniversalEntitySpec {
     
-    // Nothing additional beyond DivisionSpec, PartySpec
+    // Nothing additional beyond DivisionSpec, PartySpec, UniversalEntitySpec
     
 }

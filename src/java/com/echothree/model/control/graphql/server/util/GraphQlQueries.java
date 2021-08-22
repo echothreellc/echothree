@@ -123,6 +123,8 @@ import com.echothree.control.user.party.server.command.GetCompaniesCommand;
 import com.echothree.control.user.party.server.command.GetCompanyCommand;
 import com.echothree.control.user.party.server.command.GetDateTimeFormatCommand;
 import com.echothree.control.user.party.server.command.GetDateTimeFormatsCommand;
+import com.echothree.control.user.party.server.command.GetDivisionCommand;
+import com.echothree.control.user.party.server.command.GetDivisionsCommand;
 import com.echothree.control.user.party.server.command.GetLanguageCommand;
 import com.echothree.control.user.party.server.command.GetLanguagesCommand;
 import com.echothree.control.user.party.server.command.GetNameSuffixesCommand;
@@ -233,6 +235,7 @@ import com.echothree.model.control.offer.server.graphql.UseObject;
 import com.echothree.model.control.offer.server.graphql.UseTypeObject;
 import com.echothree.model.control.party.server.graphql.CompanyObject;
 import com.echothree.model.control.party.server.graphql.DateTimeFormatObject;
+import com.echothree.model.control.party.server.graphql.DivisionObject;
 import com.echothree.model.control.party.server.graphql.LanguageObject;
 import com.echothree.model.control.party.server.graphql.NameSuffixObject;
 import com.echothree.model.control.party.server.graphql.PersonalTitleObject;
@@ -316,6 +319,7 @@ import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.NameSuffix;
 import com.echothree.model.data.party.server.entity.PartyCompany;
+import com.echothree.model.data.party.server.entity.PartyDivision;
 import com.echothree.model.data.party.server.entity.PersonalTitle;
 import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.model.data.payment.server.entity.PaymentMethodType;
@@ -4073,6 +4077,61 @@ public final class GraphQlQueries
         }
 
         return companyObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("division")
+    public static DivisionObject division(final DataFetchingEnvironment env,
+            @GraphQLName("companyName") final String companyName,
+            @GraphQLName("divisionName") final String divisionName,
+            @GraphQLName("partyName") final String partyName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        PartyDivision division;
+
+        try {
+            var commandForm = PartyUtil.getHome().getGetDivisionForm();
+
+            commandForm.setCompanyName(companyName);
+            commandForm.setDivisionName(divisionName);
+            commandForm.setPartyName(partyName);
+            commandForm.setUlid(id);
+
+            division = new GetDivisionCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return division == null ? null : new DivisionObject(division);
+    }
+
+    @GraphQLField
+    @GraphQLName("divisions")
+    public static Collection<DivisionObject> divisions(final DataFetchingEnvironment env,
+            @GraphQLName("companyName") @GraphQLNonNull final String companyName) {
+        Collection<PartyDivision> partyDivisions;
+        Collection<DivisionObject> divisionObjects;
+
+        try {
+            var commandForm = PartyUtil.getHome().getGetDivisionsForm();
+
+            commandForm.setCompanyName(companyName);
+
+            partyDivisions = new GetDivisionsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(partyDivisions == null) {
+            divisionObjects = emptyList();
+        } else {
+            divisionObjects = new ArrayList<>(partyDivisions.size());
+
+            partyDivisions.stream()
+                    .map(DivisionObject::new)
+                    .forEachOrdered(divisionObjects::add);
+        }
+
+        return divisionObjects;
     }
 
     @GraphQLField

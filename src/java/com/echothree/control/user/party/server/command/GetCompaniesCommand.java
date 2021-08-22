@@ -80,6 +80,5 @@ public class GetCompaniesCommand
 
         return result;
     }
-    
-    
+
 }

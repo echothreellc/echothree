@@ -80,6 +80,30 @@ public class CompanyObject
         return getPartyCompany().getSortOrder();
     }
 
+    @GraphQLField
+    @GraphQLDescription("divisions")
+    public List<DivisionObject> getDivisions(final DataFetchingEnvironment env) {
+        if(PartySecurityUtils.getInstance().getHasDivisionsAccess(env)) {
+            var partyControl = Session.getModelController(PartyControl.class);
+            var entities = partyControl.getDivisionsByCompany(party);
+
+            return entities.stream().map(DivisionObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+        } else {
+            return null;
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("division count")
+    public Long getDivisionCount(final DataFetchingEnvironment env) {
+        if(PartySecurityUtils.getInstance().getHasDivisionsAccess(env)) {
+            var partyControl = Session.getModelController(PartyControl.class);
+
+            return partyControl.countPartyDivisions(party);
+        } else {
+            return null;
+        }
+    }
 
     @GraphQLField
     @GraphQLDescription("items")
@@ -87,9 +111,8 @@ public class CompanyObject
         if(ItemSecurityUtils.getInstance().getHasItemsAccess(env)) {
             var itemControl = Session.getModelController(ItemControl.class);
             var entities = itemControl.getItemsByCompanyParty(party);
-            var items = entities.stream().map(ItemObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-            return items;
+            return entities.stream().map(ItemObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
         } else {
             return null;
         }
