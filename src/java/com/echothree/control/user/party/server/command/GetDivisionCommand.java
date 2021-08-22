@@ -17,18 +17,15 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.GetDivisionForm;
-import com.echothree.control.user.party.common.result.GetDivisionResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.party.server.logic.CompanyLogic;
 import com.echothree.model.control.party.server.logic.DivisionLogic;
-import com.echothree.model.data.party.server.entity.PartyCompany;
-import com.echothree.model.data.party.server.entity.PartyDivision;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -55,17 +52,18 @@ public class GetDivisionCommand
 
     @Override
     protected BaseResult execute() {
-        GetDivisionResult result = PartyResultFactory.getGetDivisionResult();
-        String companyName = form.getCompanyName();
-        PartyCompany partyCompany = CompanyLogic.getInstance().getPartyCompanyByName(this, companyName, null, null, false);
+        var result = PartyResultFactory.getGetDivisionResult();
+        var companyName = form.getCompanyName();
+        var partyCompany = CompanyLogic.getInstance().getPartyCompanyByName(this, companyName, null, null, false);
 
         if(!hasExecutionErrors()) {
-            String divisionName = form.getDivisionName();
-            String partyName = form.getPartyName();
-            PartyDivision partyDivision = DivisionLogic.getInstance().getPartyDivisionByName(this, partyCompany == null ? null : partyCompany.getParty(), divisionName, partyName, true);
+            var divisionName = form.getDivisionName();
+            var partyName = form.getPartyName();
+            var partyDivision = DivisionLogic.getInstance().getPartyDivisionByName(this, partyCompany == null ? null : partyCompany.getParty(), divisionName, partyName, null, true);
 
             if(!hasExecutionErrors()) {
                 var partyControl = Session.getModelController(PartyControl.class);
+
                 result.setDivision(partyControl.getDivisionTransfer(getUserVisit(), partyDivision));
 
                 sendEventUsingNames(partyDivision.getPartyPK(), EventTypes.READ.name(), null, null, getPartyPK());

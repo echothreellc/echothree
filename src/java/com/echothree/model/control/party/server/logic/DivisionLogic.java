@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.party.server.logic;
 
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.common.exception.UnknownDivisionNameException;
@@ -44,8 +45,9 @@ public class DivisionLogic
         return DivisionLogicHolder.instance;
     }
 
-    public PartyDivision getPartyDivisionByName(final ExecutionErrorAccumulator eea, final Party companyParty, final String divisionName,
-            final String partyName, boolean required) {
+    public PartyDivision getPartyDivisionByName(final ExecutionErrorAccumulator eea, final Party companyParty,
+            final String divisionName, final String partyName, final UniversalEntitySpec universalEntitySpec,
+            final boolean required) {
         var parameterCount = (divisionName == null ? 0 : 1) + (partyName == null ? 0 : 1);
         PartyDivision partyDivision = null;
 

@@ -63,7 +63,7 @@ public class GetDepartmentChoicesCommand
         if(!hasExecutionErrors()) {
             String divisionName = form.getDivisionName();
             String partyName = form.getPartyName();
-            PartyDivision partyDivision = DivisionLogic.getInstance().getPartyDivisionByName(this, partyCompany == null ? null : partyCompany.getParty(), divisionName, partyName, true);
+            PartyDivision partyDivision = DivisionLogic.getInstance().getPartyDivisionByName(this, partyCompany == null ? null : partyCompany.getParty(), divisionName, partyName, null, true);
 
             if(!hasExecutionErrors()) {
                 var partyControl = Session.getModelController(PartyControl.class);
