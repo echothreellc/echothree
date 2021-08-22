@@ -17,6 +17,8 @@
 package com.echothree.model.control.item.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.party.server.graphql.CompanyObject;
+import com.echothree.model.control.party.server.graphql.PartySecurityUtils;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemDetail;
 import graphql.annotations.annotationTypes.GraphQLDescription;
@@ -59,6 +61,15 @@ public class ItemObject
     @GraphQLDescription("item category")
     public ItemCategoryObject getItemCategory(final DataFetchingEnvironment env) {
         return ItemSecurityUtils.getInstance().getHasItemCategoryAccess(env) ? new ItemCategoryObject(getItemDetail().getItemCategory()) : null;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("company")
+    @GraphQLNonNull
+    public CompanyObject getCompany(final DataFetchingEnvironment env) {
+        var companyParty = getItemDetail().getCompanyParty();
+
+        return PartySecurityUtils.getInstance().getHasPartyAccess(env, companyParty) ? new CompanyObject(companyParty) : null;
     }
 
     @GraphQLField
