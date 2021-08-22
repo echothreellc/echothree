@@ -1529,6 +1529,15 @@ public class ItemControl
                 itemPurchasingCategory);
     }
 
+    public long countItemsByCompanyParty(Party companyParty) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM items, itemdetails " +
+                "WHERE itm_activedetailid = itmdt_itemdetailid " +
+                "AND itmdt_companypartyid = ?",
+                companyParty);
+    }
+
     public long countItemsByUnitOfMeasureKind(UnitOfMeasureKind unitOfMeasureKind) {
         return session.queryForLong(
                 "SELECT COUNT(*) " +
@@ -1633,6 +1642,46 @@ public class ItemControl
 
     public List<Item> getItemsByItemCategoryForUpdate(ItemCategory itemCategory) {
         return getItemsByItemCategory(EntityPermission.READ_WRITE, itemCategory);
+    }
+
+    private List<Item> getItemsByCompanyParty(EntityPermission entityPermission, Party companyParty) {
+        List<Item> items;
+
+        try {
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM items, itemdetails " +
+                        "WHERE itm_activedetailid = itmdt_itemdetailid AND itmdt_companypartyid = ? " +
+                        "ORDER BY itmdt_itemname " +
+                        "_LIMIT_";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM items, itemdetails " +
+                        "WHERE itm_activedetailid = itmdt_itemdetailid AND itmdt_companypartyid = ? " +
+                        "FOR UPDATE";
+            }
+
+            PreparedStatement ps = ItemFactory.getInstance().prepareStatement(query);
+
+            ps.setLong(1, companyParty.getPrimaryKey().getEntityId());
+
+            items = ItemFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return items;
+    }
+
+
+    public List<Item> getItemsByCompanyParty(Party companyParty) {
+        return getItemsByCompanyParty(EntityPermission.READ_ONLY, companyParty);
+    }
+
+    public List<Item> getItemsByCompanyPartyForUpdate(Party companyParty) {
+        return getItemsByCompanyParty(EntityPermission.READ_WRITE, companyParty);
     }
 
     private Item getItemByName(String itemName, EntityPermission entityPermission) {

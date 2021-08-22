@@ -16,6 +16,9 @@
 
 package com.echothree.model.control.party.server.graphql;
 
+import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.item.server.graphql.ItemObject;
+import com.echothree.model.control.item.server.graphql.ItemSecurityUtils;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyCompany;
@@ -24,6 +27,10 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("company object")
 @GraphQLName("Company")
@@ -71,6 +78,33 @@ public class CompanyObject
     @GraphQLNonNull
     public int getSortOrder() {
         return getPartyCompany().getSortOrder();
+    }
+
+
+    @GraphQLField
+    @GraphQLDescription("items")
+    public List<ItemObject> getItems(final DataFetchingEnvironment env) {
+        if(ItemSecurityUtils.getInstance().getHasItemsAccess(env)) {
+            var itemControl = Session.getModelController(ItemControl.class);
+            var entities = itemControl.getItemsByCompanyParty(party);
+            var items = entities.stream().map(ItemObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+            return items;
+        } else {
+            return null;
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("item count")
+    public Long getItemCount(final DataFetchingEnvironment env) {
+        if(ItemSecurityUtils.getInstance().getHasItemsAccess(env)) {
+            var itemControl = Session.getModelController(ItemControl.class);
+
+            return itemControl.countItemsByCompanyParty(party);
+        } else {
+            return null;
+        }
     }
 
 }
