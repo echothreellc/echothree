@@ -87,7 +87,7 @@ public class GetMimeTypeChoicesCommand
         String commentName = form.getCommentName();
         String documentTypeName = form.getDocumentTypeName();
         String documentName = form.getDocumentName();
-        int parameterCount = (mimeTypeUsageTypeName != null? 1: 0) + (itemDescriptionTypeName != null? 1: 0) + (forumName != null? 1: 0)
+        var parameterCount = (mimeTypeUsageTypeName != null? 1: 0) + (itemDescriptionTypeName != null? 1: 0) + (forumName != null? 1: 0)
                 + (forumMessageName != null? 1: 0) + (componentVendorName != null && entityTypeName != null && commentTypeName != null? 1: 0)
                 + (commentName != null? 1: 0) + (documentTypeName != null? 1: 0) + (documentName != null? 1: 0);
 

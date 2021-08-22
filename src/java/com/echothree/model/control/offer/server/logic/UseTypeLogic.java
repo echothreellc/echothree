@@ -96,7 +96,7 @@ public class UseTypeLogic
         UseType useType = null;
         var useTypeControl = Session.getModelController(UseTypeControl.class);
         var useTypeName = universalSpec.getUseTypeName();
-        int parameterCount = (useTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (useTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0:

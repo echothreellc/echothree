@@ -73,7 +73,7 @@ public class GetPartyContactListStatusChoicesCommand
         GetPartyContactListStatusChoicesResult result = ContactListResultFactory.getGetPartyContactListStatusChoicesResult();
         String partyName = form.getPartyName();
         String contactListName = form.getContactListName();
-        int parameterCount = (partyName == null ? 0 : 1) + (contactListName == null ? 0 : 1);
+        var parameterCount = (partyName == null ? 0 : 1) + (contactListName == null ? 0 : 1);
 
         if(parameterCount == 0 || parameterCount == 2) {
             Party party = partyName == null ? null : partyControl.getPartyByName(partyName);

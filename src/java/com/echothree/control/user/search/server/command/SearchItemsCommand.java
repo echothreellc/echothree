@@ -91,7 +91,7 @@ public class SearchItemsCommand
         SearchItemsResult result = SearchResultFactory.getSearchItemsResult();
         String itemStatusChoice = form.getItemStatusChoice();
         String itemStatusChoices = form.getItemStatusChoices();
-        int parameterCount = (itemStatusChoice == null ? 0 : 1) + (itemStatusChoices == null ? 0 : 1);
+        var parameterCount = (itemStatusChoice == null ? 0 : 1) + (itemStatusChoices == null ? 0 : 1);
         
         if(parameterCount < 2) {
             SearchLogic searchLogic = SearchLogic.getInstance();

@@ -140,7 +140,7 @@ public class EditPartyInventoryLevelCommand
         String partyName = spec.getPartyName();
         String companyName = spec.getCompanyName();
         String warehouseName = spec.getWarehouseName();
-        int parameterCount = (partyName == null? 0: 1) + (companyName == null? 0: 1) + (warehouseName == null? 0: 1);
+        var parameterCount = (partyName == null ? 0 : 1) + (companyName == null ? 0 : 1) + (warehouseName == null ? 0 : 1);
         Party party = null;
 
         if(parameterCount == 1) {

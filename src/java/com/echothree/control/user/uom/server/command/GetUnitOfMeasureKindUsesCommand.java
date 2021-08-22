@@ -62,7 +62,7 @@ public class GetUnitOfMeasureKindUsesCommand
         Collection<UnitOfMeasureKindUse> entities = null;
         String unitOfMeasureKindName = form.getUnitOfMeasureKindName();
         String unitOfMeasureKindUseTypeName = form.getUnitOfMeasureKindUseTypeName();
-        int parameterCount = (unitOfMeasureKindName == null? 0: 1) + (unitOfMeasureKindUseTypeName == null? 0: 1);
+        var parameterCount = (unitOfMeasureKindName == null ? 0 : 1) + (unitOfMeasureKindUseTypeName == null ? 0 : 1);
         
         if(parameterCount == 1) {
             if(unitOfMeasureKindName != null) {

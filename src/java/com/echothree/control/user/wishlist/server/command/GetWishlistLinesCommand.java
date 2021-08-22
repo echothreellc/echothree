@@ -59,7 +59,7 @@ public class GetWishlistLinesCommand
         GetWishlistLinesResult result = WishlistResultFactory.getGetWishlistLinesResult();
         String wishlistName = form.getWishlistName();
         String itemName = form.getItemName();
-        int parameterCount = (wishlistName == null? 0: 1) + (itemName == null? 0: 1);
+        var parameterCount = (wishlistName == null ? 0 : 1) + (itemName == null ? 0 : 1);
         
         if(parameterCount == 1) {
             var wishlistControl = Session.getModelController(WishlistControl.class);

@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetCompaniesResult
         extends BaseResult {
-    
+
+    Long getCompanyCount();
+    void setCompanyCount(Long companyCount);
+
     List<CompanyTransfer> getCompanies();
     void setCompanies(List<CompanyTransfer> companies);
     

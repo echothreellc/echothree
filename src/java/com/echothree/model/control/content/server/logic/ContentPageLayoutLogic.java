@@ -94,7 +94,7 @@ public class ContentPageLayoutLogic
         ContentPageLayout contentPageLayout = null;
         var contentControl = Session.getModelController(ContentControl.class);
         String contentPageLayoutName = universalSpec.getContentPageLayoutName();
-        int parameterCount = (contentPageLayoutName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (contentPageLayoutName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0:

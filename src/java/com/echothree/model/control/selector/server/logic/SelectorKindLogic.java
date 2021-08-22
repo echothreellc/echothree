@@ -94,7 +94,7 @@ public class SelectorKindLogic
         SelectorKind selectorKind = null;
         var selectorControl = Session.getModelController(SelectorControl.class);
         var selectorKindName = universalSpec.getSelectorKindName();
-        int parameterCount = (selectorKindName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (selectorKindName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0:

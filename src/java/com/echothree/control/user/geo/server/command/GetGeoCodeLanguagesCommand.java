@@ -71,7 +71,7 @@ public class GetGeoCodeLanguagesCommand
         GetGeoCodeLanguagesResult result = GeoResultFactory.getGetGeoCodeLanguagesResult();
         String geoCodeName = form.getGeoCodeName();
         String languageIsoName = form.getLanguageIsoName();
-        int parameterCount = (geoCodeName != null? 1: 0) + (languageIsoName != null? 1: 0);
+        var parameterCount = (geoCodeName != null? 1: 0) + (languageIsoName != null? 1: 0);
         
         if(parameterCount == 1) {
             if(geoCodeName != null) {

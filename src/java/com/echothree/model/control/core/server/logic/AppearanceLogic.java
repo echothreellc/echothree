@@ -80,7 +80,7 @@ public class AppearanceLogic
         Appearance appearance = null;
         var coreControl = Session.getModelController(CoreControl.class);
         var appearanceName = universalSpec.getAppearanceName();
-        int parameterCount = (appearanceName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (appearanceName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 1:

@@ -76,7 +76,7 @@ public class GetWorkflowEntityTypesCommand
         var workflowName = form.getWorkflowName();
         var componentVendorName = form.getComponentVendorName();
         var entityTypeName = form.getEntityTypeName();
-        int parameterCount = (workflowName == null ? 0 : 1) + (componentVendorName == null && entityTypeName == null ? 0 : 1);
+        var parameterCount = (workflowName == null ? 0 : 1) + (componentVendorName == null && entityTypeName == null ? 0 : 1);
         Collection<WorkflowEntityType> workflowEntityTypes = null;
 
         if(parameterCount == 1) {

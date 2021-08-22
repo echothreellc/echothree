@@ -327,7 +327,7 @@ public class PartySearchEvaluator
     @Override
     protected EntityInstancePKHolder executeSearch(final ExecutionErrorAccumulator eea) {
         EntityInstancePKHolder resultSet = null;
-        int parameterCount = (partyName == null? 0: 1) + (alias == null? 0: 1);
+        var parameterCount = (partyName == null ? 0 : 1) + (alias == null ? 0 : 1);
 
         if(parameterCount == 0) {
             resultSet = super.executeSearch(eea);

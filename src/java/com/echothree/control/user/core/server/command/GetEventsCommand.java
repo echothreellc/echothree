@@ -81,7 +81,7 @@ public class GetEventsCommand
         String createdByKey = form.getCreatedByKey();
         String createdByGuid = form.getCreatedByGuid();
         String createdByUlid = form.getCreatedByUlid();
-        int parameterCount = (entityRef == null ? 0 : 1) + (key == null ? 0 : 1) + (guid == null ? 0 : 1) + (ulid == null ? 0 : 1)
+        var parameterCount = (entityRef == null ? 0 : 1) + (key == null ? 0 : 1) + (guid == null ? 0 : 1) + (ulid == null ? 0 : 1)
                 + (createdByEntityRef == null ? 0 : 1) + (createdByKey == null ? 0 : 1) + (createdByGuid == null ? 0 : 1) + (createdByUlid == null ? 0 : 1);
         
         if(parameterCount == 1) {

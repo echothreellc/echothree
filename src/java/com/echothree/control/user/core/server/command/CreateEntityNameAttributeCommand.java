@@ -58,7 +58,7 @@ public class CreateEntityNameAttributeCommand
     
     @Override
     protected BaseResult execute() {
-        int parameterCount = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
             EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);

@@ -59,7 +59,7 @@ public class GetDivisionChoicesCommand
         GetDivisionChoicesResult result = PartyResultFactory.getGetDivisionChoicesResult();
         String companyName = form.getCompanyName();
         String partyName = form.getPartyName();
-        int parameterCount = (companyName == null? 0: 1) + (partyName == null? 0: 1);
+        var parameterCount = (companyName == null ? 0 : 1) + (partyName == null ? 0 : 1);
         
         if(parameterCount == 1) {
             var partyControl = Session.getModelController(PartyControl.class);

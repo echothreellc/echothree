@@ -3183,7 +3183,15 @@ public class PartyControl
         
         return partyCompany;
     }
-    
+
+    public long countPartyCompanies() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM partycompanies " +
+                        "WHERE pcomp_thrutime = ?",
+                Session.MAX_TIME);
+    }
+
     public PartyCompanyValue getPartyCompanyValueForUpdate(PartyCompany partyCompany) {
         return partyCompany == null? null: partyCompany.getPartyCompanyValue().clone();
     }
@@ -3329,7 +3337,8 @@ public class PartyControl
                 query = "SELECT _ALL_ " +
                         "FROM partycompanies, partydetails " +
                         "WHERE pcomp_thrutime = ? AND pcomp_par_partyid = pardt_par_partyid AND pardt_thrutime = ? " +
-                        "ORDER BY pcomp_sortorder, pcomp_partycompanyname";
+                        "ORDER BY pcomp_sortorder, pcomp_partycompanyname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM partycompanies, partydetails " +
@@ -3392,7 +3401,7 @@ public class PartyControl
         return new CompanyChoicesBean(labels, values, defaultValue);
     }
     
-    private List<CompanyTransfer> getCompanyTransfers(UserVisit userVisit, List<PartyCompany> partyCompanies) {
+    public List<CompanyTransfer> getCompanyTransfers(UserVisit userVisit, Collection<PartyCompany> partyCompanies) {
         List<CompanyTransfer> companyTransfers = new ArrayList<>(partyCompanies.size());
         CompanyTransferCache companyTransferCache = getPartyTransferCaches(userVisit).getCompanyTransferCache();
         

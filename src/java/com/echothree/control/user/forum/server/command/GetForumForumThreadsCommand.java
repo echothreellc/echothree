@@ -56,7 +56,7 @@ public class GetForumForumThreadsCommand
         GetForumForumThreadsResult result = ForumResultFactory.getGetForumForumThreadsResult();
         String forumName = form.getForumName();
         String forumThreadName = form.getForumThreadName();
-        int parameterCount = (forumName != null? 1: 0) + (forumThreadName != null? 1: 0);
+        var parameterCount = (forumName != null? 1: 0) + (forumThreadName != null? 1: 0);
         
         if(parameterCount == 1) {
             if(forumName != null) {

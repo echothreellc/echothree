@@ -78,7 +78,7 @@ public class GetCarrierServiceOptionsCommand
             Party carrierParty = carrier.getParty();
             String carrierServiceName = form.getCarrierServiceName();
             String carrierOptionName = form.getCarrierOptionName();
-            int parameterCount = (carrierServiceName == null? 0: 1) + (carrierOptionName == null? 0: 1);
+            var parameterCount = (carrierServiceName == null ? 0 : 1) + (carrierOptionName == null ? 0 : 1);
             
             if(parameterCount == 1) {
                 if(carrierServiceName != null) {

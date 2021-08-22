@@ -72,7 +72,7 @@ public class GetCarrierCommand
         GetCarrierResult result = CarrierResultFactory.getGetCarrierResult();
         String carrierName = form.getCarrierName();
         String partyName = form.getPartyName();
-        int parameterCount = (carrierName == null? 0: 1) + (partyName == null? 0: 1);
+        var parameterCount = (carrierName == null ? 0 : 1) + (partyName == null ? 0 : 1);
         
         if(parameterCount == 1) {
             var carrierControl = Session.getModelController(CarrierControl.class);

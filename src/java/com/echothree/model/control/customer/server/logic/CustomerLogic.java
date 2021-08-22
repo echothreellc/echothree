@@ -66,7 +66,7 @@ public class CustomerLogic
 
     public Customer getCustomerByName(final ExecutionErrorAccumulator eea, final String customerName, final String partyName,
             final UniversalEntitySpec universalEntitySpec) {
-        int parameterCount = (customerName == null? 0: 1) + (partyName == null? 0: 1) +
+        var parameterCount = (customerName == null ? 0 : 1) + (partyName == null ? 0 : 1) +
                 EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalEntitySpec);
         Customer customer = null;
 

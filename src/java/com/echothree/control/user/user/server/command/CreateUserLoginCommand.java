@@ -98,7 +98,7 @@ public class CreateUserLoginCommand
     @Override
     protected BaseResult execute() {
         String partyName = form.getPartyName();
-        int parameterCount = (partyName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (partyName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
             Party party = null;

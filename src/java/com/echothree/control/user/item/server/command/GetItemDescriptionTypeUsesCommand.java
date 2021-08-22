@@ -71,7 +71,7 @@ public class GetItemDescriptionTypeUsesCommand
         GetItemDescriptionTypeUsesResult result = ItemResultFactory.getGetItemDescriptionTypeUsesResult();
         String itemDescriptionTypeName = form.getItemDescriptionTypeName();
         String itemDescriptionTypeUseTypeName = form.getItemDescriptionTypeUseTypeName();
-        int parameterCount = (itemDescriptionTypeName == null? 0: 1) + (itemDescriptionTypeUseTypeName == null? 0: 1);
+        var parameterCount = (itemDescriptionTypeName == null ? 0 : 1) + (itemDescriptionTypeUseTypeName == null ? 0 : 1);
         
         if(parameterCount == 1) {
             UserVisit userVisit = getUserVisit();

@@ -80,7 +80,7 @@ public class MimeTypeLogic
     public MimeType checkMimeType(ExecutionErrorAccumulator eea, String mimeTypeName, String value, String mimeTypeUsageTypeName, String mimeTypeMissingError,
             String missingError, String mimeTypeUnknownError, String mimeTypeUsageError) {
         MimeType mimeType = null;
-        int parameterCount = (mimeTypeName == null? 0: 1) + (value == null? 0: 1);
+        var parameterCount = (mimeTypeName == null ? 0 : 1) + (value == null ? 0 : 1);
         
         if(parameterCount == 2) {
             var coreControl = Session.getModelController(CoreControl.class);

@@ -47,7 +47,7 @@ public class LetterSourceCommandUtil {
         String emailAddressContactMechanismName = edit.getEmailAddressContactMechanismName();
         String emailAddressContactMechanismAliasTypeName = edit.getEmailAddressContactMechanismAliasTypeName();
         String alias = edit.getEmailAddressContactMechanismAlias();
-        int parameterCount = (emailAddressContactMechanismName != null && emailAddressContactMechanismAliasTypeName == null && alias == null? 1: 0)
+        var parameterCount = (emailAddressContactMechanismName != null && emailAddressContactMechanismAliasTypeName == null && alias == null? 1: 0)
                 + (emailAddressContactMechanismName == null && emailAddressContactMechanismAliasTypeName != null && alias != null? 1: 0);
         
         if(parameterCount == 1) {
@@ -101,7 +101,7 @@ public class LetterSourceCommandUtil {
         String postalAddressContactMechanismName = edit.getPostalAddressContactMechanismName();
         String postalAddressContactMechanismAliasTypeName = edit.getPostalAddressContactMechanismAliasTypeName();
         String alias = edit.getPostalAddressContactMechanismAlias();
-        int parameterCount = (postalAddressContactMechanismName != null && postalAddressContactMechanismAliasTypeName == null && alias == null? 1: 0)
+        var parameterCount = (postalAddressContactMechanismName != null && postalAddressContactMechanismAliasTypeName == null && alias == null? 1: 0)
                 + (postalAddressContactMechanismName == null && postalAddressContactMechanismAliasTypeName != null && alias != null? 1: 0);
         
         if(parameterCount == 1) {
@@ -155,7 +155,7 @@ public class LetterSourceCommandUtil {
         String letterSourceContactMechanismName = edit.getLetterSourceContactMechanismName();
         String letterSourceContactMechanismAliasTypeName = edit.getLetterSourceContactMechanismAliasTypeName();
         String alias = edit.getLetterSourceContactMechanismAlias();
-        int parameterCount = (letterSourceContactMechanismName != null && letterSourceContactMechanismAliasTypeName == null && alias == null? 1: 0)
+        var parameterCount = (letterSourceContactMechanismName != null && letterSourceContactMechanismAliasTypeName == null && alias == null? 1: 0)
                 + (letterSourceContactMechanismName == null && letterSourceContactMechanismAliasTypeName != null && alias != null? 1: 0);
         
         if(parameterCount == 1) {

@@ -71,7 +71,7 @@ public class GetPartyTypeContactListGroupsCommand
         GetPartyTypeContactListGroupsResult result = ContactListResultFactory.getGetPartyTypeContactListGroupsResult();
         String partyTypeName = form.getPartyTypeName();
         String contactListGroupName = form.getContactListGroupName();
-        int parameterCount = (partyTypeName != null? 1: 0) + (contactListGroupName != null? 1: 0);
+        var parameterCount = (partyTypeName != null? 1: 0) + (contactListGroupName != null? 1: 0);
         
         if(parameterCount == 1) {
             var contactListControl = Session.getModelController(ContactListControl.class);

@@ -71,7 +71,7 @@ public class CreateIndexTypeCommand
     protected BaseResult execute() {
         String componentVendorName = form.getComponentVendorName();
         String entityTypeName = form.getEntityTypeName();
-        int parameterCount = (componentVendorName == null ? 0 : 1) + (entityTypeName == null ? 0 : 1);
+        var parameterCount = (componentVendorName == null ? 0 : 1) + (entityTypeName == null ? 0 : 1);
 
         if(parameterCount == 0 || parameterCount == 2) {
             var indexControl = Session.getModelController(IndexControl.class);

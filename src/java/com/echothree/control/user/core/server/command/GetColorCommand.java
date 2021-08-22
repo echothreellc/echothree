@@ -62,7 +62,7 @@ public class GetColorCommand
         var coreControl = getCoreControl();
         Color color = null;
         String colorName = form.getColorName();
-        int parameterCount = (colorName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (colorName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
             if(colorName == null) {

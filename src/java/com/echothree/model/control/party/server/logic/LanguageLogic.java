@@ -95,7 +95,7 @@ public class LanguageLogic
         Language language = null;
         String languageIsoName = spec.getLanguageIsoName();
         String languageUlid = ulid.getLanguageUlid();
-        int parameterCount = (languageIsoName == null ? 0 : 1) + (languageUlid == null ? 0 : 1);
+        var parameterCount = (languageIsoName == null ? 0 : 1) + (languageUlid == null ? 0 : 1);
 
         if (parameterCount == 1) {
             language = languageIsoName == null

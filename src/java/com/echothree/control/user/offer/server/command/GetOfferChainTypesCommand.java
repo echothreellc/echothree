@@ -79,7 +79,7 @@ public class GetOfferChainTypesCommand
         String offerName = form.getOfferName();
         String chainKindName = form.getChainKindName();
         String chainTypeName = form.getChainTypeName();
-        int parameterCount = (offerName != null ? 1 : 0) + (chainKindName != null && chainTypeName != null ? 1 : 0);
+        var parameterCount = (offerName != null ? 1 : 0) + (chainKindName != null && chainTypeName != null ? 1 : 0);
         Collection<OfferChainType> offerChainTypes = null;
         
         if(parameterCount == 1) {

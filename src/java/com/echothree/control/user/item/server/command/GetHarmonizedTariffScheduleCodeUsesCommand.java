@@ -73,7 +73,7 @@ public class GetHarmonizedTariffScheduleCodeUsesCommand
         String countryName = form.getCountryName();
         String harmonizedTariffScheduleCodeName = form.getHarmonizedTariffScheduleCodeName();
         String harmonizedTariffScheduleCodeUseTypeName = form.getHarmonizedTariffScheduleCodeUseTypeName();
-        int parameterCount = (countryName == null  && harmonizedTariffScheduleCodeName == null && harmonizedTariffScheduleCodeUseTypeName != null ? 0 : 1)
+        var parameterCount = (countryName == null  && harmonizedTariffScheduleCodeName == null && harmonizedTariffScheduleCodeUseTypeName != null ? 0 : 1)
                 + (countryName != null  && harmonizedTariffScheduleCodeName != null && harmonizedTariffScheduleCodeUseTypeName == null ? 0 : 1);
 
         if(parameterCount == 1) {

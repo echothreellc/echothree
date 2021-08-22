@@ -73,7 +73,7 @@ public class GetSearchSortDirectionChoicesCommand
         GetSearchSortDirectionChoicesResult result = SearchResultFactory.getGetSearchSortDirectionChoicesResult();
         String searchKindName = form.getSearchKindName();
         String searchTypeName = form.getSearchTypeName();
-        int parameterCount = (searchKindName == null ? 0 : 1) + (searchTypeName == null ? 0 : 1);
+        var parameterCount = (searchKindName == null ? 0 : 1) + (searchTypeName == null ? 0 : 1);
 
         if(parameterCount == 0 || parameterCount == 2) {
             String defaultSearchSortDirectionChoice = form.getDefaultSearchSortDirectionChoice();

@@ -94,7 +94,7 @@ public class PaymentProcessorActionTypeLogic
         PaymentProcessorActionType paymentProcessorActionType = null;
         var paymentProcessorActionTypeControl = Session.getModelController(PaymentProcessorActionTypeControl.class);
         String paymentProcessorActionTypeName = universalSpec.getPaymentProcessorActionTypeName();
-        int parameterCount = (paymentProcessorActionTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (paymentProcessorActionTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0:

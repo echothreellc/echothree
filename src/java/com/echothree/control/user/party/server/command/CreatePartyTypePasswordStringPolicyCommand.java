@@ -75,13 +75,13 @@ public class CreatePartyTypePasswordStringPolicyCommand
     protected BaseResult execute() {
         String rawMinimumPasswordLifetime = form.getMinimumPasswordLifetime();
         String minimumPasswordLifetimeUnitOfMeasureTypeName = form.getMinimumPasswordLifetimeUnitOfMeasureTypeName();
-        int minimumPasswordLifetimeParameterCount = (rawMinimumPasswordLifetime == null? 0: 1) + (minimumPasswordLifetimeUnitOfMeasureTypeName == null? 0: 1);
+        int minimumPasswordLifetimeParameterCount = (rawMinimumPasswordLifetime == null ? 0 : 1) + (minimumPasswordLifetimeUnitOfMeasureTypeName == null ? 0 : 1);
         String rawMaximumPasswordLifetime = form.getMaximumPasswordLifetime();
         String maximumPasswordLifetimeUnitOfMeasureTypeName = form.getMaximumPasswordLifetimeUnitOfMeasureTypeName();
-        int maximumPasswordLifetimeParameterCount = (rawMaximumPasswordLifetime == null? 0: 1) + (maximumPasswordLifetimeUnitOfMeasureTypeName == null? 0: 1);
+        int maximumPasswordLifetimeParameterCount = (rawMaximumPasswordLifetime == null ? 0 : 1) + (maximumPasswordLifetimeUnitOfMeasureTypeName == null ? 0 : 1);
         String rawExpirationWarningTime = form.getExpirationWarningTime();
         String expirationWarningTimeUnitOfMeasureTypeName = form.getExpirationWarningTimeUnitOfMeasureTypeName();
-        int expirationWarningTimeParameterCount = (rawExpirationWarningTime == null? 0: 1) + (expirationWarningTimeUnitOfMeasureTypeName == null? 0: 1);
+        int expirationWarningTimeParameterCount = (rawExpirationWarningTime == null ? 0 : 1) + (expirationWarningTimeUnitOfMeasureTypeName == null ? 0 : 1);
         
         if((minimumPasswordLifetimeParameterCount == 0 || minimumPasswordLifetimeParameterCount == 2) &&
                 (maximumPasswordLifetimeParameterCount == 0 || maximumPasswordLifetimeParameterCount == 2) &&

@@ -71,7 +71,7 @@ public class GetDocumentTypeUsagesCommand
         GetDocumentTypeUsagesResult result = DocumentResultFactory.getGetDocumentTypeUsagesResult();
         String documentTypeUsageTypeName = form.getDocumentTypeUsageTypeName();
         String documentTypeName = form.getDocumentTypeName();
-        int parameterCount = (documentTypeUsageTypeName == null? 0: 1) + (documentTypeName == null? 0: 1);
+        var parameterCount = (documentTypeUsageTypeName == null ? 0 : 1) + (documentTypeName == null ? 0 : 1);
         
         if(parameterCount == 1) {
             UserVisit userVisit = getUserVisit();

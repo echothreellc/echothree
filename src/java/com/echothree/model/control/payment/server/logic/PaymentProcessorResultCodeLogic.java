@@ -94,7 +94,7 @@ public class PaymentProcessorResultCodeLogic
         PaymentProcessorResultCode paymentProcessorResultCode = null;
         var paymentProcessorResultCodeControl = Session.getModelController(PaymentProcessorResultCodeControl.class);
         String paymentProcessorResultCodeName = universalSpec.getPaymentProcessorResultCodeName();
-        int parameterCount = (paymentProcessorResultCodeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (paymentProcessorResultCodeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0:

@@ -146,7 +146,7 @@ public class PaymentMethodTypePartyTypeLogic
         var paymentMethodTypeName = universalSpec.getPaymentMethodTypeName();
         var partyTypeName = universalSpec.getPartyTypeName();
         var fullySpecifiedName = paymentMethodTypeName != null && partyTypeName != null;
-        int parameterCount = (fullySpecifiedName ? 1 : 0) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (fullySpecifiedName ? 1 : 0) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0:

@@ -73,7 +73,7 @@ public class GetEntityTagsCommand
         String tagScopeName = form.getTagScopeName();
         String tagName = form.getTagName();
         String entityRef = form.getEntityRef();
-        int parameterCount = (tagScopeName == null && tagName == null? 0: 1) + (entityRef == null? 0: 1);
+        var parameterCount = (tagScopeName == null && tagName == null ? 0 : 1) + (entityRef == null ? 0 : 1);
         
         if(parameterCount == 1) {
             var tagControl = Session.getModelController(TagControl.class);

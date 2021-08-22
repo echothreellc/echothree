@@ -70,7 +70,7 @@ public class EditEntityBooleanAttributeCommand
     @Override
     protected BaseResult execute() {
         EditEntityBooleanAttributeResult result = CoreResultFactory.getEditEntityBooleanAttributeResult();
-        int parameterCount = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(spec);
+        var parameterCount = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(spec);
 
         if(parameterCount == 1) {
             EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, spec);

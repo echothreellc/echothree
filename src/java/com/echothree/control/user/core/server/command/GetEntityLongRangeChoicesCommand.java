@@ -73,7 +73,7 @@ public class GetEntityLongRangeChoicesCommand
         String entityRef = form.getEntityRef();
         String componentVendorName = form.getComponentVendorName();
         String entityTypeName = form.getEntityTypeName();
-        int parameterCount = (entityRef != null && componentVendorName == null && entityTypeName == null? 1: 0)
+        var parameterCount = (entityRef != null && componentVendorName == null && entityTypeName == null? 1: 0)
                 + (entityRef == null && componentVendorName != null && entityTypeName != null? 1: 0);
         
         if(parameterCount == 1) {

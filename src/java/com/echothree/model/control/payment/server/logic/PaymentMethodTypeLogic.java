@@ -94,7 +94,7 @@ public class PaymentMethodTypeLogic
         PaymentMethodType paymentMethodType = null;
         var paymentMethodTypeControl = Session.getModelController(PaymentMethodTypeControl.class);
         String paymentMethodTypeName = universalSpec.getPaymentMethodTypeName();
-        int parameterCount = (paymentMethodTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (paymentMethodTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0:

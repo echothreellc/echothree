@@ -98,7 +98,7 @@ public class SequenceTypeLogic
         SequenceType sequenceType = null;
         var sequenceControl = Session.getModelController(SequenceControl.class);
         var sequenceTypeName = universalSpec.getSequenceTypeName();
-        int parameterCount = (sequenceTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (sequenceTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0:

@@ -90,7 +90,7 @@ public class SearchEmployeesCommand
         SearchEmployeesResult result = SearchResultFactory.getSearchEmployeesResult();
         String employeeName = form.getEmployeeName();
         String partyName = form.getPartyName();
-        int parameterCount = (employeeName == null? 0: 1) + (partyName == null? 0: 1);
+        var parameterCount = (employeeName == null ? 0 : 1) + (partyName == null ? 0 : 1);
 
         if(parameterCount < 2) {
             var searchControl = Session.getModelController(SearchControl.class);

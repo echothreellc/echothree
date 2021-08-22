@@ -94,7 +94,7 @@ public class OfferNameElementLogic
             final OfferNameElementUniversalSpec universalSpec, final EntityPermission entityPermission) {
         var offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
         var offerNameElementName = universalSpec.getOfferNameElementName();
-        int parameterCount = (offerNameElementName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (offerNameElementName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
         OfferNameElement offerNameElement = null;
 
         if(parameterCount == 1) {

@@ -66,8 +66,8 @@ public class GetPartyInventoryLevelsCommand
         String warehouseName = form.getWarehouseName();
         String itemName = form.getItemName();
                 String inventoryConditionName = form.getInventoryConditionName();
-        int parameterCount = (partyName == null? 0: 1) + (companyName == null? 0: 1) + (warehouseName == null? 0: 1) +
-                (itemName == null? 0: 1) + (inventoryConditionName == null? 0: 1);
+        var parameterCount = (partyName == null ? 0 : 1) + (companyName == null ? 0 : 1) + (warehouseName == null ? 0 : 1) +
+                (itemName == null ? 0 : 1) + (inventoryConditionName == null ? 0 : 1);
         
         if(parameterCount == 1) {
             var inventoryControl = Session.getModelController(InventoryControl.class);

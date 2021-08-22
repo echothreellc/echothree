@@ -62,7 +62,7 @@ public class GetCommentStatusChoicesCommand
         var commentControl = Session.getModelController(CommentControl.class);
         String commentTypeName = form.getCommentTypeName();
         String commentName = form.getCommentName();
-        int parameterCount = (commentTypeName == null? 0: 1) + (commentName == null? 0: 1);
+        var parameterCount = (commentTypeName == null ? 0 : 1) + (commentName == null ? 0 : 1);
 
         if(parameterCount == 1) {
             CommentType commentType = null;

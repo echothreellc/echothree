@@ -64,7 +64,7 @@ public class GetForumMessageCommand
     protected BaseResult execute() {
         GetForumMessageResult result = ForumResultFactory.getGetForumMessageResult();
         String forumMessageName = form.getForumMessageName();
-        int parameterCount = (forumMessageName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (forumMessageName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
             var forumControl = Session.getModelController(ForumControl.class);

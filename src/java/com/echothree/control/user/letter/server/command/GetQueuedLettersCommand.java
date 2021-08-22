@@ -74,7 +74,7 @@ public class GetQueuedLettersCommand
         String chainKindName = form.getChainKindName();
         String chainTypeName = form.getChainTypeName();
         String letterName = form.getLetterName();
-        int parameterCount = (chainKindName != null? 1: 0) + (chainTypeName != null && letterName != null? 1: 0);
+        var parameterCount = (chainKindName != null? 1: 0) + (chainTypeName != null && letterName != null? 1: 0);
 
         if(parameterCount == 0 || parameterCount == 3) {
             ChainKind chainKind = chainKindName == null ? null : chainControl.getChainKindByName(chainKindName);

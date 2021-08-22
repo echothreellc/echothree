@@ -74,7 +74,7 @@ public class GetReturnTypeShippingMethodsCommand
         String returnKindName = form.getReturnKindName();
         String returnTypeName = form.getReturnTypeName();
         String shippingMethodName = form.getShippingMethodName();
-        int parameterCount = (returnKindName != null && returnTypeName != null? 1: 0) + (shippingMethodName != null? 1: 0);
+        var parameterCount = (returnKindName != null && returnTypeName != null? 1: 0) + (shippingMethodName != null? 1: 0);
         
         if(parameterCount == 1) {
             if(returnKindName != null && returnTypeName != null) {

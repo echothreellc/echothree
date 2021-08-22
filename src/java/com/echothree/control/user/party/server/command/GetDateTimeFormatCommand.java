@@ -64,7 +64,7 @@ public class GetDateTimeFormatCommand
         var partyControl = Session.getModelController(PartyControl.class);
         DateTimeFormat dateTimeFormat = null;
         String dateTimeFormatName = form.getDateTimeFormatName();
-        int parameterCount = (dateTimeFormatName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (dateTimeFormatName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         switch(parameterCount) {
             case 0:

@@ -71,7 +71,7 @@ public class GetPartyTypeDocumentTypeUsageTypesCommand
         GetPartyTypeDocumentTypeUsageTypesResult result = DocumentResultFactory.getGetPartyTypeDocumentTypeUsageTypesResult();
         String partyTypeName = form.getPartyTypeName();
         String documentTypeUsageTypeName = form.getDocumentTypeUsageTypeName();
-        int parameterCount = (partyTypeName == null? 0: 1) + (documentTypeUsageTypeName == null? 0: 1);
+        var parameterCount = (partyTypeName == null ? 0 : 1) + (documentTypeUsageTypeName == null ? 0 : 1);
         
         if(parameterCount == 1) {
             var documentControl = Session.getModelController(DocumentControl.class);

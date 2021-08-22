@@ -72,7 +72,7 @@ public class GetCancellationReasonTypesCommand
         GetCancellationReasonTypesResult result = CancellationPolicyResultFactory.getGetCancellationReasonTypesResult();
         String cancellationReasonName = form.getCancellationReasonName();
         String cancellationTypeName = form.getCancellationTypeName();
-        int parameterCount = (cancellationReasonName != null? 1: 0) + (cancellationTypeName != null? 1: 0);
+        var parameterCount = (cancellationReasonName != null? 1: 0) + (cancellationTypeName != null? 1: 0);
         
         if(parameterCount == 1) {
             String cancellationKindName = form.getCancellationKindName();

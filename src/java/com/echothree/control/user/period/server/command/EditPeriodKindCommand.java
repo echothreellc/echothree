@@ -137,7 +137,7 @@ public class EditPeriodKindCommand
                 if(duplicatePeriodKind == null || periodKind.equals(duplicatePeriodKind)) {
                     String workflowName = edit.getWorkflowName();
                     String workflowEntranceName = edit.getWorkflowEntranceName();
-                    int parameterCount = (workflowName == null ? 0 : 1) + (workflowEntranceName == null ? 0 : 1);
+                    var parameterCount = (workflowName == null ? 0 : 1) + (workflowEntranceName == null ? 0 : 1);
 
                     if(parameterCount == 0 || parameterCount == 2) {
                         var workflowControl = Session.getModelController(WorkflowControl.class);

@@ -97,7 +97,7 @@ public class EntityTypeLogic
         var coreControl = Session.getModelController(CoreControl.class);
         var componentVendorName = universalSpec.getComponentVendorName();
         var entityTypeName = universalSpec.getEntityTypeName();
-        int parameterCount = (componentVendorName == null ? 0 : 1) + (entityTypeName == null ? 0 : 1)
+        var parameterCount = (componentVendorName == null ? 0 : 1) + (entityTypeName == null ? 0 : 1)
                 + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {

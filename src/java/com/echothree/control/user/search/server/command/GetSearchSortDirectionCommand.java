@@ -75,7 +75,7 @@ public class GetSearchSortDirectionCommand
     protected BaseResult execute() {
         GetSearchSortDirectionResult result = SearchResultFactory.getGetSearchSortDirectionResult();
         String searchSortDirectionName = form.getSearchSortDirectionName();
-        int parameterCount = (searchSortDirectionName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (searchSortDirectionName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
             var searchControl = Session.getModelController(SearchControl.class);

@@ -119,6 +119,8 @@ import com.echothree.control.user.offer.server.command.GetUseTypeCommand;
 import com.echothree.control.user.offer.server.command.GetUseTypesCommand;
 import com.echothree.control.user.offer.server.command.GetUsesCommand;
 import com.echothree.control.user.party.common.PartyUtil;
+import com.echothree.control.user.party.server.command.GetCompaniesCommand;
+import com.echothree.control.user.party.server.command.GetCompanyCommand;
 import com.echothree.control.user.party.server.command.GetDateTimeFormatCommand;
 import com.echothree.control.user.party.server.command.GetDateTimeFormatsCommand;
 import com.echothree.control.user.party.server.command.GetLanguageCommand;
@@ -229,6 +231,7 @@ import com.echothree.model.control.offer.server.graphql.OfferUseObject;
 import com.echothree.model.control.offer.server.graphql.UseNameElementObject;
 import com.echothree.model.control.offer.server.graphql.UseObject;
 import com.echothree.model.control.offer.server.graphql.UseTypeObject;
+import com.echothree.model.control.party.server.graphql.CompanyObject;
 import com.echothree.model.control.party.server.graphql.DateTimeFormatObject;
 import com.echothree.model.control.party.server.graphql.LanguageObject;
 import com.echothree.model.control.party.server.graphql.NameSuffixObject;
@@ -312,6 +315,7 @@ import com.echothree.model.data.offer.server.entity.UseType;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.NameSuffix;
+import com.echothree.model.data.party.server.entity.PartyCompany;
 import com.echothree.model.data.party.server.entity.PersonalTitle;
 import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.model.data.payment.server.entity.PaymentMethodType;
@@ -4019,6 +4023,56 @@ public final class GraphQlQueries
         }
 
         return vendorObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("company")
+    public static CompanyObject company(final DataFetchingEnvironment env,
+            @GraphQLName("companyName") final String companyName,
+            @GraphQLName("partyName") final String partyName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        PartyCompany company;
+
+        try {
+            var commandForm = PartyUtil.getHome().getGetCompanyForm();
+
+            commandForm.setCompanyName(companyName);
+            commandForm.setPartyName(partyName);
+            commandForm.setUlid(id);
+
+            company = new GetCompanyCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return company == null ? null : new CompanyObject(company);
+    }
+
+    @GraphQLField
+    @GraphQLName("companies")
+    public static Collection<CompanyObject> companies(final DataFetchingEnvironment env) {
+        Collection<PartyCompany> partyCompanies;
+        Collection<CompanyObject> companyObjects;
+
+        try {
+            var commandForm = PartyUtil.getHome().getGetCompaniesForm();
+
+            partyCompanies = new GetCompaniesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(partyCompanies == null) {
+            companyObjects = emptyList();
+        } else {
+            companyObjects = new ArrayList<>(partyCompanies.size());
+
+            partyCompanies.stream()
+                    .map(CompanyObject::new)
+                    .forEachOrdered(companyObjects::add);
+        }
+
+        return companyObjects;
     }
 
     @GraphQLField

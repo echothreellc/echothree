@@ -160,13 +160,13 @@ public class EditPartyTypePasswordStringPolicyCommand
                         if(partyTypePasswordStringPolicyDetailValue != null) {
                             String rawMinimumPasswordLifetime = edit.getMinimumPasswordLifetime();
                             String minimumPasswordLifetimeUnitOfMeasureTypeName = edit.getMinimumPasswordLifetimeUnitOfMeasureTypeName();
-                            int minimumPasswordLifetimeParameterCount = (rawMinimumPasswordLifetime == null? 0: 1) + (minimumPasswordLifetimeUnitOfMeasureTypeName == null? 0: 1);
+                            int minimumPasswordLifetimeParameterCount = (rawMinimumPasswordLifetime == null ? 0 : 1) + (minimumPasswordLifetimeUnitOfMeasureTypeName == null ? 0 : 1);
                             String rawMaximumPasswordLifetime = edit.getMaximumPasswordLifetime();
                             String maximumPasswordLifetimeUnitOfMeasureTypeName = edit.getMaximumPasswordLifetimeUnitOfMeasureTypeName();
-                            int maximumPasswordLifetimeParameterCount = (rawMaximumPasswordLifetime == null? 0: 1) + (maximumPasswordLifetimeUnitOfMeasureTypeName == null? 0: 1);
+                            int maximumPasswordLifetimeParameterCount = (rawMaximumPasswordLifetime == null ? 0 : 1) + (maximumPasswordLifetimeUnitOfMeasureTypeName == null ? 0 : 1);
                             String rawExpirationWarningTime = edit.getExpirationWarningTime();
                             String expirationWarningTimeUnitOfMeasureTypeName = edit.getExpirationWarningTimeUnitOfMeasureTypeName();
-                            int expirationWarningTimeParameterCount = (rawExpirationWarningTime == null? 0: 1) + (expirationWarningTimeUnitOfMeasureTypeName == null? 0: 1);
+                            int expirationWarningTimeParameterCount = (rawExpirationWarningTime == null ? 0 : 1) + (expirationWarningTimeUnitOfMeasureTypeName == null ? 0 : 1);
                             
                             if((minimumPasswordLifetimeParameterCount == 0 || minimumPasswordLifetimeParameterCount == 2) &&
                                     (maximumPasswordLifetimeParameterCount == 0 || maximumPasswordLifetimeParameterCount == 2) &&

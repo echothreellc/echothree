@@ -51,7 +51,7 @@ public class CreateUserVisitTrackCommand
     @Override
     protected BaseResult execute() {
         String trackValue = form.getTrackValue();
-        int parameterCount = trackValue == null ? 0 : 1;
+        var parameterCount = trackValue == null ? 0 : 1;
 
         if(parameterCount > 0) {
             var trackControl = Session.getModelController(TrackControl.class);

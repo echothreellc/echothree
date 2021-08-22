@@ -61,7 +61,7 @@ public class GetIndexCommand
     protected BaseResult execute() {
         GetIndexResult result = IndexResultFactory.getGetIndexResult();
         String indexName = form.getIndexName();
-        int parameterCount = (indexName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (indexName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
             var indexControl = Session.getModelController(IndexControl.class);

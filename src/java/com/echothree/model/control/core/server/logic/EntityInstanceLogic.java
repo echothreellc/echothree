@@ -133,7 +133,7 @@ public class EntityInstanceLogic
     
     public EntityInstance getEntityInstance(final ExecutionErrorAccumulator eea, final String entityRef, final String key,
             final String guid, final String ulid, final String componentVendorName, final String... entityTypeNames) {
-        int parameterCount = countPossibleEntitySpecs(entityRef, key, guid, ulid);
+        var parameterCount = countPossibleEntitySpecs(entityRef, key, guid, ulid);
         EntityInstance entityInstance = null;
         
         if(parameterCount == 1) {

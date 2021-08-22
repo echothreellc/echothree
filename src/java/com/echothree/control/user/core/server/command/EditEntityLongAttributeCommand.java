@@ -71,7 +71,7 @@ public class EditEntityLongAttributeCommand
     @Override
     protected BaseResult execute() {
         EditEntityLongAttributeResult result = CoreResultFactory.getEditEntityLongAttributeResult();
-        int parameterCount = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(spec);
+        var parameterCount = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(spec);
 
         if(parameterCount == 1) {
             EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, spec);

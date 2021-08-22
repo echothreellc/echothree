@@ -59,7 +59,7 @@ public class GetApplicationCommand
     protected BaseResult execute() {
         GetApplicationResult result = CoreResultFactory.getGetApplicationResult();
         String applicationName = form.getApplicationName();
-        int parameterCount = (applicationName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (applicationName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
             var coreControl = getCoreControl();

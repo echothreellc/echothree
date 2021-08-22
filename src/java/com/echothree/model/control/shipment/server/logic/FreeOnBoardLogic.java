@@ -94,7 +94,7 @@ public class FreeOnBoardLogic
         FreeOnBoard freeOnBoard = null;
         var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
         var freeOnBoardName = universalSpec.getFreeOnBoardName();
-        int parameterCount = (freeOnBoardName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (freeOnBoardName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0:

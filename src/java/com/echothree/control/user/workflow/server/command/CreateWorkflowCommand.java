@@ -86,7 +86,7 @@ public class CreateWorkflowCommand
                 var selectorControl = Session.getModelController(SelectorControl.class);
                 String selectorKindName = form.getSelectorKindName();
                 String selectorTypeName = form.getSelectorTypeName();
-                int parameterCount = (selectorKindName == null? 0: 1) + (selectorTypeName == null? 0: 1);
+                var parameterCount = (selectorKindName == null ? 0 : 1) + (selectorTypeName == null ? 0 : 1);
                 
                 if(parameterCount == 0 || parameterCount == 2) {
                     SelectorKind selectorKind = selectorKindName == null? null: selectorControl.getSelectorKindByName(selectorKindName);

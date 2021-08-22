@@ -16,12 +16,11 @@
 
 package com.echothree.model.control.party.server.logic;
 
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.employee.common.workflow.EmployeeStatusConstants;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.common.exception.CannotSpecifyEmployeeNameAndPartyNameException;
-import com.echothree.model.control.party.common.exception.MustSpecifyEmployeeNameOrPartyNameException;
 import com.echothree.model.control.party.common.exception.UnknownEmployeeNameException;
 import com.echothree.model.control.party.common.exception.UnknownEmployeeStatusChoiceException;
 import com.echothree.model.control.party.common.exception.UnknownPartyNameException;
@@ -61,7 +60,7 @@ public class EmployeeLogic
     }
 
     public PartyEmployee getPartyEmployeeByName(final ExecutionErrorAccumulator eea, final String employeeName, final String partyName) {
-        int parameterCount = (employeeName == null? 0: 1) + (partyName == null? 0: 1);
+        var parameterCount = (employeeName == null ? 0 : 1) + (partyName == null ? 0 : 1);
         PartyEmployee partyEmployee = null;
 
         if(parameterCount == 1) {
@@ -86,11 +85,7 @@ public class EmployeeLogic
                 }
             }
         } else {
-            if(parameterCount == 2) {
-                handleExecutionError(CannotSpecifyEmployeeNameAndPartyNameException.class, eea, ExecutionErrors.CannotSpecifyEmployeeNameAndPartyName.name());
-            } else {
-                handleExecutionError(MustSpecifyEmployeeNameOrPartyNameException.class, eea, ExecutionErrors.MustSpecifyEmployeeNameOrPartyName.name());
-            }
+            handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
         return partyEmployee;

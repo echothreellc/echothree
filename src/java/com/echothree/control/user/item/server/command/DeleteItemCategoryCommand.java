@@ -72,7 +72,7 @@ public class DeleteItemCategoryCommand
     @Override
     protected BaseResult execute() {
         String itemCategoryName = form.getItemCategoryName();
-        int parameterCount = (itemCategoryName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (itemCategoryName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
             var itemControl = Session.getModelController(ItemControl.class);

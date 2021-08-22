@@ -45,17 +45,21 @@ public class GetCompanyCommand
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Company.name(), SecurityRoles.Review.name())
-                )))
-        )));
-
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("CompanyName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null)
+                ))
         ));
+
+        FORM_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("CompanyName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
+        );
     }
     
     /** Creates a new instance of GetCompanyCommand */
@@ -67,7 +71,7 @@ public class GetCompanyCommand
     protected PartyCompany getEntity() {
         var companyName = form.getCompanyName();
         var partyName = form.getPartyName();
-        var partyCompany = CompanyLogic.getInstance().getPartyCompanyByName(this, companyName, partyName, true);
+        var partyCompany = CompanyLogic.getInstance().getPartyCompanyByName(this, companyName, partyName, form, true);
 
         if(partyCompany != null) {
             sendEventUsingNames(partyCompany.getPartyPK(), EventTypes.READ.name(), null, null, getPartyPK());

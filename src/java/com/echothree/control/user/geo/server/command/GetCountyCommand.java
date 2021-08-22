@@ -74,7 +74,7 @@ public class GetCountyCommand
         GeoCode geoCode = null;
         var countyName = form.getCountyName();
         var countyNumber = form.getCountyNumber();
-        var parameterCount = (countyName == null? 0: 1) + (countyNumber == null? 0: 1);
+        var parameterCount = (countyName == null ? 0 : 1) + (countyNumber == null ? 0 : 1);
 
         if(parameterCount == 1) {
             var geoControl = Session.getModelController(GeoControl.class);

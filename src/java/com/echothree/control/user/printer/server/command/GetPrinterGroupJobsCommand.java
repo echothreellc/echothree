@@ -58,7 +58,7 @@ public class GetPrinterGroupJobsCommand
         GetPrinterGroupJobsResult result = PrinterResultFactory.getGetPrinterGroupJobsResult();
         String printerGroupName = form.getPrinterGroupName();
         String printerGroupJobStatusChoice = form.getPrinterGroupJobStatusChoice();
-        int parameterCount = (printerGroupName == null ? 0 : 1) + (printerGroupJobStatusChoice == null ? 0 : 1);
+        var parameterCount = (printerGroupName == null ? 0 : 1) + (printerGroupJobStatusChoice == null ? 0 : 1);
 
         if(parameterCount == 1) {
             var printerControl = Session.getModelController(PrinterControl.class);

@@ -113,7 +113,7 @@ public class VendorLogic
 
     public Vendor getVendorByName(final ExecutionErrorAccumulator eea, final String vendorName, final String partyName,
             final UniversalEntitySpec universalEntitySpec) {
-        int parameterCount = (vendorName == null? 0: 1) + (partyName == null? 0: 1) +
+        var parameterCount = (vendorName == null ? 0 : 1) + (partyName == null ? 0 : 1) +
                 EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalEntitySpec);
         Vendor vendor = null;
 

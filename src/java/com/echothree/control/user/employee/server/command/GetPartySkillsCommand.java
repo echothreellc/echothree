@@ -56,7 +56,7 @@ public class GetPartySkillsCommand
         GetPartySkillsResult result = EmployeeResultFactory.getGetPartySkillsResult();
         String partyName = form.getPartyName();
         String skillTypeName = form.getSkillTypeName();
-        int parameterCount = (partyName == null? 0: 1) + (skillTypeName == null? 0: 1);
+        var parameterCount = (partyName == null ? 0 : 1) + (skillTypeName == null ? 0 : 1);
         
         if(parameterCount == 1) {
             var employeeControl = Session.getModelController(EmployeeControl.class);

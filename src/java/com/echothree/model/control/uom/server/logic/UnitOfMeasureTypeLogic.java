@@ -125,7 +125,7 @@ public class UnitOfMeasureTypeLogic
             final Class<? extends BaseException> unitOfMeasureTypeMissingErrorClass, final String unitOfMeasureTypeMissingErrorKey,
             final Class<? extends BaseException> unitOfMeasureTypeUnknownErrorClass, final String unitOfMeasureTypeUnknownErrorKey) {
         Long result = null;
-        int parameterCount = (unitOfMeasureTypeName == null ? 0 : 1) + (value == null ? 0 : 1);
+        var parameterCount = (unitOfMeasureTypeName == null ? 0 : 1) + (value == null ? 0 : 1);
 
         if(parameterCount == 2) {
             var uomControl = Session.getModelController(UomControl.class);
@@ -157,7 +157,7 @@ public class UnitOfMeasureTypeLogic
             final Class<? extends BaseException> unitOfMeasureTypeMissingErrorClass, final String unitOfMeasureTypeMissingErrorKey,
             final Class<? extends BaseException> unitOfMeasureTypeUnknownErrorClass, final String unitOfMeasureTypeUnknownErrorKey) {
         Long result = null;
-        int parameterCount = (unitOfMeasureTypeName == null ? 0 : 1) + (value == null ? 0 : 1);
+        var parameterCount = (unitOfMeasureTypeName == null ? 0 : 1) + (value == null ? 0 : 1);
 
         if(parameterCount == 2) {
             var uomControl = Session.getModelController(UomControl.class);

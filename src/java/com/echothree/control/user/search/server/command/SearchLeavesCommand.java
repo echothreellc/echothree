@@ -101,7 +101,7 @@ public class SearchLeavesCommand
                 Party party = partyName == null ? null : PartyLogic.getInstance().getPartyByName(this, partyName);
 
                 if(!hasExecutionErrors()) {
-                    PartyCompany partyCompany = CompanyLogic.getInstance().getPartyCompanyByName(this, form.getCompanyName(), null, false);
+                    PartyCompany partyCompany = CompanyLogic.getInstance().getPartyCompanyByName(this, form.getCompanyName(), null, null, false);
 
                     if(!hasExecutionErrors()) {
                         String leaveTypeName = form.getLeaveTypeName();

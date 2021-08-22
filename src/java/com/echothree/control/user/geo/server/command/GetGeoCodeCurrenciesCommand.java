@@ -71,7 +71,7 @@ public class GetGeoCodeCurrenciesCommand
         GetGeoCodeCurrenciesResult result = GeoResultFactory.getGetGeoCodeCurrenciesResult();
         String geoCodeName = form.getGeoCodeName();
         String currencyIsoName = form.getCurrencyIsoName();
-        int parameterCount = (geoCodeName != null? 1: 0) + (currencyIsoName != null? 1: 0);
+        var parameterCount = (geoCodeName != null? 1: 0) + (currencyIsoName != null? 1: 0);
         
         if(parameterCount == 1) {
             if(geoCodeName != null) {

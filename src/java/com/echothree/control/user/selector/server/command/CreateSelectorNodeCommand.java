@@ -652,7 +652,7 @@ public class CreateSelectorNodeCommand
             if(!hasExecutionErrors()) {
                 String geoCodeName = form.getGeoCodeName();
                 String countryName = form.getCountryName();
-                int parameterCount = (geoCodeName == null? 0: 1) + (countryName == null? 0: 1);
+                var parameterCount = (geoCodeName == null ? 0 : 1) + (countryName == null ? 0 : 1);
                 
                 if(parameterCount == 1) {
                     if(countryName != null) {

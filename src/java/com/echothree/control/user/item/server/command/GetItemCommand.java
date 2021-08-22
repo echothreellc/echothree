@@ -66,7 +66,7 @@ public class GetItemCommand
         Item item = null;
         String itemName = form.getItemName();
         String itemNameOrAlias = form.getItemNameOrAlias();
-        int parameterCount = (itemName == null ? 0 : 1) + (itemNameOrAlias == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (itemName == null ? 0 : 1) + (itemNameOrAlias == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
             if(itemName == null && itemNameOrAlias == null) {

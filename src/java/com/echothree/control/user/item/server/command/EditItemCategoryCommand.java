@@ -101,7 +101,7 @@ public class EditItemCategoryCommand
         var itemControl = Session.getModelController(ItemControl.class);
         ItemCategory itemCategory = null;
         String itemCategoryName = spec.getItemCategoryName();
-        int parameterCount = (itemCategoryName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(spec);
+        var parameterCount = (itemCategoryName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(spec);
 
         if(parameterCount == 1) {
             if(itemCategoryName == null) {

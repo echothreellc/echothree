@@ -97,10 +97,10 @@ public class CreateProfileCommand
     protected BaseResult execute() {
         String bioMimeTypeName = form.getBioMimeTypeName();
         String bio = form.getBio();
-        int bioParameterCount = (bioMimeTypeName == null? 0: 1) + (bio == null? 0: 1);
+        int bioParameterCount = (bioMimeTypeName == null ? 0 : 1) + (bio == null ? 0 : 1);
         String signatureMimeTypeName = form.getSignatureMimeTypeName();
         String signature = form.getSignature();
-        int signatureParameterCount = (signatureMimeTypeName == null? 0: 1) + (signature == null? 0: 1);
+        int signatureParameterCount = (signatureMimeTypeName == null ? 0 : 1) + (signature == null ? 0 : 1);
         
         if((bioParameterCount == 0 || bioParameterCount == 2) && (signatureParameterCount == 0 || signatureParameterCount == 2)) {
             var partyControl = Session.getModelController(PartyControl.class);

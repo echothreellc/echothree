@@ -63,7 +63,7 @@ public class CreateUserVisitCampaignCommand
         String campaignMediumValue = form.getCampaignMediumValue();
         String campaignTermValue = form.getCampaignTermValue();
         String campaignContentValue = form.getCampaignContentValue();
-        int parameterCount = (campaignValue == null ? 0 : 1) + (campaignSourceValue == null ? 0 : 1) + (campaignMediumValue == null ? 0 : 1)
+        var parameterCount = (campaignValue == null ? 0 : 1) + (campaignSourceValue == null ? 0 : 1) + (campaignMediumValue == null ? 0 : 1)
                 + (campaignTermValue == null ? 0 : 1) + (campaignContentValue == null ? 0 : 1);
 
         if(parameterCount > 0) {

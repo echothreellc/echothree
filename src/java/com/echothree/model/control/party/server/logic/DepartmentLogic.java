@@ -16,9 +16,8 @@
 
 package com.echothree.model.control.party.server.logic;
 
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.common.exception.CannotSpecifyDepartmentNameAndPartyNameException;
-import com.echothree.model.control.party.common.exception.MustSpecifyDepartmentNameOrPartyNameException;
 import com.echothree.model.control.party.common.exception.UnknownDepartmentNameException;
 import com.echothree.model.control.party.common.exception.UnknownPartyNameException;
 import com.echothree.model.control.party.common.exception.UseOfDepartmentNameRequiresDivisionNameException;
@@ -47,7 +46,7 @@ public class DepartmentLogic
 
     public PartyDepartment getPartyDepartmentByName(final ExecutionErrorAccumulator eea, final Party divisionParty, final String departmentName,
             final String partyName, boolean required) {
-        int parameterCount = (departmentName == null? 0: 1) + (partyName == null? 0: 1);
+        var parameterCount = (departmentName == null ? 0 : 1) + (partyName == null ? 0 : 1);
         PartyDepartment partyDepartment = null;
 
         if(divisionParty != null) {
@@ -80,10 +79,8 @@ public class DepartmentLogic
                     }
                 }
             } else {
-                if(parameterCount == 2) {
-                    handleExecutionError(CannotSpecifyDepartmentNameAndPartyNameException.class, eea, ExecutionErrors.CannotSpecifyDepartmentNameAndPartyName.name());
-                } else if (required) {
-                    handleExecutionError(MustSpecifyDepartmentNameOrPartyNameException.class, eea, ExecutionErrors.MustSpecifyDepartmentNameOrPartyName.name());
+                if(required) {
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                 }
             }
         }

@@ -62,7 +62,7 @@ public class RemoveEmployeFromDepartmentCommand
 
         if(!hasExecutionErrors()) {
             String companyName = form.getCompanyName();
-            PartyCompany partyCompany = CompanyLogic.getInstance().getPartyCompanyByName(this, companyName, null, false);
+            PartyCompany partyCompany = CompanyLogic.getInstance().getPartyCompanyByName(this, companyName, null, null, false);
 
             if(!hasExecutionErrors()) {
                 String divisionName = form.getDivisionName();

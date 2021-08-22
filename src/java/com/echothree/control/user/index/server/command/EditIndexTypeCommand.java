@@ -159,7 +159,7 @@ public class EditIndexTypeCommand
         } else {
             String componentVendorName = edit.getComponentVendorName();
             String entityTypeName = edit.getEntityTypeName();
-            int parameterCount = (componentVendorName == null ? 0 : 1) + (entityTypeName == null ? 0 : 1);
+            var parameterCount = (componentVendorName == null ? 0 : 1) + (entityTypeName == null ? 0 : 1);
 
             if(parameterCount == 0 || parameterCount == 2) {
                 entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, componentVendorName, entityTypeName);

@@ -103,7 +103,7 @@ public class OfferLogic
         Offer offer = null;
         var offerControl = Session.getModelController(OfferControl.class);
         String offerName = universalSpec.getOfferName();
-        int parameterCount = (offerName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (offerName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
 
         switch(parameterCount) {
             case 0:

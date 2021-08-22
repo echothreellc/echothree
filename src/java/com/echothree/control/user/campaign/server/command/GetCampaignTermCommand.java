@@ -75,7 +75,7 @@ public class GetCampaignTermCommand
     protected BaseResult execute() {
         GetCampaignTermResult result = CampaignResultFactory.getGetCampaignTermResult();
         String campaignTermName = form.getCampaignTermName();
-        int parameterCount = (campaignTermName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        var parameterCount = (campaignTermName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
             var campaignControl = Session.getModelController(CampaignControl.class);

@@ -65,7 +65,7 @@ public class ResetLockoutCommand
         String employeeName = form.getEmployeeName();
         String customerName = form.getCustomerName();
         String vendorName = form.getVendorName();
-        int parameterCount = (partyName == null ? 0 : 1) + (employeeName == null ? 0 : 1) + (customerName == null ? 0 : 1) + (vendorName == null ? 0 : 1);
+        var parameterCount = (partyName == null ? 0 : 1) + (employeeName == null ? 0 : 1) + (customerName == null ? 0 : 1) + (vendorName == null ? 0 : 1);
         
         if(parameterCount == 1) {
             UserControl userControl = getUserControl();

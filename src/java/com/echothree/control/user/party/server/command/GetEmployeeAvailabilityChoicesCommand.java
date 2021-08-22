@@ -72,7 +72,7 @@ public class GetEmployeeAvailabilityChoicesCommand
         GetEmployeeAvailabilityChoicesResult result = PartyResultFactory.getGetEmployeeAvailabilityChoicesResult();
         String employeeName = form.getEmployeeName();
         String partyName = form.getPartyName();
-        int parameterCount = (employeeName == null? 0: 1) + (partyName == null? 0: 1);
+        var parameterCount = (employeeName == null ? 0 : 1) + (partyName == null ? 0 : 1);
         
         if(parameterCount < 2) {
             Party party = null;
