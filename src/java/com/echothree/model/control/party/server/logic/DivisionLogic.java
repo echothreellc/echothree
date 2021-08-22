@@ -45,6 +45,26 @@ public class DivisionLogic
         return DivisionLogicHolder.instance;
     }
 
+    public PartyDivision getPartyDivisionByName(final ExecutionErrorAccumulator eea, final String companyName,
+            final String divisionName, final String partyName, final UniversalEntitySpec universalEntitySpec,
+            final boolean required) {
+        PartyDivision partyDivision = null;
+        Party companyParty = null;
+
+        if(companyName != null) {
+            var partyCompany = CompanyLogic.getInstance().getPartyCompanyByName(eea, companyName, null,
+                    null, true);
+
+            companyParty = partyCompany.getParty();
+        }
+
+        if(!hasExecutionErrors(eea)) {
+            partyDivision = getPartyDivisionByName(eea, companyParty, divisionName, partyName, universalEntitySpec, required);
+        }
+
+        return partyDivision;
+    }
+
     public PartyDivision getPartyDivisionByName(final ExecutionErrorAccumulator eea, final Party companyParty,
             final String divisionName, final String partyName, final UniversalEntitySpec universalEntitySpec,
             final boolean required) {

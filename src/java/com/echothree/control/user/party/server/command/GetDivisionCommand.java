@@ -54,20 +54,16 @@ public class GetDivisionCommand
     protected BaseResult execute() {
         var result = PartyResultFactory.getGetDivisionResult();
         var companyName = form.getCompanyName();
-        var partyCompany = CompanyLogic.getInstance().getPartyCompanyByName(this, companyName, null, null, false);
+        var divisionName = form.getDivisionName();
+        var partyName = form.getPartyName();
+        var partyDivision = DivisionLogic.getInstance().getPartyDivisionByName(this, companyName, divisionName, partyName, null, true);
 
         if(!hasExecutionErrors()) {
-            var divisionName = form.getDivisionName();
-            var partyName = form.getPartyName();
-            var partyDivision = DivisionLogic.getInstance().getPartyDivisionByName(this, partyCompany == null ? null : partyCompany.getParty(), divisionName, partyName, null, true);
+            var partyControl = Session.getModelController(PartyControl.class);
 
-            if(!hasExecutionErrors()) {
-                var partyControl = Session.getModelController(PartyControl.class);
+            result.setDivision(partyControl.getDivisionTransfer(getUserVisit(), partyDivision));
 
-                result.setDivision(partyControl.getDivisionTransfer(getUserVisit(), partyDivision));
-
-                sendEventUsingNames(partyDivision.getPartyPK(), EventTypes.READ.name(), null, null, getPartyPK());
-            }
+            sendEventUsingNames(partyDivision.getPartyPK(), EventTypes.READ.name(), null, null, getPartyPK());
         }
 
         return result;
