@@ -23,7 +23,10 @@ import java.util.List;
 
 public interface GetDivisionsResult
         extends BaseResult {
-    
+
+    Long getDivisionCount();
+    void setDivisionCount(Long divisionCount);
+
     CompanyTransfer getCompany();
     void setCompany(CompanyTransfer company);
     

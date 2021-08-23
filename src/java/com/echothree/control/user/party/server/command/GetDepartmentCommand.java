@@ -64,7 +64,7 @@ public class GetDepartmentCommand
 
         if(!hasExecutionErrors()) {
             String divisionName = form.getDivisionName();
-            PartyDivision partyDivision = DivisionLogic.getInstance().getPartyDivisionByName(this, partyCompany == null ? null : partyCompany.getParty(), divisionName, null, false);
+            PartyDivision partyDivision = DivisionLogic.getInstance().getPartyDivisionByName(this, partyCompany == null ? null : partyCompany.getParty(), divisionName, null, null, false);
 
             if(!hasExecutionErrors()) {
                 String departmentName = form.getDepartmentName();

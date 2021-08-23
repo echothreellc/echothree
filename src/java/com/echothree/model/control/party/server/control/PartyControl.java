@@ -3489,7 +3489,15 @@ public class PartyControl
         
         return partyDivision;
     }
-    
+
+    public long countPartyDivisions(Party companyParty) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM partydivisions " +
+                "WHERE pdiv_companypartyid = ? AND pdiv_thrutime = ?",
+                companyParty, Session.MAX_TIME);
+    }
+
     public PartyDivisionValue getPartyDivisionValueForUpdate(PartyDivision partyDivision) {
         return partyDivision == null? null: partyDivision.getPartyDivisionValue().clone();
     }
@@ -3638,7 +3646,8 @@ public class PartyControl
                         "FROM partydivisions, partydetails " +
                         "WHERE pdiv_companypartyid = ? AND pdiv_thrutime = ? " +
                         "AND pdiv_par_partyid = pardt_par_partyid AND pardt_thrutime = ? " +
-                        "ORDER BY pdiv_sortorder, pdiv_partydivisionname";
+                        "ORDER BY pdiv_sortorder, pdiv_partydivisionname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM partydivisions, partydetails " +
@@ -3703,7 +3712,7 @@ public class PartyControl
         return new DivisionChoicesBean(labels, values, defaultValue);
     }
     
-    private List<DivisionTransfer> getDivisionTransfers(UserVisit userVisit, List<PartyDivision> partyDivisions) {
+    public List<DivisionTransfer> getDivisionTransfers(UserVisit userVisit, Collection<PartyDivision> partyDivisions) {
         List<DivisionTransfer> divisionTransfers = new ArrayList<>(partyDivisions.size());
         DivisionTransferCache divisionTransferCache = getPartyTransferCaches(userVisit).getDivisionTransferCache();
         
