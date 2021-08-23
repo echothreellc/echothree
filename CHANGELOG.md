@@ -1,5 +1,11 @@
 # Changelog
 
+## 2021-08-22-01
+
+* GraphQL Objects for Companies [317](https://gitlab.echothree.com/echothree/echothree/-/issues/317)
+* GraphQL Objects for Divisions [318](https://gitlab.echothree.com/echothree/echothree/-/issues/318)
+* WildFly 24.0.1 Upgrade [322](https://gitlab.echothree.com/echothree/echothree/-/issues/322)
+
 ## 2021-08-08-01
 
 * GraphQL Objects and Mutations for Item Search [212](https://gitlab.echothree.com/echothree/echothree/-/issues/212)
