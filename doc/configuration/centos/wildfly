@@ -10,5 +10,5 @@ JAVA_OPTS="-Xms128m -Xmx4096m -Djava.net.preferIPv4Stack=true"
 JAVA_OPTS="$JAVA_OPTS -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled"
 JAVA_OPTS="$JAVA_OPTS -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true"
 #JAVA_OPTS="$JAVA_OPTS -agentlib:jdwp=transport=dt_socket,address=8787,server=y,suspend=n"
-JAVA_OPTS="$JAVA_OPTS -Dorg.jooq.no-logo=true"
+JAVA_OPTS="$JAVA_OPTS -Dorg.jooq.no-logo=true -Dorg.jooq.no-tips=true"
 export JAVA_OPTS
