@@ -309,6 +309,7 @@
                 <include name="lucene-queryparser.jar" />
                 <include name="lucene-suggest.jar" />
                 <include name="nekohtml.jar" />
+                <include name="r2dbc-spi.jar" />
                 <include name="reactive-streams.jar" />
                 <include name="slf4j-api.jar" />
                 <include name="slf4j-log4j12.jar" />
