@@ -174,7 +174,6 @@ public class EntityBlobAttributeAction
 
         if(entityBlobAttribute != null) {
             MimeTypeTransfer mimeType = entityBlobAttribute.getMimeType();
-            EntityAttributeTypeTransfer entityAttributeType = mimeType == null ? null : mimeType.getEntityAttributeType();
             EntityTimeTransfer entityTime = entityBlobAttribute.getEntityInstance().getEntityTime();
             Long modifiedTime = entityTime.getUnformattedModifiedTime();
             byte bytes[] = entityBlobAttribute.getBlobAttribute().byteArrayValue();
