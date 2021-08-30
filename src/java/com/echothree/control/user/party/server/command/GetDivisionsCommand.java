@@ -16,27 +16,21 @@
 
 package com.echothree.control.user.party.server.command;
 
-import com.echothree.control.user.party.common.form.GetCompaniesForm;
 import com.echothree.control.user.party.common.form.GetDivisionsForm;
-import com.echothree.control.user.party.common.result.GetDivisionsResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.party.server.logic.CompanyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyCompany;
 import com.echothree.model.data.party.server.entity.PartyDivision;
-import com.echothree.model.data.party.server.factory.PartyCompanyFactory;
+import com.echothree.model.data.party.server.factory.PartyDivisionFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
-import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -97,7 +91,7 @@ public class GetDivisionsCommand
             var partyControl = Session.getModelController(PartyControl.class);
             var userVisit = getUserVisit();
 
-            if(session.hasLimit(PartyCompanyFactory.class)) {
+            if(session.hasLimit(PartyDivisionFactory.class)) {
                 result.setDivisionCount(partyControl.countPartyDivisions(partyCompany.getParty()));
             }
 
