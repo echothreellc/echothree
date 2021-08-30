@@ -200,7 +200,7 @@ public class ItemDescriptionAction
                 fqn.append(itemNames[i].toLowerCase());
             }
         } else {
-            fqn.append(itemDescriptionNames.itemName.toLowerCase()).toString();
+            fqn.append(itemDescriptionNames.itemName.toLowerCase());
         }
                 
         return fqn.toString();
