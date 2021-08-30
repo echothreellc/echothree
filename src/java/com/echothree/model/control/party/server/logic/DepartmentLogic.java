@@ -16,7 +16,11 @@
 
 package com.echothree.model.control.party.server.logic;
 
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.common.exception.UnknownDepartmentNameException;
 import com.echothree.model.control.party.common.exception.UnknownPartyNameException;
@@ -44,9 +48,32 @@ public class DepartmentLogic
         return DepartmentLogicHolder.instance;
     }
 
-    public PartyDepartment getPartyDepartmentByName(final ExecutionErrorAccumulator eea, final Party divisionParty, final String departmentName,
-            final String partyName, boolean required) {
-        var parameterCount = (departmentName == null ? 0 : 1) + (partyName == null ? 0 : 1);
+    public PartyDepartment getPartyDepartmentByName(final ExecutionErrorAccumulator eea, final String companyName,
+            final String divisionName, final String departmentName, final String partyName,
+            final UniversalEntitySpec universalEntitySpec, final boolean required) {
+        PartyDepartment partyDepartment = null;
+        Party divisionParty = null;
+
+        if(companyName != null || divisionName != null) {
+            var partyDivision = DivisionLogic.getInstance().getPartyDivisionByName(eea, companyName,
+                    divisionName, null, null, true);
+
+            divisionParty = hasExecutionErrors(eea) ? null : partyDivision.getParty();
+        }
+
+        if(!hasExecutionErrors(eea)) {
+            partyDepartment = getPartyDepartmentByName(eea, divisionParty, departmentName, partyName, universalEntitySpec,
+                    required);
+        }
+
+        return partyDepartment;
+    }
+
+    public PartyDepartment getPartyDepartmentByName(final ExecutionErrorAccumulator eea, final Party divisionParty,
+            final String departmentName, final String partyName, final UniversalEntitySpec universalEntitySpec,
+            final boolean required) {
+        var parameterCount = (departmentName == null ? 0 : 1) + (partyName == null ? 0 : 1) +
+                EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalEntitySpec);
         PartyDepartment partyDepartment = null;
 
         if(divisionParty != null) {
@@ -68,14 +95,32 @@ public class DepartmentLogic
                         }
                     }
                 } else {
-                    Party party = partyControl.getPartyByName(partyName);
+                    // Use of partyName or universalEntitySpec cannot include a divisionParty.
+                    if(divisionParty == null) {
+                        if(partyName != null) {
+                            Party party = partyControl.getPartyByName(partyName);
 
-                    if(party != null) {
-                        PartyLogic.getInstance().checkPartyType(eea, party, PartyTypes.DEPARTMENT.name());
+                            if(party != null) {
+                                PartyLogic.getInstance().checkPartyType(eea, party, PartyTypes.DEPARTMENT.name());
 
-                        partyDepartment = partyControl.getPartyDepartment(party);
+                                partyDepartment = partyControl.getPartyDepartment(party);
+                            } else {
+                                handleExecutionError(UnknownPartyNameException.class, eea, ExecutionErrors.UnknownPartyName.name(), partyName);
+                            }
+                        } else if(universalEntitySpec != null) {
+                            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalEntitySpec,
+                                    ComponentVendors.ECHOTHREE.name(), EntityTypes.Party.name());
+
+                            if(!eea.hasExecutionErrors()) {
+                                var party = partyControl.getPartyByEntityInstance(entityInstance);
+
+                                PartyLogic.getInstance().checkPartyType(eea, party, PartyTypes.DEPARTMENT.name());
+
+                                partyDepartment = partyControl.getPartyDepartment(party);
+                            }
+                        }
                     } else {
-                        handleExecutionError(UnknownPartyNameException.class, eea, ExecutionErrors.UnknownPartyName.name(), partyName);
+                        handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                     }
                 }
             } else {

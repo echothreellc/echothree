@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.party.common.result;
 
-import com.echothree.model.control.party.common.transfer.CompanyTransfer;
 import com.echothree.model.control.party.common.transfer.DepartmentTransfer;
 import com.echothree.model.control.party.common.transfer.DivisionTransfer;
 import com.echothree.util.common.command.BaseResult;
@@ -24,9 +23,9 @@ import java.util.List;
 
 public interface GetDepartmentsResult
         extends BaseResult {
-    
-    CompanyTransfer getCompany();
-    void setCompany(CompanyTransfer company);
+
+    Long getDepartmentCount();
+    void setDepartmentCount(Long departmentCount);
     
     DivisionTransfer getDivision();
     void setDivision(DivisionTransfer division);

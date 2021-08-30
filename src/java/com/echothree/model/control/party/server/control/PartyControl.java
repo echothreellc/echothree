@@ -115,10 +115,8 @@ import com.echothree.model.data.party.common.pk.DateTimeFormatPK;
 import com.echothree.model.data.party.common.pk.GenderPK;
 import com.echothree.model.data.party.common.pk.LanguagePK;
 import com.echothree.model.data.party.common.pk.MoodPK;
-import com.echothree.model.data.party.common.pk.NameSuffixDetailPK;
 import com.echothree.model.data.party.common.pk.NameSuffixPK;
 import com.echothree.model.data.party.common.pk.PartyAliasTypePK;
-import com.echothree.model.data.party.common.pk.PartyDetailPK;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.common.pk.PartyTypeAuditPolicyPK;
 import com.echothree.model.data.party.common.pk.PartyTypeLockoutPolicyPK;
@@ -126,7 +124,6 @@ import com.echothree.model.data.party.common.pk.PartyTypePK;
 import com.echothree.model.data.party.common.pk.PartyTypePasswordStringPolicyPK;
 import com.echothree.model.data.party.common.pk.PersonalTitleDetailPK;
 import com.echothree.model.data.party.common.pk.PersonalTitlePK;
-import com.echothree.model.data.party.common.pk.TimeZoneDetailPK;
 import com.echothree.model.data.party.common.pk.TimeZonePK;
 import com.echothree.model.data.party.server.entity.BirthdayFormat;
 import com.echothree.model.data.party.server.entity.BirthdayFormatDescription;
@@ -3801,7 +3798,15 @@ public class PartyControl
         
         return partyDepartment;
     }
-    
+
+    public long countPartyDepartments(Party divisionParty) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM partydepartments " +
+                "WHERE pdept_divisionpartyid = ? AND pdept_thrutime = ?",
+                divisionParty, Session.MAX_TIME);
+    }
+
     public PartyDepartmentValue getPartyDepartmentValueForUpdate(PartyDepartment partyDepartment) {
         return partyDepartment == null? null: partyDepartment.getPartyDepartmentValue().clone();
     }
@@ -3950,7 +3955,8 @@ public class PartyControl
                 query = "SELECT _ALL_ " +
                         "FROM partydepartments, partydetails " +
                         "WHERE pdept_divisionpartyid = ? AND pdept_thrutime = ? " +
-                        "AND pdept_par_partyid = pardt_par_partyid AND pardt_thrutime = ?";
+                        "AND pdept_par_partyid = pardt_par_partyid AND pardt_thrutime = ? " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM partydepartments, partydetails " +
@@ -4015,7 +4021,7 @@ public class PartyControl
         return new DepartmentChoicesBean(labels, values, defaultValue);
     }
     
-    private List<DepartmentTransfer> getDepartmentTransfers(UserVisit userVisit, List<PartyDepartment> partyDepartments) {
+    public List<DepartmentTransfer> getDepartmentTransfers(UserVisit userVisit, Collection<PartyDepartment> partyDepartments) {
         List<DepartmentTransfer> departmentTransfers = new ArrayList<>(partyDepartments.size());
         DepartmentTransferCache departmentTransferCache = getPartyTransferCaches(userVisit).getDepartmentTransferCache();
         
