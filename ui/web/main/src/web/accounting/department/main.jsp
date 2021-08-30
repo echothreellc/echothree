@@ -31,7 +31,7 @@
                 <a href="<c:url value="/action/Accounting/Main" />">Accounting</a> &gt;&gt;
                 <a href="<c:url value="/action/Accounting/Company/Main" />">Companies</a> &gt;&gt;
                 <c:url var="divisionsUrl" value="/action/Accounting/Division/Main">
-                    <c:param name="CompanyName" value="${company.companyName}" />
+                    <c:param name="CompanyName" value="${division.company.companyName}" />
                 </c:url>
                 <a href="${divisionsUrl}">Divisions</a> &gt;&gt;
                 Departments
@@ -39,7 +39,7 @@
         </div>
         <div id="Content">
             <c:url var="addUrl" value="/action/Accounting/Department/Add">
-                <c:param name="CompanyName" value="${company.companyName}" />
+                <c:param name="CompanyName" value="${division.company.companyName}" />
                 <c:param name="DivisionName" value="${division.divisionName}" />
             </c:url>
             <p><a href="${addUrl}">Add Department.</a></p>
