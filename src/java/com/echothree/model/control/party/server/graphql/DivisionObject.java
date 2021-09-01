@@ -25,6 +25,9 @@ import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("division object")
 @GraphQLName("Division")
@@ -80,6 +83,31 @@ public class DivisionObject
     @GraphQLNonNull
     public int getSortOrder() {
         return getPartyDivision().getSortOrder();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("departments")
+    public List<DepartmentObject> getDepartments(final DataFetchingEnvironment env) {
+        if(PartySecurityUtils.getInstance().getHasDepartmentsAccess(env)) {
+            var partyControl = Session.getModelController(PartyControl.class);
+            var entities = partyControl.getDepartmentsByDivision(party);
+
+            return entities.stream().map(DepartmentObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+        } else {
+            return null;
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("department count")
+    public Long getDepartmentCount(final DataFetchingEnvironment env) {
+        if(PartySecurityUtils.getInstance().getHasDepartmentsAccess(env)) {
+            var partyControl = Session.getModelController(PartyControl.class);
+
+            return partyControl.countPartyDepartments(party);
+        } else {
+            return null;
+        }
     }
 
 }

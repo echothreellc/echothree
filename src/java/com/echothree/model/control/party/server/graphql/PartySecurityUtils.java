@@ -17,6 +17,8 @@
 package com.echothree.model.control.party.server.graphql;
 
 import com.echothree.control.user.party.server.command.GetCompanyCommand;
+import com.echothree.control.user.party.server.command.GetDepartmentCommand;
+import com.echothree.control.user.party.server.command.GetDepartmentsCommand;
 import com.echothree.control.user.party.server.command.GetDivisionCommand;
 import com.echothree.control.user.party.server.command.GetDivisionsCommand;
 import com.echothree.control.user.party.server.command.GetLanguageCommand;
@@ -45,6 +47,10 @@ public final class PartySecurityUtils {
         return env.<GraphQlContext>getContext().hasAccess(GetDivisionsCommand.class);
     }
 
+    public boolean getHasDepartmentsAccess(final DataFetchingEnvironment env) {
+        return env.<GraphQlContext>getContext().hasAccess(GetDepartmentsCommand.class);
+    }
+
     public boolean getHasPartyAccess(final DataFetchingEnvironment env, final Party party) {
         var partyTypeEnum = PartyTypes.valueOf(party.getLastDetail().getPartyType().getPartyTypeName());
         Class<? extends GraphQlSecurityCommand> command;
@@ -58,6 +64,9 @@ public final class PartySecurityUtils {
                 break;
             case DIVISION:
                 command = GetDivisionCommand.class;
+                break;
+            case DEPARTMENT:
+                command = GetDepartmentCommand.class;
                 break;
             default:
                 throw new RuntimeException("Unhandled PartyType");
