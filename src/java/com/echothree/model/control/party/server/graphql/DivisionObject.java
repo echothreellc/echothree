@@ -57,7 +57,6 @@ public class DivisionObject
     }
     @GraphQLField
     @GraphQLDescription("company")
-    @GraphQLNonNull
     public CompanyObject getCompany(final DataFetchingEnvironment env) {
         var companyParty = getPartyDivision().getCompanyParty();
 
