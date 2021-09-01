@@ -236,9 +236,9 @@ public class UseTypeControl
     
     public UseTypeChoicesBean getUseTypeChoices(String defaultUseTypeChoice, Language language, boolean allowNullChoice) {
         List<UseType> useTypes = getUseTypes();
-        int size = useTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = useTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -253,13 +253,13 @@ public class UseTypeControl
         for(var useType : useTypes) {
             UseTypeDetail useTypeDetail = useType.getLastDetail();
             
-            String label = getBestUseTypeDescription(useType, language);
-            String value = useTypeDetail.getUseTypeName();
+            var label = getBestUseTypeDescription(useType, language);
+            var value = useTypeDetail.getUseTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultUseTypeChoice != null && defaultUseTypeChoice.equals(value);
+            var usingDefaultChoice = defaultUseTypeChoice != null && defaultUseTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && useTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

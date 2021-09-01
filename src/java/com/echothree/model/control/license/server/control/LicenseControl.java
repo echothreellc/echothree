@@ -232,9 +232,9 @@ public class LicenseControl
 
     public LicenseTypeChoicesBean getLicenseTypeChoices(String defaultLicenseTypeChoice, Language language, boolean allowNullChoice) {
         List<LicenseType> licenseTypes = getLicenseTypes();
-        int size = licenseTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = licenseTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -249,13 +249,13 @@ public class LicenseControl
         for(var licenseType : licenseTypes) {
             LicenseTypeDetail licenseTypeDetail = licenseType.getLastDetail();
 
-            String label = getBestLicenseTypeDescription(licenseType, language);
-            String value = licenseTypeDetail.getLicenseTypeName();
+            var label = getBestLicenseTypeDescription(licenseType, language);
+            var value = licenseTypeDetail.getLicenseTypeName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultLicenseTypeChoice != null && defaultLicenseTypeChoice.equals(value);
+            var usingDefaultChoice = defaultLicenseTypeChoice != null && defaultLicenseTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && licenseTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

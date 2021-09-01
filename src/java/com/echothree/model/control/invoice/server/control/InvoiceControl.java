@@ -580,9 +580,9 @@ public class InvoiceControl
     public InvoiceTypeChoicesBean getInvoiceTypeChoices(String defaultInvoiceTypeChoice, Language language,
             boolean allowNullChoice) {
         List<InvoiceType> invoiceTypes = getInvoiceTypes();
-        int size = invoiceTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = invoiceTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -597,13 +597,13 @@ public class InvoiceControl
         for(var invoiceType : invoiceTypes) {
             InvoiceTypeDetail invoiceTypeDetail = invoiceType.getLastDetail();
             
-            String label = getBestInvoiceTypeDescription(invoiceType, language);
-            String value = invoiceTypeDetail.getInvoiceTypeName();
+            var label = getBestInvoiceTypeDescription(invoiceType, language);
+            var value = invoiceTypeDetail.getInvoiceTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultInvoiceTypeChoice != null && defaultInvoiceTypeChoice.equals(value);
+            var usingDefaultChoice = defaultInvoiceTypeChoice != null && defaultInvoiceTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && invoiceTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1054,9 +1054,9 @@ public class InvoiceControl
     public InvoiceAliasTypeChoicesBean getInvoiceAliasTypeChoices(String defaultInvoiceAliasTypeChoice, Language language,
             boolean allowNullChoice, InvoiceType invoiceType) {
         List<InvoiceAliasType> invoiceAliasTypes = getInvoiceAliasTypes(invoiceType);
-        int size = invoiceAliasTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = invoiceAliasTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -1071,13 +1071,13 @@ public class InvoiceControl
         for(var invoiceAliasType : invoiceAliasTypes) {
             InvoiceAliasTypeDetail invoiceAliasTypeDetail = invoiceAliasType.getLastDetail();
             
-            String label = getBestInvoiceAliasTypeDescription(invoiceAliasType, language);
-            String value = invoiceAliasTypeDetail.getInvoiceAliasTypeName();
+            var label = getBestInvoiceAliasTypeDescription(invoiceAliasType, language);
+            var value = invoiceAliasTypeDetail.getInvoiceAliasTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultInvoiceAliasTypeChoice != null && defaultInvoiceAliasTypeChoice.equals(value);
+            var usingDefaultChoice = defaultInvoiceAliasTypeChoice != null && defaultInvoiceAliasTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && invoiceAliasTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1335,9 +1335,9 @@ public class InvoiceControl
     public InvoiceTimeTypeChoicesBean getInvoiceTimeTypeChoices(String defaultInvoiceTimeTypeChoice, Language language, boolean allowNullChoice,
             InvoiceType invoiceType) {
         List<InvoiceTimeType> invoiceTimeTypes = getInvoiceTimeTypes(invoiceType);
-        int size = invoiceTimeTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = invoiceTimeTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -1352,13 +1352,13 @@ public class InvoiceControl
         for(var invoiceTimeType : invoiceTimeTypes) {
             InvoiceTimeTypeDetail invoiceTimeTypeDetail = invoiceTimeType.getLastDetail();
 
-            String label = getBestInvoiceTimeTypeDescription(invoiceTimeType, language);
-            String value = invoiceTimeTypeDetail.getInvoiceTimeTypeName();
+            var label = getBestInvoiceTimeTypeDescription(invoiceTimeType, language);
+            var value = invoiceTimeTypeDetail.getInvoiceTimeTypeName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultInvoiceTimeTypeChoice != null && defaultInvoiceTimeTypeChoice.equals(value);
+            var usingDefaultChoice = defaultInvoiceTimeTypeChoice != null && defaultInvoiceTimeTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && invoiceTimeTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1965,9 +1965,9 @@ public class InvoiceControl
     public InvoiceLineTypeChoicesBean getInvoiceLineTypeChoices(InvoiceType invoiceType, String defaultInvoiceLineTypeChoice,
             Language language, boolean allowNullChoice) {
         List<InvoiceLineType> invoiceLineTypes = getInvoiceLineTypes(invoiceType);
-        int size = invoiceLineTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = invoiceLineTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -1982,13 +1982,13 @@ public class InvoiceControl
         for(var invoiceLineType : invoiceLineTypes) {
             InvoiceLineTypeDetail invoiceLineTypeDetail = invoiceLineType.getLastDetail();
             
-            String label = getBestInvoiceLineTypeDescription(invoiceLineType, language);
-            String value = invoiceLineTypeDetail.getInvoiceLineTypeName();
+            var label = getBestInvoiceLineTypeDescription(invoiceLineType, language);
+            var value = invoiceLineTypeDetail.getInvoiceLineTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultInvoiceLineTypeChoice != null && defaultInvoiceLineTypeChoice.equals(value);
+            var usingDefaultChoice = defaultInvoiceLineTypeChoice != null && defaultInvoiceLineTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && invoiceLineTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

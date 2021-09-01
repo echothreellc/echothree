@@ -303,9 +303,9 @@ public class OfferControl
     
     public OfferChoicesBean getOfferChoices(String defaultOfferChoice, Language language, boolean allowNullChoice) {
         List<Offer> offers = getOffers();
-        int size = offers.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = offers.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -320,13 +320,13 @@ public class OfferControl
         for(var offer : offers) {
             OfferDetail offerDetail = offer.getLastDetail();
 
-            String label = getBestOfferDescription(offer, language);
-            String value = offerDetail.getOfferName();
+            var label = getBestOfferDescription(offer, language);
+            var value = offerDetail.getOfferName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultOfferChoice != null && defaultOfferChoice.equals(value);
+            var usingDefaultChoice = defaultOfferChoice != null && defaultOfferChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && offerDetail.getIsDefault())) {
                 defaultValue = value;
             }

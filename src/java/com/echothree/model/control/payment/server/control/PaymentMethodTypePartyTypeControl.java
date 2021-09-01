@@ -277,7 +277,7 @@ public class PaymentMethodTypePartyTypeControl
             labels.add(label == null ? value : label);
             values.add(value);
 
-            boolean usingDefaultChoice = Objects.equals(defaultPaymentMethodTypePartyTypeChoice, value);
+            var usingDefaultChoice = Objects.equals(defaultPaymentMethodTypePartyTypeChoice, value);
             if(usingDefaultChoice || (defaultValue == null && paymentMethodTypePartyTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

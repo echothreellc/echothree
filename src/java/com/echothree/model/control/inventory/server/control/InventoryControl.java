@@ -323,9 +323,9 @@ public class InventoryControl
     public InventoryLocationGroupChoicesBean getInventoryLocationGroupChoicesByWarehouseParty(String defaultInventoryLocationGroupChoice,
             Language language, boolean allowNullChoice, Party warehouseParty) {
         List<InventoryLocationGroup> inventoryLocationGroups = getInventoryLocationGroupsByWarehouseParty(warehouseParty);
-        int size = inventoryLocationGroups.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = inventoryLocationGroups.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         Iterator iter = inventoryLocationGroups.iterator();
         
@@ -342,13 +342,13 @@ public class InventoryControl
             InventoryLocationGroup inventoryLocationGroup = (InventoryLocationGroup)iter.next();
             InventoryLocationGroupDetail inventoryLocationGroupDetail = inventoryLocationGroup.getLastDetail();
             
-            String label = getBestInventoryLocationGroupDescription(inventoryLocationGroup, language);
-            String value = inventoryLocationGroupDetail.getInventoryLocationGroupName();
+            var label = getBestInventoryLocationGroupDescription(inventoryLocationGroup, language);
+            var value = inventoryLocationGroupDetail.getInventoryLocationGroupName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultInventoryLocationGroupChoice != null && defaultInventoryLocationGroupChoice.equals(value);
+            var usingDefaultChoice = defaultInventoryLocationGroupChoice != null && defaultInventoryLocationGroupChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && inventoryLocationGroupDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1083,7 +1083,7 @@ public class InventoryControl
             labels.add(label == null ? value : label);
             values.add(value);
             
-            boolean usingDefaultChoice = Objects.equals(defaultInventoryConditionChoice, value);
+            var usingDefaultChoice = Objects.equals(defaultInventoryConditionChoice, value);
             if(usingDefaultChoice || (defaultValue == null && inventoryConditionDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1400,22 +1400,22 @@ public class InventoryControl
     
     public InventoryConditionUseTypeChoicesBean getInventoryConditionUseTypeChoices(String defaultInventoryConditionUseTypeChoice, Language language) {
         List<InventoryConditionUseType>inventoryConditionUseTypes = getInventoryConditionUseTypes();
-        int size = inventoryConditionUseTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = inventoryConditionUseTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         Iterator iter = inventoryConditionUseTypes.iterator();
         
         while(iter.hasNext()) {
             InventoryConditionUseType inventoryConditionUseType = (InventoryConditionUseType)iter.next();
             
-            String label = getBestInventoryConditionUseTypeDescription(inventoryConditionUseType, language);
-            String value = inventoryConditionUseType.getInventoryConditionUseTypeName();
+            var label = getBestInventoryConditionUseTypeDescription(inventoryConditionUseType, language);
+            var value = inventoryConditionUseType.getInventoryConditionUseTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultInventoryConditionUseTypeChoice != null && defaultInventoryConditionUseTypeChoice.equals(value);
+            var usingDefaultChoice = defaultInventoryConditionUseTypeChoice != null && defaultInventoryConditionUseTypeChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null)
                 defaultValue = value;
         }
@@ -2447,9 +2447,9 @@ public class InventoryControl
 
     public AllocationPriorityChoicesBean getAllocationPriorityChoices(String defaultAllocationPriorityChoice, Language language, boolean allowNullChoice) {
         List<AllocationPriority> allocationPriorities = getAllocationPriorities();
-        int size = allocationPriorities.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = allocationPriorities.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -2464,13 +2464,13 @@ public class InventoryControl
         for(var allocationPriority : allocationPriorities) {
             AllocationPriorityDetail allocationPriorityDetail = allocationPriority.getLastDetail();
 
-            String label = getBestAllocationPriorityDescription(allocationPriority, language);
-            String value = allocationPriorityDetail.getAllocationPriorityName();
+            var label = getBestAllocationPriorityDescription(allocationPriority, language);
+            var value = allocationPriorityDetail.getAllocationPriorityName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultAllocationPriorityChoice != null && defaultAllocationPriorityChoice.equals(value);
+            var usingDefaultChoice = defaultAllocationPriorityChoice != null && defaultAllocationPriorityChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && allocationPriorityDetail.getIsDefault())) {
                 defaultValue = value;
             }

@@ -214,9 +214,9 @@ public class PaymentProcessorControl
     public PaymentProcessorChoicesBean getPaymentProcessorChoices(String defaultPaymentProcessorChoice, Language language,
             boolean allowNullChoice) {
         List<PaymentProcessor> paymentProcessors = getPaymentProcessors();
-        int size = paymentProcessors.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = paymentProcessors.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -226,13 +226,13 @@ public class PaymentProcessorControl
         
         for(var paymentProcessor : paymentProcessors) {
             PaymentProcessorDetail paymentProcessorDetail = paymentProcessor.getLastDetail();
-            String label = getBestPaymentProcessorDescription(paymentProcessor, language);
-            String value = paymentProcessorDetail.getPaymentProcessorName();
+            var label = getBestPaymentProcessorDescription(paymentProcessor, language);
+            var value = paymentProcessorDetail.getPaymentProcessorName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultPaymentProcessorChoice != null && defaultPaymentProcessorChoice.equals(value);
+            var usingDefaultChoice = defaultPaymentProcessorChoice != null && defaultPaymentProcessorChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && paymentProcessorDetail.getIsDefault()))
                 defaultValue = value;
         }

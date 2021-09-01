@@ -343,9 +343,9 @@ public class ContentControl
     public ContentPageAreaTypeChoicesBean getContentPageAreaTypeChoices(String defaultContentPageAreaTypeChoice, Language language,
             boolean allowNullChoice) {
         List<ContentPageAreaType> contentPageAreaTypes = getContentPageAreaTypes();
-        int size = contentPageAreaTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = contentPageAreaTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -358,13 +358,13 @@ public class ContentControl
         }
         
         for(var contentPageAreaType : contentPageAreaTypes) {
-            String label = getBestContentPageAreaTypeDescription(contentPageAreaType, language);
-            String value = contentPageAreaType.getContentPageAreaTypeName();
+            var label = getBestContentPageAreaTypeDescription(contentPageAreaType, language);
+            var value = contentPageAreaType.getContentPageAreaTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultContentPageAreaTypeChoice == null ? false : defaultContentPageAreaTypeChoice.equals(value);
+            var usingDefaultChoice = defaultContentPageAreaTypeChoice == null ? false : defaultContentPageAreaTypeChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null) {
                 defaultValue = value;
             }
@@ -596,9 +596,9 @@ public class ContentControl
     public ContentPageLayoutChoicesBean getContentPageLayoutChoices(String defaultContentPageLayoutChoice, Language language,
             boolean allowNullChoice) {
         List<ContentPageLayout> contentPageLayouts = getContentPageLayouts();
-        int size = contentPageLayouts.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = contentPageLayouts.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -613,13 +613,13 @@ public class ContentControl
         for(var contentPageLayout : contentPageLayouts) {
             ContentPageLayoutDetail contentPageLayoutDetail = contentPageLayout.getLastDetail();
             
-            String label = getBestContentPageLayoutDescription(contentPageLayout, language);
-            String value = contentPageLayoutDetail.getContentPageLayoutName();
+            var label = getBestContentPageLayoutDescription(contentPageLayout, language);
+            var value = contentPageLayoutDetail.getContentPageLayoutName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultContentPageLayoutChoice == null ? false : defaultContentPageLayoutChoice.equals(value);
+            var usingDefaultChoice = defaultContentPageLayoutChoice == null ? false : defaultContentPageLayoutChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && contentPageLayoutDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1083,19 +1083,19 @@ public class ContentControl
     
     public ContentCollectionChoicesBean getContentCollectionChoices(String defaultContentCollectionChoice, Language language) {
         List<ContentCollection> contentCollections = getContentCollections();
-        int size = contentCollections.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = contentCollections.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         for(var contentCollection : contentCollections) {
-            String label = getBestContentCollectionDescription(contentCollection, language);
-            String value = contentCollection.getLastDetail().getContentCollectionName();
+            var label = getBestContentCollectionDescription(contentCollection, language);
+            var value = contentCollection.getLastDetail().getContentCollectionName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultContentCollectionChoice != null && defaultContentCollectionChoice.equals(value);
+            var usingDefaultChoice = defaultContentCollectionChoice != null && defaultContentCollectionChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null)
                 defaultValue = value;
         }
@@ -1540,9 +1540,9 @@ public class ContentControl
     
     public ContentSectionChoicesBean getContentSectionChoices(ContentCollection contentCollection, String defaultContentSectionChoice, Language language, boolean allowNullChoice) {
         List<ContentSection> contentSections = getContentSections(contentCollection);
-        int size = contentSections.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = contentSections.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -1556,10 +1556,10 @@ public class ContentControl
         
         for(var contentSection : contentSections) {
             ContentSectionDetail contentSectionDetail = contentSection.getLastDetail();
-            String value = contentSectionDetail.getContentSectionName();
+            var value = contentSectionDetail.getContentSectionName();
             
             if(!value.equals(ContentSections.ROOT.toString())) {
-                String label = getBestContentSectionDescription(contentSection, language);
+                var label = getBestContentSectionDescription(contentSection, language);
 
                 labels.add(label == null? value: label);
                 values.add(value);
@@ -2873,21 +2873,21 @@ public class ContentControl
     
     public ContentCatalogChoicesBean getContentCatalogChoices(ContentCollection contentCollection, String defaultContentCatalogChoice, Language language) {
         List<ContentCatalog> contentCatalogs = getContentCatalogs(contentCollection);
-        int size = contentCatalogs.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = contentCatalogs.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         for(var contentCatalog : contentCatalogs) {
             ContentCatalogDetail contentCatalogDetail = contentCatalog.getLastDetail();
             
-            String label = getBestContentCatalogDescription(contentCatalog, language);
-            String value = contentCatalogDetail.getContentCatalogName();
+            var label = getBestContentCatalogDescription(contentCatalog, language);
+            var value = contentCatalogDetail.getContentCatalogName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultContentCatalogChoice != null && defaultContentCatalogChoice.equals(value);
+            var usingDefaultChoice = defaultContentCatalogChoice != null && defaultContentCatalogChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && contentCatalogDetail.getIsDefault()))
                 defaultValue = value;
         }
@@ -4023,9 +4023,9 @@ public class ContentControl
     
     public ContentCategoryChoicesBean getContentCategoryChoices(ContentCatalog contentCatalog, String defaultContentCategoryChoice, Language language, boolean allowNullChoice) {
         List<ContentCategory> contentCategorys = getContentCategories(contentCatalog);
-        int size = contentCategorys.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = contentCategorys.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -4039,10 +4039,10 @@ public class ContentControl
         
         for(var contentCategory : contentCategorys) {
             ContentCategoryDetail contentCategoryDetail = contentCategory.getLastDetail();
-            String value = contentCategoryDetail.getContentCategoryName();
+            var value = contentCategoryDetail.getContentCategoryName();
             
             if(!value.equals(ContentCategories.ROOT.toString())) {
-                String label = getBestContentCategoryDescription(contentCategory, language);
+                var label = getBestContentCategoryDescription(contentCategory, language);
 
                 labels.add(label == null? value: label);
                 values.add(value);
@@ -5117,19 +5117,19 @@ public class ContentControl
     
     public ContentWebAddressChoicesBean getContentWebAddressChoices(String defaultContentWebAddressChoice, Language language) {
         List<ContentWebAddress> contentWebAddresses = getContentWebAddresses();
-        int size = contentWebAddresses.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = contentWebAddresses.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         for(var contentWebAddress : contentWebAddresses) {
-            String label = getBestContentWebAddressDescription(contentWebAddress, language);
-            String value = contentWebAddress.getLastDetail().getContentWebAddressName();
+            var label = getBestContentWebAddressDescription(contentWebAddress, language);
+            var value = contentWebAddress.getLastDetail().getContentWebAddressName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultContentWebAddressChoice != null && defaultContentWebAddressChoice.equals(value);
+            var usingDefaultChoice = defaultContentWebAddressChoice != null && defaultContentWebAddressChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null)
                 defaultValue = value;
         }

@@ -283,9 +283,9 @@ public class UseControl
 
     public UseChoicesBean getUseChoices(String defaultUseChoice, Language language, boolean allowNullChoice) {
         List<Use> uses = getUses();
-        int size = uses.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = uses.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -300,13 +300,13 @@ public class UseControl
         for(var use : uses) {
             UseDetail useDetail = use.getLastDetail();
 
-            String label = getBestUseDescription(use, language);
-            String value = useDetail.getUseName();
+            var label = getBestUseDescription(use, language);
+            var value = useDetail.getUseName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultUseChoice != null && defaultUseChoice.equals(value);
+            var usingDefaultChoice = defaultUseChoice != null && defaultUseChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && useDetail.getIsDefault())) {
                 defaultValue = value;
             }

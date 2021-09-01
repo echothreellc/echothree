@@ -396,9 +396,9 @@ public class CampaignControl
 
     public CampaignChoicesBean getCampaignChoices(String defaultCampaignChoice, Language language, boolean allowNullChoice) {
         List<Campaign> campaigns = getCampaigns();
-        int size = campaigns.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = campaigns.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -413,13 +413,13 @@ public class CampaignControl
         for(var campaign : campaigns) {
             CampaignDetail campaignDetail = campaign.getLastDetail();
 
-            String label = getBestCampaignDescription(campaign, language);
-            String value = campaignDetail.getCampaignName();
+            var label = getBestCampaignDescription(campaign, language);
+            var value = campaignDetail.getCampaignName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultCampaignChoice != null && defaultCampaignChoice.equals(value);
+            var usingDefaultChoice = defaultCampaignChoice != null && defaultCampaignChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && campaignDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -439,7 +439,7 @@ public class CampaignControl
 
             CampaignPK campaignPK = campaignDetail.getCampaignPK(); // Not updated
             String campaignName = campaignDetailValue.getCampaignName();
-            String value = campaignDetailValue.getValue();
+            var value = campaignDetailValue.getValue();
             String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase());
             Boolean isDefault = campaignDetailValue.getIsDefault();
             Integer sortOrder = campaignDetailValue.getSortOrder();
@@ -912,9 +912,9 @@ public class CampaignControl
 
     public CampaignSourceChoicesBean getCampaignSourceChoices(String defaultCampaignSourceChoice, Language language, boolean allowNullChoice) {
         List<CampaignSource> campaignSources = getCampaignSources();
-        int size = campaignSources.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = campaignSources.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -929,13 +929,13 @@ public class CampaignControl
         for(var campaignSource : campaignSources) {
             CampaignSourceDetail campaignSourceDetail = campaignSource.getLastDetail();
 
-            String label = getBestCampaignSourceDescription(campaignSource, language);
-            String value = campaignSourceDetail.getCampaignSourceName();
+            var label = getBestCampaignSourceDescription(campaignSource, language);
+            var value = campaignSourceDetail.getCampaignSourceName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultCampaignSourceChoice != null && defaultCampaignSourceChoice.equals(value);
+            var usingDefaultChoice = defaultCampaignSourceChoice != null && defaultCampaignSourceChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && campaignSourceDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -955,7 +955,7 @@ public class CampaignControl
 
             CampaignSourcePK campaignSourcePK = campaignSourceDetail.getCampaignSourcePK(); // Not updated
             String campaignSourceName = campaignSourceDetailValue.getCampaignSourceName();
-            String value = campaignSourceDetailValue.getValue();
+            var value = campaignSourceDetailValue.getValue();
             String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase());
             Boolean isDefault = campaignSourceDetailValue.getIsDefault();
             Integer sortOrder = campaignSourceDetailValue.getSortOrder();
@@ -1428,9 +1428,9 @@ public class CampaignControl
 
     public CampaignMediumChoicesBean getCampaignMediumChoices(String defaultCampaignMediumChoice, Language language, boolean allowNullChoice) {
         List<CampaignMedium> campaignMediums = getCampaignMediums();
-        int size = campaignMediums.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = campaignMediums.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -1445,13 +1445,13 @@ public class CampaignControl
         for(var campaignMedium : campaignMediums) {
             CampaignMediumDetail campaignMediumDetail = campaignMedium.getLastDetail();
 
-            String label = getBestCampaignMediumDescription(campaignMedium, language);
-            String value = campaignMediumDetail.getCampaignMediumName();
+            var label = getBestCampaignMediumDescription(campaignMedium, language);
+            var value = campaignMediumDetail.getCampaignMediumName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultCampaignMediumChoice != null && defaultCampaignMediumChoice.equals(value);
+            var usingDefaultChoice = defaultCampaignMediumChoice != null && defaultCampaignMediumChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && campaignMediumDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1471,7 +1471,7 @@ public class CampaignControl
 
             CampaignMediumPK campaignMediumPK = campaignMediumDetail.getCampaignMediumPK(); // Not updated
             String campaignMediumName = campaignMediumDetailValue.getCampaignMediumName();
-            String value = campaignMediumDetailValue.getValue();
+            var value = campaignMediumDetailValue.getValue();
             String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase());
             Boolean isDefault = campaignMediumDetailValue.getIsDefault();
             Integer sortOrder = campaignMediumDetailValue.getSortOrder();
@@ -1944,9 +1944,9 @@ public class CampaignControl
 
     public CampaignTermChoicesBean getCampaignTermChoices(String defaultCampaignTermChoice, Language language, boolean allowNullChoice) {
         List<CampaignTerm> campaignTerms = getCampaignTerms();
-        int size = campaignTerms.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = campaignTerms.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -1961,13 +1961,13 @@ public class CampaignControl
         for(var campaignTerm : campaignTerms) {
             CampaignTermDetail campaignTermDetail = campaignTerm.getLastDetail();
 
-            String label = getBestCampaignTermDescription(campaignTerm, language);
-            String value = campaignTermDetail.getCampaignTermName();
+            var label = getBestCampaignTermDescription(campaignTerm, language);
+            var value = campaignTermDetail.getCampaignTermName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultCampaignTermChoice != null && defaultCampaignTermChoice.equals(value);
+            var usingDefaultChoice = defaultCampaignTermChoice != null && defaultCampaignTermChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && campaignTermDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1987,7 +1987,7 @@ public class CampaignControl
 
             CampaignTermPK campaignTermPK = campaignTermDetail.getCampaignTermPK(); // Not updated
             String campaignTermName = campaignTermDetailValue.getCampaignTermName();
-            String value = campaignTermDetailValue.getValue();
+            var value = campaignTermDetailValue.getValue();
             String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase());
             Boolean isDefault = campaignTermDetailValue.getIsDefault();
             Integer sortOrder = campaignTermDetailValue.getSortOrder();
@@ -2460,9 +2460,9 @@ public class CampaignControl
 
     public CampaignContentChoicesBean getCampaignContentChoices(String defaultCampaignContentChoice, Language language, boolean allowNullChoice) {
         List<CampaignContent> campaignContents = getCampaignContents();
-        int size = campaignContents.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = campaignContents.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -2477,13 +2477,13 @@ public class CampaignControl
         for(var campaignContent : campaignContents) {
             CampaignContentDetail campaignContentDetail = campaignContent.getLastDetail();
 
-            String label = getBestCampaignContentDescription(campaignContent, language);
-            String value = campaignContentDetail.getCampaignContentName();
+            var label = getBestCampaignContentDescription(campaignContent, language);
+            var value = campaignContentDetail.getCampaignContentName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultCampaignContentChoice != null && defaultCampaignContentChoice.equals(value);
+            var usingDefaultChoice = defaultCampaignContentChoice != null && defaultCampaignContentChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && campaignContentDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2503,7 +2503,7 @@ public class CampaignControl
 
             CampaignContentPK campaignContentPK = campaignContentDetail.getCampaignContentPK(); // Not updated
             String campaignContentName = campaignContentDetailValue.getCampaignContentName();
-            String value = campaignContentDetailValue.getValue();
+            var value = campaignContentDetailValue.getValue();
             String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase());
             Boolean isDefault = campaignContentDetailValue.getIsDefault();
             Integer sortOrder = campaignContentDetailValue.getSortOrder();

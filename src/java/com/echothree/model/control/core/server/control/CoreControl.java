@@ -1738,9 +1738,9 @@ public class CoreControl
     public CommandMessageTypeChoicesBean getCommandMessageTypeChoices(String defaultCommandMessageTypeChoice, Language language,
             boolean allowNullChoice) {
         List<CommandMessageType> commandMessageTypes = getCommandMessageTypes();
-        int size = commandMessageTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = commandMessageTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -1754,13 +1754,13 @@ public class CoreControl
         
         for(var commandMessageType : commandMessageTypes) {
             CommandMessageTypeDetail commandMessageTypeDetail = commandMessageType.getLastDetail();
-            String label = getBestCommandMessageTypeDescription(commandMessageType, language);
-            String value = commandMessageTypeDetail.getCommandMessageTypeName();
+            var label = getBestCommandMessageTypeDescription(commandMessageType, language);
+            var value = commandMessageTypeDetail.getCommandMessageTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultCommandMessageTypeChoice != null && defaultCommandMessageTypeChoice.equals(value);
+            var usingDefaultChoice = defaultCommandMessageTypeChoice != null && defaultCommandMessageTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && commandMessageTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -3047,19 +3047,19 @@ public class CoreControl
     
     public EntityAttributeTypeChoicesBean getEntityAttributeTypeChoices(String defaultEntityAttributeTypeChoice, Language language) {
         List<EntityAttributeType> entityAttributeTypes = getEntityAttributeTypes();
-        int size = entityAttributeTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = entityAttributeTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         for(var entityAttributeType : entityAttributeTypes) {
-            String label = getBestEntityAttributeTypeDescription(entityAttributeType, language);
-            String value = entityAttributeType.getEntityAttributeTypeName();
+            var label = getBestEntityAttributeTypeDescription(entityAttributeType, language);
+            var value = entityAttributeType.getEntityAttributeTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultEntityAttributeTypeChoice != null && defaultEntityAttributeTypeChoice.equals(value);
+            var usingDefaultChoice = defaultEntityAttributeTypeChoice != null && defaultEntityAttributeTypeChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null) {
                 defaultValue = value;
             }
@@ -4320,9 +4320,9 @@ public class CoreControl
     public EntityAttributeGroupChoicesBean getEntityAttributeGroupChoices(String defaultEntityAttributeGroupChoice, Language language,
             boolean allowNullChoice) {
         List<EntityAttributeGroup> entityAttributeGroups = getEntityAttributeGroups();
-        int size = entityAttributeGroups.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = entityAttributeGroups.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -4336,13 +4336,13 @@ public class CoreControl
         
         for(var entityAttributeGroup : entityAttributeGroups) {
             EntityAttributeGroupDetail entityAttributeGroupDetail = entityAttributeGroup.getLastDetail();
-            String label = getBestEntityAttributeGroupDescription(entityAttributeGroup, language);
-            String value = entityAttributeGroupDetail.getEntityAttributeGroupName();
+            var label = getBestEntityAttributeGroupDescription(entityAttributeGroup, language);
+            var value = entityAttributeGroupDetail.getEntityAttributeGroupName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultEntityAttributeGroupChoice != null && defaultEntityAttributeGroupChoice.equals(value);
+            var usingDefaultChoice = defaultEntityAttributeGroupChoice != null && defaultEntityAttributeGroupChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && entityAttributeGroupDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -6200,9 +6200,9 @@ public class CoreControl
     public EntityListItemChoicesBean getEntityListItemChoices(String defaultEntityListItemChoice, Language language,
             boolean allowNullChoice, EntityAttribute entityAttribute) {
         List<EntityListItem> entityListItems = getEntityListItems(entityAttribute);
-        int size = entityListItems.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = entityListItems.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -6216,13 +6216,13 @@ public class CoreControl
         
         for(var entityListItem : entityListItems) {
             EntityListItemDetail entityListItemDetail = entityListItem.getLastDetail();
-            String label = getBestEntityListItemDescription(entityListItem, language);
-            String value = entityListItemDetail.getEntityListItemName();
+            var label = getBestEntityListItemDescription(entityListItem, language);
+            var value = entityListItemDetail.getEntityListItemName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultEntityListItemChoice != null && defaultEntityListItemChoice.equals(value);
+            var usingDefaultChoice = defaultEntityListItemChoice != null && defaultEntityListItemChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && entityListItemDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -6695,9 +6695,9 @@ public class CoreControl
     public EntityIntegerRangeChoicesBean getEntityIntegerRangeChoices(String defaultEntityIntegerRangeChoice, Language language,
             boolean allowNullChoice, EntityAttribute entityAttribute) {
         List<EntityIntegerRange> entityIntegerRanges = getEntityIntegerRanges(entityAttribute);
-        int size = entityIntegerRanges.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = entityIntegerRanges.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -6711,13 +6711,13 @@ public class CoreControl
         
         for(var entityIntegerRange : entityIntegerRanges) {
             EntityIntegerRangeDetail entityIntegerRangeDetail = entityIntegerRange.getLastDetail();
-            String label = getBestEntityIntegerRangeDescription(entityIntegerRange, language);
-            String value = entityIntegerRangeDetail.getEntityIntegerRangeName();
+            var label = getBestEntityIntegerRangeDescription(entityIntegerRange, language);
+            var value = entityIntegerRangeDetail.getEntityIntegerRangeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultEntityIntegerRangeChoice != null && defaultEntityIntegerRangeChoice.equals(value);
+            var usingDefaultChoice = defaultEntityIntegerRangeChoice != null && defaultEntityIntegerRangeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && entityIntegerRangeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -7183,9 +7183,9 @@ public class CoreControl
     public EntityLongRangeChoicesBean getEntityLongRangeChoices(String defaultEntityLongRangeChoice, Language language,
             boolean allowNullChoice, EntityAttribute entityAttribute) {
         List<EntityLongRange> entityLongRanges = getEntityLongRanges(entityAttribute);
-        int size = entityLongRanges.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = entityLongRanges.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -7199,13 +7199,13 @@ public class CoreControl
         
         for(var entityLongRange : entityLongRanges) {
             EntityLongRangeDetail entityLongRangeDetail = entityLongRange.getLastDetail();
-            String label = getBestEntityLongRangeDescription(entityLongRange, language);
-            String value = entityLongRangeDetail.getEntityLongRangeName();
+            var label = getBestEntityLongRangeDescription(entityLongRange, language);
+            var value = entityLongRangeDetail.getEntityLongRangeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultEntityLongRangeChoice != null && defaultEntityLongRangeChoice.equals(value);
+            var usingDefaultChoice = defaultEntityLongRangeChoice != null && defaultEntityLongRangeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && entityLongRangeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -7533,9 +7533,9 @@ public class CoreControl
     public MimeTypeUsageTypeChoicesBean getMimeTypeUsageTypeChoices(String defaultMimeTypeUsageTypeChoice, Language language,
             boolean allowNullChoice) {
         List<MimeTypeUsageType> mimeTypeUsageTypes = getMimeTypeUsageTypes();
-        int size = mimeTypeUsageTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = mimeTypeUsageTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -7548,13 +7548,13 @@ public class CoreControl
         }
         
         for(var mimeTypeUsageType : mimeTypeUsageTypes) {
-            String label = getBestMimeTypeUsageTypeDescription(mimeTypeUsageType, language);
-            String value = mimeTypeUsageType.getMimeTypeUsageTypeName();
+            var label = getBestMimeTypeUsageTypeDescription(mimeTypeUsageType, language);
+            var value = mimeTypeUsageType.getMimeTypeUsageTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultMimeTypeUsageTypeChoice != null && defaultMimeTypeUsageTypeChoice.equals(value);
+            var usingDefaultChoice = defaultMimeTypeUsageTypeChoice != null && defaultMimeTypeUsageTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && mimeTypeUsageType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -7872,9 +7872,9 @@ public class CoreControl
 
     public MimeTypeChoicesBean getMimeTypeChoices(String defaultMimeTypeChoice, Language language, boolean allowNullChoice) {
         List<MimeType> mimeTypes = getMimeTypes();
-        int size = mimeTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = mimeTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -7889,13 +7889,13 @@ public class CoreControl
         for(var mimeType : mimeTypes) {
             MimeTypeDetail mimeTypeDetail = mimeType.getLastDetail();
 
-            String label = getBestMimeTypeDescription(mimeType, language);
-            String value = mimeTypeDetail.getMimeTypeName();
+            var label = getBestMimeTypeDescription(mimeType, language);
+            var value = mimeTypeDetail.getMimeTypeName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultMimeTypeChoice != null && defaultMimeTypeChoice.equals(value);
+            var usingDefaultChoice = defaultMimeTypeChoice != null && defaultMimeTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && mimeTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -7907,9 +7907,9 @@ public class CoreControl
     public MimeTypeChoicesBean getMimeTypeChoices(MimeTypeUsageType mimeTypeUsageType, String defaultMimeTypeChoice, Language language,
             boolean allowNullChoice) {
         List<MimeType> mimeTypes = getMimeTypesByMimeTypeUsageType(mimeTypeUsageType);
-        int size = mimeTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = mimeTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -7924,13 +7924,13 @@ public class CoreControl
         for(var mimeType : mimeTypes) {
             MimeTypeDetail mimeTypeDetail = mimeType.getLastDetail();
 
-            String label = getBestMimeTypeDescription(mimeType, language);
-            String value = mimeTypeDetail.getMimeTypeName();
+            var label = getBestMimeTypeDescription(mimeType, language);
+            var value = mimeTypeDetail.getMimeTypeName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultMimeTypeChoice != null && defaultMimeTypeChoice.equals(value);
+            var usingDefaultChoice = defaultMimeTypeChoice != null && defaultMimeTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && mimeTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -8479,9 +8479,9 @@ public class CoreControl
 
     public ProtocolChoicesBean getProtocolChoices(String defaultProtocolChoice, Language language, boolean allowNullChoice) {
         List<Protocol> protocols = getProtocols();
-        int size = protocols.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = protocols.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -8496,13 +8496,13 @@ public class CoreControl
         for(var protocol : protocols) {
             ProtocolDetail protocolDetail = protocol.getLastDetail();
 
-            String label = getBestProtocolDescription(protocol, language);
-            String value = protocolDetail.getProtocolName();
+            var label = getBestProtocolDescription(protocol, language);
+            var value = protocolDetail.getProtocolName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultProtocolChoice != null && defaultProtocolChoice.equals(value);
+            var usingDefaultChoice = defaultProtocolChoice != null && defaultProtocolChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && protocolDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -8938,9 +8938,9 @@ public class CoreControl
 
     public ServiceChoicesBean getServiceChoices(String defaultServiceChoice, Language language, boolean allowNullChoice) {
         List<Service> services = getServices();
-        int size = services.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = services.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -8955,13 +8955,13 @@ public class CoreControl
         for(var service : services) {
             ServiceDetail serviceDetail = service.getLastDetail();
 
-            String label = getBestServiceDescription(service, language);
-            String value = serviceDetail.getServiceName();
+            var label = getBestServiceDescription(service, language);
+            var value = serviceDetail.getServiceName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultServiceChoice != null && defaultServiceChoice.equals(value);
+            var usingDefaultChoice = defaultServiceChoice != null && defaultServiceChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && serviceDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -9369,9 +9369,9 @@ public class CoreControl
 
     public ServerChoicesBean getServerChoices(String defaultServerChoice, Language language, boolean allowNullChoice) {
         List<Server> servers = getServers();
-        int size = servers.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = servers.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -9386,13 +9386,13 @@ public class CoreControl
         for(var server : servers) {
             ServerDetail serverDetail = server.getLastDetail();
 
-            String label = getBestServerDescription(server, language);
-            String value = serverDetail.getServerName();
+            var label = getBestServerDescription(server, language);
+            var value = serverDetail.getServerName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultServerChoice != null && defaultServerChoice.equals(value);
+            var usingDefaultChoice = defaultServerChoice != null && defaultServerChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && serverDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -13466,9 +13466,9 @@ public class CoreControl
 
     public ApplicationChoicesBean getApplicationChoices(String defaultApplicationChoice, Language language, boolean allowNullChoice) {
         List<Application> applications = getApplications();
-        int size = applications.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = applications.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -13483,13 +13483,13 @@ public class CoreControl
         for(var application : applications) {
             ApplicationDetail applicationDetail = application.getLastDetail();
 
-            String label = getBestApplicationDescription(application, language);
-            String value = applicationDetail.getApplicationName();
+            var label = getBestApplicationDescription(application, language);
+            var value = applicationDetail.getApplicationName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultApplicationChoice != null && defaultApplicationChoice.equals(value);
+            var usingDefaultChoice = defaultApplicationChoice != null && defaultApplicationChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && applicationDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -13893,9 +13893,9 @@ public class CoreControl
 
     public EditorChoicesBean getEditorChoices(String defaultEditorChoice, Language language, boolean allowNullChoice) {
         List<Editor> editors = getEditors();
-        int size = editors.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = editors.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -13910,13 +13910,13 @@ public class CoreControl
         for(var editor : editors) {
             EditorDetail editorDetail = editor.getLastDetail();
 
-            String label = getBestEditorDescription(editor, language);
-            String value = editorDetail.getEditorName();
+            var label = getBestEditorDescription(editor, language);
+            var value = editorDetail.getEditorName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultEditorChoice != null && defaultEditorChoice.equals(value);
+            var usingDefaultChoice = defaultEditorChoice != null && defaultEditorChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && editorDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -14370,9 +14370,9 @@ public class CoreControl
     public ApplicationEditorChoicesBean getApplicationEditorChoices(String defaultApplicationEditorChoice, Language language, boolean allowNullChoice,
             Application application) {
         List<ApplicationEditor> applicationEditors = getApplicationEditorsByApplication(application);
-        int size = applicationEditors.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = applicationEditors.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -14388,13 +14388,13 @@ public class CoreControl
             ApplicationEditorDetail applicationEditorDetail = applicationEditor.getLastDetail();
             Editor editor = applicationEditorDetail.getEditor();
 
-            String label = getBestEditorDescription(editor, language);
-            String value = editor.getLastDetail().getEditorName();
+            var label = getBestEditorDescription(editor, language);
+            var value = editor.getLastDetail().getEditorName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultApplicationEditorChoice != null && defaultApplicationEditorChoice.equals(value);
+            var usingDefaultChoice = defaultApplicationEditorChoice != null && defaultApplicationEditorChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && applicationEditorDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -14705,9 +14705,9 @@ public class CoreControl
     public ApplicationEditorUseChoicesBean getApplicationEditorUseChoices(String defaultApplicationEditorUseChoice, Language language, boolean allowNullChoice,
             Application application) {
         List<ApplicationEditorUse> applicationEditorUses = getApplicationEditorUsesByApplication(application);
-        int size = applicationEditorUses.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = applicationEditorUses.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -14722,13 +14722,13 @@ public class CoreControl
         for(var applicationEditorUse : applicationEditorUses) {
             ApplicationEditorUseDetail applicationEditorUseDetail = applicationEditorUse.getLastDetail();
 
-            String label = getBestApplicationEditorUseDescription(applicationEditorUse, language);
-            String value = applicationEditorUseDetail.getApplicationEditorUseName();
+            var label = getBestApplicationEditorUseDescription(applicationEditorUse, language);
+            var value = applicationEditorUseDetail.getApplicationEditorUseName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultApplicationEditorUseChoice != null && defaultApplicationEditorUseChoice.equals(value);
+            var usingDefaultChoice = defaultApplicationEditorUseChoice != null && defaultApplicationEditorUseChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && applicationEditorUseDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -15407,9 +15407,9 @@ public class CoreControl
 
     public ColorChoicesBean getColorChoices(String defaultColorChoice, Language language, boolean allowNullChoice) {
         List<Color> colors = getColors();
-        int size = colors.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = colors.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -15424,13 +15424,13 @@ public class CoreControl
         for(var color : colors) {
             ColorDetail colorDetail = color.getLastDetail();
 
-            String label = getBestColorDescription(color, language);
-            String value = colorDetail.getColorName();
+            var label = getBestColorDescription(color, language);
+            var value = colorDetail.getColorName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultColorChoice != null && defaultColorChoice.equals(value);
+            var usingDefaultChoice = defaultColorChoice != null && defaultColorChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && colorDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -15853,9 +15853,9 @@ public class CoreControl
 
     public FontStyleChoicesBean getFontStyleChoices(String defaultFontStyleChoice, Language language, boolean allowNullChoice) {
         List<FontStyle> fontStyles = getFontStyles();
-        int size = fontStyles.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = fontStyles.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -15870,13 +15870,13 @@ public class CoreControl
         for(var fontStyle : fontStyles) {
             FontStyleDetail fontStyleDetail = fontStyle.getLastDetail();
 
-            String label = getBestFontStyleDescription(fontStyle, language);
-            String value = fontStyleDetail.getFontStyleName();
+            var label = getBestFontStyleDescription(fontStyle, language);
+            var value = fontStyleDetail.getFontStyleName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultFontStyleChoice != null && defaultFontStyleChoice.equals(value);
+            var usingDefaultChoice = defaultFontStyleChoice != null && defaultFontStyleChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && fontStyleDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -16296,9 +16296,9 @@ public class CoreControl
 
     public FontWeightChoicesBean getFontWeightChoices(String defaultFontWeightChoice, Language language, boolean allowNullChoice) {
         List<FontWeight> fontWeights = getFontWeights();
-        int size = fontWeights.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = fontWeights.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -16313,13 +16313,13 @@ public class CoreControl
         for(var fontWeight : fontWeights) {
             FontWeightDetail fontWeightDetail = fontWeight.getLastDetail();
 
-            String label = getBestFontWeightDescription(fontWeight, language);
-            String value = fontWeightDetail.getFontWeightName();
+            var label = getBestFontWeightDescription(fontWeight, language);
+            var value = fontWeightDetail.getFontWeightName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultFontWeightChoice != null && defaultFontWeightChoice.equals(value);
+            var usingDefaultChoice = defaultFontWeightChoice != null && defaultFontWeightChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && fontWeightDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -16739,9 +16739,9 @@ public class CoreControl
 
     public TextDecorationChoicesBean getTextDecorationChoices(String defaultTextDecorationChoice, Language language, boolean allowNullChoice) {
         List<TextDecoration> textDecorations = getTextDecorations();
-        int size = textDecorations.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = textDecorations.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -16756,13 +16756,13 @@ public class CoreControl
         for(var textDecoration : textDecorations) {
             TextDecorationDetail textDecorationDetail = textDecoration.getLastDetail();
 
-            String label = getBestTextDecorationDescription(textDecoration, language);
-            String value = textDecorationDetail.getTextDecorationName();
+            var label = getBestTextDecorationDescription(textDecoration, language);
+            var value = textDecorationDetail.getTextDecorationName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultTextDecorationChoice != null && defaultTextDecorationChoice.equals(value);
+            var usingDefaultChoice = defaultTextDecorationChoice != null && defaultTextDecorationChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && textDecorationDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -17182,9 +17182,9 @@ public class CoreControl
 
     public TextTransformationChoicesBean getTextTransformationChoices(String defaultTextTransformationChoice, Language language, boolean allowNullChoice) {
         List<TextTransformation> textTransformations = getTextTransformations();
-        int size = textTransformations.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = textTransformations.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -17199,13 +17199,13 @@ public class CoreControl
         for(var textTransformation : textTransformations) {
             TextTransformationDetail textTransformationDetail = textTransformation.getLastDetail();
 
-            String label = getBestTextTransformationDescription(textTransformation, language);
-            String value = textTransformationDetail.getTextTransformationName();
+            var label = getBestTextTransformationDescription(textTransformation, language);
+            var value = textTransformationDetail.getTextTransformationName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultTextTransformationChoice != null && defaultTextTransformationChoice.equals(value);
+            var usingDefaultChoice = defaultTextTransformationChoice != null && defaultTextTransformationChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && textTransformationDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -17755,9 +17755,9 @@ public class CoreControl
 
     public AppearanceChoicesBean getAppearanceChoices(String defaultAppearanceChoice, Language language, boolean allowNullChoice) {
         List<Appearance> appearances = getAppearances();
-        int size = appearances.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = appearances.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -17772,13 +17772,13 @@ public class CoreControl
         for(var appearance : appearances) {
             AppearanceDetail appearanceDetail = appearance.getLastDetail();
 
-            String label = getBestAppearanceDescription(appearance, language);
-            String value = appearanceDetail.getAppearanceName();
+            var label = getBestAppearanceDescription(appearance, language);
+            var value = appearanceDetail.getAppearanceName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultAppearanceChoice != null && defaultAppearanceChoice.equals(value);
+            var usingDefaultChoice = defaultAppearanceChoice != null && defaultAppearanceChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && appearanceDetail.getIsDefault())) {
                 defaultValue = value;
             }

@@ -457,9 +457,9 @@ public class CancellationPolicyControl
     
     public CancellationKindChoicesBean getCancellationKindChoices(String defaultCancellationKindChoice, Language language, boolean allowNullChoice) {
         List<CancellationKind> cancellationKinds = getCancellationKinds();
-        int size = cancellationKinds.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = cancellationKinds.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -474,13 +474,13 @@ public class CancellationPolicyControl
         for(var cancellationKind : cancellationKinds) {
             CancellationKindDetail cancellationKindDetail = cancellationKind.getLastDetail();
             
-            String label = getBestCancellationKindDescription(cancellationKind, language);
-            String value = cancellationKindDetail.getCancellationKindName();
+            var label = getBestCancellationKindDescription(cancellationKind, language);
+            var value = cancellationKindDetail.getCancellationKindName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultCancellationKindChoice != null && defaultCancellationKindChoice.equals(value);
+            var usingDefaultChoice = defaultCancellationKindChoice != null && defaultCancellationKindChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && cancellationKindDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -910,9 +910,9 @@ public class CancellationPolicyControl
     public CancellationPolicyChoicesBean getCancellationPolicyChoices(String defaultCancellationPolicyChoice, Language language,
             boolean allowNullChoice, CancellationKind cancellationKind) {
         List<CancellationPolicy> cancellationPolicies = getCancellationPolicies(cancellationKind);
-        int size = cancellationPolicies.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = cancellationPolicies.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -929,13 +929,13 @@ public class CancellationPolicyControl
             String cancellationPolicyName = cancellationPolicyDetail.getCancellationPolicyName();
             CancellationPolicyTranslation cancellationPolicyTranslation = getBestCancellationPolicyTranslation(cancellationPolicy, language);
 
-            String label = cancellationPolicyTranslation == null ? cancellationPolicyName : cancellationPolicyTranslation.getDescription();
-            String value = cancellationPolicyName;
+            var label = cancellationPolicyTranslation == null ? cancellationPolicyName : cancellationPolicyTranslation.getDescription();
+            var value = cancellationPolicyName;
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultCancellationPolicyChoice != null && defaultCancellationPolicyChoice.equals(value);
+            var usingDefaultChoice = defaultCancellationPolicyChoice != null && defaultCancellationPolicyChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && cancellationPolicyDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1657,9 +1657,9 @@ public class CancellationPolicyControl
     public CancellationReasonChoicesBean getCancellationReasonChoices(String defaultCancellationReasonChoice, Language language,
             boolean allowNullChoice, CancellationKind cancellationKind) {
         List<CancellationReason> cancellationReasons = getCancellationReasons(cancellationKind);
-        int size = cancellationReasons.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = cancellationReasons.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -1673,13 +1673,13 @@ public class CancellationPolicyControl
         
         for(var cancellationReason : cancellationReasons) {
             CancellationReasonDetail cancellationReasonDetail = cancellationReason.getLastDetail();
-            String label = getBestCancellationReasonDescription(cancellationReason, language);
-            String value = cancellationReasonDetail.getCancellationReasonName();
+            var label = getBestCancellationReasonDescription(cancellationReason, language);
+            var value = cancellationReasonDetail.getCancellationReasonName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultCancellationReasonChoice != null && defaultCancellationReasonChoice.equals(value);
+            var usingDefaultChoice = defaultCancellationReasonChoice != null && defaultCancellationReasonChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && cancellationReasonDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2422,9 +2422,9 @@ public class CancellationPolicyControl
     public CancellationTypeChoicesBean getCancellationTypeChoices(String defaultCancellationTypeChoice, Language language,
             boolean allowNullChoice, CancellationKind cancellationKind) {
         List<CancellationType> cancellationTypes = getCancellationTypes(cancellationKind);
-        int size = cancellationTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = cancellationTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -2438,13 +2438,13 @@ public class CancellationPolicyControl
         
         for(var cancellationType : cancellationTypes) {
             CancellationTypeDetail cancellationTypeDetail = cancellationType.getLastDetail();
-            String label = getBestCancellationTypeDescription(cancellationType, language);
-            String value = cancellationTypeDetail.getCancellationTypeName();
+            var label = getBestCancellationTypeDescription(cancellationType, language);
+            var value = cancellationTypeDetail.getCancellationTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultCancellationTypeChoice != null && defaultCancellationTypeChoice.equals(value);
+            var usingDefaultChoice = defaultCancellationTypeChoice != null && defaultCancellationTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && cancellationTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

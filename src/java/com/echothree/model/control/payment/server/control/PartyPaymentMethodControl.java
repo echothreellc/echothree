@@ -279,9 +279,9 @@ public class PartyPaymentMethodControl
     public PartyPaymentMethodChoicesBean getPartyPaymentMethodChoices(String defaultPartyPaymentMethodChoice, Language language, boolean allowNullChoice,
             Party party) {
         List<PartyPaymentMethod> partyPaymentMethods = getPartyPaymentMethodsByParty(party);
-        int size = partyPaymentMethods.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = partyPaymentMethods.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -296,13 +296,13 @@ public class PartyPaymentMethodControl
         for(var partyPaymentMethod : partyPaymentMethods) {
             PartyPaymentMethodDetail partyPaymentMethodDetail = partyPaymentMethod.getLastDetail();
 
-            String label = partyPaymentMethodDetail.getDescription();
-            String value = partyPaymentMethodDetail.getPartyPaymentMethodName();
+            var label = partyPaymentMethodDetail.getDescription();
+            var value = partyPaymentMethodDetail.getPartyPaymentMethodName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultPartyPaymentMethodChoice != null && defaultPartyPaymentMethodChoice.equals(value);
+            var usingDefaultChoice = defaultPartyPaymentMethodChoice != null && defaultPartyPaymentMethodChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && partyPaymentMethodDetail.getIsDefault())) {
                 defaultValue = value;
             }

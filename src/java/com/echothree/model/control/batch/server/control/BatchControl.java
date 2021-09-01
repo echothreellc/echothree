@@ -305,9 +305,9 @@ public class BatchControl
     public BatchTypeChoicesBean getBatchTypeChoices(String defaultBatchTypeChoice,
             Language language, boolean allowNullChoice) {
         List<BatchType> batchTypes = getBatchTypes();
-        int size = batchTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = batchTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -322,13 +322,13 @@ public class BatchControl
         for(var batchType : batchTypes) {
             BatchTypeDetail batchTypeDetail = batchType.getLastDetail();
             
-            String label = getBestBatchTypeDescription(batchType, language);
-            String value = batchTypeDetail.getBatchTypeName();
+            var label = getBestBatchTypeDescription(batchType, language);
+            var value = batchTypeDetail.getBatchTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultBatchTypeChoice != null && defaultBatchTypeChoice.equals(value);
+            var usingDefaultChoice = defaultBatchTypeChoice != null && defaultBatchTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && batchTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -933,9 +933,9 @@ public class BatchControl
     public BatchAliasTypeChoicesBean getBatchAliasTypeChoices(String defaultBatchAliasTypeChoice, Language language,
             boolean allowNullChoice, BatchType batchType) {
         List<BatchAliasType> batchAliasTypes = getBatchAliasTypes(batchType);
-        int size = batchAliasTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = batchAliasTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -950,13 +950,13 @@ public class BatchControl
         for(var batchAliasType : batchAliasTypes) {
             BatchAliasTypeDetail batchAliasTypeDetail = batchAliasType.getLastDetail();
             
-            String label = getBestBatchAliasTypeDescription(batchAliasType, language);
-            String value = batchAliasTypeDetail.getBatchAliasTypeName();
+            var label = getBestBatchAliasTypeDescription(batchAliasType, language);
+            var value = batchAliasTypeDetail.getBatchAliasTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultBatchAliasTypeChoice != null && defaultBatchAliasTypeChoice.equals(value);
+            var usingDefaultChoice = defaultBatchAliasTypeChoice != null && defaultBatchAliasTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && batchAliasTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

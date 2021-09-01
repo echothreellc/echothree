@@ -356,9 +356,9 @@ public class TrainingControl
     
     public TrainingClassChoicesBean getTrainingClassChoices(String defaultTrainingClassChoice, Language language, boolean allowNullChoice) {
         List<TrainingClass> trainingClasses = getTrainingClasses();
-        int size = trainingClasses.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = trainingClasses.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -375,13 +375,13 @@ public class TrainingControl
             String trainingClassName = trainingClassDetail.getTrainingClassName();
             TrainingClassTranslation trainingClassTranslation = getBestTrainingClassTranslation(trainingClass, language);
             
-            String label = trainingClassTranslation == null ? trainingClassName : trainingClassTranslation.getDescription();
-            String value = trainingClassName;
+            var label = trainingClassTranslation == null ? trainingClassName : trainingClassTranslation.getDescription();
+            var value = trainingClassName;
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultTrainingClassChoice != null && defaultTrainingClassChoice.equals(value);
+            var usingDefaultChoice = defaultTrainingClassChoice != null && defaultTrainingClassChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && trainingClassDetail.getIsDefault())) {
                 defaultValue = value;
             }

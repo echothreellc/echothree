@@ -282,9 +282,9 @@ public class CommunicationControl
     public CommunicationEventPurposeChoicesBean getCommunicationEventPurposeChoices(String defaultCommunicationEventPurposeChoice, Language language,
             boolean allowNullChoice) {
         List<CommunicationEventPurpose> communicationEventPurposes = getCommunicationEventPurposes();
-        int size = communicationEventPurposes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = communicationEventPurposes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -299,13 +299,13 @@ public class CommunicationControl
         for(var communicationEventPurpose : communicationEventPurposes) {
             CommunicationEventPurposeDetail communicationEventPurposeDetail = communicationEventPurpose.getLastDetail();
             
-            String label = getBestCommunicationEventPurposeDescription(communicationEventPurpose, language);
-            String value = communicationEventPurposeDetail.getCommunicationEventPurposeName();
+            var label = getBestCommunicationEventPurposeDescription(communicationEventPurpose, language);
+            var value = communicationEventPurposeDetail.getCommunicationEventPurposeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultCommunicationEventPurposeChoice != null && defaultCommunicationEventPurposeChoice.equals(value);
+            var usingDefaultChoice = defaultCommunicationEventPurposeChoice != null && defaultCommunicationEventPurposeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && communicationEventPurposeDetail.getIsDefault())) {
                 defaultValue = value;
             }

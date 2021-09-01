@@ -216,9 +216,9 @@ public class LotAliasControl
     public LotAliasTypeChoicesBean getLotAliasTypeChoices(String defaultLotAliasTypeChoice, Language language,
             boolean allowNullChoice) {
         List<LotAliasType> lotAliasTypes = getLotAliasTypes();
-        int size = lotAliasTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = lotAliasTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -233,13 +233,13 @@ public class LotAliasControl
         for(var lotAliasType : lotAliasTypes) {
             LotAliasTypeDetail lotAliasTypeDetail = lotAliasType.getLastDetail();
 
-            String label = getBestLotAliasTypeDescription(lotAliasType, language);
-            String value = lotAliasTypeDetail.getLotAliasTypeName();
+            var label = getBestLotAliasTypeDescription(lotAliasType, language);
+            var value = lotAliasTypeDetail.getLotAliasTypeName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultLotAliasTypeChoice != null && defaultLotAliasTypeChoice.equals(value);
+            var usingDefaultChoice = defaultLotAliasTypeChoice != null && defaultLotAliasTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && lotAliasTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

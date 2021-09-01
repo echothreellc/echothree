@@ -281,9 +281,9 @@ public class PaymentMethodControl
     
     public PaymentMethodChoicesBean getPaymentMethodChoices(String defaultPaymentMethodChoice, Language language, boolean allowNullChoice,
             List<PaymentMethod> paymentMethods) {
-        int size = paymentMethods.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = paymentMethods.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -293,13 +293,13 @@ public class PaymentMethodControl
 
         for(var paymentMethod : paymentMethods) {
             PaymentMethodDetail paymentMethodDetail = paymentMethod.getLastDetail();
-            String label = getBestPaymentMethodDescription(paymentMethod, language);
-            String value = paymentMethodDetail.getPaymentMethodName();
+            var label = getBestPaymentMethodDescription(paymentMethod, language);
+            var value = paymentMethodDetail.getPaymentMethodName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultPaymentMethodChoice != null && defaultPaymentMethodChoice.equals(value);
+            var usingDefaultChoice = defaultPaymentMethodChoice != null && defaultPaymentMethodChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && paymentMethodDetail.getIsDefault()))
                 defaultValue = value;
         }

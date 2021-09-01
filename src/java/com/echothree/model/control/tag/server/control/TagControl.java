@@ -268,9 +268,9 @@ public class TagControl
     
     public TagScopeChoicesBean getTagScopeChoices(String defaultTagScopeChoice, Language language, boolean allowNullChoice) {
         List<TagScope> tagScopes = getTagScopes();
-        int size = tagScopes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = tagScopes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -284,13 +284,13 @@ public class TagControl
         
         for(var tagScope : tagScopes) {
             TagScopeDetail tagScopeDetail = tagScope.getLastDetail();
-            String label = getBestTagScopeDescription(tagScope, language);
-            String value = tagScopeDetail.getTagScopeName();
+            var label = getBestTagScopeDescription(tagScope, language);
+            var value = tagScopeDetail.getTagScopeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultTagScopeChoice != null && defaultTagScopeChoice.equals(value);
+            var usingDefaultChoice = defaultTagScopeChoice != null && defaultTagScopeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && tagScopeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -889,8 +889,8 @@ public class TagControl
     
     public TagChoicesBean getTagChoices(String defaultTagChoice, Language language, boolean allowNullChoice, TagScope tagScope) {
         List<Tag> tags = getTags(tagScope);
-        int size = tags.size();
-        List<String> values = new ArrayList<>(size);
+        var size = tags.size();
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -903,11 +903,11 @@ public class TagControl
         
         for(var tag : tags) {
             TagDetail tagDetail = tag.getLastDetail();
-            String value = tagDetail.getTagName();
+            var value = tagDetail.getTagName();
             
             values.add(value);
             
-            boolean usingDefaultChoice = defaultTagChoice != null && defaultTagChoice.equals(value);
+            var usingDefaultChoice = defaultTagChoice != null && defaultTagChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null) {
                 defaultValue = value;
             }

@@ -453,9 +453,9 @@ public class ItemControl
     
     public ItemTypeChoicesBean getItemTypeChoices(String defaultItemTypeChoice, Language language, boolean allowNullChoice) {
         List<ItemType> itemTypes = getItemTypes();
-        int size = itemTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = itemTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -468,13 +468,13 @@ public class ItemControl
         }
         
         for(var itemType : itemTypes) {
-            String label = getBestItemTypeDescription(itemType, language);
-            String value = itemType.getItemTypeName();
+            var label = getBestItemTypeDescription(itemType, language);
+            var value = itemType.getItemTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultItemTypeChoice != null && defaultItemTypeChoice.equals(value);
+            var usingDefaultChoice = defaultItemTypeChoice != null && defaultItemTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && itemType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -582,9 +582,9 @@ public class ItemControl
     
     public ItemDeliveryTypeChoicesBean getItemDeliveryTypeChoices(String defaultItemDeliveryTypeChoice, Language language, boolean allowNullChoice) {
         List<ItemDeliveryType> itemDeliveryTypes = getItemDeliveryTypes();
-        int size = itemDeliveryTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = itemDeliveryTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -597,13 +597,13 @@ public class ItemControl
         }
         
         for(var itemDeliveryType : itemDeliveryTypes) {
-            String label = getBestItemDeliveryTypeDescription(itemDeliveryType, language);
-            String value = itemDeliveryType.getItemDeliveryTypeName();
+            var label = getBestItemDeliveryTypeDescription(itemDeliveryType, language);
+            var value = itemDeliveryType.getItemDeliveryTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultItemDeliveryTypeChoice != null && defaultItemDeliveryTypeChoice.equals(value);
+            var usingDefaultChoice = defaultItemDeliveryTypeChoice != null && defaultItemDeliveryTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && itemDeliveryType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -711,9 +711,9 @@ public class ItemControl
     
     public ItemInventoryTypeChoicesBean getItemInventoryTypeChoices(String defaultItemInventoryTypeChoice, Language language, boolean allowNullChoice) {
         List<ItemInventoryType> itemInventoryTypes = getItemInventoryTypes();
-        int size = itemInventoryTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = itemInventoryTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -726,13 +726,13 @@ public class ItemControl
         }
         
         for(var itemInventoryType : itemInventoryTypes) {
-            String label = getBestItemInventoryTypeDescription(itemInventoryType, language);
-            String value = itemInventoryType.getItemInventoryTypeName();
+            var label = getBestItemInventoryTypeDescription(itemInventoryType, language);
+            var value = itemInventoryType.getItemInventoryTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultItemInventoryTypeChoice != null && defaultItemInventoryTypeChoice.equals(value);
+            var usingDefaultChoice = defaultItemInventoryTypeChoice != null && defaultItemInventoryTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && itemInventoryType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -840,9 +840,9 @@ public class ItemControl
     
     public ItemUseTypeChoicesBean getItemUseTypeChoices(String defaultItemUseTypeChoice, Language language, boolean allowNullChoice) {
         List<ItemUseType> itemUseTypes = getItemUseTypes();
-        int size = itemUseTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = itemUseTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -855,13 +855,13 @@ public class ItemControl
         }
         
         for(var itemUseType : itemUseTypes) {
-            String label = getBestItemUseTypeDescription(itemUseType, language);
-            String value = itemUseType.getItemUseTypeName();
+            var label = getBestItemUseTypeDescription(itemUseType, language);
+            var value = itemUseType.getItemUseTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultItemUseTypeChoice != null && defaultItemUseTypeChoice.equals(value);
+            var usingDefaultChoice = defaultItemUseTypeChoice != null && defaultItemUseTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && itemUseType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1151,9 +1151,9 @@ public class ItemControl
     public ItemCategoryChoicesBean getItemCategoryChoices(String defaultItemCategoryChoice, Language language,
             boolean allowNullChoice) {
         List<ItemCategory> itemCategories = getItemCategories();
-        int size = itemCategories.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = itemCategories.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -1168,13 +1168,13 @@ public class ItemControl
         for(var itemCategory : itemCategories) {
             ItemCategoryDetail itemCategoryDetail = itemCategory.getLastDetail();
             
-            String label = allowNullChoice ? new StringBuilder(getBestItemCategoryDescription(itemCategory, language)).append(itemCategoryDetail.getIsDefault() ? " *" : "").toString(): getBestItemCategoryDescription(itemCategory, language);
-            String value = itemCategoryDetail.getItemCategoryName();
+            var label = allowNullChoice ? new StringBuilder(getBestItemCategoryDescription(itemCategory, language)).append(itemCategoryDetail.getIsDefault() ? " *" : "").toString(): getBestItemCategoryDescription(itemCategory, language);
+            var value = itemCategoryDetail.getItemCategoryName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultItemCategoryChoice != null && defaultItemCategoryChoice.equals(value);
+            var usingDefaultChoice = defaultItemCategoryChoice != null && defaultItemCategoryChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && itemCategoryDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2436,9 +2436,9 @@ public class ItemControl
     public ItemAliasChecksumTypeChoicesBean getItemAliasChecksumTypeChoices(String defaultItemAliasChecksumTypeChoice,
             Language language, boolean allowNullChoice) {
         List<ItemAliasChecksumType> itemAliasChecksumTypes = getItemAliasChecksumTypes();
-        int size = itemAliasChecksumTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = itemAliasChecksumTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -2451,13 +2451,13 @@ public class ItemControl
         }
 
         for(var itemAliasChecksumType : itemAliasChecksumTypes) {
-            String label = getBestItemAliasChecksumTypeDescription(itemAliasChecksumType, language);
-            String value = itemAliasChecksumType.getItemAliasChecksumTypeName();
+            var label = getBestItemAliasChecksumTypeDescription(itemAliasChecksumType, language);
+            var value = itemAliasChecksumType.getItemAliasChecksumTypeName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultItemAliasChecksumTypeChoice != null && defaultItemAliasChecksumTypeChoice.equals(value);
+            var usingDefaultChoice = defaultItemAliasChecksumTypeChoice != null && defaultItemAliasChecksumTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && itemAliasChecksumType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2671,9 +2671,9 @@ public class ItemControl
     public ItemAliasTypeChoicesBean getItemAliasTypeChoices(String defaultItemAliasTypeChoice, Language language,
             boolean allowNullChoice) {
         List<ItemAliasType> itemAliasTypes = getItemAliasTypes();
-        int size = itemAliasTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = itemAliasTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -2688,13 +2688,13 @@ public class ItemControl
         for(var itemAliasType : itemAliasTypes) {
             ItemAliasTypeDetail itemAliasTypeDetail = itemAliasType.getLastDetail();
             
-            String label = getBestItemAliasTypeDescription(itemAliasType, language);
-            String value = itemAliasTypeDetail.getItemAliasTypeName();
+            var label = getBestItemAliasTypeDescription(itemAliasType, language);
+            var value = itemAliasTypeDetail.getItemAliasTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultItemAliasTypeChoice != null && defaultItemAliasTypeChoice.equals(value);
+            var usingDefaultChoice = defaultItemAliasTypeChoice != null && defaultItemAliasTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && itemAliasTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -5266,9 +5266,9 @@ public class ItemControl
     public ItemPriceTypeChoicesBean getItemPriceTypeChoices(String defaultItemPriceTypeChoice, Language language,
             boolean allowNullChoice) {
         List<ItemPriceType> itemPriceTypes = getItemPriceTypes();
-        int size = itemPriceTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = itemPriceTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -5281,13 +5281,13 @@ public class ItemControl
         }
         
         for(var itemPriceType : itemPriceTypes) {
-            String label = getBestItemPriceTypeDescription(itemPriceType, language);
-            String value = itemPriceType.getItemPriceTypeName();
+            var label = getBestItemPriceTypeDescription(itemPriceType, language);
+            var value = itemPriceType.getItemPriceTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultItemPriceTypeChoice != null && defaultItemPriceTypeChoice.equals(value);
+            var usingDefaultChoice = defaultItemPriceTypeChoice != null && defaultItemPriceTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && itemPriceType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -6161,9 +6161,9 @@ public class ItemControl
 
     public ItemDescriptionTypeChoicesBean getItemDescriptionTypeChoices(String defaultItemDescriptionTypeChoice, Language language, boolean allowNullChoice) {
         List<ItemDescriptionType> itemDescriptionTypes = getItemDescriptionTypes();
-        int size = itemDescriptionTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = itemDescriptionTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -6178,13 +6178,13 @@ public class ItemControl
         for(var itemDescriptionType : itemDescriptionTypes) {
             ItemDescriptionTypeDetail itemDescriptionTypeDetail = itemDescriptionType.getLastDetail();
 
-            String label = getBestItemDescriptionTypeDescription(itemDescriptionType, language);
-            String value = itemDescriptionTypeDetail.getItemDescriptionTypeName();
+            var label = getBestItemDescriptionTypeDescription(itemDescriptionType, language);
+            var value = itemDescriptionTypeDetail.getItemDescriptionTypeName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultItemDescriptionTypeChoice != null && defaultItemDescriptionTypeChoice.equals(value);
+            var usingDefaultChoice = defaultItemDescriptionTypeChoice != null && defaultItemDescriptionTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && itemDescriptionTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -6777,9 +6777,9 @@ public class ItemControl
 
     public ItemDescriptionTypeUseTypeChoicesBean getItemDescriptionTypeUseTypeChoices(String defaultItemDescriptionTypeUseTypeChoice, Language language, boolean allowNullChoice) {
         List<ItemDescriptionTypeUseType> itemDescriptionTypeUseTypes = getItemDescriptionTypeUseTypes();
-        int size = itemDescriptionTypeUseTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = itemDescriptionTypeUseTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -6794,13 +6794,13 @@ public class ItemControl
         for(var itemDescriptionTypeUseType : itemDescriptionTypeUseTypes) {
             ItemDescriptionTypeUseTypeDetail itemDescriptionTypeUseTypeDetail = itemDescriptionTypeUseType.getLastDetail();
 
-            String label = getBestItemDescriptionTypeUseTypeDescription(itemDescriptionTypeUseType, language);
-            String value = itemDescriptionTypeUseTypeDetail.getItemDescriptionTypeUseTypeName();
+            var label = getBestItemDescriptionTypeUseTypeDescription(itemDescriptionTypeUseType, language);
+            var value = itemDescriptionTypeUseTypeDetail.getItemDescriptionTypeUseTypeName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultItemDescriptionTypeUseTypeChoice != null && defaultItemDescriptionTypeUseTypeChoice.equals(value);
+            var usingDefaultChoice = defaultItemDescriptionTypeUseTypeChoice != null && defaultItemDescriptionTypeUseTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && itemDescriptionTypeUseTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -7401,9 +7401,9 @@ public class ItemControl
 
     public ItemImageTypeChoicesBean getItemImageTypeChoices(String defaultItemImageTypeChoice, Language language, boolean allowNullChoice) {
         List<ItemImageType> itemImageTypes = getItemImageTypes();
-        int size = itemImageTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = itemImageTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -7418,13 +7418,13 @@ public class ItemControl
         for(var itemImageType : itemImageTypes) {
             ItemImageTypeDetail itemImageTypeDetail = itemImageType.getLastDetail();
 
-            String label = getBestItemImageTypeDescription(itemImageType, language);
-            String value = itemImageTypeDetail.getItemImageTypeName();
+            var label = getBestItemImageTypeDescription(itemImageType, language);
+            var value = itemImageTypeDetail.getItemImageTypeName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultItemImageTypeChoice != null && defaultItemImageTypeChoice.equals(value);
+            var usingDefaultChoice = defaultItemImageTypeChoice != null && defaultItemImageTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && itemImageTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -8957,9 +8957,9 @@ public class ItemControl
 
     public RelatedItemTypeChoicesBean getRelatedItemTypeChoices(String defaultRelatedItemTypeChoice, Language language, boolean allowNullChoice) {
         List<RelatedItemType> relatedItemTypes = getRelatedItemTypes();
-        int size = relatedItemTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = relatedItemTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -8974,13 +8974,13 @@ public class ItemControl
         for(var relatedItemType : relatedItemTypes) {
             RelatedItemTypeDetail relatedItemTypeDetail = relatedItemType.getLastDetail();
 
-            String label = getBestRelatedItemTypeDescription(relatedItemType, language);
-            String value = relatedItemTypeDetail.getRelatedItemTypeName();
+            var label = getBestRelatedItemTypeDescription(relatedItemType, language);
+            var value = relatedItemTypeDetail.getRelatedItemTypeName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultRelatedItemTypeChoice != null && defaultRelatedItemTypeChoice.equals(value);
+            var usingDefaultChoice = defaultRelatedItemTypeChoice != null && defaultRelatedItemTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && relatedItemTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -9814,9 +9814,9 @@ public class ItemControl
 
     public HarmonizedTariffScheduleCodeChoicesBean getHarmonizedTariffScheduleCodeChoices(String defaultHarmonizedTariffScheduleCodeChoice, Language language, boolean allowNullChoice, GeoCode countryGeoCode) {
         List<HarmonizedTariffScheduleCode> harmonizedTariffScheduleCodees = getHarmonizedTariffScheduleCodesByCountryGeoCode(countryGeoCode);
-        int size = harmonizedTariffScheduleCodees.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = harmonizedTariffScheduleCodees.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -9833,13 +9833,13 @@ public class ItemControl
             String harmonizedTariffScheduleCodeName = harmonizedTariffScheduleCodeDetail.getHarmonizedTariffScheduleCodeName();
             HarmonizedTariffScheduleCodeTranslation harmonizedTariffScheduleCodeTranslation = getBestHarmonizedTariffScheduleCodeTranslation(harmonizedTariffScheduleCode, language);
             
-            String label = harmonizedTariffScheduleCodeTranslation == null ? harmonizedTariffScheduleCodeName : harmonizedTariffScheduleCodeTranslation.getDescription();
-            String value = harmonizedTariffScheduleCodeName;
+            var label = harmonizedTariffScheduleCodeTranslation == null ? harmonizedTariffScheduleCodeName : harmonizedTariffScheduleCodeTranslation.getDescription();
+            var value = harmonizedTariffScheduleCodeName;
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultHarmonizedTariffScheduleCodeChoice != null && defaultHarmonizedTariffScheduleCodeChoice.equals(value);
+            var usingDefaultChoice = defaultHarmonizedTariffScheduleCodeChoice != null && defaultHarmonizedTariffScheduleCodeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && harmonizedTariffScheduleCodeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -10252,9 +10252,9 @@ public class ItemControl
 
     public HarmonizedTariffScheduleCodeUseTypeChoicesBean getHarmonizedTariffScheduleCodeUseTypeChoices(String defaultHarmonizedTariffScheduleCodeUseTypeChoice, Language language, boolean allowNullChoice) {
         List<HarmonizedTariffScheduleCodeUseType> harmonizedTariffScheduleCodeUseTypes = getHarmonizedTariffScheduleCodeUseTypes();
-        int size = harmonizedTariffScheduleCodeUseTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = harmonizedTariffScheduleCodeUseTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -10269,13 +10269,13 @@ public class ItemControl
         for(var harmonizedTariffScheduleCodeUseType : harmonizedTariffScheduleCodeUseTypes) {
             HarmonizedTariffScheduleCodeUseTypeDetail harmonizedTariffScheduleCodeUseTypeDetail = harmonizedTariffScheduleCodeUseType.getLastDetail();
 
-            String label = getBestHarmonizedTariffScheduleCodeUseTypeDescription(harmonizedTariffScheduleCodeUseType, language);
-            String value = harmonizedTariffScheduleCodeUseTypeDetail.getHarmonizedTariffScheduleCodeUseTypeName();
+            var label = getBestHarmonizedTariffScheduleCodeUseTypeDescription(harmonizedTariffScheduleCodeUseType, language);
+            var value = harmonizedTariffScheduleCodeUseTypeDetail.getHarmonizedTariffScheduleCodeUseTypeName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultHarmonizedTariffScheduleCodeUseTypeChoice != null && defaultHarmonizedTariffScheduleCodeUseTypeChoice.equals(value);
+            var usingDefaultChoice = defaultHarmonizedTariffScheduleCodeUseTypeChoice != null && defaultHarmonizedTariffScheduleCodeUseTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && harmonizedTariffScheduleCodeUseTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -10658,9 +10658,9 @@ public class ItemControl
 
     public HarmonizedTariffScheduleCodeUnitChoicesBean getHarmonizedTariffScheduleCodeUnitChoices(String defaultHarmonizedTariffScheduleCodeUnitChoice, Language language, boolean allowNullChoice) {
         List<HarmonizedTariffScheduleCodeUnit> harmonizedTariffScheduleCodeUnits = getHarmonizedTariffScheduleCodeUnits();
-        int size = harmonizedTariffScheduleCodeUnits.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = harmonizedTariffScheduleCodeUnits.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -10675,13 +10675,13 @@ public class ItemControl
         for(var harmonizedTariffScheduleCodeUnit : harmonizedTariffScheduleCodeUnits) {
             HarmonizedTariffScheduleCodeUnitDetail harmonizedTariffScheduleCodeUnitDetail = harmonizedTariffScheduleCodeUnit.getLastDetail();
 
-            String label = getBestHarmonizedTariffScheduleCodeUnitDescription(harmonizedTariffScheduleCodeUnit, language);
-            String value = harmonizedTariffScheduleCodeUnitDetail.getHarmonizedTariffScheduleCodeUnitName();
+            var label = getBestHarmonizedTariffScheduleCodeUnitDescription(harmonizedTariffScheduleCodeUnit, language);
+            var value = harmonizedTariffScheduleCodeUnitDetail.getHarmonizedTariffScheduleCodeUnitName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultHarmonizedTariffScheduleCodeUnitChoice != null && defaultHarmonizedTariffScheduleCodeUnitChoice.equals(value);
+            var usingDefaultChoice = defaultHarmonizedTariffScheduleCodeUnitChoice != null && defaultHarmonizedTariffScheduleCodeUnitChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && harmonizedTariffScheduleCodeUnitDetail.getIsDefault())) {
                 defaultValue = value;
             }

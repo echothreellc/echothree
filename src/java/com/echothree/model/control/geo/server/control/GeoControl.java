@@ -357,9 +357,9 @@ public class GeoControl
         GeoCodeAliasType geoCodeAliasType = getDefaultGeoCodeAliasType(geoCodeType);
         GeoCodeScope geoCodeScope = getGeoCodeScopeByName(GeoConstants.GeoCodeScope_COUNTRIES);
         List<GeoCode> geoCodes = getGeoCodesByGeoCodeScope(geoCodeScope);
-        int size = geoCodes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = geoCodes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -372,13 +372,13 @@ public class GeoControl
         }
         
         for(var geoCode : geoCodes) {
-            String label = getBestGeoCodeDescription(geoCode, language);
-            String value = getAliasForCountry(geoCode, geoCodeType, geoCodeAliasType);
+            var label = getBestGeoCodeDescription(geoCode, language);
+            var value = getAliasForCountry(geoCode, geoCodeType, geoCodeAliasType);
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultCountryChoice != null && defaultCountryChoice.equals(value);
+            var usingDefaultChoice = defaultCountryChoice != null && defaultCountryChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null)
                 defaultValue = value;
         }
@@ -578,9 +578,9 @@ public class GeoControl
     public GeoCodeTypeChoicesBean getGeoCodeTypeChoices(String defaultGeoCodeTypeChoice, Language language,
             boolean allowNullChoice) {
         List<GeoCodeType> geoCodeTypes = getGeoCodeTypes();
-        int size = geoCodeTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = geoCodeTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -595,13 +595,13 @@ public class GeoControl
         for(var geoCodeType : geoCodeTypes) {
             GeoCodeTypeDetail geoCodeTypeDetail = geoCodeType.getLastDetail();
             
-            String label = getBestGeoCodeTypeDescription(geoCodeType, language);
-            String value = geoCodeTypeDetail.getGeoCodeTypeName();
+            var label = getBestGeoCodeTypeDescription(geoCodeType, language);
+            var value = geoCodeTypeDetail.getGeoCodeTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultGeoCodeTypeChoice != null && defaultGeoCodeTypeChoice.equals(value);
+            var usingDefaultChoice = defaultGeoCodeTypeChoice != null && defaultGeoCodeTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && geoCodeTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1049,9 +1049,9 @@ public class GeoControl
     public GeoCodeScopeChoicesBean getGeoCodeScopeChoices(String defaultGeoCodeScopeChoice, Language language,
             boolean allowNullChoice) {
         List<GeoCodeScope> geoCodeScopes = getGeoCodeScopes();
-        int size = geoCodeScopes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = geoCodeScopes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -1066,13 +1066,13 @@ public class GeoControl
         for(var geoCodeScope : geoCodeScopes) {
             GeoCodeScopeDetail geoCodeScopeDetail = geoCodeScope.getLastDetail();
             
-            String label = getBestGeoCodeScopeDescription(geoCodeScope, language);
-            String value = geoCodeScopeDetail.getGeoCodeScopeName();
+            var label = getBestGeoCodeScopeDescription(geoCodeScope, language);
+            var value = geoCodeScopeDetail.getGeoCodeScopeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultGeoCodeScopeChoice != null && defaultGeoCodeScopeChoice.equals(value);
+            var usingDefaultChoice = defaultGeoCodeScopeChoice != null && defaultGeoCodeScopeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && geoCodeScopeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1543,9 +1543,9 @@ public class GeoControl
     public GeoCodeAliasTypeChoicesBean getGeoCodeAliasTypeChoices(String defaultGeoCodeAliasTypeChoice, Language language,
             boolean allowNullChoice, GeoCodeType geoCodeType) {
         List<GeoCodeAliasType> geoCodeAliasTypes = getGeoCodeAliasTypes(geoCodeType);
-        int size = geoCodeAliasTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = geoCodeAliasTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -1560,13 +1560,13 @@ public class GeoControl
         for(var geoCodeAliasType : geoCodeAliasTypes) {
             GeoCodeAliasTypeDetail geoCodeAliasTypeDetail = geoCodeAliasType.getLastDetail();
             
-            String label = getBestGeoCodeAliasTypeDescription(geoCodeAliasType, language);
-            String value = geoCodeAliasTypeDetail.getGeoCodeAliasTypeName();
+            var label = getBestGeoCodeAliasTypeDescription(geoCodeAliasType, language);
+            var value = geoCodeAliasTypeDetail.getGeoCodeAliasTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultGeoCodeAliasTypeChoice != null && defaultGeoCodeAliasTypeChoice.equals(value);
+            var usingDefaultChoice = defaultGeoCodeAliasTypeChoice != null && defaultGeoCodeAliasTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && geoCodeAliasTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

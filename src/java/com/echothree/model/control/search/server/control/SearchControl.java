@@ -431,9 +431,9 @@ public class SearchControl
 
     public SearchUseTypeChoicesBean getSearchUseTypeChoices(String defaultSearchUseTypeChoice, Language language, boolean allowNullChoice) {
         List<SearchUseType> searchUseTypes = getSearchUseTypes();
-        int size = searchUseTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = searchUseTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -448,13 +448,13 @@ public class SearchControl
         for(var searchUseType : searchUseTypes) {
             SearchUseTypeDetail searchUseTypeDetail = searchUseType.getLastDetail();
 
-            String label = getBestSearchUseTypeDescription(searchUseType, language);
-            String value = searchUseTypeDetail.getSearchUseTypeName();
+            var label = getBestSearchUseTypeDescription(searchUseType, language);
+            var value = searchUseTypeDetail.getSearchUseTypeName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultSearchUseTypeChoice != null && defaultSearchUseTypeChoice.equals(value);
+            var usingDefaultChoice = defaultSearchUseTypeChoice != null && defaultSearchUseTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && searchUseTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -864,9 +864,9 @@ public class SearchControl
 
     public SearchResultActionTypeChoicesBean getSearchResultActionTypeChoices(String defaultSearchResultActionTypeChoice, Language language, boolean allowNullChoice) {
         List<SearchResultActionType> searchResultActionTypes = getSearchResultActionTypes();
-        int size = searchResultActionTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = searchResultActionTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -881,13 +881,13 @@ public class SearchControl
         for(var searchResultActionType : searchResultActionTypes) {
             SearchResultActionTypeDetail searchResultActionTypeDetail = searchResultActionType.getLastDetail();
 
-            String label = getBestSearchResultActionTypeDescription(searchResultActionType, language);
-            String value = searchResultActionTypeDetail.getSearchResultActionTypeName();
+            var label = getBestSearchResultActionTypeDescription(searchResultActionType, language);
+            var value = searchResultActionTypeDetail.getSearchResultActionTypeName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultSearchResultActionTypeChoice != null && defaultSearchResultActionTypeChoice.equals(value);
+            var usingDefaultChoice = defaultSearchResultActionTypeChoice != null && defaultSearchResultActionTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && searchResultActionTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1297,9 +1297,9 @@ public class SearchControl
 
     public SearchCheckSpellingActionTypeChoicesBean getSearchCheckSpellingActionTypeChoices(String defaultSearchCheckSpellingActionTypeChoice, Language language, boolean allowNullChoice) {
         List<SearchCheckSpellingActionType> searchCheckSpellingActionTypes = getSearchCheckSpellingActionTypes();
-        int size = searchCheckSpellingActionTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = searchCheckSpellingActionTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -1314,13 +1314,13 @@ public class SearchControl
         for(var searchCheckSpellingActionType : searchCheckSpellingActionTypes) {
             SearchCheckSpellingActionTypeDetail searchCheckSpellingActionTypeDetail = searchCheckSpellingActionType.getLastDetail();
 
-            String label = getBestSearchCheckSpellingActionTypeDescription(searchCheckSpellingActionType, language);
-            String value = searchCheckSpellingActionTypeDetail.getSearchCheckSpellingActionTypeName();
+            var label = getBestSearchCheckSpellingActionTypeDescription(searchCheckSpellingActionType, language);
+            var value = searchCheckSpellingActionTypeDetail.getSearchCheckSpellingActionTypeName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultSearchCheckSpellingActionTypeChoice != null && defaultSearchCheckSpellingActionTypeChoice.equals(value);
+            var usingDefaultChoice = defaultSearchCheckSpellingActionTypeChoice != null && defaultSearchCheckSpellingActionTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && searchCheckSpellingActionTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1729,9 +1729,9 @@ public class SearchControl
 
     public SearchDefaultOperatorChoicesBean getSearchDefaultOperatorChoices(String defaultSearchDefaultOperatorChoice, Language language, boolean allowNullChoice) {
         List<SearchDefaultOperator> searchDefaultOperators = getSearchDefaultOperators();
-        int size = searchDefaultOperators.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = searchDefaultOperators.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -1746,13 +1746,13 @@ public class SearchControl
         for(var searchDefaultOperator : searchDefaultOperators) {
             SearchDefaultOperatorDetail searchDefaultOperatorDetail = searchDefaultOperator.getLastDetail();
 
-            String label = getBestSearchDefaultOperatorDescription(searchDefaultOperator, language);
-            String value = searchDefaultOperatorDetail.getSearchDefaultOperatorName();
+            var label = getBestSearchDefaultOperatorDescription(searchDefaultOperator, language);
+            var value = searchDefaultOperatorDetail.getSearchDefaultOperatorName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultSearchDefaultOperatorChoice != null && defaultSearchDefaultOperatorChoice.equals(value);
+            var usingDefaultChoice = defaultSearchDefaultOperatorChoice != null && defaultSearchDefaultOperatorChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && searchDefaultOperatorDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2163,9 +2163,9 @@ public class SearchControl
 
     public SearchSortDirectionChoicesBean getSearchSortDirectionChoices(String defaultSearchSortDirectionChoice, Language language, boolean allowNullChoice) {
         List<SearchSortDirection> searchSortDirections = getSearchSortDirections();
-        int size = searchSortDirections.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = searchSortDirections.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -2180,13 +2180,13 @@ public class SearchControl
         for(var searchSortDirection : searchSortDirections) {
             SearchSortDirectionDetail searchSortDirectionDetail = searchSortDirection.getLastDetail();
 
-            String label = getBestSearchSortDirectionDescription(searchSortDirection, language);
-            String value = searchSortDirectionDetail.getSearchSortDirectionName();
+            var label = getBestSearchSortDirectionDescription(searchSortDirection, language);
+            var value = searchSortDirectionDetail.getSearchSortDirectionName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultSearchSortDirectionChoice != null && defaultSearchSortDirectionChoice.equals(value);
+            var usingDefaultChoice = defaultSearchSortDirectionChoice != null && defaultSearchSortDirectionChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && searchSortDirectionDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2570,9 +2570,9 @@ public class SearchControl
 
     public SearchKindChoicesBean getSearchKindChoices(String defaultSearchKindChoice, Language language, boolean allowNullChoice) {
         List<SearchKind> searchKinds = getSearchKinds();
-        int size = searchKinds.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = searchKinds.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -2587,13 +2587,13 @@ public class SearchControl
         for(var searchKind : searchKinds) {
             SearchKindDetail searchKindDetail = searchKind.getLastDetail();
 
-            String label = getBestSearchKindDescription(searchKind, language);
-            String value = searchKindDetail.getSearchKindName();
+            var label = getBestSearchKindDescription(searchKind, language);
+            var value = searchKindDetail.getSearchKindName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultSearchKindChoice != null && defaultSearchKindChoice.equals(value);
+            var usingDefaultChoice = defaultSearchKindChoice != null && defaultSearchKindChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && searchKindDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2997,9 +2997,9 @@ public class SearchControl
     public SearchTypeChoicesBean getSearchTypeChoices(String defaultSearchTypeChoice, Language language,
             boolean allowNullChoice, SearchKind searchKind) {
         List<SearchType> searchTypes = getSearchTypes(searchKind);
-        int size = searchTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = searchTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -3013,13 +3013,13 @@ public class SearchControl
 
         for(var searchType : searchTypes) {
             SearchTypeDetail searchTypeDetail = searchType.getLastDetail();
-            String label = getBestSearchTypeDescription(searchType, language);
-            String value = searchTypeDetail.getSearchTypeName();
+            var label = getBestSearchTypeDescription(searchType, language);
+            var value = searchTypeDetail.getSearchTypeName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultSearchTypeChoice != null && defaultSearchTypeChoice.equals(value);
+            var usingDefaultChoice = defaultSearchTypeChoice != null && defaultSearchTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && searchTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -3424,9 +3424,9 @@ public class SearchControl
     public SearchSortOrderChoicesBean getSearchSortOrderChoices(String defaultSearchSortOrderChoice, Language language,
             boolean allowNullChoice, SearchKind searchKind) {
         List<SearchSortOrder> searchSortOrders = getSearchSortOrders(searchKind);
-        int size = searchSortOrders.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = searchSortOrders.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -3440,13 +3440,13 @@ public class SearchControl
 
         for(var searchSortOrder : searchSortOrders) {
             SearchSortOrderDetail searchSortOrderDetail = searchSortOrder.getLastDetail();
-            String label = getBestSearchSortOrderDescription(searchSortOrder, language);
-            String value = searchSortOrderDetail.getSearchSortOrderName();
+            var label = getBestSearchSortOrderDescription(searchSortOrder, language);
+            var value = searchSortOrderDetail.getSearchSortOrderName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultSearchSortOrderChoice != null && defaultSearchSortOrderChoice.equals(value);
+            var usingDefaultChoice = defaultSearchSortOrderChoice != null && defaultSearchSortOrderChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && searchSortOrderDetail.getIsDefault())) {
                 defaultValue = value;
             }

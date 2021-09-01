@@ -331,9 +331,9 @@ public class TrackControl
 
     public TrackChoicesBean getTrackChoices(String defaultTrackChoice, Language language, boolean allowNullChoice) {
         List<Track> tracks = getTracks();
-        int size = tracks.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = tracks.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -348,13 +348,13 @@ public class TrackControl
         for(var track : tracks) {
             TrackDetail trackDetail = track.getLastDetail();
 
-            String label = getBestTrackDescription(track, language);
-            String value = trackDetail.getTrackName();
+            var label = getBestTrackDescription(track, language);
+            var value = trackDetail.getTrackName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultTrackChoice != null && defaultTrackChoice.equals(value);
+            var usingDefaultChoice = defaultTrackChoice != null && defaultTrackChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && trackDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -374,7 +374,7 @@ public class TrackControl
 
             TrackPK trackPK = trackDetail.getTrackPK(); // Not updated
             String trackName = trackDetailValue.getTrackName();
-            String value = trackDetailValue.getValue();
+            var value = trackDetailValue.getValue();
             String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase());
             Boolean isDefault = trackDetailValue.getIsDefault();
             Integer sortOrder = trackDetailValue.getSortOrder();

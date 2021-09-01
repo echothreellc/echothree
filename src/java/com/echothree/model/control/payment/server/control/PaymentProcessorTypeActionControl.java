@@ -274,7 +274,7 @@ public class PaymentProcessorTypeActionControl
             labels.add(label == null ? value : label);
             values.add(value);
 
-            boolean usingDefaultChoice = Objects.equals(defaultPaymentProcessorTypeActionChoice, value);
+            var usingDefaultChoice = Objects.equals(defaultPaymentProcessorTypeActionChoice, value);
             if(usingDefaultChoice || (defaultValue == null && paymentProcessorTypeActionDetail.getIsDefault())) {
                 defaultValue = value;
             }

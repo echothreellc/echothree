@@ -243,9 +243,9 @@ public class SourceControl
 
     public SourceChoicesBean getSourceChoices(String defaultSourceChoice, Language language, boolean allowNullChoice) {
         List<Source> sources = getSources();
-        int size = sources.size() + (allowNullChoice? 1: 0);
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = sources.size() + (allowNullChoice? 1: 0);
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -260,13 +260,13 @@ public class SourceControl
         for(var source : sources) {
             SourceDetail sourceDetail = source.getLastDetail();
 
-            String label = getBestSourceDescription(source, language);
-            String value = sourceDetail.getSourceName();
+            var label = getBestSourceDescription(source, language);
+            var value = sourceDetail.getSourceName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultSourceChoice != null && defaultSourceChoice.equals(value);
+            var usingDefaultChoice = defaultSourceChoice != null && defaultSourceChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && sourceDetail.getIsDefault())) {
                 defaultValue = value;
             }

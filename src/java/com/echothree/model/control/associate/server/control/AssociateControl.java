@@ -249,9 +249,9 @@ public class AssociateControl
     
     public AssociateProgramChoicesBean getAssociateProgramChoices(String defaultAssociateProgramChoice, Language language, boolean allowNullChoice) {
         List<AssociateProgram> associatePrograms = getAssociatePrograms();
-        int size = associatePrograms.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = associatePrograms.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -266,13 +266,13 @@ public class AssociateControl
         for(var associateProgram : associatePrograms) {
             AssociateProgramDetail associateProgramDetail = associateProgram.getLastDetail();
             
-            String label = getBestAssociateProgramDescription(associateProgram, language);
-            String value = associateProgramDetail.getAssociateProgramName();
+            var label = getBestAssociateProgramDescription(associateProgram, language);
+            var value = associateProgramDetail.getAssociateProgramName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultAssociateProgramChoice != null && defaultAssociateProgramChoice.equals(value);
+            var usingDefaultChoice = defaultAssociateProgramChoice != null && defaultAssociateProgramChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && associateProgramDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -652,9 +652,9 @@ public class AssociateControl
     public AssociateChoicesBean getAssociateChoices(AssociateProgram associateProgram, String defaultAssociateChoice,
             Language language, boolean allowNullChoice) {
         List<Associate> associates = getAssociates(associateProgram);
-        int size = associates.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = associates.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -669,13 +669,13 @@ public class AssociateControl
         for(var associate : associates) {
             AssociateDetail associateDetail = associate.getLastDetail();
             
-            String label = associateDetail.getDescription();
-            String value = associateDetail.getAssociateName();
+            var label = associateDetail.getDescription();
+            var value = associateDetail.getAssociateName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultAssociateChoice != null && defaultAssociateChoice.equals(value);
+            var usingDefaultChoice = defaultAssociateChoice != null && defaultAssociateChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null) {
                 defaultValue = value;
             }
@@ -960,9 +960,9 @@ public class AssociateControl
     public AssociatePartyContactMechanismChoicesBean getAssociatePartyContactMechanismChoices(Associate associate,
             String defaultAssociatePartyContactMechanismChoice, Language language, boolean allowNullChoice) {
         List<AssociatePartyContactMechanism> associatePartyContactMechanisms = getAssociatePartyContactMechanismsByAssociate(associate);
-        int size = associatePartyContactMechanisms.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = associatePartyContactMechanisms.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -977,13 +977,13 @@ public class AssociateControl
         for(var associatePartyContactMechanism : associatePartyContactMechanisms) {
             AssociatePartyContactMechanismDetail associatePartyContactMechanismDetail = associatePartyContactMechanism.getLastDetail();
             
-            String label = associatePartyContactMechanismDetail.getAssociatePartyContactMechanismName();
-            String value = label;
+            var label = associatePartyContactMechanismDetail.getAssociatePartyContactMechanismName();
+            var value = label;
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultAssociatePartyContactMechanismChoice != null && defaultAssociatePartyContactMechanismChoice.equals(value);
+            var usingDefaultChoice = defaultAssociatePartyContactMechanismChoice != null && defaultAssociatePartyContactMechanismChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && associatePartyContactMechanismDetail.getIsDefault())) {
                 defaultValue = value;
             }

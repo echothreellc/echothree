@@ -395,9 +395,9 @@ public class ContactListControl
 
     public ContactListTypeChoicesBean getContactListTypeChoices(String defaultContactListTypeChoice, Language language, boolean allowNullChoice) {
         List<ContactListType> contactListTypes = getContactListTypes();
-        int size = contactListTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = contactListTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -412,13 +412,13 @@ public class ContactListControl
         for(var contactListType : contactListTypes) {
             ContactListTypeDetail contactListTypeDetail = contactListType.getLastDetail();
 
-            String label = getBestContactListTypeDescription(contactListType, language);
-            String value = contactListTypeDetail.getContactListTypeName();
+            var label = getBestContactListTypeDescription(contactListType, language);
+            var value = contactListTypeDetail.getContactListTypeName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultContactListTypeChoice != null && defaultContactListTypeChoice.equals(value);
+            var usingDefaultChoice = defaultContactListTypeChoice != null && defaultContactListTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && contactListTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -828,9 +828,9 @@ public class ContactListControl
 
     public ContactListGroupChoicesBean getContactListGroupChoices(String defaultContactListGroupChoice, Language language, boolean allowNullChoice) {
         List<ContactListGroup> contactListGroups = getContactListGroups();
-        int size = contactListGroups.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = contactListGroups.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -845,13 +845,13 @@ public class ContactListControl
         for(var contactListGroup : contactListGroups) {
             ContactListGroupDetail contactListGroupDetail = contactListGroup.getLastDetail();
 
-            String label = getBestContactListGroupDescription(contactListGroup, language);
-            String value = contactListGroupDetail.getContactListGroupName();
+            var label = getBestContactListGroupDescription(contactListGroup, language);
+            var value = contactListGroupDetail.getContactListGroupName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultContactListGroupChoice != null && defaultContactListGroupChoice.equals(value);
+            var usingDefaultChoice = defaultContactListGroupChoice != null && defaultContactListGroupChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && contactListGroupDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1236,9 +1236,9 @@ public class ContactListControl
 
     public ContactListFrequencyChoicesBean getContactListFrequencyChoices(String defaultContactListFrequencyChoice, Language language, boolean allowNullChoice) {
         List<ContactListFrequency> contactListFrequencies = getContactListFrequencies();
-        int size = contactListFrequencies.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = contactListFrequencies.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -1253,13 +1253,13 @@ public class ContactListControl
         for(var contactListFrequency : contactListFrequencies) {
             ContactListFrequencyDetail contactListFrequencyDetail = contactListFrequency.getLastDetail();
 
-            String label = getBestContactListFrequencyDescription(contactListFrequency, language);
-            String value = contactListFrequencyDetail.getContactListFrequencyName();
+            var label = getBestContactListFrequencyDescription(contactListFrequency, language);
+            var value = contactListFrequencyDetail.getContactListFrequencyName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultContactListFrequencyChoice != null && defaultContactListFrequencyChoice.equals(value);
+            var usingDefaultChoice = defaultContactListFrequencyChoice != null && defaultContactListFrequencyChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && contactListFrequencyDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1774,9 +1774,9 @@ public class ContactListControl
 
     public ContactListChoicesBean getContactListChoices(String defaultContactListChoice, Language language, boolean allowNullChoice) {
         List<ContactList> contactLists = getContactLists();
-        int size = contactLists.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = contactLists.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -1791,13 +1791,13 @@ public class ContactListControl
         for(var contactList : contactLists) {
             ContactListDetail contactListDetail = contactList.getLastDetail();
 
-            String label = getBestContactListDescription(contactList, language);
-            String value = contactListDetail.getContactListName();
+            var label = getBestContactListDescription(contactList, language);
+            var value = contactListDetail.getContactListName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultContactListChoice != null && defaultContactListChoice.equals(value);
+            var usingDefaultChoice = defaultContactListChoice != null && defaultContactListChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && contactListDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -3263,9 +3263,9 @@ public class ContactListControl
             ContactList contactList) {
         var contactControl = Session.getModelController(ContactControl.class);
         List<ContactListContactMechanismPurpose> contactListContactMechanismPurposes = getContactListContactMechanismPurposesByContactList(contactList);
-        int size = contactListContactMechanismPurposes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = contactListContactMechanismPurposes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -3281,13 +3281,13 @@ public class ContactListControl
             ContactListContactMechanismPurposeDetail contactListContactMechanismPurposeDetail = contactListContactMechanismPurpose.getLastDetail();
             ContactMechanismPurpose contactMechanismPurpose = contactListContactMechanismPurposeDetail.getContactMechanismPurpose();
 
-            String label = contactControl.getBestContactMechanismPurposeDescription(contactMechanismPurpose, language);
-            String value = contactMechanismPurpose.getContactMechanismPurposeName();
+            var label = contactControl.getBestContactMechanismPurposeDescription(contactMechanismPurpose, language);
+            var value = contactMechanismPurpose.getContactMechanismPurposeName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultContactListContactMechanismPurposeChoice != null && defaultContactListContactMechanismPurposeChoice.equals(value);
+            var usingDefaultChoice = defaultContactListContactMechanismPurposeChoice != null && defaultContactListContactMechanismPurposeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && contactListContactMechanismPurposeDetail.getIsDefault())) {
                 defaultValue = value;
             }

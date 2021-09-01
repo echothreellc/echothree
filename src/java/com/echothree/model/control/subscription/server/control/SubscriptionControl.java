@@ -245,9 +245,9 @@ public class SubscriptionControl
 
     public SubscriptionKindChoicesBean getSubscriptionKindChoices(String defaultSubscriptionKindChoice, Language language, boolean allowNullChoice) {
         List<SubscriptionKind> subscriptionKinds = getSubscriptionKinds();
-        int size = subscriptionKinds.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = subscriptionKinds.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -262,13 +262,13 @@ public class SubscriptionControl
         for(var subscriptionKind : subscriptionKinds) {
             SubscriptionKindDetail subscriptionKindDetail = subscriptionKind.getLastDetail();
 
-            String label = getBestSubscriptionKindDescription(subscriptionKind, language);
-            String value = subscriptionKindDetail.getSubscriptionKindName();
+            var label = getBestSubscriptionKindDescription(subscriptionKind, language);
+            var value = subscriptionKindDetail.getSubscriptionKindName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultSubscriptionKindChoice != null && defaultSubscriptionKindChoice.equals(value);
+            var usingDefaultChoice = defaultSubscriptionKindChoice != null && defaultSubscriptionKindChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && subscriptionKindDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -685,9 +685,9 @@ public class SubscriptionControl
     public SubscriptionTypeChoicesBean getSubscriptionTypeChoices(String defaultSubscriptionTypeChoice, Language language,
             boolean allowNullChoice, SubscriptionKind subscriptionKind) {
         List<SubscriptionType> subscriptionTypes = getSubscriptionTypesBySubscriptionKind(subscriptionKind);
-        int size = subscriptionTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = subscriptionTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -697,13 +697,13 @@ public class SubscriptionControl
         
         for(var subscriptionType : subscriptionTypes) {
             SubscriptionTypeDetail subscriptionTypeDetail = subscriptionType.getLastDetail();
-            String label = getBestSubscriptionTypeDescription(subscriptionType, language);
-            String value = subscriptionTypeDetail.getSubscriptionTypeName();
+            var label = getBestSubscriptionTypeDescription(subscriptionType, language);
+            var value = subscriptionTypeDetail.getSubscriptionTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultSubscriptionTypeChoice != null && defaultSubscriptionTypeChoice.equals(value);
+            var usingDefaultChoice = defaultSubscriptionTypeChoice != null && defaultSubscriptionTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && subscriptionTypeDetail.getIsDefault()))
                 defaultValue = value;
         }

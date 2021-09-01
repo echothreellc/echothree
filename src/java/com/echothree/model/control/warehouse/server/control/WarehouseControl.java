@@ -321,9 +321,9 @@ public class WarehouseControl
     
     public WarehouseChoicesBean getWarehouseChoices(String defaultWarehouseChoice, boolean allowNullChoice) {
         List<Warehouse> partyCompanies = getWarehouses();
-        int size = partyCompanies.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = partyCompanies.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -338,13 +338,13 @@ public class WarehouseControl
         for(var warehouse : partyCompanies) {
             PartyGroup partyGroup = getPartyControl().getPartyGroup(warehouse.getParty());
 
-            String label = partyGroup.getName();
-            String value = warehouse.getWarehouseName();
+            var label = partyGroup.getName();
+            var value = warehouse.getWarehouseName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultWarehouseChoice != null && defaultWarehouseChoice.equals(value);
+            var usingDefaultChoice = defaultWarehouseChoice != null && defaultWarehouseChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && warehouse.getIsDefault())) {
                 defaultValue = value;
             }
@@ -380,7 +380,6 @@ public class WarehouseControl
             warehouse.setThruTime(session.START_TIME_LONG);
             warehouse.store();
             
-            Party party = warehouse.getParty();
             PartyPK partyPK = warehouse.getPartyPK();
             String warehouseName = warehouseValue.getWarehouseName();
             Boolean isDefault = warehouseValue.getIsDefault();
@@ -490,9 +489,9 @@ public class WarehouseControl
     public LocationUseTypeChoicesBean getLocationUseTypeChoices(String defaultLocationUseTypeChoice, Language language,
             boolean allowNullChoice) {
         List<LocationUseType> locationUseTypes = getLocationUseTypes();
-        int size = locationUseTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = locationUseTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -505,13 +504,13 @@ public class WarehouseControl
         }
         
         for(var locationUseType : locationUseTypes) {
-            String label = getBestLocationUseTypeDescription(locationUseType, language);
-            String value = locationUseType.getLocationUseTypeName();
+            var label = getBestLocationUseTypeDescription(locationUseType, language);
+            var value = locationUseType.getLocationUseTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultLocationUseTypeChoice != null && defaultLocationUseTypeChoice.equals(value);
+            var usingDefaultChoice = defaultLocationUseTypeChoice != null && defaultLocationUseTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && locationUseType.getIsDefault()))
                 defaultValue = value;
         }
@@ -741,9 +740,9 @@ public class WarehouseControl
     public LocationTypeChoicesBean getLocationTypeChoicesByWarehouseParty(String defaultLocationTypeChoice, Language language,
             boolean allowNullChoice, Party warehouseParty) {
         List<LocationType> locationTypes = getLocationTypesByWarehouseParty(warehouseParty);
-        int size = locationTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = locationTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         Iterator iter = locationTypes.iterator();
         
@@ -760,13 +759,13 @@ public class WarehouseControl
             LocationType locationType = (LocationType)iter.next();
             LocationTypeDetail locationTypeDetail = locationType.getLastDetail();
             
-            String label = getBestLocationTypeDescription(locationType, language);
-            String value = locationTypeDetail.getLocationTypeName();
+            var label = getBestLocationTypeDescription(locationType, language);
+            var value = locationTypeDetail.getLocationTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultLocationTypeChoice != null && defaultLocationTypeChoice.equals(value);
+            var usingDefaultChoice = defaultLocationTypeChoice != null && defaultLocationTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && locationTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1599,21 +1598,21 @@ public class WarehouseControl
     
     public LocationChoicesBean getLocationChoicesByWarehouseParty(String defaultLocationChoice, Language language, Party warehouseParty) {
         List<Location> locations = getLocationsByWarehouseParty(warehouseParty);
-        int size = locations.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = locations.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         for(var location : locations) {
             LocationDetail locationDetail = location.getLastDetail();
             
-            String label = getBestLocationDescription(location, language);
-            String value = locationDetail.getLocationName();
+            var label = getBestLocationDescription(location, language);
+            var value = locationDetail.getLocationName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultLocationChoice != null && defaultLocationChoice.equals(value);
+            var usingDefaultChoice = defaultLocationChoice != null && defaultLocationChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null)
                 defaultValue = value;
         }

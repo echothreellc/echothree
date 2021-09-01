@@ -1381,9 +1381,9 @@ public class UserControl
     public RecoveryQuestionChoicesBean getRecoveryQuestionChoices(String defaultRecoveryQuestionChoice, Language language,
             boolean allowNullChoice) {
         List<RecoveryQuestion> recoveryQuestions = getRecoveryQuestions();
-        int size = recoveryQuestions.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = recoveryQuestions.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -1393,13 +1393,13 @@ public class UserControl
         
         for(var recoveryQuestion : recoveryQuestions) {
             RecoveryQuestionDetail recoveryQuestionDetail = recoveryQuestion.getLastDetail();
-            String label = getBestRecoveryQuestionDescription(recoveryQuestion, language);
-            String value = recoveryQuestionDetail.getRecoveryQuestionName();
+            var label = getBestRecoveryQuestionDescription(recoveryQuestion, language);
+            var value = recoveryQuestionDetail.getRecoveryQuestionName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultRecoveryQuestionChoice != null && defaultRecoveryQuestionChoice.equals(value);
+            var usingDefaultChoice = defaultRecoveryQuestionChoice != null && defaultRecoveryQuestionChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && recoveryQuestionDetail.getIsDefault()))
                 defaultValue = value;
         }

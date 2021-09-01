@@ -368,9 +368,9 @@ public class AccountingControl
     
     public CurrencyChoicesBean getCurrencyChoices(String defaultCurrencyChoice, Language language, boolean allowNullChoice) {
         List<Currency> currencies = getCurrencies();
-        int size = currencies.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = currencies.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -383,13 +383,13 @@ public class AccountingControl
         }
         
         for(var currency : currencies) {
-            String label = getBestCurrencyDescription(currency, language);
-            String value = currency.getCurrencyIsoName();
+            var label = getBestCurrencyDescription(currency, language);
+            var value = currency.getCurrencyIsoName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultCurrencyChoice != null && defaultCurrencyChoice.equals(value);
+            var usingDefaultChoice = defaultCurrencyChoice != null && defaultCurrencyChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && currency.getIsDefault()))
                 defaultValue = value;
         }
@@ -714,9 +714,9 @@ public class AccountingControl
     public ItemAccountingCategoryChoicesBean getItemAccountingCategoryChoices(String defaultItemAccountingCategoryChoice,
             Language language, boolean allowNullChoice) {
         List<ItemAccountingCategory> itemAccountingCategories = getItemAccountingCategories();
-        int size = itemAccountingCategories.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = itemAccountingCategories.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -731,13 +731,13 @@ public class AccountingControl
         for(var itemAccountingCategory : itemAccountingCategories) {
             ItemAccountingCategoryDetail itemAccountingCategoryDetail = itemAccountingCategory.getLastDetail();
             
-            String label = getBestItemAccountingCategoryDescription(itemAccountingCategory, language);
-            String value = itemAccountingCategoryDetail.getItemAccountingCategoryName();
+            var label = getBestItemAccountingCategoryDescription(itemAccountingCategory, language);
+            var value = itemAccountingCategoryDetail.getItemAccountingCategoryName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultItemAccountingCategoryChoice != null && defaultItemAccountingCategoryChoice.equals(value);
+            var usingDefaultChoice = defaultItemAccountingCategoryChoice != null && defaultItemAccountingCategoryChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && itemAccountingCategoryDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1085,9 +1085,9 @@ public class AccountingControl
     
     public GlAccountTypeChoicesBean getGlAccountTypeChoices(String defaultGlAccountTypeChoice, Language language, boolean allowNullChoice) {
         List<GlAccountType> glAccountTypes = getGlAccountTypes();
-        int size = glAccountTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = glAccountTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -1100,13 +1100,13 @@ public class AccountingControl
         }
         
         for(var glAccountType : glAccountTypes) {
-            String label = getBestGlAccountTypeDescription(glAccountType, language);
-            String value = glAccountType.getGlAccountTypeName();
+            var label = getBestGlAccountTypeDescription(glAccountType, language);
+            var value = glAccountType.getGlAccountTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultGlAccountTypeChoice != null && defaultGlAccountTypeChoice.equals(value);
+            var usingDefaultChoice = defaultGlAccountTypeChoice != null && defaultGlAccountTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && glAccountType.getIsDefault()))
                 defaultValue = value;
         }
@@ -1366,9 +1366,9 @@ public class AccountingControl
     public GlAccountClassChoicesBean getGlAccountClassChoices(String defaultGlAccountClassChoice, Language language,
             boolean allowNullChoice) {
         List<GlAccountClass> glAccountClasses = getGlAccountClasses();
-        int size = glAccountClasses.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = glAccountClasses.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -1383,13 +1383,13 @@ public class AccountingControl
         for(var glAccountClass : glAccountClasses) {
             GlAccountClassDetail glAccountClassDetail = glAccountClass.getLastDetail();
             
-            String label = getBestGlAccountClassDescription(glAccountClass, language);
-            String value = glAccountClassDetail.getGlAccountClassName();
+            var label = getBestGlAccountClassDescription(glAccountClass, language);
+            var value = glAccountClassDetail.getGlAccountClassName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultGlAccountClassChoice != null && defaultGlAccountClassChoice.equals(value);
+            var usingDefaultChoice = defaultGlAccountClassChoice != null && defaultGlAccountClassChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && glAccountClassDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1872,9 +1872,9 @@ public class AccountingControl
     public GlAccountCategoryChoicesBean getGlAccountCategoryChoices(String defaultGlAccountCategoryChoice, Language language,
             boolean allowNullChoice) {
         List<GlAccountCategory> glAccountCategories = getGlAccountCategories();
-        int size = glAccountCategories.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = glAccountCategories.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -1889,13 +1889,13 @@ public class AccountingControl
         for(var glAccountCategory : glAccountCategories) {
             GlAccountCategoryDetail glAccountCategoryDetail = glAccountCategory.getLastDetail();
             
-            String label = getBestGlAccountCategoryDescription(glAccountCategory, language);
-            String value = glAccountCategoryDetail.getGlAccountCategoryName();
+            var label = getBestGlAccountCategoryDescription(glAccountCategory, language);
+            var value = glAccountCategoryDetail.getGlAccountCategoryName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultGlAccountCategoryChoice != null && defaultGlAccountCategoryChoice.equals(value);
+            var usingDefaultChoice = defaultGlAccountCategoryChoice != null && defaultGlAccountCategoryChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && glAccountCategoryDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2363,9 +2363,9 @@ public class AccountingControl
     public GlResourceTypeChoicesBean getGlResourceTypeChoices(String defaultGlResourceTypeChoice, Language language,
             boolean allowNullChoice) {
         List<GlResourceType> glResourceTypes = getGlResourceTypes();
-        int size = glResourceTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = glResourceTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -2380,13 +2380,13 @@ public class AccountingControl
         for(var glResourceType : glResourceTypes) {
             GlResourceTypeDetail glResourceTypeDetail = glResourceType.getLastDetail();
             
-            String label = getBestGlResourceTypeDescription(glResourceType, language);
-            String value = glResourceTypeDetail.getGlResourceTypeName();
+            var label = getBestGlResourceTypeDescription(glResourceType, language);
+            var value = glResourceTypeDetail.getGlResourceTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultGlResourceTypeChoice != null && defaultGlResourceTypeChoice.equals(value);
+            var usingDefaultChoice = defaultGlResourceTypeChoice != null && defaultGlResourceTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && glResourceTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2996,9 +2996,9 @@ public class AccountingControl
     
     public GlAccountChoicesBean getGlAccountChoices(String defaultGlAccountChoice, Language language, boolean allowNullChoice) {
         List<GlAccount> glAccounts = getGlAccounts();
-        int size = glAccounts.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = glAccounts.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -3013,13 +3013,13 @@ public class AccountingControl
         for(var glAccount : glAccounts) {
             GlAccountDetail glAccountDetail = glAccount.getLastDetail();
             
-            String label = getBestGlAccountDescription(glAccount, language);
-            String value = glAccountDetail.getGlAccountName();
+            var label = getBestGlAccountDescription(glAccount, language);
+            var value = glAccountDetail.getGlAccountName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultGlAccountChoice != null && defaultGlAccountChoice.equals(value);
+            var usingDefaultChoice = defaultGlAccountChoice != null && defaultGlAccountChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null) {
                 defaultValue = value;
             }
@@ -3031,9 +3031,9 @@ public class AccountingControl
     public GlAccountChoicesBean getGlAccountChoicesByGlAccountCategory(String defaultGlAccountChoice, Language language,
             GlAccountCategory glAccountCategory, boolean allowNullChoice) {
         List<GlAccount> glAccounts = getGlAccountsByGlAccountCategory(glAccountCategory);
-        int size = glAccounts.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = glAccounts.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -3048,13 +3048,13 @@ public class AccountingControl
         for(var glAccount : glAccounts) {
             GlAccountDetail glAccountDetail = glAccount.getLastDetail();
             
-            String label = getBestGlAccountDescription(glAccount, language);
-            String value = glAccountDetail.getGlAccountName();
+            var label = getBestGlAccountDescription(glAccount, language);
+            var value = glAccountDetail.getGlAccountName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultGlAccountChoice != null && defaultGlAccountChoice.equals(value);
+            var usingDefaultChoice = defaultGlAccountChoice != null && defaultGlAccountChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && glAccountDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -5463,9 +5463,9 @@ public class AccountingControl
     public SymbolPositionChoicesBean getSymbolPositionChoices(String defaultSymbolPositionChoice, Language language,
             boolean allowNullChoice) {
         List<SymbolPosition> symbolPositions = getSymbolPositions();
-        int size = symbolPositions.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = symbolPositions.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -5480,13 +5480,13 @@ public class AccountingControl
         for(var symbolPosition : symbolPositions) {
             SymbolPositionDetail symbolPositionDetail = symbolPosition.getLastDetail();
             
-            String label = getBestSymbolPositionDescription(symbolPosition, language);
-            String value = symbolPositionDetail.getSymbolPositionName();
+            var label = getBestSymbolPositionDescription(symbolPosition, language);
+            var value = symbolPositionDetail.getSymbolPositionName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultSymbolPositionChoice != null && defaultSymbolPositionChoice.equals(value);
+            var usingDefaultChoice = defaultSymbolPositionChoice != null && defaultSymbolPositionChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && symbolPositionDetail.getIsDefault())) {
                 defaultValue = value;
             }

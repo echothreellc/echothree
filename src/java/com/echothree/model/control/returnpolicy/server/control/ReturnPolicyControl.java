@@ -460,9 +460,9 @@ public class ReturnPolicyControl
     
     public ReturnKindChoicesBean getReturnKindChoices(String defaultReturnKindChoice, Language language, boolean allowNullChoice) {
         List<ReturnKind> returnKinds = getReturnKinds();
-        int size = returnKinds.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = returnKinds.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -477,13 +477,13 @@ public class ReturnPolicyControl
         for(var returnKind : returnKinds) {
             ReturnKindDetail returnKindDetail = returnKind.getLastDetail();
             
-            String label = getBestReturnKindDescription(returnKind, language);
-            String value = returnKindDetail.getReturnKindName();
+            var label = getBestReturnKindDescription(returnKind, language);
+            var value = returnKindDetail.getReturnKindName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultReturnKindChoice != null && defaultReturnKindChoice.equals(value);
+            var usingDefaultChoice = defaultReturnKindChoice != null && defaultReturnKindChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && returnKindDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -896,9 +896,9 @@ public class ReturnPolicyControl
     public ReturnPolicyChoicesBean getReturnPolicyChoices(String defaultReturnPolicyChoice, Language language,
             boolean allowNullChoice, ReturnKind returnKind) {
         List<ReturnPolicy> returnPolicies = getReturnPolicies(returnKind);
-        int size = returnPolicies.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = returnPolicies.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -915,13 +915,13 @@ public class ReturnPolicyControl
             String returnPolicyName = returnPolicyDetail.getReturnPolicyName();
             ReturnPolicyTranslation returnPolicyTranslation = getBestReturnPolicyTranslation(returnPolicy, language);
 
-            String label = returnPolicyTranslation == null ? returnPolicyName : returnPolicyTranslation.getDescription();
-            String value = returnPolicyName;
+            var label = returnPolicyTranslation == null ? returnPolicyName : returnPolicyTranslation.getDescription();
+            var value = returnPolicyName;
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultReturnPolicyChoice != null && defaultReturnPolicyChoice.equals(value);
+            var usingDefaultChoice = defaultReturnPolicyChoice != null && defaultReturnPolicyChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && returnPolicyDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1643,9 +1643,9 @@ public class ReturnPolicyControl
     public ReturnReasonChoicesBean getReturnReasonChoices(String defaultReturnReasonChoice, Language language,
             boolean allowNullChoice, ReturnKind returnKind) {
         List<ReturnReason> returnReasons = getReturnReasons(returnKind);
-        int size = returnReasons.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = returnReasons.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -1659,13 +1659,13 @@ public class ReturnPolicyControl
         
         for(var returnReason : returnReasons) {
             ReturnReasonDetail returnReasonDetail = returnReason.getLastDetail();
-            String label = getBestReturnReasonDescription(returnReason, language);
-            String value = returnReasonDetail.getReturnReasonName();
+            var label = getBestReturnReasonDescription(returnReason, language);
+            var value = returnReasonDetail.getReturnReasonName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultReturnReasonChoice != null && defaultReturnReasonChoice.equals(value);
+            var usingDefaultChoice = defaultReturnReasonChoice != null && defaultReturnReasonChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && returnReasonDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2386,9 +2386,9 @@ public class ReturnPolicyControl
     public ReturnTypeChoicesBean getReturnTypeChoices(String defaultReturnTypeChoice, Language language,
             boolean allowNullChoice, ReturnKind returnKind) {
         List<ReturnType> returnTypes = getReturnTypes(returnKind);
-        int size = returnTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = returnTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -2402,13 +2402,13 @@ public class ReturnPolicyControl
         
         for(var returnType : returnTypes) {
             ReturnTypeDetail returnTypeDetail = returnType.getLastDetail();
-            String label = getBestReturnTypeDescription(returnType, language);
-            String value = returnTypeDetail.getReturnTypeName();
+            var label = getBestReturnTypeDescription(returnType, language);
+            var value = returnTypeDetail.getReturnTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultReturnTypeChoice != null && defaultReturnTypeChoice.equals(value);
+            var usingDefaultChoice = defaultReturnTypeChoice != null && defaultReturnTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && returnTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

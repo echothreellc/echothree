@@ -216,9 +216,9 @@ public class OrderPriorityControl
     public OrderPriorityChoicesBean getOrderPriorityChoices(String defaultOrderPriorityChoice, Language language, boolean allowNullChoice,
             OrderType orderType) {
         List<OrderPriority> orderPriorities = getOrderPriorities(orderType);
-        int size = orderPriorities.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = orderPriorities.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -233,13 +233,13 @@ public class OrderPriorityControl
         for(var orderPriority : orderPriorities) {
             OrderPriorityDetail orderPriorityDetail = orderPriority.getLastDetail();
 
-            String label = getBestOrderPriorityDescription(orderPriority, language);
-            String value = orderPriorityDetail.getOrderPriorityName();
+            var label = getBestOrderPriorityDescription(orderPriority, language);
+            var value = orderPriorityDetail.getOrderPriorityName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultOrderPriorityChoice != null && defaultOrderPriorityChoice.equals(value);
+            var usingDefaultChoice = defaultOrderPriorityChoice != null && defaultOrderPriorityChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && orderPriorityDetail.getIsDefault())) {
                 defaultValue = value;
             }

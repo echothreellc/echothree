@@ -324,9 +324,9 @@ public class ChainControl
 
     public ChainKindChoicesBean getChainKindChoices(String defaultChainKindChoice, Language language, boolean allowNullChoice) {
         List<ChainKind> chainKinds = getChainKinds();
-        int size = chainKinds.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = chainKinds.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -341,13 +341,13 @@ public class ChainControl
         for(var chainKind : chainKinds) {
             ChainKindDetail chainKindDetail = chainKind.getLastDetail();
 
-            String label = getBestChainKindDescription(chainKind, language);
-            String value = chainKindDetail.getChainKindName();
+            var label = getBestChainKindDescription(chainKind, language);
+            var value = chainKindDetail.getChainKindName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultChainKindChoice != null && defaultChainKindChoice.equals(value);
+            var usingDefaultChoice = defaultChainKindChoice != null && defaultChainKindChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && chainKindDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -768,9 +768,9 @@ public class ChainControl
     public ChainTypeChoicesBean getChainTypeChoices(String defaultChainTypeChoice, Language language,
             boolean allowNullChoice, ChainKind chainKind) {
         List<ChainType> chainTypes = getChainTypesByChainKind(chainKind);
-        int size = chainTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = chainTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -784,13 +784,13 @@ public class ChainControl
 
         for(var chainType : chainTypes) {
             ChainTypeDetail chainTypeDetail = chainType.getLastDetail();
-            String label = getBestChainTypeDescription(chainType, language);
-            String value = chainTypeDetail.getChainTypeName();
+            var label = getBestChainTypeDescription(chainType, language);
+            var value = chainTypeDetail.getChainTypeName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultChainTypeChoice != null && defaultChainTypeChoice.equals(value);
+            var usingDefaultChoice = defaultChainTypeChoice != null && defaultChainTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && chainTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1535,9 +1535,9 @@ public class ChainControl
     public ChainChoicesBean getChainChoices(String defaultChainChoice, Language language,
             boolean allowNullChoice, ChainType chainType) {
         List<Chain> chains = getChainsByChainType(chainType);
-        int size = chains.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = chains.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -1551,13 +1551,13 @@ public class ChainControl
 
         for(var chain : chains) {
             ChainDetail chainDetail = chain.getLastDetail();
-            String label = getBestChainDescription(chain, language);
-            String value = chainDetail.getChainName();
+            var label = getBestChainDescription(chain, language);
+            var value = chainDetail.getChainName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultChainChoice != null && defaultChainChoice.equals(value);
+            var usingDefaultChoice = defaultChainChoice != null && defaultChainChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && chainDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1970,9 +1970,9 @@ public class ChainControl
 
     public ChainActionSetChoicesBean getChainActionSetChoices(String defaultChainActionSetChoice, Language language, boolean allowNullChoice, Chain chain) {
         List<ChainActionSet> chainActionSets = getChainActionSetsByChain(chain);
-        int size = chainActionSets.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = chainActionSets.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -1986,13 +1986,13 @@ public class ChainControl
 
         for(var chainActionSet : chainActionSets) {
             ChainActionSetDetail chainActionSetDetail = chainActionSet.getLastDetail();
-            String label = getBestChainActionSetDescription(chainActionSet, language);
-            String value = chainActionSetDetail.getChainActionSetName();
+            var label = getBestChainActionSetDescription(chainActionSet, language);
+            var value = chainActionSetDetail.getChainActionSetName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultChainActionSetChoice != null && defaultChainActionSetChoice.equals(value);
+            var usingDefaultChoice = defaultChainActionSetChoice != null && defaultChainActionSetChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && chainActionSetDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2389,9 +2389,9 @@ public class ChainControl
 
     public ChainActionTypeChoicesBean getChainActionTypeChoices(String defaultChainActionTypeChoice, Language language, boolean allowNullChoice) {
         List<ChainActionType> chainActionTypes = getChainActionTypes();
-        int size = chainActionTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = chainActionTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -2406,13 +2406,13 @@ public class ChainControl
         for(var chainActionType : chainActionTypes) {
             ChainActionTypeDetail chainActionTypeDetail = chainActionType.getLastDetail();
 
-            String label = getBestChainActionTypeDescription(chainActionType, language);
-            String value = chainActionTypeDetail.getChainActionTypeName();
+            var label = getBestChainActionTypeDescription(chainActionType, language);
+            var value = chainActionTypeDetail.getChainActionTypeName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultChainActionTypeChoice != null && defaultChainActionTypeChoice.equals(value);
+            var usingDefaultChoice = defaultChainActionTypeChoice != null && defaultChainActionTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && chainActionTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

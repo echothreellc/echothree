@@ -283,9 +283,9 @@ public class WorkflowControl
     public WorkflowTypeChoicesBean getWorkflowTypeChoices(String defaultWorkflowTypeChoice,
             Language language, boolean allowNullChoice) {
         List<WorkflowType> workflowTypes = getWorkflowTypes();
-        int size = workflowTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = workflowTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -298,13 +298,13 @@ public class WorkflowControl
         }
         
         for(var workflowType : workflowTypes) {
-            String label = getBestWorkflowTypeDescription(workflowType, language);
-            String value = workflowType.getWorkflowTypeName();
+            var label = getBestWorkflowTypeDescription(workflowType, language);
+            var value = workflowType.getWorkflowTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultWorkflowTypeChoice != null && defaultWorkflowTypeChoice.equals(value);
+            var usingDefaultChoice = defaultWorkflowTypeChoice != null && defaultWorkflowTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && workflowType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -445,9 +445,9 @@ public class WorkflowControl
     public WorkflowStepTypeChoicesBean getWorkflowStepTypeChoices(String defaultWorkflowStepTypeChoice,
             Language language, boolean allowNullChoice) {
         List<WorkflowStepType> workflowStepTypes = getWorkflowStepTypes();
-        int size = workflowStepTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = workflowStepTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -460,13 +460,13 @@ public class WorkflowControl
         }
         
         for(var workflowStepType : workflowStepTypes) {
-            String label = getBestWorkflowStepTypeDescription(workflowStepType, language);
-            String value = workflowStepType.getWorkflowStepTypeName();
+            var label = getBestWorkflowStepTypeDescription(workflowStepType, language);
+            var value = workflowStepType.getWorkflowStepTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultWorkflowStepTypeChoice != null && defaultWorkflowStepTypeChoice.equals(value);
+            var usingDefaultChoice = defaultWorkflowStepTypeChoice != null && defaultWorkflowStepTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && workflowStepType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -960,9 +960,9 @@ public class WorkflowControl
     public BaseWorkflowChoicesBean getWorkflowStepChoices(BaseWorkflowChoicesBean baseWorkflowChoicesBean,
             String defaultWorkflowStepChoice, Language language, boolean allowNullChoice, Workflow workflow) {
         List<WorkflowStep> workflowSteps = getWorkflowStepsByWorkflow(workflow);
-        int size = workflowSteps.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = workflowSteps.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -977,13 +977,13 @@ public class WorkflowControl
         for(var workflowStep : workflowSteps) {
             WorkflowStepDetail workflowStepDetail = workflowStep.getLastDetail();
             
-            String label = getBestWorkflowStepDescription(workflowStep, language);
-            String value = workflowStepDetail.getWorkflowStepName();
+            var label = getBestWorkflowStepDescription(workflowStep, language);
+            var value = workflowStepDetail.getWorkflowStepName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultWorkflowStepChoice != null && defaultWorkflowStepChoice.equals(value);
+            var usingDefaultChoice = defaultWorkflowStepChoice != null && defaultWorkflowStepChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && workflowStepDetail.getIsDefault()))
                 defaultValue = value;
         }
@@ -1605,9 +1605,9 @@ public class WorkflowControl
             Workflow workflow, PartyPK partyPK) {
         WorkflowSecurityLogic workflowSecurityLogic = WorkflowSecurityLogic.getInstance();
         List<WorkflowEntrance> workflowEntrances = getWorkflowEntrancesByWorkflow(workflow);
-        int size = workflowEntrances.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = workflowEntrances.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -1623,8 +1623,8 @@ public class WorkflowControl
             if(workflowSecurityLogic.checkWorkflowEntranceAvailable(workflowEntrance, partyPK)) {
                 WorkflowEntranceDetail workflowEntranceDetail = workflowEntrance.getLastDetail();
 
-                String label = getBestWorkflowEntranceDescription(workflowEntrance, language);
-                String value = workflowEntranceDetail.getWorkflowEntranceName();
+                var label = getBestWorkflowEntranceDescription(workflowEntrance, language);
+                var value = workflowEntranceDetail.getWorkflowEntranceName();
 
                 labels.add(label == null? value: label);
                 values.add(value);
@@ -2718,9 +2718,9 @@ public class WorkflowControl
             Language language, boolean allowNullChoice, WorkflowStep workflowStep, PartyPK partyPK) {
         WorkflowSecurityLogic workflowSecurityLogic = WorkflowSecurityLogic.getInstance();
         List<WorkflowDestination> workflowDestinations = getWorkflowDestinationsByWorkflowStep(workflowStep);
-        int size = workflowDestinations.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = workflowDestinations.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -2736,8 +2736,8 @@ public class WorkflowControl
             if(workflowSecurityLogic.checkWorkflowDestinationAvailable(workflowDestination, partyPK)) {
                 WorkflowDestinationDetail workflowDestinationDetail = workflowDestination.getLastDetail();
 
-                String label = getBestWorkflowDestinationDescription(workflowDestination, language);
-                String value = workflowDestinationDetail.getWorkflowDestinationName();
+                var label = getBestWorkflowDestinationDescription(workflowDestination, language);
+                var value = workflowDestinationDetail.getWorkflowDestinationName();
 
                 labels.add(label == null? value: label);
                 values.add(value);

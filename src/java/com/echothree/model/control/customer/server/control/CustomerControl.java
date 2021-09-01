@@ -283,9 +283,9 @@ public class CustomerControl
     public CustomerTypeChoicesBean getCustomerTypeChoices(String defaultCustomerTypeChoice, Language language,
             boolean allowNullChoice) {
         List<CustomerType> customerTypes = getCustomerTypes();
-        int size = customerTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = customerTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -299,13 +299,13 @@ public class CustomerControl
         
         for(var customerType : customerTypes) {
             CustomerTypeDetail customerTypeDetail = customerType.getLastDetail();
-            String label = getBestCustomerTypeDescription(customerType, language);
-            String value = customerTypeDetail.getCustomerTypeName();
+            var label = getBestCustomerTypeDescription(customerType, language);
+            var value = customerTypeDetail.getCustomerTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultCustomerTypeChoice != null && defaultCustomerTypeChoice.equals(value);
+            var usingDefaultChoice = defaultCustomerTypeChoice != null && defaultCustomerTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && customerTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

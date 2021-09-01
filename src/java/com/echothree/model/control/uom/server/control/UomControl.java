@@ -329,9 +329,9 @@ public class UomControl
     
     private UnitOfMeasureKindChoicesBean getUnitOfMeasureKindChoices(final String defaultUnitOfMeasureKindChoice,
             final Language language, final boolean allowNullChoice, final List<UnitOfMeasureKind> unitOfMeasureKinds) {
-        int size = unitOfMeasureKinds.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = unitOfMeasureKinds.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -346,13 +346,13 @@ public class UomControl
         for(var unitOfMeasureKind : unitOfMeasureKinds) {
             UnitOfMeasureKindDetail unitOfMeasureKindDetail = unitOfMeasureKind.getLastDetail();
             
-            String label = getBestUnitOfMeasureKindDescription(unitOfMeasureKind, language);
-            String value = unitOfMeasureKindDetail.getUnitOfMeasureKindName();
+            var label = getBestUnitOfMeasureKindDescription(unitOfMeasureKind, language);
+            var value = unitOfMeasureKindDetail.getUnitOfMeasureKindName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultUnitOfMeasureKindChoice != null && defaultUnitOfMeasureKindChoice.equals(value);
+            var usingDefaultChoice = defaultUnitOfMeasureKindChoice != null && defaultUnitOfMeasureKindChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && unitOfMeasureKindDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -389,8 +389,8 @@ public class UomControl
                     uomtDescription = uomtName;
                 }
                 
-                String label = new StringBuilder(uomkDescription).append(", ").append(uomtDescription).toString();
-                String value = new StringBuilder(uomkName).append(':').append(uomtName).toString();
+                var label = new StringBuilder(uomkDescription).append(", ").append(uomtDescription).toString();
+                var value = new StringBuilder(uomkName).append(':').append(uomtName).toString();
                 
                 labels.add(label == null? value: label);
                 values.add(value);
@@ -861,9 +861,9 @@ public class UomControl
     public UnitOfMeasureTypeChoicesBean getUnitOfMeasureTypeChoices(String defaultUnitOfMeasureTypeChoice, Language language,
             boolean allowNullChoice, UnitOfMeasureKind unitOfMeasureKind) {
         List<UnitOfMeasureType> unitOfMeasureTypes = getUnitOfMeasureTypesByUnitOfMeasureKind(unitOfMeasureKind);
-        int size = unitOfMeasureTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = unitOfMeasureTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -878,13 +878,13 @@ public class UomControl
         for(var unitOfMeasureType : unitOfMeasureTypes) {
             UnitOfMeasureTypeDetail unitOfMeasureTypeDetail = unitOfMeasureType.getLastDetail();
             
-            String label = getBestSingularUnitOfMeasureTypeDescription(unitOfMeasureType, language);
-            String value = unitOfMeasureTypeDetail.getUnitOfMeasureTypeName();
+            var label = getBestSingularUnitOfMeasureTypeDescription(unitOfMeasureType, language);
+            var value = unitOfMeasureTypeDetail.getUnitOfMeasureTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultUnitOfMeasureTypeChoice != null && defaultUnitOfMeasureTypeChoice.equals(value);
+            var usingDefaultChoice = defaultUnitOfMeasureTypeChoice != null && defaultUnitOfMeasureTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && unitOfMeasureTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1727,9 +1727,9 @@ public class UomControl
     public UnitOfMeasureKindUseTypeChoicesBean getUnitOfMeasureKindUseTypeChoices(String defaultUnitOfMeasureKindUseTypeChoice,
             Language language, boolean allowNullChoice) {
         List<UnitOfMeasureKindUseType> unitOfMeasureKindUseTypes = getUnitOfMeasureKindUseTypes();
-        int size = unitOfMeasureKindUseTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = unitOfMeasureKindUseTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -1742,13 +1742,13 @@ public class UomControl
         }
         
         for(var unitOfMeasureKindUseType : unitOfMeasureKindUseTypes) {
-            String label = getBestUnitOfMeasureKindUseTypeDescription(unitOfMeasureKindUseType, language);
-            String value = unitOfMeasureKindUseType.getUnitOfMeasureKindUseTypeName();
+            var label = getBestUnitOfMeasureKindUseTypeDescription(unitOfMeasureKindUseType, language);
+            var value = unitOfMeasureKindUseType.getUnitOfMeasureKindUseTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultUnitOfMeasureKindUseTypeChoice != null && defaultUnitOfMeasureKindUseTypeChoice.equals(value);
+            var usingDefaultChoice = defaultUnitOfMeasureKindUseTypeChoice != null && defaultUnitOfMeasureKindUseTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && unitOfMeasureKindUseType.getIsDefault()))
                 defaultValue = value;
         }

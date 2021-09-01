@@ -316,9 +316,9 @@ public class IndexControl
 
     public IndexTypeChoicesBean getIndexTypeChoices(String defaultIndexTypeChoice, Language language, boolean allowNullChoice) {
         List<IndexType> indexTypes = getIndexTypes();
-        int size = indexTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = indexTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -333,13 +333,13 @@ public class IndexControl
         for(var indexType : indexTypes) {
             IndexTypeDetail indexTypeDetail = indexType.getLastDetail();
 
-            String label = getBestIndexTypeDescription(indexType, language);
-            String value = indexTypeDetail.getIndexTypeName();
+            var label = getBestIndexTypeDescription(indexType, language);
+            var value = indexTypeDetail.getIndexTypeName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultIndexTypeChoice != null && defaultIndexTypeChoice.equals(value);
+            var usingDefaultChoice = defaultIndexTypeChoice != null && defaultIndexTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && indexTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -734,9 +734,9 @@ public class IndexControl
 
     public IndexFieldChoicesBean getIndexFieldChoices(String defaultIndexFieldChoice, Language language, boolean allowNullChoice, IndexType indexType) {
         List<IndexField> indexFields = getIndexFields(indexType);
-        int size = indexFields.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = indexFields.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -750,13 +750,13 @@ public class IndexControl
 
         for(var indexField : indexFields) {
             IndexFieldDetail indexFieldDetail = indexField.getLastDetail();
-            String label = getBestIndexFieldDescription(indexField, language);
-            String value = indexFieldDetail.getIndexFieldName();
+            var label = getBestIndexFieldDescription(indexField, language);
+            var value = indexFieldDetail.getIndexFieldName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultIndexFieldChoice != null && defaultIndexFieldChoice.equals(value);
+            var usingDefaultChoice = defaultIndexFieldChoice != null && defaultIndexFieldChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && indexFieldDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1302,9 +1302,9 @@ public class IndexControl
 
     public IndexChoicesBean getIndexChoices(String defaultIndexChoice, Language language, boolean allowNullChoice) {
         List<Index> indexes = getIndexes();
-        int size = indexes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = indexes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -1319,13 +1319,13 @@ public class IndexControl
         for(var index : indexes) {
             IndexDetail indexDetail = index.getLastDetail();
 
-            String label = getBestIndexDescription(index, language);
-            String value = indexDetail.getIndexName();
+            var label = getBestIndexDescription(index, language);
+            var value = indexDetail.getIndexName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultIndexChoice != null && defaultIndexChoice.equals(value);
+            var usingDefaultChoice = defaultIndexChoice != null && defaultIndexChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && indexDetail.getIsDefault())) {
                 defaultValue = value;
             }

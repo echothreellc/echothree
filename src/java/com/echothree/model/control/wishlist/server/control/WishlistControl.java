@@ -251,9 +251,9 @@ public class WishlistControl
     public WishlistTypeChoicesBean getWishlistTypeChoices(String defaultWishlistTypeChoice, Language language,
             boolean allowNullChoice) {
         List<WishlistType> wishlistTypes = getWishlistTypes();
-        int size = wishlistTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = wishlistTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -267,13 +267,13 @@ public class WishlistControl
         
         for(var wishlistType : wishlistTypes) {
             WishlistTypeDetail wishlistTypeDetail = wishlistType.getLastDetail();
-            String label = getBestWishlistTypeDescription(wishlistType, language);
-            String value = wishlistTypeDetail.getWishlistTypeName();
+            var label = getBestWishlistTypeDescription(wishlistType, language);
+            var value = wishlistTypeDetail.getWishlistTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultWishlistTypeChoice != null && defaultWishlistTypeChoice.equals(value);
+            var usingDefaultChoice = defaultWishlistTypeChoice != null && defaultWishlistTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && wishlistTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -711,9 +711,9 @@ public class WishlistControl
     public WishlistTypePriorityChoicesBean getWishlistTypePriorityChoices(String defaultWishlistTypePriorityChoice, Language language,
             boolean allowNullChoice, WishlistType wishlistType) {
         List<WishlistTypePriority> wishlistTypePriorities = getWishlistTypePriorities(wishlistType);
-        int size = wishlistTypePriorities.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = wishlistTypePriorities.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -727,13 +727,13 @@ public class WishlistControl
         
         for(var wishlistTypePriority : wishlistTypePriorities) {
             WishlistTypePriorityDetail wishlistTypePriorityDetail = wishlistTypePriority.getLastDetail();
-            String label = getBestWishlistTypePriorityDescription(wishlistTypePriority, language);
-            String value = wishlistTypePriorityDetail.getWishlistTypePriorityName();
+            var label = getBestWishlistTypePriorityDescription(wishlistTypePriority, language);
+            var value = wishlistTypePriorityDetail.getWishlistTypePriorityName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultWishlistTypePriorityChoice != null && defaultWishlistTypePriorityChoice.equals(value);
+            var usingDefaultChoice = defaultWishlistTypePriorityChoice != null && defaultWishlistTypePriorityChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && wishlistTypePriorityDetail.getIsDefault())) {
                 defaultValue = value;
             }
