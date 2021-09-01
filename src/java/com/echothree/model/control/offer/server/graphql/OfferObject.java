@@ -91,9 +91,13 @@ public class OfferObject
     @GraphQLField
     @GraphQLDescription("offer item price filter")
     public FilterObject getOfferItemPriceFilter(final DataFetchingEnvironment env) {
-        var offerItemPriceFilter = getOfferDetail().getOfferItemPriceFilter();
+        if(FilterSecurityUtils.getInstance().getHasFilterAccess(env)) {
+            var offerItemPriceFilter = getOfferDetail().getOfferItemPriceFilter();
 
-        return FilterSecurityUtils.getInstance().getHasFilterAccess(env) ? new FilterObject(offerItemPriceFilter) : null;
+            return offerItemPriceFilter == null ? null : new FilterObject(offerItemPriceFilter);
+        } else {
+            return null;
+        }
     }
 
 
