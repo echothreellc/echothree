@@ -126,6 +126,22 @@ public class OfferControl
                 "WHERE ofr_activedetailid = ofrdt_offerdetailid");
     }
 
+    public long countOffersBySalesOrderSequence(Sequence sequence) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM offers, offerdetails " +
+                "WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_salesordersequenceid = ?",
+                sequence);
+    }
+
+    public long countOffersByDepartmentParty(Party departmentParty) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM offers, offerdetails " +
+                "WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_departmentpartyid = ?",
+                departmentParty);
+    }
+
     public long countOffersBySelector(Selector selector) {
         return session.queryForLong(
                 "SELECT COUNT(*) " +
@@ -233,27 +249,48 @@ public class OfferControl
     public OfferDetailValue getOfferDetailValueByNameForUpdate(String offerName) {
         return getOfferDetailValueForUpdate(getOfferByNameForUpdate(offerName));
     }
-    
+
+    public List<Offer> getOffersByDepartmentParty(Party departmentParty) {
+        List<Offer> offers;
+
+        try {
+            PreparedStatement ps = OfferFactory.getInstance().prepareStatement(
+                    "SELECT _ALL_ " +
+                    "FROM offers, offerdetails " +
+                    "WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_departmentpartyid = ? " +
+                    "ORDER BY ofrdt_sortorder, ofrdt_offername " +
+                    "_LIMIT_");
+
+            ps.setLong(1, departmentParty.getPrimaryKey().getEntityId());
+
+            offers = OfferFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return offers;
+    }
+
     public List<Offer> getOffersByOfferItemSelector(Selector offerItemSelector) {
         List<Offer> offers;
-        
+
         try {
             PreparedStatement ps = OfferFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM offers, offerdetails " +
                     "WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_offeritemselectorid = ? " +
                     "ORDER BY ofrdt_sortorder, ofrdt_offername");
-            
+
             ps.setLong(1, offerItemSelector.getPrimaryKey().getEntityId());
-            
+
             offers = OfferFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
-        
+
         return offers;
     }
-    
+
     private List<Offer> getOffers(EntityPermission entityPermission) {
         PreparedStatement ps = OfferFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ "

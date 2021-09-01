@@ -16,9 +16,14 @@
 
 package com.echothree.model.control.offer.server.graphql;
 
+import com.echothree.model.control.filter.server.graphql.FilterObject;
+import com.echothree.model.control.filter.server.graphql.FilterSecurityUtils;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.party.server.graphql.CompanyObject;
+import com.echothree.model.control.party.server.graphql.DepartmentObject;
+import com.echothree.model.control.party.server.graphql.PartySecurityUtils;
 import com.echothree.model.control.sequence.server.graphql.SequenceObject;
 import com.echothree.model.control.sequence.server.graphql.SequenceSecurityUtils;
 import com.echothree.model.control.user.server.control.UserControl;
@@ -73,11 +78,24 @@ public class OfferObject
         }
     }
 
-    // TODO: DepartmentParty
+    @GraphQLField
+    @GraphQLDescription("department")
+    public DepartmentObject getDepartment(final DataFetchingEnvironment env) {
+        var departmentParty = getOfferDetail().getDepartmentParty();
+
+        return PartySecurityUtils.getInstance().getHasPartyAccess(env, departmentParty) ? new DepartmentObject(departmentParty) : null;
+    }
 
     // TODO: OfferItemSelector
 
-    // TODO: OfferItemPriceFilter
+    @GraphQLField
+    @GraphQLDescription("offer item price filter")
+    public FilterObject getOfferItemPriceFilter(final DataFetchingEnvironment env) {
+        var offerItemPriceFilter = getOfferDetail().getOfferItemPriceFilter();
+
+        return FilterSecurityUtils.getInstance().getHasFilterAccess(env) ? new FilterObject(offerItemPriceFilter) : null;
+    }
+
 
     @GraphQLField
     @GraphQLDescription("is default")
