@@ -16,6 +16,12 @@
 
 package com.echothree.model.control.party.server.graphql;
 
+import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.item.server.graphql.ItemObject;
+import com.echothree.model.control.item.server.graphql.ItemSecurityUtils;
+import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.graphql.OfferObject;
+import com.echothree.model.control.offer.server.graphql.OfferSecurityUtils;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyDepartment;
@@ -25,6 +31,9 @@ import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("department object")
 @GraphQLName("Department")
@@ -54,7 +63,6 @@ public class DepartmentObject
     }
     @GraphQLField
     @GraphQLDescription("division")
-    @GraphQLNonNull
     public DivisionObject getDivision(final DataFetchingEnvironment env) {
         var divisionParty = getPartyDepartment().getDivisionParty();
 
@@ -80,6 +88,31 @@ public class DepartmentObject
     @GraphQLNonNull
     public int getSortOrder() {
         return getPartyDepartment().getSortOrder();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("offers")
+    public List<OfferObject> getOffers(final DataFetchingEnvironment env) {
+        if(OfferSecurityUtils.getInstance().getHasOffersAccess(env)) {
+            var offerControl = Session.getModelController(OfferControl.class);
+            var entities = offerControl.getOffersByDepartmentParty(party);
+
+            return entities.stream().map(OfferObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+        } else {
+            return null;
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("offer count")
+    public Long getOfferCount(final DataFetchingEnvironment env) {
+        if(OfferSecurityUtils.getInstance().getHasOffersAccess(env)) {
+            var offerControl = Session.getModelController(OfferControl.class);
+
+            return offerControl.countOffersByDepartmentParty(party);
+        } else {
+            return null;
+        }
     }
 
 }
