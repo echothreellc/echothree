@@ -322,9 +322,9 @@ public class CarrierControl
 
     public CarrierTypeChoicesBean getCarrierTypeChoices(String defaultCarrierTypeChoice, Language language, boolean allowNullChoice) {
         List<CarrierType> carrierTypes = getCarrierTypes();
-        int size = carrierTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = carrierTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -339,13 +339,13 @@ public class CarrierControl
         for(var carrierType : carrierTypes) {
             CarrierTypeDetail carrierTypeDetail = carrierType.getLastDetail();
 
-            String label = getBestCarrierTypeDescription(carrierType, language);
-            String value = carrierTypeDetail.getCarrierTypeName();
+            var label = getBestCarrierTypeDescription(carrierType, language);
+            var value = carrierTypeDetail.getCarrierTypeName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultCarrierTypeChoice != null && defaultCarrierTypeChoice.equals(value);
+            var usingDefaultChoice = defaultCarrierTypeChoice != null && defaultCarrierTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && carrierTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -791,9 +791,9 @@ public class CarrierControl
     
     public CarrierChoicesBean getCarrierChoices(String defaultCarrierChoice, Language language, boolean allowNullChoice) {
         List<Carrier> carriers = getCarriers();
-        int size = carriers.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = carriers.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -808,13 +808,13 @@ public class CarrierControl
         for(var carrier : carriers) {
             PartyGroup partyGroup = getPartyControl().getPartyGroup(carrier.getParty());
 
-            String label = partyGroup.getName();
-            String value = carrier.getCarrierName();
+            var label = partyGroup.getName();
+            var value = carrier.getCarrierName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultCarrierChoice != null && defaultCarrierChoice.equals(value);
+            var usingDefaultChoice = defaultCarrierChoice != null && defaultCarrierChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && carrier.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1068,9 +1068,9 @@ public class CarrierControl
     public CarrierServiceChoicesBean getCarrierServiceChoices(String defaultCarrierServiceChoice, Language language,
             boolean allowNullChoice, Party carrierParty) {
         List<CarrierService> carrierPartyPriorities = getCarrierServices(carrierParty);
-        int size = carrierPartyPriorities.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = carrierPartyPriorities.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -1084,13 +1084,13 @@ public class CarrierControl
         
         for(var carrierService : carrierPartyPriorities) {
             CarrierServiceDetail carrierServiceDetail = carrierService.getLastDetail();
-            String label = getBestCarrierServiceDescription(carrierService, language);
-            String value = carrierServiceDetail.getCarrierServiceName();
+            var label = getBestCarrierServiceDescription(carrierService, language);
+            var value = carrierServiceDetail.getCarrierServiceName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultCarrierServiceChoice != null && defaultCarrierServiceChoice.equals(value);
+            var usingDefaultChoice = defaultCarrierServiceChoice != null && defaultCarrierServiceChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && carrierServiceDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1552,9 +1552,9 @@ public class CarrierControl
     public CarrierOptionChoicesBean getCarrierOptionChoices(String defaultCarrierOptionChoice, Language language,
             boolean allowNullChoice, Party carrierParty) {
         List<CarrierOption> carrierPartyPriorities = getCarrierOptions(carrierParty);
-        int size = carrierPartyPriorities.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = carrierPartyPriorities.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -1568,13 +1568,13 @@ public class CarrierControl
         
         for(var carrierOption : carrierPartyPriorities) {
             CarrierOptionDetail carrierOptionDetail = carrierOption.getLastDetail();
-            String label = getBestCarrierOptionDescription(carrierOption, language);
-            String value = carrierOptionDetail.getCarrierOptionName();
+            var label = getBestCarrierOptionDescription(carrierOption, language);
+            var value = carrierOptionDetail.getCarrierOptionName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultCarrierOptionChoice != null && defaultCarrierOptionChoice.equals(value);
+            var usingDefaultChoice = defaultCarrierOptionChoice != null && defaultCarrierOptionChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && carrierOptionDetail.getIsDefault())) {
                 defaultValue = value;
             }

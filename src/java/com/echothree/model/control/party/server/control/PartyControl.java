@@ -115,10 +115,8 @@ import com.echothree.model.data.party.common.pk.DateTimeFormatPK;
 import com.echothree.model.data.party.common.pk.GenderPK;
 import com.echothree.model.data.party.common.pk.LanguagePK;
 import com.echothree.model.data.party.common.pk.MoodPK;
-import com.echothree.model.data.party.common.pk.NameSuffixDetailPK;
 import com.echothree.model.data.party.common.pk.NameSuffixPK;
 import com.echothree.model.data.party.common.pk.PartyAliasTypePK;
-import com.echothree.model.data.party.common.pk.PartyDetailPK;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.common.pk.PartyTypeAuditPolicyPK;
 import com.echothree.model.data.party.common.pk.PartyTypeLockoutPolicyPK;
@@ -126,7 +124,6 @@ import com.echothree.model.data.party.common.pk.PartyTypePK;
 import com.echothree.model.data.party.common.pk.PartyTypePasswordStringPolicyPK;
 import com.echothree.model.data.party.common.pk.PersonalTitleDetailPK;
 import com.echothree.model.data.party.common.pk.PersonalTitlePK;
-import com.echothree.model.data.party.common.pk.TimeZoneDetailPK;
 import com.echothree.model.data.party.common.pk.TimeZonePK;
 import com.echothree.model.data.party.server.entity.BirthdayFormat;
 import com.echothree.model.data.party.server.entity.BirthdayFormatDescription;
@@ -374,9 +371,9 @@ public class PartyControl
     
     public LanguageChoicesBean getLanguageChoices(String defaultLanguageChoice, Language descriptionLanguage, boolean allowNullChoice) {
         List<Language> languages = getLanguages();
-        int size = languages.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = languages.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -389,13 +386,13 @@ public class PartyControl
         }
         
         for(var language : languages) {
-            String label = getBestLanguageDescription(language, descriptionLanguage);
-            String value = language.getLanguageIsoName();
+            var label = getBestLanguageDescription(language, descriptionLanguage);
+            var value = language.getLanguageIsoName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultLanguageChoice != null && defaultLanguageChoice.equals(value);
+            var usingDefaultChoice = defaultLanguageChoice != null && defaultLanguageChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && language.getIsDefault())) {
                 defaultValue = value;
             }
@@ -514,9 +511,9 @@ public class PartyControl
     
     public PartyTypeChoicesBean getPartyTypeChoices(String defaultPartyTypeChoice, Language language, boolean allowNullChoice) {
         List<PartyType> partyTypes = getPartyTypes();
-        int size = partyTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = partyTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -525,13 +522,13 @@ public class PartyControl
         }
         
         for(var partyType : partyTypes) {
-            String label = getBestPartyTypeDescription(partyType, language);
-            String value = partyType.getPartyTypeName();
+            var label = getBestPartyTypeDescription(partyType, language);
+            var value = partyType.getPartyTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultPartyTypeChoice != null && defaultPartyTypeChoice.equals(value);
+            var usingDefaultChoice = defaultPartyTypeChoice != null && defaultPartyTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && partyType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -812,9 +809,9 @@ public class PartyControl
     
     public PersonalTitleChoicesBean getPersonalTitleChoices(String defaultPersonalTitleChoice, boolean allowNullChoice) {
         List<PersonalTitleDetail> personalTitleDetails = getPersonalTitleDetails();
-        int size = personalTitleDetails.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = personalTitleDetails.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -827,13 +824,13 @@ public class PartyControl
         }
         
         for(var personalTitleDetail : personalTitleDetails) {
-            String label = personalTitleDetail.getDescription();
-            String value = personalTitleDetail.getPersonalTitlePK().getEntityId().toString();
+            var label = personalTitleDetail.getDescription();
+            var value = personalTitleDetail.getPersonalTitlePK().getEntityId().toString();
             
             labels.add(label == null? "": label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultPersonalTitleChoice != null && defaultPersonalTitleChoice.equals(value);
+            var usingDefaultChoice = defaultPersonalTitleChoice != null && defaultPersonalTitleChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && personalTitleDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1061,9 +1058,9 @@ public class PartyControl
     
     public NameSuffixChoicesBean getNameSuffixChoices(String defaultNameSuffixChoice, boolean allowNullChoice) {
         List<NameSuffixDetail> nameSuffixDetails = getNameSuffixDetails();
-        int size = nameSuffixDetails.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = nameSuffixDetails.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -1076,13 +1073,13 @@ public class PartyControl
         }
         
         for(var nameSuffixDetail : nameSuffixDetails) {
-            String label = nameSuffixDetail.getDescription();
-            String value = nameSuffixDetail.getNameSuffixPK().getEntityId().toString();
+            var label = nameSuffixDetail.getDescription();
+            var value = nameSuffixDetail.getNameSuffixPK().getEntityId().toString();
             
             labels.add(label == null? "": label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultNameSuffixChoice != null && defaultNameSuffixChoice.equals(value);
+            var usingDefaultChoice = defaultNameSuffixChoice != null && defaultNameSuffixChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && nameSuffixDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1302,9 +1299,9 @@ public class PartyControl
 
     public TimeZoneChoicesBean getTimeZoneChoices(String defaultTimeZoneChoice, Language language, boolean allowNullChoice) {
         List<TimeZone> timeZones = getTimeZones();
-        int size = timeZones.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = timeZones.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -1318,12 +1315,12 @@ public class PartyControl
         
         for(var timeZone : timeZones) {
             TimeZoneDetail timeZoneDetail = timeZone.getLastDetail();
-            String value = timeZoneDetail.getJavaTimeZoneName();
+            var value = timeZoneDetail.getJavaTimeZoneName();
             
             labels.add(getBestTimeZoneDescription(timeZone, language));
             values.add(value);
             
-            boolean usingDefaultChoice = defaultTimeZoneChoice != null && defaultTimeZoneChoice.equals(value);
+            var usingDefaultChoice = defaultTimeZoneChoice != null && defaultTimeZoneChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && timeZoneDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1622,9 +1619,9 @@ public class PartyControl
 
     public DateTimeFormatChoicesBean getDateTimeFormatChoices(String defaultDateTimeFormatChoice, Language language, boolean allowNullChoice) {
         List<DateTimeFormat> dateTimeFormats = getDateTimeFormats();
-        int size = dateTimeFormats.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = dateTimeFormats.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -1638,12 +1635,12 @@ public class PartyControl
         
         for(var dateTimeFormat : dateTimeFormats) {
             DateTimeFormatDetail dateTimeFormatDetail = dateTimeFormat.getLastDetail();
-            String value = dateTimeFormatDetail.getDateTimeFormatName();
+            var value = dateTimeFormatDetail.getDateTimeFormatName();
             
             labels.add(getBestDateTimeFormatDescription(dateTimeFormat, language));
             values.add(value);
             
-            boolean usingDefaultChoice = defaultDateTimeFormatChoice != null && defaultDateTimeFormatChoice.equals(value);
+            var usingDefaultChoice = defaultDateTimeFormatChoice != null && defaultDateTimeFormatChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && dateTimeFormatDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2719,9 +2716,9 @@ public class PartyControl
     public PartyAliasTypeChoicesBean getPartyAliasTypeChoices(String defaultPartyAliasTypeChoice, Language language,
             boolean allowNullChoice, PartyType partyType) {
         List<PartyAliasType> partyAliasTypes = getPartyAliasTypes(partyType);
-        int size = partyAliasTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = partyAliasTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -2736,13 +2733,13 @@ public class PartyControl
         for(var partyAliasType : partyAliasTypes) {
             PartyAliasTypeDetail partyAliasTypeDetail = partyAliasType.getLastDetail();
 
-            String label = getBestPartyAliasTypeDescription(partyAliasType, language);
-            String value = partyAliasTypeDetail.getPartyAliasTypeName();
+            var label = getBestPartyAliasTypeDescription(partyAliasType, language);
+            var value = partyAliasTypeDetail.getPartyAliasTypeName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultPartyAliasTypeChoice != null && defaultPartyAliasTypeChoice.equals(value);
+            var usingDefaultChoice = defaultPartyAliasTypeChoice != null && defaultPartyAliasTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && partyAliasTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -3369,9 +3366,9 @@ public class PartyControl
     
     public CompanyChoicesBean getCompanyChoices(String defaultCompanyChoice, boolean allowNullChoice) {
         List<PartyCompany> partyCompanies = getCompanies();
-        int size = partyCompanies.size() + (allowNullChoice ? 1 : 0);
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = partyCompanies.size() + (allowNullChoice ? 1 : 0);
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -3386,13 +3383,13 @@ public class PartyControl
         for(var partyCompany : partyCompanies) {
             PartyGroup partyGroup = getPartyGroup(partyCompany.getParty());
             
-            String label = partyGroup.getName();
-            String value = partyCompany.getPartyCompanyName();
+            var label = partyGroup.getName();
+            var value = partyCompany.getPartyCompanyName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultCompanyChoice != null && defaultCompanyChoice.equals(value);
+            var usingDefaultChoice = defaultCompanyChoice != null && defaultCompanyChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && partyCompany.getIsDefault())) {
                 defaultValue = value;
             }
@@ -3680,9 +3677,9 @@ public class PartyControl
     
     public DivisionChoicesBean getDivisionChoices(Party companyParty, String defaultDivisionChoice, boolean allowNullChoice) {
         List<PartyDivision> partyDivisions = getDivisionsByCompany(companyParty);
-        int size = partyDivisions.size() + (allowNullChoice ? 1 : 0);
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = partyDivisions.size() + (allowNullChoice ? 1 : 0);
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -3697,13 +3694,13 @@ public class PartyControl
         for(var partyDivision : partyDivisions) {
             PartyGroup partyGroup = getPartyGroup(partyDivision.getParty());
             
-            String label = partyGroup.getName();
-            String value = partyDivision.getPartyDivisionName();
+            var label = partyGroup.getName();
+            var value = partyDivision.getPartyDivisionName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultDivisionChoice != null && defaultDivisionChoice.equals(value);
+            var usingDefaultChoice = defaultDivisionChoice != null && defaultDivisionChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && partyDivision.getIsDefault())) {
                 defaultValue = value;
             }
@@ -3801,7 +3798,15 @@ public class PartyControl
         
         return partyDepartment;
     }
-    
+
+    public long countPartyDepartments(Party divisionParty) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM partydepartments " +
+                "WHERE pdept_divisionpartyid = ? AND pdept_thrutime = ?",
+                divisionParty, Session.MAX_TIME);
+    }
+
     public PartyDepartmentValue getPartyDepartmentValueForUpdate(PartyDepartment partyDepartment) {
         return partyDepartment == null? null: partyDepartment.getPartyDepartmentValue().clone();
     }
@@ -3950,7 +3955,8 @@ public class PartyControl
                 query = "SELECT _ALL_ " +
                         "FROM partydepartments, partydetails " +
                         "WHERE pdept_divisionpartyid = ? AND pdept_thrutime = ? " +
-                        "AND pdept_par_partyid = pardt_par_partyid AND pardt_thrutime = ?";
+                        "AND pdept_par_partyid = pardt_par_partyid AND pardt_thrutime = ? " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM partydepartments, partydetails " +
@@ -3983,9 +3989,9 @@ public class PartyControl
     
     public DepartmentChoicesBean getDepartmentChoices(Party divisionParty, String defaultDepartmentChoice, boolean allowNullChoice) {
         List<PartyDepartment> partyDepartments = getDepartmentsByDivision(divisionParty);
-        int size = partyDepartments.size() + (allowNullChoice ? 1 : 0);
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = partyDepartments.size() + (allowNullChoice ? 1 : 0);
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -4000,13 +4006,13 @@ public class PartyControl
         for(var partyDepartment : partyDepartments) {
             PartyGroup partyGroup = getPartyGroup(partyDepartment.getParty());
             
-            String label = partyGroup.getName();
-            String value = partyDepartment.getPartyDepartmentName();
+            var label = partyGroup.getName();
+            var value = partyDepartment.getPartyDepartmentName();
             
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultDepartmentChoice != null && defaultDepartmentChoice.equals(value);
+            var usingDefaultChoice = defaultDepartmentChoice != null && defaultDepartmentChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && partyDepartment.getIsDefault())) {
                 defaultValue = value;
             }
@@ -4015,7 +4021,7 @@ public class PartyControl
         return new DepartmentChoicesBean(labels, values, defaultValue);
     }
     
-    private List<DepartmentTransfer> getDepartmentTransfers(UserVisit userVisit, List<PartyDepartment> partyDepartments) {
+    public List<DepartmentTransfer> getDepartmentTransfers(UserVisit userVisit, Collection<PartyDepartment> partyDepartments) {
         List<DepartmentTransfer> departmentTransfers = new ArrayList<>(partyDepartments.size());
         DepartmentTransferCache departmentTransferCache = getPartyTransferCaches(userVisit).getDepartmentTransferCache();
         
@@ -4929,9 +4935,9 @@ public class PartyControl
     
     public GenderChoicesBean getGenderChoices(String defaultGenderChoice, Language language, boolean allowNullChoice) {
         List<Gender> genders = getGenders();
-        int size = genders.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = genders.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -4946,13 +4952,13 @@ public class PartyControl
         for(var gender : genders) {
             GenderDetail genderDetail = gender.getLastDetail();
             
-            String label = getBestGenderDescription(gender, language);
-            String value = genderDetail.getGenderName();
+            var label = getBestGenderDescription(gender, language);
+            var value = genderDetail.getGenderName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultGenderChoice != null && defaultGenderChoice.equals(value);
+            var usingDefaultChoice = defaultGenderChoice != null && defaultGenderChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && genderDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -5351,9 +5357,9 @@ public class PartyControl
     
     public MoodChoicesBean getMoodChoices(String defaultMoodChoice, Language language, boolean allowNullChoice) {
         List<Mood> moods = getMoods();
-        int size = moods.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = moods.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -5368,13 +5374,13 @@ public class PartyControl
         for(var mood : moods) {
             MoodDetail moodDetail = mood.getLastDetail();
             
-            String label = getBestMoodDescription(mood, language);
-            String value = moodDetail.getMoodName();
+            var label = getBestMoodDescription(mood, language);
+            var value = moodDetail.getMoodName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultMoodChoice != null && defaultMoodChoice.equals(value);
+            var usingDefaultChoice = defaultMoodChoice != null && defaultMoodChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && moodDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -5817,9 +5823,9 @@ public class PartyControl
 
     public BirthdayFormatChoicesBean getBirthdayFormatChoices(String defaultBirthdayFormatChoice, Language language, boolean allowNullChoice) {
         List<BirthdayFormat> birthdayFormats = getBirthdayFormats();
-        int size = birthdayFormats.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = birthdayFormats.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -5833,13 +5839,13 @@ public class PartyControl
 
         for(var birthdayFormat : birthdayFormats) {
             BirthdayFormatDetail birthdayFormatDetail = birthdayFormat.getLastDetail();
-            String label = getBestBirthdayFormatDescription(birthdayFormat, language);
-            String value = birthdayFormatDetail.getBirthdayFormatName();
+            var label = getBestBirthdayFormatDescription(birthdayFormat, language);
+            var value = birthdayFormatDetail.getBirthdayFormatName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultBirthdayFormatChoice != null && defaultBirthdayFormatChoice.equals(value);
+            var usingDefaultChoice = defaultBirthdayFormatChoice != null && defaultBirthdayFormatChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && birthdayFormatDetail.getIsDefault())) {
                 defaultValue = value;
             }

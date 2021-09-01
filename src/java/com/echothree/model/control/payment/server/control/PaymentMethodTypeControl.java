@@ -238,7 +238,7 @@ public class PaymentMethodTypeControl
             labels.add(label == null ? value : label);
             values.add(value);
 
-            boolean usingDefaultChoice = Objects.equals(defaultPaymentMethodTypeChoice, value);
+            var usingDefaultChoice = Objects.equals(defaultPaymentMethodTypeChoice, value);
             if(usingDefaultChoice || (defaultValue == null && paymentMethodTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

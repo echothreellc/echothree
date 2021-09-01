@@ -37,7 +37,7 @@
             Department:<br /><br />
             <c:forEach items="${departments}" var="department">
                 <c:url var="addUrl" value="/action/Advertising/Offer/Add/Step3">
-                    <c:param name="CompanyName" value="${company.companyName}" />
+                    <c:param name="CompanyName" value="${division.company.companyName}" />
                     <c:param name="DivisionName" value="${division.divisionName}" />
                     <c:param name="DepartmentName" value="${department.departmentName}" />
                 </c:url>

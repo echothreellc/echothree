@@ -308,9 +308,9 @@ public class ShipmentControl
     public ShipmentTypeChoicesBean getShipmentTypeChoices(String defaultShipmentTypeChoice,
             Language language, boolean allowNullChoice) {
         List<ShipmentType> shipmentTypes = getShipmentTypes();
-        int size = shipmentTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = shipmentTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -325,13 +325,13 @@ public class ShipmentControl
         for(var shipmentType : shipmentTypes) {
             ShipmentTypeDetail shipmentTypeDetail = shipmentType.getLastDetail();
 
-            String label = getBestShipmentTypeDescription(shipmentType, language);
-            String value = shipmentTypeDetail.getShipmentTypeName();
+            var label = getBestShipmentTypeDescription(shipmentType, language);
+            var value = shipmentTypeDetail.getShipmentTypeName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultShipmentTypeChoice != null && defaultShipmentTypeChoice.equals(value);
+            var usingDefaultChoice = defaultShipmentTypeChoice != null && defaultShipmentTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && shipmentTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -774,9 +774,9 @@ public class ShipmentControl
     public ShipmentTimeTypeChoicesBean getShipmentTimeTypeChoices(String defaultShipmentTimeTypeChoice, Language language, boolean allowNullChoice,
             ShipmentType shipmentType) {
         List<ShipmentTimeType> shipmentTimeTypes = getShipmentTimeTypes(shipmentType);
-        int size = shipmentTimeTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = shipmentTimeTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -791,13 +791,13 @@ public class ShipmentControl
         for(var shipmentTimeType : shipmentTimeTypes) {
             ShipmentTimeTypeDetail shipmentTimeTypeDetail = shipmentTimeType.getLastDetail();
 
-            String label = getBestShipmentTimeTypeDescription(shipmentTimeType, language);
-            String value = shipmentTimeTypeDetail.getShipmentTimeTypeName();
+            var label = getBestShipmentTimeTypeDescription(shipmentTimeType, language);
+            var value = shipmentTimeTypeDetail.getShipmentTimeTypeName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultShipmentTimeTypeChoice != null && defaultShipmentTimeTypeChoice.equals(value);
+            var usingDefaultChoice = defaultShipmentTimeTypeChoice != null && defaultShipmentTimeTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && shipmentTimeTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1678,9 +1678,9 @@ public class ShipmentControl
     public ShipmentAliasTypeChoicesBean getShipmentAliasTypeChoices(String defaultShipmentAliasTypeChoice, Language language,
             boolean allowNullChoice, ShipmentType shipmentType) {
         List<ShipmentAliasType> shipmentAliasTypes = getShipmentAliasTypes(shipmentType);
-        int size = shipmentAliasTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = shipmentAliasTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -1695,13 +1695,13 @@ public class ShipmentControl
         for(var shipmentAliasType : shipmentAliasTypes) {
             ShipmentAliasTypeDetail shipmentAliasTypeDetail = shipmentAliasType.getLastDetail();
 
-            String label = getBestShipmentAliasTypeDescription(shipmentAliasType, language);
-            String value = shipmentAliasTypeDetail.getShipmentAliasTypeName();
+            var label = getBestShipmentAliasTypeDescription(shipmentAliasType, language);
+            var value = shipmentAliasTypeDetail.getShipmentAliasTypeName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultShipmentAliasTypeChoice != null && defaultShipmentAliasTypeChoice.equals(value);
+            var usingDefaultChoice = defaultShipmentAliasTypeChoice != null && defaultShipmentAliasTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && shipmentAliasTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

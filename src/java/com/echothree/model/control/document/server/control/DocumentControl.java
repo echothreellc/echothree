@@ -324,9 +324,9 @@ public class DocumentControl
     
     public DocumentTypeChoicesBean getDocumentTypeChoices(String defaultDocumentTypeChoice, Language language, boolean allowNullChoice) {
         List<DocumentType> documentTypes = getDocumentTypes();
-        int size = documentTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = documentTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -341,13 +341,13 @@ public class DocumentControl
         for(var documentType : documentTypes) {
             DocumentTypeDetail documentTypeDetail = documentType.getLastDetail();
             
-            String label = getBestDocumentTypeDescription(documentType, language);
-            String value = documentTypeDetail.getDocumentTypeName();
+            var label = getBestDocumentTypeDescription(documentType, language);
+            var value = documentTypeDetail.getDocumentTypeName();
             
             labels.add(label == null ? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultDocumentTypeChoice == null ? false: defaultDocumentTypeChoice.equals(value);
+            var usingDefaultChoice = defaultDocumentTypeChoice == null ? false: defaultDocumentTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && documentTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -782,9 +782,9 @@ public class DocumentControl
 
     public DocumentTypeUsageTypeChoicesBean getDocumentTypeUsageTypeChoices(String defaultDocumentTypeUsageTypeChoice, Language language, boolean allowNullChoice) {
         List<DocumentTypeUsageType> documentTypeUsageTypes = getDocumentTypeUsageTypes();
-        int size = documentTypeUsageTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = documentTypeUsageTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -799,13 +799,13 @@ public class DocumentControl
         for(var documentTypeUsageType : documentTypeUsageTypes) {
             DocumentTypeUsageTypeDetail documentTypeUsageTypeDetail = documentTypeUsageType.getLastDetail();
 
-            String label = getBestDocumentTypeUsageTypeDescription(documentTypeUsageType, language);
-            String value = documentTypeUsageTypeDetail.getDocumentTypeUsageTypeName();
+            var label = getBestDocumentTypeUsageTypeDescription(documentTypeUsageType, language);
+            var value = documentTypeUsageTypeDetail.getDocumentTypeUsageTypeName();
 
             labels.add(label == null ? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultDocumentTypeUsageTypeChoice == null ? false: defaultDocumentTypeUsageTypeChoice.equals(value);
+            var usingDefaultChoice = defaultDocumentTypeUsageTypeChoice == null ? false: defaultDocumentTypeUsageTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && documentTypeUsageTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2384,9 +2384,9 @@ public class DocumentControl
     public DocumentChoicesBean getPartyDocumentChoices(String defaultDocumentChoice, Language language, boolean allowNullChoice, Party party,
             DocumentType documentType) {
         List<PartyDocument> partyDocuments = getPartyDocumentsByPartyAndDocumentType(party, documentType);
-        int size = partyDocuments.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = partyDocuments.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -2402,13 +2402,13 @@ public class DocumentControl
             Document document = partyDocument.getDocument();
             DocumentDetail documentDetail = document.getLastDetail();
 
-            String label = getBestDocumentDescription(document, language);
-            String value = documentDetail.getDocumentName();
+            var label = getBestDocumentDescription(document, language);
+            var value = documentDetail.getDocumentName();
 
             labels.add(label == null ? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultDocumentChoice == null ? false: defaultDocumentChoice.equals(value);
+            var usingDefaultChoice = defaultDocumentChoice == null ? false: defaultDocumentChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && partyDocument.getIsDefault())) {
                 defaultValue = value;
             }

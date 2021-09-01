@@ -480,9 +480,9 @@ public class FinancialControl
     public FinancialAccountTypeChoicesBean getFinancialAccountTypeChoices(String defaultFinancialAccountTypeChoice,
             Language language, boolean allowNullChoice) {
         List<FinancialAccountType> financialAccountTypes = getFinancialAccountTypes();
-        int size = financialAccountTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = financialAccountTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -497,13 +497,13 @@ public class FinancialControl
         for(var financialAccountType : financialAccountTypes) {
             FinancialAccountTypeDetail financialAccountTypeDetail = financialAccountType.getLastDetail();
             
-            String label = getBestFinancialAccountTypeDescription(financialAccountType, language);
-            String value = financialAccountTypeDetail.getFinancialAccountTypeName();
+            var label = getBestFinancialAccountTypeDescription(financialAccountType, language);
+            var value = financialAccountTypeDetail.getFinancialAccountTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultFinancialAccountTypeChoice != null && defaultFinancialAccountTypeChoice.equals(value);
+            var usingDefaultChoice = defaultFinancialAccountTypeChoice != null && defaultFinancialAccountTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && financialAccountTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -992,9 +992,9 @@ public class FinancialControl
     public FinancialAccountTransactionTypeChoicesBean getFinancialAccountTransactionTypeChoices(FinancialAccountType financialAccountType,
             String defaultFinancialAccountTransactionTypeChoice, Language language, boolean allowNullChoice) {
         List<FinancialAccountTransactionType> financialAccountTransactionTypes = getFinancialAccountTransactionTypes(financialAccountType);
-        int size = financialAccountTransactionTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = financialAccountTransactionTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -1009,13 +1009,13 @@ public class FinancialControl
         for(var financialAccountTransactionType : financialAccountTransactionTypes) {
             FinancialAccountTransactionTypeDetail financialAccountTransactionTypeDetail = financialAccountTransactionType.getLastDetail();
             
-            String label = getBestFinancialAccountTransactionTypeDescription(financialAccountTransactionType, language);
-            String value = financialAccountTransactionTypeDetail.getFinancialAccountTransactionTypeName();
+            var label = getBestFinancialAccountTransactionTypeDescription(financialAccountTransactionType, language);
+            var value = financialAccountTransactionTypeDetail.getFinancialAccountTransactionTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultFinancialAccountTransactionTypeChoice != null && defaultFinancialAccountTransactionTypeChoice.equals(value);
+            var usingDefaultChoice = defaultFinancialAccountTransactionTypeChoice != null && defaultFinancialAccountTransactionTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && financialAccountTransactionTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1465,9 +1465,9 @@ public class FinancialControl
     public FinancialAccountAliasTypeChoicesBean getFinancialAccountAliasTypeChoices(String defaultFinancialAccountAliasTypeChoice, Language language,
             boolean allowNullChoice, FinancialAccountType financialAccountType) {
         List<FinancialAccountAliasType> financialAccountAliasTypes = getFinancialAccountAliasTypes(financialAccountType);
-        int size = financialAccountAliasTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = financialAccountAliasTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -1482,13 +1482,13 @@ public class FinancialControl
         for(var financialAccountAliasType : financialAccountAliasTypes) {
             FinancialAccountAliasTypeDetail financialAccountAliasTypeDetail = financialAccountAliasType.getLastDetail();
             
-            String label = getBestFinancialAccountAliasTypeDescription(financialAccountAliasType, language);
-            String value = financialAccountAliasTypeDetail.getFinancialAccountAliasTypeName();
+            var label = getBestFinancialAccountAliasTypeDescription(financialAccountAliasType, language);
+            var value = financialAccountAliasTypeDetail.getFinancialAccountAliasTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultFinancialAccountAliasTypeChoice != null && defaultFinancialAccountAliasTypeChoice.equals(value);
+            var usingDefaultChoice = defaultFinancialAccountAliasTypeChoice != null && defaultFinancialAccountAliasTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && financialAccountAliasTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

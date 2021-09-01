@@ -215,9 +215,9 @@ public class LotTimeControl
 
     public LotTimeTypeChoicesBean getLotTimeTypeChoices(String defaultLotTimeTypeChoice, Language language, boolean allowNullChoice) {
         List<LotTimeType> lotTimeTypes = getLotTimeTypes();
-        int size = lotTimeTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = lotTimeTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -232,13 +232,13 @@ public class LotTimeControl
         for(var lotTimeType : lotTimeTypes) {
             LotTimeTypeDetail lotTimeTypeDetail = lotTimeType.getLastDetail();
 
-            String label = getBestLotTimeTypeDescription(lotTimeType, language);
-            String value = lotTimeTypeDetail.getLotTimeTypeName();
+            var label = getBestLotTimeTypeDescription(lotTimeType, language);
+            var value = lotTimeTypeDetail.getLotTimeTypeName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultLotTimeTypeChoice != null && defaultLotTimeTypeChoice.equals(value);
+            var usingDefaultChoice = defaultLotTimeTypeChoice != null && defaultLotTimeTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && lotTimeTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

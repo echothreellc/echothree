@@ -243,9 +243,9 @@ public class PeriodControl
     
     public PeriodKindChoicesBean getPeriodKindChoices(String defaultPeriodKindChoice, Language language, boolean allowNullChoice) {
         List<PeriodKind> periodKinds = getPeriodKinds();
-        int size = periodKinds.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = periodKinds.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -260,13 +260,13 @@ public class PeriodControl
         for(var periodKind : periodKinds) {
             PeriodKindDetail periodKindDetail = periodKind.getLastDetail();
             
-            String label = getBestPeriodKindDescription(periodKind, language);
-            String value = periodKindDetail.getPeriodKindName();
+            var label = getBestPeriodKindDescription(periodKind, language);
+            var value = periodKindDetail.getPeriodKindName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultPeriodKindChoice != null && defaultPeriodKindChoice.equals(value);
+            var usingDefaultChoice = defaultPeriodKindChoice != null && defaultPeriodKindChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && periodKindDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -695,9 +695,9 @@ public class PeriodControl
     public PeriodTypeChoicesBean getPeriodTypeChoices(String defaultPeriodTypeChoice, Language language,
             boolean allowNullChoice, PeriodKind periodKind) {
         List<PeriodType> periodTypes = getPeriodTypes(periodKind);
-        int size = periodTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = periodTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -711,13 +711,13 @@ public class PeriodControl
         
         for(var periodType : periodTypes) {
             PeriodTypeDetail periodTypeDetail = periodType.getLastDetail();
-            String label = getBestPeriodTypeDescription(periodType, language);
-            String value = periodTypeDetail.getPeriodTypeName();
+            var label = getBestPeriodTypeDescription(periodType, language);
+            var value = periodTypeDetail.getPeriodTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultPeriodTypeChoice != null && defaultPeriodTypeChoice.equals(value);
+            var usingDefaultChoice = defaultPeriodTypeChoice != null && defaultPeriodTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && periodTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

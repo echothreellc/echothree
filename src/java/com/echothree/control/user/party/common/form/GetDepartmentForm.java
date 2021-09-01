@@ -16,12 +16,13 @@
 
 package com.echothree.control.user.party.common.form;
 
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 import com.echothree.control.user.party.common.spec.DepartmentSpec;
 import com.echothree.control.user.party.common.spec.PartySpec;
 
 public interface GetDepartmentForm
-        extends DepartmentSpec, PartySpec {
+        extends DepartmentSpec, PartySpec, UniversalEntitySpec {
     
-    // Nothing additional beyond DepartmentSpec, PartySpec
+    // Nothing additional beyond DepartmentSpec, PartySpec, UniversalEntitySpec
     
 }

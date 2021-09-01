@@ -362,9 +362,9 @@ public class EmployeeControl
     public ResponsibilityTypeChoicesBean getResponsibilityTypeChoices(String defaultResponsibilityTypeChoice, Language language,
             boolean allowNullChoice) {
         List<ResponsibilityType> responsibilityTypes = getResponsibilityTypes();
-        int size = responsibilityTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = responsibilityTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -379,13 +379,13 @@ public class EmployeeControl
         for(var responsibilityType : responsibilityTypes) {
             ResponsibilityTypeDetail responsibilityTypeDetail = responsibilityType.getLastDetail();
             
-            String label = getBestResponsibilityTypeDescription(responsibilityType, language);
-            String value = responsibilityTypeDetail.getResponsibilityTypeName();
+            var label = getBestResponsibilityTypeDescription(responsibilityType, language);
+            var value = responsibilityTypeDetail.getResponsibilityTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultResponsibilityTypeChoice != null && defaultResponsibilityTypeChoice.equals(value);
+            var usingDefaultChoice = defaultResponsibilityTypeChoice != null && defaultResponsibilityTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && responsibilityTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -789,9 +789,9 @@ public class EmployeeControl
     
     public SkillTypeChoicesBean getSkillTypeChoices(String defaultSkillTypeChoice, Language language, boolean allowNullChoice) {
         List<SkillType> skillTypes = getSkillTypes();
-        int size = skillTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = skillTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -806,13 +806,13 @@ public class EmployeeControl
         for(var skillType : skillTypes) {
             SkillTypeDetail skillTypeDetail = skillType.getLastDetail();
             
-            String label = getBestSkillTypeDescription(skillType, language);
-            String value = skillTypeDetail.getSkillTypeName();
+            var label = getBestSkillTypeDescription(skillType, language);
+            var value = skillTypeDetail.getSkillTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultSkillTypeChoice != null && defaultSkillTypeChoice.equals(value);
+            var usingDefaultChoice = defaultSkillTypeChoice != null && defaultSkillTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && skillTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1221,9 +1221,9 @@ public class EmployeeControl
 
     public LeaveTypeChoicesBean getLeaveTypeChoices(String defaultLeaveTypeChoice, Language language, boolean allowNullChoice) {
         List<LeaveType> leaveTypes = getLeaveTypes();
-        int size = leaveTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = leaveTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -1238,13 +1238,13 @@ public class EmployeeControl
         for(var leaveType : leaveTypes) {
             LeaveTypeDetail leaveTypeDetail = leaveType.getLastDetail();
 
-            String label = getBestLeaveTypeDescription(leaveType, language);
-            String value = leaveTypeDetail.getLeaveTypeName();
+            var label = getBestLeaveTypeDescription(leaveType, language);
+            var value = leaveTypeDetail.getLeaveTypeName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultLeaveTypeChoice != null && defaultLeaveTypeChoice.equals(value);
+            var usingDefaultChoice = defaultLeaveTypeChoice != null && defaultLeaveTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && leaveTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1638,9 +1638,9 @@ public class EmployeeControl
 
     public LeaveReasonChoicesBean getLeaveReasonChoices(String defaultLeaveReasonChoice, Language language, boolean allowNullChoice) {
         List<LeaveReason> leaveReasons = getLeaveReasons();
-        int size = leaveReasons.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = leaveReasons.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -1655,13 +1655,13 @@ public class EmployeeControl
         for(var leaveReason : leaveReasons) {
             LeaveReasonDetail leaveReasonDetail = leaveReason.getLastDetail();
 
-            String label = getBestLeaveReasonDescription(leaveReason, language);
-            String value = leaveReasonDetail.getLeaveReasonName();
+            var label = getBestLeaveReasonDescription(leaveReason, language);
+            var value = leaveReasonDetail.getLeaveReasonName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultLeaveReasonChoice != null && defaultLeaveReasonChoice.equals(value);
+            var usingDefaultChoice = defaultLeaveReasonChoice != null && defaultLeaveReasonChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && leaveReasonDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2397,9 +2397,9 @@ public class EmployeeControl
     public TerminationReasonChoicesBean getTerminationReasonChoices(String defaultTerminationReasonChoice, Language language,
             boolean allowNullChoice) {
         List<TerminationReason> terminationReasons = getTerminationReasons();
-        int size = terminationReasons.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = terminationReasons.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -2414,13 +2414,13 @@ public class EmployeeControl
         for(var terminationReason : terminationReasons) {
             TerminationReasonDetail terminationReasonDetail = terminationReason.getLastDetail();
             
-            String label = getBestTerminationReasonDescription(terminationReason, language);
-            String value = terminationReasonDetail.getTerminationReasonName();
+            var label = getBestTerminationReasonDescription(terminationReason, language);
+            var value = terminationReasonDetail.getTerminationReasonName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultTerminationReasonChoice != null && defaultTerminationReasonChoice.equals(value);
+            var usingDefaultChoice = defaultTerminationReasonChoice != null && defaultTerminationReasonChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && terminationReasonDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2825,9 +2825,9 @@ public class EmployeeControl
     public TerminationTypeChoicesBean getTerminationTypeChoices(String defaultTerminationTypeChoice, Language language,
             boolean allowNullChoice) {
         List<TerminationType> terminationTypes = getTerminationTypes();
-        int size = terminationTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = terminationTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -2842,13 +2842,13 @@ public class EmployeeControl
         for(var terminationType : terminationTypes) {
             TerminationTypeDetail terminationTypeDetail = terminationType.getLastDetail();
             
-            String label = getBestTerminationTypeDescription(terminationType, language);
-            String value = terminationTypeDetail.getTerminationTypeName();
+            var label = getBestTerminationTypeDescription(terminationType, language);
+            var value = terminationTypeDetail.getTerminationTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultTerminationTypeChoice != null && defaultTerminationTypeChoice.equals(value);
+            var usingDefaultChoice = defaultTerminationTypeChoice != null && defaultTerminationTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && terminationTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -3548,9 +3548,9 @@ public class EmployeeControl
     public EmployeeTypeChoicesBean getEmployeeTypeChoices(String defaultEmployeeTypeChoice, Language language,
             boolean allowNullChoice) {
         List<EmployeeType> employeeTypes = getEmployeeTypes();
-        int size = employeeTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = employeeTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -3564,13 +3564,13 @@ public class EmployeeControl
         
         for(var employeeType : employeeTypes) {
             EmployeeTypeDetail employeeTypeDetail = employeeType.getLastDetail();
-            String label = getBestEmployeeTypeDescription(employeeType, language);
-            String value = employeeTypeDetail.getEmployeeTypeName();
+            var label = getBestEmployeeTypeDescription(employeeType, language);
+            var value = employeeTypeDetail.getEmployeeTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultEmployeeTypeChoice != null && defaultEmployeeTypeChoice.equals(value);
+            var usingDefaultChoice = defaultEmployeeTypeChoice != null && defaultEmployeeTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && employeeTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

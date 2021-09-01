@@ -612,9 +612,9 @@ public class MessageControl
     public MessageChoicesBean getMessageChoices(String defaultMessageChoice, Language language,
             boolean allowNullChoice, MessageType messageType) {
         List<Message> messages = getMessagesByMessageType(messageType);
-        int size = messages.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = messages.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -628,13 +628,13 @@ public class MessageControl
         
         for(var message : messages) {
             MessageDetail messageDetail = message.getLastDetail();
-            String label = getBestMessageDescription(message, language);
-            String value = messageDetail.getMessageName();
+            var label = getBestMessageDescription(message, language);
+            var value = messageDetail.getMessageName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultMessageChoice != null && defaultMessageChoice.equals(value);
+            var usingDefaultChoice = defaultMessageChoice != null && defaultMessageChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && messageDetail.getIsDefault())) {
                 defaultValue = value;
             }

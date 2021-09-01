@@ -126,6 +126,22 @@ public class OfferControl
                 "WHERE ofr_activedetailid = ofrdt_offerdetailid");
     }
 
+    public long countOffersBySalesOrderSequence(Sequence sequence) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM offers, offerdetails " +
+                "WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_salesordersequenceid = ?",
+                sequence);
+    }
+
+    public long countOffersByDepartmentParty(Party departmentParty) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM offers, offerdetails " +
+                "WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_departmentpartyid = ?",
+                departmentParty);
+    }
+
     public long countOffersBySelector(Selector selector) {
         return session.queryForLong(
                 "SELECT COUNT(*) " +
@@ -233,27 +249,48 @@ public class OfferControl
     public OfferDetailValue getOfferDetailValueByNameForUpdate(String offerName) {
         return getOfferDetailValueForUpdate(getOfferByNameForUpdate(offerName));
     }
-    
+
+    public List<Offer> getOffersByDepartmentParty(Party departmentParty) {
+        List<Offer> offers;
+
+        try {
+            PreparedStatement ps = OfferFactory.getInstance().prepareStatement(
+                    "SELECT _ALL_ " +
+                    "FROM offers, offerdetails " +
+                    "WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_departmentpartyid = ? " +
+                    "ORDER BY ofrdt_sortorder, ofrdt_offername " +
+                    "_LIMIT_");
+
+            ps.setLong(1, departmentParty.getPrimaryKey().getEntityId());
+
+            offers = OfferFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return offers;
+    }
+
     public List<Offer> getOffersByOfferItemSelector(Selector offerItemSelector) {
         List<Offer> offers;
-        
+
         try {
             PreparedStatement ps = OfferFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM offers, offerdetails " +
                     "WHERE ofr_activedetailid = ofrdt_offerdetailid AND ofrdt_offeritemselectorid = ? " +
                     "ORDER BY ofrdt_sortorder, ofrdt_offername");
-            
+
             ps.setLong(1, offerItemSelector.getPrimaryKey().getEntityId());
-            
+
             offers = OfferFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
-        
+
         return offers;
     }
-    
+
     private List<Offer> getOffers(EntityPermission entityPermission) {
         PreparedStatement ps = OfferFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ "
@@ -303,9 +340,9 @@ public class OfferControl
     
     public OfferChoicesBean getOfferChoices(String defaultOfferChoice, Language language, boolean allowNullChoice) {
         List<Offer> offers = getOffers();
-        int size = offers.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = offers.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -320,13 +357,13 @@ public class OfferControl
         for(var offer : offers) {
             OfferDetail offerDetail = offer.getLastDetail();
 
-            String label = getBestOfferDescription(offer, language);
-            String value = offerDetail.getOfferName();
+            var label = getBestOfferDescription(offer, language);
+            var value = offerDetail.getOfferName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultOfferChoice != null && defaultOfferChoice.equals(value);
+            var usingDefaultChoice = defaultOfferChoice != null && defaultOfferChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && offerDetail.getIsDefault())) {
                 defaultValue = value;
             }

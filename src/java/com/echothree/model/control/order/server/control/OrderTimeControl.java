@@ -229,9 +229,9 @@ public class OrderTimeControl
     public OrderTimeTypeChoicesBean getOrderTimeTypeChoices(String defaultOrderTimeTypeChoice, Language language, boolean allowNullChoice,
             OrderType orderType) {
         List<OrderTimeType> orderTimeTypes = getOrderTimeTypes(orderType);
-        int size = orderTimeTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = orderTimeTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -246,13 +246,13 @@ public class OrderTimeControl
         for(var orderTimeType : orderTimeTypes) {
             OrderTimeTypeDetail orderTimeTypeDetail = orderTimeType.getLastDetail();
 
-            String label = getBestOrderTimeTypeDescription(orderTimeType, language);
-            String value = orderTimeTypeDetail.getOrderTimeTypeName();
+            var label = getBestOrderTimeTypeDescription(orderTimeType, language);
+            var value = orderTimeTypeDetail.getOrderTimeTypeName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultOrderTimeTypeChoice != null && defaultOrderTimeTypeChoice.equals(value);
+            var usingDefaultChoice = defaultOrderTimeTypeChoice != null && defaultOrderTimeTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && orderTimeTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

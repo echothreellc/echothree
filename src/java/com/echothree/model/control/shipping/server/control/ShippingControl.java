@@ -179,9 +179,9 @@ public class ShippingControl
     public ShippingMethodChoicesBean getShippingMethodChoices(String defaultShippingMethodChoice, Language language,
             boolean allowNullChoice) {
         List<ShippingMethod> shippingMethods = getShippingMethods();
-        int size = shippingMethods.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = shippingMethods.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -195,13 +195,13 @@ public class ShippingControl
         
         for(var shippingMethod : shippingMethods) {
             ShippingMethodDetail shippingMethodDetail = shippingMethod.getLastDetail();
-            String label = getBestShippingMethodDescription(shippingMethod, language);
-            String value = shippingMethodDetail.getShippingMethodName();
+            var label = getBestShippingMethodDescription(shippingMethod, language);
+            var value = shippingMethodDetail.getShippingMethodName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultShippingMethodChoice != null && defaultShippingMethodChoice.equals(value);
+            var usingDefaultChoice = defaultShippingMethodChoice != null && defaultShippingMethodChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null) {
                 defaultValue = value;
             }
@@ -214,9 +214,9 @@ public class ShippingControl
             boolean allowNullChoice, ShipmentType shipmentType) {
         var shipmentControl = Session.getModelController(ShipmentControl.class);
         List<ShipmentTypeShippingMethod> shipmentTypeShippingMethods = shipmentControl.getShipmentTypeShippingMethodsByShipmentType(shipmentType);
-        int size = shipmentTypeShippingMethods.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = shipmentTypeShippingMethods.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -231,13 +231,13 @@ public class ShippingControl
         for(var shipmentTypeShippingMethod : shipmentTypeShippingMethods) {
             ShippingMethod shippingMethod = shipmentTypeShippingMethod.getShippingMethod();
             ShippingMethodDetail shippingMethodDetail = shippingMethod.getLastDetail();
-            String label = getBestShippingMethodDescription(shippingMethod, language);
-            String value = shippingMethodDetail.getShippingMethodName();
+            var label = getBestShippingMethodDescription(shippingMethod, language);
+            var value = shippingMethodDetail.getShippingMethodName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultShippingMethodChoice != null && defaultShippingMethodChoice.equals(value);
+            var usingDefaultChoice = defaultShippingMethodChoice != null && defaultShippingMethodChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && shipmentTypeShippingMethod.getIsDefault())) {
                 defaultValue = value;
             }

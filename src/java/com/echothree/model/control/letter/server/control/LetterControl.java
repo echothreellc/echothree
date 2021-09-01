@@ -384,9 +384,9 @@ public class LetterControl
     
     public LetterSourceChoicesBean getLetterSourceChoices(String defaultLetterSourceChoice, Language language, boolean allowNullChoice) {
         List<LetterSource> letterSources = getLetterSources();
-        int size = letterSources.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = letterSources.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -401,13 +401,13 @@ public class LetterControl
         for(var letterSource : letterSources) {
             LetterSourceDetail letterSourceDetail = letterSource.getLastDetail();
             
-            String label = getBestLetterSourceDescription(letterSource, language);
-            String value = letterSourceDetail.getLetterSourceName();
+            var label = getBestLetterSourceDescription(letterSource, language);
+            var value = letterSourceDetail.getLetterSourceName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultLetterSourceChoice != null && defaultLetterSourceChoice.equals(value);
+            var usingDefaultChoice = defaultLetterSourceChoice != null && defaultLetterSourceChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && letterSourceDetail.getIsDefault()))
                 defaultValue = value;
         }
@@ -948,9 +948,9 @@ public class LetterControl
     
     public LetterChoicesBean getLetterChoices(ChainType chainType, String defaultLetterChoice, Language language, boolean allowNullChoice) {
         List<Letter> letters = getLettersByChainType(chainType);
-        int size = letters.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = letters.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -965,13 +965,13 @@ public class LetterControl
         for(var letter : letters) {
             LetterDetail letterDetail = letter.getLastDetail();
             
-            String label = getBestLetterDescription(letter, language);
-            String value = letterDetail.getLetterName();
+            var label = getBestLetterDescription(letter, language);
+            var value = letterDetail.getLetterName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultLetterChoice != null && defaultLetterChoice.equals(value);
+            var usingDefaultChoice = defaultLetterChoice != null && defaultLetterChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && letterDetail.getIsDefault()))
                 defaultValue = value;
         }

@@ -226,7 +226,7 @@ public class FreeOnBoardControl
             labels.add(label == null ? value : label);
             values.add(value);
 
-            boolean usingDefaultChoice = Objects.equals(defaultFreeOnBoardChoice, value);
+            var usingDefaultChoice = Objects.equals(defaultFreeOnBoardChoice, value);
             if(usingDefaultChoice || (defaultValue == null && freeOnBoardDetail.getIsDefault())) {
                 defaultValue = value;
             }

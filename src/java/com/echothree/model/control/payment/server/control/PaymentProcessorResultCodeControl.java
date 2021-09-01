@@ -224,7 +224,7 @@ public class PaymentProcessorResultCodeControl
             labels.add(label == null ? value : label);
             values.add(value);
 
-            boolean usingDefaultChoice = Objects.equals(defaultPaymentProcessorResultCodeChoice, value);
+            var usingDefaultChoice = Objects.equals(defaultPaymentProcessorResultCodeChoice, value);
             if(usingDefaultChoice || (defaultValue == null && paymentProcessorResultCodeDetail.getIsDefault())) {
                 defaultValue = value;
             }

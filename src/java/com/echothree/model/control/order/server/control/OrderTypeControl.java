@@ -252,9 +252,9 @@ public class OrderTypeControl
     public OrderTypeChoicesBean getOrderTypeChoices(String defaultOrderTypeChoice,
             Language language, boolean allowNullChoice) {
         List<OrderType> orderTypes = getOrderTypes();
-        int size = orderTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = orderTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -269,13 +269,13 @@ public class OrderTypeControl
         for(var orderType : orderTypes) {
             OrderTypeDetail orderTypeDetail = orderType.getLastDetail();
 
-            String label = getBestOrderTypeDescription(orderType, language);
-            String value = orderTypeDetail.getOrderTypeName();
+            var label = getBestOrderTypeDescription(orderType, language);
+            var value = orderTypeDetail.getOrderTypeName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultOrderTypeChoice != null && defaultOrderTypeChoice.equals(value);
+            var usingDefaultChoice = defaultOrderTypeChoice != null && defaultOrderTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && orderTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

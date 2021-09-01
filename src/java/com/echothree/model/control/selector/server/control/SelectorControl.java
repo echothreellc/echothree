@@ -364,9 +364,9 @@ public class SelectorControl
 
     public SelectorKindChoicesBean getSelectorKindChoices(String defaultSelectorKindChoice, Language language, boolean allowNullChoice) {
         List<SelectorKind> selectorKinds = getSelectorKinds();
-        int size = selectorKinds.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = selectorKinds.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -381,13 +381,13 @@ public class SelectorControl
         for(var selectorKind : selectorKinds) {
             SelectorKindDetail selectorKindDetail = selectorKind.getLastDetail();
 
-            String label = getBestSelectorKindDescription(selectorKind, language);
-            String value = selectorKindDetail.getSelectorKindName();
+            var label = getBestSelectorKindDescription(selectorKind, language);
+            var value = selectorKindDetail.getSelectorKindName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultSelectorKindChoice != null && defaultSelectorKindChoice.equals(value);
+            var usingDefaultChoice = defaultSelectorKindChoice != null && defaultSelectorKindChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && selectorKindDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -802,9 +802,9 @@ public class SelectorControl
     public SelectorTypeChoicesBean getSelectorTypeChoices(String defaultSelectorTypeChoice, Language language,
             boolean allowNullChoice, SelectorKind selectorKind) {
         List<SelectorType> selectorTypes = getSelectorTypes(selectorKind);
-        int size = selectorTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = selectorTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -818,13 +818,13 @@ public class SelectorControl
 
         for(var selectorType : selectorTypes) {
             SelectorTypeDetail selectorTypeDetail = selectorType.getLastDetail();
-            String label = getBestSelectorTypeDescription(selectorType, language);
-            String value = selectorTypeDetail.getSelectorTypeName();
+            var label = getBestSelectorTypeDescription(selectorType, language);
+            var value = selectorTypeDetail.getSelectorTypeName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultSelectorTypeChoice != null && defaultSelectorTypeChoice.equals(value);
+            var usingDefaultChoice = defaultSelectorTypeChoice != null && defaultSelectorTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && selectorTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1131,9 +1131,9 @@ public class SelectorControl
     public SelectorBooleanTypeChoicesBean getSelectorBooleanTypeChoices(String defaultSelectorBooleanTypeChoice, Language language,
             boolean allowNullChoice) {
         List<SelectorBooleanType> selectorBooleanTypes = getSelectorBooleanTypes();
-        int size = selectorBooleanTypes.size() + (allowNullChoice? 1: 0);
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = selectorBooleanTypes.size() + (allowNullChoice? 1: 0);
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -1146,13 +1146,13 @@ public class SelectorControl
         }
         
         for(var selectorBooleanType : selectorBooleanTypes) {
-            String label = getBestSelectorBooleanTypeDescription(selectorBooleanType, language);
-            String value = selectorBooleanType.getSelectorBooleanTypeName();
+            var label = getBestSelectorBooleanTypeDescription(selectorBooleanType, language);
+            var value = selectorBooleanType.getSelectorBooleanTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultSelectorBooleanTypeChoice != null && defaultSelectorBooleanTypeChoice.equals(value);
+            var usingDefaultChoice = defaultSelectorBooleanTypeChoice != null && defaultSelectorBooleanTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && selectorBooleanType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1253,9 +1253,9 @@ public class SelectorControl
     public SelectorComparisonTypeChoicesBean getSelectorComparisonTypeChoices(String defaultSelectorComparisonTypeChoice,
             Language language, boolean allowNullChoice) {
         List<SelectorComparisonType> selectorComparisonTypes = getSelectorComparisonTypes();
-        int size = selectorComparisonTypes.size() + (allowNullChoice? 1: 0);
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = selectorComparisonTypes.size() + (allowNullChoice? 1: 0);
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -1268,13 +1268,13 @@ public class SelectorControl
         }
         
         for(var selectorComparisonType : selectorComparisonTypes) {
-            String label = getBestSelectorComparisonTypeDescription(selectorComparisonType, language);
-            String value = selectorComparisonType.getSelectorComparisonTypeName();
+            var label = getBestSelectorComparisonTypeDescription(selectorComparisonType, language);
+            var value = selectorComparisonType.getSelectorComparisonTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultSelectorComparisonTypeChoice != null && defaultSelectorComparisonTypeChoice.equals(value);
+            var usingDefaultChoice = defaultSelectorComparisonTypeChoice != null && defaultSelectorComparisonTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && selectorComparisonType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1544,9 +1544,9 @@ public class SelectorControl
     public SelectorTextSearchTypeChoicesBean getSelectorTextSearchTypeChoices(String defaultSelectorTextSearchTypeChoice,
             Language language, boolean allowNullChoice) {
         List<SelectorTextSearchType> selectorTextSearchTypes = getSelectorTextSearchTypes();
-        int size = selectorTextSearchTypes.size() + (allowNullChoice? 1: 0);
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = selectorTextSearchTypes.size() + (allowNullChoice? 1: 0);
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -1559,13 +1559,13 @@ public class SelectorControl
         }
         
         for(var selectorTextSearchType : selectorTextSearchTypes) {
-            String label = getBestSelectorTextSearchTypeDescription(selectorTextSearchType, language);
-            String value = selectorTextSearchType.getSelectorTextSearchTypeName();
+            var label = getBestSelectorTextSearchTypeDescription(selectorTextSearchType, language);
+            var value = selectorTextSearchType.getSelectorTextSearchTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultSelectorTextSearchTypeChoice != null && defaultSelectorTextSearchTypeChoice.equals(value);
+            var usingDefaultChoice = defaultSelectorTextSearchTypeChoice != null && defaultSelectorTextSearchTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && selectorTextSearchType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1828,9 +1828,9 @@ public class SelectorControl
     public SelectorChoicesBean getSelectorChoices(SelectorType selectorType, String defaultSelectorChoice, Language language,
             boolean allowNullChoice) {
         List<Selector> selectors = getSelectorsBySelectorType(selectorType);
-        int size = selectors.size() + (allowNullChoice? 1: 0);
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = selectors.size() + (allowNullChoice? 1: 0);
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -1845,13 +1845,13 @@ public class SelectorControl
         for(var selector : selectors) {
             SelectorDetail selectorDetail = selector.getLastDetail();
             
-            String label = getBestSelectorDescription(selector, language);
-            String value = selector.getLastDetail().getSelectorName();
+            var label = getBestSelectorDescription(selector, language);
+            var value = selector.getLastDetail().getSelectorName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultSelectorChoice != null && defaultSelectorChoice.equals(value);
+            var usingDefaultChoice = defaultSelectorChoice != null && defaultSelectorChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && selectorDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2337,9 +2337,9 @@ public class SelectorControl
     public SelectorNodeChoicesBean getSelectorNodeChoices(Selector selector, String defaultSelectorNodeChoice, Language language,
             boolean allowNullChoice) {
         List<SelectorNode> selectorNodes = getSelectorNodesBySelector(selector);
-        int size = selectorNodes.size() + (allowNullChoice? 1: 0);
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = selectorNodes.size() + (allowNullChoice? 1: 0);
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -2352,13 +2352,13 @@ public class SelectorControl
         }
         
         for(var selectorNode : selectorNodes) {
-            String label = getBestSelectorNodeDescription(selectorNode, language);
-            String value = selectorNode.getLastDetail().getSelectorNodeName();
+            var label = getBestSelectorNodeDescription(selectorNode, language);
+            var value = selectorNode.getLastDetail().getSelectorNodeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultSelectorNodeChoice != null && defaultSelectorNodeChoice.equals(value);
+            var usingDefaultChoice = defaultSelectorNodeChoice != null && defaultSelectorNodeChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null) {
                 defaultValue = value;
             }

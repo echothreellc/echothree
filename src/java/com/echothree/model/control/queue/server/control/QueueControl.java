@@ -245,9 +245,9 @@ public class QueueControl
 
     public QueueTypeChoicesBean getQueueTypeChoices(String defaultQueueTypeChoice, Language language, boolean allowNullChoice) {
         List<QueueType> queueTypes = getQueueTypes();
-        int size = queueTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = queueTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -262,13 +262,13 @@ public class QueueControl
         for(var queueType : queueTypes) {
             QueueTypeDetail queueTypeDetail = queueType.getLastDetail();
 
-            String label = getBestQueueTypeDescription(queueType, language);
-            String value = queueTypeDetail.getQueueTypeName();
+            var label = getBestQueueTypeDescription(queueType, language);
+            var value = queueTypeDetail.getQueueTypeName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultQueueTypeChoice != null && defaultQueueTypeChoice.equals(value);
+            var usingDefaultChoice = defaultQueueTypeChoice != null && defaultQueueTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && queueTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

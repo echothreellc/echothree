@@ -291,9 +291,9 @@ public class VendorControl
     public VendorTypeChoicesBean getVendorTypeChoices(String defaultVendorTypeChoice, Language language,
             boolean allowNullChoice) {
         List<VendorType> vendorTypes = getVendorTypes();
-        int size = vendorTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = vendorTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -307,13 +307,13 @@ public class VendorControl
         
         for(var vendorType : vendorTypes) {
             VendorTypeDetail vendorTypeDetail = vendorType.getLastDetail();
-            String label = getBestVendorTypeDescription(vendorType, language);
-            String value = vendorTypeDetail.getVendorTypeName();
+            var label = getBestVendorTypeDescription(vendorType, language);
+            var value = vendorTypeDetail.getVendorTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultVendorTypeChoice != null && defaultVendorTypeChoice.equals(value);
+            var usingDefaultChoice = defaultVendorTypeChoice != null && defaultVendorTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && vendorTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1692,9 +1692,9 @@ public class VendorControl
     public ItemPurchasingCategoryChoicesBean getItemPurchasingCategoryChoices(String defaultItemPurchasingCategoryChoice,
             Language language, boolean allowNullChoice) {
         List<ItemPurchasingCategory> itemPurchasingCategories = getItemPurchasingCategories();
-        int size = itemPurchasingCategories.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = itemPurchasingCategories.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -1709,13 +1709,13 @@ public class VendorControl
         for(var itemPurchasingCategory : itemPurchasingCategories) {
             ItemPurchasingCategoryDetail itemPurchasingCategoryDetail = itemPurchasingCategory.getLastDetail();
             
-            String label = getBestItemPurchasingCategoryDescription(itemPurchasingCategory, language);
-            String value = itemPurchasingCategoryDetail.getItemPurchasingCategoryName();
+            var label = getBestItemPurchasingCategoryDescription(itemPurchasingCategory, language);
+            var value = itemPurchasingCategoryDetail.getItemPurchasingCategoryName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultItemPurchasingCategoryChoice != null && defaultItemPurchasingCategoryChoice.equals(value);
+            var usingDefaultChoice = defaultItemPurchasingCategoryChoice != null && defaultItemPurchasingCategoryChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && itemPurchasingCategoryDetail.getIsDefault())) {
                 defaultValue = value;
             }

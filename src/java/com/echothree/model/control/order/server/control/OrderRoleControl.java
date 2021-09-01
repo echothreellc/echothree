@@ -192,7 +192,7 @@ public class OrderRoleControl
             throw new IllegalArgumentException();
         } else {
             List<OrderRole> orderRoles = getOrderRolesByOrderAndOrderRoleType(order, orderRoleType, entityPermission);
-            int size = orderRoles.size();
+            var size = orderRoles.size();
 
             if(size > 1) {
                 throw new IllegalStateException();

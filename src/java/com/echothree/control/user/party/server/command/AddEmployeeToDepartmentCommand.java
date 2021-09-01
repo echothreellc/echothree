@@ -70,7 +70,7 @@ public class AddEmployeeToDepartmentCommand
 
                 if(!hasExecutionErrors()) {
                     String departmentName = form.getDepartmentName();
-                    PartyDepartment partyDepartment = DepartmentLogic.getInstance().getPartyDepartmentByName(this, partyDivision == null ? null : partyDivision.getParty(), departmentName, null, true);
+                    PartyDepartment partyDepartment = DepartmentLogic.getInstance().getPartyDepartmentByName(this, partyDivision == null ? null : partyDivision.getParty(), departmentName, null, null, true);
 
                     if(!hasExecutionErrors()) {
                         Party departmentParty = partyDepartment.getParty();

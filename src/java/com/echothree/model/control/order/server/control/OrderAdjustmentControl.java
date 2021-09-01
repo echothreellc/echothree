@@ -223,9 +223,9 @@ public class OrderAdjustmentControl
     public OrderAdjustmentTypeChoicesBean getOrderAdjustmentTypeChoices(String defaultOrderAdjustmentTypeChoice, Language language, boolean allowNullChoice,
             OrderType orderType) {
         List<OrderAdjustmentType> orderAdjustmentTypes = getOrderAdjustmentTypes(orderType);
-        int size = orderAdjustmentTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = orderAdjustmentTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -240,13 +240,13 @@ public class OrderAdjustmentControl
         for(var orderAdjustmentType : orderAdjustmentTypes) {
             OrderAdjustmentTypeDetail orderAdjustmentTypeDetail = orderAdjustmentType.getLastDetail();
 
-            String label = getBestOrderAdjustmentTypeDescription(orderAdjustmentType, language);
-            String value = orderAdjustmentTypeDetail.getOrderAdjustmentTypeName();
+            var label = getBestOrderAdjustmentTypeDescription(orderAdjustmentType, language);
+            var value = orderAdjustmentTypeDetail.getOrderAdjustmentTypeName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultOrderAdjustmentTypeChoice != null && defaultOrderAdjustmentTypeChoice.equals(value);
+            var usingDefaultChoice = defaultOrderAdjustmentTypeChoice != null && defaultOrderAdjustmentTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && orderAdjustmentTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

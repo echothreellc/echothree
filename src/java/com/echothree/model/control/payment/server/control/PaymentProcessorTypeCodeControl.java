@@ -238,7 +238,7 @@ public class PaymentProcessorTypeCodeControl
             labels.add(label == null ? value : label);
             values.add(value);
 
-            boolean usingDefaultChoice = Objects.equals(defaultPaymentProcessorTypeCodeChoice, value);
+            var usingDefaultChoice = Objects.equals(defaultPaymentProcessorTypeCodeChoice, value);
             if(usingDefaultChoice || (defaultValue == null && paymentProcessorTypeCodeDetail.getIsDefault())) {
                 defaultValue = value;
             }

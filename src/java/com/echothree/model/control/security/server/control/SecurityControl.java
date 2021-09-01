@@ -347,9 +347,9 @@ public class SecurityControl
     public SecurityRoleGroupChoicesBean getSecurityRoleGroupChoices(String defaultSecurityRoleGroupChoice,
             Language language, boolean allowNullChoice) {
         List<SecurityRoleGroup> securityRoleGroups = getSecurityRoleGroups();
-        int size = securityRoleGroups.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = securityRoleGroups.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -363,10 +363,10 @@ public class SecurityControl
         
         for(var securityRoleGroup : securityRoleGroups) {
             SecurityRoleGroupDetail securityRoleGroupDetail = securityRoleGroup.getLastDetail();
-            String value = securityRoleGroupDetail.getSecurityRoleGroupName();
+            var value = securityRoleGroupDetail.getSecurityRoleGroupName();
             
             if(!value.equals(SecurityRoleGroups.ROOT.name())) {
-                String label = getBestSecurityRoleGroupDescription(securityRoleGroup, language);
+                var label = getBestSecurityRoleGroupDescription(securityRoleGroup, language);
 
                 labels.add(label == null? value: label);
                 values.add(value);
@@ -864,9 +864,9 @@ public class SecurityControl
     public SecurityRoleChoicesBean getSecurityRoleChoices(String defaultSecurityRoleChoice, Language language,
             boolean allowNullChoice, SecurityRoleGroup securityRoleGroup) {
         List<SecurityRole> securityRoles = getSecurityRoles(securityRoleGroup);
-        int size = securityRoles.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = securityRoles.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -880,13 +880,13 @@ public class SecurityControl
         
         for(var securityRole : securityRoles) {
             SecurityRoleDetail securityRoleDetail = securityRole.getLastDetail();
-            String label = getBestSecurityRoleDescription(securityRole, language);
-            String value = securityRoleDetail.getSecurityRoleName();
+            var label = getBestSecurityRoleDescription(securityRole, language);
+            var value = securityRoleDetail.getSecurityRoleName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultSecurityRoleChoice != null && defaultSecurityRoleChoice.equals(value);
+            var usingDefaultChoice = defaultSecurityRoleChoice != null && defaultSecurityRoleChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && securityRoleDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1488,9 +1488,9 @@ public class SecurityControl
     public PartySecurityRoleTemplateChoicesBean getPartySecurityRoleTemplateChoices(String defaultPartySecurityRoleTemplateChoice, Language language,
             boolean allowNullChoice) {
         List<PartySecurityRoleTemplate> partySecurityRoleTemplates = getPartySecurityRoleTemplates();
-        int size = partySecurityRoleTemplates.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = partySecurityRoleTemplates.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -1504,13 +1504,13 @@ public class SecurityControl
         
         for(var partySecurityRoleTemplate : partySecurityRoleTemplates) {
             PartySecurityRoleTemplateDetail partySecurityRoleTemplateDetail = partySecurityRoleTemplate.getLastDetail();
-            String label = getBestPartySecurityRoleTemplateDescription(partySecurityRoleTemplate, language);
-            String value = partySecurityRoleTemplateDetail.getPartySecurityRoleTemplateName();
+            var label = getBestPartySecurityRoleTemplateDescription(partySecurityRoleTemplate, language);
+            var value = partySecurityRoleTemplateDetail.getPartySecurityRoleTemplateName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultPartySecurityRoleTemplateChoice != null && defaultPartySecurityRoleTemplateChoice.equals(value);
+            var usingDefaultChoice = defaultPartySecurityRoleTemplateChoice != null && defaultPartySecurityRoleTemplateChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && partySecurityRoleTemplateDetail.getIsDefault())) {
                 defaultValue = value;
             }

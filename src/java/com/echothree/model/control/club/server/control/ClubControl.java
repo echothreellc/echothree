@@ -597,9 +597,9 @@ public class ClubControl
     public ClubItemTypeChoicesBean getClubItemTypeChoices(String defaultClubItemTypeChoice, Language language,
             boolean allowNullChoice) {
         List<ClubItemType> clubItemTypes = getClubItemTypes();
-        int size = clubItemTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = clubItemTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -608,13 +608,13 @@ public class ClubControl
         }
         
         for(var clubItemType : clubItemTypes) {
-            String label = getBestClubItemTypeDescription(clubItemType, language);
-            String value = clubItemType.getClubItemTypeName();
+            var label = getBestClubItemTypeDescription(clubItemType, language);
+            var value = clubItemType.getClubItemTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultClubItemTypeChoice != null && defaultClubItemTypeChoice.equals(value);
+            var usingDefaultChoice = defaultClubItemTypeChoice != null && defaultClubItemTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && clubItemType.getIsDefault()))
                 defaultValue = value;
         }

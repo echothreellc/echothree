@@ -219,9 +219,9 @@ public class OrderAliasControl
     public OrderAliasTypeChoicesBean getOrderAliasTypeChoices(String defaultOrderAliasTypeChoice, Language language,
             boolean allowNullChoice, OrderType orderType) {
         List<OrderAliasType> orderAliasTypes = getOrderAliasTypes(orderType);
-        int size = orderAliasTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = orderAliasTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -236,13 +236,13 @@ public class OrderAliasControl
         for(var orderAliasType : orderAliasTypes) {
             OrderAliasTypeDetail orderAliasTypeDetail = orderAliasType.getLastDetail();
 
-            String label = getBestOrderAliasTypeDescription(orderAliasType, language);
-            String value = orderAliasTypeDetail.getOrderAliasTypeName();
+            var label = getBestOrderAliasTypeDescription(orderAliasType, language);
+            var value = orderAliasTypeDetail.getOrderAliasTypeName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultOrderAliasTypeChoice != null && defaultOrderAliasTypeChoice.equals(value);
+            var usingDefaultChoice = defaultOrderAliasTypeChoice != null && defaultOrderAliasTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && orderAliasTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

@@ -66,7 +66,6 @@ public class Step2Action
             ExecutionResult executionResult = commandResult.getExecutionResult();
             GetDepartmentsResult result = (GetDepartmentsResult)executionResult.getResult();
             
-            request.setAttribute(AttributeConstants.COMPANY, result.getCompany());
             request.setAttribute(AttributeConstants.DIVISION, result.getDivision());
             request.setAttribute(AttributeConstants.DEPARTMENTS, result.getDepartments());
             forwardKey = ForwardConstants.DISPLAY;

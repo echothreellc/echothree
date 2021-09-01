@@ -291,9 +291,9 @@ public class PrinterControl
 
     public PrinterGroupChoicesBean getPrinterGroupChoices(String defaultPrinterGroupChoice, Language language, boolean allowNullChoice) {
         List<PrinterGroup> printerGroups = getPrinterGroups();
-        int size = printerGroups.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = printerGroups.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -308,13 +308,13 @@ public class PrinterControl
         for(var printerGroup : printerGroups) {
             PrinterGroupDetail printerGroupDetail = printerGroup.getLastDetail();
 
-            String label = getBestPrinterGroupDescription(printerGroup, language);
-            String value = printerGroupDetail.getPrinterGroupName();
+            var label = getBestPrinterGroupDescription(printerGroup, language);
+            var value = printerGroupDetail.getPrinterGroupName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultPrinterGroupChoice != null && defaultPrinterGroupChoice.equals(value);
+            var usingDefaultChoice = defaultPrinterGroupChoice != null && defaultPrinterGroupChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && printerGroupDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1542,9 +1542,9 @@ public class PrinterControl
 
     public PrinterGroupUseTypeChoicesBean getPrinterGroupUseTypeChoices(String defaultPrinterGroupUseTypeChoice, Language language, boolean allowNullChoice) {
         List<PrinterGroupUseType> printerGroupUseTypes = getPrinterGroupUseTypes();
-        int size = printerGroupUseTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = printerGroupUseTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -1559,13 +1559,13 @@ public class PrinterControl
         for(var printerGroupUseType : printerGroupUseTypes) {
             PrinterGroupUseTypeDetail printerGroupUseTypeDetail = printerGroupUseType.getLastDetail();
 
-            String label = getBestPrinterGroupUseTypeDescription(printerGroupUseType, language);
-            String value = printerGroupUseTypeDetail.getPrinterGroupUseTypeName();
+            var label = getBestPrinterGroupUseTypeDescription(printerGroupUseType, language);
+            var value = printerGroupUseTypeDetail.getPrinterGroupUseTypeName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultPrinterGroupUseTypeChoice != null && defaultPrinterGroupUseTypeChoice.equals(value);
+            var usingDefaultChoice = defaultPrinterGroupUseTypeChoice != null && defaultPrinterGroupUseTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && printerGroupUseTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

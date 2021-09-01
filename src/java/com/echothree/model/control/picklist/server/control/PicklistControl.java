@@ -309,9 +309,9 @@ public class PicklistControl
     public PicklistTypeChoicesBean getPicklistTypeChoices(String defaultPicklistTypeChoice,
             Language language, boolean allowNullChoice) {
         List<PicklistType> picklistTypes = getPicklistTypes();
-        int size = picklistTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = picklistTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -326,13 +326,13 @@ public class PicklistControl
         for(var picklistType : picklistTypes) {
             PicklistTypeDetail picklistTypeDetail = picklistType.getLastDetail();
 
-            String label = getBestPicklistTypeDescription(picklistType, language);
-            String value = picklistTypeDetail.getPicklistTypeName();
+            var label = getBestPicklistTypeDescription(picklistType, language);
+            var value = picklistTypeDetail.getPicklistTypeName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultPicklistTypeChoice != null && defaultPicklistTypeChoice.equals(value);
+            var usingDefaultChoice = defaultPicklistTypeChoice != null && defaultPicklistTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && picklistTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -773,9 +773,9 @@ public class PicklistControl
     public PicklistTimeTypeChoicesBean getPicklistTimeTypeChoices(String defaultPicklistTimeTypeChoice, Language language, boolean allowNullChoice,
             PicklistType picklistType) {
         List<PicklistTimeType> picklistTimeTypes = getPicklistTimeTypes(picklistType);
-        int size = picklistTimeTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = picklistTimeTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -790,13 +790,13 @@ public class PicklistControl
         for(var picklistTimeType : picklistTimeTypes) {
             PicklistTimeTypeDetail picklistTimeTypeDetail = picklistTimeType.getLastDetail();
 
-            String label = getBestPicklistTimeTypeDescription(picklistTimeType, language);
-            String value = picklistTimeTypeDetail.getPicklistTimeTypeName();
+            var label = getBestPicklistTimeTypeDescription(picklistTimeType, language);
+            var value = picklistTimeTypeDetail.getPicklistTimeTypeName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultPicklistTimeTypeChoice != null && defaultPicklistTimeTypeChoice.equals(value);
+            var usingDefaultChoice = defaultPicklistTimeTypeChoice != null && defaultPicklistTimeTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && picklistTimeTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1189,9 +1189,9 @@ public class PicklistControl
     public PicklistAliasTypeChoicesBean getPicklistAliasTypeChoices(String defaultPicklistAliasTypeChoice, Language language,
             boolean allowNullChoice, PicklistType picklistType) {
         List<PicklistAliasType> picklistAliasTypes = getPicklistAliasTypes(picklistType);
-        int size = picklistAliasTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = picklistAliasTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -1206,13 +1206,13 @@ public class PicklistControl
         for(var picklistAliasType : picklistAliasTypes) {
             PicklistAliasTypeDetail picklistAliasTypeDetail = picklistAliasType.getLastDetail();
 
-            String label = getBestPicklistAliasTypeDescription(picklistAliasType, language);
-            String value = picklistAliasTypeDetail.getPicklistAliasTypeName();
+            var label = getBestPicklistAliasTypeDescription(picklistAliasType, language);
+            var value = picklistAliasTypeDetail.getPicklistAliasTypeName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultPicklistAliasTypeChoice != null && defaultPicklistAliasTypeChoice.equals(value);
+            var usingDefaultChoice = defaultPicklistAliasTypeChoice != null && defaultPicklistAliasTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && picklistAliasTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

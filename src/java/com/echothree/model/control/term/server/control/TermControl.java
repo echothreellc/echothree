@@ -140,9 +140,9 @@ public class TermControl
     
     public TermTypeChoicesBean getTermTypeChoices(String defaultTermTypeChoice, Language language, boolean allowNullChoice) {
         List<TermType> termTypes = getTermTypes();
-        int size = termTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = termTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -155,13 +155,13 @@ public class TermControl
         }
         
         for(var termType : termTypes) {
-            String label = getBestTermTypeDescription(termType, language);
-            String value = termType.getTermTypeName();
+            var label = getBestTermTypeDescription(termType, language);
+            var value = termType.getTermTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultTermTypeChoice != null && defaultTermTypeChoice.equals(value);
+            var usingDefaultChoice = defaultTermTypeChoice != null && defaultTermTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && termType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -366,9 +366,9 @@ public class TermControl
     
     public TermChoicesBean getTermChoices(String defaultTermChoice, Language language, boolean allowNullChoice) {
         List<Term> terms = getTerms();
-        int size = terms.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = terms.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -383,13 +383,13 @@ public class TermControl
         for(var term : terms) {
             TermDetail termDetail = term.getLastDetail();
             
-            String label = getBestTermDescription(term, language);
-            String value = termDetail.getTermName();
+            var label = getBestTermDescription(term, language);
+            var value = termDetail.getTermName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultTermChoice != null && defaultTermChoice.equals(value);
+            var usingDefaultChoice = defaultTermChoice != null && defaultTermChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && termDetail.getIsDefault())) {
                 defaultValue = value;
             }

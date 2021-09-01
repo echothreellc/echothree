@@ -123,6 +123,8 @@ import com.echothree.control.user.party.server.command.GetCompaniesCommand;
 import com.echothree.control.user.party.server.command.GetCompanyCommand;
 import com.echothree.control.user.party.server.command.GetDateTimeFormatCommand;
 import com.echothree.control.user.party.server.command.GetDateTimeFormatsCommand;
+import com.echothree.control.user.party.server.command.GetDepartmentCommand;
+import com.echothree.control.user.party.server.command.GetDepartmentsCommand;
 import com.echothree.control.user.party.server.command.GetDivisionCommand;
 import com.echothree.control.user.party.server.command.GetDivisionsCommand;
 import com.echothree.control.user.party.server.command.GetLanguageCommand;
@@ -235,6 +237,7 @@ import com.echothree.model.control.offer.server.graphql.UseObject;
 import com.echothree.model.control.offer.server.graphql.UseTypeObject;
 import com.echothree.model.control.party.server.graphql.CompanyObject;
 import com.echothree.model.control.party.server.graphql.DateTimeFormatObject;
+import com.echothree.model.control.party.server.graphql.DepartmentObject;
 import com.echothree.model.control.party.server.graphql.DivisionObject;
 import com.echothree.model.control.party.server.graphql.LanguageObject;
 import com.echothree.model.control.party.server.graphql.NameSuffixObject;
@@ -319,6 +322,7 @@ import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.NameSuffix;
 import com.echothree.model.data.party.server.entity.PartyCompany;
+import com.echothree.model.data.party.server.entity.PartyDepartment;
 import com.echothree.model.data.party.server.entity.PartyDivision;
 import com.echothree.model.data.party.server.entity.PersonalTitle;
 import com.echothree.model.data.party.server.entity.TimeZone;
@@ -4132,6 +4136,65 @@ public final class GraphQlQueries
         }
 
         return divisionObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("department")
+    public static DepartmentObject department(final DataFetchingEnvironment env,
+            @GraphQLName("companyName") final String companyName,
+            @GraphQLName("divisionName") final String divisionName,
+            @GraphQLName("departmentName") final String departmentName,
+            @GraphQLName("partyName") final String partyName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        PartyDepartment department;
+
+        try {
+            var commandForm = PartyUtil.getHome().getGetDepartmentForm();
+
+            commandForm.setCompanyName(companyName);
+            commandForm.setDivisionName(divisionName);
+            commandForm.setDepartmentName(departmentName);
+            commandForm.setPartyName(partyName);
+            commandForm.setUlid(id);
+
+            department = new GetDepartmentCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return department == null ? null : new DepartmentObject(department);
+    }
+
+    @GraphQLField
+    @GraphQLName("departments")
+    public static Collection<DepartmentObject> departments(final DataFetchingEnvironment env,
+            @GraphQLName("companyName") @GraphQLNonNull final String companyName,
+            @GraphQLName("divisionName") final String divisionName) {
+        Collection<PartyDepartment> partyDepartments;
+        Collection<DepartmentObject> departmentObjects;
+
+        try {
+            var commandForm = PartyUtil.getHome().getGetDepartmentsForm();
+
+            commandForm.setCompanyName(companyName);
+            commandForm.setDivisionName(divisionName);
+
+            partyDepartments = new GetDepartmentsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(partyDepartments == null) {
+            departmentObjects = emptyList();
+        } else {
+            departmentObjects = new ArrayList<>(partyDepartments.size());
+
+            partyDepartments.stream()
+                    .map(DepartmentObject::new)
+                    .forEachOrdered(departmentObjects::add);
+        }
+
+        return departmentObjects;
     }
 
     @GraphQLField

@@ -664,9 +664,9 @@ public class RatingControl
     public RatingTypeListItemChoicesBean getRatingTypeListItemChoices(String defaultRatingTypeListItemChoice, Language language,
             boolean allowNullChoice, RatingType ratingType) {
         List<RatingTypeListItem> ratingTypeListItems = getRatingTypeListItems(ratingType);
-        int size = ratingTypeListItems.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = ratingTypeListItems.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -680,13 +680,13 @@ public class RatingControl
         
         for(var ratingTypeListItem : ratingTypeListItems) {
             RatingTypeListItemDetail ratingTypeListItemDetail = ratingTypeListItem.getLastDetail();
-            String label = getBestRatingTypeListItemDescription(ratingTypeListItem, language);
-            String value = ratingTypeListItemDetail.getRatingTypeListItemName();
+            var label = getBestRatingTypeListItemDescription(ratingTypeListItem, language);
+            var value = ratingTypeListItemDetail.getRatingTypeListItemName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultRatingTypeListItemChoice != null && defaultRatingTypeListItemChoice.equals(value);
+            var usingDefaultChoice = defaultRatingTypeListItemChoice != null && defaultRatingTypeListItemChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && ratingTypeListItemDetail.getIsDefault())) {
                 defaultValue = value;
             }

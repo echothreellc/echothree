@@ -58,7 +58,7 @@ public class DivisionLogic
             var partyCompany = CompanyLogic.getInstance().getPartyCompanyByName(eea, companyName, null,
                     null, true);
 
-            companyParty = partyCompany.getParty();
+            companyParty = hasExecutionErrors(eea) ? null : partyCompany.getParty();
         }
 
         if(!hasExecutionErrors(eea)) {

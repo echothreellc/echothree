@@ -589,9 +589,9 @@ public class WorkEffortControl
     public WorkEffortScopeChoicesBean getWorkEffortScopeChoices(String defaultWorkEffortScopeChoice, Language language,
             boolean allowNullChoice, WorkEffortType workEffortType) {
         List<WorkEffortScope> workEffortScopes = getWorkEffortScopes(workEffortType);
-        int size = workEffortScopes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = workEffortScopes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -605,13 +605,13 @@ public class WorkEffortControl
         
         for(var workEffortScope : workEffortScopes) {
             WorkEffortScopeDetail workEffortScopeDetail = workEffortScope.getLastDetail();
-            String label = getBestWorkEffortScopeDescription(workEffortScope, language);
-            String value = workEffortScopeDetail.getWorkEffortScopeName();
+            var label = getBestWorkEffortScopeDescription(workEffortScope, language);
+            var value = workEffortScopeDetail.getWorkEffortScopeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultWorkEffortScopeChoice != null && defaultWorkEffortScopeChoice.equals(value);
+            var usingDefaultChoice = defaultWorkEffortScopeChoice != null && defaultWorkEffortScopeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && workEffortScopeDetail.getIsDefault())) {
                 defaultValue = value;
             }

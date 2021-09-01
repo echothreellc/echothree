@@ -171,9 +171,9 @@ public class IconControl
         var documentControl = Session.getModelController(DocumentControl.class);
         List<IconUsage> iconUsages = getIconUsagesByIconUsageType(iconUsageType);
         List<Icon> icons = getIcons();
-        int size = icons.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = icons.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -184,13 +184,13 @@ public class IconControl
         for(var iconUsage : iconUsages) {
             IconDetail iconDetail = iconUsage.getIcon().getLastDetail();
             Document document = iconDetail.getDocument();
-            String label = documentControl.getBestDocumentDescription(document, language);
-            String value = iconDetail.getIconName();
+            var label = documentControl.getBestDocumentDescription(document, language);
+            var value = iconDetail.getIconName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultIconChoice != null && defaultIconChoice.equals(value);
+            var usingDefaultChoice = defaultIconChoice != null && defaultIconChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && iconUsage.getIsDefault()))
                 defaultValue = value;
         }
@@ -363,9 +363,9 @@ public class IconControl
     
     public IconUsageTypeChoicesBean getIconUsageTypeChoices(String defaultIconUsageTypeChoice, Language language, boolean allowNullChoice) {
         List<IconUsageType> iconUsageTypes = getIconUsageTypes();
-        int size = iconUsageTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = iconUsageTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -380,13 +380,13 @@ public class IconControl
         for(var iconUsageType : iconUsageTypes) {
             IconUsageTypeDetail iconUsageTypeDetail = iconUsageType.getLastDetail();
             
-            String label = getBestIconUsageTypeDescription(iconUsageType, language);
-            String value = iconUsageTypeDetail.getIconUsageTypeName();
+            var label = getBestIconUsageTypeDescription(iconUsageType, language);
+            var value = iconUsageTypeDetail.getIconUsageTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultIconUsageTypeChoice != null && defaultIconUsageTypeChoice.equals(value);
+            var usingDefaultChoice = defaultIconUsageTypeChoice != null && defaultIconUsageTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && iconUsageTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

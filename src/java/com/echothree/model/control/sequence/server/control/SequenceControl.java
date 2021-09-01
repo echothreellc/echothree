@@ -341,9 +341,9 @@ public class SequenceControl
     
     public SequenceTypeChoicesBean getSequenceTypeChoices(String defaultSequenceTypeChoice, Language language, boolean allowNullChoice) {
         List<SequenceType> sequenceTypes = getSequenceTypes();
-        int size = sequenceTypes.size() + (allowNullChoice? 1: 0);
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = sequenceTypes.size() + (allowNullChoice? 1: 0);
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -357,13 +357,13 @@ public class SequenceControl
         
         for(var sequenceType : sequenceTypes) {
             SequenceTypeDetail sequenceTypeDetail = sequenceType.getLastDetail();
-            String label = getBestSequenceTypeDescription(sequenceType, language);
-            String value = sequenceTypeDetail.getSequenceTypeName();
+            var label = getBestSequenceTypeDescription(sequenceType, language);
+            var value = sequenceTypeDetail.getSequenceTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultSequenceTypeChoice != null && defaultSequenceTypeChoice.equals(value);
+            var usingDefaultChoice = defaultSequenceTypeChoice != null && defaultSequenceTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && sequenceTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -697,9 +697,9 @@ public class SequenceControl
     public SequenceChecksumTypeChoicesBean getSequenceChecksumTypeChoices(String defaultSequenceChecksumTypeChoice,
             Language language, boolean allowNullChoice) {
         List<SequenceChecksumType> sequenceChecksumTypes = getSequenceChecksumTypes();
-        int size = sequenceChecksumTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = sequenceChecksumTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -712,13 +712,13 @@ public class SequenceControl
         }
         
         for(var sequenceChecksumType : sequenceChecksumTypes) {
-            String label = getBestSequenceChecksumTypeDescription(sequenceChecksumType, language);
-            String value = sequenceChecksumType.getSequenceChecksumTypeName();
+            var label = getBestSequenceChecksumTypeDescription(sequenceChecksumType, language);
+            var value = sequenceChecksumType.getSequenceChecksumTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultSequenceChecksumTypeChoice != null && defaultSequenceChecksumTypeChoice.equals(value);
+            var usingDefaultChoice = defaultSequenceChecksumTypeChoice != null && defaultSequenceChecksumTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && sequenceChecksumType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -835,9 +835,9 @@ public class SequenceControl
     public SequenceEncoderTypeChoicesBean getSequenceEncoderTypeChoices(String defaultSequenceEncoderTypeChoice, Language language,
             boolean allowNullChoice) {
         List<SequenceEncoderType> sequenceEncoderTypes = getSequenceEncoderTypes();
-        int size = sequenceEncoderTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = sequenceEncoderTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -850,13 +850,13 @@ public class SequenceControl
         }
         
         for(var sequenceEncoderType : sequenceEncoderTypes) {
-            String label = getBestSequenceEncoderTypeDescription(sequenceEncoderType, language);
-            String value = sequenceEncoderType.getSequenceEncoderTypeName();
+            var label = getBestSequenceEncoderTypeDescription(sequenceEncoderType, language);
+            var value = sequenceEncoderType.getSequenceEncoderTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultSequenceEncoderTypeChoice != null && defaultSequenceEncoderTypeChoice.equals(value);
+            var usingDefaultChoice = defaultSequenceEncoderTypeChoice != null && defaultSequenceEncoderTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && sequenceEncoderType.getIsDefault()))
                 defaultValue = value;
         }
@@ -1114,9 +1114,9 @@ public class SequenceControl
     public SequenceChoicesBean getSequenceChoices(String defaultSequenceChoice, Language language, boolean allowNullChoice,
             SequenceType sequenceType) {
         List<Sequence> sequences = getSequencesBySequenceType(sequenceType);
-        int size = sequences.size() + (allowNullChoice? 1: 0);
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = sequences.size() + (allowNullChoice? 1: 0);
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -1130,13 +1130,13 @@ public class SequenceControl
         
         for(var sequence : sequences) {
             SequenceDetail sequenceDetail = sequence.getLastDetail();
-            String label = getBestSequenceDescription(sequence, language);
-            String value = sequenceDetail.getSequenceName();
+            var label = getBestSequenceDescription(sequence, language);
+            var value = sequenceDetail.getSequenceName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultSequenceChoice != null && defaultSequenceChoice.equals(value);
+            var usingDefaultChoice = defaultSequenceChoice != null && defaultSequenceChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && sequenceDetail.getIsDefault())) {
                 defaultValue = value;
             }

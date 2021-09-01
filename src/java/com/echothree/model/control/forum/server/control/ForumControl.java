@@ -309,9 +309,9 @@ public class ForumControl
     
     public ForumGroupChoicesBean getForumGroupChoices(String defaultForumGroupChoice, Language language, boolean allowNullChoice) {
         List<ForumGroup> forumGroups = getForumGroups();
-        int size = forumGroups.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = forumGroups.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -326,13 +326,13 @@ public class ForumControl
         for(var forumGroup : forumGroups) {
             ForumGroupDetail forumGroupDetail = forumGroup.getLastDetail();
             
-            String label = getBestForumGroupDescription(forumGroup, language);
-            String value = forumGroupDetail.getForumGroupName();
+            var label = getBestForumGroupDescription(forumGroup, language);
+            var value = forumGroupDetail.getForumGroupName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultForumGroupChoice != null && defaultForumGroupChoice.equals(value);
+            var usingDefaultChoice = defaultForumGroupChoice != null && defaultForumGroupChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null)
                 defaultValue = value;
         }
@@ -668,9 +668,9 @@ public class ForumControl
     
     public ForumChoicesBean getForumChoices(String defaultForumChoice, Language language, boolean allowNullChoice) {
         List<Forum> forums = getForums();
-        int size = forums.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = forums.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -685,13 +685,13 @@ public class ForumControl
         for(var forum : forums) {
             ForumDetail forumDetail = forum.getLastDetail();
             
-            String label = getBestForumDescription(forum, language);
-            String value = forumDetail.getForumName();
+            var label = getBestForumDescription(forum, language);
+            var value = forumDetail.getForumName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultForumChoice != null && defaultForumChoice.equals(value);
+            var usingDefaultChoice = defaultForumChoice != null && defaultForumChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null)
                 defaultValue = value;
         }
@@ -1284,9 +1284,9 @@ public class ForumControl
     public ForumRoleTypeChoicesBean getForumRoleTypeChoices(String defaultForumRoleTypeChoice, Language language,
             boolean allowNullChoice) {
         List<ForumRoleType> forumRoleTypes = getForumRoleTypes();
-        int size = forumRoleTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = forumRoleTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -1299,13 +1299,13 @@ public class ForumControl
         }
         
         for(var forumRoleType : forumRoleTypes) {
-            String label = getBestForumRoleTypeDescription(forumRoleType, language);
-            String value = forumRoleType.getForumRoleTypeName();
+            var label = getBestForumRoleTypeDescription(forumRoleType, language);
+            var value = forumRoleType.getForumRoleTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultForumRoleTypeChoice != null && defaultForumRoleTypeChoice.equals(value);
+            var usingDefaultChoice = defaultForumRoleTypeChoice != null && defaultForumRoleTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && forumRoleType.getIsDefault()))
                 defaultValue = value;
         }
@@ -1402,9 +1402,9 @@ public class ForumControl
     
     public ForumTypeChoicesBean getForumTypeChoices(String defaultForumTypeChoice, Language language, boolean allowNullChoice) {
         List<ForumType> forumTypes = getForumTypes();
-        int size = forumTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = forumTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -1417,13 +1417,13 @@ public class ForumControl
         }
         
         for(var forumType : forumTypes) {
-            String label = getBestForumTypeDescription(forumType, language);
-            String value = forumType.getForumTypeName();
+            var label = getBestForumTypeDescription(forumType, language);
+            var value = forumType.getForumTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultForumTypeChoice != null && defaultForumTypeChoice.equals(value);
+            var usingDefaultChoice = defaultForumTypeChoice != null && defaultForumTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && forumType.getIsDefault()))
                 defaultValue = value;
         }
@@ -1682,9 +1682,9 @@ public class ForumControl
             boolean allowNullChoice) {
         var coreControl = Session.getModelController(CoreControl.class);
         List<ForumMimeType> forumMimeTypes = getForumMimeTypesByForum(forum);
-        int size = forumMimeTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = forumMimeTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -1698,13 +1698,13 @@ public class ForumControl
         
         for(var forumMimeType : forumMimeTypes) {
             MimeType mimeType = forumMimeType.getMimeType();
-            String label = coreControl.getBestMimeTypeDescription(mimeType, language);
-            String value = mimeType.getLastDetail().getMimeTypeName();
+            var label = coreControl.getBestMimeTypeDescription(mimeType, language);
+            var value = mimeType.getLastDetail().getMimeTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultMimeTypeChoice != null && defaultMimeTypeChoice.equals(value);
+            var usingDefaultChoice = defaultMimeTypeChoice != null && defaultMimeTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && forumMimeType.getIsDefault())) {
                 defaultValue = value;
             }
@@ -4353,9 +4353,9 @@ public class ForumControl
     public ForumMessageTypeChoicesBean getForumMessageTypeChoices(String defaultForumMessageTypeChoice, Language language,
             boolean allowNullChoice) {
         List<ForumMessageType> forumMessageTypes = getForumMessageTypes();
-        int size = forumMessageTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = forumMessageTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -4368,13 +4368,13 @@ public class ForumControl
         }
         
         for(var forumMessageType : forumMessageTypes) {
-            String label = getBestForumMessageTypeDescription(forumMessageType, language);
-            String value = forumMessageType.getForumMessageTypeName();
+            var label = getBestForumMessageTypeDescription(forumMessageType, language);
+            var value = forumMessageType.getForumMessageTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultForumMessageTypeChoice != null && defaultForumMessageTypeChoice.equals(value);
+            var usingDefaultChoice = defaultForumMessageTypeChoice != null && defaultForumMessageTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && forumMessageType.getIsDefault()))
                 defaultValue = value;
         }

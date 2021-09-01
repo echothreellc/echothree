@@ -264,9 +264,9 @@ public class ScaleControl
 
     public ScaleTypeChoicesBean getScaleTypeChoices(String defaultScaleTypeChoice, Language language, boolean allowNullChoice) {
         List<ScaleType> scaleTypes = getScaleTypes();
-        int size = scaleTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = scaleTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -281,13 +281,13 @@ public class ScaleControl
         for(var scaleType : scaleTypes) {
             ScaleTypeDetail scaleTypeDetail = scaleType.getLastDetail();
 
-            String label = getBestScaleTypeDescription(scaleType, language);
-            String value = scaleTypeDetail.getScaleTypeName();
+            var label = getBestScaleTypeDescription(scaleType, language);
+            var value = scaleTypeDetail.getScaleTypeName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultScaleTypeChoice != null && defaultScaleTypeChoice.equals(value);
+            var usingDefaultChoice = defaultScaleTypeChoice != null && defaultScaleTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && scaleTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -750,9 +750,9 @@ public class ScaleControl
 
     public ScaleChoicesBean getScaleChoices(String defaultScaleChoice, Language language, boolean allowNullChoice) {
         List<Scale> scales = getScales();
-        int size = scales.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = scales.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -767,13 +767,13 @@ public class ScaleControl
         for(var scale : scales) {
             ScaleDetail scaleDetail = scale.getLastDetail();
 
-            String label = getBestScaleDescription(scale, language);
-            String value = scaleDetail.getScaleName();
+            var label = getBestScaleDescription(scale, language);
+            var value = scaleDetail.getScaleName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultScaleChoice != null && defaultScaleChoice.equals(value);
+            var usingDefaultChoice = defaultScaleChoice != null && defaultScaleChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && scaleDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1194,9 +1194,9 @@ public class ScaleControl
 
     public ScaleUseTypeChoicesBean getScaleUseTypeChoices(String defaultScaleUseTypeChoice, Language language, boolean allowNullChoice) {
         List<ScaleUseType> scaleUseTypes = getScaleUseTypes();
-        int size = scaleUseTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = scaleUseTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -1211,13 +1211,13 @@ public class ScaleControl
         for(var scaleUseType : scaleUseTypes) {
             ScaleUseTypeDetail scaleUseTypeDetail = scaleUseType.getLastDetail();
 
-            String label = getBestScaleUseTypeDescription(scaleUseType, language);
-            String value = scaleUseTypeDetail.getScaleUseTypeName();
+            var label = getBestScaleUseTypeDescription(scaleUseType, language);
+            var value = scaleUseTypeDetail.getScaleUseTypeName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultScaleUseTypeChoice != null && defaultScaleUseTypeChoice.equals(value);
+            var usingDefaultChoice = defaultScaleUseTypeChoice != null && defaultScaleUseTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && scaleUseTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }

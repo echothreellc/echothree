@@ -272,9 +272,9 @@ public class TaxControl
 
     public TaxClassificationChoicesBean getTaxClassificationChoices(String defaultTaxClassificationChoice, Language language, boolean allowNullChoice, GeoCode countryGeoCode) {
         List<TaxClassification> taxClassificationes = getTaxClassificationsByCountryGeoCode(countryGeoCode);
-        int size = taxClassificationes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = taxClassificationes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -291,13 +291,13 @@ public class TaxControl
             String taxClassificationName = taxClassificationDetail.getTaxClassificationName();
             TaxClassificationTranslation taxClassificationTranslation = getBestTaxClassificationTranslation(taxClassification, language);
             
-            String label = taxClassificationTranslation == null ? taxClassificationName : taxClassificationTranslation.getDescription();
-            String value = taxClassificationName;
+            var label = taxClassificationTranslation == null ? taxClassificationName : taxClassificationTranslation.getDescription();
+            var value = taxClassificationName;
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultTaxClassificationChoice != null && defaultTaxClassificationChoice.equals(value);
+            var usingDefaultChoice = defaultTaxClassificationChoice != null && defaultTaxClassificationChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && taxClassificationDetail.getIsDefault())) {
                 defaultValue = value;
             }

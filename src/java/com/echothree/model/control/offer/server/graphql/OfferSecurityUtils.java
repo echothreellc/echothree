@@ -34,6 +34,10 @@ public final class OfferSecurityUtils {
         return env.<GraphQlContext>getContext().hasAccess(GetOfferCommand.class);
     }
 
+    public boolean getHasOffersAccess(final DataFetchingEnvironment env) {
+        return env.<GraphQlContext>getContext().hasAccess(GetOffersCommand.class);
+    }
+
     public boolean getHasOfferNameElementAccess(final DataFetchingEnvironment env) {
         return env.<GraphQlContext>getContext().hasAccess(GetOfferNameElementCommand.class);
     }

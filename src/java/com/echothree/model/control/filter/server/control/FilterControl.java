@@ -339,9 +339,9 @@ public class FilterControl
 
     public FilterKindChoicesBean getFilterKindChoices(String defaultFilterKindChoice, Language language, boolean allowNullChoice) {
         List<FilterKind> filterKinds = getFilterKinds();
-        int size = filterKinds.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = filterKinds.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -356,13 +356,13 @@ public class FilterControl
         for(var filterKind : filterKinds) {
             FilterKindDetail filterKindDetail = filterKind.getLastDetail();
 
-            String label = getBestFilterKindDescription(filterKind, language);
-            String value = filterKindDetail.getFilterKindName();
+            var label = getBestFilterKindDescription(filterKind, language);
+            var value = filterKindDetail.getFilterKindName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultFilterKindChoice != null && defaultFilterKindChoice.equals(value);
+            var usingDefaultChoice = defaultFilterKindChoice != null && defaultFilterKindChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && filterKindDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -776,9 +776,9 @@ public class FilterControl
     public FilterTypeChoicesBean getFilterTypeChoices(String defaultFilterTypeChoice, Language language,
             boolean allowNullChoice, FilterKind filterKind) {
         List<FilterType> filterTypes = getFilterTypes(filterKind);
-        int size = filterTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = filterTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
 
         if(allowNullChoice) {
@@ -792,13 +792,13 @@ public class FilterControl
 
         for(var filterType : filterTypes) {
             FilterTypeDetail filterTypeDetail = filterType.getLastDetail();
-            String label = getBestFilterTypeDescription(filterType, language);
-            String value = filterTypeDetail.getFilterTypeName();
+            var label = getBestFilterTypeDescription(filterType, language);
+            var value = filterTypeDetail.getFilterTypeName();
 
             labels.add(label == null? value: label);
             values.add(value);
 
-            boolean usingDefaultChoice = defaultFilterTypeChoice != null && defaultFilterTypeChoice.equals(value);
+            var usingDefaultChoice = defaultFilterTypeChoice != null && defaultFilterTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && filterTypeDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -1107,19 +1107,19 @@ public class FilterControl
     public FilterAdjustmentSourceChoicesBean getFilterAdjustmentSourceChoices(String defaultFilterAdjustmentSourceChoice,
             Language language) {
         List<FilterAdjustmentSource> filterAdjustmentSources = getFilterAdjustmentSources();
-        int size = filterAdjustmentSources.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = filterAdjustmentSources.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         for(var filterAdjustmentSource : filterAdjustmentSources) {
-            String label = getBestFilterAdjustmentSourceDescription(filterAdjustmentSource, language);
-            String value = filterAdjustmentSource.getFilterAdjustmentSourceName();
+            var label = getBestFilterAdjustmentSourceDescription(filterAdjustmentSource, language);
+            var value = filterAdjustmentSource.getFilterAdjustmentSourceName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultFilterAdjustmentSourceChoice == null? false:
+            var usingDefaultChoice = defaultFilterAdjustmentSourceChoice == null? false:
                 defaultFilterAdjustmentSourceChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null)
                 defaultValue = value;
@@ -1242,22 +1242,22 @@ public class FilterControl
     public FilterAdjustmentTypeChoicesBean getFilterAdjustmentTypeChoices(String defaultFilterAdjustmentTypeChoice,
             Language language) {
         List<FilterAdjustmentType> filterAdjustmentTypes = getFilterAdjustmentTypes();
-        int size = filterAdjustmentTypes.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = filterAdjustmentTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         labels.add("");
         values.add("");
         
         for(var filterAdjustmentType : filterAdjustmentTypes) {
-            String label = getBestFilterAdjustmentTypeDescription(filterAdjustmentType, language);
-            String value = filterAdjustmentType.getFilterAdjustmentTypeName();
+            var label = getBestFilterAdjustmentTypeDescription(filterAdjustmentType, language);
+            var value = filterAdjustmentType.getFilterAdjustmentTypeName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultFilterAdjustmentTypeChoice == null? false:
+            var usingDefaultChoice = defaultFilterAdjustmentTypeChoice == null? false:
                 defaultFilterAdjustmentTypeChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null)
                 defaultValue = value;
@@ -1552,15 +1552,15 @@ public class FilterControl
     public FilterAdjustmentChoicesBean getFilterAdjustmentChoices(String defaultFilterAdjustmentChoice, Language language,
             FilterKind filterKind, boolean initialAdjustmentsOnly) {
         List<FilterAdjustment> filterAdjustments = getFilterAdjustmentsByFilterKind(filterKind);
-        int size = filterAdjustments.size();
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = filterAdjustments.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         for(var filterAdjustment : filterAdjustments) {
             if(!initialAdjustmentsOnly || filterAdjustment.getLastDetail().getFilterAdjustmentSource().getAllowedForInitialAmount()) {
-                String label = getBestFilterAdjustmentDescription(filterAdjustment, language);
-                String value = filterAdjustment.getLastDetail().getFilterAdjustmentName();
+                var label = getBestFilterAdjustmentDescription(filterAdjustment, language);
+                var value = filterAdjustment.getLastDetail().getFilterAdjustmentName();
                 
                 labels.add(label == null? value: label);
                 values.add(value);
@@ -2554,9 +2554,9 @@ public class FilterControl
     public FilterChoicesBean getFilterChoices(String defaultFilterChoice, Language language, boolean allowNullChoice,
             FilterType filterType) {
         List<Filter> filters = getFilters(filterType);
-        int size = filters.size() + (allowNullChoice? 1: 0);
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = filters.size() + (allowNullChoice? 1: 0);
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -2570,13 +2570,13 @@ public class FilterControl
         
         for(var filter : filters) {
             FilterDetail filterDetail = filter.getLastDetail();
-            String label = getBestFilterDescription(filter, language);
-            String value = filterDetail.getFilterName();
+            var label = getBestFilterDescription(filter, language);
+            var value = filterDetail.getFilterName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultFilterChoice != null && defaultFilterChoice.equals(value);
+            var usingDefaultChoice = defaultFilterChoice != null && defaultFilterChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && filterDetail.getIsDefault())) {
                 defaultValue = value;
             }
@@ -2988,9 +2988,9 @@ public class FilterControl
     public FilterStepChoicesBean getFilterStepChoices(String defaultFilterStepChoice, Language language, boolean allowNullChoice,
             Filter filter) {
         List<FilterStep> filterSteps = getFilterStepsByFilter(filter);
-        int size = filterSteps.size() + (allowNullChoice? 1: 0);
-        List<String> labels = new ArrayList<>(size);
-        List<String> values = new ArrayList<>(size);
+        var size = filterSteps.size() + (allowNullChoice? 1: 0);
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
         String defaultValue = null;
         
         if(allowNullChoice) {
@@ -3004,13 +3004,13 @@ public class FilterControl
         
         for(var filterStep : filterSteps) {
             FilterStepDetail filterStepDetail = filterStep.getLastDetail();
-            String label = getBestFilterStepDescription(filterStep, language);
-            String value = filterStepDetail.getFilterStepName();
+            var label = getBestFilterStepDescription(filterStep, language);
+            var value = filterStepDetail.getFilterStepName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            boolean usingDefaultChoice = defaultFilterStepChoice != null && defaultFilterStepChoice.equals(value);
+            var usingDefaultChoice = defaultFilterStepChoice != null && defaultFilterStepChoice.equals(value);
             if(usingDefaultChoice || defaultValue == null) {
                 defaultValue = value;
             }
