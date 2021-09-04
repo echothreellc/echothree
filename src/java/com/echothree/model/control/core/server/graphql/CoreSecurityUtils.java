@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.core.server.graphql;
 
+import com.echothree.control.user.core.server.command.GetEntityInstanceCommand;
 import com.echothree.control.user.core.server.command.GetMimeTypeCommand;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import graphql.schema.DataFetchingEnvironment;
@@ -29,9 +30,13 @@ public final class CoreSecurityUtils {
     public static CoreSecurityUtils getInstance() {
         return CoreSecurityUtilsHolder.instance;
     }
-    
+
+    public boolean getHasEntityInstanceAccess(final DataFetchingEnvironment env) {
+        return env.<GraphQlContext>getContext().hasAccess(GetEntityInstanceCommand.class);
+    }
+
     public boolean getHasMimeTypeAccess(final DataFetchingEnvironment env) {
         return env.<GraphQlContext>getContext().hasAccess(GetMimeTypeCommand.class);
     }
-    
+
 }

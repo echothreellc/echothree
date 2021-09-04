@@ -16,10 +16,10 @@
 
 package com.echothree.model.control.graphql.server.graphql;
 
-import com.echothree.control.user.core.server.command.GetEntityInstanceCommand;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.graphql.CoreSecurityUtils;
+import com.echothree.model.control.core.server.graphql.EntityAttributeGroupObject;
 import com.echothree.model.control.core.server.graphql.EntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.Session;
@@ -28,6 +28,8 @@ import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLID;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class BaseEntityInstanceObject {
     
@@ -37,7 +39,7 @@ public abstract class BaseEntityInstanceObject {
         this.basePrimaryKey = basePrimaryKey;
     }
     
-    private EntityInstance entityInstance; // Optional, use getEntityInstance()
+    private EntityInstance entityInstance; // Optional, use getEntityInstanceByBasePK()
     
     protected EntityInstance getEntityInstanceByBasePK() {
         if(entityInstance == null) {
@@ -47,21 +49,6 @@ public abstract class BaseEntityInstanceObject {
         }
         
         return entityInstance;
-    }
-
-    private Boolean hasEntityInstanceAccess;
-
-    private boolean getHasEntityInstanceAccess(final DataFetchingEnvironment env) {
-        if(hasEntityInstanceAccess == null) {
-            GraphQlContext context = env.getContext();
-            var baseSingleEntityCommand = new GetEntityInstanceCommand(context.getUserVisitPK(), null);
-
-            baseSingleEntityCommand.security();
-
-            hasEntityInstanceAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-
-        return hasEntityInstanceAccess;
     }
 
     @GraphQLField
@@ -80,8 +67,27 @@ public abstract class BaseEntityInstanceObject {
     @GraphQLDescription("entity instance")
     @GraphQLNonNull
     public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
-        if(getHasEntityInstanceAccess(env)) {
+        if(CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env)) {
             return new EntityInstanceObject(getEntityInstanceByBasePK());
+        } else {
+            return null;
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("entity attribute groups")
+    public List<EntityAttributeGroupObject> getEntityAttributeGroups() {
+        var entityInstance = getEntityInstanceByBasePK();
+
+        if(entityInstance != null) {
+            var coreControl = Session.getModelController(CoreControl.class);
+            var entityType = entityInstance.getEntityType();
+            var entities = coreControl.getEntityAttributeGroupsByEntityType(entityType);
+            var entityAttributeGroups = new ArrayList<EntityAttributeGroupObject>(entities.size());
+
+            entities.forEach((entity) -> entityAttributeGroups.add(new EntityAttributeGroupObject(entity, entityInstance)));
+
+            return entityAttributeGroups;
         } else {
             return null;
         }
