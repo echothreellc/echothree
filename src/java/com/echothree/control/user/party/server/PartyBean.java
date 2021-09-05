@@ -582,11 +582,6 @@ public class PartyBean
     }
 
     @Override
-    public CommandResult getEmployees(UserVisitPK userVisitPK, GetEmployeesForm form) {
-        return new GetEmployeesCommand(userVisitPK, form).run();
-    }
-    
-    @Override
     public CommandResult getEmployeeStatusChoices(UserVisitPK userVisitPK, GetEmployeeStatusChoicesForm form) {
         return new GetEmployeeStatusChoicesCommand(userVisitPK, form).run();
     }
