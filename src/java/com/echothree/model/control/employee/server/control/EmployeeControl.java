@@ -178,6 +178,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -3860,7 +3861,15 @@ public class EmployeeControl
         
         return partyEmployee;
     }
-    
+
+    public long countPartyEmployees() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM partyemployees " +
+                "WHERE pemp_thrutime = ?",
+                Session.MAX_TIME);
+    }
+
     public List<PartyEmployee> getPartyEmployees() {
         List<PartyEmployee> partyEmployees;
         
@@ -3869,7 +3878,8 @@ public class EmployeeControl
                     "SELECT _ALL_ " +
                     "FROM partyemployees " +
                     "WHERE pemp_thrutime = ? " +
-                    "ORDER BY pemp_partyemployeename");
+                    "ORDER BY pemp_partyemployeename " +
+                    "_LIMIT_");
             
             ps.setLong(1, Session.MAX_TIME);
             
@@ -4024,27 +4034,26 @@ public class EmployeeControl
             eea.addExecutionError(ExecutionErrors.UnknownEmployeeAvailabilityChoice.name(), employeeAvailabilityChoice);
         }
     }
-    
-    public List<EmployeeTransfer> getEmployeeTransfers(UserVisit userVisit, boolean includeInactive) {
-        var workflowControl = getWorkflowControl();
-        List<PartyEmployee> partyEmployees = getPartyEmployees();
+
+    public List<EmployeeTransfer> getEmployeeTransfers(UserVisit userVisit, Collection<PartyEmployee> partyEmployees) {
         List<EmployeeTransfer> employeeTransfers = new ArrayList<>(partyEmployees.size());
         EmployeeTransferCache employeeTransferCache = getEmployeeTransferCaches(userVisit).getEmployeeTransferCache();
-        
-        partyEmployees.stream().map((partyEmployee) -> partyEmployee.getParty()).forEach((party) -> {
-            EntityInstance entityInstance = getEntityInstanceByBasePK(party.getPrimaryKey());
-            WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceUsingNames(EmployeeStatusConstants.Workflow_EMPLOYEE_STATUS, entityInstance);
-            boolean active = workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName().equals(EmployeeStatusConstants.WorkflowStep_ACTIVE);
-            if (active || includeInactive) {
-                employeeTransfers.add(employeeTransferCache.getEmployeeTransfer(party));
-            }
-        });
-        
+
+        partyEmployees.stream().map((partyEmployee) -> partyEmployee.getParty()).forEach((party) -> employeeTransfers.add(employeeTransferCache.getTransfer(party)));
+
         return employeeTransfers;
     }
-    
+
+    public List<EmployeeTransfer> getEmployeeTransfers(UserVisit userVisit) {
+        return getEmployeeTransfers(userVisit, getPartyEmployees());
+    }
+
+    public EmployeeTransfer getEmployeeTransfer(UserVisit userVisit, PartyEmployee partyEmployee) {
+        return getEmployeeTransferCaches(userVisit).getEmployeeTransferCache().getTransfer(partyEmployee);
+    }
+
     public EmployeeTransfer getEmployeeTransfer(UserVisit userVisit, Party party) {
-        return getEmployeeTransferCaches(userVisit).getEmployeeTransferCache().getEmployeeTransfer(party);
+        return getEmployeeTransferCaches(userVisit).getEmployeeTransferCache().getTransfer(party);
     }
     
     public void updatePartyEmployeeFromValue(PartyEmployeeValue partyEmployeeValue, BasePK updatedBy) {

@@ -279,8 +279,6 @@ public interface PartyService
 
     CommandResult removeEmployeeFromDepartment(UserVisitPK userVisitPK, RemoveEmployeeFromDepartmentForm form);
 
-    CommandResult getEmployees(UserVisitPK userVisitPK, GetEmployeesForm form);
-    
     CommandResult getEmployeeStatusChoices(UserVisitPK userVisitPK, GetEmployeeStatusChoicesForm form);
     
     CommandResult setEmployeeStatus(UserVisitPK userVisitPK, SetEmployeeStatusForm form);

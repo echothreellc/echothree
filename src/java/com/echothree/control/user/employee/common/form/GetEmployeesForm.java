@@ -14,14 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.party.common.form;
+package com.echothree.control.user.employee.common.form;
 
 import com.echothree.util.common.form.BaseForm;
 
 public interface GetEmployeesForm
         extends BaseForm {
     
-    String getIncludeInactive();
-    void setIncludeInactive(String includeInactive);
+    // Nothing additional beyond BaseForm
     
 }

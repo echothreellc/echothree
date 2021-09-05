@@ -14,61 +14,71 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.party.server.command;
+package com.echothree.control.user.employee.server.command;
 
-import com.echothree.control.user.party.common.form.GetEmployeesForm;
-import com.echothree.control.user.party.common.result.GetEmployeesResult;
-import com.echothree.control.user.party.common.result.PartyResultFactory;
+import com.echothree.control.user.employee.common.form.GetEmployeesForm;
+import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.employee.server.entity.PartyEmployee;
+import com.echothree.model.data.employee.server.factory.PartyEmployeeFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.List;
 
 public class GetEmployeesCommand
-        extends BaseSimpleCommand<GetEmployeesForm> {
-    
+        extends BaseMultipleEntitiesCommand<PartyEmployee, GetEmployeesForm> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Employee.name(), SecurityRoles.List.name())
-                        )))
-                )));
-        
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-            new FieldDefinition("IncludeInactive", FieldType.BOOLEAN, true, null, null)
+                ))
         ));
+
+        FORM_FIELD_DEFINITIONS = List.of();
     }
-    
+
     /** Creates a new instance of GetEmployeesCommand */
     public GetEmployeesCommand(UserVisitPK userVisitPK, GetEmployeesForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        GetEmployeesResult result = PartyResultFactory.getGetEmployeesResult();
+    protected Collection<PartyEmployee> getEntities() {
         var employeeControl = Session.getModelController(EmployeeControl.class);
-        boolean includeInactive = Boolean.parseBoolean(form.getIncludeInactive());
-        
-        result.setEmployees(employeeControl.getEmployeeTransfers(getUserVisit(), includeInactive));
-        
+
+        return employeeControl.getPartyEmployees();
+    }
+
+    @Override
+    protected BaseResult getTransfers(Collection<PartyEmployee> entities) {
+        var result = EmployeeResultFactory.getGetEmployeesResult();
+
+        if(entities != null) {
+            var employeeControl = Session.getModelController(EmployeeControl.class);
+
+            if(session.hasLimit(PartyEmployeeFactory.class)) {
+                result.setEmployeeCount(employeeControl.countPartyEmployees());
+            }
+
+            result.setEmployees(employeeControl.getEmployeeTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
-    
+
 }

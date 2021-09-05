@@ -4995,53 +4995,6 @@
         </attribute>
     </tag>
     <tag>
-        <name>employees</name>
-        <tag-class>com.echothree.view.client.web.taglib.EmployeesTag</tag-class>
-        <body-content>JSP</body-content>
-        <attribute>
-            <name>includeInactive</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <name>options</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <name>transferProperties</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
-            <type>com.echothree.util.common.form.TransferProperties</type>
-        </attribute>
-        <attribute>
-            <name>var</name>
-            <required>true</required>
-            <rtexprvalue>true</rtexprvalue>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <name>commandResultVar</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <name>scope</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
-            <type>java.lang.String</type>
-        </attribute>
-        <attribute>
-            <name>logErrors</name>
-            <required>false</required>
-            <rtexprvalue>true</rtexprvalue>
-            <type>java.lang.Boolean</type>
-        </attribute>
-    </tag>
-    <tag>
         <name>employee</name>
         <tag-class>com.echothree.view.client.web.taglib.EmployeeTag</tag-class>
         <body-content>JSP</body-content>

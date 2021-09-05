@@ -24,6 +24,8 @@ import com.echothree.model.control.document.server.control.DocumentControl;
 import com.echothree.model.control.employee.common.EmployeeOptions;
 import com.echothree.model.control.employee.common.transfer.EmployeeTransfer;
 import com.echothree.model.control.employee.common.transfer.EmployeeTypeTransfer;
+import com.echothree.model.control.employee.common.workflow.EmployeeAvailabilityConstants;
+import com.echothree.model.control.employee.common.workflow.EmployeeStatusConstants;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyOptions;
 import com.echothree.model.control.party.common.transfer.DateTimeFormatTransfer;
@@ -38,8 +40,6 @@ import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.control.employee.common.workflow.EmployeeAvailabilityConstants;
-import com.echothree.model.control.employee.common.workflow.EmployeeStatusConstants;
 import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
@@ -123,7 +123,11 @@ public class EmployeeTransferCache
         setIncludeEntityInstance(true);
     }
 
-    public EmployeeTransfer getEmployeeTransfer(Party party) {
+    public EmployeeTransfer getTransfer(PartyEmployee partyEmployee) {
+        return getTransfer(partyEmployee.getParty());
+    }
+
+    public EmployeeTransfer getTransfer(Party party) {
         EmployeeTransfer employeeTransfer = get(party);
 
         if(employeeTransfer == null) {
