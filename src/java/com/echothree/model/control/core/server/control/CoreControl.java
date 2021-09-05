@@ -4175,7 +4175,8 @@ public class CoreControl
             query = "SELECT _ALL_ " +
                     "FROM entityattributegroups, entityattributegroupdetails " +
                     "WHERE enagp_activedetailid = enagpdt_entityattributegroupdetailid " +
-                    "ORDER BY enagpdt_sortorder, enagpdt_entityattributegroupname";
+                    "ORDER BY enagpdt_sortorder, enagpdt_entityattributegroupname " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM entityattributegroups, entityattributegroupdetails " +
@@ -4272,7 +4273,7 @@ public class CoreControl
         return getDefaultEntityAttributeGroupForUpdate().getLastDetailForUpdate().getEntityAttributeGroupDetailValue().clone();
     }
     
-    private EntityAttributeGroup getEntityAttributeGroupByName(String entityAttributeGroupName, EntityPermission entityPermission) {
+    public EntityAttributeGroup getEntityAttributeGroupByName(String entityAttributeGroupName, EntityPermission entityPermission) {
         EntityAttributeGroup entityAttributeGroup;
         
         try {
@@ -4355,7 +4356,7 @@ public class CoreControl
         return getCoreTransferCaches(userVisit).getEntityAttributeGroupTransferCache().getEntityAttributeGroupTransfer(entityAttributeGroup, entityInstance);
     }
     
-    public List<EntityAttributeGroupTransfer> getEntityAttributeGroupTransfers(UserVisit userVisit, List<EntityAttributeGroup> entityAttributeGroups, EntityInstance entityInstance) {
+    public List<EntityAttributeGroupTransfer> getEntityAttributeGroupTransfers(UserVisit userVisit, Collection<EntityAttributeGroup> entityAttributeGroups, EntityInstance entityInstance) {
         List<EntityAttributeGroupTransfer> entityAttributeGroupTransfers = new ArrayList<>(entityAttributeGroups.size());
         EntityAttributeGroupTransferCache entityAttributeGroupTransferCache = getCoreTransferCaches(userVisit).getEntityAttributeGroupTransferCache();
         
