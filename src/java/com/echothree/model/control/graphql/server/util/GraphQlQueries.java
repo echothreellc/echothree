@@ -51,6 +51,8 @@ import com.echothree.control.user.core.server.command.GetColorCommand;
 import com.echothree.control.user.core.server.command.GetColorsCommand;
 import com.echothree.control.user.core.server.command.GetComponentVendorCommand;
 import com.echothree.control.user.core.server.command.GetComponentVendorsCommand;
+import com.echothree.control.user.core.server.command.GetEntityAttributeGroupCommand;
+import com.echothree.control.user.core.server.command.GetEntityAttributeGroupsCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeTypeCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeTypesCommand;
 import com.echothree.control.user.core.server.command.GetEntityInstanceCommand;
@@ -204,6 +206,7 @@ import com.echothree.model.control.content.server.graphql.ContentWebAddressObjec
 import com.echothree.model.control.core.server.graphql.AppearanceObject;
 import com.echothree.model.control.core.server.graphql.ColorObject;
 import com.echothree.model.control.core.server.graphql.ComponentVendorObject;
+import com.echothree.model.control.core.server.graphql.EntityAttributeGroupObject;
 import com.echothree.model.control.core.server.graphql.EntityAttributeTypeObject;
 import com.echothree.model.control.core.server.graphql.EntityInstanceObject;
 import com.echothree.model.control.core.server.graphql.EntityTypeObject;
@@ -287,6 +290,7 @@ import com.echothree.model.data.content.server.entity.ContentWebAddress;
 import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.core.server.entity.Color;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
+import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
 import com.echothree.model.data.core.server.entity.EntityAttributeType;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
@@ -1927,6 +1931,52 @@ public final class GraphQlQueries
         }
 
         return appearanceObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("entityAttributeGroup")
+    public static EntityAttributeGroupObject entityAttributeGroup(final DataFetchingEnvironment env,
+            @GraphQLName("entityAttributeGroupName") final String entityAttributeGroupName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        EntityAttributeGroup entityAttributeGroup;
+
+        try {
+            var commandForm = CoreUtil.getHome().getGetEntityAttributeGroupForm();
+
+            commandForm.setEntityAttributeGroupName(entityAttributeGroupName);
+            commandForm.setUlid(id);
+
+            entityAttributeGroup = new GetEntityAttributeGroupCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return entityAttributeGroup == null ? null : new EntityAttributeGroupObject(entityAttributeGroup, null);
+    }
+
+    @GraphQLField
+    @GraphQLName("entityAttributeGroups")
+    public static Collection<EntityAttributeGroupObject> entityAttributeGroups(final DataFetchingEnvironment env) {
+        Collection<EntityAttributeGroup> entityAttributeGroups;
+        Collection<EntityAttributeGroupObject> entityAttributeGroupObjects;
+
+        try {
+            var commandForm = CoreUtil.getHome().getGetEntityAttributeGroupsForm();
+
+            entityAttributeGroups = new GetEntityAttributeGroupsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(entityAttributeGroups == null) {
+            entityAttributeGroupObjects = emptyList();
+        } else {
+            entityAttributeGroupObjects = new ArrayList<>(entityAttributeGroups.size());
+
+            entityAttributeGroups.stream().map(e -> new EntityAttributeGroupObject(e, null)).forEachOrdered(entityAttributeGroupObjects::add);
+        }
+
+        return entityAttributeGroupObjects;
     }
 
     @GraphQLField

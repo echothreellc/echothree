@@ -16,18 +16,28 @@
 
 package com.echothree.model.control.core.server.logic;
 
+import com.echothree.control.user.core.common.spec.AppearanceUniversalSpec;
+import com.echothree.control.user.core.common.spec.EntityAttributeGroupUniversalSpec;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.DuplicateEntityAttributeGroupNameException;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
+import com.echothree.model.control.core.common.exception.UnknownAppearanceNameException;
+import com.echothree.model.control.core.common.exception.UnknownEntityAttributeGroupNameException;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
+import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 
 public class EntityAttributeGroupLogic
@@ -71,5 +81,63 @@ public class EntityAttributeGroupLogic
 
         return entityAttributeGroup;
     }
-    
+
+    public EntityAttributeGroup getEntityAttributeGroupByName(final ExecutionErrorAccumulator eea, final String entityAttributeGroupName,
+            final EntityPermission entityPermission) {
+        var coreControl = Session.getModelController(CoreControl.class);
+        var entityAttributeGroup = coreControl.getEntityAttributeGroupByName(entityAttributeGroupName, entityPermission);
+
+        if(entityAttributeGroup == null) {
+            handleExecutionError(UnknownEntityAttributeGroupNameException.class, eea, ExecutionErrors.UnknownEntityAttributeGroupName.name(), entityAttributeGroupName);
+        }
+
+        return entityAttributeGroup;
+    }
+
+    public EntityAttributeGroup getEntityAttributeGroupByName(final ExecutionErrorAccumulator eea, final String entityAttributeGroupName) {
+        return getEntityAttributeGroupByName(eea, entityAttributeGroupName, EntityPermission.READ_ONLY);
+    }
+
+    public EntityAttributeGroup getEntityAttributeGroupByNameForUpdate(final ExecutionErrorAccumulator eea, final String entityAttributeGroupName) {
+        return getEntityAttributeGroupByName(eea, entityAttributeGroupName, EntityPermission.READ_WRITE);
+    }
+
+    public EntityAttributeGroup getEntityAttributeGroupByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final EntityAttributeGroupUniversalSpec universalSpec, final EntityPermission entityPermission) {
+        EntityAttributeGroup entityAttributeGroup = null;
+        var coreControl = Session.getModelController(CoreControl.class);
+        var entityAttributeGroupName = universalSpec.getEntityAttributeGroupName();
+        var parameterCount = (entityAttributeGroupName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+
+        switch(parameterCount) {
+            case 1:
+                if(entityAttributeGroupName == null) {
+                    EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                            ComponentVendors.ECHOTHREE.name(), EntityTypes.EntityAttributeGroup.name());
+
+                    if(!eea.hasExecutionErrors()) {
+                        entityAttributeGroup = coreControl.getEntityAttributeGroupByEntityInstance(entityInstance, entityPermission);
+                    }
+                } else {
+                    entityAttributeGroup = getEntityAttributeGroupByName(eea, entityAttributeGroupName, entityPermission);
+                }
+                break;
+            default:
+                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                break;
+        }
+
+        return entityAttributeGroup;
+    }
+
+    public EntityAttributeGroup getEntityAttributeGroupByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final EntityAttributeGroupUniversalSpec universalSpec) {
+        return getEntityAttributeGroupByUniversalSpec(eea, universalSpec, EntityPermission.READ_ONLY);
+    }
+
+    public EntityAttributeGroup getEntityAttributeGroupByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
+            final EntityAttributeGroupUniversalSpec universalSpec) {
+        return getEntityAttributeGroupByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
+    }
+
 }
