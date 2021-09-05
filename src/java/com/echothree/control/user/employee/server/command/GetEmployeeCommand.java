@@ -16,102 +16,118 @@
 
 package com.echothree.control.user.employee.server.command;
 
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 import com.echothree.control.user.employee.common.form.GetEmployeeForm;
 import com.echothree.control.user.employee.common.result.EmployeeResultFactory;
-import com.echothree.control.user.employee.common.result.GetEmployeeResult;
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
+import com.echothree.model.control.employee.server.logic.PartyEmployeeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.employee.server.entity.PartyEmployee;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.SecurityResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class GetEmployeeCommand
-        extends BaseSimpleCommand<GetEmployeeForm> {
-    
+        extends BaseSingleEntityCommand<PartyEmployee, GetEmployeeForm> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.CUSTOMER.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Employee.name(), SecurityRoles.Review.name())
-                        )))
-                )));
-        
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+                ))
+        ));
+
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("EmployeeName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null)
-                ));
+                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
+        );
     }
-    
+
     /** Creates a new instance of GetEmployeeCommand */
     public GetEmployeeCommand(UserVisitPK userVisitPK, GetEmployeeForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
-    @Override
-    protected BaseResult execute() {
-        GetEmployeeResult result = EmployeeResultFactory.getGetEmployeeResult();
-        var employeeControl = Session.getModelController(EmployeeControl.class);
-        String employeeName = form.getEmployeeName();
-        String partyName = form.getPartyName();
-        var parameterCount = (employeeName == null ? 0 : 1) + (partyName == null ? 0 : 1);
-        
-        if(parameterCount < 2) {
-            Party party = null;
-            
-            if(employeeName != null) {
-                PartyEmployee partyEmployee = employeeControl.getPartyEmployeeByName(employeeName);
-                
-                if(partyEmployee != null) {
-                    party = partyEmployee.getParty();
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownEmployeeName.name(), employeeName);
-                }
-            } else if(partyName != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
-                
-                party = partyControl.getPartyByName(partyName);
-                
-                if(party == null) {
-                    addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
-                }
-            } else {
-                party = getParty();
-            }
-            
-            if(!hasExecutionErrors()) {
-                PartyLogic.getInstance().checkPartyType(this, party, PartyTypes.EMPLOYEE.name());
-                
-                if(!hasExecutionErrors()) {
-                    result.setEmployee(employeeControl.getEmployeeTransfer(getUserVisit(), party));
 
-                    sendEventUsingNames(party.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
-                }
+    String employeeName;
+    String partyName;
+    UniversalEntitySpec universalEntitySpec;
+    int parameterCount;
+
+    @Override
+    public SecurityResult security() {
+        var securityResult = super.security();
+
+        employeeName = form.getEmployeeName();
+        partyName = form.getPartyName();
+        universalEntitySpec = form;
+        parameterCount = (employeeName == null ? 0 : 1) + (partyName == null ? 0 : 1) +
+                EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+
+        if(!canSpecifyParty() && parameterCount != 0) {
+            securityResult = getInsufficientSecurityResult();
+        }
+
+        return securityResult;
+    }
+
+    @Override
+    protected PartyEmployee getEntity() {
+        PartyEmployee partyEmployee = null;
+
+        if(parameterCount == 0) {
+            var party = getParty();
+
+            PartyLogic.getInstance().checkPartyType(this, party, PartyTypes.CUSTOMER.name());
+
+            if(!hasExecutionErrors()) {
+                var employeeControl = Session.getModelController(EmployeeControl.class);
+
+                partyEmployee = employeeControl.getPartyEmployee(party);
             }
         } else {
-            addExecutionError(ExecutionErrors.InvalidParameterCount.name());
+            partyEmployee = PartyEmployeeLogic.getInstance().getPartyEmployeeByName(this, employeeName, partyName, universalEntitySpec);
         }
-        
+
+        if(partyEmployee != null) {
+            sendEventUsingNames(partyEmployee.getPartyPK(), EventTypes.READ.name(), null, null, getPartyPK());
+        }
+
+        return partyEmployee;
+    }
+
+    @Override
+    protected BaseResult getTransfer(PartyEmployee partyEmployee) {
+        var result = EmployeeResultFactory.getGetEmployeeResult();
+
+        if(partyEmployee != null) {
+            var employeeControl = Session.getModelController(EmployeeControl.class);
+
+            result.setEmployee(employeeControl.getEmployeeTransfer(getUserVisit(), partyEmployee));
+        }
+
         return result;
     }
-    
+
 }
