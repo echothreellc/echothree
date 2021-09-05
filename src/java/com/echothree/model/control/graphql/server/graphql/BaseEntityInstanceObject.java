@@ -82,6 +82,9 @@ public abstract class BaseEntityInstanceObject {
         if(entityInstance != null) {
             var coreControl = Session.getModelController(CoreControl.class);
             var entityType = entityInstance.getEntityType();
+
+            // Allow user to see all EntityAttributeGroups that have Entity Attributes in them
+            // for the current object, regardless of permissions for the GetEntityAttributeGroups UC.
             var entities = coreControl.getEntityAttributeGroupsByEntityType(entityType);
             var entityAttributeGroups = new ArrayList<EntityAttributeGroupObject>(entities.size());
 
