@@ -14,22 +14,22 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.search.server.graphql;
+package com.echothree.model.control.search.server.graphql;
 
-import com.echothree.control.user.search.common.result.SearchEmployeesResult;
+import com.echothree.control.user.search.common.result.SearchItemsResult;
 import com.echothree.model.control.graphql.server.graphql.CommandResultObject;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 
-@GraphQLDescription("search employees result object")
-@GraphQLName("SearchEmployeesResult")
-public class SearchEmployeesResultObject
+@GraphQLDescription("search items result object")
+@GraphQLName("SearchItemsResult")
+public class SearchItemsResultObject
         extends CommandResultObject{
     
-    private SearchEmployeesResult result;
+    private SearchItemsResult result;
     
-    public void setResult(SearchEmployeesResult result) {
+    public void setResult(SearchItemsResult result) {
         this.result = result;
     }
     

@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.search.server.graphql;
+package com.echothree.model.control.search.server.graphql;
 
 import com.echothree.control.user.search.common.result.SearchVendorsResult;
 import com.echothree.model.control.graphql.server.graphql.CommandResultObject;
