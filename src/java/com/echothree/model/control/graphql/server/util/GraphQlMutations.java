@@ -3066,6 +3066,7 @@ public class GraphQlMutations
             @GraphQLName("telephoneNumber") final String telephoneNumber,
             @GraphQLName("telephoneExtension") final String telephoneExtension,
             @GraphQLName("customerName") final String customerName,
+            @GraphQLName("partyName") final String partyName,
             @GraphQLName("partyAliasTypeName") final String partyAliasTypeName,
             @GraphQLName("alias") final String alias,
             @GraphQLName("createdSince") final String createdSince,
@@ -3090,6 +3091,7 @@ public class GraphQlMutations
             commandForm.setTelephoneNumber(telephoneNumber);
             commandForm.setTelephoneExtension(telephoneExtension);
             commandForm.setCustomerName(customerName);
+            commandForm.setPartyName(partyName);
             commandForm.setPartyAliasTypeName(partyAliasTypeName);
             commandForm.setAlias(alias);
             commandForm.setCreatedSince(createdSince);
