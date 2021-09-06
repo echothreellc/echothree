@@ -66,9 +66,11 @@ import com.echothree.control.user.payment.common.result.EditPaymentProcessorResu
 import com.echothree.control.user.payment.common.result.EditPaymentProcessorTypeResult;
 import com.echothree.control.user.search.common.SearchUtil;
 import com.echothree.control.user.search.common.result.SearchCustomersResult;
+import com.echothree.control.user.search.common.result.SearchEmployeesResult;
 import com.echothree.control.user.search.common.result.SearchItemsResult;
 import com.echothree.control.user.search.common.result.SearchVendorsResult;
 import com.echothree.control.user.search.server.graphql.SearchCustomersResultObject;
+import com.echothree.control.user.search.server.graphql.SearchEmployeesResultObject;
 import com.echothree.control.user.search.server.graphql.SearchItemsResultObject;
 import com.echothree.control.user.search.server.graphql.SearchVendorsResultObject;
 import com.echothree.control.user.sequence.common.SequenceUtil;
@@ -3117,6 +3119,74 @@ public class GraphQlMutations
             commandForm.setSearchTypeName(searchTypeName);
 
             var commandResult = SearchUtil.getHome().clearCustomerResults(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static SearchEmployeesResultObject searchEmployees(final DataFetchingEnvironment env,
+            @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName,
+            @GraphQLName("firstName") final String firstName,
+            @GraphQLName("firstNameSoundex") final String firstNameSoundex,
+            @GraphQLName("middleName") final String middleName,
+            @GraphQLName("middleNameSoundex") final String middleNameSoundex,
+            @GraphQLName("lastName") final String lastName,
+            @GraphQLName("lastNameSoundex") final String lastNameSoundex,
+            @GraphQLName("employeeName") final String employeeName,
+            @GraphQLName("partyName") final String partyName,
+            @GraphQLName("employeeStatusChoice") final String employeeStatusChoice,
+            @GraphQLName("employeeAvailabilityChoice") final String employeeAvailabilityChoice,
+            @GraphQLName("createdSince") final String createdSince,
+            @GraphQLName("modifiedSince") final String modifiedSince,
+            @GraphQLName("fields") final String fields) {
+        var commandResultObject = new SearchEmployeesResultObject();
+
+        try {
+            var commandForm = SearchUtil.getHome().getSearchEmployeesForm();
+
+            commandForm.setSearchTypeName(searchTypeName);
+            commandForm.setFirstName(firstName);
+            commandForm.setFirstNameSoundex(firstNameSoundex);
+            commandForm.setMiddleName(middleName);
+            commandForm.setMiddleNameSoundex(middleNameSoundex);
+            commandForm.setLastName(lastName);
+            commandForm.setLastNameSoundex(lastNameSoundex);
+            commandForm.setEmployeeName(employeeName);
+            commandForm.setPartyName(partyName);
+            commandForm.setEmployeeStatusChoice(employeeStatusChoice);
+            commandForm.setEmployeeAvailabilityChoice(employeeAvailabilityChoice);
+            commandForm.setCreatedSince(createdSince);
+            commandForm.setModifiedSince(modifiedSince);
+            commandForm.setFields(fields);
+
+
+            var commandResult = SearchUtil.getHome().searchEmployees(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+            commandResultObject.setResult(commandResult.hasErrors() ? null : (SearchEmployeesResult)commandResult.getExecutionResult().getResult());
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject clearEmployeeResults(final DataFetchingEnvironment env,
+            @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = SearchUtil.getHome().getClearEmployeeResultsForm();
+
+            commandForm.setSearchTypeName(searchTypeName);
+
+            var commandResult = SearchUtil.getHome().clearEmployeeResults(getUserVisitPK(env), commandForm);
             commandResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);

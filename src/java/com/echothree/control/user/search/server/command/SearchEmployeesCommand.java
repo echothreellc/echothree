@@ -65,11 +65,11 @@ public class SearchEmployeesCommand
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("SearchTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("FirstName", FieldType.STRING, false, 1L, 20L),
-                new FieldDefinition("FirstNameSoundex", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("FirstNameSoundex", FieldType.BOOLEAN, false, null, null),
                 new FieldDefinition("MiddleName", FieldType.STRING, false, 1L, 20L),
-                new FieldDefinition("MiddleNameSoundex", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("MiddleNameSoundex", FieldType.BOOLEAN, false, null, null),
                 new FieldDefinition("LastName", FieldType.STRING, false, 1L, 20L),
-                new FieldDefinition("LastNameSoundex", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("LastNameSoundex", FieldType.BOOLEAN, false, null, null),
                 new FieldDefinition("EmployeeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EmployeeStatusChoice", FieldType.ENTITY_NAME, false, null, null),
@@ -124,11 +124,11 @@ public class SearchEmployeesCommand
                             String fields = form.getFields();
 
                             employeeSearchEvaluator.setFirstName(form.getFirstName());
-                            employeeSearchEvaluator.setFirstNameSoundex(Boolean.valueOf(form.getFirstNameSoundex()));
+                            employeeSearchEvaluator.setFirstNameSoundex(Boolean.parseBoolean(form.getFirstNameSoundex()));
                             employeeSearchEvaluator.setMiddleName(form.getMiddleName());
-                            employeeSearchEvaluator.setMiddleNameSoundex(Boolean.valueOf(form.getMiddleNameSoundex()));
+                            employeeSearchEvaluator.setMiddleNameSoundex(Boolean.parseBoolean(form.getMiddleNameSoundex()));
                             employeeSearchEvaluator.setLastName(form.getLastName());
-                            employeeSearchEvaluator.setLastNameSoundex(Boolean.valueOf(form.getLastNameSoundex()));
+                            employeeSearchEvaluator.setLastNameSoundex(Boolean.parseBoolean(form.getLastNameSoundex()));
                             employeeSearchEvaluator.setPartyEmployeeName(form.getEmployeeName());
                             employeeSearchEvaluator.setPartyName(form.getPartyName());
                             employeeSearchEvaluator.setEmployeeStatusWorkflowStep(employeeStatusWorkflowStep);

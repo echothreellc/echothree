@@ -71,6 +71,9 @@ import com.echothree.model.control.employee.server.transfer.TerminationReasonTra
 import com.echothree.model.control.employee.server.transfer.TerminationTypeDescriptionTransferCache;
 import com.echothree.model.control.employee.server.transfer.TerminationTypeTransferCache;
 import com.echothree.model.control.search.common.SearchOptions;
+import com.echothree.model.control.search.server.control.SearchControl;
+import static com.echothree.model.control.search.server.control.SearchControl.ENI_ENTITYUNIQUEID_COLUMN_INDEX;
+import com.echothree.model.control.search.server.graphql.EmployeeResultObject;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
@@ -163,7 +166,6 @@ import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.search.server.entity.UserVisitSearch;
-import com.echothree.model.data.search.server.factory.SearchResultFactory;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
@@ -4475,7 +4477,7 @@ public class EmployeeControl
     // --------------------------------------------------------------------------------
 
     public List<EmployeeResultTransfer> getEmployeeResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
-        var search = userVisitSearch.getSearch();
+        var searchControl = Session.getModelController(SearchControl.class);
         var employeeResultTransfers = new ArrayList<EmployeeResultTransfer>();
         var includeEmployee = false;
 
@@ -4484,32 +4486,37 @@ public class EmployeeControl
             includeEmployee = options.contains(SearchOptions.EmployeeResultIncludeEmployee);
         }
 
-        try {
+        try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
             var employeeControl = Session.getModelController(EmployeeControl.class);
-            var ps = SearchResultFactory.getInstance().prepareStatement(
-                    "SELECT eni_entityuniqueid " +
-                            "FROM searchresults, entityinstances " +
-                            "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = eni_entityinstanceid " +
-                            "ORDER BY srchr_sortorder, srchr_eni_entityinstanceid " +
-                            "_LIMIT_");
 
-            ps.setLong(1, search.getPrimaryKey().getEntityId());
+            while(rs.next()) {
+                var party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
 
-            try (var rs = ps.executeQuery()) {
-                while(rs.next()) {
-                    Party party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(1)));
-
-                    employeeResultTransfers.add(new EmployeeResultTransfer(party.getLastDetail().getPartyName(),
-                            includeEmployee ? employeeControl.getEmployeeTransfer(userVisit, party) : null));
-                }
-            } catch (SQLException se) {
-                throw new PersistenceDatabaseException(se);
+                employeeResultTransfers.add(new EmployeeResultTransfer(party.getLastDetail().getPartyName(),
+                        includeEmployee ? employeeControl.getEmployeeTransfer(userVisit, party) : null));
             }
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
 
         return employeeResultTransfers;
+    }
+
+    public List<EmployeeResultObject> getEmployeeResultObjects(UserVisitSearch userVisitSearch) {
+        var searchControl = Session.getModelController(SearchControl.class);
+        var employeeResultObjects = new ArrayList<EmployeeResultObject>();
+
+        try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
+            while(rs.next()) {
+                var party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
+
+                employeeResultObjects.add(new EmployeeResultObject(party));
+            }
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return employeeResultObjects;
     }
 
 }

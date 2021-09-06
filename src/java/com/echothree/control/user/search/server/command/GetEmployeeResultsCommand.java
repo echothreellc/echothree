@@ -17,89 +17,66 @@
 package com.echothree.control.user.search.server.command;
 
 import com.echothree.control.user.search.common.form.GetEmployeeResultsForm;
-import com.echothree.control.user.search.common.result.GetEmployeeResultsResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.search.common.SearchConstants;
-import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.search.server.entity.SearchKind;
-import com.echothree.model.data.search.server.entity.SearchType;
-import com.echothree.model.data.search.server.entity.UserVisitSearch;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseGetResultsCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class GetEmployeeResultsCommand
-        extends BaseSimpleCommand<GetEmployeeResultsForm> {
+        extends BaseGetResultsCommand<GetEmployeeResultsForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Employee.name(), SecurityRoles.Search.name())
-                        )))
-                )));
+                ))
+        ));
 
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SearchTypeName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+        );
     }
 
     /** Creates a new instance of GetEmployeeResultsCommand */
     public GetEmployeeResultsCommand(UserVisitPK userVisitPK, GetEmployeeResultsForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
     protected BaseResult execute() {
-        GetEmployeeResultsResult result = SearchResultFactory.getGetEmployeeResultsResult();
-        var searchControl = Session.getModelController(SearchControl.class);
-        SearchKind searchKind = searchControl.getSearchKindByName(SearchConstants.SearchKind_EMPLOYEE);
-        
-        if(searchKind != null) {
-            String searchTypeName = form.getSearchTypeName();
-            SearchType searchType = searchControl.getSearchTypeByName(searchKind, searchTypeName);
-            
-            if(searchType != null) {
-                UserVisit userVisit = getUserVisit();
-                UserVisitSearch userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
-                
-                if(userVisitSearch != null) {
-                    var employeeControl = Session.getModelController(EmployeeControl.class);
+        var result = SearchResultFactory.getGetEmployeeResultsResult();
+        var searchTypeName = form.getSearchTypeName();
+        var userVisit = getUserVisit();
+        var userVisitSearch = SearchLogic.getInstance().getUserVisitSearchByName(this, userVisit,
+                SearchConstants.SearchKind_EMPLOYEE, searchTypeName);
 
-                    if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
-                        result.setEmployeeResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));
-                    }
+        if(!hasExecutionErrors()) {
+            var employeeControl = Session.getModelController(EmployeeControl.class);
 
-                    result.setEmployeeResults(employeeControl.getEmployeeResultTransfers(userVisit, userVisitSearch));
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownUserVisitSearch.name());
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownSearchTypeName.name(), SearchConstants.SearchKind_EMPLOYEE, searchTypeName);
+            if(session.hasLimit(com.echothree.model.data.search.server.factory.SearchResultFactory.class)) {
+                result.setEmployeeResultCount(SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch()));
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownSearchKindName.name(), SearchConstants.SearchKind_EMPLOYEE);
+
+            result.setEmployeeResults(employeeControl.getEmployeeResultTransfers(userVisit, userVisitSearch));
         }
-        
+
         return result;
     }
 }

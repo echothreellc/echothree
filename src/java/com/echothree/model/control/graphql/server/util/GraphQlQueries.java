@@ -158,6 +158,7 @@ import com.echothree.control.user.queue.server.command.GetQueueTypeCommand;
 import com.echothree.control.user.queue.server.command.GetQueueTypesCommand;
 import com.echothree.control.user.search.common.SearchUtil;
 import com.echothree.control.user.search.server.command.GetCustomerResultsCommand;
+import com.echothree.control.user.search.server.command.GetEmployeeResultsCommand;
 import com.echothree.control.user.search.server.command.GetItemResultsCommand;
 import com.echothree.control.user.search.server.command.GetVendorResultsCommand;
 import com.echothree.control.user.selector.common.SelectorUtil;
@@ -260,6 +261,7 @@ import com.echothree.model.control.payment.server.graphql.PaymentProcessorTypeCo
 import com.echothree.model.control.payment.server.graphql.PaymentProcessorTypeObject;
 import com.echothree.model.control.queue.server.graphql.QueueTypeObject;
 import com.echothree.model.control.search.server.graphql.CustomerResultsObject;
+import com.echothree.model.control.search.server.graphql.EmployeeResultsObject;
 import com.echothree.model.control.search.server.graphql.ItemResultsObject;
 import com.echothree.model.control.search.server.graphql.VendorResultsObject;
 import com.echothree.model.control.selector.server.graphql.SelectorKindObject;
@@ -3420,6 +3422,27 @@ public final class GraphQlQueries
         }
 
         return customerResultsObject;
+    }
+
+    @GraphQLField
+    @GraphQLName("employeeResults")
+    public static EmployeeResultsObject employeeResults(final DataFetchingEnvironment env,
+            @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName) {
+        EmployeeResultsObject employeeResultsObject = new EmployeeResultsObject();
+
+        try {
+            var commandForm = SearchUtil.getHome().getGetEmployeeResultsForm();
+
+            commandForm.setSearchTypeName(searchTypeName);
+
+            if(new GetEmployeeResultsCommand(getUserVisitPK(env), commandForm).canGetResultsForGraphQl()) {
+                employeeResultsObject.setForm(commandForm);
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return employeeResultsObject;
     }
 
     @GraphQLField
