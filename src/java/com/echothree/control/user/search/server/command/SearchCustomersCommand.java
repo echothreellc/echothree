@@ -87,6 +87,7 @@ public class SearchCustomersCommand
                 new FieldDefinition("TelephoneExtension", FieldType.NUMBERS, false, 1L, 10L),
                 new FieldDefinition("EmailAddress", FieldType.EMAIL_ADDRESS, false, null, null),
                 new FieldDefinition("CustomerName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("PartyAliasTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("Alias", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("CreatedSince", FieldType.DATE_TIME, false, null, null),
@@ -199,6 +200,7 @@ public class SearchCustomersCommand
                                     customerSearchEvaluator.setPartyAliasType(partyAliasType);
                                     customerSearchEvaluator.setAlias(alias);
                                     customerSearchEvaluator.setCustomerName(form.getCustomerName());
+                                    customerSearchEvaluator.setPartyName(form.getPartyName());
                                     customerSearchEvaluator.setCreatedSince(createdSince == null ? null : Long.valueOf(createdSince));
                                     customerSearchEvaluator.setModifiedSince(modifiedSince == null ? null : Long.valueOf(modifiedSince));
                                     customerSearchEvaluator.setFields(fields == null ? null : Splitter.on(':').trimResults().omitEmptyStrings().splitToList(fields).toArray(new String[0]));
