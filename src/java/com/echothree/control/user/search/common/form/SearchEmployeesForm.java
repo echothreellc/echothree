@@ -42,7 +42,13 @@ public interface SearchEmployeesForm
     
     String getLastNameSoundex();
     void setLastNameSoundex(String lastNameSoundex);
-    
+
+    String getPartyAliasTypeName();
+    void setPartyAliasTypeName(String partyAliasTypeName);
+
+    String getAlias();
+    void setAlias(String alias);
+
     String getEmployeeStatusChoice();
     void setEmployeeStatusChoice(String employeeStatusChoice);
 
