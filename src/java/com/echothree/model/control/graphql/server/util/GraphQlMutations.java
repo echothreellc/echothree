@@ -3139,6 +3139,8 @@ public class GraphQlMutations
             @GraphQLName("lastNameSoundex") final String lastNameSoundex,
             @GraphQLName("employeeName") final String employeeName,
             @GraphQLName("partyName") final String partyName,
+            @GraphQLName("partyAliasTypeName") final String partyAliasTypeName,
+            @GraphQLName("alias") final String alias,
             @GraphQLName("employeeStatusChoice") final String employeeStatusChoice,
             @GraphQLName("employeeAvailabilityChoice") final String employeeAvailabilityChoice,
             @GraphQLName("createdSince") final String createdSince,
@@ -3158,6 +3160,8 @@ public class GraphQlMutations
             commandForm.setLastNameSoundex(lastNameSoundex);
             commandForm.setEmployeeName(employeeName);
             commandForm.setPartyName(partyName);
+            commandForm.setPartyAliasTypeName(partyAliasTypeName);
+            commandForm.setAlias(alias);
             commandForm.setEmployeeStatusChoice(employeeStatusChoice);
             commandForm.setEmployeeAvailabilityChoice(employeeAvailabilityChoice);
             commandForm.setCreatedSince(createdSince);
@@ -3278,6 +3282,9 @@ public class GraphQlMutations
             @GraphQLName("lastNameSoundex") final String lastNameSoundex,
             @GraphQLName("name") final String name,
             @GraphQLName("vendorName") final String vendorName,
+            @GraphQLName("partyName") final String partyName,
+            @GraphQLName("partyAliasTypeName") final String partyAliasTypeName,
+            @GraphQLName("alias") final String alias,
             @GraphQLName("createdSince") final String createdSince,
             @GraphQLName("modifiedSince") final String modifiedSince,
             @GraphQLName("fields") final String fields) {
@@ -3295,6 +3302,9 @@ public class GraphQlMutations
             commandForm.setLastNameSoundex(lastNameSoundex);
             commandForm.setName(name);
             commandForm.setVendorName(vendorName);
+            commandForm.setPartyName(partyName);
+            commandForm.setPartyAliasTypeName(partyAliasTypeName);
+            commandForm.setAlias(alias);
             commandForm.setCreatedSince(createdSince);
             commandForm.setModifiedSince(modifiedSince);
             commandForm.setFields(fields);
