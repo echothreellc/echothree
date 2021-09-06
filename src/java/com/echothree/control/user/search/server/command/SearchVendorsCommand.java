@@ -20,12 +20,15 @@ import com.echothree.control.user.search.common.form.SearchVendorsForm;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.control.user.search.common.result.SearchVendorsResult;
 import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.search.common.SearchConstants;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.vendor.server.search.VendorSearchEvaluator;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.party.server.entity.PartyAliasType;
+import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.search.server.entity.SearchKind;
 import com.echothree.model.data.search.server.entity.SearchType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -68,6 +71,9 @@ public class SearchVendorsCommand
                 new FieldDefinition("LastNameSoundex", FieldType.BOOLEAN, false, null, null),
                 new FieldDefinition("Name", FieldType.STRING, false, null, null),
                 new FieldDefinition("VendorName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("PartyAliasTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("Alias", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("CreatedSince", FieldType.DATE_TIME, false, null, null),
                 new FieldDefinition("ModifiedSince", FieldType.DATE_TIME, false, null, null),
                 new FieldDefinition("Fields", FieldType.STRING, false, null, null)
@@ -90,29 +96,53 @@ public class SearchVendorsCommand
             SearchType searchType = searchControl.getSearchTypeByName(searchKind, searchTypeName);
             
             if(searchType != null) {
-                SearchLogic searchLogic = SearchLogic.getInstance();
-                UserVisit userVisit = getUserVisit();
-                VendorSearchEvaluator vendorSearchEvaluator = new VendorSearchEvaluator(userVisit, searchType,
-                        searchLogic.getDefaultSearchDefaultOperator(null), searchLogic.getDefaultSearchSortOrder(null, searchKind),
-                        searchLogic.getDefaultSearchSortDirection(null));
-                String createdSince = form.getCreatedSince();
-                String modifiedSince = form.getModifiedSince();
-                String fields = form.getFields();
-                
-                vendorSearchEvaluator.setFirstName(form.getFirstName());
-                vendorSearchEvaluator.setFirstNameSoundex(Boolean.parseBoolean(form.getFirstNameSoundex()));
-                vendorSearchEvaluator.setMiddleName(form.getMiddleName());
-                vendorSearchEvaluator.setMiddleNameSoundex(Boolean.parseBoolean(form.getMiddleNameSoundex()));
-                vendorSearchEvaluator.setLastName(form.getLastName());
-                vendorSearchEvaluator.setLastNameSoundex(Boolean.parseBoolean(form.getLastNameSoundex()));
-                vendorSearchEvaluator.setQ(this, form.getName());
-                vendorSearchEvaluator.setVendorName(form.getVendorName());
-                vendorSearchEvaluator.setCreatedSince(createdSince == null ? null : Long.valueOf(createdSince));
-                vendorSearchEvaluator.setModifiedSince(modifiedSince == null ? null : Long.valueOf(modifiedSince));
-                vendorSearchEvaluator.setFields(fields == null ? null : Splitter.on(':').trimResults().omitEmptyStrings().splitToList(fields).toArray(new String[0]));
-                
+                String partyAliasTypeName = form.getPartyAliasTypeName();
+                String alias = form.getAlias();
+                PartyAliasType partyAliasType = null;
+
+                if(partyAliasTypeName != null) {
+                    var partyControl = Session.getModelController(PartyControl.class);
+                    PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.CUSTOMER.name());
+
+                    if(partyType != null) {
+                        partyAliasType = partyControl.getPartyAliasTypeByName(partyType, partyAliasTypeName);
+
+                        if(partyAliasType == null) {
+                            addExecutionError(ExecutionErrors.UnknownPartyAliasTypeName.name(), PartyTypes.CUSTOMER.name(), partyAliasTypeName);
+                        }
+                    } else {
+                        addExecutionError(ExecutionErrors.UnknownPartyTypeName.name(), PartyTypes.CUSTOMER.name());
+                    }
+                }
+
                 if(!hasExecutionErrors()) {
-                    result.setCount(vendorSearchEvaluator.execute(this));
+                    SearchLogic searchLogic = SearchLogic.getInstance();
+                    UserVisit userVisit = getUserVisit();
+                    VendorSearchEvaluator vendorSearchEvaluator = new VendorSearchEvaluator(userVisit, searchType,
+                            searchLogic.getDefaultSearchDefaultOperator(null), searchLogic.getDefaultSearchSortOrder(null, searchKind),
+                            searchLogic.getDefaultSearchSortDirection(null));
+                    String createdSince = form.getCreatedSince();
+                    String modifiedSince = form.getModifiedSince();
+                    String fields = form.getFields();
+
+                    vendorSearchEvaluator.setFirstName(form.getFirstName());
+                    vendorSearchEvaluator.setFirstNameSoundex(Boolean.parseBoolean(form.getFirstNameSoundex()));
+                    vendorSearchEvaluator.setMiddleName(form.getMiddleName());
+                    vendorSearchEvaluator.setMiddleNameSoundex(Boolean.parseBoolean(form.getMiddleNameSoundex()));
+                    vendorSearchEvaluator.setLastName(form.getLastName());
+                    vendorSearchEvaluator.setLastNameSoundex(Boolean.parseBoolean(form.getLastNameSoundex()));
+                    vendorSearchEvaluator.setQ(this, form.getName());
+                    vendorSearchEvaluator.setPartyAliasType(partyAliasType);
+                    vendorSearchEvaluator.setAlias(alias);
+                    vendorSearchEvaluator.setVendorName(form.getVendorName());
+                    vendorSearchEvaluator.setPartyName(form.getPartyName());
+                    vendorSearchEvaluator.setCreatedSince(createdSince == null ? null : Long.valueOf(createdSince));
+                    vendorSearchEvaluator.setModifiedSince(modifiedSince == null ? null : Long.valueOf(modifiedSince));
+                    vendorSearchEvaluator.setFields(fields == null ? null : Splitter.on(':').trimResults().omitEmptyStrings().splitToList(fields).toArray(new String[0]));
+
+                    if(!hasExecutionErrors()) {
+                        result.setCount(vendorSearchEvaluator.execute(this));
+                    }
                 }
             } else {
                 addExecutionError(ExecutionErrors.UnknownSearchTypeName.name(), SearchConstants.SearchKind_VENDOR, searchTypeName);

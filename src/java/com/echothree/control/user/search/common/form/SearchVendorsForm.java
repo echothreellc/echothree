@@ -16,10 +16,11 @@
 
 package com.echothree.control.user.search.common.form;
 
-import com.echothree.util.common.form.BaseForm;
+import com.echothree.control.user.party.common.spec.PartySpec;
+import com.echothree.control.user.vendor.common.spec.VendorSpec;
 
 public interface SearchVendorsForm
-        extends BaseForm {
+        extends VendorSpec, PartySpec {
     
     String getSearchTypeName();
     void setSearchTypeName(String searchTypeName);
@@ -44,10 +45,13 @@ public interface SearchVendorsForm
     
     String getName();
     void setName(String name);
-    
-    String getVendorName();
-    void setVendorName(String vendorName);
-    
+
+    String getPartyAliasTypeName();
+    void setPartyAliasTypeName(String partyAliasTypeName);
+
+    String getAlias();
+    void setAlias(String alias);
+
     String getCreatedSince();
     void setCreatedSince(String createdSince);
 
