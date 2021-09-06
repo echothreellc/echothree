@@ -1,5 +1,18 @@
 # Changelog
 
+## 2021-09-05-01
+
+* GraphQL Objects for Departments [319](https://gitlab.echothree.com/echothree/echothree/-/issues/319)
+* Apache Lucene 8.9.0 Upgrade [326](https://gitlab.echothree.com/echothree/echothree/-/issues/326)
+* jOOQ 3.15.2 Upgrade [327](https://gitlab.echothree.com/echothree/echothree/-/issues/327)
+* ClassGraph 4.8.115 Upgrade [328](https://gitlab.echothree.com/echothree/echothree/-/issues/328)
+* Error Prone 2.9.0 Upgrade [329](https://gitlab.echothree.com/echothree/echothree/-/issues/329)
+* Gson 2.8.8 Upgrade [330](https://gitlab.echothree.com/echothree/echothree/-/issues/330)
+* cucumber-java8/cucumber-junit 6.11.0 Upgrade [331](https://gitlab.echothree.com/echothree/echothree/-/issues/331)
+* GraphQL Objects for Entity Attribute Groups [332](https://gitlab.echothree.com/echothree/echothree/-/issues/332)
+* Add entityAttributeGroups Field to BaseEntityInstanceObject [333](https://gitlab.echothree.com/echothree/echothree/-/issues/333)
+* GraphQL Objects for Employees [334](https://gitlab.echothree.com/echothree/echothree/-/issues/334)
+
 ## 2021-08-22-01
 
 * GraphQL Objects for Companies [317](https://gitlab.echothree.com/echothree/echothree/-/issues/317)
