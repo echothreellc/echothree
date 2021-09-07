@@ -1806,11 +1806,26 @@
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="Selector" parentSecurityRoleGroupName="SelectorComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Selector" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Selector Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Selector Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Selector Delete" />
+            </securityRole>
             <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Selector List" />
             </securityRole>
             <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Selector Review" />
+            </securityRole>
+            <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Selector Choices" />
+            </securityRole>
+            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Selector Description" />
             </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="SequenceComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
@@ -7770,8 +7785,13 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="SelectorType" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SelectorType" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SelectorType" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Selector" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Selector" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Selector" securityRoleName="Delete" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Selector" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Selector" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Selector" securityRoleName="Choices" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Selector" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SequenceEncoderType" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SequenceEncoderType" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SequenceEncoderType" securityRoleName="Delete" />

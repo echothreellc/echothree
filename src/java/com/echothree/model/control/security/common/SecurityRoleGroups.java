@@ -293,6 +293,7 @@ public enum SecurityRoleGroups {
     SecurityRole,
     SecurityRoleGroup,
     SecurityRolePartyType,
+    Selector,
     SelectorKind,
     SelectorType,
     Sequence,

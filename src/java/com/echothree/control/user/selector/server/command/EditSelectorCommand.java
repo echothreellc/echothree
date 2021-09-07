@@ -22,6 +22,9 @@ import com.echothree.control.user.selector.common.form.EditSelectorForm;
 import com.echothree.control.user.selector.common.result.EditSelectorResult;
 import com.echothree.control.user.selector.common.result.SelectorResultFactory;
 import com.echothree.control.user.selector.common.spec.SelectorSpec;
+import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.selector.server.entity.SelectorDescription;
@@ -31,43 +34,52 @@ import com.echothree.model.data.selector.server.entity.SelectorType;
 import com.echothree.model.data.selector.server.value.SelectorDescriptionValue;
 import com.echothree.model.data.selector.server.value.SelectorDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class EditSelectorCommand
         extends BaseEditCommand<SelectorSpec, SelectorEdit> {
-    
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
     
     static {
-        SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-            new FieldDefinition("SelectorKindName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("SelectorTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("SelectorName", FieldType.ENTITY_NAME, true, null, null)
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.Selector.name(), SecurityRoles.Edit.name())
+                ))
         ));
+
+        SPEC_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("SelectorKindName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("SelectorTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("SelectorName", FieldType.ENTITY_NAME, true, null, null)
+        );
         
-        EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-            new FieldDefinition("SelectorName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("InitialSelectorAdjustmentName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("SelectorItemSelectorName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
-            new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
-            new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
-        ));
+        EDIT_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("SelectorName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("InitialSelectorAdjustmentName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("SelectorItemSelectorName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+        );
     }
     
     /** Creates a new instance of EditSelectorCommand */
     public EditSelectorCommand(UserVisitPK userVisitPK, EditSelectorForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override
