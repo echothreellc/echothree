@@ -1,5 +1,9 @@
 # Changelog
 
+## 2021-09-19-01
+
+* GraphQL Objects and Mutations for Employee Search [335](https://gitlab.echothree.com/echothree/echothree/-/issues/335)
+
 ## 2021-09-05-01
 
 * GraphQL Objects for Departments [319](https://gitlab.echothree.com/echothree/echothree/-/issues/319)
