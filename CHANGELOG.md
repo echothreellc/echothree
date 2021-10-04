@@ -1,5 +1,9 @@
 # Changelog
 
+## 2021-10-03-01
+
+* Guava 31.0.1-jre Upgrade [345](https://gitlab.echothree.com/echothree/echothree/-/issues/345)
+
 ## 2021-09-19-01
 
 * GraphQL Objects and Mutations for Employee Search [335](https://gitlab.echothree.com/echothree/echothree/-/issues/335)
