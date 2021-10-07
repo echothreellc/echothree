@@ -25,12 +25,12 @@ import java.util.List;
 public interface GetSelectorsResult
         extends BaseResult {
     
-    SelectorKindTransfer getSelectorKind();
-    void setSelectorKind(SelectorKindTransfer selectorKind);
-    
     SelectorTypeTransfer getSelectorType();
     void setSelectorType(SelectorTypeTransfer selectorType);
-    
+
+    Long getSelectorCount();
+    void setSelectorCount(Long selectorCount);
+
     List<SelectorTransfer> getSelectors();
     void setSelectors(List<SelectorTransfer> selectors);
     

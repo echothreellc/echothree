@@ -17,35 +17,41 @@
 package com.echothree.control.user.selector.server.command;
 
 import com.echothree.control.user.selector.common.form.GetSelectorForm;
+import com.echothree.control.user.selector.common.result.SelectorResultFactory;
+import com.echothree.control.user.selector.common.form.GetSelectorForm;
 import com.echothree.control.user.selector.common.result.GetSelectorResult;
 import com.echothree.control.user.selector.common.result.SelectorResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.selector.server.control.SelectorControl;
+import com.echothree.model.control.selector.server.logic.SelectorLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
-import com.echothree.model.data.selector.server.entity.SelectorType;
+import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class GetSelectorCommand
-        extends BaseSimpleCommand<GetSelectorForm> {
+        extends BaseSingleEntityCommand<Selector, GetSelectorForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
@@ -55,52 +61,42 @@ public class GetSelectorCommand
         ));
 
         FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("SelectorKindName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("SelectorTypeName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("SelectorName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("SelectorKindName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("SelectorTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("SelectorName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
         );
     }
-    
+
     /** Creates a new instance of GetSelectorCommand */
     public GetSelectorCommand(UserVisitPK userVisitPK, GetSelectorForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var selectorControl = Session.getModelController(SelectorControl.class);
-        GetSelectorResult result = SelectorResultFactory.getGetSelectorResult();
-        String selectorKindName = form.getSelectorKindName();
-        SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
-        
-        if(selectorKind != null) {
-            UserVisit userVisit = getUserVisit();
-            String selectorTypeName = form.getSelectorTypeName();
-            SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
-            
-            result.setSelectorKind(selectorControl.getSelectorKindTransfer(userVisit, selectorKind));
-            
-            if(selectorType != null) {
-                String selectorName = form.getSelectorName();
-                Selector selector = selectorControl.getSelectorByName(selectorType, selectorName);
-                
-                result.setSelectorType(selectorControl.getSelectorTypeTransfer(userVisit, selectorType));
-                
-                if(selector != null) {
-                    result.setSelector(selectorControl.getSelectorTransfer(userVisit, selector));
-                    
-                    sendEventUsingNames(selector.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownSelectorName.name(), selectorName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownSelectorTypeName.name(), selectorTypeName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownSelectorKindName.name(), selectorKindName);
+    protected Selector getEntity() {
+        var selector = SelectorLogic.getInstance().getSelectorByUniversalSpec(this, form, true);
+
+        if(selector != null) {
+            sendEventUsingNames(selector.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
         }
-        
+
+        return selector;
+    }
+
+    @Override
+    protected BaseResult getTransfer(Selector selector) {
+        var selectorControl = Session.getModelController(SelectorControl.class);
+        var result = SelectorResultFactory.getGetSelectorResult();
+
+        if(selector != null) {
+            result.setSelector(selectorControl.getSelectorTransfer(getUserVisit(), selector));
+        }
+
         return result;
     }
-    
+
 }

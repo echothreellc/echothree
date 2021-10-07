@@ -1653,8 +1653,32 @@ public class SelectorControl
         
         return selector;
     }
-    
-    private Selector getSelectorByName(SelectorType selectorType, String selectorName, EntityPermission entityPermission) {
+
+    public long countSelectorsBySelectorType(SelectorType selectorType) {
+        return session.queryForLong(
+                "SELECT _ALL_ "
+                + "FROM selectors, selectordetails "
+                + "WHERE sl_activedetailid = sldt_selectordetailid AND sldt_slt_selectortypeid = ?",
+                selectorType);
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Selector */
+    public Selector getSelectorByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new SelectorPK(entityInstance.getEntityUniqueId());
+        var selector = SelectorFactory.getInstance().getEntityFromPK(entityPermission, pk);
+
+        return selector;
+    }
+
+    public Selector getSelectorByEntityInstance(EntityInstance entityInstance) {
+        return getSelectorByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Selector getSelectorByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getSelectorByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public Selector getSelectorByName(SelectorType selectorType, String selectorName, EntityPermission entityPermission) {
         Selector selector;
         
         try {
@@ -1724,7 +1748,7 @@ public class SelectorControl
         return getSelectorDetailValueForUpdate(getSelectorByNameForUpdate(selectorType, selectorName));
     }
     
-    private Selector getDefaultSelector(SelectorType selectorType, EntityPermission entityPermission) {
+    public Selector getDefaultSelector(SelectorType selectorType, EntityPermission entityPermission) {
         Selector selector;
         
         try {
@@ -1864,7 +1888,7 @@ public class SelectorControl
         return getSelectorTransferCaches(userVisit).getSelectorTransferCache().getSelectorTransfer(selector);
     }
     
-    private List<SelectorTransfer> getSelectorTransfers(UserVisit userVisit, List<Selector> selectors) {
+    public List<SelectorTransfer> getSelectorTransfers(UserVisit userVisit, Collection<Selector> selectors) {
         List<SelectorTransfer> selectorTransfers = new ArrayList<>(selectors.size());
         SelectorTransferCache selectorTransferCache = getSelectorTransferCaches(userVisit).getSelectorTransferCache();
         
