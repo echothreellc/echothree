@@ -30,6 +30,8 @@ import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @GraphQLDescription("selector type object")
 @GraphQLName("SelectorType")
@@ -91,5 +93,24 @@ public class SelectorTypeObject
         
         return selectorControl.getBestSelectorTypeDescription(selectorType, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
     }
-    
+
+    @GraphQLField
+    @GraphQLDescription("selectors")
+    public Collection<SelectorObject> getSelectors(final DataFetchingEnvironment env) {
+        Collection<SelectorObject> selectorObjects = null;
+
+        if(SelectorSecurityUtils.getInstance().getHasSelectorsAccess(env)) {
+            var selectorControl = Session.getModelController(SelectorControl.class);
+            var selectors = selectorControl.getSelectorsBySelectorType(selectorType);
+
+            selectorObjects = new ArrayList<>(selectors.size());
+
+            selectors.stream()
+                    .map(SelectorObject::new)
+                    .forEachOrdered(selectorObjects::add);
+        }
+
+        return selectorObjects;
+    }
+
 }

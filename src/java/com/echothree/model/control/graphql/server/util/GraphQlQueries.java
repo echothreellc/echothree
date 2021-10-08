@@ -162,10 +162,12 @@ import com.echothree.control.user.search.server.command.GetEmployeeResultsComman
 import com.echothree.control.user.search.server.command.GetItemResultsCommand;
 import com.echothree.control.user.search.server.command.GetVendorResultsCommand;
 import com.echothree.control.user.selector.common.SelectorUtil;
+import com.echothree.control.user.selector.server.command.GetSelectorCommand;
 import com.echothree.control.user.selector.server.command.GetSelectorKindCommand;
 import com.echothree.control.user.selector.server.command.GetSelectorKindsCommand;
 import com.echothree.control.user.selector.server.command.GetSelectorTypeCommand;
 import com.echothree.control.user.selector.server.command.GetSelectorTypesCommand;
+import com.echothree.control.user.selector.server.command.GetSelectorsCommand;
 import com.echothree.control.user.sequence.common.SequenceUtil;
 import com.echothree.control.user.sequence.server.command.GetSequenceChecksumTypeCommand;
 import com.echothree.control.user.sequence.server.command.GetSequenceChecksumTypesCommand;
@@ -265,6 +267,7 @@ import com.echothree.model.control.search.server.graphql.EmployeeResultsObject;
 import com.echothree.model.control.search.server.graphql.ItemResultsObject;
 import com.echothree.model.control.search.server.graphql.VendorResultsObject;
 import com.echothree.model.control.selector.server.graphql.SelectorKindObject;
+import com.echothree.model.control.selector.server.graphql.SelectorObject;
 import com.echothree.model.control.selector.server.graphql.SelectorTypeObject;
 import com.echothree.model.control.sequence.server.graphql.SequenceChecksumTypeObject;
 import com.echothree.model.control.sequence.server.graphql.SequenceEncoderTypeObject;
@@ -346,6 +349,7 @@ import com.echothree.model.data.payment.server.entity.PaymentProcessorType;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCode;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCodeType;
 import com.echothree.model.data.queue.server.entity.QueueType;
+import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.model.data.selector.server.entity.SelectorType;
 import com.echothree.model.data.sequence.server.entity.Sequence;
@@ -668,6 +672,63 @@ public final class GraphQlQueries
         }
 
         return selectorTypeObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("selector")
+    public static SelectorObject selector(final DataFetchingEnvironment env,
+            @GraphQLName("selectorKindName") final String selectorKindName,
+            @GraphQLName("selectorTypeName") final String selectorTypeName,
+            @GraphQLName("selectorName") final String selectorName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        Selector selector;
+
+        try {
+            var commandForm = SelectorUtil.getHome().getGetSelectorForm();
+
+            commandForm.setSelectorKindName(selectorKindName);
+            commandForm.setSelectorTypeName(selectorTypeName);
+            commandForm.setSelectorName(selectorName);
+            commandForm.setUlid(id);
+
+            selector = new GetSelectorCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return selector == null ? null : new SelectorObject(selector);
+    }
+
+    @GraphQLField
+    @GraphQLName("selectors")
+    public static Collection<SelectorObject> selectors(final DataFetchingEnvironment env,
+            @GraphQLName("selectorKindName") final String selectorKindName,
+            @GraphQLName("selectorTypeName") final String selectorTypeName) {
+        Collection<Selector> selectors;
+        Collection<SelectorObject> selectorObjects;
+
+        try {
+            var commandForm = SelectorUtil.getHome().getGetSelectorsForm();
+
+            commandForm.setSelectorKindName(selectorKindName);
+            commandForm.setSelectorTypeName(selectorTypeName);
+
+            selectors = new GetSelectorsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(selectors == null) {
+            selectorObjects = emptyList();
+        } else {
+            selectorObjects = new ArrayList<>(selectors.size());
+
+            selectors.stream()
+                    .map(SelectorObject::new)
+                    .forEachOrdered(selectorObjects::add);
+        }
+
+        return selectorObjects;
     }
 
     @GraphQLField

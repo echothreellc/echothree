@@ -27,9 +27,9 @@ import com.echothree.model.control.selector.common.exception.UnknownDefaultSelec
 import com.echothree.model.control.selector.common.exception.UnknownSelectorTypeNameException;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.model.data.selector.server.entity.SelectorType;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
@@ -188,11 +188,11 @@ public class SelectorTypeLogic
         return getSelectorTypeByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
     }
 
-
     public void deleteSelectorType(final ExecutionErrorAccumulator eea, final SelectorType selectorType,
             final BasePK deletedBy) {
         var selectorControl = Session.getModelController(SelectorControl.class);
 
         selectorControl.deleteSelectorType(selectorType, deletedBy);
     }
+
 }

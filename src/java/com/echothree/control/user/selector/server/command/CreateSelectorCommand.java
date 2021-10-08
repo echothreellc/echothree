@@ -17,48 +17,63 @@
 package com.echothree.control.user.selector.server.command;
 
 import com.echothree.control.user.selector.common.form.CreateSelectorForm;
+import com.echothree.control.user.selector.common.result.SelectorResultFactory;
+import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.model.data.selector.server.entity.SelectorType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class CreateSelectorCommand
         extends BaseSimpleCommand<CreateSelectorForm> {
-    
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-            new FieldDefinition("SelectorKindName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("SelectorTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("SelectorName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
-            new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
-            new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.Selector.name(), SecurityRoles.Create.name())
+                ))
         ));
+
+        FORM_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("SelectorKindName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("SelectorTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("SelectorName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+        );
     }
     
     /** Creates a new instance of CreateSelectorCommand */
     public CreateSelectorCommand(UserVisitPK userVisitPK, CreateSelectorForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
+        var result = SelectorResultFactory.getCreateSelectorResult();
         var selectorControl = Session.getModelController(SelectorControl.class);
         String selectorKindName = form.getSelectorKindName();
         SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
+        Selector selector = null;
         
         if(selectorKind != null) {
             String selectorTypeName = form.getSelectorTypeName();
@@ -66,7 +81,8 @@ public class CreateSelectorCommand
             
             if(selectorType != null) {
                 String selectorName = form.getSelectorName();
-                Selector selector = selectorControl.getSelectorByName(selectorType, selectorName);
+                
+                selector = selectorControl.getSelectorByName(selectorType, selectorName);
                 
                 if(selector == null) {
                     var partyPK = getPartyPK();
@@ -90,8 +106,18 @@ public class CreateSelectorCommand
         } else {
             addExecutionError(ExecutionErrors.UnknownSelectorKindName.name(), selectorKindName);
         }
+
+        if(selector != null) {
+            var selectorDetail = selector.getLastDetail();
+            var selectorTypeDetail = selectorDetail.getSelectorType().getLastDetail();
+
+            result.setEntityRef(selector.getPrimaryKey().getEntityRef());
+            result.setSelectorKindName(selectorTypeDetail.getSelectorKind().getLastDetail().getSelectorKindName());
+            result.setSelectorTypeName(selectorTypeDetail.getSelectorTypeName());
+            result.setSelectorName(selectorDetail.getSelectorName());
+        }
         
-        return null;
+        return result;
     }
     
 }

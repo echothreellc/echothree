@@ -14,24 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.selector.common.result;
+package com.echothree.control.user.selector.common.spec;
 
-import com.echothree.model.control.selector.common.transfer.SelectorKindTransfer;
-import com.echothree.model.control.selector.common.transfer.SelectorTransfer;
-import com.echothree.model.control.selector.common.transfer.SelectorTypeTransfer;
-import com.echothree.util.common.command.BaseResult;
-import java.util.List;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetSelectorsResult
-        extends BaseResult {
+public interface SelectorUniversalSpec
+        extends SelectorSpec, UniversalEntitySpec {
     
-    SelectorTypeTransfer getSelectorType();
-    void setSelectorType(SelectorTypeTransfer selectorType);
-
-    Long getSelectorCount();
-    void setSelectorCount(Long selectorCount);
-
-    List<SelectorTransfer> getSelectors();
-    void setSelectors(List<SelectorTransfer> selectors);
+    // Nothing additional beyond SelectorSpec, UniversalEntitySpec
     
 }

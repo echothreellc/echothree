@@ -16,22 +16,13 @@
 
 package com.echothree.control.user.selector.common.result;
 
-import com.echothree.model.control.selector.common.transfer.SelectorKindTransfer;
-import com.echothree.model.control.selector.common.transfer.SelectorTransfer;
-import com.echothree.model.control.selector.common.transfer.SelectorTypeTransfer;
+import com.echothree.control.user.selector.common.spec.SelectorSpec;
 import com.echothree.util.common.command.BaseResult;
-import java.util.List;
 
-public interface GetSelectorsResult
-        extends BaseResult {
-    
-    SelectorTypeTransfer getSelectorType();
-    void setSelectorType(SelectorTypeTransfer selectorType);
+public interface CreateSelectorResult
+        extends SelectorSpec, BaseResult {
 
-    Long getSelectorCount();
-    void setSelectorCount(Long selectorCount);
+    String getEntityRef();
+    void setEntityRef(String entityRef);
 
-    List<SelectorTransfer> getSelectors();
-    void setSelectors(List<SelectorTransfer> selectors);
-    
 }

@@ -31,7 +31,7 @@
                 <a href="<c:url value="/action/Selector/Main" />">Selectors</a> &gt;&gt;
                 <a href="<c:url value="/action/Selector/SelectorKind/Main" />">Kinds</a> &gt;&gt;
                 <c:url var="selectorTypesUrl" value="/action/Selector/SelectorType/Main">
-                    <c:param name="SelectorKindName" value="${selectorKind.selectorKindName}" />
+                    <c:param name="SelectorKindName" value="${selectorType.selectorKind.selectorKindName}" />
                 </c:url>
                 <a href="${selectorTypesUrl}">Types</a> &gt;&gt;
                 Selectors
@@ -39,7 +39,7 @@
         </div>
         <div id="Content">
             <c:url var="addUrl" value="/action/Selector/Selector/Add">
-                <c:param name="SelectorKindName" value="${selectorKind.selectorKindName}" />
+                <c:param name="SelectorKindName" value="${selectorType.selectorKind.selectorKindName}" />
                 <c:param name="SelectorTypeName" value="${selectorType.selectorTypeName}" />
             </c:url>
             <p><a href="${addUrl}">Add Selector.</a></p>

@@ -65,7 +65,6 @@ public class MainAction
             ExecutionResult executionResult = commandResult.getExecutionResult();
             GetSelectorsResult getSelectorsResult = (GetSelectorsResult)executionResult.getResult();
             
-            request.setAttribute("selectorKind", getSelectorsResult.getSelectorKind());
             request.setAttribute("selectorType", getSelectorsResult.getSelectorType());
             request.setAttribute("selectors", getSelectorsResult.getSelectors());
             forwardKey = ForwardConstants.DISPLAY;
