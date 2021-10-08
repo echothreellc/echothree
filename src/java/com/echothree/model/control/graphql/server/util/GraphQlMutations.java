@@ -232,6 +232,7 @@ public class GraphQlMutations
     @GraphQLName("setDefaultFilter")
     public static CommandResultObject setDefaultFilter(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
+            @GraphQLName("filterTypeName") @GraphQLNonNull final String filterTypeName,
             @GraphQLName("filterName") @GraphQLNonNull final String filterName) {
         var commandResultObject = new CommandResultObject();
 
@@ -239,6 +240,7 @@ public class GraphQlMutations
             var commandForm = FilterUtil.getHome().getSetDefaultFilterForm();
 
             commandForm.setFilterKindName(filterKindName);
+            commandForm.setFilterTypeName(filterTypeName);
             commandForm.setFilterName(filterName);
 
             var commandResult = FilterUtil.getHome().setDefaultFilter(getUserVisitPK(env), commandForm);
