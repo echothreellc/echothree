@@ -69,10 +69,9 @@ import com.echothree.control.user.search.common.result.SearchCustomersResult;
 import com.echothree.control.user.search.common.result.SearchEmployeesResult;
 import com.echothree.control.user.search.common.result.SearchItemsResult;
 import com.echothree.control.user.search.common.result.SearchVendorsResult;
-import com.echothree.model.control.search.server.graphql.SearchCustomersResultObject;
-import com.echothree.model.control.search.server.graphql.SearchEmployeesResultObject;
-import com.echothree.model.control.search.server.graphql.SearchItemsResultObject;
-import com.echothree.model.control.search.server.graphql.SearchVendorsResultObject;
+import com.echothree.control.user.selector.common.SelectorUtil;
+import com.echothree.control.user.selector.common.result.CreateSelectorResult;
+import com.echothree.control.user.selector.common.result.EditSelectorResult;
 import com.echothree.control.user.sequence.common.SequenceUtil;
 import com.echothree.control.user.sequence.common.result.CreateSequenceResult;
 import com.echothree.control.user.sequence.common.result.CreateSequenceTypeResult;
@@ -85,6 +84,10 @@ import com.echothree.control.user.user.common.UserUtil;
 import com.echothree.control.user.user.common.result.EditUserLoginResult;
 import com.echothree.model.control.graphql.server.graphql.CommandResultObject;
 import com.echothree.model.control.graphql.server.graphql.CommandResultWithIdObject;
+import com.echothree.model.control.search.server.graphql.SearchCustomersResultObject;
+import com.echothree.model.control.search.server.graphql.SearchEmployeesResultObject;
+import com.echothree.model.control.search.server.graphql.SearchItemsResultObject;
+import com.echothree.model.control.search.server.graphql.SearchVendorsResultObject;
 import com.echothree.util.common.command.EditMode;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLID;
@@ -98,6 +101,149 @@ import javax.naming.NamingException;
 @GraphQLName("mutation")
 public class GraphQlMutations
         extends BaseGraphQl {
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultWithIdObject createSelector(final DataFetchingEnvironment env,
+            @GraphQLName("selectorKindName") @GraphQLNonNull final String selectorKindName,
+            @GraphQLName("selectorTypeName") @GraphQLNonNull final String selectorTypeName,
+            @GraphQLName("selectorName") @GraphQLNonNull final String selectorName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var commandResultObject = new CommandResultWithIdObject();
+
+        try {
+            var commandForm = SelectorUtil.getHome().getCreateSelectorForm();
+
+            commandForm.setSelectorKindName(selectorKindName);
+            commandForm.setSelectorTypeName(selectorTypeName);
+            commandForm.setSelectorName(selectorName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            var commandResult = SelectorUtil.getHome().createSelector(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateSelectorResult)commandResult.getExecutionResult().getResult();
+
+                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject deleteSelector(final DataFetchingEnvironment env,
+            @GraphQLName("selectorKindName") @GraphQLNonNull final String selectorKindName,
+            @GraphQLName("selectorTypeName") @GraphQLNonNull final String selectorTypeName,
+            @GraphQLName("selectorName") @GraphQLNonNull final String selectorName) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = SelectorUtil.getHome().getDeleteSelectorForm();
+
+            commandForm.setSelectorKindName(selectorKindName);
+            commandForm.setSelectorName(selectorName);
+
+            var commandResult = SelectorUtil.getHome().deleteSelector(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultWithIdObject editSelector(final DataFetchingEnvironment env,
+            @GraphQLName("selectorKindName") @GraphQLNonNull final String selectorKindName,
+            @GraphQLName("selectorTypeName") @GraphQLNonNull final String selectorTypeName,
+            @GraphQLName("originalSelectorName") final String originalSelectorName,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("selectorName") final String selectorName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var commandResultObject = new CommandResultWithIdObject();
+
+        try {
+            var spec = SelectorUtil.getHome().getSelectorUniversalSpec();
+
+            spec.setSelectorKindName(selectorKindName);
+            spec.setSelectorTypeName(selectorTypeName);
+            spec.setSelectorName(originalSelectorName);
+            spec.setUlid(id);
+
+            var commandForm = SelectorUtil.getHome().getEditSelectorForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = SelectorUtil.getHome().editSelector(getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditSelectorResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                commandResultObject.setEntityInstanceFromEntityRef(result.getSelector().getEntityInstance().getEntityRef());
+
+                if(arguments.containsKey("selectorName"))
+                    edit.setSelectorName(selectorName);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = SelectorUtil.getHome().editSelector(getUserVisitPK(env), commandForm);
+            }
+
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    @GraphQLName("setDefaultSelector")
+    public static CommandResultObject setDefaultSelector(final DataFetchingEnvironment env,
+            @GraphQLName("selectorKindName") @GraphQLNonNull final String selectorKindName,
+            @GraphQLName("selectorTypeName") @GraphQLNonNull final String selectorTypeName,
+            @GraphQLName("selectorName") @GraphQLNonNull final String selectorName) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = SelectorUtil.getHome().getSetDefaultSelectorForm();
+
+            commandForm.setSelectorKindName(selectorKindName);
+            commandForm.setSelectorTypeName(selectorTypeName);
+            commandForm.setSelectorName(selectorName);
+
+            var commandResult = SelectorUtil.getHome().setDefaultSelector(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
 
     @GraphQLField
     @GraphQLRelayMutation

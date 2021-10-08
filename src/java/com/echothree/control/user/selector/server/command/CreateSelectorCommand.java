@@ -17,6 +17,7 @@
 package com.echothree.control.user.selector.server.command;
 
 import com.echothree.control.user.selector.common.form.CreateSelectorForm;
+import com.echothree.control.user.selector.common.result.SelectorResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -68,9 +69,11 @@ public class CreateSelectorCommand
     
     @Override
     protected BaseResult execute() {
+        var result = SelectorResultFactory.getCreateSelectorResult();
         var selectorControl = Session.getModelController(SelectorControl.class);
         String selectorKindName = form.getSelectorKindName();
         SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
+        Selector selector = null;
         
         if(selectorKind != null) {
             String selectorTypeName = form.getSelectorTypeName();
@@ -78,7 +81,8 @@ public class CreateSelectorCommand
             
             if(selectorType != null) {
                 String selectorName = form.getSelectorName();
-                Selector selector = selectorControl.getSelectorByName(selectorType, selectorName);
+                
+                selector = selectorControl.getSelectorByName(selectorType, selectorName);
                 
                 if(selector == null) {
                     var partyPK = getPartyPK();
@@ -102,8 +106,18 @@ public class CreateSelectorCommand
         } else {
             addExecutionError(ExecutionErrors.UnknownSelectorKindName.name(), selectorKindName);
         }
+
+        if(selector != null) {
+            var selectorDetail = selector.getLastDetail();
+            var selectorTypeDetail = selectorDetail.getSelectorType().getLastDetail();
+
+            result.setEntityRef(selector.getPrimaryKey().getEntityRef());
+            result.setSelectorKindName(selectorTypeDetail.getSelectorKind().getLastDetail().getSelectorKindName());
+            result.setSelectorTypeName(selectorTypeDetail.getSelectorTypeName());
+            result.setSelectorName(selectorDetail.getSelectorName());
+        }
         
-        return null;
+        return result;
     }
     
 }
