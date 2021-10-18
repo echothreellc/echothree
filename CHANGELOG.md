@@ -1,5 +1,9 @@
 # Changelog
 
+## 2021-10-17-01
+
+* GraphQL Objects and Mutations for Selectors [152](https://gitlab.echothree.com/echothree/echothree/-/issues/152)
+
 ## 2021-10-03-01
 
 * Guava 31.0.1-jre Upgrade [345](https://gitlab.echothree.com/echothree/echothree/-/issues/345)
