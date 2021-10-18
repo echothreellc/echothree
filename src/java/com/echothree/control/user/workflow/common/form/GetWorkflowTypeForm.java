@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.workflow.common.form;
 
-import com.echothree.control.user.workflow.common.spec.WorkflowTypeSpec;
+import com.echothree.control.user.workflow.common.spec.WorkflowTypeUniversalSpec;
 
 public interface GetWorkflowTypeForm
-        extends WorkflowTypeSpec {
+        extends WorkflowTypeUniversalSpec {
     
-    // Nothing additional beyond WorkflowTypeSpec
+    // Nothing additional beyond WorkflowTypeUniversalSpec
     
 }
