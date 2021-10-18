@@ -66,7 +66,7 @@ public class CreateWorkflowStepTypeCommand
             var isDefault = Boolean.valueOf(form.getIsDefault());
             var sortOrder = Integer.valueOf(form.getSortOrder());
             
-            workflowControl.createWorkflowStepType(workflowStepTypeName, isDefault, sortOrder);
+            workflowControl.createWorkflowStepType(workflowStepTypeName, isDefault, sortOrder, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.DuplicateWorkflowStepTypeName.name(), workflowStepTypeName);
         }

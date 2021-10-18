@@ -66,7 +66,7 @@ public class CreateWorkflowTypeCommand
             var isDefault = Boolean.valueOf(form.getIsDefault());
             var sortOrder = Integer.valueOf(form.getSortOrder());
             
-            workflowControl.createWorkflowType(workflowTypeName, isDefault, sortOrder);
+            workflowControl.createWorkflowType(workflowTypeName, isDefault, sortOrder, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownWorkflowTypeName.name(), workflowTypeName);
         }

@@ -71,6 +71,9 @@ import com.echothree.model.control.workrequirement.server.control.WorkRequiremen
 import com.echothree.model.control.workrequirement.server.logic.WorkRequirementLogic;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
+import com.echothree.model.data.filter.common.pk.FilterKindPK;
+import com.echothree.model.data.filter.server.entity.FilterKind;
+import com.echothree.model.data.filter.server.factory.FilterKindFactory;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.PartyType;
@@ -200,8 +203,12 @@ public class WorkflowControl
     //   Workflow Types
     // --------------------------------------------------------------------------------
     
-    public WorkflowType createWorkflowType(String workflowTypeName, Boolean isDefault, Integer sortOrder) {
-        return WorkflowTypeFactory.getInstance().create(workflowTypeName, isDefault, sortOrder);
+    public WorkflowType createWorkflowType(String workflowTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
+        var workflowType = WorkflowTypeFactory.getInstance().create(workflowTypeName, isDefault, sortOrder);
+
+        sendEventUsingNames(workflowType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+
+        return workflowType;
     }
     
     private static final Map<EntityPermission, String> getWorkflowTypeByNameQueries;
@@ -219,6 +226,27 @@ public class WorkflowControl
                 "WHERE wkflt_workflowtypename = ? " +
                 "FOR UPDATE");
         getWorkflowTypeByNameQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    public long countWorkflowTypes() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM workflowtypes");
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.WorkflowType */
+    public WorkflowType getWorkflowTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new WorkflowTypePK(entityInstance.getEntityUniqueId());
+
+        return WorkflowTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public WorkflowType getWorkflowTypeByEntityInstance(EntityInstance entityInstance) {
+        return getWorkflowTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public WorkflowType getWorkflowTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getWorkflowTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
     
     private WorkflowType getWorkflowTypeByName(String workflowTypeName, EntityPermission entityPermission) {
@@ -241,7 +269,8 @@ public class WorkflowControl
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ " +
                 "FROM workflowtypes " +
-                "ORDER BY wkflt_sortorder, wkflt_workflowtypename");
+                "ORDER BY wkflt_sortorder, wkflt_workflowtypename " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM workflowtypes " +
@@ -317,8 +346,13 @@ public class WorkflowControl
     //   Workflow Type Descriptions
     // --------------------------------------------------------------------------------
     
-    public WorkflowTypeDescription createWorkflowTypeDescription(WorkflowType workflowType, Language language, String description) {
-        return WorkflowTypeDescriptionFactory.getInstance().create(workflowType, language, description);
+    public WorkflowTypeDescription createWorkflowTypeDescription(WorkflowType workflowType, Language language,
+            String description, BasePK createdBy) {
+        var workflowTypeDescription = WorkflowTypeDescriptionFactory.getInstance().create(workflowType, language, description);
+
+        sendEventUsingNames(workflowType.getPrimaryKey(), EventTypes.MODIFY.name(), workflowTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+
+        return workflowTypeDescription;
     }
     
     public WorkflowTypeDescription getWorkflowTypeDescription(WorkflowType workflowType, Language language) {
@@ -362,10 +396,36 @@ public class WorkflowControl
     //   Workflow Step Types
     // --------------------------------------------------------------------------------
     
-    public WorkflowStepType createWorkflowStepType(String workflowStepTypeName, Boolean isDefault, Integer sortOrder) {
-        return WorkflowStepTypeFactory.getInstance().create(workflowStepTypeName, isDefault, sortOrder);
+    public WorkflowStepType createWorkflowStepType(String workflowStepTypeName, Boolean isDefault, Integer sortOrder,
+            BasePK createdBy) {
+        var workflowStepType = WorkflowStepTypeFactory.getInstance().create(workflowStepTypeName, isDefault, sortOrder);
+
+        sendEventUsingNames(workflowStepType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+
+        return workflowStepType;
     }
-    
+
+    public long countWorkflowStepTypes() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM workflowsteptypes");
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.WorkflowStepType */
+    public WorkflowStepType getWorkflowStepTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new WorkflowStepTypePK(entityInstance.getEntityUniqueId());
+
+        return WorkflowStepTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public WorkflowStepType getWorkflowStepTypeByEntityInstance(EntityInstance entityInstance) {
+        return getWorkflowStepTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public WorkflowStepType getWorkflowStepTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getWorkflowStepTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     private static final Map<EntityPermission, String> getWorkflowStepTypeByNameQueries;
 
     static {
@@ -403,7 +463,8 @@ public class WorkflowControl
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ " +
                 "FROM workflowsteptypes " +
-                "ORDER BY wkflst_sortorder, wkflst_workflowsteptypename");
+                "ORDER BY wkflst_sortorder, wkflst_workflowsteptypename " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM workflowsteptypes " +
@@ -479,8 +540,13 @@ public class WorkflowControl
     //   Workflow Step Type Descriptions
     // --------------------------------------------------------------------------------
     
-    public WorkflowStepTypeDescription createWorkflowStepTypeDescription(WorkflowStepType workflowStepType, Language language, String description) {
-        return WorkflowStepTypeDescriptionFactory.getInstance().create(workflowStepType, language, description);
+    public WorkflowStepTypeDescription createWorkflowStepTypeDescription(WorkflowStepType workflowStepType,
+            Language language, String description, BasePK createdBy) {
+        var workflowStepTypeDescription = WorkflowStepTypeDescriptionFactory.getInstance().create(workflowStepType, language, description);
+
+        sendEventUsingNames(workflowStepType.getPrimaryKey(), EventTypes.MODIFY.name(), workflowStepTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+
+        return workflowStepTypeDescription;
     }
     
     public WorkflowStepTypeDescription getWorkflowStepTypeDescription(WorkflowStepType workflowStepType, Language language) {
