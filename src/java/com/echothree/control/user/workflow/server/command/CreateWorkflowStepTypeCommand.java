@@ -18,17 +18,14 @@ package com.echothree.control.user.workflow.server.command;
 
 import com.echothree.control.user.workflow.common.form.CreateWorkflowStepTypeForm;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.workflow.server.control.WorkflowControl;
+import com.echothree.model.control.workflow.server.logic.WorkflowStepTypeLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.workflow.server.entity.WorkflowStepType;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -59,18 +56,12 @@ public class CreateWorkflowStepTypeCommand
     @Override
     protected BaseResult execute() {
         String workflowStepTypeName = form.getWorkflowStepTypeName();
-        var workflowControl = Session.getModelController(WorkflowControl.class);
-        WorkflowStepType workflowStepType = workflowControl.getWorkflowStepTypeByName(workflowStepTypeName);
-        
-        if(workflowStepType == null) {
-            var isDefault = Boolean.valueOf(form.getIsDefault());
-            var sortOrder = Integer.valueOf(form.getSortOrder());
-            
-            workflowControl.createWorkflowStepType(workflowStepTypeName, isDefault, sortOrder, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.DuplicateWorkflowStepTypeName.name(), workflowStepTypeName);
-        }
-        
+        var isDefault = Boolean.valueOf(form.getIsDefault());
+        var sortOrder = Integer.valueOf(form.getSortOrder());
+
+        WorkflowStepTypeLogic.getInstance().createWorkflowStepType(this, workflowStepTypeName, isDefault, sortOrder, null,
+                null, getPartyPK());
+
         return null;
     }
     

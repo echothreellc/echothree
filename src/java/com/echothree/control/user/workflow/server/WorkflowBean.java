@@ -45,7 +45,17 @@ public class WorkflowBean
     public CommandResult createWorkflowType(UserVisitPK userVisitPK, CreateWorkflowTypeForm form) {
         return new CreateWorkflowTypeCommand(userVisitPK, form).run();
     }
-    
+
+    @Override
+    public CommandResult getWorkflowType(UserVisitPK userVisitPK, GetWorkflowTypeForm form) {
+        return new GetWorkflowTypeCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getWorkflowTypes(UserVisitPK userVisitPK, GetWorkflowTypesForm form) {
+        return new GetWorkflowTypesCommand(userVisitPK, form).run();
+    }
+
     @Override
     public CommandResult getWorkflowTypeChoices(UserVisitPK userVisitPK, GetWorkflowTypeChoicesForm form) {
         return new GetWorkflowTypeChoicesCommand(userVisitPK, form).run();
@@ -68,7 +78,17 @@ public class WorkflowBean
     public CommandResult createWorkflowStepType(UserVisitPK userVisitPK, CreateWorkflowStepTypeForm form) {
         return new CreateWorkflowStepTypeCommand(userVisitPK, form).run();
     }
-    
+
+    @Override
+    public CommandResult getWorkflowStepType(UserVisitPK userVisitPK, GetWorkflowStepTypeForm form) {
+        return new GetWorkflowStepTypeCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getWorkflowStepTypes(UserVisitPK userVisitPK, GetWorkflowStepTypesForm form) {
+        return new GetWorkflowStepTypesCommand(userVisitPK, form).run();
+    }
+
     @Override
     public CommandResult getWorkflowStepTypeChoices(UserVisitPK userVisitPK, GetWorkflowStepTypeChoicesForm form) {
         return new GetWorkflowStepTypeChoicesCommand(userVisitPK, form).run();

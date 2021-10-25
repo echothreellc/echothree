@@ -71,9 +71,6 @@ import com.echothree.model.control.workrequirement.server.control.WorkRequiremen
 import com.echothree.model.control.workrequirement.server.logic.WorkRequirementLogic;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.filter.common.pk.FilterKindPK;
-import com.echothree.model.data.filter.server.entity.FilterKind;
-import com.echothree.model.data.filter.server.factory.FilterKindFactory;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.PartyType;
@@ -211,23 +208,6 @@ public class WorkflowControl
         return workflowType;
     }
     
-    private static final Map<EntityPermission, String> getWorkflowTypeByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM workflowtypes " +
-                "WHERE wkflt_workflowtypename = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM workflowtypes " +
-                "WHERE wkflt_workflowtypename = ? " +
-                "FOR UPDATE");
-        getWorkflowTypeByNameQueries = Collections.unmodifiableMap(queryMap);
-    }
-
     public long countWorkflowTypes() {
         return session.queryForLong(
                 "SELECT COUNT(*) " +
@@ -248,19 +228,65 @@ public class WorkflowControl
     public WorkflowType getWorkflowTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
         return getWorkflowTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
-    
-    private WorkflowType getWorkflowTypeByName(String workflowTypeName, EntityPermission entityPermission) {
+
+    private static final Map<EntityPermission, String> getWorkflowTypeByNameQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                        "FROM workflowtypes " +
+                        "WHERE wkflt_workflowtypename = ?");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                        "FROM workflowtypes " +
+                        "WHERE wkflt_workflowtypename = ? " +
+                        "FOR UPDATE");
+        getWorkflowTypeByNameQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    public WorkflowType getWorkflowTypeByName(String workflowTypeName, EntityPermission entityPermission) {
         return WorkflowTypeFactory.getInstance().getEntityFromQuery(entityPermission, getWorkflowTypeByNameQueries, workflowTypeName);
     }
-    
+
     public WorkflowType getWorkflowTypeByName(String workflowTypeName) {
         return getWorkflowTypeByName(workflowTypeName, EntityPermission.READ_ONLY);
     }
-    
+
     public WorkflowType getWorkflowTypeByNameForUpdate(String workflowTypeName) {
         return getWorkflowTypeByName(workflowTypeName, EntityPermission.READ_WRITE);
     }
-    
+
+    private static final Map<EntityPermission, String> getDefaultWorkflowTypeQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                "FROM workflowtypes " +
+                "WHERE wkflt_isdefault = 1");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                "FROM workflowtypes " +
+                "WHERE wkflt_isdefault = 1 " +
+                "FOR UPDATE");
+        getDefaultWorkflowTypeQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    public WorkflowType getDefaultWorkflowType(EntityPermission entityPermission) {
+        return WorkflowTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultWorkflowTypeQueries);
+    }
+
+    public WorkflowType getDefaultWorkflowType() {
+        return getDefaultWorkflowType(EntityPermission.READ_ONLY);
+    }
+
+    public WorkflowType getDefaultWorkflowTypeForUpdate() {
+        return getDefaultWorkflowType(EntityPermission.READ_WRITE);
+    }
+
     private static final Map<EntityPermission, String> getWorkflowTypesQueries;
 
     static {
@@ -433,28 +459,57 @@ public class WorkflowControl
 
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ " +
-                "FROM workflowsteptypes " +
-                "WHERE wkflst_workflowsteptypename = ?");
+                        "FROM workflowsteptypes " +
+                        "WHERE wkflst_workflowsteptypename = ?");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
-                "FROM workflowsteptypes " +
-                "WHERE wkflst_workflowsteptypename = ? " +
-                "FOR UPDATE");
+                        "FROM workflowsteptypes " +
+                        "WHERE wkflst_workflowsteptypename = ? " +
+                        "FOR UPDATE");
         getWorkflowStepTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
-    
-    private WorkflowStepType getWorkflowStepTypeByName(String workflowStepTypeName, EntityPermission entityPermission) {
+
+    public WorkflowStepType getWorkflowStepTypeByName(String workflowStepTypeName, EntityPermission entityPermission) {
         return WorkflowStepTypeFactory.getInstance().getEntityFromQuery(entityPermission, getWorkflowStepTypeByNameQueries, workflowStepTypeName);
     }
-    
+
     public WorkflowStepType getWorkflowStepTypeByName(String workflowStepTypeName) {
         return getWorkflowStepTypeByName(workflowStepTypeName, EntityPermission.READ_ONLY);
     }
-    
+
     public WorkflowStepType getWorkflowStepTypeByNameForUpdate(String workflowStepTypeName) {
         return getWorkflowStepTypeByName(workflowStepTypeName, EntityPermission.READ_WRITE);
     }
-    
+
+    private static final Map<EntityPermission, String> getDefaultWorkflowStepTypeQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                "FROM workflowsteptypes " +
+                "WHERE wkflst_isdefault = 1");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                "FROM workflowsteptypes " +
+                "WHERE wkflst_isdefault = 1 " +
+                "FOR UPDATE");
+        getDefaultWorkflowStepTypeQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    public WorkflowStepType getDefaultWorkflowStepType(EntityPermission entityPermission) {
+        return WorkflowStepTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultWorkflowStepTypeQueries);
+    }
+
+    public WorkflowStepType getDefaultWorkflowStepType() {
+        return getDefaultWorkflowStepType(EntityPermission.READ_ONLY);
+    }
+
+    public WorkflowStepType getDefaultWorkflowStepTypeForUpdate() {
+        return getDefaultWorkflowStepType(EntityPermission.READ_WRITE);
+    }
+
     private static final Map<EntityPermission, String> getWorkflowStepTypesQueries;
 
     static {

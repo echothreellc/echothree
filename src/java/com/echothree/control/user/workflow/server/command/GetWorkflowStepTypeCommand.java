@@ -16,60 +16,75 @@
 
 package com.echothree.control.user.workflow.server.command;
 
-import com.echothree.control.user.workflow.common.form.GetWorkflowStepTypeChoicesForm;
-import com.echothree.control.user.workflow.common.result.GetWorkflowStepTypeChoicesResult;
+import com.echothree.control.user.workflow.common.form.GetWorkflowStepTypeForm;
 import com.echothree.control.user.workflow.common.result.WorkflowResultFactory;
+import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
+import com.echothree.model.control.workflow.server.logic.WorkflowStepTypeLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.workflow.server.entity.WorkflowStepType;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
-public class GetWorkflowStepTypeChoicesCommand
-        extends BaseSimpleCommand<GetWorkflowStepTypeChoicesForm> {
+public class GetWorkflowStepTypeCommand
+        extends BaseSingleEntityCommand<WorkflowStepType, GetWorkflowStepTypeForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                        new SecurityRoleDefinition(SecurityRoleGroups.WorkflowStepType.name(), SecurityRoles.Choices.name())
+                        new SecurityRoleDefinition(SecurityRoleGroups.WorkflowStepType.name(), SecurityRoles.Review.name())
                 ))
         ));
 
         FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("DefaultWorkflowStepTypeChoice", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
+                new FieldDefinition("WorkflowStepTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
         );
     }
-    
-    /** Creates a new instance of GetWorkflowStepTypeChoicesCommand */
-    public GetWorkflowStepTypeChoicesCommand(UserVisitPK userVisitPK, GetWorkflowStepTypeChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+
+    /** Creates a new instance of GetWorkflowStepTypeCommand */
+    public GetWorkflowStepTypeCommand(UserVisitPK userVisitPK, GetWorkflowStepTypeForm form) {
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
+    protected WorkflowStepType getEntity() {
+        var workflowStepType = WorkflowStepTypeLogic.getInstance().getWorkflowStepTypeByUniversalSpec(this, form, true);
+
+        if(workflowStepType != null) {
+            sendEventUsingNames(workflowStepType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+        }
+
+        return workflowStepType;
+    }
+
+    @Override
+    protected BaseResult getTransfer(WorkflowStepType workflowStepType) {
+        var result = WorkflowResultFactory.getGetWorkflowStepTypeResult();
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        GetWorkflowStepTypeChoicesResult result = WorkflowResultFactory.getGetWorkflowStepTypeChoicesResult();
-        String defaultWorkflowStepTypeChoice = form.getDefaultWorkflowStepTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
-        
-        result.setWorkflowStepTypeChoices(workflowControl.getWorkflowStepTypeChoices(defaultWorkflowStepTypeChoice, getPreferredLanguage(), allowNullChoice));
-        
+
+        if(workflowStepType != null) {
+            result.setWorkflowStepType(workflowControl.getWorkflowStepTypeTransfer(getUserVisit(), workflowStepType));
+        }
+
         return result;
     }
-    
+
 }
