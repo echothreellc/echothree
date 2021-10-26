@@ -1526,38 +1526,38 @@ public class DatabaseUtilitiesForJava {
             if(type != ColumnType.columnEID) {
                 String dbColumnName = column.getDbColumnName();
                 
-                pw.println("            " + column.getTypeAsJavaType() + " " + dbColumnName + " = _value." + column.getGetFunctionName() + "();");
-                pw.println("            if(" + dbColumnName + " == null)");
-                pw.println("                _ps.setNull(" + parameterCount + ", Types." + column.getTypeAsJavaSqlType() + ");");
-                pw.println("            else");
+                pw.println("        " + column.getTypeAsJavaType() + " " + dbColumnName + " = _value." + column.getGetFunctionName() + "();");
+                pw.println("        if(" + dbColumnName + " == null)");
+                pw.println("            _ps.setNull(" + parameterCount + ", Types." + column.getTypeAsJavaSqlType() + ");");
+                pw.println("        else");
                 
                 switch(type) {
                     case ColumnType.columnInteger:
-                        pw.println("                _ps.setInt(" + parameterCount + ", " + dbColumnName + ");");
+                        pw.println("            _ps.setInt(" + parameterCount + ", " + dbColumnName + ");");
                         break;
                     case ColumnType.columnLong:
-                        pw.println("                _ps.setLong(" + parameterCount + ", " + dbColumnName + ");");
+                        pw.println("            _ps.setLong(" + parameterCount + ", " + dbColumnName + ");");
                         break;
                     case ColumnType.columnString:
-                        pw.println("                _ps.setString(" + parameterCount + ", " + dbColumnName + ");");
+                        pw.println("            _ps.setString(" + parameterCount + ", " + dbColumnName + ");");
                         break;
                     case ColumnType.columnBoolean:
-                        pw.println("                _ps.setInt(" + parameterCount + ", " + dbColumnName + "? 1: 0);");
+                        pw.println("            _ps.setInt(" + parameterCount + ", " + dbColumnName + "? 1: 0);");
                         break;
                     case ColumnType.columnDate:
-                        pw.println("                _ps.setInt(" + parameterCount + ", " + dbColumnName + ");");
+                        pw.println("            _ps.setInt(" + parameterCount + ", " + dbColumnName + ");");
                         break;
                     case ColumnType.columnTime:
-                        pw.println("                _ps.setLong(" + parameterCount + ", " + dbColumnName + ");");
+                        pw.println("            _ps.setLong(" + parameterCount + ", " + dbColumnName + ");");
                         break;
                     case ColumnType.columnForeignKey:
-                        pw.println("                _ps.setLong(" + parameterCount + ", " + dbColumnName + ".getEntityId());");
+                        pw.println("            _ps.setLong(" + parameterCount + ", " + dbColumnName + ".getEntityId());");
                         break;
                     case ColumnType.columnBLOB:
-                        pw.println("                _ps.setBinaryStream(" + parameterCount + ", new ByteArrayInputStream(" + dbColumnName + ".byteArrayValue()), " + dbColumnName + ".length());");
+                        pw.println("            _ps.setBinaryStream(" + parameterCount + ", new ByteArrayInputStream(" + dbColumnName + ".byteArrayValue()), " + dbColumnName + ".length());");
                         break;
                     case ColumnType.columnCLOB:
-                        pw.println("                _ps.setCharacterStream(" + parameterCount + ", new StringReader(" + dbColumnName + "), " + dbColumnName + ".length());");
+                        pw.println("            _ps.setCharacterStream(" + parameterCount + ", new StringReader(" + dbColumnName + "), " + dbColumnName + ".length());");
                         break;
                     default:
                         pw.println("<error>");
@@ -2229,16 +2229,16 @@ public class DatabaseUtilitiesForJava {
         pw.println("    public boolean validPK(Session session, " + theTable.getPKClass() + " pk)");
         pw.println("            throws PersistenceDatabaseException {");
         pw.println("        boolean valid = false;");
-        pw.println("        PreparedStatement ps = session.prepareStatement(SQL_VALID);");
-        pw.println("        ResultSet rs = null;");
+        pw.println("        PreparedStatement _ps = session.prepareStatement(SQL_VALID);");
+        pw.println("        ResultSet _rs = null;");
         pw.println("        ");
         pw.println("        try {");
-        pw.println("            ps.setLong(1, pk.getEntityId());");
+        pw.println("            _ps.setLong(1, pk.getEntityId());");
         pw.println("            ");
-        pw.println("            rs = ps.executeQuery();");
-        pw.println("            if(rs.next()) {");
-        pw.println("                long _count = rs.getLong(1);");
-        pw.println("                if(rs.wasNull())");
+        pw.println("            _rs = _ps.executeQuery();");
+        pw.println("            if(_rs.next()) {");
+        pw.println("                long _count = _rs.getLong(1);");
+        pw.println("                if(_rs.wasNull())");
         pw.println("                    _count = 0;");
         pw.println("                ");
         pw.println("                if(_count == 1)");
@@ -2247,9 +2247,9 @@ public class DatabaseUtilitiesForJava {
         pw.println("        } catch (SQLException se) {");
         pw.println("            throw new PersistenceDatabaseException(se);");
         pw.println("        } finally {");
-        pw.println("            if(rs != null) {");
+        pw.println("            if(_rs != null) {");
         pw.println("                try {");
-        pw.println("                    rs.close();");
+        pw.println("                    _rs.close();");
         pw.println("                } catch (SQLException se) {");
         pw.println("                    // do nothing");
         pw.println("                }");
