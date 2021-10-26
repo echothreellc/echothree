@@ -30,8 +30,8 @@
         <dependency org="commons-net" name="commons-net" rev="3.6" conf="sources->sources" />
         <dependency org="de.odysseus.juel" name="juel-api" rev="2.2.7" conf="sources->sources" />
         <dependency org="de.odysseus.juel" name="juel-impl" rev="2.2.7" conf="sources->sources" />
-        <dependency org="io.cucumber" name="cucumber-java8" rev="6.11.0" conf="sources->sources" />
-        <dependency org="io.cucumber" name="cucumber-junit" rev="6.11.0" conf="sources->sources" />
+        <dependency org="io.cucumber" name="cucumber-java8" rev="7.0.0" conf="sources->sources" />
+        <dependency org="io.cucumber" name="cucumber-junit" rev="7.0.0" conf="sources->sources" />
         <dependency org="io.github.classgraph" name="classgraph" rev="4.8.115" conf="sources->sources" />
         <dependency org="io.github.graphql-java" name="graphql-java-annotations" rev="8.5" conf="sources->sources" />
         <dependency org="io.r2dbc" name="r2dbc-spi" rev="0.9.0.M2" conf="sources->sources" />
@@ -75,7 +75,7 @@
         <dependency org="org.javassist" name="javassist" rev="3.22.0-GA" conf="sources->sources" />
         <dependency org="org.jfree" name="jcommon" rev="1.0.24" conf="sources->sources" />
         <dependency org="org.jfree" name="jfreechart" rev="1.5.0" conf="sources->sources" />
-        <dependency org="org.jooq" name="jooq" rev="3.15.2" conf="sources->sources" />
+        <dependency org="org.jooq" name="jooq" rev="3.14.15" conf="sources->sources" />
         <dependency org="org.osgi" name="org.osgi.service.component.annotations" rev="1.4.0" conf="sources->sources" />
         <dependency org="org.reactivestreams" name="reactive-streams" rev="1.0.3" conf="sources->sources" />
         <dependency org="org.slf4j" name="slf4j-api" rev="1.7.30" conf="sources->sources" />
@@ -115,8 +115,8 @@
         <dependency org="commons-net" name="commons-net" rev="3.6" conf="javadoc->javadoc" />
         <dependency org="de.odysseus.juel" name="juel-api" rev="2.2.7" conf="javadoc->javadoc" />
         <dependency org="de.odysseus.juel" name="juel-impl" rev="2.2.7" conf="javadoc->javadoc" />
-        <dependency org="io.cucumber" name="cucumber-java8" rev="6.11.0" conf="javadoc->javadoc" />
-        <dependency org="io.cucumber" name="cucumber-junit" rev="6.11.0" conf="javadoc->javadoc" />
+        <dependency org="io.cucumber" name="cucumber-java8" rev="7.0.0" conf="javadoc->javadoc" />
+        <dependency org="io.cucumber" name="cucumber-junit" rev="7.0.0" conf="javadoc->javadoc" />
         <dependency org="io.github.classgraph" name="classgraph" rev="4.8.115" conf="javadoc->javadoc" />
         <dependency org="io.github.graphql-java" name="graphql-java-annotations" rev="8.5" conf="javadoc->javadoc" />
         <dependency org="io.r2dbc" name="r2dbc-spi" rev="0.9.0.M2" conf="javadoc->javadoc" />
@@ -159,7 +159,7 @@
         <dependency org="org.javassist" name="javassist" rev="3.22.0-GA" conf="javadoc->javadoc" />
         <dependency org="org.jfree" name="jcommon" rev="1.0.24" conf="javadoc->javadoc" />
         <dependency org="org.jfree" name="jfreechart" rev="1.5.0" conf="javadoc->javadoc" />
-        <dependency org="org.jooq" name="jooq" rev="3.15.2" conf="javadoc->javadoc" />
+        <dependency org="org.jooq" name="jooq" rev="3.14.15" conf="javadoc->javadoc" />
         <dependency org="org.osgi" name="org.osgi.service.component.annotations" rev="1.4.0" conf="javadoc->javadoc" />
         <dependency org="org.reactivestreams" name="reactive-streams" rev="1.0.3" conf="javadoc->javadoc" />
         <dependency org="org.slf4j" name="slf4j-api" rev="1.7.30" conf="javadoc->javadoc" />
@@ -201,8 +201,8 @@
         <dependency org="commons-net" name="commons-net" rev="3.6" conf="binaries->default" />
         <dependency org="de.odysseus.juel" name="juel-api" rev="2.2.7" conf="binaries->default" />
         <dependency org="de.odysseus.juel" name="juel-impl" rev="2.2.7" conf="binaries->default" />
-        <dependency org="io.cucumber" name="cucumber-java8" rev="6.11.0" conf="binaries->default" />
-        <dependency org="io.cucumber" name="cucumber-junit" rev="6.11.0" conf="binaries->default" />
+        <dependency org="io.cucumber" name="cucumber-java8" rev="7.0.0" conf="binaries->default" />
+        <dependency org="io.cucumber" name="cucumber-junit" rev="7.0.0" conf="binaries->default" />
         <dependency org="io.github.classgraph" name="classgraph" rev="4.8.115" conf="binaries->default" />
         <dependency org="io.github.graphql-java" name="graphql-java-annotations" rev="8.5" conf="binaries->default" />
         <dependency org="io.r2dbc" name="r2dbc-spi" rev="0.9.0.M2" conf="binaries->default" />
@@ -252,7 +252,7 @@
         <dependency org="org.javassist" name="javassist" rev="3.22.0-GA" conf="binaries->default" />
         <dependency org="org.jfree" name="jcommon" rev="1.0.24" conf="binaries->default" />
         <dependency org="org.jfree" name="jfreechart" rev="1.5.0" conf="binaries->default" />
-        <dependency org="org.jooq" name="jooq" rev="3.15.2" conf="binaries->default" />
+        <dependency org="org.jooq" name="jooq" rev="3.14.15" conf="binaries->default" />
         <dependency org="org.osgi" name="org.osgi.service.component.annotations" rev="1.4.0" conf="binaries->default" />
         <dependency org="org.reactivestreams" name="reactive-streams" rev="1.0.3" conf="binaries->default" />
         <dependency org="org.slf4j" name="slf4j-api" rev="1.7.30" conf="binaries->default" />
