@@ -268,6 +268,14 @@ public class Session {
             preparedStatementCache = new HashMap<>();
         } else {
             preparedStatement = preparedStatementCache.get(sql);
+
+            if(preparedStatement != null) {
+                try {
+                    preparedStatement.clearParameters();
+                } catch (SQLException se) {
+                    throw new PersistenceDatabaseException(se);
+                }
+            }
         }
         
         if((preparedStatement == null) && (sql != null)) {
