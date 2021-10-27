@@ -17,14 +17,8 @@ please see <https://www.echothree.com/security/>
 
 ## Supported IDEs
 
-Using an IDE is not required, but sometimes they can make life easier. The Echo Three project is set up
-with project files for two major IDEs:
-
-* [NetBeans](https://netbeans.apache.org)
-* [IntelliJ IDEA](https://www.jetbrains.com/idea/)
-
-If you're adding or removing libraries from the project, it's important to make sure that references are
-added and removed from the IDE projects as appropriate.
+Using an IDE is not required, but sometimes they can make life easier. The Echo Three project includes
+a project file for [IntelliJ IDEA](https://www.jetbrains.com/idea/).
 
 ## Contribution Process
 
