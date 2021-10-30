@@ -25,6 +25,7 @@ import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
@@ -74,6 +75,8 @@ public class GetSecurityRoleGroupsCommand
         if(parentSecurityRoleGroupName == null || parentSecurityRoleGroup != null) {
             entities = parentSecurityRoleGroup == null? securityControl.getSecurityRoleGroups():
                     securityControl.getSecurityRoleGroupsByParentSecurityRoleGroup(parentSecurityRoleGroup);
+        } else {
+            addExecutionError(ExecutionErrors.UnknownParentSecurityRoleGroupName.name(), parentSecurityRoleGroupName);
         }
 
         return entities;
