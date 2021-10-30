@@ -196,6 +196,9 @@ import com.echothree.control.user.user.server.command.GetUserLoginCommand;
 import com.echothree.control.user.vendor.common.VendorUtil;
 import com.echothree.control.user.vendor.server.command.GetVendorCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorsCommand;
+import com.echothree.control.user.workflow.common.WorkflowUtil;
+import com.echothree.control.user.workflow.server.command.GetWorkflowTypeCommand;
+import com.echothree.control.user.workflow.server.command.GetWorkflowTypesCommand;
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
 import com.echothree.model.control.content.server.graphql.ContentCatalogItemObject;
 import com.echothree.model.control.content.server.graphql.ContentCatalogObject;
@@ -283,6 +286,7 @@ import com.echothree.model.control.user.server.graphql.UserLoginObject;
 import com.echothree.model.control.user.server.graphql.UserSessionObject;
 import com.echothree.model.control.user.server.graphql.UserVisitObject;
 import com.echothree.model.control.vendor.server.graphql.VendorObject;
+import com.echothree.model.control.workflow.server.graphql.WorkflowTypeObject;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.content.server.entity.ContentCatalogItem;
@@ -366,6 +370,7 @@ import com.echothree.model.data.user.server.entity.UserLogin;
 import com.echothree.model.data.user.server.entity.UserSession;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.vendor.server.entity.Vendor;
+import com.echothree.model.data.workflow.server.entity.WorkflowType;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLID;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -379,6 +384,54 @@ import javax.naming.NamingException;
 @GraphQLName("query")
 public final class GraphQlQueries
         extends BaseGraphQl {
+
+    @GraphQLField
+    @GraphQLName("workflowType")
+    public static WorkflowTypeObject workflowType(final DataFetchingEnvironment env,
+            @GraphQLName("workflowTypeName") final String workflowTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        WorkflowType workflowType;
+
+        try {
+            var commandForm = WorkflowUtil.getHome().getGetWorkflowTypeForm();
+
+            commandForm.setWorkflowTypeName(workflowTypeName);
+            commandForm.setUlid(id);
+
+            workflowType = new GetWorkflowTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return workflowType == null ? null : new WorkflowTypeObject(workflowType);
+    }
+
+    @GraphQLField
+    @GraphQLName("workflowTypes")
+    public static Collection<WorkflowTypeObject> workflowTypes(final DataFetchingEnvironment env) {
+        Collection<WorkflowType> workflowTypes;
+        Collection<WorkflowTypeObject> workflowTypeObjects;
+
+        try {
+            var commandForm = WorkflowUtil.getHome().getGetWorkflowTypesForm();
+
+            workflowTypes = new GetWorkflowTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(workflowTypes == null) {
+            workflowTypeObjects = emptyList();
+        } else {
+            workflowTypeObjects = new ArrayList<>(workflowTypes.size());
+
+            workflowTypes.stream()
+                    .map(WorkflowTypeObject::new)
+                    .forEachOrdered(workflowTypeObjects::add);
+        }
+
+        return workflowTypeObjects;
+    }
 
     @GraphQLField
     @GraphQLName("sequence")
