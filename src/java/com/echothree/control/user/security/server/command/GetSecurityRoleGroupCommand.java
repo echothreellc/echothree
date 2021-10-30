@@ -66,23 +66,23 @@ public class GetSecurityRoleGroupCommand
 
     @Override
     protected SecurityRoleGroup getEntity() {
-        var SecurityRoleGroup = SecurityRoleGroupLogic.getInstance().getSecurityRoleGroupByUniversalSpec(this, form, true);
+        var securityRoleGroup = SecurityRoleGroupLogic.getInstance().getSecurityRoleGroupByUniversalSpec(this, form, true);
 
-        if(SecurityRoleGroup != null) {
-            sendEventUsingNames(SecurityRoleGroup.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+        if(securityRoleGroup != null) {
+            sendEventUsingNames(securityRoleGroup.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
         }
 
-        return SecurityRoleGroup;
+        return securityRoleGroup;
     }
 
     @Override
-    protected BaseResult getTransfer(SecurityRoleGroup SecurityRoleGroup) {
+    protected BaseResult getTransfer(SecurityRoleGroup securityRoleGroup) {
         var result = SecurityResultFactory.getGetSecurityRoleGroupResult();
 
-        if(SecurityRoleGroup != null) {
+        if(securityRoleGroup != null) {
             var securityControl = Session.getModelController(SecurityControl.class);
 
-            result.setSecurityRoleGroup(securityControl.getSecurityRoleGroupTransfer(getUserVisit(), SecurityRoleGroup));
+            result.setSecurityRoleGroup(securityControl.getSecurityRoleGroupTransfer(getUserVisit(), securityRoleGroup));
         }
 
         return result;
