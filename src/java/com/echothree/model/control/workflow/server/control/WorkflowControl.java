@@ -701,7 +701,8 @@ public class WorkflowControl
                 "SELECT _ALL_ " +
                 "FROM workflows, workflowdetails " +
                 "WHERE wkfl_activedetailid = wkfldt_workflowdetailid " +
-                "ORDER BY wkfldt_sortorder, wkfldt_workflowname");
+                "ORDER BY wkfldt_sortorder, wkfldt_workflowname " +
+                "_LIMIT_");
         
         return WorkflowFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -712,7 +713,8 @@ public class WorkflowControl
                 "FROM workflowselectorkinds, workflows, workflowdetails " +
                 "WHERE wkflslk_slk_selectorkindid = ? AND wkflslk_thrutime = ? " +
                 "AND wkflslk_wkfl_workflowid = wkfl_workflowid AND wkfl_lastdetailid = wkfldt_workflowdetailid " +
-                "ORDER BY wkfldt_sortorder, wkfldt_workflowname");
+                "ORDER BY wkfldt_sortorder, wkfldt_workflowname " +
+                "_LIMIT_");
 
         return WorkflowFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps,
                 selectorKind, Session.MAX_TIME);
@@ -724,7 +726,8 @@ public class WorkflowControl
                 + "FROM workflows, workflowdetails, workflowentitytypes "
                 + "WHERE wkfl_activedetailid = wkfldt_workflowdetailid "
                 + "AND wkfl_workflowid = wkflent_wkfl_workflowid AND wkflent_ent_entitytypeid = ? AND wkflent_thrutime = ? "
-                + "ORDER BY wkfldt_sortorder, wkfldt_workflowname");
+                + "ORDER BY wkfldt_sortorder, wkfldt_workflowname "
+                + "_LIMIT_");
 
         return WorkflowFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps,
                 entityType, Session.MAX_TIME);
