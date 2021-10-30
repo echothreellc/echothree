@@ -316,7 +316,8 @@ public class FilterControl
                 "SELECT _ALL_ "
                 + "FROM filterkinds, filterkinddetails "
                 + "WHERE fltk_activedetailid = fltkdt_filterkinddetailid "
-                + "ORDER BY fltkdt_sortorder, fltkdt_filterkindname");
+                + "ORDER BY fltkdt_sortorder, fltkdt_filterkindname "
+                + "_LIMIT");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM filterkinds, filterkinddetails "
@@ -675,7 +676,8 @@ public class FilterControl
                 "SELECT _ALL_ "
                 + "FROM filtertypes, filtertypedetails "
                 + "WHERE flttyp_activedetailid = flttypdt_filtertypedetailid AND flttypdt_fltk_filterkindid = ? "
-                + "ORDER BY flttypdt_sortorder, flttypdt_filtertypename");
+                + "ORDER BY flttypdt_sortorder, flttypdt_filtertypename "
+                + "_LIMIT");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM filtertypes, filtertypedetails "
@@ -2441,11 +2443,23 @@ public class FilterControl
         List<Filter> filters;
         
         try {
-            PreparedStatement ps = FilterFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM filters, filterdetails " +
-                    "WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ?");
-            
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM filters, filterdetails " +
+                        "WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ? " +
+                        "ORDER BY wkfldt_sortorder, fltdt_filtername " +
+                        "_LIMIT_";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM filters, filterdetails " +
+                        "WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ? " +
+                        "FOR UPDATE";
+            }
+
+            PreparedStatement ps = FilterFactory.getInstance().prepareStatement(query);
+
             ps.setLong(1, filterType.getPrimaryKey().getEntityId());
             
             filters = FilterFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
