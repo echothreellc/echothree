@@ -151,6 +151,7 @@ public enum ExecutionErrors {
     DuplicateSecurityRoleDescription,
     DuplicateSecurityRoleGroupDescription,
     DuplicateSecurityRoleGroupName,
+    UnknownDefaultSecurityRoleGroup,
     DuplicateSecurityRoleName,
     DuplicateSelectorBooleanTypeDescription,
     DuplicateSelectorComparisonTypeDescription,

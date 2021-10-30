@@ -161,6 +161,9 @@ import com.echothree.control.user.search.server.command.GetCustomerResultsComman
 import com.echothree.control.user.search.server.command.GetEmployeeResultsCommand;
 import com.echothree.control.user.search.server.command.GetItemResultsCommand;
 import com.echothree.control.user.search.server.command.GetVendorResultsCommand;
+import com.echothree.control.user.security.common.SecurityUtil;
+import com.echothree.control.user.security.server.command.GetSecurityRoleGroupCommand;
+import com.echothree.control.user.security.server.command.GetSecurityRoleGroupsCommand;
 import com.echothree.control.user.selector.common.SelectorUtil;
 import com.echothree.control.user.selector.server.command.GetSelectorCommand;
 import com.echothree.control.user.selector.server.command.GetSelectorKindCommand;
@@ -271,6 +274,7 @@ import com.echothree.model.control.search.server.graphql.CustomerResultsObject;
 import com.echothree.model.control.search.server.graphql.EmployeeResultsObject;
 import com.echothree.model.control.search.server.graphql.ItemResultsObject;
 import com.echothree.model.control.search.server.graphql.VendorResultsObject;
+import com.echothree.model.control.security.server.graphql.SecurityRoleGroupObject;
 import com.echothree.model.control.selector.server.graphql.SelectorKindObject;
 import com.echothree.model.control.selector.server.graphql.SelectorObject;
 import com.echothree.model.control.selector.server.graphql.SelectorTypeObject;
@@ -356,6 +360,7 @@ import com.echothree.model.data.payment.server.entity.PaymentProcessorType;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCode;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCodeType;
 import com.echothree.model.data.queue.server.entity.QueueType;
+import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.model.data.selector.server.entity.SelectorType;
@@ -4590,6 +4595,57 @@ public final class GraphQlQueries
         }
         
         return itemCategoryObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("securityRoleGroup")
+    public static SecurityRoleGroupObject securityRoleGroup(final DataFetchingEnvironment env,
+            @GraphQLName("securityRoleGroupName") final String securityRoleGroupName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        SecurityRoleGroup securityRoleGroup;
+
+        try {
+            var commandForm = SecurityUtil.getHome().getGetSecurityRoleGroupForm();
+
+            commandForm.setSecurityRoleGroupName(securityRoleGroupName);
+            commandForm.setUlid(id);
+
+            securityRoleGroup = new GetSecurityRoleGroupCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return securityRoleGroup == null ? null : new SecurityRoleGroupObject(securityRoleGroup);
+    }
+
+    @GraphQLField
+    @GraphQLName("securityRoleGroups")
+    public static Collection<SecurityRoleGroupObject> securityRoleGroups(final DataFetchingEnvironment env,
+            @GraphQLName("parentSecurityRoleGroupName") final String parentSecurityRoleGroupName) {
+        Collection<SecurityRoleGroup> securityRoleGroups;
+        Collection<SecurityRoleGroupObject> securityRoleGroupObjects;
+
+        try {
+            var commandForm = SecurityUtil.getHome().getGetSecurityRoleGroupsForm();
+
+            commandForm.setParentSecurityRoleGroupName(parentSecurityRoleGroupName);
+
+            securityRoleGroups = new GetSecurityRoleGroupsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(securityRoleGroups == null) {
+            securityRoleGroupObjects = emptyList();
+        } else {
+            securityRoleGroupObjects = new ArrayList<>(securityRoleGroups.size());
+
+            securityRoleGroups.stream()
+                    .map(SecurityRoleGroupObject::new)
+                    .forEachOrdered(securityRoleGroupObjects::add);
+        }
+
+        return securityRoleGroupObjects;
     }
 
     @GraphQLField

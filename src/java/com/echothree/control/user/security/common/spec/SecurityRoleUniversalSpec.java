@@ -14,22 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.security.common.result;
+package com.echothree.control.user.security.common.spec;
 
-import com.echothree.model.control.security.common.transfer.SecurityRoleGroupTransfer;
-import com.echothree.util.common.command.BaseResult;
-import java.util.List;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetSecurityRoleGroupsResult
-        extends BaseResult {
+public interface SecurityRoleUniversalSpec
+        extends SecurityRoleSpec, UniversalEntitySpec {
     
-    SecurityRoleGroupTransfer getParentSecurityRoleGroup();
-    void setParentSecurityRoleGroup(SecurityRoleGroupTransfer parentSecurityRoleGroup);
-
-    Long getSecurityRoleGroupCount();
-    void setSecurityRoleGroupCount(Long securityRoleGroupCount);
-
-    List<SecurityRoleGroupTransfer> getSecurityRoleGroups();
-    void setSecurityRoleGroups(List<SecurityRoleGroupTransfer> securityRoleGroups);
+    // Nothing additional beyond SecurityRoleSpec, UniversalEntitySpec
     
 }
