@@ -73,7 +73,7 @@ public class WorkflowStepLogic
             final Class unknownWorkflowStepException, final ExecutionErrors unknownWorkflowStepExecutionError,
             final ExecutionErrorAccumulator eea, final String workflowName, final String workflowStepName) {
         Workflow workflow = WorkflowLogic.getInstance().getWorkflowByName(unknownWorkflowException, unknownWorkflowExecutionError,
-                eea, workflowName);
+                eea, workflowName, EntityPermission.READ_ONLY);
         WorkflowStep workflowStep = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {

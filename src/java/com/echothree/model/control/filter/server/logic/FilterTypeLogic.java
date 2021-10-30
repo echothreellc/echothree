@@ -188,7 +188,6 @@ public class FilterTypeLogic
         return getFilterTypeByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
     }
 
-
     public void deleteFilterType(final ExecutionErrorAccumulator eea, final FilterType filterType,
             final BasePK deletedBy) {
         var filterControl = Session.getModelController(FilterControl.class);

@@ -19,6 +19,7 @@ package com.echothree.control.user.workflow.server.command;
 import com.echothree.control.user.workflow.common.form.GetWorkflowForm;
 import com.echothree.control.user.workflow.common.result.WorkflowResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.filter.server.logic.FilterKindLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -34,8 +35,6 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class GetWorkflowCommand
@@ -45,16 +44,20 @@ public class GetWorkflowCommand
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
-                    new SecurityRoleDefinition(SecurityRoleGroups.Workflow.name(), SecurityRoles.Review.name())
-                    )))
-                )));
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.Workflow.name(), SecurityRoles.Review.name())
+                ))
+        ));
 
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+        FORM_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
+        );
     }
     
     /** Creates a new instance of GetWorkflowCommand */
@@ -64,8 +67,7 @@ public class GetWorkflowCommand
     
     @Override
     protected Workflow getEntity() {
-        var workflowName = form.getWorkflowName();
-        var workflow = WorkflowLogic.getInstance().getWorkflowByName(this, workflowName);
+        var workflow = WorkflowLogic.getInstance().getWorkflowByUniversalSpec(this, form);
 
         if(workflow != null) {
             sendEventUsingNames(workflow.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
@@ -76,10 +78,11 @@ public class GetWorkflowCommand
 
     @Override
     protected BaseResult getTransfer(Workflow workflow) {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var result = WorkflowResultFactory.getGetWorkflowResult();
 
         if(workflow != null) {
+            var workflowControl = Session.getModelController(WorkflowControl.class);
+
             result.setWorkflow(workflowControl.getWorkflowTransfer(getUserVisit(), workflow));
         }
 
