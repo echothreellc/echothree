@@ -16,18 +16,26 @@
 
 package com.echothree.model.control.workflow.server.logic;
 
+import com.echothree.control.user.workflow.common.spec.WorkflowUniversalSpec;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.selector.server.logic.SelectorKindLogic;
 import com.echothree.model.control.workflow.common.exception.UnknownWorkflowEntityTypeException;
 import com.echothree.model.control.workflow.common.exception.UnknownWorkflowNameException;
 import com.echothree.model.control.workflow.common.exception.UnknownWorkflowSelectorKindException;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntityType;
 import com.echothree.model.data.workflow.server.entity.WorkflowSelectorKind;
+import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 
 public class WorkflowLogic
@@ -45,10 +53,10 @@ public class WorkflowLogic
         return WorkflowLogicHolder.instance;
     }
 
-    public Workflow getWorkflowByName(final Class unknownException, final ExecutionErrors unknownExecutionError,
-            final ExecutionErrorAccumulator eea, final String workflowName) {
+    public Workflow getWorkflowByName(final Class<? extends BaseException> unknownException, final ExecutionErrors unknownExecutionError,
+            final ExecutionErrorAccumulator eea, final String workflowName, final EntityPermission entityPermission) {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        var workflow = workflowControl.getWorkflowByName(workflowName);
+        var workflow = workflowControl.getWorkflowByName(workflowName, entityPermission);
 
         if(workflow == null) {
             handleExecutionError(unknownException, eea, unknownExecutionError.name(), workflowName);
@@ -57,10 +65,58 @@ public class WorkflowLogic
         return workflow;
     }
 
-    public Workflow getWorkflowByName(final ExecutionErrorAccumulator eea, final String workflowName) {
-        return getWorkflowByName(UnknownWorkflowNameException.class, ExecutionErrors.UnknownWorkflowName, eea, workflowName);
+    public Workflow getWorkflowByName(final ExecutionErrorAccumulator eea, final String workflowName,
+            final EntityPermission entityPermission) {
+        return getWorkflowByName(UnknownWorkflowNameException.class, ExecutionErrors.UnknownWorkflowName, eea,
+                workflowName, entityPermission);
     }
 
+    public Workflow getWorkflowByName(final ExecutionErrorAccumulator eea, final String workflowName) {
+        return getWorkflowByName(eea, workflowName, EntityPermission.READ_ONLY);
+    }
+
+    public Workflow getWorkflowByNameForUpdate(final ExecutionErrorAccumulator eea, final String workflowName) {
+        return getWorkflowByName(eea, workflowName, EntityPermission.READ_WRITE);
+    }
+
+    public Workflow getWorkflowByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final WorkflowUniversalSpec universalSpec, final EntityPermission entityPermission) {
+        Workflow workflow = null;
+        var workflowControl = Session.getModelController(WorkflowControl.class);
+        var workflowName = universalSpec.getWorkflowName();
+        var parameterCount = (workflowName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+
+        switch(parameterCount) {
+            case 1:
+                if(workflowName == null) {
+                    EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                            ComponentVendors.ECHOTHREE.name(), EntityTypes.Workflow.name());
+
+                    if(!eea.hasExecutionErrors()) {
+                        workflow = workflowControl.getWorkflowByEntityInstance(entityInstance, entityPermission);
+                    }
+                } else {
+                    workflow = getWorkflowByName(eea, workflowName, entityPermission);
+                }
+                break;
+            default:
+                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                break;
+        }
+
+        return workflow;
+    }
+
+    public Workflow getWorkflowByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final WorkflowUniversalSpec universalSpec) {
+        return getWorkflowByUniversalSpec(eea, universalSpec, EntityPermission.READ_ONLY);
+    }
+
+    public Workflow getWorkflowByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
+            final WorkflowUniversalSpec universalSpec) {
+        return getWorkflowByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
+    }
+    
     public WorkflowEntityType getWorkflowEntityTypeByName(final ExecutionErrorAccumulator eea, final String workflowName,
             final String componentVendorName, final String entityTypeName) {
         var workflow = getWorkflowByName(eea, workflowName);

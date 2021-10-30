@@ -71,6 +71,9 @@ import com.echothree.model.control.workrequirement.server.control.WorkRequiremen
 import com.echothree.model.control.workrequirement.server.logic.WorkRequirementLogic;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
+import com.echothree.model.data.filter.common.pk.FilterKindPK;
+import com.echothree.model.data.filter.server.entity.FilterKind;
+import com.echothree.model.data.filter.server.factory.FilterKindFactory;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.PartyType;
@@ -661,7 +664,38 @@ public class WorkflowControl
         
         return workflow;
     }
-    
+
+    public long countWorkflows() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM workflows, workflowdetails " +
+                "WHERE wkfl_activedetailid = wkfldt_workflowdetailid");
+    }
+
+    public long countWorkflowsBySelectorKind(SelectorKind selectorKind) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM workflowselectorkinds, workflows, workflowdetails " +
+                "WHERE wkflslk_slk_selectorkindid = ? AND wkflslk_thrutime = ? AND wkflslk_wkfl_workflowid = wkfl_workflowid " +
+                "AND wkfl_activedetailid = wkfldt_workflowdetailid",
+                selectorKind, Session.MAX_TIME);
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Workflow */
+    public Workflow getWorkflowByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new WorkflowPK(entityInstance.getEntityUniqueId());
+
+        return WorkflowFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Workflow getWorkflowByEntityInstance(EntityInstance entityInstance) {
+        return getWorkflowByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Workflow getWorkflowByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getWorkflowByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     public List<Workflow> getWorkflows() {
         PreparedStatement ps = WorkflowFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
@@ -713,7 +747,7 @@ public class WorkflowControl
         getWorkflowByNameQueries = Collections.unmodifiableMap(queryMap);
     }
     
-    private Workflow getWorkflowByName(String workflowName, EntityPermission entityPermission) {
+    public Workflow getWorkflowByName(String workflowName, EntityPermission entityPermission) {
         return WorkflowFactory.getInstance().getEntityFromQuery(entityPermission, getWorkflowByNameQueries,
                 workflowName);
     }
