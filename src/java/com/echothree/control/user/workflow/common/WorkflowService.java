@@ -34,7 +34,11 @@ public interface WorkflowService
     // --------------------------------------------------------------------------------
     
     CommandResult createWorkflowType(UserVisitPK userVisitPK, CreateWorkflowTypeForm form);
-    
+
+    CommandResult getWorkflowType(UserVisitPK userVisitPK, GetWorkflowTypeForm form);
+
+    CommandResult getWorkflowTypes(UserVisitPK userVisitPK, GetWorkflowTypesForm form);
+
     CommandResult getWorkflowTypeChoices(UserVisitPK userVisitPK, GetWorkflowTypeChoicesForm form);
     
     // --------------------------------------------------------------------------------
@@ -48,7 +52,11 @@ public interface WorkflowService
     // --------------------------------------------------------------------------------
     
     CommandResult createWorkflowStepType(UserVisitPK userVisitPK, CreateWorkflowStepTypeForm form);
-    
+
+    CommandResult getWorkflowStepType(UserVisitPK userVisitPK, GetWorkflowStepTypeForm form);
+
+    CommandResult getWorkflowStepTypes(UserVisitPK userVisitPK, GetWorkflowStepTypesForm form);
+
     CommandResult getWorkflowStepTypeChoices(UserVisitPK userVisitPK, GetWorkflowStepTypeChoicesForm form);
     
     // --------------------------------------------------------------------------------

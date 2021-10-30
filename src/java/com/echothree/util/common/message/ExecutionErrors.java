@@ -2229,5 +2229,7 @@ public enum ExecutionErrors {
     UnknownDefaultFilterAdjustment,
     UnknownDefaultFilter,
     UnknownDefaultSelector,
+    UnknownDefaultWorkflowType,
+    UnknownDefaultWorkflowStepType,
 
 }

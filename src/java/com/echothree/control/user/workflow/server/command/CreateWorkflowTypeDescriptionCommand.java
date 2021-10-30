@@ -76,7 +76,7 @@ public class CreateWorkflowTypeDescriptionCommand
                 if(workflowTypeDescription == null) {
                     var description = form.getDescription();
                     
-                    workflowControl.createWorkflowTypeDescription(workflowType, language, description);
+                    workflowControl.createWorkflowTypeDescription(workflowType, language, description, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateWorkflowTypeDescription.name());
                 }

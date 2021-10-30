@@ -1669,6 +1669,12 @@
             <entityType entityTypeName="WishlistTypePriorityDescription" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Wishlist Type Priority Description" />
             </entityType>
+            <entityType entityTypeName="WorkflowType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="WorkflowType" />
+            </entityType>
+            <entityType entityTypeName="WorkflowTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Workflow Type Destination" />
+            </entityType>
             <entityType entityTypeName="Workflow" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Workflow" />
             </entityType>
@@ -1713,6 +1719,12 @@
             </entityType>
             <entityType entityTypeName="WorkflowSelectorKind" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Workflow Selector Kind" />
+            </entityType>
+            <entityType entityTypeName="WorkflowStepType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Workflow Step Type" />
+            </entityType>
+            <entityType entityTypeName="WorkflowStepTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Workflow Step Type Description" />
             </entityType>
             <entityType entityTypeName="WorkflowStep" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Workflow Step" />
