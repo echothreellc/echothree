@@ -200,10 +200,12 @@ import com.echothree.control.user.vendor.common.VendorUtil;
 import com.echothree.control.user.vendor.server.command.GetVendorCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorsCommand;
 import com.echothree.control.user.workflow.common.WorkflowUtil;
+import com.echothree.control.user.workflow.server.command.GetWorkflowCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowStepTypeCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowStepTypesCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowTypeCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowTypesCommand;
+import com.echothree.control.user.workflow.server.command.GetWorkflowsCommand;
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
 import com.echothree.model.control.content.server.graphql.ContentCatalogItemObject;
 import com.echothree.model.control.content.server.graphql.ContentCatalogObject;
@@ -292,6 +294,7 @@ import com.echothree.model.control.user.server.graphql.UserLoginObject;
 import com.echothree.model.control.user.server.graphql.UserSessionObject;
 import com.echothree.model.control.user.server.graphql.UserVisitObject;
 import com.echothree.model.control.vendor.server.graphql.VendorObject;
+import com.echothree.model.control.workflow.server.graphql.WorkflowObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowStepTypeObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowTypeObject;
 import com.echothree.model.data.accounting.server.entity.Currency;
@@ -378,6 +381,7 @@ import com.echothree.model.data.user.server.entity.UserLogin;
 import com.echothree.model.data.user.server.entity.UserSession;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.vendor.server.entity.Vendor;
+import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowStepType;
 import com.echothree.model.data.workflow.server.entity.WorkflowType;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -393,6 +397,57 @@ import javax.naming.NamingException;
 @GraphQLName("query")
 public final class GraphQlQueries
         extends BaseGraphQl {
+
+    @GraphQLField
+    @GraphQLName("workflow")
+    public static WorkflowObject workflow(final DataFetchingEnvironment env,
+            @GraphQLName("workflowName") final String workflowName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        Workflow workflow;
+
+        try {
+            var commandForm = WorkflowUtil.getHome().getGetWorkflowForm();
+
+            commandForm.setWorkflowName(workflowName);
+            commandForm.setUlid(id);
+
+            workflow = new GetWorkflowCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return workflow == null ? null : new WorkflowObject(workflow);
+    }
+
+    @GraphQLField
+    @GraphQLName("workflows")
+    public static Collection<WorkflowObject> workflows(final DataFetchingEnvironment env,
+            @GraphQLName("selectorKindName") final String selectorKindName) {
+        Collection<Workflow> workflows;
+        Collection<WorkflowObject> workflowObjects;
+
+        try {
+            var commandForm = WorkflowUtil.getHome().getGetWorkflowsForm();
+
+            commandForm.setSelectorKindName(selectorKindName);
+
+            workflows = new GetWorkflowsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(workflows == null) {
+            workflowObjects = emptyList();
+        } else {
+            workflowObjects = new ArrayList<>(workflows.size());
+
+            workflows.stream()
+                    .map(WorkflowObject::new)
+                    .forEachOrdered(workflowObjects::add);
+        }
+
+        return workflowObjects;
+    }
 
     @GraphQLField
     @GraphQLName("workflowType")
