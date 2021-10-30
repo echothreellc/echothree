@@ -107,8 +107,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Objects;
+import java.util.Set;
 
 public class SecurityControl
         extends BaseModelControl {
@@ -175,13 +175,20 @@ public class SecurityControl
     }
 
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.SecurityRoleGroup */
-    public SecurityRoleGroup getSecurityRoleGroupByEntityInstance(EntityInstance entityInstance) {
-        SecurityRoleGroupPK pk = new SecurityRoleGroupPK(entityInstance.getEntityUniqueId());
-        SecurityRoleGroup securityRoleGroup = SecurityRoleGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
-        
-        return securityRoleGroup;
+    public SecurityRoleGroup getSecurityRoleGroupByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new SecurityRoleGroupPK(entityInstance.getEntityUniqueId());
+
+        return SecurityRoleGroupFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
-    
+
+    public SecurityRoleGroup getSecurityRoleGroupByEntityInstance(EntityInstance entityInstance) {
+        return getSecurityRoleGroupByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public SecurityRoleGroup getSecurityRoleGroupByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getSecurityRoleGroupByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     private static final Map<EntityPermission, String> getSecurityRoleGroupByNameQueries;
 
     static {
@@ -201,7 +208,7 @@ public class SecurityControl
         getSecurityRoleGroupByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private SecurityRoleGroup getSecurityRoleGroupByName(String securityRoleGroupName, EntityPermission entityPermission) {
+    public SecurityRoleGroup getSecurityRoleGroupByName(String securityRoleGroupName, EntityPermission entityPermission) {
         return SecurityRoleGroupFactory.getInstance().getEntityFromQuery(entityPermission, getSecurityRoleGroupByNameQueries, securityRoleGroupName);
     }
 
@@ -240,7 +247,7 @@ public class SecurityControl
         getDefaultSecurityRoleGroupQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private SecurityRoleGroup getDefaultSecurityRoleGroup(EntityPermission entityPermission) {
+    public SecurityRoleGroup getDefaultSecurityRoleGroup(EntityPermission entityPermission) {
         return SecurityRoleGroupFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultSecurityRoleGroupQueries);
     }
 
