@@ -101,6 +101,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -331,7 +332,7 @@ public class SecurityControl
         return getSecurityTransferCaches(userVisit).getSecurityRoleGroupTransferCache().getSecurityRoleGroupTransfer(securityRoleGroup);
     }
     
-    public List<SecurityRoleGroupTransfer> getSecurityRoleGroupTransfers(UserVisit userVisit, List<SecurityRoleGroup> securityRoleGroups) {
+    public List<SecurityRoleGroupTransfer> getSecurityRoleGroupTransfers(UserVisit userVisit, Collection<SecurityRoleGroup> securityRoleGroups) {
         List<SecurityRoleGroupTransfer> securityRoleGroupTransfers = new ArrayList<>(securityRoleGroups.size());
         SecurityRoleGroupTransferCache securityRoleGroupTransferCache = getSecurityTransferCaches(userVisit).getSecurityRoleGroupTransferCache();
         

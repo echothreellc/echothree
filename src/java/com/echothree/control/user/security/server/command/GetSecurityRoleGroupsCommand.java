@@ -17,7 +17,6 @@
 package com.echothree.control.user.security.server.command;
 
 import com.echothree.control.user.security.common.form.GetSecurityRoleGroupsForm;
-import com.echothree.control.user.security.common.result.GetSecurityRoleGroupsResult;
 import com.echothree.control.user.security.common.result.SecurityResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -25,23 +24,22 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class GetSecurityRoleGroupsCommand
-        extends BaseSimpleCommand<GetSecurityRoleGroupsForm> {
-    
+        extends BaseMultipleEntitiesCommand<SecurityRoleGroup, GetSecurityRoleGroupsForm> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -62,25 +60,38 @@ public class GetSecurityRoleGroupsCommand
     public GetSecurityRoleGroupsCommand(UserVisitPK userVisitPK, GetSecurityRoleGroupsForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    SecurityRoleGroup parentSecurityRoleGroup;
+
     @Override
-    protected BaseResult execute() {
+    protected Collection<SecurityRoleGroup> getEntities() {
         var securityControl = Session.getModelController(SecurityControl.class);
-        GetSecurityRoleGroupsResult result = SecurityResultFactory.getGetSecurityRoleGroupsResult();
-        String parentSecurityRoleGroupName = form.getParentSecurityRoleGroupName();
-        SecurityRoleGroup parentSecurityRoleGroup = parentSecurityRoleGroupName == null? null: securityControl.getSecurityRoleGroupByName(parentSecurityRoleGroupName);
-        
+        var parentSecurityRoleGroupName = form.getParentSecurityRoleGroupName();
+        Collection<SecurityRoleGroup> entities = null;
+
+        parentSecurityRoleGroup = parentSecurityRoleGroupName == null ? null : securityControl.getSecurityRoleGroupByName(parentSecurityRoleGroupName);
+
         if(parentSecurityRoleGroupName == null || parentSecurityRoleGroup != null) {
-            UserVisit userVisit = getUserVisit();
-            
-            result.setParentSecurityRoleGroup(parentSecurityRoleGroup == null? null: securityControl.getSecurityRoleGroupTransfer(userVisit, parentSecurityRoleGroup));
-            result.setSecurityRoleGroups(parentSecurityRoleGroup == null? securityControl.getSecurityRoleGroupTransfers(userVisit):
-                securityControl.getSecurityRoleGroupTransfersByParentSecurityRoleGroup(userVisit, parentSecurityRoleGroup));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownParentSecurityRoleGroupName.name(), parentSecurityRoleGroupName);
+            entities = parentSecurityRoleGroup == null? securityControl.getSecurityRoleGroups():
+                    securityControl.getSecurityRoleGroupsByParentSecurityRoleGroup(parentSecurityRoleGroup);
         }
-        
+
+        return entities;
+    }
+
+    @Override
+    protected BaseResult getTransfers(Collection<SecurityRoleGroup> entities) {
+        var result = SecurityResultFactory.getGetSecurityRoleGroupsResult();
+        var securityControl = Session.getModelController(SecurityControl.class);
+        var userVisit = getUserVisit();
+
+        result.setParentSecurityRoleGroup(parentSecurityRoleGroup == null ? null : securityControl.getSecurityRoleGroupTransfer(userVisit, parentSecurityRoleGroup));
+
+        if(entities != null) {
+            result.setSecurityRoleGroups(securityControl.getSecurityRoleGroupTransfers(userVisit, entities));
+        }
+
         return result;
     }
-    
+
 }

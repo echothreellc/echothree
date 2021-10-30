@@ -25,7 +25,10 @@ public interface GetSecurityRoleGroupsResult
     
     SecurityRoleGroupTransfer getParentSecurityRoleGroup();
     void setParentSecurityRoleGroup(SecurityRoleGroupTransfer parentSecurityRoleGroup);
-    
+
+    Long getSecurityRoleGroupCount();
+    void setSecurityRoleGroupCount(Long securityRoleGroupCount);
+
     List<SecurityRoleGroupTransfer> getSecurityRoleGroups();
     void setSecurityRoleGroups(List<SecurityRoleGroupTransfer> securityRoleGroups);
     
