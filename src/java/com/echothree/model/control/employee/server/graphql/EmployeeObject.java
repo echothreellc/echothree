@@ -16,8 +16,11 @@
 
 package com.echothree.model.control.employee.server.graphql;
 
+import com.echothree.model.control.employee.common.workflow.EmployeeAvailabilityConstants;
+import com.echothree.model.control.employee.common.workflow.EmployeeStatusConstants;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.party.server.graphql.BasePartyObject;
+import com.echothree.model.control.workflow.server.graphql.WorkflowEntityStatusObject;
 import com.echothree.model.data.employee.server.entity.PartyEmployee;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.server.persistence.Session;
@@ -25,6 +28,7 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("employee object")
 @GraphQLName("Employee")
@@ -67,5 +71,19 @@ public class EmployeeObject
 //        return EmployeeSecurityUtils.getInstance().getHasEmployeeTypeAccess(env) ?
 //                new EmployeeTypeObject(getEmployee().getEmployeeType()) : null;
 //    }
+
+
+    @GraphQLField
+    @GraphQLDescription("employee status")
+    public WorkflowEntityStatusObject getEmployeeStatus(final DataFetchingEnvironment env) {
+        return getWorkflowEntityStatusObject(env, EmployeeStatusConstants.Workflow_EMPLOYEE_STATUS);
+    }
+
+
+    @GraphQLField
+    @GraphQLDescription("employee availability")
+    public WorkflowEntityStatusObject getEmployeeAvailability(final DataFetchingEnvironment env) {
+        return getWorkflowEntityStatusObject(env, EmployeeAvailabilityConstants.Workflow_EMPLOYEE_AVAILABILITY);
+    }
 
 }
