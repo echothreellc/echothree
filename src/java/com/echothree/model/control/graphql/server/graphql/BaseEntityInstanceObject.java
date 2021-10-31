@@ -65,7 +65,6 @@ public abstract class BaseEntityInstanceObject {
     
     @GraphQLField
     @GraphQLDescription("entity instance")
-    @GraphQLNonNull
     public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
         if(CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env)) {
             return new EntityInstanceObject(getEntityInstanceByBasePK());
