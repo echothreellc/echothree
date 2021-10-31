@@ -73,7 +73,7 @@ public class DeleteWorkflowDestinationSelectorCommand
     protected BaseResult execute() {
         var workflowControl = Session.getModelController(WorkflowControl.class);
         String workflowName = form.getWorkflowName();
-        Workflow workflow = workflowControl.getWorkflowByName(workflowName);
+        var workflow = workflowControl.getWorkflowByName(workflowName);
         
         if(workflow != null) {
             SelectorType selectorType = workflow.getLastDetail().getSelectorType();

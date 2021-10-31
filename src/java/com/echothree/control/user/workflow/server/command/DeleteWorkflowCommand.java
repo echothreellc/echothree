@@ -64,7 +64,7 @@ public class DeleteWorkflowCommand
     protected BaseResult execute() {
         var workflowControl = Session.getModelController(WorkflowControl.class);
         String workflowName = form.getWorkflowName();
-        Workflow workflow = workflowControl.getWorkflowByNameForUpdate(workflowName);
+        var workflow = workflowControl.getWorkflowByNameForUpdate(workflowName);
         
         if(workflow != null) {
             workflowControl.deleteWorkflow(workflow, getPartyPK());

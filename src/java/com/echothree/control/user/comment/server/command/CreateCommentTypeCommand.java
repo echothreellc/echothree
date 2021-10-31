@@ -104,7 +104,7 @@ public class CreateCommentTypeCommand
                             
                             if(parameterCount != 0) {
                                 var workflowControl = Session.getModelController(WorkflowControl.class);
-                                Workflow workflow = workflowControl.getWorkflowByName(workflowName);
+                                var workflow = workflowControl.getWorkflowByName(workflowName);
                                 
                                 if(workflow != null) {
                                     workflowEntrance = workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName);

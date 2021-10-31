@@ -85,7 +85,7 @@ public class EditWorkflowDestinationDescriptionCommand
         var workflowControl = Session.getModelController(WorkflowControl.class);
         EditWorkflowDestinationDescriptionResult result = WorkflowResultFactory.getEditWorkflowDestinationDescriptionResult();
         String workflowName = spec.getWorkflowName();
-        Workflow workflow = workflowControl.getWorkflowByName(workflowName);
+        var workflow = workflowControl.getWorkflowByName(workflowName);
         
         if(workflow != null) {
             String workflowStepName = spec.getWorkflowStepName();

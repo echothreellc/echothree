@@ -87,7 +87,7 @@ public class EditWorkflowStepCommand
         var workflowControl = Session.getModelController(WorkflowControl.class);
         EditWorkflowStepResult result = WorkflowResultFactory.getEditWorkflowStepResult();
         String workflowName = spec.getWorkflowName();
-        Workflow workflow = workflowControl.getWorkflowByName(workflowName);
+        var workflow = workflowControl.getWorkflowByName(workflowName);
         
         if(workflow != null) {
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {

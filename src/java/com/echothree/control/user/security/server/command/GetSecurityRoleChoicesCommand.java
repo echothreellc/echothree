@@ -85,7 +85,7 @@ public class GetSecurityRoleChoicesCommand
                 }
             } else {
                 var workflowControl = Session.getModelController(WorkflowControl.class);
-                Workflow workflow = workflowControl.getWorkflowByName(workflowName);
+                var workflow = workflowControl.getWorkflowByName(workflowName);
 
                 if(workflow != null) {
                     securityRoleGroup = workflow.getLastDetail().getSecurityRoleGroup();

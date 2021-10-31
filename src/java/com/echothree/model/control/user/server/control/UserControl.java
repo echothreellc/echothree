@@ -451,7 +451,7 @@ public class UserControl
         var sequenceControl = Session.getModelController(SequenceControl.class);
         var workflowControl = getWorkflowControl();
         UserVisitGroup userVisitGroup = null;
-        Workflow workflow = workflowControl.getWorkflowByName(Workflow_USER_VISIT_GROUP_STATUS);
+        var workflow = workflowControl.getWorkflowByName(Workflow_USER_VISIT_GROUP_STATUS);
         
         if(workflow != null) {
             WorkflowEntrance workflowEntrance = workflowControl.getDefaultWorkflowEntrance(workflow);

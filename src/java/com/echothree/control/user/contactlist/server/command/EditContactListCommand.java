@@ -182,7 +182,7 @@ public class EditContactListCommand
                     if(contactListFrequencyName == null || contactListFrequency != null) {
                         var workflowControl = Session.getModelController(WorkflowControl.class);
                         String defaultPartyContactListStatusChoice = edit.getDefaultPartyContactListStatusChoice();
-                        Workflow workflow = workflowControl.getWorkflowByName(PartyContactListStatusConstants.Workflow_PARTY_CONTACT_LIST_STATUS);
+                        var workflow = workflowControl.getWorkflowByName(PartyContactListStatusConstants.Workflow_PARTY_CONTACT_LIST_STATUS);
 
                         defaultPartyContactListStatus = workflowControl.getWorkflowEntranceByName(workflow, defaultPartyContactListStatusChoice);
 

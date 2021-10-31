@@ -183,7 +183,7 @@ public class CreateWorkRequirementTypeCommand
         
         if(workflowName != null && workflowStepName != null) {
             var workflowControl = Session.getModelController(WorkflowControl.class);
-            Workflow workflow = workflowControl.getWorkflowByName(workflowName);
+            var workflow = workflowControl.getWorkflowByName(workflowName);
             
             if(workflow != null) {
                 workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);

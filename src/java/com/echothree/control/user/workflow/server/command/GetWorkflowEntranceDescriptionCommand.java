@@ -73,7 +73,7 @@ public class GetWorkflowEntranceDescriptionCommand
         var workflowControl = Session.getModelController(WorkflowControl.class);
         GetWorkflowEntranceDescriptionResult result = WorkflowResultFactory.getGetWorkflowEntranceDescriptionResult();
         String workflowName = form.getWorkflowName();
-        Workflow workflow = workflowControl.getWorkflowByName(workflowName);
+        var workflow = workflowControl.getWorkflowByName(workflowName);
         
         if(workflow != null) {
             String workflowEntranceName = form.getWorkflowEntranceName();

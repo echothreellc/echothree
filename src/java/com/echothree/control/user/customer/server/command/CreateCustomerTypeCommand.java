@@ -212,7 +212,7 @@ public class CreateCustomerTypeCommand
                                 WorkflowEntrance defaultCustomerStatus = null;
                                 
                                 if(defaultCustomerStatusChoice != null) {
-                                    Workflow workflow = workflowControl.getWorkflowByName(CustomerStatusConstants.Workflow_CUSTOMER_STATUS);
+                                    var workflow = workflowControl.getWorkflowByName(CustomerStatusConstants.Workflow_CUSTOMER_STATUS);
                                     defaultCustomerStatus = workflowControl.getWorkflowEntranceByName(workflow, defaultCustomerStatusChoice);
                                 }
                                 
@@ -221,7 +221,7 @@ public class CreateCustomerTypeCommand
                                     WorkflowEntrance defaultCustomerCreditStatus = null;
                                     
                                     if(defaultCustomerCreditStatusChoice != null) {
-                                        Workflow workflow = workflowControl.getWorkflowByName(CustomerCreditStatusConstants.Workflow_CUSTOMER_CREDIT_STATUS);
+                                        var workflow = workflowControl.getWorkflowByName(CustomerCreditStatusConstants.Workflow_CUSTOMER_CREDIT_STATUS);
                                         defaultCustomerCreditStatus = workflowControl.getWorkflowEntranceByName(workflow, defaultCustomerCreditStatusChoice);
                                     }
                                     

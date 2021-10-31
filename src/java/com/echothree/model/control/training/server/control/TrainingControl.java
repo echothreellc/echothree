@@ -2148,7 +2148,7 @@ public class TrainingControl
     
     public long countPartyTrainingClassesUsingNames(Party party, TrainingClass trainingClass, String workflowStepName) {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        Workflow workflow = workflowControl.getWorkflowByName(PartyTrainingClassStatusConstants.Workflow_PARTY_TRAINING_CLASS_STATUS);
+        var workflow = workflowControl.getWorkflowByName(PartyTrainingClassStatusConstants.Workflow_PARTY_TRAINING_CLASS_STATUS);
         var workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
         
         return countPartyTrainingClasses(party, trainingClass, workflowStep);

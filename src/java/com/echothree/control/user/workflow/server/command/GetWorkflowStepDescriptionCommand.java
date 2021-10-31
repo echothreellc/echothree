@@ -73,7 +73,7 @@ public class GetWorkflowStepDescriptionCommand
         var workflowControl = Session.getModelController(WorkflowControl.class);
         GetWorkflowStepDescriptionResult result = WorkflowResultFactory.getGetWorkflowStepDescriptionResult();
         String workflowName = form.getWorkflowName();
-        Workflow workflow = workflowControl.getWorkflowByName(workflowName);
+        var workflow = workflowControl.getWorkflowByName(workflowName);
         
         if(workflow != null) {
             String workflowStepName = form.getWorkflowStepName();
