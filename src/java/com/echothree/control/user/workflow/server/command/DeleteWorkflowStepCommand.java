@@ -70,7 +70,7 @@ public class DeleteWorkflowStepCommand
         
         if(workflow != null) {
             String workflowStepName = form.getWorkflowStepName();
-            WorkflowStep workflowStep = workflowControl.getWorkflowStepByNameForUpdate(workflow, workflowStepName);
+            var workflowStep = workflowControl.getWorkflowStepByNameForUpdate(workflow, workflowStepName);
             
             if(workflowStep != null) {
                 workflowControl.deleteWorkflowStep(workflowStep, getPartyPK());

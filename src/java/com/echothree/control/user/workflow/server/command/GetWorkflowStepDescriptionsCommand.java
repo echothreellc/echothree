@@ -73,7 +73,7 @@ public class GetWorkflowStepDescriptionsCommand
         
         if(workflow != null) {
             String workflowStepName = form.getWorkflowStepName();
-            WorkflowStep workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
+            var workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
             
             result.setWorkflow(workflowControl.getWorkflowTransfer(getUserVisit(), workflow));
             

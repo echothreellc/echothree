@@ -75,7 +75,7 @@ public class GetPrinterGroupJobsCommand
                 }
             } else if(printerGroupJobStatusChoice != null) {
                 var workflowControl = Session.getModelController(WorkflowControl.class);
-                WorkflowStep workflowStep = workflowControl.getWorkflowStepByName(workflowControl.getWorkflowByName(PrinterGroupJobStatusConstants.Workflow_PRINTER_GROUP_JOB_STATUS),
+                var workflowStep = workflowControl.getWorkflowStepByName(workflowControl.getWorkflowByName(PrinterGroupJobStatusConstants.Workflow_PRINTER_GROUP_JOB_STATUS),
                         printerGroupJobStatusChoice);
 
                 if(workflowStep != null) {

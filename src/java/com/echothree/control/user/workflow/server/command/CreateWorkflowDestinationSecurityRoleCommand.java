@@ -81,7 +81,7 @@ public class CreateWorkflowDestinationSecurityRoleCommand
         
         if(workflow != null) {
             String workflowStepName = form.getWorkflowStepName();
-            WorkflowStep workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
+            var workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
             
             if(workflowStep != null) {
                 String workflowDestinationName = form.getWorkflowDestinationName();

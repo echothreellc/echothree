@@ -87,7 +87,7 @@ public class EditWorkflowStepDescriptionCommand
         
         if(workflow != null) {
             String workflowStepName = spec.getWorkflowStepName();
-            WorkflowStep workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
+            var workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
             
             if(workflowStep != null) {
                 var partyControl = Session.getModelController(PartyControl.class);

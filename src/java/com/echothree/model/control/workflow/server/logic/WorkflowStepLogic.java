@@ -79,7 +79,7 @@ public class WorkflowStepLogic
     public WorkflowStep getWorkflowStepByName(final Class<? extends BaseException> unknownException, final ExecutionErrors unknownExecutionError,
             final ExecutionErrorAccumulator eea, final Workflow workflow, final String workflowStepName, EntityPermission entityPermission) {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        WorkflowStep workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName, entityPermission);
+        var workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName, entityPermission);
 
         if(workflowStep == null) {
             handleExecutionError(unknownException, eea, unknownExecutionError.name(), workflow.getLastDetail().getWorkflowName(),

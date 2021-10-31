@@ -89,7 +89,7 @@ public class EditWorkflowDestinationDescriptionCommand
         
         if(workflow != null) {
             String workflowStepName = spec.getWorkflowStepName();
-            WorkflowStep workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
+            var workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
             
             if(workflowStep != null) {
                 String workflowDestinationName = spec.getWorkflowDestinationName();
