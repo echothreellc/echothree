@@ -23,9 +23,6 @@ import com.echothree.util.common.command.BaseResult;
 public interface GetWorkflowStepResult
         extends BaseResult {
     
-    WorkflowTransfer getWorkflow();
-    void setWorkflow(WorkflowTransfer workflow);
-    
     WorkflowStepTransfer getWorkflowStep();
     void setWorkflowStep(WorkflowStepTransfer workflowStep);
     
