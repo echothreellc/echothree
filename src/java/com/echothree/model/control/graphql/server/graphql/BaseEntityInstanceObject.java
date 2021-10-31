@@ -31,12 +31,11 @@ import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BaseEntityInstanceObject {
-    
-    private final BasePK basePrimaryKey;
-    
+public abstract class BaseEntityInstanceObject
+        extends BaseObject {
+
     protected BaseEntityInstanceObject(BasePK basePrimaryKey) {
-        this.basePrimaryKey = basePrimaryKey;
+        super(basePrimaryKey);
     }
     
     private EntityInstance entityInstance; // Optional, use getEntityInstanceByBasePK()
@@ -65,7 +64,6 @@ public abstract class BaseEntityInstanceObject {
     
     @GraphQLField
     @GraphQLDescription("entity instance")
-    @GraphQLNonNull
     public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
         if(CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env)) {
             return new EntityInstanceObject(getEntityInstanceByBasePK());
