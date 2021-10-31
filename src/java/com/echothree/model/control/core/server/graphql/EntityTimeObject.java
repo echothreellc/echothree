@@ -42,7 +42,7 @@ public class EntityTimeObject {
         return new EntityInstanceObject(entityTime.getEntityInstance());
     }
     
-   @GraphQLField
+    @GraphQLField
     @GraphQLDescription("unformatted created time")
     @GraphQLNonNull
     public Long getUnformattedCreatedTime() {
