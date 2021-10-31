@@ -52,7 +52,7 @@ public class GetSequenceChecksumTypeCommand
         )));
 
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("SequenceChecksumTypeName", FieldType.ENTITY_NAME, false, null, null)
+                new FieldDefinition("SequenceChecksumTypeName", FieldType.ENTITY_NAME, true, null, null)
         ));
     }
 

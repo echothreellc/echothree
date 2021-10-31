@@ -706,7 +706,7 @@ public final class GraphQlQueries
     @GraphQLField
     @GraphQLName("sequenceChecksumType")
     public static SequenceChecksumTypeObject sequenceChecksumType(final DataFetchingEnvironment env,
-            @GraphQLName("sequenceChecksumTypeName") final String sequenceChecksumTypeName) {
+            @GraphQLName("sequenceChecksumTypeName") @GraphQLNonNull final String sequenceChecksumTypeName) {
         SequenceChecksumType sequenceChecksumType;
 
         try {
@@ -752,7 +752,7 @@ public final class GraphQlQueries
     @GraphQLField
     @GraphQLName("sequenceEncoderType")
     public static SequenceEncoderTypeObject sequenceEncoderType(final DataFetchingEnvironment env,
-            @GraphQLName("sequenceEncoderTypeName") final String sequenceEncoderTypeName) {
+            @GraphQLName("sequenceEncoderTypeName") @GraphQLNonNull final String sequenceEncoderTypeName) {
         SequenceEncoderType sequenceEncoderType;
 
         try {
