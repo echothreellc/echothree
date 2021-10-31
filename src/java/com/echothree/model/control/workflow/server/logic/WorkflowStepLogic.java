@@ -64,7 +64,7 @@ public class WorkflowStepLogic
     public WorkflowStep getWorkflowStepByName(final Class<? extends BaseException> unknownWorkflowException, final ExecutionErrors unknownWorkflowExecutionError,
             final Class<? extends BaseException>  unknownWorkflowStepException, final ExecutionErrors unknownWorkflowStepExecutionError,
             final ExecutionErrorAccumulator eea, final String workflowName, final String workflowStepName) {
-        Workflow workflow = WorkflowLogic.getInstance().getWorkflowByName(unknownWorkflowException, unknownWorkflowExecutionError,
+        var workflow = WorkflowLogic.getInstance().getWorkflowByName(unknownWorkflowException, unknownWorkflowExecutionError,
                 eea, workflowName, EntityPermission.READ_ONLY);
         WorkflowStep workflowStep = null;
 
@@ -238,7 +238,7 @@ public class WorkflowStepLogic
     
     private Set<WorkflowEntityStatus> isEntityInWorkflowSteps(final ExecutionErrorAccumulator eea, final String workflowName, final EntityInstance entityInstance,
             final EntityPermission entityPermission, final String... workflowStepNames) {
-        Workflow workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, workflowName);
+        var workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, workflowName);
         Set<WorkflowEntityStatus> result = new HashSet<>();
         
         if(!hasExecutionErrors(eea)) {

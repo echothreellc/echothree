@@ -172,7 +172,7 @@ public class SalesOrderBatchLogic
         var coreControl = Session.getModelController(CoreControl.class);
         var orderControl = Session.getModelController(OrderControl.class);
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        Workflow workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, SalesOrderBatchStatusConstants.Workflow_SALES_ORDER_BATCH_STATUS);
+        var workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, SalesOrderBatchStatusConstants.Workflow_SALES_ORDER_BATCH_STATUS);
         EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(batch.getPrimaryKey());
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
         WorkflowDestination workflowDestination = salesOrderBatchStatusChoice == null ? null : workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), salesOrderBatchStatusChoice);

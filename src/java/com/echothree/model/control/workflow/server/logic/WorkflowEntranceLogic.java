@@ -73,7 +73,7 @@ public class WorkflowEntranceLogic
 
     public WorkflowEntrance getWorkflowEntranceByName(final ExecutionErrorAccumulator eea, final String workflowName,
             final String workflowEntranceName) {
-        Workflow workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, workflowName);
+        var workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, workflowName);
         WorkflowEntrance workflowEntrance = null;
         
         if(eea == null || !eea.hasExecutionErrors()) {
