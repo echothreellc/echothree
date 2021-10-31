@@ -31,7 +31,8 @@ import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BaseEntityInstanceObject {
+public abstract class BaseEntityInstanceObject
+        extends BaseObject {
     
     private final BasePK basePrimaryKey;
     

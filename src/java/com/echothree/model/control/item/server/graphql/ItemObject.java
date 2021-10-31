@@ -17,15 +17,17 @@
 package com.echothree.model.control.item.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.item.common.workflow.ItemStatusConstants;
 import com.echothree.model.control.party.server.graphql.CompanyObject;
 import com.echothree.model.control.party.server.graphql.PartySecurityUtils;
+import com.echothree.model.control.workflow.server.graphql.WorkflowEntityStatusObject;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemDetail;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.schema.DataFetchingEnvironment;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("item object")
 @GraphQLName("Item")
@@ -78,5 +80,11 @@ public class ItemObject
     public ItemPriceTypeObject getItemPriceType(final DataFetchingEnvironment env) {
         return new ItemPriceTypeObject(getItemDetail().getItemPriceType());
     }
-    
+
+    @GraphQLField
+    @GraphQLDescription("item status")
+    public WorkflowEntityStatusObject getItemStatus(final DataFetchingEnvironment env) {
+        return getWorkflowEntityStatusObject(env, item, ItemStatusConstants.Workflow_ITEM_STATUS);
+    }
+
 }
