@@ -3377,7 +3377,7 @@ public class CoreControl
         var sequenceControl = Session.getModelController(SequenceControl.class);
         var workflowControl = getWorkflowControl();
         EventGroup eventGroup = null;
-        Workflow workflow = workflowControl.getWorkflowByName(Workflow_EVENT_GROUP_STATUS);
+        var workflow = workflowControl.getWorkflowByName(Workflow_EVENT_GROUP_STATUS);
         
         if(workflow != null) {
             WorkflowEntrance workflowEntrance = workflowControl.getDefaultWorkflowEntrance(workflow);

@@ -14,16 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.workflow.common.result;
+package com.echothree.control.user.workflow.common.spec;
 
-import com.echothree.model.control.workflow.common.transfer.WorkflowStepTransfer;
-import com.echothree.model.control.workflow.common.transfer.WorkflowTransfer;
-import com.echothree.util.common.command.BaseResult;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetWorkflowStepResult
-        extends BaseResult {
-    
-    WorkflowStepTransfer getWorkflowStep();
-    void setWorkflowStep(WorkflowStepTransfer workflowStep);
+public interface WorkflowStepUniversalSpec
+        extends WorkflowStepSpec, UniversalEntitySpec {
+
+    // Nothing additional beyond WorkflowStepSpec, UniversalEntitySpec
     
 }

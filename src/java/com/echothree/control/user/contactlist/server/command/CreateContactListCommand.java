@@ -95,7 +95,7 @@ public class CreateContactListCommand
                     if(contactListFrequencyName == null || contactListFrequency != null) {
                         var workflowControl = Session.getModelController(WorkflowControl.class);
                         String defaultPartyContactListStatusChoice = form.getDefaultPartyContactListStatusChoice();
-                        Workflow workflow = workflowControl.getWorkflowByName(PartyContactListStatusConstants.Workflow_PARTY_CONTACT_LIST_STATUS);
+                        var workflow = workflowControl.getWorkflowByName(PartyContactListStatusConstants.Workflow_PARTY_CONTACT_LIST_STATUS);
                         WorkflowEntrance defaultPartyContactListStatus = workflowControl.getWorkflowEntranceByName(workflow, defaultPartyContactListStatusChoice);
 
                         if(defaultPartyContactListStatus != null) {

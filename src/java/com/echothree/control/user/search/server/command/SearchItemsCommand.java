@@ -145,7 +145,7 @@ public class SearchItemsCommand
                                                 List<WorkflowStep> itemStatusWorkflowSteps = null;
 
                                                 if(itemStatusChoice != null || itemStatusChoices != null) {
-                                                    Workflow workflow = WorkflowLogic.getInstance().getWorkflowByName(this, ItemStatusConstants.Workflow_ITEM_STATUS);
+                                                    var workflow = WorkflowLogic.getInstance().getWorkflowByName(this, ItemStatusConstants.Workflow_ITEM_STATUS);
 
                                                     if(!hasExecutionErrors()) {
                                                         WorkflowStepLogic workflowStepLogic = WorkflowStepLogic.getInstance();

@@ -110,7 +110,7 @@ public class ContentPageLayoutLogic
                 break;
             case 1:
                 if(contentPageLayoutName == null) {
-                    EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHOTHREE.name(), EntityTypes.ContentPageLayout.name());
 
                     if(!eea.hasExecutionErrors()) {

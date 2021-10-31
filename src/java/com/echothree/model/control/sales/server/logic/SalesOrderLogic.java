@@ -516,7 +516,7 @@ public class SalesOrderLogic
     public void setSalesOrderStatus(final Session session, final ExecutionErrorAccumulator eea, final Order order, final String orderStatusChoice, final PartyPK modifiedBy) {
         var coreControl = Session.getModelController(CoreControl.class);
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        Workflow workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, SalesOrderStatusConstants.Workflow_SALES_ORDER_STATUS);
+        var workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, SalesOrderStatusConstants.Workflow_SALES_ORDER_STATUS);
         EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(order.getPrimaryKey());
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
         WorkflowDestination workflowDestination = orderStatusChoice == null? null: workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), orderStatusChoice);

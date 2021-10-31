@@ -78,7 +78,7 @@ public class TrackLogic
     public void setTrackStatus(final Session session, ExecutionErrorAccumulator eea, Track track, String trackStatusChoice, PartyPK modifiedBy) {
         var coreControl = Session.getModelController(CoreControl.class);
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        Workflow workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, TrackStatusConstants.Workflow_TRACK_STATUS);
+        var workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, TrackStatusConstants.Workflow_TRACK_STATUS);
         EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(track.getPrimaryKey());
         WorkflowEntityStatus workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstanceForUpdate(workflow, entityInstance);
         WorkflowDestination workflowDestination = trackStatusChoice == null ? null : workflowControl.getWorkflowDestinationByName(workflowEntityStatus.getWorkflowStep(), trackStatusChoice);

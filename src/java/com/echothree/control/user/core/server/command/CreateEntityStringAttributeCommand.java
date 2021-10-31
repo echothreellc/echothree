@@ -59,7 +59,7 @@ public class CreateEntityStringAttributeCommand
     
     @Override
     protected BaseResult execute() {
-        EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
+        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
         Language language = LanguageLogic.getInstance().getLanguage(this, form, form);
 
         if(!hasExecutionErrors()) {

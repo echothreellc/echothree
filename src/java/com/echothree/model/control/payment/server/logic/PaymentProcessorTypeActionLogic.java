@@ -180,7 +180,7 @@ public class PaymentProcessorTypeActionLogic
                                 paymentProcessorActionType, entityPermission);
                     }
                 } else {
-                    EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHOTHREE.name(), EntityTypes.PaymentProcessorTypeAction.name());
 
                     if(!eea.hasExecutionErrors()) {

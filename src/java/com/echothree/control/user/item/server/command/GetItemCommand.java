@@ -70,7 +70,7 @@ public class GetItemCommand
 
         if(parameterCount == 1) {
             if(itemName == null && itemNameOrAlias == null) {
-                EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
                         ComponentVendors.ECHOTHREE.name(), EntityTypes.Item.name());
 
                 if(!hasExecutionErrors()) {

@@ -85,7 +85,7 @@ public class AppearanceLogic
         switch(parameterCount) {
             case 1:
                 if(appearanceName == null) {
-                    EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHOTHREE.name(), EntityTypes.Appearance.name());
 
                     if(!eea.hasExecutionErrors()) {

@@ -89,7 +89,7 @@ public class GetEventsCommand
             UserVisit userVisit = getUserVisit();
 
             if(entityRef != null || key != null || guid != null || ulid != null) {
-                EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, entityRef, key, guid, ulid, null);
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, entityRef, key, guid, ulid, null);
 
                 if(!hasExecutionErrors()) {
                     if(session.hasLimit(EventFactory.class)) {

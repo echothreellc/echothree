@@ -494,7 +494,7 @@ public class CreateSelectorNodeCommand
             
             if(!hasExecutionErrors()) {
                 String workflowName = form.getWorkflowName();
-                Workflow workflow = workflowControl.getWorkflowByName(workflowName);
+                var workflow = workflowControl.getWorkflowByName(workflowName);
                 
                 if(workflow != null) {
                     String workflowStepName = form.getWorkflowStepName();

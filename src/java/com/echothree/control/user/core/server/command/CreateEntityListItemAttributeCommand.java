@@ -66,7 +66,7 @@ public class CreateEntityListItemAttributeCommand
     
     @Override
     protected BaseResult execute() {
-        EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
+        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
 
         if(!hasExecutionErrors()) {
             EntityAttribute entityAttribute = EntityAttributeLogic.getInstance().getEntityAttribute(this, entityInstance, form, form,

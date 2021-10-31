@@ -124,7 +124,7 @@ public class PartyLogic
     public Party getPartyByUlid(final ExecutionErrorAccumulator eea, final String ulid, final EntityPermission entityPermission) {
         Party party = null;
         
-        EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
+        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
                 ComponentVendors.ECHOTHREE.name(), EntityTypes.Party.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {

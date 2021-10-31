@@ -110,7 +110,7 @@ public class FilterKindLogic
                 break;
             case 1:
                 if(filterKindName == null) {
-                    EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHOTHREE.name(), EntityTypes.FilterKind.name());
 
                     if(!eea.hasExecutionErrors()) {

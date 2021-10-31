@@ -54,7 +54,7 @@ public class LockEntityCommand
     
     @Override
     protected BaseResult execute() {
-        EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, null);
+        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, null);
 
         if(!hasExecutionErrors()) {
             var partyPK = getPartyPK();

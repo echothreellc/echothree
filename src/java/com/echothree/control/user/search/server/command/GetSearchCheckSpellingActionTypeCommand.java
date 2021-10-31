@@ -82,7 +82,7 @@ public class GetSearchCheckSpellingActionTypeCommand
             SearchCheckSpellingActionType searchCheckSpellingActionType = null;
 
             if(searchCheckSpellingActionTypeName == null) {
-                EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHOTHREE.name(),
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHOTHREE.name(),
                         EntityTypes.SearchCheckSpellingActionType.name());
                 
                 if(!hasExecutionErrors()) {

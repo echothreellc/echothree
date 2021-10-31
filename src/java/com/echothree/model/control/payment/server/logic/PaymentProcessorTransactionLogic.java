@@ -107,7 +107,7 @@ public class PaymentProcessorTransactionLogic
         switch(parameterCount) {
             case 1:
                 if(paymentProcessorTransactionName == null) {
-                    EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHOTHREE.name(), EntityTypes.PaymentProcessorTransaction.name());
 
                     if(!eea.hasExecutionErrors()) {

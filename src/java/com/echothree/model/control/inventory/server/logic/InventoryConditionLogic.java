@@ -110,7 +110,7 @@ public class InventoryConditionLogic
                 break;
             case 1:
                 if(inventoryConditionName == null) {
-                    EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHOTHREE.name(), EntityTypes.InventoryCondition.name());
 
                     if(!eea.hasExecutionErrors()) {

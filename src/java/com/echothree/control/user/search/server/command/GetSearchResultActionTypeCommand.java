@@ -82,7 +82,7 @@ public class GetSearchResultActionTypeCommand
             SearchResultActionType searchResultActionType = null;
 
             if(searchResultActionTypeName == null) {
-                EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHOTHREE.name(),
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHOTHREE.name(),
                         EntityTypes.SearchResultActionType.name());
                 
                 if(!hasExecutionErrors()) {

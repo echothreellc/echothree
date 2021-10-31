@@ -87,12 +87,12 @@ public class EditWorkflowStepCommand
         var workflowControl = Session.getModelController(WorkflowControl.class);
         EditWorkflowStepResult result = WorkflowResultFactory.getEditWorkflowStepResult();
         String workflowName = spec.getWorkflowName();
-        Workflow workflow = workflowControl.getWorkflowByName(workflowName);
+        var workflow = workflowControl.getWorkflowByName(workflowName);
         
         if(workflow != null) {
             if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                 String workflowStepName = spec.getWorkflowStepName();
-                WorkflowStep workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
+                var workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
 
                 if(workflowStep != null) {
                     if(editMode.equals(EditMode.LOCK)) {
@@ -125,7 +125,7 @@ public class EditWorkflowStepCommand
                 }
             } else if(editMode.equals(EditMode.UPDATE)) {
                 String workflowStepName = spec.getWorkflowStepName();
-                WorkflowStep workflowStep = workflowControl.getWorkflowStepByNameForUpdate(workflow, workflowStepName);
+                var workflowStep = workflowControl.getWorkflowStepByNameForUpdate(workflow, workflowStepName);
 
                 if(workflowStep != null) {
                     workflowStepName = edit.getWorkflowStepName();

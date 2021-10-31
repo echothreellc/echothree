@@ -83,7 +83,7 @@ public class EditWorkflowEntranceDescriptionCommand
         var workflowControl = Session.getModelController(WorkflowControl.class);
         EditWorkflowEntranceDescriptionResult result = WorkflowResultFactory.getEditWorkflowEntranceDescriptionResult();
         String workflowName = spec.getWorkflowName();
-        Workflow workflow = workflowControl.getWorkflowByName(workflowName);
+        var workflow = workflowControl.getWorkflowByName(workflowName);
         
         if(workflow != null) {
             String workflowEntranceName = spec.getWorkflowEntranceName();

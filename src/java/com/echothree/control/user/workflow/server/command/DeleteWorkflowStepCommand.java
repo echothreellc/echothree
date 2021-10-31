@@ -66,11 +66,11 @@ public class DeleteWorkflowStepCommand
     protected BaseResult execute() {
         var workflowControl = Session.getModelController(WorkflowControl.class);
         String workflowName = form.getWorkflowName();
-        Workflow workflow = workflowControl.getWorkflowByName(workflowName);
+        var workflow = workflowControl.getWorkflowByName(workflowName);
         
         if(workflow != null) {
             String workflowStepName = form.getWorkflowStepName();
-            WorkflowStep workflowStep = workflowControl.getWorkflowStepByNameForUpdate(workflow, workflowStepName);
+            var workflowStep = workflowControl.getWorkflowStepByNameForUpdate(workflow, workflowStepName);
             
             if(workflowStep != null) {
                 workflowControl.deleteWorkflowStep(workflowStep, getPartyPK());

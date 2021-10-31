@@ -70,7 +70,7 @@ public class LanguageLogic
     public Language getLanguageByUlid(final ExecutionErrorAccumulator eea, final String ulid, final EntityPermission entityPermission) {
         Language projectLanguage = null;
         
-        EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
+        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
                 ComponentVendors.ECHOTHREE.name(), EntityTypes.Language.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {

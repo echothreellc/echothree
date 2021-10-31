@@ -68,7 +68,7 @@ public class GetIndexTypeCommand
             IndexType indexType = null;
 
             if(indexTypeName == null) {
-                EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHOTHREE.name(),
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHOTHREE.name(),
                         EntityTypes.IndexType.name());
                 
                 if(!hasExecutionErrors()) {

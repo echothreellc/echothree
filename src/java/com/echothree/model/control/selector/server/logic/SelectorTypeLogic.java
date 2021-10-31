@@ -165,7 +165,7 @@ public class SelectorTypeLogic
                 }
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
-            EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHOTHREE.name(), EntityTypes.SelectorType.name());
 
             if(!eea.hasExecutionErrors()) {

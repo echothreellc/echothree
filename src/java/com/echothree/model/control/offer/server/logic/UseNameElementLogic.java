@@ -99,7 +99,7 @@ public class UseNameElementLogic
 
         if(parameterCount == 1) {
             if(useNameElementName == null) {
-                EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                         ComponentVendors.ECHOTHREE.name(), EntityTypes.UseNameElement.name());
 
                 if(!eea.hasExecutionErrors()) {

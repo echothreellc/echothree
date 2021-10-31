@@ -32,6 +32,8 @@ import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @GraphQLDescription("workflow object")
 @GraphQLName("Workflow")
@@ -65,7 +67,6 @@ public class WorkflowObject
 
     @GraphQLField
     @GraphQLDescription("workflow type")
-    @GraphQLNonNull
     public WorkflowTypeObject getWorkflowType(final DataFetchingEnvironment env) {
         return WorkflowSecurityUtils.getInstance().getHasWorkflowTypeAccess(env) ? new WorkflowTypeObject(getWorkflowDetail().getWorkflowType()) : null;
     }
@@ -112,23 +113,23 @@ public class WorkflowObject
         return workflowControl.getBestWorkflowDescription(workflow, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
     }
 
-//    @GraphQLField
-//    @GraphQLDescription("workflow steps")
-//    public Collection<WorkflowStepObject> getWorkflowSteps(final DataFetchingEnvironment env) {
-//        Collection<WorkflowStepObject> workflowStepObjects = null;
-//
-//        if(WorkflowSecurityUtils.getInstance().getHasWorkflowStepsAccess(env)) {
-//            var workflowControl = Session.getModelController(WorkflowControl.class);
-//            var workflowSteps = workflowControl.getWorkflowStepsByWorkflow(workflow);
-//
-//            workflowStepObjects = new ArrayList<>(workflowSteps.size());
-//
-//            workflowSteps.stream()
-//                    .map(WorkflowStepObject::new)
-//                    .forEachOrdered(workflowStepObjects::add);
-//        }
-//
-//        return workflowStepObjects;
-//    }
+    @GraphQLField
+    @GraphQLDescription("workflow steps")
+    public Collection<WorkflowStepObject> getWorkflowSteps(final DataFetchingEnvironment env) {
+        Collection<WorkflowStepObject> workflowStepObjects = null;
+
+        if(WorkflowSecurityUtils.getInstance().getHasWorkflowStepsAccess(env)) {
+            var workflowControl = Session.getModelController(WorkflowControl.class);
+            var workflowSteps = workflowControl.getWorkflowStepsByWorkflow(workflow);
+
+            workflowStepObjects = new ArrayList<>(workflowSteps.size());
+
+            workflowSteps.stream()
+                    .map(WorkflowStepObject::new)
+                    .forEachOrdered(workflowStepObjects::add);
+        }
+
+        return workflowStepObjects;
+    }
 
 }

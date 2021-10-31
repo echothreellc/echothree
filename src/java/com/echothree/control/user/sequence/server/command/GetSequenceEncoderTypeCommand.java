@@ -53,7 +53,7 @@ public class GetSequenceEncoderTypeCommand
         )));
 
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("SequenceEncoderTypeName", FieldType.ENTITY_NAME, false, null, null)
+                new FieldDefinition("SequenceEncoderTypeName", FieldType.ENTITY_NAME, true, null, null)
         ));
     }
 

@@ -69,7 +69,7 @@ public class GetWorkflowStepChoicesCommand
         var workflowControl = Session.getModelController(WorkflowControl.class);
         GetWorkflowStepChoicesResult result = WorkflowResultFactory.getGetWorkflowStepChoicesResult();
         String workflowName = form.getWorkflowName();
-        Workflow workflow = workflowControl.getWorkflowByName(workflowName);
+        var workflow = workflowControl.getWorkflowByName(workflowName);
         
         if(workflow != null) {
             String defaultWorkflowStepChoice = form.getDefaultWorkflowStepChoice();

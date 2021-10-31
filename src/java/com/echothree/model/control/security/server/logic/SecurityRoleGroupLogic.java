@@ -111,7 +111,7 @@ public class SecurityRoleGroupLogic
                 break;
             case 1:
                 if(securityRoleGroupName == null) {
-                    EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHOTHREE.name(), EntityTypes.SecurityRoleGroup.name());
 
                     if(!eea.hasExecutionErrors()) {

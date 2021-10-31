@@ -58,7 +58,7 @@ public class SelectorNodeTypeLogic
     public SelectorNodeType getSelectorNodeTypeByUlid(final ExecutionErrorAccumulator eea, final String ulid, final EntityPermission entityPermission) {
         SelectorNodeType selectorNodeType = null;
         
-        EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
+        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
                 ComponentVendors.ECHOTHREE.name(), EntityTypes.SelectorNodeType.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {

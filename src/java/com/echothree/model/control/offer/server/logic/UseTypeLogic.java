@@ -112,7 +112,7 @@ public class UseTypeLogic
                 break;
             case 1:
                 if(useTypeName == null) {
-                    EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHOTHREE.name(), EntityTypes.UseType.name());
 
                     if(!eea.hasExecutionErrors()) {

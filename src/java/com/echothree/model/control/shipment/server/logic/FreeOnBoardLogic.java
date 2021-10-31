@@ -110,7 +110,7 @@ public class FreeOnBoardLogic
                 break;
             case 1:
                 if(freeOnBoardName == null) {
-                    EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHOTHREE.name(), EntityTypes.FreeOnBoard.name());
 
                     if(!eea.hasExecutionErrors()) {

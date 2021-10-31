@@ -66,7 +66,7 @@ public class GetFontWeightCommand
 
         if(parameterCount == 1) {
             if(fontWeightName == null) {
-                EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
                         ComponentVendors.ECHOTHREE.name(), EntityTypes.FontWeight.name());
 
                 if(!hasExecutionErrors()) {

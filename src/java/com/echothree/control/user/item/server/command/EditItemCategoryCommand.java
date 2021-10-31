@@ -105,7 +105,7 @@ public class EditItemCategoryCommand
 
         if(parameterCount == 1) {
             if(itemCategoryName == null) {
-                EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, spec, ComponentVendors.ECHOTHREE.name(),
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, spec, ComponentVendors.ECHOTHREE.name(),
                         EntityTypes.ItemCategory.name());
 
                 if(!hasExecutionErrors()) {

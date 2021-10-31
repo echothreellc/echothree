@@ -94,7 +94,7 @@ public class EditWorkflowCommand
         
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             String workflowName = spec.getWorkflowName();
-            Workflow workflow = workflowControl.getWorkflowByName(workflowName);
+            var workflow = workflowControl.getWorkflowByName(workflowName);
             
             if(workflow != null) {
                 if(editMode.equals(EditMode.LOCK)) {
@@ -132,7 +132,7 @@ public class EditWorkflowCommand
             }
         } else if(editMode.equals(EditMode.UPDATE)) {
             String workflowName = spec.getWorkflowName();
-            Workflow workflow = workflowControl.getWorkflowByNameForUpdate(workflowName);
+            var workflow = workflowControl.getWorkflowByNameForUpdate(workflowName);
             
             if(workflow != null) {
                 workflowName = edit.getWorkflowName();

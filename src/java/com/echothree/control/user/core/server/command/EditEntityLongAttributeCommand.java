@@ -74,7 +74,7 @@ public class EditEntityLongAttributeCommand
         var parameterCount = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(spec);
 
         if(parameterCount == 1) {
-            EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, spec);
+            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, spec);
 
             if(!hasExecutionErrors()) {
                 String entityAttributeName = spec.getEntityAttributeName();

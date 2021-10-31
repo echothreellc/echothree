@@ -72,7 +72,7 @@ public class GetSymbolPositionCommand
                 break;
             case 1:
                 if(symbolPositionName == null) {
-                    EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
+                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
                             ComponentVendors.ECHOTHREE.name(), EntityTypes.SymbolPosition.name());
                     
                     if(!hasExecutionErrors()) {

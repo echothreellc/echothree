@@ -82,7 +82,7 @@ public class GetCampaignTermCommand
             CampaignTerm campaignTerm = null;
 
             if(campaignTermName == null) {
-                EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHOTHREE.name(),
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHOTHREE.name(),
                         EntityTypes.CampaignTerm.name());
                 
                 if(!hasExecutionErrors()) {
