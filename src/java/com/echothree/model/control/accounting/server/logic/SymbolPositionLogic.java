@@ -58,7 +58,7 @@ public class SymbolPositionLogic
     public SymbolPosition getSymbolPositionByUlid(final ExecutionErrorAccumulator eea, final String ulid, final EntityPermission entityPermission) {
         SymbolPosition symbolPosition = null;
         
-        EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
+        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
                 ComponentVendors.ECHOTHREE.name(), EntityTypes.SymbolPosition.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {

@@ -89,7 +89,7 @@ public class WorkflowLogic
         switch(parameterCount) {
             case 1:
                 if(workflowName == null) {
-                    EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHOTHREE.name(), EntityTypes.Workflow.name());
 
                     if(!eea.hasExecutionErrors()) {

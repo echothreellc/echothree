@@ -63,7 +63,7 @@ public class CreateEntityEntityAttributeCommand
         var parameterCount = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {
-            EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
+            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
 
             if(!hasExecutionErrors()) {
                 String entityAttributeName = form.getEntityAttributeName();

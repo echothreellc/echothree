@@ -59,7 +59,7 @@ public class UnitOfMeasureKindLogic
     public UnitOfMeasureKind getUnitOfMeasureKindByUlid(final ExecutionErrorAccumulator eea, final String ulid, final EntityPermission entityPermission) {
         UnitOfMeasureKind unitOfMeasureKind = null;
         
-        EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
+        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
                 ComponentVendors.ECHOTHREE.name(), EntityTypes.UnitOfMeasureKind.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {

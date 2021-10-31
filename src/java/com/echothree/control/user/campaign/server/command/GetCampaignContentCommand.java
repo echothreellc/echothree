@@ -82,7 +82,7 @@ public class GetCampaignContentCommand
             CampaignContent campaignContent = null;
 
             if(campaignContentName == null) {
-                EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHOTHREE.name(),
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHOTHREE.name(),
                         EntityTypes.CampaignContent.name());
                 
                 if(!hasExecutionErrors()) {

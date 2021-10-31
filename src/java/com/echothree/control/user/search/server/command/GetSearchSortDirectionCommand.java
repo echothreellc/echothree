@@ -82,7 +82,7 @@ public class GetSearchSortDirectionCommand
             SearchSortDirection searchSortDirection = null;
 
             if(searchSortDirectionName == null) {
-                EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHOTHREE.name(),
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHOTHREE.name(),
                         EntityTypes.SearchSortDirection.name());
                 
                 if(!hasExecutionErrors()) {

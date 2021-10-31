@@ -109,7 +109,7 @@ public class EntityTypeLogic
                 }
                 break;
             case 1:
-                EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                         ComponentVendors.ECHOTHREE.name(), EntityTypes.EntityType.name());
 
                 if(!eea.hasExecutionErrors()) {

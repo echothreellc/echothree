@@ -72,7 +72,7 @@ public class GetLanguageCommand
                 break;
             case 1:
                 if(languageIsoName == null) {
-                    EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
+                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
                             ComponentVendors.ECHOTHREE.name(), EntityTypes.Language.name());
                     
                     if(!hasExecutionErrors()) {

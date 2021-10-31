@@ -99,7 +99,7 @@ public class OfferNameElementLogic
 
         if(parameterCount == 1) {
             if(offerNameElementName == null) {
-                EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                         ComponentVendors.ECHOTHREE.name(), EntityTypes.OfferNameElement.name());
 
                 if(!eea.hasExecutionErrors()) {

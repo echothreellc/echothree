@@ -110,7 +110,7 @@ public class WorkflowStepTypeLogic
                 break;
             case 1:
                 if(workflowStepTypeName == null) {
-                    EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHOTHREE.name(), EntityTypes.WorkflowStepType.name());
 
                     if(!eea.hasExecutionErrors()) {

@@ -70,7 +70,7 @@ public class GetForumCommand
             Forum forum = null;
 
             if(forumName == null) {
-                EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHOTHREE.name(),
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHOTHREE.name(),
                         EntityTypes.Forum.name());
                 
                 if(!hasExecutionErrors()) {

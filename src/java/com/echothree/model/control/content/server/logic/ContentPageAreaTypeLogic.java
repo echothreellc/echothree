@@ -97,7 +97,7 @@ public class ContentPageAreaTypeLogic
         switch(parameterCount) {
             case 1:
                 if(contentPageAreaTypeName == null) {
-                    EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHOTHREE.name(), EntityTypes.ContentPageAreaType.name());
 
                     if(!eea.hasExecutionErrors()) {

@@ -72,7 +72,7 @@ public class GetDateTimeFormatCommand
                 break;
             case 1:
                 if(dateTimeFormatName == null) {
-                    EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
+                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
                             ComponentVendors.ECHOTHREE.name(), EntityTypes.DateTimeFormat.name());
                     
                     if(!hasExecutionErrors()) {

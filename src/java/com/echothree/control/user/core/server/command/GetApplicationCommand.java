@@ -66,7 +66,7 @@ public class GetApplicationCommand
             Application application = null;
 
             if(applicationName == null) {
-                EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHOTHREE.name(),
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHOTHREE.name(),
                         EntityTypes.Application.name());
                 
                 if(!hasExecutionErrors()) {

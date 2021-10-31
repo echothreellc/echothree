@@ -82,7 +82,7 @@ public class GetLicenseTypeCommand
             LicenseType licenseType = null;
 
             if(licenseTypeName == null) {
-                EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHOTHREE.name(),
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHOTHREE.name(),
                         EntityTypes.LicenseType.name());
                 
                 if(!hasExecutionErrors()) {

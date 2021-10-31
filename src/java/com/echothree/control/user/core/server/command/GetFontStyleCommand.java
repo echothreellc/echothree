@@ -66,7 +66,7 @@ public class GetFontStyleCommand
 
         if(parameterCount == 1) {
             if(fontStyleName == null) {
-                EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
                         ComponentVendors.ECHOTHREE.name(), EntityTypes.FontStyle.name());
 
                 if(!hasExecutionErrors()) {

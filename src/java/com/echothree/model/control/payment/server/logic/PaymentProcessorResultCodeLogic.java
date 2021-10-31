@@ -110,7 +110,7 @@ public class PaymentProcessorResultCodeLogic
                 break;
             case 1:
                 if(paymentProcessorResultCodeName == null) {
-                    EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHOTHREE.name(), EntityTypes.PaymentProcessorResultCode.name());
 
                     if(!eea.hasExecutionErrors()) {

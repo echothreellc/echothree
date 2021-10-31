@@ -109,7 +109,7 @@ public class LotLogic
         switch(parameterCount) {
             case 1:
                 if(lotName == null) {
-                    EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHOTHREE.name(), EntityTypes.Lot.name());
 
                     if(!eea.hasExecutionErrors()) {

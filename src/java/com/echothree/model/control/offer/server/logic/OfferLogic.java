@@ -119,7 +119,7 @@ public class OfferLogic
                 break;
             case 1:
                 if(offerName == null) {
-                    EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHOTHREE.name(), EntityTypes.Offer.name());
 
                     if(!eea.hasExecutionErrors()) {

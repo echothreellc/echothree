@@ -134,7 +134,7 @@ public class EntityAttributeLogic
     public EntityAttributeType getEntityAttributeTypeByUlid(final ExecutionErrorAccumulator eea, final String ulid, final EntityPermission entityPermission) {
         EntityAttributeType entityAttributeType = null;
         
-        EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
+        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
                 ComponentVendors.ECHOTHREE.name(), EntityTypes.EntityAttributeType.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -169,7 +169,7 @@ public class EntityAttributeLogic
     public EntityAttributeGroup getEntityAttributeGroupByUlid(final ExecutionErrorAccumulator eea, final String ulid, final EntityPermission entityPermission) {
         EntityAttributeGroup entityAttributeGroup = null;
         
-        EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
+        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
                 ComponentVendors.ECHOTHREE.name(), EntityTypes.EntityAttributeGroup.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -334,7 +334,7 @@ public class EntityAttributeLogic
             final EntityPermission entityPermission) {
         EntityAttribute entityAttribute = null;
         
-        EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
+        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
                 ComponentVendors.ECHOTHREE.name(), EntityTypes.EntityAttribute.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -599,7 +599,7 @@ public class EntityAttributeLogic
     public EntityListItem getEntityListItemByUlid(final ExecutionErrorAccumulator eea, final String ulid, final EntityPermission entityPermission) {
         EntityListItem entityListItem = null;
         
-        EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
+        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
                 ComponentVendors.ECHOTHREE.name(), EntityTypes.EntityListItem.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {

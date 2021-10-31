@@ -110,7 +110,7 @@ public class PaymentMethodTypeLogic
                 break;
             case 1:
                 if(paymentMethodTypeName == null) {
-                    EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHOTHREE.name(), EntityTypes.PaymentMethodType.name());
 
                     if(!eea.hasExecutionErrors()) {

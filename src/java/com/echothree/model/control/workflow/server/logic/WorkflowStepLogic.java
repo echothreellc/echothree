@@ -170,7 +170,7 @@ public class WorkflowStepLogic
                 }
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
-            EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                     ComponentVendors.ECHOTHREE.name(), EntityTypes.WorkflowStep.name());
 
             if(!eea.hasExecutionErrors()) {

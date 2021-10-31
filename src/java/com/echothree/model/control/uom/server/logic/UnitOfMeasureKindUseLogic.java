@@ -63,7 +63,7 @@ public class UnitOfMeasureKindUseLogic
     public UnitOfMeasureKindUseType getUnitOfMeasureKindUseTypeByUlid(final ExecutionErrorAccumulator eea, final String ulid, final EntityPermission entityPermission) {
         UnitOfMeasureKindUseType unitOfMeasureKindUseType = null;
         
-        EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
+        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
                 ComponentVendors.ECHOTHREE.name(), EntityTypes.UnitOfMeasureKindUseType.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
@@ -112,7 +112,7 @@ public class UnitOfMeasureKindUseLogic
     public UnitOfMeasureKindUse getUnitOfMeasureKindUseByUlid(final ExecutionErrorAccumulator eea, final String ulid, final EntityPermission entityPermission) {
         UnitOfMeasureKindUse unitOfMeasureKindUse = null;
         
-        EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
+        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
                 ComponentVendors.ECHOTHREE.name(), EntityTypes.UnitOfMeasureKindUse.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {

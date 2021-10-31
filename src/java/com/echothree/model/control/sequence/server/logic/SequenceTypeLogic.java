@@ -114,7 +114,7 @@ public class SequenceTypeLogic
                 break;
             case 1:
                 if(sequenceTypeName == null) {
-                    EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHOTHREE.name(), EntityTypes.SequenceType.name());
 
                     if(!eea.hasExecutionErrors()) {

@@ -68,7 +68,7 @@ public class GetIndexCommand
             Index index = null;
 
             if(indexName == null) {
-                EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHOTHREE.name(),
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHOTHREE.name(),
                         EntityTypes.Index.name());
                 
                 if(!hasExecutionErrors()) {

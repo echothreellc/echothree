@@ -100,7 +100,7 @@ public class UnitOfMeasureTypeLogic
     public UnitOfMeasureType getUnitOfMeasureTypeByUlid(final ExecutionErrorAccumulator eea, final String ulid, final EntityPermission entityPermission) {
         UnitOfMeasureType unitOfMeasureType = null;
         
-        EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
+        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
                 ComponentVendors.ECHOTHREE.name(), EntityTypes.UnitOfMeasureType.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {

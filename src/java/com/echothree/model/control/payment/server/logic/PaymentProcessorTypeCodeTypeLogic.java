@@ -173,7 +173,7 @@ public class PaymentProcessorTypeCodeTypeLogic
                                 paymentProcessorTypeCodeTypeName, entityPermission);
                     }
                 } else {
-                    EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHOTHREE.name(), EntityTypes.PaymentProcessorTypeCodeType.name());
 
                     if(!eea.hasExecutionErrors()) {

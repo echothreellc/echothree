@@ -112,7 +112,7 @@ public class EntityAttributeGroupLogic
         switch(parameterCount) {
             case 1:
                 if(entityAttributeGroupName == null) {
-                    EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
                             ComponentVendors.ECHOTHREE.name(), EntityTypes.EntityAttributeGroup.name());
 
                     if(!eea.hasExecutionErrors()) {

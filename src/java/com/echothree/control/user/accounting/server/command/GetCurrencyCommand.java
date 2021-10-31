@@ -72,7 +72,7 @@ public class GetCurrencyCommand
                 break;
             case 1:
                 if(currencyIsoName == null) {
-                    EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
+                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
                             ComponentVendors.ECHOTHREE.name(), EntityTypes.Currency.name());
                     
                     if(!hasExecutionErrors()) {
