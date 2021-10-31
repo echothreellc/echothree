@@ -84,7 +84,7 @@ public class ItemObject
     @GraphQLField
     @GraphQLDescription("item status")
     public WorkflowEntityStatusObject getItemStatus(final DataFetchingEnvironment env) {
-        return getWorkflowEntityStatusObject(env, item, ItemStatusConstants.Workflow_ITEM_STATUS);
+        return getWorkflowEntityStatusObject(env, ItemStatusConstants.Workflow_ITEM_STATUS);
     }
 
 }

@@ -21,20 +21,26 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workflow.server.graphql.WorkflowEntityStatusObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowSecurityUtils;
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
-import com.echothree.util.server.persistence.BaseEntity;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.Session;
 import graphql.schema.DataFetchingEnvironment;
 
 public abstract class BaseObject {
 
+    protected final BasePK basePrimaryKey;
+
+    protected BaseObject(BasePK basePrimaryKey) {
+        this.basePrimaryKey = basePrimaryKey;
+    }
+
     protected WorkflowEntityStatusObject getWorkflowEntityStatusObject(final DataFetchingEnvironment env,
-            final BaseEntity baseEntity, final String workflowName) {
+            final String workflowName) {
         WorkflowEntityStatusObject result = null;
 
         if(WorkflowSecurityUtils.getInstance().getHasWorkflowEntityStatusesAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
             var workflowControl = Session.getModelController(WorkflowControl.class);
-            var entityInstance = coreControl.getEntityInstanceByBasePK(baseEntity.getPrimaryKey());
+            var entityInstance = coreControl.getEntityInstanceByBasePK(basePrimaryKey);
             var workflow = WorkflowLogic.getInstance().getWorkflowByName(null, workflowName);
             var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstance(workflow, entityInstance);
 

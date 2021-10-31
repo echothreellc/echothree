@@ -33,11 +33,9 @@ import java.util.List;
 
 public abstract class BaseEntityInstanceObject
         extends BaseObject {
-    
-    private final BasePK basePrimaryKey;
-    
+
     protected BaseEntityInstanceObject(BasePK basePrimaryKey) {
-        this.basePrimaryKey = basePrimaryKey;
+        super(basePrimaryKey);
     }
     
     private EntityInstance entityInstance; // Optional, use getEntityInstanceByBasePK()
