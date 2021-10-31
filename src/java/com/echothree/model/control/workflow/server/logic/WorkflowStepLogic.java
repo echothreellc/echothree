@@ -16,14 +16,23 @@
 
 package com.echothree.model.control.workflow.server.logic;
 
+import com.echothree.control.user.workflow.common.spec.WorkflowStepUniversalSpec;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.workflow.common.exception.MissingRequiredWorkflowNameException;
+import com.echothree.model.control.workflow.common.exception.UnknownDefaultWorkflowStepException;
 import com.echothree.model.control.workflow.common.exception.UnknownWorkflowNameException;
+import com.echothree.model.control.workflow.common.exception.UnknownWorkflowStepNameException;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
 import com.echothree.model.data.workflow.server.entity.WorkflowStep;
 import com.echothree.model.data.workflow.server.entity.WorkflowStepDetail;
+import com.echothree.util.common.exception.BaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
@@ -31,6 +40,7 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.validation.ParameterUtils;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -50,27 +60,9 @@ public class WorkflowStepLogic
     public static WorkflowStepLogic getInstance() {
         return WorkflowStepLogicHolder.instance;
     }
-    
-    public WorkflowStep getWorkflowStepByName(final Class unknownException, final ExecutionErrors unknownExecutionError,
-            final ExecutionErrorAccumulator eea, final Workflow workflow, final String workflowStepName) {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
-        WorkflowStep workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName);
 
-        if(workflowStep == null) {
-            handleExecutionError(unknownException, eea, unknownExecutionError.name(), workflow.getLastDetail().getWorkflowName(),
-                    workflowStepName);
-        }
-
-        return workflowStep;
-    }
-
-    public WorkflowStep getWorkflowStepByName(final ExecutionErrorAccumulator eea, final Workflow workflow, final String workflowStepName) {
-        return getWorkflowStepByName(UnknownWorkflowNameException.class, ExecutionErrors.UnknownWorkflowStepName, eea,
-                workflow, workflowStepName);
-    }
-
-    public WorkflowStep getWorkflowStepByName(final Class unknownWorkflowException, final ExecutionErrors unknownWorkflowExecutionError,
-            final Class unknownWorkflowStepException, final ExecutionErrors unknownWorkflowStepExecutionError,
+    public WorkflowStep getWorkflowStepByName(final Class<? extends BaseException> unknownWorkflowException, final ExecutionErrors unknownWorkflowExecutionError,
+            final Class<? extends BaseException>  unknownWorkflowStepException, final ExecutionErrors unknownWorkflowStepExecutionError,
             final ExecutionErrorAccumulator eea, final String workflowName, final String workflowStepName) {
         Workflow workflow = WorkflowLogic.getInstance().getWorkflowByName(unknownWorkflowException, unknownWorkflowExecutionError,
                 eea, workflowName, EntityPermission.READ_ONLY);
@@ -84,15 +76,121 @@ public class WorkflowStepLogic
         return workflowStep;
     }
 
-    public WorkflowStep getWorkflowStepByName(final ExecutionErrorAccumulator eea, final String workflowName, final String workflowStepName) {
-        Workflow workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, workflowName);
-        WorkflowStep workflowStep = null;
+    public WorkflowStep getWorkflowStepByName(final Class<? extends BaseException> unknownException, final ExecutionErrors unknownExecutionError,
+            final ExecutionErrorAccumulator eea, final Workflow workflow, final String workflowStepName, EntityPermission entityPermission) {
+        var workflowControl = Session.getModelController(WorkflowControl.class);
+        WorkflowStep workflowStep = workflowControl.getWorkflowStepByName(workflow, workflowStepName, entityPermission);
 
-        if(eea == null || !eea.hasExecutionErrors()) {
-            workflowStep = getWorkflowStepByName(eea, workflow, workflowStepName);
+        if(workflowStep == null) {
+            handleExecutionError(unknownException, eea, unknownExecutionError.name(), workflow.getLastDetail().getWorkflowName(),
+                    workflowStepName);
         }
 
         return workflowStep;
+    }
+
+    public WorkflowStep getWorkflowStepByName(final Class<? extends BaseException> unknownException, final ExecutionErrors unknownExecutionError,
+            final ExecutionErrorAccumulator eea, final Workflow workflow, final String workflowStepName) {
+        return getWorkflowStepByName(unknownException, unknownExecutionError, eea, workflow, workflowStepName, EntityPermission.READ_ONLY);
+    }
+
+    public WorkflowStep getWorkflowStepByNameForUpdate(final Class<? extends BaseException> unknownException, final ExecutionErrors unknownExecutionError,
+            final ExecutionErrorAccumulator eea, final Workflow workflow, final String workflowStepName) {
+        return getWorkflowStepByName(unknownException, unknownExecutionError, eea, workflow, workflowStepName, EntityPermission.READ_WRITE);
+    }
+
+    public WorkflowStep getWorkflowStepByName(final ExecutionErrorAccumulator eea, final Workflow workflow, final String workflowStepName,
+            final EntityPermission entityPermission) {
+        return getWorkflowStepByName(UnknownWorkflowStepNameException.class, ExecutionErrors.UnknownWorkflowStepName,
+                eea, workflow, workflowStepName, entityPermission);
+    }
+
+    public WorkflowStep getWorkflowStepByName(final ExecutionErrorAccumulator eea, final Workflow workflow, final String workflowStepName) {
+        return getWorkflowStepByName(UnknownWorkflowStepNameException.class, ExecutionErrors.UnknownWorkflowStepName,
+                eea, workflow, workflowStepName);
+    }
+
+    public WorkflowStep getWorkflowStepByNameForUpdate(final ExecutionErrorAccumulator eea, final Workflow workflow, final String workflowStepName) {
+        return getWorkflowStepByNameForUpdate(UnknownWorkflowStepNameException.class, ExecutionErrors.UnknownWorkflowStepName,
+                eea, workflow, workflowStepName);
+    }
+
+    public WorkflowStep getWorkflowStepByName(final ExecutionErrorAccumulator eea, final String workflowName, final String workflowStepName,
+            final EntityPermission entityPermission) {
+        var workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, workflowName);
+        WorkflowStep workflowStep = null;
+
+        if(!eea.hasExecutionErrors()) {
+            workflowStep = getWorkflowStepByName(UnknownWorkflowStepNameException.class, ExecutionErrors.UnknownWorkflowStepName,
+                    eea, workflow, workflowStepName, entityPermission);
+        }
+
+        return workflowStep;
+    }
+
+    public WorkflowStep getWorkflowStepByName(final ExecutionErrorAccumulator eea, final String workflowName, final String workflowStepName) {
+        return getWorkflowStepByName(eea, workflowName, workflowStepName, EntityPermission.READ_ONLY);
+    }
+
+    public WorkflowStep getWorkflowStepByNameForUpdate(final ExecutionErrorAccumulator eea, final String workflowName, final String workflowStepName) {
+        return getWorkflowStepByName(eea, workflowName, workflowStepName, EntityPermission.READ_WRITE);
+    }
+
+    public WorkflowStep getWorkflowStepByUniversalSpec(final ExecutionErrorAccumulator eea, final WorkflowStepUniversalSpec universalSpec,
+            final boolean allowDefault, final EntityPermission entityPermission) {
+        var workflowControl = Session.getModelController(WorkflowControl.class);
+        var workflowName = universalSpec.getWorkflowName();
+        var workflowStepName = universalSpec.getWorkflowStepName();
+        var nameParameterCount= ParameterUtils.getInstance().countNonNullParameters(workflowName, workflowStepName);
+        var possibleEntitySpecs= EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        WorkflowStep workflowStep = null;
+
+        if(nameParameterCount < 3 && possibleEntitySpecs == 0) {
+            Workflow workflow = null;
+
+            if(workflowName != null) {
+                workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, workflowName);
+            } else {
+                handleExecutionError(MissingRequiredWorkflowNameException.class, eea, ExecutionErrors.MissingRequiredWorkflowName.name());
+            }
+
+            if(!eea.hasExecutionErrors()) {
+                if(workflowStepName == null) {
+                    if(allowDefault) {
+                        workflowStep = workflowControl.getDefaultWorkflowStep(workflow, entityPermission);
+
+                        if(workflowStep == null) {
+                            handleExecutionError(UnknownDefaultWorkflowStepException.class, eea, ExecutionErrors.UnknownDefaultWorkflowStep.name());
+                        }
+                    } else {
+                        handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                    }
+                } else {
+                    workflowStep = getWorkflowStepByName(eea, workflow, workflowStepName, entityPermission);
+                }
+            }
+        } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
+            EntityInstance entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    ComponentVendors.ECHOTHREE.name(), EntityTypes.WorkflowStep.name());
+
+            if(!eea.hasExecutionErrors()) {
+                workflowStep = workflowControl.getWorkflowStepByEntityInstance(entityInstance, entityPermission);
+            }
+        } else {
+            handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        return workflowStep;
+    }
+
+    public WorkflowStep getWorkflowStepByUniversalSpec(final ExecutionErrorAccumulator eea, final WorkflowStepUniversalSpec universalSpec,
+            boolean allowDefault) {
+        return getWorkflowStepByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_ONLY);
+    }
+
+    public WorkflowStep getWorkflowStepByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea, final WorkflowStepUniversalSpec universalSpec,
+            boolean allowDefault) {
+        return getWorkflowStepByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
     }
 
     public Set<WorkflowEntityStatus> isEntityInWorkflowSteps(final ExecutionErrorAccumulator eea, final String workflowName, final BaseEntity baseEntity,

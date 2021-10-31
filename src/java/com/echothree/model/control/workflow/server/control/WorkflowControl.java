@@ -1002,7 +1002,31 @@ public class WorkflowControl
         
         return workflowStep;
     }
-    
+
+    public long countWorkflowStepsByWorkflow(Workflow workflow) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM workflowsteps, workflowstepdetails " +
+                "WHERE wkfls_activedetailid = wkflsdt_workflowstepdetailid " +
+                "AND wkflsdt_wkfl_workflowid = ?",
+                workflow);
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.WorkflowStep */
+    public WorkflowStep getWorkflowStepByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new WorkflowStepPK(entityInstance.getEntityUniqueId());
+
+        return WorkflowStepFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public WorkflowStep getWorkflowStepByEntityInstance(EntityInstance entityInstance) {
+        return getWorkflowStepByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public WorkflowStep getWorkflowStepByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getWorkflowStepByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     private static final Map<EntityPermission, String> getDefaultWorkflowStepQueries;
 
     static {
@@ -1022,7 +1046,7 @@ public class WorkflowControl
         getDefaultWorkflowStepQueries = Collections.unmodifiableMap(queryMap);
     }
     
-    private WorkflowStep getDefaultWorkflowStep(Workflow workflow, EntityPermission entityPermission) {
+    public WorkflowStep getDefaultWorkflowStep(Workflow workflow, EntityPermission entityPermission) {
         return WorkflowStepFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultWorkflowStepQueries,
                 workflow);
     }
@@ -1088,7 +1112,7 @@ public class WorkflowControl
         getWorkflowStepByNameQueries = Collections.unmodifiableMap(queryMap);
     }
     
-    private WorkflowStep getWorkflowStepByName(Workflow workflow, String workflowStepName, EntityPermission entityPermission) {
+    public WorkflowStep getWorkflowStepByName(Workflow workflow, String workflowStepName, EntityPermission entityPermission) {
         return WorkflowStepFactory.getInstance().getEntityFromQuery(entityPermission, getWorkflowStepByNameQueries,
                 workflow, workflowStepName);
     }
