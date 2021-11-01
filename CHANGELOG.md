@@ -1,5 +1,23 @@
 # Changelog
 
+## 2021-10-31-01
+
+* GraphQL Objects for Workflow Types [336](https://gitlab.echothree.com/echothree/echothree/-/issues/336)
+* GraphQL Objects for Security Role Groups [337](https://gitlab.echothree.com/echothree/echothree/-/issues/337)
+* GraphQL Objects for Workflows [338](https://gitlab.echothree.com/echothree/echothree/-/issues/338)
+* GraphQL Objects for Workflow Steps [339](https://gitlab.echothree.com/echothree/echothree/-/issues/339)
+* GraphQL Objects for Workflow Step Types [340](https://gitlab.echothree.com/echothree/echothree/-/issues/340)
+* Add employeeStatus and employeeAvailability fields to Employee object [341](https://gitlab.echothree.com/echothree/echothree/-/issues/341)
+* Add itemStatus field to Item object [342](https://gitlab.echothree.com/echothree/echothree/-/issues/342)
+* cucumber-java8/cucumber-junit 7.0.0 Upgrade [350](https://gitlab.echothree.com/echothree/echothree/-/issues/350)
+* jOOQ 3.15.3 Upgrade [351](https://gitlab.echothree.com/echothree/echothree/-/issues/351)
+* java.sql.SQLFeatureNotSupportedException Thrown When Binding to CLOBs [352](https://gitlab.echothree.com/echothree/echothree/-/issues/352)
+* Call clearParameters() Before Binding Parameters [353](https://gitlab.echothree.com/echothree/echothree/-/issues/353)
+* PMD 6.39.0 Upgrade [354](https://gitlab.echothree.com/echothree/echothree/-/issues/354)
+* Remove NetBeans Project [356](https://gitlab.echothree.com/echothree/echothree/-/issues/356)
+* MySQL Connector/J 8.0.27 Upgrade [357](https://gitlab.echothree.com/echothree/echothree/-/issues/357)
+* GraphQL Objects for Workflow Entity Statuses [359](https://gitlab.echothree.com/echothree/echothree/-/issues/359)
+
 ## 2021-10-17-01
 
 * GraphQL Objects and Mutations for Selectors [152](https://gitlab.echothree.com/echothree/echothree/-/issues/152)
