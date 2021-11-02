@@ -13,18 +13,18 @@ deploying these applications.
 ## Prerequisites
 
 * CentOS 6
-* Amazon Corretto 11 (11.0.10.9.1)
+* Amazon Corretto 17 (17.0.1.12.1)
 * Apache Ant 1.10 (1.10.9)
 * MySQL 8.0 (8.0.26 GA)
 * WildFly 23 (24.0.1)
 
 The full version numbers in parentheses are the most recent versions used for testing.
 
-## Amazon Corretto 11
+## Amazon Corretto 17
 
-* [What Is Amazon Corretto 11?](https://docs.aws.amazon.com/corretto/latest/corretto-11-ug/what-is-corretto-11.html)
-* [Downloads for Amazon Corretto 11](https://docs.aws.amazon.com/corretto/latest/corretto-11-ug/downloads-list.html)
-* [Versioned Downloads of Corretto on GitHub](https://github.com/corretto/corretto-11/releases)
+* [What Is Amazon Corretto 17?](https://docs.aws.amazon.com/corretto/latest/corretto-17-ug/what-is-corretto-17.html)
+* [Downloads for Amazon Corretto 17](https://docs.aws.amazon.com/corretto/latest/corretto-17-ug/downloads-list.html)
+* [Versioned Downloads of Corretto on GitHub](https://github.com/corretto/corretto-17/releases)
 
 ## MySQL 8.0
 
