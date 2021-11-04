@@ -29,7 +29,7 @@ import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 
-@GraphQLDescription("payment processor action type object")
+@GraphQLDescription("payment method type object")
 @GraphQLName("PaymentMethodType")
 public class PaymentMethodTypeObject
         extends BaseEntityInstanceObject {
@@ -53,7 +53,7 @@ public class PaymentMethodTypeObject
     }
     
     @GraphQLField
-    @GraphQLDescription("payment processor action type name")
+    @GraphQLDescription("payment method type name")
     @GraphQLNonNull
     public String getPaymentMethodTypeName() {
         return getPaymentMethodTypeDetail().getPaymentMethodTypeName();

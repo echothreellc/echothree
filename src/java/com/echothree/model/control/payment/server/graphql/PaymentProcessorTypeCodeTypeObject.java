@@ -75,7 +75,7 @@ public class PaymentProcessorTypeCodeTypeObject
     }
 
     @GraphQLField
-    @GraphQLDescription("payment processor action type name")
+    @GraphQLDescription("payment processor type code type name")
     @GraphQLNonNull
     public String getPaymentProcessorTypeCodeTypeName() {
         return getPaymentProcessorTypeCodeTypeDetail().getPaymentProcessorTypeCodeTypeName();
