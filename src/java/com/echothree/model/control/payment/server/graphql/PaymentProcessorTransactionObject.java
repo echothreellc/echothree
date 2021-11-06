@@ -16,11 +16,7 @@
 
 package com.echothree.model.control.payment.server.graphql;
 
-import com.echothree.control.user.payment.server.command.GetPaymentProcessorActionTypeCommand;
-import com.echothree.control.user.payment.server.command.GetPaymentProcessorCommand;
-import com.echothree.control.user.payment.server.command.GetPaymentProcessorResultCodeCommand;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTransaction;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTransactionDetail;
 import graphql.annotations.annotationTypes.GraphQLDescription;
@@ -52,51 +48,6 @@ public class PaymentProcessorTransactionObject
         return paymentProcessorTransactionDetail;
     }
 
-    private Boolean hasPaymentProcessorAccess;
-
-    private boolean getHasPaymentProcessorAccess(final DataFetchingEnvironment env) {
-        if(hasPaymentProcessorAccess == null) {
-            GraphQlContext context = env.getContext();
-            var baseSingleEntityCommand = new GetPaymentProcessorCommand(context.getUserVisitPK(), null);
-
-            baseSingleEntityCommand.security();
-
-            hasPaymentProcessorAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-
-        return hasPaymentProcessorAccess;
-    }
-
-    private Boolean hasPaymentProcessorActionTypeAccess;
-
-    private boolean getHasPaymentProcessorActionTypeAccess(final DataFetchingEnvironment env) {
-        if(hasPaymentProcessorActionTypeAccess == null) {
-            GraphQlContext context = env.getContext();
-            var baseSingleEntityCommand = new GetPaymentProcessorActionTypeCommand(context.getUserVisitPK(), null);
-
-            baseSingleEntityCommand.security();
-
-            hasPaymentProcessorActionTypeAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-
-        return hasPaymentProcessorActionTypeAccess;
-    }
-
-    private Boolean hasPaymentProcessorResultCodeAccess;
-
-    private boolean getHasPaymentProcessorResultCodeAccess(final DataFetchingEnvironment env) {
-        if(hasPaymentProcessorResultCodeAccess == null) {
-            GraphQlContext context = env.getContext();
-            var baseSingleEntityCommand = new GetPaymentProcessorResultCodeCommand(context.getUserVisitPK(), null);
-
-            baseSingleEntityCommand.security();
-
-            hasPaymentProcessorResultCodeAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-
-        return hasPaymentProcessorResultCodeAccess;
-    }
-
     @GraphQLField
     @GraphQLDescription("payment processor transaction name")
     @GraphQLNonNull
@@ -107,19 +58,19 @@ public class PaymentProcessorTransactionObject
     @GraphQLField
     @GraphQLDescription("payment processor")
     public PaymentProcessorObject getPaymentProcessor(final DataFetchingEnvironment env) {
-        return getHasPaymentProcessorAccess(env) ? new PaymentProcessorObject(getPaymentProcessorTransactionDetail().getPaymentProcessor()) : null;
+        return PaymentSecurityUtils.getInstance().getHasPaymentProcessorAccess(env) ? new PaymentProcessorObject(getPaymentProcessorTransactionDetail().getPaymentProcessor()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("payment processor action type")
     public PaymentProcessorActionTypeObject getPaymentProcessorActionType(final DataFetchingEnvironment env) {
-        return getHasPaymentProcessorActionTypeAccess(env) ? new PaymentProcessorActionTypeObject(getPaymentProcessorTransactionDetail().getPaymentProcessorActionType()) : null;
+        return PaymentSecurityUtils.getInstance().getHasPaymentProcessorActionTypeAccess(env) ? new PaymentProcessorActionTypeObject(getPaymentProcessorTransactionDetail().getPaymentProcessorActionType()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("payment processor result code")
     public PaymentProcessorResultCodeObject getPaymentProcessorResultCode(final DataFetchingEnvironment env) {
-        return getHasPaymentProcessorResultCodeAccess(env) ? new PaymentProcessorResultCodeObject(getPaymentProcessorTransactionDetail().getPaymentProcessorResultCode()) : null;
+        return PaymentSecurityUtils.getInstance().getHasPaymentProcessorResultCodeAccess(env) ? new PaymentProcessorResultCodeObject(getPaymentProcessorTransactionDetail().getPaymentProcessorResultCode()) : null;
     }
     
 }

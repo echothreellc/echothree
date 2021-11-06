@@ -29,7 +29,7 @@ import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 
-@GraphQLDescription("payment processor action type object")
+@GraphQLDescription("payment processor result code object")
 @GraphQLName("PaymentProcessorResultCode")
 public class PaymentProcessorResultCodeObject
         extends BaseEntityInstanceObject {
@@ -53,7 +53,7 @@ public class PaymentProcessorResultCodeObject
     }
     
     @GraphQLField
-    @GraphQLDescription("payment processor action type name")
+    @GraphQLDescription("payment processor result code name")
     @GraphQLNonNull
     public String getPaymentProcessorResultCodeName() {
         return getPaymentProcessorResultCodeDetail().getPaymentProcessorResultCodeName();

@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.payment.server.graphql;
 
-import com.echothree.control.user.payment.server.command.GetPaymentProcessorTypeCommand;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.payment.server.control.PaymentProcessorTypeCodeTypeControl;
@@ -53,29 +52,14 @@ public class PaymentProcessorTypeCodeTypeObject
         return paymentProcessorTypeCodeTypeDetail;
     }
 
-    private Boolean hasPaymentProcessorTypeAccess;
-
-    private boolean getHasPaymentProcessorTypeAccess(final DataFetchingEnvironment env) {
-        if(hasPaymentProcessorTypeAccess == null) {
-            GraphQlContext context = env.getContext();
-            var baseSingleEntityCommand = new GetPaymentProcessorTypeCommand(context.getUserVisitPK(), null);
-
-            baseSingleEntityCommand.security();
-
-            hasPaymentProcessorTypeAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-
-        return hasPaymentProcessorTypeAccess;
-    }
-
     @GraphQLField
     @GraphQLDescription("payment processor type")
     public PaymentProcessorTypeObject getPaymentProcessorType(final DataFetchingEnvironment env) {
-        return getHasPaymentProcessorTypeAccess(env) ? new PaymentProcessorTypeObject(getPaymentProcessorTypeCodeTypeDetail().getPaymentProcessorType()) : null;
+        return PaymentSecurityUtils.getInstance().getHasPaymentProcessorTypeAccess(env) ? new PaymentProcessorTypeObject(getPaymentProcessorTypeCodeTypeDetail().getPaymentProcessorType()) : null;
     }
 
     @GraphQLField
-    @GraphQLDescription("payment processor action type name")
+    @GraphQLDescription("payment processor type code type name")
     @GraphQLNonNull
     public String getPaymentProcessorTypeCodeTypeName() {
         return getPaymentProcessorTypeCodeTypeDetail().getPaymentProcessorTypeCodeTypeName();

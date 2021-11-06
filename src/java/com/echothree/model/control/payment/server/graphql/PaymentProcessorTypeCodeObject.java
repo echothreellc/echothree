@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.payment.server.graphql;
 
-import com.echothree.control.user.payment.server.command.GetPaymentProcessorTypeCodeTypeCommand;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.payment.server.control.PaymentProcessorTypeCodeControl;
@@ -53,29 +52,14 @@ public class PaymentProcessorTypeCodeObject
         return paymentProcessorTypeCodeDetail;
     }
 
-    private Boolean hasPaymentProcessorTypeCodeTypeAccess;
-
-    private boolean getHasPaymentProcessorTypeCodeTypeAccess(final DataFetchingEnvironment env) {
-        if(hasPaymentProcessorTypeCodeTypeAccess == null) {
-            GraphQlContext context = env.getContext();
-            var baseSingleEntityCommand = new GetPaymentProcessorTypeCodeTypeCommand(context.getUserVisitPK(), null);
-
-            baseSingleEntityCommand.security();
-
-            hasPaymentProcessorTypeCodeTypeAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-
-        return hasPaymentProcessorTypeCodeTypeAccess;
-    }
-
     @GraphQLField
     @GraphQLDescription("payment processor type code type")
     public PaymentProcessorTypeCodeTypeObject getPaymentProcessorTypeCodeType(final DataFetchingEnvironment env) {
-        return getHasPaymentProcessorTypeCodeTypeAccess(env) ? new PaymentProcessorTypeCodeTypeObject(getPaymentProcessorTypeCodeDetail().getPaymentProcessorTypeCodeType()) : null;
+        return PaymentSecurityUtils.getInstance().getHasPaymentProcessorTypeCodeTypeAccess(env) ? new PaymentProcessorTypeCodeTypeObject(getPaymentProcessorTypeCodeDetail().getPaymentProcessorTypeCodeType()) : null;
     }
 
     @GraphQLField
-    @GraphQLDescription("payment processor action type name")
+    @GraphQLDescription("payment processor type code name")
     @GraphQLNonNull
     public String getPaymentProcessorTypeCodeName() {
         return getPaymentProcessorTypeCodeDetail().getPaymentProcessorTypeCodeName();

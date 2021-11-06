@@ -16,10 +16,7 @@
 
 package com.echothree.model.control.payment.server.graphql;
 
-import com.echothree.control.user.payment.server.command.GetPaymentProcessorTransactionCodesCommand;
-import com.echothree.control.user.payment.server.command.GetPaymentProcessorTransactionCommand;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.payment.server.control.PaymentProcessorTransactionCodeControl;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTransactionCode;
 import com.echothree.util.server.persistence.Session;
@@ -44,40 +41,10 @@ public class PaymentProcessorTransactionCodeObject
         this.paymentProcessorTransactionCode = paymentProcessorTransactionCode;
     }
 
-    private Boolean hasPaymentProcessorTransactionAccess;
-
-    private boolean getHasPaymentProcessorTransactionAccess(final DataFetchingEnvironment env) {
-        if(hasPaymentProcessorTransactionAccess == null) {
-            GraphQlContext context = env.getContext();
-            var baseSingleEntityCommand = new GetPaymentProcessorTransactionCommand(context.getUserVisitPK(), null);
-
-            baseSingleEntityCommand.security();
-
-            hasPaymentProcessorTransactionAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-
-        return hasPaymentProcessorTransactionAccess;
-    }
-
-    private Boolean hasPaymentProcessorTransactionCodesAccess;
-
-    private boolean getHasPaymentProcessorTransactionCodesAccess(final DataFetchingEnvironment env) {
-        if(hasPaymentProcessorTransactionCodesAccess == null) {
-            GraphQlContext context = env.getContext();
-            var baseMultipleEntitiesCommand = new GetPaymentProcessorTransactionCodesCommand(context.getUserVisitPK(), null);
-
-            baseMultipleEntitiesCommand.security();
-
-            hasPaymentProcessorTransactionCodesAccess = !baseMultipleEntitiesCommand.hasSecurityMessages();
-        }
-
-        return hasPaymentProcessorTransactionCodesAccess;
-    }
-
     @GraphQLField
     @GraphQLDescription("payment processor transaction")
     public PaymentProcessorTransactionObject getPaymentProcessorTransaction(final DataFetchingEnvironment env) {
-        return getHasPaymentProcessorTransactionAccess(env) ? new PaymentProcessorTransactionObject(paymentProcessorTransactionCode.getPaymentProcessorTransaction()) : null;
+        return PaymentSecurityUtils.getInstance().getHasPaymentProcessorTransactionAccess(env) ? new PaymentProcessorTransactionObject(paymentProcessorTransactionCode.getPaymentProcessorTransaction()) : null;
     }
 
     @GraphQLField
@@ -86,7 +53,7 @@ public class PaymentProcessorTransactionCodeObject
     public List<PaymentProcessorTransactionCodeObject> getPaymentProcessorTransactionCodes(final DataFetchingEnvironment env) {
         List<PaymentProcessorTransactionCodeObject> paymentProcessorTransactionCodes = null;
 
-        if(getHasPaymentProcessorTransactionCodesAccess(env)) {
+        if(PaymentSecurityUtils.getInstance().getHasPaymentProcessorTransactionCodesAccess(env)) {
             var paymentProcessorTransactionCodeControl = Session.getModelController(PaymentProcessorTransactionCodeControl.class);
             var entities = paymentProcessorTransactionCodeControl.getPaymentProcessorTransactionCodesByPaymentProcessorTransaction(paymentProcessorTransactionCode.getPaymentProcessorTransaction());
             var objects = new ArrayList<PaymentProcessorTransactionCodeObject>(entities.size());

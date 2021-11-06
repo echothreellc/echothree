@@ -16,8 +16,6 @@
 
 package com.echothree.model.control.payment.server.graphql;
 
-import com.echothree.control.user.payment.server.command.GetPaymentProcessorTransactionsCommand;
-import com.echothree.control.user.payment.server.command.GetPaymentProcessorTypeCommand;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.payment.server.control.PaymentProcessorControl;
@@ -57,36 +55,6 @@ public class PaymentProcessorObject
         return paymentProcessorDetail;
     }
 
-    private Boolean hasPaymentProcessorTypeAccess;
-
-    private boolean getHasPaymentProcessorTypeAccess(final DataFetchingEnvironment env) {
-        if(hasPaymentProcessorTypeAccess == null) {
-            GraphQlContext context = env.getContext();
-            var baseSingleEntityCommand = new GetPaymentProcessorTypeCommand(context.getUserVisitPK(), null);
-
-            baseSingleEntityCommand.security();
-
-            hasPaymentProcessorTypeAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-
-        return hasPaymentProcessorTypeAccess;
-    }
-
-    private Boolean hasPaymentProcessorTransactionsAccess;
-
-    private boolean getHasPaymentProcessorTransactionsAccess(final DataFetchingEnvironment env) {
-        if(hasPaymentProcessorTransactionsAccess == null) {
-            GraphQlContext context = env.getContext();
-            var baseMultipleEntitiesCommand = new GetPaymentProcessorTransactionsCommand(context.getUserVisitPK(), null);
-
-            baseMultipleEntitiesCommand.security();
-
-            hasPaymentProcessorTransactionsAccess = !baseMultipleEntitiesCommand.hasSecurityMessages();
-        }
-
-        return hasPaymentProcessorTransactionsAccess;
-    }
-
     @GraphQLField
     @GraphQLDescription("payment processor name")
     @GraphQLNonNull
@@ -97,7 +65,7 @@ public class PaymentProcessorObject
     @GraphQLField
     @GraphQLDescription("payment processor type")
     public PaymentProcessorTypeObject getPaymentProcessorType(final DataFetchingEnvironment env) {
-        return getHasPaymentProcessorTypeAccess(env) ? new PaymentProcessorTypeObject(getPaymentProcessorDetail().getPaymentProcessorType()) : null;
+        return PaymentSecurityUtils.getInstance().getHasPaymentProcessorTypeAccess(env) ? new PaymentProcessorTypeObject(getPaymentProcessorDetail().getPaymentProcessorType()) : null;
     }
     
     @GraphQLField
@@ -131,7 +99,7 @@ public class PaymentProcessorObject
     public List<PaymentProcessorTransactionObject> getPaymentProcessorTransactions(final DataFetchingEnvironment env) {
         List<PaymentProcessorTransactionObject> paymentProcessorTransactions = null;
 
-        if(getHasPaymentProcessorTransactionsAccess(env)) {
+        if(PaymentSecurityUtils.getInstance().getHasPaymentProcessorTransactionsAccess(env)) {
             var paymentProcessorTransactionControl = Session.getModelController(PaymentProcessorTransactionControl.class);
             var entities = paymentProcessorTransactionControl.getPaymentProcessorTransactionsByPaymentProcessor(paymentProcessor);
             var objects = new ArrayList<PaymentProcessorTransactionObject>(entities.size());
