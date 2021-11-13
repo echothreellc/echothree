@@ -2449,7 +2449,7 @@ public class FilterControl
                 query = "SELECT _ALL_ " +
                         "FROM filters, filterdetails " +
                         "WHERE flt_activedetailid = fltdt_filterdetailid AND fltdt_flttyp_filtertypeid = ? " +
-                        "ORDER BY wkfldt_sortorder, fltdt_filtername " +
+                        "ORDER BY fltdt_sortorder, fltdt_filtername " +
                         "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
