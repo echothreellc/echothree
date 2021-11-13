@@ -217,8 +217,8 @@ public class FilterControl
     public long countFilterKinds() {
         return session.queryForLong(
                 "SELECT COUNT(*) " +
-                    "FROM filterkinds, filterkinddetails " +
-                    "WHERE fltk_activedetailid = fltkdt_filterkinddetailid");
+                "FROM filterkinds, filterkinddetails " +
+                "WHERE fltk_activedetailid = fltkdt_filterkinddetailid");
     }
 
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.FilterKind */
@@ -317,7 +317,7 @@ public class FilterControl
                 + "FROM filterkinds, filterkinddetails "
                 + "WHERE fltk_activedetailid = fltkdt_filterkinddetailid "
                 + "ORDER BY fltkdt_sortorder, fltkdt_filterkindname "
-                + "_LIMIT");
+                + "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM filterkinds, filterkinddetails "
@@ -677,7 +677,7 @@ public class FilterControl
                 + "FROM filtertypes, filtertypedetails "
                 + "WHERE flttyp_activedetailid = flttypdt_filtertypedetailid AND flttypdt_fltk_filterkindid = ? "
                 + "ORDER BY flttypdt_sortorder, flttypdt_filtertypename "
-                + "_LIMIT");
+                + "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM filtertypes, filtertypedetails "
