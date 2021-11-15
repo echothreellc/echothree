@@ -1,5 +1,12 @@
 # Changelog
 
+## 2021-11-14-01
+
+* WildFly 25.0.0 Upgrade [346](https://gitlab.echothree.com/echothree/echothree/-/issues/346)
+* Java 17 Upgrade [355](https://gitlab.echothree.com/echothree/echothree/-/issues/355)
+* Correct GraphQL Descriptions for Payment-Related Objects [361](https://gitlab.echothree.com/echothree/echothree/-/issues/361)
+* WildFly 25.0.1 Upgrade [363](https://gitlab.echothree.com/echothree/echothree/-/issues/363)
+
 ## 2021-10-31-01
 
 * GraphQL Objects for Workflow Types [336](https://gitlab.echothree.com/echothree/echothree/-/issues/336)
