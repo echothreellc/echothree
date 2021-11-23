@@ -306,6 +306,7 @@
                 <include name="classgraph.jar" />
                 <include name="commons-codec.jar" />
                 <include name="graphql-java.jar" />
+                <include name="graphql-java-extended-scalars.jar" />
                 <include name="graphql-java-annotations.jar" />
                 <include name="gson.jar" />
                 <include name="guava.jar" />

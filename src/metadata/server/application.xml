@@ -59,11 +59,15 @@
     <module>
         <ejb>lucene-suggest.jar</ejb>
     </module>
-    
+
     <module>
         <ejb>graphql-java.jar</ejb>
     </module>
-    
+
+    <module>
+        <ejb>graphql-java-extended-scalars.jar</ejb>
+    </module>
+
     <module>
         <ejb>graphql-java-annotations.jar</ejb>
     </module>
