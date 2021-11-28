@@ -123,6 +123,7 @@ public abstract class BaseSimpleCommand<F extends BaseForm>
     }
 
 
+    // Perform security and validation for GraphQL queries.
     public boolean canRunForGraphQl() {
         var securityResult = security();
         boolean canRun = false;
