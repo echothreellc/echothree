@@ -40,7 +40,7 @@ public abstract class BaseMultipleEntitiesCommand<BE extends BaseEntity, F exten
     public Collection<BE> runForGraphQl() {
         Collection<BE> entities = null;
 
-        if(canRunForGraphQl()) {
+        if(canQueryByGraphQl()) {
             entities = getEntities();
         }
         

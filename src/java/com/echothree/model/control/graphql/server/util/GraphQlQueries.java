@@ -157,7 +157,6 @@ import com.echothree.control.user.queue.common.QueueUtil;
 import com.echothree.control.user.queue.server.command.GetQueueTypeCommand;
 import com.echothree.control.user.queue.server.command.GetQueueTypesCommand;
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.server.command.CheckItemSpellingCommand;
 import com.echothree.control.user.search.server.command.GetCustomerResultsCommand;
 import com.echothree.control.user.search.server.command.GetEmployeeResultsCommand;
 import com.echothree.control.user.search.server.command.GetItemResultsCommand;
@@ -3750,7 +3749,7 @@ public final class GraphQlQueries
 
             commandForm.setSearchTypeName(searchTypeName);
 
-            if(new GetCustomerResultsCommand(getUserVisitPK(env), commandForm).canRunForGraphQl()) {
+            if(new GetCustomerResultsCommand(getUserVisitPK(env), commandForm).canQueryByGraphQl()) {
                 customerResultsObject.setForm(commandForm);
             }
         } catch (NamingException ex) {
@@ -3771,7 +3770,7 @@ public final class GraphQlQueries
 
             commandForm.setSearchTypeName(searchTypeName);
 
-            if(new GetEmployeeResultsCommand(getUserVisitPK(env), commandForm).canRunForGraphQl()) {
+            if(new GetEmployeeResultsCommand(getUserVisitPK(env), commandForm).canQueryByGraphQl()) {
                 employeeResultsObject.setForm(commandForm);
             }
         } catch (NamingException ex) {
@@ -3792,7 +3791,7 @@ public final class GraphQlQueries
 
             commandForm.setSearchTypeName(searchTypeName);
 
-            if(new GetItemResultsCommand(getUserVisitPK(env), commandForm).canRunForGraphQl()) {
+            if(new GetItemResultsCommand(getUserVisitPK(env), commandForm).canQueryByGraphQl()) {
                 itemResultsObject.setForm(commandForm);
             }
         } catch (NamingException ex) {
@@ -3801,6 +3800,33 @@ public final class GraphQlQueries
 
         return itemResultsObject;
     }
+
+//    @GraphQLField
+//    @GraphQLName("checkItemSpelling")
+//    public static CheckItemSpellingObject checkItemSpelling(final DataFetchingEnvironment env,
+//            @GraphQLName("languageIsoName") final String languageIsoName,
+//            @GraphQLName("searchDefaultOperatorName") final String searchDefaultOperatorName,
+//            @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName,
+//            @GraphQLName("q") final String q) {
+//        ItemResultsObject itemResultsObject = new ItemResultsObject();
+//
+//        try {
+//            var commandForm = SearchUtil.getHome().getCheckItemSpellingForm();
+//
+//            commandForm.setLanguageIsoName(languageIsoName);
+//            commandForm.setSearchDefaultOperatorName(searchDefaultOperatorName);
+//            commandForm.setSearchTypeName(searchTypeName);
+//            commandForm.setQ(q);
+//
+//            if(new CheckItemSpellingCommand(getUserVisitPK(env), commandForm).canRunForGraphQl()) {
+//                itemResultsObject.setForm(commandForm);
+//            }
+//        } catch (NamingException ex) {
+//            throw new RuntimeException(ex);
+//        }
+//
+//        return itemResultsObject;
+//    }
 
     @GraphQLField
     @GraphQLName("vendorResults")
@@ -3813,7 +3839,7 @@ public final class GraphQlQueries
 
             commandForm.setSearchTypeName(searchTypeName);
 
-            if(new GetVendorResultsCommand(getUserVisitPK(env), commandForm).canRunForGraphQl()) {
+            if(new GetVendorResultsCommand(getUserVisitPK(env), commandForm).canQueryByGraphQl()) {
                 vendorResultsObject.setForm(commandForm);
             }
         } catch (NamingException ex) {

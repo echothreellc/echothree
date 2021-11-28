@@ -39,7 +39,7 @@ public abstract class BaseSingleEntityCommand<BE extends BaseEntity, F extends B
     public BE runForGraphQl() {
         BE entity = null;
 
-        if(canRunForGraphQl()) {
+        if(canQueryByGraphQl()) {
             entity = getEntity();
         }
         
