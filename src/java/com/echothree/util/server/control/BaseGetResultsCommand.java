@@ -29,7 +29,7 @@ public abstract class BaseGetResultsCommand<F extends BaseForm>
         super(userVisitPK, form, commandSecurityDefinition, formFieldDefinitions, allowLimits);
     }
     
-    public boolean canGetResultsForGraphQl() {
+    public boolean canRunForGraphQl() {
         var securityResult = security();
         boolean canRun = false;
 

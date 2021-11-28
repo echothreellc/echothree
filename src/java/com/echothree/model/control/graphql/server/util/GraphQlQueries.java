@@ -157,6 +157,7 @@ import com.echothree.control.user.queue.common.QueueUtil;
 import com.echothree.control.user.queue.server.command.GetQueueTypeCommand;
 import com.echothree.control.user.queue.server.command.GetQueueTypesCommand;
 import com.echothree.control.user.search.common.SearchUtil;
+import com.echothree.control.user.search.server.command.CheckItemSpellingCommand;
 import com.echothree.control.user.search.server.command.GetCustomerResultsCommand;
 import com.echothree.control.user.search.server.command.GetEmployeeResultsCommand;
 import com.echothree.control.user.search.server.command.GetItemResultsCommand;
@@ -3749,7 +3750,7 @@ public final class GraphQlQueries
 
             commandForm.setSearchTypeName(searchTypeName);
 
-            if(new GetCustomerResultsCommand(getUserVisitPK(env), commandForm).canGetResultsForGraphQl()) {
+            if(new GetCustomerResultsCommand(getUserVisitPK(env), commandForm).canRunForGraphQl()) {
                 customerResultsObject.setForm(commandForm);
             }
         } catch (NamingException ex) {
@@ -3770,7 +3771,7 @@ public final class GraphQlQueries
 
             commandForm.setSearchTypeName(searchTypeName);
 
-            if(new GetEmployeeResultsCommand(getUserVisitPK(env), commandForm).canGetResultsForGraphQl()) {
+            if(new GetEmployeeResultsCommand(getUserVisitPK(env), commandForm).canRunForGraphQl()) {
                 employeeResultsObject.setForm(commandForm);
             }
         } catch (NamingException ex) {
@@ -3791,7 +3792,7 @@ public final class GraphQlQueries
 
             commandForm.setSearchTypeName(searchTypeName);
 
-            if(new GetItemResultsCommand(getUserVisitPK(env), commandForm).canGetResultsForGraphQl()) {
+            if(new GetItemResultsCommand(getUserVisitPK(env), commandForm).canRunForGraphQl()) {
                 itemResultsObject.setForm(commandForm);
             }
         } catch (NamingException ex) {
@@ -3812,7 +3813,7 @@ public final class GraphQlQueries
 
             commandForm.setSearchTypeName(searchTypeName);
 
-            if(new GetVendorResultsCommand(getUserVisitPK(env), commandForm).canGetResultsForGraphQl()) {
+            if(new GetVendorResultsCommand(getUserVisitPK(env), commandForm).canRunForGraphQl()) {
                 vendorResultsObject.setForm(commandForm);
             }
         } catch (NamingException ex) {
