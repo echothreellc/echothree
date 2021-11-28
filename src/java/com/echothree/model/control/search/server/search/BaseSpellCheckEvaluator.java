@@ -26,7 +26,7 @@ import com.echothree.model.control.search.common.exception.LanguageUnsupportedEx
 import com.echothree.model.control.search.common.exception.MultipleFieldsUnsupportedException;
 import com.echothree.model.control.search.common.transfer.CheckSpellingSuggestionTransfer;
 import com.echothree.model.control.search.common.transfer.CheckSpellingWordTransfer;
-import com.echothree.model.control.search.server.logic.SearchLogic;
+import com.echothree.model.control.search.server.logic.SearchCheckSpellingActionTypeLogic;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.search.server.entity.SearchDefaultOperator;
 import com.echothree.model.data.search.server.entity.SearchType;
@@ -37,13 +37,11 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.index.Term;
-import org.apache.lucene.search.BooleanClause;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.BoostQuery;
@@ -206,14 +204,14 @@ public abstract class BaseSpellCheckEvaluator
     
     private List<CheckSpellingWordTransfer> getCheckSpellingWordTransfers(final List<String> words, final List<String> analyzedWords,
             final List<List<CheckSpellingSuggestionTransfer>> suggestions) {
-        SearchLogic searchLogic = SearchLogic.getInstance();
-        List<CheckSpellingWordTransfer> checkSpellingWords = new ArrayList<>(words.size());
-        Iterator<String> analyzedWordsIter = analyzedWords.iterator();
-        Iterator<List<CheckSpellingSuggestionTransfer>> wordSuggestionsIter = suggestions.iterator();
+        var searchCheckSpellingActionTypeLogic = SearchCheckSpellingActionTypeLogic.getInstance();
+        var checkSpellingWords = new ArrayList<CheckSpellingWordTransfer>(words.size());
+        var analyzedWordsIter = analyzedWords.iterator();
+        var wordSuggestionsIter = suggestions.iterator();
         
         words.forEach((word) -> {
-            String analyzedWord = analyzedWordsIter.next();
-            List<CheckSpellingSuggestionTransfer> checkSpellingSuggestions = wordSuggestionsIter.next();
+            var analyzedWord = analyzedWordsIter.next();
+            var checkSpellingSuggestions = wordSuggestionsIter.next();
             String searchCheckSpellingActionTypeName;
             
             if(analyzedWord == null) {
@@ -225,7 +223,7 @@ public abstract class BaseSpellCheckEvaluator
             }
             
             checkSpellingWords.add(new CheckSpellingWordTransfer(word,
-                    searchLogic.getSearchCheckSpellingActionTypeTransferByName(null, userVisit, searchCheckSpellingActionTypeName),
+                    searchCheckSpellingActionTypeLogic.getSearchCheckSpellingActionTypeTransferByName(null, userVisit, searchCheckSpellingActionTypeName),
                     new ListWrapper<>(checkSpellingSuggestions)));
         });
         

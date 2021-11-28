@@ -160,6 +160,8 @@ import com.echothree.control.user.search.common.SearchUtil;
 import com.echothree.control.user.search.server.command.GetCustomerResultsCommand;
 import com.echothree.control.user.search.server.command.GetEmployeeResultsCommand;
 import com.echothree.control.user.search.server.command.GetItemResultsCommand;
+import com.echothree.control.user.search.server.command.GetSearchCheckSpellingActionTypeCommand;
+import com.echothree.control.user.search.server.command.GetSearchCheckSpellingActionTypesCommand;
 import com.echothree.control.user.search.server.command.GetVendorResultsCommand;
 import com.echothree.control.user.security.common.SecurityUtil;
 import com.echothree.control.user.security.server.command.GetSecurityRoleGroupCommand;
@@ -277,6 +279,7 @@ import com.echothree.model.control.queue.server.graphql.QueueTypeObject;
 import com.echothree.model.control.search.server.graphql.CustomerResultsObject;
 import com.echothree.model.control.search.server.graphql.EmployeeResultsObject;
 import com.echothree.model.control.search.server.graphql.ItemResultsObject;
+import com.echothree.model.control.search.server.graphql.SearchCheckSpellingActionTypeObject;
 import com.echothree.model.control.search.server.graphql.VendorResultsObject;
 import com.echothree.model.control.security.server.graphql.SecurityRoleGroupObject;
 import com.echothree.model.control.selector.server.graphql.SelectorKindObject;
@@ -366,6 +369,7 @@ import com.echothree.model.data.payment.server.entity.PaymentProcessorType;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCode;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCodeType;
 import com.echothree.model.data.queue.server.entity.QueueType;
+import com.echothree.model.data.search.server.entity.SearchCheckSpellingActionType;
 import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
@@ -401,6 +405,54 @@ import javax.naming.NamingException;
 @GraphQLName("query")
 public final class GraphQlQueries
         extends BaseGraphQl {
+
+    @GraphQLField
+    @GraphQLName("searchCheckSpellingActionType")
+    public static SearchCheckSpellingActionTypeObject searchCheckSpellingActionType(final DataFetchingEnvironment env,
+            @GraphQLName("searchCheckSpellingActionTypeName") final String searchCheckSpellingActionTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        SearchCheckSpellingActionType searchCheckSpellingActionType;
+
+        try {
+            var commandForm = SearchUtil.getHome().getGetSearchCheckSpellingActionTypeForm();
+
+            commandForm.setSearchCheckSpellingActionTypeName(searchCheckSpellingActionTypeName);
+            commandForm.setUlid(id);
+
+            searchCheckSpellingActionType = new GetSearchCheckSpellingActionTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return searchCheckSpellingActionType == null ? null : new SearchCheckSpellingActionTypeObject(searchCheckSpellingActionType);
+    }
+
+    @GraphQLField
+    @GraphQLName("searchCheckSpellingActionTypes")
+    public static Collection<SearchCheckSpellingActionTypeObject> searchCheckSpellingActionTypes(final DataFetchingEnvironment env) {
+        Collection<SearchCheckSpellingActionType> searchCheckSpellingActionTypes;
+        Collection<SearchCheckSpellingActionTypeObject> searchCheckSpellingActionTypeObjects;
+
+        try {
+            var commandForm = SearchUtil.getHome().getGetSearchCheckSpellingActionTypesForm();
+
+            searchCheckSpellingActionTypes = new GetSearchCheckSpellingActionTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(searchCheckSpellingActionTypes == null) {
+            searchCheckSpellingActionTypeObjects = emptyList();
+        } else {
+            searchCheckSpellingActionTypeObjects = new ArrayList<>(searchCheckSpellingActionTypes.size());
+
+            searchCheckSpellingActionTypes.stream()
+                    .map(SearchCheckSpellingActionTypeObject::new)
+                    .forEachOrdered(searchCheckSpellingActionTypeObjects::add);
+        }
+
+        return searchCheckSpellingActionTypeObjects;
+    }
 
     @GraphQLField
     @GraphQLName("workflow")

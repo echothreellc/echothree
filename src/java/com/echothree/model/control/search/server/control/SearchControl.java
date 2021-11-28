@@ -16,36 +16,7 @@
 
 package com.echothree.model.control.search.server.control;
 
-import com.echothree.model.control.batch.server.control.BatchControl;
-import com.echothree.model.control.contact.common.transfer.ContactMechanismResultTransfer;
-import com.echothree.model.control.contact.server.control.ContactControl;
-import com.echothree.model.control.content.common.transfer.ContentCategoryResultTransfer;
-import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.core.common.transfer.EntityListItemResultTransfer;
-import com.echothree.model.control.core.common.transfer.EntityTypeResultTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.customer.common.transfer.CustomerResultTransfer;
-import com.echothree.model.control.customer.server.control.CustomerControl;
-import com.echothree.model.control.employee.common.transfer.EmployeeResultTransfer;
-import com.echothree.model.control.employee.common.transfer.LeaveResultTransfer;
-import com.echothree.model.control.employee.server.control.EmployeeControl;
-import com.echothree.model.control.forum.common.transfer.ForumMessageResultTransfer;
-import com.echothree.model.control.forum.server.control.ForumControl;
-import com.echothree.model.control.item.common.transfer.HarmonizedTariffScheduleCodeResultTransfer;
-import com.echothree.model.control.item.common.transfer.ItemResultTransfer;
-import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.control.offer.common.transfer.OfferResultTransfer;
-import com.echothree.model.control.offer.common.transfer.UseResultTransfer;
-import com.echothree.model.control.offer.common.transfer.UseTypeResultTransfer;
-import com.echothree.model.control.offer.server.control.OfferControl;
-import com.echothree.model.control.offer.server.control.UseControl;
-import com.echothree.model.control.offer.server.control.UseTypeControl;
-import com.echothree.model.control.sales.common.transfer.SalesOrderBatchResultTransfer;
-import com.echothree.model.control.sales.common.transfer.SalesOrderResultTransfer;
-import com.echothree.model.control.sales.common.workflow.SalesOrderStatusConstants;
-import com.echothree.model.control.sales.server.control.SalesOrderBatchControl;
-import com.echothree.model.control.search.common.SearchOptions;
 import com.echothree.model.control.search.common.choice.SearchCheckSpellingActionTypeChoicesBean;
 import com.echothree.model.control.search.common.choice.SearchDefaultOperatorChoicesBean;
 import com.echothree.model.control.search.common.choice.SearchKindChoicesBean;
@@ -70,11 +41,7 @@ import com.echothree.model.control.search.common.transfer.SearchTypeDescriptionT
 import com.echothree.model.control.search.common.transfer.SearchTypeTransfer;
 import com.echothree.model.control.search.common.transfer.SearchUseTypeDescriptionTransfer;
 import com.echothree.model.control.search.common.transfer.SearchUseTypeTransfer;
-import com.echothree.model.control.search.server.graphql.CustomerResultObject;
-import com.echothree.model.control.search.server.graphql.ItemResultObject;
-import com.echothree.model.control.search.server.graphql.VendorResultObject;
 import com.echothree.model.control.search.server.transfer.SearchCheckSpellingActionTypeDescriptionTransferCache;
-import com.echothree.model.control.search.server.transfer.SearchCheckSpellingActionTypeTransferCache;
 import com.echothree.model.control.search.server.transfer.SearchDefaultOperatorDescriptionTransferCache;
 import com.echothree.model.control.search.server.transfer.SearchDefaultOperatorTransferCache;
 import com.echothree.model.control.search.server.transfer.SearchKindTransferCache;
@@ -87,41 +54,10 @@ import com.echothree.model.control.search.server.transfer.SearchTransferCaches;
 import com.echothree.model.control.search.server.transfer.SearchTypeTransferCache;
 import com.echothree.model.control.search.server.transfer.SearchUseTypeDescriptionTransferCache;
 import com.echothree.model.control.search.server.transfer.SearchUseTypeTransferCache;
-import com.echothree.model.control.security.common.transfer.SecurityRoleGroupResultTransfer;
-import com.echothree.model.control.security.common.transfer.SecurityRoleResultTransfer;
-import com.echothree.model.control.security.server.control.SecurityControl;
-import com.echothree.model.control.vendor.common.transfer.VendorResultTransfer;
-import com.echothree.model.control.vendor.server.control.VendorControl;
-import com.echothree.model.data.batch.common.pk.BatchPK;
-import com.echothree.model.data.contact.common.pk.ContactMechanismPK;
-import com.echothree.model.data.contact.server.factory.ContactMechanismFactory;
-import com.echothree.model.data.content.common.pk.ContentCategoryPK;
-import com.echothree.model.data.content.server.factory.ContentCategoryFactory;
 import com.echothree.model.data.core.common.pk.EntityInstancePK;
-import com.echothree.model.data.core.common.pk.EntityListItemPK;
-import com.echothree.model.data.core.common.pk.EntityTypePK;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.core.server.factory.EntityListItemFactory;
-import com.echothree.model.data.core.server.factory.EntityTypeFactory;
-import com.echothree.model.data.employee.common.pk.LeavePK;
-import com.echothree.model.data.employee.server.entity.Leave;
-import com.echothree.model.data.employee.server.factory.LeaveFactory;
-import com.echothree.model.data.forum.common.pk.ForumMessagePK;
-import com.echothree.model.data.forum.server.factory.ForumMessageFactory;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.model.data.index.server.entity.IndexField;
-import com.echothree.model.data.item.common.pk.HarmonizedTariffScheduleCodePK;
-import com.echothree.model.data.item.common.pk.ItemPK;
-import com.echothree.model.data.item.server.factory.HarmonizedTariffScheduleCodeFactory;
-import com.echothree.model.data.item.server.factory.ItemFactory;
-import com.echothree.model.data.offer.common.pk.OfferPK;
-import com.echothree.model.data.offer.common.pk.UsePK;
-import com.echothree.model.data.offer.common.pk.UseTypePK;
-import com.echothree.model.data.offer.server.factory.OfferFactory;
-import com.echothree.model.data.offer.server.factory.UseFactory;
-import com.echothree.model.data.offer.server.factory.UseTypeFactory;
-import com.echothree.model.data.order.common.pk.OrderPK;
-import com.echothree.model.data.order.server.factory.OrderFactory;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
@@ -225,10 +161,6 @@ import com.echothree.model.data.search.server.value.SearchTypeDescriptionValue;
 import com.echothree.model.data.search.server.value.SearchTypeDetailValue;
 import com.echothree.model.data.search.server.value.SearchUseTypeDescriptionValue;
 import com.echothree.model.data.search.server.value.SearchUseTypeDetailValue;
-import com.echothree.model.data.security.common.pk.SecurityRoleGroupPK;
-import com.echothree.model.data.security.common.pk.SecurityRolePK;
-import com.echothree.model.data.security.server.factory.SecurityRoleFactory;
-import com.echothree.model.data.security.server.factory.SecurityRoleGroupFactory;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
@@ -1166,34 +1098,49 @@ public class SearchControl
         return searchCheckSpellingActionType;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.SearchCheckSpellingActionType */
-    public SearchCheckSpellingActionType getSearchCheckSpellingActionTypeByEntityInstance(EntityInstance entityInstance) {
-        SearchCheckSpellingActionTypePK pk = new SearchCheckSpellingActionTypePK(entityInstance.getEntityUniqueId());
-        SearchCheckSpellingActionType searchCheckSpellingActionType = SearchCheckSpellingActionTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+    public long countSearchCheckSpellingActionTypes() {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM searchcheckspellingactiontypes, searchcheckspellingactiontypedetails
+                WHERE srchcksacttyp_activedetailid = srchcksacttypdt_searchcheckspellingactiontypedetailid
+                """);
+    }
 
-        return searchCheckSpellingActionType;
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.SearchCheckSpellingActionType */
+    public SearchCheckSpellingActionType getSearchCheckSpellingActionTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new SearchCheckSpellingActionTypePK(entityInstance.getEntityUniqueId());
+
+        return SearchCheckSpellingActionTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public SearchCheckSpellingActionType getSearchCheckSpellingActionTypeByEntityInstance(EntityInstance entityInstance) {
+        return getSearchCheckSpellingActionTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public SearchCheckSpellingActionType getSearchCheckSpellingActionTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getSearchCheckSpellingActionTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
     private static final Map<EntityPermission, String> getSearchCheckSpellingActionTypeByNameQueries;
 
     static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM searchcheckspellingactiontypes, searchcheckspellingactiontypedetails " +
-                "WHERE srchcksacttyp_activedetailid = srchcksacttypdt_searchcheckspellingactiontypedetailid " +
-                "AND srchcksacttypdt_searchcheckspellingactiontypename = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM searchcheckspellingactiontypes, searchcheckspellingactiontypedetails " +
-                "WHERE srchcksacttyp_activedetailid = srchcksacttypdt_searchcheckspellingactiontypedetailid " +
-                "AND srchcksacttypdt_searchcheckspellingactiontypename = ? " +
-                "FOR UPDATE");
-        getSearchCheckSpellingActionTypeByNameQueries = Collections.unmodifiableMap(queryMap);
+        getSearchCheckSpellingActionTypeByNameQueries = Map.of(
+                EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM searchcheckspellingactiontypes, searchcheckspellingactiontypedetails
+                WHERE srchcksacttyp_activedetailid = srchcksacttypdt_searchcheckspellingactiontypedetailid
+                AND srchcksacttypdt_searchcheckspellingactiontypename = ?
+                """,
+                EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM searchcheckspellingactiontypes, searchcheckspellingactiontypedetails
+                WHERE srchcksacttyp_activedetailid = srchcksacttypdt_searchcheckspellingactiontypedetailid
+                AND srchcksacttypdt_searchcheckspellingactiontypename = ?
+                FOR UPDATE"
+                """);
     }
 
-    private SearchCheckSpellingActionType getSearchCheckSpellingActionTypeByName(String searchCheckSpellingActionTypeName, EntityPermission entityPermission) {
+    public SearchCheckSpellingActionType getSearchCheckSpellingActionTypeByName(String searchCheckSpellingActionTypeName, EntityPermission entityPermission) {
         return SearchCheckSpellingActionTypeFactory.getInstance().getEntityFromQuery(entityPermission, getSearchCheckSpellingActionTypeByNameQueries, searchCheckSpellingActionTypeName);
     }
 
@@ -1216,20 +1163,20 @@ public class SearchControl
     private static final Map<EntityPermission, String> getDefaultSearchCheckSpellingActionTypeQueries;
 
     static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM searchcheckspellingactiontypes, searchcheckspellingactiontypedetails " +
-                "WHERE srchcksacttyp_activedetailid = srchcksacttypdt_searchcheckspellingactiontypedetailid " +
-                "AND srchcksacttypdt_isdefault = 1");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM searchcheckspellingactiontypes, searchcheckspellingactiontypedetails " +
-                "WHERE srchcksacttyp_activedetailid = srchcksacttypdt_searchcheckspellingactiontypedetailid " +
-                "AND srchcksacttypdt_isdefault = 1 " +
-                "FOR UPDATE");
-        getDefaultSearchCheckSpellingActionTypeQueries = Collections.unmodifiableMap(queryMap);
+        getDefaultSearchCheckSpellingActionTypeQueries = Map.of(
+                EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM searchcheckspellingactiontypes, searchcheckspellingactiontypedetails
+                WHERE srchcksacttyp_activedetailid = srchcksacttypdt_searchcheckspellingactiontypedetailid
+                AND srchcksacttypdt_isdefault = 1
+                """,
+                EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM searchcheckspellingactiontypes, searchcheckspellingactiontypedetails
+                WHERE srchcksacttyp_activedetailid = srchcksacttypdt_searchcheckspellingactiontypedetailid
+                AND srchcksacttypdt_isdefault = 1
+                FOR UPDATE
+                """);
     }
 
     private SearchCheckSpellingActionType getDefaultSearchCheckSpellingActionType(EntityPermission entityPermission) {
@@ -1251,20 +1198,20 @@ public class SearchControl
     private static final Map<EntityPermission, String> getSearchCheckSpellingActionTypesQueries;
 
     static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM searchcheckspellingactiontypes, searchcheckspellingactiontypedetails " +
-                "WHERE srchcksacttyp_activedetailid = srchcksacttypdt_searchcheckspellingactiontypedetailid " +
-                "ORDER BY srchcksacttypdt_sortorder, srchcksacttypdt_searchcheckspellingactiontypename " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM searchcheckspellingactiontypes, searchcheckspellingactiontypedetails " +
-                "WHERE srchcksacttyp_activedetailid = srchcksacttypdt_searchcheckspellingactiontypedetailid " +
-                "FOR UPDATE");
-        getSearchCheckSpellingActionTypesQueries = Collections.unmodifiableMap(queryMap);
+        getSearchCheckSpellingActionTypesQueries = Map.of(
+                EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM searchcheckspellingactiontypes, searchcheckspellingactiontypedetails
+                WHERE srchcksacttyp_activedetailid = srchcksacttypdt_searchcheckspellingactiontypedetailid
+                ORDER BY srchcksacttypdt_sortorder, srchcksacttypdt_searchcheckspellingactiontypename
+                _LIMIT_
+                """,
+                EntityPermission.READ_WRITE, """
+                SELECT _ALL_
+                FROM searchcheckspellingactiontypes, searchcheckspellingactiontypedetails
+                WHERE srchcksacttyp_activedetailid = srchcksacttypdt_searchcheckspellingactiontypedetailid
+                FOR UPDATE
+                """);
     }
 
     private List<SearchCheckSpellingActionType> getSearchCheckSpellingActionTypes(EntityPermission entityPermission) {
@@ -1283,16 +1230,19 @@ public class SearchControl
         return getSearchTransferCaches(userVisit).getSearchCheckSpellingActionTypeTransferCache().getSearchCheckSpellingActionTypeTransfer(searchCheckSpellingActionType);
     }
 
-    public List<SearchCheckSpellingActionTypeTransfer> getSearchCheckSpellingActionTypeTransfers(UserVisit userVisit) {
-        List<SearchCheckSpellingActionType> searchCheckSpellingActionTypes = getSearchCheckSpellingActionTypes();
-        List<SearchCheckSpellingActionTypeTransfer> searchCheckSpellingActionTypeTransfers = new ArrayList<>(searchCheckSpellingActionTypes.size());
-        SearchCheckSpellingActionTypeTransferCache searchCheckSpellingActionTypeTransferCache = getSearchTransferCaches(userVisit).getSearchCheckSpellingActionTypeTransferCache();
+    public List<SearchCheckSpellingActionTypeTransfer> getSearchCheckSpellingActionTypeTransfers(UserVisit userVisit, Collection<SearchCheckSpellingActionType> entities) {
+        var searchCheckSpellingActionTypeTransfers = new ArrayList<SearchCheckSpellingActionTypeTransfer>(entities.size());
+        var searchCheckSpellingActionTypeTransferCache = getSearchTransferCaches(userVisit).getSearchCheckSpellingActionTypeTransferCache();
 
-        searchCheckSpellingActionTypes.forEach((searchCheckSpellingActionType) ->
+        entities.forEach((searchCheckSpellingActionType) ->
                 searchCheckSpellingActionTypeTransfers.add(searchCheckSpellingActionTypeTransferCache.getSearchCheckSpellingActionTypeTransfer(searchCheckSpellingActionType))
         );
 
         return searchCheckSpellingActionTypeTransfers;
+    }
+
+    public List<SearchCheckSpellingActionTypeTransfer> getSearchCheckSpellingActionTypeTransfers(UserVisit userVisit) {
+        return getSearchCheckSpellingActionTypeTransfers(userVisit, getSearchCheckSpellingActionTypes());
     }
 
     public SearchCheckSpellingActionTypeChoicesBean getSearchCheckSpellingActionTypeChoices(String defaultSearchCheckSpellingActionTypeChoice, Language language, boolean allowNullChoice) {

@@ -17,55 +17,69 @@
 package com.echothree.control.user.search.server.command;
 
 import com.echothree.control.user.search.common.form.GetSearchCheckSpellingActionTypesForm;
-import com.echothree.control.user.search.common.result.GetSearchCheckSpellingActionTypesResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.search.server.entity.SearchCheckSpellingActionType;
+import com.echothree.model.data.search.server.factory.SearchCheckSpellingActionTypeFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.List;
 
 public class GetSearchCheckSpellingActionTypesCommand
-        extends BaseSimpleCommand<GetSearchCheckSpellingActionTypesForm> {
-    
+        extends BaseMultipleEntitiesCommand<SearchCheckSpellingActionType, GetSearchCheckSpellingActionTypesForm> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.SearchCheckSpellingActionType.name(), SecurityRoles.List.name())
-                        )))
-                )));
-        
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                ));
+                ))
+        ));
+
+        FORM_FIELD_DEFINITIONS = List.of();
     }
-    
+
     /** Creates a new instance of GetSearchCheckSpellingActionTypesCommand */
     public GetSearchCheckSpellingActionTypesCommand(UserVisitPK userVisitPK, GetSearchCheckSpellingActionTypesForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
+    protected Collection<SearchCheckSpellingActionType> getEntities() {
         var searchControl = Session.getModelController(SearchControl.class);
-        GetSearchCheckSpellingActionTypesResult result = SearchResultFactory.getGetSearchCheckSpellingActionTypesResult();
-        
-        result.setSearchCheckSpellingActionTypes(searchControl.getSearchCheckSpellingActionTypeTransfers(getUserVisit()));
-        
+
+        return searchControl.getSearchCheckSpellingActionTypes();
+    }
+
+    @Override
+    protected BaseResult getTransfers(Collection<SearchCheckSpellingActionType> entities) {
+        var result = SearchResultFactory.getGetSearchCheckSpellingActionTypesResult();
+
+        if(entities != null) {
+            var searchControl = Session.getModelController(SearchControl.class);
+            var userVisit = getUserVisit();
+
+            if(session.hasLimit(SearchCheckSpellingActionTypeFactory.class)) {
+                result.setSearchCheckSpellingActionTypeCount(searchControl.countSearchCheckSpellingActionTypes());
+            }
+
+            result.setSearchCheckSpellingActionTypes(searchControl.getSearchCheckSpellingActionTypeTransfers(userVisit, entities));
+        }
+
         return result;
     }
-    
+
 }
