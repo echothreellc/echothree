@@ -140,23 +140,6 @@ public class SearchLogic
         return searchResultActionType;
     }
     
-    public SearchCheckSpellingActionType getSearchCheckSpellingActionTypeByName(final ExecutionErrorAccumulator eea, final String searchCheckSpellingActionTypeName) {
-        var searchControl = Session.getModelController(SearchControl.class);
-        SearchCheckSpellingActionType searchCheckSpellingActionType = searchControl.getSearchCheckSpellingActionTypeByName(searchCheckSpellingActionTypeName);
-
-        if(searchCheckSpellingActionType == null) {
-            handleExecutionError(UnknownSearchCheckSpellingActionTypeNameException.class, eea, ExecutionErrors.UnknownSearchCheckSpellingActionTypeName.name(), searchCheckSpellingActionTypeName);
-        }
-
-        return searchCheckSpellingActionType;
-    }
-    
-    public SearchCheckSpellingActionTypeTransfer getSearchCheckSpellingActionTypeTransferByName(final ExecutionErrorAccumulator eea, final UserVisit userVisit, final String searchCheckSpellingActionTypeName) {
-        var searchControl = Session.getModelController(SearchControl.class);
-        
-        return searchControl.getSearchCheckSpellingActionTypeTransfer(userVisit, getSearchCheckSpellingActionTypeByName(eea, searchCheckSpellingActionTypeName));
-    }
-    
     public SearchKind getSearchKindByName(final ExecutionErrorAccumulator eea, final String searchKindName) {
         var searchControl = Session.getModelController(SearchControl.class);
         SearchKind searchKind = searchControl.getSearchKindByName(searchKindName);
