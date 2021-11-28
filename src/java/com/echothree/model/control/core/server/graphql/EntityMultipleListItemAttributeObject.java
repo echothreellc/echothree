@@ -69,7 +69,6 @@ public class EntityMultipleListItemAttributeObject {
         
     @GraphQLField
     @GraphQLDescription("entity list item")
-    @GraphQLNonNull
     public EntityListItemObject getEntityListItem(final DataFetchingEnvironment env) {
         // TODO: return getHasEntityListItemAccess(env) ? new EntityListItemObject(entityMultipleListItemAttribute.getEntityListItem()) : null;
         return new EntityListItemObject(entityMultipleListItemAttribute.getEntityListItem());
