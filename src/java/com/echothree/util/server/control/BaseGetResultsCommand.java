@@ -17,10 +17,8 @@
 package com.echothree.util.server.control;
 
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.common.command.SecurityResult;
 import com.echothree.util.common.form.BaseForm;
-import com.echothree.util.common.form.ValidationResult;
+import com.echothree.util.common.validation.FieldDefinition;
 import java.util.List;
 
 public abstract class BaseGetResultsCommand<F extends BaseForm>
@@ -32,11 +30,11 @@ public abstract class BaseGetResultsCommand<F extends BaseForm>
     }
     
     public boolean canGetResultsForGraphQl() {
-        SecurityResult securityResult = security();
+        var securityResult = security();
         boolean canRun = false;
 
         if(securityResult == null || !securityResult.getHasMessages()) {
-            ValidationResult validationResult = validate();
+            var validationResult = validate();
 
             if((validationResult == null || !validationResult.getHasErrors())) {
                 canRun = true;
