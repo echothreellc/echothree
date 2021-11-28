@@ -28,20 +28,5 @@ public abstract class BaseGetResultsCommand<F extends BaseForm>
             List<FieldDefinition> formFieldDefinitions, boolean allowLimits) {
         super(userVisitPK, form, commandSecurityDefinition, formFieldDefinitions, allowLimits);
     }
-    
-    public boolean canRunForGraphQl() {
-        var securityResult = security();
-        boolean canRun = false;
 
-        if(securityResult == null || !securityResult.getHasMessages()) {
-            var validationResult = validate();
-
-            if((validationResult == null || !validationResult.getHasErrors())) {
-                canRun = true;
-            }
-        }
-        
-        return canRun;
-    }
-    
 }

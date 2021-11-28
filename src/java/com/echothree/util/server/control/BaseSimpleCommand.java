@@ -122,4 +122,19 @@ public abstract class BaseSimpleCommand<F extends BaseForm>
         return validationResult;
     }
 
+
+    public boolean canRunForGraphQl() {
+        var securityResult = security();
+        boolean canRun = false;
+
+        if(securityResult == null || !securityResult.getHasMessages()) {
+            var validationResult = validate();
+
+            if((validationResult == null || !validationResult.getHasErrors())) {
+                canRun = true;
+            }
+        }
+
+        return canRun;
+    }
 }
