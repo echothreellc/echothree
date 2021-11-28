@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetSearchCheckSpellingActionTypesResult
         extends BaseResult {
-    
+
+    Long getSearchCheckSpellingActionTypeCount();
+    void setSearchCheckSpellingActionTypeCount(Long searchCheckSpellingActionTypeCount);
+
     List<SearchCheckSpellingActionTypeTransfer> getSearchCheckSpellingActionTypes();
     void setSearchCheckSpellingActionTypes(List<SearchCheckSpellingActionTypeTransfer> searchCheckSpellingActionTypes);
     
