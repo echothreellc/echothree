@@ -61,6 +61,7 @@ public abstract class BaseSearchEvaluator
     private Soundex soundex;
     
     protected Session session;
+    protected SearchType searchType;
     protected SearchSortOrder searchSortOrder;
     protected SearchSortDirection searchSortDirection;
     protected SearchUseType searchUseType;
@@ -69,10 +70,11 @@ public abstract class BaseSearchEvaluator
     private PartyPK partyPK;
     private Boolean partyVerified;
     
-    private void init(SearchSortOrder searchSortOrder, SearchSortDirection searchSortDirection, SearchUseType searchUseType) {
+    private void init(SearchType searchType, SearchSortOrder searchSortOrder, SearchSortDirection searchSortDirection, SearchUseType searchUseType) {
         UserSession userSession = getUserControl().getUserSessionByUserVisit(userVisit);
         
         this.session = ThreadSession.currentSession();
+        this.searchType = searchType;
         this.searchSortOrder = searchSortOrder;
         this.searchSortDirection = searchSortDirection;
         this.searchUseType = searchUseType;
@@ -84,12 +86,12 @@ public abstract class BaseSearchEvaluator
         }
     }
     
-    protected BaseSearchEvaluator(UserVisit userVisit, SearchType searchType, SearchDefaultOperator searchDefaultOperator, SearchSortOrder searchSortOrder,
+    protected BaseSearchEvaluator(UserVisit userVisit, SearchDefaultOperator searchDefaultOperator, SearchType searchType, SearchSortOrder searchSortOrder,
             SearchSortDirection searchSortDirection, SearchUseType searchUseType, String componentVendorName, String entityTypeName, String indexTypeName,
             Language language, String indexName) {
-        super(userVisit, searchType, searchDefaultOperator, componentVendorName, entityTypeName, indexTypeName, language, indexName);
+        super(userVisit, searchDefaultOperator, componentVendorName, entityTypeName, indexTypeName, language, indexName);
         
-        init(searchSortOrder, searchSortDirection, searchUseType);
+        init(searchType, searchSortOrder, searchSortDirection, searchUseType);
     }
     
     protected String getSearchSortOrderName() {

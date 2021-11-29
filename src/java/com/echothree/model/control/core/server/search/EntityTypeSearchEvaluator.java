@@ -40,7 +40,7 @@ public class EntityTypeSearchEvaluator
     /** Creates a new instance of EntityTypeSearchEvaluator */
     public EntityTypeSearchEvaluator(UserVisit userVisit, Language language, SearchType searchType, SearchDefaultOperator searchDefaultOperator,
             SearchSortOrder searchSortOrder, SearchSortDirection searchSortDirection, SearchUseType searchUseType) {
-        super(userVisit, searchType, searchDefaultOperator, searchSortOrder, searchSortDirection, searchUseType, ComponentVendors.ECHOTHREE.name(),
+        super(userVisit, searchDefaultOperator, searchType, searchSortOrder, searchSortDirection, searchUseType, ComponentVendors.ECHOTHREE.name(),
                 EntityTypes.EntityType.name(), IndexConstants.IndexType_ENTITY_TYPE, language, null);
         
         setField(IndexConstants.IndexField_Description);

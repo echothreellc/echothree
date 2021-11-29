@@ -55,7 +55,7 @@ public class ForumMessageSearchEvaluator
     /** Creates a new instance of ForumMessageSearchEvaluator */
     public ForumMessageSearchEvaluator(UserVisit userVisit, Language language, SearchType searchType, SearchDefaultOperator searchDefaultOperator, SearchSortOrder searchSortOrder,
             SearchSortDirection searchSortDirection, SearchUseType searchUseType, Forum forum, ForumMessageType forumMessageType) {
-        super(userVisit, searchType, searchDefaultOperator, searchSortOrder, searchSortDirection, searchUseType, ComponentVendors.ECHOTHREE.name(),
+        super(userVisit, searchDefaultOperator, searchType, searchSortOrder, searchSortDirection, searchUseType, ComponentVendors.ECHOTHREE.name(),
                 EntityTypes.ForumMessage.name(), IndexConstants.IndexType_FORUM_MESSAGE, language, null);
         
         this.forum = forum;

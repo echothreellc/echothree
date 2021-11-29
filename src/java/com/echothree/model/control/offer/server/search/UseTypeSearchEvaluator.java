@@ -40,7 +40,7 @@ public class UseTypeSearchEvaluator
     /** Creates a new instance of SecurityRoleGroupSearchEvaluator */
     public UseTypeSearchEvaluator(UserVisit userVisit, Language language, SearchType searchType, SearchDefaultOperator searchDefaultOperator,
             SearchSortOrder searchSortOrder, SearchSortDirection searchSortDirection, SearchUseType searchUseType) {
-        super(userVisit, searchType, searchDefaultOperator, searchSortOrder, searchSortDirection, searchUseType, ComponentVendors.ECHOTHREE.name(),
+        super(userVisit, searchDefaultOperator, searchType, searchSortOrder, searchSortDirection, searchUseType, ComponentVendors.ECHOTHREE.name(),
                 EntityTypes.UseType.name(), IndexConstants.IndexType_USE_TYPE, language, null);
         
         setField(IndexConstants.IndexField_Description);

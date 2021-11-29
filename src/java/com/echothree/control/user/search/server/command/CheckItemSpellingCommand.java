@@ -74,7 +74,7 @@ public class CheckItemSpellingCommand
                             : searchLogic.getSearchDefaultOperatorByName(this, searchDefaultOperatorName);
 
                     if(!hasExecutionErrors()) {
-                        var itemSpellCheckEvaluator = new ItemSpellCheckEvaluator(getUserVisit(), language, searchType, searchDefaultOperator);
+                        var itemSpellCheckEvaluator = new ItemSpellCheckEvaluator(getUserVisit(), language, searchDefaultOperator);
 
                         itemSpellCheckEvaluator.setQ(this, form.getQ());
 
