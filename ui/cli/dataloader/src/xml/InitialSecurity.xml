@@ -6576,12 +6576,6 @@
             <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Search Check Spelling Action Type Delete" />
             </securityRole>
-            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Search Check Spelling Action Type List" />
-            </securityRole>
-            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Search Check Spelling Action Type Review" />
-            </securityRole>
             <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Search Check Spelling Action Type Choices" />
             </securityRole>
@@ -8985,8 +8979,6 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="SearchCheckSpellingActionType" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SearchCheckSpellingActionType" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SearchCheckSpellingActionType" securityRoleName="Delete" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="SearchCheckSpellingActionType" securityRoleName="List" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="SearchCheckSpellingActionType" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SearchCheckSpellingActionType" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="SearchCheckSpellingActionType" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="CacheEntry" securityRoleName="List" />

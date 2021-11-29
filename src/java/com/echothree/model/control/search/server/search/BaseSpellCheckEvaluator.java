@@ -29,7 +29,6 @@ import com.echothree.model.control.search.common.transfer.CheckSpellingWordTrans
 import com.echothree.model.control.search.server.logic.SearchCheckSpellingActionTypeLogic;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.search.server.entity.SearchDefaultOperator;
-import com.echothree.model.data.search.server.entity.SearchType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.transfer.ListWrapper;
@@ -51,9 +50,9 @@ import org.apache.lucene.search.TermQuery;
 public abstract class BaseSpellCheckEvaluator
         extends BaseEvaluator {
     
-    protected BaseSpellCheckEvaluator(UserVisit userVisit, SearchType searchType, SearchDefaultOperator searchDefaultOperator, String componentVendorName,
+    protected BaseSpellCheckEvaluator(UserVisit userVisit, SearchDefaultOperator searchDefaultOperator, String componentVendorName,
             String entityTypeName, String indexTypeName, Language language, String indexName) {
-        super(userVisit, searchType, searchDefaultOperator, componentVendorName, entityTypeName, indexTypeName, language, indexName);
+        super(userVisit, searchDefaultOperator, componentVendorName, entityTypeName, indexTypeName, language, indexName);
     }
     
     private boolean isSimpleQuery(Query query, final String dictionaryField, final List<String> words) {

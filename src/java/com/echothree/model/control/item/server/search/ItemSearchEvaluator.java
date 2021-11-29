@@ -56,7 +56,7 @@ public class ItemSearchEvaluator
     /** Creates a new instance of ItemSearchEvaluator */
     public ItemSearchEvaluator(UserVisit userVisit, Language language, SearchType searchType, SearchDefaultOperator searchDefaultOperator, SearchSortOrder searchSortOrder,
             SearchSortDirection searchSortDirection, SearchUseType searchUseType) {
-        super(userVisit, searchType, searchDefaultOperator, searchSortOrder, searchSortDirection, searchUseType, ComponentVendors.ECHOTHREE.name(),
+        super(userVisit, searchDefaultOperator, searchType, searchSortOrder, searchSortDirection, searchUseType, ComponentVendors.ECHOTHREE.name(),
                 EntityTypes.Item.name(), IndexConstants.IndexType_ITEM, language, null);
         
         setField(ItemDescriptionLogic.getInstance().getIndexDefaultItemDescriptionTypeName());

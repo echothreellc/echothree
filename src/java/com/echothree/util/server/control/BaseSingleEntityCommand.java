@@ -17,11 +17,10 @@
 package com.echothree.util.server.control;
 
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.SecurityResult;
 import com.echothree.util.common.form.BaseForm;
-import com.echothree.util.common.form.ValidationResult;
+import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.server.persistence.BaseEntity;
 import java.util.List;
 
@@ -39,14 +38,9 @@ public abstract class BaseSingleEntityCommand<BE extends BaseEntity, F extends B
 
     public BE runForGraphQl() {
         BE entity = null;
-        SecurityResult securityResult = security();
 
-        if(securityResult == null || !securityResult.getHasMessages()) {
-            ValidationResult validationResult = validate();
-
-            if((validationResult == null || !validationResult.getHasErrors())) {
-                entity = getEntity();
-            }
+        if(canQueryByGraphQl()) {
+            entity = getEntity();
         }
         
         return entity;

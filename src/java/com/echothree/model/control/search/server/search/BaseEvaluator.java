@@ -18,8 +18,8 @@ package com.echothree.model.control.search.server.search;
 
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.logic.EntityTypeLogic;
-import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.index.server.analysis.BasicAnalyzer;
+import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.index.server.logic.IndexLogic;
 import com.echothree.model.control.index.server.logic.IndexTypeLogic;
 import com.echothree.model.control.search.common.SearchConstants;
@@ -31,7 +31,6 @@ import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.model.data.index.server.entity.IndexType;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.search.server.entity.SearchDefaultOperator;
-import com.echothree.model.data.search.server.entity.SearchType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
@@ -51,7 +50,6 @@ public abstract class BaseEvaluator
     private Log log;
     
     protected UserVisit userVisit;
-    protected SearchType searchType;
     protected SearchDefaultOperator searchDefaultOperator;
     protected EntityType entityType;
     
@@ -62,10 +60,9 @@ public abstract class BaseEvaluator
     private IndexControl indexControl;
     private UserControl userControl;
     
-    private void init(UserVisit userVisit, SearchType searchType, SearchDefaultOperator searchDefaultOperator, EntityType entityType, String indexTypeName,
+    private void init(UserVisit userVisit, SearchDefaultOperator searchDefaultOperator, EntityType entityType, String indexTypeName,
             Language language, String indexName) {
         this.userVisit = userVisit;
-        this.searchType = searchType;
         this.searchDefaultOperator = searchDefaultOperator;
         this.entityType = entityType;
 
@@ -80,9 +77,9 @@ public abstract class BaseEvaluator
         }
     }
     
-    protected BaseEvaluator(UserVisit userVisit, SearchType searchType, SearchDefaultOperator searchDefaultOperator, String componentVendorName,
+    protected BaseEvaluator(UserVisit userVisit, SearchDefaultOperator searchDefaultOperator, String componentVendorName,
             String entityTypeName, String indexTypeName, Language language, String indexName) {
-        init(userVisit, searchType, searchDefaultOperator,
+        init(userVisit, searchDefaultOperator,
                 entityTypeName == null ? null : EntityTypeLogic.getInstance().getEntityTypeByName(null, componentVendorName, entityTypeName),
                 indexTypeName, language, indexName);
     }

@@ -33,8 +33,8 @@ public class ItemSpellCheckEvaluator
         extends BaseSpellCheckEvaluator {
     
     /** Creates a new instance of ItemSearchEvaluator */
-    public ItemSpellCheckEvaluator(UserVisit userVisit, Language language, SearchType searchType, SearchDefaultOperator searchDefaultOperator) {
-        super(userVisit, searchType, searchDefaultOperator, ComponentVendors.ECHOTHREE.name(), EntityTypes.Item.name(),
+    public ItemSpellCheckEvaluator(UserVisit userVisit, Language language, SearchDefaultOperator searchDefaultOperator) {
+        super(userVisit, searchDefaultOperator, ComponentVendors.ECHOTHREE.name(), EntityTypes.Item.name(),
                 IndexConstants.IndexType_ITEM, language, null);
         
         setField(ItemDescriptionLogic.getInstance().getIndexDefaultItemDescriptionTypeName());

@@ -45,7 +45,7 @@ public class BatchSearchEvaluator
     
     protected BatchSearchEvaluator(UserVisit userVisit, SearchType searchType, SearchDefaultOperator searchDefaultOperator, SearchSortOrder searchSortOrder,
             SearchSortDirection searchSortDirection, BatchType batchType) {
-        super(userVisit, searchType, searchDefaultOperator, searchSortOrder, searchSortDirection, null, ComponentVendors.ECHOTHREE.name(),
+        super(userVisit, searchDefaultOperator, searchType, searchSortOrder, searchSortDirection, null, ComponentVendors.ECHOTHREE.name(),
                 EntityTypes.Batch.name(), null, null, null);
         
         this.batchType = batchType;

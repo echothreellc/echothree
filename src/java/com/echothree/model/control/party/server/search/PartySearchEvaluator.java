@@ -57,7 +57,7 @@ public class PartySearchEvaluator
     
     protected PartySearchEvaluator(UserVisit userVisit, SearchType searchType, SearchDefaultOperator searchDefaultOperator, SearchSortOrder searchSortOrder,
             SearchSortDirection searchSortDirection, String partyTypeName, String indexName) {
-        super(userVisit, searchType, searchDefaultOperator, searchSortOrder, searchSortDirection, null, ComponentVendors.ECHOTHREE.name(),
+        super(userVisit, searchDefaultOperator, searchType, searchSortOrder, searchSortDirection, null, ComponentVendors.ECHOTHREE.name(),
                 EntityTypes.Party.name(), null, null, indexName);
         
         this.partyType = PartyLogic.getInstance().getPartyTypeByName(null, partyTypeName);
