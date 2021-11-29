@@ -1,5 +1,13 @@
 # Changelog
 
+## 2021-11-28-01
+
+* GraphQL Objects for Search Check Spelling Action Types [205](https://gitlab.echothree.com/echothree/echothree/-/issues/205)
+* graphql-java 17.3 and graphql-java-annotations 9.1 Upgrades [364](https://gitlab.echothree.com/echothree/echothree/-/issues/364)
+* ClassGraph 4.8.135 Upgrade [365](https://gitlab.echothree.com/echothree/echothree/-/issues/365)
+* GraphQL Query for Check Item Spelling [366](https://gitlab.echothree.com/echothree/echothree/-/issues/366)
+* Apache Lucene 8.11.0 Upgrade [367](https://gitlab.echothree.com/echothree/echothree/-/issues/367)
+
 ## 2021-11-14-01
 
 * WildFly 25.0.0 Upgrade [346](https://gitlab.echothree.com/echothree/echothree/-/issues/346)
