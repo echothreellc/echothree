@@ -25,7 +25,6 @@ import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
-import java.util.Collections;
 import static java.util.Collections.emptyList;
 import java.util.List;
 
@@ -48,12 +47,20 @@ public class CheckSpellingWordObject {
 
     @GraphQLField
     @GraphQLDescription("search check spelling action type")
-    @GraphQLNonNull
-    public SearchCheckSpellingActionTypeObject getSearchCheckSpellingActionType() {
-        var searchControl = Session.getModelController(SearchControl.class);
-        var entity = searchControl.getSearchCheckSpellingActionTypeByName(checkSpellingWord.getSearchCheckSpellingActionType().getSearchCheckSpellingActionTypeName());
+    public SearchCheckSpellingActionTypeObject getSearchCheckSpellingActionType(final DataFetchingEnvironment env) {
+        SearchCheckSpellingActionTypeObject object;
 
-        return new SearchCheckSpellingActionTypeObject(entity);
+        if(SearchSecurityUtils.getInstance().getHasSearchCheckSpellingActionTypeAccess(env)) {
+            var searchControl = Session.getModelController(SearchControl.class);
+            var entity = searchControl.getSearchCheckSpellingActionTypeByName(
+                    checkSpellingWord.getSearchCheckSpellingActionType().getSearchCheckSpellingActionTypeName());
+
+            object = new SearchCheckSpellingActionTypeObject(entity);
+        } else {
+            object = null;
+        }
+
+        return object;
     }
 
     @GraphQLField
