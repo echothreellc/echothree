@@ -33,9 +33,9 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLName("SearchCheckSpellingActionType")
 public class SearchCheckSpellingActionTypeObject
         extends BaseEntityInstanceObject {
-    
+
     private final SearchCheckSpellingActionType searchCheckSpellingActionType; // Always Present
-    
+
     public SearchCheckSpellingActionTypeObject(SearchCheckSpellingActionType searchCheckSpellingActionType) {
         super(searchCheckSpellingActionType.getPrimaryKey());
         

@@ -157,6 +157,9 @@ import com.echothree.control.user.queue.common.QueueUtil;
 import com.echothree.control.user.queue.server.command.GetQueueTypeCommand;
 import com.echothree.control.user.queue.server.command.GetQueueTypesCommand;
 import com.echothree.control.user.search.common.SearchUtil;
+import com.echothree.control.user.search.common.result.CheckItemSpellingResult;
+import com.echothree.control.user.search.common.result.SearchCustomersResult;
+import com.echothree.control.user.search.server.command.CheckItemSpellingCommand;
 import com.echothree.control.user.search.server.command.GetCustomerResultsCommand;
 import com.echothree.control.user.search.server.command.GetEmployeeResultsCommand;
 import com.echothree.control.user.search.server.command.GetItemResultsCommand;
@@ -276,6 +279,7 @@ import com.echothree.model.control.payment.server.graphql.PaymentProcessorTypeCo
 import com.echothree.model.control.payment.server.graphql.PaymentProcessorTypeCodeTypeObject;
 import com.echothree.model.control.payment.server.graphql.PaymentProcessorTypeObject;
 import com.echothree.model.control.queue.server.graphql.QueueTypeObject;
+import com.echothree.model.control.search.server.graphql.CheckItemSpellingObject;
 import com.echothree.model.control.search.server.graphql.CustomerResultsObject;
 import com.echothree.model.control.search.server.graphql.EmployeeResultsObject;
 import com.echothree.model.control.search.server.graphql.ItemResultsObject;
@@ -3801,32 +3805,32 @@ public final class GraphQlQueries
         return itemResultsObject;
     }
 
-//    @GraphQLField
-//    @GraphQLName("checkItemSpelling")
-//    public static CheckItemSpellingObject checkItemSpelling(final DataFetchingEnvironment env,
-//            @GraphQLName("languageIsoName") final String languageIsoName,
-//            @GraphQLName("searchDefaultOperatorName") final String searchDefaultOperatorName,
-//            @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName,
-//            @GraphQLName("q") final String q) {
-//        ItemResultsObject itemResultsObject = new ItemResultsObject();
-//
-//        try {
-//            var commandForm = SearchUtil.getHome().getCheckItemSpellingForm();
-//
-//            commandForm.setLanguageIsoName(languageIsoName);
-//            commandForm.setSearchDefaultOperatorName(searchDefaultOperatorName);
-//            commandForm.setSearchTypeName(searchTypeName);
-//            commandForm.setQ(q);
-//
-//            if(new CheckItemSpellingCommand(getUserVisitPK(env), commandForm).canRunForGraphQl()) {
-//                itemResultsObject.setForm(commandForm);
-//            }
-//        } catch (NamingException ex) {
-//            throw new RuntimeException(ex);
-//        }
-//
-//        return itemResultsObject;
-//    }
+    @GraphQLField
+    @GraphQLName("checkItemSpelling")
+    public static CheckItemSpellingObject checkItemSpelling(final DataFetchingEnvironment env,
+            @GraphQLName("languageIsoName") final String languageIsoName,
+            @GraphQLName("searchDefaultOperatorName") final String searchDefaultOperatorName,
+            @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName,
+            @GraphQLName("q") final String q) {
+        var checkItemSpellingObject = new CheckItemSpellingObject();
+
+        try {
+            var commandForm = SearchUtil.getHome().getCheckItemSpellingForm();
+
+            commandForm.setLanguageIsoName(languageIsoName);
+            commandForm.setSearchDefaultOperatorName(searchDefaultOperatorName);
+            commandForm.setSearchTypeName(searchTypeName);
+            commandForm.setQ(q);
+
+            var commandResult = SearchUtil.getHome().checkItemSpelling(getUserVisitPK(env), commandForm);
+            checkItemSpellingObject.setCommandResult(commandResult);
+            checkItemSpellingObject.setResult(commandResult.hasErrors() ? null : (CheckItemSpellingResult)commandResult.getExecutionResult().getResult());
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return checkItemSpellingObject;
+    }
 
     @GraphQLField
     @GraphQLName("vendorResults")
