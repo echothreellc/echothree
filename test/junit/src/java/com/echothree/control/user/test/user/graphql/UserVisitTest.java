@@ -29,25 +29,27 @@ public class UserVisitTest
     @Test
     public void userVisitQuery()
             throws Exception {
-        Map<String, Object> userVisitBody = executeUsingPost("" +
-                "query {" +
-                "    userVisit {" +
-                "        preferredLanguage {" +
-                "            description" +
-                "        }" +
-                "        preferredCurrency {" +
-                "            description" +
-                "        }" +
-                "        preferredTimeZone {" +
-                "            description" +
-                "        }" +
-                "        preferredDateTimeFormat {" +
-                "            description" +
-                "        }" +
-                "        lastCommandTime" +
-                "	     retainUntilTime" +
-                "    }" +
-                "}");
+        var userVisitBody = executeUsingPost("""
+                query {
+                    userVisit {
+                        preferredLanguage {
+                            description
+                        }
+                        preferredCurrency {
+                            description
+                        }
+                        preferredTimeZone {
+                            description
+                        }
+                        preferredDateTimeFormat {
+                            description
+                        }
+                        lastCommandTime
+                	    retainUntilTime
+                    }
+                }
+                """);
+        
         assertThat(getString(userVisitBody, "data.userVisit.preferredLanguage.description")).isNotNull();
         assertThat(getString(userVisitBody, "data.userVisit.preferredCurrency.description")).isNotNull();
         assertThat(getString(userVisitBody, "data.userVisit.preferredTimeZone.description")).isNotNull();
@@ -55,4 +57,5 @@ public class UserVisitTest
         assertThat(getString(userVisitBody, "data.userVisit.lastCommandTime")).isNotNull();
         assertThat(getString(userVisitBody, "data.userVisit.retainUntilTime")).isNull();
     }
+
 }

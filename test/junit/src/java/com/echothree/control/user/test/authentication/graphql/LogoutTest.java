@@ -27,17 +27,20 @@ public class LogoutTest
     @Test
     public void singleLogoutTest()
             throws Exception {
-        Map<String, Object> body = executeUsingPost("mutation { logout(input: { clientMutationId: \"1\" }) { hasErrors } }");
+        var body = executeUsingPost("mutation { logout(input: { clientMutationId: \"1\" }) { hasErrors } }");
+
         Assert.assertFalse(getBoolean(body, "data.logout.hasErrors"));
     }
     
     @Test
     public void multipleLogoutTest()
             throws Exception {
-        Map<String, Object> body1 = executeUsingPost("mutation { logout(input: { clientMutationId: \"1\" }) { hasErrors } }");
+        var body1 = executeUsingPost("mutation { logout(input: { clientMutationId: \"1\" }) { hasErrors } }");
+
         Assert.assertFalse(getBoolean(body1, "data.logout.hasErrors"));
 
-        Map<String, Object> body2 = executeUsingPost("mutation { logout(input: { clientMutationId: \"1\" }) { hasErrors } }");
+        var body2 = executeUsingPost("mutation { logout(input: { clientMutationId: \"1\" }) { hasErrors } }");
+
         Assert.assertFalse(getBoolean(body2, "data.logout.hasErrors"));
     }
     

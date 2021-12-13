@@ -27,14 +27,16 @@ public class RecoverPasswordTest
     @Test
     public void recoveryPasswordFailureTest()
             throws Exception {
-        Map<String, Object> body = executeUsingPost("mutation { recoverPassword(input: { username: \"TestC@echothree.com\", answer: \"Not Chrome\", clientMutationId: \"1\" }) { hasErrors } }");
+        var body = executeUsingPost("mutation { recoverPassword(input: { username: \"TestC@echothree.com\", answer: \"Not Chrome\", clientMutationId: \"1\" }) { hasErrors } }");
+
         Assert.assertTrue(getBoolean(body, "data.recoverPassword.hasErrors"));
     }
 
     @Test
     public void recoveryPasswordSuccessfulTest()
             throws Exception {
-        Map<String, Object> body = executeUsingPost("mutation { recoverPassword(input: { username: \"TestC@echothree.com\", answer: \"Chrome\", clientMutationId: \"1\" }) { hasErrors } }");
+        var body = executeUsingPost("mutation { recoverPassword(input: { username: \"TestC@echothree.com\", answer: \"Chrome\", clientMutationId: \"1\" }) { hasErrors } }");
+
         Assert.assertFalse(getBoolean(body, "data.recoverPassword.hasErrors"));
     }
     

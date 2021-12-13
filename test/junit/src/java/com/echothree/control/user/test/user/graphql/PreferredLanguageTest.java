@@ -27,7 +27,9 @@ public class PreferredLanguageTest
     @Test
     public void setUserVisitPreferredLanguage()
             throws Exception {
-        Map<String, Object> setUserVisitPreferredLanguage = executeUsingPost("mutation { setUserVisitPreferredLanguage(input: { languageIsoName: \"de\", clientMutationId: \"1\" }) { hasErrors } }");
+        var setUserVisitPreferredLanguage = executeUsingPost("mutation { setUserVisitPreferredLanguage(input: { languageIsoName: \"de\", clientMutationId: \"1\" }) { hasErrors } }");
+
         Assert.assertFalse(getBoolean(setUserVisitPreferredLanguage, "data.setUserVisitPreferredLanguage.hasErrors"));
     }
+
 }

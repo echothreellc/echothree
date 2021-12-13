@@ -27,7 +27,9 @@ public class PreferredDateTimeFormatTest
     @Test
     public void setUserVisitPreferredDateTimeFormat()
             throws Exception {
-        Map<String, Object> setUserVisitPreferredDateTimeFormat = executeUsingPost("mutation { setUserVisitPreferredDateTimeFormat(input: { dateTimeFormatName: \"DEFAULT\", clientMutationId: \"1\" }) { hasErrors } }");
+        var setUserVisitPreferredDateTimeFormat = executeUsingPost("mutation { setUserVisitPreferredDateTimeFormat(input: { dateTimeFormatName: \"DEFAULT\", clientMutationId: \"1\" }) { hasErrors } }");
+
         Assert.assertFalse(getBoolean(setUserVisitPreferredDateTimeFormat, "data.setUserVisitPreferredDateTimeFormat.hasErrors"));
     }
+
 }

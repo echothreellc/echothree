@@ -27,7 +27,9 @@ public class PreferredTimeZoneTest
     @Test
     public void setUserVisitPreferredTimeZone()
             throws Exception {
-        Map<String, Object> setUserVisitPreferredTimeZone = executeUsingPost("mutation { setUserVisitPreferredTimeZone(input: { javaTimeZoneName: \"US/Pacific\", clientMutationId: \"1\" }) { hasErrors } }");
+        var setUserVisitPreferredTimeZone = executeUsingPost("mutation { setUserVisitPreferredTimeZone(input: { javaTimeZoneName: \"US/Pacific\", clientMutationId: \"1\" }) { hasErrors } }");
+
         Assert.assertFalse(getBoolean(setUserVisitPreferredTimeZone, "data.setUserVisitPreferredTimeZone.hasErrors"));
     }
+
 }

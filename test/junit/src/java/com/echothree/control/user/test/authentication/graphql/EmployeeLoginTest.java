@@ -27,14 +27,16 @@ public class EmployeeLoginTest
     @Test
     public void employeeLoginSuccessfulTest()
             throws Exception {
-        Map<String, Object> body = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
+        var body = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
+
         Assert.assertFalse(getBoolean(body, "data.employeeLogin.hasErrors"));
     }
     
     @Test
     public void employeeLoginFailureTest()
             throws Exception {
-        Map<String, Object> body = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"not-the-password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
+        var body = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"not-the-password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
+
         Assert.assertTrue(getBoolean(body, "data.employeeLogin.hasErrors"));
     }
     

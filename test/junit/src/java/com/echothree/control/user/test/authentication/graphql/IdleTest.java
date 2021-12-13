@@ -27,7 +27,7 @@ public class IdleTest
     @Test
     public void idleTest()
             throws Exception {
-        Map<String, Object> body = executeUsingPost("mutation {idle(input: {clientMutationId: \"1\"}) { hasErrors } }");
+        var body = executeUsingPost("mutation {idle(input: {clientMutationId: \"1\"}) { hasErrors } }");
         
         Assert.assertFalse(getBoolean(body, "data.idle.hasErrors"));
     }
@@ -35,7 +35,7 @@ public class IdleTest
     @Test
     public void idleCompleteResultTest()
             throws Exception {
-        Map<String, Object> body = executeUsingPost("mutation { idle(input: { clientMutationId: \"1\" }) { clientMutationId hasWarnings hasErrors hasSecurityMessages securityMessages { key message } hasValidationErrors validationErrors { property key message } hasExecutionWarnings executionWarnings { key message } hasExecutionErrors executionErrors { key message } } }");
+        var body = executeUsingPost("mutation { idle(input: { clientMutationId: \"1\" }) { clientMutationId hasWarnings hasErrors hasSecurityMessages securityMessages { key message } hasValidationErrors validationErrors { property key message } hasExecutionWarnings executionWarnings { key message } hasExecutionErrors executionErrors { key message } } }");
         
         Assert.assertEquals("1", getString(body, "data.idle.clientMutationId"));
         Assert.assertFalse(getBoolean(body, "data.idle.hasWarnings"));

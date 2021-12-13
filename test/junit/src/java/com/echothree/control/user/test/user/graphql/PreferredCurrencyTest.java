@@ -27,7 +27,9 @@ public class PreferredCurrencyTest
     @Test
     public void setUserVisitPreferredCurrency()
             throws Exception {
-        Map<String, Object> setUserVisitPreferredCurrency = executeUsingPost("mutation { setUserVisitPreferredCurrency(input: { currencyIsoName: \"X-1\", clientMutationId: \"1\" }) { hasErrors } }");
+        var setUserVisitPreferredCurrency = executeUsingPost("mutation { setUserVisitPreferredCurrency(input: { currencyIsoName: \"X-1\", clientMutationId: \"1\" }) { hasErrors } }");
+
         Assert.assertFalse(getBoolean(setUserVisitPreferredCurrency, "data.setUserVisitPreferredCurrency.hasErrors"));
     }
+
 }

@@ -26,68 +26,68 @@ public class LockAndUnlockEntityTest
     @Test
     public void lockAndUnlockEntity()
             throws Exception {
-        Map<String, Object> loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
+        var loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
         Assert.assertFalse(getBoolean(loginBody, "data.employeeLogin.hasErrors"));
 
-        Map<String, Object> itemCategoryBody = executeUsingPost("query { itemCategory(itemCategoryName: \"default\") { id } }");
-        String id = getString(itemCategoryBody, "data.itemCategory.id");
+        var itemCategoryBody = executeUsingPost("query { itemCategory(itemCategoryName: \"default\") { id } }");
+        var id = getString(itemCategoryBody, "data.itemCategory.id");
 
-        Map<String, Object> lockEntityBody = executeUsingPost("mutation { lockEntity(input: { id: \"" + id + "\", clientMutationId: \"1\" }) { hasErrors } }");
+        var lockEntityBody = executeUsingPost("mutation { lockEntity(input: { id: \"" + id + "\", clientMutationId: \"1\" }) { hasErrors } }");
         Assert.assertFalse(getBoolean(lockEntityBody, "data.lockEntity.hasErrors"));
 
-        Map<String, Object> unlockEntityBody = executeUsingPost("mutation { unlockEntity(input: { id: \"" + id + "\", clientMutationId: \"1\" }) { hasErrors } }");
+        var unlockEntityBody = executeUsingPost("mutation { unlockEntity(input: { id: \"" + id + "\", clientMutationId: \"1\" }) { hasErrors } }");
         Assert.assertFalse(getBoolean(unlockEntityBody, "data.unlockEntity.hasErrors"));
     }
     
     @Test
     public void lockEntityWithoutLogin()
             throws Exception {
-        Map<String, Object> loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
+        var loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
         Assert.assertFalse(getBoolean(loginBody, "data.employeeLogin.hasErrors"));
 
-        Map<String, Object> itemCategoryBody = executeUsingPost("query { itemCategory(itemCategoryName: \"default\") { id } }");
-        String id = getString(itemCategoryBody, "data.itemCategory.id");
+        var itemCategoryBody = executeUsingPost("query { itemCategory(itemCategoryName: \"default\") { id } }");
+        var id = getString(itemCategoryBody, "data.itemCategory.id");
 
-        Map<String, Object> logoutBody = executeUsingPost("mutation { logout(input: { clientMutationId: \"1\" }) { hasErrors } }");
+        var logoutBody = executeUsingPost("mutation { logout(input: { clientMutationId: \"1\" }) { hasErrors } }");
         Assert.assertFalse(getBoolean(logoutBody, "data.logout.hasErrors"));
 
-        Map<String, Object> lockEntityBody = executeUsingPost("mutation { lockEntity(input: { id: \"" + id + "\", clientMutationId: \"1\" }) { hasErrors } }");
+        var lockEntityBody = executeUsingPost("mutation { lockEntity(input: { id: \"" + id + "\", clientMutationId: \"1\" }) { hasErrors } }");
         Assert.assertTrue(getBoolean(lockEntityBody, "data.lockEntity.hasErrors"));
     }
     
     @Test
     public void unlockEntityWithoutLogin()
             throws Exception {
-        Map<String, Object> loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
+        var loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
         Assert.assertFalse(getBoolean(loginBody, "data.employeeLogin.hasErrors"));
 
-        Map<String, Object> itemCategoryBody = executeUsingPost("query { itemCategory(itemCategoryName: \"default\") { id } }");
-        String id = getString(itemCategoryBody, "data.itemCategory.id");
+        var itemCategoryBody = executeUsingPost("query { itemCategory(itemCategoryName: \"default\") { id } }");
+        var id = getString(itemCategoryBody, "data.itemCategory.id");
 
-        Map<String, Object> logoutBody = executeUsingPost("mutation { logout(input: { clientMutationId: \"1\" }) { hasErrors } }");
+        var logoutBody = executeUsingPost("mutation { logout(input: { clientMutationId: \"1\" }) { hasErrors } }");
         Assert.assertFalse(getBoolean(logoutBody, "data.logout.hasErrors"));
 
-        Map<String, Object> unlockEntityBody = executeUsingPost("mutation { unlockEntity(input: { id: \"" + id + "\", clientMutationId: \"1\" }) { hasErrors } }");
+        var unlockEntityBody = executeUsingPost("mutation { unlockEntity(input: { id: \"" + id + "\", clientMutationId: \"1\" }) { hasErrors } }");
         Assert.assertTrue(getBoolean(unlockEntityBody, "data.unlockEntity.hasErrors"));
     }
     
     @Test
     public void lockNonexistantEntity()
             throws Exception {
-        Map<String, Object> loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
+        var loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
         Assert.assertFalse(getBoolean(loginBody, "data.employeeLogin.hasErrors"));
 
-        Map<String, Object> lockEntityBody = executeUsingPost("mutation { lockEntity(input: { id: \"IDONOTEXIST\", clientMutationId: \"1\" }) { hasErrors } }");
+        var lockEntityBody = executeUsingPost("mutation { lockEntity(input: { id: \"IDONOTEXIST\", clientMutationId: \"1\" }) { hasErrors } }");
         Assert.assertTrue(getBoolean(lockEntityBody, "data.lockEntity.hasErrors"));
     }
     
     @Test
     public void unlockNonexistantEntity()
             throws Exception {
-        Map<String, Object> loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
+        var loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
         Assert.assertFalse(getBoolean(loginBody, "data.employeeLogin.hasErrors"));
 
-        Map<String, Object> lockEntityBody = executeUsingPost("mutation { unlockEntity(input: { id: \"IDONOTEXIST\", clientMutationId: \"1\" }) { hasErrors } }");
+        var lockEntityBody = executeUsingPost("mutation { unlockEntity(input: { id: \"IDONOTEXIST\", clientMutationId: \"1\" }) { hasErrors } }");
         Assert.assertTrue(getBoolean(lockEntityBody, "data.unlockEntity.hasErrors"));
     }
     

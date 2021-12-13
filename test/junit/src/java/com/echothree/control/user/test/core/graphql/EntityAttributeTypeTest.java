@@ -28,7 +28,7 @@ public class EntityAttributeTypeTest
     @Test
     public void entityAttributeTypes()
             throws Exception {
-        Map<String, Object> entityAttributeTypes = executeUsingPost("query { entityAttributeTypes { entityAttributeTypeName description id } }");
+        var entityAttributeTypes = executeUsingPost("query { entityAttributeTypes { entityAttributeTypeName description id } }");
         
         List<Map<String, Object>> list = getList(entityAttributeTypes, "data.entityAttributeTypes");
 
@@ -38,18 +38,18 @@ public class EntityAttributeTypeTest
     @Test
     public void entityAttributeType()
             throws Exception {
-        Map<String, Object> entityAttributeTypes = executeUsingPost("query { entityAttributeTypes { entityAttributeTypeName description id } }");
+        var entityAttributeTypes = executeUsingPost("query { entityAttributeTypes { entityAttributeTypeName description id } }");
         
         List<Map<String, Object>> list = getList(entityAttributeTypes, "data.entityAttributeTypes");
         
         Assert.assertFalse(list.isEmpty());
         
-        Map<String, Object> first = list.get(0);
+        var first = list.get(0);
         String entityAttributeTypeName = getString(first, "entityAttributeTypeName");
         String description = getString(first, "description");
-        String id = getString(first, "id");
+        var id = getString(first, "id");
         
-        Map<String, Object> entityAttributeType = executeUsingPost("query { entityAttributeType(entityAttributeTypeName: \"" + entityAttributeTypeName + "\") { description, id } }");
+        var entityAttributeType = executeUsingPost("query { entityAttributeType(entityAttributeTypeName: \"" + entityAttributeTypeName + "\") { description, id } }");
         
         Assert.assertEquals(description, getString(entityAttributeType, "data.entityAttributeType.description"));
         Assert.assertEquals(id, getString(entityAttributeType, "data.entityAttributeType.id"));

@@ -27,9 +27,9 @@ public class ItemTest
     @Test
     public void itemByItemName()
             throws Exception {
-        Map<String, Object> itemBody = executeUsingPost("query { item(itemName: \"minimal\") { itemName id } }");
+        var itemBody = executeUsingPost("query { item(itemName: \"minimal\") { itemName id } }");
         
-        Map<String, Object> item = getMap(itemBody, "data.item");
+        var item = getMap(itemBody, "data.item");
         
         Assert.assertNotNull(item);
     }
@@ -37,18 +37,18 @@ public class ItemTest
     @Test
     public void itemByAlias()
             throws Exception {
-        Map<String, Object> itemBody = executeUsingPost("query { item(itemNameOrAlias: \"test_other\") { itemName id } }");
+        var itemBody = executeUsingPost("query { item(itemNameOrAlias: \"test_other\") { itemName id } }");
         
-        Map<String, Object> item = getMap(itemBody, "data.item");
+        var item = getMap(itemBody, "data.item");
         
         Assert.assertNotNull(item);
     }
     @Test
     public void itemByItemNameUsingAlias()
             throws Exception {
-        Map<String, Object> itemBody = executeUsingPost("query { item(itemName: \"test_other\") { itemName id } }");
+        var itemBody = executeUsingPost("query { item(itemName: \"test_other\") { itemName id } }");
         
-        Map<String, Object> item = getMap(itemBody, "data.item");
+        var item = getMap(itemBody, "data.item");
         
         Assert.assertNull(item);
     }
@@ -56,13 +56,13 @@ public class ItemTest
     @Test
     public void itemById()
             throws Exception {
-        Map<String, Object> itemBodyByItemName = executeUsingPost("query { item(itemName: \"minimal\") { itemName id } }");
+        var itemBodyByItemName = executeUsingPost("query { item(itemName: \"minimal\") { itemName id } }");
         
-        String id = getString(itemBodyByItemName, "data.item.id");
+        var id = getString(itemBodyByItemName, "data.item.id");
         
-        Map<String, Object> itemBodyById = executeUsingPost("query { item(id: \"" + id + "\") { itemName id } }");
+        var itemBodyById = executeUsingPost("query { item(id: \"" + id + "\") { itemName id } }");
         
-        Map<String, Object> item = getMap(itemBodyById, "data.item");
+        var item = getMap(itemBodyById, "data.item");
 
         Assert.assertNotNull(item);
     }

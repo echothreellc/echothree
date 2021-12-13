@@ -29,26 +29,31 @@ public class UserSessionTest
     @Test
     public void userSessionQuery()
             throws Exception {
-        Map<String, Object> employeeLoginBody = executeUsingPost("" +
-                "mutation { " +
-                "    employeeLogin(input: { " +
-                "        username: \"test e\", " +
-                "        password: \"password\", " +
-                "        companyName: \"TEST_COMPANY\", " +
-                "        clientMutationId: \"1\"" +
-                "    })" +
-                "    {" +
-                "        hasErrors" +
-                "    }" +
-                "}");
+        var employeeLoginBody = executeUsingPost("""
+                mutation { 
+                    employeeLogin(input: { 
+                        username: "test e", 
+                        password: "password", 
+                        companyName: "TEST_COMPANY", 
+                        clientMutationId: "1"
+                    })
+                    {
+                        hasErrors
+                    }
+                }"
+                """);
+
         assertThat(getBoolean(employeeLoginBody, "data.employeeLogin.hasErrors")).isFalse();
 
-        Map<String, Object> userSessionBody = executeUsingPost("" +
-                "query {" +
-                "    userSession {" +
-                "        passwordVerifiedTime" +
-                "    }" +
-                "}");
+        var userSessionBody = executeUsingPost("""
+                query {
+                    userSession {
+                        passwordVerifiedTime
+                    }
+                }
+                """);
+
         assertThat(getString(userSessionBody, "data.userSession.passwordVerifiedTime")).isNotNull();
     }
+
 }

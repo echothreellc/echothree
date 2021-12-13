@@ -28,7 +28,7 @@ public class InventoryConditionTest
     @Test
     public void createInventoryConditionNoAuth()
             throws Exception {
-        Map<String, Object> createBody = executeUsingPost("mutation { createInventoryCondition(input: { inventoryConditionName: \"" + ORIGINAL_INVENTORY_CONDITION_NAME + "\", isDefault: \"false\", sortOrder: \"" + ORIGINAL_SORT_ORDER + "\", description: \"" + ORIGINAL_DESCRIPTION + "\", clientMutationId: \"1\" }) { id hasErrors hasSecurityMessages } }");
+        var createBody = executeUsingPost("mutation { createInventoryCondition(input: { inventoryConditionName: \"" + ORIGINAL_INVENTORY_CONDITION_NAME + "\", isDefault: \"false\", sortOrder: \"" + ORIGINAL_SORT_ORDER + "\", description: \"" + ORIGINAL_DESCRIPTION + "\", clientMutationId: \"1\" }) { id hasErrors hasSecurityMessages } }");
         Assert.assertTrue(getBoolean(createBody, "data.createInventoryCondition.hasErrors"));
         Assert.assertTrue(getBoolean(createBody, "data.createInventoryCondition.hasSecurityMessages"));
     }
@@ -36,7 +36,7 @@ public class InventoryConditionTest
     @Test
     public void deleteInventoryConditionNoAuth()
             throws Exception {
-        Map<String, Object> deleteBody = executeUsingPost("mutation { deleteInventoryCondition(input: { inventoryConditionName: \"" + ORIGINAL_INVENTORY_CONDITION_NAME + "\", clientMutationId: \"1\" }) { hasErrors hasSecurityMessages } }");
+        var deleteBody = executeUsingPost("mutation { deleteInventoryCondition(input: { inventoryConditionName: \"" + ORIGINAL_INVENTORY_CONDITION_NAME + "\", clientMutationId: \"1\" }) { hasErrors hasSecurityMessages } }");
         Assert.assertTrue(getBoolean(deleteBody, "data.deleteInventoryCondition.hasErrors"));
         Assert.assertTrue(getBoolean(deleteBody, "data.deleteInventoryCondition.hasSecurityMessages"));
     }
@@ -44,13 +44,13 @@ public class InventoryConditionTest
     @Test
     public void createInventoryConditionAndDelete()
             throws Exception {
-        Map<String, Object> loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
+        var loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
         Assert.assertFalse(getBoolean(loginBody, "data.employeeLogin.hasErrors"));
 
-        Map<String, Object> createBody = executeUsingPost("mutation { createInventoryCondition(input: { inventoryConditionName: \"" + ORIGINAL_INVENTORY_CONDITION_NAME + "\", isDefault: \"false\", sortOrder: \"" + ORIGINAL_SORT_ORDER + "\", description: \"" + ORIGINAL_DESCRIPTION + "\", clientMutationId: \"1\" }) { id hasErrors hasSecurityMessages } }");
+        var createBody = executeUsingPost("mutation { createInventoryCondition(input: { inventoryConditionName: \"" + ORIGINAL_INVENTORY_CONDITION_NAME + "\", isDefault: \"false\", sortOrder: \"" + ORIGINAL_SORT_ORDER + "\", description: \"" + ORIGINAL_DESCRIPTION + "\", clientMutationId: \"1\" }) { id hasErrors hasSecurityMessages } }");
         Assert.assertFalse(getBoolean(createBody, "data.createInventoryCondition.hasErrors"));
         
-        Map<String, Object> deleteBody = executeUsingPost("mutation { deleteInventoryCondition(input: { inventoryConditionName: \"" + ORIGINAL_INVENTORY_CONDITION_NAME + "\", clientMutationId: \"1\" }) { hasErrors hasSecurityMessages } }");
+        var deleteBody = executeUsingPost("mutation { deleteInventoryCondition(input: { inventoryConditionName: \"" + ORIGINAL_INVENTORY_CONDITION_NAME + "\", clientMutationId: \"1\" }) { hasErrors hasSecurityMessages } }");
         Assert.assertFalse(getBoolean(deleteBody, "data.deleteInventoryCondition.hasErrors"));
     }
     
@@ -65,36 +65,36 @@ public class InventoryConditionTest
     @Test
     public void createInventoryConditionAndQueryInventoryCondition()
             throws Exception {
-        Map<String, Object> loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
+        var loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
         Assert.assertFalse(getBoolean(loginBody, "data.employeeLogin.hasErrors"));
 
-        Map<String, Object> createBody = executeUsingPost("mutation { createInventoryCondition(input: { inventoryConditionName: \"" + ORIGINAL_INVENTORY_CONDITION_NAME + "\", isDefault: \"false\", sortOrder: \"" + ORIGINAL_SORT_ORDER + "\", description: \"" + ORIGINAL_DESCRIPTION + "\", clientMutationId: \"1\" }) { id hasErrors hasSecurityMessages } }");
+        var createBody = executeUsingPost("mutation { createInventoryCondition(input: { inventoryConditionName: \"" + ORIGINAL_INVENTORY_CONDITION_NAME + "\", isDefault: \"false\", sortOrder: \"" + ORIGINAL_SORT_ORDER + "\", description: \"" + ORIGINAL_DESCRIPTION + "\", clientMutationId: \"1\" }) { id hasErrors hasSecurityMessages } }");
         Assert.assertFalse(getBoolean(createBody, "data.createInventoryCondition.hasErrors"));
 
-        String id = getString(createBody, "data.createInventoryCondition.id");
+        var id = getString(createBody, "data.createInventoryCondition.id");
         
-        Map<String, Object> queryBody = executeUsingPost("query { inventoryCondition(id: \"" + id + "\") { id inventoryConditionName isDefault sortOrder description } }");
+        var queryBody = executeUsingPost("query { inventoryCondition(id: \"" + id + "\") { id inventoryConditionName isDefault sortOrder description } }");
         Assert.assertEquals(id, getString(queryBody, "data.inventoryCondition.id"));
         Assert.assertEquals(ORIGINAL_INVENTORY_CONDITION_NAME, getString(queryBody, "data.inventoryCondition.inventoryConditionName"));
         Assert.assertEquals(ORIGINAL_SORT_ORDER, getInteger(queryBody, "data.inventoryCondition.sortOrder"));
         Assert.assertEquals(ORIGINAL_DESCRIPTION, getString(queryBody, "data.inventoryCondition.description"));
         
-        Map<String, Object> deleteBody = executeUsingPost("mutation { deleteInventoryCondition(input: { inventoryConditionName: \"" + ORIGINAL_INVENTORY_CONDITION_NAME + "\", clientMutationId: \"1\" }) { hasErrors hasSecurityMessages } }");
+        var deleteBody = executeUsingPost("mutation { deleteInventoryCondition(input: { inventoryConditionName: \"" + ORIGINAL_INVENTORY_CONDITION_NAME + "\", clientMutationId: \"1\" }) { hasErrors hasSecurityMessages } }");
         Assert.assertFalse(getBoolean(deleteBody, "data.deleteInventoryCondition.hasErrors"));
     }
     
     @Test
     public void createInventoryConditionAndQueryInventoryConditions()
             throws Exception {
-        Map<String, Object> loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
+        var loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
         Assert.assertFalse(getBoolean(loginBody, "data.employeeLogin.hasErrors"));
         
-        Map<String, Object> createBody = executeUsingPost("mutation { createInventoryCondition(input: { inventoryConditionName: \"" + ORIGINAL_INVENTORY_CONDITION_NAME + "\", isDefault: \"false\", sortOrder: \"" + ORIGINAL_SORT_ORDER + "\", description: \"" + ORIGINAL_DESCRIPTION + "\", clientMutationId: \"1\" }) { id hasErrors hasSecurityMessages } }");
+        var createBody = executeUsingPost("mutation { createInventoryCondition(input: { inventoryConditionName: \"" + ORIGINAL_INVENTORY_CONDITION_NAME + "\", isDefault: \"false\", sortOrder: \"" + ORIGINAL_SORT_ORDER + "\", description: \"" + ORIGINAL_DESCRIPTION + "\", clientMutationId: \"1\" }) { id hasErrors hasSecurityMessages } }");
         Assert.assertFalse(getBoolean(createBody, "data.createInventoryCondition.hasErrors"));
         
-        String id = getString(createBody, "data.createInventoryCondition.id");
+        var id = getString(createBody, "data.createInventoryCondition.id");
         
-        Map<String, Object> queryBody = executeUsingPost("query { inventoryConditions { id sortOrder description } }");
+        var queryBody = executeUsingPost("query { inventoryConditions { id sortOrder description } }");
         
         List<Map<String, Object>> inventoryConditions = getList(queryBody, "data.inventoryConditions");
         
@@ -108,55 +108,55 @@ public class InventoryConditionTest
         }
         Assert.assertTrue(foundInventoryCondition);
         
-        Map<String, Object> deleteBody = executeUsingPost("mutation { deleteInventoryCondition(input: { inventoryConditionName: \"" + ORIGINAL_INVENTORY_CONDITION_NAME + "\", clientMutationId: \"1\" }) { hasErrors } }");
+        var deleteBody = executeUsingPost("mutation { deleteInventoryCondition(input: { inventoryConditionName: \"" + ORIGINAL_INVENTORY_CONDITION_NAME + "\", clientMutationId: \"1\" }) { hasErrors } }");
         Assert.assertFalse(getBoolean(deleteBody, "data.deleteInventoryCondition.hasErrors"));
     }
     
     @Test
     public void createInventoryConditionAndEditById()
             throws Exception {
-        Map<String, Object> loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
+        var loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
         Assert.assertFalse(getBoolean(loginBody, "data.employeeLogin.hasErrors"));
         
-        Map<String, Object> createBody = executeUsingPost("mutation { createInventoryCondition(input: { inventoryConditionName: \"" + ORIGINAL_INVENTORY_CONDITION_NAME + "\", isDefault: \"false\", sortOrder: \"" + ORIGINAL_SORT_ORDER + "\", description: \"" + ORIGINAL_DESCRIPTION + "\", clientMutationId: \"1\" }) { id hasErrors hasSecurityMessages } }");
+        var createBody = executeUsingPost("mutation { createInventoryCondition(input: { inventoryConditionName: \"" + ORIGINAL_INVENTORY_CONDITION_NAME + "\", isDefault: \"false\", sortOrder: \"" + ORIGINAL_SORT_ORDER + "\", description: \"" + ORIGINAL_DESCRIPTION + "\", clientMutationId: \"1\" }) { id hasErrors hasSecurityMessages } }");
         Assert.assertFalse(getBoolean(createBody, "data.createInventoryCondition.hasErrors"));
         
-        String id = getString(createBody, "data.createInventoryCondition.id");
+        var id = getString(createBody, "data.createInventoryCondition.id");
         
-        Map<String, Object> editBody = executeUsingPost("mutation { editInventoryCondition(input: { id: \"" + id + "\", inventoryConditionName: \"" + NEW_INVENTORY_CONDITION_NAME + "\", sortOrder: \"" + NEW_SORT_ORDER + "\", description: \"" + NEW_DESCRIPTION + "\", clientMutationId: \"1\" }) { hasErrors } }");
+        var editBody = executeUsingPost("mutation { editInventoryCondition(input: { id: \"" + id + "\", inventoryConditionName: \"" + NEW_INVENTORY_CONDITION_NAME + "\", sortOrder: \"" + NEW_SORT_ORDER + "\", description: \"" + NEW_DESCRIPTION + "\", clientMutationId: \"1\" }) { hasErrors } }");
         Assert.assertFalse(getBoolean(editBody, "data.editInventoryCondition.hasErrors"));
         
-        Map<String, Object> queryBody = executeUsingPost("query { inventoryCondition(id: \"" + id + "\") { id inventoryConditionName, sortOrder description } }");
+        var queryBody = executeUsingPost("query { inventoryCondition(id: \"" + id + "\") { id inventoryConditionName, sortOrder description } }");
         Assert.assertEquals(id, getString(queryBody, "data.inventoryCondition.id"));
         Assert.assertEquals(NEW_INVENTORY_CONDITION_NAME, getString(queryBody, "data.inventoryCondition.inventoryConditionName"));
         Assert.assertEquals(NEW_SORT_ORDER, getInteger(queryBody, "data.inventoryCondition.sortOrder"));
         Assert.assertEquals(NEW_DESCRIPTION, getString(queryBody, "data.inventoryCondition.description"));
         
-        Map<String, Object> deleteBody = executeUsingPost("mutation { deleteInventoryCondition(input: { inventoryConditionName: \"" + NEW_INVENTORY_CONDITION_NAME + "\", clientMutationId: \"1\" }) { hasErrors } }");
+        var deleteBody = executeUsingPost("mutation { deleteInventoryCondition(input: { inventoryConditionName: \"" + NEW_INVENTORY_CONDITION_NAME + "\", clientMutationId: \"1\" }) { hasErrors } }");
         Assert.assertFalse(getBoolean(deleteBody, "data.deleteInventoryCondition.hasErrors"));
     }
 
     @Test
     public void createInventoryConditionAndEditByName()
             throws Exception {
-        Map<String, Object> loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
+        var loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
         Assert.assertFalse(getBoolean(loginBody, "data.employeeLogin.hasErrors"));
 
-        Map<String, Object> createBody = executeUsingPost("mutation { createInventoryCondition(input: { inventoryConditionName: \"" + ORIGINAL_INVENTORY_CONDITION_NAME + "\", isDefault: \"false\", sortOrder: \"" + ORIGINAL_SORT_ORDER + "\", description: \"" + ORIGINAL_DESCRIPTION + "\", clientMutationId: \"1\" }) { id hasErrors hasSecurityMessages } }");
+        var createBody = executeUsingPost("mutation { createInventoryCondition(input: { inventoryConditionName: \"" + ORIGINAL_INVENTORY_CONDITION_NAME + "\", isDefault: \"false\", sortOrder: \"" + ORIGINAL_SORT_ORDER + "\", description: \"" + ORIGINAL_DESCRIPTION + "\", clientMutationId: \"1\" }) { id hasErrors hasSecurityMessages } }");
         Assert.assertFalse(getBoolean(createBody, "data.createInventoryCondition.hasErrors"));
 
-        String id = getString(createBody, "data.createInventoryCondition.id");
+        var id = getString(createBody, "data.createInventoryCondition.id");
 
-        Map<String, Object> editBody = executeUsingPost("mutation { editInventoryCondition(input: { originalInventoryConditionName: \"" + ORIGINAL_INVENTORY_CONDITION_NAME + "\", inventoryConditionName: \"" + NEW_INVENTORY_CONDITION_NAME + "\", sortOrder: \"" + NEW_SORT_ORDER + "\", description: \"" + NEW_DESCRIPTION + "\", clientMutationId: \"1\" }) { hasErrors } }");
+        var editBody = executeUsingPost("mutation { editInventoryCondition(input: { originalInventoryConditionName: \"" + ORIGINAL_INVENTORY_CONDITION_NAME + "\", inventoryConditionName: \"" + NEW_INVENTORY_CONDITION_NAME + "\", sortOrder: \"" + NEW_SORT_ORDER + "\", description: \"" + NEW_DESCRIPTION + "\", clientMutationId: \"1\" }) { hasErrors } }");
         Assert.assertFalse(getBoolean(editBody, "data.editInventoryCondition.hasErrors"));
 
-        Map<String, Object> queryBody = executeUsingPost("query { inventoryCondition(id: \"" + id + "\") { id inventoryConditionName, sortOrder description } }");
+        var queryBody = executeUsingPost("query { inventoryCondition(id: \"" + id + "\") { id inventoryConditionName, sortOrder description } }");
         Assert.assertEquals(id, getString(queryBody, "data.inventoryCondition.id"));
         Assert.assertEquals(NEW_INVENTORY_CONDITION_NAME, getString(queryBody, "data.inventoryCondition.inventoryConditionName"));
         Assert.assertEquals(NEW_SORT_ORDER, getInteger(queryBody, "data.inventoryCondition.sortOrder"));
         Assert.assertEquals(NEW_DESCRIPTION, getString(queryBody, "data.inventoryCondition.description"));
 
-        Map<String, Object> deleteBody = executeUsingPost("mutation { deleteInventoryCondition(input: { inventoryConditionName: \"" + NEW_INVENTORY_CONDITION_NAME + "\", clientMutationId: \"1\" }) { hasErrors } }");
+        var deleteBody = executeUsingPost("mutation { deleteInventoryCondition(input: { inventoryConditionName: \"" + NEW_INVENTORY_CONDITION_NAME + "\", clientMutationId: \"1\" }) { hasErrors } }");
         Assert.assertFalse(getBoolean(deleteBody, "data.deleteInventoryCondition.hasErrors"));
     }
 }

@@ -27,33 +27,40 @@ public class SetPasswordTest
     @Test
     public void setPasswordNoLoginFailureTest()
             throws Exception {
-        Map<String, Object> setPasswordBody = executeUsingPost("mutation { setPassword(input: { oldPassword: \"password\", newPassword1: \"newpassword\", newPassword2: \"newpassword\", clientMutationId: \"1\" }) { hasErrors } }");
+        var setPasswordBody = executeUsingPost("mutation { setPassword(input: { oldPassword: \"password\", newPassword1: \"newpassword\", newPassword2: \"newpassword\", clientMutationId: \"1\" }) { hasErrors } }");
+
         Assert.assertTrue(getBoolean(setPasswordBody, "data.setPassword.hasErrors"));
     }
 
     @Test
     public void setPasswordForEmployeesTest()
             throws Exception {
-        Map<String, Object> loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
+        var loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
+
         Assert.assertFalse(getBoolean(loginBody, "data.employeeLogin.hasErrors"));
 
-        Map<String, Object> setPassword1Body = executeUsingPost("mutation { setPassword(input: { oldPassword: \"password\", newPassword1: \"newpassword\", newPassword2: \"newpassword\", clientMutationId: \"1\" }) { hasErrors } }");
+        var setPassword1Body = executeUsingPost("mutation { setPassword(input: { oldPassword: \"password\", newPassword1: \"newpassword\", newPassword2: \"newpassword\", clientMutationId: \"1\" }) { hasErrors } }");
+
         Assert.assertFalse(getBoolean(setPassword1Body, "data.setPassword.hasErrors"));
 
-        Map<String, Object> setPassword2Body = executeUsingPost("mutation { setPassword(input: { oldPassword: \"newpassword\", newPassword1: \"password\", newPassword2: \"password\", clientMutationId: \"1\" }) { hasErrors } }");
+        var setPassword2Body = executeUsingPost("mutation { setPassword(input: { oldPassword: \"newpassword\", newPassword1: \"password\", newPassword2: \"password\", clientMutationId: \"1\" }) { hasErrors } }");
+
         Assert.assertFalse(getBoolean(setPassword2Body, "data.setPassword.hasErrors"));
     }
 
     @Test
     public void setPasswordForCustomersTest()
             throws Exception {
-        Map<String, Object> loginBody = executeUsingPost("mutation { customerLogin(input: { username: \"TestC@echothree.com\", password: \"password\", clientMutationId: \"1\" }) { hasErrors } }");
+        var loginBody = executeUsingPost("mutation { customerLogin(input: { username: \"TestC@echothree.com\", password: \"password\", clientMutationId: \"1\" }) { hasErrors } }");
+
         Assert.assertFalse(getBoolean(loginBody, "data.customerLogin.hasErrors"));
 
-        Map<String, Object> setPassword1Body = executeUsingPost("mutation { setPassword(input: { oldPassword: \"password\", newPassword1: \"newpassword\", newPassword2: \"newpassword\", clientMutationId: \"1\" }) { hasErrors } }");
+        var setPassword1Body = executeUsingPost("mutation { setPassword(input: { oldPassword: \"password\", newPassword1: \"newpassword\", newPassword2: \"newpassword\", clientMutationId: \"1\" }) { hasErrors } }");
+
         Assert.assertFalse(getBoolean(setPassword1Body, "data.setPassword.hasErrors"));
 
-        Map<String, Object> setPassword2Body = executeUsingPost("mutation { setPassword(input: { oldPassword: \"newpassword\", newPassword1: \"password\", newPassword2: \"password\", clientMutationId: \"1\" }) { hasErrors } }");
+        var setPassword2Body = executeUsingPost("mutation { setPassword(input: { oldPassword: \"newpassword\", newPassword1: \"password\", newPassword2: \"password\", clientMutationId: \"1\" }) { hasErrors } }");
+
         Assert.assertFalse(getBoolean(setPassword2Body, "data.setPassword.hasErrors"));
     }
     
