@@ -38,6 +38,9 @@
         <property name="ui.cli.database.jarfile" value="${ui.cli.database.jardir}/database.jar" />
 
         <path id="runtime.classpath">
+            <file file="${build.lib.dir}/jooq.jar"/>
+            <file file="${build.lib.dir}/jooq-codegen.jar"/>
+            <file file="${build.lib.dir}/jooq-meta.jar"/>
             <file file="${build.lib.dir}/mysql-connector-java.jar"/>
             <file file="${build.lib.dir}/guava.jar"/>
             <file file="${build.lib.dir}/commons-cli.jar"/>
