@@ -44,6 +44,7 @@
         <dependency org="javax.servlet" name="jstl" rev="1.2" conf="sources->sources" />
         <dependency org="javax.websocket" name="javax.websocket-api" rev="1.1" conf="sources->sources" />
         <dependency org="javax.validation" name="validation-api" rev="2.0.1.Final" conf="sources->sources" />
+        <dependency org="javax.xml.bind" name="jaxb-api" rev="2.3.1" conf="sources->sources" />
         <dependency org="jdom" name="jdom" rev="1.0" conf="sources->sources" />
         <dependency org="junit" name="junit" rev="4.12" conf="sources->sources" />
         <dependency org="mysql" name="mysql-connector-java" rev="8.0.27" conf="sources->sources" />
@@ -131,6 +132,7 @@
         <dependency org="javax.servlet" name="javax.servlet-api" rev="3.1.0" conf="javadoc->javadoc" />
         <dependency org="javax.validation" name="validation-api" rev="2.0.1.Final" conf="javadoc->javadoc" />
         <dependency org="javax.websocket" name="javax.websocket-api" rev="1.1" conf="javadoc->javadoc" />
+        <dependency org="javax.xml.bind" name="jaxb-api" rev="2.3.1" conf="javadoc->javadoc" />
         <dependency org="jdom" name="jdom" rev="1.0" conf="javadoc->javadoc" />
         <dependency org="junit" name="junit" rev="4.12" conf="javadoc->javadoc" />
         <dependency org="mysql" name="mysql-connector-java" rev="8.0.27" conf="javadoc->javadoc" />
@@ -221,6 +223,7 @@
         <dependency org="javax.servlet" name="jstl" rev="1.2" conf="binaries->default" />
         <dependency org="javax.validation" name="validation-api" rev="2.0.1.Final" conf="binaries->default" />
         <dependency org="javax.websocket" name="javax.websocket-api" rev="1.1" conf="binaries->default" />
+        <dependency org="javax.xml.bind" name="jaxb-api" rev="2.3.1" conf="binaries->default" />
         <dependency org="jdom" name="jdom" rev="1.0" conf="binaries->default" />
         <dependency org="junit" name="junit" rev="4.12" conf="binaries->default" />
         <dependency org="mysql" name="mysql-connector-java" rev="8.0.27" conf="binaries->default" />
