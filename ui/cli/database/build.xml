@@ -125,7 +125,17 @@
             <arg value="${ui.cli.database.generateddir}"/>
         </java>
     </target>
-        
+
+    <target name="GenerateJooq" depends="jar">
+        <java classpathref="runtime.classpath"
+              classname="com.echothree.ui.cli.database.Database"
+              fork="true">
+            <arg value="--jooq"/>
+            <arg value="--generated"/>
+            <arg value="${ui.cli.database.generateddir}"/>
+        </java>
+    </target>
+
     <target name="GenerateDatabase" depends="jar">
         <java classpathref="runtime.classpath"
               classname="com.echothree.ui.cli.database.Database"
@@ -190,6 +200,7 @@
         <echo>+ Available targets for database utilities: +</echo>
         <echo>+                                           +</echo>
         <echo>+        ant GenerateJava                   +</echo>
+        <echo>+        ant GenerateJooq                   +</echo>
         <echo>+        ant GenerateDatabase               +</echo>
         <echo>+        ant SetCharacterSetAndCollation    +</echo>
         <echo>+        ant RegenerateDatabase             +</echo>

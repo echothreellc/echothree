@@ -17,16 +17,13 @@
 package com.echothree.ui.cli.database;
 
 import com.echothree.ui.cli.database.util.DatabaseDefinitionParser;
-import com.echothree.ui.cli.database.util.DatabaseUtilities;
 import com.echothree.ui.cli.database.util.DatabaseUtilitiesFactory;
-import com.echothree.ui.cli.database.util.DatabaseUtilitiesForJava;
-import com.echothree.ui.cli.database.util.DatabaseViewUtilities;
 import com.echothree.ui.cli.database.util.Databases;
 import java.io.File;
 import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.DefaultConfigurationBuilder;
@@ -43,7 +40,8 @@ public class Database {
         return new DefaultParser().parse(new Options()
                 .addOption("c", "charset", false, "set character set and collation for database, tables and columns")
                 .addOption("s", "structure", false, "check and update (if necessary) database structure")
-                .addOption("j", "java", false, "export Java CMP entity beans")
+                .addOption("j", "java", false, "export Java")
+                .addOption("q", "jooq", false, "export jOOQ")
                 .addOption("e", "empty", false, "empty database")
                 .addOption("r", "reporting", false, "create reporting views")
                 .addOption("v", "verbose", false, "verbose debugging messages")
@@ -64,25 +62,26 @@ public class Database {
     
     public static void main(String args[])
             throws Exception {
-        CommandLine line = getCommandLine(args);
-        boolean doCharacterSetAndCollation = line.hasOption("c");
-        boolean doStructure = line.hasOption("s");
-        boolean doJava = line.hasOption("j");
-        boolean doEmpty = line.hasOption("e");
-        boolean doReporting = line.hasOption("r");
-        boolean doVerbose = line.hasOption("v");
-        boolean doGenerated = line.hasOption("g");
+        var line = getCommandLine(args);
+        var doCharacterSetAndCollation = line.hasOption("c");
+        var doStructure = line.hasOption("s");
+        var doJava = line.hasOption("j");
+        var doJooq = line.hasOption("q");
+        var doEmpty = line.hasOption("e");
+        var doReporting = line.hasOption("r");
+        var doVerbose = line.hasOption("v");
+        var doGenerated = line.hasOption("g");
 
         if(doCharacterSetAndCollation || doStructure || doJava || doEmpty || doReporting) {
-            Databases theDatabases = new Databases();
+            var theDatabases = new Databases();
 
-            DatabaseDefinitionParser databaseDefinitionParser = new DatabaseDefinitionParser(theDatabases);
+            var databaseDefinitionParser = new DatabaseDefinitionParser(theDatabases);
             databaseDefinitionParser.parse("/DatabaseDefinition.xml");
 
             com.echothree.ui.cli.database.util.Database echothreeDatabase = theDatabases.getDatabase("echothree");
 
             if(doCharacterSetAndCollation || doStructure || doEmpty) {
-                DatabaseUtilities myUtilities = DatabaseUtilitiesFactory.getInstance().getDatabaseUtilities(configuration, doVerbose, echothreeDatabase);
+                var myUtilities = DatabaseUtilitiesFactory.getInstance().getDatabaseUtilities(configuration, doVerbose, echothreeDatabase);
 
                 if(doEmpty) {
                     System.out.println("Emptying database...");
@@ -104,13 +103,13 @@ public class Database {
             }
             
             if(doReporting) {
-                DatabaseViewUtilities databaseViewUtilities = DatabaseUtilitiesFactory.getInstance().getDatabaseViewUtilities(configuration, doVerbose, echothreeDatabase);
+                var databaseViewUtilities = DatabaseUtilitiesFactory.getInstance().getDatabaseViewUtilities(configuration, doVerbose, echothreeDatabase);
                 
                 databaseViewUtilities.execute();
             }
 
             String generatedDirectory = null;
-            if(doJava) {
+            if(doJava || doJooq) {
                 if(doGenerated) {
                     generatedDirectory = line.getOptionValue("g");
                 }
@@ -123,8 +122,15 @@ public class Database {
 
             if(doJava) {
                 System.out.println("Exporting Java...");
-                DatabaseUtilitiesForJava myJavaUtilities = DatabaseUtilitiesFactory.getInstance().getJavaUtilities(doVerbose, echothreeDatabase);
+                var myJavaUtilities = DatabaseUtilitiesFactory.getInstance().getJavaUtilities(doVerbose, echothreeDatabase);
                 myJavaUtilities.exportJava(generatedDirectory + File.separatorChar + "java");
+                System.out.println("   ...done.");
+            }
+
+            if(doJooq) {
+                System.out.println("Exporting jOOQ XML...");
+                var myJooqUtilities = DatabaseUtilitiesFactory.getInstance().getJooqUtilities(doVerbose, echothreeDatabase);
+                myJooqUtilities.exportJooq(generatedDirectory + File.separatorChar + "xml");
                 System.out.println("   ...done.");
             }
         }
