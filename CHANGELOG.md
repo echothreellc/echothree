@@ -1,5 +1,9 @@
 # Changelog
 
+## 2021-12-12-01
+
+* jOOQ 3.15.5 Upgrade [368](https://gitlab.echothree.com/echothree/echothree/-/issues/368)
+
 ## 2021-11-28-01
 
 * GraphQL Objects for Search Check Spelling Action Types [205](https://gitlab.echothree.com/echothree/echothree/-/issues/205)
