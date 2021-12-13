@@ -41,6 +41,11 @@
             <file file="${build.lib.dir}/jooq.jar"/>
             <file file="${build.lib.dir}/jooq-codegen.jar"/>
             <file file="${build.lib.dir}/jooq-meta.jar"/>
+            <file file="${build.lib.dir}/jooq-meta.jar"/>
+            <file file="${build.lib.dir}/jooq-meta.jar"/>
+            <file file="${build.lib.dir}/jaxb-api.jar"/>
+            <file file="${build.lib.dir}/r2dbc-spi.jar"/>
+            <file file="${build.lib.dir}/reactive-streams.jar"/>
             <file file="${build.lib.dir}/mysql-connector-java.jar"/>
             <file file="${build.lib.dir}/guava.jar"/>
             <file file="${build.lib.dir}/commons-cli.jar"/>
@@ -133,6 +138,13 @@
             <arg value="--jooq"/>
             <arg value="--generated"/>
             <arg value="${ui.cli.database.generateddir}"/>
+        </java>
+        <java classpathref="runtime.classpath"
+              classname="org.jooq.codegen.GenerationTool"
+              fork="true">
+            <sysproperty key="org.jooq.no-logo" value="true" />
+            <sysproperty key="org.jooq.no-tips" value="true" />
+            <arg value="${metadata.dir}/jooq-config.xml"/>
         </java>
     </target>
 

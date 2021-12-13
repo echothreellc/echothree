@@ -16,6 +16,11 @@
 
 package com.echothree.ui.cli.database.util;
 
+import static com.google.common.base.Charsets.UTF_8;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.PrintWriter;
+import java.nio.file.Files;
 import java.util.List;
 
 public class DatabaseUtilitiesForJooq {
@@ -31,8 +36,61 @@ public class DatabaseUtilitiesForJooq {
         myComponents = theDatabase.getComponents();
     }
 
+    public String createXmlDirectory(String baseDirectory) {
+        var theDirectory = new File(baseDirectory);
+
+        if(!theDirectory.exists()) {
+            theDirectory.mkdirs();
+        }
+
+        return baseDirectory;
+    }
+
     public void exportJooq(String baseDirectory)
     throws Exception {
+        var directory = createXmlDirectory(baseDirectory);
+        var xmlFileName = "XMLDatabase.xml";
+        var f = new File(directory + File.separatorChar + xmlFileName);
+
+        try (BufferedWriter bw = Files.newBufferedWriter(f.toPath(), UTF_8)) {
+            var pw = new PrintWriter(bw);
+
+            pw.print("""
+                    <?xml version="1.0" encoding="UTF-8"?>
+                    <information_schema xmlns="http://www.jooq.org/xsd/jooq-meta-3.14.0.xsd">
+                        <schemata>
+                            <schema>
+                                <schema_name>%s</schema_name>
+                            </schema>
+                        </schemata>
+                    """.formatted(myDatabase.getName()));
+
+            // Test only.
+            pw.print("""
+                        <tables>
+                            <table>
+                                <table_schema>echothree</table_schema>
+                                <table_name>AUTHOR</table_name>
+                            </table>
+                        </tables>
+                        
+                        <columns>
+                            <column>
+                                <table_schema>echothree</table_schema>
+                                <table_name>AUTHOR</table_name>
+                                <column_name>ID</column_name>
+                                <data_type>NUMBER</data_type>
+                                <numeric_precision>7</numeric_precision>
+                                <ordinal_position>1</ordinal_position>
+                                <is_nullable>false</is_nullable>
+                            </column>
+                        </columns>
+                    """);
+
+            pw.print("""
+                    </information_schema>                                   
+                    """);
+        }
     }
     
 }

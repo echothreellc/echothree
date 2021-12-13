@@ -72,7 +72,7 @@ public class Database {
         var doVerbose = line.hasOption("v");
         var doGenerated = line.hasOption("g");
 
-        if(doCharacterSetAndCollation || doStructure || doJava || doEmpty || doReporting) {
+        if(doCharacterSetAndCollation || doStructure || doJava || doJooq || doEmpty || doReporting) {
             var theDatabases = new Databases();
 
             var databaseDefinitionParser = new DatabaseDefinitionParser(theDatabases);
