@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.authentication.graphql;
 
 import com.echothree.control.user.test.common.graphql.GraphQlTestCase;
-import java.util.Map;
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -27,15 +27,47 @@ public class IdleTest
     @Test
     public void idleTest()
             throws Exception {
-        var body = executeUsingPost("mutation {idle(input: {clientMutationId: \"1\"}) { hasErrors } }");
-        
-        Assert.assertFalse(getBoolean(body, "data.idle.hasErrors"));
+        var body = executeUsingPost("""
+                mutation {
+                    idle(input: {clientMutationId: "1"}) { 
+                        hasErrors
+                    }
+                }
+                """);
+
+        assertThat(getBoolean(body, "data.idle.hasErrors")).isFalse();
     }
     
     @Test
     public void idleCompleteResultTest()
             throws Exception {
-        var body = executeUsingPost("mutation { idle(input: { clientMutationId: \"1\" }) { clientMutationId hasWarnings hasErrors hasSecurityMessages securityMessages { key message } hasValidationErrors validationErrors { property key message } hasExecutionWarnings executionWarnings { key message } hasExecutionErrors executionErrors { key message } } }");
+        var body = executeUsingPost("""
+                mutation {
+                    idle(input: { clientMutationId: "1" }) {
+                        clientMutationId
+                        hasWarnings
+                        hasErrors
+                        hasSecurityMessages
+                        securityMessages {
+                            key message
+                        }
+                        hasValidationErrors
+                        validationErrors {
+                            property key message
+                        }
+                        hasExecutionWarnings
+                        executionWarnings {
+                            key
+                            message
+                        }
+                        hasExecutionErrors
+                        executionErrors {
+                            key
+                            message
+                        }
+                    }
+                }
+                """);
         
         Assert.assertEquals("1", getString(body, "data.idle.clientMutationId"));
         Assert.assertFalse(getBoolean(body, "data.idle.hasWarnings"));

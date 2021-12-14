@@ -17,8 +17,7 @@
 package com.echothree.control.user.test.authentication.graphql;
 
 import com.echothree.control.user.test.common.graphql.GraphQlTestCase;
-import java.util.Map;
-import org.junit.Assert;
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import org.junit.Test;
 
 public class LogoutTest
@@ -27,21 +26,39 @@ public class LogoutTest
     @Test
     public void singleLogoutTest()
             throws Exception {
-        var body = executeUsingPost("mutation { logout(input: { clientMutationId: \"1\" }) { hasErrors } }");
+        var body = executeUsingPost("""
+                mutation {
+                    logout(input: { clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """);
 
-        Assert.assertFalse(getBoolean(body, "data.logout.hasErrors"));
+        assertThat(getBoolean(body, "data.logout.hasErrors")).isFalse();
     }
     
     @Test
     public void multipleLogoutTest()
             throws Exception {
-        var body1 = executeUsingPost("mutation { logout(input: { clientMutationId: \"1\" }) { hasErrors } }");
+        var body1 = executeUsingPost("""
+                mutation {
+                    logout(input: { clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """);
 
-        Assert.assertFalse(getBoolean(body1, "data.logout.hasErrors"));
+        assertThat(getBoolean(body1, "data.logout.hasErrors")).isFalse();
 
-        var body2 = executeUsingPost("mutation { logout(input: { clientMutationId: \"1\" }) { hasErrors } }");
+        var body2 = executeUsingPost("""
+                mutation {
+                    logout(input: { clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """);
 
-        Assert.assertFalse(getBoolean(body2, "data.logout.hasErrors"));
+        assertThat(getBoolean(body2, "data.logout.hasErrors")).isFalse();
     }
     
 }
