@@ -17,9 +17,8 @@
 package com.echothree.control.user.test.user.graphql;
 
 import com.echothree.control.user.test.common.graphql.GraphQlTestCase;
-import org.junit.Assert;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import org.junit.Test;
-import java.util.Map;
 
 public class PreferredTimeZoneTest
         extends GraphQlTestCase {
@@ -27,9 +26,15 @@ public class PreferredTimeZoneTest
     @Test
     public void setUserVisitPreferredTimeZone()
             throws Exception {
-        var setUserVisitPreferredTimeZone = executeUsingPost("mutation { setUserVisitPreferredTimeZone(input: { javaTimeZoneName: \"US/Pacific\", clientMutationId: \"1\" }) { hasErrors } }");
+        var setUserVisitPreferredTimeZone = executeUsingPost("""
+                mutation {
+                    setUserVisitPreferredTimeZone(input: { javaTimeZoneName: "US/Pacific", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """);
 
-        Assert.assertFalse(getBoolean(setUserVisitPreferredTimeZone, "data.setUserVisitPreferredTimeZone.hasErrors"));
+        assertThat(getBoolean(setUserVisitPreferredTimeZone, "data.setUserVisitPreferredTimeZone.hasErrors")).isFalse();
     }
 
 }

@@ -17,8 +17,7 @@
 package com.echothree.control.user.test.user.graphql;
 
 import com.echothree.control.user.test.common.graphql.GraphQlTestCase;
-import java.util.Map;
-import org.junit.Assert;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import org.junit.Test;
 
 public class UserLoginTest
@@ -27,191 +26,488 @@ public class UserLoginTest
     @Test
     public void editUserLoginNoAuth()
             throws Exception {
-        var createCustomerWithLoginBody = executeUsingPost("mutation { createCustomerWithLogin(input: { firstName: \"Unit\", lastName: \"Test\", emailAddress: \"jdoe@echothree.com\", allowSolicitation: \"true\", username: \"UnitTest\", password1: \"password\", password2: \"password\", recoveryQuestionName: \"PET_NAME\", answer: \"bird\", clientMutationId: \"1\" }) { hasErrors id } }");
+        var createCustomerWithLoginBody = executeUsingPost("""
+                mutation {
+                    createCustomerWithLogin(input: {
+                        firstName: "Unit", lastName: "Test",
+                        emailAddress: "jdoe@echothree.com",
+                        allowSolicitation: "true",
+                        username: "UnitTest",
+                        password1: "password",
+                        password2: "password",
+                        recoveryQuestionName: "PET_NAME",
+                        answer: "bird",
+                        clientMutationId: "1"
+                    })
+                    {
+                        hasErrors
+                        id
+                    }
+                }
+                """);
 
-        Assert.assertFalse(getBoolean(createCustomerWithLoginBody, "data.createCustomerWithLogin.hasErrors"));
+        assertThat(getBoolean(createCustomerWithLoginBody, "data.createCustomerWithLogin.hasErrors")).isFalse();
         
         var id = getString(createCustomerWithLoginBody, "data.createCustomerWithLogin.id");
 
-        var editUserLoginBody1 = executeUsingPost("mutation { editUserLogin(input: { partyId: \"" + id + "\", username: \"UnitTest1\"clientMutationId: \"1\" }) { hasErrors hasSecurityMessages } }");
+        var editUserLoginBody1 = executeUsingPost("""
+                mutation {
+                    editUserLogin(input: { partyId: %s, username: "UnitTest1" clientMutationId: "1" }) {
+                        hasErrors
+                        hasSecurityMessages
+                    }
+                }
+                """.formatted(id));
 
-        Assert.assertTrue(getBoolean(editUserLoginBody1, "data.editUserLogin.hasErrors"));
-        Assert.assertTrue(getBoolean(editUserLoginBody1, "data.editUserLogin.hasSecurityMessages"));
+        assertThat(getBoolean(editUserLoginBody1, "data.editUserLogin.hasErrors")).isTrue();
+        assertThat(getBoolean(editUserLoginBody1, "data.editUserLogin.hasSecurityMessages")).isTrue();
         
-        var employeeLoginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
+        var employeeLoginBody = executeUsingPost("""
+                mutation {
+                    employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """);
 
-        Assert.assertFalse(getBoolean(employeeLoginBody, "data.employeeLogin.hasErrors"));
+        assertThat(getBoolean(employeeLoginBody, "data.employeeLogin.hasErrors")).isFalse();
         
-        var editUserLoginBody2 = executeUsingPost("mutation { editUserLogin(input: { partyId: \"" + id + "\", username: \"UnitTest1\"clientMutationId: \"1\" }) { hasErrors } }");
+        var editUserLoginBody2 = executeUsingPost("""
+                mutation {
+                    editUserLogin(input: { partyId: %s, username: "UnitTest1"clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """.formatted(id));
 
-        Assert.assertFalse(getBoolean(editUserLoginBody2, "data.editUserLogin.hasErrors"));
+        assertThat(getBoolean(editUserLoginBody2, "data.editUserLogin.hasErrors")).isFalse();
         
-        var deleteUserLoginBody = executeUsingPost("mutation { deleteUserLogin(input: { partyId: \"" + id + "\", clientMutationId: \"1\" }) { hasErrors } }");
+        var deleteUserLoginBody = executeUsingPost("""
+                mutation {
+                    deleteUserLogin(input: { partyId: %s, clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """.formatted(id));
 
-        Assert.assertFalse(getBoolean(deleteUserLoginBody, "data.deleteUserLogin.hasErrors"));
+        assertThat(getBoolean(deleteUserLoginBody, "data.deleteUserLogin.hasErrors")).isFalse();
     }
 
     @Test
     public void editUserLogin()
             throws Exception {
-        var createCustomerWithLoginBody = executeUsingPost("mutation { createCustomerWithLogin(input: { firstName: \"Unit\", lastName: \"Test\", emailAddress: \"jdoe@echothree.com\", allowSolicitation: \"true\", username: \"UnitTest\", password1: \"password\", password2: \"password\", recoveryQuestionName: \"PET_NAME\", answer: \"bird\", clientMutationId: \"1\" }) { hasErrors id } }");
+        var createCustomerWithLoginBody = executeUsingPost("""
+                mutation {
+                    createCustomerWithLogin(input: {
+                        firstName: "Unit",
+                        lastName: "Test",
+                        emailAddress: "jdoe@echothree.com",
+                        allowSolicitation: "true",
+                        username: "UnitTest",
+                        password1: "password",
+                        password2: "password",
+                        recoveryQuestionName: "PET_NAME",
+                        answer: "bird",
+                        clientMutationId: "1"
+                    })
+                    {
+                        hasErrors
+                        id
+                    }
+                }
+                """);
 
-        Assert.assertFalse(getBoolean(createCustomerWithLoginBody, "data.createCustomerWithLogin.hasErrors"));
+        assertThat(getBoolean(createCustomerWithLoginBody, "data.createCustomerWithLogin.hasErrors")).isFalse();
         
         var id = getString(createCustomerWithLoginBody, "data.createCustomerWithLogin.id");
+        var employeeLoginBody = executeUsingPost("""
+                mutation {
+                    employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """);
 
-        var employeeLoginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
-
-        Assert.assertFalse(getBoolean(employeeLoginBody, "data.employeeLogin.hasErrors"));
+        assertThat(getBoolean(employeeLoginBody, "data.employeeLogin.hasErrors")).isFalse();
         
-        var editUserLoginBody = executeUsingPost("mutation { editUserLogin(input: { partyId: \"" + id + "\", username: \"UnitTest1\", clientMutationId: \"1\" }) { hasErrors } }");
+        var editUserLoginBody = executeUsingPost("""
+                mutation {
+                    editUserLogin(input: { partyId: %s, username: "UnitTest1", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """.formatted(id));
 
-        Assert.assertFalse(getBoolean(editUserLoginBody, "data.editUserLogin.hasErrors"));
+        assertThat(getBoolean(editUserLoginBody, "data.editUserLogin.hasErrors")).isFalse();
         
-        var deleteUserLoginBody = executeUsingPost("mutation { deleteUserLogin(input: { partyId: \"" + id + "\", clientMutationId: \"1\" }) { hasErrors } }");
+        var deleteUserLoginBody = executeUsingPost("""
+                mutation {
+                    deleteUserLogin(input: { partyId: %s, clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """.formatted(id));
 
-        Assert.assertFalse(getBoolean(deleteUserLoginBody, "data.deleteUserLogin.hasErrors"));
+        assertThat(getBoolean(deleteUserLoginBody, "data.deleteUserLogin.hasErrors")).isFalse();
     }
 
     @Test
     public void deleteUserLoginNoAuth()
             throws Exception {
-        var createCustomerWithLoginBody = executeUsingPost("mutation { createCustomerWithLogin(input: { firstName: \"Unit\", lastName: \"Test\", emailAddress: \"jdoe@echothree.com\", allowSolicitation: \"true\", username: \"UnitTest\", password1: \"password\", password2: \"password\", recoveryQuestionName: \"PET_NAME\", answer: \"bird\", clientMutationId: \"1\" }) { hasErrors id } }");
+        var createCustomerWithLoginBody = executeUsingPost("""
+                mutation {
+                    createCustomerWithLogin(input: {
+                        firstName: "Unit",
+                        lastName: "Test",
+                        emailAddress: "jdoe@echothree.com",
+                        allowSolicitation: "true",
+                        username: "UnitTest",
+                        password1: "password",
+                        password2: "password",
+                        recoveryQuestionName: "PET_NAME",
+                        answer: "bird",
+                        clientMutationId: "1"
+                    })
+                    {
+                        hasErrors
+                        id
+                    }
+                }
+                """);
 
-        Assert.assertFalse(getBoolean(createCustomerWithLoginBody, "data.createCustomerWithLogin.hasErrors"));
+        assertThat(getBoolean(createCustomerWithLoginBody, "data.createCustomerWithLogin.hasErrors")).isFalse();
         
         var id = getString(createCustomerWithLoginBody, "data.createCustomerWithLogin.id");
         
-        var deleteUserLoginBody1 = executeUsingPost("mutation { deleteUserLogin(input: { partyId: \"" + id + "\", clientMutationId: \"1\" }) { hasErrors hasSecurityMessages } }");
+        var deleteUserLoginBody1 = executeUsingPost("""
+                mutation {
+                    deleteUserLogin(input: { partyId: %s, clientMutationId: "1" }) {
+                        hasErrors
+                        hasSecurityMessages
+                    }
+                }
+                """.formatted(id));
 
-        Assert.assertTrue(getBoolean(deleteUserLoginBody1, "data.deleteUserLogin.hasErrors"));
-        Assert.assertTrue(getBoolean(deleteUserLoginBody1, "data.deleteUserLogin.hasSecurityMessages"));
+        assertThat(getBoolean(deleteUserLoginBody1, "data.deleteUserLogin.hasErrors")).isTrue();
+        assertThat(getBoolean(deleteUserLoginBody1, "data.deleteUserLogin.hasSecurityMessages")).isTrue();
 
-        var employeeLoginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
+        var employeeLoginBody = executeUsingPost("""
+                mutation {
+                    employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """);
 
-        Assert.assertFalse(getBoolean(employeeLoginBody, "data.employeeLogin.hasErrors"));
+        assertThat(getBoolean(employeeLoginBody, "data.employeeLogin.hasErrors")).isFalse();
         
-        var deleteUserLoginBody2 = executeUsingPost("mutation { deleteUserLogin(input: { partyId: \"" + id + "\", clientMutationId: \"1\" }) { hasErrors } }");
+        var deleteUserLoginBody2 = executeUsingPost("""
+                mutation {
+                    deleteUserLogin(input: { partyId: %s, clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """.formatted(id));
 
-        Assert.assertFalse(getBoolean(deleteUserLoginBody2, "data.deleteUserLogin.hasErrors"));
+        assertThat(getBoolean(deleteUserLoginBody2, "data.deleteUserLogin.hasErrors")).isFalse();
     }
 
     @Test
     public void deleteUserLogin()
             throws Exception {
-        var createCustomerWithLoginBody = executeUsingPost("mutation { createCustomerWithLogin(input: { firstName: \"Unit\", lastName: \"Test\", emailAddress: \"jdoe@echothree.com\", allowSolicitation: \"true\", username: \"UnitTest\", password1: \"password\", password2: \"password\", recoveryQuestionName: \"PET_NAME\", answer: \"bird\", clientMutationId: \"1\" }) { hasErrors id } }");
+        var createCustomerWithLoginBody = executeUsingPost("""
+                mutation {
+                    createCustomerWithLogin(input: {
+                        firstName: "Unit",
+                        lastName: "Test",
+                        emailAddress: "jdoe@echothree.com",
+                        allowSolicitation: "true",
+                        username: "UnitTest",
+                        password1: "password",
+                        password2: "password",
+                        recoveryQuestionName: "PET_NAME",
+                        answer: "bird",
+                        clientMutationId: "1"
+                    })
+                    {
+                        hasErrors
+                        id
+                    }
+                }
+                """);
 
-        Assert.assertFalse(getBoolean(createCustomerWithLoginBody, "data.createCustomerWithLogin.hasErrors"));
+        assertThat(getBoolean(createCustomerWithLoginBody, "data.createCustomerWithLogin.hasErrors")).isFalse();
         
         var id = getString(createCustomerWithLoginBody, "data.createCustomerWithLogin.id");
 
-        var employeeLoginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
+        var employeeLoginBody = executeUsingPost("""
+                mutation {
+                    employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """);
 
-        Assert.assertFalse(getBoolean(employeeLoginBody, "data.employeeLogin.hasErrors"));
+        assertThat(getBoolean(employeeLoginBody, "data.employeeLogin.hasErrors")).isFalse();
         
-        var deleteUserLoginBody = executeUsingPost("mutation { deleteUserLogin(input: { partyId: \"" + id + "\", clientMutationId: \"1\" }) { hasErrors } }");
+        var deleteUserLoginBody = executeUsingPost("""
+                mutation {
+                    deleteUserLogin(input: { partyId: %s, clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """.formatted(id));
 
-        Assert.assertFalse(getBoolean(deleteUserLoginBody, "data.deleteUserLogin.hasErrors"));
+        assertThat(getBoolean(deleteUserLoginBody, "data.deleteUserLogin.hasErrors")).isFalse();
     }
 
     @Test
     public void createUserLoginNoAuth()
             throws Exception {
-        var employeeLoginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
+        var employeeLoginBody = executeUsingPost("""
+                mutation {
+                    employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """);
 
-        Assert.assertFalse(getBoolean(employeeLoginBody, "data.employeeLogin.hasErrors"));
+        assertThat(getBoolean(employeeLoginBody, "data.employeeLogin.hasErrors")).isFalse();
         
-        var createCustomerBody = executeUsingPost("mutation { createCustomer(input: { firstName: \"Unit\", lastName: \"Test\", emailAddress: \"jdoe@echothree.com\", allowSolicitation: \"true\", clientMutationId: \"1\" }) { hasErrors id } }");
+        var createCustomerBody = executeUsingPost("""
+                mutation {
+                    createCustomer(input: { firstName: "Unit", lastName: "Test", emailAddress: "jdoe@echothree.com", allowSolicitation: "true", clientMutationId: "1" }) {
+                        hasErrors
+                        id
+                    }
+                }
+                """);
 
-        Assert.assertFalse(getBoolean(createCustomerBody, "data.createCustomer.hasErrors"));
+        assertThat(getBoolean(createCustomerBody, "data.createCustomer.hasErrors")).isFalse();
         
         var id = getString(createCustomerBody, "data.createCustomer.id");
+        var logoutBody = executeUsingPost("""
+                mutation {
+                    logout(input: { clientMutationId: "1" }) {
+                        hasErrors 
+                    }
+                }
+                """);
 
-        var logoutBody = executeUsingPost("mutation { logout(input: { clientMutationId: \"1\" }) { hasErrors } }");
+        assertThat(getBoolean(logoutBody, "data.logout.hasErrors")).isFalse();
 
-        Assert.assertFalse(getBoolean(logoutBody, "data.logout.hasErrors"));
+        var createUserLoginBody = executeUsingPost("""
+                mutation {
+                    createUserLogin(input: {
+                        partyId: %s,
+                        username: "UnitTest",
+                        password1: "password",
+                        password2: "password",
+                        recoveryQuestionName: "PET_NAME",
+                        answer: "bird",
+                        clientMutationId: "1"
+                    })
+                    {
+                        hasErrors
+                    }
+                }
+                """.formatted(id));
 
-        var createUserLoginBody = executeUsingPost("mutation { createUserLogin(input: { partyId: \"" + id + "\", username: \"UnitTest\", password1: \"password\", password2: \"password\", recoveryQuestionName: \"PET_NAME\", answer: \"bird\", clientMutationId: \"1\" }) { hasErrors } }");
-
-        Assert.assertTrue(getBoolean(createUserLoginBody, "data.createUserLogin.hasErrors"));
+        assertThat(getBoolean(createUserLoginBody, "data.createUserLogin.hasErrors")).isTrue();
     }
 
     @Test
     public void createUserLogin()
             throws Exception {
-        var employeeLoginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
+        var employeeLoginBody = executeUsingPost("""
+                mutation {
+                    employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """);
 
-        Assert.assertFalse(getBoolean(employeeLoginBody, "data.employeeLogin.hasErrors"));
+        assertThat(getBoolean(employeeLoginBody, "data.employeeLogin.hasErrors")).isFalse();
         
-        var createCustomerBody = executeUsingPost("mutation { createCustomer(input: { firstName: \"Unit\", lastName: \"Test\", emailAddress: \"jdoe@echothree.com\", allowSolicitation: \"true\", clientMutationId: \"1\" }) { hasErrors id } }");
+        var createCustomerBody = executeUsingPost("""
+                mutation {
+                    createCustomer(input: { firstName: "Unit", lastName: "Test", emailAddress: "jdoe@echothree.com", allowSolicitation: "true", clientMutationId: "1" }) {
+                        hasErrors
+                        id
+                    }
+                }
+                """);
 
-        Assert.assertFalse(getBoolean(createCustomerBody, "data.createCustomer.hasErrors"));
+        assertThat(getBoolean(createCustomerBody, "data.createCustomer.hasErrors")).isFalse();
         
         var id = getString(createCustomerBody, "data.createCustomer.id");
+        var createUserLoginBody = executeUsingPost("""
+                mutation {
+                    createUserLogin(input: {
+                        partyId: %s,
+                        username: "UnitTest",
+                        password1: "password",
+                        password2: "password",
+                        recoveryQuestionName: "PET_NAME",
+                        answer: "bird",
+                        clientMutationId: "1"
+                    })
+                    {
+                        hasErrors
+                    }
+                }
+                """.formatted(id));
 
-        var createUserLoginBody = executeUsingPost("mutation { createUserLogin(input: { partyId: \"" + id + "\", username: \"UnitTest\", password1: \"password\", password2: \"password\", recoveryQuestionName: \"PET_NAME\", answer: \"bird\", clientMutationId: \"1\" }) { hasErrors } }");
+        assertThat(getBoolean(createUserLoginBody, "data.createUserLogin.hasErrors")).isFalse();
 
-        Assert.assertFalse(getBoolean(createUserLoginBody, "data.createUserLogin.hasErrors"));
+        var deleteUserLoginBody = executeUsingPost("""
+                mutation {
+                    deleteUserLogin(input: { partyId: %s, clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """.formatted(id));
 
-        var deleteUserLoginBody = executeUsingPost("mutation { deleteUserLogin(input: { partyId: \"" + id + "\", clientMutationId: \"1\" }) { hasErrors } }");
-
-        Assert.assertFalse(getBoolean(deleteUserLoginBody, "data.deleteUserLogin.hasErrors"));
+        assertThat(getBoolean(deleteUserLoginBody, "data.deleteUserLogin.hasErrors")).isFalse();
     }
     
     @Test
     public void userLoginQueryNoAuth()
             throws Exception {
-        var createCustomerWithLoginBody = executeUsingPost("mutation { createCustomerWithLogin(input: { firstName: \"Unit\", lastName: \"Test\", emailAddress: \"jdoe@echothree.com\", allowSolicitation: \"true\", username: \"UnitTest\", password1: \"password\", password2: \"password\", recoveryQuestionName: \"PET_NAME\", answer: \"bird\", clientMutationId: \"1\" }) { hasErrors id } }");
+        var createCustomerWithLoginBody = executeUsingPost("""
+                mutation {
+                    createCustomerWithLogin(input: {
+                        firstName: "Unit",
+                        lastName: "Test",
+                        emailAddress: "jdoe@echothree.com",
+                        allowSolicitation: "true",
+                        username: "UnitTest",
+                        password1: "password",
+                        password2: "password",
+                        recoveryQuestionName: "PET_NAME",
+                        answer: "bird", clientMutationId: "1"
+                    })
+                    {
+                        hasErrors
+                        id
+                    }
+                }
+                """);
 
-        Assert.assertFalse(getBoolean(createCustomerWithLoginBody, "data.createCustomerWithLogin.hasErrors"));
+        assertThat(getBoolean(createCustomerWithLoginBody, "data.createCustomerWithLogin.hasErrors")).isFalse();
         
-        var id = getString(createCustomerWithLoginBody, "data.createCustomerWithLogin.id");
-
         // Verify returned string matches the string passed in with createCustomerWithLogin
-        var userLoginQuery1 = executeUsingPost("query { userLogin(username: \"unittest\") { username } }");
+        var userLoginQuery1 = executeUsingPost("""
+                query {
+                    userLogin(username: "unittest") {
+                        username
+                    }
+                }
+                """);
 
-        Assert.assertTrue("UnitTest".equals(getString(userLoginQuery1, "data.userLogin.username")));
+        assertThat("UnitTest".equals(getString(userLoginQuery1, "data.userLogin.username"))).isTrue();
 
         // This should fail, partyId is not a permitted way to look up the userLogin without proper permissions
-        var userLoginQuery2 = executeUsingPost("query { userLogin(partyId: \"" + id + "\") { username } }");
+        var id = getString(createCustomerWithLoginBody, "data.createCustomerWithLogin.id");
+        var userLoginQuery2 = executeUsingPost("""
+                query {
+                    userLogin(partyId: %s) {
+                        username
+                    }
+                }
+                """.formatted(id));
 
-        Assert.assertNull(getObject(userLoginQuery2, "data.userLogin"));
+        assertThat(getObject(userLoginQuery2, "data.userLogin")).isNull();
 
-        var employeeLoginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
+        var employeeLoginBody = executeUsingPost("""
+                mutation {
+                    employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """);
 
-        Assert.assertFalse(getBoolean(employeeLoginBody, "data.employeeLogin.hasErrors"));
+        assertThat(getBoolean(employeeLoginBody, "data.employeeLogin.hasErrors")).isFalse();
         
-        var deleteUserLoginBody = executeUsingPost("mutation { deleteUserLogin(input: { partyId: \"" + id + "\", clientMutationId: \"1\" }) { hasErrors } }");
+        var deleteUserLoginBody = executeUsingPost("""
+                mutation {
+                    deleteUserLogin(input: { partyId: %s, clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """.formatted(id));
 
-        Assert.assertFalse(getBoolean(deleteUserLoginBody, "data.deleteUserLogin.hasErrors"));
+        assertThat(getBoolean(deleteUserLoginBody, "data.deleteUserLogin.hasErrors")).isFalse();
     }
     
     @Test
     public void userLoginQuery()
             throws Exception {
-        var createCustomerWithLoginBody = executeUsingPost("mutation { createCustomerWithLogin(input: { firstName: \"Unit\", lastName: \"Test\", emailAddress: \"jdoe@echothree.com\", allowSolicitation: \"true\", username: \"UnitTest\", password1: \"password\", password2: \"password\", recoveryQuestionName: \"PET_NAME\", answer: \"bird\", clientMutationId: \"1\" }) { hasErrors id } }");
+        var createCustomerWithLoginBody = executeUsingPost("""
+                mutation {
+                    createCustomerWithLogin(input: {
+                        firstName: "Unit",
+                        lastName: "Test",
+                        emailAddress: "jdoe@echothree.com",
+                        allowSolicitation: "true",
+                        username: "UnitTest",
+                        password1: "password",
+                        password2: "password",
+                        recoveryQuestionName: "PET_NAME",
+                        answer: "bird",
+                        clientMutationId: "1"
+                    })
+                    {
+                        hasErrors
+                        id
+                    }
+                }
+                """);
 
-        Assert.assertFalse(getBoolean(createCustomerWithLoginBody, "data.createCustomerWithLogin.hasErrors"));
+        assertThat(getBoolean(createCustomerWithLoginBody, "data.createCustomerWithLogin.hasErrors")).isFalse();
         
-        var id = getString(createCustomerWithLoginBody, "data.createCustomerWithLogin.id");
+        var employeeLoginBody = executeUsingPost("""
+                mutation {
+                    employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """);
 
-        var employeeLoginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
-
-        Assert.assertFalse(getBoolean(employeeLoginBody, "data.employeeLogin.hasErrors"));
+        assertThat(getBoolean(employeeLoginBody, "data.employeeLogin.hasErrors")).isFalse();
         
         // Verify returned string matches the string passed in with createCustomerWithLogin
-        var userLoginQuery1 = executeUsingPost("query { userLogin(username: \"UnitTest\") { username } }");
+        var userLoginQuery1 = executeUsingPost("""
+                query {
+                    userLogin(username: "UnitTest") {
+                        username
+                    }
+                }
+                """);
 
-        Assert.assertTrue("UnitTest".equals(getString(userLoginQuery1, "data.userLogin.username")));
+        assertThat("UnitTest".equals(getString(userLoginQuery1, "data.userLogin.username"))).isTrue();
 
         // This should be possible because the employee has authenticated before attempting lookup by partyId.
-        var userLoginQuery2 = executeUsingPost("query { userLogin(partyId: \"" + id + "\") { username } }");
+        var id = getString(createCustomerWithLoginBody, "data.createCustomerWithLogin.id");
+        var userLoginQuery2 = executeUsingPost("""
+                query {
+                    userLogin(partyId: %s) {
+                        username
+                    }
+                }
+                """.formatted(id));
 
-        Assert.assertTrue("UnitTest".equals(getString(userLoginQuery2, "data.userLogin.username")));
+        assertThat("UnitTest".equals(getString(userLoginQuery2, "data.userLogin.username"))).isTrue();
 
-        var deleteUserLoginBody = executeUsingPost("mutation { deleteUserLogin(input: { partyId: \"" + id + "\", clientMutationId: \"1\" }) { hasErrors } }");
+        var deleteUserLoginBody = executeUsingPost("""
+                mutation {
+                    deleteUserLogin(input: { partyId: %s, clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """.formatted(id));
 
-        Assert.assertFalse(getBoolean(deleteUserLoginBody, "data.deleteUserLogin.hasErrors"));
+        assertThat(getBoolean(deleteUserLoginBody, "data.deleteUserLogin.hasErrors")).isFalse();
     }
     
 }

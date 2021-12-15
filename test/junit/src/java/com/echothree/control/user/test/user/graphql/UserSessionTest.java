@@ -37,7 +37,7 @@ public class UserSessionTest
                     {
                         hasErrors
                     }
-                }"
+                }
                 """);
 
         assertThat(getBoolean(employeeLoginBody, "data.employeeLogin.hasErrors")).isFalse();
