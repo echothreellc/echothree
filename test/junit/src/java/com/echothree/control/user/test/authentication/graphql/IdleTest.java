@@ -18,7 +18,6 @@ package com.echothree.control.user.test.authentication.graphql;
 
 import com.echothree.control.user.test.common.graphql.GraphQlTestCase;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
-import org.junit.Assert;
 import org.junit.Test;
 
 public class IdleTest
@@ -69,17 +68,17 @@ public class IdleTest
                 }
                 """);
         
-        Assert.assertEquals("1", getString(body, "data.idle.clientMutationId"));
-        Assert.assertFalse(getBoolean(body, "data.idle.hasWarnings"));
-        Assert.assertFalse(getBoolean(body, "data.idle.hasErrors"));
-        Assert.assertFalse(getBoolean(body, "data.idle.hasSecurityMessages"));
-        Assert.assertNull(getObject(body, "data.idle.securityMessages"));
-        Assert.assertFalse(getBoolean(body, "data.idle.hasValidationErrors"));
-        Assert.assertNull(getObject(body, "data.idle.validationErrors"));
-        Assert.assertFalse(getBoolean(body, "data.idle.hasExecutionWarnings"));
-        Assert.assertNull(getObject(body, "data.idle.executionWarnings"));
-        Assert.assertFalse(getBoolean(body, "data.idle.hasExecutionErrors"));
-        Assert.assertNull(getObject(body, "data.idle.executionErrors"));
+        assertThat(getString(body, "data.idle.clientMutationId")).isEqualTo("1");
+        assertThat(getBoolean(body, "data.idle.hasWarnings")).isFalse();
+        assertThat(getBoolean(body, "data.idle.hasErrors")).isFalse();
+        assertThat(getBoolean(body, "data.idle.hasSecurityMessages")).isFalse();
+        assertThat(getObject(body, "data.idle.securityMessages")).isNull();
+        assertThat(getBoolean(body, "data.idle.hasValidationErrors")).isFalse();
+        assertThat(getObject(body, "data.idle.validationErrors")).isNull();
+        assertThat(getBoolean(body, "data.idle.hasExecutionWarnings")).isFalse();
+        assertThat(getObject(body, "data.idle.executionWarnings")).isNull();
+        assertThat(getBoolean(body, "data.idle.hasExecutionErrors")).isFalse();
+        assertThat(getObject(body, "data.idle.executionErrors")).isNull();
     }
     
 }

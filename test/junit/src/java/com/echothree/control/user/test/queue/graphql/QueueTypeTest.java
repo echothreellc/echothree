@@ -20,7 +20,7 @@ import com.echothree.control.user.test.common.graphql.GraphQlTestCase;
 import com.echothree.model.control.queue.common.QueueConstants;
 import java.util.List;
 import java.util.Map;
-import org.junit.Assert;
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import org.junit.Test;
 
 public class QueueTypeTest
@@ -29,52 +29,139 @@ public class QueueTypeTest
     @Test
     public void queueTypeByQueueTypeNameNoAuth()
             throws Exception {
-        var queueTypeBody = executeUsingPost("query { queueType(queueTypeName: \"" + QueueConstants.QueueType_INDEXING + "\") { queueTypeName isDefault sortOrder description id unformattedOldestQueuedEntityTime oldestQueuedEntityTime unformattedLatestQueuedEntityTime latestQueuedEntityTime queuedEntityCount } }");
-        Assert.assertNull(getMap(queueTypeBody, "data.queueType"));
+        var queueTypeBody = executeUsingPost("""
+                query {
+                    queueType(queueTypeName: "%s") {
+                        queueTypeName
+                        isDefault
+                        sortOrder
+                        description
+                        id
+                        unformattedOldestQueuedEntityTime
+                        oldestQueuedEntityTime
+                        unformattedLatestQueuedEntityTime
+                        latestQueuedEntityTime
+                        queuedEntityCount
+                    }
+                }
+                """.formatted(QueueConstants.QueueType_INDEXING));
+        
+        assertThat(getMap(queueTypeBody, "data.queueType")).isNull();
     }
 
     @Test
     public void queueTypeByQueueTypeName()
             throws Exception {
-        var loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
-        Assert.assertFalse(getBoolean(loginBody, "data.employeeLogin.hasErrors"));
+        var loginBody = executeUsingPost("""
+                mutation {
+                    employeeLogin(input: {
+                        username: "test e",
+                        password: "password",
+                        companyName: "TEST_COMPANY",
+                        clientMutationId: "1"
+                    })
+                    {
+                        hasErrors
+                    }
+                }
+                """);
+        
+        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
 
-        var queueTypeBody = executeUsingPost("query { queueType(queueTypeName: \"" + QueueConstants.QueueType_INDEXING + "\") { queueTypeName isDefault sortOrder description id unformattedOldestQueuedEntityTime oldestQueuedEntityTime unformattedLatestQueuedEntityTime latestQueuedEntityTime queuedEntityCount } }");
+        var queueTypeBody = executeUsingPost("""
+                query {
+                    queueType(queueTypeName: "%s") {
+                        queueTypeName
+                        isDefault
+                        sortOrder
+                        description
+                        id
+                        unformattedOldestQueuedEntityTime
+                        oldestQueuedEntityTime
+                        unformattedLatestQueuedEntityTime
+                        latestQueuedEntityTime
+                        queuedEntityCount
+                    }
+                }
+                """.formatted(QueueConstants.QueueType_INDEXING));
 
         var queueType = getMap(queueTypeBody, "data.queueType");
 
-        Assert.assertNotNull(queueType);
+        assertThat(queueType).isNotNull();
     }
 
     @Test
     public void queueTypesNoAuth()
             throws Exception {
-        var queueTypesBody = executeUsingPost("query { queueTypes { queueTypeName isDefault sortOrder description id unformattedOldestQueuedEntityTime oldestQueuedEntityTime unformattedLatestQueuedEntityTime latestQueuedEntityTime queuedEntityCount } }");
-        List<Map<String, Object>> queueTypes = getList(queueTypesBody, "data.queueTypes");
-
-        Assert.assertTrue(queueTypes.size() == 0);
+        var queueTypesBody = executeUsingPost("""
+                query {
+                    queueTypes {
+                        queueTypeName
+                        isDefault
+                        sortOrder
+                        description
+                        id
+                        unformattedOldestQueuedEntityTime
+                        oldestQueuedEntityTime
+                        unformattedLatestQueuedEntityTime
+                        latestQueuedEntityTime
+                        queuedEntityCount
+                    }
+                }
+                """);
+        
+        var queueTypes = getList(queueTypesBody, "data.queueTypes");
+        assertThat(queueTypes.size() == 0).isTrue();
     }
 
     @Test
     public void queueTypes()
             throws Exception {
-        var loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
-        Assert.assertFalse(getBoolean(loginBody, "data.employeeLogin.hasErrors"));
+        var loginBody = executeUsingPost("""
+                mutation {
+                    employeeLogin(input: {
+                        username: "test e",
+                        password: "password",
+                        companyName: "TEST_COMPANY",
+                        clientMutationId: "1"
+                    })
+                    {
+                        hasErrors
+                    }
+                }
+                """);
+        
+        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
 
-        var queueTypesBody = executeUsingPost("query { queueTypes { queueTypeName isDefault sortOrder description id unformattedOldestQueuedEntityTime oldestQueuedEntityTime unformattedLatestQueuedEntityTime latestQueuedEntityTime queuedEntityCount } }");
-        List<Map<String, Object>> queueTypes = getList(queueTypesBody, "data.queueTypes");
-
-        Assert.assertTrue(queueTypes.size() > 0);
+        var queueTypesBody = executeUsingPost("""
+                query {
+                    queueTypes {
+                        queueTypeName
+                        isDefault
+                        sortOrder
+                        description
+                        id
+                        unformattedOldestQueuedEntityTime
+                        oldestQueuedEntityTime
+                        unformattedLatestQueuedEntityTime
+                        latestQueuedEntityTime
+                        queuedEntityCount
+                    }
+                }
+                """);
+        
+        var queueTypes = getList(queueTypesBody, "data.queueTypes");
+        assertThat(queueTypes.size() > 0).isTrue();
 
         boolean foundIndexing = false;
-        for(Map<String, Object> queueType : queueTypes) {
+        for(var queueType : queueTypes) {
             if(getString(queueType, "queueTypeName").equals(QueueConstants.QueueType_INDEXING)) {
                 foundIndexing = true;
                 break;
             }
         }
 
-        Assert.assertTrue(foundIndexing);
+        assertThat(foundIndexing).isTrue();
     }
 
 }
