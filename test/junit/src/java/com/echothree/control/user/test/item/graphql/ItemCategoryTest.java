@@ -27,7 +27,11 @@ public class ItemCategoryTest
     public void createItemCategoryNoAuth()
             throws Exception {
         var createBody = executeUsingPost("""
-                mutation { createItemCategory(input: { itemCategoryName: "unit_test", isDefault: "false", sortOrder: "1", description: "Test Item Category", clientMutationId: "1" }) { hasErrors hasSecurityMessages } }
+                mutation {
+                    createItemCategory(input: { itemCategoryName: "unit_test", isDefault: "false", sortOrder: "1", description: "Test Item Category", clientMutationId: "1" }) {
+                        hasErrors hasSecurityMessages
+                    }
+                }
                 """);
         
         assertThat(getBoolean(createBody, "data.createItemCategory.hasErrors")).isTrue();
@@ -38,7 +42,11 @@ public class ItemCategoryTest
     public void deleteItemCategoryNoAuth()
             throws Exception {
         var deleteBody = executeUsingPost("""
-                mutation { deleteItemCategory(input: { itemCategoryName: "unit_test", clientMutationId: "1" }) { hasErrors hasSecurityMessages } }
+                mutation {
+                    deleteItemCategory(input: { itemCategoryName: "unit_test", clientMutationId: "1" }) {
+                        hasErrors hasSecurityMessages
+                    }
+                }
                 """);
         
         assertThat(getBoolean(deleteBody, "data.deleteItemCategory.hasErrors")).isTrue();
@@ -49,20 +57,33 @@ public class ItemCategoryTest
     public void createItemCategoryAndDeleteById()
             throws Exception {
         var loginBody = executeUsingPost("""
-                mutation { employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) { hasErrors } }
+                mutation {
+                    employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
                 """);
         
         assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
         
         var createBody = executeUsingPost("""
-                mutation { createItemCategory(input: { itemCategoryName: "unit_test", isDefault: "false", sortOrder: "1", description: "Test Item Category", clientMutationId: "1" }) { hasErrors id } }
+                mutation {
+                    createItemCategory(input: { itemCategoryName: "unit_test", isDefault: "false", sortOrder: "1", description: "Test Item Category", clientMutationId: "1" }) {
+                        hasErrors
+                        id
+                    }
+                }
                 """);
         
         assertThat(getBoolean(createBody, "data.createItemCategory.hasErrors")).isFalse();
         
         var id = getString(createBody, "data.createItemCategory.id");
         var deleteBody = executeUsingPost("""
-                mutation { deleteItemCategory(input: { id: "%s", clientMutationId: "1" }) { hasErrors } }
+                mutation {
+                    deleteItemCategory(input: { id: "%s", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
                 """.formatted(id));
         
         assertThat(getBoolean(deleteBody, "data.deleteItemCategory.hasErrors")).isFalse();
@@ -72,19 +93,31 @@ public class ItemCategoryTest
     public void createItemCategoryAndDeleteByName()
             throws Exception {
         var loginBody = executeUsingPost("""
-                mutation { employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) { hasErrors } }
+                mutation {
+                    employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
                 """);
         
         assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
         
         var createBody = executeUsingPost("""
-                mutation { createItemCategory(input: { itemCategoryName: "unit_test", isDefault: "false", sortOrder: "1", description: "Test Item Category", clientMutationId: "1" }) { hasErrors } }
+                mutation {
+                    createItemCategory(input: { itemCategoryName: "unit_test", isDefault: "false", sortOrder: "1", description: "Test Item Category", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
                 """);
         
         assertThat(getBoolean(createBody, "data.createItemCategory.hasErrors")).isFalse();
         
         var deleteBody = executeUsingPost("""
-                mutation { deleteItemCategory(input: { itemCategoryName: "unit_test", clientMutationId: "1" }) { hasErrors } }
+                mutation {
+                    deleteItemCategory(input: { itemCategoryName: "unit_test", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
                 """);
         
         assertThat(getBoolean(deleteBody, "data.deleteItemCategory.hasErrors")).isFalse();
@@ -94,27 +127,45 @@ public class ItemCategoryTest
     public void editItemCategoryById()
             throws Exception {
         var loginBody = executeUsingPost("""
-                mutation { employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) { hasErrors } }
+                mutation {
+                    employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
                 """);
         
         assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
         
         var createBody = executeUsingPost("""
-                mutation { createItemCategory(input: { itemCategoryName: "unit_test1", isDefault: "false", sortOrder: "1", description: "Test Item Category 1", clientMutationId: "1" }) { hasErrors id } }
+                mutation {
+                    createItemCategory(input: { itemCategoryName: "unit_test1", isDefault: "false", sortOrder: "1", description: "Test Item Category 1", clientMutationId: "1" }) {
+                        hasErrors
+                        id
+                    }
+                }
                 """);
         
         assertThat(getBoolean(createBody, "data.createItemCategory.hasErrors")).isFalse();
         
         var createId = getString(createBody, "data.createItemCategory.id");
         var editBody = executeUsingPost("""
-                mutation { editItemCategory(input: { id: "%s", itemCategoryName: "unit_test2", description: "Test Item Category 2", clientMutationId: "1" }) { hasErrors id } }
+                mutation {
+                    editItemCategory(input: { id: "%s", itemCategoryName: "unit_test2", description: "Test Item Category 2", clientMutationId: "1" }) {
+                        hasErrors
+                        id
+                    }
+                }
                 """.formatted(createId));
         
         assertThat(getBoolean(editBody, "data.editItemCategory.hasErrors")).isFalse();
         assertThat(createId).isEqualTo(getString(editBody, "data.editItemCategory.id"));
 
         var deleteBody = executeUsingPost("""
-                mutation { deleteItemCategory(input: { id: "%s", clientMutationId: "1" }) { hasErrors } }
+                mutation {
+                    deleteItemCategory(input: { id: "%s", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
                 """.formatted(createId));
         
         assertThat(getBoolean(deleteBody, "data.deleteItemCategory.hasErrors")).isFalse();
@@ -124,25 +175,41 @@ public class ItemCategoryTest
     public void editItemCategoryByName()
             throws Exception {
         var loginBody = executeUsingPost("""
-                mutation { employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) { hasErrors } }
+                mutation {
+                    employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
                 """);
         
         assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
         
         var createBody = executeUsingPost("""
-                mutation { createItemCategory(input: { itemCategoryName: "unit_test1", isDefault: "false", sortOrder: "1", description: "Test Item Category 1", clientMutationId: "1" }) { hasErrors } }
+                mutation {
+                    createItemCategory(input: { itemCategoryName: "unit_test1", isDefault: "false", sortOrder: "1", description: "Test Item Category 1", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
                 """);
         
         assertThat(getBoolean(createBody, "data.createItemCategory.hasErrors")).isFalse();
         
         var editBody = executeUsingPost("""
-                mutation { editItemCategory(input: { originalItemCategoryName: "unit_test1", itemCategoryName: "unit_test2", description: "Test Item Category 2", clientMutationId: "1" }) { hasErrors } }
+                mutation {
+                    editItemCategory(input: { originalItemCategoryName: "unit_test1", itemCategoryName: "unit_test2", description: "Test Item Category 2", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
                 """);
         
         assertThat(getBoolean(editBody, "data.editItemCategory.hasErrors")).isFalse();
         
         var deleteBody = executeUsingPost("""
-                mutation { deleteItemCategory(input: { itemCategoryName: "unit_test2", clientMutationId: "1" }) { hasErrors } }
+                mutation {
+                    deleteItemCategory(input: { itemCategoryName: "unit_test2", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
                 """);
         
         assertThat(getBoolean(deleteBody, "data.deleteItemCategory.hasErrors")).isFalse();

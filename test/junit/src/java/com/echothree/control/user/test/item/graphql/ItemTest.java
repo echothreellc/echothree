@@ -27,7 +27,12 @@ public class ItemTest
     public void itemByItemName()
             throws Exception {
         var itemBody = executeUsingPost("""
-                query { item(itemName: "minimal") { itemName id } }
+                query {
+                    item(itemName: "minimal") {
+                        itemName
+                        id
+                    }
+                }
                 """);
         
         assertThat(getMap(itemBody, "data.item")).isNotNull();
@@ -37,7 +42,12 @@ public class ItemTest
     public void itemByAlias()
             throws Exception {
         var itemBody = executeUsingPost("""
-                query { item(itemNameOrAlias: "test_other") { itemName id } }
+                query {
+                    item(itemNameOrAlias: "test_other") {
+                        itemName
+                        id
+                    }
+                }
                 """);
         
         assertThat(getMap(itemBody, "data.item")).isNotNull();
@@ -46,7 +56,12 @@ public class ItemTest
     public void itemByItemNameUsingAlias()
             throws Exception {
         var itemBody = executeUsingPost("""
-                query { item(itemName: "test_other") { itemName id } }
+                query {
+                    item(itemName: "test_other") {
+                        itemName
+                        id
+                    }
+                }
                 """);
         
         assertThat(getMap(itemBody, "data.item")).isNull();
@@ -56,13 +71,23 @@ public class ItemTest
     public void itemById()
             throws Exception {
         var itemBodyByItemName = executeUsingPost("""
-                query { item(itemName: "minimal") { itemName id } }
+                query {
+                    item(itemName: "minimal") {
+                        itemName
+                        id
+                    }
+                }
                 """);
         
         var id = getString(itemBodyByItemName, "data.item.id");
         
         var itemBodyById = executeUsingPost("""
-                query { item(id: "%s") { itemName id } }
+                query {
+                    item(id: "%s") {
+                        itemName
+                        id
+                    }
+                }
                 """.formatted(id));
         
         assertThat(getMap(itemBodyById, "data.item")).isNotNull();
