@@ -179,7 +179,7 @@ public class EntityInstanceTest
         var ulid = getString(entityInstance, "ulid");
         var entityInstanceBody = executeUsingPost("""
             query {
-                entityInstance(id: "%s) {
+                entityInstance(id: "%s") {
                     entityType {
                         entityTypeName
                         componentVendor {
