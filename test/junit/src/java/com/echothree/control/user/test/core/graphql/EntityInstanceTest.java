@@ -19,9 +19,7 @@ package com.echothree.control.user.test.core.graphql;
 import com.echothree.control.user.test.common.graphql.GraphQlTestCase;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
-import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
-import org.junit.Assert;
 import org.junit.Test;
 
 public class EntityInstanceTest

@@ -17,9 +17,7 @@
 package com.echothree.control.user.test.core.graphql;
 
 import com.echothree.control.user.test.common.graphql.GraphQlTestCase;
-import java.util.List;
-import java.util.Map;
-import org.junit.Assert;
+import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
 
 public class EntityAttributeTypeTest
@@ -28,31 +26,54 @@ public class EntityAttributeTypeTest
     @Test
     public void entityAttributeTypes()
             throws Exception {
-        var entityAttributeTypes = executeUsingPost("query { entityAttributeTypes { entityAttributeTypeName description id } }");
+        var entityAttributeTypesBody = executeUsingPost("""
+                query {
+                    entityAttributeTypes {
+                        entityAttributeTypeName
+                        description
+                        id
+                    }
+                }
+                """);
         
-        List<Map<String, Object>> list = getList(entityAttributeTypes, "data.entityAttributeTypes");
+        var entityAttributeTypes = getList(entityAttributeTypesBody, "data.entityAttributeTypes");
 
-        Assert.assertFalse(list.isEmpty());
+        assertThat(entityAttributeTypes).isNotEmpty();
     }
     
     @Test
     public void entityAttributeType()
             throws Exception {
-        var entityAttributeTypes = executeUsingPost("query { entityAttributeTypes { entityAttributeTypeName description id } }");
+        var entityAttributeTypesBody = executeUsingPost("""
+                query {
+                    entityAttributeTypes {
+                        entityAttributeTypeName
+                        description
+                        id
+                    }
+                }
+                """);
+                
+        var entityAttributeTypes = getList(entityAttributeTypesBody, "data.entityAttributeTypes");
+
+        assertThat(entityAttributeTypes).isNotEmpty();
         
-        List<Map<String, Object>> list = getList(entityAttributeTypes, "data.entityAttributeTypes");
-        
-        Assert.assertFalse(list.isEmpty());
-        
-        var first = list.get(0);
-        String entityAttributeTypeName = getString(first, "entityAttributeTypeName");
-        String description = getString(first, "description");
+        var first = entityAttributeTypes.get(0);
+        var entityAttributeTypeName = getString(first, "entityAttributeTypeName");
+        var description = getString(first, "description");
         var id = getString(first, "id");
         
-        var entityAttributeType = executeUsingPost("query { entityAttributeType(entityAttributeTypeName: \"" + entityAttributeTypeName + "\") { description, id } }");
-        
-        Assert.assertEquals(description, getString(entityAttributeType, "data.entityAttributeType.description"));
-        Assert.assertEquals(id, getString(entityAttributeType, "data.entityAttributeType.id"));
+        var entityAttributeType = executeUsingPost("""
+                query {
+                    entityAttributeType(entityAttributeTypeName: "%s") {
+                        description,
+                        id
+                    }
+                }
+                """.formatted(entityAttributeTypeName));
+
+        assertThat(getString(entityAttributeType, "data.entityAttributeType.description")).isEqualTo(description);
+        assertThat(getString(entityAttributeType, "data.entityAttributeType.id")).isEqualTo(id);
     }
     
 }

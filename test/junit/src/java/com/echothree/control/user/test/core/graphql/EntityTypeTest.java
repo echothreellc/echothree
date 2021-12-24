@@ -20,7 +20,6 @@ import com.echothree.control.user.test.common.graphql.GraphQlTestCase;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import static org.assertj.core.api.Assertions.assertThat;
-import org.junit.Assert;
 import org.junit.Test;
 
 public class EntityTypeTest
@@ -29,7 +28,13 @@ public class EntityTypeTest
     @Test
     public void entityTypesQueryNoAuth()
             throws Exception {
-        var entityTypesBody = executeUsingPost("query { entityTypes(componentVendorName: \"" + ComponentVendors.ECHOTHREE + "\") { entityTypeName } }\n");
+        var entityTypesBody = executeUsingPost("""
+                query {
+                    entityTypes(componentVendorName: "%s") {
+                        entityTypeName
+                    }
+                }
+                """.formatted(ComponentVendors.ECHOTHREE));
 
         var entityTypes = getList(entityTypesBody, "data.entityTypes");
 
@@ -39,7 +44,13 @@ public class EntityTypeTest
     @Test
     public void entityTypeQueryNoAuth()
             throws Exception {
-        var entityTypeBody = executeUsingPost("query { entityType(componentVendorName: \"" + ComponentVendors.ECHOTHREE + "\", entityTypeName: \"" + EntityTypes.GlAccount + "\") { entityTypeName } }");
+        var entityTypeBody = executeUsingPost("""
+                query {
+                    entityType(componentVendorName: "%s", entityTypeName: "%s") {
+                        entityTypeName
+                    }
+                }
+                """.formatted(ComponentVendors.ECHOTHREE, EntityTypes.GlAccount));
 
         var entityType = getMap(entityTypeBody, "data.entityType");
 
@@ -49,10 +60,23 @@ public class EntityTypeTest
     @Test
     public void entityTypesQuery()
             throws Exception {
-        var loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
-        Assert.assertFalse(getBoolean(loginBody, "data.employeeLogin.hasErrors"));
+        var loginBody = executeUsingPost("""
+                mutation {
+                    employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """);
 
-        var entityTypesBody = executeUsingPost("query { entityTypes(componentVendorName: \"" + ComponentVendors.ECHOTHREE + "\") { entityTypeName } }\n");
+        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
+
+        var entityTypesBody = executeUsingPost("""
+                query {
+                    entityTypes(componentVendorName: "%s") {
+                        entityTypeName
+                    }
+                }
+                """.formatted(ComponentVendors.ECHOTHREE));
 
         var entityTypes = getList(entityTypesBody, "data.entityTypes");
 
@@ -62,10 +86,23 @@ public class EntityTypeTest
     @Test
     public void entityTypeQueryUsingNames()
             throws Exception {
-        var loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
-        Assert.assertFalse(getBoolean(loginBody, "data.employeeLogin.hasErrors"));
+        var loginBody = executeUsingPost("""
+                mutation {
+                    employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """);
 
-        var entityTypeBody = executeUsingPost("query { entityType(componentVendorName: \"" + ComponentVendors.ECHOTHREE + "\", entityTypeName: \"" + EntityTypes.GlAccount + "\") { entityTypeName } }");
+        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
+
+        var entityTypeBody = executeUsingPost("""
+                query {
+                    entityType(componentVendorName: "%s", entityTypeName: "%s") {
+                        entityTypeName
+                    }
+                }
+                """.formatted(ComponentVendors.ECHOTHREE, EntityTypes.GlAccount));
 
         var entityTypeName = getString(entityTypeBody, "data.entityType.entityTypeName");
 
@@ -75,10 +112,23 @@ public class EntityTypeTest
     @Test
     public void entityTypeQueryUsingOnlyComponentVendorName()
             throws Exception {
-        var loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
-        Assert.assertFalse(getBoolean(loginBody, "data.employeeLogin.hasErrors"));
+        var loginBody = executeUsingPost("""
+                mutation {
+                    employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """);
 
-        var entityTypeBody = executeUsingPost("query { entityType(componentVendorName: \"" + ComponentVendors.ECHOTHREE + "\") { entityTypeName } }");
+        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
+
+        var entityTypeBody = executeUsingPost("""
+                query {
+                    entityType(componentVendorName: "%s") {
+                        entityTypeName
+                    }
+                }
+                """.formatted(ComponentVendors.ECHOTHREE));
 
         var entityType = getMap(entityTypeBody, "data.entityType");
 
@@ -88,10 +138,23 @@ public class EntityTypeTest
     @Test
     public void entityTypeQueryUsingOnlyEntityTypeName()
             throws Exception {
-        var loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
-        Assert.assertFalse(getBoolean(loginBody, "data.employeeLogin.hasErrors"));
+        var loginBody = executeUsingPost("""
+                mutation {
+                    employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """);
 
-        var entityTypeBody = executeUsingPost("query { entityType(entityTypeName: \"" + EntityTypes.GlAccount + "\") { entityTypeName } }");
+        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
+
+        var entityTypeBody = executeUsingPost("""
+                query {
+                    entityType(entityTypeName: "%s") {
+                        entityTypeName
+                    }
+                }
+                """.formatted(EntityTypes.GlAccount));
 
         var entityType = getMap(entityTypeBody, "data.entityType");
 
@@ -101,16 +164,37 @@ public class EntityTypeTest
     @Test
     public void entityTypeQueryUsingId()
             throws Exception {
-        var loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
-        Assert.assertFalse(getBoolean(loginBody, "data.employeeLogin.hasErrors"));
+        var loginBody = executeUsingPost("""
+                mutation {
+                    employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """);
 
-        var entityTypeBodyUsingNames = executeUsingPost("query { entityType(componentVendorName: \"" + ComponentVendors.ECHOTHREE + "\", entityTypeName: \"" + EntityTypes.GlAccount + "\") { id } }");
+        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
+
+        var entityTypeBodyUsingNames = executeUsingPost("""
+                query {
+                    entityType(componentVendorName: "%s", entityTypeName: "%s") {
+                        id
+                    }
+                }
+                """.formatted(ComponentVendors.ECHOTHREE, EntityTypes.GlAccount));
 
         var id = getString(entityTypeBodyUsingNames, "data.entityType.id");
 
         assertThat(id).isNotNull();
 
-        var entityTypeBodyUsingId = executeUsingPost("query { entityType(id: \"" + id + "\") { componentVendor { componentVendorName } entityTypeName } }");
+        var entityTypeBodyUsingId = executeUsingPost("""
+                query { entityType(id: "%s") {
+                    componentVendor {
+                        componentVendorName
+                    }
+                    entityTypeName
+                    }
+                }
+                """.formatted(id));
 
         var componentVendorName = getString(entityTypeBodyUsingId, "data.entityType.componentVendor.componentVendorName");
         var entityTypeName = getString(entityTypeBodyUsingId, "data.entityType.entityTypeName");
@@ -122,10 +206,26 @@ public class EntityTypeTest
     @Test
     public void entityTypeQueryUsingNonexistentId()
             throws Exception {
-        var loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
-        Assert.assertFalse(getBoolean(loginBody, "data.employeeLogin.hasErrors"));
+        var loginBody = executeUsingPost("""
+                mutation {
+                    employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """);
 
-        var entityTypeBody = executeUsingPost("query { entityType(id: \"non-existent\") { componentVendor { componentVendorName } entityTypeName } }");
+        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
+
+        var entityTypeBody = executeUsingPost("""
+                query {
+                    entityType(id: "non-existent") {
+                        componentVendor {
+                            componentVendorName
+                        }
+                        entityTypeName
+                    }
+                }
+                """);
 
         var entityType = getMap(entityTypeBody, "data.entityType");
 

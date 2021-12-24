@@ -18,7 +18,6 @@ package com.echothree.control.user.test.core.graphql;
 
 import com.echothree.control.user.test.common.graphql.GraphQlTestCase;
 import static org.assertj.core.api.Assertions.assertThat;
-import org.junit.Assert;
 import org.junit.Test;
 
 public class AppearanceTest
@@ -29,47 +28,77 @@ public class AppearanceTest
     @Test
     public void appearancesQueryNoAuth()
             throws Exception {
-        var appearancesBody = executeUsingPost("query { appearances { appearanceName } }");
+        var appearancesBody = executeUsingPost("""
+                query {
+                    appearances {
+                        appearanceName
+                    }
+                }
+                """);
 
-        var appearances = getList(appearancesBody, "data.appearances");
-
-        assertThat(appearances).size().isEqualTo(0);
+        assertThat(getList(appearancesBody, "data.appearances")).size().isEqualTo(0);
     }
 
     @Test
     public void appearanceQueryNoAuth()
             throws Exception {
-        var appearanceBody = executeUsingPost("query { appearance(appearanceName: \"" + TEST_APPEARANCE + "\") { appearanceName } }");
+        var appearanceBody = executeUsingPost("""
+                query {
+                    appearance(appearanceName: "%s") {
+                        appearanceName
+                    }
+                }
+                """.formatted(TEST_APPEARANCE));
 
-        var appearance = getMap(appearanceBody, "data.appearance");
-
-        assertThat(appearance).isNull();
+        assertThat(getMap(appearanceBody, "data.appearance")).isNull();
     }
 
     @Test
     public void appearancesQuery()
             throws Exception {
-        var loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
-        Assert.assertFalse(getBoolean(loginBody, "data.employeeLogin.hasErrors"));
+        var loginBody = executeUsingPost("""
+                mutation {
+                    employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """);
 
-        var appearancesBody = executeUsingPost("query { appearances { appearanceName } }");
+        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
 
-        var appearances = getList(appearancesBody, "data.appearances");
+        var appearancesBody = executeUsingPost("""
+                query {
+                    appearances {
+                        appearanceName
+                    }
+                }
+                """);
 
-        assertThat(appearances).size().isGreaterThan(0);
+        assertThat(getList(appearancesBody, "data.appearances")).size().isGreaterThan(0);
     }
 
     @Test
     public void appearanceQuery()
             throws Exception {
-        var loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
-        Assert.assertFalse(getBoolean(loginBody, "data.employeeLogin.hasErrors"));
+        var loginBody = executeUsingPost("""
+                mutation {
+                    employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """);
+        
+        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
 
-        var appearanceBody = executeUsingPost("query { appearance(appearanceName: \"" + TEST_APPEARANCE + "\") { appearanceName } }");
+        var appearanceBody = executeUsingPost("""
+                query {
+                    appearance(appearanceName: "%s") {
+                        appearanceName
+                    }
+                }
+                """.formatted(TEST_APPEARANCE));
 
-        var appearanceName = getString(appearanceBody, "data.appearance.appearanceName");
-
-        assertThat(appearanceName).isEqualTo(TEST_APPEARANCE);
+        assertThat(getString(appearanceBody, "data.appearance.appearanceName")).isEqualTo(TEST_APPEARANCE);
     }
 
 }
