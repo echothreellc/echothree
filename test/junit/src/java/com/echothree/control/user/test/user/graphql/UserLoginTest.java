@@ -74,7 +74,7 @@ public class UserLoginTest
         
         var editUserLoginBody2 = executeUsingPost("""
                 mutation {
-                    editUserLogin(input: { partyId: %s, username: "UnitTest1"clientMutationId: "1" }) {
+                    editUserLogin(input: { partyId: "%s", username: "UnitTest1", clientMutationId: "1" }) {
                         hasErrors
                     }
                 }
@@ -84,7 +84,7 @@ public class UserLoginTest
         
         var deleteUserLoginBody = executeUsingPost("""
                 mutation {
-                    deleteUserLogin(input: { partyId: %s, clientMutationId: "1" }) {
+                    deleteUserLogin(input: { partyId: "%s", clientMutationId: "1" }) {
                         hasErrors
                     }
                 }
@@ -132,7 +132,7 @@ public class UserLoginTest
         
         var editUserLoginBody = executeUsingPost("""
                 mutation {
-                    editUserLogin(input: { partyId: %s, username: "UnitTest1", clientMutationId: "1" }) {
+                    editUserLogin(input: { partyId: "%s", username: "UnitTest1", clientMutationId: "1" }) {
                         hasErrors
                     }
                 }
@@ -142,7 +142,7 @@ public class UserLoginTest
         
         var deleteUserLoginBody = executeUsingPost("""
                 mutation {
-                    deleteUserLogin(input: { partyId: %s, clientMutationId: "1" }) {
+                    deleteUserLogin(input: { partyId: "%s", clientMutationId: "1" }) {
                         hasErrors
                     }
                 }

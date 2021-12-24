@@ -100,7 +100,7 @@ public class LockAndUnlockEntityTest
 
         var lockEntityBody = executeUsingPost("""
                 mutation {
-                    lockEntity(input: { id: "%s, clientMutationId: "1" }) {
+                    lockEntity(input: { id: "%s", clientMutationId: "1" }) {
                         hasErrors
                     }
                 }
