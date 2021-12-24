@@ -18,7 +18,6 @@ package com.echothree.control.user.test.authentication.graphql;
 
 import com.echothree.control.user.test.common.graphql.GraphQlTestCase;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import org.junit.Assert;
 import org.junit.Test;
 
 public class SetPasswordTest
@@ -35,7 +34,7 @@ public class SetPasswordTest
                 }
                 """);
 
-        Assert.assertTrue(getBoolean(setPasswordBody, "data.setPassword.hasErrors"));
+        assertThat(getBoolean(setPasswordBody, "data.setPassword.hasErrors")).isTrue();
     }
 
     @Test

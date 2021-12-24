@@ -18,8 +18,6 @@ package com.echothree.control.user.test.queue.graphql;
 
 import com.echothree.control.user.test.common.graphql.GraphQlTestCase;
 import com.echothree.model.control.queue.common.QueueConstants;
-import java.util.List;
-import java.util.Map;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import org.junit.Test;
 

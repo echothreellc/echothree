@@ -17,11 +17,8 @@
 package com.echothree.control.user.test.user.graphql;
 
 import com.echothree.control.user.test.common.graphql.GraphQlTestCase;
-import org.junit.Test;
-
-import java.util.Map;
-
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import org.junit.Test;
 
 public class UserVisitTest
         extends GraphQlTestCase {
