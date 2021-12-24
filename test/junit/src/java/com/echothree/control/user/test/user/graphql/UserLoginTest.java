@@ -299,7 +299,7 @@ public class UserLoginTest
         var createUserLoginBody = executeUsingPost("""
                 mutation {
                     createUserLogin(input: {
-                        partyId: %s,
+                        partyId: "%s",
                         username: "UnitTest",
                         password1: "password",
                         password2: "password",
@@ -344,7 +344,7 @@ public class UserLoginTest
         var createUserLoginBody = executeUsingPost("""
                 mutation {
                     createUserLogin(input: {
-                        partyId: %s,
+                        partyId: "%s",
                         username: "UnitTest",
                         password1: "password",
                         password2: "password",
@@ -362,7 +362,7 @@ public class UserLoginTest
 
         var deleteUserLoginBody = executeUsingPost("""
                 mutation {
-                    deleteUserLogin(input: { partyId: %s, clientMutationId: "1" }) {
+                    deleteUserLogin(input: { partyId: "%s", clientMutationId: "1" }) {
                         hasErrors
                     }
                 }
@@ -411,7 +411,7 @@ public class UserLoginTest
         var id = getString(createCustomerWithLoginBody, "data.createCustomerWithLogin.id");
         var userLoginQuery2 = executeUsingPost("""
                 query {
-                    userLogin(partyId: %s) {
+                    userLogin(partyId: "%s") {
                         username
                     }
                 }
@@ -431,7 +431,7 @@ public class UserLoginTest
         
         var deleteUserLoginBody = executeUsingPost("""
                 mutation {
-                    deleteUserLogin(input: { partyId: %s, clientMutationId: "1" }) {
+                    deleteUserLogin(input: { partyId: "%s", clientMutationId: "1" }) {
                         hasErrors
                     }
                 }
@@ -491,7 +491,7 @@ public class UserLoginTest
         var id = getString(createCustomerWithLoginBody, "data.createCustomerWithLogin.id");
         var userLoginQuery2 = executeUsingPost("""
                 query {
-                    userLogin(partyId: %s) {
+                    userLogin(partyId: "%s") {
                         username
                     }
                 }
@@ -501,7 +501,7 @@ public class UserLoginTest
 
         var deleteUserLoginBody = executeUsingPost("""
                 mutation {
-                    deleteUserLogin(input: { partyId: %s, clientMutationId: "1" }) {
+                    deleteUserLogin(input: { partyId: "%s", clientMutationId: "1" }) {
                         hasErrors
                     }
                 }
