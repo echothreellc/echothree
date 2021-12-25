@@ -17,43 +17,12 @@
 package com.echothree.control.user.test.content.graphql;
 
 import com.echothree.control.user.test.common.graphql.GraphQlTestCase;
-import java.util.List;
-import java.util.Map;
-import org.junit.Assert;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import org.junit.Test;
 
 public class ContentPageLayoutTest
         extends GraphQlTestCase {
 
-    @Test
-    public void createContentPageLayoutNoAuth()
-            throws Exception {
-        Map<String, Object> createBody = executeUsingPost("mutation { createContentPageLayout(input: { contentPageLayoutName: \"" + ORIGINAL_CONTENT_PAGE_LAYOUT_NAME + "\", isDefault: \"false\", sortOrder: \"" + ORIGINAL_SORT_ORDER + "\", description: \"" + ORIGINAL_DESCRIPTION + "\", clientMutationId: \"1\" }) { id hasErrors hasSecurityMessages } }");
-        Assert.assertTrue(getBoolean(createBody, "data.createContentPageLayout.hasErrors"));
-        Assert.assertTrue(getBoolean(createBody, "data.createContentPageLayout.hasSecurityMessages"));
-    }
-
-    @Test
-    public void deleteContentPageLayoutNoAuth()
-            throws Exception {
-        Map<String, Object> deleteBody = executeUsingPost("mutation { deleteContentPageLayout(input: { contentPageLayoutName: \"" + ORIGINAL_CONTENT_PAGE_LAYOUT_NAME + "\", clientMutationId: \"1\" }) { hasErrors hasSecurityMessages } }");
-        Assert.assertTrue(getBoolean(deleteBody, "data.deleteContentPageLayout.hasErrors"));
-        Assert.assertTrue(getBoolean(deleteBody, "data.deleteContentPageLayout.hasSecurityMessages"));
-    }
-
-    @Test
-    public void createContentPageLayoutAndDelete()
-            throws Exception {
-        Map<String, Object> loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
-        Assert.assertFalse(getBoolean(loginBody, "data.employeeLogin.hasErrors"));
-
-        Map<String, Object> createBody = executeUsingPost("mutation { createContentPageLayout(input: { contentPageLayoutName: \"" + ORIGINAL_CONTENT_PAGE_LAYOUT_NAME + "\", isDefault: \"false\", sortOrder: \"" + ORIGINAL_SORT_ORDER + "\", description: \"" + ORIGINAL_DESCRIPTION + "\", clientMutationId: \"1\" }) { id hasErrors hasSecurityMessages } }");
-        Assert.assertFalse(getBoolean(createBody, "data.createContentPageLayout.hasErrors"));
-        
-        Map<String, Object> deleteBody = executeUsingPost("mutation { deleteContentPageLayout(input: { contentPageLayoutName: \"" + ORIGINAL_CONTENT_PAGE_LAYOUT_NAME + "\", clientMutationId: \"1\" }) { hasErrors hasSecurityMessages } }");
-        Assert.assertFalse(getBoolean(deleteBody, "data.deleteContentPageLayout.hasErrors"));
-    }
-    
     private static final String ORIGINAL_CONTENT_PAGE_LAYOUT_NAME = "TEST_NAME";
     private static final long ORIGINAL_SORT_ORDER = 10L;
     private static final String ORIGINAL_DESCRIPTION = "Test Content Page Layout";
@@ -61,102 +30,314 @@ public class ContentPageLayoutTest
     private static final String NEW_CONTENT_PAGE_LAYOUT_NAME = "TEST_AGAIN_NAME";
     private static final long NEW_SORT_ORDER = 20L;
     private static final String NEW_DESCRIPTION = "Test Again Content Page Layout";
+
+    @Test
+    public void createContentPageLayoutNoAuth()
+            throws Exception {
+        var createBody = executeUsingPost("""
+                mutation {
+                    createContentPageLayout(input: { contentPageLayoutName: "%s", isDefault: "false", sortOrder: "%s", description: "%s", clientMutationId: "1" }) {
+                        id
+                        hasErrors
+                        hasSecurityMessages
+                    }
+                }
+                """.formatted(ORIGINAL_CONTENT_PAGE_LAYOUT_NAME, ORIGINAL_SORT_ORDER, ORIGINAL_DESCRIPTION));
+
+        assertThat(getBoolean(createBody, "data.createContentPageLayout.hasErrors")).isTrue();
+        assertThat(getBoolean(createBody, "data.createContentPageLayout.hasSecurityMessages")).isTrue();
+    }
+
+    @Test
+    public void deleteContentPageLayoutNoAuth()
+            throws Exception {
+        var deleteBody = executeUsingPost("""
+                mutation {
+                    deleteContentPageLayout(input: { contentPageLayoutName: "%s", clientMutationId: "1" }) {
+                        hasErrors
+                        hasSecurityMessages
+                    }
+                }
+                """.formatted(ORIGINAL_CONTENT_PAGE_LAYOUT_NAME));
+
+        assertThat(getBoolean(deleteBody, "data.deleteContentPageLayout.hasErrors")).isTrue();
+        assertThat(getBoolean(deleteBody, "data.deleteContentPageLayout.hasSecurityMessages")).isTrue();
+    }
+
+    @Test
+    public void createContentPageLayoutAndDelete()
+            throws Exception {
+        var loginBody = executeUsingPost("""
+                mutation {
+                    employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """);
+
+        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
+
+        var createBody = executeUsingPost("""
+                mutation {
+                    createContentPageLayout(input: { contentPageLayoutName: "%s", isDefault: "false", sortOrder: "%s", description: "%s", clientMutationId: "1" }) {
+                        id
+                        hasErrors
+                        hasSecurityMessages
+                    }
+                }
+                """.formatted(ORIGINAL_CONTENT_PAGE_LAYOUT_NAME, ORIGINAL_SORT_ORDER, ORIGINAL_DESCRIPTION));
+
+        assertThat(getBoolean(createBody, "data.createContentPageLayout.hasErrors")).isFalse();
         
+        var deleteBody = executeUsingPost("""
+                mutation {
+                    deleteContentPageLayout(input: { contentPageLayoutName: "%s", clientMutationId: "1" }) {
+                        hasErrors
+                        hasSecurityMessages
+                    }
+                }
+                """.formatted(ORIGINAL_CONTENT_PAGE_LAYOUT_NAME));
+
+        assertThat(getBoolean(deleteBody, "data.deleteContentPageLayout.hasErrors")).isFalse();
+    }
+    
     @Test
     public void createContentPageLayoutAndQueryContentPageLayout()
             throws Exception {
-        Map<String, Object> loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
-        Assert.assertFalse(getBoolean(loginBody, "data.employeeLogin.hasErrors"));
+        var loginBody = executeUsingPost("""
+                mutation {
+                    employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """);
 
-        Map<String, Object> createBody = executeUsingPost("mutation { createContentPageLayout(input: { contentPageLayoutName: \"" + ORIGINAL_CONTENT_PAGE_LAYOUT_NAME + "\", isDefault: \"false\", sortOrder: \"" + ORIGINAL_SORT_ORDER + "\", description: \"" + ORIGINAL_DESCRIPTION + "\", clientMutationId: \"1\" }) { id hasErrors hasSecurityMessages } }");
-        Assert.assertFalse(getBoolean(createBody, "data.createContentPageLayout.hasErrors"));
+        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
 
-        String id = getString(createBody, "data.createContentPageLayout.id");
+        var createBody = executeUsingPost("""
+                mutation {
+                    createContentPageLayout(input: { contentPageLayoutName: "%s", isDefault: "false", sortOrder: "%s", description: "%s", clientMutationId: "1" }) {
+                        id
+                        hasErrors
+                        hasSecurityMessages
+                    }
+                }
+                """.formatted(ORIGINAL_CONTENT_PAGE_LAYOUT_NAME, ORIGINAL_SORT_ORDER, ORIGINAL_DESCRIPTION));
+
+        assertThat(getBoolean(createBody, "data.createContentPageLayout.hasErrors")).isFalse();
+
+        var id = getString(createBody, "data.createContentPageLayout.id");
+        var queryBody = executeUsingPost("""
+                query {
+                    contentPageLayout(id: "%s") {
+                        id
+                        contentPageLayoutName
+                        isDefault
+                        sortOrder
+                        description
+                    }
+                }
+                """.formatted(id));
+
+        assertThat(getString(queryBody, "data.contentPageLayout.id")).isEqualTo(id);
+        assertThat(getString(queryBody, "data.contentPageLayout.contentPageLayoutName")).isEqualTo(ORIGINAL_CONTENT_PAGE_LAYOUT_NAME);
+        assertThat(getInteger(queryBody, "data.contentPageLayout.sortOrder")).isEqualTo(ORIGINAL_SORT_ORDER);
+        assertThat(getString(queryBody, "data.contentPageLayout.description")).isEqualTo(ORIGINAL_DESCRIPTION);
         
-        Map<String, Object> queryBody = executeUsingPost("query { contentPageLayout(id: \"" + id + "\") { id contentPageLayoutName isDefault sortOrder description } }");
-        Assert.assertEquals(id, getString(queryBody, "data.contentPageLayout.id"));
-        Assert.assertEquals(ORIGINAL_CONTENT_PAGE_LAYOUT_NAME, getString(queryBody, "data.contentPageLayout.contentPageLayoutName"));
-        Assert.assertEquals(ORIGINAL_SORT_ORDER, getInteger(queryBody, "data.contentPageLayout.sortOrder"));
-        Assert.assertEquals(ORIGINAL_DESCRIPTION, getString(queryBody, "data.contentPageLayout.description"));
-        
-        Map<String, Object> deleteBody = executeUsingPost("mutation { deleteContentPageLayout(input: { contentPageLayoutName: \"" + ORIGINAL_CONTENT_PAGE_LAYOUT_NAME + "\", clientMutationId: \"1\" }) { hasErrors hasSecurityMessages } }");
-        Assert.assertFalse(getBoolean(deleteBody, "data.deleteContentPageLayout.hasErrors"));
+        var deleteBody = executeUsingPost("""
+                mutation {
+                    deleteContentPageLayout(input: { contentPageLayoutName: "%s", clientMutationId: "1" }) {
+                        hasErrors
+                        hasSecurityMessages
+                    }
+                }
+                """.formatted(ORIGINAL_CONTENT_PAGE_LAYOUT_NAME));
+
+        assertThat(getBoolean(deleteBody, "data.deleteContentPageLayout.hasErrors")).isFalse();
     }
     
     @Test
     public void createContentPageLayoutAndQueryContentPageLayouts()
             throws Exception {
-        Map<String, Object> loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
-        Assert.assertFalse(getBoolean(loginBody, "data.employeeLogin.hasErrors"));
+        var loginBody = executeUsingPost("""
+                mutation {
+                    employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """);
+
+        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
         
-        Map<String, Object> createBody = executeUsingPost("mutation { createContentPageLayout(input: { contentPageLayoutName: \"" + ORIGINAL_CONTENT_PAGE_LAYOUT_NAME + "\", isDefault: \"false\", sortOrder: \"" + ORIGINAL_SORT_ORDER + "\", description: \"" + ORIGINAL_DESCRIPTION + "\", clientMutationId: \"1\" }) { id hasErrors hasSecurityMessages } }");
-        Assert.assertFalse(getBoolean(createBody, "data.createContentPageLayout.hasErrors"));
+        var createBody = executeUsingPost("""
+                mutation {
+                    createContentPageLayout(input: { contentPageLayoutName: "%s", isDefault: "false", sortOrder: "%s", description: "%s", clientMutationId: "1" }) {
+                        id
+                        hasErrors
+                        hasSecurityMessages
+                    }
+                }
+                """.formatted(ORIGINAL_CONTENT_PAGE_LAYOUT_NAME, ORIGINAL_SORT_ORDER, ORIGINAL_DESCRIPTION));
+
+        assertThat(getBoolean(createBody, "data.createContentPageLayout.hasErrors")).isFalse();
         
-        String id = getString(createBody, "data.createContentPageLayout.id");
+        var id = getString(createBody, "data.createContentPageLayout.id");
+        var queryBody = executeUsingPost("""
+                query {
+                    contentPageLayouts {
+                        id
+                        sortOrder
+                        description
+                    }
+                }
+                """);
         
-        Map<String, Object> queryBody = executeUsingPost("query { contentPageLayouts { id sortOrder description } }");
-        
-        List<Map<String, Object>> contentPageLayouts = getList(queryBody, "data.contentPageLayouts");
-        
-        boolean foundContentPageLayout = false;
-        for(Map<String, Object> contentPageLayout : contentPageLayouts) {
+        var contentPageLayouts = getList(queryBody, "data.contentPageLayouts");
+        var foundContentPageLayout = false;
+        for(var contentPageLayout : contentPageLayouts) {
             if(id.equals(getString(contentPageLayout, "id"))) {
-                Assert.assertEquals(ORIGINAL_SORT_ORDER, getInteger(contentPageLayout, "sortOrder"));
-                Assert.assertEquals(ORIGINAL_DESCRIPTION, getString(contentPageLayout, "description"));
+                assertThat(getInteger(contentPageLayout, "sortOrder")).isEqualTo(ORIGINAL_SORT_ORDER);
+                assertThat(getString(contentPageLayout, "description")).isEqualTo(ORIGINAL_DESCRIPTION);
                 foundContentPageLayout = true;
             }
         }
-        Assert.assertTrue(foundContentPageLayout);
+
+        assertThat(foundContentPageLayout).isTrue();
         
-        Map<String, Object> deleteBody = executeUsingPost("mutation { deleteContentPageLayout(input: { contentPageLayoutName: \"" + ORIGINAL_CONTENT_PAGE_LAYOUT_NAME + "\", clientMutationId: \"1\" }) { hasErrors } }");
-        Assert.assertFalse(getBoolean(deleteBody, "data.deleteContentPageLayout.hasErrors"));
+        var deleteBody = executeUsingPost("""
+                mutation {
+                    deleteContentPageLayout(input: { contentPageLayoutName: "%s", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """.formatted(ORIGINAL_CONTENT_PAGE_LAYOUT_NAME));
+        
+        assertThat(getBoolean(deleteBody, "data.deleteContentPageLayout.hasErrors")).isFalse();
     }
     
     @Test
     public void createContentPageLayoutAndEditById()
             throws Exception {
-        Map<String, Object> loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
-        Assert.assertFalse(getBoolean(loginBody, "data.employeeLogin.hasErrors"));
+        var loginBody = executeUsingPost("""
+                mutation {
+                    employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """);
+
+        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
         
-        Map<String, Object> createBody = executeUsingPost("mutation { createContentPageLayout(input: { contentPageLayoutName: \"" + ORIGINAL_CONTENT_PAGE_LAYOUT_NAME + "\", isDefault: \"false\", sortOrder: \"" + ORIGINAL_SORT_ORDER + "\", description: \"" + ORIGINAL_DESCRIPTION + "\", clientMutationId: \"1\" }) { id hasErrors hasSecurityMessages } }");
-        Assert.assertFalse(getBoolean(createBody, "data.createContentPageLayout.hasErrors"));
+        var createBody = executeUsingPost("""
+                mutation {
+                    createContentPageLayout(input: { contentPageLayoutName: "%s", isDefault: "false", sortOrder: "%s", description: "%s", clientMutationId: "1" }) {
+                        id
+                        hasErrors
+                        hasSecurityMessages
+                    }
+                }
+                """.formatted(ORIGINAL_CONTENT_PAGE_LAYOUT_NAME, ORIGINAL_SORT_ORDER, ORIGINAL_DESCRIPTION));
+
+        assertThat(getBoolean(createBody, "data.createContentPageLayout.hasErrors")).isFalse();
         
-        String id = getString(createBody, "data.createContentPageLayout.id");
+        var id = getString(createBody, "data.createContentPageLayout.id");
+        var editBody = executeUsingPost("""
+                mutation {
+                    editContentPageLayout(input: { id: "%s", contentPageLayoutName: "%s", sortOrder: "%s", description: "%s", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """.formatted(id, NEW_CONTENT_PAGE_LAYOUT_NAME, NEW_SORT_ORDER, NEW_DESCRIPTION));
+
+        assertThat(getBoolean(editBody, "data.editContentPageLayout.hasErrors")).isFalse();
         
-        Map<String, Object> editBody = executeUsingPost("mutation { editContentPageLayout(input: { id: \"" + id + "\", contentPageLayoutName: \"" + NEW_CONTENT_PAGE_LAYOUT_NAME + "\", sortOrder: \"" + NEW_SORT_ORDER + "\", description: \"" + NEW_DESCRIPTION + "\", clientMutationId: \"1\" }) { hasErrors } }");
-        Assert.assertFalse(getBoolean(editBody, "data.editContentPageLayout.hasErrors"));
+        var queryBody = executeUsingPost("""
+                query { contentPageLayout(id: "%s") {
+                        id
+                        contentPageLayoutName
+                        sortOrder
+                        description
+                    }
+                }
+                """.formatted(id));
+
+        assertThat(getString(queryBody, "data.contentPageLayout.id")).isEqualTo(id);
+        assertThat(getString(queryBody, "data.contentPageLayout.contentPageLayoutName")).isEqualTo(NEW_CONTENT_PAGE_LAYOUT_NAME);
+        assertThat(getInteger(queryBody, "data.contentPageLayout.sortOrder")).isEqualTo(NEW_SORT_ORDER);
+        assertThat(getString(queryBody, "data.contentPageLayout.description")).isEqualTo(NEW_DESCRIPTION);
         
-        Map<String, Object> queryBody = executeUsingPost("query { contentPageLayout(id: \"" + id + "\") { id contentPageLayoutName, sortOrder description } }");
-        Assert.assertEquals(id, getString(queryBody, "data.contentPageLayout.id"));
-        Assert.assertEquals(NEW_CONTENT_PAGE_LAYOUT_NAME, getString(queryBody, "data.contentPageLayout.contentPageLayoutName"));
-        Assert.assertEquals(NEW_SORT_ORDER, getInteger(queryBody, "data.contentPageLayout.sortOrder"));
-        Assert.assertEquals(NEW_DESCRIPTION, getString(queryBody, "data.contentPageLayout.description"));
-        
-        Map<String, Object> deleteBody = executeUsingPost("mutation { deleteContentPageLayout(input: { contentPageLayoutName: \"" + NEW_CONTENT_PAGE_LAYOUT_NAME + "\", clientMutationId: \"1\" }) { hasErrors } }");
-        Assert.assertFalse(getBoolean(deleteBody, "data.deleteContentPageLayout.hasErrors"));
+        var deleteBody = executeUsingPost("""
+                mutation {
+                    deleteContentPageLayout(input: { contentPageLayoutName: "%s", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """.formatted(NEW_CONTENT_PAGE_LAYOUT_NAME));
+
+        assertThat(getBoolean(deleteBody, "data.deleteContentPageLayout.hasErrors")).isFalse();
     }
 
     @Test
     public void createContentPageLayoutAndEditByName()
             throws Exception {
-        Map<String, Object> loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
-        Assert.assertFalse(getBoolean(loginBody, "data.employeeLogin.hasErrors"));
+        var loginBody = executeUsingPost("""
+                mutation {
+                    employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """);
 
-        Map<String, Object> createBody = executeUsingPost("mutation { createContentPageLayout(input: { contentPageLayoutName: \"" + ORIGINAL_CONTENT_PAGE_LAYOUT_NAME + "\", isDefault: \"false\", sortOrder: \"" + ORIGINAL_SORT_ORDER + "\", description: \"" + ORIGINAL_DESCRIPTION + "\", clientMutationId: \"1\" }) { id hasErrors hasSecurityMessages } }");
-        Assert.assertFalse(getBoolean(createBody, "data.createContentPageLayout.hasErrors"));
+        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
 
-        String id = getString(createBody, "data.createContentPageLayout.id");
+        var createBody = executeUsingPost("""
+                mutation {
+                    createContentPageLayout(input: { contentPageLayoutName: "%s", isDefault: "false", sortOrder: "%s", description: "%s", clientMutationId: "1" }) {
+                        id
+                        hasErrors
+                        hasSecurityMessages
+                    }
+                }
+                """.formatted(ORIGINAL_CONTENT_PAGE_LAYOUT_NAME, ORIGINAL_SORT_ORDER, ORIGINAL_DESCRIPTION));
 
-        Map<String, Object> editBody = executeUsingPost("mutation { editContentPageLayout(input: { originalContentPageLayoutName: \"" + ORIGINAL_CONTENT_PAGE_LAYOUT_NAME + "\", contentPageLayoutName: \"" + NEW_CONTENT_PAGE_LAYOUT_NAME + "\", sortOrder: \"" + NEW_SORT_ORDER + "\", description: \"" + NEW_DESCRIPTION + "\", clientMutationId: \"1\" }) { hasErrors } }");
-        Assert.assertFalse(getBoolean(editBody, "data.editContentPageLayout.hasErrors"));
+        assertThat(getBoolean(createBody, "data.createContentPageLayout.hasErrors")).isFalse();
 
-        Map<String, Object> queryBody = executeUsingPost("query { contentPageLayout(id: \"" + id + "\") { id contentPageLayoutName, sortOrder description } }");
-        Assert.assertEquals(id, getString(queryBody, "data.contentPageLayout.id"));
-        Assert.assertEquals(NEW_CONTENT_PAGE_LAYOUT_NAME, getString(queryBody, "data.contentPageLayout.contentPageLayoutName"));
-        Assert.assertEquals(NEW_SORT_ORDER, getInteger(queryBody, "data.contentPageLayout.sortOrder"));
-        Assert.assertEquals(NEW_DESCRIPTION, getString(queryBody, "data.contentPageLayout.description"));
+        var id = getString(createBody, "data.createContentPageLayout.id");
+        var editBody = executeUsingPost("""
+                mutation {
+                    editContentPageLayout(input: { originalContentPageLayoutName: "%s", contentPageLayoutName: "%s", sortOrder: "%s", description: "%s", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """.formatted(ORIGINAL_CONTENT_PAGE_LAYOUT_NAME, NEW_CONTENT_PAGE_LAYOUT_NAME, NEW_SORT_ORDER, NEW_DESCRIPTION));
 
-        Map<String, Object> deleteBody = executeUsingPost("mutation { deleteContentPageLayout(input: { contentPageLayoutName: \"" + NEW_CONTENT_PAGE_LAYOUT_NAME + "\", clientMutationId: \"1\" }) { hasErrors } }");
-        Assert.assertFalse(getBoolean(deleteBody, "data.deleteContentPageLayout.hasErrors"));
+        assertThat(getBoolean(editBody, "data.editContentPageLayout.hasErrors")).isFalse();
+
+        var queryBody = executeUsingPost("""
+                query {
+                    contentPageLayout(id: "%s") {
+                        id
+                        contentPageLayoutName
+                        sortOrder
+                        description
+                    }
+                }
+                """.formatted(id));
+
+        assertThat(getString(queryBody, "data.contentPageLayout.id")).isEqualTo(id);
+        assertThat(getString(queryBody, "data.contentPageLayout.contentPageLayoutName")).isEqualTo(NEW_CONTENT_PAGE_LAYOUT_NAME);
+        assertThat(getInteger(queryBody, "data.contentPageLayout.sortOrder")).isEqualTo(NEW_SORT_ORDER);
+        assertThat(getString(queryBody, "data.contentPageLayout.description")).isEqualTo(NEW_DESCRIPTION);
+
+        var deleteBody = executeUsingPost("""
+                mutation {
+                    deleteContentPageLayout(input: { contentPageLayoutName: "%s", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """.formatted(NEW_CONTENT_PAGE_LAYOUT_NAME));
+
+        assertThat(getBoolean(deleteBody, "data.deleteContentPageLayout.hasErrors")).isFalse();
     }
+
 }

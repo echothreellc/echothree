@@ -17,9 +17,8 @@
 package com.echothree.control.user.test.user.graphql;
 
 import com.echothree.control.user.test.common.graphql.GraphQlTestCase;
-import org.junit.Assert;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import org.junit.Test;
-import java.util.Map;
 
 public class PreferredCurrencyTest
         extends GraphQlTestCase {
@@ -27,7 +26,15 @@ public class PreferredCurrencyTest
     @Test
     public void setUserVisitPreferredCurrency()
             throws Exception {
-        Map<String, Object> setUserVisitPreferredCurrency = executeUsingPost("mutation { setUserVisitPreferredCurrency(input: { currencyIsoName: \"X-1\", clientMutationId: \"1\" }) { hasErrors } }");
-        Assert.assertFalse(getBoolean(setUserVisitPreferredCurrency, "data.setUserVisitPreferredCurrency.hasErrors"));
+        var setUserVisitPreferredCurrency = executeUsingPost("""
+                mutation {
+                    setUserVisitPreferredCurrency(input: { currencyIsoName: "X-1", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """);
+
+        assertThat(getBoolean(setUserVisitPreferredCurrency, "data.setUserVisitPreferredCurrency.hasErrors")).isFalse();
     }
+
 }

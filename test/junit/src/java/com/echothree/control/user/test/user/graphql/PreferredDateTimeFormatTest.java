@@ -17,9 +17,8 @@
 package com.echothree.control.user.test.user.graphql;
 
 import com.echothree.control.user.test.common.graphql.GraphQlTestCase;
-import org.junit.Assert;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import org.junit.Test;
-import java.util.Map;
 
 public class PreferredDateTimeFormatTest
         extends GraphQlTestCase {
@@ -27,7 +26,15 @@ public class PreferredDateTimeFormatTest
     @Test
     public void setUserVisitPreferredDateTimeFormat()
             throws Exception {
-        Map<String, Object> setUserVisitPreferredDateTimeFormat = executeUsingPost("mutation { setUserVisitPreferredDateTimeFormat(input: { dateTimeFormatName: \"DEFAULT\", clientMutationId: \"1\" }) { hasErrors } }");
-        Assert.assertFalse(getBoolean(setUserVisitPreferredDateTimeFormat, "data.setUserVisitPreferredDateTimeFormat.hasErrors"));
+        var setUserVisitPreferredDateTimeFormat = executeUsingPost("""
+                mutation {
+                    setUserVisitPreferredDateTimeFormat(input: { dateTimeFormatName: "DEFAULT", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """);
+
+        assertThat(getBoolean(setUserVisitPreferredDateTimeFormat, "data.setUserVisitPreferredDateTimeFormat.hasErrors")).isFalse();
     }
+
 }
