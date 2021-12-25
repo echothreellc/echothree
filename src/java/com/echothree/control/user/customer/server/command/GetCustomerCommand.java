@@ -27,6 +27,7 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.customer.server.entity.Customer;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
@@ -123,8 +124,16 @@ public class GetCustomerCommand
 
         if(customer != null) {
             var customerControl = Session.getModelController(CustomerControl.class);
+            var userVisit = getUserVisit();
+            var companyParty = getCompanyParty();
 
-            result.setCustomer(customerControl.getCustomerTransfer(getUserVisit(), customer));
+            result.setCustomer(customerControl.getCustomerTransfer(userVisit, customer));
+
+            if(companyParty != null) {
+                var wishlistControl = Session.getModelController(WishlistControl.class);
+
+                result.setWishlists(wishlistControl.getWishlistTransfers(userVisit, companyParty, customer.getParty()));
+            }
         }
 
         return result;
