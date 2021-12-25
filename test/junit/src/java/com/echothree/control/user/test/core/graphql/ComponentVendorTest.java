@@ -19,7 +19,6 @@ package com.echothree.control.user.test.core.graphql;
 import com.echothree.control.user.test.common.graphql.GraphQlTestCase;
 import com.echothree.model.control.core.common.ComponentVendors;
 import static org.assertj.core.api.Assertions.assertThat;
-import org.junit.Assert;
 import org.junit.Test;
 
 public class ComponentVendorTest
@@ -28,64 +27,100 @@ public class ComponentVendorTest
     @Test
     public void componentVendorsQueryNoAuth()
             throws Exception {
-        var componentVendorsBody = executeUsingPost("query { componentVendors { componentVendorName } }");
+        var componentVendorsBody = executeUsingPost("""
+        query { componentVendors { componentVendorName } }
+        """);
 
-        var componentVendors = getList(componentVendorsBody, "data.componentVendors");
-
-        assertThat(componentVendors).size().isEqualTo(0);
+        assertThat(getList(componentVendorsBody, "data.componentVendors")).size().isEqualTo(0);
     }
 
     @Test
     public void componentVendorQueryNoAuth()
             throws Exception {
-        var componentVendorBody = executeUsingPost("query { componentVendor(componentVendorName: \"" + ComponentVendors.ECHOTHREE + "\") { componentVendorName } }");
+        var componentVendorBody = executeUsingPost("""
+                query { componentVendor(componentVendorName: "%s") { componentVendorName } }
+                """.formatted(ComponentVendors.ECHOTHREE));
 
-        var componentVendor = getMap(componentVendorBody, "data.componentVendor");
-
-        assertThat(componentVendor).isNull();
+        assertThat(getMap(componentVendorBody, "data.componentVendor")).isNull();
     }
 
     @Test
     public void componentVendorsQuery()
             throws Exception {
-        var loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
-        Assert.assertFalse(getBoolean(loginBody, "data.employeeLogin.hasErrors"));
+        var loginBody = executeUsingPost("""
+                mutation {
+                    employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """);
+        
+        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
 
-        var componentVendorsBody = executeUsingPost("query { componentVendors { componentVendorName } }");
+        var componentVendorsBody = executeUsingPost("""
+                query {
+                    componentVendors {
+                        componentVendorName
+                    }
+                }
+                """);
 
-        var componentVendors = getList(componentVendorsBody, "data.componentVendors");
-
-        assertThat(componentVendors).size().isGreaterThan(0);
+        assertThat(getList(componentVendorsBody, "data.componentVendors")).size().isGreaterThan(0);
     }
 
     @Test
     public void componentVendorQuery()
             throws Exception {
-        var loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
-        Assert.assertFalse(getBoolean(loginBody, "data.employeeLogin.hasErrors"));
+        var loginBody = executeUsingPost("""
+                mutation {
+                    employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """);
+        
+        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
 
-        var componentVendorBody = executeUsingPost("query { componentVendor(componentVendorName: \"" + ComponentVendors.ECHOTHREE + "\") { componentVendorName } }");
+        var componentVendorBody = executeUsingPost("""
+                query {
+                    componentVendor(componentVendorName: "%s") {
+                        componentVendorName
+                    }
+                }
+                """.formatted(ComponentVendors.ECHOTHREE));
 
-        var componentVendorName = getString(componentVendorBody, "data.componentVendor.componentVendorName");
-
-        assertThat(componentVendorName).isEqualTo(ComponentVendors.ECHOTHREE.toString());
+        assertThat(getString(componentVendorBody, "data.componentVendor.componentVendorName")).isEqualTo(ComponentVendors.ECHOTHREE.toString());
     }
 
     @Test
     public void componentVendorQueryWithEntityTypes()
             throws Exception {
-        var loginBody = executeUsingPost("mutation { employeeLogin(input: { username: \"test e\", password: \"password\", companyName: \"TEST_COMPANY\", clientMutationId: \"1\" }) { hasErrors } }");
-        Assert.assertFalse(getBoolean(loginBody, "data.employeeLogin.hasErrors"));
+        var loginBody = executeUsingPost("""
+                mutation {
+                    employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """);
+        
+        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
 
-        var componentVendorBody = executeUsingPost("query { componentVendor(componentVendorName: \"" + ComponentVendors.ECHOTHREE + "\") { componentVendorName entityTypeCount entityTypes { entityTypeName } } }");
+        var componentVendorBody = executeUsingPost("""
+                query {
+                    componentVendor(componentVendorName: "%s") {
+                        componentVendorName
+                        entityTypeCount
+                        entityTypes {
+                            entityTypeName
+                        }
+                    }
+                }
+                """.formatted(ComponentVendors.ECHOTHREE));
 
-        var componentVendorName = getString(componentVendorBody, "data.componentVendor.componentVendorName");
         var entityTypeCount = getLong(componentVendorBody, "data.componentVendor.entityTypeCount");
-        var entityTypes = getList(componentVendorBody, "data.componentVendor.entityTypes");
-
-        assertThat(componentVendorName).isEqualTo(ComponentVendors.ECHOTHREE.toString());
+        assertThat(getString(componentVendorBody, "data.componentVendor.componentVendorName")).isEqualTo(ComponentVendors.ECHOTHREE.toString());
         assertThat(entityTypeCount).isGreaterThan(0);
-        assertThat(entityTypes).size().isEqualTo(entityTypeCount);
+        assertThat(getList(componentVendorBody, "data.componentVendor.entityTypes")).size().isEqualTo(entityTypeCount);
     }
 
 }

@@ -17,11 +17,8 @@
 package com.echothree.control.user.test.user.graphql;
 
 import com.echothree.control.user.test.common.graphql.GraphQlTestCase;
-import org.junit.Test;
-
-import java.util.Map;
-
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
+import org.junit.Test;
 
 public class UserVisitTest
         extends GraphQlTestCase {
@@ -29,25 +26,27 @@ public class UserVisitTest
     @Test
     public void userVisitQuery()
             throws Exception {
-        Map<String, Object> userVisitBody = executeUsingPost("" +
-                "query {" +
-                "    userVisit {" +
-                "        preferredLanguage {" +
-                "            description" +
-                "        }" +
-                "        preferredCurrency {" +
-                "            description" +
-                "        }" +
-                "        preferredTimeZone {" +
-                "            description" +
-                "        }" +
-                "        preferredDateTimeFormat {" +
-                "            description" +
-                "        }" +
-                "        lastCommandTime" +
-                "	     retainUntilTime" +
-                "    }" +
-                "}");
+        var userVisitBody = executeUsingPost("""
+                query {
+                    userVisit {
+                        preferredLanguage {
+                            description
+                        }
+                        preferredCurrency {
+                            description
+                        }
+                        preferredTimeZone {
+                            description
+                        }
+                        preferredDateTimeFormat {
+                            description
+                        }
+                        lastCommandTime
+                	    retainUntilTime
+                    }
+                }
+                """);
+        
         assertThat(getString(userVisitBody, "data.userVisit.preferredLanguage.description")).isNotNull();
         assertThat(getString(userVisitBody, "data.userVisit.preferredCurrency.description")).isNotNull();
         assertThat(getString(userVisitBody, "data.userVisit.preferredTimeZone.description")).isNotNull();
@@ -55,4 +54,5 @@ public class UserVisitTest
         assertThat(getString(userVisitBody, "data.userVisit.lastCommandTime")).isNotNull();
         assertThat(getString(userVisitBody, "data.userVisit.retainUntilTime")).isNull();
     }
+
 }
