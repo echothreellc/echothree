@@ -57,7 +57,7 @@ public class DatabaseUtilitiesForJooq {
 
             pw.print("""
                     <?xml version="1.0" encoding="UTF-8"?>
-                    <information_schema xmlns="http://www.jooq.org/xsd/jooq-meta-3.14.0.xsd">
+                    <information_schema xmlns="http://www.jooq.org/xsd/jooq-meta-3.15.0.xsd">
                         <schemata>
                             <schema>
                                 <schema_name>%s</schema_name>
@@ -70,18 +70,74 @@ public class DatabaseUtilitiesForJooq {
                         <tables>
                             <table>
                                 <table_schema>echothree</table_schema>
-                                <table_name>AUTHOR</table_name>
+                                <table_name>PartyTypes</table_name>
                             </table>
                         </tables>
-                        
                         <columns>
                             <column>
                                 <table_schema>echothree</table_schema>
-                                <table_name>AUTHOR</table_name>
-                                <column_name>ID</column_name>
-                                <data_type>NUMBER</data_type>
-                                <numeric_precision>7</numeric_precision>
+                                <table_name>PartyTypes</table_name>
+                                <column_name>ptyp_PartyTypeId</column_name>
+                                <data_type>bigint</data_type>
+                                <numeric_precision>19</numeric_precision>
                                 <ordinal_position>1</ordinal_position>
+                                <is_nullable>false</is_nullable>
+                            </column>
+                            <column>
+                                <table_schema>echothree</table_schema>
+                                <table_name>PartyTypes</table_name>
+                                <column_name>ptyp_PartyTypeName</column_name>
+                                <data_type>varchar</data_type>
+                                <character_maximum_length>40</character_maximum_length>
+                                <ordinal_position>2</ordinal_position>
+                                <is_nullable>false</is_nullable>
+                            </column>
+                            <column>
+                                <table_schema>echothree</table_schema>
+                                <table_name>PartyTypes</table_name>
+                                <column_name>ptyp_ParentPartyTypeId</column_name>
+                                <data_type>bigint</data_type>
+                                <numeric_precision>19</numeric_precision>
+                                <is_nullable>true</is_nullable>
+                            </column>
+                            <column>
+                                <table_schema>echothree</table_schema>
+                                <table_name>PartyTypes</table_name>
+                                <column_name>ptyp_BillingAccountSequenceTypeId</column_name>
+                                <data_type>bigint</data_type>
+                                <numeric_precision>19</numeric_precision>
+                                <is_nullable>true</is_nullable>
+                            </column>
+                            <column>
+                                <table_schema>echothree</table_schema>
+                                <table_name>PartyTypes</table_name>
+                                <column_name>ptyp_AllowUserLogins</column_name>
+                                <data_type>int</data_type>
+                                <numeric_precision>10</numeric_precision>
+                                <is_nullable>false</is_nullable>
+                            </column>
+                            <column>
+                                <table_schema>echothree</table_schema>
+                                <table_name>PartyTypes</table_name>
+                                <column_name>ptyp_AllowPartyAliases</column_name>
+                                <data_type>int</data_type>
+                                <numeric_precision>10</numeric_precision>
+                                <is_nullable>false</is_nullable>
+                            </column>
+                            <column>
+                                <table_schema>echothree</table_schema>
+                                <table_name>PartyTypes</table_name>
+                                <column_name>ptyp_IsDefault</column_name>
+                                <data_type>int</data_type>
+                                <numeric_precision>10</numeric_precision>
+                                <is_nullable>false</is_nullable>
+                            </column>
+                            <column>
+                                <table_schema>echothree</table_schema>
+                                <table_name>PartyTypes</table_name>
+                                <column_name>ptyp_SortOrder</column_name>
+                                <data_type>int</data_type>
+                                <numeric_precision>10</numeric_precision>
                                 <is_nullable>false</is_nullable>
                             </column>
                         </columns>
