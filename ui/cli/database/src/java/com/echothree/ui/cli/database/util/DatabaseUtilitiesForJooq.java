@@ -141,6 +141,84 @@ public class DatabaseUtilitiesForJooq {
                                 <is_nullable>false</is_nullable>
                             </column>
                         </columns>
+                        <table_constraints>
+                            <table_constraint>
+                                <constraint_schema>echothree</constraint_schema>
+                                <constraint_name>partytypename_idx</constraint_name>
+                                <constraint_type>UNIQUE</constraint_type>
+                                <table_schema>echothree</table_schema>
+                                <table_name>PartyTypes</table_name>
+                            </table_constraint>
+                            <table_constraint>
+                                <constraint_schema>echothree</constraint_schema>
+                                <constraint_name>PRIMARY</constraint_name>
+                                <constraint_type>PRIMARY KEY</constraint_type>
+                                <table_schema>echothree</table_schema>
+                                <table_name>PartyTypes</table_name>
+                            </table_constraint>
+                            <!-- <table_constraint>
+                                <constraint_schema>echothree</constraint_schema>
+                                <constraint_name>ptyp_billingaccountsequencetypeid_fk</constraint_name>
+                                <constraint_type>FOREIGN KEY</constraint_type>
+                                <table_schema>echothree</table_schema>
+                                <table_name>PartyTypes</table_name>
+                            </table_constraint> -->
+                            <table_constraint>
+                                <constraint_schema>echothree</constraint_schema>
+                                <constraint_name>ptyp_parentpartytypeid_fk</constraint_name>
+                                <constraint_type>FOREIGN KEY</constraint_type>
+                                <table_schema>echothree</table_schema>
+                                <table_name>PartyTypes</table_name>
+                            </table_constraint>
+                        </table_constraints>
+                        <key_column_usages>
+                            <key_column_usage>
+                                <constraint_schema>echothree</constraint_schema>
+                                <constraint_name>partytypename_idx</constraint_name>
+                                <table_schema>echothree</table_schema>
+                                <table_name>PartyTypes</table_name>
+                                <column_name>ptyp_PartyTypeName</column_name>
+                                <ordinal_position>1</ordinal_position>
+                            </key_column_usage>
+                            <key_column_usage>
+                                <constraint_schema>echothree</constraint_schema>
+                                <constraint_name>PRIMARY</constraint_name>
+                                <table_schema>echothree</table_schema>
+                                <table_name>PartyTypes</table_name>
+                                <column_name>ptyp_PartyTypeId</column_name>
+                                <ordinal_position>1</ordinal_position>
+                            </key_column_usage>
+                            <!-- <key_column_usage>
+                                <constraint_schema>echothree</constraint_schema>
+                                <constraint_name>ptyp_billingaccountsequencetypeid_fk</constraint_name>
+                                <table_schema>echothree</table_schema>
+                                <table_name>PartyTypes</table_name>
+                                <column_name>ptyp_BillingAccountSequenceTypeId</column_name>
+                                <ordinal_position>1</ordinal_position>
+                            </key_column_usage> -->
+                            <key_column_usage>
+                                <constraint_schema>echothree</constraint_schema>
+                                <constraint_name>ptyp_parentpartytypeid_fk</constraint_name>
+                                <table_schema>echothree</table_schema>
+                                <table_name>PartyTypes</table_name>
+                                <column_name>ptyp_ParentPartyTypeId</column_name>
+                                <ordinal_position>1</ordinal_position>
+                            </key_column_usage>
+                        </key_column_usages>
+                        <referential_constraints>
+                            <!-- <referential_constraint>
+                                <constraint_schema>echothree</constraint_schema>
+                                <constraint_name>ptyp_billingaccountsequencetypeid_fk</constraint_name>
+                                <unique_constraint_schema>echothree</unique_constraint_schema>
+                                <unique_constraint_name>PRIMARY</unique_constraint_name>
+                            </referential_constraint> -->
+                            <referential_constraint>
+                                <constraint_schema>echothree</constraint_schema>
+                                <constraint_name>ptyp_parentpartytypeid_fk</constraint_name>
+                                <unique_constraint_schema>echothree</unique_constraint_schema>
+                                <unique_constraint_name>PRIMARY</unique_constraint_name>
+                            </referential_constraint>
+                        </referential_constraints>
                     """);
 
             pw.print("""
