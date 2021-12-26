@@ -17,8 +17,7 @@
 package com.echothree.control.user.test.authentication.graphql;
 
 import com.echothree.control.user.test.common.graphql.GraphQlTestCase;
-import java.util.Map;
-import org.junit.Assert;
+import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import org.junit.Test;
 
 public class RecoverPasswordTest
@@ -27,15 +26,29 @@ public class RecoverPasswordTest
     @Test
     public void recoveryPasswordFailureTest()
             throws Exception {
-        Map<String, Object> body = executeUsingPost("mutation { recoverPassword(input: { username: \"TestC@echothree.com\", answer: \"Not Chrome\", clientMutationId: \"1\" }) { hasErrors } }");
-        Assert.assertTrue(getBoolean(body, "data.recoverPassword.hasErrors"));
+        var body = executeUsingPost("""
+                mutation {
+                    recoverPassword(input: { username: "TestC@echothree.com", answer: "Not Chrome", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """);
+
+        assertThat(getBoolean(body, "data.recoverPassword.hasErrors")).isTrue();
     }
 
     @Test
     public void recoveryPasswordSuccessfulTest()
             throws Exception {
-        Map<String, Object> body = executeUsingPost("mutation { recoverPassword(input: { username: \"TestC@echothree.com\", answer: \"Chrome\", clientMutationId: \"1\" }) { hasErrors } }");
-        Assert.assertFalse(getBoolean(body, "data.recoverPassword.hasErrors"));
+        var body = executeUsingPost("""
+                mutation {
+                    recoverPassword(input: { username: "TestC@echothree.com", answer: "Chrome", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """);
+
+        assertThat(getBoolean(body, "data.recoverPassword.hasErrors")).isFalse();
     }
     
 }

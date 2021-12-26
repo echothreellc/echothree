@@ -17,8 +17,7 @@
 package com.echothree.control.user.test.item.graphql;
 
 import com.echothree.control.user.test.common.graphql.GraphQlTestCase;
-import java.util.Map;
-import org.junit.Assert;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import org.junit.Test;
 
 public class ItemTest
@@ -27,44 +26,71 @@ public class ItemTest
     @Test
     public void itemByItemName()
             throws Exception {
-        Map<String, Object> itemBody = executeUsingPost("query { item(itemName: \"minimal\") { itemName id } }");
+        var itemBody = executeUsingPost("""
+                query {
+                    item(itemName: "minimal") {
+                        itemName
+                        id
+                    }
+                }
+                """);
         
-        Map<String, Object> item = getMap(itemBody, "data.item");
-        
-        Assert.assertNotNull(item);
+        assertThat(getMap(itemBody, "data.item")).isNotNull();
     }
     
     @Test
     public void itemByAlias()
             throws Exception {
-        Map<String, Object> itemBody = executeUsingPost("query { item(itemNameOrAlias: \"test_other\") { itemName id } }");
+        var itemBody = executeUsingPost("""
+                query {
+                    item(itemNameOrAlias: "test_other") {
+                        itemName
+                        id
+                    }
+                }
+                """);
         
-        Map<String, Object> item = getMap(itemBody, "data.item");
-        
-        Assert.assertNotNull(item);
+        assertThat(getMap(itemBody, "data.item")).isNotNull();
     }
     @Test
     public void itemByItemNameUsingAlias()
             throws Exception {
-        Map<String, Object> itemBody = executeUsingPost("query { item(itemName: \"test_other\") { itemName id } }");
+        var itemBody = executeUsingPost("""
+                query {
+                    item(itemName: "test_other") {
+                        itemName
+                        id
+                    }
+                }
+                """);
         
-        Map<String, Object> item = getMap(itemBody, "data.item");
-        
-        Assert.assertNull(item);
+        assertThat(getMap(itemBody, "data.item")).isNull();
     }
     
     @Test
     public void itemById()
             throws Exception {
-        Map<String, Object> itemBodyByItemName = executeUsingPost("query { item(itemName: \"minimal\") { itemName id } }");
+        var itemBodyByItemName = executeUsingPost("""
+                query {
+                    item(itemName: "minimal") {
+                        itemName
+                        id
+                    }
+                }
+                """);
         
-        String id = getString(itemBodyByItemName, "data.item.id");
+        var id = getString(itemBodyByItemName, "data.item.id");
         
-        Map<String, Object> itemBodyById = executeUsingPost("query { item(id: \"" + id + "\") { itemName id } }");
+        var itemBodyById = executeUsingPost("""
+                query {
+                    item(id: "%s") {
+                        itemName
+                        id
+                    }
+                }
+                """.formatted(id));
         
-        Map<String, Object> item = getMap(itemBodyById, "data.item");
-
-        Assert.assertNotNull(item);
+        assertThat(getMap(itemBodyById, "data.item")).isNotNull();
     }
     
     

@@ -17,9 +17,8 @@
 package com.echothree.control.user.test.user.graphql;
 
 import com.echothree.control.user.test.common.graphql.GraphQlTestCase;
-import org.junit.Assert;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import org.junit.Test;
-import java.util.Map;
 
 public class PreferredLanguageTest
         extends GraphQlTestCase {
@@ -27,7 +26,15 @@ public class PreferredLanguageTest
     @Test
     public void setUserVisitPreferredLanguage()
             throws Exception {
-        Map<String, Object> setUserVisitPreferredLanguage = executeUsingPost("mutation { setUserVisitPreferredLanguage(input: { languageIsoName: \"de\", clientMutationId: \"1\" }) { hasErrors } }");
-        Assert.assertFalse(getBoolean(setUserVisitPreferredLanguage, "data.setUserVisitPreferredLanguage.hasErrors"));
+        var setUserVisitPreferredLanguage = executeUsingPost("""
+                mutation {
+                    setUserVisitPreferredLanguage(input: { languageIsoName: "de", clientMutationId: "1" }) {
+                        hasErrors
+                    }
+                }
+                """);
+
+        assertThat(getBoolean(setUserVisitPreferredLanguage, "data.setUserVisitPreferredLanguage.hasErrors")).isFalse();
     }
+
 }

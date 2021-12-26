@@ -16,49 +16,47 @@
 
 package com.echothree.control.user.test.common.graphql;
 
-import java.util.Map;
-
 public class BaseGraphQlTestCase
         extends GraphQlTestCase {
 
     protected String getUserSessionParty()
             throws Exception {
-        Map<String, Object> entityAttributeTypeBody = executeUsingPost("query { userSession { party { id } } }");
+        var entityAttributeTypeBody = executeUsingPost("query { userSession { party { id } } }");
         
         return getString(entityAttributeTypeBody, "data.userSession.party.id");
     }
 
     protected String getDefaultLanguage()
             throws Exception {
-        Map<String, Object> entityAttributeTypeBody = executeUsingPost("query { language { id } }");
+        var entityAttributeTypeBody = executeUsingPost("query { language { id } }");
         
         return getString(entityAttributeTypeBody, "data.language.id");
     }
 
     protected String getDefaultCurrency()
             throws Exception {
-        Map<String, Object> entityAttributeTypeBody = executeUsingPost("query { currency { id } }");
+        var entityAttributeTypeBody = executeUsingPost("query { currency { id } }");
         
         return getString(entityAttributeTypeBody, "data.currency.id");
     }
 
     protected String getDefaultTimeZone()
             throws Exception {
-        Map<String, Object> entityAttributeTypeBody = executeUsingPost("query { timeZone { id } }");
+        var entityAttributeTypeBody = executeUsingPost("query { timeZone { id } }");
         
         return getString(entityAttributeTypeBody, "data.timeZone.id");
     }
 
     protected String getDefaultDateTimeFormat()
             throws Exception {
-        Map<String, Object> entityAttributeTypeBody = executeUsingPost("query { dateTimeFormat { id } }");
+        var entityAttributeTypeBody = executeUsingPost("query { dateTimeFormat { id } }");
         
         return getString(entityAttributeTypeBody, "data.dateTimeFormat.id");
     }
 
     protected String getEntityAttributeTypeId(String entityAttributeTypeName)
             throws Exception {
-        Map<String, Object> entityAttributeTypeBody = executeUsingPost("query { entityAttributeType(entityAttributeTypeName: \"" + entityAttributeTypeName + "\") { id } }");
+        var entityAttributeTypeBody = executeUsingPost("query { entityAttributeType(entityAttributeTypeName: \"" + entityAttributeTypeName + "\") { id } }");
         
         return getString(entityAttributeTypeBody, "data.entityAttributeType.id");
     }
