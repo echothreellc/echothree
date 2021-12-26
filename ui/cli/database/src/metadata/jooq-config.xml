@@ -17,6 +17,11 @@
 <configuration xmlns="http://www.jooq.org/xsd/jooq-codegen-3.15.0.xsd">
     <!-- Configure the database connection here -->
     <generator>
+        <!-- A programmatic naming strategy implementation, referenced by class name. -->
+        <strategy>
+            <name>org.jooq.codegen.KeepNamesGeneratorStrategy</name>
+        </strategy>
+
         <database>
             <name>org.jooq.meta.xml.XMLDatabase</name>
             <properties>
