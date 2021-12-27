@@ -31,6 +31,9 @@ import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
+import graphql.annotations.connection.AbstractPaginatedData;
+import graphql.annotations.connection.GraphQLConnection;
+import graphql.annotations.connection.PaginatedData;
 import graphql.schema.DataFetchingEnvironment;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import java.util.ArrayList;
@@ -114,13 +117,19 @@ public class ItemCategoryObject
 
     @GraphQLField
     @GraphQLDescription("items")
-    public List<ItemObject> getItems(final DataFetchingEnvironment env) {
+    @GraphQLConnection
+    public PaginatedData<ItemObject> getItems(final DataFetchingEnvironment env) {
         if(ItemSecurityUtils.getInstance().getHasItemsAccess(env)) {
             var itemControl = Session.getModelController(ItemControl.class);
             var entities = itemControl.getItemsByItemCategory(itemCategory);
             var items = entities.stream().map(ItemObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-            return items;
+            return new AbstractPaginatedData<>(false, false, items) {
+                @Override
+                public String getCursor(ItemObject item) {
+                    return item.getId();
+                }
+            };
         } else {
             return null;
         }
