@@ -17,8 +17,10 @@
 package com.echothree.model.control.item.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.graphql.LimitedObjects;
 import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.sequence.server.graphql.SequenceObject;
@@ -33,7 +35,6 @@ import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.annotations.connection.GraphQLConnection;
-import graphql.annotations.connection.PaginatedData;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -115,17 +116,17 @@ public class ItemCategoryObject
 
     @GraphQLField
     @GraphQLDescription("items")
-    @GraphQLConnection
-    public PaginatedData<ItemObject> getItems(final DataFetchingEnvironment env) {
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<ItemObject> getItems(final DataFetchingEnvironment env) {
         if(ItemSecurityUtils.getInstance().getHasItemsAccess(env)) {
             var itemControl = Session.getModelController(ItemControl.class);
+            var totalCount = itemControl.countItemsByItemCategory(itemCategory);
 
-            try(var objectLimiter = new ObjectLimiter(env, ItemConstants.ENTITY_TYPE_NAME, itemControl.countItemsByItemCategory(itemCategory))) {
+            try(var objectLimiter = new ObjectLimiter(env, ItemConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = itemControl.getItemsByItemCategory(itemCategory);
                 var items = entities.stream().map(ItemObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-                return new LimitedObjects<>(objectLimiter, false, false, items) {
-                };
+                return new CountedObjects<>(objectLimiter, items);
             }
         } else {
             return null;

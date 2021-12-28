@@ -14,26 +14,12 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.graphql.server.graphql;
+package com.echothree.model.control.graphql.server.graphql.count;
 
-import graphql.annotations.connection.AbstractPaginatedData;
+import graphql.relay.Connection;
 
-public class LimitedObjects<BEIO extends BaseEntityInstanceObject>
-        extends AbstractPaginatedData<BEIO> {
+public interface CountingConnection<T> extends Connection<T> {
 
-    long cursor;
-
-    public LimitedObjects(ObjectLimiter objectLimiter, boolean hasPreviousPage, boolean hasNextPage, Iterable<BEIO> iterable) {
-        super(objectLimiter.getLimitOffset() > 0,
-                objectLimiter.getLimitCount() < (objectLimiter.getCount() - objectLimiter.getLimitOffset()),
-                iterable);
-
-        this.cursor = objectLimiter.getLimitOffset();
-    }
-
-    @Override
-    public String getCursor(BEIO beio) {
-        return Long.toString(cursor += 1);
-    }
+    long getTotalCount();
 
 }

@@ -34,7 +34,6 @@
       <root url="jar://$PROJECT_DIR$/build/lib/cucumber-java8.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/cucumber-junit.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/datatable.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib/diffutils.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/error_prone_annotation.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/error_prone_annotations.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/error_prone_check_api.jar!/" />
@@ -118,11 +117,9 @@
       <root url="jar://$PROJECT_DIR$/build/lib/cucumber-gherkin-messages.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/cucumber-gherkin.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/cucumber-plugin.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib/dataflow-shaded.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/docstring.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/error_prone_core-with-dependencies.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/freemarker.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib/hamcrest.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/html-formatter.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/itext.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/jboss-logging.jar!/" />
@@ -150,6 +147,16 @@
       <root url="jar://$PROJECT_DIR$/build/lib/xml-apis.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/Saxon-HE.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/org.osgi.service.component.annotations.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/dataflow-errorprone.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/graphql-java-extended-scalars.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/java-diff-utils.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/jboss-threads.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/jooq-codegen.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/jooq-meta.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/org.eclipse.jgit.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/protostream-types.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/r2dbc-spi.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/wildfly-common.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/antlr4-runtime-javadoc.jar!/" />
@@ -221,6 +228,9 @@
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/commons-digester-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/rome-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/Saxon-HE-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/graphql-java-extended-scalars-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/jaxb-api-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/r2dbc-spi-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
       <root url="jar://$PROJECT_DIR$/build/lib/jFormatString.jar!/" />
@@ -308,6 +318,11 @@
       <root url="jar://$PROJECT_DIR$/build/lib-sources/Saxon-HE-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/itext-sources.jar!/core" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/itext-sources.jar!/rups" />
+      <root url="jar://$PROJECT_DIR$/build/lib-sources/graphql-java-extended-scalars-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-sources/jaxb-api-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-sources/jooq-codegen-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-sources/jooq-meta-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-sources/r2dbc-spi-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

@@ -36,12 +36,12 @@ public class ObjectLimiter
 
     Map<String, Limit> limits;
     Limit savedLimit;
-    long count;
+    long totalCount;
     long limitOffset;
     long limitCount;
 
-    public long getCount() {
-        return count;
+    public long getTotalCount() {
+        return totalCount;
     }
 
     public long getLimitOffset() {
@@ -52,10 +52,11 @@ public class ObjectLimiter
         return limitCount;
     }
 
-    public ObjectLimiter(final DataFetchingEnvironment env, final String entityName, final long count) {
+    public ObjectLimiter(final DataFetchingEnvironment env, final String entityName, final long totalCount) {
+
         this.env = env;
         this.entityName = entityName;
-        this.count = count;
+        this.totalCount = totalCount;
 
         var session = ThreadSession.currentSession();
         var after = Validator.validateUnsignedLong(env.getArgument(PARAMETER_AFTER));
@@ -67,7 +68,7 @@ public class ObjectLimiter
 
         // Initialize edges to be allEdges.
         limitOffset = 0;
-        limitCount = count;
+        limitCount = totalCount;
 
         // Source: https://relay.dev/graphql/connections.htm
         // 4.4 Pagination algorithm
@@ -81,19 +82,19 @@ public class ObjectLimiter
             savedLimit = limits.get(entityName);
 
             // If after is set: && If afterEdge exists:
-            if(afterEdge != null && afterEdge <= count) {
+            if(afterEdge != null && afterEdge <= totalCount) {
                 // Remove all elements of edges before and including afterEdge.
                 limitOffset = afterEdge;
                 limitCount -= afterEdge;
             }
 
             // If before is set: && If beforeEdge exists:
-            if(beforeEdge != null && beforeEdge > 0 && beforeEdge <= count) {
+            if(beforeEdge != null && beforeEdge > 0 && beforeEdge <= totalCount) {
                 // Remove all elements of edges after and including beforeEdge.
                 limitCount = beforeEdge - limitOffset - 1;
             }
 
-            // TODO: If first is less than 0: Throw an error. (Currently the value is ignored.)
+            // TODO: If first is less than 0: Throw an error. (Currently no error is thrown.)
 
             // If first is set:
             if(first != null && first > 0) {
@@ -104,7 +105,7 @@ public class ObjectLimiter
                 }
             }
 
-            // TODO: If last is less than 0: Throw an error. (Currently the value is ignored.)
+            // TODO: If last is less than 0: Throw an error. (Currently no error is thrown.)
 
             // If last is set:
             if(last != null && last > 0) {
