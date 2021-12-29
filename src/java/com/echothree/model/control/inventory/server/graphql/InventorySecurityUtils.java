@@ -17,10 +17,11 @@
 package com.echothree.model.control.inventory.server.graphql;
 
 import com.echothree.control.user.inventory.server.command.GetInventoryConditionCommand;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class InventorySecurityUtils {
+public final class InventorySecurityUtils
+        extends BaseGraphQl {
 
     private static class InventorySecurityUtilsHolder {
         static InventorySecurityUtils instance = new InventorySecurityUtils();
@@ -31,7 +32,7 @@ public final class InventorySecurityUtils {
     }
     
     public boolean getHasInventoryConditionAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetInventoryConditionCommand.class);
+        return getGraphQlContext(env).hasAccess(GetInventoryConditionCommand.class);
     }
     
 }

@@ -19,10 +19,11 @@ package com.echothree.model.control.item.server.graphql;
 import com.echothree.control.user.item.server.command.GetItemCategoryCommand;
 import com.echothree.control.user.item.server.command.GetItemCommand;
 import com.echothree.control.user.item.server.command.GetItemsCommand;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class ItemSecurityUtils {
+public final class ItemSecurityUtils
+        extends BaseGraphQl {
 
     private static class ItemSecurityUtilsHolder {
         static ItemSecurityUtils instance = new ItemSecurityUtils();
@@ -33,15 +34,15 @@ public final class ItemSecurityUtils {
     }
 
     public boolean getHasItemAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetItemCommand.class);
+        return getGraphQlContext(env).hasAccess(GetItemCommand.class);
     }
 
     public boolean getHasItemsAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetItemsCommand.class);
+        return getGraphQlContext(env).hasAccess(GetItemsCommand.class);
     }
 
     public boolean getHasItemCategoryAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetItemCategoryCommand.class);
+        return getGraphQlContext(env).hasAccess(GetItemCategoryCommand.class);
     }
     
 }

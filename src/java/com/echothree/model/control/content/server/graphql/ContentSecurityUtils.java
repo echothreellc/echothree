@@ -30,10 +30,11 @@ import com.echothree.control.user.content.server.command.GetContentPageLayoutCom
 import com.echothree.control.user.content.server.command.GetContentPagesCommand;
 import com.echothree.control.user.content.server.command.GetContentSectionCommand;
 import com.echothree.control.user.content.server.command.GetContentSectionsCommand;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class ContentSecurityUtils {
+public final class ContentSecurityUtils
+        extends BaseGraphQl {
 
     private static class ContentSecurityUtilsHolder {
         static ContentSecurityUtils instance = new ContentSecurityUtils();
@@ -44,59 +45,59 @@ public final class ContentSecurityUtils {
     }
     
     public boolean getHasContentCollectionAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetContentCollectionCommand.class);
+        return getGraphQlContext(env).hasAccess(GetContentCollectionCommand.class);
     }
     
     public boolean getHasContentCatalogsAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetContentCatalogsCommand.class);
+        return getGraphQlContext(env).hasAccess(GetContentCatalogsCommand.class);
     }
     
     public boolean getHasContentCatalogAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetContentCatalogCommand.class);
+        return getGraphQlContext(env).hasAccess(GetContentCatalogCommand.class);
     }
     
     public boolean getHasContentCatalogItemsAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetContentCatalogItemsCommand.class);
+        return getGraphQlContext(env).hasAccess(GetContentCatalogItemsCommand.class);
     }
     
     public boolean getHasContentCatalogItemAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetContentCatalogItemCommand.class);
+        return getGraphQlContext(env).hasAccess(GetContentCatalogItemCommand.class);
     }
 
     public boolean getHasContentCategoriesAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetContentCategoriesCommand.class);
+        return getGraphQlContext(env).hasAccess(GetContentCategoriesCommand.class);
     }
         
     public boolean getHasContentCategoryAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetContentCategoryCommand.class);
+        return getGraphQlContext(env).hasAccess(GetContentCategoryCommand.class);
     }
         
      public boolean getHasContentCategoryItemsAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetContentCategoryItemsCommand.class);
+        return getGraphQlContext(env).hasAccess(GetContentCategoryItemsCommand.class);
     }
     
     public boolean getHasContentCategoryItemAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetContentCategoryItemCommand.class);
+        return getGraphQlContext(env).hasAccess(GetContentCategoryItemCommand.class);
     }
 
    public boolean getHasContentSectionsAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetContentSectionsCommand.class);
+        return getGraphQlContext(env).hasAccess(GetContentSectionsCommand.class);
     }
 
     public boolean getHasContentSectionAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetContentSectionCommand.class);
+        return getGraphQlContext(env).hasAccess(GetContentSectionCommand.class);
     }
     
     public boolean getHasContentPageLayoutAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetContentPageLayoutCommand.class);
+        return getGraphQlContext(env).hasAccess(GetContentPageLayoutCommand.class);
     }
     
     public boolean getHasContentPagesAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetContentPagesCommand.class);
+        return getGraphQlContext(env).hasAccess(GetContentPagesCommand.class);
     }
     
     public boolean getHasContentPageAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetContentPageCommand.class);
+        return getGraphQlContext(env).hasAccess(GetContentPageCommand.class);
     }
     
 }

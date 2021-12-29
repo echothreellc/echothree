@@ -17,19 +17,20 @@
 package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.core.server.entity.EventType;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.schema.DataFetchingEnvironment;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("event type object")
 @GraphQLName("EventType")
-public class EventTypeObject {
+public class EventTypeObject
+        extends BaseGraphQl {
     
     private final EventType eventType; // Always Present
     
@@ -50,9 +51,8 @@ public class EventTypeObject {
     public String getDescription(final DataFetchingEnvironment env) {
         var coreControl = Session.getModelController(CoreControl.class);
         var userControl = Session.getModelController(UserControl.class);
-        GraphQlContext context = env.getContext();
-        
-        return coreControl.getBestEventTypeDescription(eventType, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+
+        return coreControl.getBestEventTypeDescription(eventType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
     
 }

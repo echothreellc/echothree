@@ -20,10 +20,11 @@ import com.echothree.control.user.sequence.server.command.GetSequenceChecksumTyp
 import com.echothree.control.user.sequence.server.command.GetSequenceCommand;
 import com.echothree.control.user.sequence.server.command.GetSequenceEncoderTypeCommand;
 import com.echothree.control.user.sequence.server.command.GetSequenceTypeCommand;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class SequenceSecurityUtils {
+public final class SequenceSecurityUtils
+        extends BaseGraphQl {
 
     private static class SequenceSecurityUtilsHolder {
         static SequenceSecurityUtils instance = new SequenceSecurityUtils();
@@ -34,19 +35,19 @@ public final class SequenceSecurityUtils {
     }
 
     public boolean getHasSequenceTypeAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetSequenceTypeCommand.class);
+        return getGraphQlContext(env).hasAccess(GetSequenceTypeCommand.class);
     }
 
     public boolean getHasSequenceAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetSequenceCommand.class);
+        return getGraphQlContext(env).hasAccess(GetSequenceCommand.class);
     }
 
     public boolean getHasSequenceChecksumTypeAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetSequenceChecksumTypeCommand.class);
+        return getGraphQlContext(env).hasAccess(GetSequenceChecksumTypeCommand.class);
     }
 
     public boolean getHasSequenceEncoderTypeAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetSequenceEncoderTypeCommand.class);
+        return getGraphQlContext(env).hasAccess(GetSequenceEncoderTypeCommand.class);
     }
 
 }

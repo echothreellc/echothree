@@ -19,9 +19,7 @@ package com.echothree.model.control.offer.server.graphql;
 import com.echothree.model.control.filter.server.graphql.FilterObject;
 import com.echothree.model.control.filter.server.graphql.FilterSecurityUtils;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.offer.server.control.OfferControl;
-import com.echothree.model.control.party.server.graphql.CompanyObject;
 import com.echothree.model.control.party.server.graphql.DepartmentObject;
 import com.echothree.model.control.party.server.graphql.PartySecurityUtils;
 import com.echothree.model.control.sequence.server.graphql.SequenceObject;
@@ -121,9 +119,8 @@ public class OfferObject
     public String getDescription(final DataFetchingEnvironment env) {
         var offerControl = Session.getModelController(OfferControl.class);
         var userControl = Session.getModelController(UserControl.class);
-        GraphQlContext context = env.getContext();
-        
-        return offerControl.getBestOfferDescription(offer, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+
+        return offerControl.getBestOfferDescription(offer, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
     
 }

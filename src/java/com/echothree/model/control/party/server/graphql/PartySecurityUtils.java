@@ -23,13 +23,14 @@ import com.echothree.control.user.party.server.command.GetDivisionCommand;
 import com.echothree.control.user.party.server.command.GetDivisionsCommand;
 import com.echothree.control.user.party.server.command.GetLanguageCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorCommand;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.server.control.GraphQlSecurityCommand;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class PartySecurityUtils {
+public final class PartySecurityUtils
+        extends BaseGraphQl {
 
     private static class PartySecurityUtilsHolder {
         static PartySecurityUtils instance = new PartySecurityUtils();
@@ -40,15 +41,15 @@ public final class PartySecurityUtils {
     }
 
     public boolean getHasLanguageAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetLanguageCommand.class);
+        return getGraphQlContext(env).hasAccess(GetLanguageCommand.class);
     }
 
     public boolean getHasDivisionsAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetDivisionsCommand.class);
+        return getGraphQlContext(env).hasAccess(GetDivisionsCommand.class);
     }
 
     public boolean getHasDepartmentsAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetDepartmentsCommand.class);
+        return getGraphQlContext(env).hasAccess(GetDepartmentsCommand.class);
     }
 
     public boolean getHasPartyAccess(final DataFetchingEnvironment env, final Party party) {
@@ -72,7 +73,7 @@ public final class PartySecurityUtils {
                 throw new RuntimeException("Unhandled PartyType");
         }
 
-        return env.<GraphQlContext>getContext().hasAccess(command);
+        return getGraphQlContext(env).hasAccess(command);
     }
 
 }

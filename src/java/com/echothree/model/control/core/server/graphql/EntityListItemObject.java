@@ -19,17 +19,15 @@ package com.echothree.model.control.core.server.graphql;
 import com.echothree.control.user.core.server.command.GetEntityAttributeCommand;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.core.server.entity.EntityListItem;
 import com.echothree.model.data.core.server.entity.EntityListItemDetail;
-import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.schema.DataFetchingEnvironment;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("entity list item object")
 @GraphQLName("EntityListItem")
@@ -58,8 +56,7 @@ public class EntityListItemObject
     
     private boolean getHasEntityAttributeAccess(final DataFetchingEnvironment env) {
         if(hasEntityAttributeAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetEntityAttributeCommand(context.getUserVisitPK(), null);
+            var baseSingleEntityCommand = new GetEntityAttributeCommand(getUserVisitPK(env), null);
             
             baseSingleEntityCommand.security();
             
@@ -96,9 +93,8 @@ public class EntityListItemObject
     public String getDescription(final DataFetchingEnvironment env) {
         var coreControl = Session.getModelController(CoreControl.class);
         var userControl = Session.getModelController(UserControl.class);
-        GraphQlContext context = env.getContext();
-        
-        return coreControl.getBestEntityListItemDescription(entityListItem, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+
+        return coreControl.getBestEntityListItemDescription(entityListItem, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
     
     @GraphQLField

@@ -19,7 +19,6 @@ package com.echothree.model.control.core.server.graphql;
 import com.echothree.control.user.core.server.command.GetEntityTypesCommand;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.ComponentVendorDetail;
 import com.echothree.util.server.persistence.Session;
@@ -59,8 +58,7 @@ public class ComponentVendorObject
 
     private boolean getHasEntityTypesAccess(final DataFetchingEnvironment env) {
         if(hasEntityTypesAccess == null) {
-            GraphQlContext context = env.getContext();
-            var baseMultipleEntitiesCommand = new GetEntityTypesCommand(context.getUserVisitPK(), null);
+            var baseMultipleEntitiesCommand = new GetEntityTypesCommand(getUserVisitPK(env), null);
 
             baseMultipleEntitiesCommand.security();
 

@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.sequence.server.graphql;
 
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.sequence.server.entity.SequenceChecksumType;
@@ -29,7 +29,8 @@ import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("sequence checksum type object")
 @GraphQLName("SequenceChecksumType")
-public class SequenceChecksumTypeObject {
+public class SequenceChecksumTypeObject
+        extends BaseGraphQl {
     
     private final SequenceChecksumType sequenceChecksumType; // Always Present
     
@@ -64,9 +65,8 @@ public class SequenceChecksumTypeObject {
     public String getDescription(final DataFetchingEnvironment env) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
         var userControl = Session.getModelController(UserControl.class);
-        GraphQlContext context = env.getContext();
-        
-        return sequenceControl.getBestSequenceChecksumTypeDescription(sequenceChecksumType, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+
+        return sequenceControl.getBestSequenceChecksumTypeDescription(sequenceChecksumType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
     
 }

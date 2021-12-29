@@ -18,7 +18,7 @@ package com.echothree.model.control.uom.server.graphql;
 
 import com.echothree.control.user.uom.server.command.GetUnitOfMeasureKindCommand;
 import com.echothree.control.user.uom.server.command.GetUnitOfMeasureKindUseTypeCommand;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUse;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
 import graphql.annotations.annotationTypes.GraphQLDescription;
@@ -28,7 +28,8 @@ import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("unit of measure kind use object")
 @GraphQLName("UnitOfMeasureKindUse")
-public class UnitOfMeasureKindUseObject {
+public class UnitOfMeasureKindUseObject
+        extends BaseGraphQl {
     
     private final UnitOfMeasureKindUse unitOfMeasureKindUse; // Always Present
     
@@ -40,8 +41,7 @@ public class UnitOfMeasureKindUseObject {
     
     private boolean getHasUnitOfMeasureKindAccess(final DataFetchingEnvironment env) {
         if(hasUnitOfMeasureKindAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetUnitOfMeasureKindCommand(context.getUserVisitPK(), null);
+            var baseSingleEntityCommand = new GetUnitOfMeasureKindCommand(getUserVisitPK(env), null);
             
             baseSingleEntityCommand.security();
             
@@ -55,8 +55,7 @@ public class UnitOfMeasureKindUseObject {
     
     private boolean getHasUnitOfMeasureKindUseTypeAccess(final DataFetchingEnvironment env) {
         if(hasUnitOfMeasureKindUseTypeAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetUnitOfMeasureKindUseTypeCommand(context.getUserVisitPK(), null);
+            var baseSingleEntityCommand = new GetUnitOfMeasureKindUseTypeCommand(getUserVisitPK(env), null);
             
             baseSingleEntityCommand.security();
             

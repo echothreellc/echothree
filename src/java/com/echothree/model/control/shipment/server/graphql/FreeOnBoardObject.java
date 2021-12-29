@@ -17,7 +17,6 @@
 package com.echothree.model.control.shipment.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.shipment.server.control.FreeOnBoardControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
@@ -79,9 +78,8 @@ public class FreeOnBoardObject
     public String getDescription(final DataFetchingEnvironment env) {
         var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
         var userControl = Session.getModelController(UserControl.class);
-        GraphQlContext context = env.getContext();
-        
-        return freeOnBoardControl.getBestFreeOnBoardDescription(freeOnBoard, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+
+        return freeOnBoardControl.getBestFreeOnBoardDescription(freeOnBoard, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
     
 }

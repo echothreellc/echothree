@@ -17,7 +17,6 @@
 package com.echothree.model.control.sequence.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
@@ -109,9 +108,8 @@ public class SequenceTypeObject
     public String getDescription(final DataFetchingEnvironment env) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
         var userControl = Session.getModelController(UserControl.class);
-        GraphQlContext context = env.getContext();
 
-        return sequenceControl.getBestSequenceTypeDescription(sequenceType, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+        return sequenceControl.getBestSequenceTypeDescription(sequenceType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
 
 }

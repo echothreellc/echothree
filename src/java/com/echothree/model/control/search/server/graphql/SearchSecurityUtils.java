@@ -18,10 +18,11 @@ package com.echothree.model.control.search.server.graphql;
 
 import com.echothree.control.user.search.server.command.GetSearchCheckSpellingActionTypeCommand;
 import com.echothree.control.user.search.server.command.GetSearchCheckSpellingActionTypesCommand;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class SearchSecurityUtils {
+public final class SearchSecurityUtils
+        extends BaseGraphQl {
 
     private static class SearchSecurityUtilsHolder {
         static SearchSecurityUtils instance = new SearchSecurityUtils();
@@ -32,11 +33,11 @@ public final class SearchSecurityUtils {
     }
 
     public boolean getHasSearchCheckSpellingActionTypesAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetSearchCheckSpellingActionTypesCommand.class);
+        return getGraphQlContext(env).hasAccess(GetSearchCheckSpellingActionTypesCommand.class);
     }
 
     public boolean getHasSearchCheckSpellingActionTypeAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetSearchCheckSpellingActionTypeCommand.class);
+        return getGraphQlContext(env).hasAccess(GetSearchCheckSpellingActionTypeCommand.class);
     }
 
 }

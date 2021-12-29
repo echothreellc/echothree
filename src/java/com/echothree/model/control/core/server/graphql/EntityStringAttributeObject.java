@@ -18,19 +18,20 @@ package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.control.user.core.server.command.GetEntityAttributeCommand;
 import com.echothree.control.user.party.server.command.GetLanguageCommand;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.party.server.graphql.LanguageObject;
 import com.echothree.model.data.core.server.entity.EntityStringAttribute;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.schema.DataFetchingEnvironment;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("entity string attribute object")
 @GraphQLName("EntityStringAttribute")
-public class EntityStringAttributeObject {
+public class EntityStringAttributeObject
+        extends BaseGraphQl {
     
     private final EntityStringAttribute entityStringAttribute; // Always Present
     
@@ -42,8 +43,7 @@ public class EntityStringAttributeObject {
     
     private boolean getHasEntityAttributeAccess(final DataFetchingEnvironment env) {
         if(hasEntityAttributeAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetEntityAttributeCommand(context.getUserVisitPK(), null);
+            var baseSingleEntityCommand = new GetEntityAttributeCommand(getUserVisitPK(env), null);
             
             baseSingleEntityCommand.security();
             
@@ -57,8 +57,7 @@ public class EntityStringAttributeObject {
     
     private boolean getHasLanguageAccess(final DataFetchingEnvironment env) {
         if(hasLanguageAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetLanguageCommand(context.getUserVisitPK(), null);
+            var baseSingleEntityCommand = new GetLanguageCommand(getUserVisitPK(env), null);
             
             baseSingleEntityCommand.security();
             

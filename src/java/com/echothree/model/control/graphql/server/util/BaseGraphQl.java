@@ -17,14 +17,32 @@
 package com.echothree.model.control.graphql.server.util;
 
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.user.server.entity.UserSession;
+import com.echothree.model.data.user.server.entity.UserVisit;
 import graphql.schema.DataFetchingEnvironment;
 
 public abstract class BaseGraphQl {
 
-    protected static UserVisitPK getUserVisitPK(final DataFetchingEnvironment env) {
+    protected static GraphQlContext getGraphQlContext(final DataFetchingEnvironment env) {
         GraphQlContext context = env.getContext();
 
-        return context.getUserVisitPK();
+        return context;
+    }
+
+    protected static UserVisitPK getUserVisitPK(final DataFetchingEnvironment env) {
+        return getGraphQlContext(env).getUserVisitPK();
+    }
+
+    protected static UserVisit getUserVisit(final DataFetchingEnvironment env) {
+        return getGraphQlContext(env).getUserVisit();
+    }
+
+    protected static UserSession getUserSession(final DataFetchingEnvironment env) {
+        return getGraphQlContext(env).getUserSession();
+    }
+
+    protected static String getRemoteInet4Address(final DataFetchingEnvironment env) {
+        return getGraphQlContext(env).getRemoteInet4Address();
     }
 
 }

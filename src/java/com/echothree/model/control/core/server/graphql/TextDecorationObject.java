@@ -18,7 +18,6 @@ package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.core.server.entity.TextDecoration;
 import com.echothree.model.data.core.server.entity.TextDecorationDetail;
@@ -26,8 +25,8 @@ import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.schema.DataFetchingEnvironment;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("text decoration object")
 @GraphQLName("TextDecoration")
@@ -79,9 +78,8 @@ public class TextDecorationObject
     public String getDescription(final DataFetchingEnvironment env) {
         var coreControl = Session.getModelController(CoreControl.class);
         var userControl = Session.getModelController(UserControl.class);
-        GraphQlContext context = env.getContext();
-        
-        return coreControl.getBestTextDecorationDescription(textDecoration, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+
+        return coreControl.getBestTextDecorationDescription(textDecoration, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
     
 }

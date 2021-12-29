@@ -22,7 +22,6 @@ import com.echothree.control.user.uom.server.command.GetUnitOfMeasureTypeCommand
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureTypeObject;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
@@ -42,16 +41,15 @@ import com.echothree.model.data.core.server.entity.EntityLongAttribute;
 import com.echothree.model.data.core.server.entity.EntityMultipleListItemAttribute;
 import com.echothree.model.data.core.server.entity.EntityStringAttribute;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
-import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
+import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import graphql.annotations.annotationTypes.GraphQLNonNull;
 
 @GraphQLDescription("entity attribute object")
 @GraphQLName("EntityAttribute")
@@ -154,8 +152,7 @@ public class EntityAttributeObject
 
     private boolean getHasEntityTypeAccess(final DataFetchingEnvironment env) {
         if(hasEntityTypeAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetEntityTypeCommand(context.getUserVisitPK(), null);
+            var baseSingleEntityCommand = new GetEntityTypeCommand(getUserVisitPK(env), null);
 
             baseSingleEntityCommand.security();
 
@@ -169,8 +166,7 @@ public class EntityAttributeObject
 
     private boolean getHasEntityAttributeTypeAccess(final DataFetchingEnvironment env) {
         if(hasEntityAttributeTypeAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetEntityAttributeTypeCommand(context.getUserVisitPK(), null);
+            var baseSingleEntityCommand = new GetEntityAttributeTypeCommand(getUserVisitPK(env), null);
 
             baseSingleEntityCommand.security();
 
@@ -184,8 +180,7 @@ public class EntityAttributeObject
     
     private boolean getHasUnitOfMeasureTypeAccess(final DataFetchingEnvironment env) {
         if(hasUnitOfMeasureTypeAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetUnitOfMeasureTypeCommand(context.getUserVisitPK(), null);
+            var baseSingleEntityCommand = new GetUnitOfMeasureTypeCommand(getUserVisitPK(env), null);
             
             baseSingleEntityCommand.security();
             
@@ -393,9 +388,9 @@ public class EntityAttributeObject
     public String getDescription(final DataFetchingEnvironment env) {
         var coreControl = Session.getModelController(CoreControl.class);
         var userControl = Session.getModelController(UserControl.class);
-        GraphQlContext context = env.getContext();
+        var context = getGraphQlContext(env);
         
-        return coreControl.getBestEntityAttributeDescription(entityAttribute, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+        return coreControl.getBestEntityAttributeDescription(entityAttribute, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
     
     @GraphQLField
@@ -451,8 +446,7 @@ public class EntityAttributeObject
         if(IsEntityAttributeTypeName(EntityAttributeTypes.STRING.name()) && entityInstance != null) {
             var coreControl = Session.getModelController(CoreControl.class);
             var userControl = Session.getModelController(UserControl.class);
-            GraphQlContext context = env.getContext();
-            EntityStringAttribute entityStringAttribute = coreControl.getBestEntityStringAttribute(entityAttribute, entityInstance, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+            EntityStringAttribute entityStringAttribute = coreControl.getBestEntityStringAttribute(entityAttribute, entityInstance, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
             
             entityStringAttributeObject = entityStringAttribute == null ? null : new EntityStringAttributeObject(entityStringAttribute);
         }

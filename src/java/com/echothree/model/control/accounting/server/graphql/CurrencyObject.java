@@ -19,16 +19,14 @@ package com.echothree.model.control.accounting.server.graphql;
 import com.echothree.control.user.accounting.server.command.GetSymbolPositionCommand;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.schema.DataFetchingEnvironment;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("currency object")
 @GraphQLName("Currency")
@@ -47,8 +45,7 @@ public class CurrencyObject
     
     private boolean getHasSymbolPositionAccess(final DataFetchingEnvironment env) {
         if(hasSymbolPositionAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetSymbolPositionCommand(context.getUserVisitPK(), null);
+            var baseSingleEntityCommand = new GetSymbolPositionCommand(getUserVisitPK(env), null);
             
             baseSingleEntityCommand.security();
             
@@ -178,9 +175,8 @@ public class CurrencyObject
     public String getDescription(final DataFetchingEnvironment env) {
         var accountingControl = Session.getModelController(AccountingControl.class);
         var userControl = Session.getModelController(UserControl.class);
-        GraphQlContext context = env.getContext();
-        
-        return accountingControl.getBestCurrencyDescription(currency, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+
+        return accountingControl.getBestCurrencyDescription(currency, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
 
 }

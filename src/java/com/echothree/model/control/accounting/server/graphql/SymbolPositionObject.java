@@ -18,7 +18,6 @@ package com.echothree.model.control.accounting.server.graphql;
 
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.accounting.server.entity.SymbolPosition;
 import com.echothree.model.data.accounting.server.entity.SymbolPositionDetail;
@@ -26,8 +25,8 @@ import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.schema.DataFetchingEnvironment;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("symbol position object")
 @GraphQLName("SymbolPosition")
@@ -79,9 +78,8 @@ public class SymbolPositionObject
     public String getDescription(final DataFetchingEnvironment env) {
         var accountingControl = Session.getModelController(AccountingControl.class);
         var userControl = Session.getModelController(UserControl.class);
-        GraphQlContext context = env.getContext();
-        
-        return accountingControl.getBestSymbolPositionDescription(symbolPosition, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+
+        return accountingControl.getBestSymbolPositionDescription(symbolPosition, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
     
 }

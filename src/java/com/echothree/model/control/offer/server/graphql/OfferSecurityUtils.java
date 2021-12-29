@@ -16,11 +16,23 @@
 
 package com.echothree.model.control.offer.server.graphql;
 
-import com.echothree.control.user.offer.server.command.*;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
+import com.echothree.control.user.offer.server.command.GetOfferChainTypeCommand;
+import com.echothree.control.user.offer.server.command.GetOfferCommand;
+import com.echothree.control.user.offer.server.command.GetOfferCustomerTypeCommand;
+import com.echothree.control.user.offer.server.command.GetOfferItemCommand;
+import com.echothree.control.user.offer.server.command.GetOfferItemPriceCommand;
+import com.echothree.control.user.offer.server.command.GetOfferNameElementCommand;
+import com.echothree.control.user.offer.server.command.GetOfferUseCommand;
+import com.echothree.control.user.offer.server.command.GetOffersCommand;
+import com.echothree.control.user.offer.server.command.GetSourceCommand;
+import com.echothree.control.user.offer.server.command.GetUseCommand;
+import com.echothree.control.user.offer.server.command.GetUseNameElementCommand;
+import com.echothree.control.user.offer.server.command.GetUseTypeCommand;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class OfferSecurityUtils {
+public final class OfferSecurityUtils
+        extends BaseGraphQl {
 
     private static class OfferSecurityUtilsHolder {
         static OfferSecurityUtils instance = new OfferSecurityUtils();
@@ -31,50 +43,50 @@ public final class OfferSecurityUtils {
     }
 
     public boolean getHasOfferAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetOfferCommand.class);
+        return getGraphQlContext(env).hasAccess(GetOfferCommand.class);
     }
 
     public boolean getHasOffersAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetOffersCommand.class);
+        return getGraphQlContext(env).hasAccess(GetOffersCommand.class);
     }
 
     public boolean getHasOfferNameElementAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetOfferNameElementCommand.class);
+        return getGraphQlContext(env).hasAccess(GetOfferNameElementCommand.class);
     }
 
     public boolean getHasOfferCustomerTypeAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetOfferCustomerTypeCommand.class);
+        return getGraphQlContext(env).hasAccess(GetOfferCustomerTypeCommand.class);
     }
 
     public boolean getHasOfferChainTypeAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetOfferChainTypeCommand.class);
+        return getGraphQlContext(env).hasAccess(GetOfferChainTypeCommand.class);
     }
 
     public boolean getHasUseAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetUseCommand.class);
+        return getGraphQlContext(env).hasAccess(GetUseCommand.class);
     }
 
     public boolean getHasUseNameElementAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetUseNameElementCommand.class);
+        return getGraphQlContext(env).hasAccess(GetUseNameElementCommand.class);
     }
 
     public boolean getHasOfferUseAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetOfferUseCommand.class);
+        return getGraphQlContext(env).hasAccess(GetOfferUseCommand.class);
     }
 
     public boolean getHasSourceAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetSourceCommand.class);
+        return getGraphQlContext(env).hasAccess(GetSourceCommand.class);
     }
 
     public boolean getHasOfferItemAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetOfferItemCommand.class);
+        return getGraphQlContext(env).hasAccess(GetOfferItemCommand.class);
     }
 
     public boolean getHasOfferItemPriceAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetOfferItemPriceCommand.class);
+        return getGraphQlContext(env).hasAccess(GetOfferItemPriceCommand.class);
     }
 
     public boolean getHasUseTypeAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetUseTypeCommand.class);
+        return getGraphQlContext(env).hasAccess(GetUseTypeCommand.class);
     }
 }

@@ -21,7 +21,7 @@ import com.echothree.control.user.party.server.command.GetDateTimeFormatCommand;
 import com.echothree.control.user.party.server.command.GetLanguageCommand;
 import com.echothree.control.user.party.server.command.GetTimeZoneCommand;
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.offer.server.graphql.OfferSecurityUtils;
 import com.echothree.model.control.offer.server.graphql.OfferUseObject;
 import com.echothree.model.control.party.server.graphql.DateTimeFormatObject;
@@ -42,7 +42,8 @@ import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("user visit object")
 @GraphQLName("UserVisit")
-public class UserVisitObject {
+public class UserVisitObject
+        extends BaseGraphQl {
 
     private final UserVisit userVisit; // Always Present
 
@@ -54,8 +55,7 @@ public class UserVisitObject {
 
     private boolean getHasLanguageAccess(final DataFetchingEnvironment env) {
         if(hasLanguageAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetLanguageCommand(context.getUserVisitPK(), null);
+            var baseSingleEntityCommand = new GetLanguageCommand(getUserVisitPK(env), null);
 
             baseSingleEntityCommand.security();
 
@@ -69,8 +69,7 @@ public class UserVisitObject {
 
     private boolean getHasCurrencyAccess(final DataFetchingEnvironment env) {
         if(hasCurrencyAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetCurrencyCommand(context.getUserVisitPK(), null);
+            var baseSingleEntityCommand = new GetCurrencyCommand(getUserVisitPK(env), null);
 
             baseSingleEntityCommand.security();
 
@@ -84,8 +83,7 @@ public class UserVisitObject {
 
     private boolean getHasTimeZoneAccess(final DataFetchingEnvironment env) {
         if(hasTimeZoneAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetTimeZoneCommand(context.getUserVisitPK(), null);
+            var baseSingleEntityCommand = new GetTimeZoneCommand(getUserVisitPK(env), null);
 
             baseSingleEntityCommand.security();
 
@@ -99,8 +97,7 @@ public class UserVisitObject {
 
     private boolean getHasDateTimeFormatAccess(final DataFetchingEnvironment env) {
         if(hasDateTimeFormatAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetDateTimeFormatCommand(context.getUserVisitPK(), null);
+            var baseSingleEntityCommand = new GetDateTimeFormatCommand(getUserVisitPK(env), null);
 
             baseSingleEntityCommand.security();
 
@@ -114,8 +111,7 @@ public class UserVisitObject {
 //
 //    private boolean getHasAssociateReferralAccess(final DataFetchingEnvironment env) {
 //        if(hasAssociateReferralAccess == null) {
-//            GraphQlContext context = env.getContext();
-//            BaseSingleEntityCommand baseSingleEntityCommand = new GetAssociateReferralCommand(context.getUserVisitPK(), null);
+//            var baseSingleEntityCommand = new GetAssociateReferralCommand(getUserVisitPK(env), null);
 //
 //            baseSingleEntityCommand.security();
 //
@@ -184,9 +180,9 @@ public class UserVisitObject {
     @GraphQLDescription("last command time")
     @GraphQLNonNull
     public String getLastCommandTime(final DataFetchingEnvironment env) {
-        GraphQlContext context = env.getContext();
+        var context = getGraphQlContext(env);
 
-        return DateUtils.getInstance().formatTypicalDateTime(context.getUserVisit(), userVisit.getLastCommandTime());
+        return DateUtils.getInstance().formatTypicalDateTime(getUserVisit(env), userVisit.getLastCommandTime());
     }
     
     @GraphQLField
@@ -213,9 +209,8 @@ public class UserVisitObject {
     @GraphQLField
     @GraphQLDescription("retain until time")
     public String getRetainUntilTime(final DataFetchingEnvironment env) {
-        GraphQlContext context = env.getContext();
         Long retainUntilTime = userVisit.getRetainUntilTime();
 
-        return retainUntilTime == null ? null : DateUtils.getInstance().formatTypicalDateTime(context.getUserVisit(), retainUntilTime);
+        return retainUntilTime == null ? null : DateUtils.getInstance().formatTypicalDateTime(getUserVisit(env), retainUntilTime);
     }
 }

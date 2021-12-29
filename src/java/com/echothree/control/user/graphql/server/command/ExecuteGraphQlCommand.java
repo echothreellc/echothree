@@ -22,11 +22,11 @@ import com.echothree.control.user.graphql.common.result.GraphQlResultFactory;
 import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.graphql.server.util.GraphQlSchemaUtils;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.string.GraphQlUtils;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.google.gson.JsonParseException;
 import graphql.ExecutionInput;
@@ -86,7 +86,7 @@ public class ExecuteGraphQlCommand
         ExecuteGraphQlResult result = GraphQlResultFactory.getExecuteGraphQlResult();
 
         try {
-            boolean readOnly = Boolean.valueOf(form.getReadOnly());
+            boolean readOnly = Boolean.parseBoolean(form.getReadOnly());
             String query = form.getQuery();
             String variables = form.getVariables();
             String operationName = form.getOperationName();
@@ -144,7 +144,7 @@ public class ExecuteGraphQlCommand
             
             // query MUST be present.
             if(query != null) {
-                GraphQlContext context = new GraphQlContext(getUserVisitPK(), getUserVisit(), getUserSession(),
+                var context = new GraphQlContext(getUserVisitPK(), getUserVisit(), getUserSession(),
                         form.getRemoteInet4Address());
 
                 ExecutionInput.Builder builder = ExecutionInput.newExecutionInput()

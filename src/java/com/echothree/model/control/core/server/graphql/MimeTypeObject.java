@@ -21,14 +21,12 @@ import com.echothree.control.user.core.server.command.GetMimeTypeFileExtensionsC
 import com.echothree.control.user.core.server.command.GetMimeTypeUsagesCommand;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.core.server.entity.MimeTypeDetail;
 import com.echothree.model.data.core.server.entity.MimeTypeFileExtension;
 import com.echothree.model.data.core.server.entity.MimeTypeUsage;
 import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
-import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -65,8 +63,7 @@ public class MimeTypeObject
 
     private boolean getHasEntityAttributeTypeAccess(final DataFetchingEnvironment env) {
         if(hasEntityAttributeTypeAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetEntityAttributeTypeCommand(context.getUserVisitPK(), null);
+            var baseSingleEntityCommand = new GetEntityAttributeTypeCommand(getUserVisitPK(env), null);
 
             baseSingleEntityCommand.security();
 
@@ -80,8 +77,7 @@ public class MimeTypeObject
 
     private boolean getHasMimeTypeUsagesAccess(final DataFetchingEnvironment env) {
         if(hasMimeTypeUsagesAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseMultipleEntitiesCommand baseMultipleEntitiesCommand = new GetMimeTypeUsagesCommand(context.getUserVisitPK(), null);
+            BaseMultipleEntitiesCommand baseMultipleEntitiesCommand = new GetMimeTypeUsagesCommand(getUserVisitPK(env), null);
 
             baseMultipleEntitiesCommand.security();
 
@@ -95,8 +91,7 @@ public class MimeTypeObject
 
     private boolean getHasMimeTypeFileExtensionsAccess(final DataFetchingEnvironment env) {
         if(hasMimeTypeFileExtensionsAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseMultipleEntitiesCommand baseMultipleEntitiesCommand = new GetMimeTypeFileExtensionsCommand(context.getUserVisitPK(), null);
+            BaseMultipleEntitiesCommand baseMultipleEntitiesCommand = new GetMimeTypeFileExtensionsCommand(getUserVisitPK(env), null);
 
             baseMultipleEntitiesCommand.security();
 
@@ -140,9 +135,8 @@ public class MimeTypeObject
     public String getDescription(final DataFetchingEnvironment env) {
         var coreControl = Session.getModelController(CoreControl.class);
         var userControl = Session.getModelController(UserControl.class);
-        GraphQlContext context = env.getContext();
-        
-        return coreControl.getBestMimeTypeDescription(mimeType, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+
+        return coreControl.getBestMimeTypeDescription(mimeType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
     
     @GraphQLField

@@ -17,24 +17,18 @@
 package com.echothree.model.control.search.server.graphql;
 
 import com.echothree.control.user.search.common.form.BaseGetResultsForm;
-import com.echothree.control.user.search.common.form.GetVendorResultsForm;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.search.common.exception.BaseSearchException;
 import com.echothree.model.control.search.server.logic.SearchLogic;
-import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.search.server.entity.UserVisitSearch;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
-import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
-import java.util.Collections;
-import java.util.List;
 
-public abstract class BaseResultsObject<F extends BaseGetResultsForm> {
+public abstract class BaseResultsObject<F extends BaseGetResultsForm>
+        extends BaseGraphQl {
 
     private String searchKindName;
 
@@ -53,8 +47,7 @@ public abstract class BaseResultsObject<F extends BaseGetResultsForm> {
     protected UserVisitSearch getUserVisitSearch(final DataFetchingEnvironment env) {
         if(form != null && userVisitSearch == null) {
             try {
-                GraphQlContext context = env.getContext();
-                UserVisit userVisit = context.getUserVisit();
+                UserVisit userVisit = getUserVisit(env);
                 
                 userVisitSearch = SearchLogic.getInstance().getUserVisitSearchByName(null, userVisit,
                         searchKindName, form.getSearchTypeName());
