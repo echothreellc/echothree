@@ -17,7 +17,6 @@
 package com.echothree.model.control.workflow.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.security.server.graphql.SecurityRoleGroupObject;
 import com.echothree.model.control.security.server.graphql.SecuritySecurityUtils;
 import com.echothree.model.control.selector.server.graphql.SelectorSecurityUtils;
@@ -108,9 +107,8 @@ public class WorkflowObject
     public String getDescription(final DataFetchingEnvironment env) {
         var workflowControl = Session.getModelController(WorkflowControl.class);
         var userControl = Session.getModelController(UserControl.class);
-        GraphQlContext context = env.getContext();
-        
-        return workflowControl.getBestWorkflowDescription(workflow, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+
+        return workflowControl.getBestWorkflowDescription(workflow, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
 
     @GraphQLField

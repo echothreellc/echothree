@@ -17,10 +17,11 @@
 package com.echothree.model.control.uom.server.graphql;
 
 import com.echothree.control.user.uom.server.command.GetUnitOfMeasureTypeCommand;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class UomSecurityUtils {
+public final class UomSecurityUtils
+        extends BaseGraphQl {
 
     private static class UomSecurityUtilsHolder {
         static UomSecurityUtils instance = new UomSecurityUtils();
@@ -31,7 +32,7 @@ public final class UomSecurityUtils {
     }
     
     public boolean getHasUnitOfMeasureTypeAccess(final DataFetchingEnvironment env) {
-        return env.<GraphQlContext>getContext().hasAccess(GetUnitOfMeasureTypeCommand.class);
+        return getGraphQlExecutionContext(env).hasAccess(GetUnitOfMeasureTypeCommand.class);
     }
     
 }

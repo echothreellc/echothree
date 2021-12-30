@@ -18,7 +18,6 @@ package com.echothree.model.control.filter.server.graphql;
 
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.filter.server.entity.FilterKind;
 import com.echothree.model.data.filter.server.entity.FilterKindDetail;
@@ -81,9 +80,8 @@ public class FilterKindObject
     public String getDescription(final DataFetchingEnvironment env) {
         var filterControl = Session.getModelController(FilterControl.class);
         var userControl = Session.getModelController(UserControl.class);
-        GraphQlContext context = env.getContext();
-        
-        return filterControl.getBestFilterKindDescription(filterKind, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+
+        return filterControl.getBestFilterKindDescription(filterKind, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
 
     @GraphQLField

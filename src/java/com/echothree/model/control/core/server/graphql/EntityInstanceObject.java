@@ -16,26 +16,21 @@
 
 package com.echothree.model.control.core.server.graphql;
 
-import com.echothree.model.control.core.common.transfer.EntityLockTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityLockControl;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
-import com.echothree.model.data.core.server.entity.EntityAppearance;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.core.server.entity.EntityTime;
-import com.echothree.model.data.core.server.entity.EntityVisit;
-import com.echothree.model.data.user.server.entity.UserSession;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.schema.DataFetchingEnvironment;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("entity instance object")
 @GraphQLName("EntityInstance")
-public class EntityInstanceObject {
+public class EntityInstanceObject
+        extends BaseGraphQl {
     
     private EntityInstance entityInstance; // Always Present
     
@@ -94,7 +89,7 @@ public class EntityInstanceObject {
     @GraphQLDescription("entity time")
     public EntityTimeObject getEntityTime() {
         var coreControl = Session.getModelController(CoreControl.class);
-        EntityTime entityTime = coreControl.getEntityTime(entityInstance);
+        var entityTime = coreControl.getEntityTime(entityInstance);
         
         return entityTime == null ? null : new EntityTimeObject(entityTime);
     }
@@ -102,11 +97,10 @@ public class EntityInstanceObject {
     @GraphQLField
     @GraphQLDescription("entity visit")
     public EntityVisitObject getEntityVisit(final DataFetchingEnvironment env) {
-        GraphQlContext context = env.getContext();
         var coreControl = Session.getModelController(CoreControl.class);
-        UserSession userSession = context.getUserSession();
-        EntityInstance visitingEntityInstance = userSession == null ? null : coreControl.getEntityInstanceByBasePK(userSession.getPartyPK());
-        EntityVisit entityVisit = visitingEntityInstance == null ? null : coreControl.getEntityVisit(visitingEntityInstance, entityInstance);
+        var userSession = getUserSession(env);
+        var visitingEntityInstance = userSession == null ? null : coreControl.getEntityInstanceByBasePK(userSession.getPartyPK());
+        var entityVisit = visitingEntityInstance == null ? null : coreControl.getEntityVisit(visitingEntityInstance, entityInstance);
         
         return entityVisit == null ? null : new EntityVisitObject(entityVisit);
     }
@@ -115,7 +109,7 @@ public class EntityInstanceObject {
     @GraphQLDescription("entity appearance")
     public EntityAppearanceObject getEntityAppearance() {
         var coreControl = Session.getModelController(CoreControl.class);
-        EntityAppearance entityAppearance = coreControl.getEntityAppearance(entityInstance);
+        var entityAppearance = coreControl.getEntityAppearance(entityInstance);
         
         return entityAppearance == null ? null : new EntityAppearanceObject(entityAppearance);
     }
@@ -123,10 +117,9 @@ public class EntityInstanceObject {
     @GraphQLField
     @GraphQLDescription("entity lock")
     public EntityLockObject getEntityLock(final DataFetchingEnvironment env) {
-        GraphQlContext context = env.getContext();
         var entityLockControl = Session.getModelController(EntityLockControl.class);
-        UserVisit userVisit = context.getUserVisit();
-        EntityLockTransfer entityLockTransfer = entityLockControl.getEntityLockTransferByEntityInstance(userVisit, entityInstance);
+        var userVisit = getUserVisit(env);
+        var entityLockTransfer = entityLockControl.getEntityLockTransferByEntityInstance(userVisit, entityInstance);
         
         return entityLockTransfer == null ? null : new EntityLockObject(entityLockTransfer);
     }

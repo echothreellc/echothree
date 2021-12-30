@@ -16,9 +16,8 @@
 
 package com.echothree.model.control.queue.server.graphql;
 
-import com.echothree.model.control.queue.server.control.QueueControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
+import com.echothree.model.control.queue.server.control.QueueControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.queue.server.entity.QueueType;
 import com.echothree.model.data.queue.server.entity.QueueTypeDetail;
@@ -80,9 +79,8 @@ public class QueueTypeObject
     public String getDescription(final DataFetchingEnvironment env) {
         var queueControl = Session.getModelController(QueueControl.class);
         var userControl = Session.getModelController(UserControl.class);
-        GraphQlContext context = env.getContext();
-        
-        return queueControl.getBestQueueTypeDescription(queueType, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+
+        return queueControl.getBestQueueTypeDescription(queueType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
 
     @GraphQLField
@@ -105,11 +103,10 @@ public class QueueTypeObject
     @GraphQLField
     @GraphQLDescription("oldest queued entity")
     public String getOldestQueuedEntityTime(final DataFetchingEnvironment env) {
-        GraphQlContext context = env.getContext();
         var queueControl = Session.getModelController(QueueControl.class);
         Long oldestQueuedEntityTime = queueControl.oldestQueuedEntityTimeByQueueType(queueType);
 
-        return oldestQueuedEntityTime == null ? null : DateUtils.getInstance().formatTypicalDateTime(context.getUserVisit(), oldestQueuedEntityTime);
+        return oldestQueuedEntityTime == null ? null : DateUtils.getInstance().formatTypicalDateTime(getUserVisit(env), oldestQueuedEntityTime);
     }
 
     @GraphQLField
@@ -123,11 +120,10 @@ public class QueueTypeObject
     @GraphQLField
     @GraphQLDescription("latest queued entity")
     public String getLatestQueuedEntityTime(final DataFetchingEnvironment env) {
-        GraphQlContext context = env.getContext();
         var queueControl = Session.getModelController(QueueControl.class);
         Long latestQueuedEntityTime = queueControl.latestQueuedEntityTimeByQueueType(queueType);
 
-        return latestQueuedEntityTime == null ? null : DateUtils.getInstance().formatTypicalDateTime(context.getUserVisit(), latestQueuedEntityTime);
+        return latestQueuedEntityTime == null ? null : DateUtils.getInstance().formatTypicalDateTime(getUserVisit(env), latestQueuedEntityTime);
     }
 
 }

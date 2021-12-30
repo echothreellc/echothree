@@ -17,7 +17,7 @@
 package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
 import com.echothree.util.server.persistence.Session;
@@ -29,7 +29,8 @@ import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("mime type usage type object")
 @GraphQLName("MimeTypeUsageType")
-public class MimeTypeUsageTypeObject  {
+public class MimeTypeUsageTypeObject
+        extends BaseGraphQl {
     
     private final MimeTypeUsageType mimeTypeUsageType; // Always Present
     
@@ -64,9 +65,8 @@ public class MimeTypeUsageTypeObject  {
     public String getDescription(final DataFetchingEnvironment env) {
         var coreControl = Session.getModelController(CoreControl.class);
         var userControl = Session.getModelController(UserControl.class);
-        GraphQlContext context = env.getContext();
-        
-        return coreControl.getBestMimeTypeUsageTypeDescription(mimeTypeUsageType, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+
+        return coreControl.getBestMimeTypeUsageTypeDescription(mimeTypeUsageType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
     
 }

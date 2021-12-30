@@ -17,7 +17,6 @@
 package com.echothree.model.control.item.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.item.server.entity.ItemPriceType;
@@ -25,8 +24,8 @@ import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.schema.DataFetchingEnvironment;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("item price type object")
 @GraphQLName("ItemPriceType")
@@ -68,9 +67,8 @@ public class ItemPriceTypeObject
     public String getDescription(final DataFetchingEnvironment env) {
         var itemControl = Session.getModelController(ItemControl.class);
         var userControl = Session.getModelController(UserControl.class);
-        GraphQlContext context = env.getContext();
-        
-        return itemControl.getBestItemPriceTypeDescription(itemPriceType, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+
+        return itemControl.getBestItemPriceTypeDescription(itemPriceType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
     
 }

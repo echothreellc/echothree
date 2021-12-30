@@ -18,18 +18,17 @@ package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.control.user.core.server.command.GetEntityAttributeCommand;
 import com.echothree.control.user.core.server.command.GetEntityListItemCommand;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.data.core.server.entity.EntityListItemAttribute;
-import com.echothree.util.server.control.BaseSingleEntityCommand;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.schema.DataFetchingEnvironment;
-import graphql.annotations.annotationTypes.GraphQLNonNull;
 
 @GraphQLDescription("entity list item attribute object")
 @GraphQLName("EntityListItemAttribute")
-public class EntityListItemAttributeObject {
+public class EntityListItemAttributeObject
+        extends BaseGraphQl {
     
     private final EntityListItemAttribute entityListItemAttribute; // Always Present
     
@@ -41,8 +40,7 @@ public class EntityListItemAttributeObject {
     
     private boolean getHasEntityAttributeAccess(final DataFetchingEnvironment env) {
         if(hasEntityAttributeAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetEntityAttributeCommand(context.getUserVisitPK(), null);
+            var baseSingleEntityCommand = new GetEntityAttributeCommand(getUserVisitPK(env), null);
             
             baseSingleEntityCommand.security();
             
@@ -56,8 +54,7 @@ public class EntityListItemAttributeObject {
     
     private boolean getHasEntityListItemAccess(final DataFetchingEnvironment env) {
         if(hasEntityListItemAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetEntityListItemCommand(context.getUserVisitPK(), null);
+            var baseSingleEntityCommand = new GetEntityListItemCommand(getUserVisitPK(env), null);
             
             baseSingleEntityCommand.security();
             

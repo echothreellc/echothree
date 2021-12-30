@@ -22,7 +22,7 @@ import com.echothree.util.server.control.GraphQlSecurityCommand;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GraphQlContext {
+public class GraphQlExecutionContext {
 
     private final UserVisitPK userVisitPK;
     private final UserVisit userVisit;
@@ -31,7 +31,7 @@ public class GraphQlContext {
     
     private final Map<Class<? extends GraphQlSecurityCommand>, Boolean> securityCache = new HashMap<>();
 
-    public GraphQlContext(UserVisitPK userVisitPK, UserVisit userVisit, UserSession userSession, String remoteInet4Address) {
+    public GraphQlExecutionContext(UserVisitPK userVisitPK, UserVisit userVisit, UserSession userSession, String remoteInet4Address) {
         this.userVisitPK = userVisitPK;
         this.userVisit = userVisit;
         this.userSession = userSession;

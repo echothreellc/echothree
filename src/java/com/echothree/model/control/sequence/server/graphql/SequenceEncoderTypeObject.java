@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.sequence.server.graphql;
 
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.sequence.server.entity.SequenceEncoderType;
@@ -29,7 +29,8 @@ import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("sequence encoder type object")
 @GraphQLName("SequenceEncoderType")
-public class SequenceEncoderTypeObject {
+public class SequenceEncoderTypeObject
+        extends BaseGraphQl {
     
     private final SequenceEncoderType sequenceEncoderType; // Always Present
     
@@ -64,9 +65,8 @@ public class SequenceEncoderTypeObject {
     public String getDescription(final DataFetchingEnvironment env) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
         var userControl = Session.getModelController(UserControl.class);
-        GraphQlContext context = env.getContext();
-        
-        return sequenceControl.getBestSequenceEncoderTypeDescription(sequenceEncoderType, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+
+        return sequenceControl.getBestSequenceEncoderTypeDescription(sequenceEncoderType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
     
 }

@@ -20,19 +20,17 @@ import com.echothree.control.user.accounting.server.command.GetSymbolPositionCom
 import com.echothree.control.user.uom.server.command.GetUnitOfMeasureKindCommand;
 import com.echothree.model.control.accounting.server.graphql.SymbolPositionObject;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureTypeDescription;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureTypeDetail;
-import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.schema.DataFetchingEnvironment;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("unit of measure type object")
 @GraphQLName("UnitOfMeasureType")
@@ -63,9 +61,8 @@ public class UnitOfMeasureTypeObject
         if(unitOfMeasureTypeDescription == null) {
             var uomControl = Session.getModelController(UomControl.class);
             var userControl = Session.getModelController(UserControl.class);
-            GraphQlContext context = env.getContext();
 
-            unitOfMeasureTypeDescription = uomControl.getBestUnitOfMeasureTypeDescription(unitOfMeasureType, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+            unitOfMeasureTypeDescription = uomControl.getBestUnitOfMeasureTypeDescription(unitOfMeasureType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
         }
         
         return unitOfMeasureTypeDescription;
@@ -75,8 +72,7 @@ public class UnitOfMeasureTypeObject
     
     private boolean getHasUnitOfMeasureKindAccess(final DataFetchingEnvironment env) {
         if(hasUnitOfMeasureKindAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetUnitOfMeasureKindCommand(context.getUserVisitPK(), null);
+            var baseSingleEntityCommand = new GetUnitOfMeasureKindCommand(getUserVisitPK(env), null);
             
             baseSingleEntityCommand.security();
             
@@ -90,8 +86,7 @@ public class UnitOfMeasureTypeObject
     
     private boolean getHasSymbolPositionAccess(final DataFetchingEnvironment env) {
         if(hasSymbolPositionAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetSymbolPositionCommand(context.getUserVisitPK(), null);
+            var baseSingleEntityCommand = new GetSymbolPositionCommand(getUserVisitPK(env), null);
             
             baseSingleEntityCommand.security();
             

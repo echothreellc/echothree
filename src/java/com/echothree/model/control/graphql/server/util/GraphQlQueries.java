@@ -158,8 +158,6 @@ import com.echothree.control.user.queue.server.command.GetQueueTypeCommand;
 import com.echothree.control.user.queue.server.command.GetQueueTypesCommand;
 import com.echothree.control.user.search.common.SearchUtil;
 import com.echothree.control.user.search.common.result.CheckItemSpellingResult;
-import com.echothree.control.user.search.common.result.SearchCustomersResult;
-import com.echothree.control.user.search.server.command.CheckItemSpellingCommand;
 import com.echothree.control.user.search.server.command.GetCustomerResultsCommand;
 import com.echothree.control.user.search.server.command.GetEmployeeResultsCommand;
 import com.echothree.control.user.search.server.command.GetItemResultsCommand;
@@ -389,8 +387,6 @@ import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUseType;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.RecoveryQuestion;
 import com.echothree.model.data.user.server.entity.UserLogin;
-import com.echothree.model.data.user.server.entity.UserSession;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.vendor.server.entity.Vendor;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowStep;
@@ -4170,8 +4166,7 @@ public final class GraphQlQueries
     @GraphQLField
     @GraphQLName("userSession")
     public static UserSessionObject userSession(final DataFetchingEnvironment env) {
-        GraphQlContext context = env.getContext();
-        UserSession userSession = context.getUserSession();
+        var userSession = getUserSession(env);
         
         return userSession == null ? null : new UserSessionObject(userSession);
     }
@@ -4179,9 +4174,8 @@ public final class GraphQlQueries
     @GraphQLField
     @GraphQLName("userVisit")
     public static UserVisitObject userVisit(final DataFetchingEnvironment env) {
-        GraphQlContext context = env.getContext();
-        UserVisit userVisit = context.getUserVisit();
-        
+        var userVisit = getUserVisit(env);
+
         return userVisit == null ? null : new UserVisitObject(userVisit);
     }
     

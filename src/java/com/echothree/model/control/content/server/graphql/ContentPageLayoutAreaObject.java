@@ -18,15 +18,14 @@ package com.echothree.model.control.content.server.graphql;
 
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.content.server.entity.ContentPageLayoutArea;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.schema.DataFetchingEnvironment;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("content page layout area")
 @GraphQLName("ContentPageLayoutArea")
@@ -75,9 +74,8 @@ public class ContentPageLayoutAreaObject
     public String getDescription(final DataFetchingEnvironment env) {
         var contentControl = Session.getModelController(ContentControl.class);
         var userControl = Session.getModelController(UserControl.class);
-        GraphQlContext context = env.getContext();
-        
-        return contentControl.getBestContentPageLayoutAreaDescription(contentPageLayoutArea, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+
+        return contentControl.getBestContentPageLayoutAreaDescription(contentPageLayoutArea, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
     
 }
