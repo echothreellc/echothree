@@ -19,7 +19,7 @@ package com.echothree.control.user.graphql.server.command;
 import com.echothree.control.user.graphql.common.form.ExecuteGraphQlForm;
 import com.echothree.control.user.graphql.common.result.ExecuteGraphQlResult;
 import com.echothree.control.user.graphql.common.result.GraphQlResultFactory;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
+import com.echothree.model.control.graphql.server.util.GraphQlExecutionContext;
 import com.echothree.model.control.graphql.server.util.GraphQlSchemaUtils;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
@@ -144,7 +144,7 @@ public class ExecuteGraphQlCommand
             
             // query MUST be present.
             if(query != null) {
-                var context = new GraphQlContext(getUserVisitPK(), getUserVisit(), getUserSession(),
+                var context = new GraphQlExecutionContext(getUserVisitPK(), getUserVisit(), getUserSession(),
                         form.getRemoteInet4Address());
 
                 ExecutionInput.Builder builder = ExecutionInput.newExecutionInput()

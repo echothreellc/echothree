@@ -56,7 +56,7 @@ public final class GraphQlSecurityUtils {
         return foundCtor;
     }
 
-    public boolean hasAccess(final GraphQlContext context, final Class<? extends GraphQlSecurityCommand> command) {
+    public boolean hasAccess(final GraphQlExecutionContext context, final Class<? extends GraphQlSecurityCommand> command) {
         boolean hasAccess;
 
         try {

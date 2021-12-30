@@ -23,8 +23,8 @@ import graphql.schema.DataFetchingEnvironment;
 
 public abstract class BaseGraphQl {
 
-    protected static GraphQlContext getGraphQlContext(final DataFetchingEnvironment env) {
-        GraphQlContext context = env.getContext();
+    protected static GraphQlExecutionContext getGraphQlContext(final DataFetchingEnvironment env) {
+        GraphQlExecutionContext context = env.getContext();
 
         return context;
     }
