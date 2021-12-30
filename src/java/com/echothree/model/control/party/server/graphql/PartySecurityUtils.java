@@ -41,15 +41,15 @@ public final class PartySecurityUtils
     }
 
     public boolean getHasLanguageAccess(final DataFetchingEnvironment env) {
-        return getGraphQlContext(env).hasAccess(GetLanguageCommand.class);
+        return getGraphQlExecutionContext(env).hasAccess(GetLanguageCommand.class);
     }
 
     public boolean getHasDivisionsAccess(final DataFetchingEnvironment env) {
-        return getGraphQlContext(env).hasAccess(GetDivisionsCommand.class);
+        return getGraphQlExecutionContext(env).hasAccess(GetDivisionsCommand.class);
     }
 
     public boolean getHasDepartmentsAccess(final DataFetchingEnvironment env) {
-        return getGraphQlContext(env).hasAccess(GetDepartmentsCommand.class);
+        return getGraphQlExecutionContext(env).hasAccess(GetDepartmentsCommand.class);
     }
 
     public boolean getHasPartyAccess(final DataFetchingEnvironment env, final Party party) {
@@ -73,7 +73,7 @@ public final class PartySecurityUtils
                 throw new RuntimeException("Unhandled PartyType");
         }
 
-        return getGraphQlContext(env).hasAccess(command);
+        return getGraphQlExecutionContext(env).hasAccess(command);
     }
 
 }

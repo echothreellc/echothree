@@ -32,7 +32,7 @@ public final class AccountingSecurityUtils
     }
     
     public boolean getHasCurrencyAccess(final DataFetchingEnvironment env) {
-        return getGraphQlContext(env).hasAccess(GetCurrencyCommand.class);
+        return getGraphQlExecutionContext(env).hasAccess(GetCurrencyCommand.class);
     }
     
 }

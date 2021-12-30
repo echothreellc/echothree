@@ -25,7 +25,6 @@ import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureTypeDescription;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureTypeDetail;
-import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -62,7 +61,6 @@ public class UnitOfMeasureTypeObject
         if(unitOfMeasureTypeDescription == null) {
             var uomControl = Session.getModelController(UomControl.class);
             var userControl = Session.getModelController(UserControl.class);
-            var context = getGraphQlContext(env);
 
             unitOfMeasureTypeDescription = uomControl.getBestUnitOfMeasureTypeDescription(unitOfMeasureType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
         }

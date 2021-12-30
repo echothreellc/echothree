@@ -136,18 +136,6 @@ public class EntityAttributeObject
         return entityAttributeNumeric;
     }
     
-    private EntityAttributeListItem entityAttributeListItem; // Optional, use getEntityAttributeListItem()
-    
-    private EntityAttributeListItem getEntityAttributeListItem() {
-        if(entityAttributeListItem == null) {
-            var coreControl = Session.getModelController(CoreControl.class);
-    
-            entityAttributeListItem = coreControl.getEntityAttributeListItem(entityAttribute);
-        }
-        
-        return entityAttributeListItem;
-    }
-
     private Boolean hasEntityTypeAccess;
 
     private boolean getHasEntityTypeAccess(final DataFetchingEnvironment env) {
@@ -210,7 +198,7 @@ public class EntityAttributeObject
         return getHasEntityAttributeTypeAccess(env) ? new EntityAttributeTypeObject(getEntityAttributeDetail().getEntityAttributeType()) : null;
     }
     
-    protected boolean IsEntityAttributeTypeName(String entityAttributeTypeName) {
+    protected boolean isEntityAttributeTypeName(String entityAttributeTypeName) {
         return getEntityAttributeDetail().getEntityAttributeType().getEntityAttributeTypeName().equals(entityAttributeTypeName);
     }
     
@@ -388,8 +376,7 @@ public class EntityAttributeObject
     public String getDescription(final DataFetchingEnvironment env) {
         var coreControl = Session.getModelController(CoreControl.class);
         var userControl = Session.getModelController(UserControl.class);
-        var context = getGraphQlContext(env);
-        
+
         return coreControl.getBestEntityAttributeDescription(entityAttribute, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
     
@@ -398,7 +385,7 @@ public class EntityAttributeObject
     public EntityBooleanAttributeObject getEntityBooleanAttribute(final DataFetchingEnvironment env) {
         EntityBooleanAttributeObject entityBooleanAttributeObject = null;
         
-        if(IsEntityAttributeTypeName(EntityAttributeTypes.BOOLEAN.name()) && entityInstance != null) {
+        if(isEntityAttributeTypeName(EntityAttributeTypes.BOOLEAN.name()) && entityInstance != null) {
             var coreControl = Session.getModelController(CoreControl.class);
             EntityBooleanAttribute entityBooleanAttribute = coreControl.getEntityBooleanAttribute(entityAttribute, entityInstance);
             
@@ -413,7 +400,7 @@ public class EntityAttributeObject
     public EntityIntegerAttributeObject getEntityIntegerAttribute(final DataFetchingEnvironment env) {
         EntityIntegerAttributeObject entityIntegerAttributeObject = null;
         
-        if(IsEntityAttributeTypeName(EntityAttributeTypes.INTEGER.name()) && entityInstance != null) {
+        if(isEntityAttributeTypeName(EntityAttributeTypes.INTEGER.name()) && entityInstance != null) {
             var coreControl = Session.getModelController(CoreControl.class);
             EntityIntegerAttribute entityIntegerAttribute = coreControl.getEntityIntegerAttribute(entityAttribute, entityInstance);
             
@@ -428,7 +415,7 @@ public class EntityAttributeObject
     public EntityLongAttributeObject getEntityLongAttribute(final DataFetchingEnvironment env) {
         EntityLongAttributeObject entityLongAttributeObject = null;
         
-        if(IsEntityAttributeTypeName(EntityAttributeTypes.LONG.name()) && entityInstance != null) {
+        if(isEntityAttributeTypeName(EntityAttributeTypes.LONG.name()) && entityInstance != null) {
             var coreControl = Session.getModelController(CoreControl.class);
             EntityLongAttribute entityLongAttribute = coreControl.getEntityLongAttribute(entityAttribute, entityInstance);
             
@@ -443,7 +430,7 @@ public class EntityAttributeObject
     public EntityStringAttributeObject getEntityStringAttribute(final DataFetchingEnvironment env) {
         EntityStringAttributeObject entityStringAttributeObject = null;
         
-        if(IsEntityAttributeTypeName(EntityAttributeTypes.STRING.name()) && entityInstance != null) {
+        if(isEntityAttributeTypeName(EntityAttributeTypes.STRING.name()) && entityInstance != null) {
             var coreControl = Session.getModelController(CoreControl.class);
             var userControl = Session.getModelController(UserControl.class);
             EntityStringAttribute entityStringAttribute = coreControl.getBestEntityStringAttribute(entityAttribute, entityInstance, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
@@ -459,8 +446,8 @@ public class EntityAttributeObject
     public Collection<EntityListItemObject> getEntityListItems(final DataFetchingEnvironment env) {
         Collection<EntityListItemObject> entityListItemObjects = null;
         
-        if(IsEntityAttributeTypeName(EntityAttributeTypes.LISTITEM.name())
-                || IsEntityAttributeTypeName(EntityAttributeTypes.MULTIPLELISTITEM.name())) {
+        if(isEntityAttributeTypeName(EntityAttributeTypes.LISTITEM.name())
+                || isEntityAttributeTypeName(EntityAttributeTypes.MULTIPLELISTITEM.name())) {
             var coreControl = Session.getModelController(CoreControl.class);
             List<EntityListItem> entityListItems = coreControl.getEntityListItems(entityAttribute);
             
@@ -479,7 +466,7 @@ public class EntityAttributeObject
     public EntityListItemAttributeObject getEntityListItemAttribute(final DataFetchingEnvironment env) {
         EntityListItemAttributeObject entityListItemAttributeObject = null;
         
-        if(IsEntityAttributeTypeName(EntityAttributeTypes.LISTITEM.name()) && entityInstance != null) {
+        if(isEntityAttributeTypeName(EntityAttributeTypes.LISTITEM.name()) && entityInstance != null) {
             var coreControl = Session.getModelController(CoreControl.class);
             EntityListItemAttribute entityListItemAttribute = coreControl.getEntityListItemAttribute(entityAttribute, entityInstance);
             
@@ -494,7 +481,7 @@ public class EntityAttributeObject
     public Collection<EntityMultipleListItemAttributeObject> getEntityMultipleListItemAttributes(final DataFetchingEnvironment env) {
         Collection<EntityMultipleListItemAttributeObject> entityMultipleListItemAttributeObjects = null;
         
-        if(IsEntityAttributeTypeName(EntityAttributeTypes.MULTIPLELISTITEM.name()) && entityInstance != null) {
+        if(isEntityAttributeTypeName(EntityAttributeTypes.MULTIPLELISTITEM.name()) && entityInstance != null) {
             var coreControl = Session.getModelController(CoreControl.class);
             List<EntityMultipleListItemAttribute> entityMultipleListItemAttributes = coreControl.getEntityMultipleListItemAttributes(entityAttribute, entityInstance);
             

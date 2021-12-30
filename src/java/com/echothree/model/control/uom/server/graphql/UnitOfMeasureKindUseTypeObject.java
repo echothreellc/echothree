@@ -100,8 +100,7 @@ public class UnitOfMeasureKindUseTypeObject
     public String getDescription(final DataFetchingEnvironment env) {
         var uomControl = Session.getModelController(UomControl.class);
         var userControl = Session.getModelController(UserControl.class);
-        var context = getGraphQlContext(env);
-        
+
         return uomControl.getBestUnitOfMeasureKindUseTypeDescription(unitOfMeasureKindUseType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
     

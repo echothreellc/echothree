@@ -33,11 +33,11 @@ public final class SecuritySecurityUtils
     }
 
     public boolean getHasSecurityRoleGroupsAccess(final DataFetchingEnvironment env) {
-        return getGraphQlContext(env).hasAccess(GetSecurityRoleGroupsCommand.class);
+        return getGraphQlExecutionContext(env).hasAccess(GetSecurityRoleGroupsCommand.class);
     }
 
     public boolean getHasSecurityRoleGroupAccess(final DataFetchingEnvironment env) {
-        return getGraphQlContext(env).hasAccess(GetSecurityRoleGroupCommand.class);
+        return getGraphQlExecutionContext(env).hasAccess(GetSecurityRoleGroupCommand.class);
     }
 
 }

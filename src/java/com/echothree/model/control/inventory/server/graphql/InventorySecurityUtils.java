@@ -32,7 +32,7 @@ public final class InventorySecurityUtils
     }
     
     public boolean getHasInventoryConditionAccess(final DataFetchingEnvironment env) {
-        return getGraphQlContext(env).hasAccess(GetInventoryConditionCommand.class);
+        return getGraphQlExecutionContext(env).hasAccess(GetInventoryConditionCommand.class);
     }
     
 }

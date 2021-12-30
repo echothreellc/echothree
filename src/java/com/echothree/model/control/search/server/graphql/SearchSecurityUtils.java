@@ -33,11 +33,11 @@ public final class SearchSecurityUtils
     }
 
     public boolean getHasSearchCheckSpellingActionTypesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlContext(env).hasAccess(GetSearchCheckSpellingActionTypesCommand.class);
+        return getGraphQlExecutionContext(env).hasAccess(GetSearchCheckSpellingActionTypesCommand.class);
     }
 
     public boolean getHasSearchCheckSpellingActionTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlContext(env).hasAccess(GetSearchCheckSpellingActionTypeCommand.class);
+        return getGraphQlExecutionContext(env).hasAccess(GetSearchCheckSpellingActionTypeCommand.class);
     }
 
 }

@@ -32,7 +32,7 @@ public final class UomSecurityUtils
     }
     
     public boolean getHasUnitOfMeasureTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlContext(env).hasAccess(GetUnitOfMeasureTypeCommand.class);
+        return getGraphQlExecutionContext(env).hasAccess(GetUnitOfMeasureTypeCommand.class);
     }
     
 }

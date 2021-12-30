@@ -33,11 +33,11 @@ public final class CoreSecurityUtils
     }
 
     public boolean getHasEntityInstanceAccess(final DataFetchingEnvironment env) {
-        return getGraphQlContext(env).hasAccess(GetEntityInstanceCommand.class);
+        return getGraphQlExecutionContext(env).hasAccess(GetEntityInstanceCommand.class);
     }
 
     public boolean getHasMimeTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlContext(env).hasAccess(GetMimeTypeCommand.class);
+        return getGraphQlExecutionContext(env).hasAccess(GetMimeTypeCommand.class);
     }
 
 }

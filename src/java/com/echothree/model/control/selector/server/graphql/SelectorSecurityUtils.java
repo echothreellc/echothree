@@ -36,23 +36,23 @@ public final class SelectorSecurityUtils
     }
 
     public boolean getHasSelectorKindAccess(final DataFetchingEnvironment env) {
-        return getGraphQlContext(env).hasAccess(GetSelectorKindCommand.class);
+        return getGraphQlExecutionContext(env).hasAccess(GetSelectorKindCommand.class);
     }
 
     public boolean getHasSelectorTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlContext(env).hasAccess(GetSelectorTypeCommand.class);
+        return getGraphQlExecutionContext(env).hasAccess(GetSelectorTypeCommand.class);
     }
 
     public boolean getHasSelectorTypesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlContext(env).hasAccess(GetSelectorTypesCommand.class);
+        return getGraphQlExecutionContext(env).hasAccess(GetSelectorTypesCommand.class);
     }
 
     public boolean getHasSelectorAccess(final DataFetchingEnvironment env) {
-        return getGraphQlContext(env).hasAccess(GetSelectorCommand.class);
+        return getGraphQlExecutionContext(env).hasAccess(GetSelectorCommand.class);
     }
 
     public boolean getHasSelectorsAccess(final DataFetchingEnvironment env) {
-        return getGraphQlContext(env).hasAccess(GetSelectorsCommand.class);
+        return getGraphQlExecutionContext(env).hasAccess(GetSelectorsCommand.class);
     }
 
 }

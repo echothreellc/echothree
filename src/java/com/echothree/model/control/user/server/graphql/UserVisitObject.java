@@ -32,7 +32,6 @@ import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.string.DateUtils;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -180,8 +179,6 @@ public class UserVisitObject
     @GraphQLDescription("last command time")
     @GraphQLNonNull
     public String getLastCommandTime(final DataFetchingEnvironment env) {
-        var context = getGraphQlContext(env);
-
         return DateUtils.getInstance().formatTypicalDateTime(getUserVisit(env), userVisit.getLastCommandTime());
     }
     

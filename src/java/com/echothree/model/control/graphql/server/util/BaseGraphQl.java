@@ -23,26 +23,26 @@ import graphql.schema.DataFetchingEnvironment;
 
 public abstract class BaseGraphQl {
 
-    protected static GraphQlExecutionContext getGraphQlContext(final DataFetchingEnvironment env) {
-        GraphQlExecutionContext context = env.getContext();
+    public static final String GRAPHQL_EXECUTION_CONTEXT = "com.echothree.model.control.graphql.server.util.GraphQlExecutionContext";
 
-        return context;
+    protected static GraphQlExecutionContext getGraphQlExecutionContext(final DataFetchingEnvironment env) {
+        return env.getGraphQlContext().get(GRAPHQL_EXECUTION_CONTEXT);
     }
 
     protected static UserVisitPK getUserVisitPK(final DataFetchingEnvironment env) {
-        return getGraphQlContext(env).getUserVisitPK();
+        return getGraphQlExecutionContext(env).getUserVisitPK();
     }
 
     protected static UserVisit getUserVisit(final DataFetchingEnvironment env) {
-        return getGraphQlContext(env).getUserVisit();
+        return getGraphQlExecutionContext(env).getUserVisit();
     }
 
     protected static UserSession getUserSession(final DataFetchingEnvironment env) {
-        return getGraphQlContext(env).getUserSession();
+        return getGraphQlExecutionContext(env).getUserSession();
     }
 
     protected static String getRemoteInet4Address(final DataFetchingEnvironment env) {
-        return getGraphQlContext(env).getRemoteInet4Address();
+        return getGraphQlExecutionContext(env).getRemoteInet4Address();
     }
 
 }

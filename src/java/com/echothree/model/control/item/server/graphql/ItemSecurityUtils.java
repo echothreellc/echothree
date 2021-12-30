@@ -34,15 +34,15 @@ public final class ItemSecurityUtils
     }
 
     public boolean getHasItemAccess(final DataFetchingEnvironment env) {
-        return getGraphQlContext(env).hasAccess(GetItemCommand.class);
+        return getGraphQlExecutionContext(env).hasAccess(GetItemCommand.class);
     }
 
     public boolean getHasItemsAccess(final DataFetchingEnvironment env) {
-        return getGraphQlContext(env).hasAccess(GetItemsCommand.class);
+        return getGraphQlExecutionContext(env).hasAccess(GetItemsCommand.class);
     }
 
     public boolean getHasItemCategoryAccess(final DataFetchingEnvironment env) {
-        return getGraphQlContext(env).hasAccess(GetItemCategoryCommand.class);
+        return getGraphQlExecutionContext(env).hasAccess(GetItemCategoryCommand.class);
     }
     
 }

@@ -26,7 +26,6 @@ import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindDetail;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUse;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
-import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -121,8 +120,7 @@ public class UnitOfMeasureKindObject
     public String getDescription(final DataFetchingEnvironment env) {
         var uomControl = Session.getModelController(UomControl.class);
         var userControl = Session.getModelController(UserControl.class);
-        var context = getGraphQlContext(env);
-        
+
         return uomControl.getBestUnitOfMeasureKindDescription(unitOfMeasureKind, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
     

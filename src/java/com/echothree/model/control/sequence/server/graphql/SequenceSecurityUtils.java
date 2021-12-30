@@ -35,19 +35,19 @@ public final class SequenceSecurityUtils
     }
 
     public boolean getHasSequenceTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlContext(env).hasAccess(GetSequenceTypeCommand.class);
+        return getGraphQlExecutionContext(env).hasAccess(GetSequenceTypeCommand.class);
     }
 
     public boolean getHasSequenceAccess(final DataFetchingEnvironment env) {
-        return getGraphQlContext(env).hasAccess(GetSequenceCommand.class);
+        return getGraphQlExecutionContext(env).hasAccess(GetSequenceCommand.class);
     }
 
     public boolean getHasSequenceChecksumTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlContext(env).hasAccess(GetSequenceChecksumTypeCommand.class);
+        return getGraphQlExecutionContext(env).hasAccess(GetSequenceChecksumTypeCommand.class);
     }
 
     public boolean getHasSequenceEncoderTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlContext(env).hasAccess(GetSequenceEncoderTypeCommand.class);
+        return getGraphQlExecutionContext(env).hasAccess(GetSequenceEncoderTypeCommand.class);
     }
 
 }
