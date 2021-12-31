@@ -16,10 +16,15 @@
 
 package com.echothree.model.control.party.server.graphql;
 
+import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.graphql.ItemObject;
 import com.echothree.model.control.item.server.graphql.ItemSecurityUtils;
 import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.data.item.common.ItemConstants;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyCompany;
 import com.echothree.util.server.persistence.Session;
@@ -27,6 +32,7 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
 import java.util.List;
@@ -107,24 +113,18 @@ public class CompanyObject
 
     @GraphQLField
     @GraphQLDescription("items")
-    public List<ItemObject> getItems(final DataFetchingEnvironment env) {
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<ItemObject> getItems(final DataFetchingEnvironment env) {
         if(ItemSecurityUtils.getInstance().getHasItemsAccess(env)) {
             var itemControl = Session.getModelController(ItemControl.class);
-            var entities = itemControl.getItemsByCompanyParty(party);
+            var totalCount = itemControl.countItemsByCompanyParty(party);
 
-            return entities.stream().map(ItemObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
-        } else {
-            return null;
-        }
-    }
+            try(var objectLimiter = new ObjectLimiter(env, ItemConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = itemControl.getItemsByCompanyParty(party);
+                var items = entities.stream().map(ItemObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-    @GraphQLField
-    @GraphQLDescription("item count")
-    public Long getItemCount(final DataFetchingEnvironment env) {
-        if(ItemSecurityUtils.getInstance().getHasItemsAccess(env)) {
-            var itemControl = Session.getModelController(ItemControl.class);
-
-            return itemControl.countItemsByCompanyParty(party);
+                return new CountedObjects<>(objectLimiter, items);
+            }
         } else {
             return null;
         }
