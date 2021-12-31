@@ -74,11 +74,6 @@ public class ObjectLimiter
         // 4.4 Pagination algorithm
         if(first != null || afterEdge != null || last != null || beforeEdge != null) {
             limits = session.getLimits();
-            if(limits == null) {
-                limits = new HashMap<>();
-                session.setLimits(limits);
-            }
-
             savedLimit = limits.get(entityName);
 
             // If after is set: && If afterEdge exists:
@@ -123,7 +118,7 @@ public class ObjectLimiter
 
     @Override
     public void close() {
-        if(savedLimit != null) {
+        if(limits != null) {
             // Restore previous Limit;
             limits.put(entityName, savedLimit);
         }

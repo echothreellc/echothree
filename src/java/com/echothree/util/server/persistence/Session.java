@@ -36,7 +36,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -69,7 +68,6 @@ public class Session {
 
     private final Map<EntityInstancePK, Integer> eventTimeSequences = new HashMap<>();
 
-    private Map<Class<? extends BaseFactory<? extends BasePK, ? extends BaseEntity>>, String> limitCache;
     private Map<String, PreparedStatement> preparedStatementCache;
     
     private MimeType preferredClobMimeType;
@@ -162,11 +160,11 @@ public class Session {
     
     private String getStringFromBaseFactory(final Class<? extends BaseFactory<? extends BasePK, ? extends BaseEntity>> entityFactory,
             final Map<Class<? extends BaseFactory<? extends BasePK, ? extends BaseEntity>>, String> cache, final String methodName) {
-        String result = cache.get(entityFactory);
+        var result = cache.get(entityFactory);
         
         if(result == null) {
             try {
-                Object entityInstance = entityFactory.getDeclaredMethod(GET_INSTANCE).invoke(entityFactory);
+                var entityInstance = entityFactory.getDeclaredMethod(GET_INSTANCE).invoke(entityFactory);
 
                 if(entityInstance != null) {
                     result = (String)entityFactory.getDeclaredMethod(methodName).invoke(entityInstance);
@@ -180,18 +178,22 @@ public class Session {
         
         return result;
     }
-    
+
+    public boolean hasLimits() {
+        return limits != null;
+    }
+
     public boolean hasLimit(final String entityName) {
-        return limits != null && limits.get(entityName) != null;
+        return hasLimits() && limits.get(entityName) != null;
     }
     
     public boolean hasLimit(final Class<? extends BaseFactory<? extends BasePK, ? extends BaseEntity>> entityFactory) {
-        return limits != null && limits.get(getStringFromBaseFactory(entityFactory, entityNameCache, GET_ENTITY_TYPE_NAME)) != null;
+        return hasLimits() && limits.get(getStringFromBaseFactory(entityFactory, entityNameCache, GET_ENTITY_TYPE_NAME)) != null;
     }
     
     public void copyLimit(final String sourceEntityName, final String destinationEntityName) {
-        if(limits != null) {
-            Limit limit = limits.get(sourceEntityName);
+        if(hasLimits()) {
+            var limit = limits.get(sourceEntityName);
             
             if(limit != null) {
                 limits.put(destinationEntityName, limit);
@@ -201,56 +203,30 @@ public class Session {
     
     private String getLimit(final Class<? extends BaseFactory<? extends BasePK, ? extends BaseEntity>> entityFactory) {
         String result = null;
-        
-        if(limitCache == null) {
-            if(PersistenceDebugFlags.LogLimits) {
-                getLog().info("limitCache initialized");
-            }
 
-            limitCache = new HashMap<>();
-        }
-        
-        if(limitCache.containsKey(entityFactory)) {
-            if(PersistenceDebugFlags.LogLimits) {
-                getLog().info("cached limit found");
-            }
-            
-            result = limitCache.get(entityFactory);
-        } else {
-            if(PersistenceDebugFlags.LogLimits) {
-                getLog().info("cached limit not found");
-            }
-            
-            if(limits != null) {
-                Limit limit = limits.get(getStringFromBaseFactory(entityFactory, entityNameCache, GET_ENTITY_TYPE_NAME));
-                
-                if(limit != null) {
-                    String rawCount = limit.getCount();
-                    
-                    if(rawCount != null) {
-                        Long count = Long.valueOf(rawCount);
-                        StringBuilder limitBuilder = new StringBuilder(" LIMIT ").append(count);
-                        String rawOffset = limit.getOffset();
-                        
-                        if(rawOffset != null) {
-                            Long offset = Long.valueOf(rawOffset);
-                            
-                            limitBuilder.append(" OFFSET ").append(offset);
-                        }
-                        
-                        result = limitBuilder.append(' ').toString();
+        if(hasLimits()) {
+            var limit = limits.get(getStringFromBaseFactory(entityFactory, entityNameCache, GET_ENTITY_TYPE_NAME));
+
+            if(limit != null) {
+                var rawCount = limit.getCount();
+
+                if(rawCount != null) {
+                    var count = Long.valueOf(rawCount);
+                    var limitBuilder = new StringBuilder(" LIMIT ").append(count);
+                    var rawOffset = limit.getOffset();
+
+                    if(rawOffset != null) {
+                        var offset = Long.valueOf(rawOffset);
+
+                        limitBuilder.append(" OFFSET ").append(offset);
                     }
+
+                    result = limitBuilder.append(' ').toString();
                 }
             }
-            
-            if(result == null) {
-                result = "";
-            }
-            
-            limitCache.put(entityFactory, result);
         }
-        
-        return result;
+
+        return result == null ? "" : result;
     }
 
     /**
@@ -263,43 +239,47 @@ public class Session {
     public PreparedStatement prepareStatement(final Class<? extends BaseFactory<? extends BasePK, ? extends BaseEntity>> entityFactory,
             final String sql) {
         PreparedStatement preparedStatement = null;
-        
-        if(preparedStatementCache == null) {
-            preparedStatementCache = new HashMap<>();
-        } else {
-            preparedStatement = preparedStatementCache.get(sql);
 
-            if(preparedStatement != null) {
+        if(sql != null) {
+            // Perform replacements on specific patterns that may be in the SQL...
+            var replacedSql = sql;
+            if(entityFactory != null) {
+                // _LIMIT_ expands to any limit passed in by the client
+                var matcher = LIMIT_PATTERN.matcher(replacedSql);
+                replacedSql = matcher.replaceAll(getLimit(entityFactory));
+
+                // _ALL_ expands to all columns in table
+                matcher = ALL_FIELDS_PATTERN.matcher(replacedSql);
+                replacedSql = matcher.replaceAll(getStringFromBaseFactory(entityFactory, allColumnsCache, GET_ALL_COLUMNS));
+
+                // _PK_ expands to PK column in table
+                matcher = PK_FIELD_PATTERN.matcher(replacedSql);
+                replacedSql = matcher.replaceAll(getStringFromBaseFactory(entityFactory, pkColumnCache, GET_PK_COLUMN));
+            }
+
+            // Attempt to get a PreparedStatement from preparedStatementCache...
+            if(preparedStatementCache == null) {
+                preparedStatementCache = new HashMap<>();
+            } else {
+                preparedStatement = preparedStatementCache.get(replacedSql);
+            }
+
+            if(preparedStatement == null) {
+                // If it hasn't been cached before, go ahead and cache it for future use...
                 try {
-                    preparedStatement.clearParameters();
-                } catch (SQLException se) {
+                    preparedStatement = connection.prepareStatement(replacedSql);
+                    preparedStatementCache.put(sql, preparedStatement);
+                } catch(SQLException se) {
                     throw new PersistenceDatabaseException(se);
                 }
-            }
-        }
-        
-        if((preparedStatement == null) && (sql != null)) {
-            try {
-                String replacedSql = sql;
-
-                if(entityFactory != null) {
-                    // _LIMIT_ expands to any limit passed in by the client
-                    Matcher matcher = LIMIT_PATTERN.matcher(replacedSql);
-                    replacedSql = matcher.replaceAll(getLimit(entityFactory));
-                    
-                    // _ALL_ expands to all columns in table
-                    matcher = ALL_FIELDS_PATTERN.matcher(replacedSql);
-                    replacedSql = matcher.replaceAll(getStringFromBaseFactory(entityFactory, allColumnsCache, GET_ALL_COLUMNS));
-                    
-                    // _PK_ expands to PK column in table
-                    matcher = PK_FIELD_PATTERN.matcher(replacedSql);
-                    replacedSql = matcher.replaceAll(getStringFromBaseFactory(entityFactory, pkColumnCache, GET_PK_COLUMN));
+            } else {
+                // Cached PreparedStatement was found, call clearParameters() to clean out any previous usage of it.
+                // Clearing of batch parameters happens after executing of each batch.
+                try {
+                    preparedStatement.clearParameters();
+                } catch(SQLException se) {
+                    throw new PersistenceDatabaseException(se);
                 }
-                
-                preparedStatement = connection.prepareStatement(replacedSql);
-                preparedStatementCache.put(sql, preparedStatement);
-            } catch (SQLException se) {
-                throw new PersistenceDatabaseException(se);
             }
         }
 
@@ -531,6 +511,10 @@ public class Session {
     }
     
     public Map<String, Limit> getLimits() {
+        if(limits == null) {
+            limits = new HashMap<>();
+        }
+
         return limits;
     }
     
