@@ -131,16 +131,4 @@ public class ItemCategoryObject
         }
     }
 
-    @GraphQLField
-    @GraphQLDescription("item count")
-    public Long getItemCount(final DataFetchingEnvironment env) {
-        if(ItemSecurityUtils.getInstance().getHasItemsAccess(env)) {
-            var itemControl = Session.getModelController(ItemControl.class);
-
-            return itemControl.countItemsByItemCategory(itemCategory);
-        } else {
-            return null;
-        }
-    }
-
 }
