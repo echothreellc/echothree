@@ -45,11 +45,11 @@
     </module>
     
     <module>
-        <ejb>lucene-analyzers-common.jar</ejb>
+        <ejb>lucene-analysis-common.jar</ejb>
     </module>
     
     <module>
-        <ejb>lucene-analyzers-kuromoji.jar</ejb>
+        <ejb>lucene-analysis-kuromoji.jar</ejb>
     </module>
     
     <module>

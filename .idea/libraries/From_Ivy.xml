@@ -126,8 +126,6 @@
       <root url="jar://$PROJECT_DIR$/build/lib/jboss-transaction-api_1.2_spec.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/jgroups.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/log4j.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib/lucene-analyzers-common.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib/lucene-analyzers-kuromoji.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/messages.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/mysql-connector-java.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/oro.jar!/" />
@@ -157,6 +155,8 @@
       <root url="jar://$PROJECT_DIR$/build/lib/protostream-types.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/r2dbc-spi.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/wildfly-common.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/lucene-analysis-common.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/lucene-analysis-kuromoji.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/antlr4-runtime-javadoc.jar!/" />
@@ -200,8 +200,6 @@
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/juel-api-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/juel-impl-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/junit-javadoc.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/lucene-analyzers-common-javadoc.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/lucene-analyzers-kuromoji-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/lucene-core-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/lucene-queryparser-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/lucene-suggest-javadoc.jar!/" />
@@ -231,6 +229,8 @@
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/graphql-java-extended-scalars-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/jaxb-api-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/r2dbc-spi-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/lucene-analysis-common-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/lucene-analysis-kuromoji-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
       <root url="jar://$PROJECT_DIR$/build/lib/jFormatString.jar!/" />
@@ -299,8 +299,6 @@
       <root url="jar://$PROJECT_DIR$/build/lib-sources/httpmime-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/javax.mail-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/junit-sources.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib-sources/lucene-analyzers-common-sources.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib-sources/lucene-analyzers-kuromoji-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/lucene-core-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/lucene-queryparser-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/mysql-connector-java-sources.jar!/" />
@@ -323,6 +321,8 @@
       <root url="jar://$PROJECT_DIR$/build/lib-sources/jooq-codegen-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/jooq-meta-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/r2dbc-spi-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-sources/lucene-analysis-common-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-sources/lucene-analysis-kuromoji-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
