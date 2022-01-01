@@ -79,8 +79,8 @@
         <dependency org="org.jooq" name="jooq" rev="3.15.5" conf="sources->sources" />
         <dependency org="org.osgi" name="org.osgi.service.component.annotations" rev="1.4.0" conf="sources->sources" />
         <dependency org="org.reactivestreams" name="reactive-streams" rev="1.0.3" conf="sources->sources" />
-        <dependency org="org.slf4j" name="slf4j-api" rev="1.7.30" conf="sources->sources" />
-        <dependency org="org.slf4j" name="slf4j-log4j12" rev="1.7.30" conf="sources->sources" />
+        <dependency org="org.slf4j" name="slf4j-api" rev="1.7.32" conf="sources->sources" />
+        <dependency org="org.slf4j" name="slf4j-log4j12" rev="1.7.32" conf="sources->sources" />
         <dependency org="org.springframework" name="spring-beans" rev="5.2.9.RELEASE" conf="sources->sources" />
         <dependency org="org.springframework" name="spring-context" rev="5.2.9.RELEASE" conf="sources->sources" />
         <dependency org="org.springframework" name="spring-core" rev="5.2.9.RELEASE" conf="sources->sources" />
@@ -164,8 +164,8 @@
         <dependency org="org.jooq" name="jooq" rev="3.15.5" conf="javadoc->javadoc" />
         <dependency org="org.osgi" name="org.osgi.service.component.annotations" rev="1.4.0" conf="javadoc->javadoc" />
         <dependency org="org.reactivestreams" name="reactive-streams" rev="1.0.3" conf="javadoc->javadoc" />
-        <dependency org="org.slf4j" name="slf4j-api" rev="1.7.30" conf="javadoc->javadoc" />
-        <dependency org="org.slf4j" name="slf4j-log4j12" rev="1.7.30" conf="javadoc->javadoc" />
+        <dependency org="org.slf4j" name="slf4j-api" rev="1.7.32" conf="javadoc->javadoc" />
+        <dependency org="org.slf4j" name="slf4j-log4j12" rev="1.7.32" conf="javadoc->javadoc" />
         <dependency org="org.springframework" name="spring-beans" rev="5.2.9.RELEASE" conf="javadoc->javadoc" />
         <dependency org="org.springframework" name="spring-context" rev="5.2.9.RELEASE" conf="javadoc->javadoc" />
         <dependency org="org.springframework" name="spring-core" rev="5.2.9.RELEASE" conf="javadoc->javadoc" />
@@ -258,8 +258,8 @@
         <dependency org="org.jooq" name="jooq" rev="3.15.5" conf="binaries->default" />
         <dependency org="org.osgi" name="org.osgi.service.component.annotations" rev="1.4.0" conf="binaries->default" />
         <dependency org="org.reactivestreams" name="reactive-streams" rev="1.0.3" conf="binaries->default" />
-        <dependency org="org.slf4j" name="slf4j-api" rev="1.7.30" conf="binaries->default" />
-        <dependency org="org.slf4j" name="slf4j-log4j12" rev="1.7.30" conf="binaries->default" />
+        <dependency org="org.slf4j" name="slf4j-api" rev="1.7.32" conf="binaries->default" />
+        <dependency org="org.slf4j" name="slf4j-log4j12" rev="1.7.32" conf="binaries->default" />
         <dependency org="org.springframework" name="spring-beans" rev="5.2.9.RELEASE" conf="binaries->default" />
         <dependency org="org.springframework" name="spring-context" rev="5.2.9.RELEASE" conf="binaries->default" />
         <dependency org="org.springframework" name="spring-core" rev="5.2.9.RELEASE" conf="binaries->default" />
