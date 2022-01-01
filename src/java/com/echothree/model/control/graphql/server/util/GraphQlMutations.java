@@ -3743,14 +3743,13 @@ public class GraphQlMutations
         var commandResultObject = new CommandResultObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = AuthenticationUtil.getHome().getCustomerLoginForm();
 
             commandForm.setUsername(username);
             commandForm.setPassword(password);
-            commandForm.setRemoteInet4Address(context.getRemoteInet4Address());
+            commandForm.setRemoteInet4Address(getRemoteInet4Address(env));
 
-            commandResultObject.setCommandResult(AuthenticationUtil.getHome().customerLogin(context.getUserVisitPK(), commandForm));
+            commandResultObject.setCommandResult(AuthenticationUtil.getHome().customerLogin(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -3865,15 +3864,14 @@ public class GraphQlMutations
         var commandResultObject = new CommandResultObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = AuthenticationUtil.getHome().getEmployeeLoginForm();
 
             commandForm.setUsername(username);
             commandForm.setPassword(password);
-            commandForm.setRemoteInet4Address(context.getRemoteInet4Address());
+            commandForm.setRemoteInet4Address(getRemoteInet4Address(env));
             commandForm.setCompanyName(companyName);
 
-            commandResultObject.setCommandResult(AuthenticationUtil.getHome().employeeLogin(context.getUserVisitPK(), commandForm));
+            commandResultObject.setCommandResult(AuthenticationUtil.getHome().employeeLogin(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -3889,14 +3887,13 @@ public class GraphQlMutations
         var commandResultObject = new CommandResultObject();
 
         try {
-            GraphQlContext context = env.getContext();
             var commandForm = AuthenticationUtil.getHome().getVendorLoginForm();
 
             commandForm.setUsername(username);
             commandForm.setPassword(password);
-            commandForm.setRemoteInet4Address(context.getRemoteInet4Address());
+            commandForm.setRemoteInet4Address(getRemoteInet4Address(env));
 
-            commandResultObject.setCommandResult(AuthenticationUtil.getHome().vendorLogin(context.getUserVisitPK(), commandForm));
+            commandResultObject.setCommandResult(AuthenticationUtil.getHome().vendorLogin(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }

@@ -17,8 +17,7 @@
 package com.echothree.model.control.filter.server.graphql;
 
 import com.echothree.model.control.filter.server.control.FilterControl;
-import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentSource;
 import com.echothree.util.server.persistence.Session;
@@ -30,7 +29,8 @@ import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("filter adjustment source object")
 @GraphQLName("FilterAdjustmentSource")
-public class FilterAdjustmentSourceObject {
+public class FilterAdjustmentSourceObject
+        extends BaseGraphQl {
     
     private final FilterAdjustmentSource filterAdjustmentSource; // Always Present
     
@@ -72,9 +72,8 @@ public class FilterAdjustmentSourceObject {
     public String getDescription(final DataFetchingEnvironment env) {
         var filterControl = Session.getModelController(FilterControl.class);
         var userControl = Session.getModelController(UserControl.class);
-        GraphQlContext context = env.getContext();
-        
-        return filterControl.getBestFilterAdjustmentSourceDescription(filterAdjustmentSource, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+
+        return filterControl.getBestFilterAdjustmentSourceDescription(filterAdjustmentSource, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
     
 }

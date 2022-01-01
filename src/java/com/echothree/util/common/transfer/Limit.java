@@ -18,23 +18,24 @@ package com.echothree.util.common.transfer;
 
 import java.io.Serializable;
 
-public class Limit implements Serializable {
+public class Limit
+        implements Serializable {
     
     private String count;
     private String offset;
     
-    private void init(String count, String offset) {
+    private void init(final String count, final String offset) {
         this.count = count;
         this.offset = offset;
     }
     
     /** Creates a new instance of Limit */
-    public Limit(String count, String offset) {
+    public Limit(final String count, final String offset) {
         init(count, offset);
     }
     
     /** Creates a new instance of Limit */
-    public Limit(String count) {
+    public Limit(final String count) {
         init(count, null);
     }
     
@@ -42,7 +43,7 @@ public class Limit implements Serializable {
         return count;
     }
     
-    public void setCount(String count) {
+    public void setCount(final String count) {
         this.count = count;
     }
     
@@ -50,7 +51,7 @@ public class Limit implements Serializable {
         return offset;
     }
     
-    public void setOffset(String offset) {
+    public void setOffset(final String offset) {
         this.offset = offset;
     }
     

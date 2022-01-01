@@ -18,7 +18,7 @@ package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.control.user.core.server.command.GetMimeTypeCommand;
 import com.echothree.control.user.core.server.command.GetMimeTypeUsageTypeCommand;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.data.core.server.entity.MimeTypeUsage;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
 import graphql.annotations.annotationTypes.GraphQLDescription;
@@ -29,7 +29,8 @@ import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("mime type usage object")
 @GraphQLName("MimeTypeUsage")
-public class MimeTypeUsageObject {
+public class MimeTypeUsageObject
+        extends BaseGraphQl {
     
     private final MimeTypeUsage mimeTypeUsage; // Always Present
     
@@ -41,8 +42,7 @@ public class MimeTypeUsageObject {
 
     private boolean getHasMimeTypeAccess(final DataFetchingEnvironment env) {
         if(hasMimeTypeAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetMimeTypeCommand(context.getUserVisitPK(), null);
+            var baseSingleEntityCommand = new GetMimeTypeCommand(getUserVisitPK(env), null);
 
             baseSingleEntityCommand.security();
 
@@ -56,8 +56,7 @@ public class MimeTypeUsageObject {
 
     private boolean getHasMimeTypeUsageTypeAccess(final DataFetchingEnvironment env) {
         if(hasMimeTypeUsageTypeAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetMimeTypeUsageTypeCommand(context.getUserVisitPK(), null);
+            var baseSingleEntityCommand = new GetMimeTypeUsageTypeCommand(getUserVisitPK(env), null);
 
             baseSingleEntityCommand.security();
 

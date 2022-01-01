@@ -14,25 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.uom.server.graphql;
+package com.echothree.model.control.graphql.server.graphql.count;
 
-import com.echothree.control.user.uom.server.command.GetUnitOfMeasureTypeCommand;
-import com.echothree.model.control.graphql.server.util.BaseGraphQl;
-import graphql.schema.DataFetchingEnvironment;
+import graphql.annotations.connection.PaginatedData;
 
-public final class UomSecurityUtils
-        extends BaseGraphQl {
+public interface CountingPaginatedData<T>
+        extends PaginatedData<T>, CountingConnection<T> {
 
-    private static class UomSecurityUtilsHolder {
-        static UomSecurityUtils instance = new UomSecurityUtils();
-    }
-    
-    public static UomSecurityUtils getInstance() {
-        return UomSecurityUtilsHolder.instance;
-    }
-    
-    public boolean getHasUnitOfMeasureTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetUnitOfMeasureTypeCommand.class);
-    }
-    
+    // Nothing additional beyond PaginatedData<T>, CountingConnection<T>
+
 }

@@ -16,18 +16,19 @@
 
 package com.echothree.model.control.core.server.graphql;
 
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.data.core.server.entity.EntityTime;
 import com.echothree.util.server.string.DateUtils;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.schema.DataFetchingEnvironment;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("entity time object")
 @GraphQLName("EntityTime")
-public class EntityTimeObject {
+public class EntityTimeObject
+        extends BaseGraphQl {
     
     private final EntityTime entityTime; // Always Present
     
@@ -53,9 +54,7 @@ public class EntityTimeObject {
     @GraphQLDescription("created time")
     @GraphQLNonNull
     public String getCreatedTime(final DataFetchingEnvironment env) {
-        GraphQlContext context = env.getContext();
-
-        return DateUtils.getInstance().formatTypicalDateTime(context.getUserVisit(), entityTime.getCreatedTime());
+        return DateUtils.getInstance().formatTypicalDateTime(getUserVisit(env), entityTime.getCreatedTime());
     }
     
     @GraphQLField
@@ -67,10 +66,9 @@ public class EntityTimeObject {
     @GraphQLField
     @GraphQLDescription("modified time")
     public String getModifiedTime(final DataFetchingEnvironment env) {
-        GraphQlContext context = env.getContext();
         Long modifiedTime = entityTime.getModifiedTime();
         
-        return modifiedTime == null ? null : DateUtils.getInstance().formatTypicalDateTime(context.getUserVisit(), modifiedTime);
+        return modifiedTime == null ? null : DateUtils.getInstance().formatTypicalDateTime(getUserVisit(env), modifiedTime);
     }
     
     @GraphQLField
@@ -82,10 +80,9 @@ public class EntityTimeObject {
     @GraphQLField
     @GraphQLDescription("deleted time")
     public String getDeletedTime(final DataFetchingEnvironment env) {
-        GraphQlContext context = env.getContext();
         Long deletedTime = entityTime.getDeletedTime();
         
-        return deletedTime == null ? null : DateUtils.getInstance().formatTypicalDateTime(context.getUserVisit(), deletedTime);
+        return deletedTime == null ? null : DateUtils.getInstance().formatTypicalDateTime(getUserVisit(env), deletedTime);
     }
     
 }

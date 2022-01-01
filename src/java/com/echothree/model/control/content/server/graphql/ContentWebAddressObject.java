@@ -18,7 +18,6 @@ package com.echothree.model.control.content.server.graphql;
 
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.content.server.entity.ContentWebAddress;
 import com.echothree.model.data.content.server.entity.ContentWebAddressDetail;
@@ -26,8 +25,8 @@ import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.schema.DataFetchingEnvironment;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("content web address object")
 @GraphQLName("ContentWebAddress")
@@ -71,9 +70,8 @@ public class ContentWebAddressObject
     public String getDescription(final DataFetchingEnvironment env) {
         var contentControl = Session.getModelController(ContentControl.class);
         var userControl = Session.getModelController(UserControl.class);
-        GraphQlContext context = env.getContext();
-        
-        return contentControl.getBestContentWebAddressDescription(contentWebAddress, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+
+        return contentControl.getBestContentWebAddressDescription(contentWebAddress, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
     
 }

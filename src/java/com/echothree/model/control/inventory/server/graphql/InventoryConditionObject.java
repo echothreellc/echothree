@@ -16,9 +16,8 @@
 
 package com.echothree.model.control.inventory.server.graphql;
 
-import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
+import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.inventory.server.entity.InventoryConditionDetail;
@@ -26,8 +25,8 @@ import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.schema.DataFetchingEnvironment;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("inventory condition object")
 @GraphQLName("InventoryCondition")
@@ -79,9 +78,8 @@ public class InventoryConditionObject
     public String getDescription(final DataFetchingEnvironment env) {
         var inventoryControl = Session.getModelController(InventoryControl.class);
         var userControl = Session.getModelController(UserControl.class);
-        GraphQlContext context = env.getContext();
-        
-        return inventoryControl.getBestInventoryConditionDescription(inventoryCondition, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+
+        return inventoryControl.getBestInventoryConditionDescription(inventoryCondition, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
     
 }

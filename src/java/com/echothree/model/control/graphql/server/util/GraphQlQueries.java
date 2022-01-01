@@ -158,8 +158,6 @@ import com.echothree.control.user.queue.server.command.GetQueueTypeCommand;
 import com.echothree.control.user.queue.server.command.GetQueueTypesCommand;
 import com.echothree.control.user.search.common.SearchUtil;
 import com.echothree.control.user.search.common.result.CheckItemSpellingResult;
-import com.echothree.control.user.search.common.result.SearchCustomersResult;
-import com.echothree.control.user.search.server.command.CheckItemSpellingCommand;
 import com.echothree.control.user.search.server.command.GetCustomerResultsCommand;
 import com.echothree.control.user.search.server.command.GetEmployeeResultsCommand;
 import com.echothree.control.user.search.server.command.GetItemResultsCommand;
@@ -252,8 +250,13 @@ import com.echothree.model.control.filter.server.graphql.FilterKindObject;
 import com.echothree.model.control.filter.server.graphql.FilterObject;
 import com.echothree.model.control.filter.server.graphql.FilterStepObject;
 import com.echothree.model.control.filter.server.graphql.FilterTypeObject;
+import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.inventory.server.graphql.InventoryConditionObject;
 import com.echothree.model.control.inventory.server.graphql.LotObject;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.graphql.ItemCategoryObject;
 import com.echothree.model.control.item.server.graphql.ItemObject;
 import com.echothree.model.control.offer.server.graphql.OfferNameElementObject;
@@ -348,6 +351,7 @@ import com.echothree.model.data.filter.server.entity.FilterStep;
 import com.echothree.model.data.filter.server.entity.FilterType;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.inventory.server.entity.Lot;
+import com.echothree.model.data.item.common.ItemConstants;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemCategory;
 import com.echothree.model.data.offer.server.entity.Offer;
@@ -389,21 +393,22 @@ import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUseType;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.RecoveryQuestion;
 import com.echothree.model.data.user.server.entity.UserLogin;
-import com.echothree.model.data.user.server.entity.UserSession;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.vendor.server.entity.Vendor;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowStep;
 import com.echothree.model.data.workflow.server.entity.WorkflowStepType;
 import com.echothree.model.data.workflow.server.entity.WorkflowType;
+import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLID;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
 import java.util.Collection;
 import static java.util.Collections.emptyList;
+import java.util.stream.Collectors;
 import javax.naming.NamingException;
 
 @GraphQLName("query")
@@ -4170,8 +4175,7 @@ public final class GraphQlQueries
     @GraphQLField
     @GraphQLName("userSession")
     public static UserSessionObject userSession(final DataFetchingEnvironment env) {
-        GraphQlContext context = env.getContext();
-        UserSession userSession = context.getUserSession();
+        var userSession = getUserSession(env);
         
         return userSession == null ? null : new UserSessionObject(userSession);
     }
@@ -4179,9 +4183,8 @@ public final class GraphQlQueries
     @GraphQLField
     @GraphQLName("userVisit")
     public static UserVisitObject userVisit(final DataFetchingEnvironment env) {
-        GraphQlContext context = env.getContext();
-        UserVisit userVisit = context.getUserVisit();
-        
+        var userVisit = getUserVisit(env);
+
         return userVisit == null ? null : new UserVisitObject(userVisit);
     }
     
@@ -4716,29 +4719,31 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("items")
-    public static Collection<ItemObject> items(final DataFetchingEnvironment env) {
-        Collection<Item> items;
-        Collection<ItemObject> itemObjects;
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public static CountingPaginatedData<ItemObject> items(final DataFetchingEnvironment env) {
+        CountingPaginatedData<ItemObject> data;
 
         try {
-            var commandForm = ItemUtil.getHome().getGetItemsForm();
+            var itemControl = Session.getModelController(ItemControl.class);
+            var totalCount = itemControl.countItems();
 
-            items = new GetItemsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            try(var objectLimiter = new ObjectLimiter(env, ItemConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = ItemUtil.getHome().getGetItemsForm();
+                var entities = new GetItemsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+
+                if(entities == null) {
+                    data = null;
+                } else {
+                    var items = entities.stream().map(ItemObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, items);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(items == null) {
-            itemObjects = emptyList();
-        } else {
-            itemObjects = new ArrayList<>(items.size());
-
-            items.stream()
-                    .map(ItemObject::new)
-                    .forEachOrdered(itemObjects::add);
-        }
-
-        return itemObjects;
+        return data;
     }
 
     @GraphQLField

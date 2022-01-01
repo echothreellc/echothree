@@ -17,7 +17,6 @@
 package com.echothree.model.control.selector.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
@@ -81,9 +80,8 @@ public class SelectorKindObject
     public String getDescription(final DataFetchingEnvironment env) {
         var selectorControl = Session.getModelController(SelectorControl.class);
         var userControl = Session.getModelController(UserControl.class);
-        GraphQlContext context = env.getContext();
-        
-        return selectorControl.getBestSelectorKindDescription(selectorKind, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+
+        return selectorControl.getBestSelectorKindDescription(selectorKind, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
 
     @GraphQLField

@@ -18,7 +18,6 @@ package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.core.server.entity.AppearanceDetail;
@@ -143,9 +142,8 @@ public class AppearanceObject
     public String getDescription(final DataFetchingEnvironment env) {
         var coreControl = Session.getModelController(CoreControl.class);
         var userControl = Session.getModelController(UserControl.class);
-        GraphQlContext context = env.getContext();
-        
-        return coreControl.getBestAppearanceDescription(appearance, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+
+        return coreControl.getBestAppearanceDescription(appearance, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
     
 }

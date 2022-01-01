@@ -18,7 +18,6 @@ package com.echothree.model.control.party.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.model.data.party.server.entity.TimeZoneDetail;
@@ -26,8 +25,8 @@ import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.schema.DataFetchingEnvironment;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("time zone object")
 @GraphQLName("TimeZone")
@@ -86,9 +85,8 @@ public class TimeZoneObject
     public String getDescription(final DataFetchingEnvironment env) {
         var partyControl = Session.getModelController(PartyControl.class);
         var userControl = Session.getModelController(UserControl.class);
-        GraphQlContext context = env.getContext();
-        
-        return partyControl.getBestTimeZoneDescription(timeZone, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+
+        return partyControl.getBestTimeZoneDescription(timeZone, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
     
 }

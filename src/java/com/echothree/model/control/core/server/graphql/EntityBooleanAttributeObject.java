@@ -17,18 +17,19 @@
 package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.control.user.core.server.command.GetEntityAttributeCommand;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.data.core.server.entity.EntityBooleanAttribute;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.schema.DataFetchingEnvironment;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("entity boolean attribute object")
 @GraphQLName("EntityBooleanAttribute")
-public class EntityBooleanAttributeObject {
+public class EntityBooleanAttributeObject
+        extends BaseGraphQl {
     
     private final EntityBooleanAttribute entityBooleanAttribute; // Always Present
     
@@ -40,8 +41,7 @@ public class EntityBooleanAttributeObject {
     
     private boolean getHasEntityAttributeAccess(final DataFetchingEnvironment env) {
         if(hasEntityAttributeAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetEntityAttributeCommand(context.getUserVisitPK(), null);
+            var baseSingleEntityCommand = new GetEntityAttributeCommand(getUserVisitPK(env), null);
             
             baseSingleEntityCommand.security();
             

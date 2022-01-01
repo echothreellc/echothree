@@ -14,25 +14,24 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.accounting.server.graphql;
+package com.echothree.model.control.graphql.server.graphql.count;
 
-import com.echothree.control.user.accounting.server.command.GetCurrencyCommand;
-import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class AccountingSecurityUtils
-        extends BaseGraphQl {
+public class CountingDataConnectionFetcher<T extends BaseEntityInstanceObject>
+        implements CountingConnectionFetcher<T> {
 
-    private static class AccountingSecurityUtilsHolder {
-        static AccountingSecurityUtils instance = new AccountingSecurityUtils();
+    private final DataFetcher<CountingPaginatedData<T>> simplePaginatedDataDataFetcher;
+
+    public CountingDataConnectionFetcher(DataFetcher<CountingPaginatedData<T>> simplePaginatedDataDataFetcher) {
+        this.simplePaginatedDataDataFetcher = simplePaginatedDataDataFetcher;
     }
-    
-    public static AccountingSecurityUtils getInstance() {
-        return AccountingSecurityUtilsHolder.instance;
+
+    @Override
+    public CountingConnection<T> get(DataFetchingEnvironment environment) throws Exception {
+        return simplePaginatedDataDataFetcher.get(environment);
     }
-    
-    public boolean getHasCurrencyAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetCurrencyCommand.class);
-    }
-    
+
 }

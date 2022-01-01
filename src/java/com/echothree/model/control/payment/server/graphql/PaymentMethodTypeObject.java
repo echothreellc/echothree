@@ -17,7 +17,6 @@
 package com.echothree.model.control.payment.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.payment.server.control.PaymentMethodTypeControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.payment.server.entity.PaymentMethodType;
@@ -79,9 +78,8 @@ public class PaymentMethodTypeObject
     public String getDescription(final DataFetchingEnvironment env) {
         var paymentMethodTypeControl = Session.getModelController(PaymentMethodTypeControl.class);
         var userControl = Session.getModelController(UserControl.class);
-        GraphQlContext context = env.getContext();
-        
-        return paymentMethodTypeControl.getBestPaymentMethodTypeDescription(paymentMethodType, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+
+        return paymentMethodTypeControl.getBestPaymentMethodTypeDescription(paymentMethodType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
     
 }

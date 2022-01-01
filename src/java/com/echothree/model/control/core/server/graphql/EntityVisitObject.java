@@ -16,18 +16,19 @@
 
 package com.echothree.model.control.core.server.graphql;
 
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.data.core.server.entity.EntityVisit;
 import com.echothree.util.server.string.DateUtils;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.schema.DataFetchingEnvironment;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("entity visit object")
 @GraphQLName("EntityVisit")
-public class EntityVisitObject {
+public class EntityVisitObject
+        extends BaseGraphQl {
     
     private final EntityVisit entityVisit; // Always Present
     
@@ -60,9 +61,7 @@ public class EntityVisitObject {
     @GraphQLDescription("visited time")
     @GraphQLNonNull
     public String getVisitedTime(final DataFetchingEnvironment env) {
-        GraphQlContext context = env.getContext();
-
-        return DateUtils.getInstance().formatTypicalDateTime(context.getUserVisit(), entityVisit.getVisitedTime());
+        return DateUtils.getInstance().formatTypicalDateTime(getUserVisit(env), entityVisit.getVisitedTime());
     }
         
 }

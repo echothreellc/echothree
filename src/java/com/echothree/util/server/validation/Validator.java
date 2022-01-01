@@ -249,7 +249,7 @@ public class Validator {
         }
     }
     
-    public String validLong(String fieldValue) {
+    public static String validateLong(String fieldValue) {
         try {
             Long testLong = Long.valueOf(fieldValue);
             
@@ -265,12 +265,12 @@ public class Validator {
         return fieldValue;
     }
     
-    public String validateUnsignedLong(String unsignedLong) {
+    public static String validateUnsignedLong(String unsignedLong) {
         if(unsignedLong != null) {
             Matcher m = Patterns.UnsignedNumbers.matcher(unsignedLong);
 
             if(m.matches()) {
-                unsignedLong = validLong(unsignedLong);
+                unsignedLong = validateLong(unsignedLong);
             } else {
                 unsignedLong = null;
             }

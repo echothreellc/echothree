@@ -18,7 +18,6 @@ package com.echothree.model.control.uom.server.graphql;
 
 import com.echothree.control.user.uom.server.command.GetUnitOfMeasureKindUsesCommand;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUse;
@@ -28,10 +27,10 @@ import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
+import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
 import java.util.List;
-import graphql.annotations.annotationTypes.GraphQLNonNull;
 
 @GraphQLDescription("unit of measure kind use type object")
 @GraphQLName("UnitOfMeasureKindUseType")
@@ -50,8 +49,7 @@ public class UnitOfMeasureKindUseTypeObject
     
     private boolean getHasUnitOfMeasureKindUsesAccess(final DataFetchingEnvironment env) {
         if(hasUnitOfMeasureKindUsesAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseMultipleEntitiesCommand baseMultipleEntitiesCommand = new GetUnitOfMeasureKindUsesCommand(context.getUserVisitPK(), null);
+            BaseMultipleEntitiesCommand baseMultipleEntitiesCommand = new GetUnitOfMeasureKindUsesCommand(getUserVisitPK(env), null);
             
             baseMultipleEntitiesCommand.security();
             
@@ -102,9 +100,8 @@ public class UnitOfMeasureKindUseTypeObject
     public String getDescription(final DataFetchingEnvironment env) {
         var uomControl = Session.getModelController(UomControl.class);
         var userControl = Session.getModelController(UserControl.class);
-        GraphQlContext context = env.getContext();
-        
-        return uomControl.getBestUnitOfMeasureKindUseTypeDescription(unitOfMeasureKindUseType, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+
+        return uomControl.getBestUnitOfMeasureKindUseTypeDescription(unitOfMeasureKindUseType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
     
     @GraphQLField

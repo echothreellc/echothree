@@ -16,20 +16,21 @@
 
 package com.echothree.model.control.party.server.graphql;
 
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.schema.DataFetchingEnvironment;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("party type object")
 @GraphQLName("PartyType")
-public class PartyTypeObject {
+public class PartyTypeObject
+        extends BaseGraphQl {
 
     private final PartyType partyType; // Always Present
     
@@ -91,9 +92,8 @@ public class PartyTypeObject {
     public String getDescription(final DataFetchingEnvironment env) {
         var partyControl = Session.getModelController(PartyControl.class);
         var userControl = Session.getModelController(UserControl.class);
-        GraphQlContext context = env.getContext();
-        
-        return partyControl.getBestPartyTypeDescription(partyType, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+
+        return partyControl.getBestPartyTypeDescription(partyType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
 
 }

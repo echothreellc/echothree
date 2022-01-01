@@ -16,25 +16,26 @@
 
 package com.echothree.model.control.item.server.graphql;
 
-import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.core.server.graphql.EntityTypeObject;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
+import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.sequence.server.graphql.SequenceObject;
 import com.echothree.model.control.sequence.server.graphql.SequenceSecurityUtils;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.item.common.ItemConstants;
 import com.echothree.model.data.item.server.entity.ItemCategory;
 import com.echothree.model.data.item.server.entity.ItemCategoryDetail;
-import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.schema.DataFetchingEnvironment;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
+import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @GraphQLDescription("item category object")
@@ -107,32 +108,24 @@ public class ItemCategoryObject
     public String getDescription(final DataFetchingEnvironment env) {
         var itemControl = Session.getModelController(ItemControl.class);
         var userControl = Session.getModelController(UserControl.class);
-        GraphQlContext context = env.getContext();
-        
-        return itemControl.getBestItemCategoryDescription(itemCategory, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+
+        return itemControl.getBestItemCategoryDescription(itemCategory, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
 
     @GraphQLField
     @GraphQLDescription("items")
-    public List<ItemObject> getItems(final DataFetchingEnvironment env) {
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<ItemObject> getItems(final DataFetchingEnvironment env) {
         if(ItemSecurityUtils.getInstance().getHasItemsAccess(env)) {
             var itemControl = Session.getModelController(ItemControl.class);
-            var entities = itemControl.getItemsByItemCategory(itemCategory);
-            var items = entities.stream().map(ItemObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+            var totalCount = itemControl.countItemsByItemCategory(itemCategory);
 
-            return items;
-        } else {
-            return null;
-        }
-    }
+            try(var objectLimiter = new ObjectLimiter(env, ItemConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = itemControl.getItemsByItemCategory(itemCategory);
+                var items = entities.stream().map(ItemObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-    @GraphQLField
-    @GraphQLDescription("item count")
-    public Long getItemCount(final DataFetchingEnvironment env) {
-        if(ItemSecurityUtils.getInstance().getHasItemsAccess(env)) {
-            var itemControl = Session.getModelController(ItemControl.class);
-
-            return itemControl.countItemsByItemCategory(itemCategory);
+                return new CountedObjects<>(objectLimiter, items);
+            }
         } else {
             return null;
         }

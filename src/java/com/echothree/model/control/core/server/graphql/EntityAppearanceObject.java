@@ -18,7 +18,7 @@ package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.control.user.core.server.command.GetAppearanceCommand;
 import com.echothree.control.user.core.server.command.GetEntityInstanceCommand;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.data.core.server.entity.EntityAppearance;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
 import graphql.annotations.annotationTypes.GraphQLDescription;
@@ -29,7 +29,8 @@ import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("entity appearance object")
 @GraphQLName("EntityAppearance")
-public class EntityAppearanceObject {
+public class EntityAppearanceObject
+        extends BaseGraphQl {
     
     private final EntityAppearance entityAppearance; // Always Present
     
@@ -41,8 +42,7 @@ public class EntityAppearanceObject {
 
     private boolean getHasEntityInstanceAccess(final DataFetchingEnvironment env) {
         if(hasEntityInstanceAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetEntityInstanceCommand(context.getUserVisitPK(), null);
+            var baseSingleEntityCommand = new GetEntityInstanceCommand(getUserVisitPK(env), null);
 
             baseSingleEntityCommand.security();
 
@@ -56,8 +56,7 @@ public class EntityAppearanceObject {
 
     private boolean getHasAppearanceAccess(final DataFetchingEnvironment env) {
         if(hasAppearanceAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetAppearanceCommand(context.getUserVisitPK(), null);
+            var baseSingleEntityCommand = new GetAppearanceCommand(getUserVisitPK(env), null);
 
             baseSingleEntityCommand.security();
 

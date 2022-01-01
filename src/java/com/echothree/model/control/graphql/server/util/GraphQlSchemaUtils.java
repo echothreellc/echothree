@@ -16,7 +16,9 @@
 
 package com.echothree.model.control.graphql.server.util;
 
+import com.echothree.model.control.graphql.server.graphql.count.RelayWithCounting;
 import graphql.annotations.AnnotationsSchemaCreator;
+import graphql.annotations.processor.GraphQLAnnotations;
 import graphql.schema.GraphQLSchema;
 
 public class GraphQlSchemaUtils {
@@ -38,15 +40,19 @@ public class GraphQlSchemaUtils {
     
     private void buildSchema() {
         readOnlySchema = AnnotationsSchemaCreator.newAnnotationsSchema()
-            .query(GraphQlQueries.class)
-            .setAlwaysPrettify(true)
-            .build();
+                .setAnnotationsProcessor(new GraphQLAnnotations())
+                .setRelay(new RelayWithCounting())
+                .query(GraphQlQueries.class)
+                .setAlwaysPrettify(true)
+                .build();
 
         schema = AnnotationsSchemaCreator.newAnnotationsSchema()
-            .query(GraphQlQueries.class)
-            .mutation(GraphQlMutations.class)
-            .setAlwaysPrettify(true)
-            .build();
+                .setAnnotationsProcessor(new GraphQLAnnotations())
+                .setRelay(new RelayWithCounting())
+                .query(GraphQlQueries.class)
+                .mutation(GraphQlMutations.class)
+                .setAlwaysPrettify(true)
+                .build();
     }
 
     public GraphQLSchema getReadOnlySchema() {

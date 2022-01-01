@@ -22,7 +22,6 @@ import com.echothree.control.user.party.server.command.GetLanguageCommand;
 import com.echothree.control.user.party.server.command.GetTimeZoneCommand;
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
@@ -65,8 +64,7 @@ public class BasePartyObject
     
     private boolean getHasLanguageAccess(final DataFetchingEnvironment env) {
         if(hasLanguageAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetLanguageCommand(context.getUserVisitPK(), null);
+            var baseSingleEntityCommand = new GetLanguageCommand(getUserVisitPK(env), null);
             
             baseSingleEntityCommand.security();
             
@@ -80,8 +78,7 @@ public class BasePartyObject
     
     private boolean getHasCurrencyAccess(final DataFetchingEnvironment env) {
         if(hasCurrencyAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetCurrencyCommand(context.getUserVisitPK(), null);
+            var baseSingleEntityCommand = new GetCurrencyCommand(getUserVisitPK(env), null);
             
             baseSingleEntityCommand.security();
             
@@ -95,8 +92,7 @@ public class BasePartyObject
     
     private boolean getHasTimeZoneAccess(final DataFetchingEnvironment env) {
         if(hasTimeZoneAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetTimeZoneCommand(context.getUserVisitPK(), null);
+            var baseSingleEntityCommand = new GetTimeZoneCommand(getUserVisitPK(env), null);
             
             baseSingleEntityCommand.security();
             
@@ -110,8 +106,7 @@ public class BasePartyObject
     
     private boolean getHasDateTimeFormatAccess(final DataFetchingEnvironment env) {
         if(hasDateTimeFormatAccess == null) {
-            GraphQlContext context = env.getContext();
-            BaseSingleEntityCommand baseSingleEntityCommand = new GetDateTimeFormatCommand(context.getUserVisitPK(), null);
+            var baseSingleEntityCommand = new GetDateTimeFormatCommand(getUserVisitPK(env), null);
             
             baseSingleEntityCommand.security();
             
@@ -191,9 +186,8 @@ public class BasePartyObject
     public String getDescription(final DataFetchingEnvironment env) {
         var partyControl = Session.getModelController(PartyControl.class);
         var userControl = Session.getModelController(UserControl.class);
-        GraphQlContext context = env.getContext();
-        
-        return partyControl.getBestPartyDescription(party, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+
+        return partyControl.getBestPartyDescription(party, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
     
 }

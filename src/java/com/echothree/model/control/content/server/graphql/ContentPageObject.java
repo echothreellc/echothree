@@ -18,7 +18,6 @@ package com.echothree.model.control.content.server.graphql;
 
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.GraphQlContext;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.content.server.entity.ContentPage;
 import com.echothree.model.data.content.server.entity.ContentPageArea;
@@ -29,8 +28,8 @@ import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.schema.DataFetchingEnvironment;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,9 +95,8 @@ public class ContentPageObject
     public String getDescription(final DataFetchingEnvironment env) {
         var contentControl = Session.getModelController(ContentControl.class);
         var userControl = Session.getModelController(UserControl.class);
-        GraphQlContext context = env.getContext();
-        
-        return contentControl.getBestContentPageDescription(contentPage, userControl.getPreferredLanguageFromUserVisit(context.getUserVisit()));
+
+        return contentControl.getBestContentPageDescription(contentPage, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
     
     @GraphQLField
@@ -107,8 +105,7 @@ public class ContentPageObject
     public List<ContentPageAreaObject> getContentPageAreas(final DataFetchingEnvironment env) {
         var contentControl = Session.getModelController(ContentControl.class);
         var userControl = Session.getModelController(UserControl.class);
-        GraphQlContext context = env.getContext();
-        Language preferredLanguage = userControl.getPreferredLanguageFromUserVisit(context.getUserVisit());
+        Language preferredLanguage = userControl.getPreferredLanguageFromUserVisit(getUserVisit(env));
         List<ContentPageLayoutArea> entities = contentControl.getContentPageLayoutAreasByContentPageLayout(getContentPageDetail().getContentPageLayout());
         List<ContentPageAreaObject> contentPageAreas = new ArrayList<>(entities.size());
         

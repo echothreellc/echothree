@@ -1,5 +1,14 @@
 # Changelog
 
+## 2021-12-26-01
+
+* Prototype GraphQL Pagination [362](https://gitlab.echothree.com/echothree/echothree/-/issues/362)
+* Convert GraphQL Tests to Text Blocks [370](https://gitlab.echothree.com/echothree/echothree/-/issues/370)
+* WildFly 26.0.0 Upgrade [371](https://gitlab.echothree.com/echothree/echothree/-/issues/371)
+* Apache Lucene 8.11.1 Upgrade [372](https://gitlab.echothree.com/echothree/echothree/-/issues/372)
+* Customer Review Page Throwing NPE [373](https://gitlab.echothree.com/echothree/echothree/-/issues/373)
+* Quick Search Giving Duplicate Key Exceptions Searching for "Test Customer" [376](https://gitlab.echothree.com/echothree/echothree/-/issues/376)
+
 ## 2021-12-12-01
 
 * jOOQ 3.15.5 Upgrade [368](https://gitlab.echothree.com/echothree/echothree/-/issues/368)

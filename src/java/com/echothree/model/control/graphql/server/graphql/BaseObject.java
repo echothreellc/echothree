@@ -17,6 +17,7 @@
 package com.echothree.model.control.graphql.server.graphql;
 
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workflow.server.graphql.WorkflowEntityStatusObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowSecurityUtils;
@@ -25,7 +26,8 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.Session;
 import graphql.schema.DataFetchingEnvironment;
 
-public abstract class BaseObject {
+public abstract class BaseObject
+        extends BaseGraphQl {
 
     protected final BasePK basePrimaryKey;
 
