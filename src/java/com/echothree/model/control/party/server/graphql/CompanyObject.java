@@ -17,10 +17,10 @@
 package com.echothree.model.control.party.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
-import com.echothree.model.control.graphql.server.graphql.count.EmptyCountedObjects;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.graphql.ItemObject;
 import com.echothree.model.control.item.server.graphql.ItemSecurityUtils;
@@ -128,7 +128,7 @@ public class CompanyObject
                 return new CountedObjects<>(objectLimiter, items);
             }
         } else {
-            return EmptyCountedObjects.emptyCountedObjects();
+            return Connections.emptyConnection();
         }
     }
 

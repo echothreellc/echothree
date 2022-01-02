@@ -18,10 +18,10 @@ package com.echothree.model.control.search.server.graphql;
 
 import com.echothree.control.user.search.common.form.GetVendorResultsForm;
 import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
-import com.echothree.model.control.graphql.server.graphql.count.EmptyCountedObjects;
 import com.echothree.model.control.search.common.SearchConstants;
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.control.vendor.server.graphql.VendorObject;
@@ -51,7 +51,7 @@ public class VendorResultsObject
         var userVisitSearch = getUserVisitSearch(env);
 
         if(userVisitSearch == null) {
-            return EmptyCountedObjects.emptyCountedObjects();
+            return Connections.emptyConnection();
         } else {
             var totalCount = getTotalCount(env);
 

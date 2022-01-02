@@ -18,10 +18,10 @@ package com.echothree.model.control.item.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
-import com.echothree.model.control.graphql.server.graphql.count.EmptyCountedObjects;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.sequence.server.graphql.SequenceObject;
 import com.echothree.model.control.sequence.server.graphql.SequenceSecurityUtils;
@@ -129,7 +129,7 @@ public class ItemCategoryObject
                 return new CountedObjects<>(objectLimiter, items);
             }
         } else {
-            return EmptyCountedObjects.emptyCountedObjects();
+            return Connections.emptyConnection();
         }
     }
 

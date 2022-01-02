@@ -20,10 +20,10 @@ import com.echothree.control.user.search.common.form.GetEmployeeResultsForm;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.employee.server.graphql.EmployeeObject;
 import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
-import com.echothree.model.control.graphql.server.graphql.count.EmptyCountedObjects;
 import com.echothree.model.control.search.common.SearchConstants;
 import com.echothree.model.data.search.common.SearchResultConstants;
 import com.echothree.util.server.persistence.Session;
@@ -51,7 +51,7 @@ public class EmployeeResultsObject
         var userVisitSearch = getUserVisitSearch(env);
 
         if(userVisitSearch == null) {
-            return EmptyCountedObjects.emptyCountedObjects();
+            return Connections.emptyConnection();
         } else {
             var totalCount = getTotalCount(env);
 
