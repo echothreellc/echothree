@@ -20,7 +20,6 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.search.common.SearchOptions;
 import com.echothree.model.control.search.server.control.SearchControl;
 import static com.echothree.model.control.search.server.control.SearchControl.ENI_ENTITYUNIQUEID_COLUMN_INDEX;
-import com.echothree.model.control.search.server.graphql.VendorResultObject;
 import com.echothree.model.control.vendor.common.choice.ItemPurchasingCategoryChoicesBean;
 import com.echothree.model.control.vendor.common.choice.VendorItemStatusChoicesBean;
 import com.echothree.model.control.vendor.common.choice.VendorStatusChoicesBean;
@@ -35,6 +34,7 @@ import com.echothree.model.control.vendor.common.transfer.VendorTypeDescriptionT
 import com.echothree.model.control.vendor.common.transfer.VendorTypeTransfer;
 import com.echothree.model.control.vendor.common.workflow.VendorItemStatusConstants;
 import com.echothree.model.control.vendor.common.workflow.VendorStatusConstants;
+import com.echothree.model.control.vendor.server.graphql.VendorObject;
 import com.echothree.model.control.vendor.server.transfer.ItemPurchasingCategoryDescriptionTransferCache;
 import com.echothree.model.control.vendor.server.transfer.ItemPurchasingCategoryTransferCache;
 import com.echothree.model.control.vendor.server.transfer.VendorItemCostTransferCache;
@@ -2038,21 +2038,21 @@ public class VendorControl
         return vendorResultTransfers;
     }
 
-    public List<VendorResultObject> getVendorResultObjects(UserVisitSearch userVisitSearch) {
+    public List<VendorObject> getVendorObjectsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
         var searchControl = Session.getModelController(SearchControl.class);
-        var vendorResultObjects = new ArrayList<VendorResultObject>();
+        var vendorObjects = new ArrayList<VendorObject>();
 
         try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
             while(rs.next()) {
                 var party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
 
-                vendorResultObjects.add(new VendorResultObject(party));
+                vendorObjects.add(new VendorObject(party));
             }
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
 
-        return vendorResultObjects;
+        return vendorObjects;
     }
 
 }

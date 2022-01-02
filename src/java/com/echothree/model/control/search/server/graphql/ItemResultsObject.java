@@ -17,16 +17,20 @@
 package com.echothree.model.control.search.server.graphql;
 
 import com.echothree.control.user.search.common.form.GetItemResultsForm;
+import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.item.server.graphql.ItemObject;
 import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.data.search.common.SearchResultConstants;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
-import java.util.Collections;
-import java.util.List;
 
 @GraphQLDescription("item results object")
 @GraphQLName("ItemResults")
@@ -39,18 +43,22 @@ public class ItemResultsObject
 
     @GraphQLField
     @GraphQLDescription("items")
-    @GraphQLNonNull
-    public List<ItemResultObject> getItems(final DataFetchingEnvironment env) {
-        List<ItemResultObject> objects = null;
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<ItemObject> getItems(final DataFetchingEnvironment env) {
         var userVisitSearch = getUserVisitSearch(env);
 
-        if(userVisitSearch != null) {
-            var itemControl = Session.getModelController(ItemControl.class);
+        if(userVisitSearch == null) {
+            return null;
+        } else {
+            var totalCount = getTotalCount(env);
 
-            objects = itemControl.getItemResultObjects(userVisitSearch);
+            try(var objectLimiter = new ObjectLimiter(env, SearchResultConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var itemControl = Session.getModelController(ItemControl.class);
+                var items = itemControl.getItemObjectsFromUserVisitSearch(userVisitSearch);
+
+                return new CountedObjects<>(objectLimiter, items);
+            }
         }
-        
-        return objects == null ? Collections.emptyList() : objects;
     }
-    
+
 }
