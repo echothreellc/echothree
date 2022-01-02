@@ -31,7 +31,7 @@ public class Connections {
     public static final EmptyConnection EMPTY_CONNECTION = new EmptyConnection<>();
 
     @SuppressWarnings("unchecked")
-    public static final <T> CountingPaginatedData<T> emptyConnection() {
+    public static <T> CountingPaginatedData<T> emptyConnection() {
         return (CountingPaginatedData<T>)EMPTY_CONNECTION;
     }
 
