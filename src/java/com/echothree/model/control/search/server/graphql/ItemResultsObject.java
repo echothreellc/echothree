@@ -21,6 +21,7 @@ import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.graphql.count.EmptyCountedObjects;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.graphql.ItemObject;
 import com.echothree.model.control.search.common.SearchConstants;
@@ -29,6 +30,7 @@ import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
+import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
 
@@ -43,12 +45,13 @@ public class ItemResultsObject
 
     @GraphQLField
     @GraphQLDescription("items")
+    @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<ItemObject> getItems(final DataFetchingEnvironment env) {
         var userVisitSearch = getUserVisitSearch(env);
 
         if(userVisitSearch == null) {
-            return null;
+            return EmptyCountedObjects.emptyCountedObjects();
         } else {
             var totalCount = getTotalCount(env);
 

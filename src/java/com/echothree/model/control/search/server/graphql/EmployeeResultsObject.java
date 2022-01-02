@@ -23,12 +23,14 @@ import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.graphql.count.EmptyCountedObjects;
 import com.echothree.model.control.search.common.SearchConstants;
 import com.echothree.model.data.search.common.SearchResultConstants;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
+import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
 
@@ -43,12 +45,13 @@ public class EmployeeResultsObject
 
     @GraphQLField
     @GraphQLDescription("employees")
+    @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<EmployeeObject> getEmployees(final DataFetchingEnvironment env) {
         var userVisitSearch = getUserVisitSearch(env);
 
         if(userVisitSearch == null) {
-            return null;
+            return EmptyCountedObjects.emptyCountedObjects();
         } else {
             var totalCount = getTotalCount(env);
 
