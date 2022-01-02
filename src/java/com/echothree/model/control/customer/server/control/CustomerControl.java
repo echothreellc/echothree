@@ -29,6 +29,7 @@ import com.echothree.model.control.customer.common.transfer.CustomerTypeShipping
 import com.echothree.model.control.customer.common.transfer.CustomerTypeTransfer;
 import com.echothree.model.control.customer.common.workflow.CustomerCreditStatusConstants;
 import com.echothree.model.control.customer.common.workflow.CustomerStatusConstants;
+import com.echothree.model.control.customer.server.graphql.CustomerObject;
 import com.echothree.model.control.customer.server.transfer.CustomerTransferCaches;
 import com.echothree.model.control.customer.server.transfer.CustomerTypeDescriptionTransferCache;
 import com.echothree.model.control.customer.server.transfer.CustomerTypePaymentMethodTransferCache;
@@ -39,7 +40,6 @@ import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.search.common.SearchOptions;
 import com.echothree.model.control.search.server.control.SearchControl;
 import static com.echothree.model.control.search.server.control.SearchControl.ENI_ENTITYUNIQUEID_COLUMN_INDEX;
-import com.echothree.model.control.search.server.graphql.CustomerResultObject;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.data.accounting.common.pk.GlAccountPK;
@@ -1509,21 +1509,21 @@ public class CustomerControl
         return customerResultTransfers;
     }
 
-    public List<CustomerResultObject> getCustomerResultObjects(UserVisitSearch userVisitSearch) {
+    public List<CustomerObject> getCustomerObjectsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
         var searchControl = Session.getModelController(SearchControl.class);
-        var customerResultObjects = new ArrayList<CustomerResultObject>();
+        var customerObjects = new ArrayList<CustomerObject>();
 
         try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
             while(rs.next()) {
                 var party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
 
-                customerResultObjects.add(new CustomerResultObject(party));
+                customerObjects.add(new CustomerObject(party));
             }
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
 
-        return customerResultObjects;
+        return customerObjects;
     }
 
 }

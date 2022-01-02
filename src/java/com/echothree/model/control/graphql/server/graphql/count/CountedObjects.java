@@ -31,13 +31,13 @@ public class CountedObjects<BEIO extends BaseEntityInstanceObject>
         implements CountingPaginatedData<BEIO> {
 
     ObjectLimiter objectLimiter;
-    Iterable<BEIO> data;
+    List<BEIO> data;
 
     boolean hasPreviousPage;
     boolean hasNextPage;
     long cursor;
 
-    public CountedObjects(ObjectLimiter objectLimiter, Iterable<BEIO> data) {
+    public CountedObjects(ObjectLimiter objectLimiter, List<BEIO> data) {
         this.objectLimiter = objectLimiter;
         this.data = data;
 
@@ -69,8 +69,9 @@ public class CountedObjects<BEIO extends BaseEntityInstanceObject>
 
     @Override
     public PageInfo getPageInfo() {
-        var startCursor = new DefaultConnectionCursor(Long.toString(objectLimiter.getLimitOffset() + 1));
-        var endCursor = new DefaultConnectionCursor(Long.toString(objectLimiter.getLimitOffset() + objectLimiter.getLimitCount()));
+        var dataCount = data.size();
+        var startCursor = dataCount == 0 ? null : new DefaultConnectionCursor(Long.toString(objectLimiter.getLimitOffset() + 1));
+        var endCursor = dataCount == 0 ? null : new DefaultConnectionCursor(Long.toString(objectLimiter.getLimitOffset() + objectLimiter.getLimitCount()));
 
         return new DefaultPageInfo(startCursor, endCursor, hasPreviousPage, hasNextPage);
     }

@@ -18,15 +18,21 @@ package com.echothree.model.control.search.server.graphql;
 
 import com.echothree.control.user.search.common.form.GetCustomerResultsForm;
 import com.echothree.model.control.customer.server.control.CustomerControl;
+import com.echothree.model.control.customer.server.graphql.CustomerObject;
+import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.data.search.common.SearchResultConstants;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
-import java.util.Collections;
-import java.util.List;
 
 @GraphQLDescription("customer results object")
 @GraphQLName("CustomerResults")
@@ -40,17 +46,22 @@ public class CustomerResultsObject
     @GraphQLField
     @GraphQLDescription("customers")
     @GraphQLNonNull
-    public List<CustomerResultObject> getCustomers(final DataFetchingEnvironment env) {
-        List<CustomerResultObject> objects = null;
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<CustomerObject> getCustomers(final DataFetchingEnvironment env) {
         var userVisitSearch = getUserVisitSearch(env);
 
-        if(userVisitSearch != null) {
-            var customerControl = Session.getModelController(CustomerControl.class);
+        if(userVisitSearch == null) {
+            return Connections.emptyConnection();
+        } else {
+            var totalCount = getTotalCount(env);
 
-            objects = customerControl.getCustomerResultObjects(userVisitSearch);
+            try(var objectLimiter = new ObjectLimiter(env, SearchResultConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var customerControl = Session.getModelController(CustomerControl.class);
+                var customers = customerControl.getCustomerObjectsFromUserVisitSearch(userVisitSearch);
+
+                return new CountedObjects<>(objectLimiter, customers);
+            }
         }
-        
-        return objects == null ? Collections.emptyList() : objects;
     }
     
 }

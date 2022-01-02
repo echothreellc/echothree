@@ -80,6 +80,7 @@ import com.echothree.model.control.item.common.transfer.RelatedItemTransfer;
 import com.echothree.model.control.item.common.transfer.RelatedItemTypeDescriptionTransfer;
 import com.echothree.model.control.item.common.transfer.RelatedItemTypeTransfer;
 import com.echothree.model.control.item.common.workflow.ItemStatusConstants;
+import com.echothree.model.control.item.server.graphql.ItemObject;
 import com.echothree.model.control.item.server.transfer.HarmonizedTariffScheduleCodeTransferCache;
 import com.echothree.model.control.item.server.transfer.HarmonizedTariffScheduleCodeUnitTransferCache;
 import com.echothree.model.control.item.server.transfer.HarmonizedTariffScheduleCodeUseTypeTransferCache;
@@ -121,7 +122,6 @@ import com.echothree.model.control.offer.server.logic.OfferItemLogic;
 import com.echothree.model.control.search.common.SearchOptions;
 import com.echothree.model.control.search.server.control.SearchControl;
 import static com.echothree.model.control.search.server.control.SearchControl.ENI_ENTITYUNIQUEID_COLUMN_INDEX;
-import com.echothree.model.control.search.server.graphql.ItemResultObject;
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.accounting.common.pk.CurrencyPK;
 import com.echothree.model.data.accounting.common.pk.ItemAccountingCategoryPK;
@@ -11416,9 +11416,9 @@ public class ItemControl
         return itemResultTransfers;
     }
 
-    public List<ItemResultObject> getItemResultObjects(UserVisitSearch userVisitSearch) {
+    public List<ItemObject> getItemObjectsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
         var searchControl = Session.getModelController(SearchControl.class);
-        var itemResultObjects = new ArrayList<ItemResultObject>();
+        var itemObjects = new ArrayList<ItemObject>();
 
         try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
             var itemControl = Session.getModelController(ItemControl.class);
@@ -11426,13 +11426,13 @@ public class ItemControl
             while(rs.next()) {
                 var item = itemControl.getItemByPK(new ItemPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
 
-                itemResultObjects.add(new ItemResultObject(item));
+                itemObjects.add(new ItemObject(item));
             }
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
 
-        return itemResultObjects;
+        return itemObjects;
     }
 
 }

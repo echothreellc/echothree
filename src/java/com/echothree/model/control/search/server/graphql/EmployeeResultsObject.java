@@ -18,15 +18,21 @@ package com.echothree.model.control.search.server.graphql;
 
 import com.echothree.control.user.search.common.form.GetEmployeeResultsForm;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
+import com.echothree.model.control.employee.server.graphql.EmployeeObject;
+import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.data.search.common.SearchResultConstants;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
-import java.util.Collections;
-import java.util.List;
 
 @GraphQLDescription("employee results object")
 @GraphQLName("EmployeeResults")
@@ -40,17 +46,22 @@ public class EmployeeResultsObject
     @GraphQLField
     @GraphQLDescription("employees")
     @GraphQLNonNull
-    public List<EmployeeResultObject> getEmployees(final DataFetchingEnvironment env) {
-        List<EmployeeResultObject> objects = null;
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<EmployeeObject> getEmployees(final DataFetchingEnvironment env) {
         var userVisitSearch = getUserVisitSearch(env);
 
-        if(userVisitSearch != null) {
-            var employeeControl = Session.getModelController(EmployeeControl.class);
+        if(userVisitSearch == null) {
+            return Connections.emptyConnection();
+        } else {
+            var totalCount = getTotalCount(env);
 
-            objects = employeeControl.getEmployeeResultObjects(userVisitSearch);
+            try(var objectLimiter = new ObjectLimiter(env, SearchResultConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var employeeControl = Session.getModelController(EmployeeControl.class);
+                var employees = employeeControl.getEmployeeObjectsFromUserVisitSearch(userVisitSearch);
+
+                return new CountedObjects<>(objectLimiter, employees);
+            }
         }
-        
-        return objects == null ? Collections.emptyList() : objects;
     }
     
 }

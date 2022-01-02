@@ -59,11 +59,8 @@ public abstract class BaseResultsObject<F extends BaseGetResultsForm>
         return userVisitSearch;
     }
 
-    @GraphQLField
-    @GraphQLDescription("count")
-    @GraphQLNonNull
-    public int getCount(final DataFetchingEnvironment env) {
-        UserVisitSearch userVisitSearch = getUserVisitSearch(env);
+    protected long getTotalCount(final DataFetchingEnvironment env) {
+        var userVisitSearch = getUserVisitSearch(env);
 
         return userVisitSearch == null ? 0 : SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch());
     }

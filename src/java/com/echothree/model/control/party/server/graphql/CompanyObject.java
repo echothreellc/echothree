@@ -17,6 +17,7 @@
 package com.echothree.model.control.party.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
@@ -113,6 +114,7 @@ public class CompanyObject
 
     @GraphQLField
     @GraphQLDescription("items")
+    @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<ItemObject> getItems(final DataFetchingEnvironment env) {
         if(ItemSecurityUtils.getInstance().getHasItemsAccess(env)) {
@@ -126,7 +128,7 @@ public class CompanyObject
                 return new CountedObjects<>(objectLimiter, items);
             }
         } else {
-            return null;
+            return Connections.emptyConnection();
         }
     }
 
