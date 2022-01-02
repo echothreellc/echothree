@@ -254,6 +254,7 @@ import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.graphql.count.EmptyCountedObjects;
 import com.echothree.model.control.inventory.server.graphql.InventoryConditionObject;
 import com.echothree.model.control.inventory.server.graphql.LotObject;
 import com.echothree.model.control.item.server.control.ItemControl;
@@ -4719,6 +4720,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("items")
+    @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public static CountingPaginatedData<ItemObject> items(final DataFetchingEnvironment env) {
         CountingPaginatedData<ItemObject> data;
@@ -4732,7 +4734,7 @@ public final class GraphQlQueries
                 var entities = new GetItemsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
 
                 if(entities == null) {
-                    data = null;
+                    data = EmptyCountedObjects.emptyCountedObjects();
                 } else {
                     var items = entities.stream().map(ItemObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 

@@ -21,6 +21,7 @@ import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.graphql.count.EmptyCountedObjects;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.sequence.server.graphql.SequenceObject;
 import com.echothree.model.control.sequence.server.graphql.SequenceSecurityUtils;
@@ -114,6 +115,7 @@ public class ItemCategoryObject
 
     @GraphQLField
     @GraphQLDescription("items")
+    @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<ItemObject> getItems(final DataFetchingEnvironment env) {
         if(ItemSecurityUtils.getInstance().getHasItemsAccess(env)) {
@@ -127,7 +129,7 @@ public class ItemCategoryObject
                 return new CountedObjects<>(objectLimiter, items);
             }
         } else {
-            return null;
+            return EmptyCountedObjects.emptyCountedObjects();
         }
     }
 
