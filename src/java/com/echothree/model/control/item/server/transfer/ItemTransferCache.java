@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.item.server.transfer;
 
-import com.echothree.model.control.accounting.common.transfer.ItemAccountingCategoryTransfer;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.cancellationpolicy.common.transfer.CancellationPolicyTransfer;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.comment.common.CommentConstants;
 import com.echothree.model.control.comment.server.control.CommentControl;
@@ -28,54 +26,29 @@ import com.echothree.model.control.geo.common.GeoOptions;
 import com.echothree.model.control.item.common.ItemConstants;
 import com.echothree.model.control.item.common.ItemOptions;
 import com.echothree.model.control.item.common.ItemProperties;
-import com.echothree.model.control.item.common.transfer.ItemCategoryTransfer;
 import com.echothree.model.control.item.common.transfer.ItemCountryOfOriginTransfer;
-import com.echothree.model.control.item.common.transfer.ItemDeliveryTypeTransfer;
-import com.echothree.model.control.item.common.transfer.ItemInventoryTypeTransfer;
-import com.echothree.model.control.item.common.transfer.ItemPriceTypeTransfer;
 import com.echothree.model.control.item.common.transfer.ItemTransfer;
-import com.echothree.model.control.item.common.transfer.ItemTypeTransfer;
-import com.echothree.model.control.item.common.transfer.ItemUseTypeTransfer;
 import com.echothree.model.control.item.common.transfer.RelatedItemTransfer;
 import com.echothree.model.control.item.common.workflow.ItemStatusConstants;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
-import com.echothree.model.control.party.common.transfer.CompanyTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.rating.common.RatingConstants;
 import com.echothree.model.control.rating.server.control.RatingControl;
-import com.echothree.model.control.returnpolicy.common.transfer.ReturnPolicyTransfer;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
-import com.echothree.model.control.sequence.common.transfer.SequenceTransfer;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.tax.server.control.TaxControl;
-import com.echothree.model.control.uom.common.transfer.UnitOfMeasureKindTransfer;
 import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.control.vendor.common.transfer.ItemPurchasingCategoryTransfer;
 import com.echothree.model.control.vendor.server.control.VendorControl;
-import com.echothree.model.control.workflow.common.transfer.WorkflowEntityStatusTransfer;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;
-import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.item.server.entity.ItemDeliveryType;
-import com.echothree.model.data.item.server.entity.ItemDescriptionType;
-import com.echothree.model.data.item.server.entity.ItemDetail;
-import com.echothree.model.data.item.server.entity.ItemInventoryType;
-import com.echothree.model.data.item.server.entity.RelatedItemType;
-import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
-import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.data.vendor.server.entity.ItemPurchasingCategory;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.transfer.ListWrapperBuilder;
-import java.util.List;
-import java.util.Set;
 
 public class ItemTransferCache
         extends BaseItemTransferCache<Item, ItemTransfer> {
@@ -194,7 +167,7 @@ public class ItemTransferCache
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
-            Set<String> properties = transferProperties.getProperties(ItemTransfer.class);
+            var properties = transferProperties.getProperties(ItemTransfer.class);
             
             if(properties != null) {
                 filterItemName = !properties.contains(ItemProperties.ITEM_NAME);
@@ -239,53 +212,53 @@ public class ItemTransferCache
     
     @Override
     public ItemTransfer getTransfer(Item item) {
-        ItemTransfer itemTransfer = get(item);
+        var itemTransfer = get(item);
         
         if(itemTransfer == null) {
-            ItemDetail itemDetail = item.getLastDetail();
-            String itemName = filterItemName ? null : itemDetail.getItemName();
-            ItemTypeTransfer itemTypeTransfer = filterItemType ? null : itemControl.getItemTypeTransfer(userVisit, itemDetail.getItemType());
-            ItemUseTypeTransfer itemUseTypeTransfer = filterItemUseType ? null : itemControl.getItemUseTypeTransfer(userVisit, itemDetail.getItemUseType());
-            ItemCategoryTransfer itemCategoryTransfer = filterItemCategory ? null : itemControl.getItemCategoryTransfer(userVisit, itemDetail.getItemCategory());
-            ItemAccountingCategory itemAccountingCategory = filterItemAccountingCategory ? null : itemDetail.getItemAccountingCategory();
-            ItemAccountingCategoryTransfer itemAccountingCategoryTransfer = itemAccountingCategory == null ? null : accountingControl.getItemAccountingCategoryTransfer(userVisit, itemAccountingCategory);
-            ItemPurchasingCategory itemPurchasingCategory = filterItemPurchasingCategory ? null : itemDetail.getItemPurchasingCategory();
-            ItemPurchasingCategoryTransfer itemPurchasingCategoryTransfer = itemPurchasingCategory == null ? null : vendorControl.getItemPurchasingCategoryTransfer(userVisit, itemPurchasingCategory);
-            CompanyTransfer companyTransfer = filterCompany ? null : partyControl.getCompanyTransfer(userVisit, itemDetail.getCompanyParty());
-            ItemDeliveryType itemDeliveryType = filterItemDeliveryType ? null : itemDetail.getItemDeliveryType();
-            ItemDeliveryTypeTransfer itemDeliveryTypeTransfer = itemDeliveryType == null ? null : itemControl.getItemDeliveryTypeTransfer(userVisit, itemDeliveryType);
-            ItemInventoryType itemInventoryType = filterItemInventoryType ? null : itemDetail.getItemInventoryType();
-            ItemInventoryTypeTransfer itemInventoryTypeTransfer = itemInventoryType == null ? null : itemControl.getItemInventoryTypeTransfer(userVisit, itemInventoryType);
-            Boolean inventorySerialized = filterInventorySerialized ? null : itemDetail.getInventorySerialized();
-            Sequence serialNumberSequence = filterSerialNumberSequence ? null : itemDetail.getSerialNumberSequence();
-            SequenceTransfer serialNumberSequenceTransfer = serialNumberSequence == null ? null : sequenceControl.getSequenceTransfer(userVisit, serialNumberSequence);
-            Boolean shippingChargeExempt = filterShippingChargeExempt ? null : itemDetail.getShippingChargeExempt();
-            Long unformattedShippingStartTime = filterUnformattedShippingStartTime ? null : itemDetail.getShippingStartTime();
-            String shippingStartTime = filterShippingStartTime ? null : formatTypicalDateTime(unformattedShippingStartTime);
-            Long unformattedShippingEndTime = filterUnformattedShippingEndTime ? null : itemDetail.getShippingEndTime();
-            String shippingEndTime = filterShippingEndTime ? null : formatTypicalDateTime(unformattedShippingEndTime);
-            Long unformattedSalesOrderStartTime = filterUnformattedSalesOrderStartTime ? null : itemDetail.getSalesOrderStartTime();
-            String salesOrderStartTime = filterSalesOrderStartTime ? null : formatTypicalDateTime(unformattedSalesOrderStartTime);
-            Long unformattedSalesOrderEndTime = filterUnformattedSalesOrderEndTime ? null : itemDetail.getSalesOrderEndTime();
-            String salesOrderEndTime = filterSalesOrderEndTime ? null : formatTypicalDateTime(unformattedSalesOrderEndTime);
-            Long unformattedPurchaseOrderStartTime = filterUnformattedPurchaseOrderStartTime ? null : itemDetail.getPurchaseOrderStartTime();
-            String purchaseOrderStartTime = filterPurchaseOrderStartTime ? null : formatTypicalDateTime(unformattedPurchaseOrderStartTime);
-            Long unformattedPurchaseOrderEndTime = filterUnformattedPurchaseOrderEndTime ? null : itemDetail.getPurchaseOrderEndTime();
-            String purchaseOrderEndTime = filterPurchaseOrderEndTime ? null : formatTypicalDateTime(unformattedPurchaseOrderEndTime);
-            Boolean allowClubDiscounts = filterAllowClubDiscounts ? null : itemDetail.getAllowClubDiscounts();
-            Boolean allowCouponDiscounts = filterAllowCouponDiscounts ? null : itemDetail.getAllowCouponDiscounts();
-            Boolean allowAssociatePayments = filterAllowAssociatePayments ? null : itemDetail.getAllowAssociatePayments();
-            UnitOfMeasureKindTransfer unitOfMeasureKindTransfer = filterUnitOfMeasureKind ? null : uomControl.getUnitOfMeasureKindTransfer(userVisit, itemDetail.getUnitOfMeasureKind());
-            ItemPriceTypeTransfer itemPriceTypeTransfer = filterItemPriceType ? null : itemControl.getItemPriceTypeTransfer(userVisit, itemDetail.getItemPriceType());
-            CancellationPolicy cancellationPolicy = filterCancellationPolicy ? null : itemDetail.getCancellationPolicy();
-            CancellationPolicyTransfer cancellationPolicyTransfer = cancellationPolicy == null ? null : cancellationPolicyControl.getCancellationPolicyTransfer(userVisit, cancellationPolicy);
-            ReturnPolicy returnPolicy = filterReturnPolicy ? null : itemDetail.getReturnPolicy();
-            ReturnPolicyTransfer returnPolicyTransfer = returnPolicy == null ? null : returnPolicyControl.getReturnPolicyTransfer(userVisit, returnPolicy);
-            ItemDescriptionType itemDescriptionType = filterDescription ? null : itemControl.getItemDescriptionTypeByName(ItemConstants.ItemDescriptionType_DEFAULT_DESCRIPTION);
-            String description = itemDescriptionType == null ? null : itemControl.getBestItemStringDescription(itemDescriptionType, item, getLanguage());
+            var itemDetail = item.getLastDetail();
+            var itemName = filterItemName ? null : itemDetail.getItemName();
+            var itemTypeTransfer = filterItemType ? null : itemControl.getItemTypeTransfer(userVisit, itemDetail.getItemType());
+            var itemUseTypeTransfer = filterItemUseType ? null : itemControl.getItemUseTypeTransfer(userVisit, itemDetail.getItemUseType());
+            var itemCategoryTransfer = filterItemCategory ? null : itemControl.getItemCategoryTransfer(userVisit, itemDetail.getItemCategory());
+            var itemAccountingCategory = filterItemAccountingCategory ? null : itemDetail.getItemAccountingCategory();
+            var itemAccountingCategoryTransfer = itemAccountingCategory == null ? null : accountingControl.getItemAccountingCategoryTransfer(userVisit, itemAccountingCategory);
+            var itemPurchasingCategory = filterItemPurchasingCategory ? null : itemDetail.getItemPurchasingCategory();
+            var itemPurchasingCategoryTransfer = itemPurchasingCategory == null ? null : vendorControl.getItemPurchasingCategoryTransfer(userVisit, itemPurchasingCategory);
+            var companyTransfer = filterCompany ? null : partyControl.getCompanyTransfer(userVisit, itemDetail.getCompanyParty());
+            var itemDeliveryType = filterItemDeliveryType ? null : itemDetail.getItemDeliveryType();
+            var itemDeliveryTypeTransfer = itemDeliveryType == null ? null : itemControl.getItemDeliveryTypeTransfer(userVisit, itemDeliveryType);
+            var itemInventoryType = filterItemInventoryType ? null : itemDetail.getItemInventoryType();
+            var itemInventoryTypeTransfer = itemInventoryType == null ? null : itemControl.getItemInventoryTypeTransfer(userVisit, itemInventoryType);
+            var inventorySerialized = filterInventorySerialized ? null : itemDetail.getInventorySerialized();
+            var serialNumberSequence = filterSerialNumberSequence ? null : itemDetail.getSerialNumberSequence();
+            var serialNumberSequenceTransfer = serialNumberSequence == null ? null : sequenceControl.getSequenceTransfer(userVisit, serialNumberSequence);
+            var shippingChargeExempt = filterShippingChargeExempt ? null : itemDetail.getShippingChargeExempt();
+            var unformattedShippingStartTime = filterUnformattedShippingStartTime ? null : itemDetail.getShippingStartTime();
+            var shippingStartTime = filterShippingStartTime ? null : formatTypicalDateTime(unformattedShippingStartTime);
+            var unformattedShippingEndTime = filterUnformattedShippingEndTime ? null : itemDetail.getShippingEndTime();
+            var shippingEndTime = filterShippingEndTime ? null : formatTypicalDateTime(unformattedShippingEndTime);
+            var unformattedSalesOrderStartTime = filterUnformattedSalesOrderStartTime ? null : itemDetail.getSalesOrderStartTime();
+            var salesOrderStartTime = filterSalesOrderStartTime ? null : formatTypicalDateTime(unformattedSalesOrderStartTime);
+            var unformattedSalesOrderEndTime = filterUnformattedSalesOrderEndTime ? null : itemDetail.getSalesOrderEndTime();
+            var salesOrderEndTime = filterSalesOrderEndTime ? null : formatTypicalDateTime(unformattedSalesOrderEndTime);
+            var unformattedPurchaseOrderStartTime = filterUnformattedPurchaseOrderStartTime ? null : itemDetail.getPurchaseOrderStartTime();
+            var purchaseOrderStartTime = filterPurchaseOrderStartTime ? null : formatTypicalDateTime(unformattedPurchaseOrderStartTime);
+            var unformattedPurchaseOrderEndTime = filterUnformattedPurchaseOrderEndTime ? null : itemDetail.getPurchaseOrderEndTime();
+            var purchaseOrderEndTime = filterPurchaseOrderEndTime ? null : formatTypicalDateTime(unformattedPurchaseOrderEndTime);
+            var allowClubDiscounts = filterAllowClubDiscounts ? null : itemDetail.getAllowClubDiscounts();
+            var allowCouponDiscounts = filterAllowCouponDiscounts ? null : itemDetail.getAllowCouponDiscounts();
+            var allowAssociatePayments = filterAllowAssociatePayments ? null : itemDetail.getAllowAssociatePayments();
+            var unitOfMeasureKindTransfer = filterUnitOfMeasureKind ? null : uomControl.getUnitOfMeasureKindTransfer(userVisit, itemDetail.getUnitOfMeasureKind());
+            var itemPriceTypeTransfer = filterItemPriceType ? null : itemControl.getItemPriceTypeTransfer(userVisit, itemDetail.getItemPriceType());
+            var cancellationPolicy = filterCancellationPolicy ? null : itemDetail.getCancellationPolicy();
+            var cancellationPolicyTransfer = cancellationPolicy == null ? null : cancellationPolicyControl.getCancellationPolicyTransfer(userVisit, cancellationPolicy);
+            var returnPolicy = filterReturnPolicy ? null : itemDetail.getReturnPolicy();
+            var returnPolicyTransfer = returnPolicy == null ? null : returnPolicyControl.getReturnPolicyTransfer(userVisit, returnPolicy);
+            var itemDescriptionType = filterDescription ? null : itemControl.getItemDescriptionTypeByName(ItemConstants.ItemDescriptionType_DEFAULT_DESCRIPTION);
+            var description = itemDescriptionType == null ? null : itemControl.getBestItemStringDescription(itemDescriptionType, item, getLanguage());
 
-            EntityInstance entityInstance = coreControl.getEntityInstanceByBasePK(item.getPrimaryKey());
-            WorkflowEntityStatusTransfer itemStatusTransfer = filterItemStatus ? null : workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
+            var entityInstance = coreControl.getEntityInstanceByBasePK(item.getPrimaryKey());
+            var itemStatusTransfer = filterItemStatus ? null : workflowControl.getWorkflowEntityStatusTransferByEntityInstanceUsingNames(userVisit,
                     ItemStatusConstants.Workflow_ITEM_STATUS, entityInstance);
 
             itemTransfer = new ItemTransfer(itemName, itemTypeTransfer, itemUseTypeTransfer, itemCategoryTransfer, itemAccountingCategoryTransfer,
@@ -336,8 +309,8 @@ public class ItemTransferCache
             }
 
             if(includeItemCountryOfOrigins) {
-                List<ItemCountryOfOriginTransfer> itemCountryOfOriginTransfers = itemControl.getItemCountryOfOriginTransfersByItem(userVisit, item);
-                MapWrapper<ItemCountryOfOriginTransfer> itemCountryOfOrigins = new MapWrapper<>();
+                var itemCountryOfOriginTransfers = itemControl.getItemCountryOfOriginTransfersByItem(userVisit, item);
+                var itemCountryOfOrigins = new MapWrapper<ItemCountryOfOriginTransfer>();
 
                 itemCountryOfOriginTransfers.forEach((itemCountryOfOriginTransfer) -> {
                     itemCountryOfOrigins.put(itemCountryOfOriginTransfer.getCountryGeoCode().getGeoCodeAliases().getMap().get(GeoConstants.GeoCodeAliasType_COUNTRY_NAME).getAlias(), itemCountryOfOriginTransfer);
@@ -367,8 +340,8 @@ public class ItemTransferCache
             }
 
             if(includeRelatedItems) {
-                List<RelatedItemType> relatedItemTypes = itemControl.getRelatedItemTypes();
-                MapWrapper<ListWrapper<RelatedItemTransfer>> relatedItems = new MapWrapper<>(relatedItemTypes.size());
+                var relatedItemTypes = itemControl.getRelatedItemTypes();
+                var relatedItems = new MapWrapper<ListWrapper<RelatedItemTransfer>>(relatedItemTypes.size());
 
                 relatedItemTypes.forEach((relatedItemType) -> {
                     relatedItems.put(relatedItemType.getLastDetail().getRelatedItemTypeName(), new ListWrapper<>(itemControl.getRelatedItemTransfersByRelatedItemTypeAndFromItem(userVisit, relatedItemType, item)));

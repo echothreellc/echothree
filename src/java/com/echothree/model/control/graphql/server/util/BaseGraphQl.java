@@ -16,9 +16,15 @@
 
 package com.echothree.model.control.graphql.server.util;
 
+import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.accounting.server.entity.Currency;
+import com.echothree.model.data.party.server.entity.DateTimeFormat;
+import com.echothree.model.data.party.server.entity.Language;
+import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserSession;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 import graphql.schema.DataFetchingEnvironment;
 
 public abstract class BaseGraphQl {
@@ -43,6 +49,34 @@ public abstract class BaseGraphQl {
 
     protected static String getRemoteInet4Address(final DataFetchingEnvironment env) {
         return getGraphQlExecutionContext(env).getRemoteInet4Address();
+    }
+
+    protected static Language getLanguageEntity(final DataFetchingEnvironment env) {
+        var userControl = Session.getModelController(UserControl.class);
+
+        return userControl.getPreferredLanguageFromUserVisit(getUserVisit(env));
+    }
+
+    protected Currency getCurrencyEntity(final DataFetchingEnvironment env) {
+        var userControl = Session.getModelController(UserControl.class);
+
+        return userControl.getPreferredCurrencyFromUserVisit(getUserVisit(env));
+    }
+
+    protected TimeZone getTimeZoneEntity(final DataFetchingEnvironment env) {
+        var userControl = Session.getModelController(UserControl.class);
+
+        return userControl.getPreferredTimeZoneFromUserVisit(getUserVisit(env));
+    }
+
+    protected java.util.TimeZone getJavaTimeZone(final DataFetchingEnvironment env) {
+        return java.util.TimeZone.getTimeZone(getTimeZoneEntity(env).getLastDetail().getJavaTimeZoneName());
+    }
+
+    protected DateTimeFormat getDateTimeFormatEntity(final DataFetchingEnvironment env) {
+        var userControl = Session.getModelController(UserControl.class);
+
+        return userControl.getPreferredDateTimeFormatFromUserVisit(getUserVisit(env));
     }
 
 }
