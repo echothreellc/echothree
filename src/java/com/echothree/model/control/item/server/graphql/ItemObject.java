@@ -17,12 +17,15 @@
 package com.echothree.model.control.item.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.item.common.ItemConstants;
 import com.echothree.model.control.item.common.workflow.ItemStatusConstants;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.server.graphql.CompanyObject;
 import com.echothree.model.control.party.server.graphql.PartySecurityUtils;
 import com.echothree.model.control.workflow.server.graphql.WorkflowEntityStatusObject;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemDetail;
+import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -77,8 +80,17 @@ public class ItemObject
     @GraphQLField
     @GraphQLDescription("item price type")
     @GraphQLNonNull
-    public ItemPriceTypeObject getItemPriceType(final DataFetchingEnvironment env) {
+    public ItemPriceTypeObject getItemPriceType() {
         return new ItemPriceTypeObject(getItemDetail().getItemPriceType());
+    }
+
+    @GraphQLField
+    @GraphQLDescription("description")
+    public String getDescription(final DataFetchingEnvironment env) {
+        var itemControl = Session.getModelController(ItemControl.class);
+        var itemDescriptionType = itemControl.getItemDescriptionTypeByName(ItemConstants.ItemDescriptionType_DEFAULT_DESCRIPTION);
+
+        return itemDescriptionType == null ? null : itemControl.getBestItemStringDescription(itemDescriptionType, item, getLanguage(env));
     }
 
     @GraphQLField
