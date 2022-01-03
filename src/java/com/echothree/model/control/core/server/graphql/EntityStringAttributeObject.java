@@ -21,7 +21,6 @@ import com.echothree.control.user.party.server.command.GetLanguageCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.party.server.graphql.LanguageObject;
 import com.echothree.model.data.core.server.entity.EntityStringAttribute;
-import com.echothree.util.server.control.BaseSingleEntityCommand;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;

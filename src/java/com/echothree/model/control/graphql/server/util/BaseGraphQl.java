@@ -51,29 +51,29 @@ public abstract class BaseGraphQl {
         return getGraphQlExecutionContext(env).getRemoteInet4Address();
     }
 
-    protected static Language getLanguage(final DataFetchingEnvironment env) {
+    protected static Language getLanguageEntity(final DataFetchingEnvironment env) {
         var userControl = Session.getModelController(UserControl.class);
 
         return userControl.getPreferredLanguageFromUserVisit(getUserVisit(env));
     }
 
-    protected Currency getCurrency(final DataFetchingEnvironment env) {
+    protected Currency getCurrencyEntity(final DataFetchingEnvironment env) {
         var userControl = Session.getModelController(UserControl.class);
 
         return userControl.getPreferredCurrencyFromUserVisit(getUserVisit(env));
     }
 
-    protected TimeZone getTimeZone(final DataFetchingEnvironment env) {
+    protected TimeZone getTimeZoneEntity(final DataFetchingEnvironment env) {
         var userControl = Session.getModelController(UserControl.class);
 
         return userControl.getPreferredTimeZoneFromUserVisit(getUserVisit(env));
     }
 
     protected java.util.TimeZone getJavaTimeZone(final DataFetchingEnvironment env) {
-        return java.util.TimeZone.getTimeZone(getTimeZone(env).getLastDetail().getJavaTimeZoneName());
+        return java.util.TimeZone.getTimeZone(getTimeZoneEntity(env).getLastDetail().getJavaTimeZoneName());
     }
 
-    protected DateTimeFormat getDateTimeFormat(final DataFetchingEnvironment env) {
+    protected DateTimeFormat getDateTimeFormatEntity(final DataFetchingEnvironment env) {
         var userControl = Session.getModelController(UserControl.class);
 
         return userControl.getPreferredDateTimeFormatFromUserVisit(getUserVisit(env));

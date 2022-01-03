@@ -90,7 +90,7 @@ public class ItemObject
         var itemControl = Session.getModelController(ItemControl.class);
         var itemDescriptionType = itemControl.getItemDescriptionTypeByName(ItemConstants.ItemDescriptionType_DEFAULT_DESCRIPTION);
 
-        return itemDescriptionType == null ? null : itemControl.getBestItemStringDescription(itemDescriptionType, item, getLanguage(env));
+        return itemDescriptionType == null ? null : itemControl.getBestItemStringDescription(itemDescriptionType, item, getLanguageEntity(env));
     }
 
     @GraphQLField
