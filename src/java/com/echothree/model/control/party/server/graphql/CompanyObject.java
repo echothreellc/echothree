@@ -89,26 +89,21 @@ public class CompanyObject
 
     @GraphQLField
     @GraphQLDescription("divisions")
-    public List<DivisionObject> getDivisions(final DataFetchingEnvironment env) {
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<DivisionObject> getDivisions(final DataFetchingEnvironment env) {
         if(PartySecurityUtils.getInstance().getHasDivisionsAccess(env)) {
             var partyControl = Session.getModelController(PartyControl.class);
-            var entities = partyControl.getDivisionsByCompany(party);
+            var totalCount = partyControl.countPartyDivisions(party);
 
-            return entities.stream().map(DivisionObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+            try(var objectLimiter = new ObjectLimiter(env, ItemConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = partyControl.getDivisionsByCompany(party);
+                var divisions = entities.stream().map(DivisionObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, divisions);
+            }
         } else {
-            return null;
-        }
-    }
-
-    @GraphQLField
-    @GraphQLDescription("division count")
-    public Long getDivisionCount(final DataFetchingEnvironment env) {
-        if(PartySecurityUtils.getInstance().getHasDivisionsAccess(env)) {
-            var partyControl = Session.getModelController(PartyControl.class);
-
-            return partyControl.countPartyDivisions(party);
-        } else {
-            return null;
+            return Connections.emptyConnection();
         }
     }
 
