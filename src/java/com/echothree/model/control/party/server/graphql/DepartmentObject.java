@@ -16,6 +16,11 @@
 
 package com.echothree.model.control.party.server.graphql;
 
+import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.graphql.ItemObject;
 import com.echothree.model.control.item.server.graphql.ItemSecurityUtils;
@@ -23,6 +28,8 @@ import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.graphql.OfferObject;
 import com.echothree.model.control.offer.server.graphql.OfferSecurityUtils;
 import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.data.item.common.ItemConstants;
+import com.echothree.model.data.offer.common.OfferConstants;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyDepartment;
 import com.echothree.util.server.persistence.Session;
@@ -30,6 +37,7 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
 import java.util.List;
@@ -92,26 +100,21 @@ public class DepartmentObject
 
     @GraphQLField
     @GraphQLDescription("offers")
-    public List<OfferObject> getOffers(final DataFetchingEnvironment env) {
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<OfferObject> getOffers(final DataFetchingEnvironment env) {
         if(OfferSecurityUtils.getInstance().getHasOffersAccess(env)) {
             var offerControl = Session.getModelController(OfferControl.class);
-            var entities = offerControl.getOffersByDepartmentParty(party);
+            var totalCount = offerControl.countOffersByDepartmentParty(party);
 
-            return entities.stream().map(OfferObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+            try(var objectLimiter = new ObjectLimiter(env, OfferConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = offerControl.getOffersByDepartmentParty(party);
+                var departments = entities.stream().map(OfferObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, departments);
+            }
         } else {
-            return null;
-        }
-    }
-
-    @GraphQLField
-    @GraphQLDescription("offer count")
-    public Long getOfferCount(final DataFetchingEnvironment env) {
-        if(OfferSecurityUtils.getInstance().getHasOffersAccess(env)) {
-            var offerControl = Session.getModelController(OfferControl.class);
-
-            return offerControl.countOffersByDepartmentParty(party);
-        } else {
-            return null;
+            return Connections.emptyConnection();
         }
     }
 
