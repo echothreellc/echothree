@@ -2427,8 +2427,8 @@ public class WorkflowControl
         return getWorkflowEntrancePartyType(workflowEntrance, partyType, EntityPermission.READ_WRITE);
     }
     
-    public int countWorkflowEntrancePartyTypes(WorkflowEntrance workflowEntrance) {
-        return session.queryForInteger(
+    public long countWorkflowEntrancePartyTypes(WorkflowEntrance workflowEntrance) {
+        return session.queryForLong(
                 "SELECT COUNT(*) " +
                 "FROM workflowentrancepartytypes " +
                 "WHERE wkflenptyp_wkflen_workflowentranceid = ?",
@@ -2721,8 +2721,8 @@ public class WorkflowControl
         return getWorkflowEntranceStep(workflowEntrance, workflowStep, EntityPermission.READ_WRITE);
     }
     
-    public int countWorkflowEntranceStepsByWorkflowEntrance(WorkflowEntrance workflowEntrance) {
-        return session.queryForInteger(
+    public long countWorkflowEntranceStepsByWorkflowEntrance(WorkflowEntrance workflowEntrance) {
+        return session.queryForLong(
                 "SELECT COUNT(*) " +
                 "FROM workflowentrancesteps " +
                 "WHERE wkflens_wkflen_workflowentranceid = ? AND wkflens_thrutime = ?",
@@ -2965,8 +2965,8 @@ public class WorkflowControl
         return getWorkflowDestinationTransfers(userVisit, getWorkflowDestinationsByWorkflowStep(workflowStep));
     }
 
-    public int countWorkflowDestinationsByWorkflowStep(WorkflowStep workflowStep) {
-        return session.queryForInteger(
+    public long countWorkflowDestinationsByWorkflowStep(WorkflowStep workflowStep) {
+        return session.queryForLong(
                 "SELECT COUNT(*) " +
                 "FROM workflowdestinations, workflowdestinationdetails " +
                 "WHERE wkfldn_activedetailid = wkfldndt_workflowdestinationdetailid AND wkfldndt_wkfls_workflowstepid = ?",
@@ -3506,8 +3506,8 @@ public class WorkflowControl
         return getWorkflowDestinationPartyType(workflowDestination, partyType, EntityPermission.READ_WRITE);
     }
     
-    public int countWorkflowDestinationPartyTypes(WorkflowDestination workflowDestination) {
-        return session.queryForInteger(
+    public long countWorkflowDestinationPartyTypes(WorkflowDestination workflowDestination) {
+        return session.queryForLong(
                 "SELECT COUNT(*) " +
                 "FROM workflowdestinationpartytypes " +
                 "WHERE wkfldnptyp_wkfldn_workflowdestinationid = ?",

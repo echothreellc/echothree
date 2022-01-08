@@ -23,8 +23,8 @@ import java.util.List;
 public interface GetSecurityRoleGroupResultsResult
         extends BaseResult {
     
-    Integer getSecurityRoleGroupResultCount();
-    void setSecurityRoleGroupResultCount(Integer securityRoleGroupResultCount);
+    Long getSecurityRoleGroupResultCount();
+    void setSecurityRoleGroupResultCount(Long securityRoleGroupResultCount);
 
     List<SecurityRoleGroupResultTransfer> getSecurityRoleGroupResults();
     void setSecurityRoleGroupResults(List<SecurityRoleGroupResultTransfer> securityRoleGroupResults);

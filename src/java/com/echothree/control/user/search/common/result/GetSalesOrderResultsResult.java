@@ -23,8 +23,8 @@ import java.util.List;
 public interface GetSalesOrderResultsResult
         extends BaseResult {
     
-    Integer getSalesOrderResultCount();
-    void setSalesOrderResultCount(Integer salesOrderResultCount);
+    Long getSalesOrderResultCount();
+    void setSalesOrderResultCount(Long salesOrderResultCount);
 
     List<SalesOrderResultTransfer> getSalesOrderResults();
     void setSalesOrderResults(List<SalesOrderResultTransfer> salesOrderResults);

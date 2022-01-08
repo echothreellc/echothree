@@ -23,8 +23,8 @@ import java.util.List;
 public interface GetOfferResultsResult
         extends BaseResult {
     
-    Integer getOfferResultCount();
-    void setOfferResultCount(Integer offerResultCount);
+    Long getOfferResultCount();
+    void setOfferResultCount(Long offerResultCount);
 
     List<OfferResultTransfer> getOfferResults();
     void setOfferResults(List<OfferResultTransfer> offerResults);

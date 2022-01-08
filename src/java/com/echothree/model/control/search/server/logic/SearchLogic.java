@@ -234,10 +234,10 @@ public class SearchLogic
         }
     }
     
-    public Integer countSearchResults(final Search search) {
+    public Long countSearchResults(final Search search) {
         var searchControl = Session.getModelController(SearchControl.class);
         CachedSearch cachedSearch = search.getCachedSearch();
-        int count;
+        long count;
         
         if(cachedSearch == null) {
             count = searchControl.countSearchResults(search);
@@ -250,10 +250,10 @@ public class SearchLogic
         return count;
     }
     
-    public Integer countUserVisitSearchResults(final ExecutionErrorAccumulator eea, final UserVisit userVisit, final String searchKindName,
+    public Long countUserVisitSearchResults(final ExecutionErrorAccumulator eea, final UserVisit userVisit, final String searchKindName,
             final String searchTypeName) {
         UserVisitSearch userVisitSearch = getUserVisitSearchByName(eea, userVisit, searchKindName, searchTypeName);
-        Integer count = hasExecutionErrors(eea) ? null : countSearchResults(userVisitSearch.getSearch());
+        Long count = hasExecutionErrors(eea) ? null : countSearchResults(userVisitSearch.getSearch());
 
         return count;
     }

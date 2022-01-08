@@ -56,6 +56,7 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.ThreadSession;
+import static java.lang.Math.toIntExact;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -105,11 +106,11 @@ public class UpdateIndexesCommand
     
     private void setupIndexers(final IndexControl indexControl, final Map<EntityType, List<BaseIndexer>> indexersMap, final EntityType entityType) {
         List<IndexType> indexTypes = indexControl.getIndexTypesByEntityType(entityType);
-        int size = 0;
+        long size = 0;
 
-        size = indexTypes.stream().map((indexType) -> indexControl.countIndexesByIndexType(indexType)).reduce(size, Integer::sum);
+        size = indexTypes.stream().map((indexType) -> indexControl.countIndexesByIndexType(indexType)).reduce(size, Long::sum);
 
-        List<BaseIndexer> indexers = new ArrayList<>(size);
+        List<BaseIndexer> indexers = new ArrayList<>(toIntExact(size));
 
         indexTypes.forEach((indexType) -> {
             List<Index> indexes = indexControl.getIndexesByIndexType(indexType);
@@ -239,7 +240,7 @@ public class UpdateIndexesCommand
             // If there isn't anything in the queue, skip over all of this.
             if(!indexingComplete) {
                 var indexControl = Session.getModelController(IndexControl.class);
-                Map<EntityType, List<BaseIndexer>> indexersMap = new HashMap<>(indexControl.countIndexes());
+                Map<EntityType, List<BaseIndexer>> indexersMap = new HashMap<>(toIntExact(indexControl.countIndexes()));
 
                 try {
                     long exitTime = session.START_TIME + MAXIMUM_MILLISECONDS;

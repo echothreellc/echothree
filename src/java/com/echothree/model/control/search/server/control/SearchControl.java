@@ -167,6 +167,7 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import static java.lang.Math.toIntExact;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -3877,8 +3878,8 @@ public class SearchControl
         return getSearchResultsBySearch(search, EntityPermission.READ_WRITE);
     }
     
-    public int countSearchResults(Search search) {
-        return session.queryForInteger(
+    public long countSearchResults(Search search) {
+        return session.queryForLong(
                 "SELECT COUNT(*) " +
                 "FROM searchresults " +
                 "WHERE srchr_srch_searchid = ?",
@@ -4320,8 +4321,8 @@ public class SearchControl
         return getCachedExecutedSearchResultsByCachedExecutedSearch(cachedExecutedSearch, EntityPermission.READ_WRITE);
     }
     
-    public int countCachedExecutedSearchResults(CachedExecutedSearch cachedExecutedSearch) {
-        return session.queryForInteger(
+    public long countCachedExecutedSearchResults(CachedExecutedSearch cachedExecutedSearch) {
+        return session.queryForLong(
                 "SELECT COUNT(*) "
                 + "FROM cachedexecutedsearchresults "
                 + "WHERE cxsrchr_cxsrch_cachedexecutedsearchid = ?",
@@ -4886,10 +4887,10 @@ public class SearchControl
     }
 
     // Takes into account if it's a Search or CachedSearch.
-    public int countSearchResults(final UserVisitSearch userVisitSearch) {
+    public long countSearchResults(final UserVisitSearch userVisitSearch) {
         var search = userVisitSearch.getSearch();
         var cachedSearch = search.getCachedSearch();
-        int count;
+        long count;
 
         if(cachedSearch == null) {
             count = countSearchResults(search);
@@ -4903,7 +4904,7 @@ public class SearchControl
     }
 
     public List<EntityInstance> getUserVisitSearchEntityInstances(final UserVisitSearch userVisitSearch) {
-        var entityInstances = new ArrayList<EntityInstance>(countSearchResults(userVisitSearch));
+        var entityInstances = new ArrayList<EntityInstance>(toIntExact(countSearchResults(userVisitSearch)));
 
         // If this is a CachedSearch, then the Limits supplied by the user need to be copied
         // from SearchResults to CachedExecutedSearchResults.

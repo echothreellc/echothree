@@ -23,8 +23,8 @@ import java.util.List;
 public interface GetEntityTypeResultsResult
         extends BaseResult {
     
-    Integer getEntityTypeResultCount();
-    void setEntityTypeResultCount(Integer entityTypeResultCount);
+    Long getEntityTypeResultCount();
+    void setEntityTypeResultCount(Long entityTypeResultCount);
 
     List<EntityTypeResultTransfer> getEntityTypeResults();
     void setEntityTypeResults(List<EntityTypeResultTransfer> entityTypeResults);

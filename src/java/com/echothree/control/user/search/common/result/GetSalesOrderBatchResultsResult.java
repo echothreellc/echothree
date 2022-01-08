@@ -23,8 +23,8 @@ import java.util.List;
 public interface GetSalesOrderBatchResultsResult
         extends BaseResult {
     
-    Integer getSalesOrderBatchResultCount();
-    void setSalesOrderBatchResultCount(Integer salesOrderBatchResultCount);
+    Long getSalesOrderBatchResultCount();
+    void setSalesOrderBatchResultCount(Long salesOrderBatchResultCount);
 
     List<SalesOrderBatchResultTransfer> getSalesOrderBatchResults();
     void setSalesOrderBatchResults(List<SalesOrderBatchResultTransfer> salesOrderBatchResults);
