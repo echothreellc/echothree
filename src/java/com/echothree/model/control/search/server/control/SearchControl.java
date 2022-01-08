@@ -3840,7 +3840,7 @@ public class SearchControl
     }
     
     public boolean searchResultExists(Search search, EntityInstance entityInstance) {
-        return session.queryForInteger(
+        return session.queryForLong(
                 "SELECT COUNT(*) " +
                 "FROM searchresults " +
                 "WHERE srchr_srch_searchid = ? AND srchr_eni_entityinstanceid = ?",
@@ -4283,7 +4283,7 @@ public class SearchControl
     }
     
     public boolean cachedExecutedSearchResultExists(CachedExecutedSearch cachedExecutedSearch, EntityInstance entityInstance) {
-        return session.queryForInteger(
+        return session.queryForLong(
                 "SELECT COUNT(*) " +
                 "FROM cachedexecutedsearchresults " +
                 "WHERE cxsrchr_cxsrch_cachedexecutedsearchid = ? AND cxsrchr_eni_entityinstanceid = ?",
@@ -4740,7 +4740,7 @@ public class SearchControl
     }
     
     public boolean searchResultActionExists(Search search, SearchResultActionType searchResultActionType, EntityInstance entityInstance) {
-        return session.queryForInteger(
+        return session.queryForLong(
                 "SELECT COUNT(*) "
                 + "FROM searchresultactions "
                 + "WHERE srchract_srch_searchid = ? AND srchract_srchracttyp_searchresultactiontypeid = ? AND srchract_eni_entityinstanceid = ? "

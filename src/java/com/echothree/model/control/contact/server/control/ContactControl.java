@@ -3296,7 +3296,7 @@ public class ContactControl
     }
     
     public boolean partyContactMechanismRelationshipExists(PartyContactMechanism fromPartyContactMechanism, PartyContactMechanism toPartyContactMechanism) {
-        return session.queryForInteger(
+        return session.queryForLong(
                 "SELECT COUNT(*) "
                 + "FROM partycontactmechanismrelationships "
                 + "WHERE pcmr_frompartycontactmechanismid = ? AND pcmr_topartycontactmechanismid = ? AND pcmr_thrutime = ?",

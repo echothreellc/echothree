@@ -3134,7 +3134,7 @@ public class InvoiceControl
     }
     
     public boolean invoiceLineExists(Invoice invoice, Integer invoiceLineSequence) {
-        return session.queryForInteger(
+        return session.queryForLong(
                 "SELECT COUNT(*) " +
                 "FROM invoicelines, invoicelinedetails " +
                 "WHERE invcl_activedetailid = invcldt_invoicelinedetailid AND invcldt_invc_invoiceid = ? AND invcldt_invoicelinesequence = ?",

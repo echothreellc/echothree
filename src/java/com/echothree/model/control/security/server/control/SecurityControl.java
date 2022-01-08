@@ -2327,7 +2327,7 @@ public class SecurityControl
     }
     
     public boolean partySecurityRoleExists(PartyPK partyPK, SecurityRolePK securityRolePK) {
-        return session.queryForInteger(
+        return session.queryForLong(
                 "SELECT COUNT(*) " +
                 "FROM partysecurityroles " +
                 "WHERE psrol_par_partyid = ? AND psrol_srol_securityroleid = ? AND psrol_thrutime = ?",
@@ -2473,7 +2473,7 @@ public class SecurityControl
     }
     
     public boolean partyEntitySecurityRoleExists(PartyPK partyPK, EntityInstance entityInstancePK, SecurityRolePK securityRolePK) {
-        return session.queryForInteger(
+        return session.queryForLong(
                 "SELECT COUNT(*) " +
                 "FROM partyentitysecurityroles " +
                 "WHERE pensrol_par_partyid = ? AND pensrol_eni_entityinstanceid = ? AND pensrol_srol_securityroleid = ? AND pensrol_thrutime = ?",
