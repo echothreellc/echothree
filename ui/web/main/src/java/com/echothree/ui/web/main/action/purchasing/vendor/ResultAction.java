@@ -85,7 +85,7 @@ public class ResultAction
             ExecutionResult executionResult = commandResult.getExecutionResult();
             GetVendorResultsResult result = (GetVendorResultsResult)executionResult.getResult();
 
-            Integer vendorResultCount = result.getVendorResultCount();
+            var vendorResultCount = result.getVendorResultCount();
             if(vendorResultCount != null) {
                 request.setAttribute(AttributeConstants.VENDOR_RESULT_COUNT, vendorResultCount);
             }

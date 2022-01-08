@@ -104,7 +104,7 @@ public class ResultAction
             ExecutionResult executionResult = commandResult.getExecutionResult();
             GetHarmonizedTariffScheduleCodeResultsResult result = (GetHarmonizedTariffScheduleCodeResultsResult)executionResult.getResult();
 
-            Integer harmonizedTariffScheduleCodeResultCount = result.getHarmonizedTariffScheduleCodeResultCount();
+            var harmonizedTariffScheduleCodeResultCount = result.getHarmonizedTariffScheduleCodeResultCount();
             if(harmonizedTariffScheduleCodeResultCount != null) {
                 request.setAttribute(AttributeConstants.HARMONIZED_TARIFF_SCHEDULE_CODE_RESULT_COUNT, harmonizedTariffScheduleCodeResultCount);
             }

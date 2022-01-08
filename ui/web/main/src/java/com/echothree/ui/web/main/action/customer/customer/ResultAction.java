@@ -89,7 +89,7 @@ public class ResultAction
             ExecutionResult executionResult = commandResult.getExecutionResult();
             GetCustomerResultsResult result = (GetCustomerResultsResult)executionResult.getResult();
 
-            Integer customerResultCount = result.getCustomerResultCount();
+            var customerResultCount = result.getCustomerResultCount();
             if(customerResultCount != null) {
                 request.setAttribute(AttributeConstants.CUSTOMER_RESULT_COUNT, customerResultCount);
             }

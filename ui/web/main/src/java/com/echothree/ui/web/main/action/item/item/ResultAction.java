@@ -89,7 +89,7 @@ public class ResultAction
             ExecutionResult executionResult = commandResult.getExecutionResult();
             GetItemResultsResult result = (GetItemResultsResult)executionResult.getResult();
 
-            Integer itemResultCount = result.getItemResultCount();
+            var itemResultCount = result.getItemResultCount();
             if(itemResultCount != null) {
                 request.setAttribute(AttributeConstants.ITEM_RESULT_COUNT, itemResultCount);
             }

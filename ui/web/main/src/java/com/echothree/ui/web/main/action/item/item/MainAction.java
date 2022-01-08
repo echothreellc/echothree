@@ -109,7 +109,7 @@ public class MainAction
             } else {
                 ExecutionResult executionResult = commandResult.getExecutionResult();
                 SearchItemsResult result = (SearchItemsResult)executionResult.getResult();
-                int count = result.getCount();
+                var count = result.getCount();
 
                 if(count == 0 || count > 1) {
                     forwardKey = ForwardConstants.DISPLAY;

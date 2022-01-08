@@ -85,7 +85,7 @@ public class ResultAction
             ExecutionResult executionResult = commandResult.getExecutionResult();
             GetSalesOrderBatchResultsResult result = (GetSalesOrderBatchResultsResult)executionResult.getResult();
 
-            Integer salesOrderBatchResultCount = result.getSalesOrderBatchResultCount();
+            var salesOrderBatchResultCount = result.getSalesOrderBatchResultCount();
             if(salesOrderBatchResultCount != null) {
                 request.setAttribute(AttributeConstants.SALES_ORDER_BATCH_RESULT_COUNT, salesOrderBatchResultCount);
             }

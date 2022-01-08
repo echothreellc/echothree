@@ -118,7 +118,7 @@ public class MainAction
             } else {
                 ExecutionResult executionResult = commandResult.getExecutionResult();
                 SearchCustomersResult result = (SearchCustomersResult)executionResult.getResult();
-                int count = result.getCount();
+                var count = result.getCount();
 
                 if(count == 0 || count > 1) {
                     forwardKey = ForwardConstants.DISPLAY;

@@ -85,7 +85,7 @@ public class ResultAction
             ExecutionResult executionResult = commandResult.getExecutionResult();
             GetLeaveResultsResult result = (GetLeaveResultsResult)executionResult.getResult();
 
-            Integer leaveResultCount = result.getLeaveResultCount();
+            var leaveResultCount = result.getLeaveResultCount();
             if(leaveResultCount != null) {
                 request.setAttribute(AttributeConstants.LEAVE_RESULT_COUNT, leaveResultCount);
             }

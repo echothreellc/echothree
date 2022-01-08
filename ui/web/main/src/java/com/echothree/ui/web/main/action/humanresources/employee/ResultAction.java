@@ -87,7 +87,7 @@ public class ResultAction
             ExecutionResult executionResult = commandResult.getExecutionResult();
             GetEmployeeResultsResult result = (GetEmployeeResultsResult)executionResult.getResult();
 
-            Integer employeeResultCount = result.getEmployeeResultCount();
+            var employeeResultCount = result.getEmployeeResultCount();
             if(employeeResultCount != null) {
                 request.setAttribute(AttributeConstants.EMPLOYEE_RESULT_COUNT, employeeResultCount);
             }
