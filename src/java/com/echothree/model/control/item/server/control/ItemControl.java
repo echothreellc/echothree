@@ -5692,7 +5692,7 @@ public class ItemControl
         return getItemTransferCaches(userVisit).getItemPriceTransferCache().getTransfer(itemPrice);
     }
     
-    private List<ItemPriceTransfer> getItemPriceTransfers(UserVisit userVisit, List<ItemPrice> itemPrices) {
+    public List<ItemPriceTransfer> getItemPriceTransfers(UserVisit userVisit, Collection<ItemPrice> itemPrices) {
         List<ItemPriceTransfer> itemPriceTransfers = new ArrayList<>(itemPrices.size());
         ItemPriceTransferCache itemPriceTransferCache = getItemTransferCaches(userVisit).getItemPriceTransferCache();
         

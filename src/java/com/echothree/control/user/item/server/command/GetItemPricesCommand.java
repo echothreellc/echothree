@@ -17,26 +17,30 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.GetItemPricesForm;
-import com.echothree.control.user.item.common.result.GetItemPricesResult;
+import com.echothree.control.user.item.common.result.GetItemCategoriesResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.data.item.server.entity.Item;
+import com.echothree.model.data.item.server.entity.ItemCategory;
+import com.echothree.model.data.item.server.entity.ItemPrice;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class GetItemPricesCommand
-        extends BaseSimpleCommand<GetItemPricesForm> {
-    
+        extends BaseMultipleEntitiesCommand<ItemPrice, GetItemPricesForm> {
+
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
@@ -49,26 +53,36 @@ public class GetItemPricesCommand
     public GetItemPricesCommand(UserVisitPK userVisitPK, GetItemPricesForm form) {
         super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    Item item;
+
     @Override
-    protected BaseResult execute() {
+    protected Collection<ItemPrice> getEntities() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetItemPricesResult result = ItemResultFactory.getGetItemPricesResult();
-        String itemName = form.getItemName();
-        Item item = itemControl.getItemByName(itemName);
-        
-        if(item != null) {
-            UserVisit userVisit = getUserVisit();
-            
-            result.setItem(itemControl.getItemTransfer(userVisit, item));
-            result.setItemPrices(itemControl.getItemPriceTransfersByItem(userVisit, item));
-            
-            sendEventUsingNames(item.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownItemName.name(), itemName);
+        Collection<ItemPrice> itemPrices = null;
+
+        item = ItemLogic.getInstance().getItemByName(this, form.getItemName());
+
+        if(!hasExecutionErrors()) {
+            itemPrices = itemControl.getItemPricesByItem(item);
         }
-        
+
+        return itemPrices;
+    }
+
+    @Override
+    protected BaseResult getTransfers(Collection<ItemPrice> entities) {
+        var result = ItemResultFactory.getGetItemPricesResult();
+
+        if(entities != null) {
+            var itemControl = Session.getModelController(ItemControl.class);
+            var userVisit = getUserVisit();
+
+            result.setItem(itemControl.getItemTransfer(userVisit, item));
+            result.setItemPrices(itemControl.getItemPriceTransfers(userVisit, entities));
+        }
+
         return result;
     }
-    
+
 }
