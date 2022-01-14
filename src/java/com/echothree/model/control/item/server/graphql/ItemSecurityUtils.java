@@ -18,6 +18,8 @@ package com.echothree.model.control.item.server.graphql;
 
 import com.echothree.control.user.item.server.command.GetItemCategoryCommand;
 import com.echothree.control.user.item.server.command.GetItemCommand;
+import com.echothree.control.user.item.server.command.GetItemPriceCommand;
+import com.echothree.control.user.item.server.command.GetItemPricesCommand;
 import com.echothree.control.user.item.server.command.GetItemsCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
@@ -39,6 +41,14 @@ public final class ItemSecurityUtils
 
     public boolean getHasItemsAccess(final DataFetchingEnvironment env) {
         return getGraphQlExecutionContext(env).hasAccess(GetItemsCommand.class);
+    }
+
+    public boolean getHasItemPriceAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetItemPriceCommand.class);
+    }
+
+    public boolean getHasItemPricesAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetItemPricesCommand.class);
     }
 
     public boolean getHasItemCategoryAccess(final DataFetchingEnvironment env) {

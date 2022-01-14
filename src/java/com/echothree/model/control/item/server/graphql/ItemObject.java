@@ -98,7 +98,7 @@ public class ItemObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<ItemPriceObject> getItemPrices(final DataFetchingEnvironment env) {
-//        if(ItemSecurityUtils.getInstance().getHasItemPricesAccess(env)) {
+        if(ItemSecurityUtils.getInstance().getHasItemPricesAccess(env)) {
             var itemControl = Session.getModelController(ItemControl.class);
             var totalCount = itemControl.countItemPricesByItem(item);
 
@@ -108,9 +108,9 @@ public class ItemObject
 
                 return new CountedObjects<>(objectLimiter, itemPrices);
             }
-//        } else {
-//            return Connections.emptyConnection();
-//        }
+        } else {
+            return Connections.emptyConnection();
+        }
     }
 
     @GraphQLField
