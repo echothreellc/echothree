@@ -17,37 +17,30 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.GetItemPriceForm;
-import com.echothree.control.user.item.common.result.GetItemPriceResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
-import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.accounting.server.logic.CurrencyLogic;
+import com.echothree.model.control.inventory.server.logic.InventoryConditionLogic;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
-import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.inventory.server.entity.InventoryCondition;
-import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.item.server.entity.ItemDetail;
+import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
 import com.echothree.model.data.item.server.entity.ItemPrice;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class GetItemPriceCommand
-        extends BaseSimpleCommand<GetItemPriceForm> {
-    
+        extends BaseSingleEntityCommand<ItemPrice, GetItemPriceForm> {
+
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
@@ -71,59 +64,50 @@ public class GetItemPriceCommand
         return Boolean.parseBoolean(form.getIncludeHistory()) ? SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, getParty(),
                 SecurityRoleGroups.ItemPrice.name(), SecurityRoles.History.name()) : true;
     }
-    
+
     @Override
-    protected BaseResult execute() {
+    protected ItemPrice getEntity() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetItemPriceResult result = ItemResultFactory.getGetItemPriceResult();
-        String itemName = form.getItemName();
-        Item item = itemControl.getItemByName(itemName);
-        
-        if(item != null) {
-            var inventoryControl = Session.getModelController(InventoryControl.class);
-            String inventoryConditionName = form.getInventoryConditionName();
-            InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
-            
-            if(inventoryCondition != null) {
-                var uomControl = Session.getModelController(UomControl.class);
-                String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
-                ItemDetail itemDetail = item.getLastDetail();
-                UnitOfMeasureKind unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();
-                UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
-                
-                if(unitOfMeasureType != null) {
-                    var accountingControl = Session.getModelController(AccountingControl.class);
-                    String currencyIsoName = form.getCurrencyIsoName();
-                    Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
-                    
-                    if(currency != null) {
-                        ItemPrice itemPrice = itemControl.getItemPrice(item, inventoryCondition, unitOfMeasureType, currency);
-                        
-                        if(itemPrice != null) {
-                            UserVisit userVisit = getUserVisit();
+        var item = ItemLogic.getInstance().getItemByName(this, form.getItemName());
+        var inventoryCondition = InventoryConditionLogic.getInstance().getInventoryConditionByName(this, form.getInventoryConditionName());
+        var currency = CurrencyLogic.getInstance().getCurrencyByName(this, form.getCurrencyIsoName());
+        ItemPrice itemPrice = null;
 
-                            result.setItemPrice(itemControl.getItemPriceTransfer(userVisit, itemPrice));
+        if(!hasExecutionErrors()) {
+            var unitOfMeasureType = UnitOfMeasureTypeLogic.getInstance().getUnitOfMeasureTypeByName(this, item.getLastDetail().getUnitOfMeasureKind(), form.getUnitOfMeasureTypeName());
 
-                            if(Boolean.parseBoolean(form.getIncludeHistory())) {
-                                result.setHistory(itemControl.getItemPriceHistory(userVisit, itemPrice));
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownItemPrice.name(), itemName, inventoryConditionName, unitOfMeasureTypeName, currencyIsoName);
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownCurrencyIsoName.name(), currencyIsoName);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownUnitOfMeasureTypeName.name(), unitOfMeasureKind.getLastDetail().getUnitOfMeasureKindName(), unitOfMeasureTypeName);
+            if(!hasExecutionErrors()) {
+                itemPrice = itemControl.getItemPrice(item, inventoryCondition, unitOfMeasureType, currency);
+
+                if(itemPrice == null) {
+                    addExecutionError(ExecutionErrors.UnknownItemPrice.name(), item.getLastDetail().getItemName(),
+                            inventoryCondition.getLastDetail().getInventoryConditionName(),
+                            unitOfMeasureType.getLastDetail().getUnitOfMeasureTypeName(), currency.getCurrencyIsoName());
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownInventoryConditionName.name(), inventoryConditionName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownItemName.name(), itemName);
+
         }
-        
+
+        return itemPrice;
+    }
+
+    @Override
+    protected BaseResult getTransfer(ItemPrice entity) {
+        var result = ItemResultFactory.getGetItemPriceResult();
+
+        if(entity != null) {
+            var itemControl = Session.getModelController(ItemControl.class);
+
+            var userVisit = getUserVisit();
+
+            result.setItemPrice(itemControl.getItemPriceTransfer(userVisit, entity));
+
+            if(Boolean.parseBoolean(form.getIncludeHistory())) {
+                result.setHistory(itemControl.getItemPriceHistory(userVisit, entity));
+            }
+        }
+
         return result;
     }
-    
+
 }
