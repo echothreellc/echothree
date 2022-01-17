@@ -22,12 +22,9 @@ import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
-import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.graphql.ItemObject;
-import com.echothree.model.control.item.server.graphql.ItemPriceObject;
 import com.echothree.model.control.item.server.graphql.ItemSecurityUtils;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
-import com.echothree.model.data.item.common.ItemPriceConstants;
 import com.echothree.model.data.offer.common.OfferItemPriceConstants;
 import com.echothree.model.data.offer.server.entity.OfferItem;
 import com.echothree.util.server.persistence.Session;
@@ -65,24 +62,24 @@ public class OfferItemObject
         return ItemSecurityUtils.getInstance().getHasItemAccess(env) ? new ItemObject(offerItem.getItem()) : null;
     }
 
-//    @GraphQLField
-//    @GraphQLDescription("offer item prices")
-//    @GraphQLNonNull
-//    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-//    public CountingPaginatedData<OfferItemPriceObject> getOfferItemPrices(final DataFetchingEnvironment env) {
-//        if(OfferSecurityUtils.getInstance().getHasOfferItemPricesAccess(env)) {
-//            var offerItemControl = Session.getModelController(OfferItemControl.class);
-//            var totalCount = offerItemControl.countOfferItemPricesByOfferItem(offerItem);
-//
-//            try(var objectLimiter = new ObjectLimiter(env, OfferItemPriceConstants.ENTITY_TYPE_NAME, totalCount)) {
-//                var entities = offerItemControl.getOfferItemPricesByOfferItem(offerItem);
-//                var offerItemPrices = entities.stream().map(OfferItemPriceObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
-//
-//                return new CountedObjects<>(objectLimiter, offerItemPrices);
-//            }
-//        } else {
-//            return Connections.emptyConnection();
-//        }
-//    }
+    @GraphQLField
+    @GraphQLDescription("offer item prices")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<OfferItemPriceObject> getOfferItemPrices(final DataFetchingEnvironment env) {
+        if(OfferSecurityUtils.getInstance().getHasOfferItemPricesAccess(env)) {
+            var offerItemControl = Session.getModelController(OfferItemControl.class);
+            var totalCount = offerItemControl.countOfferItemPricesByOfferItem(offerItem);
+
+            try(var objectLimiter = new ObjectLimiter(env, OfferItemPriceConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = offerItemControl.getOfferItemPricesByOfferItem(offerItem);
+                var offerItemPrices = entities.stream().map(OfferItemPriceObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, offerItemPrices);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
 
 }

@@ -115,6 +115,8 @@ import com.echothree.control.user.item.server.command.GetItemsCommand;
 import com.echothree.control.user.offer.common.OfferUtil;
 import com.echothree.control.user.offer.server.command.GetOfferCommand;
 import com.echothree.control.user.offer.server.command.GetOfferItemCommand;
+import com.echothree.control.user.offer.server.command.GetOfferItemPriceCommand;
+import com.echothree.control.user.offer.server.command.GetOfferItemPricesCommand;
 import com.echothree.control.user.offer.server.command.GetOfferItemsCommand;
 import com.echothree.control.user.offer.server.command.GetOfferNameElementCommand;
 import com.echothree.control.user.offer.server.command.GetOfferNameElementsCommand;
@@ -266,6 +268,7 @@ import com.echothree.model.control.item.server.graphql.ItemCategoryObject;
 import com.echothree.model.control.item.server.graphql.ItemObject;
 import com.echothree.model.control.item.server.graphql.ItemPriceObject;
 import com.echothree.model.control.offer.server.graphql.OfferItemObject;
+import com.echothree.model.control.offer.server.graphql.OfferItemPriceObject;
 import com.echothree.model.control.offer.server.graphql.OfferNameElementObject;
 import com.echothree.model.control.offer.server.graphql.OfferObject;
 import com.echothree.model.control.offer.server.graphql.OfferUseObject;
@@ -364,6 +367,7 @@ import com.echothree.model.data.item.server.entity.ItemCategory;
 import com.echothree.model.data.item.server.entity.ItemPrice;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferItem;
+import com.echothree.model.data.offer.server.entity.OfferItemPrice;
 import com.echothree.model.data.offer.server.entity.OfferNameElement;
 import com.echothree.model.data.offer.server.entity.OfferUse;
 import com.echothree.model.data.offer.server.entity.Use;
@@ -1720,6 +1724,65 @@ public final class GraphQlQueries
         }
 
         return offerItemObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("offerItemPrice")
+    public static OfferItemPriceObject offerItemPrice(final DataFetchingEnvironment env,
+            @GraphQLName("offerName") @GraphQLNonNull final String offerName,
+            @GraphQLName("itemName") @GraphQLNonNull final String itemName,
+            @GraphQLName("inventoryConditionName") @GraphQLNonNull final String inventoryConditionName,
+            @GraphQLName("unitOfMeasureTypeName") @GraphQLNonNull final String unitOfMeasureTypeName,
+            @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName) {
+        OfferItemPrice offerItemPrice;
+
+        try {
+            var commandForm = OfferUtil.getHome().getGetOfferItemPriceForm();
+
+            commandForm.setOfferName(offerName);
+            commandForm.setItemName(itemName);
+            commandForm.setInventoryConditionName(inventoryConditionName);
+            commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
+            commandForm.setCurrencyIsoName(currencyIsoName);
+
+            offerItemPrice = new GetOfferItemPriceCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return offerItemPrice == null ? null : new OfferItemPriceObject(offerItemPrice);
+    }
+
+    @GraphQLField
+    @GraphQLName("offerItemPrices")
+    public static Collection<OfferItemPriceObject> offerItemPrices(final DataFetchingEnvironment env,
+            @GraphQLName("offerName") @GraphQLNonNull final String offerName,
+            @GraphQLName("itemName") @GraphQLNonNull final String itemName) {
+        Collection<OfferItemPrice> offerItemPrice;
+        Collection<OfferItemPriceObject> offerItemPriceObjects;
+
+        try {
+            var commandForm = OfferUtil.getHome().getGetOfferItemPricesForm();
+
+            commandForm.setOfferName(offerName);
+            commandForm.setItemName(itemName);
+
+            offerItemPrice = new GetOfferItemPricesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(offerItemPrice == null) {
+            offerItemPriceObjects = emptyList();
+        } else {
+            offerItemPriceObjects = new ArrayList<>(offerItemPrice.size());
+
+            offerItemPrice.stream()
+                    .map(OfferItemPriceObject::new)
+                    .forEachOrdered(offerItemPriceObjects::add);
+        }
+
+        return offerItemPriceObjects;
     }
 
     @GraphQLField
