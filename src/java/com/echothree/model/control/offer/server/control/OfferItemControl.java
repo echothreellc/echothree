@@ -235,6 +235,47 @@ public class OfferItemControl
         return offerItemPrice;
     }
 
+    public long countOfferItemPricesByItem(Item item) {
+        return session.queryForLong(
+                "SELECT COUNT(*) "
+                        + "FROM offeritems, offeritemprices "
+                        + "WHERE ofri_itm_itemid = ? AND ofri_thrutime = ? "
+                        + "AND ofri_offeritemid = ofritmp_ofri_offeritemid AND ofritmp_thrutime = ?",
+                item, Session.MAX_TIME, Session.MAX_TIME);
+    }
+
+    public long countOfferItemPricesByOfferItem(OfferItem offerItem) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM offeritemprices
+                WHERE ofritmp_ofri_offeritemid = ? AND ofritmp_thrutime = ?""",
+                offerItem, Session.MAX_TIME);
+    }
+
+    public long countOfferItemPricesByInventoryCondition(InventoryCondition inventoryCondition) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM offeritemprices
+                WHERE ofritmp_invcon_inventoryconditionid = ? AND ofritmp_thrutime = ?""",
+                inventoryCondition, Session.MAX_TIME);
+    }
+
+    public long countOfferItemPricesByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM itempofferitempricesrices
+                WHERE ofritmp_uomt_unitofmeasuretypeid = ? AND ofritmp_thrutime = ?""",
+                unitOfMeasureType, Session.MAX_TIME);
+    }
+
+    public long countOfferItemPricesByCurrency(Currency currency) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM offeritemprices
+                WHERE ofritmp_cur_currencyid = ? AND ofritmp_thrutime = ?""",
+                currency, Session.MAX_TIME);
+    }
+
     private static final Map<EntityPermission, String> getOfferItemPricesByOfferItemQueries1;
 
     static {
@@ -243,7 +284,8 @@ public class OfferItemControl
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ "
                         + "FROM offeritemprices "
-                        + "WHERE ofritmp_ofri_offeritemid = ? AND ofritmp_thrutime = ?");
+                        + "WHERE ofritmp_ofri_offeritemid = ? AND ofritmp_thrutime = ? " +
+                        "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                         + "FROM offeritemprices "
@@ -274,7 +316,8 @@ public class OfferItemControl
                 "SELECT _ALL_ "
                         + "FROM offeritems, offeritemprices "
                         + "WHERE ofri_itm_itemid = ? AND ofri_thrutime = ? "
-                        + "AND ofri_offeritemid = ofritmp_ofri_offeritemid AND ofritmp_uomt_unitofmeasuretypeid = ? AND ofritmp_thrutime = ?");
+                        + "AND ofri_offeritemid = ofritmp_ofri_offeritemid AND ofritmp_uomt_unitofmeasuretypeid = ? AND ofritmp_thrutime = ? "
+                        + "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                         + "FROM offeritems, offeritemprices "
@@ -306,7 +349,8 @@ public class OfferItemControl
                 "SELECT _ALL_ "
                         + "FROM offeritemprices "
                         + "WHERE ofritmp_ofri_offeritemid = ? AND ofritmp_invcon_inventoryconditionid = ? "
-                        + "AND ofritmp_uomt_unitofmeasuretypeid = ? AND ofritmp_thrutime = ?");
+                        + "AND ofritmp_uomt_unitofmeasuretypeid = ? AND ofritmp_thrutime = ? "
+                        + "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                         + "FROM offeritemprices "
@@ -340,7 +384,8 @@ public class OfferItemControl
                         + "FROM offeritems, offeritemprices "
                         + "WHERE ofri_itm_itemid = ? AND ofri_thrutime = ? AND ofri_offeritemid = ofritmp_ofri_offeritemid "
                         + "AND ofritmp_invcon_inventoryconditionid = ? AND ofritmp_uomt_unitofmeasuretypeid = ? "
-                        + "AND ofritmp_cur_currencyid = ? AND ofritmp_thrutime = ?");
+                        + "AND ofritmp_cur_currencyid = ? AND ofritmp_thrutime = ? "
+                        + "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                         + "FROM offeritems, offeritemprices "
@@ -400,15 +445,6 @@ public class OfferItemControl
     public OfferItemPrice getOfferItemPriceForUpdate(OfferItem offerItem, InventoryCondition inventoryCondition, UnitOfMeasureType unitOfMeasureType,
             Currency currency) {
         return getOfferItemPrice(offerItem, inventoryCondition, unitOfMeasureType, currency, EntityPermission.READ_WRITE);
-    }
-
-    public long countOfferItemPricesByItem(Item item) {
-        return session.queryForLong(
-                "SELECT COUNT(*) "
-                        + "FROM offeritems, offeritemprices "
-                        + "WHERE ofri_itm_itemid = ? AND ofri_thrutime = ? "
-                        + "AND ofri_offeritemid = ofritmp_ofri_offeritemid AND ofritmp_thrutime = ?",
-                item, Session.MAX_TIME, Session.MAX_TIME);
     }
 
     public OfferItemPriceTransfer getOfferItemPriceTransfer(UserVisit userVisit, OfferItemPrice offerItemPrice) {
