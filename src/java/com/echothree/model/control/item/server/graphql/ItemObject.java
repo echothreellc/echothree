@@ -25,12 +25,16 @@ import com.echothree.model.control.graphql.server.graphql.count.CountingPaginate
 import com.echothree.model.control.item.common.ItemConstants;
 import com.echothree.model.control.item.common.workflow.ItemStatusConstants;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.offer.server.control.OfferItemControl;
+import com.echothree.model.control.offer.server.graphql.OfferItemObject;
+import com.echothree.model.control.offer.server.graphql.OfferSecurityUtils;
 import com.echothree.model.control.party.server.graphql.CompanyObject;
 import com.echothree.model.control.party.server.graphql.PartySecurityUtils;
 import com.echothree.model.control.workflow.server.graphql.WorkflowEntityStatusObject;
 import com.echothree.model.data.item.common.ItemPriceConstants;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemDetail;
+import com.echothree.model.data.offer.common.OfferItemConstants;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -126,6 +130,27 @@ public class ItemObject
     @GraphQLDescription("item status")
     public WorkflowEntityStatusObject getItemStatus(final DataFetchingEnvironment env) {
         return getWorkflowEntityStatusObject(env, ItemStatusConstants.Workflow_ITEM_STATUS);
+    }
+
+
+    @GraphQLField
+    @GraphQLDescription("offer items")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<OfferItemObject> getOfferItems(final DataFetchingEnvironment env) {
+        if(OfferSecurityUtils.getInstance().getHasOfferItemsAccess(env)) {
+            var offerItemControl = Session.getModelController(OfferItemControl.class);
+            var totalCount = offerItemControl.countOfferItemsByItem(item);
+
+            try(var objectLimiter = new ObjectLimiter(env, OfferItemConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = offerItemControl.getOfferItemsByItem(item);
+                var offerItems = entities.stream().map(OfferItemObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, offerItems);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
     }
 
 }

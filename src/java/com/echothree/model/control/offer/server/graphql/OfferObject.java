@@ -19,12 +19,20 @@ package com.echothree.model.control.offer.server.graphql;
 import com.echothree.model.control.filter.server.graphql.FilterObject;
 import com.echothree.model.control.filter.server.graphql.FilterSecurityUtils;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.party.server.graphql.DepartmentObject;
 import com.echothree.model.control.party.server.graphql.PartySecurityUtils;
 import com.echothree.model.control.sequence.server.graphql.SequenceObject;
 import com.echothree.model.control.sequence.server.graphql.SequenceSecurityUtils;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.offer.common.OfferItemConstants;
+import com.echothree.model.data.offer.common.OfferItemPriceConstants;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferDetail;
 import com.echothree.util.server.persistence.Session;
@@ -32,7 +40,10 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("offer object")
 @GraphQLName("Offer")
@@ -97,8 +108,7 @@ public class OfferObject
             return null;
         }
     }
-
-
+    
     @GraphQLField
     @GraphQLDescription("is default")
     @GraphQLNonNull
@@ -122,5 +132,25 @@ public class OfferObject
 
         return offerControl.getBestOfferDescription(offer, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
-    
+
+    @GraphQLField
+    @GraphQLDescription("offer items")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<OfferItemObject> getOfferItems(final DataFetchingEnvironment env) {
+        if(OfferSecurityUtils.getInstance().getHasOfferItemsAccess(env)) {
+            var offerItemControl = Session.getModelController(OfferItemControl.class);
+            var totalCount = offerItemControl.countOfferItemsByOffer(offer);
+
+            try(var objectLimiter = new ObjectLimiter(env, OfferItemConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = offerItemControl.getOfferItemsByOffer(offer);
+                var offerItems = entities.stream().map(OfferItemObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, offerItems);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
 }

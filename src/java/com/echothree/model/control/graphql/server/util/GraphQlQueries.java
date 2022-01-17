@@ -114,6 +114,8 @@ import com.echothree.control.user.item.server.command.GetItemPricesCommand;
 import com.echothree.control.user.item.server.command.GetItemsCommand;
 import com.echothree.control.user.offer.common.OfferUtil;
 import com.echothree.control.user.offer.server.command.GetOfferCommand;
+import com.echothree.control.user.offer.server.command.GetOfferItemCommand;
+import com.echothree.control.user.offer.server.command.GetOfferItemsCommand;
 import com.echothree.control.user.offer.server.command.GetOfferNameElementCommand;
 import com.echothree.control.user.offer.server.command.GetOfferNameElementsCommand;
 import com.echothree.control.user.offer.server.command.GetOfferUseCommand;
@@ -263,6 +265,7 @@ import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.graphql.ItemCategoryObject;
 import com.echothree.model.control.item.server.graphql.ItemObject;
 import com.echothree.model.control.item.server.graphql.ItemPriceObject;
+import com.echothree.model.control.offer.server.graphql.OfferItemObject;
 import com.echothree.model.control.offer.server.graphql.OfferNameElementObject;
 import com.echothree.model.control.offer.server.graphql.OfferObject;
 import com.echothree.model.control.offer.server.graphql.OfferUseObject;
@@ -356,11 +359,11 @@ import com.echothree.model.data.filter.server.entity.FilterType;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.inventory.server.entity.Lot;
 import com.echothree.model.data.item.common.ItemConstants;
-import com.echothree.model.data.item.common.ItemPriceConstants;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemCategory;
 import com.echothree.model.data.item.server.entity.ItemPrice;
 import com.echothree.model.data.offer.server.entity.Offer;
+import com.echothree.model.data.offer.server.entity.OfferItem;
 import com.echothree.model.data.offer.server.entity.OfferNameElement;
 import com.echothree.model.data.offer.server.entity.OfferUse;
 import com.echothree.model.data.offer.server.entity.Use;
@@ -1666,6 +1669,57 @@ public final class GraphQlQueries
         }
 
         return offerObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("offerItem")
+    public static OfferItemObject offerItem(final DataFetchingEnvironment env,
+            @GraphQLName("offerName") @GraphQLNonNull final String offerName,
+            @GraphQLName("itemName") @GraphQLNonNull final String itemName) {
+        OfferItem offerItem;
+
+        try {
+            var commandForm = OfferUtil.getHome().getGetOfferItemForm();
+
+            commandForm.setOfferName(offerName);
+            commandForm.setItemName(itemName);
+
+            offerItem = new GetOfferItemCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return offerItem == null ? null : new OfferItemObject(offerItem);
+    }
+
+    @GraphQLField
+    @GraphQLName("offerItems")
+    public static Collection<OfferItemObject> offerItems(final DataFetchingEnvironment env,
+            @GraphQLName("offerName") @GraphQLNonNull final String offerName) {
+        Collection<OfferItem> offerItem;
+        Collection<OfferItemObject> offerItemObjects;
+
+        try {
+            var commandForm = OfferUtil.getHome().getGetOfferItemsForm();
+
+            commandForm.setOfferName(offerName);
+
+            offerItem = new GetOfferItemsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(offerItem == null) {
+            offerItemObjects = emptyList();
+        } else {
+            offerItemObjects = new ArrayList<>(offerItem.size());
+
+            offerItem.stream()
+                    .map(OfferItemObject::new)
+                    .forEachOrdered(offerItemObjects::add);
+        }
+
+        return offerItemObjects;
     }
 
     @GraphQLField

@@ -21,6 +21,8 @@ import com.echothree.control.user.offer.server.command.GetOfferCommand;
 import com.echothree.control.user.offer.server.command.GetOfferCustomerTypeCommand;
 import com.echothree.control.user.offer.server.command.GetOfferItemCommand;
 import com.echothree.control.user.offer.server.command.GetOfferItemPriceCommand;
+import com.echothree.control.user.offer.server.command.GetOfferItemPricesCommand;
+import com.echothree.control.user.offer.server.command.GetOfferItemsCommand;
 import com.echothree.control.user.offer.server.command.GetOfferNameElementCommand;
 import com.echothree.control.user.offer.server.command.GetOfferUseCommand;
 import com.echothree.control.user.offer.server.command.GetOffersCommand;
@@ -82,8 +84,16 @@ public final class OfferSecurityUtils
         return getGraphQlExecutionContext(env).hasAccess(GetOfferItemCommand.class);
     }
 
+    public boolean getHasOfferItemsAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetOfferItemsCommand.class);
+    }
+
     public boolean getHasOfferItemPriceAccess(final DataFetchingEnvironment env) {
         return getGraphQlExecutionContext(env).hasAccess(GetOfferItemPriceCommand.class);
+    }
+
+    public boolean getHasOfferItemPricesAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetOfferItemPricesCommand.class);
     }
 
     public boolean getHasUseTypeAccess(final DataFetchingEnvironment env) {
