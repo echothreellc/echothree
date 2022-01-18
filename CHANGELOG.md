@@ -1,5 +1,25 @@
 # Changelog
 
+## 2022-01-09-01
+
+* 2022 Copyright Update [358](https://gitlab.echothree.com/echothree/echothree/-/issues/358)
+* Add totalCount to GraphQL Pagination [379](https://gitlab.echothree.com/echothree/echothree/-/issues/379)
+* Implement Alternative to Deprecated GraphQL Context [380](https://gitlab.echothree.com/echothree/echothree/-/issues/380)
+* Add Pagination to items Query [381](https://gitlab.echothree.com/echothree/echothree/-/issues/381)
+* Add Pagination to items in Company, Remove itemCount [382](https://gitlab.echothree.com/echothree/echothree/-/issues/382)
+* Remove itemCount from ItemCategory Object [383](https://gitlab.echothree.com/echothree/echothree/-/issues/383)
+* Session.prepareStatement(...) Caching Prepared Statements Before Substitutions [384](https://gitlab.echothree.com/echothree/echothree/-/issues/384)
+* Apache Lucene 9.0.0 Upgrade [385](https://gitlab.echothree.com/echothree/echothree/-/issues/385)
+* ICU4J 70.1 Upgrade [386](https://gitlab.echothree.com/echothree/echothree/-/issues/386)
+* SLF4J 1.7.32 Upgrade [387](https://gitlab.echothree.com/echothree/echothree/-/issues/387)
+* Add Pagination to customerResults, employeeResults and vendorResults Queries [388](https://gitlab.echothree.com/echothree/echothree/-/issues/388)
+* Add Pagination to divisions in Company, Remove divisionCount [389](https://gitlab.echothree.com/echothree/echothree/-/issues/389)
+* Add Pagination to departments in Division, Remove departmentCount [390](https://gitlab.echothree.com/echothree/echothree/-/issues/390)
+* Add Pagination to offers in Department, Remove offerCount [391](https://gitlab.echothree.com/echothree/echothree/-/issues/391)
+* Add description to Item Object [392](https://gitlab.echothree.com/echothree/echothree/-/issues/392)
+* jOOQ 3.16.0 Upgrade [394](https://gitlab.echothree.com/echothree/echothree/-/issues/394)
+* jOOQ 3.16.1 Upgrade [395](https://gitlab.echothree.com/echothree/echothree/-/issues/395)
+
 ## 2021-12-26-01
 
 * Prototype GraphQL Pagination [362](https://gitlab.echothree.com/echothree/echothree/-/issues/362)

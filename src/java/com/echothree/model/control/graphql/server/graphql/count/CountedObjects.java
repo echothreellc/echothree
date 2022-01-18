@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.graphql.server.graphql.count;
 
-import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
 import graphql.relay.DefaultConnectionCursor;
 import graphql.relay.DefaultEdge;
@@ -27,19 +26,19 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class CountedObjects<BEIO extends BaseEntityInstanceObject>
-        implements CountingPaginatedData<BEIO> {
+public class CountedObjects<T>
+        implements CountingPaginatedData<T> {
 
     ObjectLimiter objectLimiter;
-    List<BEIO> data;
+    List<T> entities;
 
     boolean hasPreviousPage;
     boolean hasNextPage;
     long cursor;
 
-    public CountedObjects(ObjectLimiter objectLimiter, List<BEIO> data) {
+    public CountedObjects(ObjectLimiter objectLimiter, List<T> entities) {
         this.objectLimiter = objectLimiter;
-        this.data = data;
+        this.entities = entities;
 
         hasPreviousPage = objectLimiter.getLimitOffset() > 0;
         hasNextPage = objectLimiter.getLimitCount() < (objectLimiter.getTotalCount() - objectLimiter.getLimitOffset());
@@ -52,15 +51,15 @@ public class CountedObjects<BEIO extends BaseEntityInstanceObject>
     }
 
     @Override
-    public String getCursor(BEIO beio) {
+    public String getCursor(T entity) {
         return Long.toString(cursor += 1);
     }
 
     @Override
-    public List<Edge<BEIO>> getEdges() {
-        var edges = new ArrayList<Edge<BEIO>>();
+    public List<Edge<T>> getEdges() {
+        var edges = new ArrayList<Edge<T>>();
 
-        for(final BEIO beio : this) {
+        for(final T beio : this) {
             edges.add(new DefaultEdge<>(beio, new DefaultConnectionCursor(getCursor(null))));
         }
 
@@ -69,9 +68,9 @@ public class CountedObjects<BEIO extends BaseEntityInstanceObject>
 
     @Override
     public PageInfo getPageInfo() {
-        var dataCount = data.size();
-        var startCursor = dataCount == 0 ? null : new DefaultConnectionCursor(Long.toString(objectLimiter.getLimitOffset() + 1));
-        var endCursor = dataCount == 0 ? null : new DefaultConnectionCursor(Long.toString(objectLimiter.getLimitOffset() + objectLimiter.getLimitCount()));
+        var entitiesCount = entities.size();
+        var startCursor = entitiesCount == 0 ? null : new DefaultConnectionCursor(Long.toString(objectLimiter.getLimitOffset() + 1));
+        var endCursor = entitiesCount == 0 ? null : new DefaultConnectionCursor(Long.toString(objectLimiter.getLimitOffset() + objectLimiter.getLimitCount()));
 
         return new DefaultPageInfo(startCursor, endCursor, hasPreviousPage, hasNextPage);
     }
@@ -87,8 +86,8 @@ public class CountedObjects<BEIO extends BaseEntityInstanceObject>
     }
 
     @Override
-    public Iterator<BEIO> iterator() {
-        return data.iterator();
+    public Iterator<T> iterator() {
+        return entities.iterator();
     }
 
 }

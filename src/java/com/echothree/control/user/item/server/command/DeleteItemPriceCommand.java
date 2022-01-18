@@ -20,6 +20,9 @@ import com.echothree.control.user.item.common.form.DeleteItemPriceForm;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
@@ -35,6 +38,9 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
@@ -42,10 +48,18 @@ import java.util.List;
 
 public class DeleteItemPriceCommand
         extends BaseSimpleCommand<DeleteItemPriceForm> {
-    
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                        new SecurityRoleDefinition(SecurityRoleGroups.ItemPrice.name(), SecurityRoles.Delete.name())
+                )))
+        )));
+
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("InventoryConditionName", FieldType.ENTITY_NAME, true, null, null),
@@ -56,7 +70,7 @@ public class DeleteItemPriceCommand
     
     /** Creates a new instance of DeleteItemPriceCommand */
     public DeleteItemPriceCommand(UserVisitPK userVisitPK, DeleteItemPriceForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override

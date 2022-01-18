@@ -5371,7 +5371,39 @@ public class ItemControl
         
         return itemPrice;
     }
-    
+
+    public long countItemPricesByItem(Item item) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM itemprices
+                WHERE itmp_itm_itemid = ? AND itmp_thrutime = ?""",
+                item, Session.MAX_TIME);
+    }
+
+    public long countItemPricesByInventoryCondition(InventoryCondition inventoryCondition) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM itemprices
+                WHERE itmp_invcon_inventoryconditionid = ? AND itmp_thrutime = ?""",
+                inventoryCondition, Session.MAX_TIME);
+    }
+
+    public long countItemPricesByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM itemprices
+                WHERE itmp_uomt_unitofmeasuretypeid = ? AND itmp_thrutime = ?""",
+                unitOfMeasureType, Session.MAX_TIME);
+    }
+
+    public long countItemPricesByCurrency(Currency currency) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM itemprices
+                WHERE itmp_cur_currencyid = ? AND itmp_thrutime = ?""",
+                currency, Session.MAX_TIME);
+    }
+
     private List<ItemPrice> getItemPricesByItem(Item item, EntityPermission entityPermission) {
         List<ItemPrice> itemPrices;
         
@@ -5385,7 +5417,8 @@ public class ItemControl
                         "AND itmp_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid " +
                         "AND itmp_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid " +
                         "AND itmp_cur_currencyid = cur_currencyid " +
-                        "ORDER BY invcondt_sortorder, invcondt_inventoryconditionname, uomtdt_sortorder, uomtdt_unitofmeasuretypename, cur_sortorder, cur_currencyisoname";
+                        "ORDER BY invcondt_sortorder, invcondt_inventoryconditionname, uomtdt_sortorder, uomtdt_unitofmeasuretypename, cur_sortorder, cur_currencyisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM itemprices " +
@@ -5427,7 +5460,8 @@ public class ItemControl
                         "AND itmp_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid " +
                         "AND itmp_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid " +
                         "AND itmp_cur_currencyid = cur_currencyid " +
-                        "ORDER BY itmdt_itemname, uomtdt_sortorder, uomtdt_unitofmeasuretypename, cur_sortorder, cur_currencyisoname";
+                        "ORDER BY itmdt_itemname, uomtdt_sortorder, uomtdt_unitofmeasuretypename, cur_sortorder, cur_currencyisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM itemprices " +
@@ -5455,13 +5489,13 @@ public class ItemControl
     public List<ItemPrice> getItemPricesByInventoryConditionForUpdate(InventoryCondition inventoryCondition) {
         return getItemPricesByInventoryCondition(inventoryCondition, EntityPermission.READ_WRITE);
     }
-    
+
     private List<ItemPrice> getItemPricesByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
         List<ItemPrice> itemPrices;
-        
+
         try {
             String query = null;
-            
+
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
                         "FROM itemprices, items, itemdetails, inventoryconditions, inventoryconditiondetails, currencies " +
@@ -5469,35 +5503,79 @@ public class ItemControl
                         "AND itmp_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid " +
                         "AND itmp_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid " +
                         "AND itmp_cur_currencyid = cur_currencyid " +
-                        "ORDER BY itmdt_itemname, invcondt_sortorder, invcondt_inventoryconditionname, cur_sortorder, cur_currencyisoname";
+                        "ORDER BY itmdt_itemname, invcondt_sortorder, invcondt_inventoryconditionname, cur_sortorder, cur_currencyisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM itemprices " +
                         "WHERE itmp_uomt_unitofmeasuretypeid = ? AND itmp_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
+
             PreparedStatement ps = ItemPriceFactory.getInstance().prepareStatement(query);
-            
+
             ps.setLong(1, unitOfMeasureType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
-            
+
             itemPrices = ItemPriceFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
-        
+
         return itemPrices;
     }
-    
+
     public List<ItemPrice> getItemPricesByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType) {
         return getItemPricesByUnitOfMeasureType(unitOfMeasureType, EntityPermission.READ_ONLY);
     }
-    
+
     public List<ItemPrice> getItemPricesByUnitOfMeasureTypeForUpdate(UnitOfMeasureType unitOfMeasureType) {
         return getItemPricesByUnitOfMeasureType(unitOfMeasureType, EntityPermission.READ_WRITE);
     }
-    
+
+    private List<ItemPrice> getItemPricesByCurrency(Currency currency, EntityPermission entityPermission) {
+        List<ItemPrice> itemPrices;
+
+        try {
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM itemprices, items, itemdetails, inventoryconditions, inventoryconditiondetails, unitofmeasuretypes, unitofmeasuretypedetails " +
+                        "WHERE itmp_cur_currencyid = ? AND itmp_thrutime = ? " +
+                        "AND itmp_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid " +
+                        "AND itmp_invcon_inventoryconditionid = invcon_inventoryconditionid AND invcon_lastdetailid = invcondt_inventoryconditiondetailid " +
+                        "AND itmp_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid " +
+                        "ORDER BY itmdt_itemname, invcondt_sortorder, invcondt_inventoryconditionname, uomtdt_sortorder, uomtdt_unitofmeasuretypename " +
+                        "_LIMIT_";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM itemprices " +
+                        "WHERE itmp_cur_currencyid = ? AND itmp_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+
+            PreparedStatement ps = ItemPriceFactory.getInstance().prepareStatement(query);
+
+            ps.setLong(1, currency.getPrimaryKey().getEntityId());
+            ps.setLong(2, Session.MAX_TIME);
+
+            itemPrices = ItemPriceFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return itemPrices;
+    }
+
+    public List<ItemPrice> getItemPricesByCurrency(Currency currency) {
+        return getItemPricesByCurrency(currency, EntityPermission.READ_ONLY);
+    }
+
+    public List<ItemPrice> getItemPricesByCurrencyForUpdate(Currency currency) {
+        return getItemPricesByCurrency(currency, EntityPermission.READ_WRITE);
+    }
+
     public List<ItemPrice> getItemPricesByItemAndUnitOfMeasureTypeForUpdate(Item item, UnitOfMeasureType unitOfMeasureType) {
         List<ItemPrice> itemPrices;
         
@@ -5532,7 +5610,8 @@ public class ItemControl
                         "FROM itemprices, currencies " +
                         "WHERE itmp_itm_itemid = ? AND itmp_invcon_inventoryconditionid = ? AND itmp_uomt_unitofmeasuretypeid = ? " +
                         "AND itmp_thrutime = ? AND itmp_cur_currencyid = cur_currencyid " +
-                        "ORDER BY cur_sortorder, cur_currencyisoname";
+                        "ORDER BY cur_sortorder, cur_currencyisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM itemprices " +
@@ -5614,7 +5693,7 @@ public class ItemControl
         return getItemTransferCaches(userVisit).getItemPriceTransferCache().getTransfer(itemPrice);
     }
     
-    private List<ItemPriceTransfer> getItemPriceTransfers(UserVisit userVisit, List<ItemPrice> itemPrices) {
+    public List<ItemPriceTransfer> getItemPriceTransfers(UserVisit userVisit, Collection<ItemPrice> itemPrices) {
         List<ItemPriceTransfer> itemPriceTransfers = new ArrayList<>(itemPrices.size());
         ItemPriceTransferCache itemPriceTransferCache = getItemTransferCaches(userVisit).getItemPriceTransferCache();
         

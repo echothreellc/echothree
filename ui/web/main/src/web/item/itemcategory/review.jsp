@@ -42,8 +42,8 @@
         <div id="Content">
             <c:choose>
                 <c:when test="${itemCategory.itemCategoryName != itemCategory.description}">
-                    <p><font size="+2"><b><c:out value="${itemCategory.description}" /></b></font></p>
-                    <p><font size="+1"><c:out value="${itemCategory.itemCategoryName}" /></font></p>
+                    <p><font size="+2"><b><et:appearance appearance="${itemCategory.entityInstance.entityAppearance.appearance}"><c:out value="${itemCategory.description}" /></et:appearance></b></font></p>
+                    <p><font size="+1"><et:appearance appearance="${itemCategory.entityInstance.entityAppearance.appearance}"><c:out value="${itemCategory.itemCategoryName}" /></et:appearance></font></p>
                 </c:when>
                 <c:otherwise>
                     <p><font size="+2"><b><c:out value="${itemCategory.itemCategoryName}" /></b></font></p>
