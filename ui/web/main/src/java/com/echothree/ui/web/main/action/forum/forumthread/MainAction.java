@@ -77,7 +77,7 @@ public class MainAction
         options.add(ForumOptions.ForumMessagePartIncludeString);
         commandForm.setOptions(options);
 
-        String offsetParameter = request.getParameter((new ParamEncoder("forumThread").encodeParameterName(TableTagParameters.PARAMETER_PAGE)));
+        String offsetParameter = request.getParameter(new ParamEncoder("forumThread").encodeParameterName(TableTagParameters.PARAMETER_PAGE));
         Integer offset = offsetParameter == null ? null : (Integer.parseInt(offsetParameter) - 1) * 5;
 
         Map<String, Limit> limits = new HashMap<>();
