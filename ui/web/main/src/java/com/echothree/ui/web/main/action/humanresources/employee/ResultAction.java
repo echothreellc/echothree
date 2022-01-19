@@ -35,6 +35,7 @@ import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
+import static java.lang.Math.toIntExact;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -89,7 +90,7 @@ public class ResultAction
 
             var employeeResultCount = result.getEmployeeResultCount();
             if(employeeResultCount != null) {
-                request.setAttribute(AttributeConstants.EMPLOYEE_RESULT_COUNT, employeeResultCount);
+                request.setAttribute(AttributeConstants.EMPLOYEE_RESULT_COUNT, toIntExact(employeeResultCount));
             }
 
             request.setAttribute(AttributeConstants.EMPLOYEE_RESULTS, new ListWrapper<>(result.getEmployeeResults()));

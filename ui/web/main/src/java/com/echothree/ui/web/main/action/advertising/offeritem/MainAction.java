@@ -32,6 +32,7 @@ import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
+import static java.lang.Math.toIntExact;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -79,7 +80,7 @@ public class MainAction
             forwardKey = ForwardConstants.ERROR_404;
         } else {
             request.setAttribute(AttributeConstants.OFFER, offer);
-            request.setAttribute(AttributeConstants.OFFER_ITEM_COUNT, Integer.valueOf(result.getOfferItemCount().toString()));
+            request.setAttribute(AttributeConstants.OFFER_ITEM_COUNT, toIntExact(result.getOfferItemCount()));
             request.setAttribute(AttributeConstants.OFFER_ITEMS, result.getOfferItems());
             setupDtAttributes(request, "offerItem");
             forwardKey = ForwardConstants.DISPLAY;

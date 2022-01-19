@@ -34,6 +34,7 @@ import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
+import static java.lang.Math.toIntExact;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -87,7 +88,7 @@ public class ResultAction
 
             var salesOrderBatchResultCount = result.getSalesOrderBatchResultCount();
             if(salesOrderBatchResultCount != null) {
-                request.setAttribute(AttributeConstants.SALES_ORDER_BATCH_RESULT_COUNT, salesOrderBatchResultCount);
+                request.setAttribute(AttributeConstants.SALES_ORDER_BATCH_RESULT_COUNT, toIntExact(salesOrderBatchResultCount));
             }
 
             request.setAttribute(AttributeConstants.SALES_ORDER_BATCH_RESULTS, new ListWrapper<>(result.getSalesOrderBatchResults()));

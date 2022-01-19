@@ -32,6 +32,7 @@ import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
+import static java.lang.Math.toIntExact;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -82,7 +83,7 @@ public class MainAction
 
             Long contentCategoryCount = result.getContentCategoryCount();
             if(contentCategoryCount != null) {
-                request.setAttribute(AttributeConstants.CONTENT_CATEGORY_COUNT, contentCategoryCount.intValue());
+                request.setAttribute(AttributeConstants.CONTENT_CATEGORY_COUNT, toIntExact(contentCategoryCount));
             }
 
             request.setAttribute(AttributeConstants.PARENT_CONTENT_CATEGORY, result.getParentContentCategory());

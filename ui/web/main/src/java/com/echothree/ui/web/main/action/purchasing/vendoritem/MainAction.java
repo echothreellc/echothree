@@ -32,7 +32,7 @@ import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
-import com.google.common.primitives.Ints;
+import static java.lang.Math.toIntExact;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -80,7 +80,7 @@ public class MainAction
         
         Long vendorItemCount = result.getVendorItemCount();
         if(vendorItemCount != null) {
-            request.setAttribute(AttributeConstants.VENDOR_ITEM_COUNT, Ints.checkedCast(vendorItemCount));
+            request.setAttribute(AttributeConstants.VENDOR_ITEM_COUNT, toIntExact(vendorItemCount));
         }
 
         request.setAttribute(AttributeConstants.ITEM, result.getItem());
