@@ -1617,7 +1617,7 @@ public class BatchControl
     }
 
     public boolean batchEntityExists(EntityInstance entityInstance, Batch batch) {
-        return session.queryForInteger(
+        return session.queryForLong(
                 "SELECT COUNT(*) " +
                 "FROM batchentities " +
                 "WHERE btche_eni_entityinstanceid = ? AND btche_btch_batchid = ? AND btche_thrutime = ?",

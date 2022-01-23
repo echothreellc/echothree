@@ -34,6 +34,7 @@ import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
+import static java.lang.Math.toIntExact;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -72,7 +73,7 @@ public class ResultAction
         commandForm.setOptions(options);
 
         if(results == null) {
-            String offsetParameter = request.getParameter((new ParamEncoder("leaveResult").encodeParameterName(TableTagParameters.PARAMETER_PAGE)));
+            String offsetParameter = request.getParameter(new ParamEncoder("leaveResult").encodeParameterName(TableTagParameters.PARAMETER_PAGE));
             Integer offset = offsetParameter == null ? null : (Integer.parseInt(offsetParameter) - 1) * 20;
 
             Map<String, Limit> limits = new HashMap<>();
@@ -85,9 +86,9 @@ public class ResultAction
             ExecutionResult executionResult = commandResult.getExecutionResult();
             GetLeaveResultsResult result = (GetLeaveResultsResult)executionResult.getResult();
 
-            Integer leaveResultCount = result.getLeaveResultCount();
+            var leaveResultCount = result.getLeaveResultCount();
             if(leaveResultCount != null) {
-                request.setAttribute(AttributeConstants.LEAVE_RESULT_COUNT, leaveResultCount);
+                request.setAttribute(AttributeConstants.LEAVE_RESULT_COUNT, toIntExact(leaveResultCount));
             }
 
             request.setAttribute(AttributeConstants.LEAVE_RESULTS, new ListWrapper<>(result.getLeaveResults()));

@@ -1433,7 +1433,7 @@ public class LetterControl
     }
 
     public boolean isChainInstanceUsedByQueuedLetters(ChainInstance chainInstance) {
-        return session.queryForInteger(
+        return session.queryForLong(
                 "SELECT COUNT(*) " +
                 "FROM queuedletters " +
                 "WHERE qlttr_chni_chaininstanceid = ?",
@@ -1441,7 +1441,7 @@ public class LetterControl
     }
 
     public boolean isChainInstanceUsedByQueuedLetters(Letter letter) {
-        return session.queryForInteger(
+        return session.queryForLong(
                 "SELECT COUNT(*) " +
                 "FROM queuedletters " +
                 "WHERE qlttr_lttr_letterid = ?",

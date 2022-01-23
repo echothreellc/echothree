@@ -30,6 +30,7 @@ import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
+import static java.lang.Math.toIntExact;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
@@ -71,7 +72,7 @@ public class MainAction
 
         Long cacheEntryCount = result.getCacheEntryCount();
         if(cacheEntryCount != null) {
-            request.setAttribute(AttributeConstants.CACHE_ENTRY_COUNT, cacheEntryCount.intValue());
+            request.setAttribute(AttributeConstants.CACHE_ENTRY_COUNT, toIntExact(cacheEntryCount));
         }
 
         request.setAttribute(AttributeConstants.CACHE_ENTRIES, result.getCacheEntries());

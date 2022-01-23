@@ -23,8 +23,8 @@ import java.util.List;
 public interface GetLeaveResultsResult
         extends BaseResult {
     
-    Integer getLeaveResultCount();
-    void setLeaveResultCount(Integer employeeResultCount);
+    Long getLeaveResultCount();
+    void setLeaveResultCount(Long employeeResultCount);
 
     List<LeaveResultTransfer> getLeaveResults();
     void setLeaveResults(List<LeaveResultTransfer> employeeResults);

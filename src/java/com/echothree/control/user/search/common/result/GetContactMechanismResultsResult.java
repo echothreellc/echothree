@@ -23,8 +23,8 @@ import java.util.List;
 public interface GetContactMechanismResultsResult
         extends BaseResult {
     
-    Integer getContactMechanismResultCount();
-    void setContactMechanismResultCount(Integer contactMechanismResultCount);
+    Long getContactMechanismResultCount();
+    void setContactMechanismResultCount(Long contactMechanismResultCount);
 
     List<ContactMechanismResultTransfer> getContactMechanismResults();
     void setContactMechanismResults(List<ContactMechanismResultTransfer> contactMechanismResults);

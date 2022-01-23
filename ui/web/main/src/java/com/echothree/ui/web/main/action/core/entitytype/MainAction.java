@@ -32,6 +32,7 @@ import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
+import static java.lang.Math.toIntExact;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -83,7 +84,7 @@ public class MainAction
             GetEntityTypesResult result = (GetEntityTypesResult)executionResult.getResult();
 
             request.setAttribute(AttributeConstants.COMPONENT_VENDOR, result.getComponentVendor());
-            request.setAttribute(AttributeConstants.ENTITY_TYPE_COUNT, Integer.valueOf(result.getEntityTypeCount().toString()));
+            request.setAttribute(AttributeConstants.ENTITY_TYPE_COUNT, toIntExact(result.getEntityTypeCount()));
             request.setAttribute(AttributeConstants.ENTITY_TYPES, result.getEntityTypes());
             forwardKey = ForwardConstants.DISPLAY;
         } else {

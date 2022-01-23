@@ -35,6 +35,7 @@ import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
+import static java.lang.Math.toIntExact;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -74,7 +75,7 @@ public class ResultAction
         commandForm.setOptions(options);
 
         if(results == null) {
-            String offsetParameter = request.getParameter((new ParamEncoder("employeeResult").encodeParameterName(TableTagParameters.PARAMETER_PAGE)));
+            String offsetParameter = request.getParameter(new ParamEncoder("employeeResult").encodeParameterName(TableTagParameters.PARAMETER_PAGE));
             Integer offset = offsetParameter == null ? null : (Integer.parseInt(offsetParameter) - 1) * 20;
 
             Map<String, Limit> limits = new HashMap<>();
@@ -87,9 +88,9 @@ public class ResultAction
             ExecutionResult executionResult = commandResult.getExecutionResult();
             GetEmployeeResultsResult result = (GetEmployeeResultsResult)executionResult.getResult();
 
-            Integer employeeResultCount = result.getEmployeeResultCount();
+            var employeeResultCount = result.getEmployeeResultCount();
             if(employeeResultCount != null) {
-                request.setAttribute(AttributeConstants.EMPLOYEE_RESULT_COUNT, employeeResultCount);
+                request.setAttribute(AttributeConstants.EMPLOYEE_RESULT_COUNT, toIntExact(employeeResultCount));
             }
 
             request.setAttribute(AttributeConstants.EMPLOYEE_RESULTS, new ListWrapper<>(result.getEmployeeResults()));

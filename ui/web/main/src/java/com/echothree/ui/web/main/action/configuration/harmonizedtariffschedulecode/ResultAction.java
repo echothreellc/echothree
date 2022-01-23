@@ -37,6 +37,7 @@ import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
+import static java.lang.Math.toIntExact;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -104,9 +105,9 @@ public class ResultAction
             ExecutionResult executionResult = commandResult.getExecutionResult();
             GetHarmonizedTariffScheduleCodeResultsResult result = (GetHarmonizedTariffScheduleCodeResultsResult)executionResult.getResult();
 
-            Integer harmonizedTariffScheduleCodeResultCount = result.getHarmonizedTariffScheduleCodeResultCount();
+            var harmonizedTariffScheduleCodeResultCount = result.getHarmonizedTariffScheduleCodeResultCount();
             if(harmonizedTariffScheduleCodeResultCount != null) {
-                request.setAttribute(AttributeConstants.HARMONIZED_TARIFF_SCHEDULE_CODE_RESULT_COUNT, harmonizedTariffScheduleCodeResultCount);
+                request.setAttribute(AttributeConstants.HARMONIZED_TARIFF_SCHEDULE_CODE_RESULT_COUNT, toIntExact(harmonizedTariffScheduleCodeResultCount));
             }
 
             request.setAttribute(AttributeConstants.HARMONIZED_TARIFF_SCHEDULE_CODE_RESULTS, new ListWrapper<>(result.getHarmonizedTariffScheduleCodeResults()));

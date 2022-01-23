@@ -3583,16 +3583,16 @@ public class FilterControl
         return getFilterStepDestinationsByToFilterStep(toFilterStep, EntityPermission.READ_WRITE);
     }
     
-    public int countFilterStepDestinationsByFromFilterStep(FilterStep fromFilterStep) {
-        return session.queryForInteger(
+    public long countFilterStepDestinationsByFromFilterStep(FilterStep fromFilterStep) {
+        return session.queryForLong(
                 "SELECT COUNT(*) " +
                 "FROM filterstepdestinations " +
                 "WHERE fltstpdn_fromfilterstepid = ? AND fltstpdn_thrutime = ?",
                 fromFilterStep, Session.MAX_TIME);
     }
     
-    public int countFilterStepDestinationsByToFilterStep(FilterStep toFilterStep) {
-        return session.queryForInteger(
+    public long countFilterStepDestinationsByToFilterStep(FilterStep toFilterStep) {
+        return session.queryForLong(
                 "SELECT COUNT(*) " +
                 "FROM filterstepdestinations " +
                 "WHERE fltstpdn_tofilterstepid = ? AND fltstpdn_thrutime = ?",

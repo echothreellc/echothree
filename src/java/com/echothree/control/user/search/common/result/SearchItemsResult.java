@@ -21,7 +21,7 @@ import com.echothree.util.common.command.BaseResult;
 public interface SearchItemsResult
         extends BaseResult {
     
-    Integer getCount();
-    void setCount(Integer count);
+    Long getCount();
+    void setCount(Long count);
     
 }

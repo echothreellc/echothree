@@ -379,6 +379,7 @@ import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import static java.lang.Math.toIntExact;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -2972,8 +2973,8 @@ public class ItemControl
         return itemAlias;
     }
     
-    public int countItemAliases(Item item, UnitOfMeasureType unitOfMeasureType, ItemAliasType itemAliasType) {
-        return session.queryForInteger(
+    public long countItemAliases(Item item, UnitOfMeasureType unitOfMeasureType, ItemAliasType itemAliasType) {
+        return session.queryForLong(
                 "SELECT COUNT(*) " +
                 "FROM itemaliases " +
                 "WHERE itmal_itm_itemid = ? AND itmal_uomt_unitofmeasuretypeid = ? AND itmal_iat_itemaliastypeid = ? AND itmal_thrutime = ?",
@@ -11466,7 +11467,7 @@ public class ItemControl
 
     public List<ItemResultTransfer> getItemResultTransfers(UserVisitSearch userVisitSearch) {
         var searchControl = Session.getModelController(SearchControl.class);
-        var itemResultTransfers = new ArrayList<ItemResultTransfer>(searchControl.countSearchResults(userVisitSearch));;
+        var itemResultTransfers = new ArrayList<ItemResultTransfer>(toIntExact(searchControl.countSearchResults(userVisitSearch)));;
         var includeItem = false;
 
         // ItemTransfer objects are not included unless specifically requested;

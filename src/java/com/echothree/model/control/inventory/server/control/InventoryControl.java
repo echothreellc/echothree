@@ -1721,16 +1721,16 @@ public class InventoryControl
         return getInventoryConditionUseTransfers(userVisit, getInventoryConditionUsesByInventoryConditionUseType(inventoryConditionUseType));
     }
     
-    public int countInventoryConditionUsesByInventoryConditionUseType(InventoryConditionUseType inventoryConditionUseType) {
-        return session.queryForInteger(
+    public long countInventoryConditionUsesByInventoryConditionUseType(InventoryConditionUseType inventoryConditionUseType) {
+        return session.queryForLong(
                 "SELECT COUNT(*) " +
                 "FROM inventoryconditionuses " +
                 "WHERE invconu_invconut_inventoryconditionusetypeid = ? AND invconu_thrutime = ?",
                 inventoryConditionUseType, Session.MAX_TIME);
     }
     
-    public int countInventoryConditionUsesByInventoryCondition(InventoryCondition inventoryCondition) {
-        return session.queryForInteger(
+    public long countInventoryConditionUsesByInventoryCondition(InventoryCondition inventoryCondition) {
+        return session.queryForLong(
                 "SELECT COUNT(*) " +
                 "FROM inventoryconditionuses " +
                 "WHERE invconu_invcon_inventoryconditionid = ? AND invconu_thrutime = ?",

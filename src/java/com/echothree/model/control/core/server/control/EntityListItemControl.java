@@ -31,6 +31,7 @@ import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import static java.lang.Math.toIntExact;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,7 +61,7 @@ public class EntityListItemControl
         }
 
         if(cachedSearch == null) {
-            entityListItemResultTransfers = new ArrayList<>(searchControl.countSearchResults(search));
+            entityListItemResultTransfers = new ArrayList<>(toIntExact(searchControl.countSearchResults(search)));
 
             try {
                 var coreControl = Session.getModelController(CoreControl.class);
@@ -93,7 +94,7 @@ public class EntityListItemControl
         } else {
             var cachedExecutedSearch = searchControl.getCachedExecutedSearch(cachedSearch);
 
-            entityListItemResultTransfers = new ArrayList<>(searchControl.countCachedExecutedSearchResults(cachedExecutedSearch));
+            entityListItemResultTransfers = new ArrayList<>(toIntExact(searchControl.countCachedExecutedSearchResults(cachedExecutedSearch)));
 
             session.copyLimit(SearchResultConstants.ENTITY_TYPE_NAME, CachedExecutedSearchResultConstants.ENTITY_TYPE_NAME);
 

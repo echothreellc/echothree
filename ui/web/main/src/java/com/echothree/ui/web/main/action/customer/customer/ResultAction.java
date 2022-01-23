@@ -35,6 +35,7 @@ import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
+import static java.lang.Math.toIntExact;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -89,9 +90,9 @@ public class ResultAction
             ExecutionResult executionResult = commandResult.getExecutionResult();
             GetCustomerResultsResult result = (GetCustomerResultsResult)executionResult.getResult();
 
-            Integer customerResultCount = result.getCustomerResultCount();
+            var customerResultCount = result.getCustomerResultCount();
             if(customerResultCount != null) {
-                request.setAttribute(AttributeConstants.CUSTOMER_RESULT_COUNT, customerResultCount);
+                request.setAttribute(AttributeConstants.CUSTOMER_RESULT_COUNT, toIntExact(customerResultCount));
             }
 
             request.setAttribute(AttributeConstants.CUSTOMER_RESULTS, new ListWrapper<>(result.getCustomerResults()));

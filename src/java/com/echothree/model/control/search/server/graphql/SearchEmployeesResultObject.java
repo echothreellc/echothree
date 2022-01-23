@@ -35,7 +35,7 @@ public class SearchEmployeesResultObject
     
     @GraphQLField
     @GraphQLDescription("count")
-    public Integer getCount() {
+    public Long getCount() {
         return result == null ? null : result.getCount();
     }
     

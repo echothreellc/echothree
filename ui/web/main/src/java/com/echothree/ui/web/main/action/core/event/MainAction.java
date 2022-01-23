@@ -33,6 +33,7 @@ import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
+import static java.lang.Math.toIntExact;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -103,7 +104,7 @@ public class MainAction
             if(createdByEntityInstance != null) {
                 request.setAttribute(AttributeConstants.CREATED_BY_ENTITY_INSTANCE, createdByEntityInstance);
             }
-            request.setAttribute(AttributeConstants.EVENT_COUNT, Integer.valueOf(result.getEventCount().toString()));
+            request.setAttribute(AttributeConstants.EVENT_COUNT, toIntExact(result.getEventCount()));
             request.setAttribute(AttributeConstants.EVENTS, result.getEvents());
             forwardKey = ForwardConstants.DISPLAY;
         }

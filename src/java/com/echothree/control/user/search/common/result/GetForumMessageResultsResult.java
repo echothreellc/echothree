@@ -23,8 +23,8 @@ import java.util.List;
 public interface GetForumMessageResultsResult
         extends BaseResult {
     
-    Integer getForumMessageResultCount();
-    void setForumMessageResultCount(Integer forumMessageResultCount);
+    Long getForumMessageResultCount();
+    void setForumMessageResultCount(Long forumMessageResultCount);
 
     List<ForumMessageResultTransfer> getForumMessageResults();
     void setForumMessageResults(List<ForumMessageResultTransfer> forumMessageResults);

@@ -33,6 +33,7 @@ import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
+import static java.lang.Math.toIntExact;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -88,7 +89,7 @@ public class MainAction
 
             Long contentCatalogItemCount = result.getContentCatalogItemCount();
             if(contentCatalogItemCount != null) {
-                request.setAttribute(AttributeConstants.CONTENT_CATALOG_ITEM_COUNT, contentCatalogItemCount.intValue());
+                request.setAttribute(AttributeConstants.CONTENT_CATALOG_ITEM_COUNT, toIntExact(contentCatalogItemCount));
             }
             
             request.setAttribute(AttributeConstants.CONTENT_CATALOG, result.getContentCatalog());

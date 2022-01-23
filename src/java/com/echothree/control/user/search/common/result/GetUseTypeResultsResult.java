@@ -23,8 +23,8 @@ import java.util.List;
 public interface GetUseTypeResultsResult
         extends BaseResult {
     
-    Integer getUseTypeResultCount();
-    void setUseTypeResultCount(Integer useTypeResultCount);
+    Long getUseTypeResultCount();
+    void setUseTypeResultCount(Long useTypeResultCount);
 
     List<UseTypeResultTransfer> getUseTypeResults();
     void setUseTypeResults(List<UseTypeResultTransfer> useTypeResults);

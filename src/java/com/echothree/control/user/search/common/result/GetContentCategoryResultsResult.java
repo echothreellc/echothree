@@ -23,8 +23,8 @@ import java.util.List;
 public interface GetContentCategoryResultsResult
         extends BaseResult {
     
-    Integer getContentCategoryResultCount();
-    void setContentCategoryResultCount(Integer contentCategoryResultCount);
+    Long getContentCategoryResultCount();
+    void setContentCategoryResultCount(Long contentCategoryResultCount);
 
     List<ContentCategoryResultTransfer> getContentCategoryResults();
     void setContentCategoryResults(List<ContentCategoryResultTransfer> contentCategoryResults);

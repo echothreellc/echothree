@@ -1059,14 +1059,14 @@ public class IndexControl
         return index;
     }
 
-    public int countIndexes() {
-        return session.queryForInteger(
+    public long countIndexes() {
+        return session.queryForLong(
                 "SELECT COUNT(*) " +
                 "FROM indexes");
     }
 
-    public int countIndexesByIndexType(IndexType indexType) {
-        return session.queryForInteger(
+    public long countIndexesByIndexType(IndexType indexType) {
+        return session.queryForLong(
                 "SELECT COUNT(*) " +
                 "FROM indexes, indexdetails " +
                 "WHERE idx_activedetailid = idxdt_indexdetailid AND idxdt_idxt_indextypeid = ?",

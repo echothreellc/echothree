@@ -23,8 +23,8 @@ import java.util.List;
 public interface GetVendorResultsResult
         extends BaseResult {
     
-    Integer getVendorResultCount();
-    void setVendorResultCount(Integer vendorResultCount);
+    Long getVendorResultCount();
+    void setVendorResultCount(Long vendorResultCount);
 
     List<VendorResultTransfer> getVendorResults();
     void setVendorResults(List<VendorResultTransfer> vendorResults);

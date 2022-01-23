@@ -12618,8 +12618,8 @@ public class CoreControl
         return EntityEncryptionKeyFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
     }
     
-    public int countEntityEncryptionKeys() {
-        return session.queryForInteger(
+    public long countEntityEncryptionKeys() {
+        return session.queryForLong(
                 "SELECT COUNT(*) " +
                 "FROM entityencryptionkeys");
     }
