@@ -1,5 +1,18 @@
 # Changelog
 
+## 2022-01-23-01
+
+* Convert all count* Functions to Return longs [393](https://gitlab.echothree.com/echothree/echothree/-/issues/393)
+* Apply Appearances in Item Category List [396](https://gitlab.echothree.com/echothree/echothree/-/issues/396)
+* GraphQL Objects for Item Prices [397](https://gitlab.echothree.com/echothree/echothree/-/issues/397)
+* GraphQL Objects for Offer Items [398](https://gitlab.echothree.com/echothree/echothree/-/issues/398)
+* GraphQL Objects for Offer Item Prices [399](https://gitlab.echothree.com/echothree/echothree/-/issues/399)
+* CountedObjects Should Allow Any Object [400](https://gitlab.echothree.com/echothree/echothree/-/issues/400)
+* jOOQ 3.16.2 Upgrade [401](https://gitlab.echothree.com/echothree/echothree/-/issues/401)
+* ClassGraph 4.8.138 Upgrade [402](https://gitlab.echothree.com/echothree/echothree/-/issues/402)
+* Gson 2.8.9 Upgrade [404](https://gitlab.echothree.com/echothree/echothree/-/issues/404)
+* MySQL Connector/J 8.0.28 Upgrade [406](https://gitlab.echothree.com/echothree/echothree/-/issues/406)
+
 ## 2022-01-09-01
 
 * 2022 Copyright Update [358](https://gitlab.echothree.com/echothree/echothree/-/issues/358)
