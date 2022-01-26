@@ -58,7 +58,6 @@
       <root url="jar://$PROJECT_DIR$/build/lib/javax.transaction-api.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/javax.websocket-api.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/jaxb-api.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib/jcommon.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/jdom.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/jdom2.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/jFormatString.jar!/" />
@@ -194,7 +193,6 @@
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/javax.mail-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/javax.servlet-api-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/javax.websocket-api-javadoc.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/jcommon-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/jfreechart-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/jooq-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/juel-api-javadoc.jar!/" />
@@ -262,7 +260,6 @@
       <root url="jar://$PROJECT_DIR$/build/lib-sources/javax.ejb-api-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/javax.servlet-api-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/javax.websocket-api-sources.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib-sources/jcommon-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/jdom-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/jfreechart-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/jooq-sources.jar!/" />
