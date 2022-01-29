@@ -8,7 +8,7 @@
     </configurations>
     <dependencies>
         <dependency org="com.google.code.gson" name="gson" rev="2.8.9" conf="sources->sources" />
-        <dependency org="com.google.errorprone" name="error_prone_core" rev="2.9.0" conf="sources->sources" />
+        <dependency org="com.google.errorprone" name="error_prone_core" rev="2.11.0" conf="sources->sources" />
         <dependency org="com.google.guava" name="failureaccess" rev="1.0" conf="sources->sources" />
         <dependency org="com.google.guava" name="guava" rev="31.0.1-jre" conf="sources->sources" />
         <dependency org="com.graphql-java" name="graphql-java" rev="17.3" conf="sources->sources" />
@@ -75,7 +75,7 @@
         <dependency org="org.jacoco" name="org.jacoco.report" rev="0.8.6" conf="sources->sources" />
         <dependency org="org.javassist" name="javassist" rev="3.22.0-GA" conf="sources->sources" />
         <dependency org="org.jfree" name="jfreechart" rev="1.5.3" conf="sources->sources" />
-        <dependency org="org.jooq" name="jooq" rev="3.16.2" conf="sources->sources" />
+        <dependency org="org.jooq" name="jooq" rev="3.16.3" conf="sources->sources" />
         <dependency org="org.osgi" name="org.osgi.service.component.annotations" rev="1.4.0" conf="sources->sources" />
         <dependency org="org.reactivestreams" name="reactive-streams" rev="1.0.3" conf="sources->sources" />
         <dependency org="org.slf4j" name="slf4j-api" rev="1.7.32" conf="sources->sources" />
@@ -93,7 +93,7 @@
         <dependency org="xml-apis" name="xml-apis" rev="1.4.01" conf="sources->sources" />
 
         <dependency org="com.google.code.gson" name="gson" rev="2.8.9" conf="javadoc->javadoc" />
-        <dependency org="com.google.errorprone" name="error_prone_core" rev="2.9.0" conf="javadoc->javadoc" />
+        <dependency org="com.google.errorprone" name="error_prone_core" rev="2.11.0" conf="javadoc->javadoc" />
         <dependency org="com.google.guava" name="failureaccess" rev="1.0" conf="javadoc->javadoc" />
         <dependency org="com.google.guava" name="guava" rev="31.0.1-jre" conf="javadoc->javadoc" />
         <dependency org="com.graphql-java" name="graphql-java" rev="17.3" conf="javadoc->javadoc" />
@@ -159,7 +159,7 @@
         <dependency org="org.jacoco" name="org.jacoco.report" rev="0.8.6" conf="javadoc->javadoc" />
         <dependency org="org.javassist" name="javassist" rev="3.22.0-GA" conf="javadoc->javadoc" />
         <dependency org="org.jfree" name="jfreechart" rev="1.5.3" conf="javadoc->javadoc" />
-        <dependency org="org.jooq" name="jooq" rev="3.16.2" conf="javadoc->javadoc" />
+        <dependency org="org.jooq" name="jooq" rev="3.16.3" conf="javadoc->javadoc" />
         <dependency org="org.osgi" name="org.osgi.service.component.annotations" rev="1.4.0" conf="javadoc->javadoc" />
         <dependency org="org.reactivestreams" name="reactive-streams" rev="1.0.3" conf="javadoc->javadoc" />
         <dependency org="org.slf4j" name="slf4j-api" rev="1.7.32" conf="javadoc->javadoc" />
@@ -177,7 +177,7 @@
         <dependency org="xml-apis" name="xml-apis" rev="1.4.01" conf="javadoc->javadoc" />
 
         <dependency org="com.google.code.gson" name="gson" rev="2.8.9" conf="binaries->default" />
-        <dependency org="com.google.errorprone" name="error_prone_core" rev="2.9.0" conf="binaries->default">
+        <dependency org="com.google.errorprone" name="error_prone_core" rev="2.11.0" conf="binaries->default">
             <artifact name="error_prone_core" e:classifier="with-dependencies" ext="jar"/>
         </dependency>
         <dependency org="com.google.guava" name="failureaccess" rev="1.0" conf="binaries->default" />
@@ -252,7 +252,7 @@
         <dependency org="org.jacoco" name="org.jacoco.report" rev="0.8.6" conf="binaries->default"/>
         <dependency org="org.javassist" name="javassist" rev="3.22.0-GA" conf="binaries->default" />
         <dependency org="org.jfree" name="jfreechart" rev="1.5.3" conf="binaries->default" />
-        <dependency org="org.jooq" name="jooq" rev="3.16.2" conf="binaries->default" />
+        <dependency org="org.jooq" name="jooq" rev="3.16.3" conf="binaries->default" />
         <dependency org="org.osgi" name="org.osgi.service.component.annotations" rev="1.4.0" conf="binaries->default" />
         <dependency org="org.reactivestreams" name="reactive-streams" rev="1.0.3" conf="binaries->default" />
         <dependency org="org.slf4j" name="slf4j-api" rev="1.7.32" conf="binaries->default" />
