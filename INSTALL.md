@@ -16,7 +16,7 @@ deploying these applications.
 * Amazon Corretto 17 (17.0.1.12.1)
 * Apache Ant 1.10 (1.10.9)
 * MySQL 8.0 (8.0.28 GA)
-* WildFly 23 (26.0.0)
+* WildFly 23 (26.0.1)
 
 The full version numbers in parentheses are the most recent versions used for testing.
 
@@ -36,8 +36,8 @@ The full version numbers in parentheses are the most recent versions used for te
 /usr/local/jboss
     ... EchoThree
     ... share
-    ... wildfly-26.0.0.Final
-    ... wildfly-latest -> wildfly-26.0.0.Final
+    ... wildfly-26.0.1.Final
+    ... wildfly-latest -> wildfly-26.0.1.Final
 ```
 
 `/usr/local/jboss` and all files below it are owned by the jboss user and group.
@@ -177,10 +177,10 @@ Re-enter Password :
 What groups do you want this user to belong to? (Please enter a comma separated list, or leave blank for none)[  ]: 
 About to add user 'lukeskywalker' for realm 'ManagementRealm'
 Is this correct yes/no? yes
-Added user 'lukeskywalker' to file '/usr/local/jboss/wildfly-26.0.0.Final/standalone/configuration/mgmt-users.properties'
-Added user 'lukeskywalker' to file '/usr/local/jboss/wildfly-26.0.0.Final/domain/configuration/mgmt-users.properties'
-Added user 'lukeskywalker' with groups  to file '/usr/local/jboss/wildfly-26.0.0.Final/standalone/configuration/mgmt-groups.properties'
-Added user 'lukeskywalker' with groups  to file '/usr/local/jboss/wildfly-26.0.0.Final/domain/configuration/mgmt-groups.properties'
+Added user 'lukeskywalker' to file '/usr/local/jboss/wildfly-26.0.1.Final/standalone/configuration/mgmt-users.properties'
+Added user 'lukeskywalker' to file '/usr/local/jboss/wildfly-26.0.1.Final/domain/configuration/mgmt-users.properties'
+Added user 'lukeskywalker' with groups  to file '/usr/local/jboss/wildfly-26.0.1.Final/standalone/configuration/mgmt-groups.properties'
+Added user 'lukeskywalker' with groups  to file '/usr/local/jboss/wildfly-26.0.1.Final/domain/configuration/mgmt-groups.properties'
 Is this new user going to be used for one AS process to connect to another AS process? 
 e.g. for a slave host controller connecting to the master or for a Remoting connection for server to server EJB calls.
 yes/no? no
