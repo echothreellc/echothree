@@ -46,6 +46,7 @@ import com.echothree.control.user.offer.common.result.CreateOfferUseResult;
 import com.echothree.control.user.offer.common.result.CreateUseNameElementResult;
 import com.echothree.control.user.offer.common.result.CreateUseResult;
 import com.echothree.control.user.offer.common.result.CreateUseTypeResult;
+import com.echothree.control.user.offer.common.result.EditOfferItemPriceResult;
 import com.echothree.control.user.offer.common.result.EditOfferNameElementResult;
 import com.echothree.control.user.offer.common.result.EditOfferResult;
 import com.echothree.control.user.offer.common.result.EditOfferUseResult;
@@ -1622,7 +1623,130 @@ public class GraphQlMutations
 
         return commandResultObject;
     }
-    
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject createOfferItemPrice(final DataFetchingEnvironment env,
+            @GraphQLName("offerName") @GraphQLNonNull final String offerName,
+            @GraphQLName("itemName") @GraphQLNonNull final String itemName,
+            @GraphQLName("inventoryConditionName") @GraphQLNonNull final String inventoryConditionName,
+            @GraphQLName("unitOfMeasureTypeName") @GraphQLNonNull final String unitOfMeasureTypeName,
+            @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName,
+            @GraphQLName("unitPrice") final String unitPrice,
+            @GraphQLName("minimumUnitPrice") final String minimumUnitPrice,
+            @GraphQLName("maximumUnitPrice") final String maximumUnitPrice,
+            @GraphQLName("unitPriceIncrement") final String unitPriceIncrement) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = OfferUtil.getHome().getCreateOfferItemPriceForm();
+
+            commandForm.setOfferName(offerName);
+            commandForm.setItemName(itemName);
+            commandForm.setInventoryConditionName(inventoryConditionName);
+            commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
+            commandForm.setCurrencyIsoName(currencyIsoName);
+            commandForm.setUnitPrice(unitPrice);
+            commandForm.setMinimumUnitPrice(minimumUnitPrice);
+            commandForm.setMaximumUnitPrice(maximumUnitPrice);
+            commandForm.setUnitPriceIncrement(unitPriceIncrement);
+
+            var commandResult = OfferUtil.getHome().createOfferItemPrice(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject deleteOfferItemPrice(final DataFetchingEnvironment env,
+            @GraphQLName("offerName") @GraphQLNonNull final String offerName,
+            @GraphQLName("itemName") @GraphQLNonNull final String itemName,
+            @GraphQLName("inventoryConditionName") @GraphQLNonNull final String inventoryConditionName,
+            @GraphQLName("unitOfMeasureTypeName") @GraphQLNonNull final String unitOfMeasureTypeName,
+            @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = OfferUtil.getHome().getDeleteOfferItemPriceForm();
+
+            commandForm.setOfferName(offerName);
+            commandForm.setItemName(itemName);
+            commandForm.setInventoryConditionName(inventoryConditionName);
+            commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
+            commandForm.setCurrencyIsoName(currencyIsoName);
+
+            var commandResult = OfferUtil.getHome().deleteOfferItemPrice(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject editOfferItemPrice(final DataFetchingEnvironment env,
+            @GraphQLName("offerName") @GraphQLNonNull final String offerName,
+            @GraphQLName("itemName") @GraphQLNonNull final String itemName,
+            @GraphQLName("inventoryConditionName") @GraphQLNonNull final String inventoryConditionName,
+            @GraphQLName("unitOfMeasureTypeName") @GraphQLNonNull final String unitOfMeasureTypeName,
+            @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName,
+            @GraphQLName("unitPrice") final String unitPrice,
+            @GraphQLName("minimumUnitPrice") final String minimumUnitPrice,
+            @GraphQLName("maximumUnitPrice") final String maximumUnitPrice,
+            @GraphQLName("unitPriceIncrement") final String unitPriceIncrement) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var spec = OfferUtil.getHome().getOfferItemPriceSpec();
+
+            spec.setOfferName(offerName);
+            spec.setItemName(itemName);
+            spec.setInventoryConditionName(inventoryConditionName);
+            spec.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
+            spec.setCurrencyIsoName(currencyIsoName);
+
+            var commandForm = OfferUtil.getHome().getEditOfferItemPriceForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = OfferUtil.getHome().editOfferItemPrice(getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditOfferItemPriceResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                if(arguments.containsKey("unitPrice"))
+                    edit.setUnitPrice(unitPrice);
+                if(arguments.containsKey("minimumUnitPrice"))
+                    edit.setMinimumUnitPrice(minimumUnitPrice);
+                if(arguments.containsKey("maximumUnitPrice"))
+                    edit.setMaximumUnitPrice(maximumUnitPrice);
+                if(arguments.containsKey("unitPriceIncrement"))
+                    edit.setUnitPriceIncrement(unitPriceIncrement);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = OfferUtil.getHome().editOfferItemPrice(getUserVisitPK(env), commandForm);
+            }
+
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
     @GraphQLField
     @GraphQLRelayMutation
     public static CommandResultWithIdObject createUse(final DataFetchingEnvironment env,
