@@ -726,7 +726,7 @@ public class GraphQlMutations
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject editFilterAdjustmentAmount(final DataFetchingEnvironment env,
+    public static CommandResultObject editFilterAdjustmentAmount(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
             @GraphQLName("filterAdjustmentName") @GraphQLNonNull final String filterAdjustmentName,
             @GraphQLName("unitOfMeasureName") final String unitOfMeasureName,
@@ -734,7 +734,7 @@ public class GraphQlMutations
             @GraphQLName("unitOfMeasureTypeName") final String unitOfMeasureTypeName,
             @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName,
             @GraphQLName("amount") @GraphQLNonNull final String amount) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var commandResultObject = new CommandResultObject();
 
         try {
             var spec = FilterUtil.getHome().getFilterAdjustmentAmountSpec();
@@ -758,8 +758,6 @@ public class GraphQlMutations
                 var result = (EditFilterAdjustmentAmountResult)executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
-
-                commandResultObject.setEntityInstanceFromEntityRef(result.getFilterAdjustmentAmount().getEntityInstance().getEntityRef());
 
                 if(arguments.containsKey("amount"))
                     edit.setAmount(amount);
@@ -842,7 +840,7 @@ public class GraphQlMutations
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject editFilterAdjustmentFixedAmount(final DataFetchingEnvironment env,
+    public static CommandResultObject editFilterAdjustmentFixedAmount(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
             @GraphQLName("filterAdjustmentName") @GraphQLNonNull final String filterAdjustmentName,
             @GraphQLName("unitOfMeasureName") final String unitOfMeasureName,
@@ -850,7 +848,7 @@ public class GraphQlMutations
             @GraphQLName("unitOfMeasureTypeName") final String unitOfMeasureTypeName,
             @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName,
             @GraphQLName("unitAmount") @GraphQLNonNull final String unitAmount) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var commandResultObject = new CommandResultObject();
 
         try {
             var spec = FilterUtil.getHome().getFilterAdjustmentFixedAmountSpec();
@@ -874,8 +872,6 @@ public class GraphQlMutations
                 var result = (EditFilterAdjustmentFixedAmountResult)executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
-
-                commandResultObject.setEntityInstanceFromEntityRef(result.getFilterAdjustmentFixedAmount().getEntityInstance().getEntityRef());
 
                 if(arguments.containsKey("unitAmount"))
                     edit.setUnitAmount(unitAmount);
@@ -958,7 +954,7 @@ public class GraphQlMutations
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject editFilterAdjustmentPercent(final DataFetchingEnvironment env,
+    public static CommandResultObject editFilterAdjustmentPercent(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
             @GraphQLName("filterAdjustmentName") @GraphQLNonNull final String filterAdjustmentName,
             @GraphQLName("unitOfMeasureName") final String unitOfMeasureName,
@@ -966,7 +962,7 @@ public class GraphQlMutations
             @GraphQLName("unitOfMeasureTypeName") final String unitOfMeasureTypeName,
             @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName,
             @GraphQLName("percent") @GraphQLNonNull final String percent) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var commandResultObject = new CommandResultObject();
 
         try {
             var spec = FilterUtil.getHome().getFilterAdjustmentPercentSpec();
@@ -990,8 +986,6 @@ public class GraphQlMutations
                 var result = (EditFilterAdjustmentPercentResult)executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
-
-                commandResultObject.setEntityInstanceFromEntityRef(result.getFilterAdjustmentPercent().getEntityInstance().getEntityRef());
 
                 if(arguments.containsKey("percent"))
                     edit.setPercent(percent);
