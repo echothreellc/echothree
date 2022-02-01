@@ -37,6 +37,7 @@ import com.echothree.control.user.inventory.common.result.EditInventoryCondition
 import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.common.result.CreateItemCategoryResult;
 import com.echothree.control.user.item.common.result.EditItemCategoryResult;
+import com.echothree.control.user.item.common.result.EditItemPriceResult;
 import com.echothree.control.user.offer.common.OfferUtil;
 import com.echothree.control.user.offer.common.result.CreateOfferNameElementResult;
 import com.echothree.control.user.offer.common.result.CreateOfferResult;
@@ -89,6 +90,7 @@ import com.echothree.model.control.search.server.graphql.SearchEmployeesResultOb
 import com.echothree.model.control.search.server.graphql.SearchItemsResultObject;
 import com.echothree.model.control.search.server.graphql.SearchVendorsResultObject;
 import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.validation.FieldType;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLID;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -3697,6 +3699,123 @@ public class GraphQlMutations
         return commandResultObject;
     }
 
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject createItemPrice(final DataFetchingEnvironment env,
+            @GraphQLName("itemName") @GraphQLNonNull final String itemName,
+            @GraphQLName("inventoryConditionName") @GraphQLNonNull final String inventoryConditionName,
+            @GraphQLName("unitOfMeasureTypeName") @GraphQLNonNull final String unitOfMeasureTypeName,
+            @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName,
+            @GraphQLName("unitPrice") final String unitPrice,
+            @GraphQLName("minimumUnitPrice") final String minimumUnitPrice,
+            @GraphQLName("maximumUnitPrice") final String maximumUnitPrice,
+            @GraphQLName("unitPriceIncrement") final String unitPriceIncrement) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = ItemUtil.getHome().getCreateItemPriceForm();
+
+            commandForm.setItemName(itemName);
+            commandForm.setInventoryConditionName(inventoryConditionName);
+            commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
+            commandForm.setCurrencyIsoName(currencyIsoName);
+            commandForm.setUnitPrice(unitPrice);
+            commandForm.setMinimumUnitPrice(minimumUnitPrice);
+            commandForm.setMaximumUnitPrice(maximumUnitPrice);
+            commandForm.setUnitPriceIncrement(unitPriceIncrement);
+
+            var commandResult = ItemUtil.getHome().createItemPrice(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject deleteItemPrice(final DataFetchingEnvironment env,
+            @GraphQLName("itemName") @GraphQLNonNull final String itemName,
+            @GraphQLName("inventoryConditionName") @GraphQLNonNull final String inventoryConditionName,
+            @GraphQLName("unitOfMeasureTypeName") @GraphQLNonNull final String unitOfMeasureTypeName,
+            @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = ItemUtil.getHome().getDeleteItemPriceForm();
+
+            commandForm.setItemName(itemName);
+            commandForm.setInventoryConditionName(inventoryConditionName);
+            commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
+            commandForm.setCurrencyIsoName(currencyIsoName);
+
+            var commandResult = ItemUtil.getHome().deleteItemPrice(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject editItemPrice(final DataFetchingEnvironment env,
+            @GraphQLName("itemName") @GraphQLNonNull final String itemName,
+            @GraphQLName("inventoryConditionName") @GraphQLNonNull final String inventoryConditionName,
+            @GraphQLName("unitOfMeasureTypeName") @GraphQLNonNull final String unitOfMeasureTypeName,
+            @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName,
+            @GraphQLName("unitPrice") final String unitPrice,
+            @GraphQLName("minimumUnitPrice") final String minimumUnitPrice,
+            @GraphQLName("maximumUnitPrice") final String maximumUnitPrice,
+            @GraphQLName("unitPriceIncrement") final String unitPriceIncrement) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var spec = ItemUtil.getHome().getItemPriceSpec();
+
+            spec.setItemName(itemName);
+            spec.setInventoryConditionName(inventoryConditionName);
+            spec.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
+            spec.setCurrencyIsoName(currencyIsoName);
+
+            var commandForm = ItemUtil.getHome().getEditItemPriceForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = ItemUtil.getHome().editItemPrice(getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditItemPriceResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                if(arguments.containsKey("unitPrice"))
+                    edit.setUnitPrice(unitPrice);
+                if(arguments.containsKey("minimumUnitPrice"))
+                    edit.setMinimumUnitPrice(minimumUnitPrice);
+                if(arguments.containsKey("maximumUnitPrice"))
+                    edit.setMaximumUnitPrice(maximumUnitPrice);
+                if(arguments.containsKey("unitPriceIncrement"))
+                    edit.setUnitPriceIncrement(unitPriceIncrement);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = ItemUtil.getHome().editItemPrice(getUserVisitPK(env), commandForm);
+            }
+
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+    
     @GraphQLField
     @GraphQLRelayMutation
     public static CommandResultObject unlockEntity(final DataFetchingEnvironment env,
