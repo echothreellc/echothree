@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.offer.server.graphql;
 
-import com.echothree.model.control.graphql.server.graphql.BaseObject;
+import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
@@ -40,7 +40,7 @@ import java.util.stream.Collectors;
 @GraphQLDescription("offer item price object")
 @GraphQLName("OfferItem")
 public class OfferItemObject
-        extends BaseObject {
+        extends BaseEntityInstanceObject {
     
     private final OfferItem offerItem; // Always Present
     

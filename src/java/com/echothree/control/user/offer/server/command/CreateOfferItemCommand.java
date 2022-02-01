@@ -17,6 +17,7 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.CreateOfferItemForm;
+import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
@@ -25,12 +26,7 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferItem;
-import com.echothree.model.data.party.server.entity.PartyCompany;
-import com.echothree.model.data.party.server.entity.PartyDepartment;
-import com.echothree.model.data.party.server.entity.PartyDivision;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -72,27 +68,30 @@ public class CreateOfferItemCommand
     
     @Override
     protected BaseResult execute() {
-        String offerName = form.getOfferName();
+        var result = OfferResultFactory.getCreateOfferItemResult();
+        OfferItem offerItem = null;
+        var offerName = form.getOfferName();
         var offerControl = Session.getModelController(OfferControl.class);
-        Offer offer = offerControl.getOfferByName(offerName);
+        var offer = offerControl.getOfferByName(offerName);
         
         if(offer != null) {
             var itemControl = Session.getModelController(ItemControl.class);
-            String itemName = form.getItemName();
-            Item item = itemControl.getItemByName(itemName);
+            var itemName = form.getItemName();
+            var item = itemControl.getItemByName(itemName);
             
             if(item != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                PartyDepartment partyDepartment = partyControl.getPartyDepartment(offer.getLastDetail().getDepartmentParty());
-                PartyDivision partyDivision = partyControl.getPartyDivision(partyDepartment.getDivisionParty());
-                PartyCompany partyCompany = partyControl.getPartyCompany(partyDivision.getCompanyParty());
+                var partyDepartment = partyControl.getPartyDepartment(offer.getLastDetail().getDepartmentParty());
+                var partyDivision = partyControl.getPartyDivision(partyDepartment.getDivisionParty());
+                var partyCompany = partyControl.getPartyCompany(partyDivision.getCompanyParty());
                 
                 if(partyCompany.getParty().equals(item.getLastDetail().getCompanyParty())) {
                     var offerItemControl = Session.getModelController(OfferItemControl.class);
-                    OfferItem offerItem = offerItemControl.getOfferItem(offer, item);
+
+                    offerItem = offerItemControl.getOfferItem(offer, item);
                     
                     if(offerItem == null) {
-                        OfferItemLogic.getInstance().createOfferItem(offer, item, getPartyPK());
+                        offerItem = OfferItemLogic.getInstance().createOfferItem(offer, item, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.DuplicateOfferItem.name(), offerName, itemName);
                     }
@@ -105,8 +104,14 @@ public class CreateOfferItemCommand
         } else {
             addExecutionError(ExecutionErrors.UnknownOfferName.name(), offerName);
         }
-        
-        return null;
+
+        if(offerItem != null) {
+            result.setOfferName(offerItem.getOffer().getLastDetail().getOfferName());
+            result.setItemName(offerItem.getItem().getLastDetail().getItemName());
+            result.setEntityRef(offerItem.getPrimaryKey().getEntityRef());
+        }
+
+        return result;
     }
     
 }
