@@ -36,8 +36,10 @@ import com.echothree.control.user.inventory.common.result.CreateInventoryConditi
 import com.echothree.control.user.inventory.common.result.EditInventoryConditionResult;
 import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.common.result.CreateItemCategoryResult;
+import com.echothree.control.user.item.common.result.CreateItemResult;
 import com.echothree.control.user.item.common.result.EditItemCategoryResult;
 import com.echothree.control.user.item.common.result.EditItemPriceResult;
+import com.echothree.control.user.item.common.result.EditItemResult;
 import com.echothree.control.user.offer.common.OfferUtil;
 import com.echothree.control.user.offer.common.result.CreateOfferItemResult;
 import com.echothree.control.user.offer.common.result.CreateOfferNameElementResult;
@@ -92,6 +94,7 @@ import com.echothree.model.control.search.server.graphql.SearchEmployeesResultOb
 import com.echothree.model.control.search.server.graphql.SearchItemsResultObject;
 import com.echothree.model.control.search.server.graphql.SearchVendorsResultObject;
 import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLID;
@@ -3861,6 +3864,193 @@ public class GraphQlMutations
             commandForm.setUlid(id);
 
             commandResultObject.setCommandResult(ItemUtil.getHome().deleteItemCategory(getUserVisitPK(env), commandForm));    
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultWithIdObject createItem(final DataFetchingEnvironment env,
+            @GraphQLName("itemName") final String itemName,
+            @GraphQLName("itemTypeName") @GraphQLNonNull final String itemTypeName,
+            @GraphQLName("itemUseTypeName") @GraphQLNonNull final String itemUseTypeName,
+            @GraphQLName("itemCategoryName") final String itemCategoryName,
+            @GraphQLName("itemAccountingCategoryName") final String itemAccountingCategoryName,
+            @GraphQLName("itemPurchasingCategoryName") final String itemPurchasingCategoryName,
+            @GraphQLName("companyName") @GraphQLNonNull final String companyName,
+            @GraphQLName("itemDeliveryTypeName") final String itemDeliveryTypeName,
+            @GraphQLName("itemInventoryTypeName") final String itemInventoryTypeName,
+            @GraphQLName("inventorySerialized") final String inventorySerialized,
+            @GraphQLName("shippingChargeExempt") @GraphQLNonNull final String shippingChargeExempt,
+            @GraphQLName("shippingStartTime") final String shippingStartTime,
+            @GraphQLName("shippingEndTime") final String shippingEndTime,
+            @GraphQLName("salesOrderStartTime") final String salesOrderStartTime,
+            @GraphQLName("salesOrderEndTime") final String salesOrderEndTime,
+            @GraphQLName("purchaseOrderStartTime") final String purchaseOrderStartTime,
+            @GraphQLName("purchaseOrderEndTime") final String purchaseOrderEndTime,
+            @GraphQLName("allowClubDiscounts") @GraphQLNonNull final String allowClubDiscounts,
+            @GraphQLName("allowCouponDiscounts") @GraphQLNonNull final String allowCouponDiscounts,
+            @GraphQLName("allowAssociatePayments") @GraphQLNonNull final String allowAssociatePayments,
+            @GraphQLName("itemStatus") @GraphQLNonNull final String itemStatus,
+            @GraphQLName("unitOfMeasureKindName") @GraphQLNonNull final String unitOfMeasureKindName,
+            @GraphQLName("itemPriceTypeName") @GraphQLNonNull final String itemPriceTypeName,
+            @GraphQLName("cancellationPolicyName") final String cancellationPolicyName,
+            @GraphQLName("returnPolicyName") final String returnPolicyName) {
+        var commandResultObject = new CommandResultWithIdObject();
+
+        try {
+            var commandForm = ItemUtil.getHome().getCreateItemForm();
+
+            commandForm.setItemName(itemName);
+            commandForm.setItemTypeName(itemTypeName);
+            commandForm.setItemUseTypeName(itemUseTypeName);
+            commandForm.setItemCategoryName(itemCategoryName);
+            commandForm.setItemAccountingCategoryName(itemAccountingCategoryName);
+            commandForm.setItemPurchasingCategoryName(itemPurchasingCategoryName);
+            commandForm.setCompanyName(companyName);
+            commandForm.setItemDeliveryTypeName(itemDeliveryTypeName);
+            commandForm.setItemInventoryTypeName(itemInventoryTypeName);
+            commandForm.setInventorySerialized(inventorySerialized);
+            commandForm.setShippingChargeExempt(shippingChargeExempt);
+            commandForm.setShippingStartTime(shippingStartTime);
+            commandForm.setShippingEndTime(shippingEndTime);
+            commandForm.setSalesOrderStartTime(salesOrderStartTime);
+            commandForm.setSalesOrderEndTime(salesOrderEndTime);
+            commandForm.setPurchaseOrderStartTime(purchaseOrderStartTime);
+            commandForm.setPurchaseOrderEndTime(purchaseOrderEndTime);
+            commandForm.setAllowClubDiscounts(allowClubDiscounts);
+            commandForm.setAllowCouponDiscounts(allowCouponDiscounts);
+            commandForm.setAllowAssociatePayments(allowAssociatePayments);
+            commandForm.setItemStatus(itemStatus);
+            commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
+            commandForm.setItemPriceTypeName(itemPriceTypeName);
+            commandForm.setCancellationPolicyName(cancellationPolicyName);
+            commandForm.setReturnPolicyName(returnPolicyName);
+
+            var commandResult = ItemUtil.getHome().createItem(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateItemResult)commandResult.getExecutionResult().getResult();
+
+                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultWithIdObject editItem(final DataFetchingEnvironment env,
+            @GraphQLName("originalItemName") @GraphQLNonNull final String originalItemName,
+            // @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("itemName") final String itemName,
+            @GraphQLName("itemCategoryName") final String itemCategoryName,
+            @GraphQLName("itemAccountingCategoryName") final String itemAccountingCategoryName,
+            @GraphQLName("itemPurchasingCategoryName") final String itemPurchasingCategoryName,
+            @GraphQLName("shippingChargeExempt") final String shippingChargeExempt,
+            @GraphQLName("shippingStartTime") final String shippingStartTime,
+            @GraphQLName("shippingEndTime") final String shippingEndTime,
+            @GraphQLName("salesOrderStartTime") final String salesOrderStartTime,
+            @GraphQLName("salesOrderEndTime") final String salesOrderEndTime,
+            @GraphQLName("purchaseOrderStartTime") final String purchaseOrderStartTime,
+            @GraphQLName("purchaseOrderEndTime") final String purchaseOrderEndTime,
+            @GraphQLName("allowClubDiscounts") final String allowClubDiscounts,
+            @GraphQLName("allowCouponDiscounts") final String allowCouponDiscounts,
+            @GraphQLName("allowAssociatePayments") final String allowAssociatePayments,
+            @GraphQLName("cancellationPolicyName") final String cancellationPolicyName,
+            @GraphQLName("returnPolicyName") final String returnPolicyName) {
+        var commandResultObject = new CommandResultWithIdObject();
+
+        try {
+            var spec = ItemUtil.getHome().getItemUniversalSpec();
+
+            spec.setItemName(originalItemName);
+            // spec.setUlid(id);
+
+            var commandForm = ItemUtil.getHome().getEditItemForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = ItemUtil.getHome().editItem(getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditItemResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                commandResultObject.setEntityInstanceFromEntityRef(result.getItem().getEntityInstance().getEntityRef());
+
+                if(arguments.containsKey("itemName"))
+                    edit.setItemName(itemName);
+                if(arguments.containsKey("itemCategoryName"))
+                    edit.setItemCategoryName(itemCategoryName);
+                if(arguments.containsKey("itemAccountingCategoryName"))
+                    edit.setItemAccountingCategoryName(itemAccountingCategoryName);
+                if(arguments.containsKey("itemPurchasingCategoryName"))
+                    edit.setItemPurchasingCategoryName(itemPurchasingCategoryName);
+                if(arguments.containsKey("shippingChargeExempt"))
+                    edit.setShippingChargeExempt(shippingChargeExempt);
+                if(arguments.containsKey("shippingStartTime"))
+                    edit.setShippingStartTime(shippingStartTime);
+                if(arguments.containsKey("shippingEndTime"))
+                    edit.setShippingEndTime(shippingEndTime);
+                if(arguments.containsKey("salesOrderStartTime"))
+                    edit.setSalesOrderStartTime(salesOrderStartTime);
+                if(arguments.containsKey("salesOrderEndTime"))
+                    edit.setSalesOrderEndTime(salesOrderEndTime);
+                if(arguments.containsKey("purchaseOrderStartTime"))
+                    edit.setPurchaseOrderStartTime(purchaseOrderStartTime);
+                if(arguments.containsKey("purchaseOrderEndTime"))
+                    edit.setPurchaseOrderEndTime(purchaseOrderEndTime);
+                if(arguments.containsKey("allowClubDiscounts"))
+                    edit.setAllowClubDiscounts(allowClubDiscounts);
+                if(arguments.containsKey("allowCouponDiscounts"))
+                    edit.setAllowCouponDiscounts(allowCouponDiscounts);
+                if(arguments.containsKey("allowAssociatePayments"))
+                    edit.setAllowAssociatePayments(allowAssociatePayments);
+                if(arguments.containsKey("cancellationPolicyName"))
+                    edit.setCancellationPolicyName(cancellationPolicyName);
+                if(arguments.containsKey("returnPolicyName"))
+                    edit.setReturnPolicyName(returnPolicyName);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = ItemUtil.getHome().editItem(getUserVisitPK(env), commandForm);
+            }
+
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    @GraphQLName("setItemStatus")
+    public static CommandResultObject setItemStatus(final DataFetchingEnvironment env,
+            @GraphQLName("itemName") @GraphQLNonNull final String itemStatusName,
+            @GraphQLName("itemStatusChoice") @GraphQLNonNull final String ItemStatusChoice) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = ItemUtil.getHome().getSetItemStatusForm();
+
+            commandForm.setItemName(itemStatusName);
+            commandForm.setItemStatusChoice(ItemStatusChoice);
+
+            commandResultObject.setCommandResult(ItemUtil.getHome().setItemStatus(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
