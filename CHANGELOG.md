@@ -1,5 +1,16 @@
 # Changelog
 
+## 2022-02-06-01
+
+* GraphQL Mutations for Offer Items [135](https://gitlab.echothree.com/echothree/echothree/-/issues/135)
+* GraphQL Mutations for Offer Item Prices [136](https://gitlab.echothree.com/echothree/echothree/-/issues/136)
+* GraphQL Mutations for Item Prices [403](https://gitlab.echothree.com/echothree/echothree/-/issues/403)
+* Error Prone 2.11.0 Upgrade [407](https://gitlab.echothree.com/echothree/echothree/-/issues/407)
+* jOOQ 3.16.3 Upgrade [408](https://gitlab.echothree.com/echothree/echothree/-/issues/408)
+* JFreeChart 1.5.3 Upgrade [409](https://gitlab.echothree.com/echothree/echothree/-/issues/409)
+* WildFly 26.0.1 Upgrade [410](https://gitlab.echothree.com/echothree/echothree/-/issues/410)
+* GraphQL Mutations for Items [411](https://gitlab.echothree.com/echothree/echothree/-/issues/411)
+
 ## 2022-01-23-01
 
 * Convert all count* Functions to Return longs [393](https://gitlab.echothree.com/echothree/echothree/-/issues/393)
