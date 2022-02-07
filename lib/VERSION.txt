@@ -4,7 +4,6 @@ Bootstrap 4.5.3
 cross-revalidator 1.0a
 displaytag 1.2
 Jakarta POI 3.2 (used by displaytag)
-Jakarta taglibs standard 1.1.2
 Jaxen 1.1.1 (used by PMD)
 jQuery 3.5.1
 log4j 1.2.8
