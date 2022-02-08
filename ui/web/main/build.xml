@@ -186,13 +186,6 @@
                 <include name="displaytag.jar"/>
                 <include name="displaytag-export-poi.jar"/>
             </lib>
-            <!-- Jakarta Taglibs Standard -->
-            <lib dir="${lib.dir}/jakarta-taglibs-standard/lib">
-                <include name="*.jar"/>
-            </lib>
-            <webinf dir="${lib.dir}/jakarta-taglibs-standard/tld">
-                <include name="*.tld"/>
-            </webinf>
             <!-- TinyMCE -->
             <zipfileset prefix="tinymce" dir="${lib.dir}/tinymce"/>
             <!-- Prism -->
