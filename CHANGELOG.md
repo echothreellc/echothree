@@ -1,5 +1,9 @@
 # Changelog
 
+## 2022-02-20-01
+
+* Remove Jakarta Standard Taglib [418](https://gitlab.echothree.com/echothree/echothree/-/issues/418)
+
 ## 2022-02-06-01
 
 * GraphQL Mutations for Offer Items [135](https://gitlab.echothree.com/echothree/echothree/-/issues/135)
