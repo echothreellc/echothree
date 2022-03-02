@@ -350,6 +350,10 @@ import com.echothree.model.data.party.common.pk.LanguagePK;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.model.data.payment.common.pk.PaymentProcessorPK;
+import com.echothree.model.data.payment.server.entity.PaymentProcessor;
+import com.echothree.model.data.payment.server.factory.PaymentProcessorFactory;
+import com.echothree.model.data.payment.server.value.PaymentProcessorDetailValue;
 import com.echothree.model.data.returnpolicy.common.pk.ReturnPolicyPK;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.search.common.CachedExecutedSearchResultConstants;
@@ -6009,6 +6013,33 @@ public class ItemControl
         return itemDescriptionType;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ItemDescriptionType */
+    public ItemDescriptionType getItemDescriptionTypeByEntityInstance(final EntityInstance entityInstance,
+            final EntityPermission entityPermission) {
+        var pk = new ItemDescriptionTypePK(entityInstance.getEntityUniqueId());
+
+        return ItemDescriptionTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ItemDescriptionType getItemDescriptionTypeByEntityInstance(final EntityInstance entityInstance) {
+        return getItemDescriptionTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ItemDescriptionType getItemDescriptionTypeByEntityInstanceForUpdate(final EntityInstance entityInstance) {
+        return getItemDescriptionTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public ItemDescriptionTypeDetailValue getItemDescriptionTypeDetailValueForUpdate(ItemDescriptionType itemDescriptionType) {
+        return itemDescriptionType.getLastDetailForUpdate().getItemDescriptionTypeDetailValue().clone();
+    }
+
+    public long countItemDescriptionTypes() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                    "FROM itemdescriptiontypes, itemdescriptiontypedetails " +
+                    "WHERE idt_activedetailid = idtdt_itemdescriptiontypedetailid");
+    }
+
     private static final Map<EntityPermission, String> getItemDescriptionTypeByNameQueries;
 
     static {
@@ -6028,7 +6059,7 @@ public class ItemControl
         getItemDescriptionTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private ItemDescriptionType getItemDescriptionTypeByName(String itemDescriptionTypeName, EntityPermission entityPermission) {
+    public ItemDescriptionType getItemDescriptionTypeByName(String itemDescriptionTypeName, EntityPermission entityPermission) {
         return ItemDescriptionTypeFactory.getInstance().getEntityFromQuery(entityPermission, getItemDescriptionTypeByNameQueries, itemDescriptionTypeName);
     }
 
@@ -6038,10 +6069,6 @@ public class ItemControl
 
     public ItemDescriptionType getItemDescriptionTypeByNameForUpdate(String itemDescriptionTypeName) {
         return getItemDescriptionTypeByName(itemDescriptionTypeName, EntityPermission.READ_WRITE);
-    }
-
-    public ItemDescriptionTypeDetailValue getItemDescriptionTypeDetailValueForUpdate(ItemDescriptionType itemDescriptionType) {
-        return itemDescriptionType == null? null: itemDescriptionType.getLastDetailForUpdate().getItemDescriptionTypeDetailValue().clone();
     }
 
     public ItemDescriptionTypeDetailValue getItemDescriptionTypeDetailValueByNameForUpdate(String itemDescriptionTypeName) {
@@ -6135,7 +6162,7 @@ public class ItemControl
         getDefaultItemDescriptionTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private ItemDescriptionType getDefaultItemDescriptionType(EntityPermission entityPermission) {
+    public ItemDescriptionType getDefaultItemDescriptionType(EntityPermission entityPermission) {
         return ItemDescriptionTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultItemDescriptionTypeQueries);
     }
 
@@ -6219,7 +6246,7 @@ public class ItemControl
         return getItemTransferCaches(userVisit).getItemDescriptionTypeTransferCache().getTransfer(itemDescriptionType);
     }
 
-    public List<ItemDescriptionTypeTransfer> getItemDescriptionTypeTransfers(UserVisit userVisit, List<ItemDescriptionType> itemDescriptionTypes) {
+    public List<ItemDescriptionTypeTransfer> getItemDescriptionTypeTransfers(UserVisit userVisit, Collection<ItemDescriptionType> itemDescriptionTypes) {
         List<ItemDescriptionTypeTransfer> itemDescriptionTypeTransfers = new ArrayList<>(itemDescriptionTypes.size());
         ItemDescriptionTypeTransferCache itemDescriptionTypeTransferCache = getItemTransferCaches(userVisit).getItemDescriptionTypeTransferCache();
 
