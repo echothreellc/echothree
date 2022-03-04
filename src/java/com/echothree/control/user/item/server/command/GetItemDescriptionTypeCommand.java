@@ -17,7 +17,6 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.GetItemDescriptionTypeForm;
-import com.echothree.control.user.item.common.result.GetItemDescriptionTypeResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.item.server.control.ItemControl;
@@ -41,7 +40,7 @@ public class GetItemDescriptionTypeCommand
     
     static {
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("ItemDescriptionTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("ItemDescriptionTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Key", FieldType.KEY, false, null, null),
                 new FieldDefinition("Guid", FieldType.GUID, false, null, null),
@@ -56,7 +55,7 @@ public class GetItemDescriptionTypeCommand
 
     @Override
     protected ItemDescriptionType getEntity() {
-        ItemDescriptionType itemDescriptionType = ItemDescriptionTypeLogic.getInstance().getItemDescriptionTypeByUniversalSpec(this, form, true);
+        var itemDescriptionType = ItemDescriptionTypeLogic.getInstance().getItemDescriptionTypeByUniversalSpec(this, form, true);
 
         if(itemDescriptionType != null) {
             sendEventUsingNames(itemDescriptionType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
@@ -68,7 +67,7 @@ public class GetItemDescriptionTypeCommand
     @Override
     protected BaseResult getTransfer(ItemDescriptionType itemDescriptionType) {
         var itemDescriptionTypeControl = Session.getModelController(ItemControl.class);
-        GetItemDescriptionTypeResult result = ItemResultFactory.getGetItemDescriptionTypeResult();
+        var result = ItemResultFactory.getGetItemDescriptionTypeResult();
 
         if(itemDescriptionType != null) {
             result.setItemDescriptionType(itemDescriptionTypeControl.getItemDescriptionTypeTransfer(getUserVisit(), itemDescriptionType));

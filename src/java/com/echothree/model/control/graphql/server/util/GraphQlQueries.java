@@ -109,6 +109,8 @@ import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.server.command.GetItemCategoriesCommand;
 import com.echothree.control.user.item.server.command.GetItemCategoryCommand;
 import com.echothree.control.user.item.server.command.GetItemCommand;
+import com.echothree.control.user.item.server.command.GetItemDescriptionTypeCommand;
+import com.echothree.control.user.item.server.command.GetItemDescriptionTypesCommand;
 import com.echothree.control.user.item.server.command.GetItemPriceCommand;
 import com.echothree.control.user.item.server.command.GetItemPricesCommand;
 import com.echothree.control.user.item.server.command.GetItemsCommand;
@@ -265,6 +267,7 @@ import com.echothree.model.control.inventory.server.graphql.InventoryConditionOb
 import com.echothree.model.control.inventory.server.graphql.LotObject;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.graphql.ItemCategoryObject;
+import com.echothree.model.control.item.server.graphql.ItemDescriptionTypeObject;
 import com.echothree.model.control.item.server.graphql.ItemObject;
 import com.echothree.model.control.item.server.graphql.ItemPriceObject;
 import com.echothree.model.control.offer.server.graphql.OfferItemObject;
@@ -364,6 +367,7 @@ import com.echothree.model.data.inventory.server.entity.Lot;
 import com.echothree.model.data.item.common.ItemConstants;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemCategory;
+import com.echothree.model.data.item.server.entity.ItemDescriptionType;
 import com.echothree.model.data.item.server.entity.ItemPrice;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferItem;
@@ -4937,12 +4941,12 @@ public final class GraphQlQueries
 
             commandForm.setItemCategoryName(itemCategoryName);
             commandForm.setUlid(id);
-        
+
             itemCategory = new GetItemCategoryCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         return itemCategory == null ? null : new ItemCategoryObject(itemCategory);
     }
 
@@ -4952,17 +4956,17 @@ public final class GraphQlQueries
             @GraphQLName("parentItemCategoryName") final String parentItemCategoryName) {
         Collection<ItemCategory> itemCategories;
         Collection<ItemCategoryObject> itemCategoryObjects;
-        
+
         try {
             var commandForm = ItemUtil.getHome().getGetItemCategoriesForm();
 
             commandForm.setParentItemCategoryName(parentItemCategoryName);
-        
+
             itemCategories = new GetItemCategoriesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         if(itemCategories == null) {
             itemCategoryObjects = emptyList();
         } else {
@@ -4972,8 +4976,59 @@ public final class GraphQlQueries
                     .map(ItemCategoryObject::new)
                     .forEachOrdered(itemCategoryObjects::add);
         }
-        
+
         return itemCategoryObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("itemDescriptionType")
+    public static ItemDescriptionTypeObject itemDescriptionType(final DataFetchingEnvironment env,
+            @GraphQLName("itemDescriptionTypeName") final String itemDescriptionTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        ItemDescriptionType itemDescriptionType;
+
+        try {
+            var commandForm = ItemUtil.getHome().getGetItemDescriptionTypeForm();
+
+            commandForm.setItemDescriptionTypeName(itemDescriptionTypeName);
+            commandForm.setUlid(id);
+
+            itemDescriptionType = new GetItemDescriptionTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return itemDescriptionType == null ? null : new ItemDescriptionTypeObject(itemDescriptionType);
+    }
+
+    @GraphQLField
+    @GraphQLName("itemDescriptionTypes")
+    public static Collection<ItemDescriptionTypeObject> itemDescriptionTypes(final DataFetchingEnvironment env,
+            @GraphQLName("parentItemDescriptionTypeName") final String parentItemDescriptionTypeName) {
+        Collection<ItemDescriptionType> itemDescriptionTypes;
+        Collection<ItemDescriptionTypeObject> itemDescriptionTypeObjects;
+
+        try {
+            var commandForm = ItemUtil.getHome().getGetItemDescriptionTypesForm();
+
+            commandForm.setParentItemDescriptionTypeName(parentItemDescriptionTypeName);
+
+            itemDescriptionTypes = new GetItemDescriptionTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(itemDescriptionTypes == null) {
+            itemDescriptionTypeObjects = emptyList();
+        } else {
+            itemDescriptionTypeObjects = new ArrayList<>(itemDescriptionTypes.size());
+
+            itemDescriptionTypes.stream()
+                    .map(ItemDescriptionTypeObject::new)
+                    .forEachOrdered(itemDescriptionTypeObjects::add);
+        }
+
+        return itemDescriptionTypeObjects;
     }
 
     @GraphQLField
