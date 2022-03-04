@@ -38,8 +38,6 @@ public class MimeTypeUsageObject
         this.mimeTypeUsage = mimeTypeUsage;
     }
 
-    private Boolean hasMimeTypeAccess;
-
     @GraphQLField
     @GraphQLDescription("mime type")
     @GraphQLNonNull
