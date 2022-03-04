@@ -18,6 +18,10 @@ package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.control.user.core.server.command.GetEntityInstanceCommand;
 import com.echothree.control.user.core.server.command.GetMimeTypeCommand;
+import com.echothree.control.user.core.server.command.GetMimeTypeUsageTypeCommand;
+import com.echothree.control.user.core.server.command.GetMimeTypeUsageTypesCommand;
+import com.echothree.control.user.core.server.command.GetMimeTypeUsagesCommand;
+import com.echothree.control.user.core.server.command.GetMimeTypesCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
@@ -38,6 +42,26 @@ public final class CoreSecurityUtils
 
     public boolean getHasMimeTypeAccess(final DataFetchingEnvironment env) {
         return getGraphQlExecutionContext(env).hasAccess(GetMimeTypeCommand.class);
+    }
+
+    public boolean getHasMimeTypesAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetMimeTypesCommand.class);
+    }
+
+    public boolean getHasMimeTypeUsageTypeAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetMimeTypeUsageTypeCommand.class);
+    }
+
+    public boolean getHasMimeTypeUsageTypesAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetMimeTypeUsageTypesCommand.class);
+    }
+
+//    public boolean getHasMimeTypeUsageAccess(final DataFetchingEnvironment env) {
+//        return getGraphQlExecutionContext(env).hasAccess(GetMimeTypeUsageCommand.class);
+//    }
+
+    public boolean getHasMimeTypeUsagesAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetMimeTypeUsagesCommand.class);
     }
 
 }
