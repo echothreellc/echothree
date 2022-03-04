@@ -17,7 +17,6 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.GetItemDescriptionTypesForm;
-import com.echothree.control.user.item.common.result.GetItemDescriptionTypesResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -25,23 +24,23 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.item.server.entity.ItemDescriptionType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class GetItemDescriptionTypesCommand
-        extends BaseSimpleCommand<GetItemDescriptionTypesForm> {
-    
+        extends BaseMultipleEntitiesCommand<ItemDescriptionType, GetItemDescriptionTypesForm> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -62,24 +61,39 @@ public class GetItemDescriptionTypesCommand
     public GetItemDescriptionTypesCommand(UserVisitPK userVisitPK, GetItemDescriptionTypesForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
+
+    ItemDescriptionType parentItemDescriptionType;
     
     @Override
-    protected BaseResult execute() {
+    protected Collection<ItemDescriptionType> getEntities() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetItemDescriptionTypesResult result = ItemResultFactory.getGetItemDescriptionTypesResult();
-        String parentItemDescriptionTypeName = form.getParentItemDescriptionTypeName();
-        ItemDescriptionType parentItemDescriptionType = parentItemDescriptionTypeName == null? null: itemControl.getItemDescriptionTypeByName(parentItemDescriptionTypeName);
-        
+        var parentItemDescriptionTypeName = form.getParentItemDescriptionTypeName();
+        Collection<ItemDescriptionType> itemDescriptionTypes = null;
+
+        parentItemDescriptionType = parentItemDescriptionTypeName == null? null: itemControl.getItemDescriptionTypeByName(parentItemDescriptionTypeName);
+
         if(parentItemDescriptionTypeName == null || parentItemDescriptionType != null) {
-            UserVisit userVisit = getUserVisit();
-            
-            result.setParentItemDescriptionType(parentItemDescriptionType == null? null: itemControl.getItemDescriptionTypeTransfer(userVisit, parentItemDescriptionType));
-            result.setItemDescriptionTypes(parentItemDescriptionType == null? itemControl.getItemDescriptionTypeTransfers(userVisit):
-                itemControl.getItemDescriptionTypeTransfersByParentItemDescriptionType(userVisit, parentItemDescriptionType));
+            itemDescriptionTypes = parentItemDescriptionType == null ? itemControl.getItemDescriptionTypes()
+                    : itemControl.getItemDescriptionTypesByParentItemDescriptionType(parentItemDescriptionType);
         } else {
             addExecutionError(ExecutionErrors.UnknownParentItemDescriptionTypeName.name(), parentItemDescriptionTypeName);
         }
-        
+
+        return itemDescriptionTypes;
+    }
+
+    @Override
+    protected BaseResult getTransfers(Collection<ItemDescriptionType> entities) {
+        var result = ItemResultFactory.getGetItemDescriptionTypesResult();
+
+        if(entities != null) {
+            var itemControl = Session.getModelController(ItemControl.class);
+            var userVisit = getUserVisit();
+
+            result.setParentItemDescriptionType(parentItemDescriptionType == null ? null : itemControl.getItemDescriptionTypeTransfer(userVisit, parentItemDescriptionType));
+            result.setItemDescriptionTypes(itemControl.getItemDescriptionTypeTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
     

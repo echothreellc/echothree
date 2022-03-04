@@ -64,8 +64,8 @@ public class GetItemCommand
     protected Item getEntity() {
         var itemControl = Session.getModelController(ItemControl.class);
         Item item = null;
-        String itemName = form.getItemName();
-        String itemNameOrAlias = form.getItemNameOrAlias();
+        var itemName = form.getItemName();
+        var itemNameOrAlias = form.getItemNameOrAlias();
         var parameterCount = (itemName == null ? 0 : 1) + (itemNameOrAlias == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(parameterCount == 1) {

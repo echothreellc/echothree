@@ -14,13 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.item.common.form;
+package com.echothree.control.user.item.common.spec;
 
-import com.echothree.control.user.item.common.spec.ItemDescriptionTypeUniversalSpec;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetItemDescriptionTypeForm
-        extends ItemDescriptionTypeUniversalSpec {
+public interface ItemDescriptionTypeUniversalSpec
+        extends ItemDescriptionTypeSpec, UniversalEntitySpec {
     
-    // Nothing additional beyond ItemDescriptionTypeUniversalSpec
+    // Nothing additional beyond ItemDescriptionTypeSpec, UniversalEntitySpec
     
 }
