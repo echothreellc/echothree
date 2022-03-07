@@ -1,5 +1,13 @@
 # Changelog
 
+## 2022-03-06-01
+
+* GraphQL Objects for Item Description Types [412](https://gitlab.echothree.com/echothree/echothree/-/issues/412)
+* jOOQ 3.16.4 Upgrade [419](https://gitlab.echothree.com/echothree/echothree/-/issues/419)
+* cucumber-java8/cucumber-junit 7.2.3 Upgrade [420](https://gitlab.echothree.com/echothree/echothree/-/issues/420)
+* ClassGraph 4.8.141 Upgrade [421](https://gitlab.echothree.com/echothree/echothree/-/issues/421)
+* Add Permissions to Entity Attribute Commands [422](https://gitlab.echothree.com/echothree/echothree/-/issues/422)
+
 ## 2022-02-20-01
 
 * Remove Jakarta Standard Taglib [418](https://gitlab.echothree.com/echothree/echothree/-/issues/418)
