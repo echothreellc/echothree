@@ -17,10 +17,10 @@
 package com.echothree.control.user.core.common.form;
 
 import com.echothree.control.user.core.common.edit.EntityListItemAttributeEdit;
-import com.echothree.control.user.core.common.spec.EntityMultipleListItemAttributeUniversalSpec;
+import com.echothree.control.user.core.common.spec.EntityListItemAttributeUniversalSpec;
 
 public interface CreateEntityListItemAttributeForm
-        extends EntityMultipleListItemAttributeUniversalSpec, EntityListItemAttributeEdit {
+        extends EntityListItemAttributeUniversalSpec, EntityListItemAttributeEdit {
     
     // Nothing additional beyond EntityListItemAttributeSpec, EntityListItemAttributeEdit
     
