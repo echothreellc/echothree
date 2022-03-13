@@ -3402,7 +3402,8 @@ public class GraphQlMutations
     @GraphQLRelayMutation
     public static CommandResultObject deleteEntityListItemAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
-            @GraphQLName("entityAttributeName") @GraphQLNonNull final String entityAttributeName) {
+            @GraphQLName("entityAttributeName") final String entityAttributeName,
+            @GraphQLName("entityAttributeId") @GraphQLID final String entityAttributeId) {
         var commandResultObject = new CommandResultObject();
 
         try {
@@ -3410,6 +3411,7 @@ public class GraphQlMutations
 
             commandForm.setUlid(id);
             commandForm.setEntityAttributeName(entityAttributeName);
+            commandForm.setEntityAttributeUlid(entityAttributeId);
 
             var commandResult = CoreUtil.getHome().deleteEntityListItemAttribute(getUserVisitPK(env), commandForm);
             commandResultObject.setCommandResult(commandResult);
@@ -3423,9 +3425,11 @@ public class GraphQlMutations
     @GraphQLField
     @GraphQLRelayMutation
     public static CommandResultObject createEntityMultipleListItemAttribute(final DataFetchingEnvironment env,
-            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("entityAttributeName") final String entityAttributeName,
-            @GraphQLName("entityListItemName") final String entityListItemName) {
+            @GraphQLName("entityAttributeId") @GraphQLID final String entityAttributeId,
+            @GraphQLName("entityListItemName") final String entityListItemName,
+            @GraphQLName("entityListItemId") @GraphQLID final String entityListItemId) {
         var commandResultObject = new CommandResultObject();
 
         try {
@@ -3433,9 +3437,39 @@ public class GraphQlMutations
 
             commandForm.setUlid(id);
             commandForm.setEntityAttributeName(entityAttributeName);
+            commandForm.setEntityAttributeUlid(entityAttributeId);
             commandForm.setEntityListItemName(entityListItemName);
+            commandForm.setEntityListItemUlid(entityListItemId);
 
             var commandResult = CoreUtil.getHome().createEntityMultipleListItemAttribute(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject deleteEntityMultipleListItemAttribute(final DataFetchingEnvironment env,
+            @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
+            @GraphQLName("entityAttributeName") final String entityAttributeName,
+            @GraphQLName("entityAttributeId") @GraphQLID final String entityAttributeId,
+            @GraphQLName("entityListItemName") final String entityListItemName,
+            @GraphQLName("entityListItemId") @GraphQLID final String entityListItemId) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = CoreUtil.getHome().getDeleteEntityMultipleListItemAttributeForm();
+
+            commandForm.setUlid(id);
+            commandForm.setEntityAttributeName(entityAttributeName);
+            commandForm.setEntityAttributeUlid(entityAttributeId);
+            commandForm.setEntityListItemName(entityListItemName);
+            commandForm.setEntityListItemUlid(entityListItemId);
+
+            var commandResult = CoreUtil.getHome().deleteEntityMultipleListItemAttribute(getUserVisitPK(env), commandForm);
             commandResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
