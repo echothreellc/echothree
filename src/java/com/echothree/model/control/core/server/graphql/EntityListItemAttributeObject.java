@@ -16,8 +16,6 @@
 
 package com.echothree.model.control.core.server.graphql;
 
-import com.echothree.control.user.core.server.command.GetEntityAttributeCommand;
-import com.echothree.control.user.core.server.command.GetEntityListItemCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.data.core.server.entity.EntityListItemAttribute;
 import graphql.annotations.annotationTypes.GraphQLDescription;
@@ -36,45 +34,16 @@ public class EntityListItemAttributeObject
         this.entityListItemAttribute = entityListItemAttribute;
     }
 
-    private Boolean hasEntityAttributeAccess;
-    
-    private boolean getHasEntityAttributeAccess(final DataFetchingEnvironment env) {
-        if(hasEntityAttributeAccess == null) {
-            var baseSingleEntityCommand = new GetEntityAttributeCommand(getUserVisitPK(env), null);
-            
-            baseSingleEntityCommand.security();
-            
-            hasEntityAttributeAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-        
-        return hasEntityAttributeAccess;
-    }
-        
-    private Boolean hasEntityListItemAccess;
-    
-    private boolean getHasEntityListItemAccess(final DataFetchingEnvironment env) {
-        if(hasEntityListItemAccess == null) {
-            var baseSingleEntityCommand = new GetEntityListItemCommand(getUserVisitPK(env), null);
-            
-            baseSingleEntityCommand.security();
-            
-            hasEntityListItemAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-        
-        return hasEntityListItemAccess;
-    }
-        
     @GraphQLField
     @GraphQLDescription("entity list item")
     public EntityListItemObject getEntityListItem(final DataFetchingEnvironment env) {
-        // TODO: return getHasEntityListItemAccess(env) ? new EntityListItemObject(entityListItemAttribute.getEntityListItem()) : null;
-        return new EntityListItemObject(entityListItemAttribute.getEntityListItem());
+        return CoreSecurityUtils.getInstance().getHasEntityListItemAccess(env) ? new EntityListItemObject(entityListItemAttribute.getEntityListItem()) : null;
     }
     
     @GraphQLField
     @GraphQLDescription("entity attribute")
     public EntityAttributeObject getEntityAttribute(final DataFetchingEnvironment env) {
-        return getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityListItemAttribute.getEntityAttribute(), entityListItemAttribute.getEntityInstance()) : null;
+        return CoreSecurityUtils.getInstance().getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityListItemAttribute.getEntityAttribute(), entityListItemAttribute.getEntityInstance()) : null;
     }
     
     @GraphQLField
