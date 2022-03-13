@@ -31,7 +31,7 @@ import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
 import java.util.List;
 
-@GraphQLDescription("font weight object")
+@GraphQLDescription("entity attribute group object")
 @GraphQLName("EntityAttributeGroup")
 public class EntityAttributeGroupObject
         extends BaseEntityInstanceObject {
