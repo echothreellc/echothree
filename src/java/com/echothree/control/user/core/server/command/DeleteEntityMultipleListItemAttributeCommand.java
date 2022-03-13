@@ -17,6 +17,9 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteEntityMultipleListItemAttributeForm;
+import com.echothree.model.control.core.common.EntityAttributeTypes;
+import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -46,11 +49,16 @@ public class DeleteEntityMultipleListItemAttributeCommand
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), null)
         ));
 
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, true, null, null),
-                new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("EntityListItemName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+        FORM_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null),
+                new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityAttributeUlid", FieldType.ULID, false, null, null),
+                new FieldDefinition("EntityListItemName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityListItemUlid", FieldType.ULID, false, null, null)
+        );
     }
     
     /** Creates a new instance of DeleteEntityMultipleListItemAttributeCommand */
@@ -60,37 +68,28 @@ public class DeleteEntityMultipleListItemAttributeCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
-        String entityRef = form.getEntityRef();
-        EntityInstance entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
-        
-        if(entityInstance != null) {
-            String entityAttributeName = form.getEntityAttributeName();
-            EntityAttribute entityAttribute = coreControl.getEntityAttributeByName(entityInstance.getEntityType(), entityAttributeName);
-            
-            if(entityAttribute != null) {
-                String entityListItemName = form.getEntityListItemName();
-                EntityListItem entityListItem = coreControl.getEntityListItemByName(entityAttribute, entityListItemName);
-                
-                if(entityListItem != null) {
-                    EntityMultipleListItemAttribute entityMultipleListItemAttribute = coreControl.getEntityMultipleListItemAttributeForUpdate(entityAttribute,
-                            entityInstance, entityListItem);
-                    
-                    if(entityMultipleListItemAttribute != null) {
-                        coreControl.deleteEntityMultipleListItemAttribute(entityMultipleListItemAttribute, getPartyPK());
+        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
+
+        if(!hasExecutionErrors()) {
+            var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttribute(this, entityInstance, form, form,
+                    EntityAttributeTypes.MULTIPLELISTITEM);
+
+            if(!hasExecutionErrors()) {
+                var entityListItem = EntityAttributeLogic.getInstance().getEntityListItem(this, entityAttribute, form);
+
+                if(!hasExecutionErrors()) {
+                    var coreControl = getCoreControl();
+                    var entityListItemAttribute = coreControl.getEntityMultipleListItemAttributeForUpdate(entityAttribute, entityInstance, entityListItem);
+
+                    if(entityListItemAttribute != null) {
+                        coreControl.deleteEntityMultipleListItemAttribute(entityListItemAttribute, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.UnknownEntityMultipleListItemAttribute.name());
                     }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownEntityListItemName.name(), entityListItemName);
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownEntityAttributeName.name(), entityAttributeName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownEntityRef.name(), entityRef);
         }
-        
+
         return null;
     }
     
