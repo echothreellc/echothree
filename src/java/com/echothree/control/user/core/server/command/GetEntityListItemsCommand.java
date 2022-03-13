@@ -46,18 +46,11 @@ import java.util.List;
 
 public class GetEntityListItemsCommand
         extends BaseMultipleEntitiesCommand<EntityListItem, GetEntityListItemsForm> {
-    
-    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
+
+    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
-                        new SecurityRoleDefinition(SecurityRoleGroups.EntityListItem.name(), SecurityRoles.List.name())
-                        )))
-                )));
-        
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
@@ -67,7 +60,7 @@ public class GetEntityListItemsCommand
     
     /** Creates a new instance of GetEntityListItemsCommand */
     public GetEntityListItemsCommand(UserVisitPK userVisitPK, GetEntityListItemsForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
     }
     
     EntityAttribute entityAttribute;

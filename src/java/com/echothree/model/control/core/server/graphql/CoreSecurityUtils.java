@@ -16,7 +16,10 @@
 
 package com.echothree.model.control.core.server.graphql;
 
+import com.echothree.control.user.core.server.command.GetEntityAttributeCommand;
 import com.echothree.control.user.core.server.command.GetEntityInstanceCommand;
+import com.echothree.control.user.core.server.command.GetEntityListItemCommand;
+import com.echothree.control.user.core.server.command.GetEntityListItemsCommand;
 import com.echothree.control.user.core.server.command.GetMimeTypeCommand;
 import com.echothree.control.user.core.server.command.GetMimeTypeUsageTypeCommand;
 import com.echothree.control.user.core.server.command.GetMimeTypeUsageTypesCommand;
@@ -38,6 +41,22 @@ public final class CoreSecurityUtils
 
     public boolean getHasEntityInstanceAccess(final DataFetchingEnvironment env) {
         return getGraphQlExecutionContext(env).hasAccess(GetEntityInstanceCommand.class);
+    }
+
+    public boolean getHasEntityAttributeAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetEntityAttributeCommand.class);
+    }
+
+//    public boolean getHasEntityAttributesAccess(final DataFetchingEnvironment env) {
+//        return getGraphQlExecutionContext(env).hasAccess(GetEntityAttributesCommand.class);
+//    }
+
+    public boolean getHasEntityListItemAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetEntityListItemCommand.class);
+    }
+
+    public boolean getHasEntityListItemsAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetEntityListItemsCommand.class);
     }
 
     public boolean getHasMimeTypeAccess(final DataFetchingEnvironment env) {
