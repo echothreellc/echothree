@@ -17,6 +17,9 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteEntityListItemAttributeForm;
+import com.echothree.model.control.core.common.EntityAttributeTypes;
+import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -45,10 +48,14 @@ public class DeleteEntityListItemAttributeCommand
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), null)
         ));
 
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, true, null, null),
-                new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+        FORM_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null),
+                new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityAttributeUlid", FieldType.ULID, false, null, null)
+        );
     }
     
     /** Creates a new instance of DeleteEntityListItemAttributeCommand */
@@ -58,27 +65,22 @@ public class DeleteEntityListItemAttributeCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
-        String entityRef = form.getEntityRef();
-        EntityInstance entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
-        
-        if(entityInstance != null) {
-            String entityAttributeName = form.getEntityAttributeName();
-            EntityAttribute entityAttribute = coreControl.getEntityAttributeByName(entityInstance.getEntityType(), entityAttributeName);
-            
-            if(entityAttribute != null) {
-                EntityListItemAttribute entityListItemAttribute = coreControl.getEntityListItemAttributeForUpdate(entityAttribute, entityInstance);
+        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
+
+        if(!hasExecutionErrors()) {
+            var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttribute(this, entityInstance, form, form,
+                    EntityAttributeTypes.LISTITEM);
+
+            if(!hasExecutionErrors()) {
+                var coreControl = getCoreControl();
+                var entityListItemAttribute = coreControl.getEntityListItemAttributeForUpdate(entityAttribute, entityInstance);
                 
                 if(entityListItemAttribute != null) {
                     coreControl.deleteEntityListItemAttribute(entityListItemAttribute, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownEntityListItemAttribute.name());
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownEntityAttributeName.name(), entityAttributeName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownEntityRef.name(), entityRef);
         }
         
         return null;

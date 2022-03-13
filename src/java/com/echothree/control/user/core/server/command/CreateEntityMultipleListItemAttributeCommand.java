@@ -73,7 +73,7 @@ public class CreateEntityMultipleListItemAttributeCommand
                     EntityAttributeTypes.MULTIPLELISTITEM);
 
             if(!hasExecutionErrors()) {
-                EntityListItem entityListItem = EntityAttributeLogic.getInstance().getEntityListItem(this, entityAttribute, form, form);
+                EntityListItem entityListItem = EntityAttributeLogic.getInstance().getEntityListItem(this, entityAttribute, form);
                 
                 if(!hasExecutionErrors()) {
                     EntityAttributeLogic.getInstance().createEntityMultipleListItemAttribute(this, entityAttribute, entityInstance,

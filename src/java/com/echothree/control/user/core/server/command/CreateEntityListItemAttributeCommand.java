@@ -47,7 +47,7 @@ public class CreateEntityListItemAttributeCommand
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), null)
         ));
 
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Key", FieldType.KEY, false, null, null),
                 new FieldDefinition("Guid", FieldType.GUID, false, null, null),
@@ -56,7 +56,7 @@ public class CreateEntityListItemAttributeCommand
                 new FieldDefinition("EntityAttributeUlid", FieldType.ULID, false, null, null),
                 new FieldDefinition("EntityListItemName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityListItemUlid", FieldType.ULID, false, null, null)
-                ));
+        );
     }
     
     /** Creates a new instance of CreateEntityListItemAttributeCommand */
@@ -69,11 +69,11 @@ public class CreateEntityListItemAttributeCommand
         var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
 
         if(!hasExecutionErrors()) {
-            EntityAttribute entityAttribute = EntityAttributeLogic.getInstance().getEntityAttribute(this, entityInstance, form, form,
+            var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttribute(this, entityInstance, form, form,
                     EntityAttributeTypes.LISTITEM);
 
             if(!hasExecutionErrors()) {
-                EntityListItem entityListItem = EntityAttributeLogic.getInstance().getEntityListItem(this, entityAttribute, form, form);
+                var entityListItem = EntityAttributeLogic.getInstance().getEntityListItem(this, entityAttribute, form);
                 
                 if(!hasExecutionErrors()) {
                     EntityAttributeLogic.getInstance().createEntityListItemAttribute(this, entityAttribute, entityInstance,

@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.core.server.logic;
 
+import com.echothree.control.user.core.common.edit.EntityListItemAttributeEdit;
 import com.echothree.control.user.core.common.spec.EntityAttributeSpec;
 import com.echothree.control.user.core.common.spec.EntityAttributeUlid;
 import com.echothree.control.user.core.common.spec.EntityListItemSpec;
@@ -620,10 +621,10 @@ public class EntityAttributeLogic
     }
     
     public EntityListItem getEntityListItem(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final EntityListItemSpec spec, final EntityListItemUlid ulid, final EntityPermission entityPermission) {
+            final EntityListItemAttributeEdit edit, final EntityPermission entityPermission) {
         EntityListItem entityListItem = null;
-        String entityListItemName = spec.getEntityListItemName();
-        String entityListItemUlid = ulid.getEntityListItemUlid();
+        String entityListItemName = edit.getEntityListItemName();
+        String entityListItemUlid = edit.getEntityListItemUlid();
         var parameterCount = (entityListItemName == null ? 0 : 1) + (entityListItemUlid == null ? 0 : 1);
 
         if (parameterCount == 1) {
@@ -653,13 +654,13 @@ public class EntityAttributeLogic
     }
     
     public EntityListItem getEntityListItem(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final EntityListItemSpec spec, final EntityListItemUlid ulid) {
-        return getEntityListItem(eea, entityAttribute, spec, ulid, EntityPermission.READ_ONLY);
+            final EntityListItemAttributeEdit edit) {
+        return getEntityListItem(eea, entityAttribute, edit, EntityPermission.READ_ONLY);
     }
     
     public EntityListItem getEntityListItemForUpdate(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-            final EntityListItemSpec spec, final EntityListItemUlid ulid) {
-        return getEntityListItem(eea, entityAttribute, spec, ulid, EntityPermission.READ_WRITE);
+            final EntityListItemAttributeEdit edit, final EntityListItemUlid ulid) {
+        return getEntityListItem(eea, entityAttribute, edit, EntityPermission.READ_WRITE);
     }
     
     public void updateEntityListItemFromValue(final Session session, EntityListItemDetailValue entityListItemDetailValue, BasePK updatedBy) {

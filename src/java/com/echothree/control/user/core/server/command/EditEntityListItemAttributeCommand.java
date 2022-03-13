@@ -22,6 +22,9 @@ import com.echothree.control.user.core.common.form.EditEntityListItemAttributeFo
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditEntityListItemAttributeResult;
 import com.echothree.control.user.core.common.spec.EntityListItemAttributeSpec;
+import com.echothree.model.control.core.common.EntityAttributeTypes;
+import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -57,14 +60,19 @@ public class EditEntityListItemAttributeCommand
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), null)
         ));
 
-        SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, true, null, null),
-                new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+        SPEC_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null),
+                new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityAttributeUlid", FieldType.ULID, false, null, null)
+        );
         
-        EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("EntityListItemName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+        EDIT_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("EntityListItemName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityListItemUlid", FieldType.ULID, false, null, null)
+        );
     }
     
     /** Creates a new instance of EditEntityListItemAttributeCommand */
@@ -75,17 +83,16 @@ public class EditEntityListItemAttributeCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        EditEntityListItemAttributeResult result = CoreResultFactory.getEditEntityListItemAttributeResult();
-        String entityRef = spec.getEntityRef();
-        EntityInstance entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
+        var result = CoreResultFactory.getEditEntityListItemAttributeResult();
+        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, spec);
 
-        if(entityInstance != null) {
-            String entityAttributeName = spec.getEntityAttributeName();
-            EntityAttribute entityAttribute = coreControl.getEntityAttributeByName(entityInstance.getEntityType(), entityAttributeName);
+        if(!hasExecutionErrors()) {
+            var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttribute(this, entityInstance, spec, spec,
+                    EntityAttributeTypes.LISTITEM);
 
-            if(entityAttribute != null) {
+            if(!hasExecutionErrors()) {
                 EntityListItemAttribute entityListItemAttribute = null;
-                BasePK basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
+                var basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
 
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                     entityListItemAttribute = coreControl.getEntityListItemAttribute(entityAttribute, entityInstance);
@@ -95,7 +102,7 @@ public class EditEntityListItemAttributeCommand
                             result.setEntityListItemAttribute(coreControl.getEntityListItemAttributeTransfer(getUserVisit(), entityListItemAttribute, entityInstance));
 
                             if(lockEntity(basePK)) {
-                                EntityListItemAttributeEdit edit = CoreEditFactory.getEntityListItemAttributeEdit();
+                                var edit = CoreEditFactory.getEntityListItemAttributeEdit();
 
                                 result.setEdit(edit);
                                 edit.setEntityListItemName(entityListItemAttribute.getEntityListItem().getLastDetail().getEntityListItemName());
@@ -107,19 +114,20 @@ public class EditEntityListItemAttributeCommand
                             basePK = null;
                         }
                     } else {
-                        addExecutionError(ExecutionErrors.UnknownEntityListItemAttribute.name(), entityRef, entityAttributeName);
+                        addExecutionError(ExecutionErrors.UnknownEntityListItemAttribute.name(),
+                                EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance),
+                                entityAttribute.getLastDetail().getEntityAttributeName());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    String entityListItemName = edit.getEntityListItemName();
-                    EntityListItem entityListItem = coreControl.getEntityListItemByName(entityAttribute, entityListItemName);
+                    var entityListItem = EntityAttributeLogic.getInstance().getEntityListItem(this, entityAttribute, edit);
 
-                    if(entityListItem != null) {
+                    if(!hasExecutionErrors()) {
                         entityListItemAttribute = coreControl.getEntityListItemAttributeForUpdate(entityAttribute, entityInstance);
 
                         if(entityListItemAttribute != null) {
                             if(lockEntityForUpdate(basePK)) {
                                 try {
-                                    EntityListItemAttributeValue entityListItemAttributeValue = coreControl.getEntityListItemAttributeValueForUpdate(entityListItemAttribute);
+                                    var entityListItemAttributeValue = coreControl.getEntityListItemAttributeValueForUpdate(entityListItemAttribute);
 
                                     entityListItemAttributeValue.setEntityListItemPK(entityListItem.getPrimaryKey());
 
@@ -132,14 +140,10 @@ public class EditEntityListItemAttributeCommand
                                 addExecutionError(ExecutionErrors.EntityLockStale.name());
                             }
                         } else {
-                            addExecutionError(ExecutionErrors.UnknownEntityListItemAttribute.name(), entityRef, entityAttributeName);
+                            addExecutionError(ExecutionErrors.UnknownEntityListItemAttribute.name(),
+                                    EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance),
+                                    entityAttribute.getLastDetail().getEntityAttributeName());
                         }
-                    } else {
-                        EntityTypeDetail entityTypeDetail = entityInstance.getEntityType().getLastDetail();
-
-                        addExecutionError(ExecutionErrors.UnknownEntityListItemName.name(),
-                                entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                                entityTypeDetail.getEntityTypeName(), entityAttributeName, entityListItemName);
                     }
                 }
 
@@ -150,14 +154,7 @@ public class EditEntityListItemAttributeCommand
                 if(entityListItemAttribute != null) {
                     result.setEntityListItemAttribute(coreControl.getEntityListItemAttributeTransfer(getUserVisit(), entityListItemAttribute, entityInstance));
                 }
-            } else {
-                EntityTypeDetail entityTypeDetail = entityInstance.getEntityType().getLastDetail();
-
-                addExecutionError(ExecutionErrors.UnknownEntityAttributeName.name(), entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                        entityTypeDetail.getEntityTypeName(), entityAttributeName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownEntityRef.name(), entityRef);
         }
 
         return result;
