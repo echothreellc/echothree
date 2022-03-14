@@ -107,8 +107,8 @@ public class ItemObject
     @GraphQLField
     @GraphQLDescription("item price type")
     @GraphQLNonNull
-    public ItemPriceTypeObject getItemPriceType() {
-        return new ItemPriceTypeObject(getItemDetail().getItemPriceType());
+    public ItemPriceTypeObject getItemPriceType(final DataFetchingEnvironment env) {
+        return ItemSecurityUtils.getInstance().getHasItemPriceTypeAccess(env) ? new ItemPriceTypeObject(getItemDetail().getItemPriceType()) : null;
     }
 
     @GraphQLField
