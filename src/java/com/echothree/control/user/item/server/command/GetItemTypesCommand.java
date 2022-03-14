@@ -17,41 +17,49 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.GetItemTypesForm;
-import com.echothree.control.user.item.common.result.GetItemTypesResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.data.item.server.entity.ItemType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.List;
 
 public class GetItemTypesCommand
-        extends BaseSimpleCommand<GetItemTypesForm> {
-    
+        extends BaseMultipleEntitiesCommand<ItemType, GetItemTypesForm> {
+
+    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                ));
+        FORM_FIELD_DEFINITIONS = List.of(
+        );
     }
-    
+
     /** Creates a new instance of GetItemTypesCommand */
     public GetItemTypesCommand(UserVisitPK userVisitPK, GetItemTypesForm form) {
         super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
+    protected Collection<ItemType> getEntities() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetItemTypesResult result = ItemResultFactory.getGetItemTypesResult();
-        
-        result.setItemTypes(itemControl.getItemTypeTransfers(getUserVisit()));
-        
+
+        return itemControl.getItemTypes();
+    }
+
+    @Override
+    protected BaseResult getTransfers(Collection<ItemType> entities) {
+        var result = ItemResultFactory.getGetItemTypesResult();
+        var itemControl = Session.getModelController(ItemControl.class);
+        var userVisit = getUserVisit();
+
+        result.setItemTypes(itemControl.getItemTypeTransfers(userVisit, entities));
+
         return result;
     }
-    
+
 }
