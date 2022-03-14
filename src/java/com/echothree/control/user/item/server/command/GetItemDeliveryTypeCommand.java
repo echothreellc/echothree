@@ -20,6 +20,7 @@ import com.echothree.control.user.item.common.form.GetItemDeliveryTypeForm;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemDeliveryTypeLogic;
@@ -71,6 +72,10 @@ public class GetItemDeliveryTypeCommand
                 }
             } else {
                 itemDeliveryType = ItemDeliveryTypeLogic.getInstance().getItemDeliveryTypeByName(this, itemDeliveryTypeName);
+            }
+
+            if(itemDeliveryType != null) {
+                sendEventUsingNames(itemDeliveryType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());

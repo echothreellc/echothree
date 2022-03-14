@@ -420,8 +420,10 @@ public class ItemControl
     //   Item Types
     // --------------------------------------------------------------------------------
     
-    public ItemType createItemType(String itemTypeName, Boolean isDefault, Integer sortOrder) {
+    public ItemType createItemType(String itemTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         var itemType = ItemTypeFactory.getInstance().create(itemTypeName, isDefault, sortOrder);
+
+        sendEventUsingNames(itemType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
 
         return itemType;
     }
@@ -580,8 +582,13 @@ public class ItemControl
     //   Item Type Descriptions
     // --------------------------------------------------------------------------------
     
-    public ItemTypeDescription createItemTypeDescription(ItemType itemType, Language language, String description) {
-        return ItemTypeDescriptionFactory.getInstance().create(itemType, language, description);
+    public ItemTypeDescription createItemTypeDescription(ItemType itemType, Language language, String description,
+            BasePK createdBy) {
+        var itemTypeDescription = ItemTypeDescriptionFactory.getInstance().create(itemType, language, description);
+
+        sendEventUsingNames(itemType.getPrimaryKey(), EventTypes.MODIFY.name(), itemTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+
+        return itemTypeDescription;
     }
     
     public ItemTypeDescription getItemTypeDescription(ItemType itemType, Language language) {
@@ -625,8 +632,13 @@ public class ItemControl
     //   Item Delivery Types
     // --------------------------------------------------------------------------------
     
-    public ItemDeliveryType createItemDeliveryType(String itemDeliveryTypeName, Boolean isDefault, Integer sortOrder) {
-        return ItemDeliveryTypeFactory.getInstance().create(itemDeliveryTypeName, isDefault, sortOrder);
+    public ItemDeliveryType createItemDeliveryType(String itemDeliveryTypeName, Boolean isDefault, Integer sortOrder,
+            BasePK createdBy) {
+        var itemDeliveryType = ItemDeliveryTypeFactory.getInstance().create(itemDeliveryTypeName, isDefault, sortOrder);
+
+        sendEventUsingNames(itemDeliveryType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+
+        return itemDeliveryType;
     }
 
     public long countItemDeliveryTypes() {
@@ -783,8 +795,13 @@ public class ItemControl
     //   Item Delivery Type Descriptions
     // --------------------------------------------------------------------------------
     
-    public ItemDeliveryTypeDescription createItemDeliveryTypeDescription(ItemDeliveryType itemDeliveryType, Language language, String description) {
-        return ItemDeliveryTypeDescriptionFactory.getInstance().create(itemDeliveryType, language, description);
+    public ItemDeliveryTypeDescription createItemDeliveryTypeDescription(ItemDeliveryType itemDeliveryType, Language language,
+            String description, BasePK createdBy) {
+        var itemDeliveryTypeDescription = ItemDeliveryTypeDescriptionFactory.getInstance().create(itemDeliveryType, language, description);
+
+        sendEventUsingNames(itemDeliveryType.getPrimaryKey(), EventTypes.MODIFY.name(), itemDeliveryTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+
+        return itemDeliveryTypeDescription;
     }
     
     public ItemDeliveryTypeDescription getItemDeliveryTypeDescription(ItemDeliveryType itemDeliveryType, Language language) {
@@ -828,8 +845,13 @@ public class ItemControl
     //   Item Inventory Types
     // --------------------------------------------------------------------------------
     
-    public ItemInventoryType createItemInventoryType(String itemInventoryTypeName, Boolean isDefault, Integer sortOrder) {
-        return ItemInventoryTypeFactory.getInstance().create(itemInventoryTypeName, isDefault, sortOrder);
+    public ItemInventoryType createItemInventoryType(String itemInventoryTypeName, Boolean isDefault, Integer sortOrder,
+            BasePK createdBy) {
+        var itemInventoryType = ItemInventoryTypeFactory.getInstance().create(itemInventoryTypeName, isDefault, sortOrder);
+
+        sendEventUsingNames(itemInventoryType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+
+        return itemInventoryType;
     }
 
     public long countItemInventoryTypes() {
@@ -986,8 +1008,13 @@ public class ItemControl
     //   Item Inventory Type Descriptions
     // --------------------------------------------------------------------------------
     
-    public ItemInventoryTypeDescription createItemInventoryTypeDescription(ItemInventoryType itemInventoryType, Language language, String description) {
-        return ItemInventoryTypeDescriptionFactory.getInstance().create(itemInventoryType, language, description);
+    public ItemInventoryTypeDescription createItemInventoryTypeDescription(ItemInventoryType itemInventoryType, Language language,
+            String description, BasePK createdBy) {
+        var itemInventoryTypeDescription = ItemInventoryTypeDescriptionFactory.getInstance().create(itemInventoryType, language, description);
+
+        sendEventUsingNames(itemInventoryType.getPrimaryKey(), EventTypes.MODIFY.name(), itemInventoryTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+
+        return itemInventoryTypeDescription;
     }
     
     public ItemInventoryTypeDescription getItemInventoryTypeDescription(ItemInventoryType itemInventoryType, Language language) {
@@ -5456,8 +5483,13 @@ public class ItemControl
     //   Item Price Types
     // --------------------------------------------------------------------------------
     
-    public ItemPriceType createItemPriceType(String itemPriceTypeName, Boolean isDefault, Integer sortOrder) {
-        return ItemPriceTypeFactory.getInstance().create(itemPriceTypeName, isDefault, sortOrder);
+    public ItemPriceType createItemPriceType(String itemPriceTypeName, Boolean isDefault, Integer sortOrder,
+            BasePK createdBy) {
+        var itemPriceType = ItemPriceTypeFactory.getInstance().create(itemPriceTypeName, isDefault, sortOrder);
+
+        sendEventUsingNames(itemPriceType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+
+        return itemPriceType;
     }
 
     public long countItemPriceTypes() {
@@ -5615,8 +5647,13 @@ public class ItemControl
     //   Item Price Type Descriptions
     // --------------------------------------------------------------------------------
     
-    public ItemPriceTypeDescription createItemPriceTypeDescription(ItemPriceType itemPriceType, Language language, String description) {
-        return ItemPriceTypeDescriptionFactory.getInstance().create(itemPriceType, language, description);
+    public ItemPriceTypeDescription createItemPriceTypeDescription(ItemPriceType itemPriceType, Language language,
+            String description, BasePK createdBy) {
+        var itemPriceTypeDescription = ItemPriceTypeDescriptionFactory.getInstance().create(itemPriceType, language, description);
+
+        sendEventUsingNames(itemPriceType.getPrimaryKey(), EventTypes.MODIFY.name(), itemPriceTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+
+        return itemPriceTypeDescription;
     }
     
     public ItemPriceTypeDescription getItemPriceTypeDescription(ItemPriceType itemPriceType, Language language) {
