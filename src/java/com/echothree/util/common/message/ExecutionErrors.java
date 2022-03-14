@@ -2235,5 +2235,9 @@ public enum ExecutionErrors {
     UnknownDefaultWorkflowStep,
     MissingRequiredWorkflowName,
     UnknownDefaultItemDescriptionType,
+    MissingDefaultItemType,
+    MissingDefaultItemPriceType,
+    MissingDefaultItemDeliveryType,
+    MissingDefaultItemInventoryType,
 
 }

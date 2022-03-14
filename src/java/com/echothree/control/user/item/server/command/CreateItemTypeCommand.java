@@ -18,6 +18,7 @@ package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.CreateItemTypeForm;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.item.server.entity.ItemType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -25,6 +26,8 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
@@ -32,10 +35,15 @@ import java.util.List;
 
 public class CreateItemTypeCommand
         extends BaseSimpleCommand<CreateItemTypeForm> {
-    
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null))
+        );
+
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
             new FieldDefinition("ItemTypeName", FieldType.ENTITY_NAME, true, null, null),
             new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
@@ -45,7 +53,7 @@ public class CreateItemTypeCommand
     
     /** Creates a new instance of CreateItemTypeCommand */
     public CreateItemTypeCommand(UserVisitPK userVisitPK, CreateItemTypeForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
@@ -58,7 +66,7 @@ public class CreateItemTypeCommand
             var isDefault = Boolean.valueOf(form.getIsDefault());
             var sortOrder = Integer.valueOf(form.getSortOrder());
             
-            itemControl.createItemType(itemTypeName, isDefault, sortOrder);
+            itemControl.createItemType(itemTypeName, isDefault, sortOrder, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.DuplicateItemTypeName.name(), itemTypeName);
         }

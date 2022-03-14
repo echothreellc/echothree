@@ -496,6 +496,9 @@
             <entityType entityTypeName="ItemType" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Item Type" />
             </entityType>
+            <entityType entityTypeName="ItemPriceType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Price Type" />
+            </entityType>
             <entityType entityTypeName="ItemDeliveryType" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Item Delivery Type" />
             </entityType>
