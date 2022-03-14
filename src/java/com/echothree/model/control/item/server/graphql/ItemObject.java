@@ -105,6 +105,13 @@ public class ItemObject
     }
 
     @GraphQLField
+    @GraphQLDescription("item inventory type")
+    @GraphQLNonNull
+    public ItemInventoryTypeObject getItemInventoryType(final DataFetchingEnvironment env) {
+        return ItemSecurityUtils.getInstance().getHasItemInventoryTypeAccess(env) ? new ItemInventoryTypeObject(getItemDetail().getItemInventoryType()) : null;
+    }
+
+    @GraphQLField
     @GraphQLDescription("item price type")
     @GraphQLNonNull
     public ItemPriceTypeObject getItemPriceType() {

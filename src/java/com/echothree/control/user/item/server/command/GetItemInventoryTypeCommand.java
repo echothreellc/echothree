@@ -17,52 +17,83 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.GetItemInventoryTypeForm;
-import com.echothree.control.user.item.common.result.GetItemInventoryTypeResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.item.server.logic.ItemInventoryTypeLogic;
 import com.echothree.model.data.item.server.entity.ItemInventoryType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class GetItemInventoryTypeCommand
-        extends BaseSimpleCommand<GetItemInventoryTypeForm> {
-    
+        extends BaseSingleEntityCommand<ItemInventoryType, GetItemInventoryTypeForm> {
+
+    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-            new FieldDefinition("ItemInventoryTypeName", FieldType.ENTITY_NAME, false, null, null)
-        ));
+        FORM_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("ItemInventoryTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
+        );
     }
-    
+
     /** Creates a new instance of GetItemInventoryTypeCommand */
     public GetItemInventoryTypeCommand(UserVisitPK userVisitPK, GetItemInventoryTypeForm form) {
         super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
+    protected ItemInventoryType getEntity() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetItemInventoryTypeResult result = ItemResultFactory.getGetItemInventoryTypeResult();
-        String itemInventoryTypeName = form.getItemInventoryTypeName();
-        ItemInventoryType itemInventoryType = itemControl.getItemInventoryTypeByName(itemInventoryTypeName);
-        
+        ItemInventoryType itemInventoryType = null;
+        var itemInventoryTypeName = form.getItemInventoryTypeName();
+        var parameterCount = (itemInventoryTypeName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+
+        if(parameterCount == 1) {
+            if(itemInventoryTypeName == null) {
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
+                        ComponentVendors.ECHOTHREE.name(), EntityTypes.ItemInventoryType.name());
+
+                if(!hasExecutionErrors()) {
+                    itemInventoryType = itemControl.getItemInventoryTypeByEntityInstance(entityInstance);
+                }
+            } else {
+                itemInventoryType = ItemInventoryTypeLogic.getInstance().getItemInventoryTypeByName(this, itemInventoryTypeName);
+            }
+
+            if(itemInventoryType != null) {
+                sendEventUsingNames(itemInventoryType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            }
+        } else {
+            addExecutionError(ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        return itemInventoryType;
+    }
+
+    @Override
+    protected BaseResult getTransfer(ItemInventoryType itemInventoryType) {
+        var itemControl = Session.getModelController(ItemControl.class);
+        var result = ItemResultFactory.getGetItemInventoryTypeResult();
+
         if(itemInventoryType != null) {
             result.setItemInventoryType(itemControl.getItemInventoryTypeTransfer(getUserVisit(), itemInventoryType));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownItemInventoryTypeName.name(), itemInventoryTypeName);
         }
-        
-        
+
         return result;
     }
-    
+
 }
