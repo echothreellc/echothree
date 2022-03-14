@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.item.common.form;
 
-import com.echothree.control.user.item.common.spec.ItemTypeSpec;
+import com.echothree.control.user.item.common.spec.ItemTypeUniversalSpec;
 
 public interface GetItemTypeForm
-        extends ItemTypeSpec {
+        extends ItemTypeUniversalSpec {
     
-    // Nothing additional beyond ItemTypeSpec
+    // Nothing additional beyond ItemTypeUniversalSpec
     
 }
