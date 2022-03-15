@@ -23,6 +23,8 @@ import com.echothree.control.user.item.server.command.GetItemDeliveryTypeCommand
 import com.echothree.control.user.item.server.command.GetItemDeliveryTypesCommand;
 import com.echothree.control.user.item.server.command.GetItemDescriptionTypeCommand;
 import com.echothree.control.user.item.server.command.GetItemDescriptionTypesCommand;
+import com.echothree.control.user.item.server.command.GetItemInventoryTypeCommand;
+import com.echothree.control.user.item.server.command.GetItemInventoryTypesCommand;
 import com.echothree.control.user.item.server.command.GetItemPriceCommand;
 import com.echothree.control.user.item.server.command.GetItemPriceTypeCommand;
 import com.echothree.control.user.item.server.command.GetItemPriceTypesCommand;
@@ -82,6 +84,14 @@ public final class ItemSecurityUtils
 
     public boolean getHasItemDeliveryTypesAccess(final DataFetchingEnvironment env) {
         return getGraphQlExecutionContext(env).hasAccess(GetItemDeliveryTypesCommand.class);
+    }
+
+    public boolean getHasItemInventoryTypeAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetItemInventoryTypeCommand.class);
+    }
+
+    public boolean getHasItemInventoryTypesAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetItemInventoryTypesCommand.class);
     }
 
     public boolean getHasItemCategoryAccess(final DataFetchingEnvironment env) {

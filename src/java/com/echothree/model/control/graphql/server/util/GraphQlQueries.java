@@ -113,6 +113,8 @@ import com.echothree.control.user.item.server.command.GetItemDeliveryTypeCommand
 import com.echothree.control.user.item.server.command.GetItemDeliveryTypesCommand;
 import com.echothree.control.user.item.server.command.GetItemDescriptionTypeCommand;
 import com.echothree.control.user.item.server.command.GetItemDescriptionTypesCommand;
+import com.echothree.control.user.item.server.command.GetItemInventoryTypeCommand;
+import com.echothree.control.user.item.server.command.GetItemInventoryTypesCommand;
 import com.echothree.control.user.item.server.command.GetItemPriceCommand;
 import com.echothree.control.user.item.server.command.GetItemPriceTypeCommand;
 import com.echothree.control.user.item.server.command.GetItemPriceTypesCommand;
@@ -275,6 +277,7 @@ import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.graphql.ItemCategoryObject;
 import com.echothree.model.control.item.server.graphql.ItemDeliveryTypeObject;
 import com.echothree.model.control.item.server.graphql.ItemDescriptionTypeObject;
+import com.echothree.model.control.item.server.graphql.ItemInventoryTypeObject;
 import com.echothree.model.control.item.server.graphql.ItemObject;
 import com.echothree.model.control.item.server.graphql.ItemPriceObject;
 import com.echothree.model.control.item.server.graphql.ItemPriceTypeObject;
@@ -375,12 +378,14 @@ import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.inventory.server.entity.Lot;
 import com.echothree.model.data.item.common.ItemConstants;
 import com.echothree.model.data.item.common.ItemDeliveryTypeConstants;
+import com.echothree.model.data.item.common.ItemInventoryTypeConstants;
 import com.echothree.model.data.item.common.ItemPriceTypeConstants;
 import com.echothree.model.data.item.common.ItemTypeConstants;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemCategory;
 import com.echothree.model.data.item.server.entity.ItemDeliveryType;
 import com.echothree.model.data.item.server.entity.ItemDescriptionType;
+import com.echothree.model.data.item.server.entity.ItemInventoryType;
 import com.echothree.model.data.item.server.entity.ItemPrice;
 import com.echothree.model.data.item.server.entity.ItemPriceType;
 import com.echothree.model.data.item.server.entity.ItemType;
@@ -5033,6 +5038,57 @@ public final class GraphQlQueries
                     var itemDeliveryTypes = entities.stream().map(ItemDeliveryTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, itemDeliveryTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("itemInventoryType")
+    public static ItemInventoryTypeObject itemInventoryType(final DataFetchingEnvironment env,
+            @GraphQLName("itemInventoryTypeName") final String itemInventoryTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        ItemInventoryType itemInventoryType;
+
+        try {
+            var commandForm = ItemUtil.getHome().getGetItemInventoryTypeForm();
+
+            commandForm.setItemInventoryTypeName(itemInventoryTypeName);
+            commandForm.setUlid(id);
+
+            itemInventoryType = new GetItemInventoryTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return itemInventoryType == null ? null : new ItemInventoryTypeObject(itemInventoryType);
+    }
+
+    @GraphQLField
+    @GraphQLName("itemInventoryTypes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public static CountingPaginatedData<ItemInventoryTypeObject> itemInventoryTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<ItemInventoryTypeObject> data;
+
+        try {
+            var itemControl = Session.getModelController(ItemControl.class);
+            var totalCount = itemControl.countItemInventoryTypes();
+
+            try(var objectLimiter = new ObjectLimiter(env, ItemInventoryTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = ItemUtil.getHome().getGetItemInventoryTypesForm();
+                var entities = new GetItemInventoryTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var itemInventoryTypes = entities.stream().map(ItemInventoryTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, itemInventoryTypes);
                 }
             }
         } catch (NamingException ex) {
