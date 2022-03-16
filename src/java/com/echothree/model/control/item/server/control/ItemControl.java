@@ -340,6 +340,7 @@ import com.echothree.model.data.item.server.value.ItemUnitCustomerTypeLimitValue
 import com.echothree.model.data.item.server.value.ItemUnitLimitValue;
 import com.echothree.model.data.item.server.value.ItemUnitOfMeasureTypeValue;
 import com.echothree.model.data.item.server.value.ItemUnitPriceLimitValue;
+import com.echothree.model.data.item.server.value.ItemUseTypeValue;
 import com.echothree.model.data.item.server.value.ItemVariablePriceValue;
 import com.echothree.model.data.item.server.value.ItemVolumeValue;
 import com.echothree.model.data.item.server.value.ItemWeightValue;
@@ -1053,99 +1054,183 @@ public class ItemControl
         
         return description;
     }
-    
+
     // --------------------------------------------------------------------------------
     //   Item Use Types
     // --------------------------------------------------------------------------------
-    
-    public ItemUseType createItemUseType(String itemUseTypeName, Boolean isDefault, Integer sortOrder) {
-        return ItemUseTypeFactory.getInstance().create(itemUseTypeName, isDefault, sortOrder);
+
+    public ItemUseType createItemUseType(String itemUseTypeName, Boolean isDefault, Integer sortOrder,
+            BasePK createdBy) {
+        var itemUseType = ItemUseTypeFactory.getInstance().create(itemUseTypeName, isDefault, sortOrder);
+
+        sendEventUsingNames(itemUseType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+
+        return itemUseType;
     }
-    
-    public ItemUseType getItemUseTypeByName(String itemUseTypeName) {
+
+    public long countItemUseTypes() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM itemusetypes");
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ItemUseType */
+    public ItemUseType getItemUseTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ItemUseTypePK(entityInstance.getEntityUniqueId());
+
+        return ItemUseTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ItemUseType getItemUseTypeByEntityInstance(EntityInstance entityInstance) {
+        return getItemUseTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ItemUseType getItemUseTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getItemUseTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public ItemUseType getItemUseTypeByName(String itemUseTypeName, EntityPermission entityPermission) {
         ItemUseType itemUseType;
-        
+
         try {
-            PreparedStatement ps = ItemUseTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM itemusetypes " +
-                    "WHERE iutyp_itemusetypename = ?");
-            
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM itemusetypes " +
+                        "WHERE iutyp_itemusetypename = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM itemusetypes " +
+                        "WHERE iutyp_itemusetypename = ? " +
+                        "FOR UPDATE";
+            }
+
+            var ps = ItemUseTypeFactory.getInstance().prepareStatement(query);
+
             ps.setString(1, itemUseTypeName);
-            
-            itemUseType = ItemUseTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+
+            itemUseType = ItemUseTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
-        
+
         return itemUseType;
     }
-    
+
+    public ItemUseType getItemUseTypeByName(String itemUseTypeName) {
+        return getItemUseTypeByName(itemUseTypeName, EntityPermission.READ_ONLY);
+    }
+
+    public ItemUseType getItemUseTypeByNameForUpdate(String itemUseTypeName) {
+        return getItemUseTypeByName(itemUseTypeName, EntityPermission.READ_WRITE);
+    }
+
+    public ItemUseType getDefaultItemUseType(EntityPermission entityPermission) {
+        String query = null;
+
+        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+            query = "SELECT _ALL_ " +
+                    "FROM itemusetypes " +
+                    "WHERE iutyp_isdefault = 1";
+        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+            query = "SELECT _ALL_ " +
+                    "FROM itemusetypes " +
+                    "WHERE iutyp_isdefault = 1 " +
+                    "FOR UPDATE";
+        }
+
+        PreparedStatement ps = ItemUseTypeFactory.getInstance().prepareStatement(query);
+
+        return ItemUseTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+    }
+
+    public ItemUseType getDefaultItemUseType() {
+        return getDefaultItemUseType(EntityPermission.READ_ONLY);
+    }
+
+    public ItemUseType getDefaultItemUseTypeForUpdate() {
+        return getDefaultItemUseType(EntityPermission.READ_WRITE);
+    }
+
+    public ItemUseTypeValue getDefaultItemUseTypeValueForUpdate() {
+        return getDefaultItemUseTypeForUpdate().getItemUseTypeValue().clone();
+    }
+
     public List<ItemUseType> getItemUseTypes() {
         PreparedStatement ps = ItemUseTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM itemusetypes " +
-                "ORDER BY iutyp_sortorder, iutyp_itemusetypename");
-        
+                "ORDER BY iutyp_sortorder, iutyp_itemusetypename " +
+                "_LIMIT_");
+
         return ItemUseTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
-    
+
     public ItemUseTypeChoicesBean getItemUseTypeChoices(String defaultItemUseTypeChoice, Language language, boolean allowNullChoice) {
         List<ItemUseType> itemUseTypes = getItemUseTypes();
         var size = itemUseTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
         String defaultValue = null;
-        
+
         if(allowNullChoice) {
             labels.add("");
             values.add("");
-            
+
             if(defaultItemUseTypeChoice == null) {
                 defaultValue = "";
             }
         }
-        
+
         for(var itemUseType : itemUseTypes) {
             var label = getBestItemUseTypeDescription(itemUseType, language);
             var value = itemUseType.getItemUseTypeName();
-            
+
             labels.add(label == null? value: label);
             values.add(value);
-            
+
             var usingDefaultChoice = defaultItemUseTypeChoice != null && defaultItemUseTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && itemUseType.getIsDefault())) {
                 defaultValue = value;
             }
         }
-        
+
         return new ItemUseTypeChoicesBean(labels, values, defaultValue);
     }
-    
+
     public ItemUseTypeTransfer getItemUseTypeTransfer(UserVisit userVisit, ItemUseType itemUseType) {
         return getItemTransferCaches(userVisit).getItemUseTypeTransferCache().getTransfer(itemUseType);
     }
-    
-    public List<ItemUseTypeTransfer> getItemUseTypeTransfers(UserVisit userVisit) {
-        List<ItemUseType> itemUseTypes = getItemUseTypes();
-        List<ItemUseTypeTransfer> itemUseTypeTransfers = new ArrayList<>(itemUseTypes.size());
-        ItemUseTypeTransferCache itemUseTypeTransferCache = getItemTransferCaches(userVisit).getItemUseTypeTransferCache();
-        
-        itemUseTypes.forEach((itemUseType) ->
-                itemUseTypeTransfers.add(itemUseTypeTransferCache.getTransfer(itemUseType))
+
+    public List<ItemUseTypeTransfer> getItemUseTypeTransfers(UserVisit userVisit, Collection<ItemUseType> entities) {
+        var itemUseTypeTransfers = new ArrayList<ItemUseTypeTransfer>(entities.size());
+        var itemUseTypeTransferCache = getItemTransferCaches(userVisit).getItemUseTypeTransferCache();
+
+        entities.forEach((entity) ->
+                itemUseTypeTransfers.add(itemUseTypeTransferCache.getTransfer(entity))
         );
-        
+
         return itemUseTypeTransfers;
     }
-    
+
+    public List<ItemUseTypeTransfer> getItemUseTypeTransfers(UserVisit userVisit) {
+        return getItemUseTypeTransfers(userVisit, getItemUseTypes());
+    }
+
     // --------------------------------------------------------------------------------
     //   Item Use Type Descriptions
     // --------------------------------------------------------------------------------
-    
-    public ItemUseTypeDescription createItemUseTypeDescription(ItemUseType itemUseType, Language language, String description) {
-        return ItemUseTypeDescriptionFactory.getInstance().create(itemUseType, language, description);
+
+    public ItemUseTypeDescription createItemUseTypeDescription(ItemUseType itemUseType, Language language,
+            String description, BasePK createdBy) {
+        var itemUseTypeDescription = ItemUseTypeDescriptionFactory.getInstance().create(itemUseType, language, description);
+
+        sendEventUsingNames(itemUseType.getPrimaryKey(), EventTypes.MODIFY.name(), itemUseTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+
+        return itemUseTypeDescription;
     }
-    
+
     public ItemUseTypeDescription getItemUseTypeDescription(ItemUseType itemUseType, Language language) {
         ItemUseTypeDescription itemUseTypeDescription;
         
