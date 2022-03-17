@@ -7754,6 +7754,33 @@ public class ItemControl
         return itemImageType;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ItemImageType */
+    public ItemImageType getItemImageTypeByEntityInstance(final EntityInstance entityInstance,
+            final EntityPermission entityPermission) {
+        var pk = new ItemImageTypePK(entityInstance.getEntityUniqueId());
+
+        return ItemImageTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ItemImageType getItemImageTypeByEntityInstance(final EntityInstance entityInstance) {
+        return getItemImageTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ItemImageType getItemImageTypeByEntityInstanceForUpdate(final EntityInstance entityInstance) {
+        return getItemImageTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public ItemImageTypeDetailValue getItemImageTypeDetailValueForUpdate(ItemImageType itemImageType) {
+        return itemImageType.getLastDetailForUpdate().getItemImageTypeDetailValue().clone();
+    }
+
+    public long countItemImageTypes() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM itemimagetypes, itemimagetypedetails " +
+                "WHERE iimgt_activedetailid = iimgtdt_itemimagetypedetailid");
+    }
+
     private static final Map<EntityPermission, String> getItemImageTypeByNameQueries;
 
     static {
@@ -7773,7 +7800,7 @@ public class ItemControl
         getItemImageTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private ItemImageType getItemImageTypeByName(String itemImageTypeName, EntityPermission entityPermission) {
+    public ItemImageType getItemImageTypeByName(String itemImageTypeName, EntityPermission entityPermission) {
         return ItemImageTypeFactory.getInstance().getEntityFromQuery(entityPermission, getItemImageTypeByNameQueries, itemImageTypeName);
     }
 
@@ -7783,10 +7810,6 @@ public class ItemControl
 
     public ItemImageType getItemImageTypeByNameForUpdate(String itemImageTypeName) {
         return getItemImageTypeByName(itemImageTypeName, EntityPermission.READ_WRITE);
-    }
-
-    public ItemImageTypeDetailValue getItemImageTypeDetailValueForUpdate(ItemImageType itemImageType) {
-        return itemImageType == null? null: itemImageType.getLastDetailForUpdate().getItemImageTypeDetailValue().clone();
     }
 
     public ItemImageTypeDetailValue getItemImageTypeDetailValueByNameForUpdate(String itemImageTypeName) {
@@ -7812,7 +7835,7 @@ public class ItemControl
         getDefaultItemImageTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private ItemImageType getDefaultItemImageType(EntityPermission entityPermission) {
+    public ItemImageType getDefaultItemImageType(EntityPermission entityPermission) {
         return ItemImageTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultItemImageTypeQueries);
     }
 
@@ -7859,50 +7882,11 @@ public class ItemControl
         return getItemImageTypes(EntityPermission.READ_WRITE);
     }
 
-    private List<ItemImageType> getItemImageTypesByParentItemImageType(ItemImageType parentItemImageType,
-            EntityPermission entityPermission) {
-        List<ItemImageType> itemImageTypes = null;
-
-        try {
-            String query = null;
-
-            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemimagetypes, itemimagetypedetails " +
-                        "WHERE iimgt_activedetailid = iimgtdt_itemimagetypedetailid AND iimgtdt_parentitemimagetypeid = ? " +
-                        "ORDER BY iimgtdt_sortorder, iimgtdt_itemimagetypename";
-            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
-                query = "SELECT _ALL_ " +
-                        "FROM itemimagetypes, itemimagetypedetails " +
-                        "WHERE iimgt_activedetailid = iimgtdt_itemimagetypedetailid AND iimgtdt_parentitemimagetypeid = ? " +
-                        "FOR UPDATE";
-            }
-
-            PreparedStatement ps = ItemImageTypeFactory.getInstance().prepareStatement(query);
-
-            ps.setLong(1, parentItemImageType.getPrimaryKey().getEntityId());
-
-            itemImageTypes = ItemImageTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-
-        return itemImageTypes;
-    }
-
-    public List<ItemImageType> getItemImageTypesByParentItemImageType(ItemImageType parentItemImageType) {
-        return getItemImageTypesByParentItemImageType(parentItemImageType, EntityPermission.READ_ONLY);
-    }
-
-    public List<ItemImageType> getItemImageTypesByParentItemImageTypeForUpdate(ItemImageType parentItemImageType) {
-        return getItemImageTypesByParentItemImageType(parentItemImageType, EntityPermission.READ_WRITE);
-    }
-
     public ItemImageTypeTransfer getItemImageTypeTransfer(UserVisit userVisit, ItemImageType itemImageType) {
         return getItemTransferCaches(userVisit).getItemImageTypeTransferCache().getTransfer(itemImageType);
     }
 
-    public List<ItemImageTypeTransfer> getItemImageTypeTransfers(UserVisit userVisit, List<ItemImageType> itemImageTypes) {
+    public List<ItemImageTypeTransfer> getItemImageTypeTransfers(UserVisit userVisit, Collection<ItemImageType> itemImageTypes) {
         List<ItemImageTypeTransfer> itemImageTypeTransfers = new ArrayList<>(itemImageTypes.size());
         ItemImageTypeTransferCache itemImageTypeTransferCache = getItemTransferCaches(userVisit).getItemImageTypeTransferCache();
 
@@ -7915,11 +7899,6 @@ public class ItemControl
 
     public List<ItemImageTypeTransfer> getItemImageTypeTransfers(UserVisit userVisit) {
         return getItemImageTypeTransfers(userVisit, getItemImageTypes());
-    }
-
-    public List<ItemImageTypeTransfer> getItemImageTypeTransfersByParentItemImageType(UserVisit userVisit,
-            ItemImageType parentItemImageType) {
-        return getItemImageTypeTransfers(userVisit, getItemImageTypesByParentItemImageType(parentItemImageType));
     }
 
     public ItemImageTypeChoicesBean getItemImageTypeChoices(String defaultItemImageTypeChoice, Language language, boolean allowNullChoice) {
