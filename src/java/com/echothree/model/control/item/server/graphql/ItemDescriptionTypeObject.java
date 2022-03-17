@@ -54,7 +54,7 @@ public class ItemDescriptionTypeObject
     }
     
     @GraphQLField
-    @GraphQLDescription("item category name")
+    @GraphQLDescription("item description type name")
     @GraphQLNonNull
     public String getItemDescriptionTypeName() {
         return getItemDescriptionTypeDetail().getItemDescriptionTypeName();

@@ -18,15 +18,15 @@ package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.DeleteItemImageTypeForm;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.item.server.logic.ItemImageTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.item.server.entity.ItemImageType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -50,9 +50,9 @@ public class DeleteItemImageTypeCommand
                         )))
                 )));
         
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemImageTypeName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+        );
     }
     
     /** Creates a new instance of DeleteItemImageTypeCommand */
@@ -63,11 +63,11 @@ public class DeleteItemImageTypeCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemImageTypeName = form.getItemImageTypeName();
-        ItemImageType itemImageType = itemControl.getItemImageTypeByNameForUpdate(itemImageTypeName);
+        var itemImageTypeName = form.getItemImageTypeName();
+        var itemImageType = itemControl.getItemImageTypeByNameForUpdate(itemImageTypeName);
         
         if(itemImageType != null) {
-            itemControl.deleteItemImageType(itemImageType, getPartyPK());
+            ItemImageTypeLogic.getInstance().deleteItemImageType(this, itemImageType, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownItemImageTypeName.name(), itemImageTypeName);
         }
