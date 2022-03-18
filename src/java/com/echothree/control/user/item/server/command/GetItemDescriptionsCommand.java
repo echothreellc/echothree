@@ -17,7 +17,6 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.GetItemDescriptionsForm;
-import com.echothree.control.user.item.common.result.GetItemDescriptionsResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.item.common.transfer.ItemDescriptionTransfer;
@@ -26,26 +25,18 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.item.server.entity.ItemDescription;
-import com.echothree.model.data.item.server.entity.ItemDescriptionTypeUse;
-import com.echothree.model.data.item.server.entity.ItemDescriptionTypeUseType;
 import com.echothree.model.data.item.server.factory.ItemDescriptionFactory;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class GetItemDescriptionsCommand
@@ -55,18 +46,18 @@ public class GetItemDescriptionsCommand
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.ItemDescription.name(), SecurityRoles.List.name())
-                        )))
-                )));
+                ))
+        ));
 
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ItemDescriptionTypeUseTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, false, null, null)
-                ));
+        );
     }
     
     /** Creates a new instance of GetItemDescriptionsCommand */
@@ -77,16 +68,16 @@ public class GetItemDescriptionsCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetItemDescriptionsResult result = ItemResultFactory.getGetItemDescriptionsResult();
-        String itemName = form.getItemName();
-        Item item = itemControl.getItemByName(itemName);
+        var result = ItemResultFactory.getGetItemDescriptionsResult();
+        var itemName = form.getItemName();
+        var item = itemControl.getItemByName(itemName);
         
         if(item != null) {
-            String itemDescriptionTypeUseTypeName = form.getItemDescriptionTypeUseTypeName();
-            ItemDescriptionTypeUseType itemDescriptionTypeUseType = itemDescriptionTypeUseTypeName == null ? null : itemControl.getItemDescriptionTypeUseTypeByName(itemDescriptionTypeUseTypeName);
+            var itemDescriptionTypeUseTypeName = form.getItemDescriptionTypeUseTypeName();
+            var itemDescriptionTypeUseType = itemDescriptionTypeUseTypeName == null ? null : itemControl.getItemDescriptionTypeUseTypeByName(itemDescriptionTypeUseTypeName);
 
             if(itemDescriptionTypeUseTypeName == null || itemDescriptionTypeUseType != null) {
-                UserVisit userVisit = getUserVisit();
+                var userVisit = getUserVisit();
                 List<ItemDescriptionTransfer> itemDescriptions = null;
 
                 result.setItem(itemControl.getItemTransfer(userVisit, item));
@@ -103,16 +94,16 @@ public class GetItemDescriptionsCommand
                     }
                 } else {
                     var partyControl = Session.getModelController(PartyControl.class);
-                    String languageIsoName = form.getLanguageIsoName();
-                    Language language = languageIsoName == null ? getPreferredLanguage() : partyControl.getLanguageByIsoName(languageIsoName);
+                    var languageIsoName = form.getLanguageIsoName();
+                    var language = languageIsoName == null ? getPreferredLanguage() : partyControl.getLanguageByIsoName(languageIsoName);
 
                     if(languageIsoName == null || language != null) {
-                        List<ItemDescriptionTypeUse> itemDescriptionTypeUses = itemControl.getItemDescriptionTypeUsesByItemDescriptionTypeUseType(itemDescriptionTypeUseType);
+                        var itemDescriptionTypeUses = itemControl.getItemDescriptionTypeUsesByItemDescriptionTypeUseType(itemDescriptionTypeUseType);
 
                         itemDescriptions = new ArrayList<>();
 
                         for(var itemDescriptionTypeUse : itemDescriptionTypeUses) {
-                            ItemDescription itemDescription = itemControl.getBestItemDescription(itemDescriptionTypeUse.getItemDescriptionType(), item, language);
+                            var itemDescription = itemControl.getBestItemDescription(itemDescriptionTypeUse.getItemDescriptionType(), item, language);
 
                             if(itemDescription != null) {
                                 itemDescriptions.add(itemControl.getItemDescriptionTransfer(userVisit, itemDescription));

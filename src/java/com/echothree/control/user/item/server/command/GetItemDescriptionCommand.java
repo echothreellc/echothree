@@ -17,25 +17,18 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.GetItemDescriptionForm;
-import com.echothree.control.user.item.common.result.GetItemDescriptionResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.content.server.logic.ContentLogic;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemDescriptionLogic;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.item.server.entity.ItemDescription;
-import com.echothree.model.data.item.server.entity.ItemDescriptionType;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class GetItemDescriptionCommand
@@ -44,12 +37,12 @@ public class GetItemDescriptionCommand
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ItemDescriptionTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ItemName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("Referrer", FieldType.URL, false, null, null)
-                ));
+        );
     }
     
     /** Creates a new instance of GetItemDescriptionCommand */
@@ -60,21 +53,21 @@ public class GetItemDescriptionCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetItemDescriptionResult result = ItemResultFactory.getGetItemDescriptionResult();
-        String itemName = form.getItemName();
-        Item item = itemControl.getItemByName(itemName);
+        var result = ItemResultFactory.getGetItemDescriptionResult();
+        var itemName = form.getItemName();
+        var item = itemControl.getItemByName(itemName);
         
         if(item != null) {
-            String itemDescriptionTypeName = form.getItemDescriptionTypeName();
-            ItemDescriptionType itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
+            var itemDescriptionTypeName = form.getItemDescriptionTypeName();
+            var itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
             
             if(itemDescriptionType != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = languageIsoName == null ? getPreferredLanguage() : partyControl.getLanguageByIsoName(languageIsoName);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = languageIsoName == null ? getPreferredLanguage() : partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(languageIsoName == null || language != null) {
-                    ItemDescription itemDescription = itemControl.getItemDescription(itemDescriptionType, item, language);
+                    var itemDescription = itemControl.getItemDescription(itemDescriptionType, item, language);
 
                     if(itemDescription == null) {
                         itemDescription = ItemDescriptionLogic.getInstance().searchForItemDescription(itemDescriptionType, item, language, getPartyPK());
