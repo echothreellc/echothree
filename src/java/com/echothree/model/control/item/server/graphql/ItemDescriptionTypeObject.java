@@ -17,12 +17,14 @@
 package com.echothree.model.control.item.server.graphql;
 
 import com.echothree.model.control.core.server.graphql.CoreSecurityUtils;
+import com.echothree.model.control.core.server.graphql.MimeTypeObject;
 import com.echothree.model.control.core.server.graphql.MimeTypeUsageTypeObject;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.item.server.entity.ItemDescriptionType;
 import com.echothree.model.data.item.server.entity.ItemDescriptionTypeDetail;
+import com.echothree.model.data.item.server.entity.ItemImageDescriptionType;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -52,7 +54,19 @@ public class ItemDescriptionTypeObject
         
         return itemDescriptionTypeDetail;
     }
-    
+
+    private ItemImageDescriptionType itemImageDescriptionType; // Optional, use getItemImageDescriptionType()
+
+    private ItemImageDescriptionType getItemImageDescriptionType() {
+        if(itemImageDescriptionType == null) {
+            var itemControl = Session.getModelController(ItemControl.class);
+
+            itemImageDescriptionType = itemControl.getItemImageDescriptionType(itemDescriptionType);
+        }
+
+        return itemImageDescriptionType;
+    }
+
     @GraphQLField
     @GraphQLDescription("item description type name")
     @GraphQLNonNull
@@ -127,6 +141,85 @@ public class ItemDescriptionTypeObject
         var userControl = Session.getModelController(UserControl.class);
 
         return itemControl.getBestItemDescriptionTypeDescription(itemDescriptionType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+    }
+
+    @GraphQLField
+    @GraphQLDescription("minimum height")
+    public Integer getMinimumHeight() {
+        var itemImageDescriptionType = getItemImageDescriptionType();
+
+        return itemImageDescriptionType == null ? null : itemImageDescriptionType.getMinimumHeight();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("minimum width")
+    public Integer getMinimumWidth() {
+        var itemImageDescriptionType = getItemImageDescriptionType();
+
+        return itemImageDescriptionType == null ? null : itemImageDescriptionType.getMinimumWidth();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("maximum height")
+    public Integer getMaximumHeight() {
+        var itemImageDescriptionType = getItemImageDescriptionType();
+
+        return itemImageDescriptionType == null ? null : itemImageDescriptionType.getMaximumHeight();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("maximum width")
+    public Integer getMaximumWidth() {
+        var itemImageDescriptionType = getItemImageDescriptionType();
+
+        return itemImageDescriptionType == null ? null : itemImageDescriptionType.getMaximumWidth();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("preferred height")
+    public Integer getPreferredHeight() {
+        var itemImageDescriptionType = getItemImageDescriptionType();
+
+        return itemImageDescriptionType == null ? null : itemImageDescriptionType.getPreferredHeight();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("preferred width")
+    public Integer getPreferredWidth() {
+        var itemImageDescriptionType = getItemImageDescriptionType();
+
+        return itemImageDescriptionType == null ? null : itemImageDescriptionType.getPreferredWidth();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("preferred mime type")
+    public MimeTypeObject getPreferredMimeType(final DataFetchingEnvironment env) {
+        var itemImageDescriptionType = getItemImageDescriptionType();
+        MimeTypeObject mimeTypeObject = null;
+
+        if(itemImageDescriptionType != null && CoreSecurityUtils.getInstance().getHasMimeTypeAccess(env)) {
+            var preferredMimeType = itemImageDescriptionType.getPreferredMimeType();
+
+            mimeTypeObject = preferredMimeType == null ? null : new MimeTypeObject(preferredMimeType);
+        }
+
+        return mimeTypeObject;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("quality")
+    public Integer getQuality() {
+        var itemImageDescriptionType = getItemImageDescriptionType();
+
+        return itemImageDescriptionType == null ? null : itemImageDescriptionType.getQuality();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("scale from parent")
+    public Boolean getScaleFromParent() {
+        var itemImageDescriptionType = getItemImageDescriptionType();
+
+        return itemImageDescriptionType == null ? null : itemImageDescriptionType.getScaleFromParent();
     }
 
 }
