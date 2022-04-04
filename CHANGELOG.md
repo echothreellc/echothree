@@ -1,5 +1,9 @@
 # Changelog
 
+## 2022-04-03-01
+
+* Apache Lucene 9.1.0 Upgrade [451](https://gitlab.echothree.com/echothree/echothree/-/issues/451)
+
 ## 2022-03-20-01
 
 * GraphQL Objects and Queries for Item Image Types [414](https://gitlab.echothree.com/echothree/echothree/-/issues/414)
