@@ -1,5 +1,25 @@
 # Changelog
 
+## 2022-04-03-01
+
+* Apache Lucene 9.1.0 Upgrade [451](https://gitlab.echothree.com/echothree/echothree/-/issues/451)
+
+## 2022-03-20-01
+
+* GraphQL Objects and Queries for Item Image Types [414](https://gitlab.echothree.com/echothree/echothree/-/issues/414)
+* CreateEntityListItemAttributeForm Extends Incorrect Interface [423](https://gitlab.echothree.com/echothree/echothree/-/issues/423)
+* GraphQL Mutations for Entity List Item Attributes [424](https://gitlab.echothree.com/echothree/echothree/-/issues/424)
+* GraphQL Mutations for Entity Multiple List Item Attributes [425](https://gitlab.echothree.com/echothree/echothree/-/issues/425)
+* Allow Anyone to Call GetEntityListItems and Get EntityListItem UCs [428](https://gitlab.echothree.com/echothree/echothree/-/issues/428)
+* Correct GraphQL Description for Entity Attribute Group Object [430](https://gitlab.echothree.com/echothree/echothree/-/issues/430)
+* Guava 31.1-jre Upgrade [431](https://gitlab.echothree.com/echothree/echothree/-/issues/431)
+* GraphQL Objects and Queries for Item Delivery Types [432](https://gitlab.echothree.com/echothree/echothree/-/issues/432)
+* GraphQL Objects and Queries for Item Inventory Types [433](https://gitlab.echothree.com/echothree/echothree/-/issues/433)
+* GraphQL Queries for Item Price Types [434](https://gitlab.echothree.com/echothree/echothree/-/issues/434)
+* GraphQL Queries for Item Types [435](https://gitlab.echothree.com/echothree/echothree/-/issues/435)
+* GraphQL Objects and Queries for Item Use Types [436](https://gitlab.echothree.com/echothree/echothree/-/issues/436)
+* Additional Item Description Type Object FIelds [437](https://gitlab.echothree.com/echothree/echothree/-/issues/437)
+
 ## 2022-03-06-01
 
 * GraphQL Objects for Item Description Types [412](https://gitlab.echothree.com/echothree/echothree/-/issues/412)
