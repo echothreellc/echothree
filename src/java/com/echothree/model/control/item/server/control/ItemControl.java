@@ -107,7 +107,6 @@ import com.echothree.model.control.item.server.transfer.ItemUnitCustomerTypeLimi
 import com.echothree.model.control.item.server.transfer.ItemUnitLimitTransferCache;
 import com.echothree.model.control.item.server.transfer.ItemUnitOfMeasureTypeTransferCache;
 import com.echothree.model.control.item.server.transfer.ItemUnitPriceLimitTransferCache;
-import com.echothree.model.control.item.server.transfer.ItemUseTypeTransferCache;
 import com.echothree.model.control.item.server.transfer.ItemVolumeTransferCache;
 import com.echothree.model.control.item.server.transfer.ItemWeightTransferCache;
 import com.echothree.model.control.item.server.transfer.RelatedItemTransferCache;
@@ -8257,7 +8256,7 @@ public class ItemControl
         return getScaledItemDescriptionsByItemImageTypePK(itemDescriptionTypePK, EntityPermission.READ_WRITE);
     }
 
-    private List<ItemDescription> getItemDescriptionsByItem(Item item, EntityPermission entityPermission) {
+    public List<ItemDescription> getItemDescriptionsByItem(Item item, EntityPermission entityPermission) {
         List<ItemDescription> itemDescriptions;
 
         try {
@@ -8448,19 +8447,22 @@ public class ItemControl
     public ItemDescriptionTransfer getItemDescriptionTransfer(UserVisit userVisit, ItemDescription itemDescription) {
         return getItemTransferCaches(userVisit).getItemDescriptionTransferCache().getTransfer(itemDescription);
     }
-    
-    public List<ItemDescriptionTransfer> getItemDescriptionTransfersByItem(UserVisit userVisit, Item item) {
-        List<ItemDescription> itemDescriptions = getItemDescriptionsByItem(item);
+
+    public List<ItemDescriptionTransfer> getItemDescriptionTransfers(UserVisit userVisit, Collection<ItemDescription> itemDescriptions) {
         List<ItemDescriptionTransfer> itemDescriptionTransfers = new ArrayList<>(itemDescriptions.size());
         ItemDescriptionTransferCache itemDescriptionTransferCache = getItemTransferCaches(userVisit).getItemDescriptionTransferCache();
-        
+
         itemDescriptions.forEach((itemDescription) ->
                 itemDescriptionTransfers.add(itemDescriptionTransferCache.getTransfer(itemDescription))
         );
-        
+
         return itemDescriptionTransfers;
     }
-    
+
+    public List<ItemDescriptionTransfer> getItemDescriptionTransfersByItem(UserVisit userVisit, Item item) {
+        return getItemDescriptionTransfers(userVisit, getItemDescriptionsByItem(item));
+    }
+
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.ItemDescription */
     public ItemDescription getItemDescriptionByEntityInstance(EntityInstance entityInstance) {
         ItemDescriptionPK pk = new ItemDescriptionPK(entityInstance.getEntityUniqueId());

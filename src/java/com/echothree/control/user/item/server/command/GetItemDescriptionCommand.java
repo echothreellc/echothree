@@ -22,18 +22,20 @@ import com.echothree.model.control.content.server.logic.ContentLogic;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemDescriptionLogic;
 import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.data.item.server.entity.ItemDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
 
 public class GetItemDescriptionCommand
-        extends BaseSimpleCommand<GetItemDescriptionForm> {
-    
+        extends BaseSingleEntityCommand<ItemDescription, GetItemDescriptionForm> {
+
+    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
@@ -96,5 +98,65 @@ public class GetItemDescriptionCommand
         
         return result;
     }
-    
+
+    @Override
+    protected ItemDescription getEntity() {
+        var itemControl = Session.getModelController(ItemControl.class);
+        ItemDescription itemDescription = null;
+        var itemName = form.getItemName();
+        var item = itemControl.getItemByName(itemName);
+
+        if(item != null) {
+            var itemDescriptionTypeName = form.getItemDescriptionTypeName();
+            var itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
+
+            if(itemDescriptionType != null) {
+                if(itemDescriptionType.getLastDetail().getCheckContentWebAddress()) {
+                    ContentLogic.getInstance().checkReferrer(this, form.getReferrer());
+                }
+
+                if(!hasExecutionErrors()) {
+                    var partyControl = Session.getModelController(PartyControl.class);
+                    var languageIsoName = form.getLanguageIsoName();
+                    var language = languageIsoName == null ? getPreferredLanguage() : partyControl.getLanguageByIsoName(languageIsoName);
+
+                    if(languageIsoName == null || language != null) {
+                        itemDescription = itemControl.getItemDescription(itemDescriptionType, item, language);
+
+                        if(itemDescription == null) {
+                            itemDescription = ItemDescriptionLogic.getInstance().searchForItemDescription(itemDescriptionType,
+                                    item, language, getPartyPK());
+                        }
+
+                        if(itemDescription == null) {
+                            addExecutionError(ExecutionErrors.UnknownItemDescription.name(), itemDescriptionTypeName,
+                                    itemName, languageIsoName);
+                        }
+                    } else {
+                        addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
+                    }
+                }
+            } else {
+                addExecutionError(ExecutionErrors.UnknownItemDescriptionTypeName.name(), itemDescriptionTypeName);
+            }
+        } else {
+            addExecutionError(ExecutionErrors.UnknownItemName.name(), itemName);
+        }
+
+        return itemDescription;
+    }
+
+    @Override
+    protected BaseResult getTransfer(ItemDescription itemDescription) {
+        var itemControl = Session.getModelController(ItemControl.class);
+        var result = ItemResultFactory.getGetItemDescriptionResult();
+
+        if(itemDescription != null) {
+            result.setItemDescription(itemControl.getItemDescriptionTransfer(getUserVisit(), itemDescription));
+        }
+
+        return result;
+    }
+
+
 }

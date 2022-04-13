@@ -19,29 +19,31 @@ package com.echothree.control.user.item.server.command;
 import com.echothree.control.user.item.common.form.GetItemDescriptionsForm;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.item.common.transfer.ItemDescriptionTransfer;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.item.server.entity.Item;
+import com.echothree.model.data.item.server.entity.ItemDescription;
 import com.echothree.model.data.item.server.factory.ItemDescriptionFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class GetItemDescriptionsCommand
-        extends BaseSimpleCommand<GetItemDescriptionsForm> {
-    
+        extends BaseMultipleEntitiesCommand<ItemDescription, GetItemDescriptionsForm> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -64,31 +66,25 @@ public class GetItemDescriptionsCommand
     public GetItemDescriptionsCommand(UserVisitPK userVisitPK, GetItemDescriptionsForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    Item item;
+
     @Override
-    protected BaseResult execute() {
+    protected Collection<ItemDescription> getEntities() {
         var itemControl = Session.getModelController(ItemControl.class);
-        var result = ItemResultFactory.getGetItemDescriptionsResult();
+        Collection<ItemDescription> entities = null;
         var itemName = form.getItemName();
-        var item = itemControl.getItemByName(itemName);
-        
+
+        item = itemControl.getItemByName(itemName);
+
         if(item != null) {
             var itemDescriptionTypeUseTypeName = form.getItemDescriptionTypeUseTypeName();
             var itemDescriptionTypeUseType = itemDescriptionTypeUseTypeName == null ? null : itemControl.getItemDescriptionTypeUseTypeByName(itemDescriptionTypeUseTypeName);
 
             if(itemDescriptionTypeUseTypeName == null || itemDescriptionTypeUseType != null) {
-                var userVisit = getUserVisit();
-                List<ItemDescriptionTransfer> itemDescriptions = null;
-
-                result.setItem(itemControl.getItemTransfer(userVisit, item));
-
                 if(itemDescriptionTypeUseType == null) {
                     if(form.getLanguageIsoName() == null) {
-                        if(session.hasLimit(ItemDescriptionFactory.class)) {
-                            result.setItemDescriptionCount(itemControl.countItemDescriptionsByItem(item));
-                        }
-
-                        itemDescriptions = itemControl.getItemDescriptionTransfersByItem(userVisit, item);
+                        entities = itemControl.getItemDescriptionsByItem(item);
                     } else {
                         addExecutionError(ExecutionErrors.InvalidParameterCombination.name());
                     }
@@ -100,13 +96,13 @@ public class GetItemDescriptionsCommand
                     if(languageIsoName == null || language != null) {
                         var itemDescriptionTypeUses = itemControl.getItemDescriptionTypeUsesByItemDescriptionTypeUseType(itemDescriptionTypeUseType);
 
-                        itemDescriptions = new ArrayList<>();
+                        entities = new ArrayList<>();
 
                         for(var itemDescriptionTypeUse : itemDescriptionTypeUses) {
                             var itemDescription = itemControl.getBestItemDescription(itemDescriptionTypeUse.getItemDescriptionType(), item, language);
 
                             if(itemDescription != null) {
-                                itemDescriptions.add(itemControl.getItemDescriptionTransfer(userVisit, itemDescription));
+                                entities.add(itemDescription);
                             }
                         }
                     } else {
@@ -115,8 +111,6 @@ public class GetItemDescriptionsCommand
                 }
 
                 if(!hasExecutionErrors()) {
-                    result.setItemDescriptions(itemDescriptions);
-
                     sendEventUsingNames(item.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
                 }
             } else {
@@ -125,8 +119,27 @@ public class GetItemDescriptionsCommand
         } else {
             addExecutionError(ExecutionErrors.UnknownItemName.name(), itemName);
         }
-        
+
+        return entities;
+    }
+
+    @Override
+    protected BaseResult getTransfers(Collection<ItemDescription> entities) {
+        var result = ItemResultFactory.getGetItemDescriptionsResult();
+
+        if(entities != null) {
+            var itemControl = Session.getModelController(ItemControl.class);
+            var userVisit = getUserVisit();
+
+            if(session.hasLimit(ItemDescriptionFactory.class)) {
+                result.setItemDescriptionCount(itemControl.countItemDescriptionsByItem(item));
+            }
+
+            result.setItem(itemControl.getItemTransfer(userVisit, item));
+            result.setItemDescriptions(itemControl.getItemDescriptionTransfers(userVisit, entities));
+        }
+
         return result;
     }
-    
+
 }
