@@ -66,7 +66,7 @@ public class ValidationErrorsTag
     protected String footer = null;
 
     public String getProperty() {
-        return (this.property);
+        return this.property;
     }
 
     public void setProperty(String property) {
@@ -74,7 +74,7 @@ public class ValidationErrorsTag
     }
 
     public String getHeader() {
-        return (this.header);
+        return this.header;
     }
 
     public void setHeader(String header) {
@@ -82,7 +82,7 @@ public class ValidationErrorsTag
     }
 
     public String getFooter() {
-        return (this.footer);
+        return this.footer;
     }
 
     public void setFooter(String footer) {
