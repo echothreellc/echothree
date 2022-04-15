@@ -19,10 +19,15 @@ package com.echothree.model.control.item.server.graphql;
 import com.echothree.model.control.core.server.graphql.CoreSecurityUtils;
 import com.echothree.model.control.core.server.graphql.MimeTypeObject;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.server.graphql.LanguageObject;
 import com.echothree.model.control.party.server.graphql.PartySecurityUtils;
+import com.echothree.model.data.item.server.entity.ItemClobDescription;
 import com.echothree.model.data.item.server.entity.ItemDescription;
 import com.echothree.model.data.item.server.entity.ItemDescriptionDetail;
+import com.echothree.model.data.item.server.entity.ItemImageDescription;
+import com.echothree.model.data.item.server.entity.ItemStringDescription;
+import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -43,13 +48,49 @@ public class ItemDescriptionObject
     }
 
     private ItemDescriptionDetail itemDescriptionDetail; // Optional, use getItemDescriptionDetail()
-    
+
     private ItemDescriptionDetail getItemDescriptionDetail() {
         if(itemDescriptionDetail == null) {
             itemDescriptionDetail = itemDescription.getLastDetail();
         }
-        
+
         return itemDescriptionDetail;
+    }
+
+    private ItemClobDescription itemClobDescription; // Optional, use getItemClobDescription()
+
+    private ItemClobDescription getItemClobDescription() {
+        if(itemClobDescription == null) {
+            var itemControl = Session.getModelController(ItemControl.class);
+
+            itemClobDescription = itemControl.getItemClobDescription(itemDescription);
+        }
+
+        return itemClobDescription;
+    }
+
+    private ItemStringDescription itemStringDescription; // Optional, use getItemStringDescription()
+
+    private ItemStringDescription getItemStringDescription() {
+        if(itemStringDescription == null) {
+            var itemControl = Session.getModelController(ItemControl.class);
+
+            itemStringDescription = itemControl.getItemStringDescription(itemDescription);
+        }
+
+        return itemStringDescription;
+    }
+
+    private ItemImageDescription itemImageDescription; // Optional, use getItemImageDescription()
+
+    private ItemImageDescription getItemImageDescription() {
+        if(itemImageDescription == null) {
+            var itemControl = Session.getModelController(ItemControl.class);
+
+            itemImageDescription = itemControl.getItemImageDescription(itemDescription);
+        }
+
+        return itemImageDescription;
     }
 
     @GraphQLField
@@ -85,6 +126,55 @@ public class ItemDescriptionObject
         var mimeType = getItemDescriptionDetail().getMimeType();
 
         return mimeType == null ? null : (CoreSecurityUtils.getInstance().getHasMimeTypeAccess(env) ? new MimeTypeObject(mimeType) : null);
+    }
+
+    @GraphQLField
+    @GraphQLDescription("clob description")
+    public String getClobDescription(final DataFetchingEnvironment env) {
+        var itemClobDescription = getItemClobDescription();
+        
+        return itemClobDescription == null ? null : itemClobDescription.getClobDescription();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("string description")
+    public String getStringDescription(final DataFetchingEnvironment env) {
+        var itemStringDescription = getItemStringDescription();
+
+        return itemStringDescription == null ? null : itemStringDescription.getStringDescription();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("item image type")
+    public ItemImageTypeObject getItemImageType(final DataFetchingEnvironment env) {
+        var itemImageDescription = getItemImageDescription();
+        var itemImageType = itemImageDescription == null ? null : getItemImageDescription().getItemImageType();
+
+        return itemImageType == null ? null : (ItemSecurityUtils.getInstance().getHasItemImageTypeAccess(env) ? new ItemImageTypeObject(itemImageType) : null);
+    }
+
+    @GraphQLField
+    @GraphQLDescription("height")
+    public Integer getHeight(final DataFetchingEnvironment env) {
+        var itemImageDescription = getItemImageDescription();
+
+        return itemImageDescription == null ? null : itemImageDescription.getHeight();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("width")
+    public Integer getWidth(final DataFetchingEnvironment env) {
+        var itemImageDescription = getItemImageDescription();
+
+        return itemImageDescription == null ? null : itemImageDescription.getWidth();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("scaled from parent")
+    public Boolean getScaledFromParent(final DataFetchingEnvironment env) {
+        var itemImageDescription = getItemImageDescription();
+
+        return itemImageDescription == null ? null : itemImageDescription.getScaledFromParent();
     }
 
 }
