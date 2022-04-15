@@ -60,7 +60,7 @@ public class ExecutionErrorsTag
     protected String footer = null;
     
     public String getHeader() {
-        return (this.header);
+        return this.header;
     }
     
     public void setHeader(String header) {
@@ -68,7 +68,7 @@ public class ExecutionErrorsTag
     }
     
     public String getFooter() {
-        return (this.footer);
+        return this.footer;
     }
     
     public void setFooter(String footer) {

@@ -26,7 +26,7 @@ import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
-import java.util.HashMap;
+import java.util.Map;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -71,10 +71,10 @@ public class SetDefaultAction
         
         CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.DISPLAY)) {
-            customActionForward.setParameters(new HashMap<String, String>(2) {{
-                put(ParameterConstants.SELECTOR_KIND_NAME, selectorKindName);
-                put(ParameterConstants.SELECTOR_TYPE_NAME, selectorTypeName);
-            }});
+            customActionForward.setParameters(Map.of(
+                    ParameterConstants.SELECTOR_KIND_NAME, selectorKindName,
+                    ParameterConstants.SELECTOR_TYPE_NAME, selectorTypeName
+            ));
         }
         
         return customActionForward;
