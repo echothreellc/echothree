@@ -33,7 +33,7 @@
         <dependency org="de.odysseus.juel" name="juel-impl" rev="2.2.7" conf="sources->sources" />
         <dependency org="io.cucumber" name="cucumber-java8" rev="7.2.3" conf="sources->sources" />
         <dependency org="io.cucumber" name="cucumber-junit" rev="7.2.3" conf="sources->sources" />
-        <dependency org="io.github.classgraph" name="classgraph" rev="4.8.141" conf="sources->sources" />
+        <dependency org="io.github.classgraph" name="classgraph" rev="4.8.143" conf="sources->sources" />
         <dependency org="io.github.graphql-java" name="graphql-java-annotations" rev="9.1" conf="sources->sources" />
         <dependency org="io.r2dbc" name="r2dbc-spi" rev="0.9.0.RELEASE" conf="sources->sources" />
         <dependency org="javax.activation" name="activation" rev="1.1.1" conf="sources->sources" />
@@ -118,7 +118,7 @@
         <dependency org="de.odysseus.juel" name="juel-impl" rev="2.2.7" conf="javadoc->javadoc" />
         <dependency org="io.cucumber" name="cucumber-java8" rev="7.2.3" conf="javadoc->javadoc" />
         <dependency org="io.cucumber" name="cucumber-junit" rev="7.2.3" conf="javadoc->javadoc" />
-        <dependency org="io.github.classgraph" name="classgraph" rev="4.8.141" conf="javadoc->javadoc" />
+        <dependency org="io.github.classgraph" name="classgraph" rev="4.8.143" conf="javadoc->javadoc" />
         <dependency org="io.github.graphql-java" name="graphql-java-annotations" rev="9.1" conf="javadoc->javadoc" />
         <dependency org="io.r2dbc" name="r2dbc-spi" rev="0.9.0.RELEASE" conf="javadoc->javadoc" />
         <dependency org="javax.activation" name="activation" rev="1.1.1" conf="javadoc->javadoc" />
@@ -204,7 +204,7 @@
         <dependency org="de.odysseus.juel" name="juel-impl" rev="2.2.7" conf="binaries->default" />
         <dependency org="io.cucumber" name="cucumber-java8" rev="7.2.3" conf="binaries->default" />
         <dependency org="io.cucumber" name="cucumber-junit" rev="7.2.3" conf="binaries->default" />
-        <dependency org="io.github.classgraph" name="classgraph" rev="4.8.141" conf="binaries->default" />
+        <dependency org="io.github.classgraph" name="classgraph" rev="4.8.143" conf="binaries->default" />
         <dependency org="io.github.graphql-java" name="graphql-java-annotations" rev="9.1" conf="binaries->default" />
         <dependency org="io.r2dbc" name="r2dbc-spi" rev="0.9.0.RELEASE" conf="binaries->default" />
         <dependency org="javax.activation" name="activation" rev="1.1.1" conf="binaries->default" />
