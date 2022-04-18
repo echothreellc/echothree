@@ -1,5 +1,12 @@
 # Changelog
 
+## 2022-04-17-01
+
+* Spring 5.3.18 Upgrade [452](https://gitlab.echothree.com/echothree/echothree/-/issues/452)
+* Error Prone 2.13.0 Upgrade [454](https://gitlab.echothree.com/echothree/echothree/-/issues/454)
+* ClassGraph 4.8.143 Upgrade [455](https://gitlab.echothree.com/echothree/echothree/-/issues/455)
+* JaCoCo 0.8.8 Upgrade [456](https://gitlab.echothree.com/echothree/echothree/-/issues/456)
+
 ## 2022-04-03-01
 
 * Apache Lucene 9.1.0 Upgrade [451](https://gitlab.echothree.com/echothree/echothree/-/issues/451)
