@@ -177,21 +177,23 @@ public class DatabaseUtilitiesForMySQL
     boolean checkColumnDefinition(CurrentColumn cc, Column theColumn, boolean fkCheck) throws Exception {
         int columnRealType = theColumn.getType();
         boolean result = true;
-        
+
         switch (columnRealType) {
             case ColumnType.columnEID:
             case ColumnType.columnLong:
             case ColumnType.columnTime:
                 result = cc.getType() == Types.BIGINT && cc.getColumnSize() == 19;
                 break;
-            case ColumnType.columnInteger:
             case ColumnType.columnBoolean:
+                result = cc.getType() == Types.BIT && cc.getColumnSize() == 1;
+                break;
+            case ColumnType.columnInteger:
             case ColumnType.columnDate:
                 result = cc.getType() == Types.INTEGER && cc.getColumnSize() == 10;
                 break;
             case ColumnType.columnString:
                 long maxLength = theColumn.getMaxLength();
-                
+
                 if(maxLength < 256) {
                     result = cc.getType() == Types.VARCHAR && cc.getColumnSize() == maxLength;
                 } else {
@@ -206,7 +208,7 @@ public class DatabaseUtilitiesForMySQL
                 break;
             case ColumnType.columnForeignKey:
                 Column destinationColumn = myDatabase.getTable(theColumn.getDestinationTable()).getColumn(theColumn.getDestinationColumn());
-                
+
                 result = checkColumnDefinition(cc, destinationColumn, true);
                 break;
             default:
@@ -232,7 +234,7 @@ public class DatabaseUtilitiesForMySQL
     
     @Override
     String getBooleanDefinition(String columnName, Column theColumn, Column theFKColumn) {
-        String result = columnName + " INT(1)";
+        String result = columnName + " BIT(1)";
         Column nullTestColumn = theFKColumn == null? theColumn: theFKColumn;
         if(!nullTestColumn.getNullAllowed())
             result += " NOT NULL";
