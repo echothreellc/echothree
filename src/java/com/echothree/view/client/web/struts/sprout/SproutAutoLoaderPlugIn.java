@@ -34,6 +34,7 @@ package com.echothree.view.client.web.struts.sprout;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
+import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import io.github.classgraph.ClassGraph;
 import io.github.classgraph.ClassInfoList;
 import io.github.classgraph.ScanResult;
@@ -42,6 +43,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import javax.servlet.ServletException;
+import org.apache.commons.beanutils.BeanMap;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionFormBean;
 import org.apache.struts.action.ActionForward;
@@ -104,6 +106,7 @@ public class SproutAutoLoaderPlugIn
                 final String parameter = form.parameter();
                 final boolean validate = form.validate();
                 final String input = form.input();
+                final SproutProperty[] properties = form.properties();
                 final SproutForward[] forwards = form.forwards();
                 ActionConfig actionConfig = null;
                 
@@ -138,11 +141,19 @@ public class SproutAutoLoaderPlugIn
                     if(input.length() > 0) {
                         actionConfig.setInput(input);
                     }
-                    
+
+                    if(properties != null && properties.length > 0) {
+                        var beanMap = new BeanMap(actionConfig);
+
+                        for(int j = 0; j < properties.length; j++) {
+                            beanMap.put(properties[j].property(), properties[j].value());
+                        }
+                    }
+
                     if(forwards != null && forwards.length > 0) {
                         for(int j = 0; j < forwards.length; j++) {
                             String fcModule = forwards[j].module();
-                            
+
                             actionConfig.addForwardConfig(makeForward(forwards[j].name(), forwards[j].path(), forwards[j].redirect(),
                                     fcModule.length() == 0? null: fcModule));
                         }
