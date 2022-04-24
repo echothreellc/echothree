@@ -55,7 +55,8 @@ public class SproutRequestProcessor
      * initialization.
      */
     @Override
-    protected ActionForward processActionPerform(final HttpServletRequest request, final HttpServletResponse response, final Action action, final ActionForm form, final ActionMapping mapping)
+    protected ActionForward processActionPerform(final HttpServletRequest request, final HttpServletResponse response,
+            final Action action, final ActionForm form, final ActionMapping mapping)
             throws IOException, ServletException {
         // initialize Sprout if necessary
         if ( action instanceof Sprout )

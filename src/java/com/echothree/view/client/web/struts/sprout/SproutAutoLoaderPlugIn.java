@@ -31,34 +31,25 @@ limitations under the License.
 */
 package com.echothree.view.client.web.struts.sprout;
 
-import com.echothree.view.client.web.struts.sprout.Sprout.Forward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
-import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import io.github.classgraph.ClassGraph;
-import io.github.classgraph.ClassInfo;
 import io.github.classgraph.ClassInfoList;
 import io.github.classgraph.ScanResult;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Map;
 import javax.servlet.ServletException;
-import org.apache.commons.beanutils.BeanMap;
 import org.apache.log4j.Logger;
 import org.apache.struts.action.ActionFormBean;
 import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
+import org.apache.struts.action.ActionServlet;
+import org.apache.struts.action.PlugIn;
 import org.apache.struts.config.ActionConfig;
-import org.apache.struts.config.FormBeanConfig;
 import org.apache.struts.config.ForwardConfig;
-import org.apache.struts.validator.LazyValidatorForm;
-import org.springframework.beans.BeansException;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
-import org.springframework.web.struts.ContextLoaderPlugIn;
+import org.apache.struts.config.ModuleConfig;
 
 /**
  * <p>Finds Sprouts registered in a Spring context and registers them with
@@ -72,88 +63,10 @@ import org.springframework.web.struts.ContextLoaderPlugIn;
  * @author Seth Fitzsimmons
  */
 public class SproutAutoLoaderPlugIn
-        extends ContextLoaderPlugIn {
+        extends SproutContextLoaderPlugIn {
+
     private final static Logger log = Logger.getLogger(SproutAutoLoaderPlugIn.class);
 
-    private void loadSprouts(final WebApplicationContext wac)
-        throws BeansException {
-        final String[] beanNames = wac.getBeanNamesForType(Sprout.class);
-        
-        // create a default actionform
-        final FormBeanConfig fbc = new FormBeanConfig();
-
-        fbc.setName(Sprout.SPROUT_DEFAULT_ACTION_FORM_NAME);
-        fbc.setType(LazyValidatorForm.class.getName());
-        getModuleConfig().addFormBeanConfig(fbc);
-        
-        for(int i = 0; i < beanNames.length; i++) {
-            final Sprout bean = (Sprout) wac.getBean(beanNames[i]);
-            final String[] aliases = wac.getAliases(beanNames[i]);
-
-            for(int j = 0; j < aliases.length; j++) {
-                final String name = aliases[j].substring(aliases[j].lastIndexOf('/') + 1);
-
-                try {
-                    final Method method = findMethod(name, bean.getClass());
-                    log.debug(aliases[j] + " -> " + beanNames[i] + "." + name);
-
-                    final ActionMapping ac = new ActionMapping();
-                    ac.setParameter(method.getName());
-                    ac.setPath(aliases[j]);
-
-                    // establish defaults
-                    String actionForm = bean.getClass().getSimpleName() + Sprout.DEFAULT_FORM_SUFFIX;
-                    String input = aliases[j] + Sprout.DEFAULT_VIEW_EXTENSION;
-                    String scope = Sprout.DEFAULT_SCOPE;
-                    boolean validate = false;
-                    ac.addForwardConfig(makeForward(Sprout.FWD_SUCCESS, aliases[j] + ".jsp"));
-
-                    // process annotations and override defaults where appropriate
-                    final Annotation[] annotations = method.getAnnotations();
-                    for (int k = 0; k < annotations.length; k++) {
-                        final Annotation a = annotations[k];
-                        final Class type = a.annotationType();
-                        if (type.equals(Sprout.FormName.class))
-                            actionForm = ((Sprout.FormName) a).value();
-                        else if (type.equals(Sprout.Forward.class)) {
-                            final Forward fwd = (Sprout.Forward) a;
-                            for (int m=0; m < fwd.path().length; m++) {
-                                String fwdPath = fwd.path()[m];
-                                String fwdName = Sprout.FWD_SUCCESS;
-                                boolean fwdRedirect = false;
-                                if (fwd.name().length - 1  >= m)
-                                    fwdName = fwd.name()[m];
-                                if (fwd.redirect().length - 1  >= m)
-                                    fwdRedirect = fwd.redirect()[m];
-                                ac.addForwardConfig(makeForward(fwdName, fwdPath, fwdRedirect, null));
-                            }
-                        } else if (type.equals(Sprout.Input.class))
-                            input = ((Sprout.Input) a).value();
-                        if (type.equals(Sprout.Scope.class))
-                            scope = ((Sprout.Scope) a).value();
-                        else if (type.equals(Sprout.Validate.class))
-                            validate = ((Sprout.Validate) a).value();
-                    }
-
-                    // use values
-                    if (null != getModuleConfig().findFormBeanConfig(actionForm))
-                        ac.setName(actionForm);
-                    else {
-                        log.info("No ActionForm defined: " + actionForm + ". Using default.");
-                        ac.setName(Sprout.SPROUT_DEFAULT_ACTION_FORM_NAME);
-                    }
-                    ac.setValidate(validate);
-                    ac.setInput(input);
-                    ac.setScope(scope);
-
-                    getModuleConfig().addActionConfig(ac);
-                } catch(final NoSuchMethodException e) {
-                    log.warn("Could not register action; no such method: " + name, e);
-                }
-            }
-        }
-    }
-    
     private void loadForm(final Class bean) {
         final Annotation[] annotations = bean.getAnnotations();
 
@@ -199,13 +112,13 @@ public class SproutAutoLoaderPlugIn
                     
                     actionConfig = constructor.newInstance();
                 } catch (NoSuchMethodException nsme) {
-                    log.error("Failed to create a new instance of " + mappingClass.toString() + ", " + nsme.getMessage());
+                    log.error("Failed to create a new instance of " + mappingClass + ", " + nsme.getMessage());
                 } catch (InstantiationException ie) {
-                    log.error("Failed to create a new instance of " + mappingClass.toString() + ", " + ie.getMessage());
+                    log.error("Failed to create a new instance of " + mappingClass + ", " + ie.getMessage());
                 } catch (IllegalAccessException iae) {
-                    log.error("Failed to create a new instance of " + mappingClass.toString() + ", " + iae.getMessage());
+                    log.error("Failed to create a new instance of " + mappingClass + ", " + iae.getMessage());
                 } catch (InvocationTargetException ite) {
-                    log.error("Failed to create a new instance of " + mappingClass.toString() + ", " + ite.getMessage());
+                    log.error("Failed to create a new instance of " + mappingClass + ", " + ite.getMessage());
                 }
 
                 if(actionConfig != null) {
@@ -272,19 +185,8 @@ public class SproutAutoLoaderPlugIn
      * Extends Spring's ContextLoaderPlugIn initialization callback to add
      * Struts registration of Sprouts.
      */
-    @Override
     public void onInit() throws ServletException {
-        super.onInit();
-
-        final WebApplicationContext wac = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
-
-        try {
-            loadSprouts(wac);
-            loadAnnotatedActionsAndForms();
-        } catch (final BeansException e) {
-            log.warn("Error while auto loading Sprouts: " + e.getMessage(), e);
-            throw new ServletException(e);
-        }
+        loadAnnotatedActionsAndForms();
     }
     
     /**
@@ -341,4 +243,5 @@ public class SproutAutoLoaderPlugIn
 
         throw new NoSuchMethodException(name);
     }
+
 }
