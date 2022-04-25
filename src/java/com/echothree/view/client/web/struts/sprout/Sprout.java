@@ -31,20 +31,14 @@ limitations under the License.
 */
 package com.echothree.view.client.web.struts.sprout;
 
-import com.echothree.view.client.web.struts.sprout.support.SproutUtils;
 import java.io.IOException;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.Collection;
-import java.util.Iterator;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts.Globals;
 import org.apache.struts.action.ActionForm;
@@ -53,29 +47,16 @@ import org.apache.struts.action.ActionMapping;
 import org.apache.struts.action.ActionMessages;
 import org.apache.struts.action.DynaActionForm;
 import org.apache.struts.actions.MappingDispatchAction;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.BeanFactoryAware;
-import org.springframework.beans.factory.BeanNameAware;
-import org.springframework.beans.factory.BeanNotOfRequiredTypeException;
-import org.springframework.beans.factory.support.AbstractBeanFactory;
 
 /**
- * <p>Sprout at its core is a Spring-aware <code>MappingDispatchAction</code>.
- * Sprouts are appropriate when one is working with a legacy Struts
- * application and becomes fed up with service lookups and repetitive writing
- * of mappings. One goal is to make web application development in Java more
+ * <p>One goal is to make web application development in Java more
  * fun. Sprouts require Java 5 (1.5) due to their use of annotations.  They
  * also require a servlet engine conforming to the Servlet 2.4 and JSP 2.0
  * specs (Tomcat 5.x, for example) due to the use of filters, listeners, and
  * tag files.</p>
  * 
- * <p>In addition to using on Spring for auto-wiring, Sprouts obviate the need
- * to write repetitive bean declarations for each URL as they register
- * aliases in the Spring context on startup.</p>
- * 
- * <p>Sprouts additionally obviate the need to write Struts action-mappings as
- * they use information gleaned from the initial Spring bean definition, class
+ * <p>Sprouts obviate the need to write Struts action-mappings as
+ * they use information gleaned from the initial Sprout, class
  * properties (name and package), as well as annotations to appropriately
  * self-register on URLs defined by convention or specification with
  * properties obtained the same way.</p>
@@ -137,9 +118,10 @@ import org.springframework.beans.factory.support.AbstractBeanFactory;
  * @author Seth Fitzsimmons
  */
 public abstract class Sprout
-        extends MappingDispatchAction implements BeanFactoryAware, BeanNameAware {
+        extends MappingDispatchAction {
+
     private final static Logger log = Logger.getLogger( Sprout.class );
-    static final String PACKAGE_DELIMITER = ".action";
+
     static final String DEFAULT_SCOPE = "request";
     static final String DEFAULT_FORM_SUFFIX = "Form";
     static final String DEFAULT_VIEW_EXTENSION = ".jsp";
@@ -150,49 +132,6 @@ public abstract class Sprout
     
     private String beanName;
     private static final ThreadLocal<DynaActionForm> formHolder = new ThreadLocal<>();
-
-    @Override
-    public final void setBeanFactory(final BeanFactory factory) throws BeansException {
-        if ( !factory.isSingleton( beanName ) ) {
-            log.warn( getClass().getName() + " must be defined with singleton=\"true\" in order to self-register.");
-            return;
-        }
-        
-        final String pkgName = getClass().getPackage().getName();
-        final String path = pkgName.substring( pkgName.indexOf( PACKAGE_DELIMITER ) + PACKAGE_DELIMITER.length() ).replace('.', '/') + "/";
-        
-        if ( factory instanceof AbstractBeanFactory ) {
-            final AbstractBeanFactory dlbf = (AbstractBeanFactory) factory;
-            
-            final Collection<Method> methods = SproutUtils.getDeclaredMethods( getClass(), Sprout.class );
-            
-            // register beans for each url
-            log.debug("Registering paths...");
-            for ( final Iterator<Method> i = methods.iterator(); i.hasNext(); ) {
-                final Method method = i.next();
-                String name = method.getName();
-                if ( Modifier.isPublic( method.getModifiers() ) && method.getReturnType().equals( ActionForward.class ) ) {
-                    if ( name.equals("publick") )
-                        name = "public";
-                    final String url = path + name.replaceAll("([A-Z])", "_$1" ).toLowerCase();
-                    log.debug( url );
-                    if ( !ArrayUtils.contains( dlbf.getAliases( beanName ), url ) )
-                        dlbf.registerAlias( beanName, url );
-                }
-            }
-        } else {
-            log.warn("Unable to self-register; factory bean was of an unsupported type.");
-            throw new BeanNotOfRequiredTypeException( beanName, AbstractBeanFactory.class, factory.getClass() );
-        }
-    }
-
-    /**
-     * Sets the name of this bean, as registered in the Spring context.
-     */
-    @Override
-    public final void setBeanName(final String name) {
-        this.beanName = name;
-    }
     
     public final void init(final ActionMapping mapping, final ActionForm form, final HttpServletRequest request, final HttpServletResponse response) {
         if ( form instanceof DynaActionForm )

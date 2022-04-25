@@ -1,7 +1,6 @@
 <component name="libraryTable">
   <library name="From Ivy">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/build/lib/antlr.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/antlr4-runtime.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/apiguardian-api.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/asm-analysis.jar!/" />
@@ -46,9 +45,7 @@
       <root url="jar://$PROJECT_DIR$/build/lib/infinispan-commons.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/j2objc-annotations.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/java-dataloader.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib/javac.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/javassist.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib/javax.activation-api.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/javax.annotation-api.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/javax.ejb-api.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/javax.el-api.jar!/" />
@@ -57,10 +54,8 @@
       <root url="jar://$PROJECT_DIR$/build/lib/javax.servlet-api.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/javax.transaction-api.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/javax.websocket-api.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib/jaxb-api.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/jdom.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/jdom2.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib/jFormatString.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/jfreechart.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/jooq.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/json-lib-jdk15.jar!/" />
@@ -88,9 +83,6 @@
       <root url="jar://$PROJECT_DIR$/build/lib/slf4j-api.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/slf4j-log4j12.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/software-and-algorithms.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib/spring-core.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib/spring-jcl.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib/spring-struts.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/tag-expressions.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/textile4j.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/typetools.jar!/" />
@@ -112,7 +104,6 @@
       <root url="jar://$PROJECT_DIR$/build/lib/auto-value-annotations.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/bcmail-jdk14.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/bcprov-jdk14.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib/create-meta.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/cucumber-gherkin-messages.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/cucumber-gherkin.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/cucumber-plugin.jar!/" />
@@ -122,22 +113,13 @@
       <root url="jar://$PROJECT_DIR$/build/lib/html-formatter.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/itext.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/jboss-logging.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib/jboss-transaction-api_1.2_spec.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/jgroups.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/log4j.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/messages.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/mysql-connector-java.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib/oro.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/poi.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/protobuf-java.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/protostream.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib/spring-aop.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib/spring-beans.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib/spring-context.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib/spring-expression.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib/spring-web.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib/spring-webmvc.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib/struts.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/validation-api.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/wildfly-client-all.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/xercesImpl.jar!/" />
@@ -148,8 +130,6 @@
       <root url="jar://$PROJECT_DIR$/build/lib/graphql-java-extended-scalars.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/java-diff-utils.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/jboss-threads.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib/jooq-codegen.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib/jooq-meta.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/org.eclipse.jgit.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/protostream-types.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/r2dbc-spi.jar!/" />
@@ -209,12 +189,6 @@
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/poi-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/slf4j-api-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/slf4j-log4j12-javadoc.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/spring-beans-javadoc.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/spring-context-javadoc.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/spring-core-javadoc.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/spring-expression-javadoc.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/spring-struts-javadoc.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/spring-web-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/textile4j-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/validation-api-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/xalan-javadoc.jar!/" />
@@ -225,13 +199,11 @@
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/rome-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/Saxon-HE-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/graphql-java-extended-scalars-javadoc.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/jaxb-api-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/r2dbc-spi-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/lucene-analysis-common-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/lucene-analysis-kuromoji-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$PROJECT_DIR$/build/lib/jFormatString.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/activation-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/assertj-core-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/assertj-guava-sources.jar!/" />
@@ -271,12 +243,9 @@
       <root url="jar://$PROJECT_DIR$/build/lib-sources/org.jacoco.ant-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/org.jacoco.report-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/org.osgi.service.component.annotations-sources.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib-sources/reactive-streams-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/rome-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/slf4j-api-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/slf4j-log4j12-sources.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib-sources/spring-core-sources.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib-sources/spring-struts-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/textile4j-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/guava-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/graphql-java-sources.jar!/" />
@@ -300,10 +269,6 @@
       <root url="jar://$PROJECT_DIR$/build/lib-sources/lucene-queryparser-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/mysql-connector-java-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/poi-sources.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib-sources/spring-beans-sources.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib-sources/spring-context-sources.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib-sources/spring-expression-sources.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib-sources/spring-web-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/validation-api-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/wildfly-client-all-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/xalan-sources.jar!/" />
@@ -314,9 +279,6 @@
       <root url="jar://$PROJECT_DIR$/build/lib-sources/itext-sources.jar!/core" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/itext-sources.jar!/rups" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/graphql-java-extended-scalars-sources.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib-sources/jaxb-api-sources.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib-sources/jooq-codegen-sources.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib-sources/jooq-meta-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/r2dbc-spi-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/lucene-analysis-common-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/lucene-analysis-kuromoji-sources.jar!/" />
