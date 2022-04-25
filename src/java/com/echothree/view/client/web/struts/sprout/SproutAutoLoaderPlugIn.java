@@ -54,7 +54,7 @@ import org.apache.struts.config.ForwardConfig;
 import org.apache.struts.config.ModuleConfig;
 
 /**
- * <p>Finds Sprouts registered in a Spring context and registers them with
+ * <p>Finds Sprouts present in the classpath and registers them with
  * Struts, using cues from annotations present to set specific properties.</p> 
  * 
  * <p>This needs to be configured as a plug-in in
@@ -170,7 +170,7 @@ public class SproutAutoLoaderPlugIn
     }
     
     private void loadAnnotatedActionsAndForms() {
-        try(ScanResult scanResult= new ClassGraph()
+        try(ScanResult scanResult = new ClassGraph()
                 .enableAnnotationInfo()
                 .scan()) {
             final ClassInfoList actionClasses = scanResult
@@ -193,7 +193,7 @@ public class SproutAutoLoaderPlugIn
     }
 
     /**
-     * Extends Spring's ContextLoaderPlugIn initialization callback to add
+     * Extends SproutContextLoaderPlugIn's initialization callback to add
      * Struts registration of Sprouts.
      */
     public void onInit() throws ServletException {

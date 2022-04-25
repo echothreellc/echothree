@@ -49,21 +49,14 @@ import org.apache.struts.action.DynaActionForm;
 import org.apache.struts.actions.MappingDispatchAction;
 
 /**
- * <p>Sprout at its core is a Spring-aware <code>MappingDispatchAction</code>.
- * Sprouts are appropriate when one is working with a legacy Struts
- * application and becomes fed up with service lookups and repetitive writing
- * of mappings. One goal is to make web application development in Java more
+ * <p>One goal is to make web application development in Java more
  * fun. Sprouts require Java 5 (1.5) due to their use of annotations.  They
  * also require a servlet engine conforming to the Servlet 2.4 and JSP 2.0
  * specs (Tomcat 5.x, for example) due to the use of filters, listeners, and
  * tag files.</p>
  * 
- * <p>In addition to using on Spring for auto-wiring, Sprouts obviate the need
- * to write repetitive bean declarations for each URL as they register
- * aliases in the Spring context on startup.</p>
- * 
- * <p>Sprouts additionally obviate the need to write Struts action-mappings as
- * they use information gleaned from the initial Spring bean definition, class
+ * <p>Sprouts obviate the need to write Struts action-mappings as
+ * they use information gleaned from the initial Sprout, class
  * properties (name and package), as well as annotations to appropriately
  * self-register on URLs defined by convention or specification with
  * properties obtained the same way.</p>
