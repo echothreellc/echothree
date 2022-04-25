@@ -42,14 +42,15 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 /**
- * Extension of Spring's <code>DelegatingRequestProcessor</code> that adds
+ * Extension of <code>SecureRequestProcessor</code> that adds
  * Sprout initialization.
  * 
- * @see org.springframework.web.struts.DelegatingRequestProcessor
+ * @see com.echothree.view.client.web.struts.sslext.action.SecureRequestProcessor
  * @author Seth Fitzsimmons
  */
 public class SproutRequestProcessor
         extends SecureRequestProcessor {
+
     /**
      * Provides each Sprout with an extensive set of objects during its
      * initialization.
@@ -59,9 +60,11 @@ public class SproutRequestProcessor
             final Action action, final ActionForm form, final ActionMapping mapping)
             throws IOException, ServletException {
         // initialize Sprout if necessary
-        if ( action instanceof Sprout )
-            ((Sprout) action).init( mapping, form, request, response );
-        
-        return super.processActionPerform( request, response, action, form, mapping );
+        if(action instanceof Sprout) {
+            ((Sprout)action).init(mapping, form, request, response);
+        }
+
+        return super.processActionPerform(request, response, action, form, mapping);
     }
+
 }
