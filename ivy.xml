@@ -29,6 +29,7 @@
         <dependency org="commons-logging" name="commons-logging" rev="1.2" conf="sources->sources" />
         <dependency org="commons-logging" name="commons-logging-api" rev="1.1" conf="sources->sources" />
         <dependency org="commons-net" name="commons-net" rev="3.6" conf="sources->sources" />
+        <dependency org="commons-validator" name="commons-validator" rev="1.7" conf="sources->sources" />
         <dependency org="de.odysseus.juel" name="juel-api" rev="2.2.7" conf="sources->sources" />
         <dependency org="de.odysseus.juel" name="juel-impl" rev="2.2.7" conf="sources->sources" />
         <dependency org="io.cucumber" name="cucumber-java8" rev="7.2.3" conf="sources->sources" />
@@ -77,15 +78,8 @@
         <dependency org="org.jfree" name="jfreechart" rev="1.5.3" conf="sources->sources" />
         <dependency org="org.jooq" name="jooq" rev="3.16.6" conf="sources->sources" />
         <dependency org="org.osgi" name="org.osgi.service.component.annotations" rev="1.4.0" conf="sources->sources" />
-        <dependency org="org.reactivestreams" name="reactive-streams" rev="1.0.3" conf="sources->sources" />
         <dependency org="org.slf4j" name="slf4j-api" rev="1.7.32" conf="sources->sources" />
         <dependency org="org.slf4j" name="slf4j-log4j12" rev="1.7.32" conf="sources->sources" />
-        <dependency org="org.springframework" name="spring-beans" rev="5.3.18" conf="sources->sources" />
-        <dependency org="org.springframework" name="spring-context" rev="5.3.18" conf="sources->sources" />
-        <dependency org="org.springframework" name="spring-core" rev="5.3.18" conf="sources->sources" />
-        <dependency org="org.springframework" name="spring-expression" rev="5.3.18" conf="sources->sources" />
-        <dependency org="org.springframework" name="spring-struts" rev="3.2.18.RELEASE" conf="sources->sources" />
-        <dependency org="org.springframework" name="spring-web" rev="5.3.18" conf="sources->sources" />
         <dependency org="org.threeten" name="threeten-extra" rev="1.5.0" conf="sources->sources" />
         <dependency org="org.wildfly" name="wildfly-client-all" rev="26.1.0.Final" conf="sources->sources" />
         <dependency org="xalan" name="xalan" rev="2.7.2" conf="sources->sources" />
@@ -114,6 +108,7 @@
         <dependency org="commons-logging" name="commons-logging" rev="1.2" conf="javadoc->javadoc" />
         <dependency org="commons-logging" name="commons-logging-api" rev="1.1" conf="javadoc->javadoc" />
         <dependency org="commons-net" name="commons-net" rev="3.6" conf="javadoc->javadoc" />
+        <dependency org="commons-validator" name="commons-validator" rev="1.7" conf="javadoc->javadoc" />
         <dependency org="de.odysseus.juel" name="juel-api" rev="2.2.7" conf="javadoc->javadoc" />
         <dependency org="de.odysseus.juel" name="juel-impl" rev="2.2.7" conf="javadoc->javadoc" />
         <dependency org="io.cucumber" name="cucumber-java8" rev="7.2.3" conf="javadoc->javadoc" />
@@ -161,15 +156,8 @@
         <dependency org="org.jfree" name="jfreechart" rev="1.5.3" conf="javadoc->javadoc" />
         <dependency org="org.jooq" name="jooq" rev="3.16.6" conf="javadoc->javadoc" />
         <dependency org="org.osgi" name="org.osgi.service.component.annotations" rev="1.4.0" conf="javadoc->javadoc" />
-        <dependency org="org.reactivestreams" name="reactive-streams" rev="1.0.3" conf="javadoc->javadoc" />
         <dependency org="org.slf4j" name="slf4j-api" rev="1.7.32" conf="javadoc->javadoc" />
         <dependency org="org.slf4j" name="slf4j-log4j12" rev="1.7.32" conf="javadoc->javadoc" />
-        <dependency org="org.springframework" name="spring-beans" rev="5.3.18" conf="javadoc->javadoc" />
-        <dependency org="org.springframework" name="spring-context" rev="5.3.18" conf="javadoc->javadoc" />
-        <dependency org="org.springframework" name="spring-core" rev="5.3.18" conf="javadoc->javadoc" />
-        <dependency org="org.springframework" name="spring-expression" rev="5.3.18" conf="javadoc->javadoc" />
-        <dependency org="org.springframework" name="spring-struts" rev="3.2.18.RELEASE" conf="javadoc->javadoc" />
-        <dependency org="org.springframework" name="spring-web" rev="5.3.18" conf="javadoc->javadoc" />
         <dependency org="org.threeten" name="threeten-extra" rev="1.5.0" conf="javadoc->javadoc" />
         <dependency org="org.wildfly" name="wildfly-client-all" rev="26.1.0.Final" conf="javadoc->javadoc" />
         <dependency org="xalan" name="xalan" rev="2.7.2" conf="javadoc->javadoc" />
@@ -200,6 +188,7 @@
         <dependency org="commons-logging" name="commons-logging" rev="1.2" conf="binaries->default" />
         <dependency org="commons-logging" name="commons-logging-api" rev="1.1" conf="binaries->default" />
         <dependency org="commons-net" name="commons-net" rev="3.6" conf="binaries->default" />
+        <dependency org="commons-validator" name="commons-validator" rev="1.7" conf="binaries->default" />
         <dependency org="de.odysseus.juel" name="juel-api" rev="2.2.7" conf="binaries->default" />
         <dependency org="de.odysseus.juel" name="juel-impl" rev="2.2.7" conf="binaries->default" />
         <dependency org="io.cucumber" name="cucumber-java8" rev="7.2.3" conf="binaries->default" />
@@ -254,15 +243,8 @@
         <dependency org="org.jfree" name="jfreechart" rev="1.5.3" conf="binaries->default" />
         <dependency org="org.jooq" name="jooq" rev="3.16.6" conf="binaries->default" />
         <dependency org="org.osgi" name="org.osgi.service.component.annotations" rev="1.4.0" conf="binaries->default" />
-        <dependency org="org.reactivestreams" name="reactive-streams" rev="1.0.3" conf="binaries->default" />
         <dependency org="org.slf4j" name="slf4j-api" rev="1.7.32" conf="binaries->default" />
         <dependency org="org.slf4j" name="slf4j-log4j12" rev="1.7.32" conf="binaries->default" />
-        <dependency org="org.springframework" name="spring-beans" rev="5.3.18" conf="binaries->default" />
-        <dependency org="org.springframework" name="spring-context" rev="5.3.18" conf="binaries->default" />
-        <dependency org="org.springframework" name="spring-core" rev="5.3.18" conf="binaries->default" />
-        <dependency org="org.springframework" name="spring-expression" rev="5.3.18" conf="binaries->default" />
-        <dependency org="org.springframework" name="spring-struts" rev="3.2.18.RELEASE" conf="binaries->default" />
-        <dependency org="org.springframework" name="spring-web" rev="5.3.18" conf="binaries->default" />
         <dependency org="org.threeten" name="threeten-extra" rev="1.5.0" conf="binaries->default" />
         <dependency org="org.wildfly" name="wildfly-client-all" rev="26.1.0.Final" conf="binaries->default" />
         <dependency org="xalan" name="xalan" rev="2.7.2" conf="binaries->default" />
