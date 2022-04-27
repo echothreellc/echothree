@@ -295,7 +295,7 @@ public class Column {
                     javaSqlType = "VARCHAR";
                     break;
                 case ColumnType.columnBoolean:
-                    javaSqlType = "INTEGER";
+                    javaSqlType = "BIT";
                     break;
                 case ColumnType.columnDate:
                     javaSqlType = "INTEGER";

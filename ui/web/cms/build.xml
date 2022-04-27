@@ -170,21 +170,6 @@
                 <include name="struts-taglib.jar"/>
                 <include name="struts-tiles.jar"/>
             </lib>
-            <!-- Spring -->
-            <lib dir="${build.lib.dir}">
-                <include name="spring-beans.jar"/>
-                <include name="spring-context.jar"/>
-                <include name="spring-core.jar"/>
-                <include name="spring-expression.jar"/>
-                <include name="spring-web.jar"/>
-                <include name="spring-struts.jar"/>
-                <include name="reactive-streams.jar"/>
-            </lib>
-            <webinf dir="${ui.web.cms.metadatasrc}">
-                <include name="beans.xml"/>
-                <include name="applicationContext.xml"/>
-                <include name="cms-servlet.xml"/>
-            </webinf>
         </war>
     </target>
 

@@ -27,11 +27,6 @@
     <session-config>
         <session-timeout>15</session-timeout>
     </session-config>
-    <!-- Spring Context loader;
-         loads Spring configuration from applicationContext.xml -->
-    <listener>
-            <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-    </listener>
     <servlet>
         <servlet-name>cms</servlet-name>
         <servlet-class>com.echothree.ui.web.cms.framework.ExtendedActionServlet</servlet-class>     

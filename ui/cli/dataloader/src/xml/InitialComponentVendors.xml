@@ -496,17 +496,32 @@
             <entityType entityTypeName="ItemType" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Item Type" />
             </entityType>
+            <entityType entityTypeName="ItemTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Type Description" />
+            </entityType>
             <entityType entityTypeName="ItemUseType" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Item Use Type" />
+            </entityType>
+            <entityType entityTypeName="ItemUseTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Use Type Description" />
             </entityType>
             <entityType entityTypeName="ItemPriceType" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Item Price Type" />
             </entityType>
+            <entityType entityTypeName="ItemPriceTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Price Type Description" />
+            </entityType>
             <entityType entityTypeName="ItemDeliveryType" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Item Delivery Type" />
             </entityType>
+            <entityType entityTypeName="ItemDeliveryTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Delivery Type Description" />
+            </entityType>
             <entityType entityTypeName="ItemInventoryType" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Item Inventory Type" />
+            </entityType>
+            <entityType entityTypeName="ItemInventoryTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Inventory Type Description" />
             </entityType>
             <entityType entityTypeName="ItemVariablePrice" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Item Variable Price" />

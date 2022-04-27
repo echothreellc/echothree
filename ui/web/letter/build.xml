@@ -153,20 +153,6 @@
                 <include name="struts-taglib.jar"/>
                 <include name="struts-tiles.jar"/>
             </lib>
-            <!-- Spring -->
-            <lib dir="${build.lib.dir}">
-                <include name="spring-beans.jar"/>
-                <include name="spring-context.jar"/>
-                <include name="spring-core.jar"/>
-                <include name="spring-expression.jar"/>
-                <include name="spring-web.jar"/>
-                <include name="spring-struts.jar"/>
-                <include name="reactive-streams.jar"/>
-            </lib>
-            <webinf dir="${ui.web.letter.metadatasrc}">
-                <include name="applicationContext.xml"/>
-                <include name="letter-servlet.xml"/>
-            </webinf>
             <!-- Display Tag Library -->
             <lib dir="${build.lib.dir}">
                 <include name="commons-lang.jar"/>
