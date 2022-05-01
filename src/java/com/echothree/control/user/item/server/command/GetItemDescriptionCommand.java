@@ -21,6 +21,8 @@ import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.content.server.logic.ContentLogic;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemDescriptionLogic;
+import com.echothree.model.control.item.server.logic.ItemDescriptionTypeLogic;
+import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.item.server.entity.ItemDescription;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -53,94 +55,40 @@ public class GetItemDescriptionCommand
     }
 
     @Override
-    protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
-        var result = ItemResultFactory.getGetItemDescriptionResult();
-        var itemName = form.getItemName();
-        var item = itemControl.getItemByName(itemName);
-        
-        if(item != null) {
-            var itemDescriptionTypeName = form.getItemDescriptionTypeName();
-            var itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
-            
-            if(itemDescriptionType != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
-                var languageIsoName = form.getLanguageIsoName();
-                var language = languageIsoName == null ? getPreferredLanguage() : partyControl.getLanguageByIsoName(languageIsoName);
-                
-                if(languageIsoName == null || language != null) {
-                    var itemDescription = itemControl.getItemDescription(itemDescriptionType, item, language);
-
-                    if(itemDescription == null) {
-                        itemDescription = ItemDescriptionLogic.getInstance().searchForItemDescription(itemDescriptionType, item, language, getPartyPK());
-                    }
-
-                    if(itemDescription != null) {
-                        if(itemDescriptionType.getLastDetail().getCheckContentWebAddress()) {
-                            ContentLogic.getInstance().checkReferrer(this, form.getReferrer());
-                        }
-
-                        if(!hasExecutionErrors()) {
-                            result.setItemDescription(itemControl.getItemDescriptionTransfer(getUserVisit(), itemDescription));
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownItemDescription.name(), itemDescriptionTypeName, itemName, languageIsoName);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownItemDescriptionTypeName.name(), itemDescriptionTypeName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownItemName.name(), itemName);
-        }
-        
-        return result;
-    }
-
-    @Override
     protected ItemDescription getEntity() {
         var itemControl = Session.getModelController(ItemControl.class);
         ItemDescription itemDescription = null;
         var itemName = form.getItemName();
-        var item = itemControl.getItemByName(itemName);
+        var item = ItemLogic.getInstance().getItemByName(this, itemName);
+        var itemDescriptionTypeName = form.getItemDescriptionTypeName();
+        var itemDescriptionType = ItemDescriptionTypeLogic.getInstance().getItemDescriptionTypeByName(this, itemDescriptionTypeName);
 
-        if(item != null) {
-            var itemDescriptionTypeName = form.getItemDescriptionTypeName();
-            var itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
-
-            if(itemDescriptionType != null) {
-                if(itemDescriptionType.getLastDetail().getCheckContentWebAddress()) {
-                    ContentLogic.getInstance().checkReferrer(this, form.getReferrer());
-                }
-
-                if(!hasExecutionErrors()) {
-                    var partyControl = Session.getModelController(PartyControl.class);
-                    var languageIsoName = form.getLanguageIsoName();
-                    var language = languageIsoName == null ? getPreferredLanguage() : partyControl.getLanguageByIsoName(languageIsoName);
-
-                    if(languageIsoName == null || language != null) {
-                        itemDescription = itemControl.getItemDescription(itemDescriptionType, item, language);
-
-                        if(itemDescription == null) {
-                            itemDescription = ItemDescriptionLogic.getInstance().searchForItemDescription(itemDescriptionType,
-                                    item, language, getPartyPK());
-                        }
-
-                        if(itemDescription == null) {
-                            addExecutionError(ExecutionErrors.UnknownItemDescription.name(), itemDescriptionTypeName,
-                                    itemName, languageIsoName);
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
-                    }
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownItemDescriptionTypeName.name(), itemDescriptionTypeName);
+        if(!hasExecutionErrors()) {
+            if(itemDescriptionType.getLastDetail().getCheckContentWebAddress()) {
+                ContentLogic.getInstance().checkReferrer(this, form.getReferrer());
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownItemName.name(), itemName);
+
+            if(!hasExecutionErrors()) {
+                var partyControl = Session.getModelController(PartyControl.class);
+                var languageIsoName = form.getLanguageIsoName();
+                var language = languageIsoName == null ? getPreferredLanguage() : partyControl.getLanguageByIsoName(languageIsoName);
+
+                if(languageIsoName == null || language != null) {
+                    itemDescription = itemControl.getItemDescription(itemDescriptionType, item, language);
+
+                    if(itemDescription == null) {
+                        itemDescription = ItemDescriptionLogic.getInstance().searchForItemDescription(itemDescriptionType,
+                                item, language, getPartyPK());
+                    }
+
+                    if(itemDescription == null) {
+                        addExecutionError(ExecutionErrors.UnknownItemDescription.name(), itemDescriptionTypeName,
+                                itemName, languageIsoName);
+                    }
+                } else {
+                    addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
+                }
+            }
         }
 
         return itemDescription;

@@ -20,6 +20,7 @@ import com.echothree.control.user.item.common.form.GetItemDescriptionsForm;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -74,10 +75,9 @@ public class GetItemDescriptionsCommand
         var itemControl = Session.getModelController(ItemControl.class);
         Collection<ItemDescription> entities = null;
         var itemName = form.getItemName();
+        var item = ItemLogic.getInstance().getItemByName(this, itemName);
 
-        item = itemControl.getItemByName(itemName);
-
-        if(item != null) {
+        if(!hasExecutionErrors()) {
             var itemDescriptionTypeUseTypeName = form.getItemDescriptionTypeUseTypeName();
             var itemDescriptionTypeUseType = itemDescriptionTypeUseTypeName == null ? null : itemControl.getItemDescriptionTypeUseTypeByName(itemDescriptionTypeUseTypeName);
 
@@ -116,8 +116,6 @@ public class GetItemDescriptionsCommand
             } else {
                 addExecutionError(ExecutionErrors.UnknownItemDescriptionTypeUseTypeName.name(), itemDescriptionTypeUseTypeName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownItemName.name(), itemName);
         }
 
         return entities;
