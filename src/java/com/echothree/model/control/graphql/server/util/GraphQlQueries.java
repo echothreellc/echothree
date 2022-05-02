@@ -4911,9 +4911,10 @@ public final class GraphQlQueries
     @GraphQLField
     @GraphQLName("itemDescription")
     public static ItemDescriptionObject itemDescription(final DataFetchingEnvironment env,
-            @GraphQLName("itemDescriptionTypeName") @GraphQLNonNull final String itemDescriptionTypeName,
-            @GraphQLName("itemName") @GraphQLNonNull final String itemName,
+            @GraphQLName("itemDescriptionTypeName") final String itemDescriptionTypeName,
+            @GraphQLName("itemName") final String itemName,
             @GraphQLName("languageIsoName") final String languageIsoName,
+            @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("referrer") final String referrer) {
         ItemDescription itemDescription;
 
@@ -4923,6 +4924,7 @@ public final class GraphQlQueries
             commandForm.setItemDescriptionTypeName(itemDescriptionTypeName);
             commandForm.setItemName(itemName);
             commandForm.setLanguageIsoName(languageIsoName);
+            commandForm.setUlid(id);
             commandForm.setReferrer(referrer);
 
             itemDescription = new GetItemDescriptionCommand(getUserVisitPK(env), commandForm).runForGraphQl();
