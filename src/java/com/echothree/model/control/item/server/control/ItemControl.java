@@ -107,7 +107,6 @@ import com.echothree.model.control.item.server.transfer.ItemUnitCustomerTypeLimi
 import com.echothree.model.control.item.server.transfer.ItemUnitLimitTransferCache;
 import com.echothree.model.control.item.server.transfer.ItemUnitOfMeasureTypeTransferCache;
 import com.echothree.model.control.item.server.transfer.ItemUnitPriceLimitTransferCache;
-import com.echothree.model.control.item.server.transfer.ItemUseTypeTransferCache;
 import com.echothree.model.control.item.server.transfer.ItemVolumeTransferCache;
 import com.echothree.model.control.item.server.transfer.ItemWeightTransferCache;
 import com.echothree.model.control.item.server.transfer.RelatedItemTransferCache;
@@ -1911,6 +1910,21 @@ public class ItemControl
                 stylePath);
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Item */
+    public Item getItemByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ItemPK(entityInstance.getEntityUniqueId());
+
+        return ItemFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Item getItemByEntityInstance(EntityInstance entityInstance) {
+        return getItemByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Item getItemByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getItemByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+    
     private List<Item> getItems(EntityPermission entityPermission) {
         String query = null;
 
@@ -2194,22 +2208,6 @@ public class ItemControl
 
     public Item getItemByPK(ItemPK itemPK) {
         return ItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, itemPK);
-    }
-
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Item */
-    public Item getItemByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        ItemPK pk = new ItemPK(entityInstance.getEntityUniqueId());
-        Item item = ItemFactory.getInstance().getEntityFromPK(entityPermission, pk);
-
-        return item;
-    }
-
-    public Item getItemByEntityInstance(EntityInstance entityInstance) {
-        return getItemByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
-    }
-
-    public Item getItemByEntityInstanceForUpdate(EntityInstance entityInstance) {
-        return getItemByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
     // --------------------------------------------------------------------------------
@@ -8186,6 +8184,21 @@ public class ItemControl
         
         return itemDescription;
     }
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ItemDescription */
+    public ItemDescription getItemDescriptionByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ItemDescriptionPK(entityInstance.getEntityUniqueId());
+
+        return ItemDescriptionFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ItemDescription getItemDescriptionByEntityInstance(EntityInstance entityInstance) {
+        return getItemDescriptionByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ItemDescription getItemDescriptionByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getItemDescriptionByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
     
     private static final Map<EntityPermission, String> getScaledItemDescriptionsByItemDescriptionTypePKQueries;
 
@@ -8257,7 +8270,7 @@ public class ItemControl
         return getScaledItemDescriptionsByItemImageTypePK(itemDescriptionTypePK, EntityPermission.READ_WRITE);
     }
 
-    private List<ItemDescription> getItemDescriptionsByItem(Item item, EntityPermission entityPermission) {
+    public List<ItemDescription> getItemDescriptionsByItem(Item item, EntityPermission entityPermission) {
         List<ItemDescription> itemDescriptions;
 
         try {
@@ -8448,25 +8461,20 @@ public class ItemControl
     public ItemDescriptionTransfer getItemDescriptionTransfer(UserVisit userVisit, ItemDescription itemDescription) {
         return getItemTransferCaches(userVisit).getItemDescriptionTransferCache().getTransfer(itemDescription);
     }
-    
-    public List<ItemDescriptionTransfer> getItemDescriptionTransfersByItem(UserVisit userVisit, Item item) {
-        List<ItemDescription> itemDescriptions = getItemDescriptionsByItem(item);
+
+    public List<ItemDescriptionTransfer> getItemDescriptionTransfers(UserVisit userVisit, Collection<ItemDescription> itemDescriptions) {
         List<ItemDescriptionTransfer> itemDescriptionTransfers = new ArrayList<>(itemDescriptions.size());
         ItemDescriptionTransferCache itemDescriptionTransferCache = getItemTransferCaches(userVisit).getItemDescriptionTransferCache();
-        
+
         itemDescriptions.forEach((itemDescription) ->
                 itemDescriptionTransfers.add(itemDescriptionTransferCache.getTransfer(itemDescription))
         );
-        
+
         return itemDescriptionTransfers;
     }
-    
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ItemDescription */
-    public ItemDescription getItemDescriptionByEntityInstance(EntityInstance entityInstance) {
-        ItemDescriptionPK pk = new ItemDescriptionPK(entityInstance.getEntityUniqueId());
-        ItemDescription itemDescription = ItemDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
 
-        return itemDescription;
+    public List<ItemDescriptionTransfer> getItemDescriptionTransfersByItem(UserVisit userVisit, Item item) {
+        return getItemDescriptionTransfers(userVisit, getItemDescriptionsByItem(item));
     }
 
     public void updateItemDescriptionFromValue(ItemDescriptionDetailValue itemDescriptionDetailValue, BasePK updatedBy) {

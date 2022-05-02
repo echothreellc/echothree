@@ -60,9 +60,11 @@ public class DescriptionAction
         try {
             GetItemDescriptionsForm commandForm = ItemUtil.getHome().getGetItemDescriptionsForm();
             String itemName = request.getParameter(ParameterConstants.ITEM_NAME);
-            
+            String itemDescriptionTypeUseTypeName = request.getParameter(ParameterConstants.ITEM_DESCRIPTION_TYPE_USE_TYPE_NAME);
+
             commandForm.setItemName(itemName);
-            
+            commandForm.setItemDescriptionTypeUseTypeName(itemDescriptionTypeUseTypeName);
+
             Set<String> options = new HashSet<>();
             options.add(ItemOptions.ItemDescriptionIncludeString);
             options.add(ItemOptions.ItemDescriptionIncludeImageDescription);

@@ -16,10 +16,10 @@
 
 package com.echothree.control.user.item.common.form;
 
-import com.echothree.control.user.item.common.spec.ItemDescriptionSpec;
+import com.echothree.control.user.item.common.spec.ItemDescriptionUniversalSpec;
 
 public interface GetItemDescriptionForm
-        extends ItemDescriptionSpec {
+        extends ItemDescriptionUniversalSpec {
     
     String getReferrer();
     void setReferrer(String referrer);
