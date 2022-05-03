@@ -1,5 +1,16 @@
 # Changelog
 
+## 2022-05-01-01
+
+* GraphQL Objects and Queries for Item Descriptions [416](https://gitlab.echothree.com/echothree/echothree/-/issues/416)
+* WildFly 26.1.0 Upgrade [453](https://gitlab.echothree.com/echothree/echothree/-/issues/453)
+* jOOQ 3.16.6 Upgrade [458](https://gitlab.echothree.com/echothree/echothree/-/issues/458)
+* ICU4J 71.1 Upgrade [459](https://gitlab.echothree.com/echothree/echothree/-/issues/459)
+* Convert Boolean to a BIT(1) [460](https://gitlab.echothree.com/echothree/echothree/-/issues/460)
+* Missing Initial Entity Types [461](https://gitlab.echothree.com/echothree/echothree/-/issues/461)
+* Switch IntelliJ Project from JDK_17_PREVIEW to JDK_17 [462](https://gitlab.echothree.com/echothree/echothree/-/issues/462)
+* Remove Dependency on Spring [463](https://gitlab.echothree.com/echothree/echothree/-/issues/463)
+
 ## 2022-04-17-01
 
 * Spring 5.3.18 Upgrade [452](https://gitlab.echothree.com/echothree/echothree/-/issues/452)
