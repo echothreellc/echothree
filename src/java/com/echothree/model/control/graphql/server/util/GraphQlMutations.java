@@ -3485,15 +3485,15 @@ public class GraphQlMutations
     @GraphQLField
     @GraphQLRelayMutation
     public static CommandResultObject createEntityBooleanAttribute(final DataFetchingEnvironment env,
-            @GraphQLName("aspectId") @GraphQLNonNull final String aspectId,
-            @GraphQLName("entityAttributeId") @GraphQLNonNull final String entityAttributeId,
+            @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
+            @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
             @GraphQLName("booleanAttribute") @GraphQLNonNull final String booleanAttribute) {
         var commandResultObject = new CommandResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getCreateEntityBooleanAttributeForm();
 
-            commandForm.setUlid(aspectId);
+            commandForm.setUlid(id);
             commandForm.setEntityAttributeUlid(entityAttributeId);
             commandForm.setBooleanAttribute(booleanAttribute);
 
@@ -3508,15 +3508,15 @@ public class GraphQlMutations
     @GraphQLField
     @GraphQLRelayMutation
     public static CommandResultObject editEntityBooleanAttribute(final DataFetchingEnvironment env,
-            @GraphQLName("aspectId") @GraphQLNonNull final String aspectId,
-            @GraphQLName("entityAttributeId") @GraphQLNonNull final String entityAttributeId,
+            @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
+            @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
             @GraphQLName("booleanAttribute") @GraphQLNonNull final String booleanAttribute) {
         var commandResultObject = new CommandResultObject();
 
         try {
             var spec = CoreUtil.getHome().getEntityBooleanAttributeSpec();
 
-            spec.setUlid(aspectId);
+            spec.setUlid(id);
             spec.setEntityAttributeUlid(entityAttributeId);
 
             var commandForm = CoreUtil.getHome().getEditEntityBooleanAttributeForm();
@@ -3552,14 +3552,14 @@ public class GraphQlMutations
     @GraphQLField
     @GraphQLRelayMutation
     public static CommandResultObject deleteEntityBooleanAttribute(final DataFetchingEnvironment env,
-            @GraphQLName("aspectId") @GraphQLNonNull final String aspectId,
-            @GraphQLName("entityAttributeId") @GraphQLNonNull final String entityAttributeId) {
+            @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
+            @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId) {
         var commandResultObject = new CommandResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityBooleanAttributeForm();
 
-            commandForm.setUlid(aspectId);
+            commandForm.setUlid(id);
             commandForm.setEntityAttributeUlid(entityAttributeId);
 
             commandResultObject.setCommandResult(CoreUtil.getHome().deleteEntityBooleanAttribute(getUserVisitPK(env), commandForm));
@@ -3573,15 +3573,15 @@ public class GraphQlMutations
     @GraphQLField
     @GraphQLRelayMutation
     public static CommandResultObject createEntityIntegerAttribute(final DataFetchingEnvironment env,
-            @GraphQLName("aspectId") @GraphQLNonNull final String aspectId,
-            @GraphQLName("entityAttributeId") @GraphQLNonNull final String entityAttributeId,
+            @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
+            @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
             @GraphQLName("integerAttribute") @GraphQLNonNull final String integerAttribute) {
         var commandResultObject = new CommandResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getCreateEntityIntegerAttributeForm();
 
-            commandForm.setUlid(aspectId);
+            commandForm.setUlid(id);
             commandForm.setEntityAttributeUlid(entityAttributeId);
             commandForm.setIntegerAttribute(integerAttribute);
 
@@ -3596,15 +3596,15 @@ public class GraphQlMutations
     @GraphQLField
     @GraphQLRelayMutation
     public static CommandResultObject editEntityIntegerAttribute(final DataFetchingEnvironment env,
-            @GraphQLName("aspectId") @GraphQLNonNull final String aspectId,
-            @GraphQLName("entityAttributeId") @GraphQLNonNull final String entityAttributeId,
+            @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
+            @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
             @GraphQLName("integerAttribute") @GraphQLNonNull final String integerAttribute) {
         var commandResultObject = new CommandResultObject();
 
         try {
             var spec = CoreUtil.getHome().getEntityIntegerAttributeSpec();
 
-            spec.setUlid(aspectId);
+            spec.setUlid(id);
             spec.setEntityAttributeUlid(entityAttributeId);
 
             var commandForm = CoreUtil.getHome().getEditEntityIntegerAttributeForm();
@@ -3640,14 +3640,14 @@ public class GraphQlMutations
     @GraphQLField
     @GraphQLRelayMutation
     public static CommandResultObject deleteEntityIntegerAttribute(final DataFetchingEnvironment env,
-            @GraphQLName("aspectId") @GraphQLNonNull final String aspectId,
-            @GraphQLName("entityAttributeId") @GraphQLNonNull final String entityAttributeId) {
+            @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
+            @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId) {
         var commandResultObject = new CommandResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityIntegerAttributeForm();
 
-            commandForm.setUlid(aspectId);
+            commandForm.setUlid(id);
             commandForm.setEntityAttributeUlid(entityAttributeId);
 
             commandResultObject.setCommandResult(CoreUtil.getHome().deleteEntityIntegerAttribute(getUserVisitPK(env), commandForm));
@@ -3661,15 +3661,15 @@ public class GraphQlMutations
     @GraphQLField
     @GraphQLRelayMutation
     public static CommandResultObject createEntityLongAttribute(final DataFetchingEnvironment env,
-            @GraphQLName("aspectId") @GraphQLNonNull final String aspectId,
-            @GraphQLName("entityAttributeId") @GraphQLNonNull final String entityAttributeId,
+            @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
+            @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
             @GraphQLName("longAttribute") @GraphQLNonNull final String longAttribute) {
         var commandResultObject = new CommandResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getCreateEntityLongAttributeForm();
 
-            commandForm.setUlid(aspectId);
+            commandForm.setUlid(id);
             commandForm.setEntityAttributeUlid(entityAttributeId);
             commandForm.setLongAttribute(longAttribute);
 
@@ -3684,15 +3684,15 @@ public class GraphQlMutations
     @GraphQLField
     @GraphQLRelayMutation
     public static CommandResultObject editEntityLongAttribute(final DataFetchingEnvironment env,
-            @GraphQLName("aspectId") @GraphQLNonNull final String aspectId,
-            @GraphQLName("entityAttributeId") @GraphQLNonNull final String entityAttributeId,
+            @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
+            @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
             @GraphQLName("longAttribute") @GraphQLNonNull final String longAttribute) {
         var commandResultObject = new CommandResultObject();
 
         try {
             var spec = CoreUtil.getHome().getEntityLongAttributeSpec();
 
-            spec.setUlid(aspectId);
+            spec.setUlid(id);
             spec.setEntityAttributeUlid(entityAttributeId);
 
             var commandForm = CoreUtil.getHome().getEditEntityLongAttributeForm();
@@ -3728,14 +3728,14 @@ public class GraphQlMutations
     @GraphQLField
     @GraphQLRelayMutation
     public static CommandResultObject deleteEntityLongAttribute(final DataFetchingEnvironment env,
-            @GraphQLName("aspectId") @GraphQLNonNull final String aspectId,
-            @GraphQLName("entityAttributeId") @GraphQLNonNull final String entityAttributeId) {
+            @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
+            @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId) {
         var commandResultObject = new CommandResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityLongAttributeForm();
 
-            commandForm.setUlid(aspectId);
+            commandForm.setUlid(id);
             commandForm.setEntityAttributeUlid(entityAttributeId);
 
             commandResultObject.setCommandResult(CoreUtil.getHome().deleteEntityLongAttribute(getUserVisitPK(env), commandForm));
@@ -3749,16 +3749,16 @@ public class GraphQlMutations
     @GraphQLField
     @GraphQLRelayMutation
     public static CommandResultObject createEntityStringAttribute(final DataFetchingEnvironment env,
-            @GraphQLName("aspectId") @GraphQLNonNull final String aspectId,
-            @GraphQLName("entityAttributeId") @GraphQLNonNull final String entityAttributeId,
-            @GraphQLName("languageId") @GraphQLNonNull final String languageId,
+            @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
+            @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
+            @GraphQLName("languageId") @GraphQLNonNull @GraphQLID final String languageId,
             @GraphQLName("stringAttribute") @GraphQLNonNull final String stringAttribute) {
         var commandResultObject = new CommandResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getCreateEntityStringAttributeForm();
 
-            commandForm.setUlid(aspectId);
+            commandForm.setUlid(id);
             commandForm.setEntityAttributeUlid(entityAttributeId);
             commandForm.setLanguageUlid(languageId);
             commandForm.setStringAttribute(stringAttribute);
@@ -3774,16 +3774,16 @@ public class GraphQlMutations
     @GraphQLField
     @GraphQLRelayMutation
     public static CommandResultObject editEntityStringAttribute(final DataFetchingEnvironment env,
-            @GraphQLName("aspectId") @GraphQLNonNull final String aspectId,
-            @GraphQLName("entityAttributeId") @GraphQLNonNull final String entityAttributeId,
-            @GraphQLName("languageId") @GraphQLNonNull final String languageId,
+            @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
+            @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
+            @GraphQLName("languageId") @GraphQLNonNull @GraphQLID final String languageId,
             @GraphQLName("stringAttribute") @GraphQLNonNull final String stringAttribute) {
         var commandResultObject = new CommandResultObject();
 
         try {
             var spec = CoreUtil.getHome().getEntityStringAttributeSpec();
 
-            spec.setUlid(aspectId);
+            spec.setUlid(id);
             spec.setEntityAttributeUlid(entityAttributeId);
             spec.setLanguageUlid(languageId);
 
@@ -3820,15 +3820,15 @@ public class GraphQlMutations
     @GraphQLField
     @GraphQLRelayMutation
     public static CommandResultObject deleteEntityStringAttribute(final DataFetchingEnvironment env,
-            @GraphQLName("aspectId") @GraphQLNonNull final String aspectId,
-            @GraphQLName("entityAttributeId") @GraphQLNonNull final String entityAttributeId,
+            @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
+            @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
             @GraphQLName("languageId") @GraphQLNonNull final String languageId) {
         var commandResultObject = new CommandResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityStringAttributeForm();
 
-            commandForm.setUlid(aspectId);
+            commandForm.setUlid(id);
             commandForm.setEntityAttributeUlid(entityAttributeId);
             commandForm.setLanguageUlid(languageId);
 
