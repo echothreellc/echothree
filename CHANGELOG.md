@@ -1,5 +1,10 @@
 # Changelog
 
+## 2022-05-15-01
+
+* MySQL Connector/J 8.0.29 Upgrade [464](https://gitlab.echothree.com/echothree/echothree/-/issues/464)
+* Entity Attribute Mutations for Booleans, Integers, Longs, and Strings [465](https://gitlab.echothree.com/echothree/echothree/-/issues/465)
+
 ## 2022-05-01-01
 
 * GraphQL Objects and Queries for Item Descriptions [416](https://gitlab.echothree.com/echothree/echothree/-/issues/416)
