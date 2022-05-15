@@ -409,12 +409,12 @@ public class EntityAttributeLogic
     
     public EntityAttribute getEntityAttribute(final ExecutionErrorAccumulator eea, final EntityInstance entityInstance,
             final EntityAttributeSpec spec, final EntityAttributeUlid ulid, final EntityAttributeTypes... entityAttributeTypes) {
-        return getEntityAttribute(eea, entityInstance, spec, ulid, EntityPermission.READ_ONLY);
+        return getEntityAttribute(eea, entityInstance, spec, ulid, EntityPermission.READ_ONLY, entityAttributeTypes);
     }
     
     public EntityAttribute getEntityAttributeForUpdate(final ExecutionErrorAccumulator eea, final EntityInstance entityInstance,
             final EntityAttributeSpec spec, final EntityAttributeUlid ulid, final EntityAttributeTypes... entityAttributeTypes) {
-        return getEntityAttribute(eea, entityInstance, spec, ulid, EntityPermission.READ_WRITE);
+        return getEntityAttribute(eea, entityInstance, spec, ulid, EntityPermission.READ_WRITE, entityAttributeTypes);
     }
     
     private List<EntityInstanceResult> getEntityInstanceResultsByEntityAttributeTypeName(EntityAttribute entityAttribute) {
