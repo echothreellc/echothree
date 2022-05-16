@@ -22,6 +22,8 @@ import com.echothree.control.user.uom.server.command.GetUnitOfMeasureTypeCommand
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.sequence.server.graphql.SequenceObject;
+import com.echothree.model.control.sequence.server.graphql.SequenceSecurityUtils;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureTypeObject;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
@@ -123,19 +125,31 @@ public class EntityAttributeObject
         
         return entityAttributeLong;
     }
-    
+
     private EntityAttributeNumeric entityAttributeNumeric; // Optional, use getEntityAttributeNumeric()
-    
+
     private EntityAttributeNumeric getEntityAttributeNumeric() {
         if(entityAttributeNumeric == null) {
             var coreControl = Session.getModelController(CoreControl.class);
-    
+
             entityAttributeNumeric = coreControl.getEntityAttributeNumeric(entityAttribute);
         }
-        
+
         return entityAttributeNumeric;
     }
-    
+
+    private EntityAttributeListItem entityAttributeListItem; // Optional, use getEntityAttributeListItem()
+
+    private EntityAttributeListItem getEntityAttributeListItem() {
+        if(entityAttributeListItem == null) {
+            var coreControl = Session.getModelController(CoreControl.class);
+
+            entityAttributeListItem = coreControl.getEntityAttributeListItem(entityAttribute);
+        }
+
+        return entityAttributeListItem;
+    }
+
     private Boolean hasEntityTypeAccess;
 
     private boolean getHasEntityTypeAccess(final DataFetchingEnvironment env) {
@@ -351,18 +365,25 @@ public class EntityAttributeObject
         
         return entityAttributeLong == null ? null : entityAttributeLong.getLowerRangeLongValue().toString(); // TODO
     }
-    
+
     @GraphQLField
     @GraphQLDescription("unit of measure type")
     public UnitOfMeasureTypeObject getUnitOfMeasureType(final DataFetchingEnvironment env) {
         EntityAttributeNumeric entityAttributeNumeric = getEntityAttributeNumeric();
         UnitOfMeasureType unitOfMeasureType = entityAttributeNumeric == null ? null : entityAttributeNumeric.getUnitOfMeasureType();
-        
+
         return unitOfMeasureType != null && getHasUnitOfMeasureTypeAccess(env) ? new UnitOfMeasureTypeObject(unitOfMeasureType) : null;
     }
-    
-    // TODO: EntityListItemSequence
-    
+
+    @GraphQLField
+    @GraphQLDescription("entity list item sequence")
+    public SequenceObject getEntityListItemSequence(final DataFetchingEnvironment env) {
+        var entityAttributeListItem = getEntityAttributeListItem();
+        var entityListItemSequence = entityAttributeListItem == null ? null : entityAttributeListItem.getEntityListItemSequence();
+
+        return entityListItemSequence != null && SequenceSecurityUtils.getInstance().getHasSequenceAccess(env) ? new SequenceObject(entityListItemSequence) : null;
+    }
+
     @GraphQLField
     @GraphQLDescription("sort order")
     @GraphQLNonNull
