@@ -16,13 +16,13 @@
 
 package com.echothree.model.control.core.server.graphql;
 
-import com.echothree.control.user.core.server.command.GetEntityAttributeTypeCommand;
-import com.echothree.control.user.core.server.command.GetEntityTypeCommand;
-import com.echothree.control.user.uom.server.command.GetUnitOfMeasureTypeCommand;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.sequence.server.graphql.SequenceObject;
+import com.echothree.model.control.sequence.server.graphql.SequenceSecurityUtils;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureTypeObject;
+import com.echothree.model.control.uom.server.graphql.UomSecurityUtils;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityAttributeBlob;
@@ -40,7 +40,6 @@ import com.echothree.model.data.core.server.entity.EntityListItemAttribute;
 import com.echothree.model.data.core.server.entity.EntityLongAttribute;
 import com.echothree.model.data.core.server.entity.EntityMultipleListItemAttribute;
 import com.echothree.model.data.core.server.entity.EntityStringAttribute;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -79,7 +78,8 @@ public class EntityAttributeObject
     private EntityAttributeBlob entityAttributeBlob; // Optional, use getEntityAttributeBlob()
     
     private EntityAttributeBlob getEntityAttributeBlob() {
-        if(entityAttributeBlob == null) {
+        if(entityAttributeBlob == null
+                && isEntityAttributeTypeName(EntityAttributeTypes.BLOB.name())) {
             var coreControl = Session.getModelController(CoreControl.class);
     
             entityAttributeBlob = coreControl.getEntityAttributeBlob(entityAttribute);
@@ -91,7 +91,8 @@ public class EntityAttributeObject
     private EntityAttributeString entityAttributeString; // Optional, use getEntityAttributeString()
     
     private EntityAttributeString getEntityAttributeString() {
-        if(entityAttributeString == null) {
+        if(entityAttributeString == null
+                && isEntityAttributeTypeName(EntityAttributeTypes.STRING.name())) {
             var coreControl = Session.getModelController(CoreControl.class);
     
             entityAttributeString = coreControl.getEntityAttributeString(entityAttribute);
@@ -103,7 +104,8 @@ public class EntityAttributeObject
     private EntityAttributeInteger entityAttributeInteger; // Optional, use getEntityAttributeInteger()
     
     private EntityAttributeInteger getEntityAttributeInteger() {
-        if(entityAttributeInteger == null) {
+        if(entityAttributeInteger == null
+                && isEntityAttributeTypeName(EntityAttributeTypes.INTEGER.name())) {
             var coreControl = Session.getModelController(CoreControl.class);
     
             entityAttributeInteger = coreControl.getEntityAttributeInteger(entityAttribute);
@@ -115,7 +117,8 @@ public class EntityAttributeObject
     private EntityAttributeLong entityAttributeLong; // Optional, use getEntityAttributeLong()
     
     private EntityAttributeLong getEntityAttributeLong() {
-        if(entityAttributeLong == null) {
+        if(entityAttributeLong == null
+                && isEntityAttributeTypeName(EntityAttributeTypes.LONG.name())) {
             var coreControl = Session.getModelController(CoreControl.class);
     
             entityAttributeLong = coreControl.getEntityAttributeLong(entityAttribute);
@@ -123,65 +126,39 @@ public class EntityAttributeObject
         
         return entityAttributeLong;
     }
-    
+
     private EntityAttributeNumeric entityAttributeNumeric; // Optional, use getEntityAttributeNumeric()
-    
+
     private EntityAttributeNumeric getEntityAttributeNumeric() {
-        if(entityAttributeNumeric == null) {
+        if(entityAttributeNumeric == null
+                && (isEntityAttributeTypeName(EntityAttributeTypes.INTEGER.name())
+                || isEntityAttributeTypeName(EntityAttributeTypes.LONG.name()))) {
             var coreControl = Session.getModelController(CoreControl.class);
-    
+
             entityAttributeNumeric = coreControl.getEntityAttributeNumeric(entityAttribute);
         }
-        
+
         return entityAttributeNumeric;
     }
-    
-    private Boolean hasEntityTypeAccess;
 
-    private boolean getHasEntityTypeAccess(final DataFetchingEnvironment env) {
-        if(hasEntityTypeAccess == null) {
-            var baseSingleEntityCommand = new GetEntityTypeCommand(getUserVisitPK(env), null);
+    private EntityAttributeListItem entityAttributeListItem; // Optional, use getEntityAttributeListItem()
 
-            baseSingleEntityCommand.security();
+    private EntityAttributeListItem getEntityAttributeListItem() {
+        if(entityAttributeListItem == null
+        && (isEntityAttributeTypeName(EntityAttributeTypes.LISTITEM.name())
+                || isEntityAttributeTypeName(EntityAttributeTypes.MULTIPLELISTITEM.name()))) {
+            var coreControl = Session.getModelController(CoreControl.class);
 
-            hasEntityTypeAccess = !baseSingleEntityCommand.hasSecurityMessages();
+            entityAttributeListItem = coreControl.getEntityAttributeListItem(entityAttribute);
         }
 
-        return hasEntityTypeAccess;
+        return entityAttributeListItem;
     }
 
-    private Boolean hasEntityAttributeTypeAccess;
-
-    private boolean getHasEntityAttributeTypeAccess(final DataFetchingEnvironment env) {
-        if(hasEntityAttributeTypeAccess == null) {
-            var baseSingleEntityCommand = new GetEntityAttributeTypeCommand(getUserVisitPK(env), null);
-
-            baseSingleEntityCommand.security();
-
-            hasEntityAttributeTypeAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-
-        return hasEntityAttributeTypeAccess;
-    }
-
-    private Boolean hasUnitOfMeasureTypeAccess;
-    
-    private boolean getHasUnitOfMeasureTypeAccess(final DataFetchingEnvironment env) {
-        if(hasUnitOfMeasureTypeAccess == null) {
-            var baseSingleEntityCommand = new GetUnitOfMeasureTypeCommand(getUserVisitPK(env), null);
-            
-            baseSingleEntityCommand.security();
-            
-            hasUnitOfMeasureTypeAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-        
-        return hasUnitOfMeasureTypeAccess;
-    }
-    
     @GraphQLField
     @GraphQLDescription("entity type")
     public EntityTypeObject getEntityType(final DataFetchingEnvironment env) {
-        return getHasEntityTypeAccess(env) ? new EntityTypeObject(getEntityAttributeDetail().getEntityType()) : null;
+        return CoreSecurityUtils.getInstance().getHasEntityTypeAccess(env) ? new EntityTypeObject(getEntityAttributeDetail().getEntityType()) : null;
     }
     
     @GraphQLField
@@ -195,7 +172,7 @@ public class EntityAttributeObject
     @GraphQLDescription("entity attribute type")
     @GraphQLNonNull
     public EntityAttributeTypeObject getEntityAttributeType(final DataFetchingEnvironment env) {
-        return getHasEntityAttributeTypeAccess(env) ? new EntityAttributeTypeObject(getEntityAttributeDetail().getEntityAttributeType()) : null;
+        return CoreSecurityUtils.getInstance().getHasEntityAttributeTypeAccess(env) ? new EntityAttributeTypeObject(getEntityAttributeDetail().getEntityAttributeType()) : null;
     }
     
     protected boolean isEntityAttributeTypeName(String entityAttributeTypeName) {
@@ -219,7 +196,7 @@ public class EntityAttributeObject
     @GraphQLField
     @GraphQLDescription("validation pattern")
     public String getValidationPattern() {
-        EntityAttributeString entityAttributeString = getEntityAttributeString();
+        var entityAttributeString = getEntityAttributeString();
         
         return entityAttributeString == null ? null : entityAttributeString.getValidationPattern();
     }
@@ -227,7 +204,7 @@ public class EntityAttributeObject
     @GraphQLField
     @GraphQLDescription("unformatted upper range integer value")
     public Integer getUnformattedUpperRangeIntegerValue() {
-        EntityAttributeInteger entityAttributeInteger = getEntityAttributeInteger();
+        var entityAttributeInteger = getEntityAttributeInteger();
         
         return entityAttributeInteger == null ? null : entityAttributeInteger.getUpperRangeIntegerValue();
     }
@@ -235,7 +212,7 @@ public class EntityAttributeObject
     @GraphQLField
     @GraphQLDescription("upper range integer value")
     public String getUpperRangeIntegerValue() {
-        EntityAttributeInteger entityAttributeInteger = getEntityAttributeInteger();
+        var entityAttributeInteger = getEntityAttributeInteger();
         
         return entityAttributeInteger == null ? null : entityAttributeInteger.getUpperRangeIntegerValue().toString(); // TODO
     }
@@ -243,7 +220,7 @@ public class EntityAttributeObject
     @GraphQLField
     @GraphQLDescription("unformatted upper limit integer value")
     public Integer getUnformattedUpperLimitIntegerValue() {
-        EntityAttributeInteger entityAttributeInteger = getEntityAttributeInteger();
+        var entityAttributeInteger = getEntityAttributeInteger();
         
         return entityAttributeInteger == null ? null : entityAttributeInteger.getUpperLimitIntegerValue();
     }
@@ -251,7 +228,7 @@ public class EntityAttributeObject
     @GraphQLField
     @GraphQLDescription("upper limit integer value")
     public String getUpperLimitIntegerValue() {
-        EntityAttributeInteger entityAttributeInteger = getEntityAttributeInteger();
+        var entityAttributeInteger = getEntityAttributeInteger();
         
         return entityAttributeInteger == null ? null : entityAttributeInteger.getUpperLimitIntegerValue().toString(); // TODO
     }
@@ -259,7 +236,7 @@ public class EntityAttributeObject
     @GraphQLField
     @GraphQLDescription("unformatted lower limit integer value")
     public Integer getUnformattedLowerLimitIntegerValue() {
-        EntityAttributeInteger entityAttributeInteger = getEntityAttributeInteger();
+        var entityAttributeInteger = getEntityAttributeInteger();
         
         return entityAttributeInteger == null ? null : entityAttributeInteger.getLowerLimitIntegerValue();
     }
@@ -267,7 +244,7 @@ public class EntityAttributeObject
     @GraphQLField
     @GraphQLDescription("lower limit integer value")
     public String getLowerLimitIntegerValue() {
-        EntityAttributeInteger entityAttributeInteger = getEntityAttributeInteger();
+        var entityAttributeInteger = getEntityAttributeInteger();
         
         return entityAttributeInteger == null ? null : entityAttributeInteger.getLowerLimitIntegerValue().toString(); // TODO
     }
@@ -275,7 +252,7 @@ public class EntityAttributeObject
     @GraphQLField
     @GraphQLDescription("unformatted lower range integer value")
     public Integer getUnformattedLowerRangeIntegerValue() {
-        EntityAttributeInteger entityAttributeInteger = getEntityAttributeInteger();
+        var entityAttributeInteger = getEntityAttributeInteger();
         
         return entityAttributeInteger == null ? null : entityAttributeInteger.getLowerRangeIntegerValue();
     }
@@ -283,7 +260,7 @@ public class EntityAttributeObject
     @GraphQLField
     @GraphQLDescription("lower range integer value")
     public String getLowerRangeIntegerValue() {
-        EntityAttributeInteger entityAttributeInteger = getEntityAttributeInteger();
+        var entityAttributeInteger = getEntityAttributeInteger();
         
         return entityAttributeInteger == null ? null : entityAttributeInteger.getLowerRangeIntegerValue().toString(); // TODO
     }
@@ -291,7 +268,7 @@ public class EntityAttributeObject
     @GraphQLField
     @GraphQLDescription("unformatted upper range long value")
     public Long getUnformattedUpperRangeLongValue() {
-        EntityAttributeLong entityAttributeLong = getEntityAttributeLong();
+        var entityAttributeLong = getEntityAttributeLong();
         
         return entityAttributeLong == null ? null : entityAttributeLong.getUpperRangeLongValue();
     }
@@ -299,7 +276,7 @@ public class EntityAttributeObject
     @GraphQLField
     @GraphQLDescription("upper range long value")
     public String getUpperRangeLongValue() {
-        EntityAttributeLong entityAttributeLong = getEntityAttributeLong();
+        var entityAttributeLong = getEntityAttributeLong();
         
         return entityAttributeLong == null ? null : entityAttributeLong.getUpperRangeLongValue().toString(); // TODO
     }
@@ -307,7 +284,7 @@ public class EntityAttributeObject
     @GraphQLField
     @GraphQLDescription("unformatted upper limit long value")
     public Long getUnformattedUpperLimitLongValue() {
-        EntityAttributeLong entityAttributeLong = getEntityAttributeLong();
+        var entityAttributeLong = getEntityAttributeLong();
         
         return entityAttributeLong == null ? null : entityAttributeLong.getUpperLimitLongValue();
     }
@@ -315,7 +292,7 @@ public class EntityAttributeObject
     @GraphQLField
     @GraphQLDescription("upper limit long value")
     public String getUpperLimitLongValue() {
-        EntityAttributeLong entityAttributeLong = getEntityAttributeLong();
+        var entityAttributeLong = getEntityAttributeLong();
         
         return entityAttributeLong == null ? null : entityAttributeLong.getUpperLimitLongValue().toString(); // TODO
     }
@@ -323,7 +300,7 @@ public class EntityAttributeObject
     @GraphQLField
     @GraphQLDescription("unformatted lower limit long value")
     public Long getUnformattedLowerLimitLongValue() {
-        EntityAttributeLong entityAttributeLong = getEntityAttributeLong();
+        var entityAttributeLong = getEntityAttributeLong();
         
         return entityAttributeLong == null ? null : entityAttributeLong.getLowerLimitLongValue();
     }
@@ -331,7 +308,7 @@ public class EntityAttributeObject
     @GraphQLField
     @GraphQLDescription("lower limit long value")
     public String getLowerLimitLongValue() {
-        EntityAttributeLong entityAttributeLong = getEntityAttributeLong();
+        var entityAttributeLong = getEntityAttributeLong();
         
         return entityAttributeLong == null ? null : entityAttributeLong.getLowerLimitLongValue().toString(); // TODO
     }
@@ -339,7 +316,7 @@ public class EntityAttributeObject
     @GraphQLField
     @GraphQLDescription("unformatted lower range long value")
     public Long getUnformattedLowerRangeLongValue() {
-        EntityAttributeLong entityAttributeLong = getEntityAttributeLong();
+        var entityAttributeLong = getEntityAttributeLong();
         
         return entityAttributeLong == null ? null : entityAttributeLong.getLowerRangeLongValue();
     }
@@ -347,22 +324,29 @@ public class EntityAttributeObject
     @GraphQLField
     @GraphQLDescription("lower range long value")
     public String getLowerRangeLongValue() {
-        EntityAttributeLong entityAttributeLong = getEntityAttributeLong();
+        var entityAttributeLong = getEntityAttributeLong();
         
         return entityAttributeLong == null ? null : entityAttributeLong.getLowerRangeLongValue().toString(); // TODO
     }
-    
+
     @GraphQLField
     @GraphQLDescription("unit of measure type")
     public UnitOfMeasureTypeObject getUnitOfMeasureType(final DataFetchingEnvironment env) {
-        EntityAttributeNumeric entityAttributeNumeric = getEntityAttributeNumeric();
-        UnitOfMeasureType unitOfMeasureType = entityAttributeNumeric == null ? null : entityAttributeNumeric.getUnitOfMeasureType();
-        
-        return unitOfMeasureType != null && getHasUnitOfMeasureTypeAccess(env) ? new UnitOfMeasureTypeObject(unitOfMeasureType) : null;
+        var entityAttributeNumeric = getEntityAttributeNumeric();
+        var unitOfMeasureType = entityAttributeNumeric == null ? null : entityAttributeNumeric.getUnitOfMeasureType();
+
+        return unitOfMeasureType != null && UomSecurityUtils.getInstance().getHasUnitOfMeasureTypeAccess(env) ? new UnitOfMeasureTypeObject(unitOfMeasureType) : null;
     }
-    
-    // TODO: EntityListItemSequence
-    
+
+    @GraphQLField
+    @GraphQLDescription("entity list item sequence")
+    public SequenceObject getEntityListItemSequence(final DataFetchingEnvironment env) {
+        var entityAttributeListItem = getEntityAttributeListItem();
+        var entityListItemSequence = entityAttributeListItem == null ? null : entityAttributeListItem.getEntityListItemSequence();
+
+        return entityListItemSequence != null && SequenceSecurityUtils.getInstance().getHasSequenceAccess(env) ? new SequenceObject(entityListItemSequence) : null;
+    }
+
     @GraphQLField
     @GraphQLDescription("sort order")
     @GraphQLNonNull

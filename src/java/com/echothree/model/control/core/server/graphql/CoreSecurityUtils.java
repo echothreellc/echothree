@@ -17,9 +17,13 @@
 package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.control.user.core.server.command.GetEntityAttributeCommand;
+import com.echothree.control.user.core.server.command.GetEntityAttributeTypeCommand;
+import com.echothree.control.user.core.server.command.GetEntityAttributeTypesCommand;
 import com.echothree.control.user.core.server.command.GetEntityInstanceCommand;
 import com.echothree.control.user.core.server.command.GetEntityListItemCommand;
 import com.echothree.control.user.core.server.command.GetEntityListItemsCommand;
+import com.echothree.control.user.core.server.command.GetEntityTypeCommand;
+import com.echothree.control.user.core.server.command.GetEntityTypesCommand;
 import com.echothree.control.user.core.server.command.GetMimeTypeCommand;
 import com.echothree.control.user.core.server.command.GetMimeTypeUsageTypeCommand;
 import com.echothree.control.user.core.server.command.GetMimeTypeUsageTypesCommand;
@@ -43,6 +47,14 @@ public final class CoreSecurityUtils
         return getGraphQlExecutionContext(env).hasAccess(GetEntityInstanceCommand.class);
     }
 
+    public boolean getHasEntityAttributeTypeAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetEntityAttributeTypeCommand.class);
+    }
+
+    public boolean getHasEntityAttributeTypesAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetEntityAttributeTypesCommand.class);
+    }
+
     public boolean getHasEntityAttributeAccess(final DataFetchingEnvironment env) {
         return getGraphQlExecutionContext(env).hasAccess(GetEntityAttributeCommand.class);
     }
@@ -50,6 +62,14 @@ public final class CoreSecurityUtils
 //    public boolean getHasEntityAttributesAccess(final DataFetchingEnvironment env) {
 //        return getGraphQlExecutionContext(env).hasAccess(GetEntityAttributesCommand.class);
 //    }
+
+    public boolean getHasEntityTypeAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetEntityTypeCommand.class);
+    }
+
+    public boolean getHasEntityTypesAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetEntityTypesCommand.class);
+    }
 
     public boolean getHasEntityListItemAccess(final DataFetchingEnvironment env) {
         return getGraphQlExecutionContext(env).hasAccess(GetEntityListItemCommand.class);
