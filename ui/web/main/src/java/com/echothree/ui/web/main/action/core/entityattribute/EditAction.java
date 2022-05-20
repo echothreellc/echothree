@@ -73,7 +73,7 @@ public class EditAction
             if(forwardKey == null) {
                 EditActionForm actionForm = (EditActionForm)form;
                 EditEntityAttributeForm commandForm = CoreUtil.getHome().getEditEntityAttributeForm();
-                EntityAttributeSpec spec = CoreUtil.getHome().getEntityAttributeSpec();
+                var spec = CoreUtil.getHome().getEntityAttributeUniversalSpec();
                 String originalEntityAttributeName = request.getParameter(ParameterConstants.ORIGINAL_ENTITY_ATTRIBUTE_NAME);
                 
                 if(componentVendorName == null)

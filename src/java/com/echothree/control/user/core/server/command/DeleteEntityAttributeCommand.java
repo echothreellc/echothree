@@ -47,9 +47,13 @@ public class DeleteEntityAttributeCommand
         ));
         
         FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
-                new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null),
+                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, false, null, null),
+                new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
     
@@ -60,30 +64,12 @@ public class DeleteEntityAttributeCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
-        var componentVendorName = form.getComponentVendorName();
-        var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
-        
-        if(componentVendor != null) {
-            var entityTypeName = form.getEntityTypeName();
-            var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
-            
-            if(entityType != null) {
-                var entityAttributeName = form.getEntityAttributeName();
-                var entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
-                
-                if(entityAttribute != null) {
-                    EntityAttributeLogic.getInstance().deleteEntityAttribute(this, entityAttribute, getPartyPK());
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownEntityAttributeName.name(), componentVendorName, entityTypeName, entityAttributeName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), componentVendorName, entityTypeName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
+        var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByUniversalSpecForUpdate(this, form);
+
+        if(!hasExecutionErrors()) {
+            EntityAttributeLogic.getInstance().deleteEntityAttribute(this, entityAttribute, getPartyPK());
         }
-        
+
         return null;
     }
     

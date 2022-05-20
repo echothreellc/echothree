@@ -389,6 +389,14 @@ public class EntityAttributeLogic
         return entityAttribute;
     }
 
+    public EntityAttribute getEntityAttributeByUniversalSpec(final ExecutionErrorAccumulator eea, final EntityAttributeUniversalSpec universalSpec) {
+        return getEntityAttributeByUniversalSpec(eea, universalSpec, EntityPermission.READ_ONLY);
+    }
+
+    public EntityAttribute getEntityAttributeByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea, final EntityAttributeUniversalSpec universalSpec) {
+        return getEntityAttributeByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
+    }
+
     // For when we can get the EntityType from the EntityInstance:
     public EntityAttribute getEntityAttribute(final ExecutionErrorAccumulator eea, final EntityInstance entityInstance,
             final EntityAttributeSpec spec, final EntityAttributeUlid ulid, final EntityPermission entityPermission,

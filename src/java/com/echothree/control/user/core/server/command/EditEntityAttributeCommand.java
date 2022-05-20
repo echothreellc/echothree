@@ -21,7 +21,7 @@ import com.echothree.control.user.core.common.edit.EntityAttributeEdit;
 import com.echothree.control.user.core.common.form.EditEntityAttributeForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditEntityAttributeResult;
-import com.echothree.control.user.core.common.spec.EntityAttributeSpec;
+import com.echothree.control.user.core.common.spec.EntityAttributeUniversalSpec;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -50,7 +50,7 @@ import com.echothree.util.server.validation.Validator;
 import java.util.List;
 
 public class EditEntityAttributeCommand
-        extends BaseAbstractEditCommand<EntityAttributeSpec, EntityAttributeEdit, EditEntityAttributeResult, EntityAttribute, EntityAttribute> {
+        extends BaseAbstractEditCommand<EntityAttributeUniversalSpec, EntityAttributeEdit, EditEntityAttributeResult, EntityAttribute, EntityAttribute> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
@@ -65,9 +65,13 @@ public class EditEntityAttributeCommand
         ));
         
         SPEC_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
-                new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null),
+                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, false, null, null),
+                new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null)
         );
         
         EDIT_FIELD_DEFINITIONS = List.of(
@@ -88,8 +92,8 @@ public class EditEntityAttributeCommand
         var validationResult = validator.validate(edit, getEditFieldDefinitions());
         
         if(!validationResult.getHasErrors()) {
-            entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByName(this,
-                    spec.getComponentVendorName(), spec.getEntityTypeName(), spec.getEntityAttributeName());
+            entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByUniversalSpec(this,
+                    spec);
             
             if(!hasExecutionErrors()) {
                 var entityAttributeType = entityAttribute.getLastDetail().getEntityAttributeType();
@@ -115,9 +119,8 @@ public class EditEntityAttributeCommand
     
     @Override
     public EntityAttribute getEntity(EditEntityAttributeResult result) {
-        entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByName(this,
-                spec.getComponentVendorName(), spec.getEntityTypeName(), spec.getEntityAttributeName(),
-                editModeToEntityPermission(editMode));
+        entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByUniversalSpec(this,
+                spec, editModeToEntityPermission(editMode));
 
         return entityAttribute;
     }
