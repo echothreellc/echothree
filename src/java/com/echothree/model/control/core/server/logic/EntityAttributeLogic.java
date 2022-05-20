@@ -19,7 +19,7 @@ package com.echothree.model.control.core.server.logic;
 import com.echothree.control.user.core.common.edit.EntityListItemAttributeEdit;
 import com.echothree.control.user.core.common.spec.EntityAttributeSpec;
 import com.echothree.control.user.core.common.spec.EntityAttributeUlid;
-import com.echothree.control.user.core.common.spec.EntityListItemSpec;
+import com.echothree.control.user.core.common.spec.EntityAttributeUniversalSpec;
 import com.echothree.control.user.core.common.spec.EntityListItemUlid;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
@@ -354,7 +354,42 @@ public class EntityAttributeLogic
     public EntityAttribute getEntityAttributeByUlidForUpdate(final ExecutionErrorAccumulator eea, final String ulid) {
         return getEntityAttributeByUlid(eea, ulid, EntityPermission.READ_WRITE);
     }
-    
+
+    // For when we need to determine the EntityType from what the user passes in:
+    public EntityAttribute getEntityAttributeByUniversalSpec(final ExecutionErrorAccumulator eea, final EntityAttributeUniversalSpec universalSpec,
+            final EntityPermission entityPermission) {
+        EntityAttribute entityAttribute = null;
+        var componentVendorName = universalSpec.getComponentVendorName();
+        var entityTypeName = universalSpec.getEntityTypeName();
+        var entityAttributeName = universalSpec.getEntityAttributeName();
+        var universalSpecCount = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (componentVendorName == null && entityTypeName == null && entityAttributeName == null ? 0 : 1)
+                + universalSpecCount;
+
+        switch(parameterCount) {
+            case 1 -> {
+                if(universalSpecCount == 1) {
+                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                            ComponentVendors.ECHOTHREE.name(), EntityTypes.EntityAttribute.name());
+
+                    if(!eea.hasExecutionErrors()) {
+                        var coreControl = Session.getModelController(CoreControl.class);
+
+                        entityAttribute = coreControl.getEntityAttributeByEntityInstance(entityInstance, entityPermission);
+                    }
+                } else {
+                    entityAttribute = getEntityAttributeByName(eea, componentVendorName, entityTypeName, entityAttributeName, entityPermission);
+                }
+            }
+            default -> {
+                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+            }
+        }
+
+        return entityAttribute;
+    }
+
+    // For when we can get the EntityType from the EntityInstance:
     public EntityAttribute getEntityAttribute(final ExecutionErrorAccumulator eea, final EntityInstance entityInstance,
             final EntityAttributeSpec spec, final EntityAttributeUlid ulid, final EntityPermission entityPermission,
             final EntityAttributeTypes... entityAttributeTypes) {
