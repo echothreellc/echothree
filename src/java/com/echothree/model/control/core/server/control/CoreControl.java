@@ -2647,7 +2647,15 @@ public class CoreControl
         
         return entityInstance;
     }
-    
+
+    public String getUlidForEntityInstance(EntityInstance entityInstance) {
+        return ensureUlidForEntityInstance(entityInstance, false).getUlid();
+    }
+
+    public String getUlidForBasePK(BasePK basePK) {
+        return getUlidForEntityInstance(getEntityInstanceByBasePK(basePK));
+    }
+
     public EntityInstanceTransfer getEntityInstanceTransfer(UserVisit userVisit, EntityInstance entityInstance, boolean includeEntityAppearance,
             boolean includeNames, boolean includeKey, boolean includeGuid, boolean includeUlid) {
         return getCoreTransferCaches(userVisit).getEntityInstanceTransferCache().getEntityInstanceTransfer(entityInstance, includeEntityAppearance,

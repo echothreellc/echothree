@@ -34,7 +34,7 @@ public class EntityAttributeSteps implements En {
 
                     assertThat(persona.createEntityAttributeForm).isNull();
                     assertThat(persona.deleteEntityAttributeForm).isNull();
-                    assertThat(persona.entityAttributeSpec).isNull();
+                    assertThat(persona.entityAttributeUniversalSpec).isNull();
 
                     persona.createEntityAttributeForm = CoreUtil.getHome().getCreateEntityAttributeForm();
                 });
@@ -62,7 +62,7 @@ public class EntityAttributeSteps implements En {
 
                     assertThat(persona.createEntityAttributeForm).isNull();
                     assertThat(persona.deleteEntityAttributeForm).isNull();
-                    assertThat(persona.entityAttributeSpec).isNull();
+                    assertThat(persona.entityAttributeUniversalSpec).isNull();
 
                     persona.deleteEntityAttributeForm = CoreUtil.getHome().getDeleteEntityAttributeForm();
                 });
@@ -85,15 +85,15 @@ public class EntityAttributeSteps implements En {
 
                     assertThat(persona.createEntityAttributeForm).isNull();
                     assertThat(persona.deleteEntityAttributeForm).isNull();
-                    assertThat(persona.entityAttributeSpec).isNull();
+                    assertThat(persona.entityAttributeUniversalSpec).isNull();
 
-                    persona.entityAttributeSpec = CoreUtil.getHome().getEntityAttributeSpec();
+                    persona.entityAttributeUniversalSpec = CoreUtil.getHome().getEntityAttributeUniversalSpec();
                 });
 
         When("^the user begins editing the entity attribute$",
                 () -> {
                     var persona = CurrentPersona.persona;
-                    var spec = persona.entityAttributeSpec;
+                    var spec = persona.entityAttributeUniversalSpec;
 
                     assertThat(spec).isNotNull();
 
@@ -116,7 +116,7 @@ public class EntityAttributeSteps implements En {
         When("^the user finishes editing the entity attribute$",
                 () -> {
                     var persona = CurrentPersona.persona;
-                    var spec = persona.entityAttributeSpec;
+                    var spec = persona.entityAttributeUniversalSpec;
                     var edit = persona.entityAttributeEdit;
 
                     assertThat(edit).isNotNull();
@@ -130,7 +130,7 @@ public class EntityAttributeSteps implements En {
                     var commandResult = CoreUtil.getHome().editEntityAttribute(persona.userVisitPK, commandForm);
                     LastCommandResult.commandResult = commandResult;
 
-                    persona.entityAttributeSpec = null;
+                    persona.entityAttributeUniversalSpec = null;
                     persona.entityAttributeEdit = null;
                 });
         
@@ -139,7 +139,7 @@ public class EntityAttributeSteps implements En {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeForm = persona.createEntityAttributeForm;
                     var deleteEntityAttributeForm = persona.deleteEntityAttributeForm;
-                    var entityAttributeSpec = persona.entityAttributeSpec;
+                    var entityAttributeSpec = persona.entityAttributeUniversalSpec;
 
                     assertThat(createEntityAttributeForm != null || deleteEntityAttributeForm != null || entityAttributeSpec != null).isTrue();
 
@@ -157,7 +157,7 @@ public class EntityAttributeSteps implements En {
                     var persona = CurrentPersona.persona;
                     var createEntityAttributeForm = persona.createEntityAttributeForm;
                     var deleteEntityAttributeForm = persona.deleteEntityAttributeForm;
-                    var entityAttributeSpec = persona.entityAttributeSpec;
+                    var entityAttributeSpec = persona.entityAttributeUniversalSpec;
 
                     assertThat(createEntityAttributeForm != null || deleteEntityAttributeForm != null || entityAttributeSpec != null).isTrue();
 
@@ -412,7 +412,7 @@ public class EntityAttributeSteps implements En {
                     var persona = CurrentPersona.persona;
                     var lastEntityAttributeName = persona.lastEntityAttributeName;
                     var deleteEntityAttributeForm = persona.deleteEntityAttributeForm;
-                    var entityAttributeSpec = persona.entityAttributeSpec;
+                    var entityAttributeSpec = persona.entityAttributeUniversalSpec;
 
                     assertThat(deleteEntityAttributeForm != null || entityAttributeSpec != null).isTrue();
 

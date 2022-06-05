@@ -21,6 +21,8 @@ import com.echothree.control.user.content.common.ContentUtil;
 import com.echothree.control.user.content.common.result.CreateContentPageLayoutResult;
 import com.echothree.control.user.content.common.result.EditContentPageLayoutResult;
 import com.echothree.control.user.core.common.CoreUtil;
+import com.echothree.control.user.core.common.result.CreateEntityAttributeResult;
+import com.echothree.control.user.core.common.result.EditEntityAttributeResult;
 import com.echothree.control.user.core.common.result.EditEntityBooleanAttributeResult;
 import com.echothree.control.user.core.common.result.EditEntityIntegerAttributeResult;
 import com.echothree.control.user.core.common.result.EditEntityListItemAttributeResult;
@@ -3317,6 +3319,155 @@ public class GraphQlMutations
             commandForm.setDateTimeFormatName(dateTimeFormatName);
 
             var commandResult = UserUtil.getHome().setUserVisitPreferredDateTimeFormat(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultWithIdObject createEntityAttribute(final DataFetchingEnvironment env,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("componentVendorName") final String componentVendorName,
+            @GraphQLName("entityTypeName") final String entityTypeName,
+            @GraphQLName("entityAttributeName") final String entityAttributeName,
+            @GraphQLName("entityAttributeTypeName") final String entityAttributeTypeName,
+            @GraphQLName("trackRevisions") final String trackRevisions,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description,
+            @GraphQLName("checkContentWebAddress") final String checkContentWebAddress,
+            @GraphQLName("validationPattern") final String validationPattern,
+            @GraphQLName("upperRangeIntegerValue") final String upperRangeIntegerValue,
+            @GraphQLName("upperLimitIntegerValue") final String upperLimitIntegerValue,
+            @GraphQLName("lowerLimitIntegerValue") final String lowerLimitIntegerValue,
+            @GraphQLName("lowerRangeIntegerValue") final String lowerRangeIntegerValue,
+            @GraphQLName("upperRangeLongValue") final String upperRangeLongValue,
+            @GraphQLName("upperLimitLongValue") final String upperLimitLongValue,
+            @GraphQLName("lowerLimitLongValue") final String lowerLimitLongValue,
+            @GraphQLName("lowerRangeLongValue") final String lowerRangeLongValue,
+            @GraphQLName("unitOfMeasureKindName") final String unitOfMeasureKindName,
+            @GraphQLName("unitOfMeasureTypeName") final String unitOfMeasureTypeName,
+            @GraphQLName("entityListItemSequenceName") final String entityListItemSequenceName) {
+        var commandResultObject = new CommandResultWithIdObject();
+
+        try {
+            var commandForm = CoreUtil.getHome().getCreateEntityAttributeForm();
+
+            commandForm.setUlid(id);
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
+            commandForm.setEntityAttributeName(entityAttributeName);
+            commandForm.setEntityAttributeTypeName(entityAttributeTypeName);
+            commandForm.setTrackRevisions(trackRevisions);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+            commandForm.setCheckContentWebAddress(checkContentWebAddress);
+            commandForm.setValidationPattern(validationPattern);
+            commandForm.setUpperRangeIntegerValue(upperRangeIntegerValue);
+            commandForm.setUpperLimitIntegerValue(upperLimitIntegerValue);
+            commandForm.setLowerLimitIntegerValue(lowerLimitIntegerValue);
+            commandForm.setLowerRangeIntegerValue(lowerRangeIntegerValue);
+            commandForm.setUpperRangeLongValue(upperRangeLongValue);
+            commandForm.setUpperLimitLongValue(upperLimitLongValue);
+            commandForm.setLowerLimitLongValue(lowerLimitLongValue);
+            commandForm.setLowerRangeLongValue(lowerRangeLongValue);
+            commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
+            commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
+            commandForm.setEntityListItemSequenceName(entityListItemSequenceName);
+
+            var commandResult = CoreUtil.getHome().createEntityAttribute(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateEntityAttributeResult)commandResult.getExecutionResult().getResult();
+
+                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject editEntityAttribute(final DataFetchingEnvironment env,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("componentVendorName") final String componentVendorName,
+            @GraphQLName("entityTypeName") final String entityTypeName,
+            @GraphQLName("originalEntityAttributeName") final String originalEntityAttributeName,
+            @GraphQLName("entityAttributeName") final String entityAttributeName,
+            @GraphQLName("trackRevisions") final String trackRevisions,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var spec = CoreUtil.getHome().getEntityAttributeUniversalSpec();
+
+            spec.setUlid(id);
+            spec.setComponentVendorName(componentVendorName);
+            spec.setEntityTypeName(entityTypeName);
+            spec.setEntityAttributeName(originalEntityAttributeName);
+
+            var commandForm = CoreUtil.getHome().getEditEntityAttributeForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = CoreUtil.getHome().editEntityAttribute(getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditEntityAttributeResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                if(arguments.containsKey("entityAttributeName"))
+                    edit.setEntityAttributeName(entityAttributeName);
+                if(arguments.containsKey("trackRevisions"))
+                    edit.setTrackRevisions(trackRevisions);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = CoreUtil.getHome().editEntityAttribute(getUserVisitPK(env), commandForm);
+            }
+
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject deleteEntityAttribute(final DataFetchingEnvironment env,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("componentVendorName") final String componentVendorName,
+            @GraphQLName("entityTypeName") final String entityTypeName,
+            @GraphQLName("entityAttributeName") final String entityAttributeName) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = CoreUtil.getHome().getDeleteEntityAttributeForm();
+
+            commandForm.setUlid(id);
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
+            commandForm.setEntityAttributeName(entityAttributeName);
+
+            var commandResult = CoreUtil.getHome().deleteEntityAttribute(getUserVisitPK(env), commandForm);
             commandResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);

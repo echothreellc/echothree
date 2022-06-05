@@ -16,18 +16,11 @@
 
 package com.echothree.control.user.core.common.form;
 
-import com.echothree.util.common.form.BaseForm;
+import com.echothree.control.user.core.common.spec.EntityAttributeUniversalSpec;
 
 public interface DeleteEntityAttributeForm
-        extends BaseForm {
+        extends EntityAttributeUniversalSpec {
     
-    String getComponentVendorName();
-    void setComponentVendorName(String componentVendorName);
-    
-    String getEntityTypeName();
-    void setEntityTypeName(String entityTypeName);
-    
-    String getEntityAttributeName();
-    void setEntityAttributeName(String entityAttributeName);
+    // Nothing additional beyond EntityAttributeUniversalSpec
     
 }

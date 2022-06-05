@@ -14,15 +14,11 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.core.common.form;
+package com.echothree.control.user.core.common.spec;
 
-import com.echothree.control.user.core.common.edit.EntityAttributeEdit;
-import com.echothree.control.user.core.common.spec.EntityAttributeUniversalSpec;
-import com.echothree.util.common.form.BaseEditForm;
+public interface EntityAttributeUniversalSpec
+        extends EntityAttributeSpec, UniversalEntitySpec {
 
-public interface EditEntityAttributeForm
-        extends BaseEditForm<EntityAttributeUniversalSpec, EntityAttributeEdit> {
-    
-    // Nothing additional beyond BaseEditForm
+    // Nothing additional beyond EntityAttributeSpec, UniversalEntitySpec
     
 }
