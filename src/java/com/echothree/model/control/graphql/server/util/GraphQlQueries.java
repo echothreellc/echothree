@@ -4263,7 +4263,7 @@ public final class GraphQlQueries
     @GraphQLName("userLogin")
     public static UserLoginObject userLogin(final DataFetchingEnvironment env,
             @GraphQLName("username") final String username,
-            @GraphQLName("partyId") final String partyId) {
+            @GraphQLName("id") @GraphQLID final String id) {
         UserLogin userLogin;
         UserLogin foundByUsernameUserLogin;
 
@@ -4271,7 +4271,7 @@ public final class GraphQlQueries
             var commandForm = UserUtil.getHome().getGetUserLoginForm();
 
             commandForm.setUsername(username);
-            commandForm.setUlid(partyId);
+            commandForm.setUlid(id);
         
             GetUserLoginCommand getUserLoginCommand = new GetUserLoginCommand(getUserVisitPK(env), commandForm);
             userLogin = getUserLoginCommand.runForGraphQl();
