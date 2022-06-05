@@ -70,8 +70,12 @@ public class CreateEntityAttributeCommand
         ));
         
         FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null),
+                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, false, null, null),
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityAttributeTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("TrackRevisions", FieldType.BOOLEAN, true, null, null),
@@ -237,10 +241,8 @@ public class CreateEntityAttributeCommand
             var parameterCount = (unitOfMeasureKindName == null ? 0 : 1) + (unitOfMeasureTypeName == null ? 0 : 1);
 
             if(parameterCount == 0 || parameterCount == 2) {
-                var componentVendorName = form.getComponentVendorName();
-                var entityTypeName = form.getEntityTypeName();
+                var entityType = EntityTypeLogic.getInstance().getEntityTypeByUniversalSpec(this, form);
                 var entityAttributeTypeName = form.getEntityAttributeTypeName();
-                var entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, componentVendorName, entityTypeName);
                 var entityAttributeType = EntityAttributeLogic.getInstance().getEntityAttributeTypeByName(this, entityAttributeTypeName);
 
                 if(!hasExecutionErrors()) {
