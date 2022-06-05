@@ -1,5 +1,10 @@
 # Changelog
 
+## 2022-05-29-01
+
+* Add EntityListItemSequence to Entity Attribute Object [480](https://gitlab.echothree.com/echothree/echothree/-/issues/480)
+* Apache Lucene 9.2.0 Upgrade [483](https://gitlab.echothree.com/echothree/echothree/-/issues/483)
+
 ## 2022-05-15-01
 
 * MySQL Connector/J 8.0.29 Upgrade [464](https://gitlab.echothree.com/echothree/echothree/-/issues/464)
