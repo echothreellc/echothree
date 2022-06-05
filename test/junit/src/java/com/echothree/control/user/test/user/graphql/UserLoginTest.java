@@ -52,7 +52,7 @@ public class UserLoginTest
 
         var editUserLoginBody1 = executeUsingPost("""
                 mutation {
-                    editUserLogin(input: { partyId: "%s", username: "UnitTest1" clientMutationId: "1" }) {
+                    editUserLogin(input: { id: "%s", username: "UnitTest1" clientMutationId: "1" }) {
                         hasErrors
                         hasSecurityMessages
                     }
@@ -74,7 +74,7 @@ public class UserLoginTest
         
         var editUserLoginBody2 = executeUsingPost("""
                 mutation {
-                    editUserLogin(input: { partyId: "%s", username: "UnitTest1", clientMutationId: "1" }) {
+                    editUserLogin(input: { id: "%s", username: "UnitTest1", clientMutationId: "1" }) {
                         hasErrors
                     }
                 }
@@ -84,7 +84,7 @@ public class UserLoginTest
         
         var deleteUserLoginBody = executeUsingPost("""
                 mutation {
-                    deleteUserLogin(input: { partyId: "%s", clientMutationId: "1" }) {
+                    deleteUserLogin(input: { id: "%s", clientMutationId: "1" }) {
                         hasErrors
                     }
                 }
@@ -132,7 +132,7 @@ public class UserLoginTest
         
         var editUserLoginBody = executeUsingPost("""
                 mutation {
-                    editUserLogin(input: { partyId: "%s", username: "UnitTest1", clientMutationId: "1" }) {
+                    editUserLogin(input: { id: "%s", username: "UnitTest1", clientMutationId: "1" }) {
                         hasErrors
                     }
                 }
@@ -142,7 +142,7 @@ public class UserLoginTest
         
         var deleteUserLoginBody = executeUsingPost("""
                 mutation {
-                    deleteUserLogin(input: { partyId: "%s", clientMutationId: "1" }) {
+                    deleteUserLogin(input: { id: "%s", clientMutationId: "1" }) {
                         hasErrors
                     }
                 }
@@ -181,7 +181,7 @@ public class UserLoginTest
         
         var deleteUserLoginBody1 = executeUsingPost("""
                 mutation {
-                    deleteUserLogin(input: { partyId: "%s", clientMutationId: "1" }) {
+                    deleteUserLogin(input: { id: "%s", clientMutationId: "1" }) {
                         hasErrors
                         hasSecurityMessages
                     }
@@ -203,7 +203,7 @@ public class UserLoginTest
         
         var deleteUserLoginBody2 = executeUsingPost("""
                 mutation {
-                    deleteUserLogin(input: { partyId: "%s", clientMutationId: "1" }) {
+                    deleteUserLogin(input: { id: "%s", clientMutationId: "1" }) {
                         hasErrors
                     }
                 }
@@ -252,7 +252,7 @@ public class UserLoginTest
         
         var deleteUserLoginBody = executeUsingPost("""
                 mutation {
-                    deleteUserLogin(input: { partyId: "%s", clientMutationId: "1" }) {
+                    deleteUserLogin(input: { id: "%s", clientMutationId: "1" }) {
                         hasErrors
                     }
                 }
@@ -299,7 +299,7 @@ public class UserLoginTest
         var createUserLoginBody = executeUsingPost("""
                 mutation {
                     createUserLogin(input: {
-                        partyId: "%s",
+                        id: "%s",
                         username: "UnitTest",
                         password1: "password",
                         password2: "password",
@@ -344,7 +344,7 @@ public class UserLoginTest
         var createUserLoginBody = executeUsingPost("""
                 mutation {
                     createUserLogin(input: {
-                        partyId: "%s",
+                        id: "%s",
                         username: "UnitTest",
                         password1: "password",
                         password2: "password",
@@ -362,7 +362,7 @@ public class UserLoginTest
 
         var deleteUserLoginBody = executeUsingPost("""
                 mutation {
-                    deleteUserLogin(input: { partyId: "%s", clientMutationId: "1" }) {
+                    deleteUserLogin(input: { id: "%s", clientMutationId: "1" }) {
                         hasErrors
                     }
                 }
@@ -407,11 +407,11 @@ public class UserLoginTest
 
         assertThat("UnitTest".equals(getString(userLoginQuery1, "data.userLogin.username"))).isTrue();
 
-        // This should fail, partyId is not a permitted way to look up the userLogin without proper permissions
+        // This should fail, id is not a permitted way to look up the userLogin without proper permissions
         var id = getString(createCustomerWithLoginBody, "data.createCustomerWithLogin.id");
         var userLoginQuery2 = executeUsingPost("""
                 query {
-                    userLogin(partyId: "%s") {
+                    userLogin(id: "%s") {
                         username
                     }
                 }
@@ -431,7 +431,7 @@ public class UserLoginTest
         
         var deleteUserLoginBody = executeUsingPost("""
                 mutation {
-                    deleteUserLogin(input: { partyId: "%s", clientMutationId: "1" }) {
+                    deleteUserLogin(input: { id: "%s", clientMutationId: "1" }) {
                         hasErrors
                     }
                 }
@@ -487,11 +487,11 @@ public class UserLoginTest
 
         assertThat("UnitTest".equals(getString(userLoginQuery1, "data.userLogin.username"))).isTrue();
 
-        // This should be possible because the employee has authenticated before attempting lookup by partyId.
+        // This should be possible because the employee has authenticated before attempting lookup by id.
         var id = getString(createCustomerWithLoginBody, "data.createCustomerWithLogin.id");
         var userLoginQuery2 = executeUsingPost("""
                 query {
-                    userLogin(partyId: "%s") {
+                    userLogin(id: "%s") {
                         username
                     }
                 }
@@ -501,7 +501,7 @@ public class UserLoginTest
 
         var deleteUserLoginBody = executeUsingPost("""
                 mutation {
-                    deleteUserLogin(input: { partyId: "%s", clientMutationId: "1" }) {
+                    deleteUserLogin(input: { id: "%s", clientMutationId: "1" }) {
                         hasErrors
                     }
                 }

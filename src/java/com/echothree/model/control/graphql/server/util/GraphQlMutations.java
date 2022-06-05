@@ -4135,7 +4135,7 @@ public class GraphQlMutations
     @GraphQLRelayMutation
     public static CommandResultObject createUserLogin(final DataFetchingEnvironment env,
             @GraphQLName("partyName") final String partyName,
-            @GraphQLName("partyId") final String partyId,
+            @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("username") final String username,
             @GraphQLName("password1") @GraphQLNonNull final String password1,
             @GraphQLName("password2") @GraphQLNonNull final String password2,
@@ -4147,7 +4147,7 @@ public class GraphQlMutations
             var commandForm = UserUtil.getHome().getCreateUserLoginForm();
 
             commandForm.setPartyName(partyName);
-            commandForm.setUlid(partyId);
+            commandForm.setUlid(id);
             commandForm.setUsername(username);
             commandForm.setPassword1(password1);
             commandForm.setPassword2(password2);
@@ -4167,7 +4167,7 @@ public class GraphQlMutations
     @GraphQLRelayMutation
     public static CommandResultObject editUserLogin(final DataFetchingEnvironment env,
             @GraphQLName("partyName") final String partyName,
-            @GraphQLName("partyId") final String partyId,
+            @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("username") @GraphQLNonNull final String username) {
         var commandResultObject = new CommandResultObject();
 
@@ -4175,7 +4175,7 @@ public class GraphQlMutations
             var spec = PartyUtil.getHome().getPartyUniversalSpec();
 
             spec.setPartyName(partyName);
-            spec.setUlid(partyId);
+            spec.setUlid(id);
             
             var commandForm = UserUtil.getHome().getEditUserLoginForm();
             
@@ -4211,14 +4211,14 @@ public class GraphQlMutations
     @GraphQLRelayMutation
     public static CommandResultObject deleteUserLogin(final DataFetchingEnvironment env,
             @GraphQLName("partyName") final String partyName,
-            @GraphQLName("partyId") final String partyId) {
+            @GraphQLName("id") @GraphQLID final String id) {
         var commandResultObject = new CommandResultObject();
 
         try {
             var commandForm = UserUtil.getHome().getDeleteUserLoginForm();
 
             commandForm.setPartyName(partyName);
-            commandForm.setUlid(partyId);
+            commandForm.setUlid(id);
 
             commandResultObject.setCommandResult(UserUtil.getHome().deleteUserLogin(getUserVisitPK(env), commandForm));    
         } catch (NamingException ex) {
