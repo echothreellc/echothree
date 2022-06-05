@@ -3329,7 +3329,7 @@ public class GraphQlMutations
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject createEntityAttribute(final DataFetchingEnvironment env,
+    public static CommandResultWithIdObject createEntityAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("componentVendorName") final String componentVendorName,
             @GraphQLName("entityTypeName") final String entityTypeName,
