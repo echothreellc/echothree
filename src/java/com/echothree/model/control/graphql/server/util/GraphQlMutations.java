@@ -21,6 +21,7 @@ import com.echothree.control.user.content.common.ContentUtil;
 import com.echothree.control.user.content.common.result.CreateContentPageLayoutResult;
 import com.echothree.control.user.content.common.result.EditContentPageLayoutResult;
 import com.echothree.control.user.core.common.CoreUtil;
+import com.echothree.control.user.core.common.result.CreateEntityAttributeResult;
 import com.echothree.control.user.core.common.result.EditEntityAttributeResult;
 import com.echothree.control.user.core.common.result.EditEntityBooleanAttributeResult;
 import com.echothree.control.user.core.common.result.EditEntityIntegerAttributeResult;
@@ -3350,7 +3351,7 @@ public class GraphQlMutations
             @GraphQLName("unitOfMeasureKindName") final String unitOfMeasureKindName,
             @GraphQLName("unitOfMeasureTypeName") final String unitOfMeasureTypeName,
             @GraphQLName("entityListItemSequenceName") final String entityListItemSequenceName) {
-        var commandResultObject = new CommandResultObject();
+        var commandResultObject = new CommandResultWithIdObject();
 
         try {
             var commandForm = CoreUtil.getHome().getCreateEntityAttributeForm();
@@ -3379,6 +3380,12 @@ public class GraphQlMutations
 
             var commandResult = CoreUtil.getHome().createEntityAttribute(getUserVisitPK(env), commandForm);
             commandResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateEntityAttributeResult)commandResult.getExecutionResult().getResult();
+
+                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }

@@ -313,16 +313,10 @@ public class CreateEntityAttributeCommand
         }
         
         if(entityAttribute != null) {
-            var entityAttributeDetail = entityAttribute.getLastDetail();
-            var entityTypeDetail = entityAttributeDetail.getEntityType().getLastDetail();
-            var componentVendorDetail = entityTypeDetail.getComponentVendor().getLastDetail();
             var basePK = entityAttribute.getPrimaryKey();
 
-            result.setComponentVendorName(componentVendorDetail.getComponentVendorName());
-            result.setEntityTypeName(entityTypeDetail.getEntityTypeName());
-            result.setEntityAttributeName(entityAttributeDetail.getEntityAttributeName());
+            result.setEntityAttributeName(entityAttribute.getLastDetail().getEntityAttributeName());
             result.setEntityRef(basePK.getEntityRef());
-            result.setUlid(getCoreControl().getUlidForBasePK(basePK));
         }
         
         return result;

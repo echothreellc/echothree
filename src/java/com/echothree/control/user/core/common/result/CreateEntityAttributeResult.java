@@ -22,8 +22,9 @@ import com.echothree.control.user.core.common.spec.UlidSpec;
 import com.echothree.util.common.command.BaseResult;
 
 public interface CreateEntityAttributeResult
-        extends UlidSpec, EntityAttributeSpec, EntityRefSpec, BaseResult {
-    
-    // Nothing additional beyond UlidSpec, EntityAttributeSpec, EntityRefSpec, BaseResult
-    
+        extends EntityRefSpec, BaseResult {
+
+    String getEntityAttributeName();
+    void setEntityAttributeName(String entityAttributeName);
+
 }
