@@ -18,6 +18,8 @@ package com.echothree.model.control.party.server.graphql;
 
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.sequence.server.graphql.SequenceSecurityUtils;
+import com.echothree.model.control.sequence.server.graphql.SequenceTypeObject;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.util.server.persistence.Session;
@@ -49,13 +51,11 @@ public class PartyTypeObject
         return new PartyTypeObject(partyType.getParentPartyType());
     }
     
-//    @GraphQLField
-//    @GraphQLDescription("billing account sequence type")
-//    public SequenceTypeObject getBillingAccountSequenceType() {
-//        SequenceType billingAccountSequenceType = partyType.getBillingAccountSequenceType();
-//        
-//        return new SequenceTypeObject(billingAccountSequenceType);
-//    }
+    @GraphQLField
+    @GraphQLDescription("billing account sequence type")
+    public SequenceTypeObject getBillingAccountSequenceType(final DataFetchingEnvironment env) {
+        return SequenceSecurityUtils.getInstance().getHasSequenceTypeAccess(env) ? new SequenceTypeObject(partyType.getBillingAccountSequenceType()) : null;
+    }
 
     @GraphQLField
     @GraphQLDescription("allow user logins")
@@ -70,7 +70,6 @@ public class PartyTypeObject
     public Boolean getAllowPartyAliases() {
         return partyType.getAllowPartyAliases();
     }
-    
 
     @GraphQLField
     @GraphQLDescription("is default")
