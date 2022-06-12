@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.item.server.graphql;
 
+import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationPolicyObject;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
@@ -30,6 +31,7 @@ import com.echothree.model.control.offer.server.graphql.OfferItemObject;
 import com.echothree.model.control.offer.server.graphql.OfferSecurityUtils;
 import com.echothree.model.control.party.server.graphql.CompanyObject;
 import com.echothree.model.control.party.server.graphql.PartySecurityUtils;
+import com.echothree.model.control.returnpolicy.server.graphql.ReturnPolicyObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowEntityStatusObject;
 import com.echothree.model.data.item.common.ItemPriceConstants;
 import com.echothree.model.data.item.server.entity.Item;
@@ -76,6 +78,20 @@ public class ItemObject
     }
 
     @GraphQLField
+    @GraphQLDescription("item type")
+    @GraphQLNonNull
+    public ItemTypeObject getItemType(final DataFetchingEnvironment env) {
+        return ItemSecurityUtils.getInstance().getHasItemTypeAccess(env) ? new ItemTypeObject(getItemDetail().getItemType()) : null;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("item use type")
+    @GraphQLNonNull
+    public ItemUseTypeObject getItemUseType(final DataFetchingEnvironment env) {
+        return ItemSecurityUtils.getInstance().getHasItemUseTypeAccess(env) ? new ItemUseTypeObject(getItemDetail().getItemUseType()) : null;
+    }
+
+    @GraphQLField
     @GraphQLDescription("item category")
     public ItemCategoryObject getItemCategory(final DataFetchingEnvironment env) {
         return ItemSecurityUtils.getInstance().getHasItemCategoryAccess(env) ? new ItemCategoryObject(getItemDetail().getItemCategory()) : null;
@@ -88,20 +104,6 @@ public class ItemObject
         var companyParty = getItemDetail().getCompanyParty();
 
         return PartySecurityUtils.getInstance().getHasPartyAccess(env, companyParty) ? new CompanyObject(companyParty) : null;
-    }
-
-    @GraphQLField
-    @GraphQLDescription("item type")
-    @GraphQLNonNull
-    public ItemTypeObject getItemType(final DataFetchingEnvironment env) {
-        return ItemSecurityUtils.getInstance().getHasItemTypeAccess(env) ? new ItemTypeObject(getItemDetail().getItemType()) : null;
-    }
-
-    @GraphQLField
-    @GraphQLDescription("item use type")
-    @GraphQLNonNull
-    public ItemUseTypeObject getItemUseType(final DataFetchingEnvironment env) {
-        return ItemSecurityUtils.getInstance().getHasItemUseTypeAccess(env) ? new ItemUseTypeObject(getItemDetail().getItemUseType()) : null;
     }
 
     @GraphQLField
@@ -123,6 +125,24 @@ public class ItemObject
     @GraphQLNonNull
     public ItemPriceTypeObject getItemPriceType(final DataFetchingEnvironment env) {
         return ItemSecurityUtils.getInstance().getHasItemPriceTypeAccess(env) ? new ItemPriceTypeObject(getItemDetail().getItemPriceType()) : null;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("cancellation policy")
+    public CancellationPolicyObject getCancellationPolicy(final DataFetchingEnvironment env) {
+        var cancellationPolicy = getItemDetail().getCancellationPolicy();
+
+        return cancellationPolicy == null ? null : new CancellationPolicyObject(cancellationPolicy);
+        //return CancellationSecurityUtils.getInstance().getHasCancellationPolicyAccess(env) ? new CancellationPolicyObject(getCancellationTypeDetail().getCancellationPolicy()) : null;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("return policy")
+    public ReturnPolicyObject getReturnPolicy(final DataFetchingEnvironment env) {
+        var returnPolicy = getItemDetail().getReturnPolicy();
+
+        return returnPolicy == null ? null : new ReturnPolicyObject(returnPolicy);
+        //return ReturnSecurityUtils.getInstance().getHasReturnPolicyAccess(env) ? new ReturnPolicyObject(getReturnTypeDetail().getReturnPolicy()) : null;
     }
 
     @GraphQLField
