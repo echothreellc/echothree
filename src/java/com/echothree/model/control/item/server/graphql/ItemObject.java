@@ -32,12 +32,17 @@ import com.echothree.model.control.offer.server.graphql.OfferSecurityUtils;
 import com.echothree.model.control.party.server.graphql.CompanyObject;
 import com.echothree.model.control.party.server.graphql.PartySecurityUtils;
 import com.echothree.model.control.returnpolicy.server.graphql.ReturnPolicyObject;
+import com.echothree.model.control.sequence.server.graphql.SequenceObject;
+import com.echothree.model.control.sequence.server.graphql.SequenceSecurityUtils;
+import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindObject;
+import com.echothree.model.control.uom.server.graphql.UomSecurityUtils;
 import com.echothree.model.control.workflow.server.graphql.WorkflowEntityStatusObject;
 import com.echothree.model.data.item.common.ItemPriceConstants;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemDetail;
 import com.echothree.model.data.offer.common.OfferItemConstants;
 import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.string.DateUtils;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -97,6 +102,9 @@ public class ItemObject
         return ItemSecurityUtils.getInstance().getHasItemCategoryAccess(env) ? new ItemCategoryObject(getItemDetail().getItemCategory()) : null;
     }
 
+    //| itm_iactgc_itemaccountingcategoryid | bigint      | YES  |     | NULL    |       |
+    //| itm_iprchc_itempurchasingcategoryid | bigint      | YES  |     | NULL    |       |
+
     @GraphQLField
     @GraphQLDescription("company")
     @GraphQLNonNull
@@ -121,8 +129,131 @@ public class ItemObject
     }
 
     @GraphQLField
-    @GraphQLDescription("item price type")
+    @GraphQLDescription("inventory serialized")
+    public Boolean getInventorySerialized() {
+        return getItemDetail().getInventorySerialized();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("serial number sequence")
+    public SequenceObject getSalesOrderSequence(final DataFetchingEnvironment env) {
+        var salesOrderSequence = getItemDetail().getSerialNumberSequence();
+
+        return salesOrderSequence == null ? null : (SequenceSecurityUtils.getInstance().getHasSequenceAccess(env) ? new SequenceObject(salesOrderSequence) : null);
+    }
+
+    @GraphQLField
+    @GraphQLDescription("shipping charge exempt")
     @GraphQLNonNull
+    public Boolean getShippingChargeExempt() {
+        return getItemDetail().getShippingChargeExempt();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("unformatted shipping start time")
+    @GraphQLNonNull
+    public Long getUnformattedShippingStartTime() {
+        return getItemDetail().getShippingStartTime();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("shipping start time")
+    @GraphQLNonNull
+    public String getShippingStartTime(final DataFetchingEnvironment env) {
+        return DateUtils.getInstance().formatTypicalDateTime(getUserVisit(env), getItemDetail().getShippingStartTime());
+    }
+    
+    @GraphQLField
+    @GraphQLDescription("unformatted shipping end time")
+    public Long getUnformattedShippingEndTime() {
+        return getItemDetail().getShippingEndTime();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("shipping end time")
+    public String getShippingEndTime(final DataFetchingEnvironment env) {
+        return DateUtils.getInstance().formatTypicalDateTime(getUserVisit(env), getItemDetail().getShippingEndTime());
+    }
+    
+    @GraphQLField
+    @GraphQLDescription("unformatted sales order start time")
+    @GraphQLNonNull
+    public Long getUnformattedSalesOrderStartTime() {
+        return getItemDetail().getSalesOrderStartTime();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("sales order start time")
+    @GraphQLNonNull
+    public String getSalesOrderStartTime(final DataFetchingEnvironment env) {
+        return DateUtils.getInstance().formatTypicalDateTime(getUserVisit(env), getItemDetail().getSalesOrderStartTime());
+    }
+
+    @GraphQLField
+    @GraphQLDescription("unformatted sales order end time")
+    public Long getUnformattedSalesOrderEndTime() {
+        return getItemDetail().getSalesOrderEndTime();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("sales order end time")
+    public String getSalesOrderEndTime(final DataFetchingEnvironment env) {
+        return DateUtils.getInstance().formatTypicalDateTime(getUserVisit(env), getItemDetail().getSalesOrderEndTime());
+    }
+
+    @GraphQLField
+    @GraphQLDescription("unformatted purchase order start time")
+    public Long getUnformattedPurchaseOrderStartTime() {
+        return getItemDetail().getPurchaseOrderStartTime();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("purchase order start time")
+    public String getPurchaseOrderStartTime(final DataFetchingEnvironment env) {
+        return DateUtils.getInstance().formatTypicalDateTime(getUserVisit(env), getItemDetail().getPurchaseOrderStartTime());
+    }
+    
+    @GraphQLField
+    @GraphQLDescription("unformatted purchase order end time")
+    public Long getUnformattedPurchaseOrderEndTime() {
+        return getItemDetail().getPurchaseOrderEndTime();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("purchase order end time")
+    public String getPurchaseOrderEndTime(final DataFetchingEnvironment env) {
+        return DateUtils.getInstance().formatTypicalDateTime(getUserVisit(env), getItemDetail().getPurchaseOrderEndTime());
+    }
+
+    @GraphQLField
+    @GraphQLDescription("allow club discounts")
+    @GraphQLNonNull
+    public Boolean getAllowClubDiscounts() {
+        return getItemDetail().getAllowClubDiscounts();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("allow coupon discounts")
+    @GraphQLNonNull
+    public Boolean getAllowCouponDiscounts() {
+        return getItemDetail().getAllowCouponDiscounts();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("allow associate payments")
+    @GraphQLNonNull
+    public Boolean getAllowAssociatePayments() {
+        return getItemDetail().getAllowAssociatePayments();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("unit of measure kind")
+    public UnitOfMeasureKindObject getUnitOfMeasureKind(final DataFetchingEnvironment env) {
+        return UomSecurityUtils.getInstance().getHasUnitOfMeasureKindAccess(env) ? new UnitOfMeasureKindObject(getItemDetail().getUnitOfMeasureKind()) : null;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("item price type")
     public ItemPriceTypeObject getItemPriceType(final DataFetchingEnvironment env) {
         return ItemSecurityUtils.getInstance().getHasItemPriceTypeAccess(env) ? new ItemPriceTypeObject(getItemDetail().getItemPriceType()) : null;
     }
@@ -144,6 +275,8 @@ public class ItemObject
         return returnPolicy == null ? null : new ReturnPolicyObject(returnPolicy);
         //return ReturnSecurityUtils.getInstance().getHasReturnPolicyAccess(env) ? new ReturnPolicyObject(getReturnTypeDetail().getReturnPolicy()) : null;
     }
+
+    //| itm_stylpth_stylepathid             | bigint      | YES  |     | NULL    |       |
 
     @GraphQLField
     @GraphQLDescription("itemPrices")
