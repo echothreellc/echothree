@@ -16,7 +16,10 @@
 
 package com.echothree.model.control.accounting.server.graphql;
 
+import com.echothree.control.user.accounting.server.command.GetCurrenciesCommand;
 import com.echothree.control.user.accounting.server.command.GetCurrencyCommand;
+import com.echothree.control.user.accounting.server.command.GetSymbolPositionCommand;
+import com.echothree.control.user.accounting.server.command.GetSymbolPositionsCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
@@ -30,9 +33,21 @@ public final class AccountingSecurityUtils
     public static AccountingSecurityUtils getInstance() {
         return AccountingSecurityUtilsHolder.instance;
     }
-    
+
+    public boolean getHasSymbolPositionAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetSymbolPositionCommand.class);
+    }
+
+    public boolean getHasSymbolPositionsAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetSymbolPositionsCommand.class);
+    }
+
     public boolean getHasCurrencyAccess(final DataFetchingEnvironment env) {
         return getGraphQlExecutionContext(env).hasAccess(GetCurrencyCommand.class);
     }
-    
+
+    public boolean getHasCurrenciesAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetCurrenciesCommand.class);
+    }
+
 }

@@ -16,8 +16,7 @@
 
 package com.echothree.model.control.uom.server.graphql;
 
-import com.echothree.control.user.accounting.server.command.GetSymbolPositionCommand;
-import com.echothree.control.user.uom.server.command.GetUnitOfMeasureKindCommand;
+import com.echothree.model.control.accounting.server.graphql.AccountingSecurityUtils;
 import com.echothree.model.control.accounting.server.graphql.SymbolPositionObject;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.uom.server.control.UomControl;
@@ -68,38 +67,10 @@ public class UnitOfMeasureTypeObject
         return unitOfMeasureTypeDescription;
     }
     
-    private Boolean hasUnitOfMeasureKindAccess;
-    
-    private boolean getHasUnitOfMeasureKindAccess(final DataFetchingEnvironment env) {
-        if(hasUnitOfMeasureKindAccess == null) {
-            var baseSingleEntityCommand = new GetUnitOfMeasureKindCommand(getUserVisitPK(env), null);
-            
-            baseSingleEntityCommand.security();
-            
-            hasUnitOfMeasureKindAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-        
-        return hasUnitOfMeasureKindAccess;
-    }
-    
-    private Boolean hasSymbolPositionAccess;
-    
-    private boolean getHasSymbolPositionAccess(final DataFetchingEnvironment env) {
-        if(hasSymbolPositionAccess == null) {
-            var baseSingleEntityCommand = new GetSymbolPositionCommand(getUserVisitPK(env), null);
-            
-            baseSingleEntityCommand.security();
-            
-            hasSymbolPositionAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-        
-        return hasSymbolPositionAccess;
-    }
-    
     @GraphQLField
     @GraphQLDescription("unit of measure kind")
     public UnitOfMeasureKindObject getUnitOfMeasureKind(final DataFetchingEnvironment env) {
-        return getHasUnitOfMeasureKindAccess(env) ? new UnitOfMeasureKindObject(getUnitOfMeasureTypeDetail().getUnitOfMeasureKind()) : null;
+        return UomSecurityUtils.getInstance().getHasUnitOfMeasureKindAccess(env) ? new UnitOfMeasureKindObject(getUnitOfMeasureTypeDetail().getUnitOfMeasureKind()) : null;
     }
     
     @GraphQLField
@@ -112,7 +83,7 @@ public class UnitOfMeasureTypeObject
     @GraphQLField
     @GraphQLDescription("symbol position")
     public SymbolPositionObject getSymbolPosition(final DataFetchingEnvironment env) {
-        return getHasSymbolPositionAccess(env) ? new SymbolPositionObject(getUnitOfMeasureTypeDetail().getSymbolPosition()) : null;
+        return AccountingSecurityUtils.getInstance().getHasSymbolPositionAccess(env) ? new SymbolPositionObject(getUnitOfMeasureTypeDetail().getSymbolPosition()) : null;
     }
     
     @GraphQLField
