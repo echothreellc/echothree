@@ -79,7 +79,7 @@ public class VendorSteps
                     var persona = CurrentPersona.persona;
 
                     assertThat(persona.createVendorForm).isNull();
-                    assertThat(persona.entityListItemSpec).isNull();
+                    assertThat(persona.entityListItemUniversalSpec).isNull();
 
                     persona.vendorSpec = VendorUtil.getHome().getVendorSpec();
                 });

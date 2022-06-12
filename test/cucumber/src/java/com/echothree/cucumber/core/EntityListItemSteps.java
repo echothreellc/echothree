@@ -34,7 +34,7 @@ public class EntityListItemSteps implements En {
 
                     assertThat(persona.createEntityListItemForm).isNull();
                     assertThat(persona.deleteEntityListItemForm).isNull();
-                    assertThat(persona.entityListItemSpec).isNull();
+                    assertThat(persona.entityListItemUniversalSpec).isNull();
 
                     persona.createEntityListItemForm = CoreUtil.getHome().getCreateEntityListItemForm();
                 });
@@ -66,7 +66,7 @@ public class EntityListItemSteps implements En {
 
                     assertThat(persona.createEntityListItemForm).isNull();
                     assertThat(persona.deleteEntityListItemForm).isNull();
-                    assertThat(persona.entityListItemSpec).isNull();
+                    assertThat(persona.entityListItemUniversalSpec).isNull();
 
                     persona.deleteEntityListItemForm = CoreUtil.getHome().getDeleteEntityListItemForm();
                 });
@@ -89,15 +89,15 @@ public class EntityListItemSteps implements En {
 
                     assertThat(persona.createEntityListItemForm).isNull();
                     assertThat(persona.deleteEntityListItemForm).isNull();
-                    assertThat(persona.entityListItemSpec).isNull();
+                    assertThat(persona.entityListItemUniversalSpec).isNull();
 
-                    persona.entityListItemSpec = CoreUtil.getHome().getEntityListItemSpec();
+                    persona.entityListItemUniversalSpec = CoreUtil.getHome().getEntityListItemUniversalSpec();
                 });
 
         When("^the user begins editing the entity list item$",
                 () -> {
                     var persona = CurrentPersona.persona;
-                    var spec = persona.entityListItemSpec;
+                    var spec = persona.entityListItemUniversalSpec;
 
                     assertThat(spec).isNotNull();
 
@@ -120,7 +120,7 @@ public class EntityListItemSteps implements En {
         When("^the user finishes editing the entity list item$",
                 () -> {
                     var persona = CurrentPersona.persona;
-                    var spec = persona.entityListItemSpec;
+                    var spec = persona.entityListItemUniversalSpec;
                     var edit = persona.entityListItemEdit;
 
                     assertThat(edit).isNotNull();
@@ -134,7 +134,7 @@ public class EntityListItemSteps implements En {
                     var commandResult = CoreUtil.getHome().editEntityListItem(persona.userVisitPK, commandForm);
                     LastCommandResult.commandResult = commandResult;
 
-                    persona.entityListItemSpec = null;
+                    persona.entityListItemUniversalSpec = null;
                     persona.entityListItemEdit = null;
                 });
         
@@ -143,7 +143,7 @@ public class EntityListItemSteps implements En {
                     var persona = CurrentPersona.persona;
                     var createEntityListItemForm = persona.createEntityListItemForm;
                     var deleteEntityListItemForm = persona.deleteEntityListItemForm;
-                    var entityListItemSpec = persona.entityListItemSpec;
+                    var entityListItemSpec = persona.entityListItemUniversalSpec;
 
                     assertThat(createEntityListItemForm != null || deleteEntityListItemForm != null || entityListItemSpec != null).isTrue();
 
@@ -161,7 +161,7 @@ public class EntityListItemSteps implements En {
                     var persona = CurrentPersona.persona;
                     var createEntityListItemForm = persona.createEntityListItemForm;
                     var deleteEntityListItemForm = persona.deleteEntityListItemForm;
-                    var entityListItemSpec = persona.entityListItemSpec;
+                    var entityListItemSpec = persona.entityListItemUniversalSpec;
 
                     assertThat(createEntityListItemForm != null || deleteEntityListItemForm != null || entityListItemSpec != null).isTrue();
 
@@ -180,7 +180,7 @@ public class EntityListItemSteps implements En {
                     var persona = CurrentPersona.persona;
                     var createEntityListItemForm = persona.createEntityListItemForm;
                     var deleteEntityListItemForm = persona.deleteEntityListItemForm;
-                    var entityListItemSpec = persona.entityListItemSpec;
+                    var entityListItemSpec = persona.entityListItemUniversalSpec;
 
                     assertThat(createEntityListItemForm != null || deleteEntityListItemForm != null || entityListItemSpec != null).isTrue();
 
@@ -199,7 +199,7 @@ public class EntityListItemSteps implements En {
                     var lastEntityAttributeName = persona.lastEntityAttributeName;
                     var createEntityListItemForm = persona.createEntityListItemForm;
                     var deleteEntityListItemForm = persona.deleteEntityListItemForm;
-                    var entityListItemSpec = persona.entityListItemSpec;
+                    var entityListItemSpec = persona.entityListItemUniversalSpec;
 
                     assertThat(createEntityListItemForm != null || deleteEntityListItemForm != null || entityListItemSpec != null).isTrue();
 
@@ -217,7 +217,7 @@ public class EntityListItemSteps implements En {
                     var persona = CurrentPersona.persona;
                     var createEntityListItemForm = persona.createEntityListItemForm;
                     var deleteEntityListItemForm = persona.deleteEntityListItemForm;
-                    var entityListItemSpec = persona.entityListItemSpec;
+                    var entityListItemSpec = persona.entityListItemUniversalSpec;
 
                     assertThat(createEntityListItemForm != null || deleteEntityListItemForm != null || entityListItemSpec != null).isTrue();
 
@@ -235,7 +235,7 @@ public class EntityListItemSteps implements En {
                     var persona = CurrentPersona.persona;
                     var lastEntityListItemName = persona.lastEntityListItemName;
                     var deleteEntityListItemForm = persona.deleteEntityListItemForm;
-                    var entityListItemSpec = persona.entityListItemSpec;
+                    var entityListItemSpec = persona.entityListItemUniversalSpec;
 
                     assertThat(deleteEntityListItemForm != null || entityListItemSpec != null).isTrue();
 

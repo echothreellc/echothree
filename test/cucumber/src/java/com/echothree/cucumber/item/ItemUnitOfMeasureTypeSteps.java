@@ -62,7 +62,7 @@ public class ItemUnitOfMeasureTypeSteps implements En {
 
                     assertThat(persona.createItemUnitOfMeasureTypeForm).isNull();
                     assertThat(persona.deleteItemUnitOfMeasureTypeForm).isNull();
-                    assertThat(persona.entityListItemSpec).isNull();
+                    assertThat(persona.entityListItemUniversalSpec).isNull();
 
                     persona.deleteItemUnitOfMeasureTypeForm = ItemUtil.getHome().getDeleteItemUnitOfMeasureTypeForm();
                 });
@@ -85,7 +85,7 @@ public class ItemUnitOfMeasureTypeSteps implements En {
 
                     assertThat(persona.createItemUnitOfMeasureTypeForm).isNull();
                     assertThat(persona.deleteItemUnitOfMeasureTypeForm).isNull();
-                    assertThat(persona.entityListItemSpec).isNull();
+                    assertThat(persona.entityListItemUniversalSpec).isNull();
 
                     persona.itemUnitOfMeasureTypeSpec = ItemUtil.getHome().getItemUnitOfMeasureTypeSpec();
                 });

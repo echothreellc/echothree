@@ -63,7 +63,7 @@ public class ContentCollectionSteps implements En {
 
                     assertThat(persona.createContentCollectionForm).isNull();
                     assertThat(persona.deleteContentCollectionForm).isNull();
-                    assertThat(persona.entityListItemSpec).isNull();
+                    assertThat(persona.entityListItemUniversalSpec).isNull();
 
                     persona.deleteContentCollectionForm = ContentUtil.getHome().getDeleteContentCollectionForm();
                 });
@@ -86,7 +86,7 @@ public class ContentCollectionSteps implements En {
 
                     assertThat(persona.createContentCollectionForm).isNull();
                     assertThat(persona.deleteContentCollectionForm).isNull();
-                    assertThat(persona.entityListItemSpec).isNull();
+                    assertThat(persona.entityListItemUniversalSpec).isNull();
 
                     persona.contentCollectionSpec = ContentUtil.getHome().getContentCollectionSpec();
                 });

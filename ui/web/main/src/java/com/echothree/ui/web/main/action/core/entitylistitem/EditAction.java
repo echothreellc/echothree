@@ -69,7 +69,7 @@ public class EditAction
             if(forwardKey == null) {
                 EditActionForm actionForm = (EditActionForm)form;
                 EditEntityListItemForm commandForm = CoreUtil.getHome().getEditEntityListItemForm();
-                EntityListItemSpec spec = CoreUtil.getHome().getEntityListItemSpec();
+                var spec = CoreUtil.getHome().getEntityListItemUniversalSpec();
                 String originalEntityListItemName = request.getParameter(ParameterConstants.ORIGINAL_ENTITY_LIST_ITEM_NAME);
                 
                 if(componentVendorName == null)

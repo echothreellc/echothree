@@ -22,6 +22,7 @@ import com.echothree.control.user.core.common.form.EditEntityListItemForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.EditEntityListItemResult;
 import com.echothree.control.user.core.common.spec.EntityListItemSpec;
+import com.echothree.control.user.core.common.spec.EntityListItemUniversalSpec;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -48,7 +49,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class EditEntityListItemCommand
-        extends BaseAbstractEditCommand<EntityListItemSpec, EntityListItemEdit, EditEntityListItemResult, EntityListItem, EntityListItem> {
+        extends BaseAbstractEditCommand<EntityListItemUniversalSpec, EntityListItemEdit, EditEntityListItemResult, EntityListItem, EntityListItem> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
@@ -63,10 +64,14 @@ public class EditEntityListItemCommand
                 )));
         
         SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
-                new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("EntityListItemName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null),
+                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, false, null, null),
+                new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityListItemName", FieldType.ENTITY_NAME, false, null, null)
                 ));
         
         EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
@@ -92,45 +97,12 @@ public class EditEntityListItemCommand
         return CoreEditFactory.getEntityListItemEdit();
     }
 
-    EntityAttribute entityAttribute = null;
+    EntityListItem entityListItem = null;
     
     @Override
     public EntityListItem getEntity(EditEntityListItemResult result) {
-        var coreControl = getCoreControl();
-        EntityListItem entityListItem = null;
-        String componentVendorName = spec.getComponentVendorName();
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
-
-        if(componentVendor != null) {
-            String entityTypeName = spec.getEntityTypeName();
-            EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
-
-            if(entityType != null) {
-                String entityAttributeName = spec.getEntityAttributeName();
-                
-                entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
-
-                if(entityAttribute != null) {
-                    String entityListItemName = spec.getEntityListItemName();
-
-                    if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                        entityListItem = coreControl.getEntityListItemByName(entityAttribute, entityListItemName);
-                    } else { // EditMode.UPDATE
-                        entityListItem = coreControl.getEntityListItemByNameForUpdate(entityAttribute, entityListItemName);
-                    }
-
-                    if(entityListItem == null) {
-                        addExecutionError(ExecutionErrors.UnknownEntityListItemName.name(), componentVendorName, entityTypeName, entityAttributeName, entityListItemName);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownEntityAttributeName.name(), componentVendorName, entityTypeName, entityAttributeName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), componentVendorName, entityTypeName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
-        }
+        entityListItem = EntityAttributeLogic.getInstance().getEntityListItemByUniversalSpec(this,
+                spec, editModeToEntityPermission(editMode));
 
         return entityListItem;
     }
@@ -165,8 +137,9 @@ public class EditEntityListItemCommand
     @Override
     public void canUpdate(EntityListItem entityListItem) {
         var coreControl = getCoreControl();
-        String entityListItemName = edit.getEntityListItemName();
-        EntityListItem duplicateEntityListItem = coreControl.getEntityListItemByName(entityAttribute, entityListItemName);
+        var entityListItemName = edit.getEntityListItemName();
+        var duplicateEntityListItem = coreControl.getEntityListItemByName(entityListItem.getLastDetail().getEntityAttribute(),
+                entityListItemName);
 
         if(duplicateEntityListItem != null && !entityListItem.equals(duplicateEntityListItem)) {
             addExecutionError(ExecutionErrors.DuplicateEntityListItemName.name(), entityListItemName);

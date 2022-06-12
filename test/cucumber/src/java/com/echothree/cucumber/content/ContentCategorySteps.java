@@ -63,7 +63,7 @@ public class ContentCategorySteps implements En {
 
                     assertThat(persona.createContentCategoryForm).isNull();
                     assertThat(persona.deleteContentCategoryForm).isNull();
-                    assertThat(persona.entityListItemSpec).isNull();
+                    assertThat(persona.entityListItemUniversalSpec).isNull();
 
                     persona.deleteContentCategoryForm = ContentUtil.getHome().getDeleteContentCategoryForm();
                 });
@@ -86,7 +86,7 @@ public class ContentCategorySteps implements En {
 
                     assertThat(persona.createContentCategoryForm).isNull();
                     assertThat(persona.deleteContentCategoryForm).isNull();
-                    assertThat(persona.entityListItemSpec).isNull();
+                    assertThat(persona.entityListItemUniversalSpec).isNull();
 
                     persona.contentCategorySpec = ContentUtil.getHome().getContentCategorySpec();
                 });

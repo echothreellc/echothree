@@ -21,6 +21,7 @@ import com.echothree.control.user.core.common.spec.EntityAttributeSpec;
 import com.echothree.control.user.core.common.spec.EntityAttributeUlid;
 import com.echothree.control.user.core.common.spec.EntityAttributeUniversalSpec;
 import com.echothree.control.user.core.common.spec.EntityListItemUlid;
+import com.echothree.control.user.core.common.spec.EntityListItemUniversalSpec;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.EntityTypes;
@@ -662,7 +663,50 @@ public class EntityAttributeLogic
     public EntityListItem getEntityListItemByUlidForUpdate(final ExecutionErrorAccumulator eea, final String ulid) {
         return getEntityListItemByUlid(eea, ulid, EntityPermission.READ_WRITE);
     }
-    
+
+    public EntityListItem getEntityListItemByUniversalSpec(final ExecutionErrorAccumulator eea, final EntityListItemUniversalSpec universalSpec,
+            final EntityPermission entityPermission) {
+        EntityListItem entityListItem = null;
+        var componentVendorName = universalSpec.getComponentVendorName();
+        var entityTypeName = universalSpec.getEntityTypeName();
+        var entityAttributeName = universalSpec.getEntityAttributeName();
+        var entityListItemName = universalSpec.getEntityListItemName();
+        var universalSpecCount = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        var parameterCount = (componentVendorName == null && entityTypeName == null && entityAttributeName == null && entityListItemName == null ? 0 : 1)
+                + universalSpecCount;
+
+        switch(parameterCount) {
+            case 1 -> {
+                if(universalSpecCount == 1) {
+                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                            ComponentVendors.ECHOTHREE.name(), EntityTypes.EntityListItem.name());
+
+                    if(!eea.hasExecutionErrors()) {
+                        var coreControl = Session.getModelController(CoreControl.class);
+
+                        entityListItem = coreControl.getEntityListItemByEntityInstance(entityInstance, entityPermission);
+                    }
+                } else {
+                    entityListItem = getEntityListItemByName(eea, componentVendorName, entityTypeName, entityAttributeName,
+                            entityListItemName, entityPermission);
+                }
+            }
+            default -> {
+                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+            }
+        }
+
+        return entityListItem;
+    }
+
+    public EntityListItem getEntityListItemByUniversalSpec(final ExecutionErrorAccumulator eea, final EntityListItemUniversalSpec universalSpec) {
+        return getEntityListItemByUniversalSpec(eea, universalSpec, EntityPermission.READ_ONLY);
+    }
+
+    public EntityListItem getEntityListItemByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea, final EntityListItemUniversalSpec universalSpec) {
+        return getEntityListItemByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
+    }
+
     public EntityListItem getEntityListItem(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
             final EntityListItemAttributeEdit edit, final EntityPermission entityPermission) {
         EntityListItem entityListItem = null;

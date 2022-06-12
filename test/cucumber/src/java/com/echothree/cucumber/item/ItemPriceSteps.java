@@ -62,7 +62,7 @@ public class ItemPriceSteps implements En {
 
                     assertThat(persona.createItemPriceForm).isNull();
                     assertThat(persona.deleteItemPriceForm).isNull();
-                    assertThat(persona.entityListItemSpec).isNull();
+                    assertThat(persona.entityListItemUniversalSpec).isNull();
 
                     persona.deleteItemPriceForm = ItemUtil.getHome().getDeleteItemPriceForm();
                 });
@@ -85,7 +85,7 @@ public class ItemPriceSteps implements En {
 
                     assertThat(persona.createItemPriceForm).isNull();
                     assertThat(persona.deleteItemPriceForm).isNull();
-                    assertThat(persona.entityListItemSpec).isNull();
+                    assertThat(persona.entityListItemUniversalSpec).isNull();
 
                     persona.itemPriceSpec = ItemUtil.getHome().getItemPriceSpec();
                 });

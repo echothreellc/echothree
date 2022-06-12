@@ -61,7 +61,7 @@ public class OfferUseSteps implements En {
 
                     assertThat(persona.createOfferUseForm).isNull();
                     assertThat(persona.deleteOfferUseForm).isNull();
-                    assertThat(persona.entityListItemSpec).isNull();
+                    assertThat(persona.entityListItemUniversalSpec).isNull();
 
                     persona.deleteOfferUseForm = OfferUtil.getHome().getDeleteOfferUseForm();
                 });
@@ -84,7 +84,7 @@ public class OfferUseSteps implements En {
 
                     assertThat(persona.createOfferUseForm).isNull();
                     assertThat(persona.deleteOfferUseForm).isNull();
-                    assertThat(persona.entityListItemSpec).isNull();
+                    assertThat(persona.entityListItemUniversalSpec).isNull();
 
                     persona.offerUseSpec = OfferUtil.getHome().getOfferUseSpec();
                 });
