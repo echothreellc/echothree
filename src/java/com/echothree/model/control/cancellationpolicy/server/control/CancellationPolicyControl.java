@@ -777,7 +777,15 @@ public class CancellationPolicyControl
         
         return cancellationPolicy;
     }
-    
+
+    public long countCancellationPoliciesByCancellationKind(CancellationKind cancellationKind) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM cancellationpolicies, cancellationpolicydetails " +
+                "WHERE cnclplcy_activedetailid = cnclplcydt_cancellationpolicydetailid AND cnclplcydt_cnclk_cancellationkindid = ?",
+                cancellationKind);
+    }
+
     private List<CancellationPolicy> getCancellationPolicies(CancellationKind cancellationKind, EntityPermission entityPermission) {
         List<CancellationPolicy> cancellationPolicies;
         
