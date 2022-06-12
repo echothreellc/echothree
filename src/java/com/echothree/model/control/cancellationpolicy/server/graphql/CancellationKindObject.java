@@ -18,9 +18,14 @@ package com.echothree.model.control.cancellationpolicy.server.graphql;
 
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.sequence.server.graphql.SequenceSecurityUtils;
 import com.echothree.model.control.sequence.server.graphql.SequenceTypeObject;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.cancellationpolicy.common.CancellationPolicyConstants;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKindDetail;
 import com.echothree.util.server.persistence.Session;
@@ -28,7 +33,10 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("cancellation kind object")
 @GraphQLName("CancellationKind")
@@ -89,5 +97,25 @@ public class CancellationKindObject
 
         return cancellationPolicyControl.getBestCancellationKindDescription(cancellationKind, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
-    
+
+    @GraphQLField
+    @GraphQLDescription("cancellation policies")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<CancellationPolicyObject> getCancellationPolicies(final DataFetchingEnvironment env) {
+//        if(CancellationPolicySecurityUtils.getInstance().getHasCancellationPoliciesAccess(env)) {
+            var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
+            var totalCount = cancellationPolicyControl.countCancellationPoliciesByCancellationKind(cancellationKind);
+
+            try(var objectLimiter = new ObjectLimiter(env, CancellationPolicyConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = cancellationPolicyControl.getCancellationPolicies(cancellationKind);
+                var items = entities.stream().map(CancellationPolicyObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, items);
+            }
+//        } else {
+//            return Connections.emptyConnection();
+//        }
+    }
+
 }
