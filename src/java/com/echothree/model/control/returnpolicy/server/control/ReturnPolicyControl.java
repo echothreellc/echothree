@@ -44,6 +44,7 @@ import com.echothree.model.control.returnpolicy.server.transfer.ReturnReasonTran
 import com.echothree.model.control.returnpolicy.server.transfer.ReturnReasonTypeTransferCache;
 import com.echothree.model.control.returnpolicy.server.transfer.ReturnTypeShippingMethodTransferCache;
 import com.echothree.model.control.returnpolicy.server.transfer.ReturnTypeTransferCache;
+import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
 import com.echothree.model.data.core.common.pk.MimeTypePK;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.party.common.pk.LanguagePK;
@@ -763,7 +764,15 @@ public class ReturnPolicyControl
         
         return returnPolicy;
     }
-    
+
+    public long countReturnPoliciesByReturnKind(ReturnKind returnKind) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM returnpolicies, returnpolicydetails " +
+                "WHERE rtnplcy_activedetailid = rtnplcydt_returnpolicydetailid AND rtnplcydt_rtnk_returnkindid = ?",
+                returnKind);
+    }
+
     private List<ReturnPolicy> getReturnPolicies(ReturnKind returnKind, EntityPermission entityPermission) {
         List<ReturnPolicy> returnPolicies;
         
