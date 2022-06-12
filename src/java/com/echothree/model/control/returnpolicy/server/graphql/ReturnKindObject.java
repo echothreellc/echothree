@@ -17,10 +17,15 @@
 package com.echothree.model.control.returnpolicy.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.control.sequence.server.graphql.SequenceSecurityUtils;
 import com.echothree.model.control.sequence.server.graphql.SequenceTypeObject;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.returnpolicy.common.ReturnPolicyConstants;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnKind;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnKindDetail;
 import com.echothree.util.server.persistence.Session;
@@ -28,7 +33,10 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("return kind object")
 @GraphQLName("ReturnKind")
@@ -88,6 +96,26 @@ public class ReturnKindObject
         var userControl = Session.getModelController(UserControl.class);
 
         return returnPolicyControl.getBestReturnKindDescription(returnKind, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+    }
+
+    @GraphQLField
+    @GraphQLDescription("return policies")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<ReturnPolicyObject> getReturnPolicies(final DataFetchingEnvironment env) {
+//        if(ReturnPolicySecurityUtils.getInstance().getHasReturnPoliciesAccess(env)) {
+            var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
+            var totalCount = returnPolicyControl.countReturnPoliciesByReturnKind(returnKind);
+    
+            try(var objectLimiter = new ObjectLimiter(env, ReturnPolicyConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = returnPolicyControl.getReturnPolicies(returnKind);
+                var items = entities.stream().map(ReturnPolicyObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+    
+                return new CountedObjects<>(objectLimiter, items);
+            }
+//        } else {
+//            return Connections.emptyConnection();
+//        }
     }
     
 }
