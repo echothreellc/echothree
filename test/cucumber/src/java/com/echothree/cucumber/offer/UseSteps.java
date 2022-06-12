@@ -69,7 +69,7 @@ public class UseSteps implements En {
 
                     assertThat(persona.createUseForm).isNull();
                     assertThat(persona.deleteUseForm).isNull();
-                    assertThat(persona.entityListItemSpec).isNull();
+                    assertThat(persona.entityListItemUniversalSpec).isNull();
 
                     persona.deleteUseForm = OfferUtil.getHome().getDeleteUseForm();
                 });
@@ -92,7 +92,7 @@ public class UseSteps implements En {
 
                     assertThat(persona.createUseForm).isNull();
                     assertThat(persona.deleteUseForm).isNull();
-                    assertThat(persona.entityListItemSpec).isNull();
+                    assertThat(persona.entityListItemUniversalSpec).isNull();
 
                     persona.useSpec = OfferUtil.getHome().getUseSpec();
                 });

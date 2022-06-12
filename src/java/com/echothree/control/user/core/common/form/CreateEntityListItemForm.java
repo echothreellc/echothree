@@ -17,11 +17,12 @@
 package com.echothree.control.user.core.common.form;
 
 import com.echothree.control.user.core.common.edit.EntityListItemEdit;
+import com.echothree.control.user.core.common.spec.EntityAttributeUniversalSpec;
 import com.echothree.control.user.core.common.spec.EntityListItemSpec;
 
 public interface CreateEntityListItemForm
-        extends EntityListItemSpec, EntityListItemEdit {
+        extends EntityAttributeUniversalSpec, EntityListItemSpec, EntityListItemEdit {
     
-    // Nothing additional beyond EntityListItemSpec, EntityListItemEdit
+    // Nothing additional beyond EntityAttributeUniversalSpec, EntityListItemSpec, EntityListItemEdit
     
 }

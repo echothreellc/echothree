@@ -14,13 +14,11 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.core.common.form;
+package com.echothree.control.user.core.common.spec;
 
-import com.echothree.control.user.core.common.spec.EntityListItemUniversalSpec;
+public interface EntityListItemUniversalSpec
+        extends EntityListItemSpec, UniversalEntitySpec {
 
-public interface DeleteEntityListItemForm
-        extends EntityListItemUniversalSpec {
-
-    // Nothing additional beyond EntityListItemUniversalSpec
+    // Nothing additional beyond EntityListItemSpec, UniversalEntitySpec
     
 }

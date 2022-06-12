@@ -60,7 +60,7 @@ public class OfferItemPriceSteps implements En {
 
                     assertThat(persona.createOfferItemPriceForm).isNull();
                     assertThat(persona.deleteOfferItemPriceForm).isNull();
-                    assertThat(persona.entityListItemSpec).isNull();
+                    assertThat(persona.entityListItemUniversalSpec).isNull();
 
                     persona.deleteOfferItemPriceForm = OfferUtil.getHome().getDeleteOfferItemPriceForm();
                 });
@@ -83,7 +83,7 @@ public class OfferItemPriceSteps implements En {
 
                     assertThat(persona.createOfferItemPriceForm).isNull();
                     assertThat(persona.deleteOfferItemPriceForm).isNull();
-                    assertThat(persona.entityListItemSpec).isNull();
+                    assertThat(persona.entityListItemUniversalSpec).isNull();
 
                     persona.offerItemPriceSpec = OfferUtil.getHome().getOfferItemPriceSpec();
                 });
