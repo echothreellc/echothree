@@ -134,7 +134,7 @@ public class SecureLinkTag
             throw new JspException(messages.getMessage("rewrite.url", e.toString()));
         }
         
-        return (url);
+        return url;
     }
     
 }
