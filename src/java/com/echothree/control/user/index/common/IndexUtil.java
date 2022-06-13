@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.index.common;
 
-import com.echothree.control.user.index.common.IndexRemote;
 import com.echothree.control.user.index.server.IndexLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class IndexUtil {
     
     private static IndexLocal cachedLocal = null;
     private static IndexRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static IndexLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class IndexUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static IndexRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {

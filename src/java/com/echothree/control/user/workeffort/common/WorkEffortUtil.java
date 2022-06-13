@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.workeffort.common;
 
-import com.echothree.control.user.workeffort.common.WorkEffortRemote;
 import com.echothree.control.user.workeffort.server.WorkEffortLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class WorkEffortUtil {
     
     private static WorkEffortLocal cachedLocal = null;
     private static WorkEffortRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static WorkEffortLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class WorkEffortUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static WorkEffortRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {

@@ -53,7 +53,7 @@ public class BaseMessageTag
     }
     
     public String getBundle() {
-        return (this.bundle);
+        return bundle;
     }
     
     public void setBundle(String bundle) {
@@ -61,7 +61,7 @@ public class BaseMessageTag
     }
     
     public String getLocale() {
-        return (this.locale);
+        return locale;
     }
     
     public void setLocale(String locale) {

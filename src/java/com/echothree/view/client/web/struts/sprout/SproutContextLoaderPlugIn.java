@@ -27,6 +27,7 @@ public class SproutContextLoaderPlugIn
     private ActionServlet actionServlet;
     private ModuleConfig moduleConfig;
 
+    @Override
     public final void init(final ActionServlet actionServlet, final ModuleConfig moduleConfig)
             throws ServletException {
         this.actionServlet = actionServlet;
@@ -35,6 +36,7 @@ public class SproutContextLoaderPlugIn
         onInit();
     }
 
+    @Override
     public void destroy() {
         onDestroy();
     }

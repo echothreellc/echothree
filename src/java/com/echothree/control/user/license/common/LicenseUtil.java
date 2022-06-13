@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.license.common;
 
-import com.echothree.control.user.license.common.LicenseRemote;
 import com.echothree.control.user.license.server.LicenseLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class LicenseUtil {
     
     private static LicenseLocal cachedLocal = null;
     private static LicenseRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static LicenseLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class LicenseUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static LicenseRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {

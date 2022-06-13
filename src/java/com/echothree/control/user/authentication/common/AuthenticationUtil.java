@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.authentication.common;
 
-import com.echothree.control.user.authentication.common.AuthenticationRemote;
 import com.echothree.control.user.authentication.server.AuthenticationLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class AuthenticationUtil {
     
     private static AuthenticationLocal cachedLocal = null;
     private static AuthenticationRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static AuthenticationLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -38,6 +38,7 @@ public class AuthenticationUtil {
         return cachedLocal;
     }
 
+    @SuppressWarnings("BanJNDI")
     public static AuthenticationRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {

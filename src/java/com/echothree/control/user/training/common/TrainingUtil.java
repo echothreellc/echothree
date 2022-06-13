@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.training.common;
 
-import com.echothree.control.user.training.common.TrainingRemote;
 import com.echothree.control.user.training.server.TrainingLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class TrainingUtil {
     
     private static TrainingLocal cachedLocal = null;
     private static TrainingRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static TrainingLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class TrainingUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static TrainingRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {

@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.invoice.common;
 
-import com.echothree.control.user.invoice.common.InvoiceRemote;
 import com.echothree.control.user.invoice.server.InvoiceLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class InvoiceUtil {
     
     private static InvoiceLocal cachedLocal = null;
     private static InvoiceRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static InvoiceLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class InvoiceUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static InvoiceRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {

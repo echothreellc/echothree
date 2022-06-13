@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.payment.common;
 
-import com.echothree.control.user.payment.common.PaymentRemote;
 import com.echothree.control.user.payment.server.PaymentLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class PaymentUtil {
     
     private static PaymentLocal cachedLocal = null;
     private static PaymentRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static PaymentLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class PaymentUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static PaymentRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {

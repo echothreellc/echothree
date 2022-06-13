@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.printer.common;
 
-import com.echothree.control.user.printer.common.PrinterRemote;
 import com.echothree.control.user.printer.server.PrinterLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class PrinterUtil {
     
     private static PrinterLocal cachedLocal = null;
     private static PrinterRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static PrinterLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class PrinterUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static PrinterRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {

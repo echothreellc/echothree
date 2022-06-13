@@ -38,7 +38,8 @@ public class DslContextFactory {
     
     private final DataSource ds;
     private final DataSource ntds;
-    
+
+    @SuppressWarnings("BanJNDI")
     protected DslContextFactory() {
         Context jndiContext;
         

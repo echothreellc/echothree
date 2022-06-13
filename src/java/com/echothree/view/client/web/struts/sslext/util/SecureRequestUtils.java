@@ -590,7 +590,7 @@ public class SecureRequestUtils {
         sb.append(anchor);
         sb.append(query);
         
-        return (sb.toString());
+        return sb.toString();
     }
     
 }

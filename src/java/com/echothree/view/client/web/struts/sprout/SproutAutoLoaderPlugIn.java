@@ -196,6 +196,7 @@ public class SproutAutoLoaderPlugIn
      * Extends SproutContextLoaderPlugIn's initialization callback to add
      * Struts registration of Sprouts.
      */
+    @Override
     public void onInit() throws ServletException {
         loadAnnotatedActionsAndForms();
     }

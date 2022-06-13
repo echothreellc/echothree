@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.purchase.common;
 
-import com.echothree.control.user.purchase.common.PurchaseRemote;
 import com.echothree.control.user.purchase.server.PurchaseLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class PurchaseUtil {
     
     private static PurchaseLocal cachedLocal = null;
     private static PurchaseRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static PurchaseLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class PurchaseUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static PurchaseRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {

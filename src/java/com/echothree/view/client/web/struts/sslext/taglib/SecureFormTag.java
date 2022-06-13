@@ -111,7 +111,7 @@ public class SecureFormTag
         }
         
         // Return the completed value
-        return (url);
+        return url;
     }
     
     /**
@@ -217,7 +217,7 @@ public class SecureFormTag
         pageContext.setAttribute(Constants.BEAN_KEY, bean, PageContext.REQUEST_SCOPE);
         
         // Continue processing this page
-        return (EVAL_BODY_INCLUDE);
+        return EVAL_BODY_INCLUDE;
     }
     
 }

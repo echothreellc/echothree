@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.club.common;
 
-import com.echothree.control.user.club.common.ClubRemote;
 import com.echothree.control.user.club.server.ClubLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class ClubUtil {
     
     private static ClubLocal cachedLocal = null;
     private static ClubRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static ClubLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class ClubUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static ClubRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {

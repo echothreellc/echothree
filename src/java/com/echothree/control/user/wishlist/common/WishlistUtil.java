@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.wishlist.common;
 
-import com.echothree.control.user.wishlist.common.WishlistRemote;
 import com.echothree.control.user.wishlist.server.WishlistLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class WishlistUtil {
     
     private static WishlistLocal cachedLocal = null;
     private static WishlistRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static WishlistLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class WishlistUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static WishlistRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {

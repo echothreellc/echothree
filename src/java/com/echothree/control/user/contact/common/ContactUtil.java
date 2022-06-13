@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.contact.common;
 
-import com.echothree.control.user.contact.common.ContactRemote;
 import com.echothree.control.user.contact.server.ContactLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class ContactUtil {
     
     private static ContactLocal cachedLocal = null;
     private static ContactRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static ContactLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class ContactUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static ContactRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {

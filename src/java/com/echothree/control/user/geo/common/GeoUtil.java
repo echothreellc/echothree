@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.geo.common;
 
-import com.echothree.control.user.geo.common.GeoRemote;
 import com.echothree.control.user.geo.server.GeoLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class GeoUtil {
     
     private static GeoLocal cachedLocal = null;
     private static GeoRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static GeoLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class GeoUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static GeoRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {

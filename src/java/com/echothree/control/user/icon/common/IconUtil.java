@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.icon.common;
 
-import com.echothree.control.user.icon.common.IconRemote;
 import com.echothree.control.user.icon.server.IconLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class IconUtil {
     
     private static IconLocal cachedLocal = null;
     private static IconRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static IconLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class IconUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static IconRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {

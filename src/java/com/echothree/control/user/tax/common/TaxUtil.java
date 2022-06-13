@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.tax.common;
 
-import com.echothree.control.user.tax.common.TaxRemote;
 import com.echothree.control.user.tax.server.TaxLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class TaxUtil {
     
     private static TaxLocal cachedLocal = null;
     private static TaxRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static TaxLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class TaxUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static TaxRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {

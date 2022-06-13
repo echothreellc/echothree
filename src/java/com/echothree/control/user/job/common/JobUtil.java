@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.job.common;
 
-import com.echothree.control.user.job.common.JobRemote;
 import com.echothree.control.user.job.server.JobLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -27,6 +26,7 @@ public class JobUtil {
     private static JobLocal cachedLocal = null;
     private static JobRemote cachedRemote = null;
 
+    @SuppressWarnings("BanJNDI")
     public static JobLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class JobUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static JobRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {

@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.party.common;
 
-import com.echothree.control.user.party.common.PartyRemote;
 import com.echothree.control.user.party.server.PartyLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class PartyUtil {
     
     private static PartyLocal cachedLocal = null;
     private static PartyRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static PartyLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class PartyUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static PartyRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
