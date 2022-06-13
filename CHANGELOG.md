@@ -1,5 +1,17 @@
 # Changelog
 
+## 2022-06-12-01
+
+* Additional Item Object FIelds [438](https://gitlab.echothree.com/echothree/echothree/-/issues/438)
+* Add Cancellation Kind Object [439](https://gitlab.echothree.com/echothree/echothree/-/issues/439)
+* Add Cancellation Policy Object [442](https://gitlab.echothree.com/echothree/echothree/-/issues/442)
+* Add Return Kind Object [445](https://gitlab.echothree.com/echothree/echothree/-/issues/445)
+* Add Return Policy Object [448](https://gitlab.echothree.com/echothree/echothree/-/issues/448)
+* Add Entity Attribute Mutations [481](https://gitlab.echothree.com/echothree/echothree/-/issues/481)
+* Add Entity List Item Mutations [482](https://gitlab.echothree.com/echothree/echothree/-/issues/482)
+* WildFly 26.1.1 Upgrade [484](https://gitlab.echothree.com/echothree/echothree/-/issues/484)
+* Rename partyId to id for User Login Mutations [486](https://gitlab.echothree.com/echothree/echothree/-/issues/486)
+
 ## 2022-05-29-01
 
 * Add EntityListItemSequence to Entity Attribute Object [480](https://gitlab.echothree.com/echothree/echothree/-/issues/480)
