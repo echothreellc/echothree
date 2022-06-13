@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.associate.common;
 
-import com.echothree.control.user.associate.common.AssociateRemote;
 import com.echothree.control.user.associate.server.AssociateLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class AssociateUtil {
     
     private static AssociateLocal cachedLocal = null;
     private static AssociateRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static AssociateLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class AssociateUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static AssociateRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {

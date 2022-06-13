@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.message.common;
 
-import com.echothree.control.user.message.common.MessageRemote;
 import com.echothree.control.user.message.server.MessageLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class MessageUtil {
     
     private static MessageLocal cachedLocal = null;
     private static MessageRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static MessageLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class MessageUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static MessageRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {

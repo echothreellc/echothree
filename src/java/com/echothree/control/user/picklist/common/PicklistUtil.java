@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.picklist.common;
 
-import com.echothree.control.user.picklist.common.PicklistRemote;
 import com.echothree.control.user.picklist.server.PicklistLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class PicklistUtil {
     
     private static PicklistLocal cachedLocal = null;
     private static PicklistRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static PicklistLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class PicklistUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static PicklistRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {

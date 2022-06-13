@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.carrier.common;
 
-import com.echothree.control.user.carrier.common.CarrierRemote;
 import com.echothree.control.user.carrier.server.CarrierLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class CarrierUtil {
     
     private static CarrierLocal cachedLocal = null;
     private static CarrierRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static CarrierLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class CarrierUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static CarrierRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {

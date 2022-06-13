@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.sales.common;
 
-import com.echothree.control.user.sales.common.SalesRemote;
 import com.echothree.control.user.sales.server.SalesLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class SalesUtil {
     
     private static SalesLocal cachedLocal = null;
     private static SalesRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static SalesLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class SalesUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static SalesRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {

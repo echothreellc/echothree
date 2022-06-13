@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.security.common;
 
-import com.echothree.control.user.security.common.SecurityRemote;
 import com.echothree.control.user.security.server.SecurityLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class SecurityUtil {
     
     private static SecurityLocal cachedLocal = null;
     private static SecurityRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static SecurityLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class SecurityUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static SecurityRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {

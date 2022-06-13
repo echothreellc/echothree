@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.cancellationpolicy.common;
 
-import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyRemote;
 import com.echothree.control.user.cancellationpolicy.server.CancellationPolicyLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class CancellationPolicyUtil {
     
     private static CancellationPolicyLocal cachedLocal = null;
     private static CancellationPolicyRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static CancellationPolicyLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class CancellationPolicyUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static CancellationPolicyRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {

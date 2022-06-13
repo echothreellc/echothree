@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.workflow.common;
 
-import com.echothree.control.user.workflow.common.WorkflowRemote;
 import com.echothree.control.user.workflow.server.WorkflowLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class WorkflowUtil {
     
     private static WorkflowLocal cachedLocal = null;
     private static WorkflowRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static WorkflowLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class WorkflowUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static WorkflowRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {

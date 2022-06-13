@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.tag.common;
 
-import com.echothree.control.user.tag.common.TagRemote;
 import com.echothree.control.user.tag.server.TagLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class TagUtil {
     
     private static TagLocal cachedLocal = null;
     private static TagRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static TagLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class TagUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static TagRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {

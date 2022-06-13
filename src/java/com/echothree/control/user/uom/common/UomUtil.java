@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.uom.common;
 
-import com.echothree.control.user.uom.common.UomRemote;
 import com.echothree.control.user.uom.server.UomLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class UomUtil {
     
     private static UomLocal cachedLocal = null;
     private static UomRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static UomLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class UomUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static UomRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {

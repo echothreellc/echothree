@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.term.common;
 
-import com.echothree.control.user.term.common.TermRemote;
 import com.echothree.control.user.term.server.TermLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class TermUtil {
     
     private static TermLocal cachedLocal = null;
     private static TermRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static TermLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class TermUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static TermRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {

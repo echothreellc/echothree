@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.customer.common;
 
-import com.echothree.control.user.customer.common.CustomerRemote;
 import com.echothree.control.user.customer.server.CustomerLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class CustomerUtil {
     
     private static CustomerLocal cachedLocal = null;
     private static CustomerRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static CustomerLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class CustomerUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static CustomerRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {

@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.employee.common;
 
-import com.echothree.control.user.employee.common.EmployeeRemote;
 import com.echothree.control.user.employee.server.EmployeeLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class EmployeeUtil {
     
     private static EmployeeLocal cachedLocal = null;
     private static EmployeeRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static EmployeeLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class EmployeeUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static EmployeeRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {

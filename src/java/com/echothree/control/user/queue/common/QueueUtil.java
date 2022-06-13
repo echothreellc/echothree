@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.queue.common;
 
-import com.echothree.control.user.queue.common.QueueRemote;
 import com.echothree.control.user.queue.server.QueueLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class QueueUtil {
     
     private static QueueLocal cachedLocal = null;
     private static QueueRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static QueueLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class QueueUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static QueueRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {

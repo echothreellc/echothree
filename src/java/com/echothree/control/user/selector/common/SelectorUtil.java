@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.selector.common;
 
-import com.echothree.control.user.selector.common.SelectorRemote;
 import com.echothree.control.user.selector.server.SelectorLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class SelectorUtil {
     
     private static SelectorLocal cachedLocal = null;
     private static SelectorRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static SelectorLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class SelectorUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static SelectorRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {

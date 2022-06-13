@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.campaign.common;
 
-import com.echothree.control.user.campaign.common.CampaignRemote;
 import com.echothree.control.user.campaign.server.CampaignLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class CampaignUtil {
     
     private static CampaignLocal cachedLocal = null;
     private static CampaignRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static CampaignLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class CampaignUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static CampaignRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {

@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.letter.common;
 
-import com.echothree.control.user.letter.common.LetterRemote;
 import com.echothree.control.user.letter.server.LetterLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class LetterUtil {
     
     private static LetterLocal cachedLocal = null;
     private static LetterRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static LetterLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class LetterUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static LetterRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {

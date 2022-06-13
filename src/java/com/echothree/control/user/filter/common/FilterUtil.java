@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.filter.common;
 
-import com.echothree.control.user.filter.common.FilterRemote;
 import com.echothree.control.user.filter.server.FilterLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class FilterUtil {
     
     private static FilterLocal cachedLocal = null;
     private static FilterRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static FilterLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class FilterUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static FilterRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {

@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.shipping.common;
 
-import com.echothree.control.user.shipping.common.ShippingRemote;
 import com.echothree.control.user.shipping.server.ShippingLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class ShippingUtil {
     
     private static ShippingLocal cachedLocal = null;
     private static ShippingRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static ShippingLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class ShippingUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static ShippingRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {

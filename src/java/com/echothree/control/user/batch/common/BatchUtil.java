@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.batch.common;
 
-import com.echothree.control.user.batch.common.BatchRemote;
 import com.echothree.control.user.batch.server.BatchLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class BatchUtil {
     
     private static BatchLocal cachedLocal = null;
     private static BatchRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static BatchLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class BatchUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static BatchRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {

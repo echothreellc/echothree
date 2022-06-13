@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.period.common;
 
-import com.echothree.control.user.period.common.PeriodRemote;
 import com.echothree.control.user.period.server.PeriodLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class PeriodUtil {
     
     private static PeriodLocal cachedLocal = null;
     private static PeriodRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static PeriodLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class PeriodUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static PeriodRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {

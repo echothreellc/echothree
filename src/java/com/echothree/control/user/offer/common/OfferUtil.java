@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.offer.common;
 
-import com.echothree.control.user.offer.common.OfferRemote;
 import com.echothree.control.user.offer.server.OfferLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class OfferUtil {
     
     private static OfferLocal cachedLocal = null;
     private static OfferRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static OfferLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class OfferUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static OfferRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {

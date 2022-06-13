@@ -16,7 +16,6 @@
 
 package com.echothree.control.user.core.common;
 
-import com.echothree.control.user.core.common.CoreRemote;
 import com.echothree.control.user.core.server.CoreLocal;
 import com.echothree.util.common.control.InitialContextUtils;
 import javax.naming.InitialContext;
@@ -26,7 +25,8 @@ public class CoreUtil {
     
     private static CoreLocal cachedLocal = null;
     private static CoreRemote cachedRemote = null;
-    
+
+    @SuppressWarnings("BanJNDI")
     public static CoreLocal getLocalHome()
             throws NamingException {
         if(cachedLocal == null) {
@@ -37,7 +37,8 @@ public class CoreUtil {
         
         return cachedLocal;
     }
-    
+
+    @SuppressWarnings("BanJNDI")
     public static CoreRemote getHome()
             throws NamingException {
         if(cachedRemote == null) {
