@@ -67,7 +67,7 @@
         <dependency org="org.apache.lucene" name="lucene-suggest" rev="9.2.0" conf="sources->sources" />
         <dependency org="org.apache.poi" name="poi" rev="3.17" conf="sources->sources" />
         <dependency org="org.assertj" name="assertj-core" rev="3.23.1" conf="sources->sources" />
-        <dependency org="org.assertj" name="assertj-guava" rev="3.4.0" conf="sources->sources" />
+        <dependency org="org.assertj" name="assertj-guava" rev="3.5.0" conf="sources->sources" />
         <dependency org="org.freemarker" name="freemarker" rev="2.3.31" conf="sources->sources" />
         <dependency org="org.infinispan" name="infinispan-commons" rev="13.0.8.Final" conf="sources->sources" />
         <dependency org="org.infinispan" name="infinispan-core" rev="13.0.8.Final" conf="sources->sources" />
@@ -145,7 +145,7 @@
         <dependency org="org.apache.lucene" name="lucene-suggest" rev="9.2.0" conf="javadoc->javadoc" />
         <dependency org="org.apache.poi" name="poi" rev="3.17" conf="javadoc->javadoc" />
         <dependency org="org.assertj" name="assertj-core" rev="3.23.1" conf="javadoc->javadoc" />
-        <dependency org="org.assertj" name="assertj-guava" rev="3.4.0" conf="javadoc->javadoc" />
+        <dependency org="org.assertj" name="assertj-guava" rev="3.5.0" conf="javadoc->javadoc" />
         <dependency org="org.freemarker" name="freemarker" rev="2.3.31" conf="javadoc->javadoc" />
         <dependency org="org.infinispan" name="infinispan-commons" rev="13.0.8.Final" conf="javadoc->javadoc" />
         <dependency org="org.infinispan" name="infinispan-core" rev="13.0.8.Final" conf="javadoc->javadoc" />
@@ -228,7 +228,7 @@
         <dependency org="org.apache.lucene" name="lucene-suggest" rev="9.2.0" conf="binaries->default" />
         <dependency org="org.apache.poi" name="poi" rev="3.17" conf="binaries->default" />
         <dependency org="org.assertj" name="assertj-core" rev="3.23.1" conf="binaries->default" />
-        <dependency org="org.assertj" name="assertj-guava" rev="3.4.0" conf="binaries->default" />
+        <dependency org="org.assertj" name="assertj-guava" rev="3.5.0" conf="binaries->default" />
         <dependency org="org.freemarker" name="freemarker" rev="2.3.31" conf="binaries->default" />
         <dependency org="org.infinispan" name="infinispan-commons" rev="13.0.8.Final" conf="binaries->default" />
         <dependency org="org.infinispan" name="infinispan-core" rev="13.0.8.Final" conf="binaries->default" />
