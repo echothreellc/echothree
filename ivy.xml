@@ -58,7 +58,7 @@
         <dependency org="org.apache.httpcomponents" name="fluent-hc" rev="4.5.13" conf="sources->sources" />
         <dependency org="org.apache.httpcomponents" name="httpclient" rev="4.5.13" conf="sources->sources" />
         <dependency org="org.apache.httpcomponents" name="httpclient-cache" rev="4.5.13" conf="sources->sources" />
-        <dependency org="org.apache.httpcomponents" name="httpcore" rev="4.4.14" conf="sources->sources" />
+        <dependency org="org.apache.httpcomponents" name="httpcore" rev="4.4.15" conf="sources->sources" />
         <dependency org="org.apache.httpcomponents" name="httpmime" rev="4.5.13" conf="sources->sources" />
         <dependency org="org.apache.lucene" name="lucene-analysis-common" rev="9.2.0" conf="sources->sources" />
         <dependency org="org.apache.lucene" name="lucene-analysis-kuromoji" rev="9.2.0" conf="sources->sources" />
@@ -136,7 +136,7 @@
         <dependency org="org.apache.httpcomponents" name="fluent-hc" rev="4.5.13" conf="javadoc->javadoc" />
         <dependency org="org.apache.httpcomponents" name="httpclient" rev="4.5.13" conf="javadoc->javadoc" />
         <dependency org="org.apache.httpcomponents" name="httpclient-cache" rev="4.5.13" conf="javadoc->javadoc" />
-        <dependency org="org.apache.httpcomponents" name="httpcore" rev="4.4.14" conf="javadoc->javadoc" />
+        <dependency org="org.apache.httpcomponents" name="httpcore" rev="4.4.15" conf="javadoc->javadoc" />
         <dependency org="org.apache.httpcomponents" name="httpmime" rev="4.5.13" conf="javadoc->javadoc" />
         <dependency org="org.apache.lucene" name="lucene-analysis-common" rev="9.2.0" conf="javadoc->javadoc" />
         <dependency org="org.apache.lucene" name="lucene-analysis-kuromoji" rev="9.2.0" conf="javadoc->javadoc" />
@@ -219,7 +219,7 @@
         <dependency org="org.apache.httpcomponents" name="fluent-hc" rev="4.5.13" conf="binaries->default" />
         <dependency org="org.apache.httpcomponents" name="httpclient" rev="4.5.13" conf="binaries->default" />
         <dependency org="org.apache.httpcomponents" name="httpclient-cache" rev="4.5.13" conf="binaries->default" />
-        <dependency org="org.apache.httpcomponents" name="httpcore" rev="4.4.14" conf="binaries->default" />
+        <dependency org="org.apache.httpcomponents" name="httpcore" rev="4.4.15" conf="binaries->default" />
         <dependency org="org.apache.httpcomponents" name="httpmime" rev="4.5.13" conf="binaries->default" />
         <dependency org="org.apache.lucene" name="lucene-analysis-common" rev="9.2.0" conf="binaries->default" />
         <dependency org="org.apache.lucene" name="lucene-analysis-kuromoji" rev="9.2.0" conf="binaries->default" />
