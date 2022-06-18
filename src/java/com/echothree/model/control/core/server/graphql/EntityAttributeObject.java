@@ -408,23 +408,38 @@ public class EntityAttributeObject
         
         return entityLongAttributeObject;
     }
-    
+
+    @GraphQLField
+    @GraphQLDescription("entity name attribute")
+    public EntityNameAttributeObject getEntityNameAttribute(final DataFetchingEnvironment env) {
+        EntityNameAttributeObject entityNameAttributeObject = null;
+
+        if(isEntityAttributeTypeName(EntityAttributeTypes.NAME.name()) && entityInstance != null) {
+            var coreControl = Session.getModelController(CoreControl.class);
+            var entityNameAttribute = coreControl.getEntityNameAttribute(entityAttribute, entityInstance);
+
+            entityNameAttributeObject = entityNameAttribute == null ? null : new EntityNameAttributeObject(entityNameAttribute);
+        }
+
+        return entityNameAttributeObject;
+    }
+
     @GraphQLField
     @GraphQLDescription("entity string attribute")
     public EntityStringAttributeObject getEntityStringAttribute(final DataFetchingEnvironment env) {
         EntityStringAttributeObject entityStringAttributeObject = null;
-        
+
         if(isEntityAttributeTypeName(EntityAttributeTypes.STRING.name()) && entityInstance != null) {
             var coreControl = Session.getModelController(CoreControl.class);
             var userControl = Session.getModelController(UserControl.class);
             EntityStringAttribute entityStringAttribute = coreControl.getBestEntityStringAttribute(entityAttribute, entityInstance, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
-            
+
             entityStringAttributeObject = entityStringAttribute == null ? null : new EntityStringAttributeObject(entityStringAttribute);
         }
-        
+
         return entityStringAttributeObject;
     }
-    
+
     @GraphQLField
     @GraphQLDescription("entity list items")
     public Collection<EntityListItemObject> getEntityListItems(final DataFetchingEnvironment env) {
