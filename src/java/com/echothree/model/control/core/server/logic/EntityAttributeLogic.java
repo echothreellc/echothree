@@ -35,6 +35,7 @@ import com.echothree.model.control.core.common.exception.DuplicateEntityLongAttr
 import com.echothree.model.control.core.common.exception.DuplicateEntityMultipleListItemAttributeException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityNameAttributeException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityStringAttributeException;
+import com.echothree.model.control.core.common.exception.DuplicateEntityTimeAttributeException;
 import com.echothree.model.control.core.common.exception.InvalidEntityAttributeTypeException;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.common.exception.InvalidStringAttributeException;
@@ -90,6 +91,7 @@ import com.echothree.model.data.core.server.entity.EntityLongAttribute;
 import com.echothree.model.data.core.server.entity.EntityMultipleListItemAttribute;
 import com.echothree.model.data.core.server.entity.EntityNameAttribute;
 import com.echothree.model.data.core.server.entity.EntityStringAttribute;
+import com.echothree.model.data.core.server.entity.EntityTimeAttribute;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.core.server.entity.EntityTypeDetail;
 import com.echothree.model.data.core.server.value.EntityAttributeDetailValue;
@@ -999,6 +1001,29 @@ public class EntityAttributeLogic
         }
 
         return entityDateAttribute;
+    }
+
+    public EntityTimeAttribute createEntityTimeAttribute(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
+            final EntityInstance entityInstance, final Long timeAttribute, final BasePK createdBy) {
+        EntityTimeAttribute entityTimeAttribute = null;
+
+        checkEntityType(eea, entityAttribute, entityInstance);
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var coreControl = Session.getModelController(CoreControl.class);
+
+            entityTimeAttribute = coreControl.getEntityTimeAttribute(entityAttribute, entityInstance);
+
+            if(entityTimeAttribute == null) {
+                coreControl.createEntityTimeAttribute(entityAttribute, entityInstance, timeAttribute, createdBy);
+            } else {
+                handleExecutionError(DuplicateEntityTimeAttributeException.class, eea, ExecutionErrors.DuplicateEntityTimeAttribute.name(),
+                        EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance),
+                        entityAttribute.getLastDetail().getEntityAttributeName());
+            }
+        }
+
+        return entityTimeAttribute;
     }
 
     public EntityListItemAttribute createEntityListItemAttribute(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
