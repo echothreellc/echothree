@@ -17,6 +17,8 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteEntityDateAttributeForm;
+import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityDateAttribute;
@@ -46,8 +48,12 @@ public class DeleteEntityDateAttributeCommand
         ));
 
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, true, null, null),
-                new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null),
+                new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityAttributeUlid", FieldType.ULID, false, null, null)
                 ));
     }
     
@@ -58,29 +64,44 @@ public class DeleteEntityDateAttributeCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
-        String entityRef = form.getEntityRef();
-        EntityInstance entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
-        
-        if(entityInstance != null) {
-            String entityAttributeName = form.getEntityAttributeName();
-            EntityAttribute entityAttribute = coreControl.getEntityAttributeByName(entityInstance.getEntityType(), entityAttributeName);
-            
-            if(entityAttribute != null) {
-                EntityDateAttribute entityDateAttribute = coreControl.getEntityDateAttributeForUpdate(entityAttribute, entityInstance);
+        var parameterCount = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
-                if(entityDateAttribute != null) {
-                    coreControl.deleteEntityDateAttribute(entityDateAttribute, getPartyPK());
+        if(parameterCount == 1) {
+            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
+
+            if(!hasExecutionErrors()) {
+                var entityAttributeName = form.getEntityAttributeName();
+                var entityAttributeUlid = form.getEntityAttributeUlid();
+
+                parameterCount = (entityAttributeName == null ? 0 : 1) + (entityAttributeUlid == null ? 0 : 1);
+
+                if(parameterCount == 1) {
+                    var entityAttribute = entityAttributeName == null ?
+                            EntityAttributeLogic.getInstance().getEntityAttributeByUlid(this, entityAttributeUlid) :
+                            EntityAttributeLogic.getInstance().getEntityAttributeByName(this, entityInstance.getEntityType(), entityAttributeName);
+
+                    if(!hasExecutionErrors()) {
+                        if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
+                            var coreControl = getCoreControl();
+                            var entityDateAttribute = coreControl.getEntityDateAttributeForUpdate(entityAttribute, entityInstance);
+
+                            if(entityDateAttribute != null) {
+                                coreControl.deleteEntityDateAttribute(entityDateAttribute, getPartyPK());
+                            } else {
+                                addExecutionError(ExecutionErrors.UnknownEntityDateAttribute.name());
+                            }
+                        } else {
+                            addExecutionError(ExecutionErrors.MismatchedEntityType.name());
+                        }
+                    }
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownEntityDateAttribute.name(), entityRef, entityAttributeName);
+                    addExecutionError(ExecutionErrors.InvalidParameterCount.name());
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownEntityAttributeName.name(), entityAttributeName);
             }
         } else {
-            addExecutionError(ExecutionErrors.UnknownEntityRef.name(), entityRef);
+            addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
-        
+
         return null;
     }
     
