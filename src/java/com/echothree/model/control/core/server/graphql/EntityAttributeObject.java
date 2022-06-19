@@ -433,6 +433,21 @@ public class EntityAttributeObject
     }
 
     @GraphQLField
+    @GraphQLDescription("entity date attribute")
+    public EntityDateAttributeObject getEntityDateAttribute(final DataFetchingEnvironment env) {
+        EntityDateAttributeObject entityDateAttributeObject = null;
+
+        if(isEntityAttributeTypeName(EntityAttributeTypes.DATE.name()) && entityInstance != null) {
+            var coreControl = Session.getModelController(CoreControl.class);
+            var entityDateAttribute = coreControl.getEntityDateAttribute(entityAttribute, entityInstance);
+
+            entityDateAttributeObject = entityDateAttribute == null ? null : new EntityDateAttributeObject(entityDateAttribute);
+        }
+
+        return entityDateAttributeObject;
+    }
+
+    @GraphQLField
     @GraphQLDescription("entity list items")
     public Collection<EntityListItemObject> getEntityListItems(final DataFetchingEnvironment env) {
         Collection<EntityListItemObject> entityListItemObjects = null;
