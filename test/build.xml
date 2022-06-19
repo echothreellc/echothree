@@ -14,7 +14,7 @@
 <!-- See the License for the specific language governing permissions and              -->
 <!-- limitations under the License.                                                   -->
 <!--                                                                                  -->
-<project basedir="." default="compile" name="ui">
+<project basedir="." default="compile" name="test">
     
     <target name="compile">
         <parallel>
