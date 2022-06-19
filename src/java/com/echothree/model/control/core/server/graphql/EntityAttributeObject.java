@@ -32,14 +32,7 @@ import com.echothree.model.data.core.server.entity.EntityAttributeListItem;
 import com.echothree.model.data.core.server.entity.EntityAttributeLong;
 import com.echothree.model.data.core.server.entity.EntityAttributeNumeric;
 import com.echothree.model.data.core.server.entity.EntityAttributeString;
-import com.echothree.model.data.core.server.entity.EntityBooleanAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.core.server.entity.EntityIntegerAttribute;
-import com.echothree.model.data.core.server.entity.EntityListItem;
-import com.echothree.model.data.core.server.entity.EntityListItemAttribute;
-import com.echothree.model.data.core.server.entity.EntityLongAttribute;
-import com.echothree.model.data.core.server.entity.EntityMultipleListItemAttribute;
-import com.echothree.model.data.core.server.entity.EntityStringAttribute;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -48,7 +41,6 @@ import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 @GraphQLDescription("entity attribute object")
 @GraphQLName("EntityAttribute")
@@ -145,7 +137,7 @@ public class EntityAttributeObject
 
     private EntityAttributeListItem getEntityAttributeListItem() {
         if(entityAttributeListItem == null
-        && (isEntityAttributeTypeName(EntityAttributeTypes.LISTITEM.name())
+                && (isEntityAttributeTypeName(EntityAttributeTypes.LISTITEM.name())
                 || isEntityAttributeTypeName(EntityAttributeTypes.MULTIPLELISTITEM.name()))) {
             var coreControl = Session.getModelController(CoreControl.class);
 
@@ -371,7 +363,7 @@ public class EntityAttributeObject
         
         if(isEntityAttributeTypeName(EntityAttributeTypes.BOOLEAN.name()) && entityInstance != null) {
             var coreControl = Session.getModelController(CoreControl.class);
-            EntityBooleanAttribute entityBooleanAttribute = coreControl.getEntityBooleanAttribute(entityAttribute, entityInstance);
+            var entityBooleanAttribute = coreControl.getEntityBooleanAttribute(entityAttribute, entityInstance);
             
             entityBooleanAttributeObject = entityBooleanAttribute == null ? null : new EntityBooleanAttributeObject(entityBooleanAttribute);
         }
@@ -386,7 +378,7 @@ public class EntityAttributeObject
         
         if(isEntityAttributeTypeName(EntityAttributeTypes.INTEGER.name()) && entityInstance != null) {
             var coreControl = Session.getModelController(CoreControl.class);
-            EntityIntegerAttribute entityIntegerAttribute = coreControl.getEntityIntegerAttribute(entityAttribute, entityInstance);
+            var entityIntegerAttribute = coreControl.getEntityIntegerAttribute(entityAttribute, entityInstance);
             
             entityIntegerAttributeObject = entityIntegerAttribute == null ? null : new EntityIntegerAttributeObject(entityIntegerAttribute);
         }
@@ -401,7 +393,7 @@ public class EntityAttributeObject
         
         if(isEntityAttributeTypeName(EntityAttributeTypes.LONG.name()) && entityInstance != null) {
             var coreControl = Session.getModelController(CoreControl.class);
-            EntityLongAttribute entityLongAttribute = coreControl.getEntityLongAttribute(entityAttribute, entityInstance);
+            var entityLongAttribute = coreControl.getEntityLongAttribute(entityAttribute, entityInstance);
             
             entityLongAttributeObject = entityLongAttribute == null ? null : new EntityLongAttributeObject(entityLongAttribute);
         }
@@ -432,7 +424,7 @@ public class EntityAttributeObject
         if(isEntityAttributeTypeName(EntityAttributeTypes.STRING.name()) && entityInstance != null) {
             var coreControl = Session.getModelController(CoreControl.class);
             var userControl = Session.getModelController(UserControl.class);
-            EntityStringAttribute entityStringAttribute = coreControl.getBestEntityStringAttribute(entityAttribute, entityInstance, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+            var entityStringAttribute = coreControl.getBestEntityStringAttribute(entityAttribute, entityInstance, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
 
             entityStringAttributeObject = entityStringAttribute == null ? null : new EntityStringAttributeObject(entityStringAttribute);
         }
@@ -444,11 +436,11 @@ public class EntityAttributeObject
     @GraphQLDescription("entity list items")
     public Collection<EntityListItemObject> getEntityListItems(final DataFetchingEnvironment env) {
         Collection<EntityListItemObject> entityListItemObjects = null;
-        
+
         if(isEntityAttributeTypeName(EntityAttributeTypes.LISTITEM.name())
                 || isEntityAttributeTypeName(EntityAttributeTypes.MULTIPLELISTITEM.name())) {
             var coreControl = Session.getModelController(CoreControl.class);
-            List<EntityListItem> entityListItems = coreControl.getEntityListItems(entityAttribute);
+            var entityListItems = coreControl.getEntityListItems(entityAttribute);
             
             entityListItemObjects = new ArrayList<>(entityListItems.size());
             
@@ -467,7 +459,7 @@ public class EntityAttributeObject
         
         if(isEntityAttributeTypeName(EntityAttributeTypes.LISTITEM.name()) && entityInstance != null) {
             var coreControl = Session.getModelController(CoreControl.class);
-            EntityListItemAttribute entityListItemAttribute = coreControl.getEntityListItemAttribute(entityAttribute, entityInstance);
+            var entityListItemAttribute = coreControl.getEntityListItemAttribute(entityAttribute, entityInstance);
             
             entityListItemAttributeObject = entityListItemAttribute == null ? null : new EntityListItemAttributeObject(entityListItemAttribute);
         }
@@ -482,7 +474,7 @@ public class EntityAttributeObject
         
         if(isEntityAttributeTypeName(EntityAttributeTypes.MULTIPLELISTITEM.name()) && entityInstance != null) {
             var coreControl = Session.getModelController(CoreControl.class);
-            List<EntityMultipleListItemAttribute> entityMultipleListItemAttributes = coreControl.getEntityMultipleListItemAttributes(entityAttribute, entityInstance);
+            var entityMultipleListItemAttributes = coreControl.getEntityMultipleListItemAttributes(entityAttribute, entityInstance);
             
             entityMultipleListItemAttributeObjects = new ArrayList<>(entityMultipleListItemAttributes.size());
             
