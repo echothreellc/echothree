@@ -49,14 +49,13 @@ import com.echothree.util.common.transfer.MapWrapper;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.ThreadSession;
+import com.echothree.util.server.string.DateUtils;
 import com.echothree.util.server.string.PercentUtils;
 import com.echothree.util.server.string.UnitOfMeasureUtils;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -75,10 +74,6 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     private Currency currency;
     private TimeZone timeZone;
     private DateTimeFormat dateTimeFormat;
-    
-    private java.util.TimeZone javaTimeZone;
-    private SimpleDateFormat sdfShortDateFormat;
-    private SimpleDateFormat sdfTimeFormatSeconds;
 
     boolean includeEntityInstance;
     boolean includeEntityAppearance;
@@ -183,14 +178,6 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         return timeZone;
     }
     
-    protected java.util.TimeZone getJavaTimeZone() {
-        if(javaTimeZone == null) {
-            javaTimeZone = java.util.TimeZone.getTimeZone(getTimeZone().getLastDetail().getJavaTimeZoneName());
-        }
-        
-        return javaTimeZone;
-    }
-    
     protected DateTimeFormat getDateTimeFormat() {
         if(dateTimeFormat == null) {
             dateTimeFormat = getUserControl().getPreferredDateTimeFormatFromUserVisit(userVisit);
@@ -199,30 +186,12 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         return dateTimeFormat;
     }
     
-    protected String formatDateUsingShortDateFormat(Date time) {
-        if(sdfShortDateFormat == null) {
-            sdfShortDateFormat = new SimpleDateFormat(getDateTimeFormat().getLastDetail().getJavaShortDateFormat());
-            sdfShortDateFormat.setTimeZone(getJavaTimeZone());
-        }
-        
-        return sdfShortDateFormat.format(time);
-    }
-    
-    protected String formatTimeUsingTimeFormatSeconds(Date time) {
-        if(sdfTimeFormatSeconds == null) {
-            sdfTimeFormatSeconds = new SimpleDateFormat(getDateTimeFormat().getLastDetail().getJavaTimeFormatSeconds());
-            sdfTimeFormatSeconds.setTimeZone(getJavaTimeZone());
-        }
-        
-        return sdfTimeFormatSeconds.format(time);
-    }
-    
     protected String formatTypicalDateTime(Date time) {
-        return new StringBuilder(formatDateUsingShortDateFormat(time)).append(' ').append(formatTimeUsingTimeFormatSeconds(time)).toString();
+        return DateUtils.getInstance().formatTypicalDateTime(userVisit, time);
     }
     
     protected String formatTypicalDateTime(Long time) {
-        return time == null? null: formatTypicalDateTime(new Date(time));
+        return DateUtils.getInstance().formatTypicalDateTime(userVisit, time);
     }
     
     protected String formatFractionalPercent(Integer percent) {

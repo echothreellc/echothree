@@ -448,6 +448,21 @@ public class EntityAttributeObject
     }
 
     @GraphQLField
+    @GraphQLDescription("entity time attribute")
+    public EntityTimeAttributeObject getEntityTimeAttribute(final DataFetchingEnvironment env) {
+        EntityTimeAttributeObject entityTimeAttributeObject = null;
+
+        if(isEntityAttributeTypeName(EntityAttributeTypes.TIME.name()) && entityInstance != null) {
+            var coreControl = Session.getModelController(CoreControl.class);
+            var entityTimeAttribute = coreControl.getEntityTimeAttribute(entityAttribute, entityInstance);
+
+            entityTimeAttributeObject = entityTimeAttribute == null ? null : new EntityTimeAttributeObject(entityTimeAttribute);
+        }
+
+        return entityTimeAttributeObject;
+    }
+
+    @GraphQLField
     @GraphQLDescription("entity list items")
     public Collection<EntityListItemObject> getEntityListItems(final DataFetchingEnvironment env) {
         Collection<EntityListItemObject> entityListItemObjects = null;
