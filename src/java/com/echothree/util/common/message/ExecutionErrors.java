@@ -2044,6 +2044,7 @@ public enum ExecutionErrors {
     MinimumValueGreaterThanMaximumValue,
     UnknownEntityListItemSequenceName,
     InvalidStringAttribute,
+    InvalidNameAttribute,
     UnknownIndexTypeDescription,
     UnknownIndexDescription,
     DuplicateDirectory,

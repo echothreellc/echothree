@@ -32,6 +32,7 @@ import com.echothree.model.control.core.common.exception.DuplicateEntityListItem
 import com.echothree.model.control.core.common.exception.DuplicateEntityListItemNameException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityLongAttributeException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityMultipleListItemAttributeException;
+import com.echothree.model.control.core.common.exception.DuplicateEntityNameAttributeException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityStringAttributeException;
 import com.echothree.model.control.core.common.exception.InvalidEntityAttributeTypeException;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
@@ -85,6 +86,7 @@ import com.echothree.model.data.core.server.entity.EntityListItem;
 import com.echothree.model.data.core.server.entity.EntityListItemAttribute;
 import com.echothree.model.data.core.server.entity.EntityLongAttribute;
 import com.echothree.model.data.core.server.entity.EntityMultipleListItemAttribute;
+import com.echothree.model.data.core.server.entity.EntityNameAttribute;
 import com.echothree.model.data.core.server.entity.EntityStringAttribute;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.core.server.entity.EntityTypeDetail;
@@ -912,13 +914,13 @@ public class EntityAttributeLogic
 
         return entityLongAttribute;
     }
-    
+
     public EntityStringAttribute createEntityStringAttribute(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
-        final EntityInstance entityInstance, final Language language, final String stringAttribute, final BasePK createdBy) {
+            final EntityInstance entityInstance, final Language language, final String stringAttribute, final BasePK createdBy) {
         EntityStringAttribute entityStringAttribute = null;
-        
+
         checkEntityType(eea, entityAttribute, entityInstance);
-        
+
         if(eea == null || !eea.hasExecutionErrors()) {
             var coreControl = Session.getModelController(CoreControl.class);
             EntityAttributeString entityAttributeString = coreControl.getEntityAttributeString(entityAttribute);
@@ -950,7 +952,30 @@ public class EntityAttributeLogic
 
         return entityStringAttribute;
     }
-    
+
+    public EntityNameAttribute createEntityNameAttribute(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
+            final String nameAttribute, final EntityInstance entityInstance, final BasePK createdBy) {
+        EntityNameAttribute entityNameAttribute = null;
+
+        checkEntityType(eea, entityAttribute, entityInstance);
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var coreControl = Session.getModelController(CoreControl.class);
+
+            entityNameAttribute = coreControl.getEntityNameAttribute(entityAttribute, entityInstance);
+
+            if(entityNameAttribute == null) {
+                coreControl.createEntityNameAttribute(entityAttribute, nameAttribute, entityInstance, createdBy);
+            } else {
+                handleExecutionError(DuplicateEntityNameAttributeException.class, eea, ExecutionErrors.DuplicateEntityNameAttribute.name(),
+                        EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance),
+                        entityAttribute.getLastDetail().getEntityAttributeName());
+            }
+        }
+
+        return entityNameAttribute;
+    }
+
     public EntityListItemAttribute createEntityListItemAttribute(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
         final EntityInstance entityInstance, final EntityListItem entityListItem, final BasePK createdBy) {
         EntityListItemAttribute entityListItemAttribute = null;
