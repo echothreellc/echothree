@@ -75,7 +75,8 @@ public class GetItemDescriptionsCommand
         var itemControl = Session.getModelController(ItemControl.class);
         Collection<ItemDescription> entities = null;
         var itemName = form.getItemName();
-        var item = ItemLogic.getInstance().getItemByName(this, itemName);
+
+        item = ItemLogic.getInstance().getItemByName(this, itemName);
 
         if(!hasExecutionErrors()) {
             var itemDescriptionTypeUseTypeName = form.getItemDescriptionTypeUseTypeName();
