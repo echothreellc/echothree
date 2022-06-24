@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetCancellationKindsResult
         extends BaseResult {
-    
+
+    Long getCancellationKindCount();
+    void setCancellationKindCount(Long cancellationKindCount);
+
     List<CancellationKindTransfer> getCancellationKinds();
     void setCancellationKinds(List<CancellationKindTransfer> cancellationKinds);
     

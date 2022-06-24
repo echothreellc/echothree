@@ -31,7 +31,6 @@ import com.echothree.model.control.cancellationpolicy.common.transfer.Cancellati
 import com.echothree.model.control.cancellationpolicy.common.transfer.CancellationTypeDescriptionTransfer;
 import com.echothree.model.control.cancellationpolicy.common.transfer.CancellationTypeTransfer;
 import com.echothree.model.control.cancellationpolicy.common.transfer.PartyCancellationPolicyTransfer;
-import com.echothree.model.control.cancellationpolicy.server.transfer.CancellationKindTransferCache;
 import com.echothree.model.control.cancellationpolicy.server.transfer.CancellationPolicyReasonTransferCache;
 import com.echothree.model.control.cancellationpolicy.server.transfer.CancellationPolicyTransferCache;
 import com.echothree.model.control.cancellationpolicy.server.transfer.CancellationPolicyTransferCaches;
@@ -88,6 +87,7 @@ import com.echothree.model.data.cancellationpolicy.server.value.CancellationType
 import com.echothree.model.data.cancellationpolicy.server.value.CancellationTypeDetailValue;
 import com.echothree.model.data.cancellationpolicy.server.value.PartyCancellationPolicyValue;
 import com.echothree.model.data.core.common.pk.MimeTypePK;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.party.common.pk.LanguagePK;
 import com.echothree.model.data.party.server.entity.Language;
@@ -105,6 +105,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -215,7 +216,8 @@ public class CancellationPolicyControl
                 "FROM partycancellationpolicies, cancellationpolicies, cancellationpolicydetails " +
                 "WHERE pcnclplcy_cnclplcy_cancellationpolicyid = ? AND pcnclplcy_thrutime = ? " +
                 "AND pcnclplcy_cnclplcy_cancellationpolicyid = cnclplcy_cancellationpolicyid AND cnclplcy_lastdetailid = cnclplcydt_cancellationpolicydetailid " +
-                "ORDER BY cnclplcydt_sortorder, cnclplcydt_cancellationpolicyname");
+                "ORDER BY cnclplcydt_sortorder, cnclplcydt_cancellationpolicyname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM partycancellationpolicies " +
@@ -247,7 +249,8 @@ public class CancellationPolicyControl
                 "FROM partycancellationpolicies, parties, partydetails " +
                 "WHERE pcnclplcy_par_partyid = ? AND pcnclplcy_thrutime = ? " +
                 "AND pcnclplcy_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid " +
-                "ORDER BY pardt_partyname");
+                "ORDER BY pardt_partyname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM partycancellationpolicies " +
@@ -350,8 +353,30 @@ public class CancellationPolicyControl
         
         return cancellationKind;
     }
-    
-    private CancellationKind getCancellationKindByName(String cancellationKindName, EntityPermission entityPermission) {
+
+    public long countCancellationKinds() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM cancellationkinds, cancellationkinddetails " +
+                "WHERE cnclk_activedetailid = cnclkdt_cancellationkinddetailid");
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.CancellationKind */
+    public CancellationKind getCancellationKindByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new CancellationKindPK(entityInstance.getEntityUniqueId());
+
+        return CancellationKindFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public CancellationKind getCancellationKindByEntityInstance(EntityInstance entityInstance) {
+        return getCancellationKindByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public CancellationKind getCancellationKindByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getCancellationKindByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public CancellationKind getCancellationKindByName(String cancellationKindName, EntityPermission entityPermission) {
         CancellationKind cancellationKind;
         
         try {
@@ -396,7 +421,7 @@ public class CancellationPolicyControl
         return getCancellationKindDetailValueForUpdate(getCancellationKindByNameForUpdate(cancellationKindName));
     }
     
-    private CancellationKind getDefaultCancellationKind(EntityPermission entityPermission) {
+    public CancellationKind getDefaultCancellationKind(EntityPermission entityPermission) {
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
@@ -434,7 +459,8 @@ public class CancellationPolicyControl
             query = "SELECT _ALL_ " +
                     "FROM cancellationkinds, cancellationkinddetails " +
                     "WHERE cnclk_activedetailid = cnclkdt_cancellationkinddetailid " +
-                    "ORDER BY cnclkdt_sortorder, cnclkdt_cancellationkindname";
+                    "ORDER BY cnclkdt_sortorder, cnclkdt_cancellationkindname " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM cancellationkinds, cancellationkinddetails " +
@@ -492,19 +518,22 @@ public class CancellationPolicyControl
     public CancellationKindTransfer getCancellationKindTransfer(UserVisit userVisit, CancellationKind cancellationKind) {
         return getCancellationPolicyTransferCaches(userVisit).getCancellationKindTransferCache().getCancellationKindTransfer(cancellationKind);
     }
-    
-    public List<CancellationKindTransfer> getCancellationKindTransfers(UserVisit userVisit) {
-        List<CancellationKind> cancellationKinds = getCancellationKinds();
-        List<CancellationKindTransfer> cancellationKindTransfers = new ArrayList<>(cancellationKinds.size());
-        CancellationKindTransferCache cancellationKindTransferCache = getCancellationPolicyTransferCaches(userVisit).getCancellationKindTransferCache();
-        
+
+    public List<CancellationKindTransfer> getCancellationKindTransfers(UserVisit userVisit, Collection<CancellationKind> cancellationKinds) {
+        var cancellationKindTransfers = new ArrayList<CancellationKindTransfer>(cancellationKinds.size());
+        var cancellationKindTransferCache = getCancellationPolicyTransferCaches(userVisit).getCancellationKindTransferCache();
+
         cancellationKinds.forEach((cancellationKind) ->
                 cancellationKindTransfers.add(cancellationKindTransferCache.getCancellationKindTransfer(cancellationKind))
         );
-        
+
         return cancellationKindTransfers;
     }
-    
+
+    public List<CancellationKindTransfer> getCancellationKindTransfers(UserVisit userVisit) {
+        return getCancellationKindTransfers(userVisit, getCancellationKinds());
+    }
+
     private void updateCancellationKindFromValue(CancellationKindDetailValue cancellationKindDetailValue, boolean checkDefault, BasePK updatedBy) {
         CancellationKind cancellationKind = CancellationKindFactory.getInstance().getEntityFromPK(session,
                 EntityPermission.READ_WRITE, cancellationKindDetailValue.getCancellationKindPK());
@@ -648,7 +677,8 @@ public class CancellationPolicyControl
                 query = "SELECT _ALL_ " +
                         "FROM cancellationkinddescriptions, languages " +
                         "WHERE cnclkd_cnclk_cancellationkindid = ? AND cnclkd_thrutime = ? AND cnclkd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM cancellationkinddescriptions " +
@@ -796,7 +826,8 @@ public class CancellationPolicyControl
                 query = "SELECT _ALL_ " +
                         "FROM cancellationpolicies, cancellationpolicydetails " +
                         "WHERE cnclplcy_activedetailid = cnclplcydt_cancellationpolicydetailid AND cnclplcydt_cnclk_cancellationkindid = ? " +
-                        "ORDER BY cnclplcydt_sortorder, cnclplcydt_cancellationpolicyname";
+                        "ORDER BY cnclplcydt_sortorder, cnclplcydt_cancellationpolicyname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM cancellationpolicies, cancellationpolicydetails " +
@@ -1326,7 +1357,8 @@ public class CancellationPolicyControl
                         "FROM cancellationpolicyreasons, cancellationreasons, cancellationreasondetails " +
                         "WHERE cnclplcyrsn_cnclplcy_cancellationpolicyid = ? AND cnclplcyrsn_thrutime = ? " +
                         "AND cnclplcyrsn_cnclrsn_cancellationreasonid = cnclrsn_cancellationreasonid AND cnclrsn_lastdetailid = cnclrsndt_cancellationreasondetailid " +
-                        "ORDER BY cnclrsndt_sortorder, cnclrsndt_cancellationreasonname";
+                        "ORDER BY cnclrsndt_sortorder, cnclrsndt_cancellationreasonname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM cancellationpolicyreasons " +
@@ -1366,7 +1398,8 @@ public class CancellationPolicyControl
                         "FROM cancellationpolicyreasons, cancellationpolicies, cancellationpolicydetails " +
                         "WHERE cnclplcyrsn_cnclrsn_cancellationreasonid = ? AND cnclplcyrsn_thrutime = ? " +
                         "AND cnclplcyrsn_cnclplcy_cancellationpolicyid = cnclplcy_cancellationpolicyid AND cnclplcy_lastdetailid = cnclplcydt_cancellationpolicydetailid " +
-                        "ORDER BY cnclplcydt_sortorder, cnclplcydt_cancellationpolicyname";
+                        "ORDER BY cnclplcydt_sortorder, cnclplcydt_cancellationpolicyname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM cancellationpolicyreasons " +
@@ -1543,7 +1576,8 @@ public class CancellationPolicyControl
                 query = "SELECT _ALL_ " +
                         "FROM cancellationreasons, cancellationreasondetails " +
                         "WHERE cnclrsn_activedetailid = cnclrsndt_cancellationreasondetailid AND cnclrsndt_cnclk_cancellationkindid = ? " +
-                        "ORDER BY cnclrsndt_sortorder, cnclrsndt_cancellationreasonname";
+                        "ORDER BY cnclrsndt_sortorder, cnclrsndt_cancellationreasonname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM cancellationreasons, cancellationreasondetails " +
@@ -1869,7 +1903,8 @@ public class CancellationPolicyControl
                 query = "SELECT _ALL_ " +
                         "FROM cancellationreasondescriptions, languages " +
                         "WHERE cnclrsnd_cnclrsn_cancellationreasonid = ? AND cnclrsnd_thrutime = ? AND cnclrsnd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM cancellationreasondescriptions " +
@@ -2091,7 +2126,8 @@ public class CancellationPolicyControl
                         "WHERE cnclrsntyp_cnclrsn_cancellationreasonid = ? AND cnclrsntyp_thrutime = ? " +
                         "AND cnclrsntyp_cncltyp_cancellationtypeid = cncltyp_cancellationtypeid AND cncltyp_lastdetailid = cncltypdt_cancellationtypedetailid " +
                         "AND cncltypdt_cnclk_cancellationkindid = cnclk_cancellationkindid AND cnclk_lastdetailid = cnclkdt_cancellationkinddetailid " +
-                        "ORDER BY cncltypdt_sortorder, cncltypdt_cancellationtypename, cnclkdt_sortorder, cnclkdt_cancellationkindname";
+                        "ORDER BY cncltypdt_sortorder, cncltypdt_cancellationtypename, cnclkdt_sortorder, cnclkdt_cancellationkindname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM cancellationreasontypes " +
@@ -2131,7 +2167,8 @@ public class CancellationPolicyControl
                         "FROM cancellationreasontypes, cancellationreasons, cancellationreasondetails " +
                         "WHERE cnclrsntyp_cncltyp_cancellationtypeid = ? AND cnclrsntyp_thrutime = ? " +
                         "AND cnclrsntyp_cnclrsn_cancellationreasonid = cnclrsn_cancellationreasonid AND cnclrsn_lastdetailid = cnclrsndt_cancellationreasondetailid " +
-                        "ORDER BY cnclrsndt_sortorder, cnclrsndt_cancellationreasonname";
+                        "ORDER BY cnclrsndt_sortorder, cnclrsndt_cancellationreasonname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM cancellationreasontypes " +
@@ -2308,7 +2345,8 @@ public class CancellationPolicyControl
                 query = "SELECT _ALL_ " +
                         "FROM cancellationtypes, cancellationtypedetails " +
                         "WHERE cncltyp_activedetailid = cncltypdt_cancellationtypedetailid AND cncltypdt_cnclk_cancellationkindid = ? " +
-                        "ORDER BY cncltypdt_sortorder, cncltypdt_cancellationtypename";
+                        "ORDER BY cncltypdt_sortorder, cncltypdt_cancellationtypename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM cancellationtypes, cancellationtypedetails " +
@@ -2634,7 +2672,8 @@ public class CancellationPolicyControl
                 query = "SELECT _ALL_ " +
                         "FROM cancellationtypedescriptions, languages " +
                         "WHERE cncltypd_cncltyp_cancellationtypeid = ? AND cncltypd_thrutime = ? AND cncltypd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM cancellationtypedescriptions " +
