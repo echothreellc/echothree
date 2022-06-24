@@ -2242,5 +2242,7 @@ public enum ExecutionErrors {
     MissingDefaultItemDeliveryType,
     MissingDefaultItemInventoryType,
     UnknownDefaultItemImageType,
+    UnknownDefaultCancellationKind,
+    UnknownDefaultReturnKind,
 
 }

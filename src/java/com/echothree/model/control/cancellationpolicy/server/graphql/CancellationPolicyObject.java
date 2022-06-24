@@ -77,8 +77,7 @@ public class CancellationPolicyObject
     @GraphQLField
     @GraphQLDescription("cancellation kind")
     public CancellationKindObject getCancellationKind(final DataFetchingEnvironment env) {
-        return new CancellationKindObject(getCancellationPolicyDetail().getCancellationKind());
-        //return CancellationSecurityUtils.getInstance().getHasCancellationKindAccess(env) ? new CancellationKindObject(getCancellationTypeDetail().getCancellationKind()) : null;
+        return CancellationPolicySecurityUtils.getInstance().getHasCancellationKindAccess(env) ? new CancellationKindObject(getCancellationPolicyDetail().getCancellationKind()) : null;
     }
 
     @GraphQLField

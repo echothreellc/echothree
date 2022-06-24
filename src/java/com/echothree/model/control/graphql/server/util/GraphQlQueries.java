@@ -19,6 +19,9 @@ package com.echothree.model.control.graphql.server.util;
 import com.echothree.control.user.accounting.common.AccountingUtil;
 import com.echothree.control.user.accounting.server.command.GetCurrenciesCommand;
 import com.echothree.control.user.accounting.server.command.GetCurrencyCommand;
+import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
+import com.echothree.control.user.cancellationpolicy.server.command.GetCancellationKindCommand;
+import com.echothree.control.user.cancellationpolicy.server.command.GetCancellationKindsCommand;
 import com.echothree.control.user.content.common.ContentUtil;
 import com.echothree.control.user.content.server.command.GetContentCatalogCommand;
 import com.echothree.control.user.content.server.command.GetContentCatalogItemCommand;
@@ -178,6 +181,9 @@ import com.echothree.control.user.payment.server.command.GetPaymentProcessorsCom
 import com.echothree.control.user.queue.common.QueueUtil;
 import com.echothree.control.user.queue.server.command.GetQueueTypeCommand;
 import com.echothree.control.user.queue.server.command.GetQueueTypesCommand;
+import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
+import com.echothree.control.user.returnpolicy.server.command.GetReturnKindCommand;
+import com.echothree.control.user.returnpolicy.server.command.GetReturnKindsCommand;
 import com.echothree.control.user.search.common.SearchUtil;
 import com.echothree.control.user.search.common.result.CheckItemSpellingResult;
 import com.echothree.control.user.search.server.command.GetCustomerResultsCommand;
@@ -234,6 +240,8 @@ import com.echothree.control.user.workflow.server.command.GetWorkflowTypeCommand
 import com.echothree.control.user.workflow.server.command.GetWorkflowTypesCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowsCommand;
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
+import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
+import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationKindObject;
 import com.echothree.model.control.content.server.graphql.ContentCatalogItemObject;
 import com.echothree.model.control.content.server.graphql.ContentCatalogObject;
 import com.echothree.model.control.content.server.graphql.ContentCategoryItemObject;
@@ -316,6 +324,8 @@ import com.echothree.model.control.payment.server.graphql.PaymentProcessorTypeCo
 import com.echothree.model.control.payment.server.graphql.PaymentProcessorTypeCodeTypeObject;
 import com.echothree.model.control.payment.server.graphql.PaymentProcessorTypeObject;
 import com.echothree.model.control.queue.server.graphql.QueueTypeObject;
+import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
+import com.echothree.model.control.returnpolicy.server.graphql.ReturnKindObject;
 import com.echothree.model.control.search.server.graphql.CheckItemSpellingObject;
 import com.echothree.model.control.search.server.graphql.CustomerResultsObject;
 import com.echothree.model.control.search.server.graphql.EmployeeResultsObject;
@@ -345,6 +355,8 @@ import com.echothree.model.control.workflow.server.graphql.WorkflowStepObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowStepTypeObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowTypeObject;
 import com.echothree.model.data.accounting.server.entity.Currency;
+import com.echothree.model.data.cancellationpolicy.common.CancellationKindConstants;
+import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
 import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.content.server.entity.ContentCatalogItem;
 import com.echothree.model.data.content.server.entity.ContentCategory;
@@ -428,6 +440,8 @@ import com.echothree.model.data.payment.server.entity.PaymentProcessorType;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCode;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCodeType;
 import com.echothree.model.data.queue.server.entity.QueueType;
+import com.echothree.model.data.returnpolicy.common.ReturnKindConstants;
+import com.echothree.model.data.returnpolicy.server.entity.ReturnKind;
 import com.echothree.model.data.search.server.entity.SearchCheckSpellingActionType;
 import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
 import com.echothree.model.data.selector.server.entity.Selector;
@@ -4853,6 +4867,57 @@ public final class GraphQlQueries
         }
 
         return departmentObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("cancellationKind")
+    public static CancellationKindObject cancellationKind(final DataFetchingEnvironment env,
+            @GraphQLName("cancellationKindName") final String cancellationKindName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        CancellationKind cancellationKind;
+
+        try {
+            var commandForm = CancellationPolicyUtil.getHome().getGetCancellationKindForm();
+
+            commandForm.setCancellationKindName(cancellationKindName);
+            commandForm.setUlid(id);
+
+            cancellationKind = new GetCancellationKindCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return cancellationKind == null ? null : new CancellationKindObject(cancellationKind);
+    }
+
+    @GraphQLField
+    @GraphQLName("cancellationKinds")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public static CountingPaginatedData<CancellationKindObject> cancellationKinds(final DataFetchingEnvironment env) {
+        CountingPaginatedData<CancellationKindObject> data;
+
+        try {
+            var cancellationKindControl = Session.getModelController(CancellationPolicyControl.class);
+            var totalCount = cancellationKindControl.countCancellationKinds();
+
+            try(var objectLimiter = new ObjectLimiter(env, CancellationKindConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = CancellationPolicyUtil.getHome().getGetCancellationKindsForm();
+                var entities = new GetCancellationKindsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var cancellationKinds = entities.stream().map(CancellationKindObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, cancellationKinds);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
     }
 
     @GraphQLField

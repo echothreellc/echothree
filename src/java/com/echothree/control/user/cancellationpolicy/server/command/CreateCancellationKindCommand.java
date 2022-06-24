@@ -17,23 +17,21 @@
 package com.echothree.control.user.cancellationpolicy.server.command;
 
 import com.echothree.control.user.cancellationpolicy.common.form.CreateCancellationKindForm;
-import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
+import com.echothree.control.user.cancellationpolicy.common.result.CancellationPolicyResultFactory;
+import com.echothree.model.control.cancellationpolicy.server.logic.CancellationKindLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.sequence.server.control.SequenceControl;
+import com.echothree.model.control.sequence.server.logic.SequenceTypeLogic;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
-import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -68,34 +66,27 @@ public class CreateCancellationKindCommand
     
     @Override
     protected BaseResult execute() {
-        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-        String cancellationKindName = form.getCancellationKindName();
-        CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
-        
-        if(cancellationKind == null) {
-            var sequenceControl = Session.getModelController(SequenceControl.class);
-            String cancellationSequenceTypeName = form.getCancellationSequenceTypeName();
-            SequenceType cancellationSequenceType = sequenceControl.getSequenceTypeByName(cancellationSequenceTypeName);
-            
-            if(cancellationSequenceType != null) {
-                var partyPK = getPartyPK();
-                var isDefault = Boolean.valueOf(form.getIsDefault());
-                var sortOrder = Integer.valueOf(form.getSortOrder());
-                var description = form.getDescription();
-                
-                cancellationKind = cancellationPolicyControl.createCancellationKind(cancellationKindName, cancellationSequenceType, isDefault, sortOrder, partyPK);
-                
-                if(description != null) {
-                    cancellationPolicyControl.createCancellationKindDescription(cancellationKind, getPreferredLanguage(), description, partyPK);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownCancellationSequenceTypeName.name(), cancellationSequenceTypeName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.DuplicateCancellationKindName.name(), cancellationKindName);
+        var result = CancellationPolicyResultFactory.getCreateCancellationKindResult();
+        CancellationKind cancellationKind = null;
+        var cancellationKindName = form.getCancellationKindName();
+        var cancellationSequenceTypeName = form.getCancellationSequenceTypeName();
+        var cancellationSequenceType = SequenceTypeLogic.getInstance().getSequenceTypeByName(this, cancellationSequenceTypeName);
+
+        if(!hasExecutionErrors()) {
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
+            var description = form.getDescription();
+
+            cancellationKind = CancellationKindLogic.getInstance().createCancellationKind(this, cancellationKindName,
+                    cancellationSequenceType, isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());
         }
-        
-        return null;
+
+        if(cancellationKind != null) {
+            result.setCancellationKindName(cancellationKind.getLastDetail().getCancellationKindName());
+            result.setEntityRef(cancellationKind.getPrimaryKey().getEntityRef());
+        }
+
+        return result;
     }
     
 }
