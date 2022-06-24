@@ -14,19 +14,14 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.returnpolicy.common.result;
+package com.echothree.control.user.returnpolicy.common.spec;
 
-import com.echothree.model.control.returnpolicy.common.transfer.ReturnKindTransfer;
-import com.echothree.util.common.command.BaseResult;
-import java.util.List;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
+import com.echothree.util.common.form.BaseSpec;
 
-public interface GetReturnKindsResult
-        extends BaseResult {
-
-    Long getReturnKindCount();
-    void setReturnKindCount(Long returnKindCount);
-
-    List<ReturnKindTransfer> getReturnKinds();
-    void setReturnKinds(List<ReturnKindTransfer> returnKinds);
+public interface ReturnKindUniversalSpec
+        extends ReturnKindSpec, UniversalEntitySpec, BaseSpec {
+    
+    // Nothing additional beyond ReturnKindSpec, UniversalEntitySpec, BaseSpec
     
 }
