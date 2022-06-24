@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.returnpolicy.common.form;
 
-import com.echothree.control.user.returnpolicy.common.spec.ReturnKindSpec;
+import com.echothree.control.user.returnpolicy.common.spec.ReturnKindUniversalSpec;
 
 public interface GetReturnKindForm
-        extends ReturnKindSpec {
+        extends ReturnKindUniversalSpec {
     
-    // Nothing additional beyond ReturnKindSpec
+    // Nothing additional beyond ReturnKindUniversalSpec
     
 }

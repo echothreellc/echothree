@@ -4921,6 +4921,57 @@ public final class GraphQlQueries
     }
 
     @GraphQLField
+    @GraphQLName("returnKind")
+    public static ReturnKindObject returnKind(final DataFetchingEnvironment env,
+            @GraphQLName("returnKindName") final String returnKindName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        ReturnKind returnKind;
+
+        try {
+            var commandForm = ReturnPolicyUtil.getHome().getGetReturnKindForm();
+
+            commandForm.setReturnKindName(returnKindName);
+            commandForm.setUlid(id);
+
+            returnKind = new GetReturnKindCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return returnKind == null ? null : new ReturnKindObject(returnKind);
+    }
+
+    @GraphQLField
+    @GraphQLName("returnKinds")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public static CountingPaginatedData<ReturnKindObject> returnKinds(final DataFetchingEnvironment env) {
+        CountingPaginatedData<ReturnKindObject> data;
+
+        try {
+            var returnKindControl = Session.getModelController(ReturnPolicyControl.class);
+            var totalCount = returnKindControl.countReturnKinds();
+
+            try(var objectLimiter = new ObjectLimiter(env, ReturnKindConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = ReturnPolicyUtil.getHome().getGetReturnKindsForm();
+                var entities = new GetReturnKindsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var returnKinds = entities.stream().map(ReturnKindObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, returnKinds);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
     @GraphQLName("item")
     public static ItemObject item(final DataFetchingEnvironment env,
             @GraphQLName("itemName") final String itemName,

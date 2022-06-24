@@ -16,17 +16,13 @@
 
 package com.echothree.control.user.returnpolicy.common.result;
 
-import com.echothree.model.control.returnpolicy.common.transfer.ReturnKindTransfer;
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
+import com.echothree.control.user.returnpolicy.common.spec.ReturnKindSpec;
 import com.echothree.util.common.command.BaseResult;
-import java.util.List;
 
-public interface GetReturnKindsResult
-        extends BaseResult {
-
-    Long getReturnKindCount();
-    void setReturnKindCount(Long returnKindCount);
-
-    List<ReturnKindTransfer> getReturnKinds();
-    void setReturnKinds(List<ReturnKindTransfer> returnKinds);
+public interface CreateReturnKindResult
+        extends ReturnKindSpec, EntityRefSpec, BaseResult {
+    
+    // Nothing additional beyond ReturnKindSpec, EntityRefSpec, BaseResult
     
 }

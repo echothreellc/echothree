@@ -35,7 +35,6 @@ import com.echothree.model.control.returnpolicy.common.transfer.ReturnTypeDescri
 import com.echothree.model.control.returnpolicy.common.transfer.ReturnTypeShippingMethodTransfer;
 import com.echothree.model.control.returnpolicy.common.transfer.ReturnTypeTransfer;
 import com.echothree.model.control.returnpolicy.server.transfer.PartyReturnPolicyTransferCache;
-import com.echothree.model.control.returnpolicy.server.transfer.ReturnKindTransferCache;
 import com.echothree.model.control.returnpolicy.server.transfer.ReturnPolicyReasonTransferCache;
 import com.echothree.model.control.returnpolicy.server.transfer.ReturnPolicyTransferCache;
 import com.echothree.model.control.returnpolicy.server.transfer.ReturnPolicyTransferCaches;
@@ -44,8 +43,8 @@ import com.echothree.model.control.returnpolicy.server.transfer.ReturnReasonTran
 import com.echothree.model.control.returnpolicy.server.transfer.ReturnReasonTypeTransferCache;
 import com.echothree.model.control.returnpolicy.server.transfer.ReturnTypeShippingMethodTransferCache;
 import com.echothree.model.control.returnpolicy.server.transfer.ReturnTypeTransferCache;
-import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
 import com.echothree.model.data.core.common.pk.MimeTypePK;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.party.common.pk.LanguagePK;
 import com.echothree.model.data.party.server.entity.Language;
@@ -113,6 +112,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -222,7 +222,8 @@ public class ReturnPolicyControl
                 "FROM partyreturnpolicies, returnpolicies, returnpolicydetails " +
                 "WHERE prtnplcy_rtnplcy_returnpolicyid = ? AND prtnplcy_thrutime = ? " +
                 "AND prtnplcy_rtnplcy_returnpolicyid = rtnplcy_returnpolicyid AND rtnplcy_lastdetailid = rtnplcydt_returnpolicydetailid " +
-                "ORDER BY rtnplcydt_sortorder, rtnplcydt_returnpolicyname");
+                "ORDER BY rtnplcydt_sortorder, rtnplcydt_returnpolicyname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM partyreturnpolicies " +
@@ -254,7 +255,8 @@ public class ReturnPolicyControl
                 "FROM partyreturnpolicies, parties, partydetails " +
                 "WHERE prtnplcy_par_partyid = ? AND prtnplcy_thrutime = ? " +
                 "AND prtnplcy_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid " +
-                "ORDER BY pardt_partyname");
+                "ORDER BY pardt_partyname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM partyreturnpolicies " +
@@ -357,7 +359,29 @@ public class ReturnPolicyControl
         
         return returnKind;
     }
-    
+
+    public long countReturnKinds() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM returnkinds, returnkinddetails " +
+                "WHERE rtnk_activedetailid = rtnkdt_returnkinddetailid");
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ReturnKind */
+    public ReturnKind getReturnKindByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ReturnKindPK(entityInstance.getEntityUniqueId());
+
+        return ReturnKindFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ReturnKind getReturnKindByEntityInstance(EntityInstance entityInstance) {
+        return getReturnKindByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ReturnKind getReturnKindByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getReturnKindByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     private static final Map<EntityPermission, String> getReturnKindByNameQueries;
 
     static {
@@ -375,7 +399,7 @@ public class ReturnPolicyControl
         getReturnKindByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private ReturnKind getReturnKindByName(String returnKindName, EntityPermission entityPermission) {
+    public ReturnKind getReturnKindByName(String returnKindName, EntityPermission entityPermission) {
         return ReturnKindFactory.getInstance().getEntityFromQuery(entityPermission, getReturnKindByNameQueries,
                 returnKindName);
     }
@@ -413,7 +437,7 @@ public class ReturnPolicyControl
         getDefaultReturnKindQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private ReturnKind getDefaultReturnKind(EntityPermission entityPermission) {
+    public ReturnKind getDefaultReturnKind(EntityPermission entityPermission) {
         return ReturnKindFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultReturnKindQueries);
     }
     
@@ -438,7 +462,8 @@ public class ReturnPolicyControl
                 "SELECT _ALL_ "
                 + "FROM returnkinds, returnkinddetails "
                 + "WHERE rtnk_activedetailid = rtnkdt_returnkinddetailid "
-                + "ORDER BY rtnkdt_sortorder, rtnkdt_returnkindname");
+                + "ORDER BY rtnkdt_sortorder, rtnkdt_returnkindname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM returnkinds, returnkinddetails "
@@ -496,19 +521,22 @@ public class ReturnPolicyControl
     public ReturnKindTransfer getReturnKindTransfer(UserVisit userVisit, ReturnKind returnKind) {
         return getReturnPolicyTransferCaches(userVisit).getReturnKindTransferCache().getReturnKindTransfer(returnKind);
     }
-    
-    public List<ReturnKindTransfer> getReturnKindTransfers(UserVisit userVisit) {
-        List<ReturnKind> returnKinds = getReturnKinds();
-        List<ReturnKindTransfer> returnKindTransfers = new ArrayList<>(returnKinds.size());
-        ReturnKindTransferCache returnKindTransferCache = getReturnPolicyTransferCaches(userVisit).getReturnKindTransferCache();
-        
+
+    public List<ReturnKindTransfer> getReturnKindTransfers(UserVisit userVisit, Collection<ReturnKind> returnKinds) {
+        var returnKindTransfers = new ArrayList<ReturnKindTransfer>(returnKinds.size());
+        var returnKindTransferCache = getReturnPolicyTransferCaches(userVisit).getReturnKindTransferCache();
+
         returnKinds.forEach((returnKind) ->
                 returnKindTransfers.add(returnKindTransferCache.getReturnKindTransfer(returnKind))
         );
-        
+
         return returnKindTransfers;
     }
-    
+
+    public List<ReturnKindTransfer> getReturnKindTransfers(UserVisit userVisit) {
+        return getReturnKindTransfers(userVisit, getReturnKinds());
+    }
+
     private void updateReturnKindFromValue(ReturnKindDetailValue returnKindDetailValue, boolean checkDefault, BasePK updatedBy) {
         ReturnKind returnKind = ReturnKindFactory.getInstance().getEntityFromPK(session,
                 EntityPermission.READ_WRITE, returnKindDetailValue.getReturnKindPK());
@@ -642,7 +670,8 @@ public class ReturnPolicyControl
                 "SELECT _ALL_ "
                 + "FROM returnkinddescriptions, languages "
                 + "WHERE rtnkd_rtnk_returnkindid = ? AND rtnkd_thrutime = ? AND rtnkd_lang_languageid = lang_languageid "
-                + "ORDER BY lang_sortorder, lang_languageisoname");
+                + "ORDER BY lang_sortorder, lang_languageisoname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM returnkinddescriptions "
@@ -783,7 +812,8 @@ public class ReturnPolicyControl
                 query = "SELECT _ALL_ " +
                         "FROM returnpolicies, returnpolicydetails " +
                         "WHERE rtnplcy_activedetailid = rtnplcydt_returnpolicydetailid AND rtnplcydt_rtnk_returnkindid = ? " +
-                        "ORDER BY rtnplcydt_sortorder, rtnplcydt_returnpolicyname";
+                        "ORDER BY rtnplcydt_sortorder, rtnplcydt_returnpolicyname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM returnpolicies, returnpolicydetails " +
@@ -1313,7 +1343,8 @@ public class ReturnPolicyControl
                         "FROM returnpolicyreasons, returnreasons, returnreasondetails " +
                         "WHERE rtnplcyrsn_rtnplcy_returnpolicyid = ? AND rtnplcyrsn_thrutime = ? " +
                         "AND rtnplcyrsn_rtnrsn_returnreasonid = rtnrsn_returnreasonid AND rtnrsn_lastdetailid = rtnrsndt_returnreasondetailid " +
-                        "ORDER BY rtnrsndt_sortorder, rtnrsndt_returnreasonname";
+                        "ORDER BY rtnrsndt_sortorder, rtnrsndt_returnreasonname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM returnpolicyreasons " +
@@ -1353,7 +1384,8 @@ public class ReturnPolicyControl
                         "FROM returnpolicyreasons, returnpolicies, returnpolicydetails " +
                         "WHERE rtnplcyrsn_rtnrsn_returnreasonid = ? AND rtnplcyrsn_thrutime = ? " +
                         "AND rtnplcyrsn_rtnplcy_returnpolicyid = rtnplcy_returnpolicyid AND rtnplcy_lastdetailid = rtnplcydt_returnpolicydetailid " +
-                        "ORDER BY rtnplcydt_sortorder, rtnplcydt_returnpolicyname";
+                        "ORDER BY rtnplcydt_sortorder, rtnplcydt_returnpolicyname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM returnpolicyreasons " +
@@ -1530,7 +1562,8 @@ public class ReturnPolicyControl
                 query = "SELECT _ALL_ " +
                         "FROM returnreasons, returnreasondetails " +
                         "WHERE rtnrsn_activedetailid = rtnrsndt_returnreasondetailid AND rtnrsndt_rtnk_returnkindid = ? " +
-                        "ORDER BY rtnrsndt_sortorder, rtnrsndt_returnreasonname";
+                        "ORDER BY rtnrsndt_sortorder, rtnrsndt_returnreasonname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM returnreasons, returnreasondetails " +
@@ -1856,7 +1889,8 @@ public class ReturnPolicyControl
                 query = "SELECT _ALL_ " +
                         "FROM returnreasondescriptions, languages " +
                         "WHERE rtnrsnd_rtnrsn_returnreasonid = ? AND rtnrsnd_thrutime = ? AND rtnrsnd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM returnreasondescriptions " +
@@ -2078,7 +2112,8 @@ public class ReturnPolicyControl
                         "WHERE rtnrsntyp_rtnrsn_returnreasonid = ? AND rtnrsntyp_thrutime = ? " +
                         "AND rtnrsntyp_rtntyp_returntypeid = rtntyp_returntypeid AND rtntyp_lastdetailid = rtntypdt_returntypedetailid " +
                         "AND rtntypdt_rtnk_returnkindid = rtnk_returnkindid AND rtnk_lastdetailid = rtnkdt_returnkinddetailid " +
-                        "ORDER BY rtntypdt_sortorder, rtntypdt_returntypename, rtnkdt_sortorder, rtnkdt_returnkindname";
+                        "ORDER BY rtntypdt_sortorder, rtntypdt_returntypename, rtnkdt_sortorder, rtnkdt_returnkindname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM returnreasontypes " +
@@ -2118,7 +2153,8 @@ public class ReturnPolicyControl
                         "FROM returnreasontypes, returnreasons, returnreasondetails " +
                         "WHERE rtnrsntyp_rtntyp_returntypeid = ? AND rtnrsntyp_thrutime = ? " +
                         "AND rtnrsntyp_rtnrsn_returnreasonid = rtnrsn_returnreasonid AND rtnrsn_lastdetailid = rtnrsndt_returnreasondetailid " +
-                        "ORDER BY rtnrsndt_sortorder, rtnrsndt_returnreasonname";
+                        "ORDER BY rtnrsndt_sortorder, rtnrsndt_returnreasonname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM returnreasontypes " +
@@ -2294,7 +2330,8 @@ public class ReturnPolicyControl
                 "SELECT _ALL_ "
                 + "FROM returntypes, returntypedetails "
                 + "WHERE rtntyp_activedetailid = rtntypdt_returntypedetailid AND rtntypdt_rtnk_returnkindid = ? "
-                + "ORDER BY rtntypdt_sortorder, rtntypdt_returntypename");
+                + "ORDER BY rtntypdt_sortorder, rtntypdt_returntypename " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM returntypes, returntypedetails "
@@ -2590,7 +2627,8 @@ public class ReturnPolicyControl
                 "SELECT _ALL_ "
                 + "FROM returntypedescriptions, languages "
                 + "WHERE rtntypd_rtntyp_returntypeid = ? AND rtntypd_thrutime = ? AND rtntypd_lang_languageid = lang_languageid "
-                + "ORDER BY lang_sortorder, lang_languageisoname");
+                + "ORDER BY lang_sortorder, lang_languageisoname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM returntypedescriptions "
@@ -2804,7 +2842,8 @@ public class ReturnPolicyControl
                         "FROM returntypeshippingmethods, shippingmethods, shippingmethoddetails " +
                         "WHERE rtntypshm_rtntyp_returntypeid = ? AND rtntypshm_thrutime = ? " +
                         "AND rtntypshm_shm_shippingmethodid = shm_shippingmethodid AND shm_lastdetailid = shmdt_shippingmethoddetailid " +
-                        "ORDER BY shmdt_sortorder, shmdt_shippingmethodname";
+                        "ORDER BY shmdt_sortorder, shmdt_shippingmethodname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM returntypeshippingmethods " +
@@ -2845,7 +2884,8 @@ public class ReturnPolicyControl
                         "WHERE rtntypshm_shm_shippingmethodid = ? AND rtntypshm_thrutime = ? " +
                         "AND rtntypshm_rtntyp_returntypeid = rtntyp_returntypeid AND rtntyp_lastdetailid = rtntypdt_returntypedetailid " +
                         "AND rtntypdt_rtnk_returnkindid = rtnk_returnkindid AND rtnk_lastdetailid = rtnkdt_returnkinddetailid " +
-                        "ORDER BY rtntypdt_sortorder, rtntypdt_returntypename, rtnkdt_sortorder, rtnkdt_returnkindname";
+                        "ORDER BY rtntypdt_sortorder, rtntypdt_returntypename, rtnkdt_sortorder, rtnkdt_returnkindname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM returntypeshippingmethods " +

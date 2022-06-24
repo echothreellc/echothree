@@ -21,12 +21,11 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.returnpolicy.server.entity.ReturnKind;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -63,8 +62,8 @@ public class DeleteReturnKindCommand
     @Override
     protected BaseResult execute() {
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        String returnKindName = form.getReturnKindName();
-        ReturnKind returnKind = returnPolicyControl.getReturnKindByNameForUpdate(returnKindName);
+        var returnKindName = form.getReturnKindName();
+        var returnKind = returnPolicyControl.getReturnKindByNameForUpdate(returnKindName);
         
         if(returnKind != null) {
             returnPolicyControl.deleteReturnKind(returnKind, getPartyPK());

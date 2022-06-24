@@ -77,8 +77,7 @@ public class ReturnPolicyObject
     @GraphQLField
     @GraphQLDescription("return kind")
     public ReturnKindObject getReturnKind(final DataFetchingEnvironment env) {
-        return new ReturnKindObject(getReturnPolicyDetail().getReturnKind());
-        //return ReturnSecurityUtils.getInstance().getHasReturnKindAccess(env) ? new ReturnKindObject(getReturnTypeDetail().getReturnKind()) : null;
+        return ReturnPolicySecurityUtils.getInstance().getHasReturnKindAccess(env) ? new ReturnKindObject(getReturnPolicyDetail().getReturnKind()) : null;
     }
 
     @GraphQLField
