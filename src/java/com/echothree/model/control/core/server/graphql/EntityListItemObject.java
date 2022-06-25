@@ -50,9 +50,15 @@ public class EntityListItemObject
         
         return entityListItemDetail;
     }
-    
+
     @GraphQLField
-    @GraphQLDescription("entity type name")
+    @GraphQLDescription("entity attribute")
+    public EntityAttributeObject getEntityAttribute(final DataFetchingEnvironment env) {
+        return CoreSecurityUtils.getInstance().getHasEntityAttributeAccess(env) ? new EntityAttributeObject(getEntityListItemDetail().getEntityAttribute(), null) : null;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("entity list item name")
     @GraphQLNonNull
     public String getEntityListItemName() {
         return getEntityListItemDetail().getEntityListItemName();
@@ -80,12 +86,6 @@ public class EntityListItemObject
         var userControl = Session.getModelController(UserControl.class);
 
         return coreControl.getBestEntityListItemDescription(entityListItem, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
-    }
-    
-    @GraphQLField
-    @GraphQLDescription("entity attribute")
-    public EntityAttributeObject getEntityAttribute(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityAttributeAccess(env) ? new EntityAttributeObject(getEntityListItemDetail().getEntityAttribute(), null) : null;
     }
     
 }
