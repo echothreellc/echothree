@@ -123,5 +123,23 @@ public class EntityTypeObject
             return null;
         }
     }
-    
+
+    @GraphQLField
+    @GraphQLDescription("entity attributes")
+    public List<EntityAttributeObject> getEntityAttributes(final DataFetchingEnvironment env) {
+        if(CoreSecurityUtils.getInstance().getHasEntityAttributesAccess(env)) {
+            var coreControl = Session.getModelController(CoreControl.class);
+            var entities = coreControl.getEntityAttributesByEntityType(entityType);
+            var entityAttributes = new ArrayList<EntityAttributeObject>(entities.size());
+
+            for(var entity : entities) {
+                entityAttributes.add(new EntityAttributeObject(entity, null));
+            }
+
+            return entityAttributes;
+        } else {
+            return null;
+        }
+    }
+
 }
