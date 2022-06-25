@@ -19,6 +19,7 @@ package com.echothree.model.control.core.server.graphql;
 import com.echothree.control.user.core.server.command.GetEntityAttributeCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeTypeCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeTypesCommand;
+import com.echothree.control.user.core.server.command.GetEntityAttributesCommand;
 import com.echothree.control.user.core.server.command.GetEntityInstanceCommand;
 import com.echothree.control.user.core.server.command.GetEntityInstancesCommand;
 import com.echothree.control.user.core.server.command.GetEntityIntegerRangeCommand;
@@ -68,9 +69,9 @@ public final class CoreSecurityUtils
         return getGraphQlExecutionContext(env).hasAccess(GetEntityAttributeCommand.class);
     }
 
-//    public boolean getHasEntityAttributesAccess(final DataFetchingEnvironment env) {
-//        return getGraphQlExecutionContext(env).hasAccess(GetEntityAttributesCommand.class);
-//    }
+    public boolean getHasEntityAttributesAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetEntityAttributesCommand.class);
+    }
 
     public boolean getHasEntityTypeAccess(final DataFetchingEnvironment env) {
         return getGraphQlExecutionContext(env).hasAccess(GetEntityTypeCommand.class);
