@@ -19,16 +19,17 @@ package com.echothree.control.user.core.server.command;
 import com.echothree.control.user.core.common.form.GetEntityLongRangeForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
+import com.echothree.model.data.core.server.entity.EntityLongRange;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import java.util.List;
 
 public class GetEntityLongRangeCommand
-        extends BaseSimpleCommand<GetEntityLongRangeForm> {
+        extends BaseSingleEntityCommand<EntityLongRange, GetEntityLongRangeForm> {
 
     // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -46,33 +47,33 @@ public class GetEntityLongRangeCommand
     public GetEntityLongRangeCommand(UserVisitPK userVisitPK, GetEntityLongRangeForm form) {
         super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+
     @Override
-    protected BaseResult execute() {
+    protected EntityLongRange getEntity() {
         var coreControl = getCoreControl();
-        var result = CoreResultFactory.getGetEntityLongRangeResult();
+        EntityLongRange entityLongRange = null;
         var componentVendorName = form.getComponentVendorName();
         var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
-        
+
         if(componentVendor != null) {
             var entityTypeName = form.getEntityTypeName();
             var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
-            
+
             if(entityType != null) {
                 var entityAttributeName = form.getEntityAttributeName();
                 var entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
-                
+
                 if(entityAttribute != null) {
                     var entityAttributeType = entityAttribute.getLastDetail().getEntityAttributeType();
                     var entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
-                    
+
                     if(entityAttributeTypeName.equals(EntityAttributeTypes.LONG.name())) {
                         var entityLongRangeName = form.getEntityLongRangeName();
-                        var entityLongRange = coreControl.getEntityLongRangeByName(entityAttribute, entityLongRangeName);
-                        
-                        if(entityLongRange != null) {
-                            result.setEntityLongRange(coreControl.getEntityLongRangeTransfer(getUserVisit(), entityLongRange, null));
-                        } else {
+
+                        entityLongRange = coreControl.getEntityLongRangeByName(entityAttribute, entityLongRangeName);
+
+                        if(entityLongRange == null) {
                             addExecutionError(ExecutionErrors.UnknownEntityLongRangeName.name(), componentVendorName, entityTypeName, entityAttributeName, entityLongRangeName);
                         }
                     } else {
@@ -87,8 +88,21 @@ public class GetEntityLongRangeCommand
         } else {
             addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
         }
-        
+
+        return entityLongRange;
+    }
+
+    @Override
+    protected BaseResult getTransfer(EntityLongRange entityLongRange) {
+        var result = CoreResultFactory.getGetEntityLongRangeResult();
+
+        if(entityLongRange != null) {
+            var coreControl = getCoreControl();
+
+            result.setEntityLongRange(coreControl.getEntityLongRangeTransfer(getUserVisit(), entityLongRange, null));
+        }
+
         return result;
     }
-    
+
 }

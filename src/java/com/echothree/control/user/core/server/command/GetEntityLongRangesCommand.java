@@ -22,21 +22,24 @@ import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.core.server.entity.EntityAttribute;
+import com.echothree.model.data.core.server.entity.EntityLongRange;
 import com.echothree.model.data.core.server.factory.EntityLongRangeFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import java.util.Collection;
 import java.util.List;
 
 public class GetEntityLongRangesCommand
-        extends BaseSimpleCommand<GetEntityLongRangesForm> {
-    
+        extends BaseMultipleEntitiesCommand<EntityLongRange, GetEntityLongRangesForm> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -59,33 +62,31 @@ public class GetEntityLongRangesCommand
     public GetEntityLongRangesCommand(UserVisitPK userVisitPK, GetEntityLongRangesForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    EntityAttribute entityAttribute;
+
     @Override
-    protected BaseResult execute() {
+    protected Collection<EntityLongRange> getEntities() {
         var coreControl = getCoreControl();
-        var result = CoreResultFactory.getGetEntityLongRangesResult();
         var componentVendorName = form.getComponentVendorName();
         var componentVendor = coreControl.getComponentVendorByName(componentVendorName);
-        
+        Collection<EntityLongRange> entityLongRanges = null;
+
         if(componentVendor != null) {
             var entityTypeName = form.getEntityTypeName();
             var entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
-            
+
             if(entityType != null) {
                 var entityAttributeName = form.getEntityAttributeName();
-                var entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
-                
+
+                entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
+
                 if(entityAttribute != null) {
                     var entityAttributeType = entityAttribute.getLastDetail().getEntityAttributeType();
                     var entityAttributeTypeName = entityAttributeType.getEntityAttributeTypeName();
-                    
-                    if(entityAttributeTypeName.equals(EntityAttributeTypes.LONG.name())) {
-                        if(session.hasLimit(EntityLongRangeFactory.class)) {
-                            result.setEntityLongRangeCount(coreControl.countEntityLongRanges(entityAttribute));
-                        }
 
-                        result.setEntityAttribute(coreControl.getEntityAttributeTransfer(getUserVisit(), entityAttribute, null));
-                        result.setEntityLongRanges(coreControl.getEntityLongRangeTransfersByEntityAttribute(getUserVisit(), entityAttribute, null));
+                    if(entityAttributeTypeName.equals(EntityAttributeTypes.LONG.name())) {
+                        entityLongRanges = coreControl.getEntityLongRanges(entityAttribute);
                     } else {
                         addExecutionError(ExecutionErrors.InvalidEntityAttributeType.name(), componentVendorName, entityTypeName, entityAttributeName,
                                 entityAttributeTypeName);
@@ -99,8 +100,27 @@ public class GetEntityLongRangesCommand
         } else {
             addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
         }
-        
+
+        return entityLongRanges;
+    }
+
+    @Override
+    protected BaseResult getTransfers(Collection<EntityLongRange> entities) {
+        var result = CoreResultFactory.getGetEntityLongRangesResult();
+
+        if(entities != null) {
+            var coreControl = getCoreControl();
+            var userVisit = getUserVisit();
+
+            if(session.hasLimit(EntityLongRangeFactory.class)) {
+                result.setEntityLongRangeCount(coreControl.countEntityLongRanges(entityAttribute));
+            }
+
+            result.setEntityAttribute(coreControl.getEntityAttributeTransfer(userVisit, entityAttribute, null));
+            result.setEntityLongRanges(coreControl.getEntityLongRangeTransfers(userVisit, entities, null));
+        }
+
         return result;
     }
-    
+
 }
