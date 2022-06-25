@@ -587,7 +587,6 @@ import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.uom.common.pk.UnitOfMeasureTypePK;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
@@ -6638,7 +6637,7 @@ public class CoreControl
         return getCoreTransferCaches(userVisit).getEntityIntegerRangeTransferCache().getEntityIntegerRangeTransfer(entityIntegerRange, entityInstance);
     }
     
-    public List<EntityIntegerRangeTransfer> getEntityIntegerRangeTransfersByEntityAttribute(UserVisit userVisit, List<EntityIntegerRange> entityIntegerRanges, EntityInstance entityInstance) {
+    public List<EntityIntegerRangeTransfer> getEntityIntegerRangeTransfers(UserVisit userVisit, Collection<EntityIntegerRange> entityIntegerRanges, EntityInstance entityInstance) {
         List<EntityIntegerRangeTransfer> entityIntegerRangeTransfers = new ArrayList<>(entityIntegerRanges.size());
         EntityIntegerRangeTransferCache entityIntegerRangeTransferCache = getCoreTransferCaches(userVisit).getEntityIntegerRangeTransferCache();
 
@@ -6650,7 +6649,7 @@ public class CoreControl
     }
 
     public List<EntityIntegerRangeTransfer> getEntityIntegerRangeTransfersByEntityAttribute(UserVisit userVisit, EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        return getEntityIntegerRangeTransfersByEntityAttribute(userVisit, getEntityIntegerRanges(entityAttribute), entityInstance);
+        return getEntityIntegerRangeTransfers(userVisit, getEntityIntegerRanges(entityAttribute), entityInstance);
     }
 
     private void updateEntityIntegerRangeFromValue(EntityIntegerRangeDetailValue entityIntegerRangeDetailValue, boolean checkDefault,
@@ -7125,8 +7124,8 @@ public class CoreControl
     public EntityLongRangeTransfer getEntityLongRangeTransfer(UserVisit userVisit, EntityLongRange entityLongRange, EntityInstance entityInstance) {
         return getCoreTransferCaches(userVisit).getEntityLongRangeTransferCache().getEntityLongRangeTransfer(entityLongRange, entityInstance);
     }
-    
-    public List<EntityLongRangeTransfer> getEntityLongRangeTransfersByEntityAttribute(UserVisit userVisit, List<EntityLongRange> entityLongRanges, EntityInstance entityInstance) {
+
+    public List<EntityLongRangeTransfer> getEntityLongRangeTransfers(UserVisit userVisit, Collection<EntityLongRange> entityLongRanges, EntityInstance entityInstance) {
         List<EntityLongRangeTransfer> entityLongRangeTransfers = new ArrayList<>(entityLongRanges.size());
         EntityLongRangeTransferCache entityLongRangeTransferCache = getCoreTransferCaches(userVisit).getEntityLongRangeTransferCache();
 
@@ -7138,7 +7137,7 @@ public class CoreControl
     }
 
     public List<EntityLongRangeTransfer> getEntityLongRangeTransfersByEntityAttribute(UserVisit userVisit, EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        return getEntityLongRangeTransfersByEntityAttribute(userVisit, getEntityLongRanges(entityAttribute), entityInstance);
+        return getEntityLongRangeTransfers(userVisit, getEntityLongRanges(entityAttribute), entityInstance);
     }
 
     private void updateEntityLongRangeFromValue(EntityLongRangeDetailValue entityLongRangeDetailValue, boolean checkDefault,
