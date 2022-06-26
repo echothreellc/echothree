@@ -35,7 +35,6 @@ import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
-import java.util.Collection;
 
 @GraphQLDescription("item results object")
 @GraphQLName("ItemResults")
@@ -65,12 +64,6 @@ public class ItemResultsObject
                 return new CountedObjects<>(objectLimiter, items);
             }
         }
-    }
-
-    @GraphQLField
-    @GraphQLDescription("facets")
-    public Collection<UserVisitSearchFacetObject> getFacets(final DataFetchingEnvironment env) {
-        return getUserVisitSearchFacetObjects(env);
     }
 
 }

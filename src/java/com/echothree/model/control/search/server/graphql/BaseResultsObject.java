@@ -29,6 +29,8 @@ import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.control.search.server.logic.UserVisitSearchFacetLogic;
 import com.echothree.model.data.search.server.entity.UserVisitSearch;
 import com.echothree.util.server.persistence.Session;
+import graphql.annotations.annotationTypes.GraphQLDescription;
+import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -106,6 +108,12 @@ public abstract class BaseResultsObject<F extends BaseGetResultsForm>
         }
 
         return failed ? null : userVisitSearchFacetObject;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("facets")
+    public Collection<UserVisitSearchFacetObject> getFacets(final DataFetchingEnvironment env) {
+        return getUserVisitSearchFacetObjects(env);
     }
 
 }
