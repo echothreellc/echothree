@@ -23,7 +23,7 @@ public class EntityListItemAttributeFacetResult
         implements BaseDatabaseResult {
     
     private EntityListItem entityListItem;
-    private Integer count;
+    private Long count;
 
     /**
      * Returns the entityListItem.
@@ -45,7 +45,7 @@ public class EntityListItemAttributeFacetResult
      * Returns the count.
      * @return the count
      */
-    public Integer getCount() {
+    public Long getCount() {
         return count;
     }
 
@@ -53,7 +53,7 @@ public class EntityListItemAttributeFacetResult
      * Sets the count.
      * @param count the count to set
      */
-    public void setCount(Integer count) {
+    public void setCount(Long count) {
         this.count = count;
     }
     
