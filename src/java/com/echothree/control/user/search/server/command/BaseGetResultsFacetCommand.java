@@ -18,28 +18,19 @@ package com.echothree.control.user.search.server.command;
 
 import com.echothree.control.user.search.common.form.BaseGetResultsFacetForm;
 import com.echothree.control.user.search.common.result.BaseGetResultsFacetResult;
-import com.echothree.model.control.core.common.ComponentVendors;
-import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.control.search.server.logic.UserVisitSearchFacetLogic;
-import com.echothree.model.data.core.server.entity.EntityAttribute;
-import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.search.server.entity.SearchType;
-import com.echothree.model.data.search.server.entity.UserVisitSearch;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public abstract class BaseGetResultsFacetCommand<F extends BaseGetResultsFacetForm, R extends BaseGetResultsFacetResult>
@@ -48,10 +39,10 @@ public abstract class BaseGetResultsFacetCommand<F extends BaseGetResultsFacetFo
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("SearchTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+        );
     }
 
     /** Creates a new instance of BaseGetResultsFacetCommand */
@@ -59,26 +50,23 @@ public abstract class BaseGetResultsFacetCommand<F extends BaseGetResultsFacetFo
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
-    protected BaseResult execute(String searchKindName, BaseGetResultsFacetResult result) {
-        var searchControl = Session.getModelController(SearchControl.class);
-        SearchType searchType = SearchLogic.getInstance().getSearchTypeByName(this, searchKindName, form.getSearchTypeName());
+    protected BaseResult execute(final String componentVendorName, final String entityTypeName, final String searchKindName,
+            final BaseGetResultsFacetResult result) {
+        var entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, componentVendorName, entityTypeName);
+        var searchType = SearchLogic.getInstance().getSearchTypeByName(this, searchKindName, form.getSearchTypeName());
 
         if(!hasExecutionErrors()) {
-            UserVisit userVisit = getUserVisit();
-            UserVisitSearch userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
+            var searchControl = Session.getModelController(SearchControl.class);
+            var userVisitSearch = searchControl.getUserVisitSearch(getUserVisit(), searchType);
 
             if(userVisitSearch != null) {
-                EntityType entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, ComponentVendors.ECHOTHREE.name(), EntityTypes.Item.name());
-                
+                var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByName(this, entityType, form.getEntityAttributeName());
+
                 if(!hasExecutionErrors()) {
-                    EntityAttribute entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByName(this, entityType, form.getEntityAttributeName());
-                    
-                    if(!hasExecutionErrors()) {
-                        result.setUserVisitSearchFacet(UserVisitSearchFacetLogic.getInstance().getUserVisitSearchFacetTransfer(this, userVisitSearch, entityAttribute));
-                    }
+                    result.setUserVisitSearchFacet(UserVisitSearchFacetLogic.getInstance().getUserVisitSearchFacetTransfer(this, userVisitSearch, entityAttribute));
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownUserVisitSearch.name());
+                addExecutionError(ExecutionErrors.UnknownUserVisitSearch.name(), searchType.getLastDetail().getSearchTypeName());
             }
         }
         

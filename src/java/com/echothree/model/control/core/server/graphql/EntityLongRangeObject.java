@@ -19,8 +19,8 @@ package com.echothree.model.control.core.server.graphql;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.data.core.server.entity.EntityListItem;
-import com.echothree.model.data.core.server.entity.EntityListItemDetail;
+import com.echothree.model.data.core.server.entity.EntityLongRange;
+import com.echothree.model.data.core.server.entity.EntityLongRangeDetail;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -28,54 +28,66 @@ import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 
-@GraphQLDescription("entity list item object")
-@GraphQLName("EntityListItem")
-public class EntityListItemObject
+@GraphQLDescription("entity long range object")
+@GraphQLName("EntityLongRange")
+public class EntityLongRangeObject
         extends BaseEntityInstanceObject {
     
-    private final EntityListItem entityListItem; // Always Present
+    private final EntityLongRange entityLongRange; // Always Present
     
-    public EntityListItemObject(EntityListItem entityListItem) {
-        super(entityListItem.getPrimaryKey());
+    public EntityLongRangeObject(EntityLongRange entityLongRange) {
+        super(entityLongRange.getPrimaryKey());
         
-        this.entityListItem = entityListItem;
+        this.entityLongRange = entityLongRange;
     }
 
-    private EntityListItemDetail entityListItemDetail; // Optional, use getEntityListItemDetail()
+    private EntityLongRangeDetail entityLongRangeDetail; // Optional, use getEntityLongRangeDetail()
     
-    private EntityListItemDetail getEntityListItemDetail() {
-        if(entityListItemDetail == null) {
-            entityListItemDetail = entityListItem.getLastDetail();
+    private EntityLongRangeDetail getEntityLongRangeDetail() {
+        if(entityLongRangeDetail == null) {
+            entityLongRangeDetail = entityLongRange.getLastDetail();
         }
         
-        return entityListItemDetail;
+        return entityLongRangeDetail;
     }
 
     @GraphQLField
     @GraphQLDescription("entity attribute")
     public EntityAttributeObject getEntityAttribute(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityAttributeAccess(env) ? new EntityAttributeObject(getEntityListItemDetail().getEntityAttribute(), null) : null;
+        return CoreSecurityUtils.getInstance().getHasEntityAttributeAccess(env) ? new EntityAttributeObject(getEntityLongRangeDetail().getEntityAttribute(), null) : null;
     }
 
     @GraphQLField
-    @GraphQLDescription("entity list item name")
+    @GraphQLDescription("entity long range name")
     @GraphQLNonNull
-    public String getEntityListItemName() {
-        return getEntityListItemDetail().getEntityListItemName();
+    public String getEntityLongRangeName() {
+        return getEntityLongRangeDetail().getEntityLongRangeName();
     }
-    
+
+    @GraphQLField
+    @GraphQLDescription("minimum long value")
+    public Long getMinimumLongValue() {
+        return getEntityLongRangeDetail().getMinimumLongValue();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("maximum long value")
+    public Long getMaximumLongValue() {
+        return getEntityLongRangeDetail().getMaximumLongValue();
+    }
+
     @GraphQLField
     @GraphQLDescription("is default")
     @GraphQLNonNull
     public boolean getIsDefault() {
-        return getEntityListItemDetail().getIsDefault();
+        return getEntityLongRangeDetail().getIsDefault();
     }
     
     @GraphQLField
     @GraphQLDescription("sort order")
     @GraphQLNonNull
     public int getSortOrder() {
-        return getEntityListItemDetail().getSortOrder();
+        return getEntityLongRangeDetail().getSortOrder();
     }
     
     @GraphQLField
@@ -85,7 +97,7 @@ public class EntityListItemObject
         var coreControl = Session.getModelController(CoreControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return coreControl.getBestEntityListItemDescription(entityListItem, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return coreControl.getBestEntityLongRangeDescription(entityLongRange, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
     
 }

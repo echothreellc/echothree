@@ -17,6 +17,8 @@
 package com.echothree.model.control.search.server.graphql;
 
 import com.echothree.control.user.search.common.form.GetItemResultsForm;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
@@ -39,8 +41,8 @@ import graphql.schema.DataFetchingEnvironment;
 public class ItemResultsObject
         extends BaseResultsObject<GetItemResultsForm> {
 
-    public ItemResultsObject() {
-        super(SearchConstants.SearchKind_ITEM);
+    public ItemResultsObject(GetItemResultsForm form) {
+        super(ComponentVendors.ECHOTHREE.name(), EntityTypes.Item.name(), SearchConstants.SearchKind_ITEM, form);
     }
 
     @GraphQLField

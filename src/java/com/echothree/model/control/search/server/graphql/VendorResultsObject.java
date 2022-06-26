@@ -17,6 +17,8 @@
 package com.echothree.model.control.search.server.graphql;
 
 import com.echothree.control.user.search.common.form.GetVendorResultsForm;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
@@ -39,8 +41,8 @@ import graphql.schema.DataFetchingEnvironment;
 public class VendorResultsObject
         extends BaseResultsObject<GetVendorResultsForm> {
 
-    public VendorResultsObject() {
-        super(SearchConstants.SearchKind_VENDOR);
+    public VendorResultsObject(GetVendorResultsForm form) {
+        super(ComponentVendors.ECHOTHREE.name(), EntityTypes.Party.name(), SearchConstants.SearchKind_VENDOR, form);
     }
 
     @GraphQLField

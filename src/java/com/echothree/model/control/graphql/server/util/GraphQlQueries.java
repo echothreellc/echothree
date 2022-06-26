@@ -3926,7 +3926,7 @@ public final class GraphQlQueries
     @GraphQLName("customerResults")
     public static CustomerResultsObject customerResults(final DataFetchingEnvironment env,
             @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName) {
-        CustomerResultsObject customerResultsObject = new CustomerResultsObject();
+        CustomerResultsObject customerResultsObject = null;
 
         try {
             var commandForm = SearchUtil.getHome().getGetCustomerResultsForm();
@@ -3934,7 +3934,7 @@ public final class GraphQlQueries
             commandForm.setSearchTypeName(searchTypeName);
 
             if(new GetCustomerResultsCommand(getUserVisitPK(env), commandForm).canQueryByGraphQl()) {
-                customerResultsObject.setForm(commandForm);
+                customerResultsObject = new CustomerResultsObject(commandForm);
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
@@ -3947,7 +3947,7 @@ public final class GraphQlQueries
     @GraphQLName("employeeResults")
     public static EmployeeResultsObject employeeResults(final DataFetchingEnvironment env,
             @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName) {
-        EmployeeResultsObject employeeResultsObject = new EmployeeResultsObject();
+        EmployeeResultsObject employeeResultsObject = null;
 
         try {
             var commandForm = SearchUtil.getHome().getGetEmployeeResultsForm();
@@ -3955,7 +3955,7 @@ public final class GraphQlQueries
             commandForm.setSearchTypeName(searchTypeName);
 
             if(new GetEmployeeResultsCommand(getUserVisitPK(env), commandForm).canQueryByGraphQl()) {
-                employeeResultsObject.setForm(commandForm);
+                employeeResultsObject = new EmployeeResultsObject(commandForm);
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
@@ -3968,7 +3968,7 @@ public final class GraphQlQueries
     @GraphQLName("itemResults")
     public static ItemResultsObject itemResults(final DataFetchingEnvironment env,
             @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName) {
-        ItemResultsObject itemResultsObject = new ItemResultsObject();
+        ItemResultsObject itemResultsObject = null;
 
         try {
             var commandForm = SearchUtil.getHome().getGetItemResultsForm();
@@ -3976,7 +3976,7 @@ public final class GraphQlQueries
             commandForm.setSearchTypeName(searchTypeName);
 
             if(new GetItemResultsCommand(getUserVisitPK(env), commandForm).canQueryByGraphQl()) {
-                itemResultsObject.setForm(commandForm);
+                itemResultsObject = new ItemResultsObject(commandForm);
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
@@ -4016,7 +4016,7 @@ public final class GraphQlQueries
     @GraphQLName("vendorResults")
     public static VendorResultsObject vendorResults(final DataFetchingEnvironment env,
             @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName) {
-        VendorResultsObject vendorResultsObject = new VendorResultsObject();
+        VendorResultsObject vendorResultsObject = null;
 
         try {
             var commandForm = SearchUtil.getHome().getGetVendorResultsForm();
@@ -4024,7 +4024,7 @@ public final class GraphQlQueries
             commandForm.setSearchTypeName(searchTypeName);
 
             if(new GetVendorResultsCommand(getUserVisitPK(env), commandForm).canQueryByGraphQl()) {
-                vendorResultsObject.setForm(commandForm);
+                vendorResultsObject = new VendorResultsObject(commandForm);
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);

@@ -19,8 +19,8 @@ package com.echothree.model.control.core.server.graphql;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.data.core.server.entity.EntityListItem;
-import com.echothree.model.data.core.server.entity.EntityListItemDetail;
+import com.echothree.model.data.core.server.entity.EntityIntegerRange;
+import com.echothree.model.data.core.server.entity.EntityIntegerRangeDetail;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -28,54 +28,66 @@ import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 
-@GraphQLDescription("entity list item object")
-@GraphQLName("EntityListItem")
-public class EntityListItemObject
+@GraphQLDescription("entity integer range object")
+@GraphQLName("EntityIntegerRange")
+public class EntityIntegerRangeObject
         extends BaseEntityInstanceObject {
     
-    private final EntityListItem entityListItem; // Always Present
+    private final EntityIntegerRange entityIntegerRange; // Always Present
     
-    public EntityListItemObject(EntityListItem entityListItem) {
-        super(entityListItem.getPrimaryKey());
+    public EntityIntegerRangeObject(EntityIntegerRange entityIntegerRange) {
+        super(entityIntegerRange.getPrimaryKey());
         
-        this.entityListItem = entityListItem;
+        this.entityIntegerRange = entityIntegerRange;
     }
 
-    private EntityListItemDetail entityListItemDetail; // Optional, use getEntityListItemDetail()
+    private EntityIntegerRangeDetail entityIntegerRangeDetail; // Optional, use getEntityIntegerRangeDetail()
     
-    private EntityListItemDetail getEntityListItemDetail() {
-        if(entityListItemDetail == null) {
-            entityListItemDetail = entityListItem.getLastDetail();
+    private EntityIntegerRangeDetail getEntityIntegerRangeDetail() {
+        if(entityIntegerRangeDetail == null) {
+            entityIntegerRangeDetail = entityIntegerRange.getLastDetail();
         }
         
-        return entityListItemDetail;
+        return entityIntegerRangeDetail;
     }
 
     @GraphQLField
     @GraphQLDescription("entity attribute")
     public EntityAttributeObject getEntityAttribute(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityAttributeAccess(env) ? new EntityAttributeObject(getEntityListItemDetail().getEntityAttribute(), null) : null;
+        return CoreSecurityUtils.getInstance().getHasEntityAttributeAccess(env) ? new EntityAttributeObject(getEntityIntegerRangeDetail().getEntityAttribute(), null) : null;
     }
 
     @GraphQLField
-    @GraphQLDescription("entity list item name")
+    @GraphQLDescription("entity integer range name")
     @GraphQLNonNull
-    public String getEntityListItemName() {
-        return getEntityListItemDetail().getEntityListItemName();
+    public String getEntityIntegerRangeName() {
+        return getEntityIntegerRangeDetail().getEntityIntegerRangeName();
     }
-    
+
+    @GraphQLField
+    @GraphQLDescription("minimum integer value")
+    public Integer getMinimumIntegerValue() {
+        return getEntityIntegerRangeDetail().getMinimumIntegerValue();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("maximum integer value")
+    public Integer getMaximumIntegerValue() {
+        return getEntityIntegerRangeDetail().getMaximumIntegerValue();
+    }
+
     @GraphQLField
     @GraphQLDescription("is default")
     @GraphQLNonNull
     public boolean getIsDefault() {
-        return getEntityListItemDetail().getIsDefault();
+        return getEntityIntegerRangeDetail().getIsDefault();
     }
     
     @GraphQLField
     @GraphQLDescription("sort order")
     @GraphQLNonNull
     public int getSortOrder() {
-        return getEntityListItemDetail().getSortOrder();
+        return getEntityIntegerRangeDetail().getSortOrder();
     }
     
     @GraphQLField
@@ -85,7 +97,7 @@ public class EntityListItemObject
         var coreControl = Session.getModelController(CoreControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return coreControl.getBestEntityListItemDescription(entityListItem, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return coreControl.getBestEntityIntegerRangeDescription(entityIntegerRange, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
     
 }

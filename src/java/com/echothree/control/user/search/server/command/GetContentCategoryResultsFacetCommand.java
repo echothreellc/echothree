@@ -19,6 +19,8 @@ package com.echothree.control.user.search.server.command;
 import com.echothree.control.user.search.common.form.GetContentCategoryResultsFacetForm;
 import com.echothree.control.user.search.common.result.GetContentCategoryResultsFacetResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.search.common.SearchConstants;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
@@ -33,7 +35,8 @@ public class GetContentCategoryResultsFacetCommand
 
     @Override
     protected BaseResult execute() {
-        return execute(SearchConstants.SearchKind_CONTENT_CATEGORY, SearchResultFactory.getGetContentCategoryResultsFacetResult());
+        return execute(ComponentVendors.ECHOTHREE.name(), EntityTypes.ContentCategory.name(), SearchConstants.SearchKind_CONTENT_CATEGORY,
+                SearchResultFactory.getGetContentCategoryResultsFacetResult());
     }
 
 }

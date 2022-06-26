@@ -467,21 +467,22 @@ public class EntityAttributeObject
     public Collection<EntityListItemObject> getEntityListItems(final DataFetchingEnvironment env) {
         Collection<EntityListItemObject> entityListItemObjects = null;
 
-        if(isEntityAttributeTypeName(EntityAttributeTypes.LISTITEM.name())
-                || isEntityAttributeTypeName(EntityAttributeTypes.MULTIPLELISTITEM.name())) {
+        if((isEntityAttributeTypeName(EntityAttributeTypes.LISTITEM.name())
+                || isEntityAttributeTypeName(EntityAttributeTypes.MULTIPLELISTITEM.name()))
+                && CoreSecurityUtils.getInstance().getHasEntityListItemsAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
             var entityListItems = coreControl.getEntityListItems(entityAttribute);
-            
+
             entityListItemObjects = new ArrayList<>(entityListItems.size());
-            
+
             for(var entityListItem : entityListItems) {
                 entityListItemObjects.add(new EntityListItemObject(entityListItem));
             }
         }
-        
+
         return entityListItemObjects;
     }
-    
+
     @GraphQLField
     @GraphQLDescription("entity list item attribute")
     public EntityListItemAttributeObject getEntityListItemAttribute(final DataFetchingEnvironment env) {
@@ -515,5 +516,45 @@ public class EntityAttributeObject
         
         return entityMultipleListItemAttributeObjects;
     }
-    
+
+    @GraphQLField
+    @GraphQLDescription("entity long ranges")
+    public Collection<EntityLongRangeObject> getEntityLongRanges(final DataFetchingEnvironment env) {
+        Collection<EntityLongRangeObject> entityLongRangeObjects = null;
+
+        if(isEntityAttributeTypeName(EntityAttributeTypes.LONG.name())
+                && CoreSecurityUtils.getInstance().getHasEntityLongRangesAccess(env)) {
+            var coreControl = Session.getModelController(CoreControl.class);
+            var entityLongRanges = coreControl.getEntityLongRanges(entityAttribute);
+
+            entityLongRangeObjects = new ArrayList<>(entityLongRanges.size());
+
+            for(var entityLongRange : entityLongRanges) {
+                entityLongRangeObjects.add(new EntityLongRangeObject(entityLongRange));
+            }
+        }
+
+        return entityLongRangeObjects;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("entity integer ranges")
+    public Collection<EntityIntegerRangeObject> getEntityIntegerRanges(final DataFetchingEnvironment env) {
+        Collection<EntityIntegerRangeObject> entityIntegerRangeObjects = null;
+
+        if(isEntityAttributeTypeName(EntityAttributeTypes.INTEGER.name())
+                && CoreSecurityUtils.getInstance().getHasEntityIntegerRangesAccess(env)) {
+            var coreControl = Session.getModelController(CoreControl.class);
+            var entityIntegerRanges = coreControl.getEntityIntegerRanges(entityAttribute);
+
+            entityIntegerRangeObjects = new ArrayList<>(entityIntegerRanges.size());
+
+            for(var entityIntegerRange : entityIntegerRanges) {
+                entityIntegerRangeObjects.add(new EntityIntegerRangeObject(entityIntegerRange));
+            }
+        }
+
+        return entityIntegerRangeObjects;
+    }
+
 }

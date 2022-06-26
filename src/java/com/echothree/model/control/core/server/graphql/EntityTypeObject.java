@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.core.server.graphql;
 
-import com.echothree.control.user.core.server.command.GetEntityInstancesCommand;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.user.server.control.UserControl;
@@ -53,20 +52,6 @@ public class EntityTypeObject
         }
         
         return entityTypeDetail;
-    }
-
-    private Boolean hasEntityInstancesAccess;
-
-    private boolean getHasEntityInstancesAccess(final DataFetchingEnvironment env) {
-        if(hasEntityInstancesAccess == null) {
-            var baseMultipleEntitiesCommand = new GetEntityInstancesCommand(getUserVisitPK(env), null);
-
-            baseMultipleEntitiesCommand.security();
-
-            hasEntityInstancesAccess = !baseMultipleEntitiesCommand.hasSecurityMessages();
-        }
-
-        return hasEntityInstancesAccess;
     }
 
     @GraphQLField
@@ -116,7 +101,7 @@ public class EntityTypeObject
     @GraphQLField
     @GraphQLDescription("entity instances")
     public List<EntityInstanceObject> getEntityInstances(final DataFetchingEnvironment env) {
-        if(getHasEntityInstancesAccess(env)) {
+        if(CoreSecurityUtils.getInstance().getHasEntityInstancesAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
             var entities = coreControl.getEntityInstancesByEntityType(entityType);
             var entityInstances = entities.stream().map(EntityInstanceObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
@@ -130,7 +115,7 @@ public class EntityTypeObject
     @GraphQLField
     @GraphQLDescription("entity instance count")
     public Long getEntityInstanceCount(final DataFetchingEnvironment env) {
-        if(getHasEntityInstancesAccess(env)) {
+        if(CoreSecurityUtils.getInstance().getHasEntityInstancesAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
 
             return coreControl.countEntityInstancesByEntityType(entityType);
@@ -138,5 +123,23 @@ public class EntityTypeObject
             return null;
         }
     }
-    
+
+    @GraphQLField
+    @GraphQLDescription("entity attributes")
+    public List<EntityAttributeObject> getEntityAttributes(final DataFetchingEnvironment env) {
+        if(CoreSecurityUtils.getInstance().getHasEntityAttributesAccess(env)) {
+            var coreControl = Session.getModelController(CoreControl.class);
+            var entities = coreControl.getEntityAttributesByEntityType(entityType);
+            var entityAttributes = new ArrayList<EntityAttributeObject>(entities.size());
+
+            for(var entity : entities) {
+                entityAttributes.add(new EntityAttributeObject(entity, null));
+            }
+
+            return entityAttributes;
+        } else {
+            return null;
+        }
+    }
+
 }

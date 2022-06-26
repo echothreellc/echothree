@@ -94,11 +94,11 @@ public class EntityAttributeGroupObject
             var coreControl = Session.getModelController(CoreControl.class);
             var entities = coreControl.getEntityAttributesByEntityAttributeGroupAndEntityType(entityAttributeGroup,
                     entityInstance.getEntityType());
-            var aspectEntityAttributes = new ArrayList<EntityAttributeObject>(entities.size());
+            var entityAttributes = new ArrayList<EntityAttributeObject>(entities.size());
 
-            entities.forEach((entity) -> aspectEntityAttributes.add(new EntityAttributeObject(entity, entityInstance)));
+            entities.forEach((entity) -> entityAttributes.add(new EntityAttributeObject(entity, entityInstance)));
 
-            return aspectEntityAttributes;
+            return entityAttributes;
         } else {
             return null;
         }

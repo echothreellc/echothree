@@ -19,9 +19,15 @@ package com.echothree.model.control.core.server.graphql;
 import com.echothree.control.user.core.server.command.GetEntityAttributeCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeTypeCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeTypesCommand;
+import com.echothree.control.user.core.server.command.GetEntityAttributesCommand;
 import com.echothree.control.user.core.server.command.GetEntityInstanceCommand;
+import com.echothree.control.user.core.server.command.GetEntityInstancesCommand;
+import com.echothree.control.user.core.server.command.GetEntityIntegerRangeCommand;
+import com.echothree.control.user.core.server.command.GetEntityIntegerRangesCommand;
 import com.echothree.control.user.core.server.command.GetEntityListItemCommand;
 import com.echothree.control.user.core.server.command.GetEntityListItemsCommand;
+import com.echothree.control.user.core.server.command.GetEntityLongRangeCommand;
+import com.echothree.control.user.core.server.command.GetEntityLongRangesCommand;
 import com.echothree.control.user.core.server.command.GetEntityTypeCommand;
 import com.echothree.control.user.core.server.command.GetEntityTypesCommand;
 import com.echothree.control.user.core.server.command.GetMimeTypeCommand;
@@ -47,6 +53,10 @@ public final class CoreSecurityUtils
         return getGraphQlExecutionContext(env).hasAccess(GetEntityInstanceCommand.class);
     }
 
+    public boolean getHasEntityInstancesAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetEntityInstancesCommand.class);
+    }
+
     public boolean getHasEntityAttributeTypeAccess(final DataFetchingEnvironment env) {
         return getGraphQlExecutionContext(env).hasAccess(GetEntityAttributeTypeCommand.class);
     }
@@ -59,9 +69,9 @@ public final class CoreSecurityUtils
         return getGraphQlExecutionContext(env).hasAccess(GetEntityAttributeCommand.class);
     }
 
-//    public boolean getHasEntityAttributesAccess(final DataFetchingEnvironment env) {
-//        return getGraphQlExecutionContext(env).hasAccess(GetEntityAttributesCommand.class);
-//    }
+    public boolean getHasEntityAttributesAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetEntityAttributesCommand.class);
+    }
 
     public boolean getHasEntityTypeAccess(final DataFetchingEnvironment env) {
         return getGraphQlExecutionContext(env).hasAccess(GetEntityTypeCommand.class);
@@ -77,6 +87,22 @@ public final class CoreSecurityUtils
 
     public boolean getHasEntityListItemsAccess(final DataFetchingEnvironment env) {
         return getGraphQlExecutionContext(env).hasAccess(GetEntityListItemsCommand.class);
+    }
+
+    public boolean getHasEntityLongRangeAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetEntityLongRangeCommand.class);
+    }
+
+    public boolean getHasEntityLongRangesAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetEntityLongRangesCommand.class);
+    }
+
+    public boolean getHasEntityIntegerRangeAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetEntityIntegerRangeCommand.class);
+    }
+
+    public boolean getHasEntityIntegerRangesAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetEntityIntegerRangesCommand.class);
     }
 
     public boolean getHasMimeTypeAccess(final DataFetchingEnvironment env) {
