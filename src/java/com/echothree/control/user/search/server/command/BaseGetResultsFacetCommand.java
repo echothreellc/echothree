@@ -18,8 +18,6 @@ package com.echothree.control.user.search.server.command;
 
 import com.echothree.control.user.search.common.form.BaseGetResultsFacetForm;
 import com.echothree.control.user.search.common.result.BaseGetResultsFacetResult;
-import com.echothree.model.control.core.common.ComponentVendors;
-import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.search.server.control.SearchControl;
@@ -52,22 +50,20 @@ public abstract class BaseGetResultsFacetCommand<F extends BaseGetResultsFacetFo
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
-    protected BaseResult execute(String searchKindName, BaseGetResultsFacetResult result) {
-        var searchControl = Session.getModelController(SearchControl.class);
+    protected BaseResult execute(final String componentVendorName, final String entityTypeName, final String searchKindName,
+            final BaseGetResultsFacetResult result) {
+        var entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, componentVendorName, entityTypeName);
         var searchType = SearchLogic.getInstance().getSearchTypeByName(this, searchKindName, form.getSearchTypeName());
 
         if(!hasExecutionErrors()) {
+            var searchControl = Session.getModelController(SearchControl.class);
             var userVisitSearch = searchControl.getUserVisitSearch(getUserVisit(), searchType);
 
             if(userVisitSearch != null) {
-                var entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, ComponentVendors.ECHOTHREE.name(), EntityTypes.Item.name());
-                
+                var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByName(this, entityType, form.getEntityAttributeName());
+
                 if(!hasExecutionErrors()) {
-                    var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByName(this, entityType, form.getEntityAttributeName());
-                    
-                    if(!hasExecutionErrors()) {
-                        result.setUserVisitSearchFacet(UserVisitSearchFacetLogic.getInstance().getUserVisitSearchFacetTransfer(this, userVisitSearch, entityAttribute));
-                    }
+                    result.setUserVisitSearchFacet(UserVisitSearchFacetLogic.getInstance().getUserVisitSearchFacetTransfer(this, userVisitSearch, entityAttribute));
                 }
             } else {
                 addExecutionError(ExecutionErrors.UnknownUserVisitSearch.name(), searchType.getLastDetail().getSearchTypeName());

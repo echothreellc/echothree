@@ -18,9 +18,7 @@ package com.echothree.control.user.search.server.command;
 
 import com.echothree.control.user.search.common.form.BaseGetResultsFacetsForm;
 import com.echothree.control.user.search.common.result.BaseGetResultsFacetsResult;
-import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
-import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.search.common.transfer.UserVisitSearchFacetTransfer;
 import com.echothree.model.control.search.server.control.SearchControl;
@@ -53,42 +51,39 @@ public abstract class BaseGetResultsFacetsCommand<F extends BaseGetResultsFacets
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
-    protected BaseResult execute(String searchKindName, BaseGetResultsFacetsResult result) {
-        var searchControl = Session.getModelController(SearchControl.class);
+    protected BaseResult execute(final String componentVendorName, final String entityTypeName, final String searchKindName,
+            final BaseGetResultsFacetsResult result) {
+        var entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, componentVendorName, entityTypeName);
         var searchType = SearchLogic.getInstance().getSearchTypeByName(this, searchKindName, form.getSearchTypeName());
 
         if(!hasExecutionErrors()) {
-            var userVisit = getUserVisit();
-            var userVisitSearch = searchControl.getUserVisitSearch(userVisit, searchType);
+            var searchControl = Session.getModelController(SearchControl.class);
+            var userVisitSearch = searchControl.getUserVisitSearch(getUserVisit(), searchType);
 
             if(userVisitSearch != null) {
-                var entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, ComponentVendors.ECHOTHREE.name(), EntityTypes.Item.name());
-                
-                if(!hasExecutionErrors()) {
-                    var coreControl = getCoreControl();
-                    var entityAttributes = coreControl.getEntityAttributesByEntityType(entityType);
-                    var userVisitSearchFacets = new LinkedHashMap<String, UserVisitSearchFacetTransfer>();
-        
-                    entityAttributes.forEach((entityAttribute) -> {
-                        var entityAttributeTypeName = entityAttribute.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
+                var coreControl = getCoreControl();
+                var entityAttributes = coreControl.getEntityAttributesByEntityType(entityType);
+                var userVisitSearchFacets = new LinkedHashMap<String, UserVisitSearchFacetTransfer>();
 
-                        if (entityAttributeTypeName.equals(EntityAttributeTypes.LISTITEM.name())
-                                || entityAttributeTypeName.equals(EntityAttributeTypes.MULTIPLELISTITEM.name())
-                                || entityAttributeTypeName.equals(EntityAttributeTypes.INTEGER.name())
-                                || entityAttributeTypeName.equals(EntityAttributeTypes.LONG.name())) {
-                            var userVisitSearchFacet = UserVisitSearchFacetLogic.getInstance().getUserVisitSearchFacetTransfer(this, userVisitSearch, entityAttribute);
+                entityAttributes.forEach((entityAttribute) -> {
+                    var entityAttributeTypeName = entityAttribute.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
 
-                            if ((userVisitSearchFacet.getUserVisitSearchFacetListItems() != null && userVisitSearchFacet.getUserVisitSearchFacetListItems().getSize() > 0)
-                                    || (userVisitSearchFacet.getUserVisitSearchFacetIntegers() != null && userVisitSearchFacet.getUserVisitSearchFacetIntegers().getSize() > 0)
-                                    || (userVisitSearchFacet.getUserVisitSearchFacetLongs() != null && userVisitSearchFacet.getUserVisitSearchFacetLongs().getSize() > 0)) {
-                                userVisitSearchFacets.put(entityAttribute.getLastDetail().getEntityAttributeName(), userVisitSearchFacet);
-                            }
+                    if (entityAttributeTypeName.equals(EntityAttributeTypes.LISTITEM.name())
+                            || entityAttributeTypeName.equals(EntityAttributeTypes.MULTIPLELISTITEM.name())
+                            || entityAttributeTypeName.equals(EntityAttributeTypes.INTEGER.name())
+                            || entityAttributeTypeName.equals(EntityAttributeTypes.LONG.name())) {
+                        var userVisitSearchFacet = UserVisitSearchFacetLogic.getInstance().getUserVisitSearchFacetTransfer(this, userVisitSearch, entityAttribute);
+
+                        if ((userVisitSearchFacet.getUserVisitSearchFacetListItems() != null && userVisitSearchFacet.getUserVisitSearchFacetListItems().getSize() > 0)
+                                || (userVisitSearchFacet.getUserVisitSearchFacetIntegers() != null && userVisitSearchFacet.getUserVisitSearchFacetIntegers().getSize() > 0)
+                                || (userVisitSearchFacet.getUserVisitSearchFacetLongs() != null && userVisitSearchFacet.getUserVisitSearchFacetLongs().getSize() > 0)) {
+                            userVisitSearchFacets.put(entityAttribute.getLastDetail().getEntityAttributeName(), userVisitSearchFacet);
                         }
-                    });
-                    
-                    if(!hasExecutionErrors()) {
-                        result.setUserVisitSearchFacets(userVisitSearchFacets);
                     }
+                });
+
+                if(!hasExecutionErrors()) {
+                    result.setUserVisitSearchFacets(userVisitSearchFacets);
                 }
             } else {
                 addExecutionError(ExecutionErrors.UnknownUserVisitSearch.name(), searchType.getLastDetail().getSearchTypeName());
