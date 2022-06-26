@@ -22,7 +22,7 @@ public class EntityIntegerAttributeFacetResult
         implements BaseDatabaseResult {
     
     private Integer integerAttribute;
-    private Integer count;
+    private Long count;
 
     /**
      * Returns the integerAttribute.
@@ -44,7 +44,7 @@ public class EntityIntegerAttributeFacetResult
      * Returns the count.
      * @return the count
      */
-    public Integer getCount() {
+    public Long getCount() {
         return count;
     }
 
@@ -52,7 +52,7 @@ public class EntityIntegerAttributeFacetResult
      * Sets the count.
      * @param count the count to set
      */
-    public void setCount(Integer count) {
+    public void setCount(Long count) {
         this.count = count;
     }
     

@@ -81,15 +81,15 @@ public class UserVisitSearchFacetLogic
     
     public UserVisitSearchFacetTransfer getUserVisitSearchFacetTransfer(final ExecutionErrorAccumulator eea, final UserVisitSearch userVisitSearch,
             final EntityAttribute entityAttribute) {
-        var coreControl = Session.getModelController(CoreControl.class);
+        final var coreControl = Session.getModelController(CoreControl.class);
         List<UserVisitSearchFacetListItemTransfer> userVisitSearchFacetListItemTransfers = null;
         List<UserVisitSearchFacetIntegerTransfer> userVisitSearchFacetIntegerTransfers = null;
         List<UserVisitSearchFacetLongTransfer> userVisitSearchFacetLongTransfers = null;
-        var userVisit = userVisitSearch.getUserVisit();
-        var entityAttributeTypeName = entityAttribute.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
+        final var userVisit = userVisitSearch.getUserVisit();
+        final var entityAttributeTypeName = entityAttribute.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
                 
         if(entityAttributeTypeName.equals(EntityAttributeTypes.LISTITEM.name())) {
-            var entityListItemAttributeFacetResults = new EntityListItemAttributeFacetQuery(userVisitSearch).execute(entityAttribute);
+            final var entityListItemAttributeFacetResults = new EntityListItemAttributeFacetQuery(userVisitSearch).execute(entityAttribute);
 
             userVisitSearchFacetListItemTransfers = new ArrayList<>(entityListItemAttributeFacetResults.size());
 
@@ -99,7 +99,7 @@ public class UserVisitSearchFacetLogic
                         entityListItemAttributeFacetResult.getCount()));
             }
         } else if(entityAttributeTypeName.equals(EntityAttributeTypes.MULTIPLELISTITEM.name())) {
-            var entityMultipleListItemAttributeFacetResults = new EntityMultipleListItemAttributeFacetQuery(userVisitSearch).execute(entityAttribute);
+            final var entityMultipleListItemAttributeFacetResults = new EntityMultipleListItemAttributeFacetQuery(userVisitSearch).execute(entityAttribute);
 
             userVisitSearchFacetListItemTransfers = new ArrayList<>(entityMultipleListItemAttributeFacetResults.size());
 
@@ -109,22 +109,22 @@ public class UserVisitSearchFacetLogic
                         entityListItemAttributeFacetResult.getCount()));
             }
         } else if(entityAttributeTypeName.equals(EntityAttributeTypes.INTEGER.name())) {
-            var entityIntegerRangeDetails = getEntityIntegerRangeDetails(entityAttribute);
-            var currentSize = entityIntegerRangeDetails.size();
+            final var entityIntegerRangeDetails = getEntityIntegerRangeDetails(entityAttribute);
+            final var currentSize = entityIntegerRangeDetails.size();
             
             userVisitSearchFacetIntegerTransfers = new ArrayList<>(currentSize); // maximum size, may be smaller.
             
             if(currentSize > 0) {
-                var entityIntegerAttributeFacetResults = new EntityIntegerAttributeFacetQuery(userVisitSearch).execute(entityAttribute);
+                final var entityIntegerAttributeFacetResults = new EntityIntegerAttributeFacetQuery(userVisitSearch).execute(entityAttribute);
                 
                 for(var entityIntegerAttributeFacetResult : entityIntegerAttributeFacetResults) {
-                    var addedUserVisitSearchFacetIntegerTransfers = new ArrayList<UserVisitSearchFacetIntegerTransfer>();
-                    var integerAttribute = entityIntegerAttributeFacetResult.getIntegerAttribute();
+                    final var addedUserVisitSearchFacetIntegerTransfers = new ArrayList<UserVisitSearchFacetIntegerTransfer>();
+                    final var integerAttribute = entityIntegerAttributeFacetResult.getIntegerAttribute();
                     
                     for(Iterator<EntityIntegerRangeDetail> iter = entityIntegerRangeDetails.iterator(); iter.hasNext(); ) {
-                        var entityIntegerRangeDetail = iter.next();
-                        var minimumIntegerValue = entityIntegerRangeDetail.getMinimumIntegerValue();
-                        var maximumIntegerValue = entityIntegerRangeDetail.getMaximumIntegerValue();
+                        final var entityIntegerRangeDetail = iter.next();
+                        final var minimumIntegerValue = entityIntegerRangeDetail.getMinimumIntegerValue();
+                        final var maximumIntegerValue = entityIntegerRangeDetail.getMaximumIntegerValue();
                         
                         if((minimumIntegerValue == null && maximumIntegerValue != null && integerAttribute <= maximumIntegerValue)
                                 || (minimumIntegerValue != null && maximumIntegerValue == null && integerAttribute >= minimumIntegerValue)
@@ -137,9 +137,9 @@ public class UserVisitSearchFacetLogic
                     }
                     
                     for(var userVisitSearchFacetIntegerTransfer : userVisitSearchFacetIntegerTransfers) {
-                        var entityIntegerRange = userVisitSearchFacetIntegerTransfer.getEntityIntegerRange();
-                        var minimumIntegerValue = entityIntegerRange.getMinimumIntegerValue();
-                        var maximumIntegerValue = entityIntegerRange.getMaximumIntegerValue();
+                        final var entityIntegerRange = userVisitSearchFacetIntegerTransfer.getEntityIntegerRange();
+                        final var minimumIntegerValue = entityIntegerRange.getMinimumIntegerValue();
+                        final var maximumIntegerValue = entityIntegerRange.getMaximumIntegerValue();
                         
                         if((minimumIntegerValue == null && maximumIntegerValue != null && integerAttribute <= maximumIntegerValue)
                                 || (minimumIntegerValue != null && maximumIntegerValue == null && integerAttribute >= minimumIntegerValue)
@@ -152,29 +152,26 @@ public class UserVisitSearchFacetLogic
                 }
             }
 
-            userVisitSearchFacetIntegerTransfers.sort((UserVisitSearchFacetIntegerTransfer o1, UserVisitSearchFacetIntegerTransfer o2) -> {
-                int o1Count = o1.getCount();
-                int o2Count = o2.getCount();
-
-                return Integer.compare(o2Count, o1Count);
-            });
+            userVisitSearchFacetIntegerTransfers.sort(
+                    (UserVisitSearchFacetIntegerTransfer o1, UserVisitSearchFacetIntegerTransfer o2) -> Long.compare(o2.getCount(), o1.getCount())
+            );
         } else if(entityAttributeTypeName.equals(EntityAttributeTypes.LONG.name())) {
-            var entityLongRangeDetails = getEntityLongRangeDetails(entityAttribute);
-            var currentSize = entityLongRangeDetails.size();
+            final var entityLongRangeDetails = getEntityLongRangeDetails(entityAttribute);
+            final var currentSize = entityLongRangeDetails.size();
             
             userVisitSearchFacetLongTransfers = new ArrayList<>(currentSize); // maximum size, may be smaller.
             
             if(currentSize > 0) {
-                var entityLongAttributeFacetResults = new EntityLongAttributeFacetQuery(userVisitSearch).execute(entityAttribute);
+                final var entityLongAttributeFacetResults = new EntityLongAttributeFacetQuery(userVisitSearch).execute(entityAttribute);
                 
                 for(var entityLongAttributeFacetResult : entityLongAttributeFacetResults) {
-                    var addedUserVisitSearchFacetLongTransfers = new ArrayList<UserVisitSearchFacetLongTransfer>();
-                    var longAttribute = entityLongAttributeFacetResult.getLongAttribute();
+                    final var addedUserVisitSearchFacetLongTransfers = new ArrayList<UserVisitSearchFacetLongTransfer>();
+                    final var longAttribute = entityLongAttributeFacetResult.getLongAttribute();
                     
                     for(Iterator<EntityLongRangeDetail> iter = entityLongRangeDetails.iterator(); iter.hasNext(); ) {
-                        var entityLongRangeDetail = iter.next();
-                        var minimumLongValue = entityLongRangeDetail.getMinimumLongValue();
-                        var maximumLongValue = entityLongRangeDetail.getMaximumLongValue();
+                        final var entityLongRangeDetail = iter.next();
+                        final var minimumLongValue = entityLongRangeDetail.getMinimumLongValue();
+                        final var maximumLongValue = entityLongRangeDetail.getMaximumLongValue();
                         
                         if((minimumLongValue == null && maximumLongValue != null && longAttribute <= maximumLongValue)
                                 || (minimumLongValue != null && maximumLongValue == null && longAttribute >= minimumLongValue)
@@ -187,9 +184,9 @@ public class UserVisitSearchFacetLogic
                     }
                     
                     for(var userVisitSearchFacetLongTransfer : userVisitSearchFacetLongTransfers) {
-                        var entityLongRange = userVisitSearchFacetLongTransfer.getEntityLongRange();
-                        var minimumLongValue = entityLongRange.getMinimumLongValue();
-                        var maximumLongValue = entityLongRange.getMaximumLongValue();
+                        final var entityLongRange = userVisitSearchFacetLongTransfer.getEntityLongRange();
+                        final var minimumLongValue = entityLongRange.getMinimumLongValue();
+                        final var maximumLongValue = entityLongRange.getMaximumLongValue();
                         
                         if((minimumLongValue == null && maximumLongValue != null && longAttribute <= maximumLongValue)
                                 || (minimumLongValue != null && maximumLongValue == null && longAttribute >= minimumLongValue)
@@ -201,13 +198,10 @@ public class UserVisitSearchFacetLogic
                     userVisitSearchFacetLongTransfers.addAll(addedUserVisitSearchFacetLongTransfers);
                 }
             }
-            
-            userVisitSearchFacetLongTransfers.sort((UserVisitSearchFacetLongTransfer o1, UserVisitSearchFacetLongTransfer o2) -> {
-                long o1Count = o1.getCount();
-                long o2Count = o2.getCount();
 
-                return Long.compare(o2Count, o1Count);
-            });
+            userVisitSearchFacetLongTransfers.sort(
+                    (UserVisitSearchFacetLongTransfer o1, UserVisitSearchFacetLongTransfer o2) -> Long.compare(o2.getCount(), o1.getCount())
+            );
         } else {
             handleExecutionError(InvalidEntityAttributeTypeException.class, eea, ExecutionErrors.InvalidEntityAttributeType.name(), entityAttributeTypeName);
         }
