@@ -18,7 +18,6 @@ package com.echothree.model.control.search.server.database;
 
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.data.search.server.entity.CachedExecutedSearch;
-import com.echothree.model.data.search.server.entity.CachedSearch;
 import com.echothree.model.data.search.server.entity.Search;
 import com.echothree.model.data.search.server.entity.UserVisitSearch;
 import com.echothree.util.server.persistence.BaseDatabaseQuery;
@@ -35,7 +34,7 @@ public abstract class BaseFacetQuery<R extends BaseDatabaseResult>
     protected final void init(UserVisitSearch userVisitSearch) {
         this.search = userVisitSearch.getSearch();
         
-        CachedSearch cachedSearch = userVisitSearch.getSearch().getCachedSearch();
+        var cachedSearch = userVisitSearch.getSearch().getCachedSearch();
         if(cachedSearch != null) {
             var searchControl = Session.getModelController(SearchControl.class);
             
