@@ -17,6 +17,8 @@
 package com.echothree.model.control.search.server.graphql;
 
 import com.echothree.control.user.search.common.form.GetEmployeeResultsForm;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.employee.server.graphql.EmployeeObject;
 import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
@@ -39,8 +41,8 @@ import graphql.schema.DataFetchingEnvironment;
 public class EmployeeResultsObject
         extends BaseResultsObject<GetEmployeeResultsForm> {
 
-    public EmployeeResultsObject() {
-        super(SearchConstants.SearchKind_EMPLOYEE);
+    public EmployeeResultsObject(GetEmployeeResultsForm form) {
+        super(ComponentVendors.ECHOTHREE.name(), EntityTypes.Party.name(), SearchConstants.SearchKind_EMPLOYEE, form);
     }
 
     @GraphQLField

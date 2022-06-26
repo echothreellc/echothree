@@ -17,6 +17,8 @@
 package com.echothree.model.control.search.server.graphql;
 
 import com.echothree.control.user.search.common.form.GetItemResultsForm;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
@@ -33,14 +35,15 @@ import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.Collection;
 
 @GraphQLDescription("item results object")
 @GraphQLName("ItemResults")
 public class ItemResultsObject
         extends BaseResultsObject<GetItemResultsForm> {
 
-    public ItemResultsObject() {
-        super(SearchConstants.SearchKind_ITEM);
+    public ItemResultsObject(GetItemResultsForm form) {
+        super(ComponentVendors.ECHOTHREE.name(), EntityTypes.Item.name(), SearchConstants.SearchKind_ITEM, form);
     }
 
     @GraphQLField
@@ -62,6 +65,12 @@ public class ItemResultsObject
                 return new CountedObjects<>(objectLimiter, items);
             }
         }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("facets")
+    public Collection<UserVisitSearchFacetObject> getFacets(final DataFetchingEnvironment env) {
+        return getUserVisitSearchFacetObjects(env);
     }
 
 }
