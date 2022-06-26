@@ -83,6 +83,7 @@ public class UserVisitSearchFacetLogic
         return entityLongRangeDetails;
     }
 
+    // Substantial portions of this are duplicated in getUserVisitSearchFacetObject(...).
     public UserVisitSearchFacetTransfer getUserVisitSearchFacetTransfer(final ExecutionErrorAccumulator eea, final UserVisitSearch userVisitSearch,
             final EntityAttribute entityAttribute) {
         final var coreControl = Session.getModelController(CoreControl.class);
@@ -216,6 +217,7 @@ public class UserVisitSearchFacetLogic
                 userVisitSearchFacetLongTransfers == null ? null : new ListWrapper<>(userVisitSearchFacetLongTransfers));
     }
 
+    // Substantial portions of this are duplicated in getUserVisitSearchFacetTransfer(...).
     public UserVisitSearchFacetObject getUserVisitSearchFacetObject(final ExecutionErrorAccumulator eea, final UserVisitSearch userVisitSearch,
             final EntityAttribute entityAttribute) {
         List<UserVisitSearchFacetListItemObject> userVisitSearchFacetListItemObjects = null;

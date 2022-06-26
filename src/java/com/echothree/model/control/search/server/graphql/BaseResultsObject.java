@@ -38,10 +38,10 @@ import java.util.Collection;
 public abstract class BaseResultsObject<F extends BaseGetResultsForm>
         extends BaseGraphQl {
 
-    private String componentVendorName;
-    private String entityTypeName;
-    private String searchKindName;
-    private F form;
+    final private String componentVendorName;
+    final private String entityTypeName;
+    final private String searchKindName;
+    final private F form;
 
     protected BaseResultsObject(String componentVendorName, String entityTypeName, String searchKindName, F form) {
         this.componentVendorName = componentVendorName;
@@ -73,6 +73,7 @@ public abstract class BaseResultsObject<F extends BaseGetResultsForm>
         return userVisitSearch == null ? 0 : SearchLogic.getInstance().countSearchResults(userVisitSearch.getSearch());
     }
 
+    // Substantial portions of this are duplicated in BaseGetResultsFacetsCommand.
     protected Collection<UserVisitSearchFacetObject> getUserVisitSearchFacetObjects(final DataFetchingEnvironment env) {
         final var userVisitSearchFacetObject = new ArrayList<UserVisitSearchFacetObject>();
         var failed = false;

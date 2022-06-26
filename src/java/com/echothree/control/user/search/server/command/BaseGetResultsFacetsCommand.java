@@ -50,7 +50,8 @@ public abstract class BaseGetResultsFacetsCommand<F extends BaseGetResultsFacets
     protected BaseGetResultsFacetsCommand(UserVisitPK userVisitPK, F form, CommandSecurityDefinition COMMAND_SECURITY_DEFINITION) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
-    
+
+    // Substantial portions of this are duplicated in BaseResultsObject.
     protected BaseResult execute(final String componentVendorName, final String entityTypeName, final String searchKindName,
             final BaseGetResultsFacetsResult result) {
         var entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, componentVendorName, entityTypeName);
