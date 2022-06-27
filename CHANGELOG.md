@@ -1,5 +1,32 @@
 # Changelog
 
+## 2022-06-26-01
+
+* GraphQL Queries for Getting Item Results Facets [405](https://gitlab.echothree.com/echothree/echothree/-/issues/405)
+* Add Cancellation Kind Queries [440](https://gitlab.echothree.com/echothree/echothree/-/issues/440)
+* Add Return Kind Queries [446](https://gitlab.echothree.com/echothree/echothree/-/issues/446)
+* Add Entity Attribute Mutations for Dates [468](https://gitlab.echothree.com/echothree/echothree/-/issues/468)
+* Add Entity Attribute Mutations for Names [471](https://gitlab.echothree.com/echothree/echothree/-/issues/471)
+* Add Entity Attribute Mutations for Times [472](https://gitlab.echothree.com/echothree/echothree/-/issues/472)
+* Add Date to Entity Attribute Object [475](https://gitlab.echothree.com/echothree/echothree/-/issues/475)
+* Add Name to Entity Attribute Object [478](https://gitlab.echothree.com/echothree/echothree/-/issues/478)
+* Add Time to Entity Attribute Object [479](https://gitlab.echothree.com/echothree/echothree/-/issues/479)
+* Error Prone 2.14.0 Upgrade [487](https://gitlab.echothree.com/echothree/echothree/-/issues/487)
+* cucumber-java8/cucumber-junit 7.3.4 Upgrade [488](https://gitlab.echothree.com/echothree/echothree/-/issues/488)
+* ClassGraph 4.8.147 Upgrade [489](https://gitlab.echothree.com/echothree/echothree/-/issues/489)
+* commons-codec 1.15 Upgrade [490](https://gitlab.echothree.com/echothree/echothree/-/issues/490)
+* commons-cli 1.5.0 Upgrade [491](https://gitlab.echothree.com/echothree/echothree/-/issues/491)
+* ROME 1.18.0 Upgrade [492](https://gitlab.echothree.com/echothree/echothree/-/issues/492)
+* Gson 2.9.0 Upgrade [493](https://gitlab.echothree.com/echothree/echothree/-/issues/493)
+* commons-collections4 4.4 Upgrade [494](https://gitlab.echothree.com/echothree/echothree/-/issues/494)
+* httpcore 4.4.15 Upgrade [495](https://gitlab.echothree.com/echothree/echothree/-/issues/495)
+* javassist 3.29.0-GA Upgrade [496](https://gitlab.echothree.com/echothree/echothree/-/issues/496)
+* freemarker 2.3.31 Upgrade [497](https://gitlab.echothree.com/echothree/echothree/-/issues/497)
+* assertj-guava 3.5.0 Upgrade [498](https://gitlab.echothree.com/echothree/echothree/-/issues/498)
+* assertj-core 3.23.1 Upgrade [499](https://gitlab.echothree.com/echothree/echothree/-/issues/499)
+* xercesImpl 2.12.2 Upgrade [500](https://gitlab.echothree.com/echothree/echothree/-/issues/500)
+* GetItemDescriptions UC Not Setting Item in Result [510](https://gitlab.echothree.com/echothree/echothree/-/issues/510)
+
 ## 2022-06-12-01
 
 * Additional Item Object FIelds [438](https://gitlab.echothree.com/echothree/echothree/-/issues/438)
