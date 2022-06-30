@@ -986,19 +986,22 @@ public class CancellationPolicyControl
     public CancellationPolicyTransfer getCancellationPolicyTransfer(UserVisit userVisit, CancellationPolicy cancellationPolicy) {
         return getCancellationPolicyTransferCaches(userVisit).getCancellationPolicyTransferCache().getCancellationPolicyTransfer(cancellationPolicy);
     }
-    
-    public List<CancellationPolicyTransfer> getCancellationPolicyTransfersByCancellationKind(UserVisit userVisit, CancellationKind cancellationKind) {
-        List<CancellationPolicy> cancellationPolicies = getCancellationPolicies(cancellationKind);
+
+    public List<CancellationPolicyTransfer> getCancellationPolicyTransfers(UserVisit userVisit, Collection<CancellationPolicy> cancellationPolicies) {
         List<CancellationPolicyTransfer> cancellationPolicyTransfers = new ArrayList<>(cancellationPolicies.size());
         CancellationPolicyTransferCache cancellationPolicyTransferCache = getCancellationPolicyTransferCaches(userVisit).getCancellationPolicyTransferCache();
-        
+
         cancellationPolicies.forEach((cancellationPolicy) ->
                 cancellationPolicyTransfers.add(cancellationPolicyTransferCache.getCancellationPolicyTransfer(cancellationPolicy))
         );
-        
+
         return cancellationPolicyTransfers;
     }
-    
+
+    public List<CancellationPolicyTransfer> getCancellationPolicyTransfersByCancellationKind(UserVisit userVisit, CancellationKind cancellationKind) {
+        return getCancellationPolicyTransfers(userVisit, getCancellationPolicies(cancellationKind));
+    }
+
     private void updateCancellationPolicyFromValue(CancellationPolicyDetailValue cancellationPolicyDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(cancellationPolicyDetailValue.hasBeenModified()) {
