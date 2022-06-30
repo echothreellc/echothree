@@ -19,6 +19,7 @@ package com.echothree.model.control.cancellationpolicy.server.graphql;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
@@ -103,7 +104,7 @@ public class CancellationKindObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<CancellationPolicyObject> getCancellationPolicies(final DataFetchingEnvironment env) {
-//        if(CancellationPolicySecurityUtils.getInstance().getHasCancellationPoliciesAccess(env)) {
+        if(CancellationPolicySecurityUtils.getInstance().getHasCancellationPoliciesAccess(env)) {
             var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
             var totalCount = cancellationPolicyControl.countCancellationPoliciesByCancellationKind(cancellationKind);
 
@@ -113,9 +114,9 @@ public class CancellationKindObject
 
                 return new CountedObjects<>(objectLimiter, items);
             }
-//        } else {
-//            return Connections.emptyConnection();
-//        }
+        } else {
+            return Connections.emptyConnection();
+        }
     }
 
 }

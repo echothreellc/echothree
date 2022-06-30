@@ -18,6 +18,8 @@ package com.echothree.model.control.cancellationpolicy.server.graphql;
 
 import com.echothree.control.user.cancellationpolicy.server.command.GetCancellationKindCommand;
 import com.echothree.control.user.cancellationpolicy.server.command.GetCancellationKindsCommand;
+import com.echothree.control.user.cancellationpolicy.server.command.GetCancellationPoliciesCommand;
+import com.echothree.control.user.cancellationpolicy.server.command.GetCancellationPolicyCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
@@ -38,6 +40,14 @@ public final class CancellationPolicySecurityUtils
 
     public boolean getHasCancellationKindsAccess(final DataFetchingEnvironment env) {
         return getGraphQlExecutionContext(env).hasAccess(GetCancellationKindsCommand.class);
+    }
+
+    public boolean getHasCancellationPolicyAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetCancellationPolicyCommand.class);
+    }
+
+    public boolean getHasCancellationPoliciesAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetCancellationPoliciesCommand.class);
     }
 
 }

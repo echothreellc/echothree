@@ -17,6 +17,7 @@
 package com.echothree.model.control.item.server.graphql;
 
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationPolicyObject;
+import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationPolicySecurityUtils;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
@@ -264,8 +265,7 @@ public class ItemObject
     public CancellationPolicyObject getCancellationPolicy(final DataFetchingEnvironment env) {
         var cancellationPolicy = getItemDetail().getCancellationPolicy();
 
-        return cancellationPolicy == null ? null : new CancellationPolicyObject(cancellationPolicy);
-        //return CancellationSecurityUtils.getInstance().getHasCancellationPolicyAccess(env) ? new CancellationPolicyObject(getCancellationTypeDetail().getCancellationPolicy()) : null;
+        return cancellationPolicy == null ? null : (CancellationPolicySecurityUtils.getInstance().getHasCancellationPolicyAccess(env) ? new CancellationPolicyObject(cancellationPolicy) : null);
     }
 
     @GraphQLField
