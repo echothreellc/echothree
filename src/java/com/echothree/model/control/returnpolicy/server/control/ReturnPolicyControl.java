@@ -972,19 +972,22 @@ public class ReturnPolicyControl
     public ReturnPolicyTransfer getReturnPolicyTransfer(UserVisit userVisit, ReturnPolicy returnPolicy) {
         return getReturnPolicyTransferCaches(userVisit).getReturnPolicyTransferCache().getReturnPolicyTransfer(returnPolicy);
     }
-    
-    public List<ReturnPolicyTransfer> getReturnPolicyTransfersByReturnKind(UserVisit userVisit, ReturnKind returnKind) {
-        List<ReturnPolicy> returnPolicies = getReturnPolicies(returnKind);
+
+    public List<ReturnPolicyTransfer> getReturnPolicyTransfers(UserVisit userVisit, Collection<ReturnPolicy> returnPolicies ) {
         List<ReturnPolicyTransfer> returnPolicyTransfers = new ArrayList<>(returnPolicies.size());
         ReturnPolicyTransferCache returnPolicyTransferCache = getReturnPolicyTransferCaches(userVisit).getReturnPolicyTransferCache();
-        
+
         returnPolicies.forEach((returnPolicy) ->
                 returnPolicyTransfers.add(returnPolicyTransferCache.getReturnPolicyTransfer(returnPolicy))
         );
-        
+
         return returnPolicyTransfers;
     }
-    
+
+    public List<ReturnPolicyTransfer> getReturnPolicyTransfersByReturnKind(UserVisit userVisit, ReturnKind returnKind) {
+        return getReturnPolicyTransfers(userVisit, getReturnPolicies(returnKind));
+    }
+
     private void updateReturnPolicyFromValue(ReturnPolicyDetailValue returnPolicyDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(returnPolicyDetailValue.hasBeenModified()) {

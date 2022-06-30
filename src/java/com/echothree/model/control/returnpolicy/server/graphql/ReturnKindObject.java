@@ -18,6 +18,7 @@ package com.echothree.model.control.returnpolicy.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
@@ -103,7 +104,7 @@ public class ReturnKindObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<ReturnPolicyObject> getReturnPolicies(final DataFetchingEnvironment env) {
-//        if(ReturnPolicySecurityUtils.getInstance().getHasReturnPoliciesAccess(env)) {
+        if(ReturnPolicySecurityUtils.getInstance().getHasReturnPoliciesAccess(env)) {
             var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
             var totalCount = returnPolicyControl.countReturnPoliciesByReturnKind(returnKind);
     
@@ -113,9 +114,9 @@ public class ReturnKindObject
     
                 return new CountedObjects<>(objectLimiter, items);
             }
-//        } else {
-//            return Connections.emptyConnection();
-//        }
+        } else {
+            return Connections.emptyConnection();
+        }
     }
     
 }

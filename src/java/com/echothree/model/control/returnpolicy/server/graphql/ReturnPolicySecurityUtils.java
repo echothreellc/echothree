@@ -18,6 +18,8 @@ package com.echothree.model.control.returnpolicy.server.graphql;
 
 import com.echothree.control.user.returnpolicy.server.command.GetReturnKindCommand;
 import com.echothree.control.user.returnpolicy.server.command.GetReturnKindsCommand;
+import com.echothree.control.user.returnpolicy.server.command.GetReturnPoliciesCommand;
+import com.echothree.control.user.returnpolicy.server.command.GetReturnPolicyCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
@@ -31,13 +33,21 @@ public final class ReturnPolicySecurityUtils
     public static ReturnPolicySecurityUtils getInstance() {
         return ReturnPolicySecurityUtilsHolder.instance;
     }
-    
+
     public boolean getHasReturnKindAccess(final DataFetchingEnvironment env) {
         return getGraphQlExecutionContext(env).hasAccess(GetReturnKindCommand.class);
     }
 
     public boolean getHasReturnKindsAccess(final DataFetchingEnvironment env) {
         return getGraphQlExecutionContext(env).hasAccess(GetReturnKindsCommand.class);
+    }
+
+    public boolean getHasReturnPolicyAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetReturnPolicyCommand.class);
+    }
+
+    public boolean getHasReturnPoliciesAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetReturnPoliciesCommand.class);
     }
 
 }

@@ -32,6 +32,7 @@ import com.echothree.model.control.offer.server.graphql.OfferSecurityUtils;
 import com.echothree.model.control.party.server.graphql.CompanyObject;
 import com.echothree.model.control.party.server.graphql.PartySecurityUtils;
 import com.echothree.model.control.returnpolicy.server.graphql.ReturnPolicyObject;
+import com.echothree.model.control.returnpolicy.server.graphql.ReturnPolicySecurityUtils;
 import com.echothree.model.control.sequence.server.graphql.SequenceObject;
 import com.echothree.model.control.sequence.server.graphql.SequenceSecurityUtils;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindObject;
@@ -272,8 +273,7 @@ public class ItemObject
     public ReturnPolicyObject getReturnPolicy(final DataFetchingEnvironment env) {
         var returnPolicy = getItemDetail().getReturnPolicy();
 
-        return returnPolicy == null ? null : new ReturnPolicyObject(returnPolicy);
-        //return ReturnSecurityUtils.getInstance().getHasReturnPolicyAccess(env) ? new ReturnPolicyObject(getReturnTypeDetail().getReturnPolicy()) : null;
+        return returnPolicy == null ? null : (ReturnPolicySecurityUtils.getInstance().getHasReturnPolicyAccess(env) ? new ReturnPolicyObject(returnPolicy) : null);
     }
 
     //| itm_stylpth_stylepathid             | bigint      | YES  |     | NULL    |       |
