@@ -816,6 +816,21 @@ public class CancellationPolicyControl
                 cancellationKind);
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.CancellationPolicy */
+    public CancellationPolicy getCancellationPolicyByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new CancellationPolicyPK(entityInstance.getEntityUniqueId());
+
+        return CancellationPolicyFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public CancellationPolicy getCancellationPolicyByEntityInstance(EntityInstance entityInstance) {
+        return getCancellationPolicyByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public CancellationPolicy getCancellationPolicyByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getCancellationPolicyByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     private List<CancellationPolicy> getCancellationPolicies(CancellationKind cancellationKind, EntityPermission entityPermission) {
         List<CancellationPolicy> cancellationPolicies;
         
@@ -855,7 +870,7 @@ public class CancellationPolicyControl
         return getCancellationPolicies(cancellationKind, EntityPermission.READ_WRITE);
     }
     
-    private CancellationPolicy getDefaultCancellationPolicy(CancellationKind cancellationKind, EntityPermission entityPermission) {
+    public CancellationPolicy getDefaultCancellationPolicy(CancellationKind cancellationKind, EntityPermission entityPermission) {
         CancellationPolicy cancellationPolicy;
         
         try {
@@ -898,7 +913,7 @@ public class CancellationPolicyControl
         return getDefaultCancellationPolicyForUpdate(cancellationKind).getLastDetailForUpdate().getCancellationPolicyDetailValue().clone();
     }
     
-    private CancellationPolicy getCancellationPolicyByName(CancellationKind cancellationKind, String cancellationPolicyName, EntityPermission entityPermission) {
+    public CancellationPolicy getCancellationPolicyByName(CancellationKind cancellationKind, String cancellationPolicyName, EntityPermission entityPermission) {
         CancellationPolicy cancellationPolicy;
         
         try {

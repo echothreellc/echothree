@@ -14,13 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.cancellationpolicy.common.form;
+package com.echothree.control.user.cancellationpolicy.common.spec;
 
-import com.echothree.control.user.cancellationpolicy.common.spec.CancellationPolicyUniversalSpec;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetCancellationPolicyForm
-        extends CancellationPolicyUniversalSpec {
+public interface CancellationPolicyUniversalSpec
+        extends CancellationPolicySpec, UniversalEntitySpec {
     
-    // Nothing additional beyond CancellationPolicyUniversalSpec
+    // Nothing additional beyond CancellationPolicySpec, UniversalEntitySpec
     
 }
