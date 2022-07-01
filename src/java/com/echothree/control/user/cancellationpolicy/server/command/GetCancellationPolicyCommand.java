@@ -19,11 +19,11 @@ package com.echothree.control.user.cancellationpolicy.server.command;
 import com.echothree.control.user.cancellationpolicy.common.form.GetCancellationPolicyForm;
 import com.echothree.control.user.cancellationpolicy.common.result.CancellationPolicyResultFactory;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
+import com.echothree.model.control.cancellationpolicy.server.logic.CancellationPolicyLogic;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
@@ -38,8 +38,12 @@ public class GetCancellationPolicyCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("CancellationKindName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("CancellationPolicyName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("CancellationKindName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("CancellationPolicyName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
         );
     }
     
@@ -50,23 +54,10 @@ public class GetCancellationPolicyCommand
 
     @Override
     protected CancellationPolicy getEntity() {
-        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-        var cancellationKindName = form.getCancellationKindName();
-        var cancellationKind = cancellationPolicyControl.getCancellationKindByName(cancellationKindName);
-        CancellationPolicy cancellationPolicy = null;
+        var cancellationPolicy = CancellationPolicyLogic.getInstance().getCancellationPolicyByUniversalSpec(this, form, true);
 
-        if(cancellationKind != null) {
-            var cancellationPolicyName = form.getCancellationPolicyName();
-
-            cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
-
-            if(cancellationPolicy != null) {
-                sendEventUsingNames(cancellationPolicy.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
-            } else {
-                addExecutionError(ExecutionErrors.UnknownCancellationPolicyName.name(), cancellationPolicyName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownCancellationKindName.name(), cancellationKindName);
+        if(cancellationPolicy != null) {
+            sendEventUsingNames(cancellationPolicy.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
         }
 
         return cancellationPolicy;

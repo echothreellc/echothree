@@ -22,6 +22,8 @@ import com.echothree.control.user.accounting.server.command.GetCurrencyCommand;
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
 import com.echothree.control.user.cancellationpolicy.server.command.GetCancellationKindCommand;
 import com.echothree.control.user.cancellationpolicy.server.command.GetCancellationKindsCommand;
+import com.echothree.control.user.cancellationpolicy.server.command.GetCancellationPoliciesCommand;
+import com.echothree.control.user.cancellationpolicy.server.command.GetCancellationPolicyCommand;
 import com.echothree.control.user.content.common.ContentUtil;
 import com.echothree.control.user.content.server.command.GetContentCatalogCommand;
 import com.echothree.control.user.content.server.command.GetContentCatalogItemCommand;
@@ -242,6 +244,7 @@ import com.echothree.control.user.workflow.server.command.GetWorkflowsCommand;
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationKindObject;
+import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationPolicyObject;
 import com.echothree.model.control.content.server.graphql.ContentCatalogItemObject;
 import com.echothree.model.control.content.server.graphql.ContentCatalogObject;
 import com.echothree.model.control.content.server.graphql.ContentCategoryItemObject;
@@ -357,6 +360,7 @@ import com.echothree.model.control.workflow.server.graphql.WorkflowTypeObject;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.cancellationpolicy.common.CancellationKindConstants;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
+import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
 import com.echothree.model.data.content.server.entity.ContentCatalog;
 import com.echothree.model.data.content.server.entity.ContentCatalogItem;
 import com.echothree.model.data.content.server.entity.ContentCategory;
@@ -4918,6 +4922,59 @@ public final class GraphQlQueries
         }
 
         return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("cancellationPolicy")
+    public static CancellationPolicyObject cancellationPolicy(final DataFetchingEnvironment env,
+            @GraphQLName("cancellationKindName") final String cancellationKindName,
+            @GraphQLName("cancellationPolicyName") final String cancellationPolicyName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        CancellationPolicy cancellationPolicy;
+
+        try {
+            var commandForm = CancellationPolicyUtil.getHome().getGetCancellationPolicyForm();
+
+            commandForm.setCancellationKindName(cancellationKindName);
+            commandForm.setCancellationPolicyName(cancellationPolicyName);
+            commandForm.setUlid(id);
+
+            cancellationPolicy = new GetCancellationPolicyCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return cancellationPolicy == null ? null : new CancellationPolicyObject(cancellationPolicy);
+    }
+
+    @GraphQLField
+    @GraphQLName("cancellationPolicies")
+    public static Collection<CancellationPolicyObject> cancellationPolicies(final DataFetchingEnvironment env,
+            @GraphQLName("cancellationKindName") @GraphQLNonNull final String cancellationKindName) {
+        Collection<CancellationPolicy> cancellationPolicies;
+        Collection<CancellationPolicyObject> cancellationPolicyObjects;
+
+        try {
+            var commandForm = CancellationPolicyUtil.getHome().getGetCancellationPoliciesForm();
+
+            commandForm.setCancellationKindName(cancellationKindName);
+
+            cancellationPolicies = new GetCancellationPoliciesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(cancellationPolicies == null) {
+            cancellationPolicyObjects = emptyList();
+        } else {
+            cancellationPolicyObjects = new ArrayList<>(cancellationPolicies.size());
+
+            cancellationPolicies.stream()
+                    .map(CancellationPolicyObject::new)
+                    .forEachOrdered(cancellationPolicyObjects::add);
+        }
+
+        return cancellationPolicyObjects;
     }
 
     @GraphQLField
