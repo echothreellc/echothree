@@ -14,13 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.returnpolicy.common.form;
+package com.echothree.control.user.returnpolicy.common.spec;
 
-import com.echothree.control.user.returnpolicy.common.spec.ReturnPolicyUniversalSpec;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetReturnPolicyForm
-        extends ReturnPolicyUniversalSpec {
+public interface ReturnPolicyUniversalSpec
+        extends ReturnPolicySpec, UniversalEntitySpec {
     
-    // Nothing additional beyond ReturnPolicyUniversalSpec
+    // Nothing additional beyond ReturnPolicySpec, UniversalEntitySpec
     
 }

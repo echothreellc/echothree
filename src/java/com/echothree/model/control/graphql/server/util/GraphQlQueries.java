@@ -184,6 +184,8 @@ import com.echothree.control.user.queue.server.command.GetQueueTypesCommand;
 import com.echothree.control.user.returnpolicy.common.ReturnPolicyUtil;
 import com.echothree.control.user.returnpolicy.server.command.GetReturnKindCommand;
 import com.echothree.control.user.returnpolicy.server.command.GetReturnKindsCommand;
+import com.echothree.control.user.returnpolicy.server.command.GetReturnPoliciesCommand;
+import com.echothree.control.user.returnpolicy.server.command.GetReturnPolicyCommand;
 import com.echothree.control.user.search.common.SearchUtil;
 import com.echothree.control.user.search.common.result.CheckItemSpellingResult;
 import com.echothree.control.user.search.server.command.GetCustomerResultsCommand;
@@ -326,6 +328,7 @@ import com.echothree.model.control.payment.server.graphql.PaymentProcessorTypeOb
 import com.echothree.model.control.queue.server.graphql.QueueTypeObject;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.control.returnpolicy.server.graphql.ReturnKindObject;
+import com.echothree.model.control.returnpolicy.server.graphql.ReturnPolicyObject;
 import com.echothree.model.control.search.server.graphql.CheckItemSpellingObject;
 import com.echothree.model.control.search.server.graphql.CustomerResultsObject;
 import com.echothree.model.control.search.server.graphql.EmployeeResultsObject;
@@ -442,6 +445,7 @@ import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCodeTy
 import com.echothree.model.data.queue.server.entity.QueueType;
 import com.echothree.model.data.returnpolicy.common.ReturnKindConstants;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnKind;
+import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.search.server.entity.SearchCheckSpellingActionType;
 import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
 import com.echothree.model.data.selector.server.entity.Selector;
@@ -4969,6 +4973,59 @@ public final class GraphQlQueries
         }
 
         return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("returnPolicy")
+    public static ReturnPolicyObject returnPolicy(final DataFetchingEnvironment env,
+            @GraphQLName("returnKindName") final String returnKindName,
+            @GraphQLName("returnPolicyName") final String returnPolicyName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        ReturnPolicy returnPolicy;
+
+        try {
+            var commandForm = ReturnPolicyUtil.getHome().getGetReturnPolicyForm();
+
+            commandForm.setReturnKindName(returnKindName);
+            commandForm.setReturnPolicyName(returnPolicyName);
+            commandForm.setUlid(id);
+
+            returnPolicy = new GetReturnPolicyCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return returnPolicy == null ? null : new ReturnPolicyObject(returnPolicy);
+    }
+
+    @GraphQLField
+    @GraphQLName("returnPolicies")
+    public static Collection<ReturnPolicyObject> returnPolicies(final DataFetchingEnvironment env,
+            @GraphQLName("returnKindName") @GraphQLNonNull final String returnKindName) {
+        Collection<ReturnPolicy> returnPolicies;
+        Collection<ReturnPolicyObject> returnPolicyObjects;
+
+        try {
+            var commandForm = ReturnPolicyUtil.getHome().getGetReturnPoliciesForm();
+
+            commandForm.setReturnKindName(returnKindName);
+
+            returnPolicies = new GetReturnPoliciesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(returnPolicies == null) {
+            returnPolicyObjects = emptyList();
+        } else {
+            returnPolicyObjects = new ArrayList<>(returnPolicies.size());
+
+            returnPolicies.stream()
+                    .map(ReturnPolicyObject::new)
+                    .forEachOrdered(returnPolicyObjects::add);
+        }
+
+        return returnPolicyObjects;
     }
 
     @GraphQLField
