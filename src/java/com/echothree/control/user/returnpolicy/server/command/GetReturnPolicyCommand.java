@@ -20,10 +20,10 @@ import com.echothree.control.user.returnpolicy.common.form.GetReturnPolicyForm;
 import com.echothree.control.user.returnpolicy.common.result.ReturnPolicyResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
+import com.echothree.model.control.returnpolicy.server.logic.ReturnPolicyLogic;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
@@ -38,8 +38,12 @@ public class GetReturnPolicyCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("ReturnKindName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("ReturnPolicyName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("ReturnKindName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("ReturnPolicyName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
         );
     }
     
@@ -50,23 +54,10 @@ public class GetReturnPolicyCommand
 
     @Override
     protected ReturnPolicy getEntity() {
-        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-        var returnKindName = form.getReturnKindName();
-        var returnKind = returnPolicyControl.getReturnKindByName(returnKindName);
-        ReturnPolicy returnPolicy = null;
+        var returnPolicy = ReturnPolicyLogic.getInstance().getReturnPolicyByUniversalSpec(this, form, true);
 
-        if(returnKind != null) {
-            var returnPolicyName = form.getReturnPolicyName();
-
-            returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
-
-            if(returnPolicy != null) {
-                sendEventUsingNames(returnPolicy.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
-            } else {
-                addExecutionError(ExecutionErrors.UnknownReturnPolicyName.name(), returnPolicyName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownReturnKindName.name(), returnKindName);
+        if(returnPolicy != null) {
+            sendEventUsingNames(returnPolicy.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
         }
 
         return returnPolicy;

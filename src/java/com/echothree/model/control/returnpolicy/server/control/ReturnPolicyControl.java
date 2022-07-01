@@ -802,6 +802,21 @@ public class ReturnPolicyControl
                 returnKind);
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ReturnPolicy */
+    public ReturnPolicy getReturnPolicyByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ReturnPolicyPK(entityInstance.getEntityUniqueId());
+
+        return ReturnPolicyFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ReturnPolicy getReturnPolicyByEntityInstance(EntityInstance entityInstance) {
+        return getReturnPolicyByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ReturnPolicy getReturnPolicyByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getReturnPolicyByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     private List<ReturnPolicy> getReturnPolicies(ReturnKind returnKind, EntityPermission entityPermission) {
         List<ReturnPolicy> returnPolicies;
         
@@ -841,7 +856,7 @@ public class ReturnPolicyControl
         return getReturnPolicies(returnKind, EntityPermission.READ_WRITE);
     }
     
-    private ReturnPolicy getDefaultReturnPolicy(ReturnKind returnKind, EntityPermission entityPermission) {
+    public ReturnPolicy getDefaultReturnPolicy(ReturnKind returnKind, EntityPermission entityPermission) {
         ReturnPolicy returnPolicy;
         
         try {
@@ -884,7 +899,7 @@ public class ReturnPolicyControl
         return getDefaultReturnPolicyForUpdate(returnKind).getLastDetailForUpdate().getReturnPolicyDetailValue().clone();
     }
     
-    private ReturnPolicy getReturnPolicyByName(ReturnKind returnKind, String returnPolicyName, EntityPermission entityPermission) {
+    public ReturnPolicy getReturnPolicyByName(ReturnKind returnKind, String returnPolicyName, EntityPermission entityPermission) {
         ReturnPolicy returnPolicy;
         
         try {
