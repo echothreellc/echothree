@@ -5,7 +5,7 @@ cache:
     - .ivy2/cache
 
 variables:
-  ANT_OPTS: "-Xmx5120m -Divy.default.ivy.user.dir=$CI_PROJECT_DIR/.ivy2"
+  ANT_OPTS: "-Xmx7168m -Divy.default.ivy.user.dir=$CI_PROJECT_DIR/.ivy2"
 
 stages:
   - build
