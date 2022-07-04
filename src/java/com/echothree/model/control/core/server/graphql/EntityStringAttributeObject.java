@@ -16,10 +16,9 @@
 
 package com.echothree.model.control.core.server.graphql;
 
-import com.echothree.control.user.core.server.command.GetEntityAttributeCommand;
-import com.echothree.control.user.party.server.command.GetLanguageCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.party.server.graphql.LanguageObject;
+import com.echothree.model.control.party.server.graphql.PartySecurityUtils;
 import com.echothree.model.data.core.server.entity.EntityStringAttribute;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -38,34 +37,6 @@ public class EntityStringAttributeObject
         this.entityStringAttribute = entityStringAttribute;
     }
 
-    private Boolean hasEntityAttributeAccess;
-    
-    private boolean getHasEntityAttributeAccess(final DataFetchingEnvironment env) {
-        if(hasEntityAttributeAccess == null) {
-            var baseSingleEntityCommand = new GetEntityAttributeCommand(getUserVisitPK(env), null);
-            
-            baseSingleEntityCommand.security();
-            
-            hasEntityAttributeAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-        
-        return hasEntityAttributeAccess;
-    }
-        
-    private Boolean hasLanguageAccess;
-    
-    private boolean getHasLanguageAccess(final DataFetchingEnvironment env) {
-        if(hasLanguageAccess == null) {
-            var baseSingleEntityCommand = new GetLanguageCommand(getUserVisitPK(env), null);
-            
-            baseSingleEntityCommand.security();
-            
-            hasLanguageAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-        
-        return hasLanguageAccess;
-    }
-        
     @GraphQLField
     @GraphQLDescription("string attribute")
     @GraphQLNonNull
@@ -76,13 +47,13 @@ public class EntityStringAttributeObject
     @GraphQLField
     @GraphQLDescription("entity attribute")
     public EntityAttributeObject getEntityAttribute(final DataFetchingEnvironment env) {
-        return getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityStringAttribute.getEntityAttribute(), entityStringAttribute.getEntityInstance()) : null;
+        return CoreSecurityUtils.getInstance().getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityStringAttribute.getEntityAttribute(), entityStringAttribute.getEntityInstance()) : null;
     }
     
     @GraphQLField
     @GraphQLDescription("language")
     public LanguageObject getLanguage(final DataFetchingEnvironment env) {
-        return getHasLanguageAccess(env) ? new LanguageObject(entityStringAttribute.getLanguage()) : null;
+        return PartySecurityUtils.getInstance().getHasLanguageAccess(env) ? new LanguageObject(entityStringAttribute.getLanguage()) : null;
     }
     
     @GraphQLField
