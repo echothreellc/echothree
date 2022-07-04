@@ -16,9 +16,7 @@
 
 package com.echothree.model.control.core.server.transfer;
 
-import com.echothree.model.control.core.common.transfer.EntityAttributeTransfer;
 import com.echothree.model.control.core.common.transfer.EntityGeoPointAttributeTransfer;
-import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
@@ -38,22 +36,23 @@ public class EntityGeoPointAttributeTransferCache
     GeoPointUtils geoPointUtils = GeoPointUtils.getInstance();
     
     /** Creates a new instance of EntityGeoPointAttributeTransferCache */
-    public EntityGeoPointAttributeTransferCache(UserVisit userVisit, CoreControl coreControl) {
+    public EntityGeoPointAttributeTransferCache(final UserVisit userVisit, final CoreControl coreControl) {
         super(userVisit, coreControl);
     }
     
-    public EntityGeoPointAttributeTransfer getEntityGeoPointAttributeTransfer(EntityGeoPointAttribute entityGeoPointAttribute, EntityInstance entityInstance) {
-        EntityGeoPointAttributeTransfer entityGeoPointAttributeTransfer = get(entityGeoPointAttribute);
+    public EntityGeoPointAttributeTransfer getEntityGeoPointAttributeTransfer(final EntityGeoPointAttribute entityGeoPointAttribute,
+            final EntityInstance entityInstance) {
+        var entityGeoPointAttributeTransfer = get(entityGeoPointAttribute);
         
         if(entityGeoPointAttributeTransfer == null) {
-            EntityAttributeTransfer entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityGeoPointAttribute.getEntityAttribute(), entityInstance) : null;
-            EntityInstanceTransfer entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityGeoPointAttribute.getEntityInstance(), false, false, false, false, false);
-            int unformattedLatitude = entityGeoPointAttribute.getLatitude();
-            String latitude = geoPointUtils.formatDegrees(unformattedLatitude);
-            int unformattedLongitude = entityGeoPointAttribute.getLongitude();
-            String longitude = geoPointUtils.formatDegrees(unformattedLongitude);
-            String elevation = formatUnitOfMeasure(elevationUnitOfMeasureKind, entityGeoPointAttribute.getElevation());
-            String altitude = formatUnitOfMeasure(altitudeUnitOfMeasureKind, entityGeoPointAttribute.getAltitude());
+            var entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityGeoPointAttribute.getEntityAttribute(), entityInstance) : null;
+            var entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityGeoPointAttribute.getEntityInstance(), false, false, false, false, false);
+            var unformattedLatitude = entityGeoPointAttribute.getLatitude();
+            var latitude = geoPointUtils.formatDegrees(unformattedLatitude);
+            var unformattedLongitude = entityGeoPointAttribute.getLongitude();
+            var longitude = geoPointUtils.formatDegrees(unformattedLongitude);
+            var elevation = formatUnitOfMeasure(elevationUnitOfMeasureKind, entityGeoPointAttribute.getElevation());
+            var altitude = formatUnitOfMeasure(altitudeUnitOfMeasureKind, entityGeoPointAttribute.getAltitude());
             
             entityGeoPointAttributeTransfer = new EntityGeoPointAttributeTransfer(entityAttribute, entityInstanceTransfer, unformattedLatitude, latitude,
                     unformattedLongitude, longitude, elevation, altitude);

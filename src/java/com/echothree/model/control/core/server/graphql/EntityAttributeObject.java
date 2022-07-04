@@ -433,6 +433,21 @@ public class EntityAttributeObject
     }
 
     @GraphQLField
+    @GraphQLDescription("entity geo point attribute")
+    public EntityGeoPointAttributeObject getEntityGeoPointAttribute(final DataFetchingEnvironment env) {
+        EntityGeoPointAttributeObject entityGeoPointAttributeObject = null;
+
+        if(isEntityAttributeTypeName(EntityAttributeTypes.GEOPOINT.name()) && entityInstance != null) {
+            var coreControl = Session.getModelController(CoreControl.class);
+            var entityGeoPointAttribute = coreControl.getEntityGeoPointAttribute(entityAttribute, entityInstance);
+
+            entityGeoPointAttributeObject = entityGeoPointAttribute == null ? null : new EntityGeoPointAttributeObject(entityGeoPointAttribute);
+        }
+
+        return entityGeoPointAttributeObject;
+    }
+
+    @GraphQLField
     @GraphQLDescription("entity date attribute")
     public EntityDateAttributeObject getEntityDateAttribute(final DataFetchingEnvironment env) {
         EntityDateAttributeObject entityDateAttributeObject = null;
