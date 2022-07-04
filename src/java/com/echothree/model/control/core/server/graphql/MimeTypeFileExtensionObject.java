@@ -16,10 +16,8 @@
 
 package com.echothree.model.control.core.server.graphql;
 
-import com.echothree.control.user.core.server.command.GetMimeTypeCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.data.core.server.entity.MimeTypeFileExtension;
-import com.echothree.util.server.control.BaseSingleEntityCommand;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -37,25 +35,11 @@ public class MimeTypeFileExtensionObject
         this.mimeTypeFileExtension = mimeTypeFileExtension;
     }
 
-    private Boolean hasMimeTypeAccess;
-
-    private boolean getHasMimeTypeAccess(final DataFetchingEnvironment env) {
-        if(hasMimeTypeAccess == null) {
-            var baseSingleEntityCommand = new GetMimeTypeCommand(getUserVisitPK(env), null);
-
-            baseSingleEntityCommand.security();
-
-            hasMimeTypeAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-
-        return hasMimeTypeAccess;
-    }
-
     @GraphQLField
     @GraphQLDescription("mime type")
     @GraphQLNonNull
     public MimeTypeObject getMimeType(final DataFetchingEnvironment env) {
-        return getHasMimeTypeAccess(env) ? new MimeTypeObject(mimeTypeFileExtension.getMimeType()) : null;
+        return CoreSecurityUtils.getInstance().getHasMimeTypeAccess(env) ? new MimeTypeObject(mimeTypeFileExtension.getMimeType()) : null;
     }
 
     @GraphQLField
