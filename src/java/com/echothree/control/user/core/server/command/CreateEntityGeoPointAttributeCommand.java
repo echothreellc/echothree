@@ -23,15 +23,11 @@ import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
-import com.echothree.model.data.core.server.entity.EntityAttribute;
-import com.echothree.model.data.core.server.entity.EntityGeoPointAttribute;
-import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.core.server.entity.EntityTypeDetail;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -80,40 +76,40 @@ public class CreateEntityGeoPointAttributeCommand
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
 
             if(!hasExecutionErrors()) {
-                String entityAttributeName = form.getEntityAttributeName();
-                String entityAttributeUlid = form.getEntityAttributeUlid();
+                var entityAttributeName = form.getEntityAttributeName();
+                var entityAttributeUlid = form.getEntityAttributeUlid();
                 
                 parameterCount = (entityAttributeName == null ? 0 : 1) + (entityAttributeUlid == null ? 0 : 1);
                 
                 if(parameterCount == 1) {
-                    EntityAttribute entityAttribute = entityAttributeName == null ?
+                    var entityAttribute = entityAttributeName == null ?
                             EntityAttributeLogic.getInstance().getEntityAttributeByUlid(this, entityAttributeUlid) :
                             EntityAttributeLogic.getInstance().getEntityAttributeByName(this, entityInstance.getEntityType(), entityAttributeName);
 
                     if(!hasExecutionErrors()) {
-                        String entityAttributeTypeName = entityAttribute.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
+                        var entityAttributeTypeName = entityAttribute.getLastDetail().getEntityAttributeType().getEntityAttributeTypeName();
 
                         if(EntityAttributeTypes.GEOPOINT.name().equals(entityAttributeTypeName)) {
                             if(entityInstance.getEntityType().equals(entityAttribute.getLastDetail().getEntityType())) {
                                 var coreControl = getCoreControl();
-                                EntityGeoPointAttribute entityGeoPointAttribute = coreControl.getEntityGeoPointAttribute(entityAttribute, entityInstance);
+                                var entityGeoPointAttribute = coreControl.getEntityGeoPointAttribute(entityAttribute, entityInstance);
 
                                 if(entityGeoPointAttribute == null) {
-                                    UnitOfMeasureTypeLogic unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
-                                    Long elevation = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_ELEVATION,
+                                    var unitOfMeasureTypeLogic = UnitOfMeasureTypeLogic.getInstance();
+                                    var elevation = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_ELEVATION,
                                             form.getElevation(), form.getElevationUnitOfMeasureTypeName(),
                                             null, ExecutionErrors.MissingRequiredElevation.name(), null, ExecutionErrors.MissingRequiredElevationUnitOfMeasureTypeName.name(),
                                             null, ExecutionErrors.UnknownElevationUnitOfMeasureTypeName.name());
 
                                     if(!hasExecutionErrors()) {
-                                        Long altitude = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_ALTITUDE,
+                                        var altitude = unitOfMeasureTypeLogic.checkUnitOfMeasure(this, UomConstants.UnitOfMeasureKindUseType_ALTITUDE,
                                                 form.getAltitude(), form.getAltitudeUnitOfMeasureTypeName(),
                                                 null, ExecutionErrors.MissingRequiredAltitude.name(), null, ExecutionErrors.MissingRequiredAltitudeUnitOfMeasureTypeName.name(),
                                                 null, ExecutionErrors.UnknownAltitudeUnitOfMeasureTypeName.name());
 
                                         if(!hasExecutionErrors()) {
-                                            Integer latitude = Integer.valueOf(form.getLatitude());
-                                            Integer longitude = Integer.valueOf(form.getLongitude());
+                                            var latitude = Integer.valueOf(form.getLatitude());
+                                            var longitude = Integer.valueOf(form.getLongitude());
 
                                             coreControl.createEntityGeoPointAttribute(entityAttribute, entityInstance, latitude, longitude, elevation, altitude, getPartyPK());
                                         }
@@ -124,8 +120,8 @@ public class CreateEntityGeoPointAttributeCommand
                                             entityAttribute.getLastDetail().getEntityAttributeName());
                                 }
                             } else {
-                                EntityTypeDetail expectedEntityTypeDetail = entityAttribute.getLastDetail().getEntityType().getLastDetail();
-                                EntityTypeDetail suppliedEntityTypeDetail = entityInstance.getEntityType().getLastDetail();
+                                var expectedEntityTypeDetail = entityAttribute.getLastDetail().getEntityType().getLastDetail();
+                                var suppliedEntityTypeDetail = entityInstance.getEntityType().getLastDetail();
                                 
                                 addExecutionError(ExecutionErrors.MismatchedEntityType.name(),
                                         expectedEntityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
