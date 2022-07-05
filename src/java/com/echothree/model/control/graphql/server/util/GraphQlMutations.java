@@ -26,6 +26,7 @@ import com.echothree.control.user.core.common.result.CreateEntityListItemResult;
 import com.echothree.control.user.core.common.result.EditEntityAttributeResult;
 import com.echothree.control.user.core.common.result.EditEntityBooleanAttributeResult;
 import com.echothree.control.user.core.common.result.EditEntityDateAttributeResult;
+import com.echothree.control.user.core.common.result.EditEntityGeoPointAttributeResult;
 import com.echothree.control.user.core.common.result.EditEntityIntegerAttributeResult;
 import com.echothree.control.user.core.common.result.EditEntityListItemAttributeResult;
 import com.echothree.control.user.core.common.result.EditEntityListItemResult;
@@ -4380,6 +4381,119 @@ public class GraphQlMutations
             commandForm.setEntityAttributeUlid(entityAttributeId);
 
             commandResultObject.setCommandResult(CoreUtil.getHome().deleteEntityTimeAttribute(getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject createEntityGeoPointAttribute(final DataFetchingEnvironment env,
+            @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
+            @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
+            @GraphQLName("latitude") @GraphQLNonNull final String latitude,
+            @GraphQLName("longitude") @GraphQLNonNull final String longitude,
+            @GraphQLName("elevation") final String elevation,
+            @GraphQLName("elevationUnitOfMeasureTypeName") final String elevationUnitOfMeasureTypeName,
+            @GraphQLName("altitude") final String altitude,
+            @GraphQLName("altitudeUnitOfMeasureTypeName") final String altitudeUnitOfMeasureTypeName) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = CoreUtil.getHome().getCreateEntityGeoPointAttributeForm();
+
+            commandForm.setUlid(id);
+            commandForm.setEntityAttributeUlid(entityAttributeId);
+            commandForm.setLatitude(latitude);
+            commandForm.setLongitude(longitude);
+            commandForm.setElevation(elevation);
+            commandForm.setElevationUnitOfMeasureTypeName(elevationUnitOfMeasureTypeName);
+            commandForm.setAltitude(altitude);
+            commandForm.setAltitudeUnitOfMeasureTypeName(altitudeUnitOfMeasureTypeName);
+
+            commandResultObject.setCommandResult(CoreUtil.getHome().createEntityGeoPointAttribute(getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject editEntityGeoPointAttribute(final DataFetchingEnvironment env,
+            @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
+            @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
+            @GraphQLName("latitude") final String latitude,
+            @GraphQLName("longitude") final String longitude,
+            @GraphQLName("elevation") final String elevation,
+            @GraphQLName("elevationUnitOfMeasureTypeName") final String elevationUnitOfMeasureTypeName,
+            @GraphQLName("altitude") final String altitude,
+            @GraphQLName("altitudeUnitOfMeasureTypeName") final String altitudeUnitOfMeasureTypeName) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var spec = CoreUtil.getHome().getEntityGeoPointAttributeSpec();
+
+            spec.setUlid(id);
+            spec.setEntityAttributeUlid(entityAttributeId);
+
+            var commandForm = CoreUtil.getHome().getEditEntityGeoPointAttributeForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = CoreUtil.getHome().editEntityGeoPointAttribute(getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditEntityGeoPointAttributeResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                if(arguments.containsKey("latitude"))
+                    edit.setLatitude(latitude);
+                if(arguments.containsKey("longitude"))
+                    edit.setLongitude(longitude);
+                if(arguments.containsKey("elevation"))
+                    edit.setElevation(elevation);
+                if(arguments.containsKey("elevationUnitOfMeasureTypeName"))
+                    edit.setElevationUnitOfMeasureTypeName(elevationUnitOfMeasureTypeName);
+                if(arguments.containsKey("altitude"))
+                    edit.setAltitude(altitude);
+                if(arguments.containsKey("altitudeUnitOfMeasureTypeName"))
+                    edit.setAltitudeUnitOfMeasureTypeName(altitudeUnitOfMeasureTypeName);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = CoreUtil.getHome().editEntityGeoPointAttribute(getUserVisitPK(env), commandForm);
+            }
+
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject deleteEntityGeoPointAttribute(final DataFetchingEnvironment env,
+            @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
+            @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = CoreUtil.getHome().getDeleteEntityGeoPointAttributeForm();
+
+            commandForm.setUlid(id);
+            commandForm.setEntityAttributeUlid(entityAttributeId);
+
+            commandResultObject.setCommandResult(CoreUtil.getHome().deleteEntityGeoPointAttribute(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
