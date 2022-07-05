@@ -19,47 +19,53 @@ package com.echothree.model.control.core.server.graphql;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.party.server.graphql.LanguageObject;
 import com.echothree.model.control.party.server.graphql.PartySecurityUtils;
-import com.echothree.model.data.core.server.entity.EntityStringAttribute;
+import com.echothree.model.data.core.server.entity.EntityClobAttribute;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 
-@GraphQLDescription("entity string attribute object")
-@GraphQLName("EntityStringAttribute")
-public class EntityStringAttributeObject
+@GraphQLDescription("entity clob attribute object")
+@GraphQLName("EntityClobAttribute")
+public class EntityClobAttributeObject
         extends BaseGraphQl {
     
-    private final EntityStringAttribute entityStringAttribute; // Always Present
+    private final EntityClobAttribute entityClobAttribute; // Always Present
     
-    public EntityStringAttributeObject(EntityStringAttribute entityStringAttribute) {
-        this.entityStringAttribute = entityStringAttribute;
+    public EntityClobAttributeObject(EntityClobAttribute entityClobAttribute) {
+        this.entityClobAttribute = entityClobAttribute;
     }
 
     @GraphQLField
-    @GraphQLDescription("string attribute")
-    @GraphQLNonNull
-    public String getStringAttribute() {
-        return entityStringAttribute.getStringAttribute();
-    }
-    
-    @GraphQLField
     @GraphQLDescription("entity attribute")
     public EntityAttributeObject getEntityAttribute(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityStringAttribute.getEntityAttribute(), entityStringAttribute.getEntityInstance()) : null;
+        return CoreSecurityUtils.getInstance().getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityClobAttribute.getEntityAttribute(), entityClobAttribute.getEntityInstance()) : null;
     }
-    
-    @GraphQLField
-    @GraphQLDescription("language")
-    public LanguageObject getLanguage(final DataFetchingEnvironment env) {
-        return PartySecurityUtils.getInstance().getHasLanguageAccess(env) ? new LanguageObject(entityStringAttribute.getLanguage()) : null;
-    }
-    
+
     @GraphQLField
     @GraphQLDescription("entity instance")
     public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityStringAttribute.getEntityInstance()) : null;
+        return CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityClobAttribute.getEntityInstance()) : null;
     }
-    
+
+    @GraphQLField
+    @GraphQLDescription("language")
+    public LanguageObject getLanguage(final DataFetchingEnvironment env) {
+        return PartySecurityUtils.getInstance().getHasLanguageAccess(env) ? new LanguageObject(entityClobAttribute.getLanguage()) : null;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("clob attribute")
+    @GraphQLNonNull
+    public String getClobAttribute() {
+        return entityClobAttribute.getClobAttribute();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("mime type")
+    public MimeTypeObject getMimeType(final DataFetchingEnvironment env) {
+        return CoreSecurityUtils.getInstance().getHasMimeTypeAccess(env) ? new MimeTypeObject(entityClobAttribute.getMimeType()) : null;
+    }
+
 }

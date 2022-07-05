@@ -39,8 +39,8 @@ public class EntityTimeObject
     @GraphQLField
     @GraphQLDescription("entity instance")
     @GraphQLNonNull
-    public EntityInstanceObject getEntityInstance() {
-        return new EntityInstanceObject(entityTime.getEntityInstance());
+    public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
+        return CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityTime.getEntityInstance()) : null;
     }
     
     @GraphQLField

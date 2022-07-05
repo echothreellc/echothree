@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.core.server.graphql;
 
-import com.echothree.control.user.core.server.command.GetEntityAttributeCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
@@ -39,20 +38,6 @@ public class EntityGeoPointAttributeObject
     
     public EntityGeoPointAttributeObject(EntityGeoPointAttribute entityGeoPointAttribute) {
         this.entityGeoPointAttribute = entityGeoPointAttribute;
-    }
-
-    private Boolean hasEntityAttributeAccess;
-    
-    private boolean getHasEntityAttributeAccess(final DataFetchingEnvironment env) {
-        if(hasEntityAttributeAccess == null) {
-            var baseSingleEntityCommand = new GetEntityAttributeCommand(getUserVisitPK(env), null);
-            
-            baseSingleEntityCommand.security();
-            
-            hasEntityAttributeAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-        
-        return hasEntityAttributeAccess;
     }
 
     @GraphQLField
@@ -130,13 +115,13 @@ public class EntityGeoPointAttributeObject
     @GraphQLField
     @GraphQLDescription("entity attribute")
     public EntityAttributeObject getEntityAttribute(final DataFetchingEnvironment env) {
-        return getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityGeoPointAttribute.getEntityAttribute(), entityGeoPointAttribute.getEntityInstance()) : null;
+        return CoreSecurityUtils.getInstance().getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityGeoPointAttribute.getEntityAttribute(), entityGeoPointAttribute.getEntityInstance()) : null;
     }
     
     @GraphQLField
     @GraphQLDescription("entity instance")
     public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
-        return new EntityInstanceObject(entityGeoPointAttribute.getEntityInstance());
+        return CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityGeoPointAttribute.getEntityInstance()) : null;
     }
     
 }

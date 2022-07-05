@@ -16,10 +16,8 @@
 
 package com.echothree.model.control.core.server.graphql;
 
-import com.echothree.control.user.core.server.command.GetEntityAttributeCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.data.core.server.entity.EntityLongAttribute;
-import com.echothree.util.server.control.BaseSingleEntityCommand;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -37,20 +35,6 @@ public class EntityLongAttributeObject
         this.entityLongAttribute = entityLongAttribute;
     }
 
-    private Boolean hasEntityAttributeAccess;
-    
-    private boolean getHasEntityAttributeAccess(final DataFetchingEnvironment env) {
-        if(hasEntityAttributeAccess == null) {
-            var baseSingleEntityCommand = new GetEntityAttributeCommand(getUserVisitPK(env), null);
-            
-            baseSingleEntityCommand.security();
-            
-            hasEntityAttributeAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-        
-        return hasEntityAttributeAccess;
-    }
-        
     @GraphQLField
     @GraphQLDescription("unformatted long attribute")
     @GraphQLNonNull
@@ -68,13 +52,13 @@ public class EntityLongAttributeObject
     @GraphQLField
     @GraphQLDescription("entity attribute")
     public EntityAttributeObject getEntityAttribute(final DataFetchingEnvironment env) {
-        return getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityLongAttribute.getEntityAttribute(), entityLongAttribute.getEntityInstance()) : null;
+        return CoreSecurityUtils.getInstance().getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityLongAttribute.getEntityAttribute(), entityLongAttribute.getEntityInstance()) : null;
     }
     
     @GraphQLField
     @GraphQLDescription("entity instance")
     public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
-        return new EntityInstanceObject(entityLongAttribute.getEntityInstance());
+        return CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityLongAttribute.getEntityInstance()) : null;
     }
     
 }

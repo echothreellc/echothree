@@ -448,6 +448,22 @@ public class EntityAttributeObject
     }
 
     @GraphQLField
+    @GraphQLDescription("entity clob attribute")
+    public EntityClobAttributeObject getEntityClobAttribute(final DataFetchingEnvironment env) {
+        EntityClobAttributeObject entityClobAttributeObject = null;
+
+        if(isEntityAttributeTypeName(EntityAttributeTypes.CLOB.name()) && entityInstance != null) {
+            var coreControl = Session.getModelController(CoreControl.class);
+            var userControl = Session.getModelController(UserControl.class);
+            var entityClobAttribute = coreControl.getBestEntityClobAttribute(entityAttribute, entityInstance, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+
+            entityClobAttributeObject = entityClobAttribute == null ? null : new EntityClobAttributeObject(entityClobAttribute);
+        }
+
+        return entityClobAttributeObject;
+    }
+
+    @GraphQLField
     @GraphQLDescription("entity date attribute")
     public EntityDateAttributeObject getEntityDateAttribute(final DataFetchingEnvironment env) {
         EntityDateAttributeObject entityDateAttributeObject = null;

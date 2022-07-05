@@ -16,11 +16,8 @@
 
 package com.echothree.model.control.core.server.graphql;
 
-import com.echothree.control.user.core.server.command.GetAppearanceCommand;
-import com.echothree.control.user.core.server.command.GetEntityInstanceCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.data.core.server.entity.EntityAppearance;
-import com.echothree.util.server.control.BaseSingleEntityCommand;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -38,46 +35,18 @@ public class EntityAppearanceObject
         this.entityAppearance = entityAppearance;
     }
 
-    private Boolean hasEntityInstanceAccess;
-
-    private boolean getHasEntityInstanceAccess(final DataFetchingEnvironment env) {
-        if(hasEntityInstanceAccess == null) {
-            var baseSingleEntityCommand = new GetEntityInstanceCommand(getUserVisitPK(env), null);
-
-            baseSingleEntityCommand.security();
-
-            hasEntityInstanceAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-
-        return hasEntityInstanceAccess;
-    }
-
-    private Boolean hasAppearanceAccess;
-
-    private boolean getHasAppearanceAccess(final DataFetchingEnvironment env) {
-        if(hasAppearanceAccess == null) {
-            var baseSingleEntityCommand = new GetAppearanceCommand(getUserVisitPK(env), null);
-
-            baseSingleEntityCommand.security();
-
-            hasAppearanceAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-
-        return hasAppearanceAccess;
-    }
-
     @GraphQLField
     @GraphQLDescription("entity instance")
     @GraphQLNonNull
     public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
-        return getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityAppearance.getEntityInstance()) : null;
+        return CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityAppearance.getEntityInstance()) : null;
     }
     
     @GraphQLField
     @GraphQLDescription("appearance")
     @GraphQLNonNull
     public AppearanceObject getAppearance(final DataFetchingEnvironment env) {
-        return getHasAppearanceAccess(env) ? new AppearanceObject(entityAppearance.getAppearance()) : null;
+        return CoreSecurityUtils.getInstance().getHasAppearanceAccess(env) ? new AppearanceObject(entityAppearance.getAppearance()) : null;
     }
     
 }

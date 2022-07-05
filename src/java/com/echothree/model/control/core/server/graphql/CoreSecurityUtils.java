@@ -16,6 +16,8 @@
 
 package com.echothree.model.control.core.server.graphql;
 
+import com.echothree.control.user.core.server.command.GetAppearanceCommand;
+import com.echothree.control.user.core.server.command.GetAppearancesCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeTypeCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeTypesCommand;
@@ -31,6 +33,8 @@ import com.echothree.control.user.core.server.command.GetEntityLongRangesCommand
 import com.echothree.control.user.core.server.command.GetEntityTypeCommand;
 import com.echothree.control.user.core.server.command.GetEntityTypesCommand;
 import com.echothree.control.user.core.server.command.GetMimeTypeCommand;
+import com.echothree.control.user.core.server.command.GetMimeTypeFileExtensionCommand;
+import com.echothree.control.user.core.server.command.GetMimeTypeFileExtensionsCommand;
 import com.echothree.control.user.core.server.command.GetMimeTypeUsageTypeCommand;
 import com.echothree.control.user.core.server.command.GetMimeTypeUsageTypesCommand;
 import com.echothree.control.user.core.server.command.GetMimeTypeUsagesCommand;
@@ -55,6 +59,14 @@ public final class CoreSecurityUtils
 
     public boolean getHasEntityInstancesAccess(final DataFetchingEnvironment env) {
         return getGraphQlExecutionContext(env).hasAccess(GetEntityInstancesCommand.class);
+    }
+
+    public boolean getHasAppearanceAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetAppearanceCommand.class);
+    }
+
+    public boolean getHasAppearancesAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetAppearancesCommand.class);
     }
 
     public boolean getHasEntityAttributeTypeAccess(final DataFetchingEnvironment env) {
@@ -111,6 +123,14 @@ public final class CoreSecurityUtils
 
     public boolean getHasMimeTypesAccess(final DataFetchingEnvironment env) {
         return getGraphQlExecutionContext(env).hasAccess(GetMimeTypesCommand.class);
+    }
+
+    public boolean getHasMimeTypeFileExtensionAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetMimeTypeFileExtensionCommand.class);
+    }
+
+    public boolean getHasMimeTypeFileExtensionsAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetMimeTypeFileExtensionsCommand.class);
     }
 
     public boolean getHasMimeTypeUsageTypeAccess(final DataFetchingEnvironment env) {
