@@ -58,7 +58,7 @@ public class EntityIntegerAttributeObject
     @GraphQLField
     @GraphQLDescription("entity instance")
     public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
-        return new EntityInstanceObject(entityIntegerAttribute.getEntityInstance());
+        return CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityIntegerAttribute.getEntityInstance()) : null;
     }
     
 }

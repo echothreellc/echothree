@@ -49,7 +49,7 @@ public class EntityMultipleListItemAttributeObject
     @GraphQLField
     @GraphQLDescription("entity instance")
     public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
-        return new EntityInstanceObject(entityMultipleListItemAttribute.getEntityInstance());
+        return CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityMultipleListItemAttribute.getEntityInstance()) : null;
     }
     
 }

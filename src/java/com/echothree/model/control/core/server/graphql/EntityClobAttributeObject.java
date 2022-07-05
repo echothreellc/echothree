@@ -46,7 +46,7 @@ public class EntityClobAttributeObject
     @GraphQLField
     @GraphQLDescription("entity instance")
     public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
-        return new EntityInstanceObject(entityClobAttribute.getEntityInstance());
+        return CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityClobAttribute.getEntityInstance()) : null;
     }
 
     @GraphQLField

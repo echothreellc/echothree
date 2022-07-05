@@ -121,7 +121,7 @@ public class EntityGeoPointAttributeObject
     @GraphQLField
     @GraphQLDescription("entity instance")
     public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
-        return new EntityInstanceObject(entityGeoPointAttribute.getEntityInstance());
+        return CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityGeoPointAttribute.getEntityInstance()) : null;
     }
     
 }
