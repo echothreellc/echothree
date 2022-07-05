@@ -42,7 +42,7 @@ public class HttpSessionUtils {
         return instance;
     }
 
-    public static final int DEFAULT_MAX_INACTIVE_INTERVAL = 15 * 3600; // 15 minutes
+    public static final int DEFAULT_MAX_INACTIVE_INTERVAL = 15 * 60; // 15 minutes
 
     private Cookie GetUserKeyCookie(final HttpServletRequest request) {
         Cookie cookie = null;
