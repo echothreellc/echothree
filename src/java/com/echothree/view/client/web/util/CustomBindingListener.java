@@ -22,10 +22,14 @@ import java.io.Serializable;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionBindingListener;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class CustomBindingListener
         implements HttpSessionBindingListener, Serializable {
-    
+
+    protected static Log log = LogFactory.getLog(CustomBindingListener.class);
+
     UserVisitPK userVisitPK;
     
     /** Creates a new instance of CustomBindingListener */
@@ -40,10 +44,14 @@ public class CustomBindingListener
     
     @Override
     public void valueUnbound(HttpSessionBindingEvent httpSessionBindingEvent) {
+        if(log.isDebugEnabled()) {
+            log.debug("CustomBindingListener.valueUnbound: invalidateUserVisit called for: " + userVisitPK.getEntityRef());
+        }
+
         try {
             AuthenticationUtil.getHome().invalidateUserVisit(userVisitPK);
-        } catch (NamingException dne) {
-            // nothing right now
+        } catch (NamingException ne) {
+            log.error("CustomBindingListener.valueUnbound encountered an Exception", ne);
         }
     }
     
