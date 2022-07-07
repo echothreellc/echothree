@@ -17,22 +17,19 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteEntityClobAttributeForm;
+import com.echothree.model.control.core.common.EntityAttributeTypes;
+import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.core.server.entity.EntityAttribute;
-import com.echothree.model.data.core.server.entity.EntityClobAttribute;
-import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.core.server.entity.EntityTypeDetail;
-import com.echothree.model.data.party.server.entity.Language;
+import com.echothree.model.control.party.server.logic.LanguageLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -50,9 +47,14 @@ public class DeleteEntityClobAttributeCommand
         ));
 
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, true, null, null),
-                new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null),
+                new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityAttributeUlid", FieldType.ULID, false, null, null),
+                new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("LanguageUlid", FieldType.ENTITY_NAME, false, null, null)
                 ));
     }
     
@@ -63,38 +65,20 @@ public class DeleteEntityClobAttributeCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
-        String entityRef = form.getEntityRef();
-        EntityInstance entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
-        
-        if(entityInstance != null) {
-            String entityAttributeName = form.getEntityAttributeName();
-            EntityAttribute entityAttribute = coreControl.getEntityAttributeByName(entityInstance.getEntityType(), entityAttributeName);
-            
-            if(entityAttribute != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
-                String languageIsoName = form.getLanguageIsoName();
-                Language language = partyControl.getLanguageByIsoName(languageIsoName);
-                
-                if(language != null) {
-                    EntityClobAttribute entityClobAttribute = coreControl.getEntityClobAttributeForUpdate(entityAttribute, entityInstance, language);
-                    
-                    if(entityClobAttribute != null) {
-                        coreControl.deleteEntityClobAttribute(entityClobAttribute, getPartyPK());
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownEntityClobAttribute.name());
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
-                }
+        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
+        var language = LanguageLogic.getInstance().getLanguage(this, form, form);
+        var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttribute(this, entityInstance, form, form,
+                EntityAttributeTypes.CLOB);
+
+        if(!hasExecutionErrors()) {
+            var coreControl = getCoreControl();
+            var entityClobAttribute = coreControl.getEntityClobAttributeForUpdate(entityAttribute, entityInstance, language);
+
+            if(entityClobAttribute != null) {
+                coreControl.deleteEntityClobAttribute(entityClobAttribute, getPartyPK());
             } else {
-                EntityTypeDetail entityTypeDetail = entityInstance.getEntityType().getLastDetail();
-                
-                addExecutionError(ExecutionErrors.UnknownEntityAttributeName.name(), entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                        entityTypeDetail.getEntityTypeName(), entityAttributeName);
+                addExecutionError(ExecutionErrors.UnknownEntityClobAttribute.name());
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownEntityRef.name(), entityRef);
         }
         
         return null;

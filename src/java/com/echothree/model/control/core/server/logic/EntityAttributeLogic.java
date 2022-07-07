@@ -27,6 +27,7 @@ import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.DuplicateEntityAttributeNameException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityBooleanAttributeException;
+import com.echothree.model.control.core.common.exception.DuplicateEntityClobAttributeException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityDateAttributeException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityIntegerAttributeException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityListItemAttributeException;
@@ -82,6 +83,7 @@ import com.echothree.model.data.core.server.entity.EntityAttributeLong;
 import com.echothree.model.data.core.server.entity.EntityAttributeString;
 import com.echothree.model.data.core.server.entity.EntityAttributeType;
 import com.echothree.model.data.core.server.entity.EntityBooleanAttribute;
+import com.echothree.model.data.core.server.entity.EntityClobAttribute;
 import com.echothree.model.data.core.server.entity.EntityDateAttribute;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityIntegerAttribute;
@@ -94,6 +96,7 @@ import com.echothree.model.data.core.server.entity.EntityStringAttribute;
 import com.echothree.model.data.core.server.entity.EntityTimeAttribute;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.core.server.entity.EntityTypeDetail;
+import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.core.server.value.EntityAttributeDetailValue;
 import com.echothree.model.data.core.server.value.EntityListItemDetailValue;
 import com.echothree.model.data.party.common.pk.PartyPK;
@@ -955,6 +958,31 @@ public class EntityAttributeLogic
         }
 
         return entityStringAttribute;
+    }
+
+    public EntityClobAttribute createEntityClobAttribute(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
+            final EntityInstance entityInstance, final Language language, final String clobAttribute, final MimeType mimeType,
+            final BasePK createdBy) {
+        EntityClobAttribute entityClobAttribute = null;
+
+        checkEntityType(eea, entityAttribute, entityInstance);
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var coreControl = Session.getModelController(CoreControl.class);
+
+            entityClobAttribute = coreControl.getEntityClobAttribute(entityAttribute, entityInstance, language);
+
+            if(entityClobAttribute == null) {
+                coreControl.createEntityClobAttribute(entityAttribute, entityInstance, language, clobAttribute, mimeType, createdBy);
+            } else {
+                handleExecutionError(DuplicateEntityClobAttributeException.class, eea, ExecutionErrors.DuplicateEntityClobAttribute.name(),
+                        EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance),
+                        entityAttribute.getLastDetail().getEntityAttributeName(),
+                        language.getLanguageIsoName());
+            }
+        }
+
+        return entityClobAttribute;
     }
 
     public EntityNameAttribute createEntityNameAttribute(final ExecutionErrorAccumulator eea, final EntityAttribute entityAttribute,
