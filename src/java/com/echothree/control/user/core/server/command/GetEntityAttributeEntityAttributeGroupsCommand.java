@@ -68,17 +68,17 @@ public class GetEntityAttributeEntityAttributeGroupsCommand
     
     @Override
     protected BaseResult execute() {
-        GetEntityAttributeEntityAttributeGroupsResult result = CoreResultFactory.getGetEntityAttributeEntityAttributeGroupsResult();
-        String componentVendorName = form.getComponentVendorName();
-        String entityTypeName = form.getEntityTypeName();
-        String entityAttributeName = form.getEntityAttributeName();
-        String entityAttributeGroupName = form.getEntityAttributeGroupName();
+        var result = CoreResultFactory.getGetEntityAttributeEntityAttributeGroupsResult();
+        var componentVendorName = form.getComponentVendorName();
+        var entityTypeName = form.getEntityTypeName();
+        var entityAttributeName = form.getEntityAttributeName();
+        var entityAttributeGroupName = form.getEntityAttributeGroupName();
         var parameterCount = ((componentVendorName != null) && (entityTypeName != null) && (entityAttributeName != null) ? 1 : 0)
                 + (entityAttributeGroupName != null ? 1 : 0);
 
         if(parameterCount == 1) {
             var coreControl = getCoreControl();
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             
             if(entityAttributeGroupName == null) {
                 EntityAttribute entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByName(this, componentVendorName, entityTypeName, entityAttributeName);
@@ -98,15 +98,7 @@ public class GetEntityAttributeEntityAttributeGroupsCommand
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
-        
-        
-        
-        
-        
-        
-        
 
-        
         return result;
     }
     
