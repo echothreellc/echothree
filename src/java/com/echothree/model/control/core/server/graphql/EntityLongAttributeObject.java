@@ -36,6 +36,18 @@ public class EntityLongAttributeObject
     }
 
     @GraphQLField
+    @GraphQLDescription("entity attribute")
+    public EntityAttributeObject getEntityAttribute(final DataFetchingEnvironment env) {
+        return CoreSecurityUtils.getInstance().getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityLongAttribute.getEntityAttribute(), entityLongAttribute.getEntityInstance()) : null;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("entity instance")
+    public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
+        return CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityLongAttribute.getEntityInstance()) : null;
+    }
+
+    @GraphQLField
     @GraphQLDescription("unformatted long attribute")
     @GraphQLNonNull
     public Long getUnformattedLongAttribute() {
@@ -47,18 +59,6 @@ public class EntityLongAttributeObject
     @GraphQLNonNull
     public String getLongAttribute() {
         return entityLongAttribute.getLongAttribute().toString(); // TODO
-    }
-    
-    @GraphQLField
-    @GraphQLDescription("entity attribute")
-    public EntityAttributeObject getEntityAttribute(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityLongAttribute.getEntityAttribute(), entityLongAttribute.getEntityInstance()) : null;
-    }
-    
-    @GraphQLField
-    @GraphQLDescription("entity instance")
-    public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityLongAttribute.getEntityInstance()) : null;
     }
     
 }

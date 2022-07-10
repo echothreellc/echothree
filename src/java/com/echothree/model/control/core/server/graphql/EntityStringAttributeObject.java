@@ -38,28 +38,28 @@ public class EntityStringAttributeObject
     }
 
     @GraphQLField
-    @GraphQLDescription("string attribute")
-    @GraphQLNonNull
-    public String getStringAttribute() {
-        return entityStringAttribute.getStringAttribute();
-    }
-    
-    @GraphQLField
     @GraphQLDescription("entity attribute")
     public EntityAttributeObject getEntityAttribute(final DataFetchingEnvironment env) {
         return CoreSecurityUtils.getInstance().getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityStringAttribute.getEntityAttribute(), entityStringAttribute.getEntityInstance()) : null;
     }
-    
-    @GraphQLField
-    @GraphQLDescription("language")
-    public LanguageObject getLanguage(final DataFetchingEnvironment env) {
-        return PartySecurityUtils.getInstance().getHasLanguageAccess(env) ? new LanguageObject(entityStringAttribute.getLanguage()) : null;
-    }
-    
+
     @GraphQLField
     @GraphQLDescription("entity instance")
     public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
         return CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityStringAttribute.getEntityInstance()) : null;
     }
-    
+
+    @GraphQLField
+    @GraphQLDescription("language")
+    public LanguageObject getLanguage(final DataFetchingEnvironment env) {
+        return PartySecurityUtils.getInstance().getHasLanguageAccess(env) ? new LanguageObject(entityStringAttribute.getLanguage()) : null;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("string attribute")
+    @GraphQLNonNull
+    public String getStringAttribute() {
+        return entityStringAttribute.getStringAttribute();
+    }
+
 }

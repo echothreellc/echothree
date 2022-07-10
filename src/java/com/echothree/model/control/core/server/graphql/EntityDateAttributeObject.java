@@ -37,6 +37,18 @@ public class EntityDateAttributeObject
     }
 
     @GraphQLField
+    @GraphQLDescription("entity attribute")
+    public EntityAttributeObject getEntityAttribute(final DataFetchingEnvironment env) {
+        return CoreSecurityUtils.getInstance().getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityDateAttribute.getEntityAttribute(), entityDateAttribute.getEntityInstance()) : null;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("entity instance")
+    public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
+        return CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityDateAttribute.getEntityInstance()) : null;
+    }
+
+    @GraphQLField
     @GraphQLDescription("unformatted date attribute")
     @GraphQLNonNull
     public int getUnformattedDateAttribute() {
@@ -50,16 +62,4 @@ public class EntityDateAttributeObject
         return DateUtils.getInstance().formatDate(getUserVisit(env), entityDateAttribute.getDateAttribute());
     }
 
-    @GraphQLField
-    @GraphQLDescription("entity attribute")
-    public EntityAttributeObject getEntityAttribute(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityDateAttribute.getEntityAttribute(), entityDateAttribute.getEntityInstance()) : null;
-    }
-    
-    @GraphQLField
-    @GraphQLDescription("entity instance")
-    public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityDateAttribute.getEntityInstance()) : null;
-    }
-    
 }
