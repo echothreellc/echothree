@@ -18,30 +18,31 @@ package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.GetEntityAttributeEntityAttributeGroupsForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.GetEntityAttributeEntityAttributeGroupsResult;
 import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
+import com.echothree.model.data.core.server.entity.EntityAttributeEntityAttributeGroup;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.EntityPermission;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class GetEntityAttributeEntityAttributeGroupsCommand
-        extends BaseSimpleCommand<GetEntityAttributeEntityAttributeGroupsForm> {
-    
+        extends BaseMultipleEntitiesCommand<EntityAttributeEntityAttributeGroup, GetEntityAttributeEntityAttributeGroupsForm> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -65,34 +66,34 @@ public class GetEntityAttributeEntityAttributeGroupsCommand
     public GetEntityAttributeEntityAttributeGroupsCommand(UserVisitPK userVisitPK, GetEntityAttributeEntityAttributeGroupsForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    EntityAttribute entityAttribute;
+    EntityAttributeGroup entityAttributeGroup;
+
     @Override
-    protected BaseResult execute() {
-        var result = CoreResultFactory.getGetEntityAttributeEntityAttributeGroupsResult();
+    protected Collection<EntityAttributeEntityAttributeGroup> getEntities() {
         var componentVendorName = form.getComponentVendorName();
         var entityTypeName = form.getEntityTypeName();
         var entityAttributeName = form.getEntityAttributeName();
         var entityAttributeGroupName = form.getEntityAttributeGroupName();
         var parameterCount = ((componentVendorName != null) && (entityTypeName != null) && (entityAttributeName != null) ? 1 : 0)
                 + (entityAttributeGroupName != null ? 1 : 0);
+        Collection<EntityAttributeEntityAttributeGroup> result = null;
 
         if(parameterCount == 1) {
             var coreControl = getCoreControl();
-            var userVisit = getUserVisit();
-            
+
             if(entityAttributeGroupName == null) {
-                EntityAttribute entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByName(this, componentVendorName, entityTypeName, entityAttributeName);
-                
+                entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByName(this, componentVendorName, entityTypeName, entityAttributeName);
+
                 if(!hasExecutionErrors()) {
-                    result.setEntityAttribute(coreControl.getEntityAttributeTransfer(userVisit, entityAttribute, null));
-                    result.setEntityAttributeEntityAttributeGroups(coreControl.getEntityAttributeEntityAttributeGroupTransfersByEntityAttribute(userVisit, entityAttribute, null));
+                    result = coreControl.getEntityAttributeEntityAttributeGroupsByEntityAttribute(entityAttribute, EntityPermission.READ_ONLY);
                 }
             } else {
-                EntityAttributeGroup entityAttributeGroup = EntityAttributeLogic.getInstance().getEntityAttributeGroupByName(this, entityAttributeGroupName);
-                
+                entityAttributeGroup = EntityAttributeLogic.getInstance().getEntityAttributeGroupByName(this, entityAttributeGroupName);
+
                 if(!hasExecutionErrors()) {
-                    result.setEntityAttributeGroup(coreControl.getEntityAttributeGroupTransfer(userVisit, entityAttributeGroup, null));
-                    result.setEntityAttributeEntityAttributeGroups(coreControl.getEntityAttributeEntityAttributeGroupTransfersByEntityAttributeGroup(userVisit, entityAttributeGroup, null));
+                    result = coreControl.getEntityAttributeEntityAttributeGroupsByEntityAttributeGroup(entityAttributeGroup, EntityPermission.READ_ONLY);
                 }
             }
         } else {
@@ -101,5 +102,25 @@ public class GetEntityAttributeEntityAttributeGroupsCommand
 
         return result;
     }
-    
+
+    @Override
+    protected BaseResult getTransfers(Collection<EntityAttributeEntityAttributeGroup> entities) {
+        var result = CoreResultFactory.getGetEntityAttributeEntityAttributeGroupsResult();
+
+        if(entities != null) {
+            var coreControl = getCoreControl();
+            var userVisit = getUserVisit();
+
+            if(entityAttributeGroup == null) {
+                result.setEntityAttribute(coreControl.getEntityAttributeTransfer(userVisit, entityAttribute, null));
+            } else {
+                result.setEntityAttributeGroup(coreControl.getEntityAttributeGroupTransfer(userVisit, entityAttributeGroup, null));
+            }
+
+            result.setEntityAttributeEntityAttributeGroups(coreControl.getEntityAttributeEntityAttributeGroupTransfers(userVisit, entities, null));
+        }
+
+        return result;
+    }
+
 }

@@ -19,6 +19,10 @@ package com.echothree.model.control.core.server.graphql;
 import com.echothree.control.user.core.server.command.GetAppearanceCommand;
 import com.echothree.control.user.core.server.command.GetAppearancesCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeCommand;
+import com.echothree.control.user.core.server.command.GetEntityAttributeEntityAttributeGroupCommand;
+import com.echothree.control.user.core.server.command.GetEntityAttributeEntityAttributeGroupsCommand;
+import com.echothree.control.user.core.server.command.GetEntityAttributeGroupCommand;
+import com.echothree.control.user.core.server.command.GetEntityAttributeGroupsCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeTypeCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeTypesCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributesCommand;
@@ -75,6 +79,22 @@ public final class CoreSecurityUtils
 
     public boolean getHasEntityAttributeTypesAccess(final DataFetchingEnvironment env) {
         return getGraphQlExecutionContext(env).hasAccess(GetEntityAttributeTypesCommand.class);
+    }
+
+    public boolean getHasEntityAttributeGroupAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetEntityAttributeGroupCommand.class);
+    }
+
+    public boolean getHasEntityAttributeGroupsAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetEntityAttributeGroupsCommand.class);
+    }
+
+    public boolean getHasEntityAttributeEntityAttributeGroupAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetEntityAttributeEntityAttributeGroupCommand.class);
+    }
+
+    public boolean getHasEntityAttributeEntityAttributeGroupsAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetEntityAttributeEntityAttributeGroupsCommand.class);
     }
 
     public boolean getHasEntityAttributeAccess(final DataFetchingEnvironment env) {
