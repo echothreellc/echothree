@@ -38,14 +38,12 @@ public class EntityVisitObject
     
     @GraphQLField
     @GraphQLDescription("visited entity instance")
-    @GraphQLNonNull
     public EntityInstanceObject getVisitedEntityInstance(final DataFetchingEnvironment env) {
         return CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityVisit.getVisitedEntityInstance()) : null;
     }
     
     @GraphQLField
     @GraphQLDescription("entity instance")
-    @GraphQLNonNull
     public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
         return CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityVisit.getEntityInstance()) : null;
     }
