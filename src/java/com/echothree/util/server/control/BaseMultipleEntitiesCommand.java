@@ -53,7 +53,7 @@ public abstract class BaseMultipleEntitiesCommand<BE extends BaseEntity, F exten
     }
 
     @Override
-    protected BaseResult execute() {
+    protected final BaseResult execute() {
         Collection<BE> entities = getEntities();
         
         return getTransfers(entities);
