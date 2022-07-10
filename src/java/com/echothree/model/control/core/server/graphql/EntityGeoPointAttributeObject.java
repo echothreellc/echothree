@@ -41,6 +41,18 @@ public class EntityGeoPointAttributeObject
     }
 
     @GraphQLField
+    @GraphQLDescription("entity attribute")
+    public EntityAttributeObject getEntityAttribute(final DataFetchingEnvironment env) {
+        return CoreSecurityUtils.getInstance().getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityGeoPointAttribute.getEntityAttribute(), entityGeoPointAttribute.getEntityInstance()) : null;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("entity instance")
+    public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
+        return CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityGeoPointAttribute.getEntityInstance()) : null;
+    }
+
+    @GraphQLField
     @GraphQLDescription("unformatted latitude")
     @GraphQLNonNull
     public int getUnformattedLatitude() {
@@ -112,16 +124,4 @@ public class EntityGeoPointAttributeObject
         return formattedAltitude;
     }
 
-    @GraphQLField
-    @GraphQLDescription("entity attribute")
-    public EntityAttributeObject getEntityAttribute(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityGeoPointAttribute.getEntityAttribute(), entityGeoPointAttribute.getEntityInstance()) : null;
-    }
-    
-    @GraphQLField
-    @GraphQLDescription("entity instance")
-    public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityGeoPointAttribute.getEntityInstance()) : null;
-    }
-    
 }

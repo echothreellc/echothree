@@ -564,6 +564,25 @@ public class EntityAttributeObject
     }
 
     @GraphQLField
+    @GraphQLDescription("entity collection attribute")
+    public Collection<EntityCollectionAttributeObject> getEntityCollectionAttributes(final DataFetchingEnvironment env) {
+        Collection<EntityCollectionAttributeObject> entityCollectionAttributeObjects = null;
+
+        if(isEntityAttributeTypeName(EntityAttributeTypes.COLLECTION.name()) && entityInstance != null) {
+            var coreControl = Session.getModelController(CoreControl.class);
+            var entityCollectionAttributes = coreControl.getEntityCollectionAttributes(entityAttribute, entityInstance);
+
+            entityCollectionAttributeObjects = new ArrayList<>(entityCollectionAttributes.size());
+
+            for(var entityCollectionAttribute : entityCollectionAttributes) {
+                entityCollectionAttributeObjects.add(new EntityCollectionAttributeObject(entityCollectionAttribute));
+            }
+        }
+
+        return entityCollectionAttributeObjects;
+    }
+
+    @GraphQLField
     @GraphQLDescription("entity long ranges")
     public Collection<EntityLongRangeObject> getEntityLongRanges(final DataFetchingEnvironment env) {
         Collection<EntityLongRangeObject> entityLongRangeObjects = null;

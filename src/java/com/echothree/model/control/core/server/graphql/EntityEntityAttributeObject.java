@@ -35,21 +35,21 @@ public class EntityEntityAttributeObject
     }
 
     @GraphQLField
-    @GraphQLDescription("entity instance attribute")
-    public EntityInstanceObject getEntityInstanceAttribute(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env) ? new EntityInstanceObject((entityEntityAttribute.getEntityInstanceAttribute())) : null;
-    }
-
-    @GraphQLField
     @GraphQLDescription("entity attribute")
     public EntityAttributeObject getEntityAttribute(final DataFetchingEnvironment env) {
         return CoreSecurityUtils.getInstance().getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityEntityAttribute.getEntityAttribute(), entityEntityAttribute.getEntityInstance()) : null;
     }
-    
+
     @GraphQLField
     @GraphQLDescription("entity instance")
     public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
         return CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityEntityAttribute.getEntityInstance()) : null;
     }
-    
+
+    @GraphQLField
+    @GraphQLDescription("entity instance attribute")
+    public EntityInstanceObject getEntityInstanceAttribute(final DataFetchingEnvironment env) {
+        return CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityEntityAttribute.getEntityInstanceAttribute()) : null;
+    }
+
 }

@@ -35,21 +35,21 @@ public class EntityMultipleListItemAttributeObject
     }
 
     @GraphQLField
-    @GraphQLDescription("entity list item")
-    public EntityListItemObject getEntityListItem(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityListItemAccess(env) ? new EntityListItemObject(entityMultipleListItemAttribute.getEntityListItem()) : null;
-    }
-    
-    @GraphQLField
     @GraphQLDescription("entity attribute")
     public EntityAttributeObject getEntityAttribute(final DataFetchingEnvironment env) {
         return CoreSecurityUtils.getInstance().getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityMultipleListItemAttribute.getEntityAttribute(), entityMultipleListItemAttribute.getEntityInstance()) : null;
     }
-    
+
     @GraphQLField
     @GraphQLDescription("entity instance")
     public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
         return CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityMultipleListItemAttribute.getEntityInstance()) : null;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("entity list item")
+    public EntityListItemObject getEntityListItem(final DataFetchingEnvironment env) {
+        return CoreSecurityUtils.getInstance().getHasEntityListItemAccess(env) ? new EntityListItemObject(entityMultipleListItemAttribute.getEntityListItem()) : null;
     }
     
 }

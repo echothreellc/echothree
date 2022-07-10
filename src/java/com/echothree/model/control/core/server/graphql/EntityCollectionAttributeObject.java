@@ -17,48 +17,39 @@
 package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
-import com.echothree.model.data.core.server.entity.EntityIntegerAttribute;
+import com.echothree.model.data.core.server.entity.EntityCollectionAttribute;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 
-@GraphQLDescription("entity integer attribute object")
-@GraphQLName("EntityIntegerAttribute")
-public class EntityIntegerAttributeObject
+@GraphQLDescription("entity collection attribute object")
+@GraphQLName("EntityCollectionAttribute")
+public class EntityCollectionAttributeObject
         extends BaseGraphQl {
-    
-    private final EntityIntegerAttribute entityIntegerAttribute; // Always Present
-    
-    public EntityIntegerAttributeObject(EntityIntegerAttribute entityIntegerAttribute) {
-        this.entityIntegerAttribute = entityIntegerAttribute;
+
+    private final EntityCollectionAttribute entityCollectionAttribute; // Always Present
+
+    public EntityCollectionAttributeObject(EntityCollectionAttribute entityCollectionAttribute) {
+        this.entityCollectionAttribute = entityCollectionAttribute;
     }
 
     @GraphQLField
     @GraphQLDescription("entity attribute")
     public EntityAttributeObject getEntityAttribute(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityIntegerAttribute.getEntityAttribute(), entityIntegerAttribute.getEntityInstance()) : null;
+        return CoreSecurityUtils.getInstance().getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityCollectionAttribute.getEntityAttribute(), entityCollectionAttribute.getEntityInstance()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("entity instance")
     public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityIntegerAttribute.getEntityInstance()) : null;
+        return CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityCollectionAttribute.getEntityInstance()) : null;
     }
 
     @GraphQLField
-    @GraphQLDescription("unformatted integer attribute")
-    @GraphQLNonNull
-    public Integer getUnformattedIntegerAttribute() {
-        return entityIntegerAttribute.getIntegerAttribute();
+    @GraphQLDescription("entity instance attribute")
+    public EntityInstanceObject getEntityInstanceAttribute(final DataFetchingEnvironment env) {
+        return CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityCollectionAttribute.getEntityInstanceAttribute()) : null;
     }
-    
-    @GraphQLField
-    @GraphQLDescription("integer attribute")
-    @GraphQLNonNull
-    public String getIntegerAttribute() {
-        return entityIntegerAttribute.getIntegerAttribute().toString(); // TODO
-    }
-    
+
 }
