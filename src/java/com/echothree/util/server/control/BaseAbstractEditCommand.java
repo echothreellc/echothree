@@ -92,9 +92,9 @@ public abstract class BaseAbstractEditCommand<S extends BaseSpec, E extends Base
             LE lockEntity = getLockEntity(baseEntity);
 
             switch(editMode) {
-                case LOCK:
+                case LOCK -> {
                     canEdit(baseEntity);
-                    
+
                     // canEdit(...) may set both SecurityMessages and ExecutionErrors.
                     if(!hasSecurityMessages()) {
                         if(!hasExecutionErrors()) {
@@ -106,16 +106,14 @@ public abstract class BaseAbstractEditCommand<S extends BaseSpec, E extends Base
                                 addExecutionError(ExecutionErrors.EntityLockFailed.name());
                             }
                         }
-                    
+
                         fillInResult(result, baseEntity, lockEntity);
                     }
-                    break;
-                case ABANDON:
-                    unlockEntity(lockEntity);
-                    break;
-                case UPDATE:
+                }
+                case ABANDON -> unlockEntity(lockEntity);
+                case UPDATE -> {
                     canEdit(baseEntity);
-                    
+
                     // canEdit(...) may set both SecurityMessages and ExecutionErrors.
                     if(!hasSecurityMessages()) {
                         if(!hasExecutionErrors()) {
@@ -133,12 +131,12 @@ public abstract class BaseAbstractEditCommand<S extends BaseSpec, E extends Base
                                 }
                             }
                         }
-                        
+
                         if(hasExecutionErrors()) {
                             fillInResult(result, baseEntity, lockEntity);
                         }
                     }
-                    break;
+                }
             }
         }
         
