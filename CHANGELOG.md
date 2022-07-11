@@ -1,5 +1,19 @@
 # Changelog
 
+## 2022-07-10-01
+
+* Add entityAttributeGroups to Entity Attribute Object [426](https://gitlab.echothree.com/echothree/echothree/-/issues/426)
+* Add Cancellation Policy Queries [443](https://gitlab.echothree.com/echothree/echothree/-/issues/443)
+* Add Return Policy Queries [449](https://gitlab.echothree.com/echothree/echothree/-/issues/449)
+* Add Entity Attribute Mutations for CLOBs [466](https://gitlab.echothree.com/echothree/echothree/-/issues/466)
+* Add Entity Attribute Mutations for GeoPoints [470](https://gitlab.echothree.com/echothree/echothree/-/issues/470)
+* Add CLOB to Entity Attribute Object [473](https://gitlab.echothree.com/echothree/echothree/-/issues/473)
+* Add Collection to Entity Attribute Object [474](https://gitlab.echothree.com/echothree/echothree/-/issues/474)
+* Add Entity to Entity Attribute Object [476](https://gitlab.echothree.com/echothree/echothree/-/issues/476)
+* Add GeoPoint to Entity Attribute Object [477](https://gitlab.echothree.com/echothree/echothree/-/issues/477)
+* jOOQ 3.17.1 Upgrade [501](https://gitlab.echothree.com/echothree/echothree/-/issues/501)
+* UserVisits Not Being Invalidated by Servlet Container for GraphQL [512](https://gitlab.echothree.com/echothree/echothree/-/issues/512)
+
 ## 2022-06-26-01
 
 * GraphQL Queries for Getting Item Results Facets [405](https://gitlab.echothree.com/echothree/echothree/-/issues/405)
