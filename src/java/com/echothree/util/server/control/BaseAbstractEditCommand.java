@@ -17,14 +17,14 @@
 package com.echothree.util.server.control;
 
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
-import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseEditResult;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.form.BaseEdit;
 import com.echothree.util.common.form.BaseEditForm;
 import com.echothree.util.common.form.BaseSpec;
+import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.EntityPermission;
 import java.util.List;
@@ -83,7 +83,7 @@ public abstract class BaseAbstractEditCommand<S extends BaseSpec, E extends Base
     protected abstract void doUpdate(BE baseEntity);
     
     @Override
-    protected BaseResult execute() {
+    protected final BaseResult execute() {
         R result = getResult();
         BE baseEntity = getEntity(result);
         
@@ -92,9 +92,9 @@ public abstract class BaseAbstractEditCommand<S extends BaseSpec, E extends Base
             LE lockEntity = getLockEntity(baseEntity);
 
             switch(editMode) {
-                case LOCK:
+                case LOCK -> {
                     canEdit(baseEntity);
-                    
+
                     // canEdit(...) may set both SecurityMessages and ExecutionErrors.
                     if(!hasSecurityMessages()) {
                         if(!hasExecutionErrors()) {
@@ -106,16 +106,14 @@ public abstract class BaseAbstractEditCommand<S extends BaseSpec, E extends Base
                                 addExecutionError(ExecutionErrors.EntityLockFailed.name());
                             }
                         }
-                    
+
                         fillInResult(result, baseEntity, lockEntity);
                     }
-                    break;
-                case ABANDON:
-                    unlockEntity(lockEntity);
-                    break;
-                case UPDATE:
+                }
+                case ABANDON -> unlockEntity(lockEntity);
+                case UPDATE -> {
                     canEdit(baseEntity);
-                    
+
                     // canEdit(...) may set both SecurityMessages and ExecutionErrors.
                     if(!hasSecurityMessages()) {
                         if(!hasExecutionErrors()) {
@@ -133,12 +131,12 @@ public abstract class BaseAbstractEditCommand<S extends BaseSpec, E extends Base
                                 }
                             }
                         }
-                        
+
                         if(hasExecutionErrors()) {
                             fillInResult(result, baseEntity, lockEntity);
                         }
                     }
-                    break;
+                }
             }
         }
         

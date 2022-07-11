@@ -622,4 +622,23 @@ public class EntityAttributeObject
         return entityIntegerRangeObjects;
     }
 
+    @GraphQLField
+    @GraphQLDescription("entity attribute entity attribute groups")
+    public Collection<EntityAttributeEntityAttributeGroupObject> getEntityAttributeEntityAttributeGroups(final DataFetchingEnvironment env) {
+        Collection<EntityAttributeEntityAttributeGroupObject> entityAttributeEntityAttributeGroupObjects = null;
+
+        if(CoreSecurityUtils.getInstance().getHasEntityAttributeEntityAttributeGroupsAccess(env)) {
+            var coreControl = Session.getModelController(CoreControl.class);
+            var entityAttributeEntityAttributeGroups = coreControl.getEntityAttributeEntityAttributeGroupsByEntityAttribute(entityAttribute);
+
+            entityAttributeEntityAttributeGroupObjects = new ArrayList<>(entityAttributeEntityAttributeGroups.size());
+
+            for(var entityAttributeEntityAttributeGroup : entityAttributeEntityAttributeGroups) {
+                entityAttributeEntityAttributeGroupObjects.add(new EntityAttributeEntityAttributeGroupObject(entityAttributeEntityAttributeGroup));
+            }
+        }
+
+        return entityAttributeEntityAttributeGroupObjects;
+    }
+
 }

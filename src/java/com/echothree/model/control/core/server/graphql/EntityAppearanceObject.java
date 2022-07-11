@@ -37,14 +37,12 @@ public class EntityAppearanceObject
 
     @GraphQLField
     @GraphQLDescription("entity instance")
-    @GraphQLNonNull
     public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
         return CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityAppearance.getEntityInstance()) : null;
     }
     
     @GraphQLField
     @GraphQLDescription("appearance")
-    @GraphQLNonNull
     public AppearanceObject getAppearance(final DataFetchingEnvironment env) {
         return CoreSecurityUtils.getInstance().getHasAppearanceAccess(env) ? new AppearanceObject(entityAppearance.getAppearance()) : null;
     }

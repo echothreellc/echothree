@@ -17,49 +17,41 @@
 package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
-import com.echothree.model.data.core.server.entity.EntityVisit;
-import com.echothree.util.server.string.DateUtils;
+import com.echothree.model.data.core.server.entity.EntityAttributeEntityAttributeGroup;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 
-@GraphQLDescription("entity visit object")
-@GraphQLName("EntityVisit")
-public class EntityVisitObject
+@GraphQLDescription("entity attribute entity attribute group object")
+@GraphQLName("EntityAttributeEntityAttributeGroup")
+public class EntityAttributeEntityAttributeGroupObject
         extends BaseGraphQl {
     
-    private final EntityVisit entityVisit; // Always Present
+    private final EntityAttributeEntityAttributeGroup entityAttributeEntityAttributeGroup; // Always Present
     
-    public EntityVisitObject(EntityVisit entityVisit) {
-        this.entityVisit = entityVisit;
+    public EntityAttributeEntityAttributeGroupObject(EntityAttributeEntityAttributeGroup entityAttributeEntityAttributeGroup) {
+        this.entityAttributeEntityAttributeGroup = entityAttributeEntityAttributeGroup;
     }
-    
-    @GraphQLField
-    @GraphQLDescription("visited entity instance")
-    public EntityInstanceObject getVisitedEntityInstance(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityVisit.getVisitedEntityInstance()) : null;
-    }
-    
+
     @GraphQLField
     @GraphQLDescription("entity instance")
-    public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityVisit.getEntityInstance()) : null;
+    public EntityAttributeObject getEntityAttribute(final DataFetchingEnvironment env) {
+        return CoreSecurityUtils.getInstance().getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityAttributeEntityAttributeGroup.getEntityAttribute(), null) : null;
     }
-    
+
     @GraphQLField
-    @GraphQLDescription("unformatted visited time")
-    @GraphQLNonNull
-    public Long getUnformattedVisitedTime() {
-        return entityVisit.getVisitedTime();
+    @GraphQLDescription("entity instance")
+    public EntityAttributeGroupObject getEntityAttributeGroup(final DataFetchingEnvironment env) {
+        return CoreSecurityUtils.getInstance().getHasEntityAttributeGroupAccess(env) ? new EntityAttributeGroupObject(entityAttributeEntityAttributeGroup.getEntityAttributeGroup(), null) : null;
     }
-    
+
     @GraphQLField
-    @GraphQLDescription("visited time")
+    @GraphQLDescription("sort order")
     @GraphQLNonNull
-    public String getVisitedTime(final DataFetchingEnvironment env) {
-        return DateUtils.getInstance().formatTypicalDateTime(getUserVisit(env), entityVisit.getVisitedTime());
+    public int getSortOrder() {
+        return entityAttributeEntityAttributeGroup.getSortOrder();
     }
-        
+
 }
