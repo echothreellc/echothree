@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.core.common.form;
 
-import com.echothree.control.user.core.common.spec.EntityAttributeSpec;
+import com.echothree.control.user.core.common.spec.EntityAttributeUniversalSpec;
 
 public interface GetEntityAttributeForm
-        extends EntityAttributeSpec {
+        extends EntityAttributeUniversalSpec {
     
-    // Nothing additional beyond EntityAttributeSpec
+    // Nothing additional beyond EntityAttributeUniversalSpec
     
 }

@@ -56,10 +56,12 @@ import com.echothree.control.user.core.server.command.GetColorCommand;
 import com.echothree.control.user.core.server.command.GetColorsCommand;
 import com.echothree.control.user.core.server.command.GetComponentVendorCommand;
 import com.echothree.control.user.core.server.command.GetComponentVendorsCommand;
+import com.echothree.control.user.core.server.command.GetEntityAttributeCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeGroupCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeGroupsCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeTypeCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeTypesCommand;
+import com.echothree.control.user.core.server.command.GetEntityAttributesCommand;
 import com.echothree.control.user.core.server.command.GetEntityInstanceCommand;
 import com.echothree.control.user.core.server.command.GetEntityInstancesCommand;
 import com.echothree.control.user.core.server.command.GetEntityTypeCommand;
@@ -263,6 +265,7 @@ import com.echothree.model.control.core.server.graphql.AppearanceObject;
 import com.echothree.model.control.core.server.graphql.ColorObject;
 import com.echothree.model.control.core.server.graphql.ComponentVendorObject;
 import com.echothree.model.control.core.server.graphql.EntityAttributeGroupObject;
+import com.echothree.model.control.core.server.graphql.EntityAttributeObject;
 import com.echothree.model.control.core.server.graphql.EntityAttributeTypeObject;
 import com.echothree.model.control.core.server.graphql.EntityInstanceObject;
 import com.echothree.model.control.core.server.graphql.EntityTypeObject;
@@ -379,6 +382,7 @@ import com.echothree.model.data.content.server.entity.ContentWebAddress;
 import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.core.server.entity.Color;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
+import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
 import com.echothree.model.data.core.server.entity.EntityAttributeType;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -2511,6 +2515,65 @@ public final class GraphQlQueries
         }
 
         return entityAttributeGroupObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("entityAttribute")
+    public static EntityAttributeObject entityAttribute(final DataFetchingEnvironment env,
+            @GraphQLName("componentVendorName") final String componentVendorName,
+            @GraphQLName("entityTypeName") final String entityTypeName,
+            @GraphQLName("entityAttributeName") final String entityAttributeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        EntityAttribute entityAttribute;
+
+        try {
+            var commandForm = CoreUtil.getHome().getGetEntityAttributeForm();
+
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
+            commandForm.setEntityAttributeName(entityAttributeName);
+            commandForm.setUlid(id);
+
+            entityAttribute = new GetEntityAttributeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return entityAttribute == null ? null : new EntityAttributeObject(entityAttribute, null);
+    }
+
+    @GraphQLField
+    @GraphQLName("entityAttributes")
+    public static Collection<EntityAttributeObject> entityAttributes(final DataFetchingEnvironment env,
+            @GraphQLName("componentVendorName") final String componentVendorName,
+            @GraphQLName("entityTypeName") final String entityTypeName,
+            @GraphQLName("entityAttributeTypeNames") final String entityAttributeTypeNames,
+            @GraphQLName("id") @GraphQLID final String id) {
+        Collection<EntityAttribute> entityAttributes;
+        Collection<EntityAttributeObject> entityAttributeObjects;
+
+        try {
+            var commandForm = CoreUtil.getHome().getGetEntityAttributesForm();
+
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
+            commandForm.setEntityAttributeTypeNames(entityAttributeTypeNames);
+            commandForm.setUlid(id);
+
+            entityAttributes = new GetEntityAttributesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(entityAttributes == null) {
+            entityAttributeObjects = emptyList();
+        } else {
+            entityAttributeObjects = new ArrayList<>(entityAttributes.size());
+
+            entityAttributes.stream().map(e -> new EntityAttributeObject(e, null)).forEachOrdered(entityAttributeObjects::add);
+        }
+
+        return entityAttributeObjects;
     }
 
     @GraphQLField
