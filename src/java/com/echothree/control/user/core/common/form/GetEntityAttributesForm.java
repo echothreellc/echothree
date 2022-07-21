@@ -16,10 +16,10 @@
 
 package com.echothree.control.user.core.common.form;
 
-import com.echothree.control.user.core.common.spec.EntityTypeSpec;
+import com.echothree.control.user.core.common.spec.EntityTypeUniversalSpec;
 
 public interface GetEntityAttributesForm
-        extends EntityTypeSpec {
+        extends EntityTypeUniversalSpec {
     
     String getEntityAttributeTypeNames();
     void setEntityAttributeTypeNames(String entityAttributeTypeNames);
