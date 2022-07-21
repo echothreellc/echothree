@@ -20,22 +20,19 @@ import com.echothree.control.user.core.common.edit.CoreEditFactory;
 import com.echothree.control.user.core.common.edit.EntityEntityAttributeEdit;
 import com.echothree.control.user.core.common.form.EditEntityEntityAttributeForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
-import com.echothree.control.user.core.common.result.EditEntityEntityAttributeResult;
 import com.echothree.control.user.core.common.spec.EntityEntityAttributeSpec;
+import com.echothree.model.control.core.common.EntityAttributeTypes;
+import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityEntityAttribute;
-import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.core.server.entity.EntityTypeDetail;
 import com.echothree.model.data.core.server.value.EntityEntityAttributeValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -58,8 +55,12 @@ public class EditEntityEntityAttributeCommand
         ));
 
         SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, true, null, null),
-                new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null),
+                new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityAttributeUlid", FieldType.ULID, false, null, null)
                 ));
         
         EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
@@ -75,17 +76,16 @@ public class EditEntityEntityAttributeCommand
     @Override
     protected BaseResult execute() {
         var coreControl = getCoreControl();
-        EditEntityEntityAttributeResult result = CoreResultFactory.getEditEntityEntityAttributeResult();
-        String entityRef = spec.getEntityRef();
-        EntityInstance entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
+        var result = CoreResultFactory.getEditEntityEntityAttributeResult();
+        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, spec);
 
-        if(entityInstance != null) {
-            String entityAttributeName = spec.getEntityAttributeName();
-            EntityAttribute entityAttribute = coreControl.getEntityAttributeByName(entityInstance.getEntityType(), entityAttributeName);
+        if(!hasExecutionErrors()) {
+            var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttribute(this, entityInstance, spec, spec,
+                    EntityAttributeTypes.ENTITY);
 
-            if(entityAttribute != null) {
+            if(!hasExecutionErrors()) {
                 EntityEntityAttribute entityEntityAttribute = null;
-                BasePK basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
+                var basePK = PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance);
 
                 if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
                     entityEntityAttribute = coreControl.getEntityEntityAttribute(entityAttribute, entityInstance);
@@ -107,11 +107,15 @@ public class EditEntityEntityAttributeCommand
                             basePK = null;
                         }
                     } else {
-                        addExecutionError(ExecutionErrors.UnknownEntityEntityAttribute.name(), entityRef, entityAttributeName);
+                        var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
+
+                        addExecutionError(ExecutionErrors.UnknownEntityEntityAttribute.name(), basePK.getEntityRef(),
+                                entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
+                                entityTypeDetail.getEntityTypeName(), entityAttribute.getLastDetail().getEntityAttributeName());
                     }
                 } else if(editMode.equals(EditMode.UPDATE)) {
-                    String entityRefAttribute = edit.getEntityRefAttribute();
-                    EntityInstance entityInstanceAttribute = coreControl.getEntityInstanceByEntityRef(entityRefAttribute);
+                    var entityRefAttribute = edit.getEntityRefAttribute();
+                    var entityInstanceAttribute = coreControl.getEntityInstanceByEntityRef(entityRefAttribute);
 
                     if(entityInstanceAttribute != null) {
                         entityEntityAttribute = coreControl.getEntityEntityAttributeForUpdate(entityAttribute, entityInstance);
@@ -132,7 +136,11 @@ public class EditEntityEntityAttributeCommand
                                 addExecutionError(ExecutionErrors.EntityLockStale.name());
                             }
                         } else {
-                            addExecutionError(ExecutionErrors.UnknownEntityEntityAttribute.name(), entityRef, entityAttributeName);
+                            var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
+
+                            addExecutionError(ExecutionErrors.UnknownEntityEntityAttribute.name(), basePK.getEntityRef(),
+                                    entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
+                                    entityTypeDetail.getEntityTypeName(), entityAttribute.getLastDetail().getEntityAttributeName());
                         }
                     } else {
                         addExecutionError(ExecutionErrors.UnknownEntityRefAttribute.name(), entityRefAttribute);
@@ -146,14 +154,7 @@ public class EditEntityEntityAttributeCommand
                 if(entityEntityAttribute != null) {
                     result.setEntityEntityAttribute(coreControl.getEntityEntityAttributeTransfer(getUserVisit(), entityEntityAttribute, entityInstance));
                 }
-            } else {
-                EntityTypeDetail entityTypeDetail = entityInstance.getEntityType().getLastDetail();
-
-                addExecutionError(ExecutionErrors.UnknownEntityAttributeName.name(), entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                        entityTypeDetail.getEntityTypeName(), entityAttributeName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownEntityRef.name(), entityRef);
         }
 
         return result;
