@@ -105,15 +105,6 @@ public class CreateEntityEntityAttributeCommand
                                 EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance),
                                 entityAttribute.getLastDetail().getEntityAttributeName());
                 }
-            } else {
-                var expectedEntityTypeDetail = entityAttribute.getLastDetail().getEntityType().getLastDetail();
-                var suppliedEntityTypeDetail = entityInstance.getEntityType().getLastDetail();
-
-                addExecutionError(ExecutionErrors.MismatchedEntityType.name(),
-                        expectedEntityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                        expectedEntityTypeDetail.getEntityTypeName(),
-                        suppliedEntityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                        suppliedEntityTypeDetail.getEntityTypeName());
             }
         }
 

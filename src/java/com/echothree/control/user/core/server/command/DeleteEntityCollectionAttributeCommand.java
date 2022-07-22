@@ -17,17 +17,15 @@
 package com.echothree.control.user.core.server.command;
 
 import com.echothree.control.user.core.common.form.DeleteEntityCollectionAttributeForm;
+import com.echothree.model.control.core.common.EntityAttributeTypes;
+import com.echothree.model.control.core.server.logic.EntityAttributeLogic;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.data.core.server.entity.EntityAttribute;
-import com.echothree.model.data.core.server.entity.EntityCollectionAttribute;
-import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.core.server.entity.EntityTypeDetail;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -48,8 +46,12 @@ public class DeleteEntityCollectionAttributeCommand
         ));
 
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, true, null, null),
-                new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null),
+                new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityAttributeUlid", FieldType.ULID, false, null, null),
                 new FieldDefinition("EntityRefAttribute", FieldType.ENTITY_REF, true, null, null)
                 ));
     }
@@ -61,42 +63,32 @@ public class DeleteEntityCollectionAttributeCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
-        String entityRef = form.getEntityRef();
-        EntityInstance entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
-        
-        if(entityInstance != null) {
-            String entityAttributeName = form.getEntityAttributeName();
-            EntityType entityType = entityInstance.getEntityType();
-            EntityAttribute entityAttribute = coreControl.getEntityAttributeByName(entityInstance.getEntityType(), entityAttributeName);
-            
-            if(entityAttribute != null) {
-                String entityRefAttribute = form.getEntityRefAttribute();
-                EntityInstance entityInstanceAttribute = coreControl.getEntityInstanceByEntityRef(entityRefAttribute);
+        var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
+
+        if(!hasExecutionErrors()) {
+            var entityAttribute = EntityAttributeLogic.getInstance().getEntityAttribute(this, entityInstance, form, form,
+                    EntityAttributeTypes.COLLECTION);
+
+            if(!hasExecutionErrors()) {
+                var coreControl = getCoreControl();
+                var entityRefAttribute = form.getEntityRefAttribute();
+                var entityInstanceAttribute = coreControl.getEntityInstanceByEntityRef(entityRefAttribute);
 
                 if(entityInstanceAttribute != null) {
-                    EntityCollectionAttribute entityCollectionAttribute = coreControl.getEntityCollectionAttributeForUpdate(entityAttribute, entityInstance, entityInstanceAttribute);
+                    var entityCollectionAttribute = coreControl.getEntityCollectionAttributeForUpdate(entityAttribute, entityInstance, entityInstanceAttribute);
                     
                     if(entityCollectionAttribute != null) {
                         coreControl.deleteEntityCollectionAttribute(entityCollectionAttribute, getPartyPK());
                     } else {
-                        EntityTypeDetail entityTypeDetail = entityType.getLastDetail();
-
                         addExecutionError(ExecutionErrors.UnknownEntityCollectionAttribute.name(),
-                                entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(), entityTypeDetail.getEntityTypeName(),
-                                entityAttributeName, entityRef, entityRefAttribute);
+                                EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance),
+                                entityAttribute.getLastDetail().getEntityAttributeName(),
+                                EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstanceAttribute));
                     }
                 } else {
                     addExecutionError(ExecutionErrors.UnknownEntityRefAttribute.name(), entityRefAttribute);
                 }
-            } else {
-                EntityTypeDetail entityTypeDetail = entityType.getLastDetail();
-                
-                addExecutionError(ExecutionErrors.UnknownEntityAttributeName.name(), entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
-                        entityTypeDetail.getEntityTypeName(), entityAttributeName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownEntityRef.name(), entityRef);
         }
         
         return null;

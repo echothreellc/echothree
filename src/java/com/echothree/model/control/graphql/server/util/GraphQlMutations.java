@@ -4692,6 +4692,52 @@ public class GraphQlMutations
 
     @GraphQLField
     @GraphQLRelayMutation
+    public static CommandResultObject createEntityCollectionAttribute(final DataFetchingEnvironment env,
+            @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
+            @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
+            @GraphQLName("entityRefAttribute") @GraphQLNonNull final String entityRefAttribute) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = CoreUtil.getHome().getCreateEntityCollectionAttributeForm();
+
+            commandForm.setUlid(id);
+            commandForm.setEntityAttributeUlid(entityAttributeId);
+            commandForm.setEntityRefAttribute(entityRefAttribute);
+
+            commandResultObject.setCommandResult(CoreUtil.getHome().createEntityCollectionAttribute(getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject deleteEntityCollectionAttribute(final DataFetchingEnvironment env,
+            @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
+            @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
+            @GraphQLName("entityRefAttribute") @GraphQLNonNull final String entityRefAttribute) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = CoreUtil.getHome().getDeleteEntityCollectionAttributeForm();
+
+            commandForm.setUlid(id);
+            commandForm.setEntityAttributeUlid(entityAttributeId);
+            commandForm.setEntityRefAttribute(entityRefAttribute);
+
+            commandResultObject.setCommandResult(CoreUtil.getHome().deleteEntityCollectionAttribute(getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
     public static SearchCustomersResultObject searchCustomers(final DataFetchingEnvironment env,
             @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName,
             @GraphQLName("customerTypeName") final String customerTypeName,
