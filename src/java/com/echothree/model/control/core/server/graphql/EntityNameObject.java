@@ -27,19 +27,19 @@ import graphql.annotations.annotationTypes.GraphQLNonNull;
 public class EntityNameObject
         extends BaseGraphQl {
 
-    private final String key;
+    private final String name;
     private final String value;
 
-    public EntityNameObject(String key, String value) {
-        this.key = key;
+    public EntityNameObject(String name, String value) {
+        this.name = name;
         this.value = value;
     }
     
     @GraphQLField
-    @GraphQLDescription("key")
+    @GraphQLDescription("name")
     @GraphQLNonNull
-    public String getKey() {
-        return key;
+    public String getName() {
+        return name;
     }
 
     @GraphQLField
