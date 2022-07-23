@@ -47,7 +47,7 @@ public class ItemShippingTimeTransferCache
 
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
-            Set<String> properties = transferProperties.getProperties(ItemShippingTimeTransfer.class);
+            var properties = transferProperties.getProperties(ItemShippingTimeTransfer.class);
             
             if(properties != null) {
                 filterItem = !properties.contains(ItemProperties.ITEM);

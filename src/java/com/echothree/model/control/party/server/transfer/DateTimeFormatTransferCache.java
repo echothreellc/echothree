@@ -57,7 +57,7 @@ public class DateTimeFormatTransferCache
 
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
-            Set<String> properties = transferProperties.getProperties(DateTimeFormatTransfer.class);
+            var properties = transferProperties.getProperties(DateTimeFormatTransfer.class);
             
             if(properties != null) {
                 filterDateTimeFormatName = !properties.contains(PartyProperties.DATE_TIME_FORMAT_NAME);

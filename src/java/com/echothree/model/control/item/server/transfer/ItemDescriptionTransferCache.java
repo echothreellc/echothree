@@ -84,7 +84,7 @@ public class ItemDescriptionTransferCache
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
-            Set<String> properties = transferProperties.getProperties(ItemDescriptionTransfer.class);
+            var properties = transferProperties.getProperties(ItemDescriptionTransfer.class);
             
             if(properties != null) {
                 filterItemDescriptionType = !properties.contains(ItemProperties.ITEM_DESCRIPTION_TYPE);

@@ -41,7 +41,7 @@ public class ItemPriceTypeTransferCache
 
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
-            Set<String> properties = transferProperties.getProperties(ItemPriceTypeTransfer.class);
+            var properties = transferProperties.getProperties(ItemPriceTypeTransfer.class);
 
             if(properties != null) {
                 filterItemPriceTypeName = !properties.contains(ItemProperties.ITEM_PRICE_TYPE_NAME);

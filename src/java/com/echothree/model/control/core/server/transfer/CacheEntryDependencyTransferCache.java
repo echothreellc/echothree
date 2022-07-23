@@ -39,7 +39,7 @@ public class CacheEntryDependencyTransferCache
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
-            Set<String> properties = transferProperties.getProperties(CacheEntryDependencyTransfer.class);
+            var properties = transferProperties.getProperties(CacheEntryDependencyTransfer.class);
             
             if(properties != null) {
                 filterCacheEntry = !properties.contains(CoreProperties.CACHE_ENTRY);

@@ -77,7 +77,7 @@ public class ItemPriceTransferCache
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
-            Set<String> properties = transferProperties.getProperties(ItemPriceTransfer.class);
+            var properties = transferProperties.getProperties(ItemPriceTransfer.class);
             
             if(properties != null) {
                 filterItem = !properties.contains(ItemProperties.ITEM);

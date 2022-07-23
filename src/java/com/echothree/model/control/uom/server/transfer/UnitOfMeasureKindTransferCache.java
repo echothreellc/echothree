@@ -42,7 +42,7 @@ public class UnitOfMeasureKindTransferCache
 
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
-            Set<String> properties = transferProperties.getProperties(UnitOfMeasureKindTransfer.class);
+            var properties = transferProperties.getProperties(UnitOfMeasureKindTransfer.class);
             
             if(properties != null) {
                 filterUnitOfMeasureKindName = !properties.contains(UomProperties.UNIT_OF_MEASURE_KIND_NAME);

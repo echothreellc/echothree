@@ -42,7 +42,7 @@ public class TimeZoneTransferCache
 
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
-            Set<String> properties = transferProperties.getProperties(TimeZoneTransfer.class);
+            var properties = transferProperties.getProperties(TimeZoneTransfer.class);
             
             if(properties != null) {
                 filterJavaTimeZoneName = !properties.contains(PartyProperties.JAVA_TIME_ZONE_NAME);

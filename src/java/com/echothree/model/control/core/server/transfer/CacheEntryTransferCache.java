@@ -60,7 +60,7 @@ public class CacheEntryTransferCache
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
-            Set<String> properties = transferProperties.getProperties(CacheEntryTransfer.class);
+            var properties = transferProperties.getProperties(CacheEntryTransfer.class);
             
             if(properties != null) {
                 filterCacheEntryKey = !properties.contains(CoreProperties.CACHE_ENTRY_KEY);

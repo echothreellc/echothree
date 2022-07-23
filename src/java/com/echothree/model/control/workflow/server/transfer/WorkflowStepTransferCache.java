@@ -46,7 +46,7 @@ public class WorkflowStepTransferCache
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
-            Set<String> properties = transferProperties.getProperties(WorkflowStepTransfer.class);
+            var properties = transferProperties.getProperties(WorkflowStepTransfer.class);
             
             if(properties != null) {
                 filterWorkflow = !properties.contains(WorkflowProperties.WORKFLOW);

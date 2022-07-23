@@ -44,7 +44,7 @@ public class EntityListItemTransferCache
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
-            Set<String> properties = transferProperties.getProperties(EntityListItemTransfer.class);
+            var properties = transferProperties.getProperties(EntityListItemTransfer.class);
             
             if(properties != null) {
                 filterEntityAttribute = !properties.contains(CoreProperties.ENTITY_ATTRIBUTE);

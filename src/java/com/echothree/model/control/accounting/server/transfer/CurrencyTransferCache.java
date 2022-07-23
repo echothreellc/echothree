@@ -55,7 +55,7 @@ public class CurrencyTransferCache
 
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
-            Set<String> properties = transferProperties.getProperties(CurrencyTransfer.class);
+            var properties = transferProperties.getProperties(CurrencyTransfer.class);
             
             if(properties != null) {
                 filterCurrencyIsoName = !properties.contains(AccountingProperties.CURRENCY_ISO_NAME);

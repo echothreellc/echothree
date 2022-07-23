@@ -46,7 +46,7 @@ public class EntityLongRangeTransferCache
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
-            Set<String> properties = transferProperties.getProperties(EntityLongRangeTransfer.class);
+            var properties = transferProperties.getProperties(EntityLongRangeTransfer.class);
             
             if(properties != null) {
                 filterEntityAttribute = !properties.contains(CoreProperties.ENTITY_ATTRIBUTE);

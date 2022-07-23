@@ -52,7 +52,7 @@ public class MimeTypeTransferCache
 
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
-            Set<String> properties = transferProperties.getProperties(MimeTypeTransfer.class);
+            var properties = transferProperties.getProperties(MimeTypeTransfer.class);
             
             if(properties != null) {
                 filterMimeTypeName = !properties.contains(CoreProperties.MIME_TYPE_NAME);

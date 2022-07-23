@@ -89,7 +89,7 @@ public class EntityAttributeTransferCache
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
-            Set<String> properties = transferProperties.getProperties(EntityAttributeTransfer.class);
+            var properties = transferProperties.getProperties(EntityAttributeTransfer.class);
             
             if(properties != null) {
                 filterEntityType = !properties.contains(CoreProperties.ENTITY_TYPE);

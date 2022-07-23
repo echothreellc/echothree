@@ -62,7 +62,7 @@ public class ContentPageTransferCache
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
-            Set<String> properties = transferProperties.getProperties(ContentPageTransfer.class);
+            var properties = transferProperties.getProperties(ContentPageTransfer.class);
             
             if(properties != null) {
                 filterContentSection = !properties.contains(ContentProperties.CONTENT_SECTION);
