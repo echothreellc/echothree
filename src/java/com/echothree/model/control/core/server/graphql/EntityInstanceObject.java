@@ -20,6 +20,7 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityLockControl;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.util.server.persistence.EntityDescriptionUtils;
 import com.echothree.util.server.persistence.EntityNamesUtils;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.translator.EntityInstanceAndNames;
@@ -132,6 +133,14 @@ public class EntityInstanceObject
         var entityNamesMapping = EntityNamesUtils.getInstance().getEntityNames(entityInstance);
 
         return entityNamesMapping == null ? null : new EntityNamesObject(entityNamesMapping.getEntityNames());
+    }
+
+    @GraphQLField
+    @GraphQLDescription("description")
+    public String getDescription(final DataFetchingEnvironment env) {
+        var userVisit = getUserVisit(env);
+
+        return EntityDescriptionUtils.getInstance().getDescription(userVisit, entityInstance);
     }
 
 }
