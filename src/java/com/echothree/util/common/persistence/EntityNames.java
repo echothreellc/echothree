@@ -22,8 +22,8 @@ import java.io.Serializable;
 public class EntityNames
         implements Serializable {
     
-    private String target;
-    private MapWrapper<String> names;
+    private final String target;
+    private final MapWrapper<String> names;
     
     /** Creates a new instance of EntityNames */
     public EntityNames(String target, MapWrapper<String> names) {
@@ -35,16 +35,8 @@ public class EntityNames
         return target;
     }
 
-    public void setTarget(String target) {
-        this.target = target;
-    }
-
     public MapWrapper<String> getNames() {
         return names;
     }
 
-    public void setNames(MapWrapper<String> names) {
-        this.names = names;
-    }
-    
 }
