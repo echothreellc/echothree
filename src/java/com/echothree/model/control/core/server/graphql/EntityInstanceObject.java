@@ -20,7 +20,9 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityLockControl;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.util.server.persistence.EntityNamesUtils;
 import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.persistence.translator.EntityInstanceAndNames;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -120,8 +122,16 @@ public class EntityInstanceObject
         var entityLockControl = Session.getModelController(EntityLockControl.class);
         var userVisit = getUserVisit(env);
         var entityLockTransfer = entityLockControl.getEntityLockTransferByEntityInstance(userVisit, entityInstance);
-        
+
         return entityLockTransfer == null ? null : new EntityLockObject(entityLockTransfer);
+    }
+
+    @GraphQLField
+    @GraphQLDescription("entity names")
+    public EntityNamesObject getEntityNames(final DataFetchingEnvironment env) {
+        var entityNamesMapping = EntityNamesUtils.getInstance().getEntityNames(entityInstance);
+
+        return entityNamesMapping == null ? null : new EntityNamesObject(entityNamesMapping.getEntityNames());
     }
 
 }
