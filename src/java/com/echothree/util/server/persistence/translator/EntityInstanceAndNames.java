@@ -21,8 +21,8 @@ import com.echothree.util.common.persistence.EntityNames;
 
 public class EntityInstanceAndNames {
 
-    private EntityInstance entityInstance;
-    private EntityNames entityNames;
+    private final EntityInstance entityInstance;
+    private final EntityNames entityNames;
     
     public EntityInstanceAndNames(EntityInstance entityInstance, EntityNames entityNames) {
         this.entityInstance = entityInstance;
@@ -38,27 +38,11 @@ public class EntityInstanceAndNames {
     }
 
     /**
-     * Sets the entityInstance.
-     * @param entityInstance the entityInstance to set
-     */
-    public void setEntityInstance(EntityInstance entityInstance) {
-        this.entityInstance = entityInstance;
-    }
-
-    /**
      * Returns the entityNames.
      * @return the entityNames
      */
     public EntityNames getEntityNames() {
         return entityNames;
-    }
-
-    /**
-     * Sets the entityNames.
-     * @param entityNames the entityNames to set
-     */
-    public void setEntityNames(EntityNames entityNames) {
-        this.entityNames = entityNames;
     }
 
 }
