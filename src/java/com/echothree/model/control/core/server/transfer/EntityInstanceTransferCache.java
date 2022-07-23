@@ -75,7 +75,7 @@ public class EntityInstanceTransferCache
         
         if(entityInstanceTransfer == null) {
             var entityTypeTransfer = filterEntityType ? null : coreControl.getEntityTypeTransfer(userVisit, entityInstance.getEntityType());
-            Long entityUniqueId = filterEntityUniqueId ? null : entityInstance.getEntityUniqueId();
+            var entityUniqueId = filterEntityUniqueId ? null : entityInstance.getEntityUniqueId();
             String key = null;
             String guid = null;
             String ulid = null;
