@@ -39,7 +39,7 @@ public class ComponentVendorTransferCache
 
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
-            Set<String> properties = transferProperties.getProperties(ComponentVendorTransfer.class);
+            var properties = transferProperties.getProperties(ComponentVendorTransfer.class);
             
             if(properties != null) {
                 filterComponentVendorName = !properties.contains(CoreProperties.COMPONENT_VENDOR_NAME);

@@ -39,7 +39,7 @@ public class MimeTypeUsageTypeTransferCache
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
-            Set<String> properties = transferProperties.getProperties(MimeTypeUsageTypeTransfer.class);
+            var properties = transferProperties.getProperties(MimeTypeUsageTypeTransfer.class);
             
             if(properties != null) {
                 filterMimeTypeUsageTypeName = !properties.contains(CoreProperties.MIME_TYPE_USAGE_TYPE_NAME);

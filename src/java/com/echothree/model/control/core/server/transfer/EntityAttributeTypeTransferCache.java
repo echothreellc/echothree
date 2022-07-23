@@ -37,7 +37,7 @@ public class EntityAttributeTypeTransferCache
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
-            Set<String> properties = transferProperties.getProperties(EntityAttributeTypeTransfer.class);
+            var properties = transferProperties.getProperties(EntityAttributeTypeTransfer.class);
             
             if(properties != null) {
                 filterEntityAttributeTypeName = !properties.contains(CoreProperties.ENTITY_ATTRIBUTE_TYPE_NAME);

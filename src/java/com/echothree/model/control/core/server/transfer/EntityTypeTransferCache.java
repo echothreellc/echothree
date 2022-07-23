@@ -60,7 +60,7 @@ public class EntityTypeTransferCache
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
-            Set<String> properties = transferProperties.getProperties(EntityTypeTransfer.class);
+            var properties = transferProperties.getProperties(EntityTypeTransfer.class);
             
             if(properties != null) {
                 filterComponentVendor = !properties.contains(CoreProperties.COMPONENT_VENDOR);

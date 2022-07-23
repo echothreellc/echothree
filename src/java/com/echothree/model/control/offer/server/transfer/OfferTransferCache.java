@@ -79,7 +79,7 @@ public class OfferTransferCache
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
-            Set<String> properties = transferProperties.getProperties(OfferTransfer.class);
+            var properties = transferProperties.getProperties(OfferTransfer.class);
             
             if(properties != null) {
                 filterOfferName = !properties.contains(OfferProperties.OFFER_NAME);

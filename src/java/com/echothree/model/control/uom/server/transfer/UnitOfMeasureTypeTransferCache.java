@@ -62,7 +62,7 @@ public class UnitOfMeasureTypeTransferCache
 
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
-            Set<String> properties = transferProperties.getProperties(UnitOfMeasureTypeTransfer.class);
+            var properties = transferProperties.getProperties(UnitOfMeasureTypeTransfer.class);
             
             if(properties != null) {
                 filterUnitOfMeasureKind = !properties.contains(UomProperties.UNIT_OF_MEASURE_KIND);

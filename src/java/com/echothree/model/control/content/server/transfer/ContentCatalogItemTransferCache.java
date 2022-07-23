@@ -71,7 +71,7 @@ public class ContentCatalogItemTransferCache
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
-            Set<String> properties = transferProperties.getProperties(ContentCatalogItemTransfer.class);
+            var properties = transferProperties.getProperties(ContentCatalogItemTransfer.class);
             
             if(properties != null) {
                 filterContentCatalog = !properties.contains(ContentProperties.CONTENT_CATALOG);

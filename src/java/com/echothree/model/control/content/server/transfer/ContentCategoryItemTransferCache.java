@@ -42,7 +42,7 @@ public class ContentCategoryItemTransferCache
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
-            Set<String> properties = transferProperties.getProperties(ContentCategoryItemTransfer.class);
+            var properties = transferProperties.getProperties(ContentCategoryItemTransfer.class);
             
             if(properties != null) {
                 filterContentCategory = !properties.contains(ContentProperties.CONTENT_CATEGORY);

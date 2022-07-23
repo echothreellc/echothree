@@ -39,7 +39,7 @@ public class LanguageTransferCache
 
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
-            Set<String> properties = transferProperties.getProperties(LanguageTransfer.class);
+            var properties = transferProperties.getProperties(LanguageTransfer.class);
             
             if(properties != null) {
                 filterLanguageIsoName = !properties.contains(PartyProperties.LANGUAGE_ISO_NAME);

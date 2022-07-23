@@ -42,7 +42,7 @@ public class EntityTimeTransferCache
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
-            Set<String> properties = transferProperties.getProperties(EntityTimeTransfer.class);
+            var properties = transferProperties.getProperties(EntityTimeTransfer.class);
             
             if(properties != null) {
                 filterUnformattedCreatedTime = !properties.contains(CoreProperties.UNFORMATTED_CREATED_TIME);

@@ -80,7 +80,7 @@ public class OfferItemPriceTransferCache
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
-            Set<String> properties = transferProperties.getProperties(OfferItemPriceTransfer.class);
+            var properties = transferProperties.getProperties(OfferItemPriceTransfer.class);
             
             if(properties != null) {
                 filterOfferItem = !properties.contains(OfferProperties.OFFER_ITEM);
