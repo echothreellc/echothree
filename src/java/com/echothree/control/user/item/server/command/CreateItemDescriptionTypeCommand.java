@@ -17,6 +17,7 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.CreateItemDescriptionTypeForm;
+import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -106,6 +107,7 @@ public class CreateItemDescriptionTypeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = ItemResultFactory.getCreateItemDescriptionTypeResult();
         var itemControl = Session.getModelController(ItemControl.class);
         var itemDescriptionTypeName = form.getItemDescriptionTypeName();
         var itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
@@ -217,8 +219,13 @@ public class CreateItemDescriptionTypeCommand
         } else {
             addExecutionError(ExecutionErrors.DuplicateItemDescriptionTypeName.name(), itemDescriptionTypeName);
         }
-        
-        return null;
+
+        if(itemDescriptionType != null) {
+            result.setItemDescriptionTypeName(itemDescriptionType.getLastDetail().getItemDescriptionTypeName());
+            result.setEntityRef(itemDescriptionType.getPrimaryKey().getEntityRef());
+        }
+
+        return result;
     }
     
 }
