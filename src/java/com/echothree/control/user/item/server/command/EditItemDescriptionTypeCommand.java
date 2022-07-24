@@ -41,6 +41,7 @@ import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
+import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.Validator;
 import java.util.Arrays;
@@ -75,8 +76,8 @@ public class EditItemDescriptionTypeCommand
                 new FieldDefinition("ItemDescriptionTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ParentItemDescriptionTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("UseParentIfMissing", FieldType.BOOLEAN, true, null, null),
-                new FieldDefinition("IncludeInIndex", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("CheckContentWebAddress", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("IncludeInIndex", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("IndexDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
@@ -106,15 +107,18 @@ public class EditItemDescriptionTypeCommand
         var validationResult = validator.validate(edit, EDIT_FIELD_DEFINITIONS);
 
         if(!validationResult.getHasErrors()) {
-            var itemControl = Session.getModelController(ItemControl.class);
-            var itemDescriptionType = itemControl.getItemDescriptionTypeByName(spec.getItemDescriptionTypeName());
-            var mimeTypeUsageType = itemDescriptionType.getLastDetail().getMimeTypeUsageType();
+            var itemDescriptionType = ItemDescriptionTypeLogic.getInstance().getItemDescriptionTypeByUniversalSpec(this,
+                    spec, false, EntityPermission.READ_ONLY);
 
-            if(mimeTypeUsageType != null) {
-                var mimeTypeUsageTypeName = mimeTypeUsageType.getMimeTypeUsageTypeName();
+            if(!hasExecutionErrors()) {
+                var mimeTypeUsageType = itemDescriptionType.getLastDetail().getMimeTypeUsageType();
 
-                if(mimeTypeUsageTypeName.equals(MimeTypeUsageTypes.IMAGE.name())) {
-                    validationResult = validator.validate(edit, imageFieldDefinitions);
+                if(mimeTypeUsageType != null) {
+                    var mimeTypeUsageTypeName = mimeTypeUsageType.getMimeTypeUsageTypeName();
+
+                    if(mimeTypeUsageTypeName.equals(MimeTypeUsageTypes.IMAGE.name())) {
+                        validationResult = validator.validate(edit, imageFieldDefinitions);
+                    }
                 }
             }
         }

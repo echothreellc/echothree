@@ -51,9 +51,11 @@ import com.echothree.control.user.inventory.common.result.CreateInventoryConditi
 import com.echothree.control.user.inventory.common.result.EditInventoryConditionResult;
 import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.common.result.CreateItemCategoryResult;
+import com.echothree.control.user.item.common.result.CreateItemDescriptionTypeResult;
 import com.echothree.control.user.item.common.result.CreateItemImageTypeResult;
 import com.echothree.control.user.item.common.result.CreateItemResult;
 import com.echothree.control.user.item.common.result.EditItemCategoryResult;
+import com.echothree.control.user.item.common.result.EditItemDescriptionTypeResult;
 import com.echothree.control.user.item.common.result.EditItemImageTypeResult;
 import com.echothree.control.user.item.common.result.EditItemPriceResult;
 import com.echothree.control.user.item.common.result.EditItemResult;
@@ -111,6 +113,8 @@ import com.echothree.model.control.search.server.graphql.SearchEmployeesResultOb
 import com.echothree.model.control.search.server.graphql.SearchItemsResultObject;
 import com.echothree.model.control.search.server.graphql.SearchVendorsResultObject;
 import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.common.validation.FieldType;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLID;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -5350,6 +5354,184 @@ public class GraphQlMutations
             commandForm.setUlid(id);
 
             commandResultObject.setCommandResult(ItemUtil.getHome().deleteItemImageType(getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultWithIdObject createItemDescriptionType(final DataFetchingEnvironment env,
+            @GraphQLName("itemDescriptionTypeName") @GraphQLNonNull final String itemDescriptionTypeName,
+            @GraphQLName("parentItemDescriptionTypeName") final String parentItemDescriptionTypeName,
+            @GraphQLName("useParentIfMissing") @GraphQLNonNull final String useParentIfMissing,
+            @GraphQLName("mimeTypeUsageTypeName") final String mimeTypeUsageTypeName,
+            @GraphQLName("checkContentWebAddress") @GraphQLNonNull final String checkContentWebAddress,
+            @GraphQLName("includeInIndex") @GraphQLNonNull final String includeInIndex,
+            @GraphQLName("indexDefault") @GraphQLNonNull final String indexDefault,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description,
+            @GraphQLName("minimumHeight") final String minimumHeight,
+            @GraphQLName("minimumWidth") final String minimumWidth,
+            @GraphQLName("maximumHeight") final String maximumHeight,
+            @GraphQLName("maximumWidth") final String maximumWidth,
+            @GraphQLName("preferredHeight") final String preferredHeight,
+            @GraphQLName("preferredWidth") final String preferredWidth,
+            @GraphQLName("preferredMimeTypeName") final String preferredMimeTypeName,
+            @GraphQLName("quality") final String quality,
+            @GraphQLName("scaleFromParent") final String scaleFromParent) {
+        var commandResultObject = new CommandResultWithIdObject();
+
+        try {
+            var commandForm = ItemUtil.getHome().getCreateItemDescriptionTypeForm();
+
+            commandForm.setItemDescriptionTypeName(itemDescriptionTypeName);
+            commandForm.setParentItemDescriptionTypeName(parentItemDescriptionTypeName);
+            commandForm.setUseParentIfMissing(useParentIfMissing);
+            commandForm.setMimeTypeUsageTypeName(mimeTypeUsageTypeName);
+            commandForm.setCheckContentWebAddress(checkContentWebAddress);
+            commandForm.setIncludeInIndex(includeInIndex);
+            commandForm.setIndexDefault(indexDefault);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+            commandForm.setMinimumHeight(minimumHeight);
+            commandForm.setMinimumWidth(minimumWidth);
+            commandForm.setMaximumHeight(maximumHeight);
+            commandForm.setMaximumWidth(maximumWidth);
+            commandForm.setPreferredHeight(preferredHeight);
+            commandForm.setPreferredWidth(preferredWidth);
+            commandForm.setPreferredMimeTypeName(preferredMimeTypeName);
+            commandForm.setQuality(quality);
+            commandForm.setScaleFromParent(scaleFromParent);
+
+            var commandResult = ItemUtil.getHome().createItemDescriptionType(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateItemDescriptionTypeResult)commandResult.getExecutionResult().getResult();
+
+                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultWithIdObject editItemDescriptionType(final DataFetchingEnvironment env,
+            @GraphQLName("originalItemDescriptionTypeName") final String originalItemDescriptionTypeName,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("itemDescriptionTypeName") final String itemDescriptionTypeName,
+            @GraphQLName("parentItemDescriptionTypeName") final String parentItemDescriptionTypeName,
+            @GraphQLName("useParentIfMissing") final String useParentIfMissing,
+            @GraphQLName("checkContentWebAddress") final String checkContentWebAddress,
+            @GraphQLName("includeInIndex") final String includeInIndex,
+            @GraphQLName("indexDefault") final String indexDefault,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description,
+            @GraphQLName("minimumHeight") final String minimumHeight,
+            @GraphQLName("minimumWidth") final String minimumWidth,
+            @GraphQLName("maximumHeight") final String maximumHeight,
+            @GraphQLName("maximumWidth") final String maximumWidth,
+            @GraphQLName("preferredHeight") final String preferredHeight,
+            @GraphQLName("preferredWidth") final String preferredWidth,
+            @GraphQLName("preferredMimeTypeName") final String preferredMimeTypeName,
+            @GraphQLName("quality") final String quality,
+            @GraphQLName("scaleFromParent") final String scaleFromParent) {
+        var commandResultObject = new CommandResultWithIdObject();
+
+        try {
+            var spec = ItemUtil.getHome().getItemDescriptionTypeUniversalSpec();
+
+            spec.setItemDescriptionTypeName(originalItemDescriptionTypeName);
+            spec.setUlid(id);
+
+            var commandForm = ItemUtil.getHome().getEditItemDescriptionTypeForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = ItemUtil.getHome().editItemDescriptionType(getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditItemDescriptionTypeResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                commandResultObject.setEntityInstanceFromEntityRef(result.getItemDescriptionType().getEntityInstance().getEntityRef());
+
+                if(arguments.containsKey("itemDescriptionTypeName"))
+                    edit.setItemDescriptionTypeName(itemDescriptionTypeName);
+                if(arguments.containsKey("useParentIfMissing"))
+                    edit.setUseParentIfMissing(useParentIfMissing);
+                if(arguments.containsKey("checkContentWebAddress"))
+                    edit.setCheckContentWebAddress(checkContentWebAddress);
+                if(arguments.containsKey("includeInIndex"))
+                    edit.setIncludeInIndex(includeInIndex);
+                if(arguments.containsKey("indexDefault"))
+                    edit.setIndexDefault(indexDefault);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+                if(arguments.containsKey("minimumHeight"))
+                    edit.setMinimumHeight(minimumHeight);
+                if(arguments.containsKey("minimumWidth"))
+                    edit.setMinimumWidth(minimumWidth);
+                if(arguments.containsKey("maximumHeight"))
+                    edit.setMaximumHeight(maximumHeight);
+                if(arguments.containsKey("maximumWidth"))
+                    edit.setMaximumWidth(maximumWidth);
+                if(arguments.containsKey("preferredHeight"))
+                    edit.setPreferredHeight(preferredHeight);
+                if(arguments.containsKey("preferredWidth"))
+                    edit.setPreferredWidth(preferredWidth);
+                if(arguments.containsKey("preferredMimeTypeName"))
+                    edit.setPreferredMimeTypeName(preferredMimeTypeName);
+                if(arguments.containsKey("quality"))
+                    edit.setQuality(quality);
+                if(arguments.containsKey("scaleFromParent"))
+                    edit.setScaleFromParent(scaleFromParent);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = ItemUtil.getHome().editItemDescriptionType(getUserVisitPK(env), commandForm);
+            }
+
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject deleteItemDescriptionType(final DataFetchingEnvironment env,
+            @GraphQLName("itemDescriptionTypeName") final String itemDescriptionTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = ItemUtil.getHome().getDeleteItemDescriptionTypeForm();
+
+            commandForm.setItemDescriptionTypeName(itemDescriptionTypeName);
+            commandForm.setUlid(id);
+
+            commandResultObject.setCommandResult(ItemUtil.getHome().deleteItemDescriptionType(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
