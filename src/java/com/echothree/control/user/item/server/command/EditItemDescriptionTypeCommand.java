@@ -29,21 +29,14 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.MimeType;
-import com.echothree.model.data.core.server.entity.MimeTypeUsage;
 import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
 import com.echothree.model.data.item.server.entity.ItemDescriptionType;
-import com.echothree.model.data.item.server.entity.ItemDescriptionTypeDescription;
-import com.echothree.model.data.item.server.entity.ItemDescriptionTypeDetail;
-import com.echothree.model.data.item.server.entity.ItemImageDescriptionType;
-import com.echothree.model.data.item.server.value.ItemDescriptionTypeDescriptionValue;
-import com.echothree.model.data.item.server.value.ItemDescriptionTypeDetailValue;
-import com.echothree.model.data.item.server.value.ItemImageDescriptionTypeValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -106,15 +99,15 @@ public class EditItemDescriptionTypeCommand
     
     @Override
     protected ValidationResult validateEdit(Validator validator) {
-        ValidationResult validationResult = validator.validate(edit, EDIT_FIELD_DEFINITIONS);
+        var validationResult = validator.validate(edit, EDIT_FIELD_DEFINITIONS);
 
         if(!validationResult.getHasErrors()) {
             var itemControl = Session.getModelController(ItemControl.class);
-            ItemDescriptionType itemDescriptionType = itemControl.getItemDescriptionTypeByName(spec.getItemDescriptionTypeName());
-            MimeTypeUsageType mimeTypeUsageType = itemDescriptionType.getLastDetail().getMimeTypeUsageType();
+            var itemDescriptionType = itemControl.getItemDescriptionTypeByName(spec.getItemDescriptionTypeName());
+            var mimeTypeUsageType = itemDescriptionType.getLastDetail().getMimeTypeUsageType();
 
             if(mimeTypeUsageType != null) {
-                String mimeTypeUsageTypeName = mimeTypeUsageType.getMimeTypeUsageTypeName();
+                var mimeTypeUsageTypeName = mimeTypeUsageType.getMimeTypeUsageTypeName();
 
                 if(mimeTypeUsageTypeName.equals(MimeTypeUsageTypes.IMAGE.name())) {
                     validationResult = validator.validate(edit, imageFieldDefinitions);
@@ -139,7 +132,7 @@ public class EditItemDescriptionTypeCommand
     public ItemDescriptionType getEntity(EditItemDescriptionTypeResult result) {
         var itemControl = Session.getModelController(ItemControl.class);
         ItemDescriptionType itemDescriptionType = null;
-        String itemDescriptionTypeName = spec.getItemDescriptionTypeName();
+        var itemDescriptionTypeName = spec.getItemDescriptionTypeName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
             itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
@@ -175,8 +168,8 @@ public class EditItemDescriptionTypeCommand
     @Override
     public void doLock(ItemDescriptionTypeEdit edit, ItemDescriptionType itemDescriptionType) {
         var itemControl = Session.getModelController(ItemControl.class);
-        ItemDescriptionTypeDescription itemDescriptionTypeDescription = itemControl.getItemDescriptionTypeDescription(itemDescriptionType, getPreferredLanguage());
-        ItemDescriptionTypeDetail itemDescriptionTypeDetail = itemDescriptionType.getLastDetail();
+        var itemDescriptionTypeDescription = itemControl.getItemDescriptionTypeDescription(itemDescriptionType, getPreferredLanguage());
+        var itemDescriptionTypeDetail = itemDescriptionType.getLastDetail();
 
         parentItemDescriptionType = itemDescriptionTypeDetail.getParentItemDescriptionType();
         mimeTypeUsageType = itemDescriptionTypeDetail.getMimeTypeUsageType();
@@ -195,17 +188,17 @@ public class EditItemDescriptionTypeCommand
         }
 
         if(mimeTypeUsageType != null) {
-            String mimeTypeUsageTypeName = mimeTypeUsageType.getMimeTypeUsageTypeName();
+            var mimeTypeUsageTypeName = mimeTypeUsageType.getMimeTypeUsageTypeName();
 
             if(mimeTypeUsageTypeName.equals(MimeTypeUsageTypes.IMAGE.name())) {
-                ItemImageDescriptionType itemImageDescriptionType = itemControl.getItemImageDescriptionType(itemDescriptionType);
-                Integer minimumHeight = itemImageDescriptionType.getMinimumHeight();
-                Integer minimumWidth = itemImageDescriptionType.getMinimumWidth();
-                Integer maximumHeight = itemImageDescriptionType.getMaximumHeight();
-                Integer maximumWidth = itemImageDescriptionType.getMaximumWidth();
-                Integer preferredHeight = itemImageDescriptionType.getPreferredHeight();
-                Integer preferredWidth = itemImageDescriptionType.getPreferredWidth();
-                Integer quality = itemImageDescriptionType.getQuality();
+                var itemImageDescriptionType = itemControl.getItemImageDescriptionType(itemDescriptionType);
+                var minimumHeight = itemImageDescriptionType.getMinimumHeight();
+                var minimumWidth = itemImageDescriptionType.getMinimumWidth();
+                var maximumHeight = itemImageDescriptionType.getMaximumHeight();
+                var maximumWidth = itemImageDescriptionType.getMaximumWidth();
+                var preferredHeight = itemImageDescriptionType.getPreferredHeight();
+                var preferredWidth = itemImageDescriptionType.getPreferredWidth();
+                var quality = itemImageDescriptionType.getQuality();
 
                 preferredMimeType = itemImageDescriptionType.getPreferredMimeType();
 
@@ -225,11 +218,11 @@ public class EditItemDescriptionTypeCommand
     @Override
     public void canUpdate(ItemDescriptionType itemDescriptionType) {
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemDescriptionTypeName = edit.getItemDescriptionTypeName();
-        ItemDescriptionType duplicateItemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
+        var itemDescriptionTypeName = edit.getItemDescriptionTypeName();
+        var duplicateItemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
 
         if(duplicateItemDescriptionType == null || itemDescriptionType.equals(duplicateItemDescriptionType)) {
-            String parentItemDescriptionTypeName = edit.getParentItemDescriptionTypeName();
+            var parentItemDescriptionTypeName = edit.getParentItemDescriptionTypeName();
             
             parentItemDescriptionType = parentItemDescriptionTypeName == null? null: itemControl.getItemDescriptionTypeByName(parentItemDescriptionTypeName);
 
@@ -238,8 +231,8 @@ public class EditItemDescriptionTypeCommand
 
                 if(parentItemDescriptionType != null) {
                     if(itemControl.isParentItemDescriptionTypeSafe(itemDescriptionType, parentItemDescriptionType)) {
-                        MimeTypeUsageType parentMimeTypeUsageType = parentItemDescriptionType.getLastDetail().getMimeTypeUsageType();
-                        boolean invalidMimeTypeUsageType = false;
+                        var parentMimeTypeUsageType = parentItemDescriptionType.getLastDetail().getMimeTypeUsageType();
+                        var invalidMimeTypeUsageType = false;
 
                         // Either the parent's and the new type's MimeTypeUsageTypes must match, or both must be null.
                         if(parentMimeTypeUsageType != null) {
@@ -260,13 +253,13 @@ public class EditItemDescriptionTypeCommand
 
                 if(!hasExecutionErrors()) {
                     var coreControl = getCoreControl();
-                    String preferredMimeTypeName = edit.getPreferredMimeTypeName();
+                    var preferredMimeTypeName = edit.getPreferredMimeTypeName();
 
                     preferredMimeType = preferredMimeTypeName == null ? null : coreControl.getMimeTypeByName(preferredMimeTypeName);
 
                     if(preferredMimeTypeName == null || preferredMimeType != null) {
                         if(preferredMimeType != null && mimeTypeUsageType != null) {
-                            MimeTypeUsage mimeTypeUsage = coreControl.getMimeTypeUsage(preferredMimeType, mimeTypeUsageType);
+                            var mimeTypeUsage = coreControl.getMimeTypeUsage(preferredMimeType, mimeTypeUsageType);
 
                             if(mimeTypeUsage == null) {
                                 addExecutionError(ExecutionErrors.UnknownMimeTypeUsage.name());
@@ -288,9 +281,9 @@ public class EditItemDescriptionTypeCommand
     public void doUpdate(ItemDescriptionType itemDescriptionType) {
         var itemControl = Session.getModelController(ItemControl.class);
         var partyPK = getPartyPK();
-        ItemDescriptionTypeDetailValue itemDescriptionTypeDetailValue = itemControl.getItemDescriptionTypeDetailValueForUpdate(itemDescriptionType);
-        ItemDescriptionTypeDescription itemDescriptionTypeDescription = itemControl.getItemDescriptionTypeDescriptionForUpdate(itemDescriptionType, getPreferredLanguage());
-        String description = edit.getDescription();
+        var itemDescriptionTypeDetailValue = itemControl.getItemDescriptionTypeDetailValueForUpdate(itemDescriptionType);
+        var itemDescriptionTypeDescription = itemControl.getItemDescriptionTypeDescriptionForUpdate(itemDescriptionType, getPreferredLanguage());
+        var description = edit.getDescription();
 
         itemDescriptionTypeDetailValue.setItemDescriptionTypeName(edit.getItemDescriptionTypeName());
         itemDescriptionTypeDetailValue.setParentItemDescriptionTypePK(parentItemDescriptionType == null? null: parentItemDescriptionType.getPrimaryKey());
@@ -308,24 +301,24 @@ public class EditItemDescriptionTypeCommand
         } else if(itemDescriptionTypeDescription != null && description == null) {
             itemControl.deleteItemDescriptionTypeDescription(itemDescriptionTypeDescription, partyPK);
         } else if(itemDescriptionTypeDescription != null && description != null) {
-            ItemDescriptionTypeDescriptionValue itemDescriptionTypeDescriptionValue = itemControl.getItemDescriptionTypeDescriptionValue(itemDescriptionTypeDescription);
+            var itemDescriptionTypeDescriptionValue = itemControl.getItemDescriptionTypeDescriptionValue(itemDescriptionTypeDescription);
 
             itemDescriptionTypeDescriptionValue.setDescription(description);
             itemControl.updateItemDescriptionTypeDescriptionFromValue(itemDescriptionTypeDescriptionValue, partyPK);
         }
 
         if(mimeTypeUsageType != null) {
-            String mimeTypeUsageTypeName = mimeTypeUsageType.getMimeTypeUsageTypeName();
+            var mimeTypeUsageTypeName = mimeTypeUsageType.getMimeTypeUsageTypeName();
 
             if(mimeTypeUsageTypeName.equals(MimeTypeUsageTypes.IMAGE.name())) {
-                ItemImageDescriptionTypeValue itemImageDescriptionTypeValue = itemControl.getItemImageDescriptionTypeValueForUpdate(itemDescriptionType);
-                String strMinimumHeight = edit.getMinimumHeight();
-                String strMinimumWidth = edit.getMinimumWidth();
-                String strMaximumHeight = edit.getMaximumHeight();
-                String strMaximumWidth = edit.getMaximumWidth();
-                String strPreferredHeight = edit.getPreferredHeight();
-                String strPreferredWidth = edit.getPreferredWidth();
-                String strQuality = edit.getQuality();
+                var itemImageDescriptionTypeValue = itemControl.getItemImageDescriptionTypeValueForUpdate(itemDescriptionType);
+                var strMinimumHeight = edit.getMinimumHeight();
+                var strMinimumWidth = edit.getMinimumWidth();
+                var strMaximumHeight = edit.getMaximumHeight();
+                var strMaximumWidth = edit.getMaximumWidth();
+                var strPreferredHeight = edit.getPreferredHeight();
+                var strPreferredWidth = edit.getPreferredWidth();
+                var strQuality = edit.getQuality();
 
                 itemImageDescriptionTypeValue.setMinimumHeight(strMinimumHeight == null ? null : Integer.valueOf(strMinimumHeight));
                 itemImageDescriptionTypeValue.setMinimumWidth(strMinimumWidth == null ? null : Integer.valueOf(strMinimumWidth));
