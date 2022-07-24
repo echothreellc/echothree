@@ -1,5 +1,17 @@
 # Changelog
 
+## 2022-07-24-01
+
+* GraphQL Mutations for Item Description Types [413](https://gitlab.echothree.com/echothree/echothree/-/issues/413)
+* GraphQL Mutations for Item Image Types [415](https://gitlab.echothree.com/echothree/echothree/-/issues/415)
+* GraphQL Mutations for Item Descriptions [417](https://gitlab.echothree.com/echothree/echothree/-/issues/417)
+* Add Queries for Entity Attributes [429](https://gitlab.echothree.com/echothree/echothree/-/issues/429)
+* Add Entity Attribute Mutations for Collections [467](https://gitlab.echothree.com/echothree/echothree/-/issues/467)
+* Add Entity Attribute Mutations for Entities [469](https://gitlab.echothree.com/echothree/echothree/-/issues/469)
+* jOOQ 3.17.2 Upgrade [513](https://gitlab.echothree.com/echothree/echothree/-/issues/513)
+* Add Entity Names Object [514](https://gitlab.echothree.com/echothree/echothree/-/issues/514)
+* Add Description Field to Entity Instance Object [518](https://gitlab.echothree.com/echothree/echothree/-/issues/518)
+
 ## 2022-07-10-01
 
 * Add entityAttributeGroups to Entity Attribute Object [426](https://gitlab.echothree.com/echothree/echothree/-/issues/426)
