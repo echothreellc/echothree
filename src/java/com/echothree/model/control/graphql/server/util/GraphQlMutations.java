@@ -51,10 +51,12 @@ import com.echothree.control.user.inventory.common.result.CreateInventoryConditi
 import com.echothree.control.user.inventory.common.result.EditInventoryConditionResult;
 import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.common.result.CreateItemCategoryResult;
+import com.echothree.control.user.item.common.result.CreateItemDescriptionResult;
 import com.echothree.control.user.item.common.result.CreateItemDescriptionTypeResult;
 import com.echothree.control.user.item.common.result.CreateItemImageTypeResult;
 import com.echothree.control.user.item.common.result.CreateItemResult;
 import com.echothree.control.user.item.common.result.EditItemCategoryResult;
+import com.echothree.control.user.item.common.result.EditItemDescriptionResult;
 import com.echothree.control.user.item.common.result.EditItemDescriptionTypeResult;
 import com.echothree.control.user.item.common.result.EditItemImageTypeResult;
 import com.echothree.control.user.item.common.result.EditItemPriceResult;
@@ -113,8 +115,6 @@ import com.echothree.model.control.search.server.graphql.SearchEmployeesResultOb
 import com.echothree.model.control.search.server.graphql.SearchItemsResultObject;
 import com.echothree.model.control.search.server.graphql.SearchVendorsResultObject;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.common.validation.FieldType;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLID;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -5719,6 +5719,124 @@ public class GraphQlMutations
             commandForm.setItemStatusChoice(ItemStatusChoice);
 
             commandResultObject.setCommandResult(ItemUtil.getHome().setItemStatus(getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultWithIdObject createItemDescription(final DataFetchingEnvironment env,
+            @GraphQLName("itemName") @GraphQLNonNull final String itemName,
+            @GraphQLName("itemDescriptionTypeName") @GraphQLNonNull final String itemDescriptionTypeName,
+            @GraphQLName("languageIsoName") @GraphQLNonNull final String languageIsoName,
+            @GraphQLName("mimeTypeName") final String mimeTypeName,
+            @GraphQLName("itemImageTypeName") final String itemImageTypeName,
+            @GraphQLName("clobDescription") final String clobDescription,
+            @GraphQLName("stringDescription") final String stringDescription) {
+        var commandResultObject = new CommandResultWithIdObject();
+
+        try {
+            var commandForm = ItemUtil.getHome().getCreateItemDescriptionForm();
+
+            commandForm.setItemName(itemName);
+            commandForm.setItemDescriptionTypeName(itemDescriptionTypeName);
+            commandForm.setLanguageIsoName(languageIsoName);
+            commandForm.setMimeTypeName(mimeTypeName);
+            commandForm.setItemImageTypeName(itemImageTypeName);
+            commandForm.setClobDescription(clobDescription);
+            commandForm.setStringDescription(stringDescription);
+
+            var commandResult = ItemUtil.getHome().createItemDescription(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateItemDescriptionResult)commandResult.getExecutionResult().getResult();
+
+                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultWithIdObject editItemDescription(final DataFetchingEnvironment env,
+            @GraphQLName("itemName") @GraphQLNonNull final String itemName,
+            @GraphQLName("itemDescriptionTypeName") @GraphQLNonNull final String itemDescriptionTypeName,
+            @GraphQLName("languageIsoName") @GraphQLNonNull final String languageIsoName,
+            @GraphQLName("mimeTypeName") final String mimeTypeName,
+            @GraphQLName("itemImageTypeName") final String itemImageTypeName,
+            @GraphQLName("clobDescription") final String clobDescription,
+            @GraphQLName("stringDescription") final String stringDescription) {
+        var commandResultObject = new CommandResultWithIdObject();
+
+        try {
+            var spec = ItemUtil.getHome().getItemDescriptionUniversalSpec();
+
+            spec.setItemName(itemName);
+            spec.setItemDescriptionTypeName(itemDescriptionTypeName);
+            spec.setLanguageIsoName(languageIsoName);
+
+            var commandForm = ItemUtil.getHome().getEditItemDescriptionForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = ItemUtil.getHome().editItemDescription(getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditItemDescriptionResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                commandResultObject.setEntityInstance(result.getItemDescription().getEntityInstance());
+
+                if(arguments.containsKey("mimeTypeName"))
+                    edit.setMimeTypeName(mimeTypeName);
+                if(arguments.containsKey("itemImageTypeName"))
+                    edit.setItemImageTypeName(itemImageTypeName);
+                if(arguments.containsKey("clobDescription"))
+                    edit.setClobDescription(clobDescription);
+                if(arguments.containsKey("stringDescription"))
+                    edit.setStringDescription(stringDescription);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = ItemUtil.getHome().editItemDescription(getUserVisitPK(env), commandForm);
+            }
+
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject deleteItemDescription(final DataFetchingEnvironment env,
+            @GraphQLName("itemName") @GraphQLNonNull final String itemName,
+            @GraphQLName("itemDescriptionTypeName") @GraphQLNonNull final String itemDescriptionTypeName,
+            @GraphQLName("languageIsoName") @GraphQLNonNull final String languageIsoName) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = ItemUtil.getHome().getDeleteItemDescriptionForm();
+
+            commandForm.setItemName(itemName);
+            commandForm.setItemDescriptionTypeName(itemDescriptionTypeName);
+            commandForm.setLanguageIsoName(languageIsoName);
+
+            commandResultObject.setCommandResult(ItemUtil.getHome().deleteItemDescription(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
