@@ -221,7 +221,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getSelector().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getSelector().getEntityInstance());
 
                 if(arguments.containsKey("selectorName"))
                     edit.setSelectorName(selectorName);
@@ -370,7 +370,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getFilter().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getFilter().getEntityInstance());
 
                 if(arguments.containsKey("filterName"))
                     edit.setFilterName(filterName);
@@ -520,7 +520,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getFilterStep().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getFilterStep().getEntityInstance());
 
                 if(arguments.containsKey("filterStepName"))
                     edit.setFilterStepName(filterStepName);
@@ -636,7 +636,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getFilterAdjustment().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getFilterAdjustment().getEntityInstance());
 
                 if(arguments.containsKey("filterAdjustmentName"))
                     edit.setFilterAdjustmentName(filterAdjustmentName);
@@ -1121,7 +1121,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getSequence().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getSequence().getEntityInstance());
 
                 if(arguments.containsKey("sequenceName"))
                     edit.setSequenceName(sequenceName);
@@ -1293,7 +1293,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getSequenceType().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getSequenceType().getEntityInstance());
 
                 if(arguments.containsKey("sequenceTypeName"))
                     edit.setSequenceTypeName(sequenceTypeName);
@@ -1428,7 +1428,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getOfferUse().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getOfferUse().getEntityInstance());
 
                 if(arguments.containsKey("salesOrderSequenceName"))
                     edit.setSalesOrderSequenceName(salesOrderSequenceName);
@@ -1544,7 +1544,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getOffer().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getOffer().getEntityInstance());
 
                 if(arguments.containsKey("offerName"))
                     edit.setOfferName(offerName);
@@ -1854,7 +1854,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getUse().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getUse().getEntityInstance());
 
                 if(arguments.containsKey("useName"))
                     edit.setUseName(useName);
@@ -1987,7 +1987,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getOfferNameElement().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getOfferNameElement().getEntityInstance());
 
                 if(arguments.containsKey("offerNameElementName"))
                     edit.setOfferNameElementName(offerNameElementName);
@@ -2099,7 +2099,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getUseNameElement().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getUseNameElement().getEntityInstance());
 
                 if(arguments.containsKey("useNameElementName"))
                     edit.setUseNameElementName(useNameElementName);
@@ -2208,7 +2208,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getUseType().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getUseType().getEntityInstance());
 
                 if(arguments.containsKey("useTypeName"))
                     edit.setUseTypeName(useTypeName);
@@ -2336,7 +2336,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getFreeOnBoard().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getFreeOnBoard().getEntityInstance());
 
                 if(arguments.containsKey("freeOnBoardName"))
                     edit.setFreeOnBoardName(freeOnBoardName);
@@ -2464,7 +2464,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getPaymentProcessor().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getPaymentProcessor().getEntityInstance());
 
                 if(arguments.containsKey("paymentProcessorName"))
                     edit.setPaymentProcessorName(paymentProcessorName);
@@ -2571,7 +2571,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getPaymentProcessorType().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getPaymentProcessorType().getEntityInstance());
 
                 if(arguments.containsKey("paymentProcessorTypeName"))
                     edit.setPaymentProcessorTypeName(paymentProcessorTypeName);
@@ -2699,7 +2699,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getPaymentMethodType().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getPaymentMethodType().getEntityInstance());
 
                 if(arguments.containsKey("paymentMethodTypeName"))
                     edit.setPaymentMethodTypeName(paymentMethodTypeName);
@@ -2827,7 +2827,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getPaymentProcessorResultCode().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getPaymentProcessorResultCode().getEntityInstance());
 
                 if(arguments.containsKey("paymentProcessorResultCodeName"))
                     edit.setPaymentProcessorResultCodeName(paymentProcessorResultCodeName);
@@ -2955,7 +2955,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getPaymentProcessorActionType().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getPaymentProcessorActionType().getEntityInstance());
 
                 if(arguments.containsKey("paymentProcessorActionTypeName"))
                     edit.setPaymentProcessorActionTypeName(paymentProcessorActionTypeName);
@@ -3083,7 +3083,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
                 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getInventoryCondition().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getInventoryCondition().getEntityInstance());
 
                 if(arguments.containsKey("inventoryConditionName"))
                     edit.setInventoryConditionName(inventoryConditionName);
@@ -3211,7 +3211,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
                 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getContentPageLayout().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getContentPageLayout().getEntityInstance());
 
                 if(arguments.containsKey("contentPageLayoutName"))
                     edit.setContentPageLayoutName(contentPageLayoutName);
@@ -5195,7 +5195,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getItemCategory().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getItemCategory().getEntityInstance());
 
                 if(arguments.containsKey("itemCategoryName"))
                     edit.setItemCategoryName(itemCategoryName);
@@ -5311,7 +5311,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getItemImageType().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getItemImageType().getEntityInstance());
 
                 if(arguments.containsKey("itemImageTypeName"))
                     edit.setItemImageTypeName(itemImageTypeName);
@@ -5467,7 +5467,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getItemDescriptionType().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getItemDescriptionType().getEntityInstance());
 
                 if(arguments.containsKey("itemDescriptionTypeName"))
                     edit.setItemDescriptionTypeName(itemDescriptionTypeName);
@@ -5655,7 +5655,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getItem().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getItem().getEntityInstance());
 
                 if(arguments.containsKey("itemName"))
                     edit.setItemName(itemName);
