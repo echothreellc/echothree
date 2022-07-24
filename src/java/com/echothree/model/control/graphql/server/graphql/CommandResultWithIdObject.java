@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.graphql.server.graphql;
 
+import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.util.server.persistence.Session;
@@ -30,16 +31,24 @@ public class CommandResultWithIdObject
     
     private EntityInstance entityInstance; // Optional, use getEntityInstance()
     
-    public void setEntityInstanceFromEntityRef(String entityRef) {
+    public void setEntityInstance(final EntityInstance entityInstance) {
+        if(this.entityInstance == null) {
+            this.entityInstance = entityInstance;
+        } else {
+            throw new RuntimeException("Cannot call setEntityInstance(EntityInstance) multiple times");
+        }
+    }
+
+    public void setEntityInstanceFromEntityRef(final String entityRef) {
         var coreControl = Session.getModelController(CoreControl.class);
 
-        entityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
+        setEntityInstance(coreControl.getEntityInstanceByEntityRef(entityRef));
     }
-    
-    public void setEntityInstance(EntityInstance entityInstance) {
-        this.entityInstance = entityInstance;
+
+    public void setEntityInstance(final EntityInstanceTransfer entityInstanceTransfer) {
+        setEntityInstanceFromEntityRef(entityInstanceTransfer.getEntityRef());
     }
-    
+
     @GraphQLField
     @GraphQLDescription("id")
     public String getId() {

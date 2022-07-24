@@ -52,7 +52,7 @@ public class EditAction
     @Override
     protected ItemDescriptionTypeSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ItemDescriptionTypeSpec spec = ItemUtil.getHome().getItemDescriptionTypeSpec();
+        var spec = ItemUtil.getHome().getItemDescriptionTypeUniversalSpec();
         
         spec.setItemDescriptionTypeName(findParameter(request, ParameterConstants.ORIGINAL_ITEM_DESCRIPTION_TYPE_NAME, actionForm.getOriginalItemDescriptionTypeName()));
         

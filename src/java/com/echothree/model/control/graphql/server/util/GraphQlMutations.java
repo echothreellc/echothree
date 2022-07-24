@@ -51,9 +51,11 @@ import com.echothree.control.user.inventory.common.result.CreateInventoryConditi
 import com.echothree.control.user.inventory.common.result.EditInventoryConditionResult;
 import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.common.result.CreateItemCategoryResult;
+import com.echothree.control.user.item.common.result.CreateItemDescriptionTypeResult;
 import com.echothree.control.user.item.common.result.CreateItemImageTypeResult;
 import com.echothree.control.user.item.common.result.CreateItemResult;
 import com.echothree.control.user.item.common.result.EditItemCategoryResult;
+import com.echothree.control.user.item.common.result.EditItemDescriptionTypeResult;
 import com.echothree.control.user.item.common.result.EditItemImageTypeResult;
 import com.echothree.control.user.item.common.result.EditItemPriceResult;
 import com.echothree.control.user.item.common.result.EditItemResult;
@@ -111,6 +113,8 @@ import com.echothree.model.control.search.server.graphql.SearchEmployeesResultOb
 import com.echothree.model.control.search.server.graphql.SearchItemsResultObject;
 import com.echothree.model.control.search.server.graphql.SearchVendorsResultObject;
 import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.common.validation.FieldType;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLID;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -217,7 +221,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getSelector().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getSelector().getEntityInstance());
 
                 if(arguments.containsKey("selectorName"))
                     edit.setSelectorName(selectorName);
@@ -366,7 +370,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getFilter().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getFilter().getEntityInstance());
 
                 if(arguments.containsKey("filterName"))
                     edit.setFilterName(filterName);
@@ -516,7 +520,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getFilterStep().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getFilterStep().getEntityInstance());
 
                 if(arguments.containsKey("filterStepName"))
                     edit.setFilterStepName(filterStepName);
@@ -632,7 +636,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getFilterAdjustment().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getFilterAdjustment().getEntityInstance());
 
                 if(arguments.containsKey("filterAdjustmentName"))
                     edit.setFilterAdjustmentName(filterAdjustmentName);
@@ -1117,7 +1121,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getSequence().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getSequence().getEntityInstance());
 
                 if(arguments.containsKey("sequenceName"))
                     edit.setSequenceName(sequenceName);
@@ -1289,7 +1293,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getSequenceType().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getSequenceType().getEntityInstance());
 
                 if(arguments.containsKey("sequenceTypeName"))
                     edit.setSequenceTypeName(sequenceTypeName);
@@ -1424,7 +1428,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getOfferUse().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getOfferUse().getEntityInstance());
 
                 if(arguments.containsKey("salesOrderSequenceName"))
                     edit.setSalesOrderSequenceName(salesOrderSequenceName);
@@ -1540,7 +1544,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getOffer().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getOffer().getEntityInstance());
 
                 if(arguments.containsKey("offerName"))
                     edit.setOfferName(offerName);
@@ -1850,7 +1854,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getUse().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getUse().getEntityInstance());
 
                 if(arguments.containsKey("useName"))
                     edit.setUseName(useName);
@@ -1983,7 +1987,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getOfferNameElement().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getOfferNameElement().getEntityInstance());
 
                 if(arguments.containsKey("offerNameElementName"))
                     edit.setOfferNameElementName(offerNameElementName);
@@ -2095,7 +2099,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getUseNameElement().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getUseNameElement().getEntityInstance());
 
                 if(arguments.containsKey("useNameElementName"))
                     edit.setUseNameElementName(useNameElementName);
@@ -2204,7 +2208,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getUseType().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getUseType().getEntityInstance());
 
                 if(arguments.containsKey("useTypeName"))
                     edit.setUseTypeName(useTypeName);
@@ -2332,7 +2336,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getFreeOnBoard().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getFreeOnBoard().getEntityInstance());
 
                 if(arguments.containsKey("freeOnBoardName"))
                     edit.setFreeOnBoardName(freeOnBoardName);
@@ -2460,7 +2464,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getPaymentProcessor().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getPaymentProcessor().getEntityInstance());
 
                 if(arguments.containsKey("paymentProcessorName"))
                     edit.setPaymentProcessorName(paymentProcessorName);
@@ -2567,7 +2571,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getPaymentProcessorType().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getPaymentProcessorType().getEntityInstance());
 
                 if(arguments.containsKey("paymentProcessorTypeName"))
                     edit.setPaymentProcessorTypeName(paymentProcessorTypeName);
@@ -2695,7 +2699,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getPaymentMethodType().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getPaymentMethodType().getEntityInstance());
 
                 if(arguments.containsKey("paymentMethodTypeName"))
                     edit.setPaymentMethodTypeName(paymentMethodTypeName);
@@ -2823,7 +2827,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getPaymentProcessorResultCode().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getPaymentProcessorResultCode().getEntityInstance());
 
                 if(arguments.containsKey("paymentProcessorResultCodeName"))
                     edit.setPaymentProcessorResultCodeName(paymentProcessorResultCodeName);
@@ -2951,7 +2955,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getPaymentProcessorActionType().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getPaymentProcessorActionType().getEntityInstance());
 
                 if(arguments.containsKey("paymentProcessorActionTypeName"))
                     edit.setPaymentProcessorActionTypeName(paymentProcessorActionTypeName);
@@ -3079,7 +3083,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
                 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getInventoryCondition().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getInventoryCondition().getEntityInstance());
 
                 if(arguments.containsKey("inventoryConditionName"))
                     edit.setInventoryConditionName(inventoryConditionName);
@@ -3207,7 +3211,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
                 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getContentPageLayout().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getContentPageLayout().getEntityInstance());
 
                 if(arguments.containsKey("contentPageLayoutName"))
                     edit.setContentPageLayoutName(contentPageLayoutName);
@@ -5191,7 +5195,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getItemCategory().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getItemCategory().getEntityInstance());
 
                 if(arguments.containsKey("itemCategoryName"))
                     edit.setItemCategoryName(itemCategoryName);
@@ -5307,7 +5311,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getItemImageType().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getItemImageType().getEntityInstance());
 
                 if(arguments.containsKey("itemImageTypeName"))
                     edit.setItemImageTypeName(itemImageTypeName);
@@ -5350,6 +5354,184 @@ public class GraphQlMutations
             commandForm.setUlid(id);
 
             commandResultObject.setCommandResult(ItemUtil.getHome().deleteItemImageType(getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultWithIdObject createItemDescriptionType(final DataFetchingEnvironment env,
+            @GraphQLName("itemDescriptionTypeName") @GraphQLNonNull final String itemDescriptionTypeName,
+            @GraphQLName("parentItemDescriptionTypeName") final String parentItemDescriptionTypeName,
+            @GraphQLName("useParentIfMissing") @GraphQLNonNull final String useParentIfMissing,
+            @GraphQLName("mimeTypeUsageTypeName") final String mimeTypeUsageTypeName,
+            @GraphQLName("checkContentWebAddress") @GraphQLNonNull final String checkContentWebAddress,
+            @GraphQLName("includeInIndex") @GraphQLNonNull final String includeInIndex,
+            @GraphQLName("indexDefault") @GraphQLNonNull final String indexDefault,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description,
+            @GraphQLName("minimumHeight") final String minimumHeight,
+            @GraphQLName("minimumWidth") final String minimumWidth,
+            @GraphQLName("maximumHeight") final String maximumHeight,
+            @GraphQLName("maximumWidth") final String maximumWidth,
+            @GraphQLName("preferredHeight") final String preferredHeight,
+            @GraphQLName("preferredWidth") final String preferredWidth,
+            @GraphQLName("preferredMimeTypeName") final String preferredMimeTypeName,
+            @GraphQLName("quality") final String quality,
+            @GraphQLName("scaleFromParent") final String scaleFromParent) {
+        var commandResultObject = new CommandResultWithIdObject();
+
+        try {
+            var commandForm = ItemUtil.getHome().getCreateItemDescriptionTypeForm();
+
+            commandForm.setItemDescriptionTypeName(itemDescriptionTypeName);
+            commandForm.setParentItemDescriptionTypeName(parentItemDescriptionTypeName);
+            commandForm.setUseParentIfMissing(useParentIfMissing);
+            commandForm.setMimeTypeUsageTypeName(mimeTypeUsageTypeName);
+            commandForm.setCheckContentWebAddress(checkContentWebAddress);
+            commandForm.setIncludeInIndex(includeInIndex);
+            commandForm.setIndexDefault(indexDefault);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+            commandForm.setMinimumHeight(minimumHeight);
+            commandForm.setMinimumWidth(minimumWidth);
+            commandForm.setMaximumHeight(maximumHeight);
+            commandForm.setMaximumWidth(maximumWidth);
+            commandForm.setPreferredHeight(preferredHeight);
+            commandForm.setPreferredWidth(preferredWidth);
+            commandForm.setPreferredMimeTypeName(preferredMimeTypeName);
+            commandForm.setQuality(quality);
+            commandForm.setScaleFromParent(scaleFromParent);
+
+            var commandResult = ItemUtil.getHome().createItemDescriptionType(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateItemDescriptionTypeResult)commandResult.getExecutionResult().getResult();
+
+                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultWithIdObject editItemDescriptionType(final DataFetchingEnvironment env,
+            @GraphQLName("originalItemDescriptionTypeName") final String originalItemDescriptionTypeName,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("itemDescriptionTypeName") final String itemDescriptionTypeName,
+            @GraphQLName("parentItemDescriptionTypeName") final String parentItemDescriptionTypeName,
+            @GraphQLName("useParentIfMissing") final String useParentIfMissing,
+            @GraphQLName("checkContentWebAddress") final String checkContentWebAddress,
+            @GraphQLName("includeInIndex") final String includeInIndex,
+            @GraphQLName("indexDefault") final String indexDefault,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description,
+            @GraphQLName("minimumHeight") final String minimumHeight,
+            @GraphQLName("minimumWidth") final String minimumWidth,
+            @GraphQLName("maximumHeight") final String maximumHeight,
+            @GraphQLName("maximumWidth") final String maximumWidth,
+            @GraphQLName("preferredHeight") final String preferredHeight,
+            @GraphQLName("preferredWidth") final String preferredWidth,
+            @GraphQLName("preferredMimeTypeName") final String preferredMimeTypeName,
+            @GraphQLName("quality") final String quality,
+            @GraphQLName("scaleFromParent") final String scaleFromParent) {
+        var commandResultObject = new CommandResultWithIdObject();
+
+        try {
+            var spec = ItemUtil.getHome().getItemDescriptionTypeUniversalSpec();
+
+            spec.setItemDescriptionTypeName(originalItemDescriptionTypeName);
+            spec.setUlid(id);
+
+            var commandForm = ItemUtil.getHome().getEditItemDescriptionTypeForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = ItemUtil.getHome().editItemDescriptionType(getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditItemDescriptionTypeResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                commandResultObject.setEntityInstance(result.getItemDescriptionType().getEntityInstance());
+
+                if(arguments.containsKey("itemDescriptionTypeName"))
+                    edit.setItemDescriptionTypeName(itemDescriptionTypeName);
+                if(arguments.containsKey("useParentIfMissing"))
+                    edit.setUseParentIfMissing(useParentIfMissing);
+                if(arguments.containsKey("checkContentWebAddress"))
+                    edit.setCheckContentWebAddress(checkContentWebAddress);
+                if(arguments.containsKey("includeInIndex"))
+                    edit.setIncludeInIndex(includeInIndex);
+                if(arguments.containsKey("indexDefault"))
+                    edit.setIndexDefault(indexDefault);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+                if(arguments.containsKey("minimumHeight"))
+                    edit.setMinimumHeight(minimumHeight);
+                if(arguments.containsKey("minimumWidth"))
+                    edit.setMinimumWidth(minimumWidth);
+                if(arguments.containsKey("maximumHeight"))
+                    edit.setMaximumHeight(maximumHeight);
+                if(arguments.containsKey("maximumWidth"))
+                    edit.setMaximumWidth(maximumWidth);
+                if(arguments.containsKey("preferredHeight"))
+                    edit.setPreferredHeight(preferredHeight);
+                if(arguments.containsKey("preferredWidth"))
+                    edit.setPreferredWidth(preferredWidth);
+                if(arguments.containsKey("preferredMimeTypeName"))
+                    edit.setPreferredMimeTypeName(preferredMimeTypeName);
+                if(arguments.containsKey("quality"))
+                    edit.setQuality(quality);
+                if(arguments.containsKey("scaleFromParent"))
+                    edit.setScaleFromParent(scaleFromParent);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = ItemUtil.getHome().editItemDescriptionType(getUserVisitPK(env), commandForm);
+            }
+
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject deleteItemDescriptionType(final DataFetchingEnvironment env,
+            @GraphQLName("itemDescriptionTypeName") final String itemDescriptionTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = ItemUtil.getHome().getDeleteItemDescriptionTypeForm();
+
+            commandForm.setItemDescriptionTypeName(itemDescriptionTypeName);
+            commandForm.setUlid(id);
+
+            commandResultObject.setCommandResult(ItemUtil.getHome().deleteItemDescriptionType(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -5473,7 +5655,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getItem().getEntityInstance().getEntityRef());
+                commandResultObject.setEntityInstance(result.getItem().getEntityInstance());
 
                 if(arguments.containsKey("itemName"))
                     edit.setItemName(itemName);
