@@ -14,13 +14,16 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.item.common.form;
+package com.echothree.control.user.item.common.result;
 
-import com.echothree.control.user.item.common.spec.ItemImageTypeUniversalSpec;
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
+import com.echothree.control.user.item.common.spec.ItemCategorySpec;
+import com.echothree.control.user.item.common.spec.ItemImageTypeSpec;
+import com.echothree.util.common.command.BaseResult;
 
-public interface DeleteItemImageTypeForm
-        extends ItemImageTypeUniversalSpec {
+public interface CreateItemImageTypeResult
+        extends ItemImageTypeSpec, EntityRefSpec, BaseResult {
     
-    // Nothing additional beyond ItemImageTypeUniversalSpec
+    // Nothing additional beyond ItemCategorySpec, EntityRefSpec, BaseResult
     
 }

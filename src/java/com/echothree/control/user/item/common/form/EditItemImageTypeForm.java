@@ -17,11 +17,11 @@
 package com.echothree.control.user.item.common.form;
 
 import com.echothree.control.user.item.common.edit.ItemImageTypeEdit;
-import com.echothree.control.user.item.common.spec.ItemImageTypeSpec;
+import com.echothree.control.user.item.common.spec.ItemImageTypeUniversalSpec;
 import com.echothree.util.common.form.BaseEditForm;
 
 public interface EditItemImageTypeForm
-        extends BaseEditForm<ItemImageTypeSpec, ItemImageTypeEdit> {
+        extends BaseEditForm<ItemImageTypeUniversalSpec, ItemImageTypeEdit> {
     
     // Nothing additional beyond BaseEditForm
     

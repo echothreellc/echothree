@@ -368,7 +368,7 @@ public class ItemDescriptionLogic
                                         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
                                         try {
-                                            float scaledQualtity = (float)quality / 100.0f;
+                                            float scaledQuality = (float)quality / 100.0f;
                                             ImageWriteParam iwp = imageWriter.getDefaultWriteParam();
 
                                             if(iwp.canWriteCompressed()) {
@@ -381,7 +381,7 @@ public class ItemDescriptionLogic
                                                     iwp.setCompressionType(compressionTypes[0]);
                                                 }
 
-                                                iwp.setCompressionQuality(scaledQualtity);
+                                                iwp.setCompressionQuality(scaledQuality);
                                             }
 
                                             ImageOutputStream imageOutputStream = new MemoryCacheImageOutputStream(byteArrayOutputStream);
