@@ -21,10 +21,11 @@ import com.echothree.control.user.item.common.edit.ItemEditFactory;
 import com.echothree.control.user.item.common.form.EditItemDescriptionTypeForm;
 import com.echothree.control.user.item.common.result.EditItemDescriptionTypeResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
-import com.echothree.control.user.item.common.spec.ItemDescriptionTypeSpec;
+import com.echothree.control.user.item.common.spec.ItemDescriptionTypeUniversalSpec;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemDescriptionLogic;
+import com.echothree.model.control.item.server.logic.ItemDescriptionTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -32,7 +33,6 @@ import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
 import com.echothree.model.data.item.server.entity.ItemDescriptionType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.form.ValidationResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -48,7 +48,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class EditItemDescriptionTypeCommand
-        extends BaseAbstractEditCommand<ItemDescriptionTypeSpec, ItemDescriptionTypeEdit, EditItemDescriptionTypeResult, ItemDescriptionType, ItemDescriptionType> {
+        extends BaseAbstractEditCommand<ItemDescriptionTypeUniversalSpec, ItemDescriptionTypeEdit, EditItemDescriptionTypeResult, ItemDescriptionType, ItemDescriptionType> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
@@ -64,7 +64,11 @@ public class EditItemDescriptionTypeCommand
                 )));
         
         SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("ItemDescriptionTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("ItemDescriptionTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
                 ));
         
         EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
@@ -130,23 +134,8 @@ public class EditItemDescriptionTypeCommand
     
     @Override
     public ItemDescriptionType getEntity(EditItemDescriptionTypeResult result) {
-        var itemControl = Session.getModelController(ItemControl.class);
-        ItemDescriptionType itemDescriptionType = null;
-        var itemDescriptionTypeName = spec.getItemDescriptionTypeName();
-
-        if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            itemDescriptionType = itemControl.getItemDescriptionTypeByName(itemDescriptionTypeName);
-        } else { // EditMode.UPDATE
-            itemDescriptionType = itemControl.getItemDescriptionTypeByNameForUpdate(itemDescriptionTypeName);
-        }
-
-        if(itemDescriptionType != null) {
-            result.setItemDescriptionType(itemControl.getItemDescriptionTypeTransfer(getUserVisit(), itemDescriptionType));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownItemDescriptionTypeName.name(), itemDescriptionTypeName);
-        }
-
-        return itemDescriptionType;
+        return ItemDescriptionTypeLogic.getInstance().getItemDescriptionTypeByUniversalSpec(this,
+                spec, false, editModeToEntityPermission(editMode));
     }
     
     @Override
