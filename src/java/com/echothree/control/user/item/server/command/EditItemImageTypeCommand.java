@@ -21,9 +21,10 @@ import com.echothree.control.user.item.common.edit.ItemImageTypeEdit;
 import com.echothree.control.user.item.common.form.EditItemImageTypeForm;
 import com.echothree.control.user.item.common.result.EditItemImageTypeResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
-import com.echothree.control.user.item.common.spec.ItemImageTypeSpec;
+import com.echothree.control.user.item.common.spec.ItemImageTypeUniversalSpec;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemDescriptionLogic;
+import com.echothree.model.control.item.server.logic.ItemImageTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -37,7 +38,6 @@ import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -48,7 +48,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class EditItemImageTypeCommand
-        extends BaseAbstractEditCommand<ItemImageTypeSpec, ItemImageTypeEdit, EditItemImageTypeResult, ItemImageType, ItemImageType> {
+        extends BaseAbstractEditCommand<ItemImageTypeUniversalSpec, ItemImageTypeEdit, EditItemImageTypeResult, ItemImageType, ItemImageType> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
@@ -63,7 +63,11 @@ public class EditItemImageTypeCommand
                 )));
         
         SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("ItemImageTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("ItemImageTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
                 ));
         
         EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
@@ -93,23 +97,8 @@ public class EditItemImageTypeCommand
     
     @Override
     public ItemImageType getEntity(EditItemImageTypeResult result) {
-        var itemControl = Session.getModelController(ItemControl.class);
-        ItemImageType itemImageType = null;
-        String itemImageTypeName = spec.getItemImageTypeName();
-
-        if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            itemImageType = itemControl.getItemImageTypeByName(itemImageTypeName);
-        } else { // EditMode.UPDATE
-            itemImageType = itemControl.getItemImageTypeByNameForUpdate(itemImageTypeName);
-        }
-
-        if(itemImageType != null) {
-            result.setItemImageType(itemControl.getItemImageTypeTransfer(getUserVisit(), itemImageType));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownItemImageTypeName.name(), itemImageTypeName);
-        }
-
-        return itemImageType;
+        return ItemImageTypeLogic.getInstance().getItemImageTypeByUniversalSpec(this,
+                spec, false, editModeToEntityPermission(editMode));
     }
     
     @Override

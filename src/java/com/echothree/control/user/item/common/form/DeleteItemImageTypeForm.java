@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.item.common.form;
 
-import com.echothree.control.user.item.common.spec.ItemImageTypeSpec;
+import com.echothree.control.user.item.common.spec.ItemImageTypeUniversalSpec;
 
 public interface DeleteItemImageTypeForm
-        extends ItemImageTypeSpec {
+        extends ItemImageTypeUniversalSpec {
     
-    // Nothing additional beyond ItemImageTypeSpec
+    // Nothing additional beyond ItemImageTypeUniversalSpec
     
 }
