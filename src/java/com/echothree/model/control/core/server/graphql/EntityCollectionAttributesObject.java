@@ -56,8 +56,8 @@ public class EntityCollectionAttributesObject
     }
 
     @GraphQLField
-    @GraphQLDescription("entity instances")
-    public Collection<EntityInstanceObject> getEntityInstances(final DataFetchingEnvironment env) {
+    @GraphQLDescription("entity instance attributes")
+    public Collection<EntityInstanceObject> getEntityInstanceAttributes(final DataFetchingEnvironment env) {
         List<EntityInstanceObject> entityCollectionAttributeObjects = null;
 
         if(CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env)) {
@@ -66,7 +66,7 @@ public class EntityCollectionAttributesObject
             entityCollectionAttributeObjects = new ArrayList<>(entityCollectionAttributes.size());
 
             for(var entityCollectionAttribute : entityCollectionAttributes) {
-                entityCollectionAttributeObjects.add(new EntityInstanceObject(entityCollectionAttribute.getEntityInstance()));
+                entityCollectionAttributeObjects.add(new EntityInstanceObject(entityCollectionAttribute.getEntityInstanceAttribute()));
             }
         }
 
