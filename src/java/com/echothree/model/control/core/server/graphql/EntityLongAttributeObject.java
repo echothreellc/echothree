@@ -27,7 +27,8 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("entity long attribute object")
 @GraphQLName("EntityLongAttribute")
 public class EntityLongAttributeObject
-        extends BaseGraphQl {
+        extends BaseGraphQl
+        implements AttributeInterface {
     
     private final EntityLongAttribute entityLongAttribute; // Always Present
     
