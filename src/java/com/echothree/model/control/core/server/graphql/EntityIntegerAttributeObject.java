@@ -27,7 +27,8 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("entity integer attribute object")
 @GraphQLName("EntityIntegerAttribute")
 public class EntityIntegerAttributeObject
-        extends BaseGraphQl {
+        extends BaseGraphQl
+        implements AttributeInterface {
     
     private final EntityIntegerAttribute entityIntegerAttribute; // Always Present
     

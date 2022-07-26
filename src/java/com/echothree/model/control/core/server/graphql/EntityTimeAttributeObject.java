@@ -28,7 +28,8 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("entity time attribute object")
 @GraphQLName("EntityTimeAttribute")
 public class EntityTimeAttributeObject
-        extends BaseGraphQl {
+        extends BaseGraphQl
+        implements AttributeInterface {
     
     private final EntityTimeAttribute entityTimeAttribute; // Always Present
     

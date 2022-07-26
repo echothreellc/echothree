@@ -32,7 +32,8 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("entity geo point attribute object")
 @GraphQLName("EntityGeoPointAttribute")
 public class EntityGeoPointAttributeObject
-        extends BaseGraphQl {
+        extends BaseGraphQl
+        implements AttributeInterface {
     
     private final EntityGeoPointAttribute entityGeoPointAttribute; // Always Present
     
