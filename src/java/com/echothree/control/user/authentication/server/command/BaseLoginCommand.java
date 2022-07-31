@@ -155,16 +155,37 @@ public abstract class BaseLoginCommand<F extends BaseForm>
         userLoginStatus.setFailureCount(0);
         userLoginStatus.setFirstFailureTime(null);
         userLoginStatus.setLastFailureTime(null);
-   }
+    }
+
+    protected void addRemoteInet4AddressToParty(final Party party, final Integer remoteInet4Address) {
+        if(remoteInet4Address != null) {
+            var contactControl = Session.getModelController(ContactControl.class);
+            var partyPK = party.getPrimaryKey();
+            PartyContactMechanism partyContactMechanism = contactControl.getPartyContactMechanismByInet4Address(party, remoteInet4Address);
+
+            if(partyContactMechanism == null) {
+                String contactMechanismName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.CONTACT_MECHANISM.name());
+                ContactMechanismType contactMechanismType = contactControl.getContactMechanismTypeByName(ContactMechanismTypes.INET_4.name());
+                ContactMechanism contactMechanism = contactControl.createContactMechanism(contactMechanismName, contactMechanismType, Boolean.FALSE, partyPK);
+
+                contactControl.createContactInet4Address(contactMechanism, remoteInet4Address, partyPK);
+                partyContactMechanism = contactControl.createPartyContactMechanism(party, contactMechanism, null, Boolean.FALSE, 1, partyPK);
+            }
+
+            ContactMechanismPurpose contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(ContactMechanismPurposes.INET_4_LOGIN.name());
+            PartyContactMechanismPurpose partyContactMechanismPurpose = contactControl.getPartyContactMechanismPurpose(partyContactMechanism, contactMechanismPurpose);
+            if(partyContactMechanismPurpose == null) {
+                contactControl.createPartyContactMechanismPurpose(partyContactMechanism, contactMechanismPurpose, Boolean.FALSE, 1, partyPK);
+            }
+        }
+    }
 
     protected void successfulLogin(UserLoginStatus userLoginStatus, Party party, PartyRelationship partyRelationship, Integer remoteInet4Address) {
-        var contactControl = Session.getModelController(ContactControl.class);
         UserControl userControl = getUserControl();
         UserVisit userVisit = getUserVisitForUpdate();
         UserKey userKey = userVisit.getUserKey();
         UserKeyDetailValue userKeyDetailValue = userControl.getUserKeyDetailValueByPKForUpdate(userKey.getLastDetail().getPrimaryKey());
-        PartyContactMechanism partyContactMechanism = contactControl.getPartyContactMechanismByInet4Address(party, remoteInet4Address);
-        
+
         userControl.associatePartyToUserVisit(userVisit, party, partyRelationship, session.START_TIME_LONG);
         
         // Only update the UserKeyDetail if the party has changed
@@ -183,25 +204,9 @@ public abstract class BaseLoginCommand<F extends BaseForm>
         clearLoginFailures(userLoginStatus);
 
         userLoginStatus.setLastLoginTime(session.START_TIME_LONG);
-        
-        if(partyContactMechanism == null) {
-            String contactMechanismName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.CONTACT_MECHANISM.name());
-            ContactMechanismType contactMechanismType = contactControl.getContactMechanismTypeByName(ContactMechanismTypes.INET_4.name());
-            ContactMechanism contactMechanism = contactControl.createContactMechanism(contactMechanismName,
-                    contactMechanismType, Boolean.FALSE, partyPK);
-            
-            contactControl.createContactInet4Address(contactMechanism, remoteInet4Address, partyPK);
-            partyContactMechanism = contactControl.createPartyContactMechanism(party, contactMechanism,
-                    null, Boolean.FALSE, 1, partyPK);
-        }
-        
-        ContactMechanismPurpose contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(ContactMechanismPurposes.INET_4_LOGIN.name());
-        PartyContactMechanismPurpose partyContactMechanismPurpose = contactControl.getPartyContactMechanismPurpose(partyContactMechanism,
-                contactMechanismPurpose);
-        if(partyContactMechanismPurpose == null) {
-            contactControl.createPartyContactMechanismPurpose(partyContactMechanism, contactMechanismPurpose, Boolean.FALSE, 1, partyPK);
-        }
-        
+
+        addRemoteInet4AddressToParty(party, remoteInet4Address);
+
         // TODO: Create audit trail
     }
     
