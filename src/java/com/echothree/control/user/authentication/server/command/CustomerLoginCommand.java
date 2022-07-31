@@ -42,7 +42,7 @@ public class CustomerLoginCommand
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("Username", FieldType.STRING, true, 1L, 80L),
                 new FieldDefinition("Password", FieldType.STRING, true, 1L, 40L),
-                new FieldDefinition("RemoteInet4Address", FieldType.INET_4_ADDRESS, true, null, null)
+                new FieldDefinition("RemoteInet4Address", FieldType.INET_4_ADDRESS, false, null, null)
                 ));
     }
     
@@ -66,7 +66,8 @@ public class CustomerLoginCommand
                 
                 if(!hasExecutionErrors()) {
                     if(checkPasswords(userLoginStatus, form.getPassword(), party, true)) {
-                        Integer remoteInet4Address = Integer.valueOf(form.getRemoteInet4Address());
+                        var strRemoteInet4Address = form.getRemoteInet4Address();
+                        var remoteInet4Address = strRemoteInet4Address == null ? null : Integer.valueOf(form.getRemoteInet4Address());
                         
                         successfulLogin(userLoginStatus, party, null, remoteInet4Address);
                     }

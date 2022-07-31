@@ -54,7 +54,7 @@ public class EmployeeLoginCommand
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("Username", FieldType.STRING, true, 1L, 80L),
                 new FieldDefinition("Password", FieldType.STRING, true, 1L, 40L),
-                new FieldDefinition("RemoteInet4Address", FieldType.INET_4_ADDRESS, true, null, null),
+                new FieldDefinition("RemoteInet4Address", FieldType.INET_4_ADDRESS, false, null, null),
                 new FieldDefinition("CompanyName", FieldType.ENTITY_NAME, true, null, null)
                 ));
     }
@@ -98,7 +98,8 @@ public class EmployeeLoginCommand
                                         fromRoleType, party, toRoleType);
 
                                 if(partyRelationship != null) {
-                                    Integer remoteInet4Address = Integer.valueOf(form.getRemoteInet4Address());
+                                    var strRemoteInet4Address = form.getRemoteInet4Address();
+                                    var remoteInet4Address = strRemoteInet4Address == null ? null : Integer.valueOf(form.getRemoteInet4Address());
 
                                     successfulLogin(userLoginStatus, party, partyRelationship, remoteInet4Address);
                                 } else {
