@@ -62,7 +62,9 @@
                 </c:otherwise>
             </c:choose>
             <br />
-            Mime Type Usage Type: ${itemDescriptionType.mimeTypeUsageType.description}<br />
+            <c:if test='${itemDescriptionType.mimeTypeUsageType != null}'>
+                Mime Type Usage Type: ${itemDescriptionType.mimeTypeUsageType.description}<br />
+            </c:if>
             Check Content Web Address:
             <c:choose>
                 <c:when test="${itemDescriptionType.checkContentWebAddress}">
