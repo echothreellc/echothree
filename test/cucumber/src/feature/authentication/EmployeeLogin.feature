@@ -1,5 +1,5 @@
 Feature: Employee login
-  A employee wants to login so that they will be able to work with their account
+  An employee wants to login so that they will be able to work with their account
 
   Scenario: Existing employee login that's successful
     Given the employee Test begins using the application
