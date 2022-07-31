@@ -16,13 +16,11 @@
 
 package com.echothree.cucumber.authentication;
 
-import com.echothree.control.user.authentication.common.AuthenticationService;
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
-import com.echothree.cucumber.util.persona.EmployeePersona;
-import com.echothree.cucumber.util.persona.EmployeePersonas;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
-import com.echothree.util.common.command.CommandResult;
+import com.echothree.cucumber.util.persona.EmployeePersona;
+import com.echothree.cucumber.util.persona.EmployeePersonas;
 import io.cucumber.java8.En;
 import java.util.Map;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,8 +30,8 @@ public class EmployeeLoginSteps implements En {
     public EmployeeLoginSteps() {
         After(() -> {
                     for(Map.Entry<String, EmployeePersona> employeePersona : EmployeePersonas.getPersonaEntries()) {
-                        AuthenticationService authenticationService = AuthenticationUtil.getHome();
-                        CommandResult commandResult = authenticationService.logout(employeePersona.getValue().userVisitPK);
+                        var authenticationService = AuthenticationUtil.getHome();
+                        var commandResult = authenticationService.logout(employeePersona.getValue().userVisitPK);
 
                         assertThat(commandResult.hasErrors()).isFalse();
                     }
