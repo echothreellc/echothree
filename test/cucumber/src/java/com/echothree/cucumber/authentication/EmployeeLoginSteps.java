@@ -39,19 +39,6 @@ public class EmployeeLoginSteps implements En {
                     }
                 });
 
-        When("^the user logs in as an employee with the username \"([^\"]*)\" and password \"([^\"]*)\" and company \"([^\"]*)\"$",
-                (String username, String password, String companyName) -> {
-                    var authenticationService = AuthenticationUtil.getHome();
-                    var employeeLoginForm = authenticationService.getEmployeeLoginForm();
-
-                    employeeLoginForm.setUsername(username);
-                    employeeLoginForm.setPassword(password);
-                    employeeLoginForm.setCompanyName(companyName);
-                    employeeLoginForm.setRemoteInet4Address("0.0.0.0");
-
-                    LastCommandResult.commandResult = authenticationService.employeeLogin(CurrentPersona.persona.userVisitPK, employeeLoginForm);
-                });
-
         When("^the user begins to log in as an employee$",
                 () -> {
                     var persona = CurrentPersona.persona;

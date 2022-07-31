@@ -37,19 +37,7 @@ public class CustomerLoginSteps implements En {
                     }
                 });
 
-        When("^the user logs in as a customer with the username \"([^\"]*)\" and password \"([^\"]*)\"$",
-                (String username, String password) -> {
-                    var authenticationService = AuthenticationUtil.getHome();
-                    var customerLoginForm = authenticationService.getCustomerLoginForm();
-
-                    customerLoginForm.setUsername(username);
-                    customerLoginForm.setPassword(password);
-                    customerLoginForm.setRemoteInet4Address("0.0.0.0");
-
-                    LastCommandResult.commandResult = authenticationService.customerLogin(CurrentPersona.persona.userVisitPK, customerLoginForm);
-                });
-
-        And("^the user begins to log in as an customer$",
+        When("^the user begins to log in as an customer$",
                 () -> {
                     var persona = CurrentPersona.persona;
 

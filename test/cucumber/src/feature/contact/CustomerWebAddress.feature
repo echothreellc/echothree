@@ -4,7 +4,10 @@ Feature: Customer web address
   Background:
     Given the customer Test begins using the application
     And the user is not currently logged in
-    When the user logs in as a customer with the username "TestC@echothree.com" and password "password"
+    When the user begins to log in as an customer
+    And the customer sets the username to "TestC@echothree.com"
+    And the customer sets the password to "password"
+    And the customer logs in
     Then no error should occur
 
   Scenario: Existing customer adds and then deletes an web address without a description
