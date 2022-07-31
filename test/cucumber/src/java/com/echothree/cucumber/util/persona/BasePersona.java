@@ -16,6 +16,9 @@
 
 package com.echothree.cucumber.util.persona;
 
+import com.echothree.control.user.authentication.common.form.CustomerLoginForm;
+import com.echothree.control.user.authentication.common.form.EmployeeLoginForm;
+import com.echothree.control.user.authentication.common.form.VendorLoginForm;
 import com.echothree.control.user.contact.common.edit.ContactEmailAddressEdit;
 import com.echothree.control.user.contact.common.edit.ContactPostalAddressEdit;
 import com.echothree.control.user.contact.common.edit.ContactTelephoneEdit;
@@ -150,6 +153,11 @@ public class BasePersona {
         this.persona = persona;
         userVisitPK = UserVisits.getUserVisitPK();
     }
+
+    // Authentication
+    public CustomerLoginForm customerLoginForm;
+    public EmployeeLoginForm employeeLoginForm;
+    public VendorLoginForm vendorLoginForm;
 
     // Contact
     public PartyContactMechanismSpec partyContactMechanismSpec;
