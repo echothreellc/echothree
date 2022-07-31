@@ -17,6 +17,8 @@
 package com.echothree.cucumber.authentication;
 
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
+import com.echothree.control.user.item.common.ItemUtil;
+import com.echothree.control.user.item.common.result.CreateItemResult;
 import com.echothree.cucumber.util.command.LastCommandResult;
 import com.echothree.cucumber.util.persona.CurrentPersona;
 import com.echothree.cucumber.util.persona.EmployeePersona;
@@ -48,6 +50,65 @@ public class EmployeeLoginSteps implements En {
                     employeeLoginForm.setRemoteInet4Address("0.0.0.0");
 
                     LastCommandResult.commandResult = authenticationService.employeeLogin(CurrentPersona.persona.userVisitPK, employeeLoginForm);
+                });
+
+        When("^the user begins to log in as an employee$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+
+                    assertThat(persona.employeeLoginForm).isNull();
+
+                    persona.employeeLoginForm = AuthenticationUtil.getHome().getEmployeeLoginForm();
+                });
+
+        And("^the employee sets the username to \"([^\"]*)\"$",
+                (String username) -> {
+                    var persona = CurrentPersona.persona;
+
+                    assertThat(persona.employeeLoginForm).isNotNull();
+
+                    persona.employeeLoginForm.setUsername(username);
+                });
+
+        And("^the employee sets the password to \"([^\"]*)\"$",
+                (String password) -> {
+                    var persona = CurrentPersona.persona;
+
+                    assertThat(persona.employeeLoginForm).isNotNull();
+
+                    persona.employeeLoginForm.setPassword(password);
+                });
+
+        And("^the employee sets the company to \"([^\"]*)\"$",
+                (String company) -> {
+                    var persona = CurrentPersona.persona;
+
+                    assertThat(persona.employeeLoginForm).isNotNull();
+
+                    persona.employeeLoginForm.setCompanyName(company);
+                });
+
+        And("^the employee sets the remote IPv4 address to \"([^\"]*)\"$",
+                (String remoteInet4Address) -> {
+                    var persona = CurrentPersona.persona;
+
+                    assertThat(persona.employeeLoginForm).isNotNull();
+
+                    persona.employeeLoginForm.setRemoteInet4Address(remoteInet4Address);
+                });
+
+        And("^the employee logs in$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+                    var employeeLoginForm = persona.employeeLoginForm;
+
+                    assertThat(persona.employeeLoginForm).isNotNull();
+
+                    var authenticationService = AuthenticationUtil.getHome();
+
+                    LastCommandResult.commandResult = authenticationService.employeeLogin(persona.userVisitPK, employeeLoginForm);
+
+                    persona.employeeLoginForm = null;
                 });
     }
 
