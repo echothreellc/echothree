@@ -25,27 +25,12 @@ import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.user.common.UserConstants;
-import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.data.contact.server.entity.ContactMechanism;
-import com.echothree.model.data.contact.server.entity.ContactMechanismPurpose;
-import com.echothree.model.data.contact.server.entity.ContactMechanismType;
-import com.echothree.model.data.contact.server.entity.PartyContactMechanism;
-import com.echothree.model.data.contact.server.entity.PartyContactMechanismPurpose;
-import com.echothree.model.data.party.common.pk.PartyPK;
-import com.echothree.model.data.party.common.pk.PartyRelationshipPK;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyRelationship;
-import com.echothree.model.data.party.server.entity.PartyTypePasswordStringPolicy;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserKey;
-import com.echothree.model.data.user.server.entity.UserLoginPassword;
-import com.echothree.model.data.user.server.entity.UserLoginPasswordEncoderType;
 import com.echothree.model.data.user.server.entity.UserLoginPasswordString;
-import com.echothree.model.data.user.server.entity.UserLoginPasswordType;
 import com.echothree.model.data.user.server.entity.UserLoginStatus;
-import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.data.user.server.value.UserKeyDetailValue;
 import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.message.ExecutionWarnings;
@@ -61,23 +46,23 @@ public abstract class BaseLoginCommand<F extends BaseForm>
         extends BaseSimpleCommand<F> {
     
     /** Creates a new instance of BaseLoginCommand */
-    protected BaseLoginCommand(UserVisitPK userVisitPK, F form, CommandSecurityDefinition commandSecurityDefinition,
-            List<FieldDefinition> formFieldDefinition) {
+    protected BaseLoginCommand(final UserVisitPK userVisitPK, final F form, final CommandSecurityDefinition commandSecurityDefinition,
+            final List<FieldDefinition> formFieldDefinition) {
         super(userVisitPK, form, commandSecurityDefinition, formFieldDefinition, false);
     }
     
-    protected UserLoginPasswordString checkPassword(String password, Party party, String userLoginPasswordTypeName,
-            boolean deleteOnSuccess) {
-        UserControl userControl = getUserControl();
-        UserLoginPasswordString result = null;
-        UserLoginPasswordType userLoginPasswordType = userControl.getUserLoginPasswordTypeByName(userLoginPasswordTypeName);
-        UserLoginPassword userLoginPassword = deleteOnSuccess? userControl.getUserLoginPasswordForUpdate(party, userLoginPasswordType):
+    protected UserLoginPasswordString checkPassword(final String password, final Party party, final String userLoginPasswordTypeName,
+            final boolean deleteOnSuccess) {
+        var userControl = getUserControl();
+        var userLoginPasswordType = userControl.getUserLoginPasswordTypeByName(userLoginPasswordTypeName);
+        var userLoginPassword = deleteOnSuccess? userControl.getUserLoginPasswordForUpdate(party, userLoginPasswordType):
             userControl.getUserLoginPassword(party, userLoginPasswordType);
-        
+        UserLoginPasswordString result = null;
+
         if(userLoginPassword != null) {
-            UserLoginPasswordEncoderType userLoginPasswordEncoderType = userLoginPassword.getUserLoginPasswordType().getUserLoginPasswordEncoderType();
-            String userLoginPasswordEncoderTypeName = userLoginPasswordEncoderType.getUserLoginPasswordEncoderTypeName();
-            UserLoginPasswordString userLoginPasswordString = userControl.getUserLoginPasswordString(userLoginPassword);
+            var userLoginPasswordEncoderType = userLoginPassword.getUserLoginPasswordType().getUserLoginPasswordEncoderType();
+            var userLoginPasswordEncoderTypeName = userLoginPasswordEncoderType.getUserLoginPasswordEncoderTypeName();
+            var userLoginPasswordString = userControl.getUserLoginPasswordString(userLoginPassword);
             
             if(userLoginPasswordEncoderTypeName.equals(UserConstants.UserLoginPasswordEncoderType_SHA1)) {
                 result = Sha1Utils.getInstance().encode(userLoginPasswordString.getSalt(), password).equals(userLoginPasswordString.getPassword()) ? userLoginPasswordString: null;
@@ -96,7 +81,7 @@ public abstract class BaseLoginCommand<F extends BaseForm>
     // TODO: Recovered password should become regular password if that ends up being the password that matches, also,
     // the recovered password should be deleted if the user logs in using their regular one. Changing a password should also
     // make sure a recovered password does not exist.
-    protected boolean checkPasswords(UserLoginStatus userLoginStatus, String password, Party party, boolean doStatusChecks) {
+    protected boolean checkPasswords(final UserLoginStatus userLoginStatus, final String password, final Party party, final boolean doStatusChecks) {
         var result = checkPassword(password, party, UserConstants.UserLoginPasswordType_STRING, false);
         
         if(result == null) {
@@ -107,7 +92,7 @@ public abstract class BaseLoginCommand<F extends BaseForm>
             addExecutionError(ExecutionErrors.IncorrectPassword.name());
         } else if(doStatusChecks) {
             var partyControl = Session.getModelController(PartyControl.class);
-            PartyTypePasswordStringPolicy partyTypePasswordStringPolicy = partyControl.getPartyTypePasswordStringPolicy(party.getLastDetail().getPartyType());
+            var partyTypePasswordStringPolicy = partyControl.getPartyTypePasswordStringPolicy(party.getLastDetail().getPartyType());
             
             if(partyTypePasswordStringPolicy != null) {
                 var partyTypePasswordStringPolicyDetail = partyTypePasswordStringPolicy.getLastDetail();
@@ -150,7 +135,7 @@ public abstract class BaseLoginCommand<F extends BaseForm>
         return result != null;
     }
 
-    protected void clearLoginFailures(UserLoginStatus userLoginStatus) {
+    protected void clearLoginFailures(final UserLoginStatus userLoginStatus) {
         // Audit trail for callers of this function should be created by the callers.
         userLoginStatus.setFailureCount(0);
         userLoginStatus.setFirstFailureTime(null);
@@ -161,38 +146,39 @@ public abstract class BaseLoginCommand<F extends BaseForm>
         if(remoteInet4Address != null) {
             var contactControl = Session.getModelController(ContactControl.class);
             var partyPK = party.getPrimaryKey();
-            PartyContactMechanism partyContactMechanism = contactControl.getPartyContactMechanismByInet4Address(party, remoteInet4Address);
+            var partyContactMechanism = contactControl.getPartyContactMechanismByInet4Address(party, remoteInet4Address);
 
             if(partyContactMechanism == null) {
-                String contactMechanismName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.CONTACT_MECHANISM.name());
-                ContactMechanismType contactMechanismType = contactControl.getContactMechanismTypeByName(ContactMechanismTypes.INET_4.name());
-                ContactMechanism contactMechanism = contactControl.createContactMechanism(contactMechanismName, contactMechanismType, Boolean.FALSE, partyPK);
+                var contactMechanismName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(null, SequenceTypes.CONTACT_MECHANISM.name());
+                var contactMechanismType = contactControl.getContactMechanismTypeByName(ContactMechanismTypes.INET_4.name());
+                var contactMechanism = contactControl.createContactMechanism(contactMechanismName, contactMechanismType, Boolean.FALSE, partyPK);
 
                 contactControl.createContactInet4Address(contactMechanism, remoteInet4Address, partyPK);
                 partyContactMechanism = contactControl.createPartyContactMechanism(party, contactMechanism, null, Boolean.FALSE, 1, partyPK);
             }
 
-            ContactMechanismPurpose contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(ContactMechanismPurposes.INET_4_LOGIN.name());
-            PartyContactMechanismPurpose partyContactMechanismPurpose = contactControl.getPartyContactMechanismPurpose(partyContactMechanism, contactMechanismPurpose);
+            var contactMechanismPurpose = contactControl.getContactMechanismPurposeByName(ContactMechanismPurposes.INET_4_LOGIN.name());
+            var partyContactMechanismPurpose = contactControl.getPartyContactMechanismPurpose(partyContactMechanism, contactMechanismPurpose);
             if(partyContactMechanismPurpose == null) {
                 contactControl.createPartyContactMechanismPurpose(partyContactMechanism, contactMechanismPurpose, Boolean.FALSE, 1, partyPK);
             }
         }
     }
 
-    protected void successfulLogin(UserLoginStatus userLoginStatus, Party party, PartyRelationship partyRelationship, Integer remoteInet4Address) {
-        UserControl userControl = getUserControl();
-        UserVisit userVisit = getUserVisitForUpdate();
-        UserKey userKey = userVisit.getUserKey();
-        UserKeyDetailValue userKeyDetailValue = userControl.getUserKeyDetailValueByPKForUpdate(userKey.getLastDetail().getPrimaryKey());
+    protected void successfulLogin(final UserLoginStatus userLoginStatus, final Party party, final PartyRelationship partyRelationship,
+            final Integer remoteInet4Address) {
+        var userControl = getUserControl();
+        var userVisit = getUserVisitForUpdate();
+        var userKey = userVisit.getUserKey();
+        var userKeyDetailValue = userControl.getUserKeyDetailValueByPKForUpdate(userKey.getLastDetail().getPrimaryKey());
 
         userControl.associatePartyToUserVisit(userVisit, party, partyRelationship, session.START_TIME_LONG);
         
         // Only update the UserKeyDetail if the party has changed
-        PartyPK partyPK = party.getPrimaryKey();
-        PartyRelationshipPK partyRelationshipPK = partyRelationship == null? null: partyRelationship.getPrimaryKey();
-        PartyPK userKeyPartyPK = userKeyDetailValue.getPartyPK();
-        PartyRelationshipPK userKeyPartyRelationshipPK = userKeyDetailValue.getPartyRelationshipPK();
+        var partyPK = party.getPrimaryKey();
+        var partyRelationshipPK = partyRelationship == null? null: partyRelationship.getPrimaryKey();
+        var userKeyPartyPK = userKeyDetailValue.getPartyPK();
+        var userKeyPartyRelationshipPK = userKeyDetailValue.getPartyRelationshipPK();
         
         if(userKeyPartyPK == null || !userKeyPartyPK.equals(partyPK)
                 || userKeyPartyRelationshipPK == null || !userKeyPartyRelationshipPK.equals(partyRelationshipPK)) {
@@ -210,8 +196,8 @@ public abstract class BaseLoginCommand<F extends BaseForm>
         // TODO: Create audit trail
     }
     
-    protected void unsuccessfulLogin(UserLoginStatus userLoginStatus) {
-        Integer failureCount = userLoginStatus.getFailureCount();
+    protected void unsuccessfulLogin(final UserLoginStatus userLoginStatus) {
+        var failureCount = userLoginStatus.getFailureCount();
         
         userLoginStatus.setFailureCount(failureCount + 1);
         if(userLoginStatus.getFirstFailureTime() == null) {
