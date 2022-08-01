@@ -36,7 +36,6 @@ import com.echothree.model.control.vendor.common.workflow.VendorItemStatusConsta
 import com.echothree.model.control.vendor.common.workflow.VendorStatusConstants;
 import com.echothree.model.control.vendor.server.graphql.VendorObject;
 import com.echothree.model.control.vendor.server.transfer.ItemPurchasingCategoryDescriptionTransferCache;
-import com.echothree.model.control.vendor.server.transfer.ItemPurchasingCategoryTransferCache;
 import com.echothree.model.control.vendor.server.transfer.VendorItemCostTransferCache;
 import com.echothree.model.control.vendor.server.transfer.VendorItemTransferCache;
 import com.echothree.model.control.vendor.server.transfer.VendorTransferCaches;
@@ -1534,7 +1533,29 @@ public class VendorControl
         
         return itemPurchasingCategory;
     }
-    
+
+    public long countItemPurchasingCategories() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM itempurchasingcategories, itempurchasingcategorydetails " +
+                "WHERE iprchc_activedetailid = iprchcdt_itempurchasingcategorydetailid");
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ItemPurchasingCategory */
+    public ItemPurchasingCategory getItemPurchasingCategoryByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ItemPurchasingCategoryPK(entityInstance.getEntityUniqueId());
+
+        return ItemPurchasingCategoryFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ItemPurchasingCategory getItemPurchasingCategoryByEntityInstance(EntityInstance entityInstance) {
+        return getItemPurchasingCategoryByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ItemPurchasingCategory getItemPurchasingCategoryByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getItemPurchasingCategoryByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     private static final Map<EntityPermission, String> getItemPurchasingCategoryByNameQueries;
 
     static {
@@ -1554,7 +1575,7 @@ public class VendorControl
         getItemPurchasingCategoryByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private ItemPurchasingCategory getItemPurchasingCategoryByName(String itemPurchasingCategoryName, EntityPermission entityPermission) {
+    public ItemPurchasingCategory getItemPurchasingCategoryByName(String itemPurchasingCategoryName, EntityPermission entityPermission) {
         return ItemPurchasingCategoryFactory.getInstance().getEntityFromQuery(entityPermission, getItemPurchasingCategoryByNameQueries, itemPurchasingCategoryName);
     }
 
@@ -1593,7 +1614,7 @@ public class VendorControl
         getDefaultItemPurchasingCategoryQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private ItemPurchasingCategory getDefaultItemPurchasingCategory(EntityPermission entityPermission) {
+    public ItemPurchasingCategory getDefaultItemPurchasingCategory(EntityPermission entityPermission) {
         return ItemPurchasingCategoryFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultItemPurchasingCategoryQueries);
     }
 
@@ -1676,19 +1697,22 @@ public class VendorControl
     public ItemPurchasingCategoryTransfer getItemPurchasingCategoryTransfer(UserVisit userVisit, ItemPurchasingCategory itemPurchasingCategory) {
         return getVendorTransferCaches(userVisit).getItemPurchasingCategoryTransferCache().getItemPurchasingCategoryTransfer(itemPurchasingCategory);
     }
-    
-    public List<ItemPurchasingCategoryTransfer> getItemPurchasingCategoryTransfers(UserVisit userVisit) {
-        List<ItemPurchasingCategory> itemPurchasingCategories = getItemPurchasingCategories();
-        List<ItemPurchasingCategoryTransfer> itemPurchasingCategoryTransfers = new ArrayList<>(itemPurchasingCategories.size());
-        ItemPurchasingCategoryTransferCache itemPurchasingCategoryTransferCache = getVendorTransferCaches(userVisit).getItemPurchasingCategoryTransferCache();
-        
+
+    public List<ItemPurchasingCategoryTransfer> getItemPurchasingCategoryTransfers(UserVisit userVisit, Collection<ItemPurchasingCategory> itemPurchasingCategories) {
+        var itemPurchasingCategoryTransfers = new ArrayList<ItemPurchasingCategoryTransfer>(itemPurchasingCategories.size());
+        var itemPurchasingCategoryTransferCache = getVendorTransferCaches(userVisit).getItemPurchasingCategoryTransferCache();
+
         itemPurchasingCategories.forEach((itemPurchasingCategory) ->
                 itemPurchasingCategoryTransfers.add(itemPurchasingCategoryTransferCache.getItemPurchasingCategoryTransfer(itemPurchasingCategory))
         );
-        
+
         return itemPurchasingCategoryTransfers;
     }
-    
+
+    public List<ItemPurchasingCategoryTransfer> getItemPurchasingCategoryTransfers(UserVisit userVisit) {
+        return getItemPurchasingCategoryTransfers(userVisit, getItemPurchasingCategories());
+    }
+
     public ItemPurchasingCategoryChoicesBean getItemPurchasingCategoryChoices(String defaultItemPurchasingCategoryChoice,
             Language language, boolean allowNullChoice) {
         List<ItemPurchasingCategory> itemPurchasingCategories = getItemPurchasingCategories();

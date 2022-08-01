@@ -40,6 +40,8 @@ import com.echothree.model.control.sequence.server.graphql.SequenceObject;
 import com.echothree.model.control.sequence.server.graphql.SequenceSecurityUtils;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindObject;
 import com.echothree.model.control.uom.server.graphql.UomSecurityUtils;
+import com.echothree.model.control.vendor.server.graphql.ItemPurchasingCategoryObject;
+import com.echothree.model.control.vendor.server.graphql.VendorSecurityUtils;
 import com.echothree.model.control.workflow.server.graphql.WorkflowEntityStatusObject;
 import com.echothree.model.data.item.common.ItemPriceConstants;
 import com.echothree.model.data.item.server.entity.Item;
@@ -113,7 +115,11 @@ public class ItemObject
         return AccountingSecurityUtils.getInstance().getHasItemAccountingCategoryAccess(env) ? new ItemAccountingCategoryObject(getItemDetail().getItemAccountingCategory()) : null;
     }
 
-    //| itm_iprchc_itempurchasingcategoryid | bigint      | YES  |     | NULL    |       |
+    @GraphQLField
+    @GraphQLDescription("item purchasing category")
+    public ItemPurchasingCategoryObject getItemPurchasingCategory(final DataFetchingEnvironment env) {
+        return VendorSecurityUtils.getInstance().getHasItemPurchasingCategoryAccess(env) ? new ItemPurchasingCategoryObject(getItemDetail().getItemPurchasingCategory()) : null;
+    }
 
     @GraphQLField
     @GraphQLDescription("company")
