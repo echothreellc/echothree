@@ -16,16 +16,26 @@
 
 package com.echothree.model.control.vendor.server.logic;
 
+import com.echothree.control.user.vendor.common.spec.ItemPurchasingCategoryUniversalSpec;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.vendor.common.exception.UnknownDefaultItemPurchasingCategoryException;
+import com.echothree.model.control.vendor.common.exception.UnknownItemPurchasingCategoryNameException;
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.vendor.server.entity.ItemPurchasingCategory;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
 
-public class ItemPurchasingCategoryLogic {
+public class ItemPurchasingCategoryLogic
+        extends BaseLogic {
     
     private ItemPurchasingCategoryLogic() {
         super();
@@ -37,6 +47,75 @@ public class ItemPurchasingCategoryLogic {
     
     public static ItemPurchasingCategoryLogic getInstance() {
         return ItemPurchasingCategoryLogicHolder.instance;
+    }
+
+    public ItemPurchasingCategory getItemPurchasingCategoryByName(final ExecutionErrorAccumulator eea, final String itemPurchasingCategoryName,
+            final EntityPermission entityPermission) {
+        var vendorControl = Session.getModelController(VendorControl.class);
+        var itemPurchasingCategory = vendorControl.getItemPurchasingCategoryByName(itemPurchasingCategoryName, entityPermission);
+
+        if(itemPurchasingCategory == null) {
+            handleExecutionError(UnknownItemPurchasingCategoryNameException.class, eea, ExecutionErrors.UnknownItemPurchasingCategoryName.name(), itemPurchasingCategoryName);
+        }
+
+        return itemPurchasingCategory;
+    }
+
+    public ItemPurchasingCategory getItemPurchasingCategoryByName(final ExecutionErrorAccumulator eea, final String itemPurchasingCategoryName) {
+        return getItemPurchasingCategoryByName(eea, itemPurchasingCategoryName, EntityPermission.READ_ONLY);
+    }
+
+    public ItemPurchasingCategory getItemPurchasingCategoryByNameForUpdate(final ExecutionErrorAccumulator eea, final String itemPurchasingCategoryName) {
+        return getItemPurchasingCategoryByName(eea, itemPurchasingCategoryName, EntityPermission.READ_WRITE);
+    }
+
+    public ItemPurchasingCategory getItemPurchasingCategoryByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final ItemPurchasingCategoryUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
+        ItemPurchasingCategory itemPurchasingCategory = null;
+        var vendorControl = Session.getModelController(VendorControl.class);
+        var itemPurchasingCategoryName = universalSpec.getItemPurchasingCategoryName();
+        var parameterCount = (itemPurchasingCategoryName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+
+        switch(parameterCount) {
+            case 0:
+                if(allowDefault) {
+                    itemPurchasingCategory = vendorControl.getDefaultItemPurchasingCategory(entityPermission);
+
+                    if(itemPurchasingCategory == null) {
+                        handleExecutionError(UnknownDefaultItemPurchasingCategoryException.class, eea, ExecutionErrors.UnknownDefaultItemPurchasingCategory.name());
+                    }
+                } else {
+                    handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                }
+                break;
+            case 1:
+                if(itemPurchasingCategoryName == null) {
+                    var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                            ComponentVendors.ECHOTHREE.name(), EntityTypes.ItemPurchasingCategory.name());
+
+                    if(!eea.hasExecutionErrors()) {
+                        itemPurchasingCategory = vendorControl.getItemPurchasingCategoryByEntityInstance(entityInstance, entityPermission);
+                    }
+                } else {
+                    itemPurchasingCategory = getItemPurchasingCategoryByName(eea, itemPurchasingCategoryName, entityPermission);
+                }
+                break;
+            default:
+                handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                break;
+        }
+
+        return itemPurchasingCategory;
+    }
+
+    public ItemPurchasingCategory getItemPurchasingCategoryByUniversalSpec(final ExecutionErrorAccumulator eea,
+            final ItemPurchasingCategoryUniversalSpec universalSpec, boolean allowDefault) {
+        return getItemPurchasingCategoryByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_ONLY);
+    }
+
+    public ItemPurchasingCategory getItemPurchasingCategoryByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
+            final ItemPurchasingCategoryUniversalSpec universalSpec, boolean allowDefault) {
+        return getItemPurchasingCategoryByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
     }
 
     private long countItemsByItemPurchasingCategoryChildren(final VendorControl vendorControl, final ItemControl itemControl,

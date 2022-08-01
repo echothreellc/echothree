@@ -2245,5 +2245,6 @@ public enum ExecutionErrors {
     UnknownDefaultCancellationKind,
     UnknownDefaultReturnKind,
     UnknownDefaultItemAccountingCategory,
+    UnknownDefaultItemPurchasingCategory,
 
 }

@@ -17,20 +17,19 @@
 package com.echothree.control.user.vendor.server.command;
 
 import com.echothree.control.user.vendor.common.form.GetItemPurchasingCategoryForm;
-import com.echothree.control.user.vendor.common.result.GetItemPurchasingCategoryResult;
 import com.echothree.control.user.vendor.common.result.VendorResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.vendor.server.control.VendorControl;
+import com.echothree.model.control.vendor.server.logic.ItemPurchasingCategoryLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.vendor.server.entity.ItemPurchasingCategory;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -40,45 +39,54 @@ import java.util.Collections;
 import java.util.List;
 
 public class GetItemPurchasingCategoryCommand
-        extends BaseSimpleCommand<GetItemPurchasingCategoryForm> {
-    
+        extends BaseSingleEntityCommand<ItemPurchasingCategory, GetItemPurchasingCategoryForm> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
                         new SecurityRoleDefinition(SecurityRoleGroups.ItemPurchasingCategory.name(), SecurityRoles.Review.name())
-                        )))
-                )));
-        
+                )))
+        )));
+
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("ItemPurchasingCategoryName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+                new FieldDefinition("ItemPurchasingCategoryName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
+        ));
     }
-    
+
     /** Creates a new instance of GetItemPurchasingCategoryCommand */
     public GetItemPurchasingCategoryCommand(UserVisitPK userVisitPK, GetItemPurchasingCategoryForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var vendorControl = Session.getModelController(VendorControl.class);
-        GetItemPurchasingCategoryResult result = VendorResultFactory.getGetItemPurchasingCategoryResult();
-        String itemPurchasingCategoryName = form.getItemPurchasingCategoryName();
-        ItemPurchasingCategory itemPurchasingCategory = vendorControl.getItemPurchasingCategoryByName(itemPurchasingCategoryName);
-        
-        if(itemPurchasingCategory != null) {
-            result.setItemPurchasingCategory(vendorControl.getItemPurchasingCategoryTransfer(getUserVisit(), itemPurchasingCategory));
-            
-            sendEventUsingNames(itemPurchasingCategory.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownItemPurchasingCategoryName.name(), itemPurchasingCategoryName);
+    protected ItemPurchasingCategory getEntity() {
+        var returnKind = ItemPurchasingCategoryLogic.getInstance().getItemPurchasingCategoryByUniversalSpec(this, form, true);
+
+        if(returnKind != null) {
+            sendEventUsingNames(returnKind.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
         }
-        
+
+        return returnKind;
+    }
+
+    @Override
+    protected BaseResult getTransfer(ItemPurchasingCategory returnKind) {
+        var vendorControl = Session.getModelController(VendorControl.class);
+        var result = VendorResultFactory.getGetItemPurchasingCategoryResult();
+
+        if(returnKind != null) {
+            result.setItemPurchasingCategory(vendorControl.getItemPurchasingCategoryTransfer(getUserVisit(), returnKind));
+        }
+
         return result;
     }
-    
+
 }

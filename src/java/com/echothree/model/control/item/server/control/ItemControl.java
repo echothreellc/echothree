@@ -2035,6 +2035,46 @@ public class ItemControl
         return getItemsByItemAccountingCategory(EntityPermission.READ_WRITE, itemAccountingCategory);
     }
 
+    private List<Item> getItemsByItemPurchasingCategory(EntityPermission entityPermission, ItemPurchasingCategory itemPurchasingCategory) {
+        List<Item> items;
+
+        try {
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM items, itemdetails " +
+                        "WHERE itm_activedetailid = itmdt_itemdetailid AND itmdt_iprchc_itempurchasingcategoryid = ? " +
+                        "ORDER BY itmdt_itemname " +
+                        "_LIMIT_";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM items, itemdetails " +
+                        "WHERE itm_activedetailid = itmdt_itemdetailid AND itmdt_iprchc_itempurchasingcategoryid = ? " +
+                        "FOR UPDATE";
+            }
+
+            PreparedStatement ps = ItemFactory.getInstance().prepareStatement(query);
+
+            ps.setLong(1, itemPurchasingCategory.getPrimaryKey().getEntityId());
+
+            items = ItemFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return items;
+    }
+
+
+    public List<Item> getItemsByItemPurchasingCategory(ItemPurchasingCategory itemPurchasingCategory) {
+        return getItemsByItemPurchasingCategory(EntityPermission.READ_ONLY, itemPurchasingCategory);
+    }
+
+    public List<Item> getItemsByItemPurchasingCategoryForUpdate(ItemPurchasingCategory itemPurchasingCategory) {
+        return getItemsByItemPurchasingCategory(EntityPermission.READ_WRITE, itemPurchasingCategory);
+    }
+
     private List<Item> getItemsByCompanyParty(EntityPermission entityPermission, Party companyParty) {
         List<Item> items;
 

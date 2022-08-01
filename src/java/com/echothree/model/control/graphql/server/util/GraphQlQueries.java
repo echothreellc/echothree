@@ -236,6 +236,8 @@ import com.echothree.control.user.user.server.command.GetRecoveryQuestionCommand
 import com.echothree.control.user.user.server.command.GetRecoveryQuestionsCommand;
 import com.echothree.control.user.user.server.command.GetUserLoginCommand;
 import com.echothree.control.user.vendor.common.VendorUtil;
+import com.echothree.control.user.vendor.server.command.GetItemPurchasingCategoriesCommand;
+import com.echothree.control.user.vendor.server.command.GetItemPurchasingCategoryCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorsCommand;
 import com.echothree.control.user.workflow.common.WorkflowUtil;
@@ -362,6 +364,8 @@ import com.echothree.model.control.user.server.graphql.RecoveryQuestionObject;
 import com.echothree.model.control.user.server.graphql.UserLoginObject;
 import com.echothree.model.control.user.server.graphql.UserSessionObject;
 import com.echothree.model.control.user.server.graphql.UserVisitObject;
+import com.echothree.model.control.vendor.server.control.VendorControl;
+import com.echothree.model.control.vendor.server.graphql.ItemPurchasingCategoryObject;
 import com.echothree.model.control.vendor.server.graphql.VendorObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowStepObject;
@@ -476,6 +480,8 @@ import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUseType;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.RecoveryQuestion;
 import com.echothree.model.data.user.server.entity.UserLogin;
+import com.echothree.model.data.vendor.common.ItemPurchasingCategoryConstants;
+import com.echothree.model.data.vendor.server.entity.ItemPurchasingCategory;
 import com.echothree.model.data.vendor.server.entity.Vendor;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowStep;
@@ -5671,6 +5677,57 @@ public final class GraphQlQueries
                     var itemAccountingCategories = entities.stream().map(ItemAccountingCategoryObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, itemAccountingCategories);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("itemPurchasingCategory")
+    public static ItemPurchasingCategoryObject itemPurchasingCategory(final DataFetchingEnvironment env,
+            @GraphQLName("itemPurchasingCategoryName") final String itemPurchasingCategoryName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        ItemPurchasingCategory itemPurchasingCategory;
+
+        try {
+            var commandForm = VendorUtil.getHome().getGetItemPurchasingCategoryForm();
+
+            commandForm.setItemPurchasingCategoryName(itemPurchasingCategoryName);
+            commandForm.setUlid(id);
+
+            itemPurchasingCategory = new GetItemPurchasingCategoryCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return itemPurchasingCategory == null ? null : new ItemPurchasingCategoryObject(itemPurchasingCategory);
+    }
+
+    @GraphQLField
+    @GraphQLName("itemPurchasingCategories")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public static CountingPaginatedData<ItemPurchasingCategoryObject> itemPurchasingCategories(final DataFetchingEnvironment env) {
+        CountingPaginatedData<ItemPurchasingCategoryObject> data;
+
+        try {
+            var vendorControl = Session.getModelController(VendorControl.class);
+            var totalCount = vendorControl.countItemPurchasingCategories();
+
+            try(var objectLimiter = new ObjectLimiter(env, ItemPurchasingCategoryConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = VendorUtil.getHome().getGetItemPurchasingCategoriesForm();
+                var entities = new GetItemPurchasingCategoriesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var itemPurchasingCategories = entities.stream().map(ItemPurchasingCategoryObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, itemPurchasingCategories);
                 }
             }
         } catch (NamingException ex) {
