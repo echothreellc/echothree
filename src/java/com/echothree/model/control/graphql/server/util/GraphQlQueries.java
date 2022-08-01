@@ -19,6 +19,8 @@ package com.echothree.model.control.graphql.server.util;
 import com.echothree.control.user.accounting.common.AccountingUtil;
 import com.echothree.control.user.accounting.server.command.GetCurrenciesCommand;
 import com.echothree.control.user.accounting.server.command.GetCurrencyCommand;
+import com.echothree.control.user.accounting.server.command.GetItemAccountingCategoriesCommand;
+import com.echothree.control.user.accounting.server.command.GetItemAccountingCategoryCommand;
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
 import com.echothree.control.user.cancellationpolicy.server.command.GetCancellationKindCommand;
 import com.echothree.control.user.cancellationpolicy.server.command.GetCancellationKindsCommand;
@@ -245,7 +247,9 @@ import com.echothree.control.user.workflow.server.command.GetWorkflowStepsComman
 import com.echothree.control.user.workflow.server.command.GetWorkflowTypeCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowTypesCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowsCommand;
+import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
+import com.echothree.model.control.accounting.server.graphql.ItemAccountingCategoryObject;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationKindObject;
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationPolicyObject;
@@ -363,7 +367,9 @@ import com.echothree.model.control.workflow.server.graphql.WorkflowObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowStepObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowStepTypeObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowTypeObject;
+import com.echothree.model.data.accounting.common.ItemAccountingCategoryConstants;
 import com.echothree.model.data.accounting.server.entity.Currency;
+import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;
 import com.echothree.model.data.cancellationpolicy.common.CancellationKindConstants;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
@@ -5621,6 +5627,57 @@ public final class GraphQlQueries
         }
 
         return itemCategoryObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("itemAccountingCategory")
+    public static ItemAccountingCategoryObject itemAccountingCategory(final DataFetchingEnvironment env,
+            @GraphQLName("itemAccountingCategoryName") final String itemAccountingCategoryName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        ItemAccountingCategory itemAccountingCategory;
+
+        try {
+            var commandForm = AccountingUtil.getHome().getGetItemAccountingCategoryForm();
+
+            commandForm.setItemAccountingCategoryName(itemAccountingCategoryName);
+            commandForm.setUlid(id);
+
+            itemAccountingCategory = new GetItemAccountingCategoryCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return itemAccountingCategory == null ? null : new ItemAccountingCategoryObject(itemAccountingCategory);
+    }
+
+    @GraphQLField
+    @GraphQLName("itemAccountingCategories")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public static CountingPaginatedData<ItemAccountingCategoryObject> itemAccountingCategories(final DataFetchingEnvironment env) {
+        CountingPaginatedData<ItemAccountingCategoryObject> data;
+
+        try {
+            var accountingControl = Session.getModelController(AccountingControl.class);
+            var totalCount = accountingControl.countItemAccountingCategories();
+
+            try(var objectLimiter = new ObjectLimiter(env, ItemAccountingCategoryConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = AccountingUtil.getHome().getGetItemAccountingCategoriesForm();
+                var entities = new GetItemAccountingCategoriesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var itemAccountingCategories = entities.stream().map(ItemAccountingCategoryObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, itemAccountingCategories);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
     }
 
     @GraphQLField

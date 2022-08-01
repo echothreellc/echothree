@@ -14,13 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.accounting.common.form;
+package com.echothree.control.user.accounting.common.spec;
 
-import com.echothree.control.user.accounting.common.spec.ItemAccountingCategoryUniversalSpec;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetItemAccountingCategoryForm
-        extends ItemAccountingCategoryUniversalSpec {
+public interface ItemAccountingCategoryUniversalSpec
+        extends ItemAccountingCategorySpec, UniversalEntitySpec {
     
-    // Nothing additional beyond ItemAccountingCategoryUniversalSpec
+    // Nothing additional beyond ItemAccountingCategorySpec, UniversalEntitySpec
     
 }

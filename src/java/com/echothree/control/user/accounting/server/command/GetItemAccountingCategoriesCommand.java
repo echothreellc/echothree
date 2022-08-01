@@ -18,25 +18,27 @@ package com.echothree.control.user.accounting.server.command;
 
 import com.echothree.control.user.accounting.common.form.GetItemAccountingCategoriesForm;
 import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
-import com.echothree.control.user.accounting.common.result.GetItemAccountingCategoriesResult;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;
+import com.echothree.model.data.accounting.server.factory.ItemAccountingCategoryFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class GetItemAccountingCategoriesCommand
-        extends BaseSimpleCommand<GetItemAccountingCategoriesForm> {
+        extends BaseMultipleEntitiesCommand<ItemAccountingCategory, GetItemAccountingCategoriesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -57,14 +59,28 @@ public class GetItemAccountingCategoriesCommand
     public GetItemAccountingCategoriesCommand(UserVisitPK userVisitPK, GetItemAccountingCategoriesForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
+    protected Collection<ItemAccountingCategory> getEntities() {
         var accountingControl = Session.getModelController(AccountingControl.class);
-        GetItemAccountingCategoriesResult result = AccountingResultFactory.getGetItemAccountingCategoriesResult();
-        
-        result.setItemAccountingCategories(accountingControl.getItemAccountingCategoryTransfers(getUserVisit()));
-        
+
+        return accountingControl.getItemAccountingCategories();
+    }
+
+    @Override
+    protected BaseResult getTransfers(Collection<ItemAccountingCategory> entities) {
+        var result = AccountingResultFactory.getGetItemAccountingCategoriesResult();
+
+        if(entities != null) {
+            var accountingControl = Session.getModelController(AccountingControl.class);
+
+            if(session.hasLimit(ItemAccountingCategoryFactory.class)) {
+                result.setItemAccountingCategoryCount(accountingControl.countItemAccountingCategories());
+            }
+
+            result.setItemAccountingCategories(accountingControl.getItemAccountingCategoryTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
     

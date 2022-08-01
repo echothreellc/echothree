@@ -65,7 +65,6 @@ import com.echothree.model.control.accounting.server.transfer.GlAccountTypeTrans
 import com.echothree.model.control.accounting.server.transfer.GlResourceTypeDescriptionTransferCache;
 import com.echothree.model.control.accounting.server.transfer.GlResourceTypeTransferCache;
 import com.echothree.model.control.accounting.server.transfer.ItemAccountingCategoryDescriptionTransferCache;
-import com.echothree.model.control.accounting.server.transfer.ItemAccountingCategoryTransferCache;
 import com.echothree.model.control.accounting.server.transfer.SymbolPositionDescriptionTransferCache;
 import com.echothree.model.control.accounting.server.transfer.SymbolPositionTransferCache;
 import com.echothree.model.control.accounting.server.transfer.TransactionEntityRoleTransferCache;
@@ -556,6 +555,28 @@ public class AccountingControl
         
         return itemAccountingCategory;
     }
+
+    public long countItemAccountingCategories() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM itemaccountingcategories, itemaccountingcategorydetails " +
+                "WHERE iactgc_activedetailid = iactgcdt_itemaccountingcategorydetailid");
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ItemAccountingCategory */
+    public ItemAccountingCategory getItemAccountingCategoryByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ItemAccountingCategoryPK(entityInstance.getEntityUniqueId());
+
+        return ItemAccountingCategoryFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ItemAccountingCategory getItemAccountingCategoryByEntityInstance(EntityInstance entityInstance) {
+        return getItemAccountingCategoryByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ItemAccountingCategory getItemAccountingCategoryByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getItemAccountingCategoryByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
     
     private static final Map<EntityPermission, String> getItemAccountingCategoryByNameQueries;
 
@@ -576,7 +597,7 @@ public class AccountingControl
         getItemAccountingCategoryByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private ItemAccountingCategory getItemAccountingCategoryByName(String itemAccountingCategoryName, EntityPermission entityPermission) {
+    public ItemAccountingCategory getItemAccountingCategoryByName(String itemAccountingCategoryName, EntityPermission entityPermission) {
         return ItemAccountingCategoryFactory.getInstance().getEntityFromQuery(entityPermission, getItemAccountingCategoryByNameQueries, itemAccountingCategoryName);
     }
 
@@ -615,7 +636,7 @@ public class AccountingControl
         getDefaultItemAccountingCategoryQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private ItemAccountingCategory getDefaultItemAccountingCategory(EntityPermission entityPermission) {
+    public ItemAccountingCategory getDefaultItemAccountingCategory(EntityPermission entityPermission) {
         return ItemAccountingCategoryFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultItemAccountingCategoryQueries);
     }
 
@@ -698,19 +719,22 @@ public class AccountingControl
     public ItemAccountingCategoryTransfer getItemAccountingCategoryTransfer(UserVisit userVisit, ItemAccountingCategory itemAccountingCategory) {
         return getAccountingTransferCaches(userVisit).getItemAccountingCategoryTransferCache().getTransfer(itemAccountingCategory);
     }
-    
-    public List<ItemAccountingCategoryTransfer> getItemAccountingCategoryTransfers(UserVisit userVisit) {
-        List<ItemAccountingCategory> itemAccountingCategories = getItemAccountingCategories();
-        List<ItemAccountingCategoryTransfer> itemAccountingCategoryTransfers = new ArrayList<>(itemAccountingCategories.size());
-        ItemAccountingCategoryTransferCache itemAccountingCategoryTransferCache = getAccountingTransferCaches(userVisit).getItemAccountingCategoryTransferCache();
-        
+
+    public List<ItemAccountingCategoryTransfer> getItemAccountingCategoryTransfers(UserVisit userVisit, Collection<ItemAccountingCategory> itemAccountingCategories) {
+        var itemAccountingCategoryTransfers = new ArrayList<ItemAccountingCategoryTransfer>(itemAccountingCategories.size());
+        var itemAccountingCategoryTransferCache = getAccountingTransferCaches(userVisit).getItemAccountingCategoryTransferCache();
+
         itemAccountingCategories.forEach((itemAccountingCategory) ->
                 itemAccountingCategoryTransfers.add(itemAccountingCategoryTransferCache.getTransfer(itemAccountingCategory))
         );
-        
+
         return itemAccountingCategoryTransfers;
     }
-    
+
+    public List<ItemAccountingCategoryTransfer> getItemAccountingCategoryTransfers(UserVisit userVisit) {
+        return getItemAccountingCategoryTransfers(userVisit, getItemAccountingCategories());
+    }
+
     public ItemAccountingCategoryChoicesBean getItemAccountingCategoryChoices(String defaultItemAccountingCategoryChoice,
             Language language, boolean allowNullChoice) {
         List<ItemAccountingCategory> itemAccountingCategories = getItemAccountingCategories();
