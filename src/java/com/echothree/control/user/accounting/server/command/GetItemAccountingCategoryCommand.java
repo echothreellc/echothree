@@ -19,16 +19,17 @@ package com.echothree.control.user.accounting.server.command;
 import com.echothree.control.user.accounting.common.form.GetItemAccountingCategoryForm;
 import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
+import com.echothree.model.control.accounting.server.logic.ItemAccountingCategoryLogic;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -38,7 +39,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class GetItemAccountingCategoryCommand
-        extends BaseSimpleCommand<GetItemAccountingCategoryForm> {
+        extends BaseSingleEntityCommand<ItemAccountingCategory, GetItemAccountingCategoryForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -52,7 +53,11 @@ public class GetItemAccountingCategoryCommand
                 )));
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-            new FieldDefinition("ItemAccountingCategoryName", FieldType.ENTITY_NAME, true, null, null)
+            new FieldDefinition("ItemAccountingCategoryName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
         ));
     }
     
@@ -60,22 +65,27 @@ public class GetItemAccountingCategoryCommand
     public GetItemAccountingCategoryCommand(UserVisitPK userVisitPK, GetItemAccountingCategoryForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
+    protected ItemAccountingCategory getEntity() {
+        var returnKind = ItemAccountingCategoryLogic.getInstance().getItemAccountingCategoryByUniversalSpec(this, form, true);
+
+        if(returnKind != null) {
+            sendEventUsingNames(returnKind.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+        }
+
+        return returnKind;
+    }
+
+    @Override
+    protected BaseResult getTransfer(ItemAccountingCategory returnKind) {
         var accountingControl = Session.getModelController(AccountingControl.class);
         var result = AccountingResultFactory.getGetItemAccountingCategoryResult();
-        var itemAccountingCategoryName = form.getItemAccountingCategoryName();
-        var itemAccountingCategory = accountingControl.getItemAccountingCategoryByName(itemAccountingCategoryName);
-        
-        if(itemAccountingCategory != null) {
-            result.setItemAccountingCategory(accountingControl.getItemAccountingCategoryTransfer(getUserVisit(), itemAccountingCategory));
-            
-            sendEventUsingNames(itemAccountingCategory.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownItemAccountingCategoryName.name(), itemAccountingCategoryName);
+
+        if(returnKind != null) {
+            result.setItemAccountingCategory(accountingControl.getItemAccountingCategoryTransfer(getUserVisit(), returnKind));
         }
-        
+
         return result;
     }
     

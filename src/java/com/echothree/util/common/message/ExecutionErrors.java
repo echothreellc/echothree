@@ -2244,5 +2244,6 @@ public enum ExecutionErrors {
     UnknownDefaultItemImageType,
     UnknownDefaultCancellationKind,
     UnknownDefaultReturnKind,
+    UnknownDefaultItemAccountingCategory,
 
 }
