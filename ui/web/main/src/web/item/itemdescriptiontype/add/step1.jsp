@@ -34,7 +34,8 @@
             </h2>
         </div>
         <div id="Content">
-            Mime Type Usage Type:<br /><br />
+            <a href="<c:url value="/action/Item/ItemDescriptionType/Add/Step2" />">String Description</a><br /><br />
+            Or Mime Type Usage Type:<br /><br />
             <c:forEach items="${mimeTypeUsageTypes}" var="mimeTypeUsageType">
                 <c:url var="addUrl" value="/action/Item/ItemDescriptionType/Add/Step2">
                     <c:param name="MimeTypeUsageTypeName" value="${mimeTypeUsageType.mimeTypeUsageTypeName}" />
