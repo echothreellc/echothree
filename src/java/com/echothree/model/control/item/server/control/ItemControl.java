@@ -1995,6 +1995,46 @@ public class ItemControl
         return getItemsByItemCategory(EntityPermission.READ_WRITE, itemCategory);
     }
 
+    private List<Item> getItemsByItemAccountingCategory(EntityPermission entityPermission, ItemAccountingCategory itemAccountingCategory) {
+        List<Item> items;
+
+        try {
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM items, itemdetails " +
+                        "WHERE itm_activedetailid = itmdt_itemdetailid AND itmdt_iactgc_itemaccountingcategoryid = ? " +
+                        "ORDER BY itmdt_itemname " +
+                        "_LIMIT_";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM items, itemdetails " +
+                        "WHERE itm_activedetailid = itmdt_itemdetailid AND itmdt_iactgc_itemaccountingcategoryid = ? " +
+                        "FOR UPDATE";
+            }
+
+            PreparedStatement ps = ItemFactory.getInstance().prepareStatement(query);
+
+            ps.setLong(1, itemAccountingCategory.getPrimaryKey().getEntityId());
+
+            items = ItemFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return items;
+    }
+
+
+    public List<Item> getItemsByItemAccountingCategory(ItemAccountingCategory itemAccountingCategory) {
+        return getItemsByItemAccountingCategory(EntityPermission.READ_ONLY, itemAccountingCategory);
+    }
+
+    public List<Item> getItemsByItemAccountingCategoryForUpdate(ItemAccountingCategory itemAccountingCategory) {
+        return getItemsByItemAccountingCategory(EntityPermission.READ_WRITE, itemAccountingCategory);
+    }
+
     private List<Item> getItemsByCompanyParty(EntityPermission entityPermission, Party companyParty) {
         List<Item> items;
 

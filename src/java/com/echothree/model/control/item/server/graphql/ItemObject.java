@@ -16,6 +16,8 @@
 
 package com.echothree.model.control.item.server.graphql;
 
+import com.echothree.model.control.accounting.server.graphql.AccountingSecurityUtils;
+import com.echothree.model.control.accounting.server.graphql.ItemAccountingCategoryObject;
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationPolicyObject;
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationPolicySecurityUtils;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
@@ -53,6 +55,7 @@ import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
+import org.apache.sshd.common.util.security.SecurityUtils;
 
 @GraphQLDescription("item object")
 @GraphQLName("Item")
@@ -104,7 +107,12 @@ public class ItemObject
         return ItemSecurityUtils.getInstance().getHasItemCategoryAccess(env) ? new ItemCategoryObject(getItemDetail().getItemCategory()) : null;
     }
 
-    //| itm_iactgc_itemaccountingcategoryid | bigint      | YES  |     | NULL    |       |
+    @GraphQLField
+    @GraphQLDescription("item accounting category")
+    public ItemAccountingCategoryObject getItemAccountingCategory(final DataFetchingEnvironment env) {
+        return AccountingSecurityUtils.getInstance().getHasItemAccountingCategoryAccess(env) ? new ItemAccountingCategoryObject(getItemDetail().getItemAccountingCategory()) : null;
+    }
+
     //| itm_iprchc_itempurchasingcategoryid | bigint      | YES  |     | NULL    |       |
 
     @GraphQLField
