@@ -2816,8 +2816,13 @@ public class ItemControl
     //   Item Alias Checksum Types
     // --------------------------------------------------------------------------------
 
-    public ItemAliasChecksumType createItemAliasChecksumType(String itemAliasChecksumTypeName, Boolean isDefault, Integer sortOrder) {
-        return ItemAliasChecksumTypeFactory.getInstance().create(itemAliasChecksumTypeName, isDefault, sortOrder);
+    public ItemAliasChecksumType createItemAliasChecksumType(String itemAliasChecksumTypeName, Boolean isDefault, Integer sortOrder,
+            BasePK createdBy) {
+        var itemAliasChecksumType = ItemAliasChecksumTypeFactory.getInstance().create(itemAliasChecksumTypeName, isDefault, sortOrder);
+
+        sendEventUsingNames(itemAliasChecksumType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+
+        return itemAliasChecksumType;
     }
 
     public List<ItemAliasChecksumType> getItemAliasChecksumTypes() {
@@ -2889,8 +2894,13 @@ public class ItemControl
     //   Item Alias Checksum Type Descriptions
     // --------------------------------------------------------------------------------
 
-    public ItemAliasChecksumTypeDescription createItemAliasChecksumTypeDescription(ItemAliasChecksumType itemAliasChecksumType, Language language, String description) {
-        return ItemAliasChecksumTypeDescriptionFactory.getInstance().create(itemAliasChecksumType, language, description);
+    public ItemAliasChecksumTypeDescription createItemAliasChecksumTypeDescription(ItemAliasChecksumType itemAliasChecksumType,
+            Language language, String description, BasePK createdBy) {
+        var itemAliasChecksumTypeDescription = ItemAliasChecksumTypeDescriptionFactory.getInstance().create(itemAliasChecksumType, language, description);
+
+        sendEventUsingNames(itemAliasChecksumType.getPrimaryKey(), EventTypes.MODIFY.name(), itemAliasChecksumTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+
+        return itemAliasChecksumTypeDescription;
     }
 
     public ItemAliasChecksumTypeDescription getItemAliasChecksumTypeDescription(ItemAliasChecksumType itemAliasChecksumType, Language language) {
