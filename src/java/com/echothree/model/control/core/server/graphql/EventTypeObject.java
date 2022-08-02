@@ -17,6 +17,7 @@
 package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.core.server.entity.EventType;
@@ -30,11 +31,13 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("event type object")
 @GraphQLName("EventType")
 public class EventTypeObject
-        extends BaseGraphQl {
+        extends BaseEntityInstanceObject {
     
     private final EventType eventType; // Always Present
     
     public EventTypeObject(EventType eventType) {
+        super(eventType.getPrimaryKey());
+
         this.eventType = eventType;
     }
     
