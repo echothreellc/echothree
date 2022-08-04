@@ -2816,8 +2816,13 @@ public class ItemControl
     //   Item Alias Checksum Types
     // --------------------------------------------------------------------------------
 
-    public ItemAliasChecksumType createItemAliasChecksumType(String itemAliasChecksumTypeName, Boolean isDefault, Integer sortOrder) {
-        return ItemAliasChecksumTypeFactory.getInstance().create(itemAliasChecksumTypeName, isDefault, sortOrder);
+    public ItemAliasChecksumType createItemAliasChecksumType(String itemAliasChecksumTypeName, Boolean isDefault, Integer sortOrder,
+            BasePK createdBy) {
+        var itemAliasChecksumType = ItemAliasChecksumTypeFactory.getInstance().create(itemAliasChecksumTypeName, isDefault, sortOrder);
+
+        sendEventUsingNames(itemAliasChecksumType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+
+        return itemAliasChecksumType;
     }
 
     public List<ItemAliasChecksumType> getItemAliasChecksumTypes() {
@@ -2889,8 +2894,13 @@ public class ItemControl
     //   Item Alias Checksum Type Descriptions
     // --------------------------------------------------------------------------------
 
-    public ItemAliasChecksumTypeDescription createItemAliasChecksumTypeDescription(ItemAliasChecksumType itemAliasChecksumType, Language language, String description) {
-        return ItemAliasChecksumTypeDescriptionFactory.getInstance().create(itemAliasChecksumType, language, description);
+    public ItemAliasChecksumTypeDescription createItemAliasChecksumTypeDescription(ItemAliasChecksumType itemAliasChecksumType,
+            Language language, String description, BasePK createdBy) {
+        var itemAliasChecksumTypeDescription = ItemAliasChecksumTypeDescriptionFactory.getInstance().create(itemAliasChecksumType, language, description);
+
+        sendEventUsingNames(itemAliasChecksumType.getPrimaryKey(), EventTypes.MODIFY.name(), itemAliasChecksumTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+
+        return itemAliasChecksumTypeDescription;
     }
 
     public ItemAliasChecksumTypeDescription getItemAliasChecksumTypeDescription(ItemAliasChecksumType itemAliasChecksumType, Language language) {
@@ -2962,8 +2972,31 @@ public class ItemControl
         
         return itemAliasType;
     }
-    
-    private ItemAliasType getItemAliasTypeByName(String itemAliasTypeName, EntityPermission entityPermission) {
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ItemAliasType */
+    public ItemAliasType getItemAliasTypeByEntityInstance(final EntityInstance entityInstance,
+            final EntityPermission entityPermission) {
+        var pk = new ItemAliasTypePK(entityInstance.getEntityUniqueId());
+
+        return ItemAliasTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ItemAliasType getItemAliasTypeByEntityInstance(final EntityInstance entityInstance) {
+        return getItemAliasTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ItemAliasType getItemAliasTypeByEntityInstanceForUpdate(final EntityInstance entityInstance) {
+        return getItemAliasTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countItemAliasTypes() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM itemaliastypes, itemaliastypedetails " +
+                "WHERE iat_activedetailid = iatdt_itemaliastypedetailid");
+    }
+
+    public ItemAliasType getItemAliasTypeByName(String itemAliasTypeName, EntityPermission entityPermission) {
         ItemAliasType itemAliasType;
         
         try {
@@ -3008,7 +3041,7 @@ public class ItemControl
         return getItemAliasTypeDetailValueForUpdate(getItemAliasTypeByNameForUpdate(itemAliasTypeName));
     }
     
-    private ItemAliasType getDefaultItemAliasType(EntityPermission entityPermission) {
+    public ItemAliasType getDefaultItemAliasType(EntityPermission entityPermission) {
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
@@ -3070,19 +3103,22 @@ public class ItemControl
     public ItemAliasTypeTransfer getItemAliasTypeTransfer(UserVisit userVisit, ItemAliasType itemAliasType) {
         return getItemTransferCaches(userVisit).getItemAliasTypeTransferCache().getTransfer(itemAliasType);
     }
-    
-    public List<ItemAliasTypeTransfer> getItemAliasTypeTransfers(UserVisit userVisit) {
-        List<ItemAliasType> itemAliasTypes = getItemAliasTypes();
+
+    public List<ItemAliasTypeTransfer> getItemAliasTypeTransfers(UserVisit userVisit, Collection<ItemAliasType> itemAliasTypes) {
         List<ItemAliasTypeTransfer> itemAliasTypeTransfers = new ArrayList<>(itemAliasTypes.size());
         ItemAliasTypeTransferCache itemAliasTypeTransferCache = getItemTransferCaches(userVisit).getItemAliasTypeTransferCache();
-        
+
         itemAliasTypes.forEach((itemAliasType) ->
                 itemAliasTypeTransfers.add(itemAliasTypeTransferCache.getTransfer(itemAliasType))
         );
-        
+
         return itemAliasTypeTransfers;
     }
-    
+
+    public List<ItemAliasTypeTransfer> getItemAliasTypeTransfers(UserVisit userVisit) {
+        return getItemAliasTypeTransfers(userVisit, getItemAliasTypes());
+    }
+
     public ItemAliasTypeChoicesBean getItemAliasTypeChoices(String defaultItemAliasTypeChoice, Language language,
             boolean allowNullChoice) {
         List<ItemAliasType> itemAliasTypes = getItemAliasTypes();

@@ -1,0 +1,106 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2022 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.model.control.item.server.graphql;
+
+import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.item.server.entity.ItemAliasType;
+import com.echothree.model.data.item.server.entity.ItemAliasTypeDetail;
+import com.echothree.util.server.persistence.Session;
+import graphql.annotations.annotationTypes.GraphQLDescription;
+import graphql.annotations.annotationTypes.GraphQLField;
+import graphql.annotations.annotationTypes.GraphQLName;
+import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.schema.DataFetchingEnvironment;
+
+@GraphQLDescription("item alias type object")
+@GraphQLName("ItemAliasType")
+public class ItemAliasTypeObject
+        extends BaseEntityInstanceObject {
+    
+    private final ItemAliasType itemAliasType; // Always Present
+    
+    public ItemAliasTypeObject(ItemAliasType itemAliasType) {
+        super(itemAliasType.getPrimaryKey());
+        
+        this.itemAliasType = itemAliasType;
+    }
+
+    private ItemAliasTypeDetail itemAliasTypeDetail; // Optional, use getItemAliasTypeDetail()
+    
+    private ItemAliasTypeDetail getItemAliasTypeDetail() {
+        if(itemAliasTypeDetail == null) {
+            itemAliasTypeDetail = itemAliasType.getLastDetail();
+        }
+        
+        return itemAliasTypeDetail;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("item alias type name")
+    @GraphQLNonNull
+    public String getItemAliasTypeName() {
+        return getItemAliasTypeDetail().getItemAliasTypeName();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("validation pattern")
+    public String getValidationPattern() {
+        return getItemAliasTypeDetail().getValidationPattern();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("item alias checksum type")
+    @GraphQLNonNull
+    public ItemAliasChecksumTypeObject getItemAliasChecksumType() {
+        return new ItemAliasChecksumTypeObject(getItemAliasTypeDetail().getItemAliasChecksumType());
+    }
+
+    @GraphQLField
+    @GraphQLDescription("allow multiple")
+    @GraphQLNonNull
+    public boolean getAllowMultiple() {
+        return getItemAliasTypeDetail().getAllowMultiple();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("is default")
+    @GraphQLNonNull
+    public boolean getIsDefault() {
+        return getItemAliasTypeDetail().getIsDefault();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("sort order")
+    @GraphQLNonNull
+    public int getSortOrder() {
+        return getItemAliasTypeDetail().getSortOrder();
+    }
+    
+    @GraphQLField
+    @GraphQLDescription("description")
+    @GraphQLNonNull
+    public String getDescription(final DataFetchingEnvironment env) {
+        var itemControl = Session.getModelController(ItemControl.class);
+        var userControl = Session.getModelController(UserControl.class);
+
+        return itemControl.getBestItemAliasTypeDescription(itemAliasType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+    }
+
+
+}

@@ -439,6 +439,12 @@
             <entityType entityTypeName="ItemCategoryDescription" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Item Category Description" />
             </entityType>
+            <entityType entityTypeName="ItemAliasChecksumType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Alias Checksum Type" />
+            </entityType>
+            <entityType entityTypeName="ItemAliasChecksumTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Item Alias Checksum Type Description" />
+            </entityType>
             <entityType entityTypeName="ItemAliasType" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Item Alias Type" />
             </entityType>

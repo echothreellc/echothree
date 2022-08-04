@@ -17,6 +17,7 @@
 package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.core.server.entity.EventType;
@@ -30,11 +31,13 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("event type object")
 @GraphQLName("EventType")
 public class EventTypeObject
-        extends BaseGraphQl {
+        extends BaseEntityInstanceObject {
     
     private final EventType eventType; // Always Present
     
     public EventTypeObject(EventType eventType) {
+        super(eventType.getPrimaryKey());
+
         this.eventType = eventType;
     }
     
@@ -43,6 +46,54 @@ public class EventTypeObject
     @GraphQLNonNull
     public String getEventTypeName() {
         return eventType.getEventTypeName();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("update created time")
+    @GraphQLNonNull
+    public boolean getUpdateCreatedTime() {
+        return eventType.getUpdateCreatedTime();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("update modified time")
+    @GraphQLNonNull
+    public boolean getUpdateModifiedTime() {
+        return eventType.getUpdateModifiedTime();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("update deleted time")
+    @GraphQLNonNull
+    public boolean getUpdateDeletedTime() {
+        return eventType.getUpdateDeletedTime();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("update visited time")
+    @GraphQLNonNull
+    public boolean getUpdateVisitedTime() {
+        return eventType.getUpdateVisitedTime();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("queue to subscribers")
+    @GraphQLNonNull
+    public boolean getQueueToSubscribers() {
+        return eventType.getQueueToSubscribers();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("keep history")
+    @GraphQLNonNull
+    public boolean getKeepHistory() {
+        return eventType.getKeepHistory();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("maximum history")
+    public Integer getMaximumHistory() {
+        return eventType.getMaximumHistory();
     }
 
     @GraphQLField
