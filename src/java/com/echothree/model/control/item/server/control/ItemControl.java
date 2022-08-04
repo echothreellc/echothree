@@ -3103,19 +3103,22 @@ public class ItemControl
     public ItemAliasTypeTransfer getItemAliasTypeTransfer(UserVisit userVisit, ItemAliasType itemAliasType) {
         return getItemTransferCaches(userVisit).getItemAliasTypeTransferCache().getTransfer(itemAliasType);
     }
-    
-    public List<ItemAliasTypeTransfer> getItemAliasTypeTransfers(UserVisit userVisit) {
-        List<ItemAliasType> itemAliasTypes = getItemAliasTypes();
+
+    public List<ItemAliasTypeTransfer> getItemAliasTypeTransfers(UserVisit userVisit, Collection<ItemAliasType> itemAliasTypes) {
         List<ItemAliasTypeTransfer> itemAliasTypeTransfers = new ArrayList<>(itemAliasTypes.size());
         ItemAliasTypeTransferCache itemAliasTypeTransferCache = getItemTransferCaches(userVisit).getItemAliasTypeTransferCache();
-        
+
         itemAliasTypes.forEach((itemAliasType) ->
                 itemAliasTypeTransfers.add(itemAliasTypeTransferCache.getTransfer(itemAliasType))
         );
-        
+
         return itemAliasTypeTransfers;
     }
-    
+
+    public List<ItemAliasTypeTransfer> getItemAliasTypeTransfers(UserVisit userVisit) {
+        return getItemAliasTypeTransfers(userVisit, getItemAliasTypes());
+    }
+
     public ItemAliasTypeChoicesBean getItemAliasTypeChoices(String defaultItemAliasTypeChoice, Language language,
             boolean allowNullChoice) {
         List<ItemAliasType> itemAliasTypes = getItemAliasTypes();
