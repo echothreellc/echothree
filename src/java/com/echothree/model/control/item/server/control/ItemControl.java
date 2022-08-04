@@ -2972,8 +2972,31 @@ public class ItemControl
         
         return itemAliasType;
     }
-    
-    private ItemAliasType getItemAliasTypeByName(String itemAliasTypeName, EntityPermission entityPermission) {
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ItemAliasType */
+    public ItemAliasType getItemAliasTypeByEntityInstance(final EntityInstance entityInstance,
+            final EntityPermission entityPermission) {
+        var pk = new ItemAliasTypePK(entityInstance.getEntityUniqueId());
+
+        return ItemAliasTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ItemAliasType getItemAliasTypeByEntityInstance(final EntityInstance entityInstance) {
+        return getItemAliasTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ItemAliasType getItemAliasTypeByEntityInstanceForUpdate(final EntityInstance entityInstance) {
+        return getItemAliasTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countItemAliasTypes() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM itemaliastypes, itemaliastypedetails " +
+                "WHERE iat_activedetailid = iatdt_itemaliastypedetailid");
+    }
+
+    public ItemAliasType getItemAliasTypeByName(String itemAliasTypeName, EntityPermission entityPermission) {
         ItemAliasType itemAliasType;
         
         try {
@@ -3018,7 +3041,7 @@ public class ItemControl
         return getItemAliasTypeDetailValueForUpdate(getItemAliasTypeByNameForUpdate(itemAliasTypeName));
     }
     
-    private ItemAliasType getDefaultItemAliasType(EntityPermission entityPermission) {
+    public ItemAliasType getDefaultItemAliasType(EntityPermission entityPermission) {
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
