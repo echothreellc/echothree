@@ -3268,8 +3268,9 @@ public class ItemControl
                 }
             }
             
-            itemAliasTypeDetail = ItemAliasTypeDetailFactory.getInstance().create(itemAliasTypePK, itemAliasTypeName, validationPattern, itemAliasChecksumTypePK,
-                    allowMultiple, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            itemAliasTypeDetail = ItemAliasTypeDetailFactory.getInstance().create(itemAliasTypePK, itemAliasTypeName,
+                    validationPattern, itemAliasChecksumTypePK, allowMultiple, isDefault, sortOrder, session.START_TIME_LONG,
+                    Session.MAX_TIME_LONG);
             
             itemAliasType.setActiveDetail(itemAliasTypeDetail);
             itemAliasType.setLastDetail(itemAliasTypeDetail);
