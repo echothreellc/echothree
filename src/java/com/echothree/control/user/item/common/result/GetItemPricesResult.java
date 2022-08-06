@@ -26,7 +26,10 @@ public interface GetItemPricesResult
     
     ItemTransfer getItem();
     void setItem(ItemTransfer item);
-    
+
+    Long getItemPriceCount();
+    void setItemPriceCount(Long itemPriceCount);
+
     List<ItemPriceTransfer> getItemPrices();
     void setItemPrices(List<ItemPriceTransfer> itemPrices);
     

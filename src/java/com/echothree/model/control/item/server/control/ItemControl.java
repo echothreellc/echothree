@@ -3422,7 +3422,31 @@ public class ItemControl
         
         return itemAlias;
     }
-    
+
+    public long countItemAliasesByItem(Item item) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM itemaliases
+                WHERE itmal_itm_itemid = ? AND itmal_thrutime = ?""",
+                item, Session.MAX_TIME);
+    }
+
+    public long countItemAliasesByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM itemaliases
+                WHERE itmal_uomt_unitofmeasuretypeid = ? AND itmal_thrutime = ?""",
+                unitOfMeasureType, Session.MAX_TIME);
+    }
+
+    public long countItemAliasesByUnitOfMeasureType(ItemAliasType itemAliasType) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM itemaliases
+                WHERE itmal_iat_itemaliastypeid = ? AND itmal_thrutime = ?""",
+                itemAliasType, Session.MAX_TIME);
+    }
+
     public long countItemAliases(Item item, UnitOfMeasureType unitOfMeasureType, ItemAliasType itemAliasType) {
         return session.queryForLong(
                 "SELECT COUNT(*) " +
@@ -3488,7 +3512,8 @@ public class ItemControl
                 query = "SELECT _ALL_ " +
                         "FROM itemaliases " +
                         "WHERE itmal_itm_itemid = ? AND itmal_uomt_unitofmeasuretypeid = ? AND itmal_iat_itemaliastypeid = ? AND itmal_thrutime = ? " +
-                        "ORDER BY itmal_alias";
+                        "ORDER BY itmal_alias " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM itemaliases " +
@@ -3530,7 +3555,8 @@ public class ItemControl
                         "FROM itemaliases, itemaliastypes, itemaliastypedetails " +
                         "WHERE itmal_itm_itemid = ? AND itmal_thrutime = ? " +
                         "AND itmal_iat_itemaliastypeid = iat_itemaliastypeid AND iat_lastdetailid = iatdt_itemaliastypedetailid " +
-                        "ORDER BY iatdt_sortorder, iatdt_itemaliastypename";
+                        "ORDER BY iatdt_sortorder, iatdt_itemaliastypename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM itemaliases " +
@@ -3570,7 +3596,8 @@ public class ItemControl
                         "FROM itemaliases, items, itemdetails " +
                         "WHERE itmal_uomt_unitofmeasuretypeid = ? AND itmal_thrutime = ? " +
                         "AND itmal_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid " +
-                        "ORDER BY itmdt_itemname";
+                        "ORDER BY itmdt_itemname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM itemaliases " +
@@ -3610,7 +3637,8 @@ public class ItemControl
                         "FROM itemaliases, items, itemdetails " +
                         "WHERE itmal_iat_itemaliastypeid = ? AND itmal_thrutime = ? " +
                         "AND itmal_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid " +
-                        "ORDER BY itmdt_itemname";
+                        "ORDER BY itmdt_itemname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM itemaliases " +
@@ -3647,7 +3675,8 @@ public class ItemControl
                     "SELECT _ALL_ " +
                     "FROM itemaliases " +
                     "WHERE itmal_itm_itemid = ? AND itmal_uomt_unitofmeasuretypeid = ? AND itmal_thrutime = ? " +
-                    "FOR UPDATE");
+                    "FOR UPDATE " +
+                    "_LIMIT_");
             
             ps.setLong(1, item.getPrimaryKey().getEntityId());
             ps.setLong(2, unitOfMeasureType.getPrimaryKey().getEntityId());
@@ -3684,18 +3713,21 @@ public class ItemControl
     public ItemAliasTransfer getItemAliasTransfer(UserVisit userVisit, ItemAlias itemAlias) {
         return getItemTransferCaches(userVisit).getItemAliasTransferCache().getTransfer(itemAlias);
     }
-    
-    public List<ItemAliasTransfer> getItemAliasTransfersByItem(UserVisit userVisit, Item item) {
-        List<ItemAlias> itemAliases = getItemAliasesByItem(item);
+
+    public List<ItemAliasTransfer> getItemAliasTransfers(UserVisit userVisit, Collection<ItemAlias> itemAliases) {
         List<ItemAliasTransfer> itemAliasTransfers = new ArrayList<>(itemAliases.size());
-        
+
         itemAliases.forEach((itemAlias) -> {
             itemAliasTransfers.add(getItemTransferCaches(userVisit).getItemAliasTransferCache().getTransfer(itemAlias));
         });
-        
+
         return itemAliasTransfers;
     }
-    
+
+    public List<ItemAliasTransfer> getItemAliasTransfersByItem(UserVisit userVisit, Item item) {
+        return getItemAliasTransfers(userVisit, getItemAliasesByItem(item));
+    }
+
     public void deleteItemAlias(ItemAlias itemAlias, BasePK deletedBy) {
         itemAlias.setThruTime(session.START_TIME_LONG);
         

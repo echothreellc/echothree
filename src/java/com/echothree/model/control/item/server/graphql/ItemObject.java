@@ -43,6 +43,7 @@ import com.echothree.model.control.uom.server.graphql.UomSecurityUtils;
 import com.echothree.model.control.vendor.server.graphql.ItemPurchasingCategoryObject;
 import com.echothree.model.control.vendor.server.graphql.VendorSecurityUtils;
 import com.echothree.model.control.workflow.server.graphql.WorkflowEntityStatusObject;
+import com.echothree.model.data.item.common.ItemAliasConstants;
 import com.echothree.model.data.item.common.ItemPriceConstants;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemDetail;
@@ -57,7 +58,6 @@ import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
-import org.apache.sshd.common.util.security.SecurityUtils;
 
 @GraphQLDescription("item object")
 @GraphQLName("Item")
@@ -306,6 +306,26 @@ public class ItemObject
                 var itemPrices = entities.stream().map(ItemPriceObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, itemPrices);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("itemAliases")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<ItemAliasObject> getItemAliases(final DataFetchingEnvironment env) {
+        if(ItemSecurityUtils.getInstance().getHasItemAliasesAccess(env)) {
+            var itemControl = Session.getModelController(ItemControl.class);
+            var totalCount = itemControl.countItemAliasesByItem(item);
+
+            try(var objectLimiter = new ObjectLimiter(env, ItemAliasConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = itemControl.getItemAliasesByItem(item);
+                var itemAliases = entities.stream().map(ItemAliasObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, itemAliases);
             }
         } else {
             return Connections.emptyConnection();

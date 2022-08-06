@@ -26,7 +26,10 @@ public interface GetItemAliasesResult
     
     ItemTransfer getItem();
     void setItem(ItemTransfer item);
-    
+
+    Long getItemAliasCount();
+    void setItemAliasCount(Long itemAliasCount);
+
     List<ItemAliasTransfer> getItemAliases();
     void setItemAliases(List<ItemAliasTransfer> itemAliases);
     
