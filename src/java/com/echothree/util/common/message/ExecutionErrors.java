@@ -2246,5 +2246,6 @@ public enum ExecutionErrors {
     UnknownDefaultReturnKind,
     UnknownDefaultItemAccountingCategory,
     UnknownDefaultItemPurchasingCategory,
+    UnknownDefaultItemAliasChecksumType,
 
 }
