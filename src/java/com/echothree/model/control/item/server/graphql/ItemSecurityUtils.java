@@ -16,6 +16,10 @@
 
 package com.echothree.model.control.item.server.graphql;
 
+import com.echothree.control.user.item.server.command.GetItemAliasCommand;
+import com.echothree.control.user.item.server.command.GetItemAliasTypeCommand;
+import com.echothree.control.user.item.server.command.GetItemAliasTypesCommand;
+import com.echothree.control.user.item.server.command.GetItemAliasesCommand;
 import com.echothree.control.user.item.server.command.GetItemCategoriesCommand;
 import com.echothree.control.user.item.server.command.GetItemCategoryCommand;
 import com.echothree.control.user.item.server.command.GetItemCommand;
@@ -82,6 +86,22 @@ public final class ItemSecurityUtils
 
     public boolean getHasItemTypesAccess(final DataFetchingEnvironment env) {
         return getGraphQlExecutionContext(env).hasAccess(GetItemTypesCommand.class);
+    }
+
+    public boolean getHasItemAliasTypeAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetItemAliasTypeCommand.class);
+    }
+
+    public boolean getHasItemAliasTypesAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetItemAliasTypesCommand.class);
+    }
+
+    public boolean getHasItemAliasAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetItemAliasCommand.class);
+    }
+
+    public boolean getHasItemAliasesAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetItemAliasesCommand.class);
     }
 
     public boolean getHasItemPriceTypeAccess(final DataFetchingEnvironment env) {

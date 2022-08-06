@@ -115,8 +115,10 @@ import com.echothree.control.user.inventory.server.command.GetInventoryCondition
 import com.echothree.control.user.inventory.server.command.GetLotCommand;
 import com.echothree.control.user.inventory.server.command.GetLotsCommand;
 import com.echothree.control.user.item.common.ItemUtil;
+import com.echothree.control.user.item.server.command.GetItemAliasCommand;
 import com.echothree.control.user.item.server.command.GetItemAliasTypeCommand;
 import com.echothree.control.user.item.server.command.GetItemAliasTypesCommand;
+import com.echothree.control.user.item.server.command.GetItemAliasesCommand;
 import com.echothree.control.user.item.server.command.GetItemCategoriesCommand;
 import com.echothree.control.user.item.server.command.GetItemCategoryCommand;
 import com.echothree.control.user.item.server.command.GetItemCommand;
@@ -304,6 +306,7 @@ import com.echothree.model.control.graphql.server.graphql.count.CountingPaginate
 import com.echothree.model.control.inventory.server.graphql.InventoryConditionObject;
 import com.echothree.model.control.inventory.server.graphql.LotObject;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.item.server.graphql.ItemAliasObject;
 import com.echothree.model.control.item.server.graphql.ItemAliasTypeObject;
 import com.echothree.model.control.item.server.graphql.ItemCategoryObject;
 import com.echothree.model.control.item.server.graphql.ItemDeliveryTypeObject;
@@ -430,6 +433,7 @@ import com.echothree.model.data.item.common.ItemPriceTypeConstants;
 import com.echothree.model.data.item.common.ItemTypeConstants;
 import com.echothree.model.data.item.common.ItemUseTypeConstants;
 import com.echothree.model.data.item.server.entity.Item;
+import com.echothree.model.data.item.server.entity.ItemAlias;
 import com.echothree.model.data.item.server.entity.ItemAliasType;
 import com.echothree.model.data.item.server.entity.ItemCategory;
 import com.echothree.model.data.item.server.entity.ItemDeliveryType;
@@ -5587,6 +5591,58 @@ public final class GraphQlQueries
         }
 
         return itemPriceObjects;
+    }
+
+    public GraphQlQueries() {
+    }
+
+    @GraphQLField
+    @GraphQLName("itemAlias")
+    public static ItemAliasObject itemAlias(final DataFetchingEnvironment env,
+            @GraphQLName("alias") @GraphQLNonNull final String alias) {
+        ItemAlias itemAlias;
+
+        try {
+            var commandForm = ItemUtil.getHome().getGetItemAliasForm();
+
+            commandForm.setAlias(alias);
+
+            itemAlias = new GetItemAliasCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return itemAlias == null ? null : new ItemAliasObject(itemAlias);
+    }
+
+    @GraphQLField
+    @GraphQLName("itemAliases")
+    public static Collection<ItemAliasObject> itemAliases(final DataFetchingEnvironment env,
+            @GraphQLName("itemName") @GraphQLNonNull final String itemName) {
+        Collection<ItemAlias> itemAlias;
+        Collection<ItemAliasObject> itemAliasObjects;
+
+        try {
+            var commandForm = ItemUtil.getHome().getGetItemAliasesForm();
+
+            commandForm.setItemName(itemName);
+
+            itemAlias = new GetItemAliasesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(itemAlias == null) {
+            itemAliasObjects = emptyList();
+        } else {
+            itemAliasObjects = new ArrayList<>(itemAlias.size());
+
+            itemAlias.stream()
+                    .map(ItemAliasObject::new)
+                    .forEachOrdered(itemAliasObjects::add);
+        }
+
+        return itemAliasObjects;
     }
 
     @GraphQLField

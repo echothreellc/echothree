@@ -97,7 +97,6 @@ public class GetItemPriceCommand
 
         if(entity != null) {
             var itemControl = Session.getModelController(ItemControl.class);
-
             var userVisit = getUserVisit();
 
             result.setItemPrice(itemControl.getItemPriceTransfer(userVisit, entity));
