@@ -23,6 +23,7 @@ import com.echothree.control.user.item.common.result.EditItemAliasTypeResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.control.user.item.common.spec.ItemAliasTypeSpec;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.item.server.logic.ItemAliasTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -178,7 +179,7 @@ public class EditItemAliasTypeCommand
         itemAliasTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         itemAliasTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        itemControl.updateItemAliasTypeFromValue(itemAliasTypeDetailValue, partyPK);
+        ItemAliasTypeLogic.getInstance().updateItemAliasTypeFromValue(itemAliasTypeDetailValue, partyPK);
 
         if(itemAliasTypeDescription == null && description != null) {
             itemControl.createItemAliasTypeDescription(itemAliasType, getPreferredLanguage(), description, partyPK);

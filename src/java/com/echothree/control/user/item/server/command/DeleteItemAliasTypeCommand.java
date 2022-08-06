@@ -18,15 +18,15 @@ package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.DeleteItemAliasTypeForm;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.item.server.logic.ItemAliasTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.item.server.entity.ItemAliasType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -63,11 +63,11 @@ public class DeleteItemAliasTypeCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        String itemAliasTypeName = form.getItemAliasTypeName();
-        ItemAliasType itemAliasType = itemControl.getItemAliasTypeByNameForUpdate(itemAliasTypeName);
+        var itemAliasTypeName = form.getItemAliasTypeName();
+        var itemAliasType = itemControl.getItemAliasTypeByNameForUpdate(itemAliasTypeName);
         
         if(itemAliasType != null) {
-            itemControl.deleteItemAliasType(itemAliasType, getPartyPK());
+            ItemAliasTypeLogic.getInstance().deleteItemAliasType(this, itemAliasType, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownItemAliasTypeName.name(), itemAliasTypeName);
         }

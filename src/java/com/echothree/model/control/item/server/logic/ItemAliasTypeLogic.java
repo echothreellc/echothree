@@ -27,6 +27,7 @@ import com.echothree.model.control.item.common.exception.UnknownItemAliasTypeNam
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemAliasChecksumType;
 import com.echothree.model.data.item.server.entity.ItemAliasType;
+import com.echothree.model.data.item.server.value.ItemAliasTypeDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
@@ -140,6 +141,12 @@ public class ItemAliasTypeLogic
         return getItemAliasTypeByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
     }
 
+    public void updateItemAliasTypeFromValue(ItemAliasTypeDetailValue itemAliasTypeDetailValue, BasePK updatedBy) {
+        var itemControl = Session.getModelController(ItemControl.class);
+
+        itemControl.updateItemAliasTypeFromValue(itemAliasTypeDetailValue, updatedBy);
+    }
+    
     public void deleteItemAliasType(final ExecutionErrorAccumulator eea, final ItemAliasType itemAliasType,
             final BasePK deletedBy) {
         var itemControl = Session.getModelController(ItemControl.class);
