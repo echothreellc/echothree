@@ -50,11 +50,13 @@ import com.echothree.control.user.inventory.common.InventoryUtil;
 import com.echothree.control.user.inventory.common.result.CreateInventoryConditionResult;
 import com.echothree.control.user.inventory.common.result.EditInventoryConditionResult;
 import com.echothree.control.user.item.common.ItemUtil;
+import com.echothree.control.user.item.common.result.CreateItemAliasTypeResult;
 import com.echothree.control.user.item.common.result.CreateItemCategoryResult;
 import com.echothree.control.user.item.common.result.CreateItemDescriptionResult;
 import com.echothree.control.user.item.common.result.CreateItemDescriptionTypeResult;
 import com.echothree.control.user.item.common.result.CreateItemImageTypeResult;
 import com.echothree.control.user.item.common.result.CreateItemResult;
+import com.echothree.control.user.item.common.result.EditItemAliasTypeResult;
 import com.echothree.control.user.item.common.result.EditItemCategoryResult;
 import com.echothree.control.user.item.common.result.EditItemDescriptionResult;
 import com.echothree.control.user.item.common.result.EditItemDescriptionTypeResult;
@@ -5532,6 +5534,129 @@ public class GraphQlMutations
             commandForm.setUlid(id);
 
             commandResultObject.setCommandResult(ItemUtil.getHome().deleteItemDescriptionType(getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultWithIdObject createItemAliasType(final DataFetchingEnvironment env,
+            @GraphQLName("itemAliasTypeName") @GraphQLNonNull final String itemAliasTypeName,
+            @GraphQLName("validationPattern") final String validationPattern,
+            @GraphQLName("itemAliasChecksumTypeName") @GraphQLNonNull final String itemAliasChecksumTypeName,
+            @GraphQLName("allowMultiple") @GraphQLNonNull final String allowMultiple,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var commandResultObject = new CommandResultWithIdObject();
+
+        try {
+            var commandForm = ItemUtil.getHome().getCreateItemAliasTypeForm();
+
+            commandForm.setItemAliasTypeName(itemAliasTypeName);
+            commandForm.setValidationPattern(validationPattern);
+            commandForm.setItemAliasChecksumTypeName(itemAliasChecksumTypeName);
+            commandForm.setAllowMultiple(allowMultiple);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            var commandResult = ItemUtil.getHome().createItemAliasType(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateItemAliasTypeResult)commandResult.getExecutionResult().getResult();
+
+                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultWithIdObject editItemAliasType(final DataFetchingEnvironment env,
+            @GraphQLName("originalItemAliasTypeName") final String originalItemAliasTypeName,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("itemAliasTypeName") final String itemAliasTypeName,
+            @GraphQLName("validationPattern") final String validationPattern,
+            @GraphQLName("itemAliasChecksumTypeName") final String itemAliasChecksumTypeName,
+            @GraphQLName("allowMultiple") final String allowMultiple,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var commandResultObject = new CommandResultWithIdObject();
+
+        try {
+            var spec = ItemUtil.getHome().getItemAliasTypeUniversalSpec();
+
+            spec.setItemAliasTypeName(originalItemAliasTypeName);
+            spec.setUlid(id);
+
+            var commandForm = ItemUtil.getHome().getEditItemAliasTypeForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = ItemUtil.getHome().editItemAliasType(getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditItemAliasTypeResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                commandResultObject.setEntityInstance(result.getItemAliasType().getEntityInstance());
+
+                if(arguments.containsKey("itemAliasTypeName"))
+                    edit.setItemAliasTypeName(itemAliasTypeName);
+                if(arguments.containsKey("validationPattern"))
+                    edit.setValidationPattern(validationPattern);
+                if(arguments.containsKey("itemAliasChecksumTypeName"))
+                    edit.setItemAliasChecksumTypeName(itemAliasChecksumTypeName);
+                if(arguments.containsKey("allowMultiple"))
+                    edit.setAllowMultiple(allowMultiple);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = ItemUtil.getHome().editItemAliasType(getUserVisitPK(env), commandForm);
+            }
+
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject deleteItemAliasType(final DataFetchingEnvironment env,
+            @GraphQLName("itemAliasTypeName") final String itemAliasTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = ItemUtil.getHome().getDeleteItemAliasTypeForm();
+
+            commandForm.setItemAliasTypeName(itemAliasTypeName);
+            commandForm.setUlid(id);
+
+            commandResultObject.setCommandResult(ItemUtil.getHome().deleteItemAliasType(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }

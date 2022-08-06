@@ -50,7 +50,7 @@ public class EditAction
     @Override
     protected ItemAliasTypeSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ItemAliasTypeSpec spec = ItemUtil.getHome().getItemAliasTypeSpec();
+        var spec = ItemUtil.getHome().getItemAliasTypeUniversalSpec();
         
         spec.setItemAliasTypeName(findParameter(request, ParameterConstants.ORIGINAL_ITEM_ALIAS_TYPE_NAME, actionForm.getOriginalItemAliasTypeName()));
         

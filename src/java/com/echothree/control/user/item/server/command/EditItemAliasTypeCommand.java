@@ -21,8 +21,9 @@ import com.echothree.control.user.item.common.edit.ItemEditFactory;
 import com.echothree.control.user.item.common.form.EditItemAliasTypeForm;
 import com.echothree.control.user.item.common.result.EditItemAliasTypeResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
-import com.echothree.control.user.item.common.spec.ItemAliasTypeSpec;
+import com.echothree.control.user.item.common.spec.ItemAliasTypeUniversalSpec;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.item.server.logic.ItemAliasTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -36,7 +37,6 @@ import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -47,7 +47,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class EditItemAliasTypeCommand
-        extends BaseAbstractEditCommand<ItemAliasTypeSpec, ItemAliasTypeEdit, EditItemAliasTypeResult, ItemAliasType, ItemAliasType> {
+        extends BaseAbstractEditCommand<ItemAliasTypeUniversalSpec, ItemAliasTypeEdit, EditItemAliasTypeResult, ItemAliasType, ItemAliasType> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
@@ -62,7 +62,11 @@ public class EditItemAliasTypeCommand
                 )));
         
         SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("ItemAliasTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("ItemAliasTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
                 ));
         
         EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
@@ -93,23 +97,8 @@ public class EditItemAliasTypeCommand
     
     @Override
     public ItemAliasType getEntity(EditItemAliasTypeResult result) {
-        var itemControl = Session.getModelController(ItemControl.class);
-        ItemAliasType itemAliasType = null;
-        String itemAliasTypeName = spec.getItemAliasTypeName();
-
-        if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            itemAliasType = itemControl.getItemAliasTypeByName(itemAliasTypeName);
-        } else { // EditMode.UPDATE
-            itemAliasType = itemControl.getItemAliasTypeByNameForUpdate(itemAliasTypeName);
-        }
-
-        if(itemAliasType != null) {
-            result.setItemAliasType(itemControl.getItemAliasTypeTransfer(getUserVisit(), itemAliasType));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownItemAliasTypeName.name(), itemAliasTypeName);
-        }
-
-        return itemAliasType;
+        return ItemAliasTypeLogic.getInstance().getItemAliasTypeByUniversalSpec(this,
+                spec, false, editModeToEntityPermission(editMode));
     }
     
     @Override
@@ -178,7 +167,7 @@ public class EditItemAliasTypeCommand
         itemAliasTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         itemAliasTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        itemControl.updateItemAliasTypeFromValue(itemAliasTypeDetailValue, partyPK);
+        ItemAliasTypeLogic.getInstance().updateItemAliasTypeFromValue(itemAliasTypeDetailValue, partyPK);
 
         if(itemAliasTypeDescription == null && description != null) {
             itemControl.createItemAliasTypeDescription(itemAliasType, getPreferredLanguage(), description, partyPK);

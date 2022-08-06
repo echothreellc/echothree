@@ -14,13 +14,15 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.item.common.form;
+package com.echothree.control.user.item.common.result;
 
-import com.echothree.control.user.item.common.spec.ItemAliasTypeUniversalSpec;
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
+import com.echothree.control.user.item.common.spec.ItemAliasTypeSpec;
+import com.echothree.util.common.command.BaseResult;
 
-public interface DeleteItemAliasTypeForm
-        extends ItemAliasTypeUniversalSpec {
+public interface CreateItemAliasTypeResult
+        extends ItemAliasTypeSpec, EntityRefSpec, BaseResult {
     
-    // Nothing additional beyond ItemAliasTypeUniversalSpec
+    // Nothing additional beyond ItemAliasTypeSpec, EntityRefSpec, BaseResult
     
 }

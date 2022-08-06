@@ -305,6 +305,7 @@ import com.echothree.model.data.item.server.value.HarmonizedTariffScheduleCodeUn
 import com.echothree.model.data.item.server.value.HarmonizedTariffScheduleCodeUseTypeDescriptionValue;
 import com.echothree.model.data.item.server.value.HarmonizedTariffScheduleCodeUseTypeDetailValue;
 import com.echothree.model.data.item.server.value.HarmonizedTariffScheduleCodeUseValue;
+import com.echothree.model.data.item.server.value.ItemAliasChecksumTypeValue;
 import com.echothree.model.data.item.server.value.ItemAliasTypeDescriptionValue;
 import com.echothree.model.data.item.server.value.ItemAliasTypeDetailValue;
 import com.echothree.model.data.item.server.value.ItemAliasValue;
@@ -2825,27 +2826,43 @@ public class ItemControl
         return itemAliasChecksumType;
     }
 
-    public List<ItemAliasChecksumType> getItemAliasChecksumTypes() {
-        PreparedStatement ps = ItemAliasChecksumTypeFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM itemaliaschecksumtypes " +
-                "ORDER BY iact_sortorder, iact_itemaliaschecksumtypename");
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ItemAliasChecksumType */
+    public ItemAliasChecksumType getItemAliasChecksumTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ItemAliasChecksumTypePK(entityInstance.getEntityUniqueId());
 
-        return ItemAliasChecksumTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+        return ItemAliasChecksumTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
-    public ItemAliasChecksumType getItemAliasChecksumTypeByName(String itemAliasChecksumTypeName) {
-        ItemAliasChecksumType itemAliasChecksumType = null;
+    public ItemAliasChecksumType getItemAliasChecksumTypeByEntityInstance(EntityInstance entityInstance) {
+        return getItemAliasChecksumTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ItemAliasChecksumType getItemAliasChecksumTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getItemAliasChecksumTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public ItemAliasChecksumType getItemAliasChecksumTypeByName(String itemAliasChecksumTypeName, EntityPermission entityPermission) {
+        ItemAliasChecksumType itemAliasChecksumType;
 
         try {
-            PreparedStatement ps = ItemAliasChecksumTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM itemaliaschecksumtypes " +
-                    "WHERE iact_itemaliaschecksumtypename = ?");
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM itemaliaschecksumtypes " +
+                        "WHERE iact_itemaliaschecksumtypename = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM itemaliaschecksumtypes " +
+                        "WHERE iact_itemaliaschecksumtypename = ? " +
+                        "FOR UPDATE";
+            }
+
+            var ps = ItemAliasChecksumTypeFactory.getInstance().prepareStatement(query);
 
             ps.setString(1, itemAliasChecksumTypeName);
 
-            itemAliasChecksumType = ItemAliasChecksumTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
+            itemAliasChecksumType = ItemAliasChecksumTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -2853,8 +2870,56 @@ public class ItemControl
         return itemAliasChecksumType;
     }
 
-    public ItemAliasChecksumTypeChoicesBean getItemAliasChecksumTypeChoices(String defaultItemAliasChecksumTypeChoice,
-            Language language, boolean allowNullChoice) {
+    public ItemAliasChecksumType getItemAliasChecksumTypeByName(String itemAliasChecksumTypeName) {
+        return getItemAliasChecksumTypeByName(itemAliasChecksumTypeName, EntityPermission.READ_ONLY);
+    }
+
+    public ItemAliasChecksumType getItemAliasChecksumTypeByNameForUpdate(String itemAliasChecksumTypeName) {
+        return getItemAliasChecksumTypeByName(itemAliasChecksumTypeName, EntityPermission.READ_WRITE);
+    }
+
+    public ItemAliasChecksumType getDefaultItemAliasChecksumType(EntityPermission entityPermission) {
+        String query = null;
+
+        if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+            query = "SELECT _ALL_ " +
+                    "FROM itemaliaschecksumtypes " +
+                    "WHERE iact_isdefault = 1";
+        } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+            query = "SELECT _ALL_ " +
+                    "FROM itemaliaschecksumtypes " +
+                    "WHERE iact_isdefault = 1 " +
+                    "FOR UPDATE";
+        }
+
+        PreparedStatement ps = ItemAliasChecksumTypeFactory.getInstance().prepareStatement(query);
+
+        return ItemAliasChecksumTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+    }
+
+    public ItemAliasChecksumType getDefaultItemAliasChecksumType() {
+        return getDefaultItemAliasChecksumType(EntityPermission.READ_ONLY);
+    }
+
+    public ItemAliasChecksumType getDefaultItemAliasChecksumTypeForUpdate() {
+        return getDefaultItemAliasChecksumType(EntityPermission.READ_WRITE);
+    }
+
+    public ItemAliasChecksumTypeValue getDefaultItemAliasChecksumTypeValueForUpdate() {
+        return getDefaultItemAliasChecksumTypeForUpdate().getItemAliasChecksumTypeValue().clone();
+    }
+
+    public List<ItemAliasChecksumType> getItemAliasChecksumTypes() {
+        PreparedStatement ps = ItemAliasChecksumTypeFactory.getInstance().prepareStatement(
+                "SELECT _ALL_ " +
+                "FROM itemaliaschecksumtypes " +
+                "ORDER BY iact_sortorder, iact_itemaliaschecksumtypename " +
+                "_LIMIT_");
+
+        return ItemAliasChecksumTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+    }
+
+    public ItemAliasChecksumTypeChoicesBean getItemAliasChecksumTypeChoices(String defaultItemAliasChecksumTypeChoice, Language language, boolean allowNullChoice) {
         List<ItemAliasChecksumType> itemAliasChecksumTypes = getItemAliasChecksumTypes();
         var size = itemAliasChecksumTypes.size();
         var labels = new ArrayList<String>(size);
@@ -2890,6 +2955,21 @@ public class ItemControl
         return getItemTransferCaches(userVisit).getItemAliasChecksumTypeTransferCache().getTransfer(itemAliasChecksumType);
     }
 
+    public List<ItemAliasChecksumTypeTransfer> getItemAliasChecksumTypeTransfers(UserVisit userVisit, Collection<ItemAliasChecksumType> entities) {
+        var itemAliasChecksumTypeTransfers = new ArrayList<ItemAliasChecksumTypeTransfer>(entities.size());
+        var itemAliasChecksumTypeTransferCache = getItemTransferCaches(userVisit).getItemAliasChecksumTypeTransferCache();
+
+        entities.forEach((entity) ->
+                itemAliasChecksumTypeTransfers.add(itemAliasChecksumTypeTransferCache.getTransfer(entity))
+        );
+
+        return itemAliasChecksumTypeTransfers;
+    }
+
+    public List<ItemAliasChecksumTypeTransfer> getItemAliasChecksumTypeTransfers(UserVisit userVisit) {
+        return getItemAliasChecksumTypeTransfers(userVisit, getItemAliasChecksumTypes());
+    }
+    
     // --------------------------------------------------------------------------------
     //   Item Alias Checksum Type Descriptions
     // --------------------------------------------------------------------------------
@@ -3188,8 +3268,9 @@ public class ItemControl
                 }
             }
             
-            itemAliasTypeDetail = ItemAliasTypeDetailFactory.getInstance().create(itemAliasTypePK, itemAliasTypeName, validationPattern, itemAliasChecksumTypePK,
-                    allowMultiple, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            itemAliasTypeDetail = ItemAliasTypeDetailFactory.getInstance().create(itemAliasTypePK, itemAliasTypeName,
+                    validationPattern, itemAliasChecksumTypePK, allowMultiple, isDefault, sortOrder, session.START_TIME_LONG,
+                    Session.MAX_TIME_LONG);
             
             itemAliasType.setActiveDetail(itemAliasTypeDetail);
             itemAliasType.setLastDetail(itemAliasTypeDetail);
