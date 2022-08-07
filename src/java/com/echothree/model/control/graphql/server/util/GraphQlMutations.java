@@ -56,6 +56,7 @@ import com.echothree.control.user.item.common.result.CreateItemDescriptionResult
 import com.echothree.control.user.item.common.result.CreateItemDescriptionTypeResult;
 import com.echothree.control.user.item.common.result.CreateItemImageTypeResult;
 import com.echothree.control.user.item.common.result.CreateItemResult;
+import com.echothree.control.user.item.common.result.EditItemAliasResult;
 import com.echothree.control.user.item.common.result.EditItemAliasTypeResult;
 import com.echothree.control.user.item.common.result.EditItemCategoryResult;
 import com.echothree.control.user.item.common.result.EditItemDescriptionResult;
@@ -5657,6 +5658,99 @@ public class GraphQlMutations
             commandForm.setUlid(id);
 
             commandResultObject.setCommandResult(ItemUtil.getHome().deleteItemAliasType(getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject createItemAlias(final DataFetchingEnvironment env,
+            @GraphQLName("itemName") @GraphQLNonNull final String itemName,
+            @GraphQLName("unitOfMeasureTypeName") @GraphQLNonNull final String unitOfMeasureTypeName,
+            @GraphQLName("itemAliasTypeName") @GraphQLNonNull final String itemAliasTypeName,
+            @GraphQLName("alias") @GraphQLNonNull final String alias) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = ItemUtil.getHome().getCreateItemAliasForm();
+
+            commandForm.setItemName(itemName);
+            commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
+            commandForm.setItemAliasTypeName(itemAliasTypeName);
+            commandForm.setAlias(alias);
+
+            var commandResult = ItemUtil.getHome().createItemAlias(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject editItemAlias(final DataFetchingEnvironment env,
+            @GraphQLName("originalAlias") @GraphQLNonNull final String originalAlias,
+            @GraphQLName("unitOfMeasureTypeName") final String unitOfMeasureTypeName,
+            @GraphQLName("itemAliasTypeName") final String itemAliasTypeName,
+            @GraphQLName("alias") final String alias) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var spec = ItemUtil.getHome().getItemAliasSpec();
+
+            spec.setAlias(originalAlias);
+
+            var commandForm = ItemUtil.getHome().getEditItemAliasForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = ItemUtil.getHome().editItemAlias(getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditItemAliasResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                if(arguments.containsKey("unitOfMeasureTypeName"))
+                    edit.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
+                if(arguments.containsKey("itemAliasTypeName"))
+                    edit.setItemAliasTypeName(itemAliasTypeName);
+                if(arguments.containsKey("alias"))
+                    edit.setAlias(alias);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = ItemUtil.getHome().editItemAlias(getUserVisitPK(env), commandForm);
+            }
+
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject deleteItemAlias(final DataFetchingEnvironment env,
+            @GraphQLName("alias") @GraphQLID final String alias) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = ItemUtil.getHome().getDeleteItemAliasForm();
+
+            commandForm.setAlias(alias);
+
+            commandResultObject.setCommandResult(ItemUtil.getHome().deleteItemAlias(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
