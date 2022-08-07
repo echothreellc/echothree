@@ -17,11 +17,11 @@
 package com.echothree.control.user.accounting.common.form;
 
 import com.echothree.control.user.accounting.common.edit.ItemAccountingCategoryEdit;
-import com.echothree.control.user.accounting.common.spec.ItemAccountingCategorySpec;
+import com.echothree.control.user.accounting.common.spec.ItemAccountingCategoryUniversalSpec;
 import com.echothree.util.common.form.BaseEditForm;
 
 public interface EditItemAccountingCategoryForm
-        extends BaseEditForm<ItemAccountingCategorySpec, ItemAccountingCategoryEdit> {
+        extends BaseEditForm<ItemAccountingCategoryUniversalSpec, ItemAccountingCategoryEdit> {
     
     // Nothing additional beyond BaseEditForm
     

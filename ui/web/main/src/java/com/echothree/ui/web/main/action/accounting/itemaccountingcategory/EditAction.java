@@ -20,7 +20,6 @@ import com.echothree.control.user.accounting.common.AccountingUtil;
 import com.echothree.control.user.accounting.common.edit.ItemAccountingCategoryEdit;
 import com.echothree.control.user.accounting.common.form.EditItemAccountingCategoryForm;
 import com.echothree.control.user.accounting.common.result.EditItemAccountingCategoryResult;
-import com.echothree.control.user.accounting.common.spec.ItemAccountingCategorySpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -64,7 +63,7 @@ public class EditAction
             if(forwardKey == null) {
                 EditActionForm actionForm = (EditActionForm)form;
                 EditItemAccountingCategoryForm commandForm = AccountingUtil.getHome().getEditItemAccountingCategoryForm();
-                ItemAccountingCategorySpec spec = AccountingUtil.getHome().getItemAccountingCategorySpec();
+                var spec = AccountingUtil.getHome().getItemAccountingCategoryUniversalSpec();
                 
                 if(originalItemAccountingCategoryName == null)
                     originalItemAccountingCategoryName = actionForm.getOriginalItemAccountingCategoryName();
