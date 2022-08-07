@@ -1,5 +1,20 @@
 # Changelog
 
+## 2022-08-07-01
+
+* Add Item Accounting Category Object and Queries [502](https://gitlab.echothree.com/echothree/echothree/-/issues/502)
+* Add Item Accounting Category Mutations [503](https://gitlab.echothree.com/echothree/echothree/-/issues/503)
+* Add Item Purchasing Category Object and Queries [504](https://gitlab.echothree.com/echothree/echothree/-/issues/504)
+* Add Item Purchasing Category Mutations [505](https://gitlab.echothree.com/echothree/echothree/-/issues/505)
+* Add Item Alias Type Object and Queries [506](https://gitlab.echothree.com/echothree/echothree/-/issues/506)
+* Add Item Alias Type Mutations [507](https://gitlab.echothree.com/echothree/echothree/-/issues/507)
+* Add Item Alias Object and Queries [508](https://gitlab.echothree.com/echothree/echothree/-/issues/508)
+* Add Item Alias Mutations [509](https://gitlab.echothree.com/echothree/echothree/-/issues/509)
+* Don't Log IP Address if Login is Local [517](https://gitlab.echothree.com/echothree/echothree/-/issues/517)
+* Cannot Add Item Description Type Without a Mime Type Usage Type [519](https://gitlab.echothree.com/echothree/echothree/-/issues/519)
+* Item Description Type Review Shouldn't Show Mime Type Usage Type if Null [520](https://gitlab.echothree.com/echothree/echothree/-/issues/520)
+* Use GraphQL Unions for Entity Attributes [522](https://gitlab.echothree.com/echothree/echothree/-/issues/522)
+
 ## 2022-07-24-01
 
 * GraphQL Mutations for Item Description Types [413](https://gitlab.echothree.com/echothree/echothree/-/issues/413)
