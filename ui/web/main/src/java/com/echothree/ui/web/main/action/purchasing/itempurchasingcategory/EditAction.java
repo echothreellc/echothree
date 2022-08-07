@@ -64,7 +64,7 @@ public class EditAction
             if(forwardKey == null) {
                 EditActionForm actionForm = (EditActionForm)form;
                 EditItemPurchasingCategoryForm commandForm = VendorUtil.getHome().getEditItemPurchasingCategoryForm();
-                ItemPurchasingCategorySpec spec = VendorUtil.getHome().getItemPurchasingCategorySpec();
+                var spec = VendorUtil.getHome().getItemPurchasingCategoryUniversalSpec();
                 
                 if(originalItemPurchasingCategoryName == null)
                     originalItemPurchasingCategoryName = actionForm.getOriginalItemPurchasingCategoryName();

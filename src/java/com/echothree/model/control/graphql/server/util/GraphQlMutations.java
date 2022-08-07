@@ -111,6 +111,9 @@ import com.echothree.control.user.shipment.common.result.CreateFreeOnBoardResult
 import com.echothree.control.user.shipment.common.result.EditFreeOnBoardResult;
 import com.echothree.control.user.user.common.UserUtil;
 import com.echothree.control.user.user.common.result.EditUserLoginResult;
+import com.echothree.control.user.vendor.common.VendorUtil;
+import com.echothree.control.user.vendor.common.result.CreateItemPurchasingCategoryResult;
+import com.echothree.control.user.vendor.common.result.EditItemPurchasingCategoryResult;
 import com.echothree.model.control.graphql.server.graphql.CommandResultObject;
 import com.echothree.model.control.graphql.server.graphql.CommandResultWithIdObject;
 import com.echothree.model.control.search.server.graphql.SearchCustomersResultObject;
@@ -5239,6 +5242,119 @@ public class GraphQlMutations
             commandForm.setUlid(id);
 
             commandResultObject.setCommandResult(ItemUtil.getHome().deleteItemCategory(getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultWithIdObject createItemPurchasingCategory(final DataFetchingEnvironment env,
+            @GraphQLName("itemPurchasingCategoryName") @GraphQLNonNull final String itemPurchasingCategoryName,
+            @GraphQLName("parentItemPurchasingCategoryName") final String parentItemPurchasingCategoryName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var commandResultObject = new CommandResultWithIdObject();
+
+        try {
+            var commandForm = VendorUtil.getHome().getCreateItemPurchasingCategoryForm();
+
+            commandForm.setItemPurchasingCategoryName(itemPurchasingCategoryName);
+            commandForm.setParentItemPurchasingCategoryName(parentItemPurchasingCategoryName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            var commandResult = VendorUtil.getHome().createItemPurchasingCategory(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateItemPurchasingCategoryResult)commandResult.getExecutionResult().getResult();
+
+                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultWithIdObject editItemPurchasingCategory(final DataFetchingEnvironment env,
+            @GraphQLName("originalItemPurchasingCategoryName") final String originalItemPurchasingCategoryName,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("itemPurchasingCategoryName") final String itemPurchasingCategoryName,
+            @GraphQLName("parentItemPurchasingCategoryName") final String parentItemPurchasingCategoryName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var commandResultObject = new CommandResultWithIdObject();
+
+        try {
+            var spec = VendorUtil.getHome().getItemPurchasingCategoryUniversalSpec();
+
+            spec.setItemPurchasingCategoryName(originalItemPurchasingCategoryName);
+            spec.setUlid(id);
+
+            var commandForm = VendorUtil.getHome().getEditItemPurchasingCategoryForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = VendorUtil.getHome().editItemPurchasingCategory(getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditItemPurchasingCategoryResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                commandResultObject.setEntityInstance(result.getItemPurchasingCategory().getEntityInstance());
+
+                if(arguments.containsKey("itemPurchasingCategoryName"))
+                    edit.setItemPurchasingCategoryName(itemPurchasingCategoryName);
+                if(arguments.containsKey("parentItemPurchasingCategoryName"))
+                    edit.setParentItemPurchasingCategoryName(parentItemPurchasingCategoryName);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = VendorUtil.getHome().editItemPurchasingCategory(getUserVisitPK(env), commandForm);
+            }
+
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject deleteItemPurchasingCategory(final DataFetchingEnvironment env,
+            @GraphQLName("itemPurchasingCategoryName") final String itemPurchasingCategoryName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = VendorUtil.getHome().getDeleteItemPurchasingCategoryForm();
+
+            commandForm.setItemPurchasingCategoryName(itemPurchasingCategoryName);
+            commandForm.setUlid(id);
+
+            commandResultObject.setCommandResult(VendorUtil.getHome().deleteItemPurchasingCategory(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
