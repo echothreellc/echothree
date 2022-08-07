@@ -16,6 +16,9 @@
 
 package com.echothree.model.control.graphql.server.util;
 
+import com.echothree.control.user.accounting.common.AccountingUtil;
+import com.echothree.control.user.accounting.common.result.CreateItemAccountingCategoryResult;
+import com.echothree.control.user.accounting.common.result.EditItemAccountingCategoryResult;
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
 import com.echothree.control.user.content.common.ContentUtil;
 import com.echothree.control.user.content.common.result.CreateContentPageLayoutResult;
@@ -5242,6 +5245,119 @@ public class GraphQlMutations
             commandForm.setUlid(id);
 
             commandResultObject.setCommandResult(ItemUtil.getHome().deleteItemCategory(getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultWithIdObject createItemAccountingCategory(final DataFetchingEnvironment env,
+            @GraphQLName("itemAccountingCategoryName") @GraphQLNonNull final String itemAccountingCategoryName,
+            @GraphQLName("parentItemAccountingCategoryName") final String parentItemAccountingCategoryName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var commandResultObject = new CommandResultWithIdObject();
+
+        try {
+            var commandForm = AccountingUtil.getHome().getCreateItemAccountingCategoryForm();
+
+            commandForm.setItemAccountingCategoryName(itemAccountingCategoryName);
+            commandForm.setParentItemAccountingCategoryName(parentItemAccountingCategoryName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            var commandResult = AccountingUtil.getHome().createItemAccountingCategory(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateItemAccountingCategoryResult)commandResult.getExecutionResult().getResult();
+
+                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultWithIdObject editItemAccountingCategory(final DataFetchingEnvironment env,
+            @GraphQLName("originalItemAccountingCategoryName") final String originalItemAccountingCategoryName,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("itemAccountingCategoryName") final String itemAccountingCategoryName,
+            @GraphQLName("parentItemAccountingCategoryName") final String parentItemAccountingCategoryName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var commandResultObject = new CommandResultWithIdObject();
+
+        try {
+            var spec = AccountingUtil.getHome().getItemAccountingCategoryUniversalSpec();
+
+            spec.setItemAccountingCategoryName(originalItemAccountingCategoryName);
+            spec.setUlid(id);
+
+            var commandForm = AccountingUtil.getHome().getEditItemAccountingCategoryForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = AccountingUtil.getHome().editItemAccountingCategory(getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditItemAccountingCategoryResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                commandResultObject.setEntityInstance(result.getItemAccountingCategory().getEntityInstance());
+
+                if(arguments.containsKey("itemAccountingCategoryName"))
+                    edit.setItemAccountingCategoryName(itemAccountingCategoryName);
+                if(arguments.containsKey("parentItemAccountingCategoryName"))
+                    edit.setParentItemAccountingCategoryName(parentItemAccountingCategoryName);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = AccountingUtil.getHome().editItemAccountingCategory(getUserVisitPK(env), commandForm);
+            }
+
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject deleteItemAccountingCategory(final DataFetchingEnvironment env,
+            @GraphQLName("itemAccountingCategoryName") final String itemAccountingCategoryName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = AccountingUtil.getHome().getDeleteItemAccountingCategoryForm();
+
+            commandForm.setItemAccountingCategoryName(itemAccountingCategoryName);
+            commandForm.setUlid(id);
+
+            commandResultObject.setCommandResult(AccountingUtil.getHome().deleteItemAccountingCategory(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }

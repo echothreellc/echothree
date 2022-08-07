@@ -17,16 +17,17 @@
 package com.echothree.control.user.accounting.server.command;
 
 import com.echothree.control.user.accounting.common.form.CreateItemAccountingCategoryForm;
+import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -49,13 +50,13 @@ public class CreateItemAccountingCategoryCommand
                         new SecurityRoleDefinition(SecurityRoleGroups.ItemAccountingCategory.name(), SecurityRoles.Create.name())
                         )))
                 )));
-        
+
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-            new FieldDefinition("ItemAccountingCategoryName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("ParentItemAccountingCategoryName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
-            new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
-            new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                new FieldDefinition("ItemAccountingCategoryName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("ParentItemAccountingCategoryName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
+                new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
         ));
     }
     
@@ -66,6 +67,7 @@ public class CreateItemAccountingCategoryCommand
     
     @Override
     protected BaseResult execute() {
+        var result = AccountingResultFactory.getCreateItemAccountingCategoryResult();
         var accountingControl = Session.getModelController(AccountingControl.class);
         String itemAccountingCategoryName = form.getItemAccountingCategoryName();
         ItemAccountingCategory itemAccountingCategory = accountingControl.getItemAccountingCategoryByName(itemAccountingCategoryName);
@@ -97,8 +99,13 @@ public class CreateItemAccountingCategoryCommand
         } else {
             addExecutionError(ExecutionErrors.DuplicateItemAccountingCategoryName.name(), itemAccountingCategoryName);
         }
+
+        if(itemAccountingCategory != null) {
+            result.setItemAccountingCategoryName(itemAccountingCategory.getLastDetail().getItemAccountingCategoryName());
+            result.setEntityRef(itemAccountingCategory.getPrimaryKey().getEntityRef());
+        }
         
-        return null;
+        return result;
     }
     
 }
