@@ -2413,7 +2413,8 @@ public class CoreControl
                     "SELECT _ALL_ " +
                     "FROM entityinstances " +
                     "WHERE eni_ent_entitytypeid = ? " +
-                    "ORDER BY eni_entityuniqueid");
+                    "ORDER BY eni_entityuniqueid " +
+                    "_LIMIT_");
             
             ps.setLong(1, entityType.getPrimaryKey().getEntityId());
             
@@ -4645,7 +4646,7 @@ public class CoreControl
         
         return entityAttribute;
     }
-    
+
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.EntityAttribute */
     public EntityAttribute getEntityAttributeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new EntityAttributePK(entityInstance.getEntityUniqueId());
@@ -4664,7 +4665,15 @@ public class CoreControl
     public EntityAttribute getEntityAttributeByPK(EntityAttributePK pk) {
         return EntityAttributeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
     }
-    
+
+    public long countEntityAttributesByEntityType(EntityType entityType) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM entityattributes, entityattributedetails " +
+                "WHERE ena_activedetailid = enadt_entityattributedetailid AND enadt_ent_entitytypeid = ?",
+                entityType);
+    }
+
     public EntityAttribute getEntityAttributeByName(EntityType entityType, String entityAttributeName, EntityPermission entityPermission) {
         EntityAttribute entityAttribute;
         
@@ -4724,7 +4733,8 @@ public class CoreControl
                         "FROM entityattributes, entityattributedetails " +
                         "WHERE ena_activedetailid = enadt_entityattributedetailid " +
                         "AND enadt_ent_entitytypeid = ? " +
-                        "ORDER BY enadt_sortorder, enadt_entityattributename";
+                        "ORDER BY enadt_sortorder, enadt_entityattributename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM entityattributes, entityattributedetails " +

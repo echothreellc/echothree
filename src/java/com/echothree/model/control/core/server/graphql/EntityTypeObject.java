@@ -18,7 +18,14 @@ package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.core.common.EntityAttributeConstants;
+import com.echothree.model.data.core.common.EntityInstanceConstants;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.core.server.entity.EntityTypeDetail;
 import com.echothree.util.server.persistence.Session;
@@ -26,9 +33,9 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @GraphQLDescription("entity type object")
@@ -100,45 +107,45 @@ public class EntityTypeObject
 
     @GraphQLField
     @GraphQLDescription("entity instances")
-    public List<EntityInstanceObject> getEntityInstances(final DataFetchingEnvironment env) {
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<EntityInstanceObject> getEntityInstances(final DataFetchingEnvironment env) {
         if(CoreSecurityUtils.getInstance().getHasEntityInstancesAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
-            var entities = coreControl.getEntityInstancesByEntityType(entityType);
-            var entityInstances = entities.stream().map(EntityInstanceObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+            var totalCount = coreControl.countEntityInstancesByEntityType(entityType);
 
-            return entityInstances;
+            try(var objectLimiter = new ObjectLimiter(env, EntityInstanceConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = coreControl.getEntityInstancesByEntityType(entityType);
+                var entityInstances = entities.stream().map(EntityInstanceObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, entityInstances);
+            }
         } else {
-            return null;
-        }
-    }
-
-    @GraphQLField
-    @GraphQLDescription("entity instance count")
-    public Long getEntityInstanceCount(final DataFetchingEnvironment env) {
-        if(CoreSecurityUtils.getInstance().getHasEntityInstancesAccess(env)) {
-            var coreControl = Session.getModelController(CoreControl.class);
-
-            return coreControl.countEntityInstancesByEntityType(entityType);
-        } else {
-            return null;
+            return Connections.emptyConnection();
         }
     }
 
     @GraphQLField
     @GraphQLDescription("entity attributes")
-    public List<EntityAttributeObject> getEntityAttributes(final DataFetchingEnvironment env) {
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<EntityAttributeObject> getEntityAttributes(final DataFetchingEnvironment env) {
         if(CoreSecurityUtils.getInstance().getHasEntityAttributesAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
-            var entities = coreControl.getEntityAttributesByEntityType(entityType);
-            var entityAttributes = new ArrayList<EntityAttributeObject>(entities.size());
+            var totalCount = coreControl.countEntityAttributesByEntityType(entityType);
 
-            for(var entity : entities) {
-                entityAttributes.add(new EntityAttributeObject(entity, null));
+            try(var objectLimiter = new ObjectLimiter(env, EntityAttributeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = coreControl.getEntityAttributesByEntityType(entityType);
+                var entityAttributes = new ArrayList<EntityAttributeObject>(entities.size());
+
+                for(var entity : entities) {
+                    entityAttributes.add(new EntityAttributeObject(entity, null));
+                }
+
+                return new CountedObjects<>(objectLimiter, entityAttributes);
             }
-
-            return entityAttributes;
         } else {
-            return null;
+            return Connections.emptyConnection();
         }
     }
 
