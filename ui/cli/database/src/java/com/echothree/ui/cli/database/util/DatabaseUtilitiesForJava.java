@@ -1484,7 +1484,7 @@ public class DatabaseUtilitiesForJava {
                 
                 if(type == ColumnType.columnForeignKey) {
                     createEntityParameters += column.getFKEntityClass() + " " + column.getEntityVariableName();
-                    pkParameters += column.getEntityVariableName() + " == null? (" + column.getFKPKClass() + ")null: " + column.getEntityVariableName() + ".getPrimaryKey()";
+                    pkParameters += column.getEntityVariableName() + " == null ? null : " + column.getEntityVariableName() + ".getPrimaryKey()";
                     createPkParameters += column.getFKPKClass() + " " + column.getVariableName();
                     nullParameters += "(" + column.getFKPKClass() + ")null";
                 } else {
