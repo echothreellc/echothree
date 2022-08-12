@@ -13080,8 +13080,8 @@ public class CoreControl
         return suppressEvent;
     }
 
-    public Event sendEvent(EntityInstance entityInstance, EventType eventType, EntityInstance relatedEntityInstance,
-            EventType relatedEventType, BasePK createdByPK) {
+    public Event sendEvent(final EntityInstance entityInstance, final EventType eventType, final EntityInstance relatedEntityInstance,
+            final EventType relatedEventType, final BasePK createdByPK) {
         var createdByEntityInstance = createdByPK == null ? null : getEntityInstanceByBasePK(createdByPK);
         Event event = null;
 
@@ -13147,14 +13147,15 @@ public class CoreControl
     }
 
     @Override
-    public Event sendEventUsingNames(BasePK entityInstancePK, String eventTypeName, BasePK relatedPK, String relatedEventTypeName, BasePK createdByPK) {
+    public Event sendEventUsingNames(final BasePK entityInstancePK, final String eventTypeName, final BasePK relatedPK,
+            final String relatedEventTypeName, final BasePK createdByPK) {
+        var entityInstance = getEntityInstanceByBasePK(entityInstancePK);
         Event event = null;
-        EntityInstance entityInstance = getEntityInstanceByBasePK(entityInstancePK);
-        
+
         if(entityInstance == null) {
             getLog().error("sendEventUsingNames: getEntityInstanceByBasePK failed on " + entityInstancePK.toString());
         } else {
-            EntityInstance relatedEntityInstance = relatedPK == null? null: getEntityInstanceByBasePK(relatedPK);
+            var relatedEntityInstance = relatedPK == null? null: getEntityInstanceByBasePK(relatedPK);
             
             event = sendEventUsingNames(entityInstance, eventTypeName, relatedEntityInstance, relatedEventTypeName, createdByPK);
         }
@@ -13163,16 +13164,18 @@ public class CoreControl
     }
     
     @Override
-    public Event sendEventUsingNames(EntityInstance entityInstance, String eventTypeName, BasePK relatedPK, String relatedEventTypeName, BasePK createdByPK) {
-        EntityInstance relatedEntityInstance = relatedPK == null? null: getEntityInstanceByBasePK(relatedPK);
+    public Event sendEventUsingNames(final EntityInstance entityInstance, final String eventTypeName, final BasePK relatedPK,
+            final String relatedEventTypeName, final BasePK createdByPK) {
+        var relatedEntityInstance = relatedPK == null? null: getEntityInstanceByBasePK(relatedPK);
         
         return sendEventUsingNames(entityInstance, eventTypeName, relatedEntityInstance, relatedEventTypeName, createdByPK);
     }
     
     @Override
-    public Event sendEventUsingNames(EntityInstance entityInstance, String eventTypeName, EntityInstance relatedEntityInstance, String relatedEventTypeName, BasePK createdByPK) {
-        EventType eventType = getEventTypeByName(eventTypeName);
-        EventType relatedEventType = relatedEventTypeName == null? null: getEventTypeByName(relatedEventTypeName);
+    public Event sendEventUsingNames(final EntityInstance entityInstance, final String eventTypeName, final EntityInstance relatedEntityInstance,
+            final String relatedEventTypeName, final BasePK createdByPK) {
+        var eventType = getEventTypeByName(eventTypeName);
+        var relatedEventType = relatedEventTypeName == null? null: getEventTypeByName(relatedEventTypeName);
         
         return sendEvent(entityInstance, eventType, relatedEntityInstance, relatedEventType, createdByPK);
     }
