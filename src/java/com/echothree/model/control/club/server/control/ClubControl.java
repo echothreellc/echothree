@@ -118,7 +118,7 @@ public class ClubControl
         club.setLastDetail(clubDetail);
         club.store();
         
-        sendEventUsingNames(club.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(club.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return club;
     }
@@ -342,7 +342,7 @@ public class ClubControl
             club.setActiveDetail(clubDetail);
             club.setLastDetail(clubDetail);
             
-            sendEventUsingNames(clubPK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(clubPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -376,7 +376,7 @@ public class ClubControl
             }
         }
         
-        sendEventUsingNames(club.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(club.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteClubBySubscriptionType(SubscriptionType subscriptionType, BasePK deletedBy) {
@@ -395,7 +395,7 @@ public class ClubControl
         ClubDescription clubDescription = ClubDescriptionFactory.getInstance().create(club,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(club.getPrimaryKey(), EventTypes.MODIFY, clubDescription.getPrimaryKey(),
+        sendEvent(club.getPrimaryKey(), EventTypes.MODIFY, clubDescription.getPrimaryKey(),
                 null, createdBy);
         
         return clubDescription;
@@ -539,14 +539,14 @@ public class ClubControl
             clubDescription = ClubDescriptionFactory.getInstance().create(club, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(club.getPrimaryKey(), EventTypes.MODIFY, clubDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(club.getPrimaryKey(), EventTypes.MODIFY, clubDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteClubDescription(ClubDescription clubDescription, BasePK deletedBy) {
         clubDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(clubDescription.getClubPK(), EventTypes.MODIFY,
+        sendEvent(clubDescription.getClubPK(), EventTypes.MODIFY,
                 clubDescription.getPrimaryKey(), null, deletedBy);
     }
     
@@ -691,7 +691,7 @@ public class ClubControl
         ClubItem clubItem = ClubItemFactory.getInstance().create(club, clubItemType, item, subscriptionTime,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(club.getPrimaryKey(), EventTypes.MODIFY, clubItem.getPrimaryKey(), null, createdBy);
+        sendEvent(club.getPrimaryKey(), EventTypes.MODIFY, clubItem.getPrimaryKey(), null, createdBy);
         
         return clubItem;
     }
@@ -859,7 +859,7 @@ public class ClubControl
             clubItem = ClubItemFactory.getInstance().create(subscriptionTypePK, clubItemTypePK, itemPK,
                     subscriptionTime, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(clubItem.getClubPK(), EventTypes.MODIFY,
+            sendEvent(clubItem.getClubPK(), EventTypes.MODIFY,
                     clubItem.getPrimaryKey(), null, updatedBy);
         }
     }
@@ -867,7 +867,7 @@ public class ClubControl
     public void deleteClubItem(ClubItem clubItem, BasePK deletedBy) {
         clubItem.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(clubItem.getClubPK(), EventTypes.MODIFY, clubItem.getPrimaryKey(), null, deletedBy);
+        sendEvent(clubItem.getClubPK(), EventTypes.MODIFY, clubItem.getPrimaryKey(), null, deletedBy);
     }
     
     private void deleteClubItems(List<ClubItem> clubItems, BasePK deletedBy) {

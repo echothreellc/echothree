@@ -85,7 +85,7 @@ public class UseControl
         use.setLastDetail(useDetail);
         use.store();
 
-        sendEventUsingNames(use.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(use.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return use;
     }
@@ -352,7 +352,7 @@ public class UseControl
             use.setActiveDetail(useDetail);
             use.setLastDetail(useDetail);
 
-            sendEventUsingNames(usePK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(usePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -389,7 +389,7 @@ public class UseControl
             }
         }
 
-        sendEventUsingNames(use.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(use.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteUses(List<Use> uses, BasePK deletedBy) {
@@ -410,7 +410,7 @@ public class UseControl
         UseDescription useDescription = UseDescriptionFactory.getInstance().create(use, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(use.getPrimaryKey(), EventTypes.MODIFY, useDescription.getPrimaryKey(),
+        sendEvent(use.getPrimaryKey(), EventTypes.MODIFY, useDescription.getPrimaryKey(),
                 EventTypes.CREATE, createdBy);
 
         return useDescription;
@@ -548,7 +548,7 @@ public class UseControl
 
             useDescription = UseDescriptionFactory.getInstance().create(use, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(use.getPrimaryKey(), EventTypes.MODIFY, useDescription.getPrimaryKey(),
+            sendEvent(use.getPrimaryKey(), EventTypes.MODIFY, useDescription.getPrimaryKey(),
                     EventTypes.MODIFY, updatedBy);
         }
     }
@@ -556,7 +556,7 @@ public class UseControl
     public void deleteUseDescription(UseDescription useDescription, BasePK deletedBy) {
         useDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(useDescription.getUsePK(), EventTypes.MODIFY,
+        sendEvent(useDescription.getUsePK(), EventTypes.MODIFY,
                 useDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 

@@ -154,7 +154,7 @@ public class CommunicationControl
         communicationEventPurpose.setLastDetail(communicationEventPurposeDetail);
         communicationEventPurpose.store();
         
-        sendEventUsingNames(communicationEventPurpose.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(communicationEventPurpose.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return communicationEventPurpose;
     }
@@ -351,7 +351,7 @@ public class CommunicationControl
             communicationEventPurpose.setActiveDetail(communicationEventPurposeDetail);
             communicationEventPurpose.setLastDetail(communicationEventPurposeDetail);
             
-            sendEventUsingNames(communicationEventPurposePK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(communicationEventPurposePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -384,7 +384,7 @@ public class CommunicationControl
             }
         }
         
-        sendEventUsingNames(communicationEventPurpose.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(communicationEventPurpose.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -396,7 +396,7 @@ public class CommunicationControl
         CommunicationEventPurposeDescription communicationEventPurposeDescription = CommunicationEventPurposeDescriptionFactory.getInstance().create(session,
                 communicationEventPurpose, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(communicationEventPurpose.getPrimaryKey(), EventTypes.MODIFY, communicationEventPurposeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(communicationEventPurpose.getPrimaryKey(), EventTypes.MODIFY, communicationEventPurposeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return communicationEventPurposeDescription;
     }
@@ -535,14 +535,14 @@ public class CommunicationControl
             communicationEventPurposeDescription = CommunicationEventPurposeDescriptionFactory.getInstance().create(communicationEventPurpose, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(communicationEventPurpose.getPrimaryKey(), EventTypes.MODIFY, communicationEventPurposeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(communicationEventPurpose.getPrimaryKey(), EventTypes.MODIFY, communicationEventPurposeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteCommunicationEventPurposeDescription(CommunicationEventPurposeDescription communicationEventPurposeDescription, BasePK deletedBy) {
         communicationEventPurposeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(communicationEventPurposeDescription.getCommunicationEventPurposePK(), EventTypes.MODIFY, communicationEventPurposeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(communicationEventPurposeDescription.getCommunicationEventPurposePK(), EventTypes.MODIFY, communicationEventPurposeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -768,7 +768,7 @@ public class CommunicationControl
         communicationEvent.setLastDetail(communicationEventDetail);
         communicationEvent.store();
         
-        sendEventUsingNames(communicationEvent.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(communicationEvent.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return communicationEvent;
     }
@@ -909,7 +909,7 @@ public class CommunicationControl
         CommunicationEventRole communicationEventRole = CommunicationEventRoleFactory.getInstance().create(session,
                 communicationEvent, party, communicationEventRoleType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(communicationEvent.getPrimaryKey(), EventTypes.MODIFY,
+        sendEvent(communicationEvent.getPrimaryKey(), EventTypes.MODIFY,
                 communicationEventRole.getPrimaryKey(), null, createdBy);
         
         return communicationEventRole;
@@ -1060,7 +1060,7 @@ public class CommunicationControl
     public void deleteCommunicationEventRole(CommunicationEventRole communicationEventRole, BasePK deletedBy) {
         communicationEventRole.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(communicationEventRole.getCommunicationEventPK(), EventTypes.MODIFY,
+        sendEvent(communicationEventRole.getCommunicationEventPK(), EventTypes.MODIFY,
                 communicationEventRole.getPrimaryKey(), null, deletedBy);
     }
     
@@ -1172,7 +1172,7 @@ public class CommunicationControl
         communicationSource.setLastDetail(communicationSourceDetail);
         communicationSource.store();
         
-        sendEventUsingNames(communicationSource.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(communicationSource.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return communicationSource;
     }
@@ -1333,7 +1333,7 @@ public class CommunicationControl
             communicationSource.setActiveDetail(communicationSourceDetail);
             communicationSource.setLastDetail(communicationSourceDetail);
             
-            sendEventUsingNames(communicationSourcePK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(communicationSourcePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -1346,7 +1346,7 @@ public class CommunicationControl
         communicationSource.setActiveDetail(null);
         communicationSource.store();
         
-        sendEventUsingNames(communicationSource.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(communicationSource.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -1358,7 +1358,7 @@ public class CommunicationControl
         CommunicationSourceDescription communicationSourceDescription = CommunicationSourceDescriptionFactory.getInstance().create(session,
                 communicationSource, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(communicationSource.getPrimaryKey(), EventTypes.MODIFY, communicationSourceDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(communicationSource.getPrimaryKey(), EventTypes.MODIFY, communicationSourceDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return communicationSourceDescription;
     }
@@ -1497,14 +1497,14 @@ public class CommunicationControl
             communicationSourceDescription = CommunicationSourceDescriptionFactory.getInstance().create(communicationSource, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(communicationSource.getPrimaryKey(), EventTypes.MODIFY, communicationSourceDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(communicationSource.getPrimaryKey(), EventTypes.MODIFY, communicationSourceDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteCommunicationSourceDescription(CommunicationSourceDescription communicationSourceDescription, BasePK deletedBy) {
         communicationSourceDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(communicationSourceDescription.getCommunicationSourcePK(), EventTypes.MODIFY, communicationSourceDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(communicationSourceDescription.getCommunicationSourcePK(), EventTypes.MODIFY, communicationSourceDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -1527,7 +1527,7 @@ public class CommunicationControl
                 communicationSource, server, username, encodeCommunicationEmailSourcePassword(password), receiveWorkEffortScope,
                 sendWorkEffortScope, reviewEmployeeSelector, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(communicationSource.getPrimaryKey(), EventTypes.MODIFY, communicationEmailSource.getPrimaryKey(), null, createdBy);
+        sendEvent(communicationSource.getPrimaryKey(), EventTypes.MODIFY, communicationEmailSource.getPrimaryKey(), null, createdBy);
         
         return communicationEmailSource;
     }
@@ -1612,7 +1612,7 @@ public class CommunicationControl
                     communicationSource.getPrimaryKey(), serverPK, username, password, receiveWorkEffortScopePK,
                     sendWorkEffortScopePK, reviewEmployeeSelectorPK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(communicationSource.getPrimaryKey(), EventTypes.MODIFY,
+            sendEvent(communicationSource.getPrimaryKey(), EventTypes.MODIFY,
                     communicationEmailSource.getPrimaryKey(), null, updatedBy);
         }
     }
@@ -1620,7 +1620,7 @@ public class CommunicationControl
     public void deleteCommunicationEmailSource(CommunicationEmailSource communicationEmailSource, BasePK deletedBy) {
         communicationEmailSource.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(communicationEmailSource.getCommunicationSource().getPrimaryKey(), EventTypes.MODIFY,
+        sendEvent(communicationEmailSource.getCommunicationSource().getPrimaryKey(), EventTypes.MODIFY,
                 communicationEmailSource.getPrimaryKey(), null, deletedBy);
     }
     

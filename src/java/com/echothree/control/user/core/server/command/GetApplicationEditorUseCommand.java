@@ -78,7 +78,7 @@ public class GetApplicationEditorUseCommand
             if(applicationEditorUse != null) {
                 result.setApplicationEditorUse(coreControl.getApplicationEditorUseTransfer(getUserVisit(), applicationEditorUse));
 
-                sendEventUsingNames(applicationEditorUse.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+                sendEvent(applicationEditorUse.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownApplicationEditorUseName.name(), applicationName, applicationEditorUseName);
             }

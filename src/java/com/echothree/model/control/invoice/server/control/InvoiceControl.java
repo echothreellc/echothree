@@ -418,7 +418,7 @@ public class InvoiceControl
         invoiceType.setLastDetail(invoiceTypeDetail);
         invoiceType.store();
         
-        sendEventUsingNames(invoiceType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(invoiceType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return invoiceType;
     }
@@ -673,7 +673,7 @@ public class InvoiceControl
             invoiceType.setActiveDetail(invoiceTypeDetail);
             invoiceType.setLastDetail(invoiceTypeDetail);
             
-            sendEventUsingNames(invoiceTypePK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(invoiceTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -712,7 +712,7 @@ public class InvoiceControl
             }
         }
         
-        sendEventUsingNames(invoiceType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(invoiceType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteInvoiceType(InvoiceType invoiceType, BasePK deletedBy) {
@@ -739,7 +739,7 @@ public class InvoiceControl
         InvoiceTypeDescription invoiceTypeDescription = InvoiceTypeDescriptionFactory.getInstance().create(invoiceType, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(invoiceType.getPrimaryKey(), EventTypes.MODIFY, invoiceTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(invoiceType.getPrimaryKey(), EventTypes.MODIFY, invoiceTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return invoiceTypeDescription;
     }
@@ -877,14 +877,14 @@ public class InvoiceControl
             invoiceTypeDescription = InvoiceTypeDescriptionFactory.getInstance().create(invoiceType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(invoiceType.getPrimaryKey(), EventTypes.MODIFY, invoiceTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(invoiceType.getPrimaryKey(), EventTypes.MODIFY, invoiceTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteInvoiceTypeDescription(InvoiceTypeDescription invoiceTypeDescription, BasePK deletedBy) {
         invoiceTypeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(invoiceTypeDescription.getInvoiceTypePK(), EventTypes.MODIFY, invoiceTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(invoiceTypeDescription.getInvoiceTypePK(), EventTypes.MODIFY, invoiceTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -924,7 +924,7 @@ public class InvoiceControl
         invoiceAliasType.setLastDetail(invoiceAliasTypeDetail);
         invoiceAliasType.store();
         
-        sendEventUsingNames(invoiceAliasType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(invoiceAliasType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return invoiceAliasType;
     }
@@ -1126,7 +1126,7 @@ public class InvoiceControl
             invoiceAliasType.setActiveDetail(invoiceAliasTypeDetail);
             invoiceAliasType.setLastDetail(invoiceAliasTypeDetail);
             
-            sendEventUsingNames(invoiceAliasTypePK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(invoiceAliasTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -1161,7 +1161,7 @@ public class InvoiceControl
             }
         }
         
-        sendEventUsingNames(invoiceAliasType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(invoiceAliasType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteInvoiceAliasTypes(List<InvoiceAliasType> invoiceAliasTypes, BasePK deletedBy) {
@@ -1202,7 +1202,7 @@ public class InvoiceControl
         invoiceTimeType.setLastDetail(invoiceTimeTypeDetail);
         invoiceTimeType.store();
 
-        sendEventUsingNames(invoiceTimeType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(invoiceTimeType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return invoiceTimeType;
     }
@@ -1406,7 +1406,7 @@ public class InvoiceControl
             invoiceTimeType.setActiveDetail(invoiceTimeTypeDetail);
             invoiceTimeType.setLastDetail(invoiceTimeTypeDetail);
 
-            sendEventUsingNames(invoiceTimeTypePK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(invoiceTimeTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -1441,7 +1441,7 @@ public class InvoiceControl
             }
         }
 
-        sendEventUsingNames(invoiceTimeType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(invoiceTimeType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     // --------------------------------------------------------------------------------
@@ -1452,7 +1452,7 @@ public class InvoiceControl
         InvoiceTimeTypeDescription invoiceTimeTypeDescription = InvoiceTimeTypeDescriptionFactory.getInstance().create(invoiceTimeType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(invoiceTimeType.getPrimaryKey(), EventTypes.MODIFY, invoiceTimeTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(invoiceTimeType.getPrimaryKey(), EventTypes.MODIFY, invoiceTimeTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return invoiceTimeTypeDescription;
     }
@@ -1574,14 +1574,14 @@ public class InvoiceControl
             invoiceTimeTypeDescription = InvoiceTimeTypeDescriptionFactory.getInstance().create(invoiceTimeType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(invoiceTimeType.getPrimaryKey(), EventTypes.MODIFY, invoiceTimeTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(invoiceTimeType.getPrimaryKey(), EventTypes.MODIFY, invoiceTimeTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteInvoiceTimeTypeDescription(InvoiceTimeTypeDescription invoiceTimeTypeDescription, BasePK deletedBy) {
         invoiceTimeTypeDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(invoiceTimeTypeDescription.getInvoiceTimeTypePK(), EventTypes.MODIFY, invoiceTimeTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(invoiceTimeTypeDescription.getInvoiceTimeTypePK(), EventTypes.MODIFY, invoiceTimeTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -1601,7 +1601,7 @@ public class InvoiceControl
         InvoiceAliasTypeDescription invoiceAliasTypeDescription = InvoiceAliasTypeDescriptionFactory.getInstance().create(invoiceAliasType, language,
                 description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(invoiceAliasType.getPrimaryKey(), EventTypes.MODIFY, invoiceAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(invoiceAliasType.getPrimaryKey(), EventTypes.MODIFY, invoiceAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return invoiceAliasTypeDescription;
     }
@@ -1723,14 +1723,14 @@ public class InvoiceControl
             invoiceAliasTypeDescription = InvoiceAliasTypeDescriptionFactory.getInstance().create(invoiceAliasType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(invoiceAliasType.getPrimaryKey(), EventTypes.MODIFY, invoiceAliasTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(invoiceAliasType.getPrimaryKey(), EventTypes.MODIFY, invoiceAliasTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteInvoiceAliasTypeDescription(InvoiceAliasTypeDescription invoiceAliasTypeDescription, BasePK deletedBy) {
         invoiceAliasTypeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(invoiceAliasTypeDescription.getInvoiceAliasTypePK(), EventTypes.MODIFY, invoiceAliasTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(invoiceAliasTypeDescription.getInvoiceAliasTypePK(), EventTypes.MODIFY, invoiceAliasTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -1772,7 +1772,7 @@ public class InvoiceControl
         invoiceLineType.setLastDetail(invoiceLineTypeDetail);
         invoiceLineType.store();
         
-        sendEventUsingNames(invoiceLineType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(invoiceLineType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return invoiceLineType;
     }
@@ -2060,7 +2060,7 @@ public class InvoiceControl
             invoiceLineType.setActiveDetail(invoiceLineTypeDetail);
             invoiceLineType.setLastDetail(invoiceLineTypeDetail);
             
-            sendEventUsingNames(invoiceLineTypePK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(invoiceLineTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -2099,7 +2099,7 @@ public class InvoiceControl
             }
         }
 
-        sendEventUsingNames(invoiceLineType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(invoiceLineType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteInvoiceLineType(InvoiceLineType invoiceLineType, BasePK deletedBy) {
@@ -2131,7 +2131,7 @@ public class InvoiceControl
         InvoiceLineTypeDescription invoiceLineTypeDescription = InvoiceLineTypeDescriptionFactory.getInstance().create(session,
                 invoiceLineType, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(invoiceLineType.getPrimaryKey(), EventTypes.MODIFY, invoiceLineTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(invoiceLineType.getPrimaryKey(), EventTypes.MODIFY, invoiceLineTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return invoiceLineTypeDescription;
     }
@@ -2272,14 +2272,14 @@ public class InvoiceControl
             invoiceLineTypeDescription = InvoiceLineTypeDescriptionFactory.getInstance().create(invoiceLineType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(invoiceLineType.getPrimaryKey(), EventTypes.MODIFY, invoiceLineTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(invoiceLineType.getPrimaryKey(), EventTypes.MODIFY, invoiceLineTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteInvoiceLineTypeDescription(InvoiceLineTypeDescription invoiceLineTypeDescription, BasePK deletedBy) {
         invoiceLineTypeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(invoiceLineTypeDescription.getInvoiceLineTypePK(), EventTypes.MODIFY, invoiceLineTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(invoiceLineTypeDescription.getInvoiceLineTypePK(), EventTypes.MODIFY, invoiceLineTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -2305,7 +2305,7 @@ public class InvoiceControl
         InvoiceRole invoiceRole = InvoiceRoleFactory.getInstance().create(invoice, party, partyContactMechanism, invoiceRoleType, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(invoice.getPrimaryKey(), EventTypes.MODIFY, invoiceRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(invoice.getPrimaryKey(), EventTypes.MODIFY, invoiceRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return invoiceRole;
     }
@@ -2477,14 +2477,14 @@ public class InvoiceControl
             invoiceRole = InvoiceRoleFactory.getInstance().create(invoicePK, partyPK, partyContactMechanismPK, invoiceRoleTypePK,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(invoicePK, EventTypes.MODIFY, invoiceRole.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(invoicePK, EventTypes.MODIFY, invoiceRole.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteInvoiceRole(InvoiceRole invoiceRole, BasePK deletedBy) {
         invoiceRole.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(invoiceRole.getInvoicePK(), EventTypes.MODIFY, invoiceRole.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(invoiceRole.getInvoicePK(), EventTypes.MODIFY, invoiceRole.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteInvoiceRolesByInvoice(Invoice invoice, BasePK deletedBy) {
@@ -2515,7 +2515,7 @@ public class InvoiceControl
         invoice.setLastDetail(invoiceDetail);
         invoice.store();
         
-        sendEventUsingNames(invoice.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(invoice.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         createInvoiceStatus(invoice);
         
@@ -2751,7 +2751,7 @@ public class InvoiceControl
     public InvoiceTime createInvoiceTime(Invoice invoice, InvoiceTimeType invoiceTimeType, Long time, BasePK createdBy) {
         InvoiceTime invoiceTime = InvoiceTimeFactory.getInstance().create(invoice, invoiceTimeType, time, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(invoice.getPrimaryKey(), EventTypes.MODIFY, invoiceTime.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(invoice.getPrimaryKey(), EventTypes.MODIFY, invoiceTime.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return invoiceTime;
     }
@@ -2908,14 +2908,14 @@ public class InvoiceControl
 
             invoiceTime = InvoiceTimeFactory.getInstance().create(invoicePK, invoiceTimeTypePK, time, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(invoicePK, EventTypes.MODIFY, invoiceTime.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(invoicePK, EventTypes.MODIFY, invoiceTime.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteInvoiceTime(InvoiceTime invoiceTime, BasePK deletedBy) {
         invoiceTime.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(invoiceTime.getInvoiceTimeTypePK(), EventTypes.MODIFY, invoiceTime.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(invoiceTime.getInvoiceTimeTypePK(), EventTypes.MODIFY, invoiceTime.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -2940,7 +2940,7 @@ public class InvoiceControl
     public InvoiceAlias createInvoiceAlias(Invoice invoice, InvoiceAliasType invoiceAliasType, String alias, BasePK createdBy) {
         InvoiceAlias invoiceAlias = InvoiceAliasFactory.getInstance().create(invoice, invoiceAliasType, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(invoice.getPrimaryKey(), EventTypes.MODIFY, invoiceAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(invoice.getPrimaryKey(), EventTypes.MODIFY, invoiceAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return invoiceAlias;
     }
@@ -3076,14 +3076,14 @@ public class InvoiceControl
             
             invoiceAlias = InvoiceAliasFactory.getInstance().create(invoicePK, invoiceAliasTypePK, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(invoicePK, EventTypes.MODIFY, invoiceAlias.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(invoicePK, EventTypes.MODIFY, invoiceAlias.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteInvoiceAlias(InvoiceAlias invoiceAlias, BasePK deletedBy) {
         invoiceAlias.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(invoiceAlias.getInvoicePK(), EventTypes.MODIFY, invoiceAlias.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(invoiceAlias.getInvoicePK(), EventTypes.MODIFY, invoiceAlias.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -3128,7 +3128,7 @@ public class InvoiceControl
         invoiceLine.setLastDetail(invoiceLineDetail);
         invoiceLine.store();
         
-        sendEventUsingNames(invoiceLine.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(invoiceLine.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return invoiceLine;
     }
@@ -3229,7 +3229,7 @@ public class InvoiceControl
         InvoiceLineItem invoiceLineItem = InvoiceLineItemFactory.getInstance().create(invoiceLine, item, inventoryCondition, unitOfMeasureType, quantity, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(invoiceLine.getPrimaryKey(), EventTypes.MODIFY, invoiceLineItem.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(invoiceLine.getPrimaryKey(), EventTypes.MODIFY, invoiceLineItem.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return invoiceLineItem;
     }
@@ -3292,14 +3292,14 @@ public class InvoiceControl
             invoiceLineItem = InvoiceLineItemFactory.getInstance().create(invoiceLinePK, itemPK, inventoryConditionPK, unitOfMeasureTypePK, quantity, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(invoiceLinePK, EventTypes.MODIFY, invoiceLineItem.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(invoiceLinePK, EventTypes.MODIFY, invoiceLineItem.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteInvoiceLineItem(InvoiceLineItem invoiceLineItem, BasePK deletedBy) {
         invoiceLineItem.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(invoiceLineItem.getInvoiceLinePK(), EventTypes.MODIFY, invoiceLineItem.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(invoiceLineItem.getInvoiceLinePK(), EventTypes.MODIFY, invoiceLineItem.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteInvoiceLineItemsByInvoiceLine(InvoiceLine invoiceLine, BasePK deletedBy) {
@@ -3317,7 +3317,7 @@ public class InvoiceControl
     public InvoiceLineGlAccount createInvoiceLineGlAccount(InvoiceLine invoiceLine, GlAccount glAccount, BasePK createdBy) {
         InvoiceLineGlAccount invoiceLineGlAccount = InvoiceLineGlAccountFactory.getInstance().create(invoiceLine, glAccount, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(invoiceLine.getPrimaryKey(), EventTypes.MODIFY, invoiceLineGlAccount.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(invoiceLine.getPrimaryKey(), EventTypes.MODIFY, invoiceLineGlAccount.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return invoiceLineGlAccount;
     }
@@ -3376,14 +3376,14 @@ public class InvoiceControl
             
             invoiceLineGlAccount = InvoiceLineGlAccountFactory.getInstance().create(invoiceLinePK, glAccountPK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(invoiceLinePK, EventTypes.MODIFY, invoiceLineGlAccount.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(invoiceLinePK, EventTypes.MODIFY, invoiceLineGlAccount.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteInvoiceLineGlAccount(InvoiceLineGlAccount invoiceLineGlAccount, BasePK deletedBy) {
         invoiceLineGlAccount.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(invoiceLineGlAccount.getInvoiceLinePK(), EventTypes.MODIFY, invoiceLineGlAccount.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(invoiceLineGlAccount.getInvoiceLinePK(), EventTypes.MODIFY, invoiceLineGlAccount.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteInvoiceLineGlAccountsByInvoiceLine(InvoiceLine invoiceLine, BasePK deletedBy) {

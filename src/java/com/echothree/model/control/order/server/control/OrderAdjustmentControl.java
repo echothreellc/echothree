@@ -90,7 +90,7 @@ public class OrderAdjustmentControl
         orderAdjustmentType.setLastDetail(orderAdjustmentTypeDetail);
         orderAdjustmentType.store();
 
-        sendEventUsingNames(orderAdjustmentType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(orderAdjustmentType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return orderAdjustmentType;
     }
@@ -294,7 +294,7 @@ public class OrderAdjustmentControl
             orderAdjustmentType.setActiveDetail(orderAdjustmentTypeDetail);
             orderAdjustmentType.setLastDetail(orderAdjustmentTypeDetail);
 
-            sendEventUsingNames(orderAdjustmentTypePK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(orderAdjustmentTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -329,7 +329,7 @@ public class OrderAdjustmentControl
             }
         }
 
-        sendEventUsingNames(orderAdjustmentType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(orderAdjustmentType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     // --------------------------------------------------------------------------------
@@ -340,7 +340,7 @@ public class OrderAdjustmentControl
         OrderAdjustmentTypeDescription orderAdjustmentTypeDescription = OrderAdjustmentTypeDescriptionFactory.getInstance().create(orderAdjustmentType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(orderAdjustmentType.getPrimaryKey(), EventTypes.MODIFY, orderAdjustmentTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(orderAdjustmentType.getPrimaryKey(), EventTypes.MODIFY, orderAdjustmentTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return orderAdjustmentTypeDescription;
     }
@@ -462,14 +462,14 @@ public class OrderAdjustmentControl
             orderAdjustmentTypeDescription = OrderAdjustmentTypeDescriptionFactory.getInstance().create(orderAdjustmentType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(orderAdjustmentType.getPrimaryKey(), EventTypes.MODIFY, orderAdjustmentTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(orderAdjustmentType.getPrimaryKey(), EventTypes.MODIFY, orderAdjustmentTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteOrderAdjustmentTypeDescription(OrderAdjustmentTypeDescription orderAdjustmentTypeDescription, BasePK deletedBy) {
         orderAdjustmentTypeDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(orderAdjustmentTypeDescription.getOrderAdjustmentTypePK(), EventTypes.MODIFY, orderAdjustmentTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(orderAdjustmentTypeDescription.getOrderAdjustmentTypePK(), EventTypes.MODIFY, orderAdjustmentTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -498,7 +498,7 @@ public class OrderAdjustmentControl
         orderAdjustment.setLastDetail(orderAdjustmentDetail);
         orderAdjustment.store();
 
-        sendEventUsingNames(orderAdjustment.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(orderAdjustment.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return orderAdjustment;
     }
@@ -547,7 +547,7 @@ public class OrderAdjustmentControl
         orderAdjustment.setActiveDetail(null);
         orderAdjustment.store();
 
-        sendEventUsingNames(orderAdjustmentDetail.getOrderPK(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(orderAdjustmentDetail.getOrderPK(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteOrderAdjustmentsByOrder(Order order, BasePK deletedBy) {

@@ -98,7 +98,7 @@ public class GetSearchSortDirectionCommand
 
             if(!hasExecutionErrors()) {
                 result.setSearchSortDirection(searchControl.getSearchSortDirectionTransfer(getUserVisit(), searchSortDirection));
-                sendEventUsingNames(searchSortDirection.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+                sendEvent(searchSortDirection.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());

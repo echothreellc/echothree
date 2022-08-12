@@ -70,7 +70,7 @@ public class GetFilterTypeCommand
         var filterType = FilterTypeLogic.getInstance().getFilterTypeByUniversalSpec(this, form, true);
 
         if(filterType != null) {
-            sendEventUsingNames(filterType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+            sendEvent(filterType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return filterType;

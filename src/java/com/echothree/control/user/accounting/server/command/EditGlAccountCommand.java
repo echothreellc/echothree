@@ -105,7 +105,7 @@ public class EditGlAccountCommand
                         Boolean isDefault = glAccountDetail.getIsDefault();
 
                         result.setGlAccount(accountingControl.getGlAccountTransfer(getUserVisit(), glAccount));
-                        sendEventUsingNames(glAccountCategory.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+                        sendEvent(glAccountCategory.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
 
                         result.setEdit(edit);
                         edit.setGlAccountName(glAccountDetail.getGlAccountName());

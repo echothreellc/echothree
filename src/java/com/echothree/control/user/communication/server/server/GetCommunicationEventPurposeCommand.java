@@ -59,7 +59,7 @@ public class GetCommunicationEventPurposeCommand
         if(communicationEventPurpose != null) {
             result.setCommunicationEventPurpose(communicationControl.getCommunicationEventPurposeTransfer(getUserVisit(), communicationEventPurpose));
             
-            sendEventUsingNames(communicationEventPurpose.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+            sendEvent(communicationEventPurpose.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownCommunicationEventPurposeName.name(), communicationEventPurposeName);
         }

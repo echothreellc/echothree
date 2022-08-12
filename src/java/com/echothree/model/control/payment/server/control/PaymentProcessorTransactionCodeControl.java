@@ -49,7 +49,7 @@ public class PaymentProcessorTransactionCodeControl
         var paymentProcessorTransactionCode = PaymentProcessorTransactionCodeFactory.getInstance().create(paymentProcessorTransaction,
                 paymentProcessorTypeCode, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(paymentProcessorTransaction.getPrimaryKey(), EventTypes.MODIFY, paymentProcessorTransactionCode.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(paymentProcessorTransaction.getPrimaryKey(), EventTypes.MODIFY, paymentProcessorTransactionCode.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return paymentProcessorTransactionCode;
     }
@@ -177,7 +177,7 @@ public class PaymentProcessorTransactionCodeControl
     public void deletePaymentProcessorTransactionCode(final PaymentProcessorTransactionCode paymentProcessorTransactionCode, final BasePK deletedBy) {
         paymentProcessorTransactionCode.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(paymentProcessorTransactionCode.getPaymentProcessorTransactionPK(), EventTypes.MODIFY, paymentProcessorTransactionCode.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(paymentProcessorTransactionCode.getPaymentProcessorTransactionPK(), EventTypes.MODIFY, paymentProcessorTransactionCode.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 

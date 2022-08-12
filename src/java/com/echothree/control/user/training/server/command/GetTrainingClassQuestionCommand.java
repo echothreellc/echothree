@@ -111,7 +111,7 @@ public class GetTrainingClassQuestionCommand
 
                             result.setTrainingClassQuestion(trainingControl.getTrainingClassQuestionTransfer(userVisit, trainingClassQuestion));
 
-                            sendEventUsingNames(trainingClassQuestion.getPrimaryKey(), EventTypes.READ, null, null, partyPK);
+                            sendEvent(trainingClassQuestion.getPrimaryKey(), EventTypes.READ, null, null, partyPK);
 
                             if(partyTrainingClassSessionStatus != null) {
                                 PartyTrainingClassSessionQuestion partyTrainingClassSessionQuestion = trainingControl.getPartyTrainingClassSessionQuestion(partyTrainingClassSession, trainingClassQuestion);

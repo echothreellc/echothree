@@ -67,7 +67,7 @@ public class GetLocationTypeCommand
             if(locationType != null) {
                 result.setLocationType(warehouseControl.getLocationTypeTransfer(getUserVisit(), locationType));
                 
-                sendEventUsingNames(locationType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+                sendEvent(locationType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownLocationTypeName.name(), locationTypeName);
             }

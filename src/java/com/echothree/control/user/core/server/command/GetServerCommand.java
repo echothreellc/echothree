@@ -71,7 +71,7 @@ public class GetServerCommand
         if(server != null) {
             result.setServer(coreControl.getServerTransfer(getUserVisit(), server));
             
-            sendEventUsingNames(server.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+            sendEvent(server.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownServerName.name(), serverName);
         }

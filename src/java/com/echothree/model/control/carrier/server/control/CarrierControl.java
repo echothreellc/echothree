@@ -155,7 +155,7 @@ public class CarrierControl
         carrierType.setLastDetail(carrierTypeDetail);
         carrierType.store();
 
-        sendEventUsingNames(carrierType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(carrierType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return carrierType;
     }
@@ -391,7 +391,7 @@ public class CarrierControl
             carrierType.setActiveDetail(carrierTypeDetail);
             carrierType.setLastDetail(carrierTypeDetail);
 
-            sendEventUsingNames(carrierTypePK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(carrierTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -425,7 +425,7 @@ public class CarrierControl
             }
         }
 
-        sendEventUsingNames(carrierType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(carrierType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     // --------------------------------------------------------------------------------
@@ -437,7 +437,7 @@ public class CarrierControl
         CarrierTypeDescription carrierTypeDescription = CarrierTypeDescriptionFactory.getInstance().create(carrierType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(carrierType.getPrimaryKey(), EventTypes.MODIFY, carrierTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(carrierType.getPrimaryKey(), EventTypes.MODIFY, carrierTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return carrierTypeDescription;
     }
@@ -562,14 +562,14 @@ public class CarrierControl
             carrierTypeDescription = CarrierTypeDescriptionFactory.getInstance().create(carrierType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(carrierType.getPrimaryKey(), EventTypes.MODIFY, carrierTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(carrierType.getPrimaryKey(), EventTypes.MODIFY, carrierTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteCarrierTypeDescription(CarrierTypeDescription carrierTypeDescription, BasePK deletedBy) {
         carrierTypeDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(carrierTypeDescription.getCarrierTypePK(), EventTypes.MODIFY, carrierTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(carrierTypeDescription.getCarrierTypePK(), EventTypes.MODIFY, carrierTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -602,7 +602,7 @@ public class CarrierControl
         Carrier carrier = CarrierFactory.getInstance().create(party, carrierName, carrierType, geoCodeSelector, itemSelector, accountValidationPattern,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY, carrier.getPrimaryKey(), null, createdBy);
+        sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, carrier.getPrimaryKey(), null, createdBy);
         
         return carrier;
     }
@@ -859,7 +859,7 @@ public class CarrierControl
             carrier = CarrierFactory.getInstance().create(partyPK, carrierName, carrierTypePK, geoCodeSelectorPK, itemSelectorPK, accountValidationPattern,
                     isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(partyPK, EventTypes.MODIFY, carrier.getPrimaryKey(), null, updatedBy);
+            sendEvent(partyPK, EventTypes.MODIFY, carrier.getPrimaryKey(), null, updatedBy);
         }
     }
     
@@ -898,7 +898,7 @@ public class CarrierControl
             }
         }
         
-        sendEventUsingNames(carrier.getPartyPK(), EventTypes.MODIFY, carrier.getPrimaryKey(), null, deletedBy);
+        sendEvent(carrier.getPartyPK(), EventTypes.MODIFY, carrier.getPrimaryKey(), null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -931,7 +931,7 @@ public class CarrierControl
         carrierService.setLastDetail(carrierServiceDetail);
         carrierService.store();
         
-        sendEventUsingNames(carrierService.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(carrierService.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return carrierService;
     }
@@ -1156,7 +1156,7 @@ public class CarrierControl
             carrierService.setActiveDetail(carrierServiceDetail);
             carrierService.setLastDetail(carrierServiceDetail);
             
-            sendEventUsingNames(carrierServicePK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(carrierServicePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -1199,7 +1199,7 @@ public class CarrierControl
             }
         }
         
-        sendEventUsingNames(carrierService.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(carrierService.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteCarrierService(CarrierService carrierService, BasePK deletedBy) {
@@ -1223,7 +1223,7 @@ public class CarrierControl
         CarrierServiceDescription carrierServiceDescription = CarrierServiceDescriptionFactory.getInstance().create(carrierService,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(carrierService.getPrimaryKey(), EventTypes.MODIFY, carrierServiceDescription.getPrimaryKey(),
+        sendEvent(carrierService.getPrimaryKey(), EventTypes.MODIFY, carrierServiceDescription.getPrimaryKey(),
                 null, createdBy);
         
         return carrierServiceDescription;
@@ -1363,7 +1363,7 @@ public class CarrierControl
             carrierServiceDescription = CarrierServiceDescriptionFactory.getInstance().create(carrierService, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(carrierService.getPrimaryKey(), EventTypes.MODIFY, carrierServiceDescription.getPrimaryKey(),
+            sendEvent(carrierService.getPrimaryKey(), EventTypes.MODIFY, carrierServiceDescription.getPrimaryKey(),
                     null, updatedBy);
         }
     }
@@ -1371,7 +1371,7 @@ public class CarrierControl
     public void deleteCarrierServiceDescription(CarrierServiceDescription carrierServiceDescription, BasePK deletedBy) {
         carrierServiceDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(carrierServiceDescription.getCarrierServicePK(), EventTypes.MODIFY,
+        sendEvent(carrierServiceDescription.getCarrierServicePK(), EventTypes.MODIFY,
                 carrierServiceDescription.getPrimaryKey(), null, deletedBy);
     }
     
@@ -1415,7 +1415,7 @@ public class CarrierControl
         carrierOption.setLastDetail(carrierOptionDetail);
         carrierOption.store();
         
-        sendEventUsingNames(carrierOption.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(carrierOption.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return carrierOption;
     }
@@ -1650,7 +1650,7 @@ public class CarrierControl
             carrierOption.setActiveDetail(carrierOptionDetail);
             carrierOption.setLastDetail(carrierOptionDetail);
             
-            sendEventUsingNames(carrierOptionPK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(carrierOptionPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -1690,7 +1690,7 @@ public class CarrierControl
             }
         }
         
-        sendEventUsingNames(carrierOption.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(carrierOption.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteCarrierOption(CarrierOption carrierOption, BasePK deletedBy) {
@@ -1714,7 +1714,7 @@ public class CarrierControl
         CarrierOptionDescription carrierOptionDescription = CarrierOptionDescriptionFactory.getInstance().create(carrierOption,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(carrierOption.getPrimaryKey(), EventTypes.MODIFY, carrierOptionDescription.getPrimaryKey(),
+        sendEvent(carrierOption.getPrimaryKey(), EventTypes.MODIFY, carrierOptionDescription.getPrimaryKey(),
                 null, createdBy);
         
         return carrierOptionDescription;
@@ -1854,7 +1854,7 @@ public class CarrierControl
             carrierOptionDescription = CarrierOptionDescriptionFactory.getInstance().create(carrierOption, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(carrierOption.getPrimaryKey(), EventTypes.MODIFY, carrierOptionDescription.getPrimaryKey(),
+            sendEvent(carrierOption.getPrimaryKey(), EventTypes.MODIFY, carrierOptionDescription.getPrimaryKey(),
                     null, updatedBy);
         }
     }
@@ -1862,7 +1862,7 @@ public class CarrierControl
     public void deleteCarrierOptionDescription(CarrierOptionDescription carrierOptionDescription, BasePK deletedBy) {
         carrierOptionDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(carrierOptionDescription.getCarrierOptionPK(), EventTypes.MODIFY,
+        sendEvent(carrierOptionDescription.getCarrierOptionPK(), EventTypes.MODIFY,
                 carrierOptionDescription.getPrimaryKey(), null, deletedBy);
     }
     
@@ -1887,7 +1887,7 @@ public class CarrierControl
                 requiredOrderSelector, recommendedShipmentSelector, requiredShipmentSelector, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(carrierService.getPrimaryKey(), EventTypes.MODIFY, carrierServiceOption.getPrimaryKey(),
+        sendEvent(carrierService.getPrimaryKey(), EventTypes.MODIFY, carrierServiceOption.getPrimaryKey(),
                 null, createdBy);
         
         return carrierServiceOption;
@@ -2071,14 +2071,14 @@ public class CarrierControl
                     recommendedGeoCodeSelectorPK, requiredGeoCodeSelectorPK, recommendedItemSelectorPK, requiredItemSelectorPK, recommendedOrderSelectorPK,
                     requiredOrderSelectorPK, recommendedShipmentSelectorPK, requiredShipmentSelectorPK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(carrierServicePK, EventTypes.MODIFY, carrierServiceOption.getPrimaryKey(), null, updatedBy);
+            sendEvent(carrierServicePK, EventTypes.MODIFY, carrierServiceOption.getPrimaryKey(), null, updatedBy);
         }
     }
     
     public void deleteCarrierServiceOption(CarrierServiceOption carrierServiceOption, BasePK deletedBy) {
         carrierServiceOption.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(carrierServiceOption.getCarrierService().getPrimaryKey(), EventTypes.MODIFY,
+        sendEvent(carrierServiceOption.getCarrierService().getPrimaryKey(), EventTypes.MODIFY,
                 carrierServiceOption.getPrimaryKey(), null, deletedBy);
     }
     
@@ -2103,7 +2103,7 @@ public class CarrierControl
     public PartyCarrier createPartyCarrier(Party party, Party carrierParty, BasePK createdBy) {
         PartyCarrier partyCarrier = PartyCarrierFactory.getInstance().create(party, carrierParty, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY, partyCarrier.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyCarrier.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return partyCarrier;
     }
@@ -2264,7 +2264,7 @@ public class CarrierControl
     public void deletePartyCarrier(PartyCarrier partyCarrier, BasePK deletedBy) {
         partyCarrier.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(partyCarrier.getParty().getPrimaryKey(), EventTypes.MODIFY, partyCarrier.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(partyCarrier.getParty().getPrimaryKey(), EventTypes.MODIFY, partyCarrier.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deletePartyCarriers(List<PartyCarrier> partyCarriers, BasePK deletedBy) {
@@ -2296,7 +2296,7 @@ public class CarrierControl
         partyCarrierAccount.setLastDetail(partyCarrierAccountDetail);
         partyCarrierAccount.store();
 
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY, partyCarrierAccount.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyCarrierAccount.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return partyCarrierAccount;
     }
@@ -2456,7 +2456,7 @@ public class CarrierControl
             partyCarrierAccount.setActiveDetail(partyCarrierAccountDetail);
             partyCarrierAccount.setLastDetail(partyCarrierAccountDetail);
 
-            sendEventUsingNames(partyPK, EventTypes.MODIFY, partyCarrierAccountPK, EventTypes.MODIFY, updatedBy);
+            sendEvent(partyPK, EventTypes.MODIFY, partyCarrierAccountPK, EventTypes.MODIFY, updatedBy);
         }
     }
 
@@ -2467,7 +2467,7 @@ public class CarrierControl
         partyCarrierAccount.setActiveDetail(null);
         partyCarrierAccount.store();
 
-        sendEventUsingNames(partyCarrierAccountDetail.getPartyPK(), EventTypes.MODIFY, partyCarrierAccount.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(partyCarrierAccountDetail.getPartyPK(), EventTypes.MODIFY, partyCarrierAccount.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     public void deletePartyCarrierAccounts(List<PartyCarrierAccount> partyCarrierAccounts, BasePK deletedBy) {

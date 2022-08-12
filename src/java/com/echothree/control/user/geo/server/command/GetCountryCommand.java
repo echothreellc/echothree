@@ -192,7 +192,7 @@ public class GetCountryCommand
             }
 
             if(geoCode != null) {
-                sendEventUsingNames(geoCode.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+                sendEvent(geoCode.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());

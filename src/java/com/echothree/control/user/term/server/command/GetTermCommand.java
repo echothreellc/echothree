@@ -59,7 +59,7 @@ public class GetTermCommand
         if(term != null) {
             result.setTerm(termControl.getTermTransfer(getUserVisit(), term));
             
-            sendEventUsingNames(term.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+            sendEvent(term.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownTermName.name(), termName);
         }

@@ -73,7 +73,7 @@ public class GetGlAccountClassCommand
         if(glAccountClass != null) {
             result.setGlAccountClass(accountingControl.getGlAccountClassTransfer(getUserVisit(), glAccountClass));
             
-            sendEventUsingNames(glAccountClass.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+            sendEvent(glAccountClass.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownGlAccountClassName.name(), glAccountClassName);
         }

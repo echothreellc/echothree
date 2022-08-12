@@ -73,7 +73,7 @@ public class GetPeriodKindCommand
         if(periodKind != null) {
             result.setPeriodKind(periodControl.getPeriodKindTransfer(getUserVisit(), periodKind));
             
-            sendEventUsingNames(periodKind.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+            sendEvent(periodKind.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownPeriodKindName.name(), periodKindName);
         }

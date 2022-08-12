@@ -98,7 +98,7 @@ public class GetSearchDefaultOperatorCommand
 
             if(!hasExecutionErrors()) {
                 result.setSearchDefaultOperator(searchControl.getSearchDefaultOperatorTransfer(getUserVisit(), searchDefaultOperator));
-                sendEventUsingNames(searchDefaultOperator.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+                sendEvent(searchDefaultOperator.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());

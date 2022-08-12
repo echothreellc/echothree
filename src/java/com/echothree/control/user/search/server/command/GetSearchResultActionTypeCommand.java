@@ -98,7 +98,7 @@ public class GetSearchResultActionTypeCommand
 
             if(!hasExecutionErrors()) {
                 result.setSearchResultActionType(searchControl.getSearchResultActionTypeTransfer(getUserVisit(), searchResultActionType));
-                sendEventUsingNames(searchResultActionType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+                sendEvent(searchResultActionType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());

@@ -71,7 +71,7 @@ public class GetServiceCommand
         if(service != null) {
             result.setService(coreControl.getServiceTransfer(getUserVisit(), service));
             
-            sendEventUsingNames(service.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+            sendEvent(service.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownServiceName.name(), serviceName);
         }

@@ -162,7 +162,7 @@ public class CustomerControl
         customerType.setLastDetail(customerTypeDetail);
         customerType.store();
 
-        sendEventUsingNames(customerType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(customerType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return customerType;
     }
@@ -392,7 +392,7 @@ public class CustomerControl
             customerType.setActiveDetail(customerTypeDetail);
             customerType.setLastDetail(customerTypeDetail);
 
-            sendEventUsingNames(customerTypePK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(customerTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -434,7 +434,7 @@ public class CustomerControl
             }
         }
         
-        sendEventUsingNames(customerType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(customerType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -447,7 +447,7 @@ public class CustomerControl
                 language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(customerType.getPrimaryKey(), EventTypes.MODIFY, customerTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(customerType.getPrimaryKey(), EventTypes.MODIFY, customerTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return customerTypeDescription;
     }
@@ -591,14 +591,14 @@ public class CustomerControl
             customerTypeDescription = CustomerTypeDescriptionFactory.getInstance().create(customerType, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(customerType.getPrimaryKey(), EventTypes.MODIFY, customerTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(customerType.getPrimaryKey(), EventTypes.MODIFY, customerTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteCustomerTypeDescription(CustomerTypeDescription customerTypeDescription, BasePK deletedBy) {
         customerTypeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(customerTypeDescription.getCustomerTypePK(), EventTypes.MODIFY, customerTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(customerTypeDescription.getCustomerTypePK(), EventTypes.MODIFY, customerTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteCustomerTypeDescriptionsByCustomerType(CustomerType customerType, BasePK deletedBy) {
@@ -624,7 +624,7 @@ public class CustomerControl
                 allowCombiningShipments, requireReference, allowReferenceDuplicates, referenceValidationPattern,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY, customer.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, customer.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return customer;
     }
@@ -817,7 +817,7 @@ public class CustomerControl
                     arGlAccountPK, holdUntilComplete, allowBackorders, allowSubstitutions, allowCombiningShipments, requireReference, allowReferenceDuplicates,
                     referenceValidationPattern, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(partyPK, EventTypes.MODIFY, customer.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(partyPK, EventTypes.MODIFY, customer.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -912,7 +912,7 @@ public class CustomerControl
         CustomerTypePaymentMethod customerTypePaymentMethod = CustomerTypePaymentMethodFactory.getInstance().create(session, customerType, paymentMethod,
                 defaultSelectionPriority, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(customerType.getPrimaryKey(), EventTypes.MODIFY, customerTypePaymentMethod.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(customerType.getPrimaryKey(), EventTypes.MODIFY, customerTypePaymentMethod.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return customerTypePaymentMethod;
     }
@@ -1138,7 +1138,7 @@ public class CustomerControl
             customerTypePaymentMethod = CustomerTypePaymentMethodFactory.getInstance().create(customerTypePK, paymentMethodPK, defaultSelectionPriority,
                     isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(customerTypePK, EventTypes.MODIFY, customerTypePaymentMethod.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(customerTypePK, EventTypes.MODIFY, customerTypePaymentMethod.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -1168,7 +1168,7 @@ public class CustomerControl
             }
         }
         
-        sendEventUsingNames(customerTypePaymentMethod.getCustomerTypePK(), EventTypes.MODIFY, customerTypePaymentMethod.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(customerTypePaymentMethod.getCustomerTypePK(), EventTypes.MODIFY, customerTypePaymentMethod.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteCustomerTypePaymentMethods(List<CustomerTypePaymentMethod> customerTypePaymentMethods, BasePK deletedBy) {
@@ -1206,7 +1206,7 @@ public class CustomerControl
         CustomerTypeShippingMethod customerTypeShippingMethod = CustomerTypeShippingMethodFactory.getInstance().create(session, customerType, shippingMethod,
                 defaultSelectionPriority, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(customerType.getPrimaryKey(), EventTypes.MODIFY, customerTypeShippingMethod.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(customerType.getPrimaryKey(), EventTypes.MODIFY, customerTypeShippingMethod.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return customerTypeShippingMethod;
     }
@@ -1432,7 +1432,7 @@ public class CustomerControl
             customerTypeShippingMethod = CustomerTypeShippingMethodFactory.getInstance().create(customerTypePK, shippingMethodPK, defaultSelectionPriority,
                     isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(customerTypePK, EventTypes.MODIFY, customerTypeShippingMethod.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(customerTypePK, EventTypes.MODIFY, customerTypeShippingMethod.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -1462,7 +1462,7 @@ public class CustomerControl
             }
         }
         
-        sendEventUsingNames(customerTypeShippingMethod.getCustomerTypePK(), EventTypes.MODIFY, customerTypeShippingMethod.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(customerTypeShippingMethod.getCustomerTypePK(), EventTypes.MODIFY, customerTypeShippingMethod.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteCustomerTypeShippingMethods(List<CustomerTypeShippingMethod> customerTypeShippingMethods, BasePK deletedBy) {

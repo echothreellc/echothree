@@ -79,7 +79,7 @@ public class GetPeriodTypeCommand
             if(periodType != null) {
                 result.setPeriodType(periodControl.getPeriodTypeTransfer(getUserVisit(), periodType));
                 
-                sendEventUsingNames(periodType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+                sendEvent(periodType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownPeriodTypeName.name(), periodTypeName);
             }

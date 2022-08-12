@@ -87,7 +87,7 @@ public class GetLetterCommand
                 if(letter != null) {
                     result.setLetter(letterControl.getLetterTransfer(getUserVisit(), letter));
                     
-                    sendEventUsingNames(letter.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+                    sendEvent(letter.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownLetterName.name(), letterName);
                 }

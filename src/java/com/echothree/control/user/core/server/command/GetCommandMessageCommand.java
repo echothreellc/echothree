@@ -77,7 +77,7 @@ public class GetCommandMessageCommand
             if(commandMessage != null) {
                 result.setCommandMessage(coreControl.getCommandMessageTransfer(getUserVisit(), commandMessage));
 
-                sendEventUsingNames(commandMessage.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+                sendEvent(commandMessage.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownCommandMessageKey.name(), commandMessageTypeName, commandMessageKey);
             }

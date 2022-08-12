@@ -109,7 +109,7 @@ public class GetQueueTypeCommand
 
         if(queueType != null) {
             result.setQueueType(queueControl.getQueueTypeTransfer(getUserVisit(), queueType));
-            sendEventUsingNames(queueType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+            sendEvent(queueType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return result;

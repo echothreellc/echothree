@@ -81,7 +81,7 @@ public class GetOrderAliasTypeCommand
             if(orderAliasType != null) {
                 result.setOrderAliasType(orderAliasControl.getOrderAliasTypeTransfer(getUserVisit(), orderAliasType));
 
-                sendEventUsingNames(orderAliasType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+                sendEvent(orderAliasType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownOrderAliasTypeName.name(), orderTypeName, orderAliasTypeName);
             }

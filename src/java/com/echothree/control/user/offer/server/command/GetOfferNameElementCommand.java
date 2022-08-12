@@ -72,7 +72,7 @@ public class GetOfferNameElementCommand
         OfferNameElement offerNameElement = OfferNameElementLogic.getInstance().getOfferNameElementByUniversalSpec(this, form);
 
         if(offerNameElement != null) {
-            sendEventUsingNames(offerNameElement.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+            sendEvent(offerNameElement.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return offerNameElement;

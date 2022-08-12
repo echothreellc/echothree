@@ -82,7 +82,7 @@ public class OrderShipmentGroupControl
         orderShipmentGroup.setLastDetail(orderShipmentGroupDetail);
         orderShipmentGroup.store();
         
-        sendEventUsingNames(orderShipmentGroup.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(orderShipmentGroup.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return orderShipmentGroup;
     }
@@ -291,7 +291,7 @@ public class OrderShipmentGroupControl
             orderShipmentGroup.setActiveDetail(orderShipmentGroupDetail);
             orderShipmentGroup.setLastDetail(orderShipmentGroupDetail);
 
-            sendEventUsingNames(orderShipmentGroupPK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(orderShipmentGroupPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -328,7 +328,7 @@ public class OrderShipmentGroupControl
             }
         }
 
-        sendEventUsingNames(orderShipmentGroup.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(orderShipmentGroup.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteOrderShipmentGroupsByPartyContactMechanism(PartyContactMechanism partyContactMechanism, BasePK deletedBy) {

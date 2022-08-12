@@ -81,7 +81,7 @@ public class GetOrderLineAdjustmentTypeCommand
             if(orderLineAdjustmentType != null) {
                 result.setOrderLineAdjustmentType(orderLineAdjustmentControl.getOrderLineAdjustmentTypeTransfer(getUserVisit(), orderLineAdjustmentType));
 
-                sendEventUsingNames(orderLineAdjustmentType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+                sendEvent(orderLineAdjustmentType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownOrderLineAdjustmentTypeName.name(), orderLineAdjustmentTypeName);
             }

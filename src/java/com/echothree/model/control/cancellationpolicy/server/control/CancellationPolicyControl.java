@@ -143,7 +143,7 @@ public class CancellationPolicyControl
         PartyCancellationPolicy partyCancellationPolicy = PartyCancellationPolicyFactory.getInstance().create(party, cancellationPolicy,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY, partyCancellationPolicy.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyCancellationPolicy.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return partyCancellationPolicy;
     }
@@ -303,7 +303,7 @@ public class CancellationPolicyControl
         // Performed manually, since sendEvent doesn't call it for relatedEntityInstances.
         coreControl.deleteEntityInstanceDependencies(coreControl.getEntityInstanceByBasePK(partyCancellationPolicy.getPrimaryKey()), deletedBy);
         
-        sendEventUsingNames(partyCancellationPolicy.getPartyPK(), EventTypes.MODIFY, partyCancellationPolicy.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(partyCancellationPolicy.getPartyPK(), EventTypes.MODIFY, partyCancellationPolicy.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deletePartyCancellationPoliciesByParty(List<PartyCancellationPolicy> partyCancellationPolicies, BasePK deletedBy) {
@@ -349,7 +349,7 @@ public class CancellationPolicyControl
         cancellationKind.setLastDetail(cancellationKindDetail);
         cancellationKind.store();
         
-        sendEventUsingNames(cancellationKind.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(cancellationKind.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return cancellationKind;
     }
@@ -571,7 +571,7 @@ public class CancellationPolicyControl
         cancellationKind.setLastDetail(cancellationKindDetail);
         cancellationKind.store();
         
-        sendEventUsingNames(cancellationKindPK, EventTypes.MODIFY, null, null, updatedBy);
+        sendEvent(cancellationKindPK, EventTypes.MODIFY, null, null, updatedBy);
     }
     
     public void updateCancellationKindFromValue(CancellationKindDetailValue cancellationKindDetailValue, BasePK updatedBy) {
@@ -603,7 +603,7 @@ public class CancellationPolicyControl
             }
         }
         
-        sendEventUsingNames(cancellationKind.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(cancellationKind.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -615,7 +615,7 @@ public class CancellationPolicyControl
         CancellationKindDescription cancellationKindDescription = CancellationKindDescriptionFactory.getInstance().create(cancellationKind,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(cancellationKind.getPrimaryKey(), EventTypes.MODIFY, cancellationKindDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(cancellationKind.getPrimaryKey(), EventTypes.MODIFY, cancellationKindDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return cancellationKindDescription;
     }
@@ -754,14 +754,14 @@ public class CancellationPolicyControl
             cancellationKindDescription = CancellationKindDescriptionFactory.getInstance().create(cancellationKind, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(cancellationKind.getPrimaryKey(), EventTypes.MODIFY, cancellationKindDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(cancellationKind.getPrimaryKey(), EventTypes.MODIFY, cancellationKindDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteCancellationKindDescription(CancellationKindDescription cancellationKindDescription, BasePK deletedBy) {
         cancellationKindDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(cancellationKindDescription.getCancellationKindPK(), EventTypes.MODIFY, cancellationKindDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(cancellationKindDescription.getCancellationKindPK(), EventTypes.MODIFY, cancellationKindDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -803,7 +803,7 @@ public class CancellationPolicyControl
         cancellationPolicy.setLastDetail(cancellationPolicyDetail);
         cancellationPolicy.store();
         
-        sendEventUsingNames(cancellationPolicy.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(cancellationPolicy.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return cancellationPolicy;
     }
@@ -1056,7 +1056,7 @@ public class CancellationPolicyControl
             cancellationPolicy.setActiveDetail(cancellationPolicyDetail);
             cancellationPolicy.setLastDetail(cancellationPolicyDetail);
             
-            sendEventUsingNames(cancellationPolicyPK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(cancellationPolicyPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -1092,7 +1092,7 @@ public class CancellationPolicyControl
             }
         }
         
-        sendEventUsingNames(cancellationPolicy.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(cancellationPolicy.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteCancellationPoliciesByCancellationKind(CancellationKind cancellationKind, BasePK deletedBy) {
@@ -1112,7 +1112,7 @@ public class CancellationPolicyControl
         CancellationPolicyTranslation cancellationPolicyTranslation = CancellationPolicyTranslationFactory.getInstance().create(cancellationPolicy,
                 language, description, policyMimeType, policy, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(cancellationPolicy.getPrimaryKey(), EventTypes.MODIFY, cancellationPolicyTranslation.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(cancellationPolicy.getPrimaryKey(), EventTypes.MODIFY, cancellationPolicyTranslation.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return cancellationPolicyTranslation;
     }
@@ -1230,14 +1230,14 @@ public class CancellationPolicyControl
             cancellationPolicyTranslation = CancellationPolicyTranslationFactory.getInstance().create(cancellationPolicyPK, languagePK, description,
                     policyMimeTypePK, policy, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(cancellationPolicyPK, EventTypes.MODIFY, cancellationPolicyTranslation.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(cancellationPolicyPK, EventTypes.MODIFY, cancellationPolicyTranslation.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteCancellationPolicyTranslation(CancellationPolicyTranslation cancellationPolicyTranslation, BasePK deletedBy) {
         cancellationPolicyTranslation.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(cancellationPolicyTranslation.getCancellationPolicyPK(), EventTypes.MODIFY, cancellationPolicyTranslation.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(cancellationPolicyTranslation.getCancellationPolicyPK(), EventTypes.MODIFY, cancellationPolicyTranslation.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -1270,7 +1270,7 @@ public class CancellationPolicyControl
         CancellationPolicyReason cancellationPolicyReason = CancellationPolicyReasonFactory.getInstance().create(cancellationPolicy, cancellationReason,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(cancellationPolicy.getPrimaryKey(), EventTypes.MODIFY, cancellationPolicyReason.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(cancellationPolicy.getPrimaryKey(), EventTypes.MODIFY, cancellationPolicyReason.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return cancellationPolicyReason;
     }
@@ -1502,7 +1502,7 @@ public class CancellationPolicyControl
             cancellationPolicyReason = CancellationPolicyReasonFactory.getInstance().create(cancellationPolicyPK, cancellationReasonPK,
                     isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(cancellationPolicyPK, EventTypes.MODIFY, cancellationPolicyReason.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(cancellationPolicyPK, EventTypes.MODIFY, cancellationPolicyReason.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -1532,7 +1532,7 @@ public class CancellationPolicyControl
             }
         }
         
-        sendEventUsingNames(cancellationPolicy.getPrimaryKey(), EventTypes.MODIFY, cancellationPolicyReason.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(cancellationPolicy.getPrimaryKey(), EventTypes.MODIFY, cancellationPolicyReason.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteCancellationPolicyReasons(List<CancellationPolicyReason> cancellationPolicyReasons, BasePK deletedBy) {
@@ -1579,7 +1579,7 @@ public class CancellationPolicyControl
         cancellationReason.setLastDetail(cancellationReasonDetail);
         cancellationReason.store();
         
-        sendEventUsingNames(cancellationReason.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(cancellationReason.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return cancellationReason;
     }
@@ -1803,7 +1803,7 @@ public class CancellationPolicyControl
             cancellationReason.setActiveDetail(cancellationReasonDetail);
             cancellationReason.setLastDetail(cancellationReasonDetail);
             
-            sendEventUsingNames(cancellationReasonPK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(cancellationReasonPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -1839,7 +1839,7 @@ public class CancellationPolicyControl
             }
         }
         
-        sendEventUsingNames(cancellationReason.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(cancellationReason.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteCancellationReasonsByCancellationKind(CancellationKind cancellationKind, BasePK deletedBy) {
@@ -1859,7 +1859,7 @@ public class CancellationPolicyControl
         CancellationReasonDescription cancellationReasonDescription = CancellationReasonDescriptionFactory.getInstance().create(cancellationReason,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(cancellationReason.getPrimaryKey(), EventTypes.MODIFY, cancellationReasonDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(cancellationReason.getPrimaryKey(), EventTypes.MODIFY, cancellationReasonDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return cancellationReasonDescription;
     }
@@ -1998,14 +1998,14 @@ public class CancellationPolicyControl
             cancellationReasonDescription = CancellationReasonDescriptionFactory.getInstance().create(cancellationReason, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(cancellationReason.getPrimaryKey(), EventTypes.MODIFY, cancellationReasonDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(cancellationReason.getPrimaryKey(), EventTypes.MODIFY, cancellationReasonDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteCancellationReasonDescription(CancellationReasonDescription cancellationReasonDescription, BasePK deletedBy) {
         cancellationReasonDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(cancellationReasonDescription.getCancellationReasonPK(), EventTypes.MODIFY, cancellationReasonDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(cancellationReasonDescription.getCancellationReasonPK(), EventTypes.MODIFY, cancellationReasonDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -2038,7 +2038,7 @@ public class CancellationPolicyControl
         CancellationReasonType cancellationReasonType = CancellationReasonTypeFactory.getInstance().create(cancellationReason, cancellationType,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(cancellationReason.getPrimaryKey(), EventTypes.MODIFY, cancellationReasonType.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(cancellationReason.getPrimaryKey(), EventTypes.MODIFY, cancellationReasonType.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return cancellationReasonType;
     }
@@ -2271,7 +2271,7 @@ public class CancellationPolicyControl
             cancellationReasonType = CancellationReasonTypeFactory.getInstance().create(cancellationReasonPK, cancellationTypePK,
                     isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(cancellationReasonPK, EventTypes.MODIFY, cancellationReasonType.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(cancellationReasonPK, EventTypes.MODIFY, cancellationReasonType.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -2301,7 +2301,7 @@ public class CancellationPolicyControl
             }
         }
         
-        sendEventUsingNames(cancellationReason.getPrimaryKey(), EventTypes.MODIFY, cancellationReasonType.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(cancellationReason.getPrimaryKey(), EventTypes.MODIFY, cancellationReasonType.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteCancellationReasonTypes(List<CancellationReasonType> cancellationReasonTypes, BasePK deletedBy) {
@@ -2348,7 +2348,7 @@ public class CancellationPolicyControl
         cancellationType.setLastDetail(cancellationTypeDetail);
         cancellationType.store();
         
-        sendEventUsingNames(cancellationType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(cancellationType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return cancellationType;
     }
@@ -2573,7 +2573,7 @@ public class CancellationPolicyControl
             cancellationType.setActiveDetail(cancellationTypeDetail);
             cancellationType.setLastDetail(cancellationTypeDetail);
             
-            sendEventUsingNames(cancellationTypePK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(cancellationTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -2608,7 +2608,7 @@ public class CancellationPolicyControl
             }
         }
         
-        sendEventUsingNames(cancellationType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(cancellationType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteCancellationTypesByCancellationKind(CancellationKind cancellationKind, BasePK deletedBy) {
@@ -2628,7 +2628,7 @@ public class CancellationPolicyControl
         CancellationTypeDescription cancellationTypeDescription = CancellationTypeDescriptionFactory.getInstance().create(cancellationType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(cancellationType.getPrimaryKey(), EventTypes.MODIFY, cancellationTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(cancellationType.getPrimaryKey(), EventTypes.MODIFY, cancellationTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return cancellationTypeDescription;
     }
@@ -2767,14 +2767,14 @@ public class CancellationPolicyControl
             cancellationTypeDescription = CancellationTypeDescriptionFactory.getInstance().create(cancellationType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(cancellationType.getPrimaryKey(), EventTypes.MODIFY, cancellationTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(cancellationType.getPrimaryKey(), EventTypes.MODIFY, cancellationTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteCancellationTypeDescription(CancellationTypeDescription cancellationTypeDescription, BasePK deletedBy) {
         cancellationTypeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(cancellationTypeDescription.getCancellationTypePK(), EventTypes.MODIFY, cancellationTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(cancellationTypeDescription.getCancellationTypePK(), EventTypes.MODIFY, cancellationTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     

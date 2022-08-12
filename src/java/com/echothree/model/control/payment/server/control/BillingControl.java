@@ -192,7 +192,7 @@ public class BillingControl
         billingAccount.setLastDetail(billingAccountDetail);
         billingAccount.store();
         
-        sendEventUsingNames(billingAccount.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(billingAccount.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         createBillingAccountStatus(billingAccount, Long.valueOf(0), null);
         
@@ -476,7 +476,7 @@ public class BillingControl
         BillingAccountRole billingAccountRole = BillingAccountRoleFactory.getInstance().create(billingAccount, party, partyContactMechanism,
                 billingAccountRoleType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(billingAccount.getPrimaryKey(), EventTypes.MODIFY, billingAccountRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(billingAccount.getPrimaryKey(), EventTypes.MODIFY, billingAccountRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return billingAccountRole;
     }
@@ -651,14 +651,14 @@ public class BillingControl
             billingAccountRole = BillingAccountRoleFactory.getInstance().create(billingAccountPK, partyPK, partyContactMechanismPK, billingAccountRoleTypePK,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(billingAccountPK, EventTypes.MODIFY, billingAccountRole.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(billingAccountPK, EventTypes.MODIFY, billingAccountRole.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteBillingAccountRole(BillingAccountRole billingAccountRole, BasePK deletedBy) {
         billingAccountRole.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(billingAccountRole.getBillingAccountPK(), EventTypes.MODIFY, billingAccountRole.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(billingAccountRole.getBillingAccountPK(), EventTypes.MODIFY, billingAccountRole.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteBillingAccountRolesByBillingAccount(BillingAccount billingAccount, BasePK deletedBy) {

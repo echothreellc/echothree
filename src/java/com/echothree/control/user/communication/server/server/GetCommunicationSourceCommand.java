@@ -59,7 +59,7 @@ public class GetCommunicationSourceCommand
         if(communicationSource != null) {
             result.setCommunicationSource(communicationControl.getCommunicationSourceTransfer(getUserVisit(), communicationSource));
             
-            sendEventUsingNames(communicationSource.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+            sendEvent(communicationSource.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownCommunicationSourceName.name(), communicationSourceName);
         }

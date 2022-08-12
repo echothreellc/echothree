@@ -65,7 +65,7 @@ public class OfferUseControl
         offerUse.setLastDetail(offerUseDetail);
         offerUse.store();
 
-        sendEventUsingNames(offerUse.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(offerUse.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return offerUse;
     }
@@ -318,7 +318,7 @@ public class OfferUseControl
             offerUse.setActiveDetail(offerUseDetail);
             offerUse.setLastDetail(offerUseDetail);
 
-            sendEventUsingNames(offerUsePK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(offerUsePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -332,7 +332,7 @@ public class OfferUseControl
         offerUse.setActiveDetail(null);
         offerUse.store();
 
-        sendEventUsingNames(offerUse.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(offerUse.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteOfferUses(List<OfferUse> offerUses, BasePK deletedBy) {

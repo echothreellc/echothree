@@ -76,7 +76,7 @@ public class PaymentProcessorResultCodeControl
         paymentProcessorResultCode.setLastDetail(paymentProcessorResultCodeDetail);
         paymentProcessorResultCode.store();
 
-        sendEventUsingNames(paymentProcessorResultCode.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(paymentProcessorResultCode.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return paymentProcessorResultCode;
     }
@@ -270,7 +270,7 @@ public class PaymentProcessorResultCodeControl
             paymentProcessorResultCode.setActiveDetail(paymentProcessorResultCodeDetail);
             paymentProcessorResultCode.setLastDetail(paymentProcessorResultCodeDetail);
 
-            sendEventUsingNames(paymentProcessorResultCodePK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(paymentProcessorResultCodePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -307,7 +307,7 @@ public class PaymentProcessorResultCodeControl
             }
         }
 
-        sendEventUsingNames(paymentProcessorResultCode.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(paymentProcessorResultCode.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     // --------------------------------------------------------------------------------
@@ -319,7 +319,7 @@ public class PaymentProcessorResultCodeControl
         var paymentProcessorResultCodeDescription = PaymentProcessorResultCodeDescriptionFactory.getInstance().create(paymentProcessorResultCode,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(paymentProcessorResultCode.getPrimaryKey(), EventTypes.MODIFY, paymentProcessorResultCodeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(paymentProcessorResultCode.getPrimaryKey(), EventTypes.MODIFY, paymentProcessorResultCodeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return paymentProcessorResultCodeDescription;
     }
@@ -437,14 +437,14 @@ public class PaymentProcessorResultCodeControl
             paymentProcessorResultCodeDescription = PaymentProcessorResultCodeDescriptionFactory.getInstance().create(paymentProcessorResultCode, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(paymentProcessorResultCode.getPrimaryKey(), EventTypes.MODIFY, paymentProcessorResultCodeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(paymentProcessorResultCode.getPrimaryKey(), EventTypes.MODIFY, paymentProcessorResultCodeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deletePaymentProcessorResultCodeDescription(final PaymentProcessorResultCodeDescription paymentProcessorResultCodeDescription, final BasePK deletedBy) {
         paymentProcessorResultCodeDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(paymentProcessorResultCodeDescription.getPaymentProcessorResultCodePK(), EventTypes.MODIFY, paymentProcessorResultCodeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(paymentProcessorResultCodeDescription.getPaymentProcessorResultCodePK(), EventTypes.MODIFY, paymentProcessorResultCodeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 

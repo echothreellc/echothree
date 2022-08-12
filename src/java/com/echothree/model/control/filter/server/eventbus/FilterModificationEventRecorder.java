@@ -47,7 +47,7 @@ public class FilterModificationEventRecorder {
             var filterControl = Session.getModelController(FilterControl.class);
             var filterStep = filterControl.getFilterStepByEntityInstance(event.getEntityInstance());
 
-            coreControl.sendEventUsingNames(filterStep.getLastDetail().getFilter().getPrimaryKey(),
+            coreControl.sendEvent(filterStep.getLastDetail().getFilter().getPrimaryKey(),
                     EventTypes.TOUCH, filterStep.getPrimaryKey(), EventTypes.valueOf(event.getEventType().getEventTypeName()),
                     PersistenceUtils.getInstance().getBasePKFromEntityInstance(event.getCreatedBy()));
         }

@@ -129,7 +129,7 @@ public class IndexControl
         indexType.setLastDetail(indexTypeDetail);
         indexType.store();
 
-        sendEventUsingNames(indexType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(indexType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return indexType;
     }
@@ -385,7 +385,7 @@ public class IndexControl
             indexType.setActiveDetail(indexTypeDetail);
             indexType.setLastDetail(indexTypeDetail);
 
-            sendEventUsingNames(indexTypePK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(indexTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -424,7 +424,7 @@ public class IndexControl
             }
         }
 
-        sendEventUsingNames(indexType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(indexType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteIndexType(IndexType indexType, BasePK deletedBy) {
@@ -451,7 +451,7 @@ public class IndexControl
         IndexTypeDescription indexTypeDescription = IndexTypeDescriptionFactory.getInstance().create(indexType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(indexType.getPrimaryKey(), EventTypes.MODIFY, indexTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(indexType.getPrimaryKey(), EventTypes.MODIFY, indexTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return indexTypeDescription;
     }
@@ -573,14 +573,14 @@ public class IndexControl
             indexTypeDescription = IndexTypeDescriptionFactory.getInstance().create(indexType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(indexType.getPrimaryKey(), EventTypes.MODIFY, indexTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(indexType.getPrimaryKey(), EventTypes.MODIFY, indexTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteIndexTypeDescription(IndexTypeDescription indexTypeDescription, BasePK deletedBy) {
         indexTypeDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(indexTypeDescription.getIndexTypePK(), EventTypes.MODIFY, indexTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(indexTypeDescription.getIndexTypePK(), EventTypes.MODIFY, indexTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -620,7 +620,7 @@ public class IndexControl
         indexField.setLastDetail(indexFieldDetail);
         indexField.store();
 
-        sendEventUsingNames(indexField.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(indexField.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return indexField;
     }
@@ -820,7 +820,7 @@ public class IndexControl
             indexField.setActiveDetail(indexFieldDetail);
             indexField.setLastDetail(indexFieldDetail);
 
-            sendEventUsingNames(indexFieldPK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(indexFieldPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -857,7 +857,7 @@ public class IndexControl
             }
         }
 
-        sendEventUsingNames(indexField.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(indexField.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteIndexFieldsByIndexType(IndexType indexType, BasePK deletedBy) {
@@ -877,7 +877,7 @@ public class IndexControl
         IndexFieldDescription indexFieldDescription = IndexFieldDescriptionFactory.getInstance().create(indexField,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(indexField.getPrimaryKey(), EventTypes.MODIFY, indexFieldDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(indexField.getPrimaryKey(), EventTypes.MODIFY, indexFieldDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return indexFieldDescription;
     }
@@ -998,14 +998,14 @@ public class IndexControl
             indexFieldDescription = IndexFieldDescriptionFactory.getInstance().create(indexField, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(indexField.getPrimaryKey(), EventTypes.MODIFY, indexFieldDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(indexField.getPrimaryKey(), EventTypes.MODIFY, indexFieldDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteIndexFieldDescription(IndexFieldDescription indexFieldDescription, BasePK deletedBy) {
         indexFieldDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(indexFieldDescription.getIndexFieldPK(), EventTypes.MODIFY, indexFieldDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(indexFieldDescription.getIndexFieldPK(), EventTypes.MODIFY, indexFieldDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -1044,7 +1044,7 @@ public class IndexControl
         index.setLastDetail(indexDetail);
         index.store();
 
-        sendEventUsingNames(index.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(index.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         createIndexStatus(index);
         
@@ -1373,7 +1373,7 @@ public class IndexControl
             index.setActiveDetail(indexDetail);
             index.setLastDetail(indexDetail);
 
-            sendEventUsingNames(indexPK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(indexPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -1413,7 +1413,7 @@ public class IndexControl
             }
         }
 
-        sendEventUsingNames(index.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(index.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteIndex(Index index, BasePK deletedBy) {
@@ -1440,7 +1440,7 @@ public class IndexControl
         IndexDescription indexDescription = IndexDescriptionFactory.getInstance().create(index, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(index.getPrimaryKey(), EventTypes.MODIFY, indexDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(index.getPrimaryKey(), EventTypes.MODIFY, indexDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return indexDescription;
     }
@@ -1562,14 +1562,14 @@ public class IndexControl
             indexDescription = IndexDescriptionFactory.getInstance().create(index, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(index.getPrimaryKey(), EventTypes.MODIFY, indexDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(index.getPrimaryKey(), EventTypes.MODIFY, indexDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteIndexDescription(IndexDescription indexDescription, BasePK deletedBy) {
         indexDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(indexDescription.getIndexPK(), EventTypes.MODIFY, indexDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(indexDescription.getIndexPK(), EventTypes.MODIFY, indexDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 

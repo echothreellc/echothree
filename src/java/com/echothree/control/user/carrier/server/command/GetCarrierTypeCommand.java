@@ -73,7 +73,7 @@ public class GetCarrierTypeCommand
         if(carrierType != null) {
             result.setCarrierType(carrierControl.getCarrierTypeTransfer(getUserVisit(), carrierType));
             
-            sendEventUsingNames(carrierType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+            sendEvent(carrierType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownCarrierTypeName.name(), carrierTypeName);
         }

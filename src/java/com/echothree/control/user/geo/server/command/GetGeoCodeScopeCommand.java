@@ -73,7 +73,7 @@ public class GetGeoCodeScopeCommand
         if(geoCodeScope != null) {
             result.setGeoCodeScope(geoControl.getGeoCodeScopeTransfer(getUserVisit(), geoCodeScope));
             
-            sendEventUsingNames(geoCodeScope.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+            sendEvent(geoCodeScope.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownGeoCodeScopeName.name(), geoCodeScopeName);
         }

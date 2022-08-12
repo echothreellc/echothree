@@ -224,7 +224,7 @@ public class TrainingControl
         trainingClass.setLastDetail(trainingClassDetail);
         trainingClass.store();
         
-        sendEventUsingNames(trainingClass.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(trainingClass.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return trainingClass;
     }
@@ -438,7 +438,7 @@ public class TrainingControl
             trainingClass.setActiveDetail(trainingClassDetail);
             trainingClass.setLastDetail(trainingClassDetail);
             
-            sendEventUsingNames(trainingClassPK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(trainingClassPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -473,7 +473,7 @@ public class TrainingControl
             }
         }
         
-        sendEventUsingNames(trainingClass.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(trainingClass.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -485,7 +485,7 @@ public class TrainingControl
         TrainingClassTranslation trainingClassTranslation = TrainingClassTranslationFactory.getInstance().create(trainingClass, language, description,
                 overviewMimeType, overview, introductionMimeType, introduction, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(trainingClass.getPrimaryKey(), EventTypes.MODIFY, trainingClassTranslation.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(trainingClass.getPrimaryKey(), EventTypes.MODIFY, trainingClassTranslation.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return trainingClassTranslation;
     }
@@ -605,14 +605,14 @@ public class TrainingControl
             trainingClassTranslation = TrainingClassTranslationFactory.getInstance().create(trainingClassPK, languagePK, description, overviewMimeTypePK,
                     overview, introductionMimeTypePK, introduction, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(trainingClassPK, EventTypes.MODIFY, trainingClassTranslation.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(trainingClassPK, EventTypes.MODIFY, trainingClassTranslation.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteTrainingClassTranslation(TrainingClassTranslation trainingClassTranslation, BasePK deletedBy) {
         trainingClassTranslation.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(trainingClassTranslation.getTrainingClassPK(), EventTypes.MODIFY, trainingClassTranslation.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(trainingClassTranslation.getTrainingClassPK(), EventTypes.MODIFY, trainingClassTranslation.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -640,7 +640,7 @@ public class TrainingControl
         trainingClassSection.setLastDetail(trainingClassSectionDetail);
         trainingClassSection.store();
         
-        sendEventUsingNames(trainingClassSection.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(trainingClassSection.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return trainingClassSection;
     }
@@ -759,7 +759,7 @@ public class TrainingControl
             trainingClassSection.setActiveDetail(trainingClassSectionDetail);
             trainingClassSection.setLastDetail(trainingClassSectionDetail);
             
-            sendEventUsingNames(trainingClassSectionPK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(trainingClassSectionPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -774,7 +774,7 @@ public class TrainingControl
         trainingClassSection.setActiveDetail(null);
         trainingClassSection.store();
         
-        sendEventUsingNames(trainingClassSection.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(trainingClassSection.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteTrainingClassSections(List<TrainingClassSection> trainingClassSections, BasePK deletedBy) {
@@ -796,7 +796,7 @@ public class TrainingControl
         TrainingClassSectionTranslation trainingClassSectionTranslation = TrainingClassSectionTranslationFactory.getInstance().create(trainingClassSection,
                 language, description, overviewMimeType, overview, introductionMimeType, introduction, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(trainingClassSection.getPrimaryKey(), EventTypes.MODIFY, trainingClassSectionTranslation.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(trainingClassSection.getPrimaryKey(), EventTypes.MODIFY, trainingClassSectionTranslation.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return trainingClassSectionTranslation;
     }
@@ -916,14 +916,14 @@ public class TrainingControl
             trainingClassSectionTranslation = TrainingClassSectionTranslationFactory.getInstance().create(trainingClassSectionPK, languagePK, description,
                     overviewMimeTypePK, overview, introductionMimeTypePK, introduction, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(trainingClassSectionPK, EventTypes.MODIFY, trainingClassSectionTranslation.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(trainingClassSectionPK, EventTypes.MODIFY, trainingClassSectionTranslation.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteTrainingClassSectionTranslation(TrainingClassSectionTranslation trainingClassSectionTranslation, BasePK deletedBy) {
         trainingClassSectionTranslation.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(trainingClassSectionTranslation.getTrainingClassSectionPK(), EventTypes.MODIFY, trainingClassSectionTranslation.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(trainingClassSectionTranslation.getTrainingClassSectionPK(), EventTypes.MODIFY, trainingClassSectionTranslation.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -951,7 +951,7 @@ public class TrainingControl
         trainingClassPage.setLastDetail(trainingClassPageDetail);
         trainingClassPage.store();
         
-        sendEventUsingNames(trainingClassPage.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(trainingClassPage.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return trainingClassPage;
     }
@@ -1090,7 +1090,7 @@ public class TrainingControl
             trainingClassPage.setActiveDetail(trainingClassPageDetail);
             trainingClassPage.setLastDetail(trainingClassPageDetail);
             
-            sendEventUsingNames(trainingClassPagePK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(trainingClassPagePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -1103,7 +1103,7 @@ public class TrainingControl
         trainingClassPage.setActiveDetail(null);
         trainingClassPage.store();
         
-        sendEventUsingNames(trainingClassPage.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(trainingClassPage.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteTrainingClassPages(List<TrainingClassPage> trainingClassPages, BasePK deletedBy) {
@@ -1125,7 +1125,7 @@ public class TrainingControl
         TrainingClassPageTranslation trainingClassPageTranslation = TrainingClassPageTranslationFactory.getInstance().create(trainingClassPage, language,
                 description, pageMimeType, page, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(trainingClassPage.getPrimaryKey(), EventTypes.MODIFY, trainingClassPageTranslation.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(trainingClassPage.getPrimaryKey(), EventTypes.MODIFY, trainingClassPageTranslation.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return trainingClassPageTranslation;
     }
@@ -1245,14 +1245,14 @@ public class TrainingControl
             trainingClassPageTranslation = TrainingClassPageTranslationFactory.getInstance().create(trainingClassPagePK, languagePK, description,
                     pageMimeTypePK, page, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(trainingClassPagePK, EventTypes.MODIFY, trainingClassPageTranslation.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(trainingClassPagePK, EventTypes.MODIFY, trainingClassPageTranslation.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteTrainingClassPageTranslation(TrainingClassPageTranslation trainingClassPageTranslation, BasePK deletedBy) {
         trainingClassPageTranslation.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(trainingClassPageTranslation.getTrainingClassPagePK(), EventTypes.MODIFY, trainingClassPageTranslation.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(trainingClassPageTranslation.getTrainingClassPagePK(), EventTypes.MODIFY, trainingClassPageTranslation.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -1280,7 +1280,7 @@ public class TrainingControl
         trainingClassQuestion.setLastDetail(trainingClassQuestionDetail);
         trainingClassQuestion.store();
         
-        sendEventUsingNames(trainingClassQuestion.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(trainingClassQuestion.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return trainingClassQuestion;
     }
@@ -1422,7 +1422,7 @@ public class TrainingControl
             trainingClassQuestion.setActiveDetail(trainingClassQuestionDetail);
             trainingClassQuestion.setLastDetail(trainingClassQuestionDetail);
             
-            sendEventUsingNames(trainingClassQuestionPK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(trainingClassQuestionPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -1436,7 +1436,7 @@ public class TrainingControl
         trainingClassQuestion.setActiveDetail(null);
         trainingClassQuestion.store();
         
-        sendEventUsingNames(trainingClassQuestion.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(trainingClassQuestion.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteTrainingClassQuestions(List<TrainingClassQuestion> trainingClassQuestions, BasePK deletedBy) {
@@ -1458,7 +1458,7 @@ public class TrainingControl
         TrainingClassQuestionTranslation trainingClassQuestionTranslation = TrainingClassQuestionTranslationFactory.getInstance().create(trainingClassQuestion,
                 language, questionMimeType, question, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(trainingClassQuestion.getPrimaryKey(), EventTypes.MODIFY, trainingClassQuestionTranslation.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(trainingClassQuestion.getPrimaryKey(), EventTypes.MODIFY, trainingClassQuestionTranslation.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return trainingClassQuestionTranslation;
     }
@@ -1577,14 +1577,14 @@ public class TrainingControl
             trainingClassQuestionTranslation = TrainingClassQuestionTranslationFactory.getInstance().create(trainingClassQuestionPK, languagePK,
                     questionMimeTypePK, question, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(trainingClassQuestionPK, EventTypes.MODIFY, trainingClassQuestionTranslation.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(trainingClassQuestionPK, EventTypes.MODIFY, trainingClassQuestionTranslation.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteTrainingClassQuestionTranslation(TrainingClassQuestionTranslation trainingClassQuestionTranslation, BasePK deletedBy) {
         trainingClassQuestionTranslation.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(trainingClassQuestionTranslation.getTrainingClassQuestionPK(), EventTypes.MODIFY, trainingClassQuestionTranslation.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(trainingClassQuestionTranslation.getTrainingClassQuestionPK(), EventTypes.MODIFY, trainingClassQuestionTranslation.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -1612,7 +1612,7 @@ public class TrainingControl
         trainingClassAnswer.setLastDetail(trainingClassAnswerDetail);
         trainingClassAnswer.store();
         
-        sendEventUsingNames(trainingClassAnswer.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(trainingClassAnswer.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return trainingClassAnswer;
     }
@@ -1729,7 +1729,7 @@ public class TrainingControl
             trainingClassAnswer.setActiveDetail(trainingClassAnswerDetail);
             trainingClassAnswer.setLastDetail(trainingClassAnswerDetail);
             
-            sendEventUsingNames(trainingClassAnswerPK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(trainingClassAnswerPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -1742,7 +1742,7 @@ public class TrainingControl
         trainingClassAnswer.setActiveDetail(null);
         trainingClassAnswer.store();
         
-        sendEventUsingNames(trainingClassAnswer.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(trainingClassAnswer.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteTrainingClassAnswers(List<TrainingClassAnswer> trainingClassAnswers, BasePK deletedBy) {
@@ -1764,7 +1764,7 @@ public class TrainingControl
         TrainingClassAnswerTranslation trainingClassAnswerTranslation = TrainingClassAnswerTranslationFactory.getInstance().create(trainingClassAnswer,
                 language, answerMimeType, answer, selectedMimeType, selected, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(trainingClassAnswer.getPrimaryKey(), EventTypes.MODIFY, trainingClassAnswerTranslation.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(trainingClassAnswer.getPrimaryKey(), EventTypes.MODIFY, trainingClassAnswerTranslation.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return trainingClassAnswerTranslation;
     }
@@ -1884,14 +1884,14 @@ public class TrainingControl
             trainingClassAnswerTranslation = TrainingClassAnswerTranslationFactory.getInstance().create(trainingClassAnswerPK, languagePK, answerMimeTypePK,
                     answer, selectedMimeTypePK, selected, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(trainingClassAnswerPK, EventTypes.MODIFY, trainingClassAnswerTranslation.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(trainingClassAnswerPK, EventTypes.MODIFY, trainingClassAnswerTranslation.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteTrainingClassAnswerTranslation(TrainingClassAnswerTranslation trainingClassAnswerTranslation, BasePK deletedBy) {
         trainingClassAnswerTranslation.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(trainingClassAnswerTranslation.getTrainingClassAnswerPK(), EventTypes.MODIFY, trainingClassAnswerTranslation.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(trainingClassAnswerTranslation.getTrainingClassAnswerPK(), EventTypes.MODIFY, trainingClassAnswerTranslation.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -1928,8 +1928,8 @@ public class TrainingControl
         partyTrainingClass.store();
         
         PartyTrainingClassPK partyTrainingClassPK = partyTrainingClass.getPrimaryKey();
-        sendEventUsingNames(partyTrainingClassPK, EventTypes.CREATE, null, null, createdBy);
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.TOUCH, partyTrainingClassPK, EventTypes.CREATE, createdBy);
+        sendEvent(partyTrainingClassPK, EventTypes.CREATE, null, null, createdBy);
+        sendEvent(party.getPrimaryKey(), EventTypes.TOUCH, partyTrainingClassPK, EventTypes.CREATE, createdBy);
         
         return partyTrainingClass;
     }
@@ -2235,8 +2235,8 @@ public class TrainingControl
             partyTrainingClass.setActiveDetail(partyTrainingClassDetail);
             partyTrainingClass.setLastDetail(partyTrainingClassDetail);
             
-            sendEventUsingNames(partyTrainingClassPK, EventTypes.MODIFY, null, null, updatedBy);
-            sendEventUsingNames(partyPK, EventTypes.TOUCH, partyTrainingClassPK, EventTypes.MODIFY, updatedBy);
+            sendEvent(partyTrainingClassPK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(partyPK, EventTypes.TOUCH, partyTrainingClassPK, EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -2251,8 +2251,8 @@ public class TrainingControl
         partyTrainingClass.store();
         
         PartyTrainingClassPK partyTrainingClassPK = partyTrainingClass.getPrimaryKey();
-        sendEventUsingNames(partyTrainingClassPK, EventTypes.DELETE, null, null, deletedBy);
-        sendEventUsingNames(partyTrainingClassDetail.getParty().getPrimaryKey(), EventTypes.TOUCH, partyTrainingClassPK, EventTypes.DELETE, deletedBy);
+        sendEvent(partyTrainingClassPK, EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(partyTrainingClassDetail.getParty().getPrimaryKey(), EventTypes.TOUCH, partyTrainingClassPK, EventTypes.DELETE, deletedBy);
     }
     
     public void deletePartyTrainingClassByParty(Party party, BasePK deletedBy) {
@@ -2347,7 +2347,7 @@ public class TrainingControl
         partyTrainingClassSession.setLastDetail(partyTrainingClassSessionDetail);
         partyTrainingClassSession.store();
         
-        sendEventUsingNames(partyTrainingClassSession.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(partyTrainingClassSession.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         createPartyTrainingClassSessionStatus(partyTrainingClassSession);
 
@@ -2468,7 +2468,7 @@ public class TrainingControl
             partyTrainingClassSession.setActiveDetail(partyTrainingClassSessionDetail);
             partyTrainingClassSession.setLastDetail(partyTrainingClassSessionDetail);
             
-            sendEventUsingNames(partyTrainingClassSessionPK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(partyTrainingClassSessionPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -2482,7 +2482,7 @@ public class TrainingControl
         partyTrainingClassSession.setActiveDetail(null);
         partyTrainingClassSession.store();
         
-        sendEventUsingNames(partyTrainingClassSession.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(partyTrainingClassSession.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deletePartyTrainingClassSessions(List<PartyTrainingClassSession> partyTrainingClassSessions, BasePK deletedBy) {
@@ -2649,7 +2649,7 @@ public class TrainingControl
         PartyTrainingClassSessionSection partyTrainingClassSessionSection = PartyTrainingClassSessionSectionFactory.getInstance().create(partyTrainingClassSession,
                 partyTrainingClassSessionSectionSequence, trainingClassSection, readingStartTime, readingEndTime, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(partyTrainingClassSession.getPrimaryKey(), EventTypes.MODIFY, partyTrainingClassSessionSection.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(partyTrainingClassSession.getPrimaryKey(), EventTypes.MODIFY, partyTrainingClassSessionSection.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return partyTrainingClassSessionSection;
     }
@@ -2802,7 +2802,7 @@ public class TrainingControl
                     partyTrainingClassSessionSectionSequence, trainingClassSectionPK, readingStartTime, readingEndTime, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(partyTrainingClassSessionPK, EventTypes.MODIFY, partyTrainingClassSessionSection.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(partyTrainingClassSessionPK, EventTypes.MODIFY, partyTrainingClassSessionSection.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -2811,7 +2811,7 @@ public class TrainingControl
         
         partyTrainingClassSessionSection.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(partyTrainingClassSessionSection.getPartyTrainingClassSessionPK(), EventTypes.MODIFY, partyTrainingClassSessionSection.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(partyTrainingClassSessionSection.getPartyTrainingClassSessionPK(), EventTypes.MODIFY, partyTrainingClassSessionSection.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deletePartyTrainingClassSessionSections(List<PartyTrainingClassSessionSection> partyTrainingClassSessionSections, BasePK deletedBy) {
@@ -2848,7 +2848,7 @@ public class TrainingControl
         PartyTrainingClassSessionPage partyTrainingClassSessionPage = PartyTrainingClassSessionPageFactory.getInstance().create(partyTrainingClassSession,
                 partyTrainingClassSessionPageSequence, trainingClassPage, readingStartTime, readingEndTime, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(partyTrainingClassSession.getPrimaryKey(), EventTypes.MODIFY, partyTrainingClassSessionPage.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(partyTrainingClassSession.getPrimaryKey(), EventTypes.MODIFY, partyTrainingClassSessionPage.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return partyTrainingClassSessionPage;
     }
@@ -3001,7 +3001,7 @@ public class TrainingControl
                     partyTrainingClassSessionPageSequence, trainingClassPagePK, readingStartTime, readingEndTime, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(partyTrainingClassSessionPK, EventTypes.MODIFY, partyTrainingClassSessionPage.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(partyTrainingClassSessionPK, EventTypes.MODIFY, partyTrainingClassSessionPage.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -3010,7 +3010,7 @@ public class TrainingControl
         
         partyTrainingClassSessionPage.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(partyTrainingClassSessionPage.getPartyTrainingClassSessionPK(), EventTypes.MODIFY, partyTrainingClassSessionPage.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(partyTrainingClassSessionPage.getPartyTrainingClassSessionPK(), EventTypes.MODIFY, partyTrainingClassSessionPage.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deletePartyTrainingClassSessionPages(List<PartyTrainingClassSessionPage> partyTrainingClassSessionPages, BasePK deletedBy) {
@@ -3043,7 +3043,7 @@ public class TrainingControl
         partyTrainingClassSessionQuestion.setLastDetail(partyTrainingClassSessionQuestionDetail);
         partyTrainingClassSessionQuestion.store();
         
-        sendEventUsingNames(partyTrainingClassSessionQuestion.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(partyTrainingClassSessionQuestion.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         createPartyTrainingClassSessionQuestionStatus(partyTrainingClassSessionQuestion);
 
@@ -3210,7 +3210,7 @@ public class TrainingControl
             partyTrainingClassSessionQuestion.setActiveDetail(partyTrainingClassSessionQuestionDetail);
             partyTrainingClassSessionQuestion.setLastDetail(partyTrainingClassSessionQuestionDetail);
             
-            sendEventUsingNames(partyTrainingClassSessionQuestionPK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(partyTrainingClassSessionQuestionPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -3224,7 +3224,7 @@ public class TrainingControl
         partyTrainingClassSessionQuestion.setActiveDetail(null);
         partyTrainingClassSessionQuestion.store();
         
-        sendEventUsingNames(partyTrainingClassSessionQuestion.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(partyTrainingClassSessionQuestion.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deletePartyTrainingClassSessionQuestions(List<PartyTrainingClassSessionQuestion> partyTrainingClassSessionQuestions, BasePK deletedBy) {
@@ -3308,7 +3308,7 @@ public class TrainingControl
         PartyTrainingClassSessionAnswer partyTrainingClassSessionAnswer = PartyTrainingClassSessionAnswerFactory.getInstance().create(partyTrainingClassSessionQuestion,
             partyTrainingClassSessionAnswerSequence, trainingClassAnswer, questionStartTime, questionEndTime, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(partyTrainingClassSessionQuestion.getPrimaryKey(), EventTypes.MODIFY, partyTrainingClassSessionAnswer.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(partyTrainingClassSessionQuestion.getPrimaryKey(), EventTypes.MODIFY, partyTrainingClassSessionAnswer.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return partyTrainingClassSessionAnswer;
     }
@@ -3462,14 +3462,14 @@ public class TrainingControl
                     partyTrainingClassSessionAnswerSequence, trainingClassAnswerPK, questionStartTime, questionEndTime, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(partyTrainingClassSessionQuestionPK, EventTypes.MODIFY, partyTrainingClassSessionAnswer.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(partyTrainingClassSessionQuestionPK, EventTypes.MODIFY, partyTrainingClassSessionAnswer.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deletePartyTrainingClassSessionAnswer(PartyTrainingClassSessionAnswer partyTrainingClassSessionAnswer, BasePK deletedBy) {
         partyTrainingClassSessionAnswer.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(partyTrainingClassSessionAnswer.getPartyTrainingClassSessionQuestionPK(), EventTypes.MODIFY, partyTrainingClassSessionAnswer.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(partyTrainingClassSessionAnswer.getPartyTrainingClassSessionQuestionPK(), EventTypes.MODIFY, partyTrainingClassSessionAnswer.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deletePartyTrainingClassSessionAnswers(List<PartyTrainingClassSessionAnswer> partyTrainingClassSessionAnswers, BasePK deletedBy) {

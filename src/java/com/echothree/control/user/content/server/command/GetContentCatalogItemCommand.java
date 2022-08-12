@@ -142,7 +142,7 @@ public class GetContentCatalogItemCommand
                                         AssociateReferralLogic.getInstance().handleAssociateReferral(session, this, form, userVisit, contentCatalog.getPrimaryKey(), partyPK);
 
                                         if(!hasExecutionErrors()) {
-                                            sendEventUsingNames(contentCatalog.getPrimaryKey(), EventTypes.READ, null, null, partyPK);
+                                            sendEvent(contentCatalog.getPrimaryKey(), EventTypes.READ, null, null, partyPK);
                                         }
                                     } else {
                                         addExecutionError(ExecutionErrors.UnknownContentCatalogItem.name(), contentCollection.getLastDetail().getContentCollectionName(),

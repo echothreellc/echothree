@@ -98,7 +98,7 @@ public class GetCampaignTermCommand
 
             if(!hasExecutionErrors()) {
                 result.setCampaignTerm(campaignControl.getCampaignTermTransfer(getUserVisit(), campaignTerm));
-                sendEventUsingNames(campaignTerm.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+                sendEvent(campaignTerm.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());

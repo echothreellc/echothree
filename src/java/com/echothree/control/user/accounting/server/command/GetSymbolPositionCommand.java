@@ -88,7 +88,7 @@ public class GetSymbolPositionCommand
         }
         
         if(symbolPosition != null) {
-            sendEventUsingNames(symbolPosition.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+            sendEvent(symbolPosition.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return symbolPosition;

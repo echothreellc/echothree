@@ -72,7 +72,7 @@ public class GetSequenceCommand
         var sequence = SequenceLogic.getInstance().getSequenceByUniversalSpec(this, form, true);
 
         if(sequence != null) {
-            sendEventUsingNames(sequence.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+            sendEvent(sequence.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return sequence;

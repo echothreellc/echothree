@@ -69,7 +69,7 @@ public class OfferNameElementControl
         offerNameElement.setLastDetail(offerNameElementDetail);
         offerNameElement.store();
         
-        sendEventUsingNames(offerNameElement.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(offerNameElement.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return offerNameElement;
     }
@@ -210,7 +210,7 @@ public class OfferNameElementControl
             offerNameElement.setActiveDetail(offerNameElementDetail);
             offerNameElement.setLastDetail(offerNameElementDetail);
             
-            sendEventUsingNames(offerNameElementPK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(offerNameElementPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -222,7 +222,7 @@ public class OfferNameElementControl
         offerNameElement.setActiveDetail(null);
         offerNameElement.store();
         
-        sendEventUsingNames(offerNameElement.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(offerNameElement.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -234,7 +234,7 @@ public class OfferNameElementControl
         OfferNameElementDescription offerNameElementDescription = OfferNameElementDescriptionFactory.getInstance().create(session,
                 offerNameElement, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(offerNameElement.getPrimaryKey(), EventTypes.MODIFY,
+        sendEvent(offerNameElement.getPrimaryKey(), EventTypes.MODIFY,
                 offerNameElementDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return offerNameElementDescription;
@@ -377,7 +377,7 @@ public class OfferNameElementControl
             offerNameElementDescription = OfferNameElementDescriptionFactory.getInstance().create(offerNameElement,
                     language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(offerNameElement.getPrimaryKey(), EventTypes.MODIFY,
+            sendEvent(offerNameElement.getPrimaryKey(), EventTypes.MODIFY,
                     offerNameElementDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
@@ -385,7 +385,7 @@ public class OfferNameElementControl
     public void deleteOfferNameElementDescription(OfferNameElementDescription offerNameElementDescription, BasePK deletedBy) {
         offerNameElementDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(offerNameElementDescription.getOfferNameElementPK(), EventTypes.MODIFY,
+        sendEvent(offerNameElementDescription.getOfferNameElementPK(), EventTypes.MODIFY,
                 offerNameElementDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     

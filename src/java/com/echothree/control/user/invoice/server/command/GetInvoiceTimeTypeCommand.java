@@ -79,7 +79,7 @@ public class GetInvoiceTimeTypeCommand
             if(invoiceTimeType != null) {
                 result.setInvoiceTimeType(invoiceControl.getInvoiceTimeTypeTransfer(getUserVisit(), invoiceTimeType));
 
-                sendEventUsingNames(invoiceTimeType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+                sendEvent(invoiceTimeType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownInvoiceTimeTypeName.name(), invoiceTimeTypeName);
             }

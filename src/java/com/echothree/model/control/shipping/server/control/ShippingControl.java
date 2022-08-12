@@ -96,7 +96,7 @@ public class ShippingControl
         shippingMethod.setLastDetail(shippingMethodDetail);
         shippingMethod.store();
         
-        sendEventUsingNames(shippingMethod.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(shippingMethod.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return shippingMethod;
     }
@@ -283,7 +283,7 @@ public class ShippingControl
             shippingMethod.setActiveDetail(shippingMethodDetail);
             shippingMethod.setLastDetail(shippingMethodDetail);
             
-            sendEventUsingNames(shippingMethodPK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(shippingMethodPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -301,7 +301,7 @@ public class ShippingControl
         shippingMethod.setActiveDetail(null);
         shippingMethod.store();
         
-        sendEventUsingNames(shippingMethod.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(shippingMethod.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -313,7 +313,7 @@ public class ShippingControl
         ShippingMethodDescription shippingMethodDescription = ShippingMethodDescriptionFactory.getInstance().create(shippingMethod,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(shippingMethod.getPrimaryKey(), EventTypes.MODIFY, shippingMethodDescription.getPrimaryKey(),
+        sendEvent(shippingMethod.getPrimaryKey(), EventTypes.MODIFY, shippingMethodDescription.getPrimaryKey(),
                 null, createdBy);
         
         return shippingMethodDescription;
@@ -453,7 +453,7 @@ public class ShippingControl
             shippingMethodDescription = ShippingMethodDescriptionFactory.getInstance().create(shippingMethod, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(shippingMethod.getPrimaryKey(), EventTypes.MODIFY, shippingMethodDescription.getPrimaryKey(),
+            sendEvent(shippingMethod.getPrimaryKey(), EventTypes.MODIFY, shippingMethodDescription.getPrimaryKey(),
                     null, updatedBy);
         }
     }
@@ -461,7 +461,7 @@ public class ShippingControl
     public void deleteShippingMethodDescription(ShippingMethodDescription shippingMethodDescription, BasePK deletedBy) {
         shippingMethodDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(shippingMethodDescription.getShippingMethodPK(), EventTypes.MODIFY,
+        sendEvent(shippingMethodDescription.getShippingMethodPK(), EventTypes.MODIFY,
                 shippingMethodDescription.getPrimaryKey(), null, deletedBy);
     }
     
@@ -482,7 +482,7 @@ public class ShippingControl
         ShippingMethodCarrierService shippingMethodCarrierService = ShippingMethodCarrierServiceFactory.getInstance().create(session,
                 shippingMethod, carrierService, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(shippingMethod.getPrimaryKey(), EventTypes.MODIFY, shippingMethodCarrierService.getPrimaryKey(),
+        sendEvent(shippingMethod.getPrimaryKey(), EventTypes.MODIFY, shippingMethodCarrierService.getPrimaryKey(),
                 null, createdBy);
         
         return shippingMethodCarrierService;
@@ -646,7 +646,7 @@ public class ShippingControl
     public void deleteShippingMethodCarrierService(ShippingMethodCarrierService shippingMethodCarrierService, BasePK deletedBy) {
         shippingMethodCarrierService.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(shippingMethodCarrierService.getShippingMethod().getPrimaryKey(), EventTypes.MODIFY,
+        sendEvent(shippingMethodCarrierService.getShippingMethod().getPrimaryKey(), EventTypes.MODIFY,
                 shippingMethodCarrierService.getPrimaryKey(), null, deletedBy);
     }
     

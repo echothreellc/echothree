@@ -112,7 +112,7 @@ public class RatingControl
         ratingType.setLastDetail(ratingTypeDetail);
         ratingType.store();
         
-        sendEventUsingNames(ratingType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(ratingType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return ratingType;
     }
@@ -240,7 +240,7 @@ public class RatingControl
             ratingType.setActiveDetail(ratingTypeDetail);
             ratingType.setLastDetail(ratingTypeDetail);
             
-            sendEventUsingNames(ratingTypePK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(ratingTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -253,7 +253,7 @@ public class RatingControl
         ratingType.setActiveDetail(null);
         ratingType.store();
         
-        sendEventUsingNames(ratingType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(ratingType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteRatingTypes(List<RatingType> ratingTypes, BasePK deletedBy) {
@@ -275,7 +275,7 @@ public class RatingControl
         RatingTypeDescription ratingTypeDescription = RatingTypeDescriptionFactory.getInstance().create(ratingType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(ratingType.getPrimaryKey(), EventTypes.MODIFY, ratingTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(ratingType.getPrimaryKey(), EventTypes.MODIFY, ratingTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return ratingTypeDescription;
     }
@@ -412,14 +412,14 @@ public class RatingControl
             
             ratingTypeDescription = RatingTypeDescriptionFactory.getInstance().create(ratingType, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(ratingType.getPrimaryKey(), EventTypes.MODIFY, ratingTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(ratingType.getPrimaryKey(), EventTypes.MODIFY, ratingTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteRatingTypeDescription(RatingTypeDescription ratingTypeDescription, BasePK deletedBy) {
         ratingTypeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(ratingTypeDescription.getRatingTypePK(), EventTypes.MODIFY, ratingTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(ratingTypeDescription.getRatingTypePK(), EventTypes.MODIFY, ratingTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -461,7 +461,7 @@ public class RatingControl
         ratingTypeListItem.setLastDetail(ratingTypeListItemDetail);
         ratingTypeListItem.store();
         
-        sendEventUsingNames(ratingTypeListItem.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(ratingTypeListItem.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return ratingTypeListItem;
     }
@@ -653,7 +653,7 @@ public class RatingControl
             ratingTypeListItem.setActiveDetail(ratingTypeListItemDetail);
             ratingTypeListItem.setLastDetail(ratingTypeListItemDetail);
             
-            sendEventUsingNames(ratingTypeListItemPK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(ratingTypeListItemPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -722,7 +722,7 @@ public class RatingControl
             }
         }
         
-        sendEventUsingNames(ratingTypeListItem.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(ratingTypeListItem.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteRatingTypeListItems(List<RatingTypeListItem> ratingTypeListItems, BasePK deletedBy) {
@@ -744,7 +744,7 @@ public class RatingControl
         RatingTypeListItemDescription ratingTypeListItemDescription = RatingTypeListItemDescriptionFactory.getInstance().create(session,
                 ratingTypeListItem, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(ratingTypeListItem.getPrimaryKey(), EventTypes.MODIFY, ratingTypeListItemDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(ratingTypeListItem.getPrimaryKey(), EventTypes.MODIFY, ratingTypeListItemDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return ratingTypeListItemDescription;
     }
@@ -881,14 +881,14 @@ public class RatingControl
             
             ratingTypeListItemDescription = RatingTypeListItemDescriptionFactory.getInstance().create(ratingTypeListItem, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(ratingTypeListItem.getPrimaryKey(), EventTypes.MODIFY, ratingTypeListItemDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(ratingTypeListItem.getPrimaryKey(), EventTypes.MODIFY, ratingTypeListItemDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteRatingTypeListItemDescription(RatingTypeListItemDescription ratingTypeListItemDescription, BasePK deletedBy) {
         ratingTypeListItemDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(ratingTypeListItemDescription.getRatingTypeListItemPK(), EventTypes.MODIFY, ratingTypeListItemDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(ratingTypeListItemDescription.getRatingTypeListItemPK(), EventTypes.MODIFY, ratingTypeListItemDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -916,8 +916,8 @@ public class RatingControl
         rating.setLastDetail(ratingDetail);
         rating.store();
         
-        sendEventUsingNames(rating.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
-        sendEventUsingNames(ratedEntityInstance, EventTypes.TOUCH, rating.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(rating.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(ratedEntityInstance, EventTypes.TOUCH, rating.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return rating;
     }
@@ -1215,8 +1215,8 @@ public class RatingControl
             rating.setActiveDetail(ratingDetail);
             rating.setLastDetail(ratingDetail);
             
-            sendEventUsingNames(rating.getPrimaryKey(), EventTypes.MODIFY, null, null, updatedBy);
-            sendEventUsingNames(ratingDetail.getRatedEntityInstance(), EventTypes.TOUCH, rating.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(rating.getPrimaryKey(), EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(ratingDetail.getRatedEntityInstance(), EventTypes.TOUCH, rating.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -1227,8 +1227,8 @@ public class RatingControl
         rating.setActiveDetail(null);
         rating.store();
         
-        sendEventUsingNames(rating.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
-        sendEventUsingNames(ratingDetail.getRatedEntityInstance(), EventTypes.TOUCH, rating.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(rating.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(ratingDetail.getRatedEntityInstance(), EventTypes.TOUCH, rating.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteRatings(List<Rating> ratings, BasePK deletedBy) {

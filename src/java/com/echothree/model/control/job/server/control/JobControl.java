@@ -90,7 +90,7 @@ public class JobControl
         job.setLastDetail(jobDetail);
         job.store();
         
-        sendEventUsingNames(job.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(job.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         createJobStatus(job);
         
@@ -240,7 +240,7 @@ public class JobControl
         job.setLastDetail(jobDetail);
         job.store();
         
-        sendEventUsingNames(jobPK, EventTypes.MODIFY, null, null, updatedBy);
+        sendEvent(jobPK, EventTypes.MODIFY, null, null, updatedBy);
     }
     
     public void deleteJob(Job job, BasePK deletedBy) {
@@ -251,7 +251,7 @@ public class JobControl
         job.setActiveDetail(null);
         job.store();
         
-        sendEventUsingNames(job.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(job.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
         
         removeJobStatusByJob(job);
     }
@@ -265,7 +265,7 @@ public class JobControl
         JobDescription jobDescription = JobDescriptionFactory.getInstance().create(session,
                 job, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(job.getPrimaryKey(), EventTypes.MODIFY, jobDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(job.getPrimaryKey(), EventTypes.MODIFY, jobDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return jobDescription;
     }
@@ -403,14 +403,14 @@ public class JobControl
             jobDescription = JobDescriptionFactory.getInstance().create(job, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(job.getPrimaryKey(), EventTypes.MODIFY, jobDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(job.getPrimaryKey(), EventTypes.MODIFY, jobDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteJobDescription(JobDescription jobDescription, BasePK deletedBy) {
         jobDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(jobDescription.getJobPK(), EventTypes.MODIFY, jobDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(jobDescription.getJobPK(), EventTypes.MODIFY, jobDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     

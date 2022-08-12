@@ -111,7 +111,7 @@ public class GetPartyCommand
                 
                 result.setParty(partyControl.getPartyTransfer(getUserVisit(), party));
 
-                sendEventUsingNames(party.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+                sendEvent(party.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());

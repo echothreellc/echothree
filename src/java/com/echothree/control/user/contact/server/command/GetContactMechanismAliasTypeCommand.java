@@ -73,7 +73,7 @@ public class GetContactMechanismAliasTypeCommand
         if(contactMechanismAliasType != null) {
             result.setContactMechanismAliasType(contactControl.getContactMechanismAliasTypeTransfer(getUserVisit(), contactMechanismAliasType));
             
-            sendEventUsingNames(contactMechanismAliasType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+            sendEvent(contactMechanismAliasType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownContactMechanismAliasTypeName.name(), contactMechanismAliasTypeName);
         }

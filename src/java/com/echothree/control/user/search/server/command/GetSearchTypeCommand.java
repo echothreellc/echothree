@@ -79,7 +79,7 @@ public class GetSearchTypeCommand
             if(searchType != null) {
                 result.setSearchType(searchControl.getSearchTypeTransfer(getUserVisit(), searchType));
                 
-                sendEventUsingNames(searchType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+                sendEvent(searchType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownSearchTypeName.name(), searchKindName, searchTypeName);
             }

@@ -80,7 +80,7 @@ public class GetCommentUsageTypeCommand
                     if(commentUsageType != null) {
                         result.setCommentUsageType(commentControl.getCommentUsageTypeTransfer(userVisit, commentUsageType));
 
-                        sendEventUsingNames(commentUsageType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+                        sendEvent(commentUsageType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.UnknownCommentUsageTypeName.name(), commentUsageTypeName);
                     }

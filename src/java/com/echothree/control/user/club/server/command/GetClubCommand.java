@@ -59,7 +59,7 @@ public class GetClubCommand
         if(club != null) {
             result.setClub(clubControl.getClubTransfer(getUserVisit(), club));
             
-            sendEventUsingNames(club.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+            sendEvent(club.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownClubName.name(), clubName);
         }

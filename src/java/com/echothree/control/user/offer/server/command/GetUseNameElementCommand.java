@@ -72,7 +72,7 @@ public class GetUseNameElementCommand
         UseNameElement useNameElement = UseNameElementLogic.getInstance().getUseNameElementByUniversalSpec(this, form);
 
         if(useNameElement != null) {
-            sendEventUsingNames(useNameElement.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+            sendEvent(useNameElement.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return useNameElement;

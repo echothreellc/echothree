@@ -111,7 +111,7 @@ public class GetVendorCommand
         }
 
         if(vendor != null) {
-            sendEventUsingNames(vendor.getPartyPK(), EventTypes.READ, null, null, getPartyPK());
+            sendEvent(vendor.getPartyPK(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return vendor;

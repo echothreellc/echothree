@@ -96,7 +96,7 @@ public class EditSymbolPositionCommand
                         SymbolPositionDetail symbolPositionDetail = symbolPosition.getLastDetail();
 
                         result.setSymbolPosition(accountingControl.getSymbolPositionTransfer(getUserVisit(), symbolPosition));
-                        sendEventUsingNames(symbolPosition.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+                        sendEvent(symbolPosition.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
 
                         result.setEdit(edit);
                         edit.setSymbolPositionName(symbolPositionDetail.getSymbolPositionName());

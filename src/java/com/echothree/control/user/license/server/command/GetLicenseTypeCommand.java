@@ -98,7 +98,7 @@ public class GetLicenseTypeCommand
 
             if(!hasExecutionErrors()) {
                 result.setLicenseType(licenseControl.getLicenseTypeTransfer(getUserVisit(), licenseType));
-                sendEventUsingNames(licenseType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+                sendEvent(licenseType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());

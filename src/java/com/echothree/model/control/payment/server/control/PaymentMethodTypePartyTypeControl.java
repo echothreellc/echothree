@@ -78,7 +78,7 @@ public class PaymentMethodTypePartyTypeControl
         paymentMethodTypePartyType.setLastDetail(paymentMethodTypePartyTypeDetail);
         paymentMethodTypePartyType.store();
 
-        sendEventUsingNames(paymentMethodType.getPrimaryKey(), EventTypes.MODIFY, paymentMethodTypePartyType.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(paymentMethodType.getPrimaryKey(), EventTypes.MODIFY, paymentMethodTypePartyType.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return paymentMethodTypePartyType;
     }
@@ -329,7 +329,7 @@ public class PaymentMethodTypePartyTypeControl
             paymentMethodTypePartyType.setActiveDetail(paymentMethodTypePartyTypeDetail);
             paymentMethodTypePartyType.setLastDetail(paymentMethodTypePartyTypeDetail);
 
-            sendEventUsingNames(paymentMethodTypePK, EventTypes.MODIFY, paymentMethodTypePartyType.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(paymentMethodTypePK, EventTypes.MODIFY, paymentMethodTypePartyType.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
@@ -362,7 +362,7 @@ public class PaymentMethodTypePartyTypeControl
             }
         }
 
-        sendEventUsingNames(paymentMethodType.getPrimaryKey(), EventTypes.MODIFY, paymentMethodTypePartyType.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(paymentMethodType.getPrimaryKey(), EventTypes.MODIFY, paymentMethodTypePartyType.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     public void deletePaymentMethodTypePartyTypes(final Collection<PaymentMethodTypePartyType> paymentMethodTypePartyTypes, final BasePK deletedBy) {

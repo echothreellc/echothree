@@ -639,27 +639,27 @@ public abstract class BaseCommand
         return getCoreControl().getEntityInstanceByBasePK(pk);
     }
     
-    protected Event sendEventUsingNames(final BasePK entityInstancePK, final EventTypes eventType, final BasePK relatedPK,
+    protected Event sendEvent(final BasePK entityInstancePK, final EventTypes eventType, final BasePK relatedPK,
             final EventTypes relatedEventType, final BasePK createdByPK) {
         EntityInstance entityInstance = getEntityInstanceByBasePK(entityInstancePK);
         EntityInstance relatedEntityInstance = relatedPK == null? null: getEntityInstanceByBasePK(relatedPK);
         
-        return sendEventUsingNames(entityInstance, eventType, relatedEntityInstance, relatedEventType, createdByPK);
+        return sendEvent(entityInstance, eventType, relatedEntityInstance, relatedEventType, createdByPK);
     }
     
-    protected Event sendEventUsingNames(final EntityInstance entityInstance, final EventTypes eventType, final BasePK relatedPK,
+    protected Event sendEvent(final EntityInstance entityInstance, final EventTypes eventType, final BasePK relatedPK,
             final EventTypes relatedEventType, final BasePK createdByPK) {
         EntityInstance relatedEntityInstance = relatedPK == null? null: getEntityInstanceByBasePK(relatedPK);
 
-        return sendEventUsingNames(entityInstance, eventType, relatedEntityInstance, relatedEventType, createdByPK);
+        return sendEvent(entityInstance, eventType, relatedEntityInstance, relatedEventType, createdByPK);
     }
     
-    protected Event sendEventUsingNames(final EntityInstance entityInstance, final EventTypes eventType, final EntityInstance relatedEntityInstance,
+    protected Event sendEvent(final EntityInstance entityInstance, final EventTypes eventType, final EntityInstance relatedEntityInstance,
             final EventTypes relatedEventType, final BasePK createdByPK) {
         Event event = null;
         
         if(createdByPK != null) {
-            event = getCoreControl().sendEventUsingNames(entityInstance, eventType, relatedEntityInstance, relatedEventType,
+            event = getCoreControl().sendEvent(entityInstance, eventType, relatedEntityInstance, relatedEventType,
                 createdByPK);
         }
         

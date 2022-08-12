@@ -657,7 +657,7 @@ public class CoreControl
         componentVendor.setLastDetail(componentVendorDetail);
         componentVendor.store();
         
-        sendEventUsingNames(componentVendor.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(componentVendor.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return componentVendor;
     }
@@ -786,7 +786,7 @@ public class CoreControl
             componentVendor.setActiveDetail(componentVendorDetail);
             componentVendor.setLastDetail(componentVendorDetail);
             
-            sendEventUsingNames(componentVendorPK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(componentVendorPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -798,7 +798,7 @@ public class CoreControl
         componentVendor.setActiveDetail(null);
         componentVendor.store();
         
-        sendEventUsingNames(componentVendor.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(componentVendor.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -817,7 +817,7 @@ public class CoreControl
         entityType.setLastDetail(entityTypeDetail);
         entityType.store();
         
-        sendEventUsingNames(entityType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(entityType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return entityType;
     }
@@ -1015,7 +1015,7 @@ public class CoreControl
             entityType.setActiveDetail(entityTypeDetail);
             entityType.setLastDetail(entityTypeDetail);
             
-            sendEventUsingNames(entityTypePK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(entityTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -1046,7 +1046,7 @@ public class CoreControl
         entityType.setActiveDetail(null);
         entityType.store();
         
-        sendEventUsingNames(entityType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(entityType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteEntityTypesByComponentVendor(ComponentVendor componentVendor, BasePK deletedBy) {
@@ -1066,7 +1066,7 @@ public class CoreControl
         EntityTypeDescription entityTypeDescription = EntityTypeDescriptionFactory.getInstance().create(entityType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(entityType.getPrimaryKey(), EventTypes.MODIFY, entityTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(entityType.getPrimaryKey(), EventTypes.MODIFY, entityTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return entityTypeDescription;
     }
@@ -1208,14 +1208,14 @@ public class CoreControl
             entityTypeDescription = EntityTypeDescriptionFactory.getInstance().create(entityType, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(entityType.getPrimaryKey(), EventTypes.MODIFY, entityTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(entityType.getPrimaryKey(), EventTypes.MODIFY, entityTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteEntityTypeDescription(EntityTypeDescription entityTypeDescription, BasePK deletedBy) {
         entityTypeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(entityTypeDescription.getEntityTypePK(), EventTypes.MODIFY, entityTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(entityTypeDescription.getEntityTypePK(), EventTypes.MODIFY, entityTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteEntityTypeDescriptionsByEntityType(EntityType entityType, BasePK deletedBy) {
@@ -1241,7 +1241,7 @@ public class CoreControl
         command.setLastDetail(commandDetail);
         command.store();
         
-        sendEventUsingNames(command.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(command.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return command;
     }
@@ -1405,7 +1405,7 @@ public class CoreControl
             command.setActiveDetail(commandDetail);
             command.setLastDetail(commandDetail);
             
-            sendEventUsingNames(commandPK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(commandPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -1417,7 +1417,7 @@ public class CoreControl
         command.setActiveDetail(null);
         command.store();
         
-        sendEventUsingNames(command.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(command.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteCommandsByComponentVendor(ComponentVendor componentVendor, BasePK deletedBy) {
@@ -1437,7 +1437,7 @@ public class CoreControl
         CommandDescription commandDescription = CommandDescriptionFactory.getInstance().create(command,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(command.getPrimaryKey(), EventTypes.MODIFY, commandDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(command.getPrimaryKey(), EventTypes.MODIFY, commandDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return commandDescription;
     }
@@ -1579,14 +1579,14 @@ public class CoreControl
             commandDescription = CommandDescriptionFactory.getInstance().create(command, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(command.getPrimaryKey(), EventTypes.MODIFY, commandDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(command.getPrimaryKey(), EventTypes.MODIFY, commandDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteCommandDescription(CommandDescription commandDescription, BasePK deletedBy) {
         commandDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(commandDescription.getCommandPK(), EventTypes.MODIFY, commandDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(commandDescription.getCommandPK(), EventTypes.MODIFY, commandDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteCommandDescriptionsByCommand(Command command, BasePK deletedBy) {
@@ -1625,7 +1625,7 @@ public class CoreControl
         commandMessageType.setLastDetail(commandMessageTypeDetail);
         commandMessageType.store();
         
-        sendEventUsingNames(commandMessageType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(commandMessageType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return commandMessageType;
     }
@@ -1821,7 +1821,7 @@ public class CoreControl
             commandMessageType.setActiveDetail(commandMessageTypeDetail);
             commandMessageType.setLastDetail(commandMessageTypeDetail);
             
-            sendEventUsingNames(commandMessageTypePK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(commandMessageTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -1855,7 +1855,7 @@ public class CoreControl
             }
         }
         
-        sendEventUsingNames(commandMessageType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(commandMessageType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -1868,7 +1868,7 @@ public class CoreControl
                 language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(commandMessageType.getPrimaryKey(), EventTypes.MODIFY, commandMessageTypeDescription.getPrimaryKey(),
+        sendEvent(commandMessageType.getPrimaryKey(), EventTypes.MODIFY, commandMessageTypeDescription.getPrimaryKey(),
                 null, createdBy);
         
         return commandMessageTypeDescription;
@@ -2010,7 +2010,7 @@ public class CoreControl
             commandMessageTypeDescription = CommandMessageTypeDescriptionFactory.getInstance().create(commandMessageType, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(commandMessageType.getPrimaryKey(), EventTypes.MODIFY, commandMessageTypeDescription.getPrimaryKey(),
+            sendEvent(commandMessageType.getPrimaryKey(), EventTypes.MODIFY, commandMessageTypeDescription.getPrimaryKey(),
                     null, updatedBy);
         }
     }
@@ -2018,7 +2018,7 @@ public class CoreControl
     public void deleteCommandMessageTypeDescription(CommandMessageTypeDescription commandMessageTypeDescription, BasePK deletedBy) {
         commandMessageTypeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(commandMessageTypeDescription.getCommandMessageTypePK(), EventTypes.MODIFY,
+        sendEvent(commandMessageTypeDescription.getCommandMessageTypePK(), EventTypes.MODIFY,
                 commandMessageTypeDescription.getPrimaryKey(), null, deletedBy);
     }
     
@@ -2046,7 +2046,7 @@ public class CoreControl
         commandMessage.setLastDetail(commandMessageDetail);
         commandMessage.store();
         
-        sendEventUsingNames(commandMessage.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(commandMessage.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return commandMessage;
     }
@@ -2177,7 +2177,7 @@ public class CoreControl
             commandMessage.setActiveDetail(commandMessageDetail);
             commandMessage.setLastDetail(commandMessageDetail);
             
-            sendEventUsingNames(commandMessagePK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(commandMessagePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -2189,7 +2189,7 @@ public class CoreControl
         commandMessage.setActiveDetail(null);
         commandMessage.store();
         
-        sendEventUsingNames(commandMessage.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(commandMessage.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteCommandMessages(List<CommandMessage> commandMessages, BasePK deletedBy) {
@@ -2210,7 +2210,7 @@ public class CoreControl
         CommandMessageTranslation commandMessageTranslation = CommandMessageTranslationFactory.getInstance().create(commandMessage, language, translation,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(commandMessageTranslation.getCommandMessagePK(), EventTypes.MODIFY, commandMessageTranslation.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(commandMessageTranslation.getCommandMessagePK(), EventTypes.MODIFY, commandMessageTranslation.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return commandMessageTranslation;
     }
@@ -2348,14 +2348,14 @@ public class CoreControl
             commandMessageTranslation = CommandMessageTranslationFactory.getInstance().create(commandMessagePK, languagePK, translation, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(commandMessagePK, EventTypes.MODIFY, commandMessageTranslation.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(commandMessagePK, EventTypes.MODIFY, commandMessageTranslation.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteCommandMessageTranslation(CommandMessageTranslation commandMessageTranslation, BasePK deletedBy) {
         commandMessageTranslation.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(commandMessageTranslation.getCommandMessagePK(), EventTypes.MODIFY, commandMessageTranslation.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(commandMessageTranslation.getCommandMessagePK(), EventTypes.MODIFY, commandMessageTranslation.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteCommandMessageTranslations(List<CommandMessageTranslation> commandMessageTranslations, BasePK deletedBy) {
@@ -3416,7 +3416,7 @@ public class CoreControl
         eventGroup.setLastDetail(eventGroupDetail);
         eventGroup.store();
         
-        sendEventUsingNames(eventGroup.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(eventGroup.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return eventGroup;
     }
@@ -4156,7 +4156,7 @@ public class CoreControl
         entityAttributeGroup.setLastDetail(entityAttributeGroupDetail);
         entityAttributeGroup.store();
         
-        sendEventUsingNames(entityAttributeGroup.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(entityAttributeGroup.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return entityAttributeGroup;
     }
@@ -4420,7 +4420,7 @@ public class CoreControl
             entityAttributeGroup.setActiveDetail(entityAttributeGroupDetail);
             entityAttributeGroup.setLastDetail(entityAttributeGroupDetail);
             
-            sendEventUsingNames(entityAttributeGroupPK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(entityAttributeGroupPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -4454,7 +4454,7 @@ public class CoreControl
             }
         }
         
-        sendEventUsingNames(entityAttributeGroup.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(entityAttributeGroup.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -4467,7 +4467,7 @@ public class CoreControl
                 language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(entityAttributeGroup.getPrimaryKey(), EventTypes.MODIFY, entityAttributeGroupDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(entityAttributeGroup.getPrimaryKey(), EventTypes.MODIFY, entityAttributeGroupDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return entityAttributeGroupDescription;
     }
@@ -4607,14 +4607,14 @@ public class CoreControl
             entityAttributeGroupDescription = EntityAttributeGroupDescriptionFactory.getInstance().create(entityAttributeGroup, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(entityAttributeGroup.getPrimaryKey(), EventTypes.MODIFY, entityAttributeGroupDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(entityAttributeGroup.getPrimaryKey(), EventTypes.MODIFY, entityAttributeGroupDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteEntityAttributeGroupDescription(EntityAttributeGroupDescription entityAttributeGroupDescription, BasePK deletedBy) {
         entityAttributeGroupDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(entityAttributeGroupDescription.getEntityAttributeGroupPK(), EventTypes.MODIFY, entityAttributeGroupDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(entityAttributeGroupDescription.getEntityAttributeGroupPK(), EventTypes.MODIFY, entityAttributeGroupDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteEntityAttributeGroupDescriptionsByEntityAttributeGroup(EntityAttributeGroup entityAttributeGroup, BasePK deletedBy) {
@@ -4642,7 +4642,7 @@ public class CoreControl
         entityAttribute.setLastDetail(entityAttributeDetail);
         entityAttribute.store();
         
-        sendEventUsingNames(entityAttribute.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(entityAttribute.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return entityAttribute;
     }
@@ -4905,7 +4905,7 @@ public class CoreControl
             entityAttribute.setActiveDetail(entityAttributeDetail);
             entityAttribute.setLastDetail(entityAttributeDetail);
             
-            sendEventUsingNames(entityAttributePK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(entityAttributePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -4994,7 +4994,7 @@ public class CoreControl
         entityAttribute.setActiveDetail(null);
         entityAttribute.store();
         
-        sendEventUsingNames(entityAttribute.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(entityAttribute.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteEntityAttributesByEntityInstance(EntityInstance entityInstance, BasePK deletedBy) {
@@ -5052,7 +5052,7 @@ public class CoreControl
         EntityAttributeDescription entityAttributeDescription = EntityAttributeDescriptionFactory.getInstance().create(session,
                 entityAttribute, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return entityAttributeDescription;
     }
@@ -5194,14 +5194,14 @@ public class CoreControl
             entityAttributeDescription = EntityAttributeDescriptionFactory.getInstance().create(entityAttribute, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteEntityAttributeDescription(EntityAttributeDescription entityAttributeDescription, BasePK deletedBy) {
         entityAttributeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(entityAttributeDescription.getEntityAttributePK(), EventTypes.MODIFY, entityAttributeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(entityAttributeDescription.getEntityAttributePK(), EventTypes.MODIFY, entityAttributeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteEntityAttributeDescriptionsByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
@@ -5221,7 +5221,7 @@ public class CoreControl
         EntityAttributeBlob entityAttributeBlob = EntityAttributeBlobFactory.getInstance().create(session,
                 entityAttribute, checkContentWebAddress, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeBlob.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeBlob.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return entityAttributeBlob;
     }
@@ -5278,14 +5278,14 @@ public class CoreControl
             entityAttributeBlob = EntityAttributeBlobFactory.getInstance().create(entityAttribute, checkContentWebAddress,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeBlob.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeBlob.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteEntityAttributeBlob(EntityAttributeBlob entityAttributeBlob, BasePK deletedBy) {
         entityAttributeBlob.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(entityAttributeBlob.getEntityAttributePK(), EventTypes.MODIFY, entityAttributeBlob.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(entityAttributeBlob.getEntityAttributePK(), EventTypes.MODIFY, entityAttributeBlob.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteEntityAttributeBlobByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
@@ -5305,7 +5305,7 @@ public class CoreControl
         EntityAttributeString entityAttributeString = EntityAttributeStringFactory.getInstance().create(session,
                 entityAttribute, validationPattern, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeString.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeString.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return entityAttributeString;
     }
@@ -5362,14 +5362,14 @@ public class CoreControl
             entityAttributeString = EntityAttributeStringFactory.getInstance().create(entityAttribute, validationPattern,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeString.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeString.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteEntityAttributeString(EntityAttributeString entityAttributeString, BasePK deletedBy) {
         entityAttributeString.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(entityAttributeString.getEntityAttributePK(), EventTypes.MODIFY, entityAttributeString.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(entityAttributeString.getEntityAttributePK(), EventTypes.MODIFY, entityAttributeString.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteEntityAttributeStringByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
@@ -5390,7 +5390,7 @@ public class CoreControl
                 entityAttribute, upperRangeIntegerValue, upperLimitIntegerValue, lowerLimitIntegerValue, lowerRangeIntegerValue,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeInteger.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeInteger.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return entityAttributeInteger;
     }
@@ -5451,14 +5451,14 @@ public class CoreControl
                     upperLimitIntegerValue, lowerLimitIntegerValue, lowerRangeIntegerValue, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeInteger.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeInteger.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteEntityAttributeInteger(EntityAttributeInteger entityAttributeInteger, BasePK deletedBy) {
         entityAttributeInteger.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(entityAttributeInteger.getEntityAttributePK(), EventTypes.MODIFY, entityAttributeInteger.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(entityAttributeInteger.getEntityAttributePK(), EventTypes.MODIFY, entityAttributeInteger.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteEntityAttributeIntegerByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
@@ -5479,7 +5479,7 @@ public class CoreControl
                 entityAttribute, upperRangeLongValue, upperLimitLongValue, lowerLimitLongValue, lowerRangeLongValue,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeLong.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeLong.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return entityAttributeLong;
     }
@@ -5539,14 +5539,14 @@ public class CoreControl
             entityAttributeLong = EntityAttributeLongFactory.getInstance().create(entityAttribute, upperRangeLongValue,
                     upperLimitLongValue, lowerLimitLongValue, lowerRangeLongValue, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeLong.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeLong.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteEntityAttributeLong(EntityAttributeLong entityAttributeLong, BasePK deletedBy) {
         entityAttributeLong.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(entityAttributeLong.getEntityAttributePK(), EventTypes.MODIFY, entityAttributeLong.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(entityAttributeLong.getEntityAttributePK(), EventTypes.MODIFY, entityAttributeLong.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteEntityAttributeLongByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
@@ -5566,7 +5566,7 @@ public class CoreControl
         EntityAttributeNumeric entityAttributeNumeric = EntityAttributeNumericFactory.getInstance().create(session,
                 entityAttribute, unitOfMeasureType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeNumeric.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeNumeric.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return entityAttributeNumeric;
     }
@@ -5631,14 +5631,14 @@ public class CoreControl
             entityAttributeNumeric = EntityAttributeNumericFactory.getInstance().create(entityAttributePK, unitOfMeasureTypePK,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(entityAttributePK, EventTypes.MODIFY, entityAttributeNumeric.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(entityAttributePK, EventTypes.MODIFY, entityAttributeNumeric.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteEntityAttributeNumeric(EntityAttributeNumeric entityAttributeNumeric, BasePK deletedBy) {
         entityAttributeNumeric.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(entityAttributeNumeric.getEntityAttributePK(), EventTypes.MODIFY, entityAttributeNumeric.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(entityAttributeNumeric.getEntityAttributePK(), EventTypes.MODIFY, entityAttributeNumeric.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteEntityAttributeNumericByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
@@ -5658,7 +5658,7 @@ public class CoreControl
         EntityAttributeListItem entityAttributeListItem = EntityAttributeListItemFactory.getInstance().create(session,
                 entityAttribute, entityListItemSequence, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeListItem.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeListItem.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return entityAttributeListItem;
     }
@@ -5723,14 +5723,14 @@ public class CoreControl
             entityAttributeListItem = EntityAttributeListItemFactory.getInstance().create(entityAttributePK, entityListItemSequencePK,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(entityAttributePK, EventTypes.MODIFY, entityAttributeListItem.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(entityAttributePK, EventTypes.MODIFY, entityAttributeListItem.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteEntityAttributeListItem(EntityAttributeListItem entityAttributeListItem, BasePK deletedBy) {
         entityAttributeListItem.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(entityAttributeListItem.getEntityAttributePK(), EventTypes.MODIFY, entityAttributeListItem.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(entityAttributeListItem.getEntityAttributePK(), EventTypes.MODIFY, entityAttributeListItem.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteEntityAttributeListItemByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
@@ -5750,7 +5750,7 @@ public class CoreControl
         EntityAttributeEntityAttributeGroup entityAttributeEntityAttributeGroup = EntityAttributeEntityAttributeGroupFactory.getInstance().create(session,
                 entityAttribute, entityAttributeGroup, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeEntityAttributeGroup.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeEntityAttributeGroup.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return entityAttributeEntityAttributeGroup;
     }
@@ -5926,14 +5926,14 @@ public class CoreControl
             entityAttributeEntityAttributeGroup = EntityAttributeEntityAttributeGroupFactory.getInstance().create(entityAttribute, entityAttributeGroup,
                     sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeEntityAttributeGroup.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeEntityAttributeGroup.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteEntityAttributeEntityAttributeGroup(EntityAttributeEntityAttributeGroup entityAttributeEntityAttributeGroup, BasePK deletedBy) {
         entityAttributeEntityAttributeGroup.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(entityAttributeEntityAttributeGroup.getEntityAttributePK(), EventTypes.MODIFY, entityAttributeEntityAttributeGroup.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(entityAttributeEntityAttributeGroup.getEntityAttributePK(), EventTypes.MODIFY, entityAttributeEntityAttributeGroup.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteEntityAttributeEntityAttributeGroupsByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
@@ -5980,7 +5980,7 @@ public class CoreControl
         entityListItem.setLastDetail(entityListItemDetail);
         entityListItem.store();
         
-        sendEventUsingNames(entityListItem.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(entityListItem.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return entityListItem;
     }
@@ -6207,7 +6207,7 @@ public class CoreControl
             entityListItem.setActiveDetail(entityListItemDetail);
             entityListItem.setLastDetail(entityListItemDetail);
             
-            sendEventUsingNames(entityListItemPK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(entityListItemPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -6285,7 +6285,7 @@ public class CoreControl
             }
         }
 
-        sendEventUsingNames(entityListItem.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(entityListItem.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteEntityListItem(EntityListItem entityListItem, BasePK deletedBy) {
@@ -6308,7 +6308,7 @@ public class CoreControl
         EntityListItemDescription entityListItemDescription = EntityListItemDescriptionFactory.getInstance().create(entityListItem, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(entityListItem.getPrimaryKey(), EventTypes.MODIFY, entityListItemDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(entityListItem.getPrimaryKey(), EventTypes.MODIFY, entityListItemDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return entityListItemDescription;
     }
@@ -6446,14 +6446,14 @@ public class CoreControl
             entityListItemDescription = EntityListItemDescriptionFactory.getInstance().create(entityListItem, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(entityListItem.getPrimaryKey(), EventTypes.MODIFY, entityListItemDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(entityListItem.getPrimaryKey(), EventTypes.MODIFY, entityListItemDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteEntityListItemDescription(EntityListItemDescription entityListItemDescription, BasePK deletedBy) {
         entityListItemDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(entityListItemDescription.getEntityListItemPK(), EventTypes.MODIFY, entityListItemDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(entityListItemDescription.getEntityListItemPK(), EventTypes.MODIFY, entityListItemDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteEntityListItemDescriptionsByEntityListItem(EntityListItem entityListItem, BasePK deletedBy) {
@@ -6492,7 +6492,7 @@ public class CoreControl
         entityIntegerRange.setLastDetail(entityIntegerRangeDetail);
         entityIntegerRange.store();
         
-        sendEventUsingNames(entityIntegerRange.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(entityIntegerRange.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return entityIntegerRange;
     }
@@ -6702,7 +6702,7 @@ public class CoreControl
             entityIntegerRange.setActiveDetail(entityIntegerRangeDetail);
             entityIntegerRange.setLastDetail(entityIntegerRangeDetail);
             
-            sendEventUsingNames(entityIntegerRangePK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(entityIntegerRangePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -6773,7 +6773,7 @@ public class CoreControl
             }
         }
 
-        sendEventUsingNames(entityIntegerRange.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(entityIntegerRange.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteEntityIntegerRange(EntityIntegerRange entityIntegerRange, BasePK deletedBy) {
@@ -6796,7 +6796,7 @@ public class CoreControl
         EntityIntegerRangeDescription entityIntegerRangeDescription = EntityIntegerRangeDescriptionFactory.getInstance().create(entityIntegerRange, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(entityIntegerRange.getPrimaryKey(), EventTypes.MODIFY, entityIntegerRangeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(entityIntegerRange.getPrimaryKey(), EventTypes.MODIFY, entityIntegerRangeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return entityIntegerRangeDescription;
     }
@@ -6934,14 +6934,14 @@ public class CoreControl
             entityIntegerRangeDescription = EntityIntegerRangeDescriptionFactory.getInstance().create(entityIntegerRange, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(entityIntegerRange.getPrimaryKey(), EventTypes.MODIFY, entityIntegerRangeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(entityIntegerRange.getPrimaryKey(), EventTypes.MODIFY, entityIntegerRangeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteEntityIntegerRangeDescription(EntityIntegerRangeDescription entityIntegerRangeDescription, BasePK deletedBy) {
         entityIntegerRangeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(entityIntegerRangeDescription.getEntityIntegerRangePK(), EventTypes.MODIFY, entityIntegerRangeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(entityIntegerRangeDescription.getEntityIntegerRangePK(), EventTypes.MODIFY, entityIntegerRangeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteEntityIntegerRangeDescriptionsByEntityIntegerRange(EntityIntegerRange entityIntegerRange, BasePK deletedBy) {
@@ -6980,7 +6980,7 @@ public class CoreControl
         entityLongRange.setLastDetail(entityLongRangeDetail);
         entityLongRange.store();
         
-        sendEventUsingNames(entityLongRange.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(entityLongRange.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return entityLongRange;
     }
@@ -7190,7 +7190,7 @@ public class CoreControl
             entityLongRange.setActiveDetail(entityLongRangeDetail);
             entityLongRange.setLastDetail(entityLongRangeDetail);
             
-            sendEventUsingNames(entityLongRangePK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(entityLongRangePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -7261,7 +7261,7 @@ public class CoreControl
             }
         }
 
-        sendEventUsingNames(entityLongRange.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(entityLongRange.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteEntityLongRange(EntityLongRange entityLongRange, BasePK deletedBy) {
@@ -7284,7 +7284,7 @@ public class CoreControl
         EntityLongRangeDescription entityLongRangeDescription = EntityLongRangeDescriptionFactory.getInstance().create(entityLongRange, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(entityLongRange.getPrimaryKey(), EventTypes.MODIFY, entityLongRangeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(entityLongRange.getPrimaryKey(), EventTypes.MODIFY, entityLongRangeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return entityLongRangeDescription;
     }
@@ -7422,14 +7422,14 @@ public class CoreControl
             entityLongRangeDescription = EntityLongRangeDescriptionFactory.getInstance().create(entityLongRange, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(entityLongRange.getPrimaryKey(), EventTypes.MODIFY, entityLongRangeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(entityLongRange.getPrimaryKey(), EventTypes.MODIFY, entityLongRangeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteEntityLongRangeDescription(EntityLongRangeDescription entityLongRangeDescription, BasePK deletedBy) {
         entityLongRangeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(entityLongRangeDescription.getEntityLongRangePK(), EventTypes.MODIFY, entityLongRangeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(entityLongRangeDescription.getEntityLongRangePK(), EventTypes.MODIFY, entityLongRangeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteEntityLongRangeDescriptionsByEntityLongRange(EntityLongRange entityLongRange, BasePK deletedBy) {
@@ -7673,7 +7673,7 @@ public class CoreControl
         mimeType.setLastDetail(mimeTypeDetail);
         mimeType.store();
 
-        sendEventUsingNames(mimeType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(mimeType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return mimeType;
     }
@@ -7995,7 +7995,7 @@ public class CoreControl
             mimeType.setActiveDetail(mimeTypeDetail);
             mimeType.setLastDetail(mimeTypeDetail);
 
-            sendEventUsingNames(mimeTypePK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(mimeTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -8028,7 +8028,7 @@ public class CoreControl
             }
         }
 
-        sendEventUsingNames(mimeType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(mimeType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     // --------------------------------------------------------------------------------
@@ -8040,7 +8040,7 @@ public class CoreControl
         MimeTypeDescription mimeTypeDescription = MimeTypeDescriptionFactory.getInstance().create(mimeType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(mimeType.getPrimaryKey(), EventTypes.MODIFY, mimeTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(mimeType.getPrimaryKey(), EventTypes.MODIFY, mimeTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return mimeTypeDescription;
     }
@@ -8165,14 +8165,14 @@ public class CoreControl
             mimeTypeDescription = MimeTypeDescriptionFactory.getInstance().create(mimeType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(mimeType.getPrimaryKey(), EventTypes.MODIFY, mimeTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(mimeType.getPrimaryKey(), EventTypes.MODIFY, mimeTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteMimeTypeDescription(MimeTypeDescription mimeTypeDescription, BasePK deletedBy) {
         mimeTypeDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(mimeTypeDescription.getMimeTypePK(), EventTypes.MODIFY, mimeTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(mimeTypeDescription.getMimeTypePK(), EventTypes.MODIFY, mimeTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -8369,7 +8369,7 @@ public class CoreControl
         protocol.setLastDetail(protocolDetail);
         protocol.store();
 
-        sendEventUsingNames(protocol.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(protocol.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return protocol;
     }
@@ -8565,7 +8565,7 @@ public class CoreControl
             protocol.setActiveDetail(protocolDetail);
             protocol.setLastDetail(protocolDetail);
 
-            sendEventUsingNames(protocolPK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(protocolPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -8603,7 +8603,7 @@ public class CoreControl
             }
         }
 
-        sendEventUsingNames(protocol.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(protocol.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteProtocol(Protocol protocol, BasePK deletedBy) {
@@ -8626,7 +8626,7 @@ public class CoreControl
         ProtocolDescription protocolDescription = ProtocolDescriptionFactory.getInstance().create(protocol, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(protocol.getPrimaryKey(), EventTypes.MODIFY, protocolDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(protocol.getPrimaryKey(), EventTypes.MODIFY, protocolDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return protocolDescription;
     }
@@ -8748,14 +8748,14 @@ public class CoreControl
             protocolDescription = ProtocolDescriptionFactory.getInstance().create(protocol, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(protocol.getPrimaryKey(), EventTypes.MODIFY, protocolDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(protocol.getPrimaryKey(), EventTypes.MODIFY, protocolDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteProtocolDescription(ProtocolDescription protocolDescription, BasePK deletedBy) {
         protocolDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(protocolDescription.getProtocolPK(), EventTypes.MODIFY, protocolDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(protocolDescription.getProtocolPK(), EventTypes.MODIFY, protocolDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -8795,7 +8795,7 @@ public class CoreControl
         service.setLastDetail(serviceDetail);
         service.store();
 
-        sendEventUsingNames(service.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(service.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return service;
     }
@@ -9026,7 +9026,7 @@ public class CoreControl
             service.setActiveDetail(serviceDetail);
             service.setLastDetail(serviceDetail);
 
-            sendEventUsingNames(servicePK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(servicePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -9064,7 +9064,7 @@ public class CoreControl
             }
         }
 
-        sendEventUsingNames(service.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(service.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteService(Service service, BasePK deletedBy) {
@@ -9091,7 +9091,7 @@ public class CoreControl
         ServiceDescription serviceDescription = ServiceDescriptionFactory.getInstance().create(service, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(service.getPrimaryKey(), EventTypes.MODIFY, serviceDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(service.getPrimaryKey(), EventTypes.MODIFY, serviceDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return serviceDescription;
     }
@@ -9213,14 +9213,14 @@ public class CoreControl
             serviceDescription = ServiceDescriptionFactory.getInstance().create(service, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(service.getPrimaryKey(), EventTypes.MODIFY, serviceDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(service.getPrimaryKey(), EventTypes.MODIFY, serviceDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteServiceDescription(ServiceDescription serviceDescription, BasePK deletedBy) {
         serviceDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(serviceDescription.getServicePK(), EventTypes.MODIFY, serviceDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(serviceDescription.getServicePK(), EventTypes.MODIFY, serviceDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -9259,7 +9259,7 @@ public class CoreControl
         server.setLastDetail(serverDetail);
         server.store();
 
-        sendEventUsingNames(server.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(server.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return server;
     }
@@ -9455,7 +9455,7 @@ public class CoreControl
             server.setActiveDetail(serverDetail);
             server.setLastDetail(serverDetail);
 
-            sendEventUsingNames(serverPK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(serverPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -9493,7 +9493,7 @@ public class CoreControl
             }
         }
 
-        sendEventUsingNames(server.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(server.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteServer(Server server, BasePK deletedBy) {
@@ -9516,7 +9516,7 @@ public class CoreControl
         ServerDescription serverDescription = ServerDescriptionFactory.getInstance().create(server, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(server.getPrimaryKey(), EventTypes.MODIFY, serverDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(server.getPrimaryKey(), EventTypes.MODIFY, serverDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return serverDescription;
     }
@@ -9638,14 +9638,14 @@ public class CoreControl
             serverDescription = ServerDescriptionFactory.getInstance().create(server, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(server.getPrimaryKey(), EventTypes.MODIFY, serverDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(server.getPrimaryKey(), EventTypes.MODIFY, serverDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteServerDescription(ServerDescription serverDescription, BasePK deletedBy) {
         serverDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(serverDescription.getServerPK(), EventTypes.MODIFY, serverDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(serverDescription.getServerPK(), EventTypes.MODIFY, serverDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -9664,7 +9664,7 @@ public class CoreControl
     public ServerService createServerService(Server server, Service service, BasePK createdBy) {
         ServerService serverService = ServerServiceFactory.getInstance().create(server, service, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(server.getPrimaryKey(), EventTypes.MODIFY, serverService.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(server.getPrimaryKey(), EventTypes.MODIFY, serverService.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return serverService;
     }
@@ -9794,7 +9794,7 @@ public class CoreControl
 
         serverService.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(serverService.getServerPK(), EventTypes.MODIFY, serverService.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(serverService.getServerPK(), EventTypes.MODIFY, serverService.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -9822,7 +9822,7 @@ public class CoreControl
                 entityInstance, booleanAttribute,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return entityBooleanAttribute;
     }
@@ -9937,7 +9937,7 @@ public class CoreControl
             EntityBooleanAttributeFactory.getInstance().create(entityAttribute, entityInstance, entityBooleanAttributeValue.getBooleanAttribute(), session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -9951,7 +9951,7 @@ public class CoreControl
             entityBooleanAttribute.remove();
         }
         
-        sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteEntityBooleanAttributes(List<EntityBooleanAttribute> entityBooleanAttributes, BasePK deletedBy) {
@@ -9976,7 +9976,7 @@ public class CoreControl
         EntityDateAttribute entityDateAttribute = EntityDateAttributeFactory.getInstance().create(entityAttribute, entityInstance, dateAttribute, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return entityDateAttribute;
     }
@@ -10090,7 +10090,7 @@ public class CoreControl
             EntityDateAttributeFactory.getInstance().create(entityAttribute, entityInstance, entityDateAttributeValue.getDateAttribute(), session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -10104,7 +10104,7 @@ public class CoreControl
             entityDateAttribute.remove();
         }
         
-        sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteEntityDateAttributes(List<EntityDateAttribute> entityDateAttributes, BasePK deletedBy) {
@@ -10130,7 +10130,7 @@ public class CoreControl
         EntityIntegerAttribute entityIntegerAttribute = EntityIntegerAttributeFactory.getInstance().create(entityAttribute,
                 entityInstance, integerAttribute, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return entityIntegerAttribute;
     }
@@ -10245,7 +10245,7 @@ public class CoreControl
             EntityIntegerAttributeFactory.getInstance().create(entityAttribute, entityInstance, entityIntegerAttributeValue.getIntegerAttribute(), session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     public void deleteEntityIntegerAttribute(EntityIntegerAttribute entityIntegerAttribute, BasePK deletedBy) {
@@ -10258,7 +10258,7 @@ public class CoreControl
             entityIntegerAttribute.remove();
         }
         
-        sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteEntityIntegerAttributes(List<EntityIntegerAttribute> entityIntegerAttributes, BasePK deletedBy) {
@@ -10284,7 +10284,7 @@ public class CoreControl
         EntityListItemAttribute entityListItemAttribute = EntityListItemAttributeFactory.getInstance().create(session,
                 entityAttribute, entityInstance, entityListItem, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return entityListItemAttribute;
     }
@@ -10418,7 +10418,7 @@ public class CoreControl
             EntityListItemAttributeFactory.getInstance().create(entityAttribute.getPrimaryKey(), entityInstance.getPrimaryKey(), entityListItemAttributeValue.getEntityListItemPK(),
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -10432,7 +10432,7 @@ public class CoreControl
             entityListItemAttribute.remove();
         }
         
-        sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteEntityListItemAttributes(List<EntityListItemAttribute> entityListItemAttributes, BasePK deletedBy) {
@@ -10458,7 +10458,7 @@ public class CoreControl
         EntityLongAttribute entityLongAttribute = EntityLongAttributeFactory.getInstance().create(entityAttribute,
                 entityInstance, longAttribute, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return entityLongAttribute;
     }
@@ -10573,7 +10573,7 @@ public class CoreControl
             EntityLongAttributeFactory.getInstance().create(entityAttribute, entityInstance, entityLongAttributeValue.getLongAttribute(), session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -10587,7 +10587,7 @@ public class CoreControl
             entityLongAttribute.remove();
         }
         
-        sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteEntityLongAttributes(List<EntityLongAttribute> entityLongAttributes, BasePK deletedBy) {
@@ -10613,7 +10613,7 @@ public class CoreControl
         EntityMultipleListItemAttribute entityMultipleListItemAttribute = EntityMultipleListItemAttributeFactory.getInstance().create(session,
                 entityAttribute, entityInstance, entityListItem, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return entityMultipleListItemAttribute;
     }
@@ -10780,7 +10780,7 @@ public class CoreControl
             entityMultipleListItemAttribute.remove();
         }
         
-        sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteEntityMultipleListItemAttributes(List<EntityMultipleListItemAttribute> entityMultipleListItemAttributes, BasePK deletedBy) {
@@ -10806,7 +10806,7 @@ public class CoreControl
         EntityNameAttribute entityNameAttribute = EntityNameAttributeFactory.getInstance().create(entityAttribute,
                 nameAttribute, entityInstance, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return entityNameAttribute;
     }
@@ -10921,7 +10921,7 @@ public class CoreControl
             EntityNameAttributeFactory.getInstance().create(entityAttribute, entityNameAttributeValue.getNameAttribute(), entityInstance, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -10935,7 +10935,7 @@ public class CoreControl
             entityNameAttribute.remove();
         }
         
-        sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteEntityNameAttributes(List<EntityNameAttribute> entityNameAttributes, BasePK deletedBy) {
@@ -10982,7 +10982,7 @@ public class CoreControl
         EntityStringAttribute entityStringAttribute = EntityStringAttributeFactory.getInstance().create(entityAttribute,
                 entityInstance, language, stringAttribute, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return entityStringAttribute;
     }
@@ -11109,7 +11109,7 @@ public class CoreControl
             EntityStringAttributeFactory.getInstance().create(entityAttribute, entityInstance, language, entityStringAttributeValue.getStringAttribute(), session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -11123,7 +11123,7 @@ public class CoreControl
             entityStringAttribute.remove();
         }
         
-        sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteEntityStringAttributes(List<EntityStringAttribute> entityStringAttributes, BasePK deletedBy) {
@@ -11149,7 +11149,7 @@ public class CoreControl
         EntityGeoPointAttribute entityGeoPointAttribute = EntityGeoPointAttributeFactory.getInstance().create(entityAttribute, entityInstance, latitude,
                 longitude, elevation, altitude, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return entityGeoPointAttribute;
     }
@@ -11265,7 +11265,7 @@ public class CoreControl
                     entityGeoPointAttributeValue.getLongitude(), entityGeoPointAttributeValue.getElevation(), entityGeoPointAttributeValue.getAltitude(),
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -11279,7 +11279,7 @@ public class CoreControl
             entityGeoPointAttribute.remove();
         }
         
-        sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteEntityGeoPointAttributes(List<EntityGeoPointAttribute> entityGeoPointAttributes, BasePK deletedBy) {
@@ -11304,7 +11304,7 @@ public class CoreControl
         EntityTimeAttribute entityTimeAttribute = EntityTimeAttributeFactory.getInstance().create(entityAttribute, entityInstance, timeAttribute, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return entityTimeAttribute;
     }
@@ -11418,7 +11418,7 @@ public class CoreControl
             EntityTimeAttributeFactory.getInstance().create(entityAttribute, entityInstance, entityTimeAttributeValue.getTimeAttribute(), session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -11432,7 +11432,7 @@ public class CoreControl
             entityTimeAttribute.remove();
         }
         
-        sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteEntityTimeAttributes(List<EntityTimeAttribute> entityTimeAttributes, BasePK deletedBy) {
@@ -11458,7 +11458,7 @@ public class CoreControl
         EntityBlobAttribute entityBlobAttribute = EntityBlobAttributeFactory.getInstance().create(entityAttribute,
                 entityInstance, language, blobAttribute, mimeType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return entityBlobAttribute;
     }
@@ -11587,7 +11587,7 @@ public class CoreControl
             EntityBlobAttributeFactory.getInstance().create(entityAttribute.getPrimaryKey(), entityInstance.getPrimaryKey(), language.getPrimaryKey(),
                     entityBlobAttributeValue.getBlobAttribute(), entityBlobAttributeValue.getMimeTypePK(), session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -11601,7 +11601,7 @@ public class CoreControl
             entityBlobAttribute.remove();
         }
         
-        sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteEntityBlobAttributes(List<EntityBlobAttribute> entityBlobAttributes, BasePK deletedBy) {
@@ -11627,7 +11627,7 @@ public class CoreControl
         EntityClobAttribute entityClobAttribute = EntityClobAttributeFactory.getInstance().create(entityAttribute,
                 entityInstance, language, clobAttribute, mimeType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return entityClobAttribute;
     }
@@ -11756,7 +11756,7 @@ public class CoreControl
             EntityClobAttributeFactory.getInstance().create(entityAttribute.getPrimaryKey(), entityInstance.getPrimaryKey(), language.getPrimaryKey(),
                     entityClobAttributeValue.getClobAttribute(), entityClobAttributeValue.getMimeTypePK(), session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -11770,7 +11770,7 @@ public class CoreControl
             entityClobAttribute.remove();
         }
         
-        sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteEntityClobAttributes(List<EntityClobAttribute> entityClobAttributes, BasePK deletedBy) {
@@ -11795,7 +11795,7 @@ public class CoreControl
         EntityAttributeEntityType entityAttributeEntityType = EntityAttributeEntityTypeFactory.getInstance().create(entityAttribute, allowedEntityType,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeEntityType.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(entityAttribute.getPrimaryKey(), EventTypes.MODIFY, entityAttributeEntityType.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return entityAttributeEntityType;
     }
@@ -11945,7 +11945,7 @@ public class CoreControl
     public void deleteEntityAttributeEntityType(EntityAttributeEntityType entityAttributeEntityType, BasePK deletedBy) {
         entityAttributeEntityType.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(entityAttributeEntityType.getEntityAttributePK(), EventTypes.MODIFY, entityAttributeEntityType.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(entityAttributeEntityType.getEntityAttributePK(), EventTypes.MODIFY, entityAttributeEntityType.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteEntityAttributeEntityTypes(List<EntityAttributeEntityType> entityAttributeEntityTypes, BasePK deletedBy) {
@@ -11971,7 +11971,7 @@ public class CoreControl
         EntityEntityAttribute entityEntityAttribute = EntityEntityAttributeFactory.getInstance().create(entityAttribute, entityInstance,
                 entityInstanceAttribute, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return entityEntityAttribute;
     }
@@ -12108,7 +12108,7 @@ public class CoreControl
             EntityEntityAttributeFactory.getInstance().create(entityAttribute.getPrimaryKey(), entityInstance.getPrimaryKey(),
                     entityEntityAttributeValue.getEntityInstanceAttributePK(), session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -12122,7 +12122,7 @@ public class CoreControl
             entityEntityAttribute.remove();
         }
         
-        sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteEntityEntityAttributes(List<EntityEntityAttribute> entityEntityAttributes, BasePK deletedBy) {
@@ -12149,7 +12149,7 @@ public class CoreControl
         EntityCollectionAttribute entityCollectionAttribute = EntityCollectionAttributeFactory.getInstance().create(entityAttribute, entityInstance,
                 entityInstanceAttribute, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return entityCollectionAttribute;
     }
@@ -12319,7 +12319,7 @@ public class CoreControl
             entityCollectionAttribute.remove();
         }
         
-        sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(entityInstance, EventTypes.MODIFY, entityAttribute.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteEntityCollectionAttributes(List<EntityCollectionAttribute> entityCollectionAttributes, BasePK deletedBy) {
@@ -12367,7 +12367,7 @@ public class CoreControl
         BaseEncryptionKey baseEncryptionKey = BaseEncryptionKeyFactory.getInstance().create(baseEncryptionKeyName,
                 sha1Hash);
         
-        sendEventUsingNames(baseEncryptionKey.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(baseEncryptionKey.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return baseEncryptionKey;
     }
@@ -12669,7 +12669,7 @@ public class CoreControl
         eventSubscriber.setLastDetail(eventSubscriberDetail);
         eventSubscriber.store();
         
-        sendEventUsingNames(eventSubscriber.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(eventSubscriber.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return eventSubscriber;
     }
@@ -12774,7 +12774,7 @@ public class CoreControl
         eventSubscriber.setActiveDetail(null);
         eventSubscriber.store();
         
-        sendEventUsingNames(eventSubscriber.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(eventSubscriber.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteEventSubscribers(List<EventSubscriber> eventSubscribers, BasePK deletedBy) {
@@ -12858,7 +12858,7 @@ public class CoreControl
         EventSubscriberEventType eventSubscriberEventType = EventSubscriberEventTypeFactory.getInstance().create(session,
                 eventSubscriber, eventType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(eventSubscriber.getPrimaryKey(), EventTypes.MODIFY, eventSubscriberEventType.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(eventSubscriber.getPrimaryKey(), EventTypes.MODIFY, eventSubscriberEventType.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return eventSubscriberEventType;
     }
@@ -12912,7 +12912,7 @@ public class CoreControl
         EventSubscriberEntityType eventSubscriberEntityType = EventSubscriberEntityTypeFactory.getInstance().create(session,
                 eventSubscriber, entityType, eventType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(eventSubscriber.getPrimaryKey(), EventTypes.MODIFY, eventSubscriberEntityType.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(eventSubscriber.getPrimaryKey(), EventTypes.MODIFY, eventSubscriberEntityType.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return eventSubscriberEntityType;
     }
@@ -12968,7 +12968,7 @@ public class CoreControl
         EventSubscriberEntityInstance eventSubscriberEntityInstance = EventSubscriberEntityInstanceFactory.getInstance().create(session,
                 eventSubscriber, entityInstance, eventType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(eventSubscriber.getPrimaryKey(), EventTypes.MODIFY, eventSubscriberEntityInstance.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(eventSubscriber.getPrimaryKey(), EventTypes.MODIFY, eventSubscriberEntityInstance.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return eventSubscriberEntityInstance;
     }
@@ -13080,6 +13080,7 @@ public class CoreControl
         return suppressEvent;
     }
 
+    @Override
     public Event sendEvent(final EntityInstance entityInstance, final EventTypes eventTypeEnum, final EntityInstance relatedEntityInstance,
             final EventTypes relatedEventTypeEnum, final BasePK createdByPK) {
         var eventType = getEventTypeByName(eventTypeEnum.name());
@@ -13149,7 +13150,7 @@ public class CoreControl
     }
 
     @Override
-    public Event sendEventUsingNames(final BasePK entityInstancePK, final EventTypes eventType, final BasePK relatedPK,
+    public Event sendEvent(final BasePK entityInstancePK, final EventTypes eventType, final BasePK relatedPK,
             final EventTypes relatedEventType, final BasePK createdByPK) {
         var entityInstance = getEntityInstanceByBasePK(entityInstancePK);
         Event event = null;
@@ -13159,23 +13160,17 @@ public class CoreControl
         } else {
             var relatedEntityInstance = relatedPK == null? null: getEntityInstanceByBasePK(relatedPK);
             
-            event = sendEventUsingNames(entityInstance, eventType, relatedEntityInstance, relatedEventType, createdByPK);
+            event = sendEvent(entityInstance, eventType, relatedEntityInstance, relatedEventType, createdByPK);
         }
         
         return event;
     }
     
     @Override
-    public Event sendEventUsingNames(final EntityInstance entityInstance, final EventTypes eventType, final BasePK relatedPK,
+    public Event sendEvent(final EntityInstance entityInstance, final EventTypes eventType, final BasePK relatedPK,
             final EventTypes relatedEventType, final BasePK createdByPK) {
         var relatedEntityInstance = relatedPK == null? null: getEntityInstanceByBasePK(relatedPK);
         
-        return sendEventUsingNames(entityInstance, eventType, relatedEntityInstance, relatedEventType, createdByPK);
-    }
-    
-    @Override
-    public Event sendEventUsingNames(final EntityInstance entityInstance, final EventTypes eventType, final EntityInstance relatedEntityInstance,
-            final EventTypes relatedEventType, final BasePK createdByPK) {
         return sendEvent(entityInstance, eventType, relatedEntityInstance, relatedEventType, createdByPK);
     }
     
@@ -13186,7 +13181,7 @@ public class CoreControl
     public PartyEntityType createPartyEntityType(Party party, EntityType entityType, Boolean confirmDelete, BasePK createdBy) {
         PartyEntityType partyEntityType = PartyEntityTypeFactory.getInstance().create(party, entityType, confirmDelete, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY, partyEntityType.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyEntityType.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return partyEntityType;
     }
@@ -13308,14 +13303,14 @@ public class CoreControl
 
             partyEntityType = PartyEntityTypeFactory.getInstance().create(partyPK, entityTypePK, confirmDelete, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(partyPK, EventTypes.MODIFY, partyEntityType.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(partyPK, EventTypes.MODIFY, partyEntityType.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deletePartyEntityType(PartyEntityType partyEntityType, BasePK deletedBy) {
         partyEntityType.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(partyEntityType.getPartyPK(), EventTypes.MODIFY, partyEntityType.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(partyEntityType.getPartyPK(), EventTypes.MODIFY, partyEntityType.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     public void deletePartyEntityTypesByParty(Party party, BasePK deletedBy) {
@@ -13351,7 +13346,7 @@ public class CoreControl
         application.setLastDetail(applicationDetail);
         application.store();
 
-        sendEventUsingNames(application.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(application.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return application;
     }
@@ -13554,7 +13549,7 @@ public class CoreControl
             application.setActiveDetail(applicationDetail);
             application.setLastDetail(applicationDetail);
 
-            sendEventUsingNames(applicationPK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(applicationPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -13593,7 +13588,7 @@ public class CoreControl
             }
         }
 
-        sendEventUsingNames(application.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(application.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteApplication(Application application, BasePK deletedBy) {
@@ -13616,7 +13611,7 @@ public class CoreControl
         ApplicationDescription applicationDescription = ApplicationDescriptionFactory.getInstance().create(application, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(application.getPrimaryKey(), EventTypes.MODIFY, applicationDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(application.getPrimaryKey(), EventTypes.MODIFY, applicationDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return applicationDescription;
     }
@@ -13738,14 +13733,14 @@ public class CoreControl
             applicationDescription = ApplicationDescriptionFactory.getInstance().create(application, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(application.getPrimaryKey(), EventTypes.MODIFY, applicationDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(application.getPrimaryKey(), EventTypes.MODIFY, applicationDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteApplicationDescription(ApplicationDescription applicationDescription, BasePK deletedBy) {
         applicationDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(applicationDescription.getApplicationPK(), EventTypes.MODIFY, applicationDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(applicationDescription.getApplicationPK(), EventTypes.MODIFY, applicationDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -13785,7 +13780,7 @@ public class CoreControl
         editor.setLastDetail(editorDetail);
         editor.store();
 
-        sendEventUsingNames(editor.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(editor.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return editor;
     }
@@ -13988,7 +13983,7 @@ public class CoreControl
             editor.setActiveDetail(editorDetail);
             editor.setLastDetail(editorDetail);
 
-            sendEventUsingNames(editorPK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(editorPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -14026,7 +14021,7 @@ public class CoreControl
             }
         }
 
-        sendEventUsingNames(editor.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(editor.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteEditor(Editor editor, BasePK deletedBy) {
@@ -14049,7 +14044,7 @@ public class CoreControl
         EditorDescription editorDescription = EditorDescriptionFactory.getInstance().create(editor, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(editor.getPrimaryKey(), EventTypes.MODIFY, editorDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(editor.getPrimaryKey(), EventTypes.MODIFY, editorDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return editorDescription;
     }
@@ -14171,14 +14166,14 @@ public class CoreControl
             editorDescription = EditorDescriptionFactory.getInstance().create(editor, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(editor.getPrimaryKey(), EventTypes.MODIFY, editorDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(editor.getPrimaryKey(), EventTypes.MODIFY, editorDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteEditorDescription(EditorDescription editorDescription, BasePK deletedBy) {
         editorDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(editorDescription.getEditorPK(), EventTypes.MODIFY, editorDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(editorDescription.getEditorPK(), EventTypes.MODIFY, editorDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -14217,7 +14212,7 @@ public class CoreControl
         applicationEditor.setLastDetail(applicationEditorDetail);
         applicationEditor.store();
 
-        sendEventUsingNames(applicationEditor.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(applicationEditor.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return applicationEditor;
     }
@@ -14461,7 +14456,7 @@ public class CoreControl
             applicationEditor.setActiveDetail(applicationEditorDetail);
             applicationEditor.setLastDetail(applicationEditorDetail);
 
-            sendEventUsingNames(applicationEditorPK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(applicationEditorPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -14500,7 +14495,7 @@ public class CoreControl
             }
         }
 
-        sendEventUsingNames(applicationEditor.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(applicationEditor.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteApplicationEditor(ApplicationEditor applicationEditor, BasePK deletedBy) {
@@ -14552,7 +14547,7 @@ public class CoreControl
         applicationEditorUse.setLastDetail(applicationEditorUseDetail);
         applicationEditorUse.store();
 
-        sendEventUsingNames(applicationEditorUse.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(applicationEditorUse.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return applicationEditorUse;
     }
@@ -14798,7 +14793,7 @@ public class CoreControl
             applicationEditorUse.setActiveDetail(applicationEditorUseDetail);
             applicationEditorUse.setLastDetail(applicationEditorUseDetail);
 
-            sendEventUsingNames(applicationEditorUsePK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(applicationEditorUsePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -14837,7 +14832,7 @@ public class CoreControl
             }
         }
 
-        sendEventUsingNames(applicationEditorUse.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(applicationEditorUse.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteApplicationEditorUse(ApplicationEditorUse applicationEditorUse, BasePK deletedBy) {
@@ -14869,7 +14864,7 @@ public class CoreControl
         ApplicationEditorUseDescription applicationEditorUseDescription = ApplicationEditorUseDescriptionFactory.getInstance().create(applicationEditorUse,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(applicationEditorUse.getPrimaryKey(), EventTypes.MODIFY, applicationEditorUseDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(applicationEditorUse.getPrimaryKey(), EventTypes.MODIFY, applicationEditorUseDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return applicationEditorUseDescription;
     }
@@ -14991,14 +14986,14 @@ public class CoreControl
             applicationEditorUseDescription = ApplicationEditorUseDescriptionFactory.getInstance().create(applicationEditorUse, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(applicationEditorUse.getPrimaryKey(), EventTypes.MODIFY, applicationEditorUseDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(applicationEditorUse.getPrimaryKey(), EventTypes.MODIFY, applicationEditorUseDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteApplicationEditorUseDescription(ApplicationEditorUseDescription applicationEditorUseDescription, BasePK deletedBy) {
         applicationEditorUseDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(applicationEditorUseDescription.getApplicationEditorUsePK(), EventTypes.MODIFY, applicationEditorUseDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(applicationEditorUseDescription.getApplicationEditorUsePK(), EventTypes.MODIFY, applicationEditorUseDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -15026,7 +15021,7 @@ public class CoreControl
         partyApplicationEditorUse.setLastDetail(partyApplicationEditorUseDetail);
         partyApplicationEditorUse.store();
 
-        sendEventUsingNames(partyApplicationEditorUse.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(partyApplicationEditorUse.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return partyApplicationEditorUse;
     }
@@ -15222,7 +15217,7 @@ public class CoreControl
             partyApplicationEditorUse.setActiveDetail(partyApplicationEditorUseDetail);
             partyApplicationEditorUse.setLastDetail(partyApplicationEditorUseDetail);
 
-            sendEventUsingNames(partyApplicationEditorUsePK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(partyApplicationEditorUsePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -15233,7 +15228,7 @@ public class CoreControl
         partyApplicationEditorUse.setActiveDetail(null);
         partyApplicationEditorUse.store();
 
-        sendEventUsingNames(partyApplicationEditorUse.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(partyApplicationEditorUse.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deletePartyApplicationEditorUses(List<PartyApplicationEditorUse> partyApplicationEditorUses, BasePK deletedBy) {
@@ -15281,7 +15276,7 @@ public class CoreControl
         color.setLastDetail(colorDetail);
         color.store();
 
-        sendEventUsingNames(color.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(color.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return color;
     }
@@ -15498,7 +15493,7 @@ public class CoreControl
             color.setActiveDetail(colorDetail);
             color.setLastDetail(colorDetail);
 
-            sendEventUsingNames(colorPK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(colorPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -15536,7 +15531,7 @@ public class CoreControl
             }
         }
 
-        sendEventUsingNames(color.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(color.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteColor(Color color, BasePK deletedBy) {
@@ -15559,7 +15554,7 @@ public class CoreControl
         ColorDescription colorDescription = ColorDescriptionFactory.getInstance().create(color, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(color.getPrimaryKey(), EventTypes.MODIFY, colorDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(color.getPrimaryKey(), EventTypes.MODIFY, colorDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return colorDescription;
     }
@@ -15681,14 +15676,14 @@ public class CoreControl
             colorDescription = ColorDescriptionFactory.getInstance().create(color, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(color.getPrimaryKey(), EventTypes.MODIFY, colorDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(color.getPrimaryKey(), EventTypes.MODIFY, colorDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteColorDescription(ColorDescription colorDescription, BasePK deletedBy) {
         colorDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(colorDescription.getColorPK(), EventTypes.MODIFY, colorDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(colorDescription.getColorPK(), EventTypes.MODIFY, colorDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -15727,7 +15722,7 @@ public class CoreControl
         fontStyle.setLastDetail(fontStyleDetail);
         fontStyle.store();
 
-        sendEventUsingNames(fontStyle.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(fontStyle.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return fontStyle;
     }
@@ -15941,7 +15936,7 @@ public class CoreControl
             fontStyle.setActiveDetail(fontStyleDetail);
             fontStyle.setLastDetail(fontStyleDetail);
 
-            sendEventUsingNames(fontStylePK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(fontStylePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -15979,7 +15974,7 @@ public class CoreControl
             }
         }
 
-        sendEventUsingNames(fontStyle.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(fontStyle.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteFontStyle(FontStyle fontStyle, BasePK deletedBy) {
@@ -16002,7 +15997,7 @@ public class CoreControl
         FontStyleDescription fontStyleDescription = FontStyleDescriptionFactory.getInstance().create(fontStyle, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(fontStyle.getPrimaryKey(), EventTypes.MODIFY, fontStyleDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(fontStyle.getPrimaryKey(), EventTypes.MODIFY, fontStyleDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return fontStyleDescription;
     }
@@ -16124,14 +16119,14 @@ public class CoreControl
             fontStyleDescription = FontStyleDescriptionFactory.getInstance().create(fontStyle, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(fontStyle.getPrimaryKey(), EventTypes.MODIFY, fontStyleDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(fontStyle.getPrimaryKey(), EventTypes.MODIFY, fontStyleDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteFontStyleDescription(FontStyleDescription fontStyleDescription, BasePK deletedBy) {
         fontStyleDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(fontStyleDescription.getFontStylePK(), EventTypes.MODIFY, fontStyleDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(fontStyleDescription.getFontStylePK(), EventTypes.MODIFY, fontStyleDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -16170,7 +16165,7 @@ public class CoreControl
         fontWeight.setLastDetail(fontWeightDetail);
         fontWeight.store();
 
-        sendEventUsingNames(fontWeight.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(fontWeight.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return fontWeight;
     }
@@ -16384,7 +16379,7 @@ public class CoreControl
             fontWeight.setActiveDetail(fontWeightDetail);
             fontWeight.setLastDetail(fontWeightDetail);
 
-            sendEventUsingNames(fontWeightPK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(fontWeightPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -16422,7 +16417,7 @@ public class CoreControl
             }
         }
 
-        sendEventUsingNames(fontWeight.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(fontWeight.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteFontWeight(FontWeight fontWeight, BasePK deletedBy) {
@@ -16445,7 +16440,7 @@ public class CoreControl
         FontWeightDescription fontWeightDescription = FontWeightDescriptionFactory.getInstance().create(fontWeight, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(fontWeight.getPrimaryKey(), EventTypes.MODIFY, fontWeightDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(fontWeight.getPrimaryKey(), EventTypes.MODIFY, fontWeightDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return fontWeightDescription;
     }
@@ -16567,14 +16562,14 @@ public class CoreControl
             fontWeightDescription = FontWeightDescriptionFactory.getInstance().create(fontWeight, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(fontWeight.getPrimaryKey(), EventTypes.MODIFY, fontWeightDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(fontWeight.getPrimaryKey(), EventTypes.MODIFY, fontWeightDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteFontWeightDescription(FontWeightDescription fontWeightDescription, BasePK deletedBy) {
         fontWeightDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(fontWeightDescription.getFontWeightPK(), EventTypes.MODIFY, fontWeightDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(fontWeightDescription.getFontWeightPK(), EventTypes.MODIFY, fontWeightDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -16613,7 +16608,7 @@ public class CoreControl
         textDecoration.setLastDetail(textDecorationDetail);
         textDecoration.store();
 
-        sendEventUsingNames(textDecoration.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(textDecoration.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return textDecoration;
     }
@@ -16827,7 +16822,7 @@ public class CoreControl
             textDecoration.setActiveDetail(textDecorationDetail);
             textDecoration.setLastDetail(textDecorationDetail);
 
-            sendEventUsingNames(textDecorationPK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(textDecorationPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -16865,7 +16860,7 @@ public class CoreControl
             }
         }
 
-        sendEventUsingNames(textDecoration.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(textDecoration.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteTextDecoration(TextDecoration textDecoration, BasePK deletedBy) {
@@ -16888,7 +16883,7 @@ public class CoreControl
         TextDecorationDescription textDecorationDescription = TextDecorationDescriptionFactory.getInstance().create(textDecoration, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(textDecoration.getPrimaryKey(), EventTypes.MODIFY, textDecorationDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(textDecoration.getPrimaryKey(), EventTypes.MODIFY, textDecorationDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return textDecorationDescription;
     }
@@ -17010,14 +17005,14 @@ public class CoreControl
             textDecorationDescription = TextDecorationDescriptionFactory.getInstance().create(textDecoration, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(textDecoration.getPrimaryKey(), EventTypes.MODIFY, textDecorationDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(textDecoration.getPrimaryKey(), EventTypes.MODIFY, textDecorationDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteTextDecorationDescription(TextDecorationDescription textDecorationDescription, BasePK deletedBy) {
         textDecorationDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(textDecorationDescription.getTextDecorationPK(), EventTypes.MODIFY, textDecorationDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(textDecorationDescription.getTextDecorationPK(), EventTypes.MODIFY, textDecorationDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -17056,7 +17051,7 @@ public class CoreControl
         textTransformation.setLastDetail(textTransformationDetail);
         textTransformation.store();
 
-        sendEventUsingNames(textTransformation.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(textTransformation.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return textTransformation;
     }
@@ -17270,7 +17265,7 @@ public class CoreControl
             textTransformation.setActiveDetail(textTransformationDetail);
             textTransformation.setLastDetail(textTransformationDetail);
 
-            sendEventUsingNames(textTransformationPK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(textTransformationPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -17308,7 +17303,7 @@ public class CoreControl
             }
         }
 
-        sendEventUsingNames(textTransformation.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(textTransformation.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteTextTransformation(TextTransformation textTransformation, BasePK deletedBy) {
@@ -17331,7 +17326,7 @@ public class CoreControl
         TextTransformationDescription textTransformationDescription = TextTransformationDescriptionFactory.getInstance().create(textTransformation, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(textTransformation.getPrimaryKey(), EventTypes.MODIFY, textTransformationDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(textTransformation.getPrimaryKey(), EventTypes.MODIFY, textTransformationDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return textTransformationDescription;
     }
@@ -17453,14 +17448,14 @@ public class CoreControl
             textTransformationDescription = TextTransformationDescriptionFactory.getInstance().create(textTransformation, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(textTransformation.getPrimaryKey(), EventTypes.MODIFY, textTransformationDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(textTransformation.getPrimaryKey(), EventTypes.MODIFY, textTransformationDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteTextTransformationDescription(TextTransformationDescription textTransformationDescription, BasePK deletedBy) {
         textTransformationDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(textTransformationDescription.getTextTransformationPK(), EventTypes.MODIFY, textTransformationDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(textTransformationDescription.getTextTransformationPK(), EventTypes.MODIFY, textTransformationDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -17500,7 +17495,7 @@ public class CoreControl
         appearance.setLastDetail(appearanceDetail);
         appearance.store();
 
-        sendEventUsingNames(appearance.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(appearance.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return appearance;
     }
@@ -17847,7 +17842,7 @@ public class CoreControl
             appearance.setActiveDetail(appearanceDetail);
             appearance.setLastDetail(appearanceDetail);
 
-            sendEventUsingNames(appearancePK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(appearancePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -17886,7 +17881,7 @@ public class CoreControl
             }
         }
 
-        sendEventUsingNames(appearance.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(appearance.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteAppearance(Appearance appearance, BasePK deletedBy) {
@@ -17930,7 +17925,7 @@ public class CoreControl
         AppearanceDescription appearanceDescription = AppearanceDescriptionFactory.getInstance().create(appearance, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(appearance.getPrimaryKey(), EventTypes.MODIFY, appearanceDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(appearance.getPrimaryKey(), EventTypes.MODIFY, appearanceDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return appearanceDescription;
     }
@@ -18052,14 +18047,14 @@ public class CoreControl
             appearanceDescription = AppearanceDescriptionFactory.getInstance().create(appearance, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(appearance.getPrimaryKey(), EventTypes.MODIFY, appearanceDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(appearance.getPrimaryKey(), EventTypes.MODIFY, appearanceDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteAppearanceDescription(AppearanceDescription appearanceDescription, BasePK deletedBy) {
         appearanceDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(appearanceDescription.getAppearancePK(), EventTypes.MODIFY, appearanceDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(appearanceDescription.getAppearancePK(), EventTypes.MODIFY, appearanceDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -18079,7 +18074,7 @@ public class CoreControl
         AppearanceTextDecoration appearanceTextDecoration = AppearanceTextDecorationFactory.getInstance().create(appearance, textDecoration,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(appearance.getPrimaryKey(), EventTypes.MODIFY, appearanceTextDecoration.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(appearance.getPrimaryKey(), EventTypes.MODIFY, appearanceTextDecoration.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return appearanceTextDecoration;
     }
@@ -18212,7 +18207,7 @@ public class CoreControl
     public void deleteAppearanceTextDecoration(AppearanceTextDecoration appearanceTextDecoration, BasePK deletedBy) {
         appearanceTextDecoration.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(appearanceTextDecoration.getAppearancePK(), EventTypes.MODIFY, appearanceTextDecoration.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(appearanceTextDecoration.getAppearancePK(), EventTypes.MODIFY, appearanceTextDecoration.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     public void deleteAppearanceTextDecorationsByAppearance(List<AppearanceTextDecoration> appearanceTextDecorations, BasePK deletedBy) {
@@ -18237,7 +18232,7 @@ public class CoreControl
         AppearanceTextTransformation appearanceTextTransformation = AppearanceTextTransformationFactory.getInstance().create(appearance, textTransformation,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(appearance.getPrimaryKey(), EventTypes.MODIFY, appearanceTextTransformation.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(appearance.getPrimaryKey(), EventTypes.MODIFY, appearanceTextTransformation.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return appearanceTextTransformation;
     }
@@ -18370,7 +18365,7 @@ public class CoreControl
     public void deleteAppearanceTextTransformation(AppearanceTextTransformation appearanceTextTransformation, BasePK deletedBy) {
         appearanceTextTransformation.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(appearanceTextTransformation.getAppearancePK(), EventTypes.MODIFY, appearanceTextTransformation.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(appearanceTextTransformation.getAppearancePK(), EventTypes.MODIFY, appearanceTextTransformation.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     public void deleteAppearanceTextTransformationsByAppearance(List<AppearanceTextTransformation> appearanceTextTransformations, BasePK deletedBy) {
@@ -18395,7 +18390,7 @@ public class CoreControl
         EntityAppearance entityAppearance = EntityAppearanceFactory.getInstance().create(entityInstance, appearance, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAppearance.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(entityInstance, EventTypes.MODIFY, entityAppearance.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return entityAppearance;
     }
@@ -18501,14 +18496,14 @@ public class CoreControl
 
             entityAppearance = EntityAppearanceFactory.getInstance().create(entityInstance.getPrimaryKey(), appearancePK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(entityInstance, EventTypes.MODIFY, entityAppearance.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(entityInstance, EventTypes.MODIFY, entityAppearance.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteEntityAppearance(EntityAppearance entityAppearance, BasePK deletedBy) {
         entityAppearance.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(entityAppearance.getEntityInstance(), EventTypes.MODIFY, entityAppearance.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(entityAppearance.getEntityInstance(), EventTypes.MODIFY, entityAppearance.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     public void deleteEntityAppearancesByAppearance(Appearance appearance, BasePK deletedBy) {

@@ -78,7 +78,7 @@ public class GetRatingTypeListItemCommand
                     if(ratingTypeListItem != null) {
                         result.setRatingTypeListItem(ratingControl.getRatingTypeListItemTransfer(getUserVisit(), ratingTypeListItem));
 
-                        sendEventUsingNames(ratingTypeListItem.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+                        sendEvent(ratingTypeListItem.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.UnknownRatingTypeListItemName.name(), ratingTypeListItemName);
                     }

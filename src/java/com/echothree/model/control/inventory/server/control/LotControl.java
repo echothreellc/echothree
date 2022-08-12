@@ -64,7 +64,7 @@ public class LotControl
         lot.setLastDetail(lotDetail);
         lot.store();
 
-        sendEventUsingNames(lot.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(lot.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return lot;
     }
@@ -335,7 +335,7 @@ public class LotControl
             lot.setActiveDetail(lotDetail);
             lot.setLastDetail(lotDetail);
 
-            sendEventUsingNames(lotPK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(lotPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -345,7 +345,7 @@ public class LotControl
         lotDetail.store();
         lot.setActiveDetail(null);
 
-        sendEventUsingNames(lot.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(lot.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteLots(final Collection<Lot> lots, final BasePK deletedBy) {

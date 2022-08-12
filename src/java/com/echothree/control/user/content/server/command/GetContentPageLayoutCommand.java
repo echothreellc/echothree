@@ -59,7 +59,7 @@ public class GetContentPageLayoutCommand
         ContentPageLayout contentPageLayout = ContentPageLayoutLogic.getInstance().getContentPageLayoutByUniversalSpec(this, form, true);
 
         if(contentPageLayout != null) {
-            sendEventUsingNames(contentPageLayout.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+            sendEvent(contentPageLayout.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return contentPageLayout;

@@ -72,7 +72,7 @@ public class UseNameElementControl
         useNameElement.setLastDetail(useNameElementDetail);
         useNameElement.store();
 
-        sendEventUsingNames(useNameElement.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(useNameElement.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return useNameElement;
     }
@@ -213,7 +213,7 @@ public class UseNameElementControl
             useNameElement.setActiveDetail(useNameElementDetail);
             useNameElement.setLastDetail(useNameElementDetail);
 
-            sendEventUsingNames(useNameElementPK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(useNameElementPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -225,7 +225,7 @@ public class UseNameElementControl
         useNameElement.setActiveDetail(null);
         useNameElement.store();
 
-        sendEventUsingNames(useNameElement.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(useNameElement.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     // --------------------------------------------------------------------------------
@@ -237,7 +237,7 @@ public class UseNameElementControl
         UseNameElementDescription useNameElementDescription = UseNameElementDescriptionFactory.getInstance().create(session,
                 useNameElement, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(useNameElement.getPrimaryKey(), EventTypes.MODIFY,
+        sendEvent(useNameElement.getPrimaryKey(), EventTypes.MODIFY,
                 useNameElementDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return useNameElementDescription;
@@ -381,7 +381,7 @@ public class UseNameElementControl
             useNameElementDescription = UseNameElementDescriptionFactory.getInstance().create(useNameElement,
                     language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(useNameElement.getPrimaryKey(), EventTypes.MODIFY,
+            sendEvent(useNameElement.getPrimaryKey(), EventTypes.MODIFY,
                     useNameElementDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
@@ -389,7 +389,7 @@ public class UseNameElementControl
     public void deleteUseNameElementDescription(UseNameElementDescription useNameElementDescription, BasePK deletedBy) {
         useNameElementDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(useNameElementDescription.getUseNameElementPK(), EventTypes.MODIFY,
+        sendEvent(useNameElementDescription.getUseNameElementPK(), EventTypes.MODIFY,
                 useNameElementDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 

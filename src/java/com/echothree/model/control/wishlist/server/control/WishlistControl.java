@@ -139,7 +139,7 @@ public class WishlistControl
         wishlistType.setLastDetail(wishlistTypeDetail);
         wishlistType.store();
         
-        sendEventUsingNames(wishlistType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(wishlistType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return wishlistType;
     }
@@ -335,7 +335,7 @@ public class WishlistControl
             wishlistType.setActiveDetail(wishlistTypeDetail);
             wishlistType.setLastDetail(wishlistTypeDetail);
             
-            sendEventUsingNames(wishlistTypePK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(wishlistTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -373,7 +373,7 @@ public class WishlistControl
             }
         }
         
-        sendEventUsingNames(wishlistType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(wishlistType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -386,7 +386,7 @@ public class WishlistControl
                 language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(wishlistType.getPrimaryKey(), EventTypes.MODIFY, wishlistTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(wishlistType.getPrimaryKey(), EventTypes.MODIFY, wishlistTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return wishlistTypeDescription;
     }
@@ -526,14 +526,14 @@ public class WishlistControl
             wishlistTypeDescription = WishlistTypeDescriptionFactory.getInstance().create(wishlistType, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(wishlistType.getPrimaryKey(), EventTypes.MODIFY, wishlistTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(wishlistType.getPrimaryKey(), EventTypes.MODIFY, wishlistTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteWishlistTypeDescription(WishlistTypeDescription wishlistTypeDescription, BasePK deletedBy) {
         wishlistTypeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(wishlistTypeDescription.getWishlistTypePK(), EventTypes.MODIFY, wishlistTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(wishlistTypeDescription.getWishlistTypePK(), EventTypes.MODIFY, wishlistTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteWishlistTypeDescriptionsByWishlistType(WishlistType wishlistType, BasePK deletedBy) {
@@ -574,7 +574,7 @@ public class WishlistControl
         wishlistTypePriority.setLastDetail(wishlistTypePriorityDetail);
         wishlistTypePriority.store();
         
-        sendEventUsingNames(wishlistTypePriority.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(wishlistTypePriority.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return wishlistTypePriority;
     }
@@ -797,7 +797,7 @@ public class WishlistControl
             wishlistTypePriority.setActiveDetail(wishlistTypePriorityDetail);
             wishlistTypePriority.setLastDetail(wishlistTypePriorityDetail);
             
-            sendEventUsingNames(wishlistTypePriorityPK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(wishlistTypePriorityPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -832,7 +832,7 @@ public class WishlistControl
             }
         }
         
-        sendEventUsingNames(wishlistTypePriority.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(wishlistTypePriority.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteWishlistTypePrioritiesByWishlistType(WishlistType wishlistType, BasePK deletedBy) {
@@ -852,7 +852,7 @@ public class WishlistControl
         WishlistTypePriorityDescription wishlistTypePriorityDescription = WishlistTypePriorityDescriptionFactory.getInstance().create(session,
                 wishlistTypePriority, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(wishlistTypePriority.getPrimaryKey(), EventTypes.MODIFY, wishlistTypePriorityDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(wishlistTypePriority.getPrimaryKey(), EventTypes.MODIFY, wishlistTypePriorityDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return wishlistTypePriorityDescription;
     }
@@ -992,14 +992,14 @@ public class WishlistControl
             wishlistTypePriorityDescription = WishlistTypePriorityDescriptionFactory.getInstance().create(wishlistTypePriority, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(wishlistTypePriority.getPrimaryKey(), EventTypes.MODIFY, wishlistTypePriorityDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(wishlistTypePriority.getPrimaryKey(), EventTypes.MODIFY, wishlistTypePriorityDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteWishlistTypePriorityDescription(WishlistTypePriorityDescription wishlistTypePriorityDescription, BasePK deletedBy) {
         wishlistTypePriorityDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(wishlistTypePriorityDescription.getWishlistTypePriorityPK(), EventTypes.MODIFY, wishlistTypePriorityDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(wishlistTypePriorityDescription.getWishlistTypePriorityPK(), EventTypes.MODIFY, wishlistTypePriorityDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteWishlistTypePriorityDescriptionsByWishlistTypePriority(WishlistTypePriority wishlistTypePriority, BasePK deletedBy) {
@@ -1018,7 +1018,7 @@ public class WishlistControl
         Wishlist wishlist = WishlistFactory.getInstance().create(order, offerUse, wishlistType,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(order.getPrimaryKey(), EventTypes.MODIFY, wishlist.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(order.getPrimaryKey(), EventTypes.MODIFY, wishlist.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return wishlist;
     }
@@ -1140,14 +1140,14 @@ public class WishlistControl
             wishlist = WishlistFactory.getInstance().create(orderPK, offerUsePK, wishlistTypePK,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(orderPK, EventTypes.MODIFY, wishlist.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(orderPK, EventTypes.MODIFY, wishlist.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteWishlist(Wishlist wishlist, BasePK deletedBy) {
         wishlist.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(wishlist.getOrderPK(), EventTypes.MODIFY, wishlist.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(wishlist.getOrderPK(), EventTypes.MODIFY, wishlist.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteWishlistByOrder(Order order, BasePK deletedBy) {
@@ -1163,7 +1163,7 @@ public class WishlistControl
         WishlistLine wishlistLine = WishlistLineFactory.getInstance().create(orderLine, offerUse,
                 wishlistTypePriority, associateReferral, comment, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(orderLine.getPrimaryKey(), EventTypes.MODIFY, wishlistLine.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(orderLine.getPrimaryKey(), EventTypes.MODIFY, wishlistLine.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return wishlistLine;
     }
@@ -1297,14 +1297,14 @@ public class WishlistControl
             wishlistLine = WishlistLineFactory.getInstance().create(orderLinePK, offerUsePK,
                     wishlistTypePriorityPK, associateReferralPK, comment, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(orderLinePK, EventTypes.MODIFY, wishlistLine.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(orderLinePK, EventTypes.MODIFY, wishlistLine.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteWishlistLine(WishlistLine wishlistLine, BasePK deletedBy) {
         wishlistLine.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(wishlistLine.getOrderLinePK(), EventTypes.MODIFY, wishlistLine.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(wishlistLine.getOrderLinePK(), EventTypes.MODIFY, wishlistLine.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteWishlistLineByOrderLine(OrderLine orderLine, BasePK deletedBy) {

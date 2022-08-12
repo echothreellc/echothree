@@ -83,7 +83,7 @@ public class UseTypeControl
         useType.setLastDetail(useTypeDetail);
         useType.store();
         
-        sendEventUsingNames(useType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(useType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return useType;
     }
@@ -305,7 +305,7 @@ public class UseTypeControl
             useType.setActiveDetail(useTypeDetail);
             useType.setLastDetail(useTypeDetail);
             
-            sendEventUsingNames(useTypePK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(useTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -341,7 +341,7 @@ public class UseTypeControl
             }
         }
         
-        sendEventUsingNames(useType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(useType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -352,7 +352,7 @@ public class UseTypeControl
         UseTypeDescription useTypeDescription = UseTypeDescriptionFactory.getInstance().create(useType, language,
                 description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(useType.getPrimaryKey(), EventTypes.MODIFY, useTypeDescription.getPrimaryKey(),
+        sendEvent(useType.getPrimaryKey(), EventTypes.MODIFY, useTypeDescription.getPrimaryKey(),
                 EventTypes.CREATE, createdBy);
         
         return useTypeDescription;
@@ -491,7 +491,7 @@ public class UseTypeControl
             useTypeDescription = UseTypeDescriptionFactory.getInstance().create(useType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(useType.getPrimaryKey(), EventTypes.MODIFY, useTypeDescription.getPrimaryKey(),
+            sendEvent(useType.getPrimaryKey(), EventTypes.MODIFY, useTypeDescription.getPrimaryKey(),
                     EventTypes.MODIFY, updatedBy);
         }
     }
@@ -499,7 +499,7 @@ public class UseTypeControl
     public void deleteUseTypeDescription(UseTypeDescription useTypeDescription, BasePK deletedBy) {
         useTypeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(useTypeDescription.getUseTypePK(), EventTypes.MODIFY,
+        sendEvent(useTypeDescription.getUseTypePK(), EventTypes.MODIFY,
                 useTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     

@@ -63,7 +63,7 @@ public class GetItemUnitCustomerTypeLimitsCommand
             result.setItem(itemControl.getItemTransfer(userVisit, item));
             result.setItemUnitCustomerTypeLimits(itemControl.getItemUnitCustomerTypeLimitTransfersByItem(userVisit, item));
             
-            sendEventUsingNames(item.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+            sendEvent(item.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownItemName.name(), itemName);
         }

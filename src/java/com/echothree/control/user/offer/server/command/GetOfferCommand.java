@@ -77,7 +77,7 @@ public class GetOfferCommand
         Offer offer = OfferLogic.getInstance().getOfferByUniversalSpec(this, form, true);
 
         if(offer != null) {
-            sendEventUsingNames(offer.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+            sendEvent(offer.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return offer;

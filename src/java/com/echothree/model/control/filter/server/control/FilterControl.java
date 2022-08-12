@@ -209,7 +209,7 @@ public class FilterControl
         filterKind.setLastDetail(filterKindDetail);
         filterKind.store();
 
-        sendEventUsingNames(filterKind.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(filterKind.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return filterKind;
     }
@@ -427,7 +427,7 @@ public class FilterControl
         filterKind.setLastDetail(filterKindDetail);
         filterKind.store();
 
-        sendEventUsingNames(filterKindPK, EventTypes.MODIFY, null, null, updatedBy);
+        sendEvent(filterKindPK, EventTypes.MODIFY, null, null, updatedBy);
     }
 
     public void updateFilterKindFromValue(FilterKindDetailValue filterKindDetailValue, BasePK updatedBy) {
@@ -459,7 +459,7 @@ public class FilterControl
             }
         }
 
-        sendEventUsingNames(filterKind.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(filterKind.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     // --------------------------------------------------------------------------------
@@ -471,7 +471,7 @@ public class FilterControl
         FilterKindDescription filterKindDescription = FilterKindDescriptionFactory.getInstance().create(filterKind,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(filterKind.getPrimaryKey(), EventTypes.MODIFY, filterKindDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(filterKind.getPrimaryKey(), EventTypes.MODIFY, filterKindDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return filterKindDescription;
     }
@@ -592,14 +592,14 @@ public class FilterControl
             filterKindDescription = FilterKindDescriptionFactory.getInstance().create(filterKind, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(filterKind.getPrimaryKey(), EventTypes.MODIFY, filterKindDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(filterKind.getPrimaryKey(), EventTypes.MODIFY, filterKindDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteFilterKindDescription(FilterKindDescription filterKindDescription, BasePK deletedBy) {
         filterKindDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(filterKindDescription.getFilterKindPK(), EventTypes.MODIFY, filterKindDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(filterKindDescription.getFilterKindPK(), EventTypes.MODIFY, filterKindDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -639,7 +639,7 @@ public class FilterControl
         filterType.setLastDetail(filterTypeDetail);
         filterType.store();
 
-        sendEventUsingNames(filterType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(filterType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return filterType;
     }
@@ -867,7 +867,7 @@ public class FilterControl
             filterType.setActiveDetail(filterTypeDetail);
             filterType.setLastDetail(filterTypeDetail);
 
-            sendEventUsingNames(filterTypePK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(filterTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -901,7 +901,7 @@ public class FilterControl
             }
         }
 
-        sendEventUsingNames(filterType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(filterType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteFilterTypesByFilterKind(FilterKind filterKind, BasePK deletedBy) {
@@ -921,7 +921,7 @@ public class FilterControl
         FilterTypeDescription filterTypeDescription = FilterTypeDescriptionFactory.getInstance().create(filterType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(filterType.getPrimaryKey(), EventTypes.MODIFY, filterTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(filterType.getPrimaryKey(), EventTypes.MODIFY, filterTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return filterTypeDescription;
     }
@@ -1042,14 +1042,14 @@ public class FilterControl
             filterTypeDescription = FilterTypeDescriptionFactory.getInstance().create(filterType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(filterType.getPrimaryKey(), EventTypes.MODIFY, filterTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(filterType.getPrimaryKey(), EventTypes.MODIFY, filterTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteFilterTypeDescription(FilterTypeDescription filterTypeDescription, BasePK deletedBy) {
         filterTypeDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(filterTypeDescription.getFilterTypePK(), EventTypes.MODIFY, filterTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(filterTypeDescription.getFilterTypePK(), EventTypes.MODIFY, filterTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -1367,7 +1367,7 @@ public class FilterControl
         filterAdjustment.setLastDetail(filterAdjustmentDetail);
         filterAdjustment.store();
         
-        sendEventUsingNames(filterAdjustment.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(filterAdjustment.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return filterAdjustment;
     }
@@ -1618,7 +1618,7 @@ public class FilterControl
             filterAdjustment.setActiveDetail(filterAdjustmentDetail);
             filterAdjustment.setLastDetail(filterAdjustmentDetail);
             
-            sendEventUsingNames(filterAdjustmentPK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(filterAdjustmentPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -1655,7 +1655,7 @@ public class FilterControl
             }
         }
         
-        sendEventUsingNames(filterAdjustment.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(filterAdjustment.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -1667,7 +1667,7 @@ public class FilterControl
         FilterAdjustmentAmount filterAdjustmentAmount = FilterAdjustmentAmountFactory.getInstance().create(session,
                 filterAdjustment, unitOfMeasureType, currency, amount, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(filterAdjustment.getPrimaryKey(), EventTypes.MODIFY,
+        sendEvent(filterAdjustment.getPrimaryKey(), EventTypes.MODIFY,
                 filterAdjustmentAmount.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return filterAdjustmentAmount;
@@ -1812,7 +1812,7 @@ public class FilterControl
             filterAdjustmentAmount = FilterAdjustmentAmountFactory.getInstance().create(filterAdjustmentPK,
                     unitOfMeasureTypePK, currencyPK, amount, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(filterAdjustmentPK, EventTypes.MODIFY,
+            sendEvent(filterAdjustmentPK, EventTypes.MODIFY,
                     filterAdjustmentAmount.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
@@ -1820,7 +1820,7 @@ public class FilterControl
     public void deleteFilterAdjustmentAmount(FilterAdjustmentAmount filterAdjustmentAmount, BasePK deletedBy) {
         filterAdjustmentAmount.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(filterAdjustmentAmount.getFilterAdjustment().getPrimaryKey(), EventTypes.MODIFY,
+        sendEvent(filterAdjustmentAmount.getFilterAdjustment().getPrimaryKey(), EventTypes.MODIFY,
                 filterAdjustmentAmount.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
@@ -1841,7 +1841,7 @@ public class FilterControl
         FilterAdjustmentFixedAmount filterAdjustmentFixedAmount = FilterAdjustmentFixedAmountFactory.getInstance().create(session,
                 filterAdjustment, unitOfMeasureType, currency, unitAmount, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(filterAdjustment.getPrimaryKey(), EventTypes.MODIFY,
+        sendEvent(filterAdjustment.getPrimaryKey(), EventTypes.MODIFY,
                 filterAdjustmentFixedAmount.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return filterAdjustmentFixedAmount;
@@ -1989,7 +1989,7 @@ public class FilterControl
             filterAdjustmentFixedAmount = FilterAdjustmentFixedAmountFactory.getInstance().create(filterAdjustmentPK,
                     unitOfMeasureTypePK, currencyPK, unitAmount, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(filterAdjustmentPK, EventTypes.MODIFY,
+            sendEvent(filterAdjustmentPK, EventTypes.MODIFY,
                     filterAdjustmentFixedAmount.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
@@ -1997,7 +1997,7 @@ public class FilterControl
     public void deleteFilterAdjustmentFixedAmount(FilterAdjustmentFixedAmount filterAdjustmentFixedAmount, BasePK deletedBy) {
         filterAdjustmentFixedAmount.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(filterAdjustmentFixedAmount.getFilterAdjustment().getPrimaryKey(),
+        sendEvent(filterAdjustmentFixedAmount.getFilterAdjustment().getPrimaryKey(),
                 EventTypes.MODIFY, filterAdjustmentFixedAmount.getPrimaryKey(), EventTypes.DELETE,
                 deletedBy);
     }
@@ -2019,7 +2019,7 @@ public class FilterControl
         FilterAdjustmentPercent filterAdjustmentPercent = FilterAdjustmentPercentFactory.getInstance().create(session,
                 filterAdjustment, unitOfMeasureType, currency, percent, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(filterAdjustment.getPrimaryKey(), EventTypes.MODIFY,
+        sendEvent(filterAdjustment.getPrimaryKey(), EventTypes.MODIFY,
                 filterAdjustmentPercent.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return filterAdjustmentPercent;
@@ -2166,7 +2166,7 @@ public class FilterControl
             filterAdjustmentPercent = FilterAdjustmentPercentFactory.getInstance().create(filterAdjustmentPK,
                     unitOfMeasureTypePK, currencyPK, percent, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(filterAdjustmentPK, EventTypes.MODIFY,
+            sendEvent(filterAdjustmentPK, EventTypes.MODIFY,
                     filterAdjustmentPercent.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
@@ -2174,7 +2174,7 @@ public class FilterControl
     public void deleteFilterAdjustmentPercent(FilterAdjustmentPercent filterAdjustmentPercent, BasePK deletedBy) {
         filterAdjustmentPercent.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(filterAdjustmentPercent.getFilterAdjustment().getPrimaryKey(), EventTypes.MODIFY,
+        sendEvent(filterAdjustmentPercent.getFilterAdjustment().getPrimaryKey(), EventTypes.MODIFY,
                 filterAdjustmentPercent.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
@@ -2196,7 +2196,7 @@ public class FilterControl
         FilterAdjustmentDescription filterAdjustmentDescription = FilterAdjustmentDescriptionFactory.getInstance().create(session,
                 filterAdjustment, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(filterAdjustment.getPrimaryKey(), EventTypes.MODIFY,
+        sendEvent(filterAdjustment.getPrimaryKey(), EventTypes.MODIFY,
                 filterAdjustmentDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return filterAdjustmentDescription;
@@ -2347,7 +2347,7 @@ public class FilterControl
             filterAdjustmentDescription = FilterAdjustmentDescriptionFactory.getInstance().create(filterAdjustment,
                     language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(filterAdjustment.getPrimaryKey(), EventTypes.MODIFY,
+            sendEvent(filterAdjustment.getPrimaryKey(), EventTypes.MODIFY,
                     filterAdjustmentDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
@@ -2355,7 +2355,7 @@ public class FilterControl
     public void deleteFilterAdjustmentDescription(FilterAdjustmentDescription filterAdjustmentDescription, BasePK deletedBy) {
         filterAdjustmentDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(filterAdjustmentDescription.getFilterAdjustmentPK(), EventTypes.MODIFY,
+        sendEvent(filterAdjustmentDescription.getFilterAdjustmentPK(), EventTypes.MODIFY,
                 filterAdjustmentDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
@@ -2395,7 +2395,7 @@ public class FilterControl
         filter.setLastDetail(filterDetail);
         filter.store();
         
-        sendEventUsingNames(filter.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(filter.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return filter;
     }
@@ -2659,7 +2659,7 @@ public class FilterControl
             filter.setActiveDetail(filterDetail);
             filter.setLastDetail(filterDetail);
             
-            sendEventUsingNames(filterPK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(filterPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -2694,7 +2694,7 @@ public class FilterControl
             }
         }
         
-        sendEventUsingNames(filter.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(filter.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -2704,7 +2704,7 @@ public class FilterControl
     public FilterDescription createFilterDescription(Filter filter, Language language, String description, BasePK createdBy) {
         FilterDescription filterDescription = FilterDescriptionFactory.getInstance().create(filter, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(filter.getPrimaryKey(), EventTypes.MODIFY, filterDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(filter.getPrimaryKey(), EventTypes.MODIFY, filterDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return filterDescription;
     }
@@ -2843,14 +2843,14 @@ public class FilterControl
             
             filterDescription = FilterDescriptionFactory.getInstance().create(filter, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(filter.getPrimaryKey(), EventTypes.MODIFY, filterDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(filter.getPrimaryKey(), EventTypes.MODIFY, filterDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteFilterDescription(FilterDescription filterDescription, BasePK deletedBy) {
         filterDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(filterDescription.getFilterPK(), EventTypes.MODIFY, filterDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(filterDescription.getFilterPK(), EventTypes.MODIFY, filterDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -2877,7 +2877,7 @@ public class FilterControl
         filterStep.setLastDetail(filterStepDetail);
         filterStep.store();
         
-        sendEventUsingNames(filterStep.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(filterStep.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return filterStep;
     }
@@ -3073,7 +3073,7 @@ public class FilterControl
             filterStep.setActiveDetail(filterStepDetail);
             filterStep.setLastDetail(filterStepDetail);
             
-            sendEventUsingNames(filterStepPK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(filterStepPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -3088,7 +3088,7 @@ public class FilterControl
         filterStep.setActiveDetail(null);
         filterStep.store();
         
-        sendEventUsingNames(filterStep.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(filterStep.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteFilterStepsByFilter(Filter filter, BasePK deletedBy) {
@@ -3108,7 +3108,7 @@ public class FilterControl
                 description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(filterStep.getPrimaryKey(), EventTypes.MODIFY,
+        sendEvent(filterStep.getPrimaryKey(), EventTypes.MODIFY,
                 filterStepDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return filterStepDescription;
@@ -3250,7 +3250,7 @@ public class FilterControl
             filterStepDescription = FilterStepDescriptionFactory.getInstance().create(filterStep, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(filterStep.getPrimaryKey(), EventTypes.MODIFY, filterStepDescription.getPrimaryKey(),
+            sendEvent(filterStep.getPrimaryKey(), EventTypes.MODIFY, filterStepDescription.getPrimaryKey(),
                     EventTypes.MODIFY, updatedBy);
         }
     }
@@ -3258,7 +3258,7 @@ public class FilterControl
     public void deleteFilterStepDescription(FilterStepDescription filterStepDescription, BasePK deletedBy) {
         filterStepDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(filterStepDescription.getFilterStep().getPrimaryKey(), EventTypes.MODIFY,
+        sendEvent(filterStepDescription.getFilterStep().getPrimaryKey(), EventTypes.MODIFY,
                 filterStepDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
@@ -3278,7 +3278,7 @@ public class FilterControl
     public FilterEntranceStep createFilterEntranceStep(Filter filter, FilterStep filterStep, BasePK createdBy) {
         FilterEntranceStep filterEntranceStep = FilterEntranceStepFactory.getInstance().create(filter, filterStep, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(filter.getPrimaryKey(), EventTypes.MODIFY, filterEntranceStep.getPrimaryKey(),
+        sendEvent(filter.getPrimaryKey(), EventTypes.MODIFY, filterEntranceStep.getPrimaryKey(),
                 EventTypes.CREATE, createdBy);
         
         return filterEntranceStep;
@@ -3431,7 +3431,7 @@ public class FilterControl
     public void deleteFilterEntranceStep(FilterEntranceStep filterEntranceStep, BasePK deletedBy) {
         filterEntranceStep.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(filterEntranceStep.getFilter().getPrimaryKey(), EventTypes.MODIFY,
+        sendEvent(filterEntranceStep.getFilter().getPrimaryKey(), EventTypes.MODIFY,
                 filterEntranceStep.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
@@ -3451,7 +3451,7 @@ public class FilterControl
         FilterStepDestination filterStepDestination = FilterStepDestinationFactory.getInstance().create(fromFilterStep,
                 toFilterStep, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(fromFilterStep.getLastDetail().getFilter().getPrimaryKey(), EventTypes.MODIFY,
+        sendEvent(fromFilterStep.getLastDetail().getFilter().getPrimaryKey(), EventTypes.MODIFY,
                 filterStepDestination.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return filterStepDestination;
@@ -3628,7 +3628,7 @@ public class FilterControl
         filterStepDestination.setThruTime(session.START_TIME_LONG);
         filterStepDestination.store();
         
-        sendEventUsingNames(filterStepDestination.getFromFilterStep().getLastDetail().getFilter().getPrimaryKey(),
+        sendEvent(filterStepDestination.getFromFilterStep().getLastDetail().getFilter().getPrimaryKey(),
                 EventTypes.MODIFY, filterStepDestination.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
@@ -3669,7 +3669,7 @@ public class FilterControl
         filterStepElement.setLastDetail(filterStepElementDetail);
         filterStepElement.store();
         
-        sendEventUsingNames(filterStep.getLastDetail().getFilter().getPrimaryKey(), EventTypes.MODIFY,
+        sendEvent(filterStep.getLastDetail().getFilter().getPrimaryKey(), EventTypes.MODIFY,
                 filterStepElement.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return filterStepElement;
@@ -3819,7 +3819,7 @@ public class FilterControl
             filterStepElement.setActiveDetail(filterStepElementDetail);
             filterStepElement.setLastDetail(filterStepElementDetail);
             
-            sendEventUsingNames(filterStep.getLastDetail().getFilter().getPrimaryKey(), EventTypes.MODIFY,
+            sendEvent(filterStep.getLastDetail().getFilter().getPrimaryKey(), EventTypes.MODIFY,
                     filterStepElementPK, EventTypes.DELETE, updatedBy);
         }
     }
@@ -3832,7 +3832,7 @@ public class FilterControl
         filterStepElement.setActiveDetail(null);
         filterStepElement.store();
         
-        sendEventUsingNames(filterStepElementDetail.getFilterStep().getLastDetail().getFilter().getPrimaryKey(),
+        sendEvent(filterStepElementDetail.getFilterStep().getLastDetail().getFilter().getPrimaryKey(),
                 EventTypes.MODIFY, filterStepElement.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
@@ -3853,7 +3853,7 @@ public class FilterControl
         FilterStepElementDescription filterStepElementDescription = FilterStepElementDescriptionFactory.getInstance().create(session,
                 filterStepElement, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(filterStepElement.getLastDetail().getFilterStep().getLastDetail().getFilterPK(),
+        sendEvent(filterStepElement.getLastDetail().getFilterStep().getLastDetail().getFilterPK(),
                 EventTypes.MODIFY, filterStepElementDescription.getPrimaryKey(), EventTypes.CREATE,
                 createdBy);
         
@@ -3996,14 +3996,14 @@ public class FilterControl
             filterStepElementDescription = FilterStepElementDescriptionFactory.getInstance().create(filterStepElement,
                     language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(filterStepElement.getLastDetail().getFilterStep().getLastDetail().getFilterPK(), EventTypes.MODIFY, filterStepElementDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(filterStepElement.getLastDetail().getFilterStep().getLastDetail().getFilterPK(), EventTypes.MODIFY, filterStepElementDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteFilterStepElementDescription(FilterStepElementDescription filterStepElementDescription, BasePK deletedBy) {
         filterStepElementDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(filterStepElementDescription.getFilterStepElement().getLastDetail().getFilterStep().getLastDetail().getFilterPK(), EventTypes.MODIFY, filterStepElementDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(filterStepElementDescription.getFilterStepElement().getLastDetail().getFilterStep().getLastDetail().getFilterPK(), EventTypes.MODIFY, filterStepElementDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     

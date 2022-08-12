@@ -72,7 +72,7 @@ public class GetUseTypeCommand
         UseType useType = UseTypeLogic.getInstance().getUseTypeByUniversalSpec(this, form, true);
 
         if(useType != null) {
-            sendEventUsingNames(useType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+            sendEvent(useType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return useType;

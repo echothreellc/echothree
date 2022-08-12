@@ -75,7 +75,7 @@ public class PaymentProcessorTypeActionControl
         paymentProcessorTypeAction.setLastDetail(paymentProcessorTypeActionDetail);
         paymentProcessorTypeAction.store();
 
-        sendEventUsingNames(paymentProcessorType.getPrimaryKey(), EventTypes.MODIFY, paymentProcessorTypeAction.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(paymentProcessorType.getPrimaryKey(), EventTypes.MODIFY, paymentProcessorTypeAction.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return paymentProcessorTypeAction;
     }
@@ -323,7 +323,7 @@ public class PaymentProcessorTypeActionControl
             paymentProcessorTypeAction.setActiveDetail(paymentProcessorTypeActionDetail);
             paymentProcessorTypeAction.setLastDetail(paymentProcessorTypeActionDetail);
 
-            sendEventUsingNames(paymentProcessorTypePK, EventTypes.MODIFY, paymentProcessorTypeAction.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(paymentProcessorTypePK, EventTypes.MODIFY, paymentProcessorTypeAction.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
@@ -360,7 +360,7 @@ public class PaymentProcessorTypeActionControl
             }
         }
 
-        sendEventUsingNames(paymentProcessorType.getPrimaryKey(), EventTypes.MODIFY, paymentProcessorTypeAction.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(paymentProcessorType.getPrimaryKey(), EventTypes.MODIFY, paymentProcessorTypeAction.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     public void deletePaymentProcessorTypeActions(final Collection<PaymentProcessorTypeAction> paymentProcessorTypeActions, final BasePK deletedBy) {

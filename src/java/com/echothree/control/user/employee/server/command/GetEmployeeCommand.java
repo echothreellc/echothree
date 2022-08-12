@@ -111,7 +111,7 @@ public class GetEmployeeCommand
         }
 
         if(partyEmployee != null) {
-            sendEventUsingNames(partyEmployee.getPartyPK(), EventTypes.READ, null, null, getPartyPK());
+            sendEvent(partyEmployee.getPartyPK(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return partyEmployee;

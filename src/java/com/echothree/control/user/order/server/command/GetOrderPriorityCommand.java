@@ -81,7 +81,7 @@ public class GetOrderPriorityCommand
             if(orderPriority != null) {
                 result.setOrderPriority(orderPriorityControl.getOrderPriorityTransfer(getUserVisit(), orderPriority));
 
-                sendEventUsingNames(orderPriority.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+                sendEvent(orderPriority.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownOrderPriorityName.name(), orderPriorityName);
             }

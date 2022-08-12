@@ -70,7 +70,7 @@ public class GetItemImageTypeCommand
         var itemImageType = ItemImageTypeLogic.getInstance().getItemImageTypeByUniversalSpec(this, form, true);
 
         if(itemImageType != null) {
-            sendEventUsingNames(itemImageType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+            sendEvent(itemImageType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return itemImageType;

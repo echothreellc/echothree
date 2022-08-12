@@ -59,7 +59,7 @@ public class GetTransactionTypeCommand
         if(transactionType != null) {
             result.setTransactionType(accountingControl.getTransactionTypeTransfer(getUserVisit(), transactionType));
             
-            sendEventUsingNames(transactionType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+            sendEvent(transactionType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownTransactionTypeName.name(), transactionTypeName);
         }

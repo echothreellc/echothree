@@ -69,7 +69,7 @@ public class GetCancellationKindCommand
         var cancellationKind = CancellationKindLogic.getInstance().getCancellationKindByUniversalSpec(this, form, true);
 
         if(cancellationKind != null) {
-            sendEventUsingNames(cancellationKind.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+            sendEvent(cancellationKind.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return cancellationKind;

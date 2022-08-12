@@ -69,7 +69,7 @@ public class GetReturnKindCommand
         var returnKind = ReturnKindLogic.getInstance().getReturnKindByUniversalSpec(this, form, true);
 
         if(returnKind != null) {
-            sendEventUsingNames(returnKind.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+            sendEvent(returnKind.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return returnKind;

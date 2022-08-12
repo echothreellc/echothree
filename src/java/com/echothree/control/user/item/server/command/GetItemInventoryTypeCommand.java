@@ -75,7 +75,7 @@ public class GetItemInventoryTypeCommand
             }
 
             if(itemInventoryType != null) {
-                sendEventUsingNames(itemInventoryType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+                sendEvent(itemInventoryType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());

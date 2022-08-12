@@ -126,7 +126,7 @@ public class MessageControl
         messageType.setLastDetail(messageTypeDetail);
         messageType.store();
         
-        sendEventUsingNames(messageType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(messageType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return messageType;
     }
@@ -254,7 +254,7 @@ public class MessageControl
             messageType.setActiveDetail(messageTypeDetail);
             messageType.setLastDetail(messageTypeDetail);
             
-            sendEventUsingNames(messageTypePK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(messageTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -266,7 +266,7 @@ public class MessageControl
         messageType.setActiveDetail(null);
         messageType.store();
         
-        sendEventUsingNames(messageType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(messageType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteMessageTypes(List<MessageType> messageTypes, BasePK deletedBy) {
@@ -288,7 +288,7 @@ public class MessageControl
         MessageTypeDescription messageTypeDescription = MessageTypeDescriptionFactory.getInstance().create(messageType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(messageType.getPrimaryKey(), EventTypes.MODIFY, messageTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(messageType.getPrimaryKey(), EventTypes.MODIFY, messageTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return messageTypeDescription;
     }
@@ -427,14 +427,14 @@ public class MessageControl
             messageTypeDescription = MessageTypeDescriptionFactory.getInstance().create(messageType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(messageType.getPrimaryKey(), EventTypes.MODIFY, messageTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(messageType.getPrimaryKey(), EventTypes.MODIFY, messageTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteMessageTypeDescription(MessageTypeDescription messageTypeDescription, BasePK deletedBy) {
         messageTypeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(messageTypeDescription.getMessageTypePK(), EventTypes.MODIFY, messageTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(messageTypeDescription.getMessageTypePK(), EventTypes.MODIFY, messageTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -475,7 +475,7 @@ public class MessageControl
         message.setLastDetail(messageDetail);
         message.store();
         
-        sendEventUsingNames(message.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(message.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return message;
     }
@@ -699,7 +699,7 @@ public class MessageControl
             message.setActiveDetail(messageDetail);
             message.setLastDetail(messageDetail);
             
-            sendEventUsingNames(messagePK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(messagePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -737,7 +737,7 @@ public class MessageControl
             }
         }
         
-        sendEventUsingNames(message.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(message.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteMessages(List<Message> messages, BasePK deletedBy) {
@@ -758,7 +758,7 @@ public class MessageControl
         MessageDescription messageDescription = MessageDescriptionFactory.getInstance().create(message,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(message.getPrimaryKey(), EventTypes.MODIFY, messageDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(message.getPrimaryKey(), EventTypes.MODIFY, messageDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return messageDescription;
     }
@@ -895,14 +895,14 @@ public class MessageControl
             
             messageDescription = MessageDescriptionFactory.getInstance().create(message, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(message.getPrimaryKey(), EventTypes.MODIFY, messageDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(message.getPrimaryKey(), EventTypes.MODIFY, messageDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteMessageDescription(MessageDescription messageDescription, BasePK deletedBy) {
         messageDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(messageDescription.getMessagePK(), EventTypes.MODIFY, messageDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(messageDescription.getMessagePK(), EventTypes.MODIFY, messageDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -922,7 +922,7 @@ public class MessageControl
         MessageString messageString = MessageStringFactory.getInstance().create(message, language, string,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(messageString.getMessagePK(), EventTypes.MODIFY, messageString.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(messageString.getMessagePK(), EventTypes.MODIFY, messageString.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return messageString;
     }
@@ -1046,14 +1046,14 @@ public class MessageControl
             messageString = MessageStringFactory.getInstance().create(messagePK, languagePK, string,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(messagePK, EventTypes.MODIFY, messageString.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(messagePK, EventTypes.MODIFY, messageString.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteMessageString(MessageString messageString, BasePK deletedBy) {
         messageString.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(messageString.getMessagePK(), EventTypes.MODIFY, messageString.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(messageString.getMessagePK(), EventTypes.MODIFY, messageString.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteMessageStrings(List<MessageString> messageStrings, BasePK deletedBy) {
@@ -1074,7 +1074,7 @@ public class MessageControl
         MessageBlob messageBlob = MessageBlobFactory.getInstance().create(message, language, mimeType, blob,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(messageBlob.getMessagePK(), EventTypes.MODIFY, messageBlob.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(messageBlob.getMessagePK(), EventTypes.MODIFY, messageBlob.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return messageBlob;
     }
@@ -1199,14 +1199,14 @@ public class MessageControl
             messageBlob = MessageBlobFactory.getInstance().create(messagePK, languagePK, mimeTypePK, blob,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(messagePK, EventTypes.MODIFY, messageBlob.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(messagePK, EventTypes.MODIFY, messageBlob.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteMessageBlob(MessageBlob messageBlob, BasePK deletedBy) {
         messageBlob.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(messageBlob.getMessagePK(), EventTypes.MODIFY, messageBlob.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(messageBlob.getMessagePK(), EventTypes.MODIFY, messageBlob.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteMessageBlobs(List<MessageBlob> messageBlobs, BasePK deletedBy) {
@@ -1227,7 +1227,7 @@ public class MessageControl
         MessageClob messageClob = MessageClobFactory.getInstance().create(message, language, mimeType, clob,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(messageClob.getMessagePK(), EventTypes.MODIFY, messageClob.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(messageClob.getMessagePK(), EventTypes.MODIFY, messageClob.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return messageClob;
     }
@@ -1352,14 +1352,14 @@ public class MessageControl
             messageClob = MessageClobFactory.getInstance().create(messagePK, languagePK, mimeTypePK, clob,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(messagePK, EventTypes.MODIFY, messageClob.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(messagePK, EventTypes.MODIFY, messageClob.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteMessageClob(MessageClob messageClob, BasePK deletedBy) {
         messageClob.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(messageClob.getMessagePK(), EventTypes.MODIFY, messageClob.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(messageClob.getMessagePK(), EventTypes.MODIFY, messageClob.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteMessageClobs(List<MessageClob> messageClobs, BasePK deletedBy) {
@@ -1380,7 +1380,7 @@ public class MessageControl
         EntityMessage entityMessage = EntityMessageFactory.getInstance().create(entityInstance, message,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(message.getPrimaryKey(), EventTypes.MODIFY, entityMessage.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(message.getPrimaryKey(), EventTypes.MODIFY, entityMessage.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return entityMessage;
     }
@@ -1529,7 +1529,7 @@ public class MessageControl
     public void deleteEntityMessage(EntityMessage entityMessage, BasePK deletedBy) {
         entityMessage.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(entityMessage.getMessagePK(), EventTypes.MODIFY, entityMessage.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(entityMessage.getMessagePK(), EventTypes.MODIFY, entityMessage.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     

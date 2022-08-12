@@ -88,7 +88,7 @@ public class GetCurrencyCommand
         }
         
         if(currency != null) {
-            sendEventUsingNames(currency.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+            sendEvent(currency.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return currency;

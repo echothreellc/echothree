@@ -71,7 +71,7 @@ public class GetFilterCommand
         var filter = FilterLogic.getInstance().getFilterByUniversalSpec(this, form, true);
 
         if(filter != null) {
-            sendEventUsingNames(filter.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+            sendEvent(filter.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return filter;

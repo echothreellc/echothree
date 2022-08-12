@@ -59,7 +59,7 @@ public class GetResponsibilityTypeCommand
         if(responsibilityType != null) {
             result.setResponsibilityType(employeeControl.getResponsibilityTypeTransfer(getUserVisit(), responsibilityType));
             
-            sendEventUsingNames(responsibilityType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+            sendEvent(responsibilityType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownResponsibilityTypeName.name(), responsibilityTypeName);
         }

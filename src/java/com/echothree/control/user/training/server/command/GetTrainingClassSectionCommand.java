@@ -104,7 +104,7 @@ public class GetTrainingClassSectionCommand
 
                         result.setTrainingClassSection(trainingControl.getTrainingClassSectionTransfer(userVisit, trainingClassSection));
 
-                        sendEventUsingNames(trainingClassSection.getPrimaryKey(), EventTypes.READ, null, null, partyPK);
+                        sendEvent(trainingClassSection.getPrimaryKey(), EventTypes.READ, null, null, partyPK);
 
                         if(partyTrainingClassSessionStatus != null) {
                             PartyTrainingClassSessionSection partyTrainingClassSessionSection = trainingControl.createPartyTrainingClassSessionSection(partyTrainingClassSession,

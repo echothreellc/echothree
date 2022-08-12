@@ -53,7 +53,7 @@ public class GetPreferredDateTimeFormatCommand
         DateTimeFormat dateTimeFormat = getPreferredDateTimeFormat();
 
         result.setPreferredDateTimeFormat(partyControl.getDateTimeFormatTransfer(getUserVisit(), dateTimeFormat));
-        sendEventUsingNames(dateTimeFormat.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+        sendEvent(dateTimeFormat.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
 
         return result;
     }

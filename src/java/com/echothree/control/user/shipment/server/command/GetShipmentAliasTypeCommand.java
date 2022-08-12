@@ -79,7 +79,7 @@ public class GetShipmentAliasTypeCommand
             if(shipmentAliasType != null) {
                 result.setShipmentAliasType(shipmentControl.getShipmentAliasTypeTransfer(getUserVisit(), shipmentAliasType));
 
-                sendEventUsingNames(shipmentAliasType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+                sendEvent(shipmentAliasType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownShipmentAliasTypeName.name(), shipmentTypeName, shipmentAliasTypeName);
             }

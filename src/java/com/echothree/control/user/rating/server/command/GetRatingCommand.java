@@ -59,7 +59,7 @@ public class GetRatingCommand
         if(rating != null) {
             result.setRating(ratingControl.getRatingTransfer(getUserVisit(), rating));
 
-            sendEventUsingNames(rating.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+            sendEvent(rating.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownRatingName.name(), ratingName);
         }

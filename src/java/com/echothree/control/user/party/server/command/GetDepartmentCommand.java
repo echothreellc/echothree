@@ -74,7 +74,7 @@ public class GetDepartmentCommand
                 divisionName, departmentName, partyName, form, true);
 
         if(partyDepartment != null) {
-            sendEventUsingNames(partyDepartment.getPartyPK(), EventTypes.READ, null, null, getPartyPK());
+            sendEvent(partyDepartment.getPartyPK(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return partyDepartment;

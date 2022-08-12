@@ -71,7 +71,7 @@ public class GetSelectorKindCommand
         var selectorKind = SelectorKindLogic.getInstance().getSelectorKindByUniversalSpec(this, form, true);
 
         if(selectorKind != null) {
-            sendEventUsingNames(selectorKind.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+            sendEvent(selectorKind.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return selectorKind;

@@ -98,7 +98,7 @@ public class GetCampaignMediumCommand
 
             if(!hasExecutionErrors()) {
                 result.setCampaignMedium(campaignControl.getCampaignMediumTransfer(getUserVisit(), campaignMedium));
-                sendEventUsingNames(campaignMedium.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+                sendEvent(campaignMedium.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());

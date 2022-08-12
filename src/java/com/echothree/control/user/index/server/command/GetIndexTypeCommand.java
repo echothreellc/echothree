@@ -84,7 +84,7 @@ public class GetIndexTypeCommand
 
             if(!hasExecutionErrors()) {
                 result.setIndexType(indexControl.getIndexTypeTransfer(getUserVisit(), indexType));
-                sendEventUsingNames(indexType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+                sendEvent(indexType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());

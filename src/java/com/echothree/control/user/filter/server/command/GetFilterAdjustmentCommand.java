@@ -71,7 +71,7 @@ public class GetFilterAdjustmentCommand
         var filterAdjustment = FilterAdjustmentLogic.getInstance().getFilterAdjustmentByUniversalSpec(this, form, true);
 
         if(filterAdjustment != null) {
-            sendEventUsingNames(filterAdjustment.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+            sendEvent(filterAdjustment.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return filterAdjustment;

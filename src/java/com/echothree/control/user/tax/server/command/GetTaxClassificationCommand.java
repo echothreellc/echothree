@@ -81,7 +81,7 @@ public class GetTaxClassificationCommand
             if(taxClassification != null) {
                 result.setTaxClassification(taxControl.getTaxClassificationTransfer(getUserVisit(), taxClassification));
                 
-                sendEventUsingNames(taxClassification.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+                sendEvent(taxClassification.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownTaxClassificationName.name(), countryName, taxClassificationName);
             }

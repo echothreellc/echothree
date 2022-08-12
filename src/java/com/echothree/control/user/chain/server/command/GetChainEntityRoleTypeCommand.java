@@ -85,7 +85,7 @@ public class GetChainEntityRoleTypeCommand
                 if(chainEntityRoleType != null) {
                     result.setChainEntityRoleType(chainControl.getChainEntityRoleTypeTransfer(getUserVisit(), chainEntityRoleType));
 
-                    sendEventUsingNames(chainEntityRoleType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+                    sendEvent(chainEntityRoleType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownChainEntityRoleTypeName.name(), chainKindName, chainTypeName, chainEntityRoleTypeName);
                 }

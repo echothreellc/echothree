@@ -71,7 +71,7 @@ public class GetCommandMessageTypeCommand
         if(commandMessageType != null) {
             result.setCommandMessageType(coreControl.getCommandMessageTypeTransfer(getUserVisit(), commandMessageType));
             
-            sendEventUsingNames(commandMessageType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+            sendEvent(commandMessageType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownCommandMessageTypeName.name(), commandMessageTypeName);
         }

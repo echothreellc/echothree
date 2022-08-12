@@ -91,7 +91,7 @@ public class GetTrainingClassAnswerCommand
                     if(trainingClassAnswer != null) {
                         result.setTrainingClassAnswer(trainingControl.getTrainingClassAnswerTransfer(getUserVisit(), trainingClassAnswer));
 
-                        sendEventUsingNames(trainingClassAnswer.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+                        sendEvent(trainingClassAnswer.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.UnknownTrainingClassAnswerName.name(), trainingClassName, trainingClassSectionName,
                                 trainingClassQuestionName, trainingClassAnswerName);

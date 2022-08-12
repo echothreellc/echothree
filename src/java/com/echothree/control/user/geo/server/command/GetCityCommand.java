@@ -109,7 +109,7 @@ public class GetCityCommand
         if(geoCodeAlias != null) {
             geoCode = geoCodeAlias.getGeoCode();
 
-            sendEventUsingNames(geoCode.getPrimaryKey(), EventTypes.READ, null, null, createdBy);
+            sendEvent(geoCode.getPrimaryKey(), EventTypes.READ, null, null, createdBy);
         } else {
             addExecutionError(ExecutionErrors.UnknownCityName.name());
         }

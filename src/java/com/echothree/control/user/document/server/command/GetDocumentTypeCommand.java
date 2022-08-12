@@ -73,7 +73,7 @@ public class GetDocumentTypeCommand
         if(documentType != null) {
             result.setDocumentType(documentControl.getDocumentTypeTransfer(getUserVisit(), documentType));
             
-            sendEventUsingNames(documentType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+            sendEvent(documentType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownDocumentTypeName.name(), documentTypeName);
         }

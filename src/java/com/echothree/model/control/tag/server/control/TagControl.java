@@ -116,7 +116,7 @@ public class TagControl
         tagScope.setLastDetail(tagScopeDetail);
         tagScope.store();
         
-        sendEventUsingNames(tagScope.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(tagScope.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return tagScope;
     }
@@ -358,7 +358,7 @@ public class TagControl
             tagScope.setActiveDetail(tagScopeDetail);
             tagScope.setLastDetail(tagScopeDetail);
             
-            sendEventUsingNames(tagScopePK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(tagScopePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -393,7 +393,7 @@ public class TagControl
             }
         }
         
-        sendEventUsingNames(tagScope.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(tagScope.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -406,7 +406,7 @@ public class TagControl
                 language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(tagScope.getPrimaryKey(), EventTypes.MODIFY, tagScopeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(tagScope.getPrimaryKey(), EventTypes.MODIFY, tagScopeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return tagScopeDescription;
     }
@@ -546,14 +546,14 @@ public class TagControl
             tagScopeDescription = TagScopeDescriptionFactory.getInstance().create(tagScope, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(tagScope.getPrimaryKey(), EventTypes.MODIFY, tagScopeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(tagScope.getPrimaryKey(), EventTypes.MODIFY, tagScopeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteTagScopeDescription(TagScopeDescription tagScopeDescription, BasePK deletedBy) {
         tagScopeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(tagScopeDescription.getTagScopePK(), EventTypes.MODIFY, tagScopeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(tagScopeDescription.getTagScopePK(), EventTypes.MODIFY, tagScopeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteTagScopeDescriptionsByTagScope(TagScope tagScope, BasePK deletedBy) {
@@ -572,7 +572,7 @@ public class TagControl
         TagScopeEntityType tagScopeEntityType = TagScopeEntityTypeFactory.getInstance().create(tagScope, entityType,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(tagScope.getPrimaryKey(), EventTypes.MODIFY, tagScopeEntityType.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(tagScope.getPrimaryKey(), EventTypes.MODIFY, tagScopeEntityType.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return tagScopeEntityType;
     }
@@ -722,7 +722,7 @@ public class TagControl
     public void deleteTagScopeEntityType(TagScopeEntityType tagScopeEntityType, BasePK deletedBy) {
         tagScopeEntityType.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(tagScopeEntityType.getTagScopePK(), EventTypes.MODIFY, tagScopeEntityType.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(tagScopeEntityType.getTagScopePK(), EventTypes.MODIFY, tagScopeEntityType.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteTagScopeEntityTypes(List<TagScopeEntityType> tagScopeEntityTypes, BasePK deletedBy) {
@@ -755,7 +755,7 @@ public class TagControl
         tag.setLastDetail(tagDetail);
         tag.store();
         
-        sendEventUsingNames(tag.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(tag.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return tag;
     }
@@ -959,7 +959,7 @@ public class TagControl
             tag.setActiveDetail(tagDetail);
             tag.setLastDetail(tagDetail);
             
-            sendEventUsingNames(tagPK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(tagPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -971,7 +971,7 @@ public class TagControl
         tag.setActiveDetail(null);
         tag.store();
         
-        sendEventUsingNames(tag.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(tag.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteTags(List<Tag> tags, BasePK deletedBy) {
@@ -991,7 +991,7 @@ public class TagControl
     public EntityTag createEntityTag(EntityInstance taggedEntityInstance, Tag tag, BasePK createdBy) {
         EntityTag entityTag = EntityTagFactory.getInstance().create(taggedEntityInstance, tag, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(taggedEntityInstance, EventTypes.MODIFY, entityTag.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(taggedEntityInstance, EventTypes.MODIFY, entityTag.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return entityTag;
     }
@@ -1162,7 +1162,7 @@ public class TagControl
         entityTag.setThruTime(session.START_TIME_LONG);
         entityTag.store();
         
-        sendEventUsingNames(taggedEntityInstance, EventTypes.MODIFY, entityTag.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(taggedEntityInstance, EventTypes.MODIFY, entityTag.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteEntityTags(List<EntityTag> entityTags, BasePK deletedBy) {

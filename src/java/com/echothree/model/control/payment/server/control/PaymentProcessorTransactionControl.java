@@ -65,7 +65,7 @@ public class PaymentProcessorTransactionControl
         paymentProcessorTransaction.setLastDetail(paymentProcessorTransactionDetail);
         paymentProcessorTransaction.store();
 
-        sendEventUsingNames(paymentProcessorTransaction.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(paymentProcessorTransaction.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return paymentProcessorTransaction;
     }
@@ -280,7 +280,7 @@ public class PaymentProcessorTransactionControl
             paymentProcessorTransaction.setActiveDetail(paymentProcessorTransactionDetail);
             paymentProcessorTransaction.setLastDetail(paymentProcessorTransactionDetail);
 
-            sendEventUsingNames(paymentProcessorTransactionPK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(paymentProcessorTransactionPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -294,7 +294,7 @@ public class PaymentProcessorTransactionControl
         paymentProcessorTransactionDetail.store();
         paymentProcessorTransaction.setActiveDetail(null);
 
-        sendEventUsingNames(paymentProcessorTransaction.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(paymentProcessorTransaction.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deletePaymentProcessorTransactions(final Collection<PaymentProcessorTransaction> paymentProcessorTransactions, final BasePK deletedBy) {

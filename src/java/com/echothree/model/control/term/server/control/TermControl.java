@@ -259,7 +259,7 @@ public class TermControl
         term.setLastDetail(termDetail);
         term.store();
         
-        sendEventUsingNames(term.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(term.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return term;
     }
@@ -451,7 +451,7 @@ public class TermControl
         term.setLastDetail(termDetail);
         term.store();
         
-        sendEventUsingNames(termPK, EventTypes.MODIFY, null, null, updatedBy);
+        sendEvent(termPK, EventTypes.MODIFY, null, null, updatedBy);
     }
     
     public void updateTermFromValue(TermDetailValue termDetailValue, BasePK updatedBy) {
@@ -491,7 +491,7 @@ public class TermControl
             }
         }
         
-        sendEventUsingNames(term.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(term.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -502,7 +502,7 @@ public class TermControl
         TermDescription termDescription = TermDescriptionFactory.getInstance().create(term, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(term.getPrimaryKey(), EventTypes.MODIFY, termDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(term.getPrimaryKey(), EventTypes.MODIFY, termDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return termDescription;
     }
@@ -639,14 +639,14 @@ public class TermControl
             termDescription = TermDescriptionFactory.getInstance().create(term, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(term.getPrimaryKey(), EventTypes.MODIFY, termDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(term.getPrimaryKey(), EventTypes.MODIFY, termDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteTermDescription(TermDescription termDescription, BasePK deletedBy) {
         termDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(termDescription.getTermPK(), EventTypes.MODIFY, termDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(termDescription.getTermPK(), EventTypes.MODIFY, termDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -667,7 +667,7 @@ public class TermControl
         StandardTerm standardTerm = StandardTermFactory.getInstance().create(term, netDueDays, discountPercentage,
                 discountDays, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(term.getPrimaryKey(), EventTypes.MODIFY, standardTerm.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(term.getPrimaryKey(), EventTypes.MODIFY, standardTerm.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return standardTerm;
     }
@@ -734,14 +734,14 @@ public class TermControl
             standardTerm = StandardTermFactory.getInstance().create(termPK, netDueDays, discountPercentage, discountDays,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(termPK, EventTypes.MODIFY, standardTerm.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(termPK, EventTypes.MODIFY, standardTerm.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteStandardTerm(StandardTerm standardTerm, BasePK deletedBy) {
         standardTerm.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(standardTerm.getTermPK(), EventTypes.MODIFY, standardTerm.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(standardTerm.getTermPK(), EventTypes.MODIFY, standardTerm.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteStandardTermByTerm(Term term, BasePK deletedBy) {
@@ -761,7 +761,7 @@ public class TermControl
         DateDrivenTerm dateDrivenTerm = DateDrivenTermFactory.getInstance().create(term, netDueDayOfMonth,
                 dueNextMonthDays, discountPercentage, discountBeforeDayOfMonth, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(term.getPrimaryKey(), EventTypes.MODIFY, dateDrivenTerm.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(term.getPrimaryKey(), EventTypes.MODIFY, dateDrivenTerm.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return dateDrivenTerm;
     }
@@ -829,14 +829,14 @@ public class TermControl
             dateDrivenTerm = DateDrivenTermFactory.getInstance().create(termPK, netDueDayOfMonth, dueNextMonthDays,
                     discountPercentage, discountBeforeDayOfMonth, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(termPK, EventTypes.MODIFY, dateDrivenTerm.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(termPK, EventTypes.MODIFY, dateDrivenTerm.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteDateDrivenTerm(DateDrivenTerm dateDrivenTerm, BasePK deletedBy) {
         dateDrivenTerm.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(dateDrivenTerm.getTermPK(), EventTypes.MODIFY, dateDrivenTerm.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(dateDrivenTerm.getTermPK(), EventTypes.MODIFY, dateDrivenTerm.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteDateDrivenTermByTerm(Term term, BasePK deletedBy) {
@@ -856,7 +856,7 @@ public class TermControl
         CustomerTypeCreditLimit customerTypeCreditLimit = CustomerTypeCreditLimitFactory.getInstance().create(customerType,
                 currency, creditLimit, potentialCreditLimit, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(customerType.getPrimaryKey(), EventTypes.MODIFY, customerTypeCreditLimit.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(customerType.getPrimaryKey(), EventTypes.MODIFY, customerTypeCreditLimit.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return customerTypeCreditLimit;
     }
@@ -981,14 +981,14 @@ public class TermControl
             customerTypeCreditLimit = CustomerTypeCreditLimitFactory.getInstance().create(customerTypePK, currencyPK, creditLimit,
                     potentialCreditLimit, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(customerTypePK, EventTypes.MODIFY, customerTypeCreditLimit.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(customerTypePK, EventTypes.MODIFY, customerTypeCreditLimit.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteCustomerTypeCreditLimit(CustomerTypeCreditLimit customerTypeCreditLimit, BasePK deletedBy) {
         customerTypeCreditLimit.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(customerTypeCreditLimit.getCustomerTypePK(), EventTypes.MODIFY, customerTypeCreditLimit.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(customerTypeCreditLimit.getCustomerTypePK(), EventTypes.MODIFY, customerTypeCreditLimit.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteCustomerTypeCreditLimitsByCustomerType(CustomerType customerType, BasePK deletedBy) {
@@ -1008,7 +1008,7 @@ public class TermControl
         PartyCreditLimit partyCreditLimit = PartyCreditLimitFactory.getInstance().create(party, currency, creditLimit,
                 potentialCreditLimit, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY, partyCreditLimit.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyCreditLimit.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return partyCreditLimit;
     }
@@ -1132,14 +1132,14 @@ public class TermControl
             partyCreditLimit = PartyCreditLimitFactory.getInstance().create(partyPK, currencyPK, creditLimit,
                     potentialCreditLimit, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(partyPK, EventTypes.MODIFY, partyCreditLimit.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(partyPK, EventTypes.MODIFY, partyCreditLimit.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deletePartyCreditLimit(PartyCreditLimit partyCreditLimit, BasePK deletedBy) {
         partyCreditLimit.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(partyCreditLimit.getPartyPK(), EventTypes.MODIFY, partyCreditLimit.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(partyCreditLimit.getPartyPK(), EventTypes.MODIFY, partyCreditLimit.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deletePartyCreditLimitsByParty(Party party, BasePK deletedBy) {
@@ -1158,7 +1158,7 @@ public class TermControl
         PartyTerm partyTerm = PartyTermFactory.getInstance().create(party, term, taxable, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY, partyTerm.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyTerm.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return partyTerm;
     }
@@ -1274,14 +1274,14 @@ public class TermControl
             partyTerm = PartyTermFactory.getInstance().create(partyPK, termPK, taxable, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(partyPK, EventTypes.MODIFY, partyTerm.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(partyPK, EventTypes.MODIFY, partyTerm.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deletePartyTerm(PartyTerm partyTerm, BasePK deletedBy) {
         partyTerm.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(partyTerm.getPartyPK(), EventTypes.MODIFY, partyTerm.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(partyTerm.getPartyPK(), EventTypes.MODIFY, partyTerm.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deletePartyTermByParty(Party party, BasePK deletedBy) {

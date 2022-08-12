@@ -73,7 +73,7 @@ public class GetShipmentTypeCommand
         if(shipmentType != null) {
             result.setShipmentType(shipmentControl.getShipmentTypeTransfer(getUserVisit(), shipmentType));
             
-            sendEventUsingNames(shipmentType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+            sendEvent(shipmentType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownShipmentTypeName.name(), shipmentTypeName);
         }

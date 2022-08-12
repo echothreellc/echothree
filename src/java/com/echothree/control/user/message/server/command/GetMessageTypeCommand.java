@@ -78,7 +78,7 @@ public class GetMessageTypeCommand
                 if(messageType != null) {
                     result.setMessageType(messageControl.getMessageTypeTransfer(userVisit, messageType));
                     
-                    sendEventUsingNames(messageType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+                    sendEvent(messageType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownMessageTypeName.name(), messageTypeName);
                 }

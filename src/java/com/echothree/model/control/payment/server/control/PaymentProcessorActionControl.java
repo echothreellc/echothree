@@ -48,7 +48,7 @@ public class PaymentProcessorActionControl
         var paymentProcessorAction = PaymentProcessorActionFactory.getInstance().create(paymentProcessor,
                 paymentProcessorTypeAction, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(paymentProcessor.getPrimaryKey(), EventTypes.MODIFY, paymentProcessorAction.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(paymentProcessor.getPrimaryKey(), EventTypes.MODIFY, paymentProcessorAction.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return paymentProcessorAction;
     }
@@ -176,7 +176,7 @@ public class PaymentProcessorActionControl
     public void deletePaymentProcessorAction(final PaymentProcessorAction paymentProcessorAction, final BasePK deletedBy) {
         paymentProcessorAction.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(paymentProcessorAction.getPaymentProcessorPK(), EventTypes.MODIFY, paymentProcessorAction.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(paymentProcessorAction.getPaymentProcessorPK(), EventTypes.MODIFY, paymentProcessorAction.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 

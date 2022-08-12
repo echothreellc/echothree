@@ -53,7 +53,7 @@ public class GetPreferredCurrencyCommand
         Currency currency = getPreferredCurrency();
 
         result.setPreferredCurrency(accountingControl.getCurrencyTransfer(getUserVisit(), currency));
-        sendEventUsingNames(currency.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+        sendEvent(currency.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
 
         return result;
     }

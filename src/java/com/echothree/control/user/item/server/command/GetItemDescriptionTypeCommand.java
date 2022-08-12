@@ -58,7 +58,7 @@ public class GetItemDescriptionTypeCommand
         var itemDescriptionType = ItemDescriptionTypeLogic.getInstance().getItemDescriptionTypeByUniversalSpec(this, form, true);
 
         if(itemDescriptionType != null) {
-            sendEventUsingNames(itemDescriptionType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+            sendEvent(itemDescriptionType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return itemDescriptionType;

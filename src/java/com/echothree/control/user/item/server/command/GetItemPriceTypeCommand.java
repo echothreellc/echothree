@@ -75,7 +75,7 @@ public class GetItemPriceTypeCommand
             }
 
             if(itemPriceType != null) {
-                sendEventUsingNames(itemPriceType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+                sendEvent(itemPriceType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());

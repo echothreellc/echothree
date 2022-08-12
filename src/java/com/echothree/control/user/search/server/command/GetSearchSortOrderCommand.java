@@ -79,7 +79,7 @@ public class GetSearchSortOrderCommand
             if(searchSortOrder != null) {
                 result.setSearchSortOrder(searchControl.getSearchSortOrderTransfer(getUserVisit(), searchSortOrder));
                 
-                sendEventUsingNames(searchSortOrder.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+                sendEvent(searchSortOrder.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownSearchSortOrderName.name(), searchKindName, searchSortOrderName);
             }

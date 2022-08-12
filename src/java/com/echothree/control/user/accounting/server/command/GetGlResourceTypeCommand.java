@@ -73,7 +73,7 @@ public class GetGlResourceTypeCommand
         if(glResourceType != null) {
             result.setGlResourceType(accountingControl.getGlResourceTypeTransfer(getUserVisit(), glResourceType));
             
-            sendEventUsingNames(glResourceType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+            sendEvent(glResourceType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownGlResourceTypeName.name(), glResourceTypeName);
         }

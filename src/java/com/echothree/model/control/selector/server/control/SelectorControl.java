@@ -233,7 +233,7 @@ public class SelectorControl
         selectorKind.setLastDetail(selectorKindDetail);
         selectorKind.store();
 
-        sendEventUsingNames(selectorKind.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(selectorKind.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return selectorKind;
     }
@@ -451,7 +451,7 @@ public class SelectorControl
         selectorKind.setLastDetail(selectorKindDetail);
         selectorKind.store();
 
-        sendEventUsingNames(selectorKindPK, EventTypes.MODIFY, null, null, updatedBy);
+        sendEvent(selectorKindPK, EventTypes.MODIFY, null, null, updatedBy);
     }
 
     public void updateSelectorKindFromValue(SelectorKindDetailValue selectorKindDetailValue, BasePK updatedBy) {
@@ -483,7 +483,7 @@ public class SelectorControl
             }
         }
 
-        sendEventUsingNames(selectorKind.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(selectorKind.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     // --------------------------------------------------------------------------------
@@ -495,7 +495,7 @@ public class SelectorControl
         SelectorKindDescription selectorKindDescription = SelectorKindDescriptionFactory.getInstance().create(selectorKind,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(selectorKind.getPrimaryKey(), EventTypes.MODIFY, selectorKindDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(selectorKind.getPrimaryKey(), EventTypes.MODIFY, selectorKindDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return selectorKindDescription;
     }
@@ -616,14 +616,14 @@ public class SelectorControl
             selectorKindDescription = SelectorKindDescriptionFactory.getInstance().create(selectorKind, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(selectorKind.getPrimaryKey(), EventTypes.MODIFY, selectorKindDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(selectorKind.getPrimaryKey(), EventTypes.MODIFY, selectorKindDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteSelectorKindDescription(SelectorKindDescription selectorKindDescription, BasePK deletedBy) {
         selectorKindDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(selectorKindDescription.getSelectorKindPK(), EventTypes.MODIFY, selectorKindDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(selectorKindDescription.getSelectorKindPK(), EventTypes.MODIFY, selectorKindDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -663,7 +663,7 @@ public class SelectorControl
         selectorType.setLastDetail(selectorTypeDetail);
         selectorType.store();
 
-        sendEventUsingNames(selectorType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(selectorType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return selectorType;
     }
@@ -891,7 +891,7 @@ public class SelectorControl
             selectorType.setActiveDetail(selectorTypeDetail);
             selectorType.setLastDetail(selectorTypeDetail);
 
-            sendEventUsingNames(selectorTypePK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(selectorTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -926,7 +926,7 @@ public class SelectorControl
             }
         }
 
-        sendEventUsingNames(selectorType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(selectorType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteSelectorTypesBySelectorKind(SelectorKind selectorKind, BasePK deletedBy) {
@@ -946,7 +946,7 @@ public class SelectorControl
         SelectorTypeDescription selectorTypeDescription = SelectorTypeDescriptionFactory.getInstance().create(selectorType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(selectorType.getPrimaryKey(), EventTypes.MODIFY, selectorTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(selectorType.getPrimaryKey(), EventTypes.MODIFY, selectorTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return selectorTypeDescription;
     }
@@ -1067,14 +1067,14 @@ public class SelectorControl
             selectorTypeDescription = SelectorTypeDescriptionFactory.getInstance().create(selectorType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(selectorType.getPrimaryKey(), EventTypes.MODIFY, selectorTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(selectorType.getPrimaryKey(), EventTypes.MODIFY, selectorTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteSelectorTypeDescription(SelectorTypeDescription selectorTypeDescription, BasePK deletedBy) {
         selectorTypeDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(selectorTypeDescription.getSelectorTypePK(), EventTypes.MODIFY, selectorTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(selectorTypeDescription.getSelectorTypePK(), EventTypes.MODIFY, selectorTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -1649,7 +1649,7 @@ public class SelectorControl
         selector.setLastDetail(selectorDetail);
         selector.store();
         
-        sendEventUsingNames(selector.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(selector.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return selector;
     }
@@ -1940,7 +1940,7 @@ public class SelectorControl
         selector.setLastDetail(selectorDetail);
         selector.store();
         
-        sendEventUsingNames(selectorPK, EventTypes.MODIFY, null, null, updatedBy);
+        sendEvent(selectorPK, EventTypes.MODIFY, null, null, updatedBy);
     }
     
     public void updateSelectorFromValue(SelectorDetailValue selectorDetailValue, BasePK updatedBy) {
@@ -1979,7 +1979,7 @@ public class SelectorControl
             }
         }
         
-        sendEventUsingNames(selector.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(selector.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteSelectors(List<Selector> selectors, BasePK deletedBy) {
@@ -1999,7 +1999,7 @@ public class SelectorControl
     public SelectorDescription createSelectorDescription(Selector selector, Language language, String description, BasePK createdBy) {
         SelectorDescription selectorDescription = SelectorDescriptionFactory.getInstance().create(selector, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(selector.getPrimaryKey(), EventTypes.MODIFY, selectorDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(selector.getPrimaryKey(), EventTypes.MODIFY, selectorDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return selectorDescription;
     }
@@ -2137,14 +2137,14 @@ public class SelectorControl
             
             selectorDescription = SelectorDescriptionFactory.getInstance().create(selector, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(selector.getPrimaryKey(), EventTypes.MODIFY, selectorDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(selector.getPrimaryKey(), EventTypes.MODIFY, selectorDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteSelectorDescription(SelectorDescription selectorDescription, BasePK deletedBy) {
         selectorDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(selectorDescription.getSelectorPK(), EventTypes.MODIFY, selectorDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(selectorDescription.getSelectorPK(), EventTypes.MODIFY, selectorDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -2224,7 +2224,7 @@ public class SelectorControl
         selectorNode.setLastDetail(selectorNodeDetail);
         selectorNode.store();
         
-        sendEventUsingNames(selector.getPrimaryKey(), EventTypes.MODIFY, selectorNode.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(selector.getPrimaryKey(), EventTypes.MODIFY, selectorNode.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return selectorNode;
     }
@@ -2445,7 +2445,7 @@ public class SelectorControl
             selectorNode.setActiveDetail(selectorNodeDetail);
             selectorNode.setLastDetail(selectorNodeDetail);
             
-            sendEventUsingNames(selectorPK, EventTypes.MODIFY, selectorNodePK, EventTypes.MODIFY, updatedBy);
+            sendEvent(selectorPK, EventTypes.MODIFY, selectorNodePK, EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -2509,7 +2509,7 @@ public class SelectorControl
             }
         }
         
-        sendEventUsingNames(selectorNodeDetail.getSelector().getPrimaryKey(), EventTypes.MODIFY,
+        sendEvent(selectorNodeDetail.getSelector().getPrimaryKey(), EventTypes.MODIFY,
                 selectorNode.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
@@ -2530,7 +2530,7 @@ public class SelectorControl
         SelectorNodeDescription selectorNodeDescription = SelectorNodeDescriptionFactory.getInstance().create(selectorNode,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
+        sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
                 selectorNodeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return selectorNodeDescription;
@@ -2674,14 +2674,14 @@ public class SelectorControl
             
             selectorNodeDescription = SelectorNodeDescriptionFactory.getInstance().create(selectorNode, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(selectorNode.getLastDetail().getSelector().getPrimaryKey(), EventTypes.MODIFY, selectorNodeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(selectorNode.getLastDetail().getSelector().getPrimaryKey(), EventTypes.MODIFY, selectorNodeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteSelectorNodeDescription(SelectorNodeDescription selectorNodeDescription, BasePK deletedBy) {
         selectorNodeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(selectorNodeDescription.getSelectorNode().getLastDetail().getSelector().getPrimaryKey(), EventTypes.MODIFY, selectorNodeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(selectorNodeDescription.getSelectorNode().getLastDetail().getSelector().getPrimaryKey(), EventTypes.MODIFY, selectorNodeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteSelectorNodeDescriptionsBySelectorNode(SelectorNode selectorNode, BasePK deletedBy) {
@@ -2701,7 +2701,7 @@ public class SelectorControl
         SelectorNodeBoolean selectorNodeBoolean = SelectorNodeBooleanFactory.getInstance().create(selectorNode,
                 selectorBooleanType, leftSelectorNode, rightSelectorNode, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
+        sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
                 selectorNodeBoolean.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return selectorNodeBoolean;
@@ -2811,7 +2811,7 @@ public class SelectorControl
             selectorNodeBoolean = SelectorNodeBooleanFactory.getInstance().create(selectorNode.getPrimaryKey(),
                     selectorBooleanTypePK, leftSelectorNodePK, rightSelectorNodePK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
+            sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
                     selectorNodeBoolean.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
@@ -2819,7 +2819,7 @@ public class SelectorControl
     public void deleteSelectorNodeBoolean(SelectorNodeBoolean selectorNodeBoolean, BasePK deletedBy) {
         selectorNodeBoolean.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(selectorNodeBoolean.getSelectorNode().getLastDetail().getSelectorPK(),
+        sendEvent(selectorNodeBoolean.getSelectorNode().getLastDetail().getSelectorPK(),
                 EventTypes.MODIFY, selectorNodeBoolean.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
@@ -2832,7 +2832,7 @@ public class SelectorControl
         SelectorNodeWorkflowStep selectorNodeWorkflowStep = SelectorNodeWorkflowStepFactory.getInstance().create(session,
                 selectorNode, workflowStep, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
+        sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
                 selectorNodeWorkflowStep.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return selectorNodeWorkflowStep;
@@ -2940,7 +2940,7 @@ public class SelectorControl
             selectorNodeWorkflowStep = SelectorNodeWorkflowStepFactory.getInstance().create(selectorNode.getPrimaryKey(),
                     workflowStepPK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
+            sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
                     selectorNodeWorkflowStep.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
@@ -2948,7 +2948,7 @@ public class SelectorControl
     public void deleteSelectorNodeWorkflowStep(SelectorNodeWorkflowStep selectorNodeWorkflowStep, BasePK deletedBy) {
         selectorNodeWorkflowStep.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(selectorNodeWorkflowStep.getSelectorNode().getLastDetail().getSelectorPK(),
+        sendEvent(selectorNodeWorkflowStep.getSelectorNode().getLastDetail().getSelectorPK(),
                 EventTypes.MODIFY, selectorNodeWorkflowStep.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
@@ -2961,7 +2961,7 @@ public class SelectorControl
         SelectorNodeEntityListItem selectorNodeEntityListItem = SelectorNodeEntityListItemFactory.getInstance().create(session,
                 selectorNode, entityListItem, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
+        sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
                 selectorNodeEntityListItem.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return selectorNodeEntityListItem;
@@ -3069,7 +3069,7 @@ public class SelectorControl
             selectorNodeEntityListItem = SelectorNodeEntityListItemFactory.getInstance().create(selectorNode.getPrimaryKey(),
                     entityListItemPK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
+            sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
                     selectorNodeEntityListItem.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
@@ -3077,7 +3077,7 @@ public class SelectorControl
     public void deleteSelectorNodeEntityListItem(SelectorNodeEntityListItem selectorNodeEntityListItem, BasePK deletedBy) {
         selectorNodeEntityListItem.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(selectorNodeEntityListItem.getSelectorNode().getLastDetail().getSelectorPK(),
+        sendEvent(selectorNodeEntityListItem.getSelectorNode().getLastDetail().getSelectorPK(),
                 EventTypes.MODIFY, selectorNodeEntityListItem.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
@@ -3090,7 +3090,7 @@ public class SelectorControl
         SelectorNodeResponsibilityType selectorNodeResponsibilityType = SelectorNodeResponsibilityTypeFactory.getInstance().create(session,
                 selectorNode, responsibilityType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
+        sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
                 selectorNodeResponsibilityType.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return selectorNodeResponsibilityType;
@@ -3198,7 +3198,7 @@ public class SelectorControl
             selectorNodeResponsibilityType = SelectorNodeResponsibilityTypeFactory.getInstance().create(selectorNode.getPrimaryKey(),
                     responsibilityTypePK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
+            sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
                     selectorNodeResponsibilityType.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
@@ -3206,7 +3206,7 @@ public class SelectorControl
     public void deleteSelectorNodeResponsibilityType(SelectorNodeResponsibilityType selectorNodeResponsibilityType, BasePK deletedBy) {
         selectorNodeResponsibilityType.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(selectorNodeResponsibilityType.getSelectorNode().getLastDetail().getSelectorPK(),
+        sendEvent(selectorNodeResponsibilityType.getSelectorNode().getLastDetail().getSelectorPK(),
                 EventTypes.MODIFY, selectorNodeResponsibilityType.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
@@ -3219,7 +3219,7 @@ public class SelectorControl
         SelectorNodeTrainingClass selectorNodeTrainingClass = SelectorNodeTrainingClassFactory.getInstance().create(session,
                 selectorNode, trainingClass, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
+        sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
                 selectorNodeTrainingClass.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return selectorNodeTrainingClass;
@@ -3327,7 +3327,7 @@ public class SelectorControl
             selectorNodeTrainingClass = SelectorNodeTrainingClassFactory.getInstance().create(selectorNode.getPrimaryKey(),
                     trainingClassPK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
+            sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
                     selectorNodeTrainingClass.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
@@ -3335,7 +3335,7 @@ public class SelectorControl
     public void deleteSelectorNodeTrainingClass(SelectorNodeTrainingClass selectorNodeTrainingClass, BasePK deletedBy) {
         selectorNodeTrainingClass.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(selectorNodeTrainingClass.getSelectorNode().getLastDetail().getSelectorPK(),
+        sendEvent(selectorNodeTrainingClass.getSelectorNode().getLastDetail().getSelectorPK(),
                 EventTypes.MODIFY, selectorNodeTrainingClass.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
@@ -3348,7 +3348,7 @@ public class SelectorControl
         SelectorNodeSkillType selectorNodeSkillType = SelectorNodeSkillTypeFactory.getInstance().create(session,
                 selectorNode, skillType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
+        sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
                 selectorNodeSkillType.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return selectorNodeSkillType;
@@ -3456,7 +3456,7 @@ public class SelectorControl
             selectorNodeSkillType = SelectorNodeSkillTypeFactory.getInstance().create(selectorNode.getPrimaryKey(),
                     skillTypePK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
+            sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
                     selectorNodeSkillType.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
@@ -3464,7 +3464,7 @@ public class SelectorControl
     public void deleteSelectorNodeSkillType(SelectorNodeSkillType selectorNodeSkillType, BasePK deletedBy) {
         selectorNodeSkillType.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(selectorNodeSkillType.getSelectorNode().getLastDetail().getSelectorPK(),
+        sendEvent(selectorNodeSkillType.getSelectorNode().getLastDetail().getSelectorPK(),
                 EventTypes.MODIFY, selectorNodeSkillType.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
@@ -3477,7 +3477,7 @@ public class SelectorControl
         SelectorNodeItemCategory selectorNodeItemCategory = SelectorNodeItemCategoryFactory.getInstance().create(session,
                 selectorNode, itemCategory, checkParents, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
+        sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
                 selectorNodeItemCategory.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return selectorNodeItemCategory;
@@ -3586,7 +3586,7 @@ public class SelectorControl
             selectorNodeItemCategory = SelectorNodeItemCategoryFactory.getInstance().create(selectorNode.getPrimaryKey(),
                     itemCategoryPK, checkParents, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
+            sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
                     selectorNodeItemCategory.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
@@ -3594,7 +3594,7 @@ public class SelectorControl
     public void deleteSelectorNodeItemCategory(SelectorNodeItemCategory selectorNodeItemCategory, BasePK deletedBy) {
         selectorNodeItemCategory.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(selectorNodeItemCategory.getSelectorNode().getLastDetail().getSelectorPK(),
+        sendEvent(selectorNodeItemCategory.getSelectorNode().getLastDetail().getSelectorPK(),
                 EventTypes.MODIFY, selectorNodeItemCategory.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
@@ -3607,7 +3607,7 @@ public class SelectorControl
         SelectorNodeItemAccountingCategory selectorNodeItemAccountingCategory = SelectorNodeItemAccountingCategoryFactory.getInstance().create(session,
                 selectorNode, itemAccountingCategory, checkParents, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
+        sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
                 selectorNodeItemAccountingCategory.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return selectorNodeItemAccountingCategory;
@@ -3717,7 +3717,7 @@ public class SelectorControl
             selectorNodeItemAccountingCategory = SelectorNodeItemAccountingCategoryFactory.getInstance().create(selectorNode.getPrimaryKey(),
                     itemAccountingCategoryPK, checkParents, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
+            sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
                     selectorNodeItemAccountingCategory.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
@@ -3726,7 +3726,7 @@ public class SelectorControl
             BasePK deletedBy) {
         selectorNodeItemAccountingCategory.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(selectorNodeItemAccountingCategory.getSelectorNode().getLastDetail().getSelectorPK(),
+        sendEvent(selectorNodeItemAccountingCategory.getSelectorNode().getLastDetail().getSelectorPK(),
                 EventTypes.MODIFY, selectorNodeItemAccountingCategory.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
@@ -3739,7 +3739,7 @@ public class SelectorControl
         SelectorNodeItemPurchasingCategory selectorNodeItemPurchasingCategory = SelectorNodeItemPurchasingCategoryFactory.getInstance().create(session,
                 selectorNode, itemPurchasingCategory, checkParents, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
+        sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
                 selectorNodeItemPurchasingCategory.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return selectorNodeItemPurchasingCategory;
@@ -3849,7 +3849,7 @@ public class SelectorControl
             selectorNodeItemPurchasingCategory = SelectorNodeItemPurchasingCategoryFactory.getInstance().create(selectorNode.getPrimaryKey(),
                     itemPurchasingCategoryPK, checkParents, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
+            sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
                     selectorNodeItemPurchasingCategory.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
@@ -3858,7 +3858,7 @@ public class SelectorControl
             BasePK deletedBy) {
         selectorNodeItemPurchasingCategory.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(selectorNodeItemPurchasingCategory.getSelectorNode().getLastDetail().getSelectorPK(),
+        sendEvent(selectorNodeItemPurchasingCategory.getSelectorNode().getLastDetail().getSelectorPK(),
                 EventTypes.MODIFY, selectorNodeItemPurchasingCategory.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
@@ -3871,7 +3871,7 @@ public class SelectorControl
         SelectorNodeGeoCode selectorNodeGeoCode = SelectorNodeGeoCodeFactory.getInstance().create(session,
                 selectorNode, geoCode, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
+        sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
                 selectorNodeGeoCode.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return selectorNodeGeoCode;
@@ -3987,7 +3987,7 @@ public class SelectorControl
             selectorNodeGeoCode = SelectorNodeGeoCodeFactory.getInstance().create(selectorNode.getPrimaryKey(),
                     geoCodePK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
+            sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
                     selectorNodeGeoCode.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
@@ -3995,7 +3995,7 @@ public class SelectorControl
     public void deleteSelectorNodeGeoCode(SelectorNodeGeoCode selectorNodeGeoCode, BasePK deletedBy) {
         selectorNodeGeoCode.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(selectorNodeGeoCode.getSelectorNode().getLastDetail().getSelectorPK(),
+        sendEvent(selectorNodeGeoCode.getSelectorNode().getLastDetail().getSelectorPK(),
                 EventTypes.MODIFY, selectorNodeGeoCode.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
@@ -4008,7 +4008,7 @@ public class SelectorControl
         SelectorNodePaymentMethod selectorNodePaymentMethod = SelectorNodePaymentMethodFactory.getInstance().create(session,
                 selectorNode, paymentMethod, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
+        sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
                 selectorNodePaymentMethod.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return selectorNodePaymentMethod;
@@ -4116,7 +4116,7 @@ public class SelectorControl
             selectorNodePaymentMethod = SelectorNodePaymentMethodFactory.getInstance().create(selectorNode.getPrimaryKey(),
                     paymentMethodPK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
+            sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
                     selectorNodePaymentMethod.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
@@ -4124,7 +4124,7 @@ public class SelectorControl
     public void deleteSelectorNodePaymentMethod(SelectorNodePaymentMethod selectorNodePaymentMethod, BasePK deletedBy) {
         selectorNodePaymentMethod.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(selectorNodePaymentMethod.getSelectorNode().getLastDetail().getSelectorPK(),
+        sendEvent(selectorNodePaymentMethod.getSelectorNode().getLastDetail().getSelectorPK(),
                 EventTypes.MODIFY, selectorNodePaymentMethod.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
@@ -4137,7 +4137,7 @@ public class SelectorControl
         SelectorNodePaymentProcessor selectorNodePaymentProcessor = SelectorNodePaymentProcessorFactory.getInstance().create(session,
                 selectorNode, paymentProcessor, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
+        sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
                 selectorNodePaymentProcessor.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return selectorNodePaymentProcessor;
@@ -4245,7 +4245,7 @@ public class SelectorControl
             selectorNodePaymentProcessor = SelectorNodePaymentProcessorFactory.getInstance().create(selectorNode.getPrimaryKey(),
                     paymentProcessorPK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
+            sendEvent(selectorNode.getLastDetail().getSelectorPK(), EventTypes.MODIFY,
                     selectorNodePaymentProcessor.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
@@ -4253,7 +4253,7 @@ public class SelectorControl
     public void deleteSelectorNodePaymentProcessor(SelectorNodePaymentProcessor selectorNodePaymentProcessor, BasePK deletedBy) {
         selectorNodePaymentProcessor.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(selectorNodePaymentProcessor.getSelectorNode().getLastDetail().getSelectorPK(),
+        sendEvent(selectorNodePaymentProcessor.getSelectorNode().getLastDetail().getSelectorPK(),
                 EventTypes.MODIFY, selectorNodePaymentProcessor.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     

@@ -72,7 +72,7 @@ public class GetFilterStepCommand
         var filterStep = FilterStepLogic.getInstance().getFilterStepByUniversalSpec(this, form, true);
 
         if(filterStep != null) {
-            sendEventUsingNames(filterStep.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+            sendEvent(filterStep.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return filterStep;

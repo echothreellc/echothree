@@ -70,7 +70,7 @@ public class OfferItemControl
     public OfferItem createOfferItem(Offer offer, Item item, BasePK createdBy) {
         OfferItem offerItem = OfferItemFactory.getInstance().create(offer, item, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(offerItem.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(offerItem.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return offerItem;
     }
@@ -217,7 +217,7 @@ public class OfferItemControl
         offerItem.setThruTime(session.START_TIME_LONG);
         offerItem.store();
 
-        sendEventUsingNames(offerItem.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(offerItem.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     // --------------------------------------------------------------------------------
@@ -230,7 +230,7 @@ public class OfferItemControl
         OfferItemPrice offerItemPrice = OfferItemPriceFactory.getInstance().create(offerItem, inventoryCondition, unitOfMeasureType, currency,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(offerItem.getPrimaryKey(), EventTypes.MODIFY, offerItemPrice.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(offerItem.getPrimaryKey(), EventTypes.MODIFY, offerItemPrice.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return offerItemPrice;
     }
@@ -490,7 +490,7 @@ public class OfferItemControl
             deleteOfferItemVariablePrice(offerItemVariablePrice, deletedBy);
         }
 
-        sendEventUsingNames(offerItem.getPrimaryKey(), EventTypes.MODIFY, offerItemPrice.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(offerItem.getPrimaryKey(), EventTypes.MODIFY, offerItemPrice.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     // --------------------------------------------------------------------------------
@@ -502,7 +502,7 @@ public class OfferItemControl
         OfferItemFixedPrice offerItemFixedPrice = OfferItemFixedPriceFactory.getInstance().create(offerItemPrice,
                 unitPrice, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(offerItemPrice.getOfferItemPK(), EventTypes.MODIFY, offerItemFixedPrice.getPrimaryKey(),
+        sendEvent(offerItemPrice.getOfferItemPK(), EventTypes.MODIFY, offerItemFixedPrice.getPrimaryKey(),
                 EventTypes.CREATE, createdBy);
 
         return offerItemFixedPrice;
@@ -579,7 +579,7 @@ public class OfferItemControl
             offerItemFixedPrice = OfferItemFixedPriceFactory.getInstance().create(offerItemPricePK, unitPrice,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(offerItemFixedPrice.getOfferItemPrice().getOfferItemPK(), EventTypes.MODIFY,
+            sendEvent(offerItemFixedPrice.getOfferItemPrice().getOfferItemPK(), EventTypes.MODIFY,
                     offerItemFixedPrice.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
 
@@ -590,7 +590,7 @@ public class OfferItemControl
         offerItemFixedPrice.setThruTime(session.START_TIME_LONG);
         offerItemFixedPrice.store();
 
-        sendEventUsingNames(offerItemFixedPrice.getOfferItemPrice().getOfferItemPK(), EventTypes.MODIFY,
+        sendEvent(offerItemFixedPrice.getOfferItemPrice().getOfferItemPK(), EventTypes.MODIFY,
                 offerItemFixedPrice.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
@@ -604,7 +604,7 @@ public class OfferItemControl
         OfferItemVariablePrice offerItemVariablePrice = OfferItemVariablePriceFactory.getInstance().create(offerItemPrice, minimumUnitPrice, maximumUnitPrice,
                 unitPriceIncrement, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(offerItemPrice.getOfferItemPK(), EventTypes.MODIFY, offerItemVariablePrice.getPrimaryKey(),
+        sendEvent(offerItemPrice.getOfferItemPK(), EventTypes.MODIFY, offerItemVariablePrice.getPrimaryKey(),
                 EventTypes.CREATE, createdBy);
 
         return offerItemVariablePrice;
@@ -683,7 +683,7 @@ public class OfferItemControl
             offerItemVariablePrice = OfferItemVariablePriceFactory.getInstance().create(offerItemPricePK, maximumUnitPrice,
                     minimumUnitPrice, unitPriceIncrement, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(offerItemVariablePrice.getOfferItemPrice().getOfferItemPK(), EventTypes.MODIFY,
+            sendEvent(offerItemVariablePrice.getOfferItemPrice().getOfferItemPK(), EventTypes.MODIFY,
                     offerItemVariablePrice.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
 
@@ -694,7 +694,7 @@ public class OfferItemControl
         offerItemVariablePrice.setThruTime(session.START_TIME_LONG);
         offerItemVariablePrice.store();
 
-        sendEventUsingNames(offerItemVariablePrice.getOfferItemPrice().getOfferItemPK(), EventTypes.MODIFY,
+        sendEvent(offerItemVariablePrice.getOfferItemPrice().getOfferItemPK(), EventTypes.MODIFY,
                 offerItemVariablePrice.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 

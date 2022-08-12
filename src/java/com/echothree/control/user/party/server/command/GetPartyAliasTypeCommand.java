@@ -79,7 +79,7 @@ public class GetPartyAliasTypeCommand
             if(partyAliasType != null) {
                 result.setPartyAliasType(partyControl.getPartyAliasTypeTransfer(getUserVisit(), partyAliasType));
 
-                sendEventUsingNames(partyAliasType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+                sendEvent(partyAliasType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownPartyAliasTypeName.name(), partyTypeName, partyAliasTypeName);
             }

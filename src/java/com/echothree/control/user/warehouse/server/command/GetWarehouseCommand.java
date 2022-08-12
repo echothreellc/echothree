@@ -91,7 +91,7 @@ public class GetWarehouseCommand
             if(!hasExecutionErrors()) {
                 result.setWarehouse(warehouseControl.getWarehouseTransfer(getUserVisit(), warehouse));
                 
-                sendEventUsingNames(warehouse.getPartyPK(), EventTypes.READ, null, null, getPartyPK());
+                sendEvent(warehouse.getPartyPK(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
