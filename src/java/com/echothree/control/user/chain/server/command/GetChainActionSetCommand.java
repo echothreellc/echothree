@@ -91,7 +91,7 @@ public class GetChainActionSetCommand
                     if(chainActionSet != null) {
                         result.setChainActionSet(chainControl.getChainActionSetTransfer(getUserVisit(), chainActionSet));
 
-                        sendEventUsingNames(chainActionSet.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                        sendEventUsingNames(chainActionSet.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.UnknownChainActionSetName.name(), chainKindName, chainTypeName, chainName, chainActionSetName);
                     }

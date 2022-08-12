@@ -58,7 +58,7 @@ public class GetUserVisitGroupCommand
         if(userVisitGroup != null) {
             result.setUserVisitGroup(userControl.getUserVisitGroupTransfer(getUserVisit(), userVisitGroup));
             
-            sendEventUsingNames(userVisitGroup.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEventUsingNames(userVisitGroup.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownUserVisitGroupName.name(), userVisitGroupName);
         }

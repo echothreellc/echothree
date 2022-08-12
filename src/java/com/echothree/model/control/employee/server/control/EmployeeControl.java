@@ -237,7 +237,7 @@ public class EmployeeControl
         responsibilityType.setLastDetail(responsibilityTypeDetail);
         responsibilityType.store();
         
-        sendEventUsingNames(responsibilityType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(responsibilityType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return responsibilityType;
     }
@@ -434,7 +434,7 @@ public class EmployeeControl
             responsibilityType.setActiveDetail(responsibilityTypeDetail);
             responsibilityType.setLastDetail(responsibilityTypeDetail);
             
-            sendEventUsingNames(responsibilityTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(responsibilityTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -468,7 +468,7 @@ public class EmployeeControl
             }
         }
         
-        sendEventUsingNames(responsibilityType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(responsibilityType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -480,7 +480,7 @@ public class EmployeeControl
         ResponsibilityTypeDescription responsibilityTypeDescription = ResponsibilityTypeDescriptionFactory.getInstance().create(session,
                 responsibilityType, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(responsibilityType.getPrimaryKey(), EventTypes.MODIFY.name(), responsibilityTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(responsibilityType.getPrimaryKey(), EventTypes.MODIFY, responsibilityTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return responsibilityTypeDescription;
     }
@@ -619,14 +619,14 @@ public class EmployeeControl
             responsibilityTypeDescription = ResponsibilityTypeDescriptionFactory.getInstance().create(responsibilityType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(responsibilityType.getPrimaryKey(), EventTypes.MODIFY.name(), responsibilityTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(responsibilityType.getPrimaryKey(), EventTypes.MODIFY, responsibilityTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteResponsibilityTypeDescription(ResponsibilityTypeDescription responsibilityTypeDescription, BasePK deletedBy) {
         responsibilityTypeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(responsibilityTypeDescription.getResponsibilityTypePK(), EventTypes.MODIFY.name(), responsibilityTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(responsibilityTypeDescription.getResponsibilityTypePK(), EventTypes.MODIFY, responsibilityTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -665,7 +665,7 @@ public class EmployeeControl
         skillType.setLastDetail(skillTypeDetail);
         skillType.store();
         
-        sendEventUsingNames(skillType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(skillType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return skillType;
     }
@@ -861,7 +861,7 @@ public class EmployeeControl
             skillType.setActiveDetail(skillTypeDetail);
             skillType.setLastDetail(skillTypeDetail);
             
-            sendEventUsingNames(skillTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(skillTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -895,7 +895,7 @@ public class EmployeeControl
             }
         }
         
-        sendEventUsingNames(skillType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(skillType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -907,7 +907,7 @@ public class EmployeeControl
         SkillTypeDescription skillTypeDescription = SkillTypeDescriptionFactory.getInstance().create(session,
                 skillType, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(skillType.getPrimaryKey(), EventTypes.MODIFY.name(), skillTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(skillType.getPrimaryKey(), EventTypes.MODIFY, skillTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return skillTypeDescription;
     }
@@ -1046,14 +1046,14 @@ public class EmployeeControl
             skillTypeDescription = SkillTypeDescriptionFactory.getInstance().create(skillType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(skillType.getPrimaryKey(), EventTypes.MODIFY.name(), skillTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(skillType.getPrimaryKey(), EventTypes.MODIFY, skillTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteSkillTypeDescription(SkillTypeDescription skillTypeDescription, BasePK deletedBy) {
         skillTypeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(skillTypeDescription.getSkillTypePK(), EventTypes.MODIFY.name(), skillTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(skillTypeDescription.getSkillTypePK(), EventTypes.MODIFY, skillTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -1093,7 +1093,7 @@ public class EmployeeControl
         leaveType.setLastDetail(leaveTypeDetail);
         leaveType.store();
 
-        sendEventUsingNames(leaveType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(leaveType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return leaveType;
     }
@@ -1293,7 +1293,7 @@ public class EmployeeControl
             leaveType.setActiveDetail(leaveTypeDetail);
             leaveType.setLastDetail(leaveTypeDetail);
 
-            sendEventUsingNames(leaveTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(leaveTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -1326,7 +1326,7 @@ public class EmployeeControl
             }
         }
 
-        sendEventUsingNames(leaveType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(leaveType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     // --------------------------------------------------------------------------------
@@ -1338,7 +1338,7 @@ public class EmployeeControl
         LeaveTypeDescription leaveTypeDescription = LeaveTypeDescriptionFactory.getInstance().create(leaveType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(leaveType.getPrimaryKey(), EventTypes.MODIFY.name(), leaveTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(leaveType.getPrimaryKey(), EventTypes.MODIFY, leaveTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return leaveTypeDescription;
     }
@@ -1463,14 +1463,14 @@ public class EmployeeControl
             leaveTypeDescription = LeaveTypeDescriptionFactory.getInstance().create(leaveType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(leaveType.getPrimaryKey(), EventTypes.MODIFY.name(), leaveTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(leaveType.getPrimaryKey(), EventTypes.MODIFY, leaveTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteLeaveTypeDescription(LeaveTypeDescription leaveTypeDescription, BasePK deletedBy) {
         leaveTypeDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(leaveTypeDescription.getLeaveTypePK(), EventTypes.MODIFY.name(), leaveTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(leaveTypeDescription.getLeaveTypePK(), EventTypes.MODIFY, leaveTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -1510,7 +1510,7 @@ public class EmployeeControl
         leaveReason.setLastDetail(leaveReasonDetail);
         leaveReason.store();
 
-        sendEventUsingNames(leaveReason.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(leaveReason.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return leaveReason;
     }
@@ -1710,7 +1710,7 @@ public class EmployeeControl
             leaveReason.setActiveDetail(leaveReasonDetail);
             leaveReason.setLastDetail(leaveReasonDetail);
 
-            sendEventUsingNames(leaveReasonPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(leaveReasonPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -1743,7 +1743,7 @@ public class EmployeeControl
             }
         }
 
-        sendEventUsingNames(leaveReason.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(leaveReason.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     // --------------------------------------------------------------------------------
@@ -1755,7 +1755,7 @@ public class EmployeeControl
         LeaveReasonDescription leaveReasonDescription = LeaveReasonDescriptionFactory.getInstance().create(leaveReason,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(leaveReason.getPrimaryKey(), EventTypes.MODIFY.name(), leaveReasonDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(leaveReason.getPrimaryKey(), EventTypes.MODIFY, leaveReasonDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return leaveReasonDescription;
     }
@@ -1880,14 +1880,14 @@ public class EmployeeControl
             leaveReasonDescription = LeaveReasonDescriptionFactory.getInstance().create(leaveReason, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(leaveReason.getPrimaryKey(), EventTypes.MODIFY.name(), leaveReasonDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(leaveReason.getPrimaryKey(), EventTypes.MODIFY, leaveReasonDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteLeaveReasonDescription(LeaveReasonDescription leaveReasonDescription, BasePK deletedBy) {
         leaveReasonDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(leaveReasonDescription.getLeaveReasonPK(), EventTypes.MODIFY.name(), leaveReasonDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(leaveReasonDescription.getLeaveReasonPK(), EventTypes.MODIFY, leaveReasonDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -1925,8 +1925,8 @@ public class EmployeeControl
         leave.store();
 
         LeavePK leavePK = leave.getPrimaryKey();
-        sendEventUsingNames(leavePK, EventTypes.CREATE.name(), null, null, createdBy);
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.TOUCH.name(), leavePK, EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(leavePK, EventTypes.CREATE, null, null, createdBy);
+        sendEventUsingNames(party.getPrimaryKey(), EventTypes.TOUCH, leavePK, EventTypes.CREATE, createdBy);
 
         return leave;
     }
@@ -2211,8 +2211,8 @@ public class EmployeeControl
             leave.setActiveDetail(leaveDetail);
             leave.setLastDetail(leaveDetail);
 
-            sendEventUsingNames(leavePK, EventTypes.MODIFY.name(), null, null, updatedBy);
-            sendEventUsingNames(partyPK, EventTypes.TOUCH.name(), leavePK, EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(leavePK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEventUsingNames(partyPK, EventTypes.TOUCH, leavePK, EventTypes.MODIFY, updatedBy);
         }
     }
 
@@ -2223,8 +2223,8 @@ public class EmployeeControl
         leave.setActiveDetail(null);
 
         LeavePK leavePK = leave.getPrimaryKey();
-        sendEventUsingNames(leavePK, EventTypes.DELETE.name(), null, null, deletedBy);
-        sendEventUsingNames(leaveDetail.getParty().getPrimaryKey(), EventTypes.TOUCH.name(), leavePK, EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(leavePK, EventTypes.DELETE, null, null, deletedBy);
+        sendEventUsingNames(leaveDetail.getParty().getPrimaryKey(), EventTypes.TOUCH, leavePK, EventTypes.DELETE, deletedBy);
     }
 
     public void deleteLeaves(List<Leave> leaves, BasePK deletedBy) {
@@ -2272,7 +2272,7 @@ public class EmployeeControl
         terminationReason.setLastDetail(terminationReasonDetail);
         terminationReason.store();
         
-        sendEventUsingNames(terminationReason.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(terminationReason.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return terminationReason;
     }
@@ -2469,7 +2469,7 @@ public class EmployeeControl
             terminationReason.setActiveDetail(terminationReasonDetail);
             terminationReason.setLastDetail(terminationReasonDetail);
             
-            sendEventUsingNames(terminationReasonPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(terminationReasonPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -2503,7 +2503,7 @@ public class EmployeeControl
             }
         }
         
-        sendEventUsingNames(terminationReason.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(terminationReason.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -2515,7 +2515,7 @@ public class EmployeeControl
         TerminationReasonDescription terminationReasonDescription = TerminationReasonDescriptionFactory.getInstance().create(session,
                 terminationReason, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(terminationReason.getPrimaryKey(), EventTypes.MODIFY.name(), terminationReasonDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(terminationReason.getPrimaryKey(), EventTypes.MODIFY, terminationReasonDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return terminationReasonDescription;
     }
@@ -2654,14 +2654,14 @@ public class EmployeeControl
             terminationReasonDescription = TerminationReasonDescriptionFactory.getInstance().create(terminationReason, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(terminationReason.getPrimaryKey(), EventTypes.MODIFY.name(), terminationReasonDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(terminationReason.getPrimaryKey(), EventTypes.MODIFY, terminationReasonDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteTerminationReasonDescription(TerminationReasonDescription terminationReasonDescription, BasePK deletedBy) {
         terminationReasonDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(terminationReasonDescription.getTerminationReasonPK(), EventTypes.MODIFY.name(), terminationReasonDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(terminationReasonDescription.getTerminationReasonPK(), EventTypes.MODIFY, terminationReasonDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -2700,7 +2700,7 @@ public class EmployeeControl
         terminationType.setLastDetail(terminationTypeDetail);
         terminationType.store();
         
-        sendEventUsingNames(terminationType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(terminationType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return terminationType;
     }
@@ -2897,7 +2897,7 @@ public class EmployeeControl
             terminationType.setActiveDetail(terminationTypeDetail);
             terminationType.setLastDetail(terminationTypeDetail);
             
-            sendEventUsingNames(terminationTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(terminationTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -2931,7 +2931,7 @@ public class EmployeeControl
             }
         }
         
-        sendEventUsingNames(terminationType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(terminationType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -2943,7 +2943,7 @@ public class EmployeeControl
         TerminationTypeDescription terminationTypeDescription = TerminationTypeDescriptionFactory.getInstance().create(session,
                 terminationType, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(terminationType.getPrimaryKey(), EventTypes.MODIFY.name(), terminationTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(terminationType.getPrimaryKey(), EventTypes.MODIFY, terminationTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return terminationTypeDescription;
     }
@@ -3082,14 +3082,14 @@ public class EmployeeControl
             terminationTypeDescription = TerminationTypeDescriptionFactory.getInstance().create(terminationType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(terminationType.getPrimaryKey(), EventTypes.MODIFY.name(), terminationTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(terminationType.getPrimaryKey(), EventTypes.MODIFY, terminationTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteTerminationTypeDescription(TerminationTypeDescription terminationTypeDescription, BasePK deletedBy) {
         terminationTypeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(terminationTypeDescription.getTerminationTypePK(), EventTypes.MODIFY.name(), terminationTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(terminationTypeDescription.getTerminationTypePK(), EventTypes.MODIFY, terminationTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -3127,8 +3127,8 @@ public class EmployeeControl
         employment.store();
 
         EmploymentPK employmentPK = employment.getPrimaryKey();
-        sendEventUsingNames(employmentPK, EventTypes.CREATE.name(), null, null, createdBy);
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.TOUCH.name(), employmentPK, EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(employmentPK, EventTypes.CREATE, null, null, createdBy);
+        sendEventUsingNames(party.getPrimaryKey(), EventTypes.TOUCH, employmentPK, EventTypes.CREATE, createdBy);
 
         return employment;
     }
@@ -3377,8 +3377,8 @@ public class EmployeeControl
             employment.setActiveDetail(employmentDetail);
             employment.setLastDetail(employmentDetail);
 
-            sendEventUsingNames(employmentPK, EventTypes.MODIFY.name(), null, null, updatedBy);
-            sendEventUsingNames(partyPK, EventTypes.TOUCH.name(), employmentPK, EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(employmentPK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEventUsingNames(partyPK, EventTypes.TOUCH, employmentPK, EventTypes.MODIFY, updatedBy);
         }
     }
 
@@ -3389,8 +3389,8 @@ public class EmployeeControl
         employment.setActiveDetail(null);
 
         EmploymentPK employmentPK = employment.getPrimaryKey();
-        sendEventUsingNames(employmentPK, EventTypes.DELETE.name(), null, null, deletedBy);
-        sendEventUsingNames(employmentDetail.getParty().getPrimaryKey(), EventTypes.TOUCH.name(), employmentPK, EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(employmentPK, EventTypes.DELETE, null, null, deletedBy);
+        sendEventUsingNames(employmentDetail.getParty().getPrimaryKey(), EventTypes.TOUCH, employmentPK, EventTypes.DELETE, deletedBy);
     }
 
     public void deleteEmployments(List<Employment> employments, BasePK deletedBy) {
@@ -3439,7 +3439,7 @@ public class EmployeeControl
         employeeType.setLastDetail(employeeTypeDetail);
         employeeType.store();
         
-        sendEventUsingNames(employeeType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(employeeType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return employeeType;
     }
@@ -3640,7 +3640,7 @@ public class EmployeeControl
             employeeType.setActiveDetail(employeeTypeDetail);
             employeeType.setLastDetail(employeeTypeDetail);
             
-            sendEventUsingNames(employeeTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(employeeTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -3673,7 +3673,7 @@ public class EmployeeControl
             }
         }
         
-        sendEventUsingNames(employeeType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(employeeType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -3686,7 +3686,7 @@ public class EmployeeControl
                 language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(employeeType.getPrimaryKey(), EventTypes.MODIFY.name(), employeeTypeDescription.getPrimaryKey(),
+        sendEventUsingNames(employeeType.getPrimaryKey(), EventTypes.MODIFY, employeeTypeDescription.getPrimaryKey(),
                 null, createdBy);
         
         return employeeTypeDescription;
@@ -3831,7 +3831,7 @@ public class EmployeeControl
             employeeTypeDescription = EmployeeTypeDescriptionFactory.getInstance().create(employeeType, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(employeeType.getPrimaryKey(), EventTypes.MODIFY.name(), employeeTypeDescription.getPrimaryKey(),
+            sendEventUsingNames(employeeType.getPrimaryKey(), EventTypes.MODIFY, employeeTypeDescription.getPrimaryKey(),
                     null, updatedBy);
         }
     }
@@ -3839,7 +3839,7 @@ public class EmployeeControl
     public void deleteEmployeeTypeDescription(EmployeeTypeDescription employeeTypeDescription, BasePK deletedBy) {
         employeeTypeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(employeeTypeDescription.getEmployeeTypePK(), EventTypes.MODIFY.name(),
+        sendEventUsingNames(employeeTypeDescription.getEmployeeTypePK(), EventTypes.MODIFY,
                 employeeTypeDescription.getPrimaryKey(), null, deletedBy);
     }
     
@@ -3859,7 +3859,7 @@ public class EmployeeControl
         PartyEmployee partyEmployee = PartyEmployeeFactory.getInstance().create(party, partyEmployeeName, employeeType,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), partyEmployee.getPrimaryKey(), null, createdBy);
+        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY, partyEmployee.getPrimaryKey(), null, createdBy);
         
         return partyEmployee;
     }
@@ -4072,14 +4072,14 @@ public class EmployeeControl
             partyEmployee = PartyEmployeeFactory.getInstance().create(partyPK, partyEmployeeName, employeeTypePK, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(partyPK, EventTypes.MODIFY.name(), partyEmployee.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(partyPK, EventTypes.MODIFY, partyEmployee.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deletePartyEmployee(PartyEmployee partyEmployee, BasePK deletedBy) {
         partyEmployee.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(partyEmployee.getPartyPK(), EventTypes.MODIFY.name(), partyEmployee.getPrimaryKey(), null, deletedBy);
+        sendEventUsingNames(partyEmployee.getPartyPK(), EventTypes.MODIFY, partyEmployee.getPrimaryKey(), null, deletedBy);
     }
     
     public void deletePartyEmployeeByParty(Party party, BasePK deletedBy) {
@@ -4098,7 +4098,7 @@ public class EmployeeControl
         PartyResponsibility partyResponsibility = PartyResponsibilityFactory.getInstance().create(party, responsibilityType,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), partyResponsibility.getPrimaryKey(), null, createdBy);
+        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY, partyResponsibility.getPrimaryKey(), null, createdBy);
         
         return partyResponsibility;
     }
@@ -4262,7 +4262,7 @@ public class EmployeeControl
     public void deletePartyResponsibility(PartyResponsibility partyResponsibility, BasePK deletedBy) {
         partyResponsibility.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(partyResponsibility.getPartyPK(), EventTypes.MODIFY.name(), partyResponsibility.getPrimaryKey(), null, deletedBy);
+        sendEventUsingNames(partyResponsibility.getPartyPK(), EventTypes.MODIFY, partyResponsibility.getPrimaryKey(), null, deletedBy);
     }
     
     public void deletePartyResponsibilityByParty(Party party, BasePK deletedBy) {
@@ -4289,7 +4289,7 @@ public class EmployeeControl
         PartySkill partySkill = PartySkillFactory.getInstance().create(party, skillType,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), partySkill.getPrimaryKey(), null, createdBy);
+        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY, partySkill.getPrimaryKey(), null, createdBy);
         
         return partySkill;
     }
@@ -4453,7 +4453,7 @@ public class EmployeeControl
     public void deletePartySkill(PartySkill partySkill, BasePK deletedBy) {
         partySkill.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(partySkill.getPartyPK(), EventTypes.MODIFY.name(), partySkill.getPrimaryKey(), null, deletedBy);
+        sendEventUsingNames(partySkill.getPartyPK(), EventTypes.MODIFY, partySkill.getPrimaryKey(), null, deletedBy);
     }
     
     public void deletePartySkillByParty(Party party, BasePK deletedBy) {

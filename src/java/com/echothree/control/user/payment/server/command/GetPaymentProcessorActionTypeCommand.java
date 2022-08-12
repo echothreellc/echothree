@@ -59,7 +59,7 @@ public class GetPaymentProcessorActionTypeCommand
         PaymentProcessorActionType paymentProcessorActionType = PaymentProcessorActionTypeLogic.getInstance().getPaymentProcessorActionTypeByUniversalSpec(this, form, true);
 
         if(paymentProcessorActionType != null) {
-            sendEventUsingNames(paymentProcessorActionType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEventUsingNames(paymentProcessorActionType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return paymentProcessorActionType;

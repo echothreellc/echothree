@@ -160,7 +160,7 @@ public class PrinterControl
         printerGroup.setLastDetail(printerGroupDetail);
         printerGroup.store();
 
-        sendEventUsingNames(printerGroup.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(printerGroup.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return printerGroup;
     }
@@ -361,7 +361,7 @@ public class PrinterControl
             printerGroup.setActiveDetail(printerGroupDetail);
             printerGroup.setLastDetail(printerGroupDetail);
 
-            sendEventUsingNames(printerGroupPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(printerGroupPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -426,7 +426,7 @@ public class PrinterControl
             }
         }
 
-        sendEventUsingNames(printerGroup.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(printerGroup.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     // --------------------------------------------------------------------------------
@@ -438,7 +438,7 @@ public class PrinterControl
         PrinterGroupDescription printerGroupDescription = PrinterGroupDescriptionFactory.getInstance().create(printerGroup,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(printerGroup.getPrimaryKey(), EventTypes.MODIFY.name(), printerGroupDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(printerGroup.getPrimaryKey(), EventTypes.MODIFY, printerGroupDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return printerGroupDescription;
     }
@@ -563,14 +563,14 @@ public class PrinterControl
             printerGroupDescription = PrinterGroupDescriptionFactory.getInstance().create(printerGroup, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(printerGroup.getPrimaryKey(), EventTypes.MODIFY.name(), printerGroupDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(printerGroup.getPrimaryKey(), EventTypes.MODIFY, printerGroupDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deletePrinterGroupDescription(PrinterGroupDescription printerGroupDescription, BasePK deletedBy) {
         printerGroupDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(printerGroupDescription.getPrinterGroupPK(), EventTypes.MODIFY.name(), printerGroupDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(printerGroupDescription.getPrinterGroupPK(), EventTypes.MODIFY, printerGroupDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -598,7 +598,7 @@ public class PrinterControl
         printer.setLastDetail(printerDetail);
         printer.store();
 
-        sendEventUsingNames(printer.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(printer.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return printer;
     }
@@ -792,7 +792,7 @@ public class PrinterControl
             printer.setActiveDetail(printerDetail);
             printer.setLastDetail(printerDetail);
 
-            sendEventUsingNames(printerPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(printerPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -832,7 +832,7 @@ public class PrinterControl
         printer.setActiveDetail(null);
         printer.store();
 
-        sendEventUsingNames(printer.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(printer.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deletePrinters(List<Printer> printers, BasePK deletedBy) {
@@ -853,7 +853,7 @@ public class PrinterControl
         PrinterDescription printerDescription = PrinterDescriptionFactory.getInstance().create(printer, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(printer.getPrimaryKey(), EventTypes.MODIFY.name(), printerDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(printer.getPrimaryKey(), EventTypes.MODIFY, printerDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return printerDescription;
     }
@@ -978,14 +978,14 @@ public class PrinterControl
             printerDescription = PrinterDescriptionFactory.getInstance().create(printer, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(printer.getPrimaryKey(), EventTypes.MODIFY.name(), printerDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(printer.getPrimaryKey(), EventTypes.MODIFY, printerDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deletePrinterDescription(PrinterDescription printerDescription, BasePK deletedBy) {
         printerDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(printerDescription.getPrinterPK(), EventTypes.MODIFY.name(), printerDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(printerDescription.getPrinterPK(), EventTypes.MODIFY, printerDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     public void deletePrinterDescriptionsByPrinter(Printer printer, BasePK deletedBy) {
@@ -1021,7 +1021,7 @@ public class PrinterControl
         printerGroupJob.setLastDetail(printerGroupJobDetail);
         printerGroupJob.store();
 
-        sendEventUsingNames(printerGroupJob.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(printerGroupJob.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return printerGroupJob;
     }
@@ -1293,7 +1293,7 @@ public class PrinterControl
             printerGroupJob.setActiveDetail(printerGroupJobDetail);
             printerGroupJob.setLastDetail(printerGroupJobDetail);
 
-            sendEventUsingNames(printerGroupJobPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(printerGroupJobPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -1351,7 +1351,7 @@ public class PrinterControl
         printerGroupJob.setActiveDetail(null);
         printerGroupJob.store();
 
-        sendEventUsingNames(printerGroupJob.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(printerGroupJob.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deletePrinterGroupJobs(List<PrinterGroupJob> printerGroupJobs, BasePK deletedBy) {
@@ -1411,7 +1411,7 @@ public class PrinterControl
         printerGroupUseType.setLastDetail(printerGroupUseTypeDetail);
         printerGroupUseType.store();
 
-        sendEventUsingNames(printerGroupUseType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(printerGroupUseType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return printerGroupUseType;
     }
@@ -1611,7 +1611,7 @@ public class PrinterControl
             printerGroupUseType.setActiveDetail(printerGroupUseTypeDetail);
             printerGroupUseType.setLastDetail(printerGroupUseTypeDetail);
 
-            sendEventUsingNames(printerGroupUseTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(printerGroupUseTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -1645,7 +1645,7 @@ public class PrinterControl
             }
         }
 
-        sendEventUsingNames(printerGroupUseType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(printerGroupUseType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     // --------------------------------------------------------------------------------
@@ -1657,7 +1657,7 @@ public class PrinterControl
         PrinterGroupUseTypeDescription printerGroupUseTypeDescription = PrinterGroupUseTypeDescriptionFactory.getInstance().create(printerGroupUseType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(printerGroupUseType.getPrimaryKey(), EventTypes.MODIFY.name(), printerGroupUseTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(printerGroupUseType.getPrimaryKey(), EventTypes.MODIFY, printerGroupUseTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return printerGroupUseTypeDescription;
     }
@@ -1782,14 +1782,14 @@ public class PrinterControl
             printerGroupUseTypeDescription = PrinterGroupUseTypeDescriptionFactory.getInstance().create(printerGroupUseType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(printerGroupUseType.getPrimaryKey(), EventTypes.MODIFY.name(), printerGroupUseTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(printerGroupUseType.getPrimaryKey(), EventTypes.MODIFY, printerGroupUseTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deletePrinterGroupUseTypeDescription(PrinterGroupUseTypeDescription printerGroupUseTypeDescription, BasePK deletedBy) {
         printerGroupUseTypeDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(printerGroupUseTypeDescription.getPrinterGroupUseTypePK(), EventTypes.MODIFY.name(), printerGroupUseTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(printerGroupUseTypeDescription.getPrinterGroupUseTypePK(), EventTypes.MODIFY, printerGroupUseTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -1809,7 +1809,7 @@ public class PrinterControl
         PartyPrinterGroupUse partyPrinterGroupUse = PartyPrinterGroupUseFactory.getInstance().create(party, printerGroupUseType, printerGroup,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), partyPrinterGroupUse.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY, partyPrinterGroupUse.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return partyPrinterGroupUse;
     }
@@ -1999,14 +1999,14 @@ public class PrinterControl
             partyPrinterGroupUse = PartyPrinterGroupUseFactory.getInstance().create(partyPK, printerGroupUseTypePK,
                     printerGroupPK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(partyPK, EventTypes.MODIFY.name(), partyPrinterGroupUse.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(partyPK, EventTypes.MODIFY, partyPrinterGroupUse.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deletePartyPrinterGroupUse(PartyPrinterGroupUse partyPrinterGroupUse, BasePK deletedBy) {
         partyPrinterGroupUse.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(partyPrinterGroupUse.getPartyPK(), EventTypes.MODIFY.name(), partyPrinterGroupUse.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(partyPrinterGroupUse.getPartyPK(), EventTypes.MODIFY, partyPrinterGroupUse.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     public void deletePartyPrinterGroupUses(List<PartyPrinterGroupUse> partyPrinterGroupUses, BasePK deletedBy) {

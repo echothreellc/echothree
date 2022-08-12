@@ -69,7 +69,7 @@ public class GetPaymentProcessorTypeCodeTypeCommand
                 form.getPaymentProcessorTypeName(), form.getPaymentProcessorTypeCodeTypeName());
 
         if(paymentProcessorTypeCodeType != null) {
-            sendEventUsingNames(paymentProcessorTypeCodeType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEventUsingNames(paymentProcessorTypeCodeType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return paymentProcessorTypeCodeType;

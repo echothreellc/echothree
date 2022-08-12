@@ -138,7 +138,7 @@ public class AssociateControl
         associateProgram.setLastDetail(associateProgramDetail);
         associateProgram.store();
         
-        sendEventUsingNames(associateProgram.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(associateProgram.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return associateProgram;
     }
@@ -340,7 +340,7 @@ public class AssociateControl
         associateProgram.setLastDetail(associateProgramDetail);
         associateProgram.store();
         
-        sendEventUsingNames(associateProgramPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+        sendEventUsingNames(associateProgramPK, EventTypes.MODIFY, null, null, updatedBy);
     }
     
     public void updateAssociateProgramFromValue(AssociateProgramDetailValue associateProgramDetailValue, BasePK updatedBy) {
@@ -373,7 +373,7 @@ public class AssociateControl
             }
         }
         
-        sendEventUsingNames(associateProgram.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(associateProgram.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -385,7 +385,7 @@ public class AssociateControl
         AssociateProgramDescription associateProgramDescription = AssociateProgramDescriptionFactory.getInstance().create(associateProgram,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(associateProgram.getPrimaryKey(), EventTypes.MODIFY.name(), associateProgramDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(associateProgram.getPrimaryKey(), EventTypes.MODIFY, associateProgramDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return associateProgramDescription;
     }
@@ -524,14 +524,14 @@ public class AssociateControl
             associateProgramDescription = AssociateProgramDescriptionFactory.getInstance().create(associateProgram, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(associateProgram.getPrimaryKey(), EventTypes.MODIFY.name(), associateProgramDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(associateProgram.getPrimaryKey(), EventTypes.MODIFY, associateProgramDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteAssociateProgramDescription(AssociateProgramDescription associateProgramDescription, BasePK deletedBy) {
         associateProgramDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(associateProgramDescription.getAssociateProgramPK(), EventTypes.MODIFY.name(), associateProgramDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(associateProgramDescription.getAssociateProgramPK(), EventTypes.MODIFY, associateProgramDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -560,7 +560,7 @@ public class AssociateControl
         associate.setLastDetail(associateDetail);
         associate.store();
         
-        sendEventUsingNames(associate.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(associate.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return associate;
     }
@@ -726,7 +726,7 @@ public class AssociateControl
         associate.setLastDetail(associateDetail);
         associate.store();
         
-        sendEventUsingNames(associatePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+        sendEventUsingNames(associatePK, EventTypes.MODIFY, null, null, updatedBy);
     }
     
     public void deleteAssociate(Associate associate, BasePK deletedBy) {
@@ -738,7 +738,7 @@ public class AssociateControl
         associate.setActiveDetail(null);
         associate.store();
         
-        sendEventUsingNames(associate.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(associate.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteAssociates(List<Associate> associates, BasePK deletedBy) {
@@ -781,7 +781,7 @@ public class AssociateControl
         associatePartyContactMechanism.setLastDetail(associatePartyContactMechanismDetail);
         associatePartyContactMechanism.store();
         
-        sendEventUsingNames(associatePartyContactMechanism.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(associatePartyContactMechanism.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return associatePartyContactMechanism;
     }
@@ -1056,7 +1056,7 @@ public class AssociateControl
         associatePartyContactMechanism.setLastDetail(associatePartyContactMechanismDetail);
         associatePartyContactMechanism.store();
         
-        sendEventUsingNames(associatePartyContactMechanismPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+        sendEventUsingNames(associatePartyContactMechanismPK, EventTypes.MODIFY, null, null, updatedBy);
     }
     
     public void updateAssociatePartyContactMechanismFromValue(AssociatePartyContactMechanismDetailValue associatePartyContactMechanismDetailValue, BasePK updatedBy) {
@@ -1089,7 +1089,7 @@ public class AssociateControl
             }
         }
         
-        sendEventUsingNames(associatePartyContactMechanism.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(associatePartyContactMechanism.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteAssociatePartyContactMechanisms(List<AssociatePartyContactMechanism> associatePartyContactMechanisms, BasePK deletedBy) {
@@ -1135,7 +1135,7 @@ public class AssociateControl
         associateReferral.setLastDetail(associateReferralDetail);
         associateReferral.store();
         
-        sendEventUsingNames(associateReferral.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(associateReferral.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return associateReferral;
     }
@@ -1352,7 +1352,7 @@ public class AssociateControl
         associateReferral.setLastDetail(associateReferralDetail);
         associateReferral.store();
         
-        sendEventUsingNames(associateReferralPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+        sendEventUsingNames(associateReferralPK, EventTypes.MODIFY, null, null, updatedBy);
     }
     
     public void deleteAssociateReferral(AssociateReferral associateReferral, BasePK deletedBy) {
@@ -1361,7 +1361,7 @@ public class AssociateControl
         associateReferral.setActiveDetail(null);
         associateReferral.store();
         
-        sendEventUsingNames(associateReferral.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(associateReferral.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteAssociateReferrals(List<AssociateReferral> associateReferrals, BasePK deletedBy) {

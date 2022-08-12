@@ -73,7 +73,7 @@ public class GetHarmonizedTariffScheduleCodeUseTypeCommand
         if(harmonizedTariffScheduleCodeUseType != null) {
             result.setHarmonizedTariffScheduleCodeUseType(itemControl.getHarmonizedTariffScheduleCodeUseTypeTransfer(getUserVisit(), harmonizedTariffScheduleCodeUseType));
             
-            sendEventUsingNames(harmonizedTariffScheduleCodeUseType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEventUsingNames(harmonizedTariffScheduleCodeUseType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownHarmonizedTariffScheduleCodeUseTypeName.name(), harmonizedTariffScheduleCodeUseTypeName);
         }

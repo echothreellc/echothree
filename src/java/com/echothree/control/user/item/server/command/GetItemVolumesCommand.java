@@ -63,7 +63,7 @@ public class GetItemVolumesCommand
             result.setItem(itemControl.getItemTransfer(userVisit, item));
             result.setItemVolumes(itemControl.getItemVolumeTransfersByItem(userVisit, item));
             
-            sendEventUsingNames(item.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEventUsingNames(item.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownItemName.name(), itemName);
         }

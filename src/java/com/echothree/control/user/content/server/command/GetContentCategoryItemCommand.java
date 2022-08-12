@@ -161,7 +161,7 @@ public class GetContentCategoryItemCommand
                                                 AssociateReferralLogic.getInstance().handleAssociateReferral(session, this, form, userVisit, contentCategory.getPrimaryKey(), partyPK);
 
                                                 if(!hasExecutionErrors()) {
-                                                    sendEventUsingNames(contentCategory.getPrimaryKey(), EventTypes.READ.name(), null, null, partyPK);
+                                                    sendEventUsingNames(contentCategory.getPrimaryKey(), EventTypes.READ, null, null, partyPK);
                                                 }
                                             } else {
                                                 if(contentCategoryName == null) {

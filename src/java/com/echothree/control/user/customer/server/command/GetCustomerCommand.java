@@ -112,7 +112,7 @@ public class GetCustomerCommand
         }
 
         if(customer != null) {
-            sendEventUsingNames(customer.getPartyPK(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEventUsingNames(customer.getPartyPK(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return customer;

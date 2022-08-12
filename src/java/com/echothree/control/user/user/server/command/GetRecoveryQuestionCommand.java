@@ -104,7 +104,7 @@ public class GetRecoveryQuestionCommand
                 }
 
                 if(recoveryQuestion != null) {
-                    sendEventUsingNames(recoveryQuestion.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                    sendEventUsingNames(recoveryQuestion.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                 }
             } else {
                 Party party = null;
@@ -187,7 +187,7 @@ public class GetRecoveryQuestionCommand
             result.setRecoveryQuestion(userControl.getRecoveryQuestionTransfer(getUserVisit(), recoveryQuestion));
                 
             if(self != null) {
-                sendEventUsingNames(recoveryQuestion.getPrimaryKey(), EventTypes.READ.name(), null, null, self.getPrimaryKey());
+                sendEventUsingNames(recoveryQuestion.getPrimaryKey(), EventTypes.READ, null, null, self.getPrimaryKey());
             }
         }
 

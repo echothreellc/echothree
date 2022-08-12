@@ -74,7 +74,7 @@ public class GetCompanyCommand
         var partyCompany = CompanyLogic.getInstance().getPartyCompanyByName(this, companyName, partyName, form, true);
 
         if(partyCompany != null) {
-            sendEventUsingNames(partyCompany.getPartyPK(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEventUsingNames(partyCompany.getPartyPK(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return partyCompany;

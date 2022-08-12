@@ -147,7 +147,7 @@ public class WorkRequirementControl
         workRequirementType.setLastDetail(workRequirementTypeDetail);
         workRequirementType.store();
         
-        sendEventUsingNames(workRequirementType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(workRequirementType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return workRequirementType;
     }
@@ -320,7 +320,7 @@ public class WorkRequirementControl
             workRequirementType.setActiveDetail(workRequirementTypeDetail);
             workRequirementType.setLastDetail(workRequirementTypeDetail);
             
-            sendEventUsingNames(workRequirementTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(workRequirementTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -333,7 +333,7 @@ public class WorkRequirementControl
         workRequirementType.setActiveDetail(null);
         workRequirementType.store();
         
-        sendEventUsingNames(workRequirementType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(workRequirementType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteWorkRequirementTypesByWorkEffortType(WorkEffortType workEffortType, BasePK deletedBy) {
@@ -361,7 +361,7 @@ public class WorkRequirementControl
         WorkRequirementTypeDescription workRequirementTypeDescription = WorkRequirementTypeDescriptionFactory.getInstance().create(workRequirementType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(workRequirementType.getPrimaryKey(), EventTypes.MODIFY.name(), workRequirementTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(workRequirementType.getPrimaryKey(), EventTypes.MODIFY, workRequirementTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return workRequirementTypeDescription;
     }
@@ -501,14 +501,14 @@ public class WorkRequirementControl
             workRequirementTypeDescription = WorkRequirementTypeDescriptionFactory.getInstance().create(workRequirementType, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(workRequirementType.getPrimaryKey(), EventTypes.MODIFY.name(), workRequirementTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(workRequirementType.getPrimaryKey(), EventTypes.MODIFY, workRequirementTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteWorkRequirementTypeDescription(WorkRequirementTypeDescription workRequirementTypeDescription, BasePK deletedBy) {
         workRequirementTypeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(workRequirementTypeDescription.getWorkRequirementTypePK(), EventTypes.MODIFY.name(), workRequirementTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(workRequirementTypeDescription.getWorkRequirementTypePK(), EventTypes.MODIFY, workRequirementTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteWorkRequirementTypeDescriptionsByWorkRequirementType(WorkRequirementType workRequirementType, BasePK deletedBy) {
@@ -538,7 +538,7 @@ public class WorkRequirementControl
         workRequirementScope.setLastDetail(workRequirementScopeDetail);
         workRequirementScope.store();
         
-        sendEventUsingNames(workRequirementScope.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(workRequirementScope.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return workRequirementScope;
     }
@@ -761,7 +761,7 @@ public class WorkRequirementControl
             workRequirementScope.setActiveDetail(workRequirementScopeDetail);
             workRequirementScope.setLastDetail(workRequirementScopeDetail);
             
-            sendEventUsingNames(workRequirementScopePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(workRequirementScopePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -773,7 +773,7 @@ public class WorkRequirementControl
         workRequirementScope.setActiveDetail(null);
         workRequirementScope.store();
         
-        sendEventUsingNames(workRequirementScope.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(workRequirementScope.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteWorkRequirementScopesByWorkRequirementType(WorkRequirementType workRequirementType, BasePK deletedBy) {
@@ -810,7 +810,7 @@ public class WorkRequirementControl
         workRequirement.setLastDetail(workRequirementDetail);
         workRequirement.store();
         
-        sendEventUsingNames(workRequirement.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(workRequirement.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         createWorkRequirementStatus(workRequirement);
         
@@ -1021,7 +1021,7 @@ public class WorkRequirementControl
             workRequirement.setActiveDetail(workRequirementDetail);
             workRequirement.setLastDetail(workRequirementDetail);
             
-            sendEventUsingNames(workRequirementPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(workRequirementPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -1035,7 +1035,7 @@ public class WorkRequirementControl
         workRequirement.setActiveDetail(null);
         workRequirement.store();
         
-        sendEventUsingNames(workRequirement.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(workRequirement.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteWorkRequirementsByWorkRequirementScope(WorkRequirementScope workRequirementScope, BasePK deletedBy) {
@@ -1124,7 +1124,7 @@ public class WorkRequirementControl
         workAssignment.setLastDetail(workAssignmentDetail);
         workAssignment.store();
 
-        sendEventUsingNames(workAssignment.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(workAssignment.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return workAssignment;
     }
@@ -1326,7 +1326,7 @@ public class WorkRequirementControl
             workAssignment.setActiveDetail(workAssignmentDetail);
             workAssignment.setLastDetail(workAssignmentDetail);
 
-            sendEventUsingNames(workAssignmentPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(workAssignmentPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -1336,7 +1336,7 @@ public class WorkRequirementControl
         workAssignment.setActiveDetail(null);
         workAssignment.store();
 
-        sendEventUsingNames(workAssignment.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(workAssignment.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteWorkAssignments(List<WorkAssignment> workAssignments, BasePK deletedBy) {
@@ -1377,7 +1377,7 @@ public class WorkRequirementControl
         workTime.setLastDetail(workTimeDetail);
         workTime.store();
 
-        sendEventUsingNames(workTime.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(workTime.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return workTime;
     }
@@ -1573,7 +1573,7 @@ public class WorkRequirementControl
             workTime.setActiveDetail(workTimeDetail);
             workTime.setLastDetail(workTimeDetail);
 
-            sendEventUsingNames(workTimePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(workTimePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -1585,7 +1585,7 @@ public class WorkRequirementControl
         workTime.setActiveDetail(null);
         workTime.store();
 
-        sendEventUsingNames(workTime.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(workTime.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteWorkTimes(List<WorkTime> workTimes, BasePK deletedBy) {

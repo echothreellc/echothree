@@ -71,7 +71,7 @@ public class GetItemAccountingCategoryCommand
         var returnKind = ItemAccountingCategoryLogic.getInstance().getItemAccountingCategoryByUniversalSpec(this, form, true);
 
         if(returnKind != null) {
-            sendEventUsingNames(returnKind.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEventUsingNames(returnKind.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return returnKind;

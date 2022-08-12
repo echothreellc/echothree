@@ -82,7 +82,7 @@ public class GetApplicationCommand
 
             if(!hasExecutionErrors()) {
                 result.setApplication(coreControl.getApplicationTransfer(getUserVisit(), application));
-                sendEventUsingNames(application.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEventUsingNames(application.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());

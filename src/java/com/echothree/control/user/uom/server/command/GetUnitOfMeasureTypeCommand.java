@@ -56,7 +56,7 @@ public class GetUnitOfMeasureTypeCommand
                 form.getUnitOfMeasureKindName(), form.getUnitOfMeasureTypeName());
         
         if(!hasExecutionErrors()) {
-            sendEventUsingNames(unitOfMeasureType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEventUsingNames(unitOfMeasureType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
         
         return unitOfMeasureType;

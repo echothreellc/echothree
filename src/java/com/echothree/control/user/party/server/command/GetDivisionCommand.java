@@ -74,7 +74,7 @@ public class GetDivisionCommand
         var partyDivision = DivisionLogic.getInstance().getPartyDivisionByName(this, companyName, divisionName, partyName, form, true);
 
         if(partyDivision != null) {
-            sendEventUsingNames(partyDivision.getPartyPK(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEventUsingNames(partyDivision.getPartyPK(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return partyDivision;

@@ -98,7 +98,7 @@ public class GetSearchUseTypeCommand
 
             if(!hasExecutionErrors()) {
                 result.setSearchUseType(searchControl.getSearchUseTypeTransfer(getUserVisit(), searchUseType));
-                sendEventUsingNames(searchUseType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEventUsingNames(searchUseType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());

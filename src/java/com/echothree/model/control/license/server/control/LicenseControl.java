@@ -96,7 +96,7 @@ public class LicenseControl
         licenseType.setLastDetail(licenseTypeDetail);
         licenseType.store();
 
-        sendEventUsingNames(licenseType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(licenseType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return licenseType;
     }
@@ -300,7 +300,7 @@ public class LicenseControl
             licenseType.setActiveDetail(licenseTypeDetail);
             licenseType.setLastDetail(licenseTypeDetail);
 
-            sendEventUsingNames(licenseTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(licenseTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -337,7 +337,7 @@ public class LicenseControl
             }
         }
 
-        sendEventUsingNames(licenseType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(licenseType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteLicenseType(LicenseType licenseType, BasePK deletedBy) {
@@ -360,7 +360,7 @@ public class LicenseControl
         LicenseTypeDescription licenseTypeDescription = LicenseTypeDescriptionFactory.getInstance().create(licenseType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(licenseType.getPrimaryKey(), EventTypes.MODIFY.name(), licenseTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(licenseType.getPrimaryKey(), EventTypes.MODIFY, licenseTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return licenseTypeDescription;
     }
@@ -482,14 +482,14 @@ public class LicenseControl
             licenseTypeDescription = LicenseTypeDescriptionFactory.getInstance().create(licenseType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(licenseType.getPrimaryKey(), EventTypes.MODIFY.name(), licenseTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(licenseType.getPrimaryKey(), EventTypes.MODIFY, licenseTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteLicenseTypeDescription(LicenseTypeDescription licenseTypeDescription, BasePK deletedBy) {
         licenseTypeDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(licenseTypeDescription.getLicenseTypePK(), EventTypes.MODIFY.name(), licenseTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(licenseTypeDescription.getLicenseTypePK(), EventTypes.MODIFY, licenseTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 

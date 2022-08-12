@@ -72,7 +72,7 @@ public class GetRatingTypeCommand
                 if(ratingType != null) {
                     result.setRatingType(ratingControl.getRatingTypeTransfer(getUserVisit(), ratingType));
 
-                    sendEventUsingNames(ratingType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                    sendEventUsingNames(ratingType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownRatingTypeName.name(), ratingTypeName);
                 }

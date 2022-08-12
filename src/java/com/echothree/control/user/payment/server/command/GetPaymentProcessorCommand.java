@@ -72,7 +72,7 @@ public class GetPaymentProcessorCommand
         PaymentProcessor paymentProcessor = PaymentProcessorLogic.getInstance().getPaymentProcessorByUniversalSpec(this, form, true);
 
         if(paymentProcessor != null) {
-            sendEventUsingNames(paymentProcessor.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEventUsingNames(paymentProcessor.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return paymentProcessor;

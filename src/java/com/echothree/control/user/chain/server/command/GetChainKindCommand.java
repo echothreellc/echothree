@@ -73,7 +73,7 @@ public class GetChainKindCommand
         if(chainKind != null) {
             result.setChainKind(chainControl.getChainKindTransfer(getUserVisit(), chainKind));
             
-            sendEventUsingNames(chainKind.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEventUsingNames(chainKind.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownChainKindName.name(), chainKindName);
         }

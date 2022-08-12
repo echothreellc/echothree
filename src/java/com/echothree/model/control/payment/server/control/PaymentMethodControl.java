@@ -94,7 +94,7 @@ public class PaymentMethodControl
         paymentMethod.setLastDetail(paymentMethodDetail);
         paymentMethod.store();
         
-        sendEventUsingNames(paymentMethod.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(paymentMethod.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return paymentMethod;
     }
@@ -380,7 +380,7 @@ public class PaymentMethodControl
             paymentMethod.setActiveDetail(paymentMethodDetail);
             paymentMethod.setLastDetail(paymentMethodDetail);
             
-            sendEventUsingNames(paymentMethodPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(paymentMethodPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -420,7 +420,7 @@ public class PaymentMethodControl
             }
         }
         
-        sendEventUsingNames(paymentMethod.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(paymentMethod.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deletePaymentMethodsByPaymentProcessor(PaymentProcessor paymentProcessor, BasePK deletedBy) {
@@ -440,8 +440,8 @@ public class PaymentMethodControl
         PaymentMethodDescription paymentMethodDescription = PaymentMethodDescriptionFactory.getInstance().create(session,
                 paymentMethod, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(paymentMethod.getPrimaryKey(), EventTypes.MODIFY.name(), paymentMethodDescription.getPrimaryKey(),
-                EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(paymentMethod.getPrimaryKey(), EventTypes.MODIFY, paymentMethodDescription.getPrimaryKey(),
+                EventTypes.CREATE, createdBy);
         
         return paymentMethodDescription;
     }
@@ -581,16 +581,16 @@ public class PaymentMethodControl
             paymentMethodDescription = PaymentMethodDescriptionFactory.getInstance().create(paymentMethod, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(paymentMethod.getPrimaryKey(), EventTypes.MODIFY.name(),
-                    paymentMethodDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(paymentMethod.getPrimaryKey(), EventTypes.MODIFY,
+                    paymentMethodDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deletePaymentMethodDescription(PaymentMethodDescription paymentMethodDescription, BasePK deletedBy) {
         paymentMethodDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(paymentMethodDescription.getPaymentMethodPK(), EventTypes.MODIFY.name(),
-                paymentMethodDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(paymentMethodDescription.getPaymentMethodPK(), EventTypes.MODIFY,
+                paymentMethodDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deletePaymentMethodDescriptionsByPaymentMethod(PaymentMethod paymentMethod, BasePK deletedBy) {
@@ -609,8 +609,8 @@ public class PaymentMethodControl
         PaymentMethodCheck paymentMethodCheck = PaymentMethodCheckFactory.getInstance().create(paymentMethod, holdDays,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(paymentMethod.getPrimaryKey(), EventTypes.MODIFY.name(), paymentMethodCheck.getPrimaryKey(),
-                EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(paymentMethod.getPrimaryKey(), EventTypes.MODIFY, paymentMethodCheck.getPrimaryKey(),
+                EventTypes.CREATE, createdBy);
         
         return paymentMethodCheck;
     }
@@ -673,16 +673,16 @@ public class PaymentMethodControl
             paymentMethodCheck = PaymentMethodCheckFactory.getInstance().create(paymentMethodPK, holdDays,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(paymentMethodPK, EventTypes.MODIFY.name(), paymentMethodCheck.getPrimaryKey(),
-                    EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(paymentMethodPK, EventTypes.MODIFY, paymentMethodCheck.getPrimaryKey(),
+                    EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deletePaymentMethodCheck(PaymentMethodCheck paymentMethodCheck, BasePK deletedBy) {
         paymentMethodCheck.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(paymentMethodCheck.getPaymentMethodPK(), EventTypes.MODIFY.name(),
-                paymentMethodCheck.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(paymentMethodCheck.getPaymentMethodPK(), EventTypes.MODIFY,
+                paymentMethodCheck.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -700,8 +700,8 @@ public class PaymentMethodControl
                 securityCodeValidationPattern, retainCreditCard, retainSecurityCode, requestBilling, requireBilling, requestIssuer, requireIssuer,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(paymentMethod.getPrimaryKey(), EventTypes.MODIFY.name(), paymentMethodCreditCard.getPrimaryKey(),
-                EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(paymentMethod.getPrimaryKey(), EventTypes.MODIFY, paymentMethodCreditCard.getPrimaryKey(),
+                EventTypes.CREATE, createdBy);
         
         return paymentMethodCreditCard;
     }
@@ -782,16 +782,16 @@ public class PaymentMethodControl
                     securityCodeValidationPattern, retainCreditCard, retainSecurityCode, requestBilling, requireBilling, requestIssuer, requireIssuer,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(paymentMethodPK, EventTypes.MODIFY.name(), paymentMethodCreditCard.getPrimaryKey(),
-                    EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(paymentMethodPK, EventTypes.MODIFY, paymentMethodCreditCard.getPrimaryKey(),
+                    EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deletePaymentMethodCreditCard(PaymentMethodCreditCard paymentMethodCreditCard, BasePK deletedBy) {
         paymentMethodCreditCard.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(paymentMethodCreditCard.getPaymentMethodPK(), EventTypes.MODIFY.name(),
-                paymentMethodCreditCard.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(paymentMethodCreditCard.getPaymentMethodPK(), EventTypes.MODIFY,
+                paymentMethodCreditCard.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
  }

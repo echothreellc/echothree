@@ -272,7 +272,7 @@ public class AccountingControl
                 defaultFractionDigits, priceUnitFractionDigits, priceLineFractionDigits, costUnitFractionDigits,
                 costLineFractionDigits, minusSign, isDefault, sortOrder);
         
-        sendEventUsingNames(currency.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(currency.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return currency;
     }
@@ -425,7 +425,7 @@ public class AccountingControl
     public CurrencyDescription createCurrencyDescription(Currency currency, Language language, String description, BasePK createdBy) {
         CurrencyDescription currencyDescription = CurrencyDescriptionFactory.getInstance().create(currency, language, description);
         
-        sendEventUsingNames(currency.getPrimaryKey(), EventTypes.MODIFY.name(), currencyDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(currency.getPrimaryKey(), EventTypes.MODIFY, currencyDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return currencyDescription;
     }
@@ -551,7 +551,7 @@ public class AccountingControl
         itemAccountingCategory.setLastDetail(itemAccountingCategoryDetail);
         itemAccountingCategory.store();
         
-        sendEventUsingNames(itemAccountingCategory.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(itemAccountingCategory.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return itemAccountingCategory;
     }
@@ -837,7 +837,7 @@ public class AccountingControl
             itemAccountingCategory.setActiveDetail(itemAccountingCategoryDetail);
             itemAccountingCategory.setLastDetail(itemAccountingCategoryDetail);
             
-            sendEventUsingNames(itemAccountingCategoryPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(itemAccountingCategoryPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -877,7 +877,7 @@ public class AccountingControl
             }
         }
 
-        sendEventUsingNames(itemAccountingCategory.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(itemAccountingCategory.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteItemAccountingCategory(ItemAccountingCategory itemAccountingCategory, BasePK deletedBy) {
@@ -905,7 +905,7 @@ public class AccountingControl
         ItemAccountingCategoryDescription itemAccountingCategoryDescription = ItemAccountingCategoryDescriptionFactory.getInstance().create(itemAccountingCategory, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(itemAccountingCategory.getPrimaryKey(), EventTypes.MODIFY.name(), itemAccountingCategoryDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(itemAccountingCategory.getPrimaryKey(), EventTypes.MODIFY, itemAccountingCategoryDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return itemAccountingCategoryDescription;
     }
@@ -1050,7 +1050,7 @@ public class AccountingControl
             itemAccountingCategoryDescription = ItemAccountingCategoryDescriptionFactory.getInstance().create(itemAccountingCategory, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(itemAccountingCategory.getPrimaryKey(), EventTypes.MODIFY.name(), itemAccountingCategoryDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(itemAccountingCategory.getPrimaryKey(), EventTypes.MODIFY, itemAccountingCategoryDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -1058,7 +1058,7 @@ public class AccountingControl
             BasePK deletedBy) {
         itemAccountingCategoryDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(itemAccountingCategoryDescription.getItemAccountingCategoryPK(), EventTypes.MODIFY.name(), itemAccountingCategoryDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(itemAccountingCategoryDescription.getItemAccountingCategoryPK(), EventTypes.MODIFY, itemAccountingCategoryDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -1228,7 +1228,7 @@ public class AccountingControl
         glAccountClass.setLastDetail(glAccountClassDetail);
         glAccountClass.store();
         
-        sendEventUsingNames(glAccountClass.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(glAccountClass.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return glAccountClass;
     }
@@ -1481,7 +1481,7 @@ public class AccountingControl
             glAccountClass.setActiveDetail(glAccountClassDetail);
             glAccountClass.setLastDetail(glAccountClassDetail);
             
-            sendEventUsingNames(glAccountClassPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(glAccountClassPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -1520,7 +1520,7 @@ public class AccountingControl
             }
         }
 
-        sendEventUsingNames(glAccountClass.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(glAccountClass.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteGlAccountClass(GlAccountClass glAccountClass, BasePK deletedBy) {
@@ -1547,7 +1547,7 @@ public class AccountingControl
         GlAccountClassDescription glAccountClassDescription = GlAccountClassDescriptionFactory.getInstance().create(glAccountClass, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(glAccountClass.getPrimaryKey(), EventTypes.MODIFY.name(), glAccountClassDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(glAccountClass.getPrimaryKey(), EventTypes.MODIFY, glAccountClassDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return glAccountClassDescription;
     }
@@ -1685,14 +1685,14 @@ public class AccountingControl
             glAccountClassDescription = GlAccountClassDescriptionFactory.getInstance().create(glAccountClass, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(glAccountClass.getPrimaryKey(), EventTypes.MODIFY.name(), glAccountClassDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(glAccountClass.getPrimaryKey(), EventTypes.MODIFY, glAccountClassDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteGlAccountClassDescription(GlAccountClassDescription glAccountClassDescription, BasePK deletedBy) {
         glAccountClassDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(glAccountClassDescription.getGlAccountClassPK(), EventTypes.MODIFY.name(), glAccountClassDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(glAccountClassDescription.getGlAccountClassPK(), EventTypes.MODIFY, glAccountClassDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -1734,7 +1734,7 @@ public class AccountingControl
         glAccountCategory.setLastDetail(glAccountCategoryDetail);
         glAccountCategory.store();
         
-        sendEventUsingNames(glAccountCategory.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(glAccountCategory.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return glAccountCategory;
     }
@@ -1987,7 +1987,7 @@ public class AccountingControl
             glAccountCategory.setActiveDetail(glAccountCategoryDetail);
             glAccountCategory.setLastDetail(glAccountCategoryDetail);
             
-            sendEventUsingNames(glAccountCategoryPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(glAccountCategoryPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -2027,7 +2027,7 @@ public class AccountingControl
             }
         }
 
-        sendEventUsingNames(glAccountCategory.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(glAccountCategory.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteGlAccountCategory(GlAccountCategory glAccountCategory, BasePK deletedBy) {
@@ -2054,7 +2054,7 @@ public class AccountingControl
         GlAccountCategoryDescription glAccountCategoryDescription = GlAccountCategoryDescriptionFactory.getInstance().create(glAccountCategory, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(glAccountCategory.getPrimaryKey(), EventTypes.MODIFY.name(), glAccountCategoryDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(glAccountCategory.getPrimaryKey(), EventTypes.MODIFY, glAccountCategoryDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return glAccountCategoryDescription;
     }
@@ -2192,14 +2192,14 @@ public class AccountingControl
             glAccountCategoryDescription = GlAccountCategoryDescriptionFactory.getInstance().create(glAccountCategory, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(glAccountCategory.getPrimaryKey(), EventTypes.MODIFY.name(), glAccountCategoryDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(glAccountCategory.getPrimaryKey(), EventTypes.MODIFY, glAccountCategoryDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteGlAccountCategoryDescription(GlAccountCategoryDescription glAccountCategoryDescription, BasePK deletedBy) {
         glAccountCategoryDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(glAccountCategoryDescription.getGlAccountCategoryPK(), EventTypes.MODIFY.name(), glAccountCategoryDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(glAccountCategoryDescription.getGlAccountCategoryPK(), EventTypes.MODIFY, glAccountCategoryDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -2238,7 +2238,7 @@ public class AccountingControl
         glResourceType.setLastDetail(glResourceTypeDetail);
         glResourceType.store();
         
-        sendEventUsingNames(glResourceType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(glResourceType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return glResourceType;
     }
@@ -2456,7 +2456,7 @@ public class AccountingControl
             glResourceType.setActiveDetail(glResourceTypeDetail);
             glResourceType.setLastDetail(glResourceTypeDetail);
             
-            sendEventUsingNames(glResourceTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(glResourceTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -2490,7 +2490,7 @@ public class AccountingControl
             }
         }
         
-        sendEventUsingNames(glResourceType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(glResourceType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -2501,7 +2501,7 @@ public class AccountingControl
         GlResourceTypeDescription glResourceTypeDescription = GlResourceTypeDescriptionFactory.getInstance().create(glResourceType, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(glResourceType.getPrimaryKey(), EventTypes.MODIFY.name(), glResourceTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(glResourceType.getPrimaryKey(), EventTypes.MODIFY, glResourceTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return glResourceTypeDescription;
     }
@@ -2639,14 +2639,14 @@ public class AccountingControl
             glResourceTypeDescription = GlResourceTypeDescriptionFactory.getInstance().create(glResourceType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(glResourceType.getPrimaryKey(), EventTypes.MODIFY.name(), glResourceTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(glResourceType.getPrimaryKey(), EventTypes.MODIFY, glResourceTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteGlResourceTypeDescription(GlResourceTypeDescription glResourceTypeDescription, BasePK deletedBy) {
         glResourceTypeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(glResourceTypeDescription.getGlResourceTypePK(), EventTypes.MODIFY.name(), glResourceTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(glResourceTypeDescription.getGlResourceTypePK(), EventTypes.MODIFY, glResourceTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -2693,7 +2693,7 @@ public class AccountingControl
         glAccount.setLastDetail(glAccountDetail);
         glAccount.store();
         
-        sendEventUsingNames(glAccount.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(glAccount.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return glAccount;
     }
@@ -3179,7 +3179,7 @@ public class AccountingControl
             glAccount.setActiveDetail(glAccountDetail);
             glAccount.setLastDetail(glAccountDetail);
             
-            sendEventUsingNames(glAccountPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(glAccountPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -3210,7 +3210,7 @@ public class AccountingControl
             }
         }
 
-        sendEventUsingNames(glAccount.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(glAccount.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteGlAccount(GlAccount glAccount, BasePK deletedBy) {
@@ -3249,7 +3249,7 @@ public class AccountingControl
         GlAccountDescription glAccountDescription = GlAccountDescriptionFactory.getInstance().create(glAccount, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(glAccount.getPrimaryKey(), EventTypes.MODIFY.name(), glAccountDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(glAccount.getPrimaryKey(), EventTypes.MODIFY, glAccountDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return glAccountDescription;
     }
@@ -3387,14 +3387,14 @@ public class AccountingControl
             glAccountDescription = GlAccountDescriptionFactory.getInstance().create(glAccount, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(glAccount.getPrimaryKey(), EventTypes.MODIFY.name(), glAccountDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(glAccount.getPrimaryKey(), EventTypes.MODIFY, glAccountDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteGlAccountDescription(GlAccountDescription glAccountDescription, BasePK deletedBy) {
         glAccountDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(glAccountDescription.getGlAccountPK(), EventTypes.MODIFY.name(), glAccountDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(glAccountDescription.getGlAccountPK(), EventTypes.MODIFY, glAccountDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteGlAccountDescriptionsByGlAccount(GlAccount glAccount, BasePK deletedBy) {
@@ -3467,7 +3467,7 @@ public class AccountingControl
         transactionType.setLastDetail(transactionTypeDetail);
         transactionType.store();
         
-        sendEventUsingNames(transactionType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(transactionType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return transactionType;
     }
@@ -3581,7 +3581,7 @@ public class AccountingControl
         transactionType.setActiveDetail(transactionTypeDetail);
         transactionType.setLastDetail(transactionTypeDetail);
 
-        sendEventUsingNames(transactionTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+        sendEventUsingNames(transactionTypePK, EventTypes.MODIFY, null, null, updatedBy);
     }
     
     public void deleteTransactionType(TransactionType transactionType, BasePK deletedBy) {
@@ -3594,7 +3594,7 @@ public class AccountingControl
         transactionType.setActiveDetail(null);
         transactionType.store();
         
-        sendEventUsingNames(transactionType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(transactionType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteTransactionTypes(List<TransactionType> transactionTypes, BasePK deletedBy) {
@@ -3611,7 +3611,7 @@ public class AccountingControl
         TransactionTypeDescription transactionTypeDescription = TransactionTypeDescriptionFactory.getInstance().create(transactionType, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(transactionType.getPrimaryKey(), EventTypes.MODIFY.name(), transactionTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(transactionType.getPrimaryKey(), EventTypes.MODIFY, transactionTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return transactionTypeDescription;
     }
@@ -3749,14 +3749,14 @@ public class AccountingControl
             transactionTypeDescription = TransactionTypeDescriptionFactory.getInstance().create(transactionType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(transactionType.getPrimaryKey(), EventTypes.MODIFY.name(), transactionTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(transactionType.getPrimaryKey(), EventTypes.MODIFY, transactionTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteTransactionTypeDescription(TransactionTypeDescription transactionTypeDescription, BasePK deletedBy) {
         transactionTypeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(transactionTypeDescription.getTransactionTypePK(), EventTypes.MODIFY.name(), transactionTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(transactionTypeDescription.getTransactionTypePK(), EventTypes.MODIFY, transactionTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -3784,7 +3784,7 @@ public class AccountingControl
         transactionGlAccountCategory.setLastDetail(transactionGlAccountCategoryDetail);
         transactionGlAccountCategory.store();
         
-        sendEventUsingNames(transactionGlAccountCategory.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(transactionGlAccountCategory.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return transactionGlAccountCategory;
     }
@@ -3944,7 +3944,7 @@ public class AccountingControl
         transactionGlAccountCategory.setActiveDetail(transactionGlAccountCategoryDetail);
         transactionGlAccountCategory.setLastDetail(transactionGlAccountCategoryDetail);
 
-        sendEventUsingNames(transactionGlAccountCategoryPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+        sendEventUsingNames(transactionGlAccountCategoryPK, EventTypes.MODIFY, null, null, updatedBy);
     }
     
     public void deleteTransactionGlAccountCategory(TransactionGlAccountCategory transactionGlAccountCategory, BasePK deletedBy) {
@@ -3956,7 +3956,7 @@ public class AccountingControl
         transactionGlAccountCategory.setActiveDetail(null);
         transactionGlAccountCategory.store();
         
-        sendEventUsingNames(transactionGlAccountCategory.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(transactionGlAccountCategory.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteTransactionGlAccountCategories(List<TransactionGlAccountCategory> transactionGlAccountCategories, BasePK deletedBy) {
@@ -3978,7 +3978,7 @@ public class AccountingControl
         TransactionGlAccountCategoryDescription transactionGlAccountCategoryDescription = TransactionGlAccountCategoryDescriptionFactory.getInstance().create(transactionGlAccountCategory,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(transactionGlAccountCategory.getPrimaryKey(), EventTypes.MODIFY.name(), transactionGlAccountCategoryDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(transactionGlAccountCategory.getPrimaryKey(), EventTypes.MODIFY, transactionGlAccountCategoryDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return transactionGlAccountCategoryDescription;
     }
@@ -4116,14 +4116,14 @@ public class AccountingControl
             transactionGlAccountCategoryDescription = TransactionGlAccountCategoryDescriptionFactory.getInstance().create(transactionGlAccountCategory, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(transactionGlAccountCategory.getPrimaryKey(), EventTypes.MODIFY.name(), transactionGlAccountCategoryDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(transactionGlAccountCategory.getPrimaryKey(), EventTypes.MODIFY, transactionGlAccountCategoryDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteTransactionGlAccountCategoryDescription(TransactionGlAccountCategoryDescription transactionGlAccountCategoryDescription, BasePK deletedBy) {
         transactionGlAccountCategoryDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(transactionGlAccountCategoryDescription.getTransactionGlAccountCategoryPK(), EventTypes.MODIFY.name(), transactionGlAccountCategoryDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(transactionGlAccountCategoryDescription.getTransactionGlAccountCategoryPK(), EventTypes.MODIFY, transactionGlAccountCategoryDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -4151,7 +4151,7 @@ public class AccountingControl
         transactionEntityRoleType.setLastDetail(transactionEntityRoleTypeDetail);
         transactionEntityRoleType.store();
         
-        sendEventUsingNames(transactionEntityRoleType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(transactionEntityRoleType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return transactionEntityRoleType;
     }
@@ -4354,7 +4354,7 @@ public class AccountingControl
         transactionEntityRoleType.setActiveDetail(transactionEntityRoleTypeDetail);
         transactionEntityRoleType.setLastDetail(transactionEntityRoleTypeDetail);
 
-        sendEventUsingNames(transactionEntityRoleTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+        sendEventUsingNames(transactionEntityRoleTypePK, EventTypes.MODIFY, null, null, updatedBy);
     }
     
     public void deleteTransactionEntityRoleType(TransactionEntityRoleType transactionEntityRoleType, BasePK deletedBy) {
@@ -4365,7 +4365,7 @@ public class AccountingControl
         transactionEntityRoleType.setActiveDetail(null);
         transactionEntityRoleType.store();
         
-        sendEventUsingNames(transactionEntityRoleType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(transactionEntityRoleType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteTransactionEntityRoleTypes(List<TransactionEntityRoleType> transactionEntityRoleTypes, BasePK deletedBy) {
@@ -4390,7 +4390,7 @@ public class AccountingControl
         TransactionEntityRoleTypeDescription transactionEntityRoleTypeDescription = TransactionEntityRoleTypeDescriptionFactory.getInstance().create(transactionEntityRoleType, language,
                 description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(transactionEntityRoleType.getPrimaryKey(), EventTypes.MODIFY.name(), transactionEntityRoleTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(transactionEntityRoleType.getPrimaryKey(), EventTypes.MODIFY, transactionEntityRoleTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return transactionEntityRoleTypeDescription;
     }
@@ -4528,14 +4528,14 @@ public class AccountingControl
             transactionEntityRoleTypeDescription = TransactionEntityRoleTypeDescriptionFactory.getInstance().create(transactionEntityRoleType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(transactionEntityRoleType.getPrimaryKey(), EventTypes.MODIFY.name(), transactionEntityRoleTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(transactionEntityRoleType.getPrimaryKey(), EventTypes.MODIFY, transactionEntityRoleTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteTransactionEntityRoleTypeDescription(TransactionEntityRoleTypeDescription transactionEntityRoleTypeDescription, BasePK deletedBy) {
         transactionEntityRoleTypeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(transactionEntityRoleTypeDescription.getTransactionEntityRoleTypePK(), EventTypes.MODIFY.name(), transactionEntityRoleTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(transactionEntityRoleTypeDescription.getTransactionEntityRoleTypePK(), EventTypes.MODIFY, transactionEntityRoleTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -4554,7 +4554,7 @@ public class AccountingControl
      public TransactionGlAccount createTransactionGlAccount(TransactionGlAccountCategory transactionGlAccountCategory, GlAccount glAccount, BasePK createdBy) {
         TransactionGlAccount transactionGlAccount = TransactionGlAccountFactory.getInstance().create(transactionGlAccountCategory, glAccount, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(transactionGlAccountCategory.getPrimaryKey(), EventTypes.MODIFY.name(), transactionGlAccount.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(transactionGlAccountCategory.getPrimaryKey(), EventTypes.MODIFY, transactionGlAccount.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return transactionGlAccount;
     }
@@ -4662,14 +4662,14 @@ public class AccountingControl
             
             transactionGlAccount = TransactionGlAccountFactory.getInstance().create(transactionGlAccountCategoryPK, glAccountPK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(transactionGlAccountCategoryPK, EventTypes.MODIFY.name(), transactionGlAccount.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(transactionGlAccountCategoryPK, EventTypes.MODIFY, transactionGlAccount.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteTransactionGlAccount(TransactionGlAccount transactionGlAccount, BasePK deletedBy) {
         transactionGlAccount.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(transactionGlAccount.getTransactionGlAccountCategoryPK(), EventTypes.MODIFY.name(), transactionGlAccount.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(transactionGlAccount.getTransactionGlAccountCategoryPK(), EventTypes.MODIFY, transactionGlAccount.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteTransactionGlAccountByTransactionGlAccountCategory(TransactionGlAccountCategory transactionGlAccountCategory, BasePK deletedBy) {
@@ -4762,7 +4762,7 @@ public class AccountingControl
         transactionGroup.setLastDetail(transactionGroupDetail);
         transactionGroup.store();
         
-        sendEventUsingNames(transactionGroup.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(transactionGroup.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return transactionGroup;
     }
@@ -4923,7 +4923,7 @@ public class AccountingControl
         transaction.setLastDetail(transactionDetail);
         transaction.store();
         
-        sendEventUsingNames(transaction.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(transaction.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         createTransactionStatus(transaction);
         
@@ -5070,7 +5070,7 @@ public class AccountingControl
         TransactionGlEntry transactionGlEntry = TransactionGlEntryFactory.getInstance().create(transaction, transactionGlEntrySequence, parentTransactionGlEntry, groupParty,
                 transactionGlAccountCategory, glAccount, originalCurrency, originalAmount, amount, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(transaction.getPrimaryKey(), EventTypes.MODIFY.name(), transactionGlEntry.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(transaction.getPrimaryKey(), EventTypes.MODIFY, transactionGlEntry.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return transactionGlEntry;
     }
@@ -5147,7 +5147,7 @@ public class AccountingControl
         TransactionEntityRole transactionEntityRole = TransactionEntityRoleFactory.getInstance().create(transaction, transactionEntityRoleType, entityInstance, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(transaction.getPrimaryKey(), EventTypes.MODIFY.name(), transactionEntityRole.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(transaction.getPrimaryKey(), EventTypes.MODIFY, transactionEntityRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return transactionEntityRole;
     }
@@ -5276,7 +5276,7 @@ public class AccountingControl
     public void deleteTransactionEntityRole(TransactionEntityRole transactionEntityRole, BasePK deletedBy) {
         transactionEntityRole.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(transactionEntityRole.getTransactionPK(), EventTypes.MODIFY.name(), transactionEntityRole.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(transactionEntityRole.getTransactionPK(), EventTypes.MODIFY, transactionEntityRole.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteTransactionEntityRoles(List<TransactionEntityRole> transactionEntityRoles, BasePK deletedBy) {
@@ -5320,7 +5320,7 @@ public class AccountingControl
         symbolPosition.setLastDetail(symbolPositionDetail);
         symbolPosition.store();
         
-        sendEventUsingNames(symbolPosition.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(symbolPosition.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return symbolPosition;
     }
@@ -5556,7 +5556,7 @@ public class AccountingControl
             symbolPosition.setActiveDetail(symbolPositionDetail);
             symbolPosition.setLastDetail(symbolPositionDetail);
             
-            sendEventUsingNames(symbolPositionPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(symbolPositionPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -5589,7 +5589,7 @@ public class AccountingControl
             }
         }
         
-        sendEventUsingNames(symbolPosition.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(symbolPosition.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -5600,7 +5600,7 @@ public class AccountingControl
         SymbolPositionDescription symbolPositionDescription = SymbolPositionDescriptionFactory.getInstance().create(symbolPosition, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(symbolPosition.getPrimaryKey(), EventTypes.MODIFY.name(), symbolPositionDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(symbolPosition.getPrimaryKey(), EventTypes.MODIFY, symbolPositionDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return symbolPositionDescription;
     }
@@ -5738,14 +5738,14 @@ public class AccountingControl
             symbolPositionDescription = SymbolPositionDescriptionFactory.getInstance().create(symbolPosition, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(symbolPosition.getPrimaryKey(), EventTypes.MODIFY.name(), symbolPositionDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(symbolPosition.getPrimaryKey(), EventTypes.MODIFY, symbolPositionDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteSymbolPositionDescription(SymbolPositionDescription symbolPositionDescription, BasePK deletedBy) {
         symbolPositionDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(symbolPositionDescription.getSymbolPositionPK(), EventTypes.MODIFY.name(), symbolPositionDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(symbolPositionDescription.getSymbolPositionPK(), EventTypes.MODIFY, symbolPositionDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     

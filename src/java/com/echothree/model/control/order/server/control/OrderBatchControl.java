@@ -46,7 +46,7 @@ public class OrderBatchControl
     public OrderBatch createOrderBatch(Batch batch, Currency currency, Long count, Long amount, BasePK createdBy) {
         OrderBatch orderBatch = OrderBatchFactory.getInstance().create(batch, currency, count, amount, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(batch.getPrimaryKey(), EventTypes.MODIFY.name(), orderBatch.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(batch.getPrimaryKey(), EventTypes.MODIFY, orderBatch.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return orderBatch;
     }
@@ -104,14 +104,14 @@ public class OrderBatchControl
 
             orderBatch = OrderBatchFactory.getInstance().create(batchPK, currencyPK, count, amount, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(batchPK, EventTypes.MODIFY.name(), orderBatch.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(batchPK, EventTypes.MODIFY, orderBatch.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteOrderBatch(OrderBatch orderBatch, BasePK deletedBy) {
         orderBatch.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(orderBatch.getBatchPK(), EventTypes.MODIFY.name(), orderBatch.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(orderBatch.getBatchPK(), EventTypes.MODIFY, orderBatch.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     public void deleteOrderBatch(Batch batch, BasePK deletedBy) {

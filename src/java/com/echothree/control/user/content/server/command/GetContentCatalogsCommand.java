@@ -95,7 +95,7 @@ public class GetContentCatalogsCommand
                 if(!hasExecutionErrors()) {
                     contentCatalogs = contentControl.getContentCatalogs(contentCollection);
                     
-                    sendEventUsingNames(contentCollection.getPrimaryKey(), EventTypes.READ.name(), null, null, partyPK);
+                    sendEventUsingNames(contentCollection.getPrimaryKey(), EventTypes.READ, null, null, partyPK);
                 }
             }
         } else {

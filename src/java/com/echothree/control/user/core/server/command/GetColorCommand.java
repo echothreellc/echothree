@@ -77,7 +77,7 @@ public class GetColorCommand
             }
 
             if(color != null) {
-                sendEventUsingNames(color.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEventUsingNames(color.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());

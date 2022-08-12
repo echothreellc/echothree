@@ -79,7 +79,7 @@ public class GetIndexFieldCommand
             if(indexField != null) {
                 result.setIndexField(indexControl.getIndexFieldTransfer(getUserVisit(), indexField));
                 
-                sendEventUsingNames(indexField.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEventUsingNames(indexField.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownIndexFieldName.name(), indexTypeName, indexFieldName);
             }

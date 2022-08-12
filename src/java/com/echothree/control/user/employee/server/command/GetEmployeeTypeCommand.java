@@ -73,7 +73,7 @@ public class GetEmployeeTypeCommand
         if(employeeType != null) {
             result.setEmployeeType(employeeControl.getEmployeeTypeTransfer(getUserVisit(), employeeType));
             
-            sendEventUsingNames(employeeType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEventUsingNames(employeeType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownEmployeeTypeName.name(), employeeTypeName);
         }

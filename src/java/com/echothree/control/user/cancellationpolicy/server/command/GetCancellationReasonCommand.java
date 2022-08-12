@@ -79,7 +79,7 @@ public class GetCancellationReasonCommand
             if(cancellationReason != null) {
                 result.setCancellationReason(cancellationPolicyControl.getCancellationReasonTransfer(getUserVisit(), cancellationReason));
                 
-                sendEventUsingNames(cancellationReason.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEventUsingNames(cancellationReason.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownCancellationReasonName.name(), cancellationReasonName);
             }

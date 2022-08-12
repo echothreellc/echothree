@@ -59,7 +59,7 @@ public class GetWorkRequirementCommand
         if(workRequirement != null) {
             result.setWorkRequirement(workRequirementControl.getWorkRequirementTransfer(getUserVisit(), workRequirement));
             
-            sendEventUsingNames(workRequirement.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEventUsingNames(workRequirement.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownWorkRequirementName.name(), workRequirementName);
         }

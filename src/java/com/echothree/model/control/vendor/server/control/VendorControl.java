@@ -177,7 +177,7 @@ public class VendorControl
         vendorType.setLastDetail(vendorTypeDetail);
         vendorType.store();
         
-        sendEventUsingNames(vendorType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(vendorType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return vendorType;
     }
@@ -394,7 +394,7 @@ public class VendorControl
             vendorType.setActiveDetail(vendorTypeDetail);
             vendorType.setLastDetail(vendorTypeDetail);
             
-            sendEventUsingNames(vendorTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(vendorTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -427,7 +427,7 @@ public class VendorControl
             }
         }
         
-        sendEventUsingNames(vendorType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(vendorType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -440,7 +440,7 @@ public class VendorControl
                 language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(vendorType.getPrimaryKey(), EventTypes.MODIFY.name(), vendorTypeDescription.getPrimaryKey(),
+        sendEventUsingNames(vendorType.getPrimaryKey(), EventTypes.MODIFY, vendorTypeDescription.getPrimaryKey(),
                 null, createdBy);
         
         return vendorTypeDescription;
@@ -586,7 +586,7 @@ public class VendorControl
             vendorTypeDescription = VendorTypeDescriptionFactory.getInstance().create(vendorType, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(vendorType.getPrimaryKey(), EventTypes.MODIFY.name(), vendorTypeDescription.getPrimaryKey(),
+            sendEventUsingNames(vendorType.getPrimaryKey(), EventTypes.MODIFY, vendorTypeDescription.getPrimaryKey(),
                     null, updatedBy);
         }
     }
@@ -594,7 +594,7 @@ public class VendorControl
     public void deleteVendorTypeDescription(VendorTypeDescription vendorTypeDescription, BasePK deletedBy) {
         vendorTypeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(vendorTypeDescription.getVendorTypePK(), EventTypes.MODIFY.name(),
+        sendEventUsingNames(vendorTypeDescription.getVendorTypePK(), EventTypes.MODIFY,
                 vendorTypeDescription.getPrimaryKey(), null, deletedBy);
     }
     
@@ -623,7 +623,7 @@ public class VendorControl
                 requireReference, allowReferenceDuplicates, referenceValidationPattern, vendorItemSelector,
                 vendorItemCostFilter, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), vendor.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY, vendor.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return vendor;
     }
@@ -899,7 +899,7 @@ public class VendorControl
                     allowReferenceDuplicates, referenceValidationPattern, vendorItemSelectorPK, vendorItemCostFilterPK, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(partyPK, EventTypes.MODIFY.name(), vendor.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(partyPK, EventTypes.MODIFY, vendor.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -920,7 +920,7 @@ public class VendorControl
         vendorItem.setLastDetail(vendorItemDetail);
         vendorItem.store();
         
-        sendEventUsingNames(vendorItem.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(vendorItem.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return vendorItem;
     }
@@ -1226,7 +1226,7 @@ public class VendorControl
             vendorItem.setActiveDetail(vendorItemDetail);
             vendorItem.setLastDetail(vendorItemDetail);
             
-            sendEventUsingNames(vendorItemPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(vendorItemPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -1238,7 +1238,7 @@ public class VendorControl
         vendorItem.setActiveDetail(null);
         vendorItem.store();
         
-        sendEventUsingNames(vendorItem.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(vendorItem.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteVendorItems(List<VendorItem> vendorItems, BasePK deletedBy) {
@@ -1264,7 +1264,7 @@ public class VendorControl
         VendorItemCost vendorItemCost = VendorItemCostFactory.getInstance().create(vendorItem, inventoryCondition,
                 unitOfMeasureType, unitCost, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(vendorItem.getPrimaryKey(), EventTypes.MODIFY.name(), vendorItemCost.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(vendorItem.getPrimaryKey(), EventTypes.MODIFY, vendorItemCost.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return vendorItemCost;
     }
@@ -1467,14 +1467,14 @@ public class VendorControl
             vendorItemCost = VendorItemCostFactory.getInstance().create(vendorItemPK, inventoryConditionPK,
                     unitOfMeasureTypePK, unitCost, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(vendorItemPK, EventTypes.MODIFY.name(), vendorItemCost.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(vendorItemPK, EventTypes.MODIFY, vendorItemCost.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteVendorItemCost(VendorItemCost vendorItemCost, BasePK deletedBy) {
         vendorItemCost.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(vendorItemCost.getVendorItemPK(), EventTypes.MODIFY.name(), vendorItemCost.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(vendorItemCost.getVendorItemPK(), EventTypes.MODIFY, vendorItemCost.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteVendorItemCosts(List<VendorItemCost> vendorItemCosts, BasePK deletedBy) {
@@ -1529,7 +1529,7 @@ public class VendorControl
         itemPurchasingCategory.setLastDetail(itemPurchasingCategoryDetail);
         itemPurchasingCategory.store();
         
-        sendEventUsingNames(itemPurchasingCategory.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(itemPurchasingCategory.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return itemPurchasingCategory;
     }
@@ -1809,7 +1809,7 @@ public class VendorControl
             itemPurchasingCategory.setActiveDetail(itemPurchasingCategoryDetail);
             itemPurchasingCategory.setLastDetail(itemPurchasingCategoryDetail);
             
-            sendEventUsingNames(itemPurchasingCategoryPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(itemPurchasingCategoryPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -1847,7 +1847,7 @@ public class VendorControl
             }
         }
 
-        sendEventUsingNames(itemPurchasingCategory.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(itemPurchasingCategory.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteItemPurchasingCategory(ItemPurchasingCategory itemPurchasingCategory, BasePK deletedBy) {
@@ -1874,7 +1874,7 @@ public class VendorControl
         ItemPurchasingCategoryDescription itemPurchasingCategoryDescription = ItemPurchasingCategoryDescriptionFactory.getInstance().create(itemPurchasingCategory, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(itemPurchasingCategory.getPrimaryKey(), EventTypes.MODIFY.name(), itemPurchasingCategoryDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(itemPurchasingCategory.getPrimaryKey(), EventTypes.MODIFY, itemPurchasingCategoryDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return itemPurchasingCategoryDescription;
     }
@@ -2013,14 +2013,14 @@ public class VendorControl
             itemPurchasingCategoryDescription = ItemPurchasingCategoryDescriptionFactory.getInstance().create(itemPurchasingCategory, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(itemPurchasingCategory.getPrimaryKey(), EventTypes.MODIFY.name(), itemPurchasingCategoryDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(itemPurchasingCategory.getPrimaryKey(), EventTypes.MODIFY, itemPurchasingCategoryDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteItemPurchasingCategoryDescription(ItemPurchasingCategoryDescription itemPurchasingCategoryDescription, BasePK deletedBy) {
         itemPurchasingCategoryDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(itemPurchasingCategoryDescription.getItemPurchasingCategoryPK(), EventTypes.MODIFY.name(), itemPurchasingCategoryDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(itemPurchasingCategoryDescription.getItemPurchasingCategoryPK(), EventTypes.MODIFY, itemPurchasingCategoryDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     

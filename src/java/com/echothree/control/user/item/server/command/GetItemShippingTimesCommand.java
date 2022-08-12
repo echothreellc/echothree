@@ -63,7 +63,7 @@ public class GetItemShippingTimesCommand
             result.setItem(itemControl.getItemTransfer(userVisit, item));
             result.setItemShippingTimes(itemControl.getItemShippingTimeTransfersByItem(userVisit, item));
             
-            sendEventUsingNames(item.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEventUsingNames(item.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownItemName.name(), itemName);
         }

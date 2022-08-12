@@ -106,7 +106,7 @@ public class QueueControl
         queueType.setLastDetail(queueTypeDetail);
         queueType.store();
 
-        sendEventUsingNames(queueType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(queueType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return queueType;
     }
@@ -313,7 +313,7 @@ public class QueueControl
             queueType.setActiveDetail(queueTypeDetail);
             queueType.setLastDetail(queueTypeDetail);
 
-            sendEventUsingNames(queueTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(queueTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -351,7 +351,7 @@ public class QueueControl
             }
         }
 
-        sendEventUsingNames(queueType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(queueType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteQueueType(QueueType queueType, BasePK deletedBy) {
@@ -374,7 +374,7 @@ public class QueueControl
         QueueTypeDescription queueTypeDescription = QueueTypeDescriptionFactory.getInstance().create(queueType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(queueType.getPrimaryKey(), EventTypes.MODIFY.name(), queueTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(queueType.getPrimaryKey(), EventTypes.MODIFY, queueTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return queueTypeDescription;
     }
@@ -496,14 +496,14 @@ public class QueueControl
             queueTypeDescription = QueueTypeDescriptionFactory.getInstance().create(queueType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(queueType.getPrimaryKey(), EventTypes.MODIFY.name(), queueTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(queueType.getPrimaryKey(), EventTypes.MODIFY, queueTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteQueueTypeDescription(QueueTypeDescription queueTypeDescription, BasePK deletedBy) {
         queueTypeDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(queueTypeDescription.getQueueTypePK(), EventTypes.MODIFY.name(), queueTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(queueTypeDescription.getQueueTypePK(), EventTypes.MODIFY, queueTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 

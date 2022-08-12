@@ -81,7 +81,7 @@ public class GetHarmonizedTariffScheduleCodeCommand
             if(harmonizedTariffScheduleCode != null) {
                 result.setHarmonizedTariffScheduleCode(itemControl.getHarmonizedTariffScheduleCodeTransfer(getUserVisit(), harmonizedTariffScheduleCode));
                 
-                sendEventUsingNames(harmonizedTariffScheduleCode.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEventUsingNames(harmonizedTariffScheduleCode.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownHarmonizedTariffScheduleCodeName.name(), countryName, harmonizedTariffScheduleCodeName);
             }

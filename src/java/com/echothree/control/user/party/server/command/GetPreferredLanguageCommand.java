@@ -53,7 +53,7 @@ public class GetPreferredLanguageCommand
         Language language = getPreferredLanguage();
 
         result.setPreferredLanguage(partyControl.getLanguageTransfer(getUserVisit(), language));
-        sendEventUsingNames(language.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+        sendEventUsingNames(language.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
 
         return result;
     }

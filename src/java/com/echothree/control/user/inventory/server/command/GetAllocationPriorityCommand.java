@@ -73,7 +73,7 @@ public class GetAllocationPriorityCommand
         if(allocationPriority != null) {
             result.setAllocationPriority(inventoryControl.getAllocationPriorityTransfer(getUserVisit(), allocationPriority));
 
-            sendEventUsingNames(allocationPriority.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEventUsingNames(allocationPriority.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownAllocationPriorityName.name(), allocationPriorityName);
         }

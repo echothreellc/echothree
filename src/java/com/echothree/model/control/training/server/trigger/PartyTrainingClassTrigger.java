@@ -52,7 +52,7 @@ public class PartyTrainingClassTrigger
 
         workflowControl.transitionEntityInWorkflowUsingNames(null, workflowEntityStatus, PartyTrainingClassStatusConstants.WorkflowDestination_PASSED_TO_EXPIRED,
                 trainingClass.getLastDetail().getExpiredRetentionTime(), triggeredBy);
-        coreControl.sendEventUsingNames(partyTrainingClassDetail.getParty().getPrimaryKey(), EventTypes.TOUCH.name(), partyTrainingClass.getPrimaryKey(), EventTypes.MODIFY.name(), triggeredBy);
+        coreControl.sendEventUsingNames(partyTrainingClassDetail.getParty().getPrimaryKey(), EventTypes.TOUCH, partyTrainingClass.getPrimaryKey(), EventTypes.MODIFY, triggeredBy);
 
         // If it is required, then consider creating a new PartyTrainingClass that's assigned to them.
         if(checkTrainingRequired(party, trainingClass)) {

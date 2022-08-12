@@ -79,7 +79,7 @@ public class GetSecurityRoleCommand
             if(securityRole != null) {
                 result.setSecurityRole(securityControl.getSecurityRoleTransfer(getUserVisit(), securityRole));
                 
-                sendEventUsingNames(securityRole.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEventUsingNames(securityRole.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownSecurityRoleName.name(), securityRoleGroupName, securityRoleName);
             }

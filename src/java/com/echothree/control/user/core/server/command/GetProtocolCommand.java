@@ -71,7 +71,7 @@ public class GetProtocolCommand
         if(protocol != null) {
             result.setProtocol(coreControl.getProtocolTransfer(getUserVisit(), protocol));
             
-            sendEventUsingNames(protocol.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEventUsingNames(protocol.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownProtocolName.name(), protocolName);
         }

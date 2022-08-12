@@ -79,7 +79,7 @@ public class GetPicklistAliasTypeCommand
             if(picklistAliasType != null) {
                 result.setPicklistAliasType(picklistControl.getPicklistAliasTypeTransfer(getUserVisit(), picklistAliasType));
 
-                sendEventUsingNames(picklistAliasType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEventUsingNames(picklistAliasType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownPicklistAliasTypeName.name(), picklistTypeName, picklistAliasTypeName);
             }

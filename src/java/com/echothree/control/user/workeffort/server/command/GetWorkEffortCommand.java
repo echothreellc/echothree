@@ -59,7 +59,7 @@ public class GetWorkEffortCommand
         if(workEffort != null) {
             result.setWorkEffort(workEffortControl.getWorkEffortTransfer(getUserVisit(), workEffort));
             
-            sendEventUsingNames(workEffort.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEventUsingNames(workEffort.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownWorkEffortName.name(), workEffortName);
         }

@@ -88,7 +88,7 @@ public class GetTimeZoneCommand
         }
 
         if(timeZone != null) {
-            sendEventUsingNames(timeZone.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEventUsingNames(timeZone.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
         
         return timeZone;

@@ -98,7 +98,7 @@ public class EditGlAccountClassCommand
                         GlAccountClass parentGlAccountClass = glAccountClassDetail.getParentGlAccountClass();
 
                         result.setGlAccountClass(accountingControl.getGlAccountClassTransfer(getUserVisit(), glAccountClass));
-                        sendEventUsingNames(glAccountClass.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                        sendEventUsingNames(glAccountClass.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
 
                         result.setEdit(edit);
                         edit.setGlAccountClassName(glAccountClassDetail.getGlAccountClassName());

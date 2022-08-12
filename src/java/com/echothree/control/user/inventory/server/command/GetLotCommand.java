@@ -73,7 +73,7 @@ public class GetLotCommand
         Lot lot = LotLogic.getInstance().getLotByUniversalSpec(this, form);
 
         if(lot != null) {
-            sendEventUsingNames(lot.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEventUsingNames(lot.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return lot;

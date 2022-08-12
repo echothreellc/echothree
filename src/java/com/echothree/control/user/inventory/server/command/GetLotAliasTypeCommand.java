@@ -73,7 +73,7 @@ public class GetLotAliasTypeCommand
         if(lotAliasType != null) {
             result.setLotAliasType(lotAliasControl.getLotAliasTypeTransfer(getUserVisit(), lotAliasType));
 
-            sendEventUsingNames(lotAliasType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEventUsingNames(lotAliasType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownLotAliasTypeName.name(), lotAliasTypeName);
         }

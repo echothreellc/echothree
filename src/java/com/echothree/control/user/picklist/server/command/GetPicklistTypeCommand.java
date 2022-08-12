@@ -73,7 +73,7 @@ public class GetPicklistTypeCommand
         if(picklistType != null) {
             result.setPicklistType(picklistControl.getPicklistTypeTransfer(getUserVisit(), picklistType));
             
-            sendEventUsingNames(picklistType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEventUsingNames(picklistType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownPicklistTypeName.name(), picklistTypeName);
         }

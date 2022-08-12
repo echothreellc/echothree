@@ -71,7 +71,7 @@ public class GetEditorCommand
         if(editor != null) {
             result.setEditor(coreControl.getEditorTransfer(getUserVisit(), editor));
             
-            sendEventUsingNames(editor.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEventUsingNames(editor.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownEditorName.name(), editorName);
         }

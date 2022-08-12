@@ -92,7 +92,7 @@ public class GetItemCategoryCommand
             }
 
             if(itemCategory != null) {
-                sendEventUsingNames(itemCategory.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEventUsingNames(itemCategory.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());

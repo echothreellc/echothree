@@ -59,7 +59,7 @@ public class GetTerminationTypeCommand
         if(terminationType != null) {
             result.setTerminationType(employeeControl.getTerminationTypeTransfer(getUserVisit(), terminationType));
             
-            sendEventUsingNames(terminationType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEventUsingNames(terminationType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownTerminationTypeName.name(), terminationTypeName);
         }

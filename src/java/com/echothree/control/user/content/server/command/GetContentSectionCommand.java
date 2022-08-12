@@ -98,7 +98,7 @@ public class GetContentSectionCommand
                     AssociateReferralLogic.getInstance().handleAssociateReferral(session, this, form, userVisit, contentSection.getPrimaryKey(), partyPK);
 
                     if(!hasExecutionErrors()) {
-                        sendEventUsingNames(contentSection.getPrimaryKey(), EventTypes.READ.name(), null, null, partyPK);
+                        sendEventUsingNames(contentSection.getPrimaryKey(), EventTypes.READ, null, null, partyPK);
                     }
                 } else {
                     addExecutionError(ExecutionErrors.UnknownContentSectionName.name(), contentCollection.getLastDetail().getContentCollectionName(), contentSectionName);

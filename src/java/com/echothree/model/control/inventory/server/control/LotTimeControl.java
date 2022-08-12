@@ -87,7 +87,7 @@ public class LotTimeControl
         lotTimeType.setLastDetail(lotTimeTypeDetail);
         lotTimeType.store();
 
-        sendEventUsingNames(lotTimeType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(lotTimeType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return lotTimeType;
     }
@@ -284,7 +284,7 @@ public class LotTimeControl
             lotTimeType.setActiveDetail(lotTimeTypeDetail);
             lotTimeType.setLastDetail(lotTimeTypeDetail);
 
-            sendEventUsingNames(lotTimeTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(lotTimeTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -318,7 +318,7 @@ public class LotTimeControl
             }
         }
 
-        sendEventUsingNames(lotTimeType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(lotTimeType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     // --------------------------------------------------------------------------------
@@ -329,7 +329,7 @@ public class LotTimeControl
         LotTimeTypeDescription lotTimeTypeDescription = LotTimeTypeDescriptionFactory.getInstance().create(lotTimeType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(lotTimeType.getPrimaryKey(), EventTypes.MODIFY.name(), lotTimeTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(lotTimeType.getPrimaryKey(), EventTypes.MODIFY, lotTimeTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return lotTimeTypeDescription;
     }
@@ -451,14 +451,14 @@ public class LotTimeControl
             lotTimeTypeDescription = LotTimeTypeDescriptionFactory.getInstance().create(lotTimeType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(lotTimeType.getPrimaryKey(), EventTypes.MODIFY.name(), lotTimeTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(lotTimeType.getPrimaryKey(), EventTypes.MODIFY, lotTimeTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteLotTimeTypeDescription(LotTimeTypeDescription lotTimeTypeDescription, BasePK deletedBy) {
         lotTimeTypeDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(lotTimeTypeDescription.getLotTimeTypePK(), EventTypes.MODIFY.name(), lotTimeTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(lotTimeTypeDescription.getLotTimeTypePK(), EventTypes.MODIFY, lotTimeTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -477,7 +477,7 @@ public class LotTimeControl
     public LotTime createLotTime(Lot lot, LotTimeType lotTimeType, Long time, BasePK createdBy) {
         LotTime lotTime = LotTimeFactory.getInstance().create(lot, lotTimeType, time, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(lot.getPrimaryKey(), EventTypes.MODIFY.name(), lotTime.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(lot.getPrimaryKey(), EventTypes.MODIFY, lotTime.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return lotTime;
     }
@@ -634,14 +634,14 @@ public class LotTimeControl
 
             lotTime = LotTimeFactory.getInstance().create(lotPK, lotTimeTypePK, time, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(lotPK, EventTypes.MODIFY.name(), lotTime.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(lotPK, EventTypes.MODIFY, lotTime.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteLotTime(LotTime lotTime, BasePK deletedBy) {
         lotTime.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(lotTime.getLotTimeTypePK(), EventTypes.MODIFY.name(), lotTime.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(lotTime.getLotTimeTypePK(), EventTypes.MODIFY, lotTime.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 

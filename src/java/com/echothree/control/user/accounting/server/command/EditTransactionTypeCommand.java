@@ -95,7 +95,7 @@ public class EditTransactionTypeCommand
                         TransactionTypeDetail transactionTypeDetail = transactionType.getLastDetail();
 
                         result.setTransactionType(accountingControl.getTransactionTypeTransfer(getUserVisit(), transactionType));
-                        sendEventUsingNames(transactionType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                        sendEventUsingNames(transactionType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
 
                         result.setEdit(edit);
                         edit.setTransactionTypeName(transactionTypeDetail.getTransactionTypeName());

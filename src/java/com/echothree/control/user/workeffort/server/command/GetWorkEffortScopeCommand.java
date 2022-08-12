@@ -65,7 +65,7 @@ public class GetWorkEffortScopeCommand
             if(workEffortScope != null) {
                 result.setWorkEffortScope(workEffortControl.getWorkEffortScopeTransfer(getUserVisit(), workEffortScope));
                 
-                sendEventUsingNames(workEffortScope.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEventUsingNames(workEffortScope.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownWorkEffortScopeName.name(), workEffortScopeName);
             }

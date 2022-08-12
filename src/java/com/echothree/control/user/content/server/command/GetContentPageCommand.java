@@ -103,7 +103,7 @@ public class GetContentPageCommand
                                 contentPage.getPrimaryKey(), partyPK);
 
                         if(!hasExecutionErrors()) {
-                            sendEventUsingNames(contentPage.getPrimaryKey(), EventTypes.READ.name(), null, null, partyPK);
+                            sendEventUsingNames(contentPage.getPrimaryKey(), EventTypes.READ, null, null, partyPK);
                         }
                     } else {
                         addExecutionError(ExecutionErrors.UnknownContentPageName.name(),

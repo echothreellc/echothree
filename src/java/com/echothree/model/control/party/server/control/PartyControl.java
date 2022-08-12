@@ -296,7 +296,7 @@ public class PartyControl
     public Language createLanguage(String languageIsoName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
         Language language = LanguageFactory.getInstance().create(languageIsoName, isDefault, sortOrder);
         
-        sendEventUsingNames(language.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(language.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return language;
     }
@@ -428,7 +428,7 @@ public class PartyControl
             BasePK createdBy) {
         LanguageDescription languageDescription = LanguageDescriptionFactory.getInstance().create(language, descriptionLanguage, description);
         
-        sendEventUsingNames(language.getPrimaryKey(), EventTypes.MODIFY.name(), languageDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(language.getPrimaryKey(), EventTypes.MODIFY, languageDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return languageDescription;
     }
@@ -732,7 +732,7 @@ public class PartyControl
         personalTitle.setLastDetail(personalTitleDetail);
         personalTitle.store();
         
-        sendEventUsingNames(personalTitle.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(personalTitle.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return personalTitle;
     }
@@ -901,7 +901,7 @@ public class PartyControl
             personalTitle.setActiveDetail(personalTitleDetail);
             personalTitle.setLastDetail(personalTitleDetail);
             
-            sendEventUsingNames(personalTitle.getPrimaryKey(), EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(personalTitle.getPrimaryKey(), EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -951,7 +951,7 @@ public class PartyControl
             }
         }
         
-        sendEventUsingNames(personalTitle.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(personalTitle.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -981,7 +981,7 @@ public class PartyControl
         nameSuffix.setLastDetail(nameSuffixDetail);
         nameSuffix.store();
         
-        sendEventUsingNames(nameSuffix.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(nameSuffix.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return nameSuffix;
     }
@@ -1148,7 +1148,7 @@ public class PartyControl
             nameSuffix.setActiveDetail(nameSuffixDetail);
             nameSuffix.setLastDetail(nameSuffixDetail);
             
-            sendEventUsingNames(nameSuffix.getPrimaryKey(), EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(nameSuffix.getPrimaryKey(), EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -1198,7 +1198,7 @@ public class PartyControl
             }
         }
         
-        sendEventUsingNames(nameSuffix.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(nameSuffix.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -1218,7 +1218,7 @@ public class PartyControl
         timeZone.setLastDetail(timeZoneDetail);
         timeZone.store();
         
-        sendEventUsingNames(timeZone.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(timeZone.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return timeZone;
     }
@@ -1356,7 +1356,7 @@ public class PartyControl
         TimeZoneDescription timeZoneDescription = TimeZoneDescriptionFactory.getInstance().create(timeZone, language,
                 description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(timeZone.getPrimaryKey(), EventTypes.MODIFY.name(), timeZoneDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(timeZone.getPrimaryKey(), EventTypes.MODIFY, timeZoneDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return timeZoneDescription;
     }
@@ -1495,14 +1495,14 @@ public class PartyControl
             timeZoneDescription = TimeZoneDescriptionFactory.getInstance().create(timeZone, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(timeZone.getPrimaryKey(), EventTypes.MODIFY.name(), timeZoneDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(timeZone.getPrimaryKey(), EventTypes.MODIFY, timeZoneDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteTimeZoneDescription(TimeZoneDescription timeZoneDescription, BasePK deletedBy) {
         timeZoneDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(timeZoneDescription.getTimeZonePK(), EventTypes.MODIFY.name(), timeZoneDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(timeZoneDescription.getTimeZonePK(), EventTypes.MODIFY, timeZoneDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteTimeZoneDescriptionsByTimeZone(TimeZone timeZone, BasePK deletedBy) {
@@ -1538,7 +1538,7 @@ public class PartyControl
         dateTimeFormat.setLastDetail(dateTimeFormatDetail);
         dateTimeFormat.store();
         
-        sendEventUsingNames(dateTimeFormat.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(dateTimeFormat.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return dateTimeFormat;
     }
@@ -1677,7 +1677,7 @@ public class PartyControl
         DateTimeFormatDescription dateTimeFormatDescription = DateTimeFormatDescriptionFactory.getInstance().create(session,
                 dateTimeFormat, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(dateTimeFormat.getPrimaryKey(), EventTypes.MODIFY.name(), dateTimeFormatDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(dateTimeFormat.getPrimaryKey(), EventTypes.MODIFY, dateTimeFormatDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return dateTimeFormatDescription;
     }
@@ -1816,14 +1816,14 @@ public class PartyControl
             dateTimeFormatDescription = DateTimeFormatDescriptionFactory.getInstance().create(dateTimeFormat, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(dateTimeFormat.getPrimaryKey(), EventTypes.MODIFY.name(), dateTimeFormatDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(dateTimeFormat.getPrimaryKey(), EventTypes.MODIFY, dateTimeFormatDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteDateTimeFormatDescription(DateTimeFormatDescription dateTimeFormatDescription, BasePK deletedBy) {
         dateTimeFormatDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(dateTimeFormatDescription.getDateTimeFormatPK(), EventTypes.MODIFY.name(), dateTimeFormatDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(dateTimeFormatDescription.getDateTimeFormatPK(), EventTypes.MODIFY, dateTimeFormatDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -1871,7 +1871,7 @@ public class PartyControl
             party.setActiveDetail(partyDetail);
             party.setLastDetail(partyDetail);
             
-            sendEventUsingNames(party.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+            sendEventUsingNames(party.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         }
         
         return party;
@@ -2055,7 +2055,7 @@ public class PartyControl
             party.setActiveDetail(partyDetail);
             party.setLastDetail(partyDetail);
             
-            sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -2160,7 +2160,7 @@ public class PartyControl
         partyDetail.store();
         party.setActiveDetail(null);
         
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(party.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public PartyTransfer getPartyTransfer(UserVisit userVisit, Party party) {
@@ -2307,7 +2307,7 @@ public class PartyControl
     public PartyAlias createPartyAlias(Party party, PartyAliasType partyAliasType, String alias, BasePK createdBy) {
         PartyAlias partyAlias = PartyAliasFactory.getInstance().create(party, partyAliasType, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), partyAlias.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY, partyAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return partyAlias;
     }
@@ -2473,14 +2473,14 @@ public class PartyControl
 
             partyAlias = PartyAliasFactory.getInstance().create(partyPK, partyAliasTypePK, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(partyPK, EventTypes.MODIFY.name(), partyAlias.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(partyPK, EventTypes.MODIFY, partyAlias.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deletePartyAlias(PartyAlias partyAlias, BasePK deletedBy) {
         partyAlias.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(partyAlias.getPartyPK(), EventTypes.MODIFY.name(), partyAlias.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(partyAlias.getPartyPK(), EventTypes.MODIFY, partyAlias.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -2586,7 +2586,7 @@ public class PartyControl
         partyAliasType.setLastDetail(partyAliasTypeDetail);
         partyAliasType.store();
 
-        sendEventUsingNames(partyAliasType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(partyAliasType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return partyAliasType;
     }
@@ -2788,7 +2788,7 @@ public class PartyControl
             partyAliasType.setActiveDetail(partyAliasTypeDetail);
             partyAliasType.setLastDetail(partyAliasTypeDetail);
 
-            sendEventUsingNames(partyAliasTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(partyAliasTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -2823,7 +2823,7 @@ public class PartyControl
             }
         }
 
-        sendEventUsingNames(partyAliasType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(partyAliasType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deletePartyAliasTypes(List<PartyAliasType> partyAliasTypes, BasePK deletedBy) {
@@ -2844,7 +2844,7 @@ public class PartyControl
         PartyAliasTypeDescription partyAliasTypeDescription = PartyAliasTypeDescriptionFactory.getInstance().create(partyAliasType, language,
                 description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(partyAliasType.getPrimaryKey(), EventTypes.MODIFY.name(), partyAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(partyAliasType.getPrimaryKey(), EventTypes.MODIFY, partyAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return partyAliasTypeDescription;
     }
@@ -2966,14 +2966,14 @@ public class PartyControl
             partyAliasTypeDescription = PartyAliasTypeDescriptionFactory.getInstance().create(partyAliasType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(partyAliasType.getPrimaryKey(), EventTypes.MODIFY.name(), partyAliasTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(partyAliasType.getPrimaryKey(), EventTypes.MODIFY, partyAliasTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deletePartyAliasTypeDescription(PartyAliasTypeDescription partyAliasTypeDescription, BasePK deletedBy) {
         partyAliasTypeDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(partyAliasTypeDescription.getPartyAliasTypePK(), EventTypes.MODIFY.name(), partyAliasTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(partyAliasTypeDescription.getPartyAliasTypePK(), EventTypes.MODIFY, partyAliasTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -3068,7 +3068,7 @@ public class PartyControl
     public PartyGroup createPartyGroup(Party party, String name, BasePK createdBy) {
         PartyGroup partyGroup = PartyGroupFactory.getInstance().create(party, name, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), partyGroup.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY, partyGroup.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return partyGroup;
     }
@@ -3132,7 +3132,7 @@ public class PartyControl
             
             partyGroup = PartyGroupFactory.getInstance().create(partyPK, name, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(partyPK, EventTypes.MODIFY.name(), partyGroup.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(partyPK, EventTypes.MODIFY, partyGroup.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -3140,7 +3140,7 @@ public class PartyControl
         partyGroup.setThruTime(session.START_TIME_LONG);
         partyGroup.store();
         
-        sendEventUsingNames(partyGroup.getPartyPK(), EventTypes.MODIFY.name(), partyGroup.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(partyGroup.getPartyPK(), EventTypes.MODIFY, partyGroup.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deletePartyGroupByParty(Party party, BasePK deletedBy) {
@@ -3176,7 +3176,7 @@ public class PartyControl
         PartyCompany partyCompany = PartyCompanyFactory.getInstance().create(party, partyCompanyName, isDefault, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), partyCompany.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY, partyCompany.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return partyCompany;
     }
@@ -3453,7 +3453,7 @@ public class PartyControl
             partyCompany = PartyCompanyFactory.getInstance().create(partyPK, partyCompanyName, isDefault, sortOrder,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(partyPK, EventTypes.MODIFY.name(), partyCompany.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(partyPK, EventTypes.MODIFY, partyCompany.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -3482,7 +3482,7 @@ public class PartyControl
         PartyDivision partyDivision = PartyDivisionFactory.getInstance().create(party, companyParty, partyDivisionName,
                 isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), partyDivision.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY, partyDivision.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return partyDivision;
     }
@@ -3765,7 +3765,7 @@ public class PartyControl
             partyDivision = PartyDivisionFactory.getInstance().create(partyPK, companyParty.getPrimaryKey(), partyDivisionName,
                     isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(partyPK, EventTypes.MODIFY.name(), partyDivision.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(partyPK, EventTypes.MODIFY, partyDivision.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -3794,7 +3794,7 @@ public class PartyControl
         PartyDepartment partyDepartment = PartyDepartmentFactory.getInstance().create(party, divisionParty,
                 partyDepartmentName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), partyDepartment.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY, partyDepartment.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return partyDepartment;
     }
@@ -4077,7 +4077,7 @@ public class PartyControl
             partyDepartment = PartyDepartmentFactory.getInstance().create(partyPK, companyParty.getPrimaryKey(), partyDepartmentName,
                     isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(partyPK, EventTypes.MODIFY.name(), partyDepartment.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(partyPK, EventTypes.MODIFY, partyDepartment.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -4094,7 +4094,7 @@ public class PartyControl
         Person person = PersonFactory.getInstance().create(party, personalTitle, firstName, firstNameSdx, middleName, middleNameSdx, lastName, lastNameSdx,
                 nameSuffix, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), person.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY, person.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return person;
     }
@@ -4182,7 +4182,7 @@ public class PartyControl
             person = PersonFactory.getInstance().create(partyPK, personalTitlePK, firstName, firstNameSdx, middleName, middleNameSdx, lastName, lastNameSdx,
                     nameSuffixPK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(partyPK, EventTypes.MODIFY.name(), person.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(partyPK, EventTypes.MODIFY, person.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -4190,7 +4190,7 @@ public class PartyControl
         person.setThruTime(session.START_TIME_LONG);
         person.store();
         
-        sendEventUsingNames(person.getPartyPK(), EventTypes.MODIFY.name(), person.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(person.getPartyPK(), EventTypes.MODIFY, person.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deletePersonByParty(Party party, BasePK deletedBy) {
@@ -4214,8 +4214,8 @@ public class PartyControl
         PartyRelationship partyRelationship = PartyRelationshipFactory.getInstance().create(partyRelationshipType,
                 fromParty, fromRoleType, toParty, toRoleType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(fromParty.getPrimaryKey(), EventTypes.MODIFY.name(), partyRelationship.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
-        sendEventUsingNames(toParty.getPrimaryKey(), EventTypes.MODIFY.name(), partyRelationship.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(fromParty.getPrimaryKey(), EventTypes.MODIFY, partyRelationship.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEventUsingNames(toParty.getPrimaryKey(), EventTypes.MODIFY, partyRelationship.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return partyRelationship;
     }
@@ -4433,8 +4433,8 @@ public class PartyControl
     public void deletePartyRelationship(PartyRelationship partyRelationship, BasePK deletedBy) {
         partyRelationship.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(partyRelationship.getFromPartyPK(), EventTypes.MODIFY.name(), partyRelationship.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
-        sendEventUsingNames(partyRelationship.getToPartyPK(), EventTypes.MODIFY.name(), partyRelationship.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(partyRelationship.getFromPartyPK(), EventTypes.MODIFY, partyRelationship.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEventUsingNames(partyRelationship.getToPartyPK(), EventTypes.MODIFY, partyRelationship.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deletePartyRelationships(List<PartyRelationship> partyRelationships, BasePK deletedBy) {
@@ -4463,7 +4463,7 @@ public class PartyControl
         partyTypeAuditPolicy.setLastDetail(partyTypeAuditPolicyDetail);
         partyTypeAuditPolicy.store();
 
-        sendEventUsingNames(partyTypeAuditPolicy.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(partyTypeAuditPolicy.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return partyTypeAuditPolicy;
     }
@@ -4541,7 +4541,7 @@ public class PartyControl
             partyTypeAuditPolicy.setActiveDetail(partyTypeAuditPolicyDetail);
             partyTypeAuditPolicy.setLastDetail(partyTypeAuditPolicyDetail);
 
-            sendEventUsingNames(partyTypeAuditPolicyPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(partyTypeAuditPolicyPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -4551,7 +4551,7 @@ public class PartyControl
         partyTypeAuditPolicy.setActiveDetail(null);
         partyTypeAuditPolicy.store();
         
-        sendEventUsingNames(partyTypeAuditPolicy.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(partyTypeAuditPolicy.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -4572,7 +4572,7 @@ public class PartyControl
         partyTypeLockoutPolicy.setLastDetail(partyTypeLockoutPolicyDetail);
         partyTypeLockoutPolicy.store();
         
-        sendEventUsingNames(partyTypeLockoutPolicy.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(partyTypeLockoutPolicy.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return partyTypeLockoutPolicy;
     }
@@ -4653,7 +4653,7 @@ public class PartyControl
             partyTypeLockoutPolicy.setActiveDetail(partyTypeLockoutPolicyDetail);
             partyTypeLockoutPolicy.setLastDetail(partyTypeLockoutPolicyDetail);
             
-            sendEventUsingNames(partyTypeLockoutPolicyPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(partyTypeLockoutPolicyPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -4663,7 +4663,7 @@ public class PartyControl
         partyTypeLockoutPolicy.setActiveDetail(null);
         partyTypeLockoutPolicy.store();
         
-        sendEventUsingNames(partyTypeLockoutPolicy.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(partyTypeLockoutPolicy.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -4689,7 +4689,7 @@ public class PartyControl
         partyTypePasswordStringPolicy.setLastDetail(partyTypePasswordStringPolicyDetail);
         partyTypePasswordStringPolicy.store();
         
-        sendEventUsingNames(partyTypePasswordStringPolicy.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(partyTypePasswordStringPolicy.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return partyTypePasswordStringPolicy;
     }
@@ -4784,7 +4784,7 @@ public class PartyControl
             partyTypePasswordStringPolicy.setActiveDetail(partyTypePasswordStringPolicyDetail);
             partyTypePasswordStringPolicy.setLastDetail(partyTypePasswordStringPolicyDetail);
             
-            sendEventUsingNames(partyTypePasswordStringPolicyPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(partyTypePasswordStringPolicyPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -4794,7 +4794,7 @@ public class PartyControl
         partyTypePasswordStringPolicy.setActiveDetail(null);
         partyTypePasswordStringPolicy.store();
         
-        sendEventUsingNames(partyTypePasswordStringPolicy.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(partyTypePasswordStringPolicy.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -4824,7 +4824,7 @@ public class PartyControl
         gender.setLastDetail(genderDetail);
         gender.store();
         
-        sendEventUsingNames(gender.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(gender.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return gender;
     }
@@ -5019,7 +5019,7 @@ public class PartyControl
         gender.setLastDetail(genderDetail);
         gender.store();
         
-        sendEventUsingNames(genderPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+        sendEventUsingNames(genderPK, EventTypes.MODIFY, null, null, updatedBy);
     }
     
     public void updateGenderFromValue(GenderDetailValue genderDetailValue, BasePK updatedBy) {
@@ -5051,7 +5051,7 @@ public class PartyControl
             }
         }
         
-        sendEventUsingNames(gender.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(gender.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -5062,7 +5062,7 @@ public class PartyControl
         GenderDescription genderDescription = GenderDescriptionFactory.getInstance().create(gender, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(gender.getPrimaryKey(), EventTypes.MODIFY.name(), genderDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(gender.getPrimaryKey(), EventTypes.MODIFY, genderDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return genderDescription;
     }
@@ -5201,14 +5201,14 @@ public class PartyControl
             genderDescription = GenderDescriptionFactory.getInstance().create(gender, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(gender.getPrimaryKey(), EventTypes.MODIFY.name(), genderDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(gender.getPrimaryKey(), EventTypes.MODIFY, genderDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteGenderDescription(GenderDescription genderDescription, BasePK deletedBy) {
         genderDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(genderDescription.getGenderPK(), EventTypes.MODIFY.name(), genderDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(genderDescription.getGenderPK(), EventTypes.MODIFY, genderDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -5246,7 +5246,7 @@ public class PartyControl
         mood.setLastDetail(moodDetail);
         mood.store();
         
-        sendEventUsingNames(mood.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(mood.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return mood;
     }
@@ -5442,7 +5442,7 @@ public class PartyControl
         mood.setLastDetail(moodDetail);
         mood.store();
         
-        sendEventUsingNames(moodPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+        sendEventUsingNames(moodPK, EventTypes.MODIFY, null, null, updatedBy);
     }
     
     public void updateMoodFromValue(MoodDetailValue moodDetailValue, BasePK updatedBy) {
@@ -5474,7 +5474,7 @@ public class PartyControl
             }
         }
         
-        sendEventUsingNames(mood.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(mood.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -5485,7 +5485,7 @@ public class PartyControl
         MoodDescription moodDescription = MoodDescriptionFactory.getInstance().create(mood, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(mood.getPrimaryKey(), EventTypes.MODIFY.name(), moodDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(mood.getPrimaryKey(), EventTypes.MODIFY, moodDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return moodDescription;
     }
@@ -5624,14 +5624,14 @@ public class PartyControl
             moodDescription = MoodDescriptionFactory.getInstance().create(mood, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(mood.getPrimaryKey(), EventTypes.MODIFY.name(), moodDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(mood.getPrimaryKey(), EventTypes.MODIFY, moodDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteMoodDescription(MoodDescription moodDescription, BasePK deletedBy) {
         moodDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(moodDescription.getMoodPK(), EventTypes.MODIFY.name(), moodDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(moodDescription.getMoodPK(), EventTypes.MODIFY, moodDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -5671,7 +5671,7 @@ public class PartyControl
         birthdayFormat.setLastDetail(birthdayFormatDetail);
         birthdayFormat.store();
 
-        sendEventUsingNames(birthdayFormat.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(birthdayFormat.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return birthdayFormat;
     }
@@ -5913,7 +5913,7 @@ public class PartyControl
             birthdayFormat.setActiveDetail(birthdayFormatDetail);
             birthdayFormat.setLastDetail(birthdayFormatDetail);
 
-            sendEventUsingNames(birthdayFormatPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(birthdayFormatPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -5946,7 +5946,7 @@ public class PartyControl
             }
         }
 
-        sendEventUsingNames(birthdayFormat.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(birthdayFormat.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     // --------------------------------------------------------------------------------
@@ -5959,7 +5959,7 @@ public class PartyControl
                 language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(birthdayFormat.getPrimaryKey(), EventTypes.MODIFY.name(), birthdayFormatDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(birthdayFormat.getPrimaryKey(), EventTypes.MODIFY, birthdayFormatDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return birthdayFormatDescription;
     }
@@ -6099,14 +6099,14 @@ public class PartyControl
             birthdayFormatDescription = BirthdayFormatDescriptionFactory.getInstance().create(birthdayFormat, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(birthdayFormat.getPrimaryKey(), EventTypes.MODIFY.name(), birthdayFormatDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(birthdayFormat.getPrimaryKey(), EventTypes.MODIFY, birthdayFormatDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteBirthdayFormatDescription(BirthdayFormatDescription birthdayFormatDescription, BasePK deletedBy) {
         birthdayFormatDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(birthdayFormatDescription.getBirthdayFormatPK(), EventTypes.MODIFY.name(), birthdayFormatDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(birthdayFormatDescription.getBirthdayFormatPK(), EventTypes.MODIFY, birthdayFormatDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     public void deleteBirthdayFormatDescriptionsByBirthdayFormat(BirthdayFormat birthdayFormat, BasePK deletedBy) {
@@ -6128,7 +6128,7 @@ public class PartyControl
                 occupation, hobbies, location, bioMimeType, bio, signatureMimeType, signature, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), profile.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY, profile.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return profile;
     }
@@ -6243,7 +6243,7 @@ public class PartyControl
                     occupation, hobbies, location, bioMimeTypePK, bio, signatureMimeTypePK, signature, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(partyPK, EventTypes.MODIFY.name(), profile.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(partyPK, EventTypes.MODIFY, profile.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -6251,7 +6251,7 @@ public class PartyControl
         profile.setThruTime(session.START_TIME_LONG);
         profile.store();
         
-        sendEventUsingNames(profile.getPartyPK(), EventTypes.MODIFY.name(), profile.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(profile.getPartyPK(), EventTypes.MODIFY, profile.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteProfileByParty(Party party, BasePK deletedBy) {

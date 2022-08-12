@@ -77,7 +77,7 @@ public class GetTextTransformationCommand
             }
 
             if(textTransformation != null) {
-                sendEventUsingNames(textTransformation.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEventUsingNames(textTransformation.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());

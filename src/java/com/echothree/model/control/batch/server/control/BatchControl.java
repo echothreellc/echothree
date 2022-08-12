@@ -143,7 +143,7 @@ public class BatchControl
         batchType.setLastDetail(batchTypeDetail);
         batchType.store();
         
-        sendEventUsingNames(batchType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(batchType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return batchType;
     }
@@ -400,7 +400,7 @@ public class BatchControl
             batchType.setActiveDetail(batchTypeDetail);
             batchType.setLastDetail(batchTypeDetail);
             
-            sendEventUsingNames(batchTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(batchTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -441,7 +441,7 @@ public class BatchControl
             }
         }
 
-        sendEventUsingNames(batchType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(batchType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteBatchType(BatchType batchType, BasePK deletedBy) {
@@ -468,7 +468,7 @@ public class BatchControl
         BatchTypeDescription batchTypeDescription = BatchTypeDescriptionFactory.getInstance().create(batchType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(batchType.getPrimaryKey(), EventTypes.MODIFY.name(), batchTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(batchType.getPrimaryKey(), EventTypes.MODIFY, batchTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return batchTypeDescription;
     }
@@ -590,14 +590,14 @@ public class BatchControl
             batchTypeDescription = BatchTypeDescriptionFactory.getInstance().create(batchType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(batchType.getPrimaryKey(), EventTypes.MODIFY.name(), batchTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(batchType.getPrimaryKey(), EventTypes.MODIFY, batchTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteBatchTypeDescription(BatchTypeDescription batchTypeDescription, BasePK deletedBy) {
         batchTypeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(batchTypeDescription.getBatchTypePK(), EventTypes.MODIFY.name(), batchTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(batchTypeDescription.getBatchTypePK(), EventTypes.MODIFY, batchTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -617,7 +617,7 @@ public class BatchControl
         BatchTypeEntityType batchTypeEntityType = BatchTypeEntityTypeFactory.getInstance().create(batchType, entityType,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(batchType.getPrimaryKey(), EventTypes.MODIFY.name(), batchTypeEntityType.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(batchType.getPrimaryKey(), EventTypes.MODIFY, batchTypeEntityType.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return batchTypeEntityType;
     }
@@ -758,7 +758,7 @@ public class BatchControl
     public void deleteBatchTypeEntityType(BatchTypeEntityType batchTypeEntityType, BasePK deletedBy) {
         batchTypeEntityType.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(batchTypeEntityType.getBatchTypePK(), EventTypes.MODIFY.name(), batchTypeEntityType.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(batchTypeEntityType.getBatchTypePK(), EventTypes.MODIFY, batchTypeEntityType.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     public void deleteBatchTypeEntityTypes(List<BatchTypeEntityType> batchTypeEntityTypes, BasePK deletedBy) {
@@ -803,7 +803,7 @@ public class BatchControl
         batchAliasType.setLastDetail(batchAliasTypeDetail);
         batchAliasType.store();
         
-        sendEventUsingNames(batchAliasType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(batchAliasType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return batchAliasType;
     }
@@ -1005,7 +1005,7 @@ public class BatchControl
             batchAliasType.setActiveDetail(batchAliasTypeDetail);
             batchAliasType.setLastDetail(batchAliasTypeDetail);
             
-            sendEventUsingNames(batchAliasTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(batchAliasTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -1040,7 +1040,7 @@ public class BatchControl
             }
         }
         
-        sendEventUsingNames(batchAliasType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(batchAliasType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteBatchAliasTypes(List<BatchAliasType> batchAliasTypes, BasePK deletedBy) {
@@ -1061,7 +1061,7 @@ public class BatchControl
         BatchAliasTypeDescription batchAliasTypeDescription = BatchAliasTypeDescriptionFactory.getInstance().create(batchAliasType, language,
                 description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(batchAliasType.getPrimaryKey(), EventTypes.MODIFY.name(), batchAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(batchAliasType.getPrimaryKey(), EventTypes.MODIFY, batchAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return batchAliasTypeDescription;
     }
@@ -1183,14 +1183,14 @@ public class BatchControl
             batchAliasTypeDescription = BatchAliasTypeDescriptionFactory.getInstance().create(batchAliasType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(batchAliasType.getPrimaryKey(), EventTypes.MODIFY.name(), batchAliasTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(batchAliasType.getPrimaryKey(), EventTypes.MODIFY, batchAliasTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteBatchAliasTypeDescription(BatchAliasTypeDescription batchAliasTypeDescription, BasePK deletedBy) {
         batchAliasTypeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(batchAliasTypeDescription.getBatchAliasTypePK(), EventTypes.MODIFY.name(), batchAliasTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(batchAliasTypeDescription.getBatchAliasTypePK(), EventTypes.MODIFY, batchAliasTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -1216,7 +1216,7 @@ public class BatchControl
         batch.setLastDetail(batchDetail);
         batch.store();
         
-        sendEventUsingNames(batch.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(batch.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return batch;
     }
@@ -1372,7 +1372,7 @@ public class BatchControl
             batch.setActiveDetail(batchDetail);
             batch.setLastDetail(batchDetail);
             
-            sendEventUsingNames(batchPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(batchPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -1384,7 +1384,7 @@ public class BatchControl
         batch.setActiveDetail(null);
         batch.store();
         
-        sendEventUsingNames(batch.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(batch.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteBatches(List<Batch> batches, BasePK deletedBy) {
@@ -1404,7 +1404,7 @@ public class BatchControl
     public BatchAlias createBatchAlias(Batch batch, BatchAliasType batchAliasType, String alias, BasePK createdBy) {
         BatchAlias batchAlias = BatchAliasFactory.getInstance().create(batch, batchAliasType, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(batch.getPrimaryKey(), EventTypes.MODIFY.name(), batchAlias.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(batch.getPrimaryKey(), EventTypes.MODIFY, batchAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return batchAlias;
     }
@@ -1570,14 +1570,14 @@ public class BatchControl
             
             batchAlias = BatchAliasFactory.getInstance().create(batchPK, batchAliasTypePK, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(batchPK, EventTypes.MODIFY.name(), batchAlias.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(batchPK, EventTypes.MODIFY, batchAlias.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteBatchAlias(BatchAlias batchAlias, BasePK deletedBy) {
         batchAlias.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(batchAlias.getBatchPK(), EventTypes.MODIFY.name(), batchAlias.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(batchAlias.getBatchPK(), EventTypes.MODIFY, batchAlias.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteBatchAliasesByBatchAliasType(BatchAliasType batchAliasType, BasePK deletedBy) {
@@ -1603,7 +1603,7 @@ public class BatchControl
     public BatchEntity createBatchEntity(EntityInstance entityInstance, Batch batch, BasePK createdBy) {
         BatchEntity batchEntity = BatchEntityFactory.getInstance().create(entityInstance, batch, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(entityInstance, EventTypes.MODIFY.name(), batchEntity.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(entityInstance, EventTypes.MODIFY, batchEntity.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return batchEntity;
     }
@@ -1744,7 +1744,7 @@ public class BatchControl
     public void deleteBatchEntity(BatchEntity batchEntity, BasePK deletedBy) {
         batchEntity.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(batchEntity.getEntityInstance(), EventTypes.MODIFY.name(), batchEntity.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(batchEntity.getEntityInstance(), EventTypes.MODIFY, batchEntity.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     public void deleteBatchEntities(List<BatchEntity> batchEntities, BasePK deletedBy) {

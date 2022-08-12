@@ -58,7 +58,7 @@ public class GetForumGroupCommand
         
         if(forumGroup != null) {
             result.setForumGroup(forumControl.getForumGroupTransfer(getUserVisit(), forumGroup));
-            sendEventUsingNames(forumGroup.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEventUsingNames(forumGroup.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownForumGroupName.name(), forumGroupName);
         }

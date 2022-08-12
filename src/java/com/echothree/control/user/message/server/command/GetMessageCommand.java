@@ -86,7 +86,7 @@ public class GetMessageCommand
                     if(message != null) {
                         result.setMessage(messageControl.getMessageTransfer(userVisit, message));
                         
-                        sendEventUsingNames(messageType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                        sendEventUsingNames(messageType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.UnknownMessageName.name(), messageName);
                     }

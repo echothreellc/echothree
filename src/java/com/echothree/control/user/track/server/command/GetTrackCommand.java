@@ -98,7 +98,7 @@ public class GetTrackCommand
 
             if(!hasExecutionErrors()) {
                 result.setTrack(trackControl.getTrackTransfer(getUserVisit(), track));
-                sendEventUsingNames(track.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEventUsingNames(track.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());

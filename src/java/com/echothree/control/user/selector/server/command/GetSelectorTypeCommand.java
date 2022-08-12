@@ -80,7 +80,7 @@ public class GetSelectorTypeCommand
         var selectorType = SelectorTypeLogic.getInstance().getSelectorTypeByUniversalSpec(this, form, true);
 
         if(selectorType != null) {
-            sendEventUsingNames(selectorType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEventUsingNames(selectorType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return selectorType;

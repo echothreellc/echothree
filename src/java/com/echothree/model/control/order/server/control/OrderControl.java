@@ -92,7 +92,7 @@ public class OrderControl
         order.setLastDetail(orderDetail);
         order.store();
         
-        sendEventUsingNames(order.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(order.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         createOrderStatus(order);
         
@@ -262,7 +262,7 @@ public class OrderControl
             order.setActiveDetail(orderDetail);
             order.setLastDetail(orderDetail);
             
-            sendEventUsingNames(orderPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(orderPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -291,7 +291,7 @@ public class OrderControl
         order.setActiveDetail(null);
         order.store();
         
-        sendEventUsingNames(order.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(order.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteOrders(List<Order> orders, BasePK deletedBy) {

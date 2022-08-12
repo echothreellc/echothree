@@ -65,7 +65,7 @@ public class GetTransactionEntityRoleTypeCommand
             if(transactionEntityRoleType != null) {
                 result.setTransactionEntityRoleType(accountingControl.getTransactionEntityRoleTypeTransfer(getUserVisit(), transactionEntityRoleType));
                 
-                sendEventUsingNames(transactionEntityRoleType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEventUsingNames(transactionEntityRoleType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownTransactionEntityRoleTypeName.name(), transactionEntityRoleTypeName);
             }

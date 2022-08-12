@@ -88,7 +88,7 @@ public class GetForumCommand
             if(!hasExecutionErrors()) {
                 if(form.getKey() != null || ForumLogic.getInstance().isForumRoleTypePermitted(this, forum, getParty(), ForumConstants.ForumRoleType_READER)) {
                     result.setForum(forumControl.getForumTransfer(getUserVisit(), forum));
-                    sendEventUsingNames(forum.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                    sendEventUsingNames(forum.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                 }
             } else {
                 addExecutionError(ExecutionErrors.MissingRequiredForumRoleType.name(), ForumConstants.ForumRoleType_READER);

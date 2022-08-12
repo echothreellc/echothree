@@ -134,7 +134,7 @@ public class TaxControl
         taxClassification.setLastDetail(taxClassificationDetail);
         taxClassification.store();
 
-        sendEventUsingNames(taxClassification.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(taxClassification.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return taxClassification;
     }
@@ -364,7 +364,7 @@ public class TaxControl
             taxClassification.setActiveDetail(taxClassificationDetail);
             taxClassification.setLastDetail(taxClassificationDetail);
 
-            sendEventUsingNames(taxClassificationPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(taxClassificationPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -399,7 +399,7 @@ public class TaxControl
             }
         }
 
-        sendEventUsingNames(taxClassification.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(taxClassification.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteTaxClassifications(List<TaxClassification> taxClassifications, BasePK deletedBy) {
@@ -421,7 +421,7 @@ public class TaxControl
         TaxClassificationTranslation taxClassificationTranslation = TaxClassificationTranslationFactory.getInstance().create(taxClassification,
                 language, description, overviewMimeType, overview, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(taxClassification.getPrimaryKey(), EventTypes.MODIFY.name(), taxClassificationTranslation.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(taxClassification.getPrimaryKey(), EventTypes.MODIFY, taxClassificationTranslation.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return taxClassificationTranslation;
     }
@@ -537,14 +537,14 @@ public class TaxControl
             taxClassificationTranslation = TaxClassificationTranslationFactory.getInstance().create(taxClassificationPK,
                     languagePK, description, overviewMimeTypePK, overview, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(taxClassificationPK, EventTypes.MODIFY.name(), taxClassificationTranslation.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(taxClassificationPK, EventTypes.MODIFY, taxClassificationTranslation.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteTaxClassificationTranslation(TaxClassificationTranslation taxClassificationTranslation, BasePK deletedBy) {
         taxClassificationTranslation.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(taxClassificationTranslation.getTaxClassificationPK(), EventTypes.MODIFY.name(), taxClassificationTranslation.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(taxClassificationTranslation.getTaxClassificationPK(), EventTypes.MODIFY, taxClassificationTranslation.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -573,7 +573,7 @@ public class TaxControl
         itemTaxClassification.setLastDetail(itemTaxClassificationDetail);
         itemTaxClassification.store();
 
-        sendEventUsingNames(item.getPrimaryKey(), EventTypes.MODIFY.name(), itemTaxClassification.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(item.getPrimaryKey(), EventTypes.MODIFY, itemTaxClassification.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return itemTaxClassification;
     }
@@ -763,7 +763,7 @@ public class TaxControl
             itemTaxClassification.setActiveDetail(itemTaxClassificationDetail);
             itemTaxClassification.setLastDetail(itemTaxClassificationDetail);
 
-            sendEventUsingNames(itemPK, EventTypes.MODIFY.name(), itemTaxClassificationPK, EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(itemPK, EventTypes.MODIFY, itemTaxClassificationPK, EventTypes.MODIFY, updatedBy);
         }
     }
 
@@ -773,7 +773,7 @@ public class TaxControl
         itemTaxClassification.setActiveDetail(null);
         itemTaxClassification.store();
 
-        sendEventUsingNames(itemTaxClassificationDetail.getItemPK(), EventTypes.MODIFY.name(), itemTaxClassification.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(itemTaxClassificationDetail.getItemPK(), EventTypes.MODIFY, itemTaxClassification.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     public void deleteItemTaxClassifications(List<ItemTaxClassification> itemTaxClassifications, BasePK deletedBy) {
@@ -824,7 +824,7 @@ public class TaxControl
         tax.setLastDetail(taxDetail);
         tax.store();
         
-        sendEventUsingNames(tax.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(tax.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return tax;
     }
@@ -993,7 +993,7 @@ public class TaxControl
             tax.setActiveDetail(taxDetail);
             tax.setLastDetail(taxDetail);
             
-            sendEventUsingNames(taxPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(taxPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -1027,7 +1027,7 @@ public class TaxControl
             }
         }
         
-        sendEventUsingNames(tax.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(tax.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -1038,7 +1038,7 @@ public class TaxControl
         TaxDescription taxDescription = TaxDescriptionFactory.getInstance().create(tax, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(tax.getPrimaryKey(), EventTypes.MODIFY.name(), taxDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(tax.getPrimaryKey(), EventTypes.MODIFY, taxDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return taxDescription;
     }
@@ -1180,14 +1180,14 @@ public class TaxControl
             taxDescription = TaxDescriptionFactory.getInstance().create(tax, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(tax.getPrimaryKey(), EventTypes.MODIFY.name(), taxDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(tax.getPrimaryKey(), EventTypes.MODIFY, taxDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteTaxDescription(TaxDescription taxDescription, BasePK deletedBy) {
         taxDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(taxDescription.getTaxPK(), EventTypes.MODIFY.name(),
+        sendEventUsingNames(taxDescription.getTaxPK(), EventTypes.MODIFY,
                 taxDescription.getPrimaryKey(), null, deletedBy);
     }
     
@@ -1207,8 +1207,8 @@ public class TaxControl
         GeoCodeTax geoCodeTax = GeoCodeTaxFactory.getInstance().create(geoCode, tax, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(geoCode.getPrimaryKey(), EventTypes.MODIFY.name(), geoCodeTax.getPrimaryKey(), null, createdBy);
-        sendEventUsingNames(tax.getPrimaryKey(), EventTypes.MODIFY.name(), geoCodeTax.getPrimaryKey(), null, createdBy);
+        sendEventUsingNames(geoCode.getPrimaryKey(), EventTypes.MODIFY, geoCodeTax.getPrimaryKey(), null, createdBy);
+        sendEventUsingNames(tax.getPrimaryKey(), EventTypes.MODIFY, geoCodeTax.getPrimaryKey(), null, createdBy);
         
         return geoCodeTax;
     }
@@ -1367,8 +1367,8 @@ public class TaxControl
     public void deleteGeoCodeTax(GeoCodeTax geoCodeTax, BasePK deletedBy) {
         geoCodeTax.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(geoCodeTax.getGeoCodePK(), EventTypes.MODIFY.name(), geoCodeTax.getPrimaryKey(), null, deletedBy);
-        sendEventUsingNames(geoCodeTax.getTaxPK(), EventTypes.MODIFY.name(), geoCodeTax.getPrimaryKey(), null, deletedBy);
+        sendEventUsingNames(geoCodeTax.getGeoCodePK(), EventTypes.MODIFY, geoCodeTax.getPrimaryKey(), null, deletedBy);
+        sendEventUsingNames(geoCodeTax.getTaxPK(), EventTypes.MODIFY, geoCodeTax.getPrimaryKey(), null, deletedBy);
     }
     
     private void deleteGeoCodeTaxes(List<GeoCodeTax> geoCodeTaxes, BasePK deletedBy) {

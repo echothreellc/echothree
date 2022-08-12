@@ -90,7 +90,7 @@ public class OrderTypeControl
         orderType.setLastDetail(orderTypeDetail);
         orderType.store();
 
-        sendEventUsingNames(orderType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(orderType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return orderType;
     }
@@ -347,7 +347,7 @@ public class OrderTypeControl
             orderType.setActiveDetail(orderTypeDetail);
             orderType.setLastDetail(orderTypeDetail);
 
-            sendEventUsingNames(orderTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(orderTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -387,7 +387,7 @@ public class OrderTypeControl
             }
         }
 
-        sendEventUsingNames(orderType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(orderType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteOrderType(OrderType orderType, BasePK deletedBy) {
@@ -414,7 +414,7 @@ public class OrderTypeControl
         OrderTypeDescription orderTypeDescription = OrderTypeDescriptionFactory.getInstance().create(orderType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(orderType.getPrimaryKey(), EventTypes.MODIFY.name(), orderTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(orderType.getPrimaryKey(), EventTypes.MODIFY, orderTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return orderTypeDescription;
     }
@@ -536,14 +536,14 @@ public class OrderTypeControl
             orderTypeDescription = OrderTypeDescriptionFactory.getInstance().create(orderType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(orderType.getPrimaryKey(), EventTypes.MODIFY.name(), orderTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(orderType.getPrimaryKey(), EventTypes.MODIFY, orderTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteOrderTypeDescription(OrderTypeDescription orderTypeDescription, BasePK deletedBy) {
         orderTypeDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(orderTypeDescription.getOrderTypePK(), EventTypes.MODIFY.name(), orderTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(orderTypeDescription.getOrderTypePK(), EventTypes.MODIFY, orderTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 

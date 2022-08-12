@@ -57,7 +57,7 @@ public class GetEventGroupCommand
         if(eventGroup != null) {
             result.setEventGroup(coreControl.getEventGroupTransfer(getUserVisit(), eventGroup));
             
-            sendEventUsingNames(eventGroup.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEventUsingNames(eventGroup.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownEventGroupName.name(), eventGroupName);
         }

@@ -59,7 +59,7 @@ public class GetGenderCommand
         if(gender != null) {
             result.setGender(partyControl.getGenderTransfer(getUserVisit(), gender));
             
-            sendEventUsingNames(gender.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEventUsingNames(gender.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownGenderName.name(), genderName);
         }

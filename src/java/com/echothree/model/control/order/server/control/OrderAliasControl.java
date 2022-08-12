@@ -89,7 +89,7 @@ public class OrderAliasControl
         orderAliasType.setLastDetail(orderAliasTypeDetail);
         orderAliasType.store();
 
-        sendEventUsingNames(orderAliasType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(orderAliasType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return orderAliasType;
     }
@@ -291,7 +291,7 @@ public class OrderAliasControl
             orderAliasType.setActiveDetail(orderAliasTypeDetail);
             orderAliasType.setLastDetail(orderAliasTypeDetail);
 
-            sendEventUsingNames(orderAliasTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(orderAliasTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -326,7 +326,7 @@ public class OrderAliasControl
             }
         }
 
-        sendEventUsingNames(orderAliasType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(orderAliasType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteOrderAliasTypes(List<OrderAliasType> orderAliasTypes, BasePK deletedBy) {
@@ -347,7 +347,7 @@ public class OrderAliasControl
         OrderAliasTypeDescription orderAliasTypeDescription = OrderAliasTypeDescriptionFactory.getInstance().create(orderAliasType, language,
                 description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(orderAliasType.getPrimaryKey(), EventTypes.MODIFY.name(), orderAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(orderAliasType.getPrimaryKey(), EventTypes.MODIFY, orderAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return orderAliasTypeDescription;
     }
@@ -469,14 +469,14 @@ public class OrderAliasControl
             orderAliasTypeDescription = OrderAliasTypeDescriptionFactory.getInstance().create(orderAliasType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(orderAliasType.getPrimaryKey(), EventTypes.MODIFY.name(), orderAliasTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(orderAliasType.getPrimaryKey(), EventTypes.MODIFY, orderAliasTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteOrderAliasTypeDescription(OrderAliasTypeDescription orderAliasTypeDescription, BasePK deletedBy) {
         orderAliasTypeDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(orderAliasTypeDescription.getOrderAliasTypePK(), EventTypes.MODIFY.name(), orderAliasTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(orderAliasTypeDescription.getOrderAliasTypePK(), EventTypes.MODIFY, orderAliasTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -495,7 +495,7 @@ public class OrderAliasControl
     public OrderAlias createOrderAlias(Order order, OrderAliasType orderAliasType, String alias, BasePK createdBy) {
         OrderAlias orderAlias = OrderAliasFactory.getInstance().create(order, orderAliasType, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(order.getPrimaryKey(), EventTypes.MODIFY.name(), orderAlias.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(order.getPrimaryKey(), EventTypes.MODIFY, orderAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return orderAlias;
     }
@@ -660,14 +660,14 @@ public class OrderAliasControl
 
             orderAlias = OrderAliasFactory.getInstance().create(orderPK, orderAliasTypePK, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(orderPK, EventTypes.MODIFY.name(), orderAlias.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(orderPK, EventTypes.MODIFY, orderAlias.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteOrderAlias(OrderAlias orderAlias, BasePK deletedBy) {
         orderAlias.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(orderAlias.getOrderPK(), EventTypes.MODIFY.name(), orderAlias.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(orderAlias.getOrderPK(), EventTypes.MODIFY, orderAlias.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 

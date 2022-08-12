@@ -59,7 +59,7 @@ public class SalesOrderBatchControl
     public SalesOrderBatch createSalesOrderBatch(Batch batch, PaymentMethod paymentMethod, BasePK createdBy) {
         SalesOrderBatch salesOrderBatch = SalesOrderBatchFactory.getInstance().create(batch, paymentMethod, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(batch.getPrimaryKey(), EventTypes.MODIFY.name(), salesOrderBatch.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(batch.getPrimaryKey(), EventTypes.MODIFY, salesOrderBatch.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return salesOrderBatch;
     }
@@ -132,14 +132,14 @@ public class SalesOrderBatchControl
 
             salesOrderBatch = SalesOrderBatchFactory.getInstance().create(batchPK, paymentMethodPK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(batchPK, EventTypes.MODIFY.name(), salesOrderBatch.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(batchPK, EventTypes.MODIFY, salesOrderBatch.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteSalesOrderBatch(SalesOrderBatch salesOrderBatch, BasePK deletedBy) {
         salesOrderBatch.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(salesOrderBatch.getBatchPK(), EventTypes.MODIFY.name(), salesOrderBatch.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(salesOrderBatch.getBatchPK(), EventTypes.MODIFY, salesOrderBatch.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     public void deleteSalesOrderBatch(Batch batch, BasePK deletedBy) {

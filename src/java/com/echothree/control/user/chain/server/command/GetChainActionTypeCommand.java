@@ -73,7 +73,7 @@ public class GetChainActionTypeCommand
         if(chainActionType != null) {
             result.setChainActionType(chainControl.getChainActionTypeTransfer(getUserVisit(), chainActionType));
             
-            sendEventUsingNames(chainActionType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEventUsingNames(chainActionType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownChainActionTypeName.name(), chainActionTypeName);
         }

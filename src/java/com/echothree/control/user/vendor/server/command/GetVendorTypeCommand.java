@@ -73,7 +73,7 @@ public class GetVendorTypeCommand
         if(vendorType != null) {
             result.setVendorType(vendorControl.getVendorTypeTransfer(getUserVisit(), vendorType));
             
-            sendEventUsingNames(vendorType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEventUsingNames(vendorType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownVendorTypeName.name(), vendorTypeName);
         }

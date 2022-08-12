@@ -150,7 +150,7 @@ public class GetPartyApplicationEditorUseCommand
                         
                         result.setPartyApplicationEditorUse(partyApplicationEditorUseTransfer);
 
-                        sendEventUsingNames(partyApplicationEditorUse.getPrimaryKey(), EventTypes.READ.name(), null, null, partyPK);
+                        sendEventUsingNames(partyApplicationEditorUse.getPrimaryKey(), EventTypes.READ, null, null, partyPK);
                     } else {
                         addExecutionError(ExecutionErrors.UnknownPartyApplicationEditorUse.name(), partyName, applicationName, applicationEditorUseName);
                     }

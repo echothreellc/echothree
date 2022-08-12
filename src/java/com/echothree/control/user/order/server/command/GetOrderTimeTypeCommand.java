@@ -81,7 +81,7 @@ public class GetOrderTimeTypeCommand
             if(orderTimeType != null) {
                 result.setOrderTimeType(orderTimeControl.getOrderTimeTypeTransfer(getUserVisit(), orderTimeType));
 
-                sendEventUsingNames(orderTimeType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEventUsingNames(orderTimeType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownOrderTimeTypeName.name(), orderTimeTypeName);
             }

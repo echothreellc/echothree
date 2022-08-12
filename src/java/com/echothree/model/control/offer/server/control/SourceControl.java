@@ -77,8 +77,8 @@ public class SourceControl
         source.setLastDetail(sourceDetail);
         source.store();
 
-        sendEventUsingNames(offerUse.getLastDetail().getOfferPK(), EventTypes.MODIFY.name(), source.getPrimaryKey(),
-                EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(offerUse.getLastDetail().getOfferPK(), EventTypes.MODIFY, source.getPrimaryKey(),
+                EventTypes.CREATE, createdBy);
 
         return source;
     }
@@ -343,8 +343,8 @@ public class SourceControl
             source.setActiveDetail(sourceDetail);
             source.setLastDetail(sourceDetail);
 
-            sendEventUsingNames(offerUse.getLastDetail().getOfferPK(), EventTypes.MODIFY.name(), source.getPrimaryKey(),
-                    EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(offerUse.getLastDetail().getOfferPK(), EventTypes.MODIFY, source.getPrimaryKey(),
+                    EventTypes.MODIFY, updatedBy);
         }
     }
 
@@ -376,7 +376,7 @@ public class SourceControl
         }
 
         sendEventUsingNames(source.getLastDetail().getOfferUse().getLastDetail().getOfferPK(),
-                EventTypes.MODIFY.name(), source.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+                EventTypes.MODIFY, source.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     public void deleteSources(List<Source> sources, BasePK deletedBy) {

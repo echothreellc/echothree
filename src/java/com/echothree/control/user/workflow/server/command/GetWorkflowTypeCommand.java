@@ -69,7 +69,7 @@ public class GetWorkflowTypeCommand
         var workflowType = WorkflowTypeLogic.getInstance().getWorkflowTypeByUniversalSpec(this, form, true);
 
         if(workflowType != null) {
-            sendEventUsingNames(workflowType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEventUsingNames(workflowType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return workflowType;

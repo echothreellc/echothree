@@ -97,7 +97,7 @@ public class GetContentCatalogCommand
                             contentCatalog.getPrimaryKey(), partyPK);
 
                     if(!hasExecutionErrors()) {
-                        sendEventUsingNames(contentCatalog.getPrimaryKey(), EventTypes.READ.name(), null, null, partyPK);
+                        sendEventUsingNames(contentCatalog.getPrimaryKey(), EventTypes.READ, null, null, partyPK);
                     }
                 } else {
                     addExecutionError(ExecutionErrors.UnknownContentCatalogName.name(),

@@ -91,7 +91,7 @@ public class GetZipCodeCommand
             if(geoCodeAlias != null) {
                 geoCode = geoCodeAlias.getGeoCode();
 
-                sendEventUsingNames(geoCode.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEventUsingNames(geoCode.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownZipCodeName.name(), zipCodeName);
             }

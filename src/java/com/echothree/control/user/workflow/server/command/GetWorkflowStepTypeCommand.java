@@ -69,7 +69,7 @@ public class GetWorkflowStepTypeCommand
         var workflowStepType = WorkflowStepTypeLogic.getInstance().getWorkflowStepTypeByUniversalSpec(this, form, true);
 
         if(workflowStepType != null) {
-            sendEventUsingNames(workflowStepType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEventUsingNames(workflowStepType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return workflowStepType;

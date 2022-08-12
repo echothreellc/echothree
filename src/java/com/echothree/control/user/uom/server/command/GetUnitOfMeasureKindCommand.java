@@ -54,7 +54,7 @@ public class GetUnitOfMeasureKindCommand
         UnitOfMeasureKind unitOfMeasureKind = UnitOfMeasureKindLogic.getInstance().getUnitOfMeasureKindByName(this, form.getUnitOfMeasureKindName());
         
         if(!hasExecutionErrors()) {
-            sendEventUsingNames(unitOfMeasureKind.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEventUsingNames(unitOfMeasureKind.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
         
         return unitOfMeasureKind;

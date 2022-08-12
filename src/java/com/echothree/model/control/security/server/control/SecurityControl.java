@@ -163,7 +163,7 @@ public class SecurityControl
         securityRoleGroup.setLastDetail(securityRoleGroupDetail);
         securityRoleGroup.store();
         
-        sendEventUsingNames(securityRoleGroup.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(securityRoleGroup.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return securityRoleGroup;
     }
@@ -450,7 +450,7 @@ public class SecurityControl
             securityRoleGroup.setActiveDetail(securityRoleGroupDetail);
             securityRoleGroup.setLastDetail(securityRoleGroupDetail);
             
-            sendEventUsingNames(securityRoleGroupPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(securityRoleGroupPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -489,7 +489,7 @@ public class SecurityControl
             }
         }
 
-        sendEventUsingNames(securityRoleGroup.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(securityRoleGroup.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteSecurityRoleGroup(SecurityRoleGroup securityRoleGroup, BasePK deletedBy) {
@@ -516,7 +516,7 @@ public class SecurityControl
         SecurityRoleGroupDescription securityRoleGroupDescription = SecurityRoleGroupDescriptionFactory.getInstance().create(securityRoleGroup, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(securityRoleGroup.getPrimaryKey(), EventTypes.MODIFY.name(), securityRoleGroupDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(securityRoleGroup.getPrimaryKey(), EventTypes.MODIFY, securityRoleGroupDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return securityRoleGroupDescription;
     }
@@ -654,14 +654,14 @@ public class SecurityControl
             securityRoleGroupDescription = SecurityRoleGroupDescriptionFactory.getInstance().create(securityRoleGroup, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(securityRoleGroup.getPrimaryKey(), EventTypes.MODIFY.name(), securityRoleGroupDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(securityRoleGroup.getPrimaryKey(), EventTypes.MODIFY, securityRoleGroupDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteSecurityRoleGroupDescription(SecurityRoleGroupDescription securityRoleGroupDescription, BasePK deletedBy) {
         securityRoleGroupDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(securityRoleGroupDescription.getSecurityRoleGroupPK(), EventTypes.MODIFY.name(), securityRoleGroupDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(securityRoleGroupDescription.getSecurityRoleGroupPK(), EventTypes.MODIFY, securityRoleGroupDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -703,7 +703,7 @@ public class SecurityControl
         securityRole.setLastDetail(securityRoleDetail);
         securityRole.store();
         
-        sendEventUsingNames(securityRole.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(securityRole.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return securityRole;
     }
@@ -958,7 +958,7 @@ public class SecurityControl
             securityRole.setActiveDetail(securityRoleDetail);
             securityRole.setLastDetail(securityRoleDetail);
             
-            sendEventUsingNames(securityRolePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(securityRolePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -996,7 +996,7 @@ public class SecurityControl
             }
         }
         
-        sendEventUsingNames(securityRole.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(securityRole.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteSecurityRolesBySecurityRoleGroup(SecurityRoleGroup securityRoleGroup, BasePK deletedBy) {
@@ -1015,7 +1015,7 @@ public class SecurityControl
         SecurityRoleDescription securityRoleDescription = SecurityRoleDescriptionFactory.getInstance().create(securityRole, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(securityRole.getPrimaryKey(), EventTypes.MODIFY.name(), securityRoleDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(securityRole.getPrimaryKey(), EventTypes.MODIFY, securityRoleDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return securityRoleDescription;
     }
@@ -1153,14 +1153,14 @@ public class SecurityControl
             securityRoleDescription = SecurityRoleDescriptionFactory.getInstance().create(securityRole, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(securityRole.getPrimaryKey(), EventTypes.MODIFY.name(), securityRoleDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(securityRole.getPrimaryKey(), EventTypes.MODIFY, securityRoleDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteSecurityRoleDescription(SecurityRoleDescription securityRoleDescription, BasePK deletedBy) {
         securityRoleDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(securityRoleDescription.getSecurityRolePK(), EventTypes.MODIFY.name(), securityRoleDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(securityRoleDescription.getSecurityRolePK(), EventTypes.MODIFY, securityRoleDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -1180,7 +1180,7 @@ public class SecurityControl
         SecurityRolePartyType securityRolePartyType = SecurityRolePartyTypeFactory.getInstance().create(securityRole, partyType, partySelector,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(securityRole.getPrimaryKey(), EventTypes.MODIFY.name(), securityRolePartyType.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(securityRole.getPrimaryKey(), EventTypes.MODIFY, securityRolePartyType.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return securityRolePartyType;
     }
@@ -1321,14 +1321,14 @@ public class SecurityControl
             securityRolePartyType = SecurityRolePartyTypeFactory.getInstance().create(securityRolePK, partyTypePK, partySelectorPK, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(securityRolePK, EventTypes.MODIFY.name(), securityRolePartyType.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(securityRolePK, EventTypes.MODIFY, securityRolePartyType.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteSecurityRolePartyType(SecurityRolePartyType securityRolePartyType, BasePK deletedBy) {
         securityRolePartyType.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(securityRolePartyType.getSecurityRolePK(), EventTypes.MODIFY.name(), securityRolePartyType.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(securityRolePartyType.getSecurityRolePK(), EventTypes.MODIFY, securityRolePartyType.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -1378,7 +1378,7 @@ public class SecurityControl
         partySecurityRoleTemplate.setLastDetail(partySecurityRoleTemplateDetail);
         partySecurityRoleTemplate.store();
         
-        sendEventUsingNames(partySecurityRoleTemplate.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(partySecurityRoleTemplate.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return partySecurityRoleTemplate;
     }
@@ -1580,7 +1580,7 @@ public class SecurityControl
             partySecurityRoleTemplate.setActiveDetail(partySecurityRoleTemplateDetail);
             partySecurityRoleTemplate.setLastDetail(partySecurityRoleTemplateDetail);
             
-            sendEventUsingNames(partySecurityRoleTemplatePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(partySecurityRoleTemplatePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -1615,7 +1615,7 @@ public class SecurityControl
             }
         }
         
-        sendEventUsingNames(partySecurityRoleTemplate.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(partySecurityRoleTemplate.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -1627,7 +1627,7 @@ public class SecurityControl
         PartySecurityRoleTemplateDescription partySecurityRoleTemplateDescription = PartySecurityRoleTemplateDescriptionFactory.getInstance().create(session,
                 partySecurityRoleTemplate, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(partySecurityRoleTemplate.getPrimaryKey(), EventTypes.MODIFY.name(), partySecurityRoleTemplateDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(partySecurityRoleTemplate.getPrimaryKey(), EventTypes.MODIFY, partySecurityRoleTemplateDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return partySecurityRoleTemplateDescription;
     }
@@ -1770,14 +1770,14 @@ public class SecurityControl
             partySecurityRoleTemplateDescription = PartySecurityRoleTemplateDescriptionFactory.getInstance().create(session,
                     partySecurityRoleTemplate, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(partySecurityRoleTemplate.getPrimaryKey(), EventTypes.MODIFY.name(), partySecurityRoleTemplateDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(partySecurityRoleTemplate.getPrimaryKey(), EventTypes.MODIFY, partySecurityRoleTemplateDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deletePartySecurityRoleTemplateDescription(PartySecurityRoleTemplateDescription partySecurityRoleTemplateDescription, BasePK deletedBy) {
         partySecurityRoleTemplateDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(partySecurityRoleTemplateDescription.getPartySecurityRoleTemplatePK(), EventTypes.MODIFY.name(), partySecurityRoleTemplateDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(partySecurityRoleTemplateDescription.getPartySecurityRoleTemplatePK(), EventTypes.MODIFY, partySecurityRoleTemplateDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deletePartySecurityRoleTemplateDescriptionsByPartySecurityRoleTemplate(PartySecurityRoleTemplate partySecurityRoleTemplate, BasePK deletedBy) {
@@ -1797,7 +1797,7 @@ public class SecurityControl
         PartySecurityRoleTemplateRole partySecurityRoleTemplateRole = PartySecurityRoleTemplateRoleFactory.getInstance().create(partySecurityRoleTemplate,
                 securityRole, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(partySecurityRoleTemplate.getPrimaryKey(), EventTypes.MODIFY.name(), partySecurityRoleTemplateRole.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(partySecurityRoleTemplate.getPrimaryKey(), EventTypes.MODIFY, partySecurityRoleTemplateRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return partySecurityRoleTemplateRole;
     }
@@ -1950,7 +1950,7 @@ public class SecurityControl
         partySecurityRoleTemplateRole.setThruTime(session.START_TIME_LONG);
         partySecurityRoleTemplateRole.store();
         
-        sendEventUsingNames(partySecurityRoleTemplateRole.getPartySecurityRoleTemplatePK(), EventTypes.MODIFY.name(), partySecurityRoleTemplateRole.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(partySecurityRoleTemplateRole.getPartySecurityRoleTemplatePK(), EventTypes.MODIFY, partySecurityRoleTemplateRole.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -1962,7 +1962,7 @@ public class SecurityControl
         PartySecurityRoleTemplateTrainingClass partySecurityRoleTemplateTrainingClass = PartySecurityRoleTemplateTrainingClassFactory.getInstance().create(partySecurityRoleTemplate,
                 trainingClass, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(partySecurityRoleTemplate.getPrimaryKey(), EventTypes.MODIFY.name(), partySecurityRoleTemplateTrainingClass.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(partySecurityRoleTemplate.getPrimaryKey(), EventTypes.MODIFY, partySecurityRoleTemplateTrainingClass.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return partySecurityRoleTemplateTrainingClass;
     }
@@ -2120,7 +2120,7 @@ public class SecurityControl
         partySecurityRoleTemplateTrainingClass.setThruTime(session.START_TIME_LONG);
         partySecurityRoleTemplateTrainingClass.store();
         
-        sendEventUsingNames(partySecurityRoleTemplateTrainingClass.getPartySecurityRoleTemplatePK(), EventTypes.MODIFY.name(), partySecurityRoleTemplateTrainingClass.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(partySecurityRoleTemplateTrainingClass.getPartySecurityRoleTemplatePK(), EventTypes.MODIFY, partySecurityRoleTemplateTrainingClass.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -2131,7 +2131,7 @@ public class SecurityControl
         PartySecurityRoleTemplateUse partySecurityRoleTemplateUse = PartySecurityRoleTemplateUseFactory.getInstance().create(party, partySecurityRoleTemplate,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), partySecurityRoleTemplate.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY, partySecurityRoleTemplate.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         syncPartySecurityRoles(party, partySecurityRoleTemplate, createdBy);
         
@@ -2191,7 +2191,7 @@ public class SecurityControl
             partySecurityRoleTemplateUse = PartySecurityRoleTemplateUseFactory.getInstance().create(partyPK,
                     partySecurityRoleTemplatePK, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(partyPK, EventTypes.MODIFY.name(), partySecurityRoleTemplateUse.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(partyPK, EventTypes.MODIFY, partySecurityRoleTemplateUse.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
 
             syncPartySecurityRoles(partyPK, partySecurityRoleTemplatePK, updatedBy);
         }
@@ -2235,7 +2235,7 @@ public class SecurityControl
     public void deletePartySecurityRoleTemplateUse(PartySecurityRoleTemplateUse partySecurityRoleTemplateUse, BasePK deletedBy) {
         partySecurityRoleTemplateUse.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(partySecurityRoleTemplateUse.getPartySecurityRoleTemplatePK(), EventTypes.MODIFY.name(), partySecurityRoleTemplateUse.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(partySecurityRoleTemplateUse.getPartySecurityRoleTemplatePK(), EventTypes.MODIFY, partySecurityRoleTemplateUse.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deletePartySecurityRoleTemplateUseByParty(Party party, BasePK deletedBy) {
@@ -2288,7 +2288,7 @@ public class SecurityControl
         PartySecurityRole partySecurityRole = PartySecurityRoleFactory.getInstance().create(party, securityRole,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), partySecurityRole.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY, partySecurityRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return partySecurityRole;
     }
@@ -2410,7 +2410,7 @@ public class SecurityControl
         partySecurityRole.setThruTime(session.START_TIME_LONG);
         partySecurityRole.store();
         
-        sendEventUsingNames(partySecurityRole.getParty().getPrimaryKey(), EventTypes.MODIFY.name(), partySecurityRole.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(partySecurityRole.getParty().getPrimaryKey(), EventTypes.MODIFY, partySecurityRole.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deletePartySecurityRoles(List<PartySecurityRole> partySecurityRoles, BasePK deletedBy) {
@@ -2432,7 +2432,7 @@ public class SecurityControl
         PartyEntitySecurityRole partyEntitySecurityRole = PartyEntitySecurityRoleFactory.getInstance().create(party, entityInstance,
                 securityRole, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), partyEntitySecurityRole.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY, partyEntitySecurityRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return partyEntitySecurityRole;
     }
@@ -2609,7 +2609,7 @@ public class SecurityControl
         partyEntitySecurityRole.setThruTime(session.START_TIME_LONG);
         partyEntitySecurityRole.store();
         
-        sendEventUsingNames(partyEntitySecurityRole.getParty().getPrimaryKey(), EventTypes.MODIFY.name(), partyEntitySecurityRole.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(partyEntitySecurityRole.getParty().getPrimaryKey(), EventTypes.MODIFY, partyEntitySecurityRole.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deletePartyEntitySecurityRoles(List<PartyEntitySecurityRole> partyEntitySecurityRoles, BasePK deletedBy) {

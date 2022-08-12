@@ -73,7 +73,7 @@ public class GetInvoiceTypeCommand
         if(invoiceType != null) {
             result.setInvoiceType(invoiceControl.getInvoiceTypeTransfer(getUserVisit(), invoiceType));
             
-            sendEventUsingNames(invoiceType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEventUsingNames(invoiceType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownInvoiceTypeName.name(), invoiceTypeName);
         }

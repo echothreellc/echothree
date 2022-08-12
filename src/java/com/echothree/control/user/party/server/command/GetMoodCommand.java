@@ -59,7 +59,7 @@ public class GetMoodCommand
         if(mood != null) {
             result.setMood(partyControl.getMoodTransfer(getUserVisit(), mood));
             
-            sendEventUsingNames(mood.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEventUsingNames(mood.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownMoodName.name(), moodName);
         }

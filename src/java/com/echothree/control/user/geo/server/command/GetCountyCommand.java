@@ -131,7 +131,7 @@ public class GetCountyCommand
                 if(geoCodeAlias != null) {
                     geoCode = geoCodeAlias.getGeoCode();
 
-                    sendEventUsingNames(geoCode.getPrimaryKey(), EventTypes.READ.name(), null, null, createdBy);
+                    sendEventUsingNames(geoCode.getPrimaryKey(), EventTypes.READ, null, null, createdBy);
                 }
             } else {
                 addExecutionError(ExecutionErrors.UnknownGeoCodeScopeName.name(), geoCodeScopeName);

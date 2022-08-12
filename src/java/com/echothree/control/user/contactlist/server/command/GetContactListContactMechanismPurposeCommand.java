@@ -85,7 +85,7 @@ public class GetContactListContactMechanismPurposeCommand
                 if(contactListContactMechanismPurpose != null) {
                     result.setContactListContactMechanismPurpose(contactListControl.getContactListContactMechanismPurposeTransfer(getUserVisit(), contactListContactMechanismPurpose));
 
-                    sendEventUsingNames(contactListContactMechanismPurpose.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                    sendEventUsingNames(contactListContactMechanismPurpose.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateContactListContactMechanismPurpose.name(), contactListName, contactMechanismPurposeName);
                 }

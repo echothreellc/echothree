@@ -90,7 +90,7 @@ public class GetPartyPaymentMethodCommand
         } else {
             result.setPartyPaymentMethod(partyPaymentMethodControl.getPartyPaymentMethodTransfer(getUserVisit(), partyPaymentMethod));
 
-            sendEventUsingNames(partyPaymentMethod.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEventUsingNames(partyPaymentMethod.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
         
         return result;

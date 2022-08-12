@@ -132,7 +132,7 @@ public class PeriodControl
         periodKind.setLastDetail(periodKindDetail);
         periodKind.store();
         
-        sendEventUsingNames(periodKind.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(periodKind.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return periodKind;
     }
@@ -327,7 +327,7 @@ public class PeriodControl
         periodKind.setLastDetail(periodKindDetail);
         periodKind.store();
         
-        sendEventUsingNames(periodKindPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+        sendEventUsingNames(periodKindPK, EventTypes.MODIFY, null, null, updatedBy);
     }
     
     public void updatePeriodKindFromValue(PeriodKindDetailValue periodKindDetailValue, BasePK updatedBy) {
@@ -360,7 +360,7 @@ public class PeriodControl
             }
         }
         
-        sendEventUsingNames(periodKind.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(periodKind.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -372,7 +372,7 @@ public class PeriodControl
         PeriodKindDescription periodKindDescription = PeriodKindDescriptionFactory.getInstance().create(periodKind,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(periodKind.getPrimaryKey(), EventTypes.MODIFY.name(), periodKindDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(periodKind.getPrimaryKey(), EventTypes.MODIFY, periodKindDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return periodKindDescription;
     }
@@ -510,14 +510,14 @@ public class PeriodControl
             periodKindDescription = PeriodKindDescriptionFactory.getInstance().create(periodKind, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(periodKind.getPrimaryKey(), EventTypes.MODIFY.name(), periodKindDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(periodKind.getPrimaryKey(), EventTypes.MODIFY, periodKindDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deletePeriodKindDescription(PeriodKindDescription periodKindDescription, BasePK deletedBy) {
         periodKindDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(periodKindDescription.getPeriodKindPK(), EventTypes.MODIFY.name(), periodKindDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(periodKindDescription.getPeriodKindPK(), EventTypes.MODIFY, periodKindDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -558,7 +558,7 @@ public class PeriodControl
         periodType.setLastDetail(periodTypeDetail);
         periodType.store();
         
-        sendEventUsingNames(periodType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(periodType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return periodType;
     }
@@ -803,7 +803,7 @@ public class PeriodControl
             periodType.setActiveDetail(periodTypeDetail);
             periodType.setLastDetail(periodTypeDetail);
             
-            sendEventUsingNames(periodTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(periodTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -838,7 +838,7 @@ public class PeriodControl
             }
         }
         
-        sendEventUsingNames(periodType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(periodType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deletePeriodTypesByPeriodKind(PeriodKind periodKind, BasePK deletedBy) {
@@ -858,7 +858,7 @@ public class PeriodControl
         PeriodTypeDescription periodTypeDescription = PeriodTypeDescriptionFactory.getInstance().create(periodType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(periodType.getPrimaryKey(), EventTypes.MODIFY.name(), periodTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(periodType.getPrimaryKey(), EventTypes.MODIFY, periodTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return periodTypeDescription;
     }
@@ -996,14 +996,14 @@ public class PeriodControl
             periodTypeDescription = PeriodTypeDescriptionFactory.getInstance().create(periodType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(periodType.getPrimaryKey(), EventTypes.MODIFY.name(), periodTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(periodType.getPrimaryKey(), EventTypes.MODIFY, periodTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deletePeriodTypeDescription(PeriodTypeDescription periodTypeDescription, BasePK deletedBy) {
         periodTypeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(periodTypeDescription.getPeriodTypePK(), EventTypes.MODIFY.name(), periodTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(periodTypeDescription.getPeriodTypePK(), EventTypes.MODIFY, periodTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deletePeriodTypeDescriptionsByPeriodType(PeriodType periodType, BasePK deletedBy) {
@@ -1030,7 +1030,7 @@ public class PeriodControl
         period.setLastDetail(periodDetail);
         period.store();
         
-        sendEventUsingNames(period.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(period.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return period;
     }
@@ -1273,7 +1273,7 @@ public class PeriodControl
             period.setActiveDetail(periodDetail);
             period.setLastDetail(periodDetail);
             
-            sendEventUsingNames(periodPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(periodPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -1286,7 +1286,7 @@ public class PeriodControl
         period.setActiveDetail(null);
         period.store();
         
-        sendEventUsingNames(period.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(period.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deletePeriods(List<Period> periods, BasePK deletedBy) {
@@ -1316,7 +1316,7 @@ public class PeriodControl
         PeriodDescription periodDescription = PeriodDescriptionFactory.getInstance().create(period,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(period.getPrimaryKey(), EventTypes.MODIFY.name(), periodDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEventUsingNames(period.getPrimaryKey(), EventTypes.MODIFY, periodDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return periodDescription;
     }
@@ -1454,14 +1454,14 @@ public class PeriodControl
             periodDescription = PeriodDescriptionFactory.getInstance().create(period, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(period.getPrimaryKey(), EventTypes.MODIFY.name(), periodDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEventUsingNames(period.getPrimaryKey(), EventTypes.MODIFY, periodDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deletePeriodDescription(PeriodDescription periodDescription, BasePK deletedBy) {
         periodDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(periodDescription.getPeriodPK(), EventTypes.MODIFY.name(), periodDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEventUsingNames(periodDescription.getPeriodPK(), EventTypes.MODIFY, periodDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deletePeriodDescriptionsByPeriod(Period period, BasePK deletedBy) {

@@ -112,7 +112,7 @@ public class WorkEffortControl
         workEffortType.setLastDetail(workEffortTypeDetail);
         workEffortType.store();
         
-        sendEventUsingNames(workEffortType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(workEffortType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return workEffortType;
     }
@@ -232,7 +232,7 @@ public class WorkEffortControl
             workEffortType.setActiveDetail(workEffortTypeDetail);
             workEffortType.setLastDetail(workEffortTypeDetail);
             
-            sendEventUsingNames(workEffortTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(workEffortTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -248,7 +248,7 @@ public class WorkEffortControl
         workEffortType.setActiveDetail(null);
         workEffortType.store();
         
-        sendEventUsingNames(workEffortType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(workEffortType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -260,7 +260,7 @@ public class WorkEffortControl
         WorkEffortTypeDescription workEffortTypeDescription = WorkEffortTypeDescriptionFactory.getInstance().create(workEffortType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(workEffortType.getPrimaryKey(), EventTypes.MODIFY.name(), workEffortTypeDescription.getPrimaryKey(),
+        sendEventUsingNames(workEffortType.getPrimaryKey(), EventTypes.MODIFY, workEffortTypeDescription.getPrimaryKey(),
                 null, createdBy);
         
         return workEffortTypeDescription;
@@ -401,7 +401,7 @@ public class WorkEffortControl
             workEffortTypeDescription = WorkEffortTypeDescriptionFactory.getInstance().create(workEffortType, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(workEffortType.getPrimaryKey(), EventTypes.MODIFY.name(), workEffortTypeDescription.getPrimaryKey(),
+            sendEventUsingNames(workEffortType.getPrimaryKey(), EventTypes.MODIFY, workEffortTypeDescription.getPrimaryKey(),
                     null, updatedBy);
         }
     }
@@ -409,7 +409,7 @@ public class WorkEffortControl
     public void deleteWorkEffortTypeDescription(WorkEffortTypeDescription workEffortTypeDescription, BasePK deletedBy) {
         workEffortTypeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(workEffortTypeDescription.getWorkEffortTypePK(), EventTypes.MODIFY.name(),
+        sendEventUsingNames(workEffortTypeDescription.getWorkEffortTypePK(), EventTypes.MODIFY,
                 workEffortTypeDescription.getPrimaryKey(), null, deletedBy);
     }
     
@@ -452,7 +452,7 @@ public class WorkEffortControl
         workEffortScope.setLastDetail(workEffortScopeDetail);
         workEffortScope.store();
         
-        sendEventUsingNames(workEffortScope.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(workEffortScope.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return workEffortScope;
     }
@@ -679,7 +679,7 @@ public class WorkEffortControl
             workEffortScope.setActiveDetail(workEffortScopeDetail);
             workEffortScope.setLastDetail(workEffortScopeDetail);
             
-            sendEventUsingNames(workEffortScopePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(workEffortScopePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -722,7 +722,7 @@ public class WorkEffortControl
             }
         }
         
-        sendEventUsingNames(workEffortScope.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(workEffortScope.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteWorkEffortScope(WorkEffortScope workEffortScope, BasePK deletedBy) {
@@ -746,7 +746,7 @@ public class WorkEffortControl
         WorkEffortScopeDescription workEffortScopeDescription = WorkEffortScopeDescriptionFactory.getInstance().create(workEffortScope,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(workEffortScope.getPrimaryKey(), EventTypes.MODIFY.name(), workEffortScopeDescription.getPrimaryKey(),
+        sendEventUsingNames(workEffortScope.getPrimaryKey(), EventTypes.MODIFY, workEffortScopeDescription.getPrimaryKey(),
                 null, createdBy);
         
         return workEffortScopeDescription;
@@ -887,7 +887,7 @@ public class WorkEffortControl
             workEffortScopeDescription = WorkEffortScopeDescriptionFactory.getInstance().create(workEffortScope, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(workEffortScope.getPrimaryKey(), EventTypes.MODIFY.name(), workEffortScopeDescription.getPrimaryKey(),
+            sendEventUsingNames(workEffortScope.getPrimaryKey(), EventTypes.MODIFY, workEffortScopeDescription.getPrimaryKey(),
                     null, updatedBy);
         }
     }
@@ -895,7 +895,7 @@ public class WorkEffortControl
     public void deleteWorkEffortScopeDescription(WorkEffortScopeDescription workEffortScopeDescription, BasePK deletedBy) {
         workEffortScopeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(workEffortScopeDescription.getWorkEffortScopePK(), EventTypes.MODIFY.name(),
+        sendEventUsingNames(workEffortScopeDescription.getWorkEffortScopePK(), EventTypes.MODIFY,
                 workEffortScopeDescription.getPrimaryKey(), null, deletedBy);
     }
     
@@ -924,7 +924,7 @@ public class WorkEffortControl
         workEffort.setLastDetail(workEffortDetail);
         workEffort.store();
         
-        sendEventUsingNames(workEffort.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEventUsingNames(workEffort.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return workEffort;
     }
@@ -1145,7 +1145,7 @@ public class WorkEffortControl
             workEffort.setActiveDetail(workEffortDetail);
             workEffort.setLastDetail(workEffortDetail);
             
-            sendEventUsingNames(workEffortPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEventUsingNames(workEffortPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -1159,7 +1159,7 @@ public class WorkEffortControl
         workEffort.setActiveDetail(null);
         workEffort.store();
         
-        sendEventUsingNames(workEffort.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEventUsingNames(workEffort.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteWorkEfforts(List<WorkEffort> workEfforts, BasePK deletedBy) {

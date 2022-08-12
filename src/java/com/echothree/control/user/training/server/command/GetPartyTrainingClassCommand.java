@@ -73,7 +73,7 @@ public class GetPartyTrainingClassCommand
         if(partyTrainingClass != null) {
             result.setPartyTrainingClass(trainingControl.getPartyTrainingClassTransfer(getUserVisit(), partyTrainingClass));
             
-            sendEventUsingNames(partyTrainingClass.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEventUsingNames(partyTrainingClass.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownPartyTrainingClassName.name(), partyTrainingClassName);
         }

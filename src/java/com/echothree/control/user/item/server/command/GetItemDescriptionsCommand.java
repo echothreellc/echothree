@@ -112,7 +112,7 @@ public class GetItemDescriptionsCommand
                 }
 
                 if(!hasExecutionErrors()) {
-                    sendEventUsingNames(item.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                    sendEventUsingNames(item.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                 }
             } else {
                 addExecutionError(ExecutionErrors.UnknownItemDescriptionTypeUseTypeName.name(), itemDescriptionTypeUseTypeName);
