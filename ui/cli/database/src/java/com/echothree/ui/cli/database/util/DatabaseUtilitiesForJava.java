@@ -372,7 +372,7 @@ public class DatabaseUtilitiesForJava {
         if(columns.size() > 1) {
             pw.println("            ");
             
-            columns.stream().forEach((column) -> {
+            columns.forEach((column) -> {
                 int columnType = column.getType();
                 if (columnType != ColumnType.columnEID && columnType != ColumnType.columnBLOB) {
                     String variableName = column.getVariableName();
@@ -398,7 +398,7 @@ public class DatabaseUtilitiesForJava {
         if(columns.size() > 1) {
             pw.println("            ");
             
-            columns.stream().forEach((column) -> {
+            columns.forEach((column) -> {
                 int columnType = column.getType();
                 if (columnType != ColumnType.columnEID && columnType != ColumnType.columnBLOB) {
                     pw.println("            stringValue.append(\", " + column.getVariableName() + "=\").append(" + column.getGetFunctionName() + "());");
@@ -461,7 +461,7 @@ public class DatabaseUtilitiesForJava {
         if(columns.size() > 1) {
             pw.println("            ");
             
-            columns.stream().forEach((column) -> {
+            columns.forEach((column) -> {
                 int type = column.getType();
                 if (type != ColumnType.columnEID) {
                     String getFunctionName = column.getGetFunctionName();
@@ -858,7 +858,7 @@ public class DatabaseUtilitiesForJava {
     }
     
     public void writeEntityGetsSets(PrintWriter pw, Table theTable) {
-        theTable.getColumns().stream().forEach((column) -> {
+        theTable.getColumns().forEach((column) -> {
             int type = column.getType();
             
             if (type != ColumnType.columnEID) {
@@ -1280,7 +1280,7 @@ public class DatabaseUtilitiesForJava {
         pw.println("                    ");
         pw.println("                    _ps.clearBatch();");
         pw.println("                    ");
-        pw.println("                    pks.stream().forEach((pk) -> {");
+        pw.println("                    pks.forEach((pk) -> {");
         pw.println("                        session.getValueCache().remove(pk);");
         pw.println("                    });");
         pw.println("                }");
@@ -1288,7 +1288,7 @@ public class DatabaseUtilitiesForJava {
         pw.println("                throw new PersistenceDatabaseException(se);");
         pw.println("            }");
         pw.println("            ");
-        pw.println("            pks.stream().forEach((pk) -> {");
+        pw.println("            pks.forEach((pk) -> {");
         pw.println("                session.removed(pk, true);");
         pw.println("            });");
         pw.println("        }");
@@ -1433,7 +1433,7 @@ public class DatabaseUtilitiesForJava {
             pw.println("                    ");
             pw.println("                    _ps.clearBatch();");
             pw.println("                    ");
-            pw.println("                    entities.stream().forEach((entity) -> {");
+            pw.println("                    entities.forEach((entity) -> {");
             pw.println("                        session.getValueCache().put(entity.get" + valueClass + "());");
             pw.println("                    });");
             pw.println("                }");
@@ -1650,7 +1650,7 @@ public class DatabaseUtilitiesForJava {
         pw.println("                throw new PersistenceDatabaseException(se);");
         pw.println("            }");
         pw.println("            ");
-        pw.println("            _cacheValues.stream().forEach((_cacheValue) -> {");
+        pw.println("            _cacheValues.forEach((_cacheValue) -> {");
         pw.println("                " + entityClass + " _cacheEntity = new " + entityClass + "(_cacheValue, EntityPermission.READ_ONLY);");
         pw.println("                ");
         pw.println("                session.putReadOnlyEntity(_cacheValue.getPrimaryKey(), _cacheEntity);");
