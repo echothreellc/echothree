@@ -25,11 +25,14 @@ import com.echothree.model.data.core.server.entity.EntityListItem;
 import com.echothree.model.data.core.server.entity.EntityListItemDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
+import com.echothree.util.server.persistence.Session;
 import java.util.Set;
 
 public class EntityListItemTransferCache
         extends BaseCoreTransferCache<EntityListItem, EntityListItemTransfer> {
-    
+
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
     TransferProperties transferProperties;
     boolean filterEntityAttribute;
     boolean filterEntityListItemName;
@@ -39,8 +42,8 @@ public class EntityListItemTransferCache
     boolean filterEntityInstance;
 
     /** Creates a new instance of EntityListItemTransferCache */
-    public EntityListItemTransferCache(UserVisit userVisit, CoreControl coreControl) {
-        super(userVisit, coreControl);
+    public EntityListItemTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {

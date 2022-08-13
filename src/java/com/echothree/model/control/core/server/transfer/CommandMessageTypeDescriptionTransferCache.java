@@ -22,13 +22,16 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.core.server.entity.CommandMessageTypeDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class CommandMessageTypeDescriptionTransferCache
         extends BaseCoreDescriptionTransferCache<CommandMessageTypeDescription, CommandMessageTypeDescriptionTransfer> {
-    
+
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
     /** Creates a new instance of CommandMessageTypeDescriptionTransferCache */
-    public CommandMessageTypeDescriptionTransferCache(UserVisit userVisit, CoreControl coreControl) {
-        super(userVisit, coreControl);
+    public CommandMessageTypeDescriptionTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
     
     public CommandMessageTypeDescriptionTransfer getCommandMessageTypeDescriptionTransfer(CommandMessageTypeDescription commandMessageTypeDescription) {

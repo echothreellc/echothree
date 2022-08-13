@@ -55,7 +55,8 @@ import java.util.Set;
 
 public class EntityAttributeTransferCache
         extends BaseCoreTransferCache<EntityAttribute, EntityAttributeTransfer> {
-    
+
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
     SequenceControl sequenceControl = Session.getModelController(SequenceControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
     
@@ -77,8 +78,8 @@ public class EntityAttributeTransferCache
     boolean filterEntityInstance;
 
     /** Creates a new instance of EntityAttributeTransferCache */
-    public EntityAttributeTransferCache(UserVisit userVisit, CoreControl coreControl) {
-        super(userVisit, coreControl);
+    public EntityAttributeTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         var options = session.getOptions();
         if(options != null) {

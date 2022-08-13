@@ -31,13 +31,14 @@ import java.util.Set;
 
 public class EntityStringAttributeTransferCache
         extends BaseCoreTransferCache<EntityStringAttribute, EntityStringAttributeTransfer> {
-    
+
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     boolean includeString;
     
     /** Creates a new instance of EntityStringAttributeTransferCache */
-    public EntityStringAttributeTransferCache(UserVisit userVisit, CoreControl coreControl) {
-        super(userVisit, coreControl);
+    public EntityStringAttributeTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         var options = session.getOptions();
         if(options != null) {

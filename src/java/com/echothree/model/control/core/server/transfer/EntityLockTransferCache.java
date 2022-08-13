@@ -29,6 +29,7 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.DslContextFactory;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.PersistenceUtils;
+import com.echothree.util.server.persistence.Session;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -38,10 +39,12 @@ import javax.sql.DataSource;
 
 public class EntityLockTransferCache
         extends BaseCoreTransferCache {
-    
+
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
     /** Creates a new instance of EntityLockTransferCache */
-    public EntityLockTransferCache(UserVisit userVisit, CoreControl coreControl) {
-        super(userVisit, coreControl);
+    public EntityLockTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
     
     DataSource ds = null;

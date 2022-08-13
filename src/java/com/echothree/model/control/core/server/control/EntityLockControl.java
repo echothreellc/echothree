@@ -23,7 +23,6 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.EntityLockException;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
-import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.BaseValue;
 import com.echothree.util.server.persistence.DslContextFactory;
@@ -33,7 +32,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class EntityLockControl
-        extends BaseModelControl {
+        extends BaseCoreControl {
     
     /** Creates a new instance of EntityLockControl */
     public EntityLockControl() {

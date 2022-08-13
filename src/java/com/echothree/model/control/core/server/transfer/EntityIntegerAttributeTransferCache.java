@@ -23,13 +23,16 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityIntegerAttribute;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class EntityIntegerAttributeTransferCache
         extends BaseCoreTransferCache<EntityIntegerAttribute, EntityIntegerAttributeTransfer> {
-    
+
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
     /** Creates a new instance of EntityIntegerAttributeTransferCache */
-    public EntityIntegerAttributeTransferCache(UserVisit userVisit, CoreControl coreControl) {
-        super(userVisit, coreControl);
+    public EntityIntegerAttributeTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
     
     public EntityIntegerAttributeTransfer getEntityIntegerAttributeTransfer(EntityIntegerAttribute entityIntegerAttribute, EntityInstance entityInstance) {

@@ -21,13 +21,16 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.TextTransformation;
 import com.echothree.model.data.core.server.entity.TextTransformationDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class TextTransformationTransferCache
         extends BaseCoreTransferCache<TextTransformation, TextTransformationTransfer> {
 
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
     /** Creates a new instance of TextTransformationTransferCache */
-    public TextTransformationTransferCache(UserVisit userVisit, CoreControl coreControl) {
-        super(userVisit, coreControl);
+    public TextTransformationTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         setIncludeEntityInstance(true);
     }

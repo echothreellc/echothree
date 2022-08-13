@@ -28,7 +28,6 @@ import com.echothree.model.data.search.server.factory.CachedExecutedSearchResult
 import com.echothree.model.data.search.server.factory.SearchResultFactory;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
-import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import static java.lang.Math.toIntExact;
@@ -37,7 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EntityListItemControl
-        extends BaseModelControl {
+        extends BaseCoreControl {
 
     /** Creates a new instance of EntityListItemControl */
     public EntityListItemControl() {

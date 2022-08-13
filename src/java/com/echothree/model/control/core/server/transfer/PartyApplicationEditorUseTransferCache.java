@@ -32,10 +32,11 @@ public class PartyApplicationEditorUseTransferCache
         extends BaseCoreTransferCache<PartyApplicationEditorUse, PartyApplicationEditorUseTransfer> {
 
     PartyControl partyControl = Session.getModelController(PartyControl.class);
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     /** Creates a new instance of PartyApplicationEditorUseTransferCache */
-    public PartyApplicationEditorUseTransferCache(UserVisit userVisit, CoreControl coreControl) {
-        super(userVisit, coreControl);
+    public PartyApplicationEditorUseTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         setIncludeEntityInstance(true);
     }

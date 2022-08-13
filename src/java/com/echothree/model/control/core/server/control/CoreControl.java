@@ -156,7 +156,6 @@ import com.echothree.model.control.core.server.transfer.CommandMessageTranslatio
 import com.echothree.model.control.core.server.transfer.CommandMessageTypeDescriptionTransferCache;
 import com.echothree.model.control.core.server.transfer.CommandMessageTypeTransferCache;
 import com.echothree.model.control.core.server.transfer.CommandTransferCache;
-import com.echothree.model.control.core.server.transfer.CoreTransferCaches;
 import com.echothree.model.control.core.server.transfer.EditorDescriptionTransferCache;
 import com.echothree.model.control.core.server.transfer.EditorTransferCache;
 import com.echothree.model.control.core.server.transfer.EntityAppearanceTransferCache;
@@ -596,7 +595,6 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BaseKey;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.persistence.type.ByteArray;
-import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.EntityPermission;
@@ -620,25 +618,11 @@ import java.util.Objects;
 import java.util.Set;
 
 public class CoreControl
-        extends BaseModelControl {
+        extends BaseCoreControl {
     
     /** Creates a new instance of CoreControl */
     public CoreControl() {
         super();
-    }
-    
-    // --------------------------------------------------------------------------------
-    //   Core Transfer Caches
-    // --------------------------------------------------------------------------------
-    
-    private CoreTransferCaches coreTransferCaches;
-    
-    public CoreTransferCaches getCoreTransferCaches(UserVisit userVisit) {
-        if(coreTransferCaches == null) {
-            coreTransferCaches = new CoreTransferCaches(userVisit, this);
-        }
-        
-        return coreTransferCaches;
     }
     
     // --------------------------------------------------------------------------------

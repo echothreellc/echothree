@@ -26,17 +26,20 @@ import com.echothree.model.data.core.server.entity.CommandMessageDetail;
 import com.echothree.model.data.core.server.entity.CommandMessageTranslation;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.MapWrapper;
+import com.echothree.util.server.persistence.Session;
 import java.util.List;
 import java.util.Set;
 
 public class CommandMessageTransferCache
         extends BaseCoreTransferCache<CommandMessage, CommandMessageTransfer> {
-    
+
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
     boolean includeTranslations;
     
     /** Creates a new instance of CommandMessageTransferCache */
-    public CommandMessageTransferCache(UserVisit userVisit, CoreControl coreControl) {
-        super(userVisit, coreControl);
+    public CommandMessageTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         var options = session.getOptions();
         if(options != null) {

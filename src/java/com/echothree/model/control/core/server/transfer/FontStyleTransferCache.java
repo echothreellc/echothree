@@ -21,13 +21,16 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.FontStyle;
 import com.echothree.model.data.core.server.entity.FontStyleDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class FontStyleTransferCache
         extends BaseCoreTransferCache<FontStyle, FontStyleTransfer> {
 
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
     /** Creates a new instance of FontStyleTransferCache */
-    public FontStyleTransferCache(UserVisit userVisit, CoreControl coreControl) {
-        super(userVisit, coreControl);
+    public FontStyleTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         setIncludeEntityInstance(true);
     }

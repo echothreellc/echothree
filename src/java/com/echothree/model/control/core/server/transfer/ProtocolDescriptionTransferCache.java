@@ -22,13 +22,16 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.model.data.core.server.entity.ProtocolDescription;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class ProtocolDescriptionTransferCache
         extends BaseCoreDescriptionTransferCache<ProtocolDescription, ProtocolDescriptionTransfer> {
-    
+
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
     /** Creates a new instance of ProtocolDescriptionTransferCache */
-    public ProtocolDescriptionTransferCache(UserVisit userVisit, CoreControl coreControl) {
-        super(userVisit, coreControl);
+    public ProtocolDescriptionTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
     
     public ProtocolDescriptionTransfer getProtocolDescriptionTransfer(ProtocolDescription protocolDescription) {

@@ -29,15 +29,16 @@ import com.echothree.util.server.persistence.Session;
 
 public class EntityGeoPointAttributeTransferCache
         extends BaseCoreTransferCache<EntityGeoPointAttribute, EntityGeoPointAttributeTransfer> {
-    
+
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
     UomControl uomControl = Session.getModelController(UomControl.class);
     UnitOfMeasureKind elevationUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_ELEVATION);
     UnitOfMeasureKind altitudeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_ALTITUDE);
     GeoPointUtils geoPointUtils = GeoPointUtils.getInstance();
     
     /** Creates a new instance of EntityGeoPointAttributeTransferCache */
-    public EntityGeoPointAttributeTransferCache(final UserVisit userVisit, final CoreControl coreControl) {
-        super(userVisit, coreControl);
+    public EntityGeoPointAttributeTransferCache(final UserVisit userVisit) {
+        super(userVisit);
     }
     
     public EntityGeoPointAttributeTransfer getEntityGeoPointAttributeTransfer(final EntityGeoPointAttribute entityGeoPointAttribute,

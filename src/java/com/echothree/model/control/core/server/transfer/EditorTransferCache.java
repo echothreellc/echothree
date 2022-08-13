@@ -21,13 +21,16 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.Editor;
 import com.echothree.model.data.core.server.entity.EditorDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class EditorTransferCache
         extends BaseCoreTransferCache<Editor, EditorTransfer> {
 
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
     /** Creates a new instance of EditorTransferCache */
-    public EditorTransferCache(UserVisit userVisit, CoreControl coreControl) {
-        super(userVisit, coreControl);
+    public EditorTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         setIncludeEntityInstance(true);
     }

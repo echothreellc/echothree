@@ -26,10 +26,13 @@ import com.echothree.model.data.core.server.entity.MimeTypeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.ListWrapper;
+import com.echothree.util.server.persistence.Session;
 import java.util.Set;
 
 public class MimeTypeTransferCache
         extends BaseCoreTransferCache<MimeType, MimeTypeTransfer> {
+
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     boolean includeMimeTypeFileExtensions;
     
@@ -42,8 +45,8 @@ public class MimeTypeTransferCache
     boolean filterEntityInstance;
     
     /** Creates a new instance of MimeTypeTransferCache */
-    public MimeTypeTransferCache(UserVisit userVisit, CoreControl coreControl) {
-        super(userVisit, coreControl);
+    public MimeTypeTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         var options = session.getOptions();
         if(options != null) {

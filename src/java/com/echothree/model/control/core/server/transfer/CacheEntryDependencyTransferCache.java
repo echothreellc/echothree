@@ -24,18 +24,21 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.CacheEntryDependency;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
+import com.echothree.util.server.persistence.Session;
 import java.util.Set;
 
 public class CacheEntryDependencyTransferCache
         extends BaseCoreTransferCache<CacheEntryDependency, CacheEntryDependencyTransfer> {
-    
+
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
     TransferProperties transferProperties;
     boolean filterCacheEntry;
     boolean filterEntityInstance;
     
     /** Creates a new instance of CacheEntryTransferCache */
-    public CacheEntryDependencyTransferCache(UserVisit userVisit, CoreControl coreControl) {
-        super(userVisit, coreControl);
+    public CacheEntryDependencyTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
