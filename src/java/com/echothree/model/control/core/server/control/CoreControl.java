@@ -13112,10 +13112,13 @@ public class CoreControl
                 shouldQueueEventToSubscribers = true;
             }
         }
-        
+
+        // Support for tracking the last time an EntityInstance (just as an Employee Party) has visited a given
+        // EntityInstance. If the EntityInstance has not been modified since the last visit, the READ event caused
+        // by the visit will be suppressed vs. being recorded.
         var shouldSuppressEvent = false;
         if(shouldUpdateVisitedTime && createdByEntityInstance != null) {
-            var entityVisit = getEntityVisitForUpdate(createdByEntityInstance, entityInstance);
+            final var entityVisit = getEntityVisitForUpdate(createdByEntityInstance, entityInstance);
 
             if(entityVisit == null) {
                 createEntityVisit(createdByEntityInstance, entityInstance);
@@ -13128,6 +13131,8 @@ public class CoreControl
                     modifiedTime = entityTime.getCreatedTime();
                 }
 
+                // There is a possible override for suppressing events in here by EntityType. This was added to ensure
+                // that full auditing is available for some EntityTypes such as PartyPaymentMethod.
                 if(entityVisit.getVisitedTime() >= modifiedTime && !entityInstance.getEntityType().getLastDetail().getKeepAllHistory()) {
                     shouldSuppressEvent = true;
                 }
@@ -13137,7 +13142,7 @@ public class CoreControl
         }
 
         if(!shouldSuppressEvent) {
-            var eventGroup = createdByPK == null ? null : getActiveEventGroup(createdByPK);
+            final var eventGroup = createdByPK == null ? null : getActiveEventGroup(createdByPK);
 
             event = createEvent(eventGroup, eventTime, entityInstance, eventType, relatedEntityInstance, relatedEventType,
                     createdByEntityInstance);
