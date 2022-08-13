@@ -1770,13 +1770,6 @@
                     <columns>
                         <column name="EventTypeId" type="EID" nullAllowed="false" />
                         <column name="EventTypeName" type="Name" nullAllowed="false" />
-                        <column name="UpdateCreatedTime" type="Boolean" nullAllowed="false" />
-                        <column name="UpdateModifiedTime" type="Boolean" nullAllowed="false" />
-                        <column name="UpdateDeletedTime" type="Boolean" nullAllowed="false" />
-                        <column name="UpdateVisitedTime" type="Boolean" nullAllowed="false" />
-                        <column name="QueueToSubscribers" type="Boolean" nullAllowed="false" />
-                        <column name="KeepHistory" type="Boolean" nullAllowed="false" />
-                        <column name="MaximumHistory" type="Integer" nullAllowed="true" />
                     </columns>
                     <indexes>
                         <index type="PrimaryKey">

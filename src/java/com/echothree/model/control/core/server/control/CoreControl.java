@@ -2862,10 +2862,8 @@ public class CoreControl
     //   Event Types
     // --------------------------------------------------------------------------------
     
-    public EventType createEventType(String eventTypeName, Boolean updateCreatedTime, Boolean updateModifiedTime, Boolean updateDeletedTime,
-            Boolean updateVisitedTime, Boolean queueToSubscribers, Boolean keepHistory, Integer maximumHistory) {
-        EventType eventType = EventTypeFactory.getInstance().create(eventTypeName, updateCreatedTime, updateModifiedTime, updateDeletedTime,
-                updateVisitedTime, queueToSubscribers, keepHistory, maximumHistory);
+    public EventType createEventType(String eventTypeName) {
+        EventType eventType = EventTypeFactory.getInstance().create(eventTypeName);
         
         return eventType;
     }
@@ -13033,29 +13031,98 @@ public class CoreControl
         }
     }
 
-    private boolean shouldClearCache(final EntityInstance entityInstance, final EventType eventType, final Long eventTime,
-            final EntityTime entityTime, final BasePK createdByPK) {
-        var clearCache = false;
+    private EntityTime getEntityTime(final EntityInstance entityInstance, final Long eventTime) {
+        var entityTime = getEntityTimeForUpdate(entityInstance);
 
-        if(eventType.getUpdateModifiedTime()) {
-            entityTime.setModifiedTime(eventTime);
-            clearCache = true;
+        if(entityTime == null) {
+            // Initially created read-only, convert to read/write. If we're in sendEvent(...),
+            // we need an EntityTime. If there wasn't one previously, we do the best we can,
+            // using the eventTIme as its createdTime.
+            createEntityTime(entityInstance, eventTime, null, null);
+            entityTime = getEntityTimeForUpdate(entityInstance);
         }
 
-        if(eventType.getUpdateDeletedTime()) {
-            deleteEntityInstanceDependencies(entityInstance, createdByPK);
-            entityTime.setDeletedTime(eventTime);
-            clearCache = true;
-        }
-
-        return clearCache;
+        return entityTime;
     }
 
-    private boolean shouldSuppressEvent(final EntityInstance entityInstance, final EventType eventType,
-            final EntityInstance createdByEntityInstance, final Long eventTime, final EntityTime entityTime) {
-        var suppressEvent = false;
+    private void pruneEvents(final EntityInstance entityInstance, final EventType eventType, final Integer maximumHistory) {
+        final var events = getEventsByEntityInstanceAndEventTypeForUpdate(entityInstance, eventType);
+        final var eventCountToRemove = events.size() - maximumHistory;
 
-        if(eventType.getUpdateVisitedTime() && createdByEntityInstance != null) {
+        if(eventCountToRemove > 0) {
+            final var i = events.iterator();
+
+            for(var j = 0; j < eventCountToRemove; j++) {
+                removeEvent(i.next());
+            }
+        }
+    }
+
+    @Override
+    public Event sendEvent(final EntityInstance entityInstance, final EventTypes eventTypeEnum, final EntityInstance relatedEntityInstance,
+            final EventTypes relatedEventTypeEnum, final BasePK createdByPK) {
+        final var eventType = getEventTypeByName(eventTypeEnum.name());
+        final var relatedEventType = relatedEventTypeEnum == null? null: getEventTypeByName(relatedEventTypeEnum.name());
+        final var createdByEntityInstance = createdByPK == null ? null : getEntityInstanceByBasePK(createdByPK);
+        Event event = null;
+
+        if(CoreDebugFlags.LogSentEvents) {
+            getLog().info("entityInstance = " + entityInstance
+                    + ", eventType = " + eventType.getEventTypeName()
+                    + ", relatedEntityInstance = " + relatedEntityInstance
+                    + ", relatedEventType = " + (relatedEventType == null ? "(null)" : relatedEventType.getEventTypeName())
+                    + ", createdByEntityInstance = " + createdByEntityInstance);
+        }
+
+        final var eventTime = session.START_TIME_LONG;
+        final var entityTime = getEntityTime(entityInstance, eventTime);
+        var shouldClearCache = false;
+        var shouldQueueEntityInstanceToIndexing = false;
+        var shouldUpdateVisitedTime = false;
+        var shouldQueueEventToSubscribers = false;
+        Integer maximumHistory = null;
+
+        switch(eventTypeEnum) {
+            case CREATE -> {
+                entityTime.setCreatedTime(eventTime);
+                shouldQueueEntityInstanceToIndexing = true;
+                shouldQueueEventToSubscribers = true;
+            }
+            case READ -> {
+                shouldUpdateVisitedTime = true;
+                shouldQueueEventToSubscribers = true;
+            }
+            case TOUCH -> {
+                entityTime.setModifiedTime(eventTime);
+                shouldClearCache = true;
+                shouldQueueEntityInstanceToIndexing = true;
+                maximumHistory = 5;
+            }
+            case MODIFY -> {
+                entityTime.setModifiedTime(eventTime);
+                shouldClearCache = true;
+                shouldQueueEntityInstanceToIndexing = true;
+                shouldQueueEventToSubscribers = true;
+            }
+            case DELETE -> {
+                deleteEntityInstanceDependencies(entityInstance, createdByPK);
+                entityTime.setDeletedTime(eventTime);
+                shouldClearCache = true;
+                shouldQueueEntityInstanceToIndexing = true;
+                shouldQueueEventToSubscribers = true;
+            }
+        }
+        
+        if(shouldClearCache) {
+            removeCacheEntriesByEntityInstance(entityInstance);
+        }
+
+        if(shouldQueueEntityInstanceToIndexing) {
+            queueEntityInstanceToIndexing(entityInstance);
+        }
+
+        var shouldSuppressEvent = false;
+        if(shouldUpdateVisitedTime && createdByEntityInstance != null) {
             var entityVisit = getEntityVisitForUpdate(createdByEntityInstance, entityInstance);
 
             if(entityVisit == null) {
@@ -13070,77 +13137,25 @@ public class CoreControl
                 }
 
                 if(entityVisit.getVisitedTime() >= modifiedTime && !entityInstance.getEntityType().getLastDetail().getKeepAllHistory()) {
-                    suppressEvent = true;
+                    shouldSuppressEvent = true;
                 }
 
                 entityVisit.setVisitedTime(eventTime);
             }
         }
 
-        return suppressEvent;
-    }
+        if(!shouldSuppressEvent) {
+            var eventGroup = createdByPK == null ? null : getActiveEventGroup(createdByPK);
 
-    @Override
-    public Event sendEvent(final EntityInstance entityInstance, final EventTypes eventTypeEnum, final EntityInstance relatedEntityInstance,
-            final EventTypes relatedEventTypeEnum, final BasePK createdByPK) {
-        var eventType = getEventTypeByName(eventTypeEnum.name());
-        var relatedEventType = relatedEventTypeEnum == null? null: getEventTypeByName(relatedEventTypeEnum.name());
-        var createdByEntityInstance = createdByPK == null ? null : getEntityInstanceByBasePK(createdByPK);
-        Event event = null;
-
-        if(CoreDebugFlags.LogSentEvents) {
-            getLog().info("entityInstance = " + entityInstance
-                    + ", eventType = " + eventType.getEventTypeName()
-                    + ", relatedEntityInstance = " + relatedEntityInstance
-                    + ", relatedEventType = " + (relatedEventType == null ? "(null)" : relatedEventType.getEventTypeName())
-                    + ", createdByEntityInstance = " + createdByEntityInstance);
-        }
-
-        var eventTime = session.START_TIME_LONG;
-        var entityTime = getEntityTimeForUpdate(entityInstance);
-        if(entityTime == null) {
-            // Initially created read-only, convert to read/write. If we're in sendEvent(...),
-            // we need an EntityTime. If there wasn't one previously, we do the best we can,
-            // using the eventTIme as its createdTime.
-            createEntityTime(entityInstance, eventTime, null, null);
-            entityTime = getEntityTimeForUpdate(entityInstance);
-        }
-        
-        if(eventType.getUpdateCreatedTime()) {
-            entityTime.setCreatedTime(eventTime);
-        }
-        
-        if(shouldClearCache(entityInstance, eventType, eventTime, entityTime, createdByPK)) {
-            removeCacheEntriesByEntityInstance(entityInstance);
-        }
-        
-        queueEntityInstanceToIndexing(entityInstance);
-        
-        var suppressEvent = shouldSuppressEvent(entityInstance, eventType, createdByEntityInstance, eventTime,
-                entityTime);
-
-        if(eventType.getKeepHistory() && !suppressEvent) {
-            var maximumHistory = eventType.getMaximumHistory();
-            var eventgroup = createdByPK == null? null: getActiveEventGroup(createdByPK);
-            
-            event = createEvent(eventgroup, eventTime, entityInstance, eventType, relatedEntityInstance, relatedEventType,
+            event = createEvent(eventGroup, eventTime, entityInstance, eventType, relatedEntityInstance, relatedEventType,
                     createdByEntityInstance);
             
-            if(eventType.getQueueToSubscribers()) {
+            if(shouldQueueEventToSubscribers) {
                 createQueuedEvent(event);
             }
             
             if(maximumHistory != null) {
-                var events = getEventsByEntityInstanceAndEventTypeForUpdate(entityInstance, eventType);
-                var eventCountToRemove = events.size() - maximumHistory;
-                
-                if(eventCountToRemove > 0) {
-                    var i = events.iterator();
-                    
-                    for(var j = 0; j < eventCountToRemove; j++) {
-                        removeEvent(i.next());
-                    }
-                }
+                pruneEvents(entityInstance, eventType, maximumHistory);
             }
 
             SentEventEventBus.eventBus.post(new SentEvent(event));

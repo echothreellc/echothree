@@ -49,54 +49,6 @@ public class EventTypeObject
     }
 
     @GraphQLField
-    @GraphQLDescription("update created time")
-    @GraphQLNonNull
-    public boolean getUpdateCreatedTime() {
-        return eventType.getUpdateCreatedTime();
-    }
-
-    @GraphQLField
-    @GraphQLDescription("update modified time")
-    @GraphQLNonNull
-    public boolean getUpdateModifiedTime() {
-        return eventType.getUpdateModifiedTime();
-    }
-
-    @GraphQLField
-    @GraphQLDescription("update deleted time")
-    @GraphQLNonNull
-    public boolean getUpdateDeletedTime() {
-        return eventType.getUpdateDeletedTime();
-    }
-
-    @GraphQLField
-    @GraphQLDescription("update visited time")
-    @GraphQLNonNull
-    public boolean getUpdateVisitedTime() {
-        return eventType.getUpdateVisitedTime();
-    }
-
-    @GraphQLField
-    @GraphQLDescription("queue to subscribers")
-    @GraphQLNonNull
-    public boolean getQueueToSubscribers() {
-        return eventType.getQueueToSubscribers();
-    }
-
-    @GraphQLField
-    @GraphQLDescription("keep history")
-    @GraphQLNonNull
-    public boolean getKeepHistory() {
-        return eventType.getKeepHistory();
-    }
-
-    @GraphQLField
-    @GraphQLDescription("maximum history")
-    public Integer getMaximumHistory() {
-        return eventType.getMaximumHistory();
-    }
-
-    @GraphQLField
     @GraphQLDescription("description")
     @GraphQLNonNull
     public String getDescription(final DataFetchingEnvironment env) {
