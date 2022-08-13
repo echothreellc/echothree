@@ -13031,7 +13031,7 @@ public class CoreControl
         }
     }
 
-    private EntityTime getEntityTime(final EntityInstance entityInstance, final Long eventTime) {
+    private EntityTime createOrGetEntityTime(final EntityInstance entityInstance, final Long eventTime) {
         var entityTime = getEntityTimeForUpdate(entityInstance);
 
         if(entityTime == null) {
@@ -13075,7 +13075,7 @@ public class CoreControl
         }
 
         final var eventTime = session.START_TIME_LONG;
-        final var entityTime = getEntityTime(entityInstance, eventTime);
+        final var entityTime = createOrGetEntityTime(entityInstance, eventTime);
         var shouldClearCache = false;
         var shouldQueueEntityInstanceToIndexing = false;
         var shouldUpdateVisitedTime = false;
