@@ -1988,9 +1988,9 @@ public class CoreControl
         List<CommandMessageTypeDescriptionTransfer> commandMessageTypeDescriptionTransfers = new ArrayList<>(commandMessageTypeDescriptions.size());
         CommandMessageTypeDescriptionTransferCache commandMessageTypeDescriptionTransferCache = getCoreTransferCaches(userVisit).getCommandMessageTypeDescriptionTransferCache();
     
-        commandMessageTypeDescriptions.forEach((commandMessageTypeDescription) -> {
-            commandMessageTypeDescriptionTransfers.add(commandMessageTypeDescriptionTransferCache.getCommandMessageTypeDescriptionTransfer(commandMessageTypeDescription));
-        });
+        commandMessageTypeDescriptions.forEach((commandMessageTypeDescription) ->
+                commandMessageTypeDescriptionTransfers.add(commandMessageTypeDescriptionTransferCache.getCommandMessageTypeDescriptionTransfer(commandMessageTypeDescription))
+        );
         
         return commandMessageTypeDescriptionTransfers;
     }
@@ -2673,10 +2673,10 @@ public class CoreControl
         var entityInstanceTransfers = new ArrayList<EntityInstanceTransfer>(entityInstances.size());
         var entityInstanceTransferCache = getCoreTransferCaches(userVisit).getEntityInstanceTransferCache();
 
-        entityInstances.forEach((entityInstance) -> {
-            entityInstanceTransfers.add(entityInstanceTransferCache.getEntityInstanceTransfer(entityInstance, includeEntityAppearance, includeNames,
-                    includeKey, includeGuid, includeUlid));
-        });
+        entityInstances.forEach((entityInstance) ->
+                entityInstanceTransfers.add(entityInstanceTransferCache.getEntityInstanceTransfer(entityInstance,
+                        includeEntityAppearance, includeNames, includeKey, includeGuid, includeUlid))
+        );
 
         return entityInstanceTransfers;
     }
@@ -2838,9 +2838,9 @@ public class CoreControl
         // If an EntityInstance is in a role for a ChainInstance, then that ChainInstance should be deleted. Because an individual
         // EntityInstance may be in more than one role, the list of ChainInstances needs to be deduplicated.
         Set<ChainInstance> chainInstances = new HashSet<>();
-        chainControl.getChainInstanceEntityRolesByEntityInstanceForUpdate(entityInstance).forEach((chainInstanceEntityRole) -> {
-            chainInstances.add(chainInstanceEntityRole.getChainInstanceForUpdate());
-        });
+        chainControl.getChainInstanceEntityRolesByEntityInstanceForUpdate(entityInstance).forEach((chainInstanceEntityRole) ->
+                chainInstances.add(chainInstanceEntityRole.getChainInstanceForUpdate())
+        );
         chainControl.deleteChainInstances(chainInstances, deletedBy);
 
         deleteEntityAttributesByEntityInstance(entityInstance, deletedBy);
@@ -3918,9 +3918,7 @@ public class CoreControl
     }
     
     public void removeCacheEntries(List<CacheEntry> cacheEntries) {
-        cacheEntries.forEach((cacheEntry) -> {
-            removeCacheEntry(cacheEntry);
-        });
+        cacheEntries.forEach(this::removeCacheEntry);
     }
     
     public void removeCacheEntries() {
@@ -4366,9 +4364,9 @@ public class CoreControl
         List<EntityAttributeGroupTransfer> entityAttributeGroupTransfers = new ArrayList<>(entityAttributeGroups.size());
         EntityAttributeGroupTransferCache entityAttributeGroupTransferCache = getCoreTransferCaches(userVisit).getEntityAttributeGroupTransferCache();
         
-        entityAttributeGroups.forEach((entityAttributeGroup) -> {
-            entityAttributeGroupTransfers.add(entityAttributeGroupTransferCache.getEntityAttributeGroupTransfer(entityAttributeGroup, entityInstance));
-        });
+        entityAttributeGroups.forEach((entityAttributeGroup) ->
+                entityAttributeGroupTransfers.add(entityAttributeGroupTransferCache.getEntityAttributeGroupTransfer(entityAttributeGroup, entityInstance))
+        );
         
         return entityAttributeGroupTransfers;
     }
@@ -4583,9 +4581,9 @@ public class CoreControl
         List<EntityAttributeGroupDescriptionTransfer> entityAttributeGroupDescriptionTransfers = new ArrayList<>(entityAttributeGroupDescriptions.size());
         EntityAttributeGroupDescriptionTransferCache entityAttributeGroupDescriptionTransferCache = getCoreTransferCaches(userVisit).getEntityAttributeGroupDescriptionTransferCache();
         
-        entityAttributeGroupDescriptions.forEach((entityAttributeGroupDescription) -> {
-            entityAttributeGroupDescriptionTransfers.add(entityAttributeGroupDescriptionTransferCache.getEntityAttributeGroupDescriptionTransfer(entityAttributeGroupDescription, entityInstance));
-        });
+        entityAttributeGroupDescriptions.forEach((entityAttributeGroupDescription) ->
+                entityAttributeGroupDescriptionTransfers.add(entityAttributeGroupDescriptionTransferCache.getEntityAttributeGroupDescriptionTransfer(entityAttributeGroupDescription, entityInstance))
+        );
         
         return entityAttributeGroupDescriptionTransfers;
     }
@@ -4858,9 +4856,9 @@ public class CoreControl
         List<EntityAttributeTransfer> entityAttributeTransfers = new ArrayList<>(entityAttributes.size());
         EntityAttributeTransferCache entityAttributeTransferCache = getCoreTransferCaches(userVisit).getEntityAttributeTransferCache();
         
-        entityAttributes.forEach((entityAttribute) -> {
-            entityAttributeTransfers.add(entityAttributeTransferCache.getEntityAttributeTransfer(entityAttribute, entityInstance));
-        });
+        entityAttributes.forEach((entityAttribute) ->
+                entityAttributeTransfers.add(entityAttributeTransferCache.getEntityAttributeTransfer(entityAttribute, entityInstance))
+        );
         
         return entityAttributeTransfers;
     }
@@ -5170,9 +5168,9 @@ public class CoreControl
         List<EntityAttributeDescriptionTransfer> entityAttributeDescriptionTransfers = new ArrayList<>(entityAttributeDescriptions.size());
         EntityAttributeDescriptionTransferCache entityAttributeDescriptionTransferCache = getCoreTransferCaches(userVisit).getEntityAttributeDescriptionTransferCache();
         
-        entityAttributeDescriptions.forEach((entityAttributeDescription) -> {
-            entityAttributeDescriptionTransfers.add(entityAttributeDescriptionTransferCache.getEntityAttributeDescriptionTransfer(entityAttributeDescription, entityInstance));
-        });
+        entityAttributeDescriptions.forEach((entityAttributeDescription) ->
+                entityAttributeDescriptionTransfers.add(entityAttributeDescriptionTransferCache.getEntityAttributeDescriptionTransfer(entityAttributeDescription, entityInstance))
+        );
         
         return entityAttributeDescriptionTransfers;
     }
@@ -5892,9 +5890,9 @@ public class CoreControl
         List<EntityAttributeEntityAttributeGroupTransfer> entityAttributeEntityAttributeGroupTransfers = new ArrayList<>(entityAttributeEntityAttributeGroups.size());
         EntityAttributeEntityAttributeGroupTransferCache entityAttributeEntityAttributeGroupTransferCache = getCoreTransferCaches(userVisit).getEntityAttributeEntityAttributeGroupTransferCache();
         
-        entityAttributeEntityAttributeGroups.forEach((entityAttributeEntityAttributeGroup) -> {
-            entityAttributeEntityAttributeGroupTransfers.add(entityAttributeEntityAttributeGroupTransferCache.getEntityAttributeEntityAttributeGroupTransfer(entityAttributeEntityAttributeGroup, entityInstance));
-        });
+        entityAttributeEntityAttributeGroups.forEach((entityAttributeEntityAttributeGroup) ->
+                entityAttributeEntityAttributeGroupTransfers.add(entityAttributeEntityAttributeGroupTransferCache.getEntityAttributeEntityAttributeGroupTransfer(entityAttributeEntityAttributeGroup, entityInstance))
+        );
         
         return entityAttributeEntityAttributeGroupTransfers;
     }
@@ -6155,9 +6153,9 @@ public class CoreControl
         List<EntityListItemTransfer> entityListItemTransfers = new ArrayList<>(entityListItems.size());
         EntityListItemTransferCache entityListItemTransferCache = getCoreTransferCaches(userVisit).getEntityListItemTransferCache();
 
-        entityListItems.forEach((entityListItem) -> {
-            entityListItemTransfers.add(entityListItemTransferCache.getEntityListItemTransfer(entityListItem, entityInstance));
-        });
+        entityListItems.forEach((entityListItem) ->
+                entityListItemTransfers.add(entityListItemTransferCache.getEntityListItemTransfer(entityListItem, entityInstance))
+        );
 
         return entityListItemTransfers;
     }
@@ -6293,9 +6291,9 @@ public class CoreControl
     public void deleteEntityListItemsByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
         List<EntityListItem> entityListItems = getEntityListItemsForUpdate(entityAttribute);
         
-        entityListItems.forEach((entityListItem) -> {
-            deleteEntityListItem(entityListItem, false, deletedBy);
-        });
+        entityListItems.forEach((entityListItem) ->
+                deleteEntityListItem(entityListItem, false, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -6423,9 +6421,9 @@ public class CoreControl
         List<EntityListItemDescriptionTransfer> entityListItemDescriptionTransfers = new ArrayList<>(entityListItemDescriptions.size());
         EntityListItemDescriptionTransferCache entityListItemDescriptionTransferCache = getCoreTransferCaches(userVisit).getEntityListItemDescriptionTransferCache();
         
-        entityListItemDescriptions.forEach((entityListItemDescription) -> {
-            entityListItemDescriptionTransfers.add(entityListItemDescriptionTransferCache.getEntityListItemDescriptionTransfer(entityListItemDescription, entityInstance));
-        });
+        entityListItemDescriptions.forEach((entityListItemDescription) ->
+                entityListItemDescriptionTransfers.add(entityListItemDescriptionTransferCache.getEntityListItemDescriptionTransfer(entityListItemDescription, entityInstance))
+        );
         
         return entityListItemDescriptionTransfers;
     }
@@ -6649,9 +6647,9 @@ public class CoreControl
         List<EntityIntegerRangeTransfer> entityIntegerRangeTransfers = new ArrayList<>(entityIntegerRanges.size());
         EntityIntegerRangeTransferCache entityIntegerRangeTransferCache = getCoreTransferCaches(userVisit).getEntityIntegerRangeTransferCache();
 
-        entityIntegerRanges.forEach((entityIntegerRange) -> {
-            entityIntegerRangeTransfers.add(entityIntegerRangeTransferCache.getEntityIntegerRangeTransfer(entityIntegerRange, entityInstance));
-        });
+        entityIntegerRanges.forEach((entityIntegerRange) ->
+                entityIntegerRangeTransfers.add(entityIntegerRangeTransferCache.getEntityIntegerRangeTransfer(entityIntegerRange, entityInstance))
+        );
 
         return entityIntegerRangeTransfers;
     }
@@ -6781,9 +6779,9 @@ public class CoreControl
     public void deleteEntityIntegerRangesByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
         List<EntityIntegerRange> entityIntegerRanges = getEntityIntegerRangesForUpdate(entityAttribute);
         
-        entityIntegerRanges.forEach((entityIntegerRange) -> {
-            deleteEntityIntegerRange(entityIntegerRange, false, deletedBy);
-        });
+        entityIntegerRanges.forEach((entityIntegerRange) ->
+                deleteEntityIntegerRange(entityIntegerRange, false, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -6911,9 +6909,9 @@ public class CoreControl
         List<EntityIntegerRangeDescriptionTransfer> entityIntegerRangeDescriptionTransfers = new ArrayList<>(entityIntegerRangeDescriptions.size());
         EntityIntegerRangeDescriptionTransferCache entityIntegerRangeDescriptionTransferCache = getCoreTransferCaches(userVisit).getEntityIntegerRangeDescriptionTransferCache();
         
-        entityIntegerRangeDescriptions.forEach((entityIntegerRangeDescription) -> {
-            entityIntegerRangeDescriptionTransfers.add(entityIntegerRangeDescriptionTransferCache.getEntityIntegerRangeDescriptionTransfer(entityIntegerRangeDescription, entityInstance));
-        });
+        entityIntegerRangeDescriptions.forEach((entityIntegerRangeDescription) ->
+                entityIntegerRangeDescriptionTransfers.add(entityIntegerRangeDescriptionTransferCache.getEntityIntegerRangeDescriptionTransfer(entityIntegerRangeDescription, entityInstance))
+        );
         
         return entityIntegerRangeDescriptionTransfers;
     }
@@ -7137,9 +7135,9 @@ public class CoreControl
         List<EntityLongRangeTransfer> entityLongRangeTransfers = new ArrayList<>(entityLongRanges.size());
         EntityLongRangeTransferCache entityLongRangeTransferCache = getCoreTransferCaches(userVisit).getEntityLongRangeTransferCache();
 
-        entityLongRanges.forEach((entityLongRange) -> {
-            entityLongRangeTransfers.add(entityLongRangeTransferCache.getEntityLongRangeTransfer(entityLongRange, entityInstance));
-        });
+        entityLongRanges.forEach((entityLongRange) ->
+                entityLongRangeTransfers.add(entityLongRangeTransferCache.getEntityLongRangeTransfer(entityLongRange, entityInstance))
+        );
 
         return entityLongRangeTransfers;
     }
@@ -7269,9 +7267,9 @@ public class CoreControl
     public void deleteEntityLongRangesByEntityAttribute(EntityAttribute entityAttribute, BasePK deletedBy) {
         List<EntityLongRange> entityLongRanges = getEntityLongRangesForUpdate(entityAttribute);
         
-        entityLongRanges.forEach((entityLongRange) -> {
-            deleteEntityLongRange(entityLongRange, false, deletedBy);
-        });
+        entityLongRanges.forEach((entityLongRange) ->
+                deleteEntityLongRange(entityLongRange, false, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
@@ -7399,9 +7397,9 @@ public class CoreControl
         List<EntityLongRangeDescriptionTransfer> entityLongRangeDescriptionTransfers = new ArrayList<>(entityLongRangeDescriptions.size());
         EntityLongRangeDescriptionTransferCache entityLongRangeDescriptionTransferCache = getCoreTransferCaches(userVisit).getEntityLongRangeDescriptionTransferCache();
         
-        entityLongRangeDescriptions.forEach((entityLongRangeDescription) -> {
-            entityLongRangeDescriptionTransfers.add(entityLongRangeDescriptionTransferCache.getEntityLongRangeDescriptionTransfer(entityLongRangeDescription, entityInstance));
-        });
+        entityLongRangeDescriptions.forEach((entityLongRangeDescription) ->
+                entityLongRangeDescriptionTransfers.add(entityLongRangeDescriptionTransferCache.getEntityLongRangeDescriptionTransfer(entityLongRangeDescription, entityInstance))
+        );
         
         return entityLongRangeDescriptionTransfers;
     }
@@ -10756,9 +10754,9 @@ public class CoreControl
         List<EntityMultipleListItemAttributeTransfer> entityMultipleListItemAttributeTransfers = new ArrayList<>(entityMultipleListItemAttributes.size());
         EntityMultipleListItemAttributeTransferCache entityMultipleListItemAttributeTransferCache = getCoreTransferCaches(userVisit).getEntityMultipleListItemAttributeTransferCache();
         
-        entityMultipleListItemAttributes.forEach((entityMultipleListItemAttribute) -> {
-            entityMultipleListItemAttributeTransfers.add(entityMultipleListItemAttributeTransferCache.getEntityMultipleListItemAttributeTransfer(entityMultipleListItemAttribute, entityInstance));
-        });
+        entityMultipleListItemAttributes.forEach((entityMultipleListItemAttribute) ->
+                entityMultipleListItemAttributeTransfers.add(entityMultipleListItemAttributeTransferCache.getEntityMultipleListItemAttributeTransfer(entityMultipleListItemAttribute, entityInstance))
+        );
         
         return entityMultipleListItemAttributeTransfers;
     }
@@ -11925,9 +11923,9 @@ public class CoreControl
         List<EntityAttributeEntityTypeTransfer> entityAttributeEntityTypeTransfers = new ArrayList<>(entityAttributeEntityTypes.size());
         EntityAttributeEntityTypeTransferCache entityAttributeEntityTypeTransferCache = getCoreTransferCaches(userVisit).getEntityAttributeEntityTypeTransferCache();
 
-        entityAttributeEntityTypes.forEach((entityAttributeEntityType) -> {
-            entityAttributeEntityTypeTransfers.add(entityAttributeEntityTypeTransferCache.getEntityAttributeEntityTypeTransfer(entityAttributeEntityType, entityInstance));
-        });
+        entityAttributeEntityTypes.forEach((entityAttributeEntityType) ->
+                entityAttributeEntityTypeTransfers.add(entityAttributeEntityTypeTransferCache.getEntityAttributeEntityTypeTransfer(entityAttributeEntityType, entityInstance))
+        );
 
         return entityAttributeEntityTypeTransfers;
     }
@@ -12295,9 +12293,9 @@ public class CoreControl
         List<EntityCollectionAttributeTransfer> entityCollectionAttributeTransfers = new ArrayList<>(entityCollectionAttributes.size());
         EntityCollectionAttributeTransferCache entityCollectionAttributeTransferCache = getCoreTransferCaches(userVisit).getEntityCollectionAttributeTransferCache();
         
-        entityCollectionAttributes.forEach((entityCollectionAttribute) -> {
-            entityCollectionAttributeTransfers.add(entityCollectionAttributeTransferCache.getEntityCollectionAttributeTransfer(entityCollectionAttribute, entityInstance));
-        });
+        entityCollectionAttributes.forEach((entityCollectionAttribute) ->
+                entityCollectionAttributeTransfers.add(entityCollectionAttributeTransferCache.getEntityCollectionAttributeTransfer(entityCollectionAttribute, entityInstance))
+        );
         
         return entityCollectionAttributeTransfers;
     }
@@ -12838,9 +12836,7 @@ public class CoreControl
     }
     
     public void removeQueuedSubscriberEvents(List<QueuedSubscriberEvent> queuedSubscriberEvents) {
-        queuedSubscriberEvents.forEach((queuedSubscriberEvent) -> {
-            removeQueuedSubscriberEvent(queuedSubscriberEvent);
-        });
+        queuedSubscriberEvents.forEach(this::removeQueuedSubscriberEvent);
     }
     
     public void removeQueuedSubscriberEventsByEventSubscriber(EventSubscriber eventSubscriber) {
@@ -13334,9 +13330,9 @@ public class CoreControl
     }
 
     public void deletePartyEntityTypesByParty(Party party, BasePK deletedBy) {
-        getPartyEntityTypesByPartyForUpdate(party).forEach((partyEntityType) -> {
-            deletePartyEntityType(partyEntityType, deletedBy);
-        });
+        getPartyEntityTypesByPartyForUpdate(party).forEach((partyEntityType) ->
+                deletePartyEntityType(partyEntityType, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
