@@ -72,7 +72,7 @@ public class GetUseCommand
         var use = UseLogic.getInstance().getUseByUniversalSpec(this, form, true);
 
         if(!hasExecutionErrors()) {
-            sendEventUsingNames(use.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(use.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
         
         return use;

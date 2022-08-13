@@ -82,7 +82,7 @@ public class GetApplicationEditorCommand
                 if(applicationEditor != null) {
                     result.setApplicationEditor(coreControl.getApplicationEditorTransfer(getUserVisit(), applicationEditor));
 
-                    sendEventUsingNames(applicationEditor.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                    sendEvent(applicationEditor.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateApplicationEditor.name(), applicationName, editorName);
                 }

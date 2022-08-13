@@ -79,7 +79,7 @@ public class GetShipmentTimeTypeCommand
             if(shipmentTimeType != null) {
                 result.setShipmentTimeType(shipmentControl.getShipmentTimeTypeTransfer(getUserVisit(), shipmentTimeType));
 
-                sendEventUsingNames(shipmentTimeType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEvent(shipmentTimeType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownShipmentTimeTypeName.name(), shipmentTimeTypeName);
             }

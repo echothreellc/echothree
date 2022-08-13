@@ -57,7 +57,7 @@ public class GetReturnPolicyCommand
         var returnPolicy = ReturnPolicyLogic.getInstance().getReturnPolicyByUniversalSpec(this, form, true);
 
         if(returnPolicy != null) {
-            sendEventUsingNames(returnPolicy.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(returnPolicy.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return returnPolicy;

@@ -110,7 +110,7 @@ public class GetTrainingClassPageCommand
 
                             result.setTrainingClassPage(trainingControl.getTrainingClassPageTransfer(userVisit, trainingClassPage));
 
-                            sendEventUsingNames(trainingClassPage.getPrimaryKey(), EventTypes.READ.name(), null, null, partyPK);
+                            sendEvent(trainingClassPage.getPrimaryKey(), EventTypes.READ, null, null, partyPK);
 
                             if(partyTrainingClassSessionStatus != null) {
                                 PartyTrainingClassSessionPage partyTrainingClassSessionPage = trainingControl.createPartyTrainingClassSessionPage(partyTrainingClassSession,

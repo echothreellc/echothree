@@ -70,7 +70,7 @@ public class GetWorkflowCommand
         var workflow = WorkflowLogic.getInstance().getWorkflowByUniversalSpec(this, form);
 
         if(workflow != null) {
-            sendEventUsingNames(workflow.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(workflow.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return workflow;

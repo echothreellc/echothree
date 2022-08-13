@@ -59,7 +59,7 @@ public class GetTerminationReasonCommand
         if(terminationReason != null) {
             result.setTerminationReason(employeeControl.getTerminationReasonTransfer(getUserVisit(), terminationReason));
             
-            sendEventUsingNames(terminationReason.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(terminationReason.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownTerminationReasonName.name(), terminationReasonName);
         }

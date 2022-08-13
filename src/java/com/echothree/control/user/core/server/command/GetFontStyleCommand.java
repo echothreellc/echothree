@@ -77,7 +77,7 @@ public class GetFontStyleCommand
             }
 
             if(fontStyle != null) {
-                sendEventUsingNames(fontStyle.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEvent(fontStyle.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());

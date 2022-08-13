@@ -59,7 +59,7 @@ public class GetContentPageAreaTypeCommand
         ContentPageAreaType contentPageAreaType = ContentPageAreaTypeLogic.getInstance().getContentPageAreaTypeByUniversalSpec(this, form);
 
         if(contentPageAreaType != null) {
-            sendEventUsingNames(contentPageAreaType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(contentPageAreaType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return contentPageAreaType;

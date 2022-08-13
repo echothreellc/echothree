@@ -79,7 +79,7 @@ public class GetReturnReasonCommand
             if(returnReason != null) {
                 result.setReturnReason(returnPolicyControl.getReturnReasonTransfer(getUserVisit(), returnReason));
                 
-                sendEventUsingNames(returnReason.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEvent(returnReason.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownReturnReasonName.name(), returnReasonName);
             }

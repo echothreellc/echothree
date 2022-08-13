@@ -50,7 +50,7 @@ public class PartyFreeOnBoardControl
         PartyFreeOnBoard partyFreeOnBoard = PartyFreeOnBoardFactory.getInstance().create(party, freeOnBoard, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), partyFreeOnBoard.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partyFreeOnBoard.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return partyFreeOnBoard;
     }
@@ -165,14 +165,14 @@ public class PartyFreeOnBoardControl
             partyFreeOnBoard = PartyFreeOnBoardFactory.getInstance().create(partyPK, freeOnBoardPK, session.START_TIME_LONG,
                     Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(partyPK, EventTypes.MODIFY.name(), partyFreeOnBoard.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(partyPK, EventTypes.MODIFY, partyFreeOnBoard.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deletePartyFreeOnBoard(PartyFreeOnBoard partyFreeOnBoard, BasePK deletedBy) {
         partyFreeOnBoard.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(partyFreeOnBoard.getPartyPK(), EventTypes.MODIFY.name(), partyFreeOnBoard.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(partyFreeOnBoard.getPartyPK(), EventTypes.MODIFY, partyFreeOnBoard.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     public void deletePartyFreeOnBoardByParty(Party party, BasePK deletedBy) {

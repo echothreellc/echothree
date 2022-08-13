@@ -65,7 +65,7 @@ public class GetTransactionGlAccountCategoryCommand
             if(transactionGlAccountCategory != null) {
                 result.setTransactionGlAccountCategory(accountingControl.getTransactionGlAccountCategoryTransfer(getUserVisit(), transactionGlAccountCategory));
                 
-                sendEventUsingNames(transactionGlAccountCategory.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEvent(transactionGlAccountCategory.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownTransactionGlAccountCategoryName.name(), transactionGlAccountCategoryName);
             }

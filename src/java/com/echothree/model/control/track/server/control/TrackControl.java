@@ -124,7 +124,7 @@ public class TrackControl
         track.store();
 
         TrackPK trackPK = track.getPrimaryKey();
-        sendEventUsingNames(trackPK, EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(trackPK, EventTypes.CREATE, null, null, createdBy);
 
         EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(trackPK);
         getWorkflowControl().addEntityToWorkflowUsingNames(null, TrackStatusConstants.Workflow_TRACK_STATUS,
@@ -401,7 +401,7 @@ public class TrackControl
             track.setActiveDetail(trackDetail);
             track.setLastDetail(trackDetail);
 
-            sendEventUsingNames(trackPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(trackPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -439,7 +439,7 @@ public class TrackControl
             }
         }
 
-        sendEventUsingNames(track.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(track.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteTrack(Track track, BasePK deletedBy) {
@@ -462,7 +462,7 @@ public class TrackControl
         TrackDescription trackDescription = TrackDescriptionFactory.getInstance().create(track, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(track.getPrimaryKey(), EventTypes.MODIFY.name(), trackDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(track.getPrimaryKey(), EventTypes.MODIFY, trackDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return trackDescription;
     }
@@ -584,14 +584,14 @@ public class TrackControl
             trackDescription = TrackDescriptionFactory.getInstance().create(track, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(track.getPrimaryKey(), EventTypes.MODIFY.name(), trackDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(track.getPrimaryKey(), EventTypes.MODIFY, trackDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteTrackDescription(TrackDescription trackDescription, BasePK deletedBy) {
         trackDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(trackDescription.getTrackPK(), EventTypes.MODIFY.name(), trackDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(trackDescription.getTrackPK(), EventTypes.MODIFY, trackDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 

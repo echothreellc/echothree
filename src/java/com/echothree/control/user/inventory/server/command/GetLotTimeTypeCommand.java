@@ -73,7 +73,7 @@ public class GetLotTimeTypeCommand
         if(lotTimeType != null) {
             result.setLotTimeType(lotTimeControl.getLotTimeTypeTransfer(getUserVisit(), lotTimeType));
 
-            sendEventUsingNames(lotTimeType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(lotTimeType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownLotTimeTypeName.name(), lotTimeTypeName);
         }

@@ -59,7 +59,7 @@ public class GetTransactionCommand
         if(transaction != null) {
             result.setTransaction(accountingControl.getTransactionTransfer(getUserVisit(), transaction));
             
-            sendEventUsingNames(transaction.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(transaction.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownTransactionName.name(), transactionName);
         }

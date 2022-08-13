@@ -78,7 +78,7 @@ public class PaymentProcessorTypeCodeTypeControl
         paymentProcessorTypeCodeType.setLastDetail(paymentProcessorTypeCodeTypeDetail);
         paymentProcessorTypeCodeType.store();
 
-        sendEventUsingNames(paymentProcessorTypeCodeType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(paymentProcessorTypeCodeType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return paymentProcessorTypeCodeType;
     }
@@ -286,7 +286,7 @@ public class PaymentProcessorTypeCodeTypeControl
             paymentProcessorTypeCodeType.setActiveDetail(paymentProcessorTypeCodeTypeDetail);
             paymentProcessorTypeCodeType.setLastDetail(paymentProcessorTypeCodeTypeDetail);
 
-            sendEventUsingNames(paymentProcessorTypeCodeTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(paymentProcessorTypeCodeTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -324,7 +324,7 @@ public class PaymentProcessorTypeCodeTypeControl
             }
         }
 
-        sendEventUsingNames(paymentProcessorTypeCodeType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(paymentProcessorTypeCodeType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deletePaymentProcessorTypeCodeTypes(final Collection<PaymentProcessorTypeCodeType> paymentProcessorTypeCodeTypes, final BasePK deletedBy) {
@@ -344,7 +344,7 @@ public class PaymentProcessorTypeCodeTypeControl
         var paymentProcessorTypeCodeTypeDescription = PaymentProcessorTypeCodeTypeDescriptionFactory.getInstance().create(paymentProcessorTypeCodeType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(paymentProcessorTypeCodeType.getPrimaryKey(), EventTypes.MODIFY.name(), paymentProcessorTypeCodeTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(paymentProcessorTypeCodeType.getPrimaryKey(), EventTypes.MODIFY, paymentProcessorTypeCodeTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return paymentProcessorTypeCodeTypeDescription;
     }
@@ -462,14 +462,14 @@ public class PaymentProcessorTypeCodeTypeControl
             paymentProcessorTypeCodeTypeDescription = PaymentProcessorTypeCodeTypeDescriptionFactory.getInstance().create(paymentProcessorTypeCodeType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(paymentProcessorTypeCodeType.getPrimaryKey(), EventTypes.MODIFY.name(), paymentProcessorTypeCodeTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(paymentProcessorTypeCodeType.getPrimaryKey(), EventTypes.MODIFY, paymentProcessorTypeCodeTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deletePaymentProcessorTypeCodeTypeDescription(final PaymentProcessorTypeCodeTypeDescription paymentProcessorTypeCodeTypeDescription, final BasePK deletedBy) {
         paymentProcessorTypeCodeTypeDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(paymentProcessorTypeCodeTypeDescription.getPaymentProcessorTypeCodeTypePK(), EventTypes.MODIFY.name(), paymentProcessorTypeCodeTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(paymentProcessorTypeCodeTypeDescription.getPaymentProcessorTypeCodeTypePK(), EventTypes.MODIFY, paymentProcessorTypeCodeTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 

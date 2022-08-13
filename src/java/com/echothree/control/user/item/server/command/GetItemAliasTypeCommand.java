@@ -58,7 +58,7 @@ public class GetItemAliasTypeCommand
         var itemAliasType = ItemAliasTypeLogic.getInstance().getItemAliasTypeByUniversalSpec(this, form, true);
 
         if(itemAliasType != null) {
-            sendEventUsingNames(itemAliasType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(itemAliasType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return itemAliasType;

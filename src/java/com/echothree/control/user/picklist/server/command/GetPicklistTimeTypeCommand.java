@@ -79,7 +79,7 @@ public class GetPicklistTimeTypeCommand
             if(picklistTimeType != null) {
                 result.setPicklistTimeType(picklistControl.getPicklistTimeTypeTransfer(getUserVisit(), picklistTimeType));
 
-                sendEventUsingNames(picklistTimeType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEvent(picklistTimeType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownPicklistTimeTypeName.name(), picklistTimeTypeName);
             }

@@ -81,7 +81,7 @@ public class GetSelectorCommand
         var selector = SelectorLogic.getInstance().getSelectorByUniversalSpec(this, form, true);
 
         if(selector != null) {
-            sendEventUsingNames(selector.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(selector.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return selector;

@@ -98,7 +98,7 @@ public class GetCampaignSourceCommand
 
             if(!hasExecutionErrors()) {
                 result.setCampaignSource(campaignControl.getCampaignSourceTransfer(getUserVisit(), campaignSource));
-                sendEventUsingNames(campaignSource.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEvent(campaignSource.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());

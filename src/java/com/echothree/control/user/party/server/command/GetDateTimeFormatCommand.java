@@ -88,7 +88,7 @@ public class GetDateTimeFormatCommand
         }
         
         if(dateTimeFormat != null) {
-            sendEventUsingNames(dateTimeFormat.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(dateTimeFormat.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return dateTimeFormat;

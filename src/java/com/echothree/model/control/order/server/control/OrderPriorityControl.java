@@ -83,7 +83,7 @@ public class OrderPriorityControl
         orderPriority.setLastDetail(orderPriorityDetail);
         orderPriority.store();
 
-        sendEventUsingNames(orderPriority.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(orderPriority.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return orderPriority;
     }
@@ -288,7 +288,7 @@ public class OrderPriorityControl
             orderPriority.setActiveDetail(orderPriorityDetail);
             orderPriority.setLastDetail(orderPriorityDetail);
 
-            sendEventUsingNames(orderPriorityPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(orderPriorityPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -322,7 +322,7 @@ public class OrderPriorityControl
             }
         }
 
-        sendEventUsingNames(orderPriority.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(orderPriority.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     // --------------------------------------------------------------------------------
@@ -333,7 +333,7 @@ public class OrderPriorityControl
         OrderPriorityDescription orderPriorityDescription = OrderPriorityDescriptionFactory.getInstance().create(orderPriority, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(orderPriority.getPrimaryKey(), EventTypes.MODIFY.name(), orderPriorityDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(orderPriority.getPrimaryKey(), EventTypes.MODIFY, orderPriorityDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return orderPriorityDescription;
     }
@@ -455,14 +455,14 @@ public class OrderPriorityControl
             orderPriorityDescription = OrderPriorityDescriptionFactory.getInstance().create(orderPriority, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(orderPriority.getPrimaryKey(), EventTypes.MODIFY.name(), orderPriorityDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(orderPriority.getPrimaryKey(), EventTypes.MODIFY, orderPriorityDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteOrderPriorityDescription(OrderPriorityDescription orderPriorityDescription, BasePK deletedBy) {
         orderPriorityDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(orderPriorityDescription.getOrderPriorityPK(), EventTypes.MODIFY.name(), orderPriorityDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(orderPriorityDescription.getOrderPriorityPK(), EventTypes.MODIFY, orderPriorityDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 

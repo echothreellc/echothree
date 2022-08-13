@@ -85,7 +85,7 @@ public class GetChainCommand
                 if(chain != null) {
                     result.setChain(chainControl.getChainTransfer(getUserVisit(), chain));
 
-                    sendEventUsingNames(chain.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                    sendEvent(chain.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownChainName.name(), chainKindName, chainTypeName, chainName);
                 }

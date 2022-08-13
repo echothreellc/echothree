@@ -73,7 +73,7 @@ public class GetSearchKindCommand
         if(searchKind != null) {
             result.setSearchKind(searchControl.getSearchKindTransfer(getUserVisit(), searchKind));
             
-            sendEventUsingNames(searchKind.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(searchKind.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownSearchKindName.name(), searchKindName);
         }

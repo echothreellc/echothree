@@ -59,7 +59,7 @@ public class GetSkillTypeCommand
         if(skillType != null) {
             result.setSkillType(employeeControl.getSkillTypeTransfer(getUserVisit(), skillType));
             
-            sendEventUsingNames(skillType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(skillType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownSkillTypeName.name(), skillTypeName);
         }

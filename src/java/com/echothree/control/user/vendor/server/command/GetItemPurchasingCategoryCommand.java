@@ -71,7 +71,7 @@ public class GetItemPurchasingCategoryCommand
         var returnKind = ItemPurchasingCategoryLogic.getInstance().getItemPurchasingCategoryByUniversalSpec(this, form, true);
 
         if(returnKind != null) {
-            sendEventUsingNames(returnKind.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(returnKind.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return returnKind;

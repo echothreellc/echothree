@@ -138,7 +138,7 @@ public class OrderRoleControl
     public OrderRole createOrderRole(Order order, Party party, OrderRoleType orderRoleType, BasePK createdBy) {
         OrderRole orderRole = OrderRoleFactory.getInstance().create(order, party, orderRoleType, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(order.getPrimaryKey(), EventTypes.MODIFY.name(), orderRole.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(order.getPrimaryKey(), EventTypes.MODIFY, orderRole.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return orderRole;
     }
@@ -274,7 +274,7 @@ public class OrderRoleControl
     public void deleteOrderRole(OrderRole orderRole, BasePK deletedBy) {
         orderRole.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(orderRole.getOrderPK(), EventTypes.MODIFY.name(), orderRole.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(orderRole.getOrderPK(), EventTypes.MODIFY, orderRole.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     public void deleteOrderRoles(List<OrderRole> orderRoles, BasePK deletedBy) {

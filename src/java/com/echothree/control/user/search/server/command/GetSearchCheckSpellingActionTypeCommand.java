@@ -56,7 +56,7 @@ public class GetSearchCheckSpellingActionTypeCommand
         var searchCheckSpellingActionType = SearchCheckSpellingActionTypeLogic.getInstance().getSearchCheckSpellingActionTypeByUniversalSpec(this, form);
 
         if(searchCheckSpellingActionType != null) {
-            sendEventUsingNames(searchCheckSpellingActionType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(searchCheckSpellingActionType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return searchCheckSpellingActionType;

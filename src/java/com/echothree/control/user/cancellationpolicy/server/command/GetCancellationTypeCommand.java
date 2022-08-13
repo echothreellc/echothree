@@ -79,7 +79,7 @@ public class GetCancellationTypeCommand
             if(cancellationType != null) {
                 result.setCancellationType(cancellationPolicyControl.getCancellationTypeTransfer(getUserVisit(), cancellationType));
                 
-                sendEventUsingNames(cancellationType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEvent(cancellationType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownCancellationTypeName.name(), cancellationTypeName);
             }

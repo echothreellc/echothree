@@ -87,7 +87,7 @@ public class LotAliasControl
         lotAliasType.setLastDetail(lotAliasTypeDetail);
         lotAliasType.store();
 
-        sendEventUsingNames(lotAliasType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(lotAliasType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return lotAliasType;
     }
@@ -286,7 +286,7 @@ public class LotAliasControl
             lotAliasType.setActiveDetail(lotAliasTypeDetail);
             lotAliasType.setLastDetail(lotAliasTypeDetail);
 
-            sendEventUsingNames(lotAliasTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(lotAliasTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -320,7 +320,7 @@ public class LotAliasControl
             }
         }
 
-        sendEventUsingNames(lotAliasType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(lotAliasType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteLotAliasTypes(List<LotAliasType> lotAliasTypes, BasePK deletedBy) {
@@ -337,7 +337,7 @@ public class LotAliasControl
         LotAliasTypeDescription lotAliasTypeDescription = LotAliasTypeDescriptionFactory.getInstance().create(lotAliasType, language,
                 description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(lotAliasType.getPrimaryKey(), EventTypes.MODIFY.name(), lotAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(lotAliasType.getPrimaryKey(), EventTypes.MODIFY, lotAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return lotAliasTypeDescription;
     }
@@ -459,14 +459,14 @@ public class LotAliasControl
             lotAliasTypeDescription = LotAliasTypeDescriptionFactory.getInstance().create(lotAliasType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(lotAliasType.getPrimaryKey(), EventTypes.MODIFY.name(), lotAliasTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(lotAliasType.getPrimaryKey(), EventTypes.MODIFY, lotAliasTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteLotAliasTypeDescription(LotAliasTypeDescription lotAliasTypeDescription, BasePK deletedBy) {
         lotAliasTypeDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(lotAliasTypeDescription.getLotAliasTypePK(), EventTypes.MODIFY.name(), lotAliasTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(lotAliasTypeDescription.getLotAliasTypePK(), EventTypes.MODIFY, lotAliasTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -485,7 +485,7 @@ public class LotAliasControl
     public LotAlias createLotAlias(Lot lot, LotAliasType lotAliasType, String alias, BasePK createdBy) {
         LotAlias lotAlias = LotAliasFactory.getInstance().create(lot, lotAliasType, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(lot.getPrimaryKey(), EventTypes.MODIFY.name(), lotAlias.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(lot.getPrimaryKey(), EventTypes.MODIFY, lotAlias.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return lotAlias;
     }
@@ -650,14 +650,14 @@ public class LotAliasControl
 
             lotAlias = LotAliasFactory.getInstance().create(lotPK, lotAliasTypePK, alias, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(lotPK, EventTypes.MODIFY.name(), lotAlias.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(lotPK, EventTypes.MODIFY, lotAlias.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteLotAlias(LotAlias lotAlias, BasePK deletedBy) {
         lotAlias.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(lotAlias.getLotPK(), EventTypes.MODIFY.name(), lotAlias.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(lotAlias.getLotPK(), EventTypes.MODIFY, lotAlias.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 

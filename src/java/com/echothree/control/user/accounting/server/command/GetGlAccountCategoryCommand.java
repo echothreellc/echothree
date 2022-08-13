@@ -73,7 +73,7 @@ public class GetGlAccountCategoryCommand
         if(glAccountCategory != null) {
             result.setGlAccountCategory(accountingControl.getGlAccountCategoryTransfer(getUserVisit(), glAccountCategory));
             
-            sendEventUsingNames(glAccountCategory.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(glAccountCategory.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownGlAccountCategoryName.name(), glAccountCategoryName);
         }

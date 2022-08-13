@@ -79,7 +79,7 @@ public class GetPartyTrainingClassSessionCommand
             if(partyTrainingClassSession != null) {
                 result.setPartyTrainingClassSession(trainingControl.getPartyTrainingClassSessionTransfer(getUserVisit(), partyTrainingClassSession));
 
-                sendEventUsingNames(partyTrainingClassSession.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEvent(partyTrainingClassSession.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownPartyTrainingClassSessionSequence.name(), partyTrainingClassName, form.getPartyTrainingClassSessionSequence());
             }

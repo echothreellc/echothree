@@ -35,7 +35,8 @@ import java.util.Set;
 
 public class EntityTypeTransferCache
         extends BaseCoreTransferCache<EntityType, EntityTypeTransfer> {
-    
+
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
     IndexControl indexControl;
     UomControl uomControl = Session.getModelController(UomControl.class);
     UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
@@ -55,8 +56,8 @@ public class EntityTypeTransferCache
     boolean includeIndexTypes;
     
     /** Creates a new instance of EntityTypeTransferCache */
-    public EntityTypeTransferCache(UserVisit userVisit, CoreControl coreControl) {
-        super(userVisit, coreControl);
+    public EntityTypeTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {

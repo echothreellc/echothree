@@ -73,7 +73,7 @@ public class GetLetterSourceCommand
         if(letterSource != null) {
             result.setLetterSource(letterControl.getLetterSourceTransfer(getUserVisit(), letterSource));
             
-            sendEventUsingNames(letterSource.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(letterSource.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownLetterSourceName.name(), letterSourceName);
         }

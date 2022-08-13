@@ -79,7 +79,7 @@ public class GetGeoCodeAliasTypeCommand
             if(geoAliasType != null) {
                 result.setGeoCodeAliasType(geoControl.getGeoCodeAliasTypeTransfer(getUserVisit(), geoAliasType));
 
-                sendEventUsingNames(geoAliasType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEvent(geoAliasType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownGeoCodeAliasTypeName.name(), geoCodeTypeName, geoAliasTypeName);
             }

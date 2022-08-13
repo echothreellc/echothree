@@ -77,7 +77,7 @@ public class GetTextDecorationCommand
             }
 
             if(textDecoration != null) {
-                sendEventUsingNames(textDecoration.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEvent(textDecoration.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());

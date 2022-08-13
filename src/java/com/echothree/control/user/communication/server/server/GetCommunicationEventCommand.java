@@ -59,7 +59,7 @@ public class GetCommunicationEventCommand
         if(communicationEvent != null) {
             result.setCommunicationEvent(communicationControl.getCommunicationEventTransfer(getUserVisit(), communicationEvent));
             
-            sendEventUsingNames(communicationEvent.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(communicationEvent.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownCommunicationEventName.name(), communicationEventName);
         }

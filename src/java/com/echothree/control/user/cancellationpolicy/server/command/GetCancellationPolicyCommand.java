@@ -57,7 +57,7 @@ public class GetCancellationPolicyCommand
         var cancellationPolicy = CancellationPolicyLogic.getInstance().getCancellationPolicyByUniversalSpec(this, form, true);
 
         if(cancellationPolicy != null) {
-            sendEventUsingNames(cancellationPolicy.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(cancellationPolicy.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return cancellationPolicy;

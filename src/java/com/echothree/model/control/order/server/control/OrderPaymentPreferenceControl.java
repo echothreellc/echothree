@@ -66,7 +66,7 @@ public class OrderPaymentPreferenceControl
         orderPaymentPreference.setLastDetail(orderPaymentPreferenceDetail);
         orderPaymentPreference.store();
 
-        sendEventUsingNames(orderPaymentPreference.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(orderPaymentPreference.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return orderPaymentPreference;
     }
@@ -308,7 +308,7 @@ public class OrderPaymentPreferenceControl
             orderPaymentPreference.setActiveDetail(orderPaymentPreferenceDetail);
             orderPaymentPreference.setLastDetail(orderPaymentPreferenceDetail);
 
-            sendEventUsingNames(orderPaymentPreferencePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(orderPaymentPreferencePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -319,7 +319,7 @@ public class OrderPaymentPreferenceControl
         orderPaymentPreference.setActiveDetail(null);
         orderPaymentPreference.store();
 
-        sendEventUsingNames(orderPaymentPreference.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(orderPaymentPreference.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteOrderPaymentPreferencesByOrder(List<OrderPaymentPreference> orderPaymentPreferences, BasePK deletedBy) {

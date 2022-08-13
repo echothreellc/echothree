@@ -79,7 +79,7 @@ public class GetBatchAliasTypeCommand
             if(batchAliasType != null) {
                 result.setBatchAliasType(batchControl.getBatchAliasTypeTransfer(getUserVisit(), batchAliasType));
 
-                sendEventUsingNames(batchAliasType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEvent(batchAliasType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownBatchAliasTypeName.name(), batchTypeName, batchAliasTypeName);
             }

@@ -228,7 +228,7 @@ public class SearchControl
         searchUseType.setLastDetail(searchUseTypeDetail);
         searchUseType.store();
 
-        sendEventUsingNames(searchUseType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(searchUseType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return searchUseType;
     }
@@ -432,7 +432,7 @@ public class SearchControl
             searchUseType.setActiveDetail(searchUseTypeDetail);
             searchUseType.setLastDetail(searchUseTypeDetail);
 
-            sendEventUsingNames(searchUseTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(searchUseTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -470,7 +470,7 @@ public class SearchControl
             }
         }
 
-        sendEventUsingNames(searchUseType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(searchUseType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteSearchUseType(SearchUseType searchUseType, BasePK deletedBy) {
@@ -493,7 +493,7 @@ public class SearchControl
         SearchUseTypeDescription searchUseTypeDescription = SearchUseTypeDescriptionFactory.getInstance().create(searchUseType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(searchUseType.getPrimaryKey(), EventTypes.MODIFY.name(), searchUseTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(searchUseType.getPrimaryKey(), EventTypes.MODIFY, searchUseTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return searchUseTypeDescription;
     }
@@ -615,14 +615,14 @@ public class SearchControl
             searchUseTypeDescription = SearchUseTypeDescriptionFactory.getInstance().create(searchUseType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(searchUseType.getPrimaryKey(), EventTypes.MODIFY.name(), searchUseTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(searchUseType.getPrimaryKey(), EventTypes.MODIFY, searchUseTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteSearchUseTypeDescription(SearchUseTypeDescription searchUseTypeDescription, BasePK deletedBy) {
         searchUseTypeDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(searchUseTypeDescription.getSearchUseTypePK(), EventTypes.MODIFY.name(), searchUseTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(searchUseTypeDescription.getSearchUseTypePK(), EventTypes.MODIFY, searchUseTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -661,7 +661,7 @@ public class SearchControl
         searchResultActionType.setLastDetail(searchResultActionTypeDetail);
         searchResultActionType.store();
 
-        sendEventUsingNames(searchResultActionType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(searchResultActionType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return searchResultActionType;
     }
@@ -865,7 +865,7 @@ public class SearchControl
             searchResultActionType.setActiveDetail(searchResultActionTypeDetail);
             searchResultActionType.setLastDetail(searchResultActionTypeDetail);
 
-            sendEventUsingNames(searchResultActionTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(searchResultActionTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -903,7 +903,7 @@ public class SearchControl
             }
         }
 
-        sendEventUsingNames(searchResultActionType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(searchResultActionType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteSearchResultActionType(SearchResultActionType searchResultActionType, BasePK deletedBy) {
@@ -926,7 +926,7 @@ public class SearchControl
         SearchResultActionTypeDescription searchResultActionTypeDescription = SearchResultActionTypeDescriptionFactory.getInstance().create(searchResultActionType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(searchResultActionType.getPrimaryKey(), EventTypes.MODIFY.name(), searchResultActionTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(searchResultActionType.getPrimaryKey(), EventTypes.MODIFY, searchResultActionTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return searchResultActionTypeDescription;
     }
@@ -1048,14 +1048,14 @@ public class SearchControl
             searchResultActionTypeDescription = SearchResultActionTypeDescriptionFactory.getInstance().create(searchResultActionType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(searchResultActionType.getPrimaryKey(), EventTypes.MODIFY.name(), searchResultActionTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(searchResultActionType.getPrimaryKey(), EventTypes.MODIFY, searchResultActionTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteSearchResultActionTypeDescription(SearchResultActionTypeDescription searchResultActionTypeDescription, BasePK deletedBy) {
         searchResultActionTypeDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(searchResultActionTypeDescription.getSearchResultActionTypePK(), EventTypes.MODIFY.name(), searchResultActionTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(searchResultActionTypeDescription.getSearchResultActionTypePK(), EventTypes.MODIFY, searchResultActionTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -1094,7 +1094,7 @@ public class SearchControl
         searchCheckSpellingActionType.setLastDetail(searchCheckSpellingActionTypeDetail);
         searchCheckSpellingActionType.store();
 
-        sendEventUsingNames(searchCheckSpellingActionType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(searchCheckSpellingActionType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return searchCheckSpellingActionType;
     }
@@ -1316,7 +1316,7 @@ public class SearchControl
             searchCheckSpellingActionType.setActiveDetail(searchCheckSpellingActionTypeDetail);
             searchCheckSpellingActionType.setLastDetail(searchCheckSpellingActionTypeDetail);
 
-            sendEventUsingNames(searchCheckSpellingActionTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(searchCheckSpellingActionTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -1353,7 +1353,7 @@ public class SearchControl
             }
         }
 
-        sendEventUsingNames(searchCheckSpellingActionType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(searchCheckSpellingActionType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteSearchCheckSpellingActionType(SearchCheckSpellingActionType searchCheckSpellingActionType, BasePK deletedBy) {
@@ -1376,7 +1376,7 @@ public class SearchControl
         SearchCheckSpellingActionTypeDescription searchCheckSpellingActionTypeDescription = SearchCheckSpellingActionTypeDescriptionFactory.getInstance().create(searchCheckSpellingActionType, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(searchCheckSpellingActionType.getPrimaryKey(), EventTypes.MODIFY.name(), searchCheckSpellingActionTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(searchCheckSpellingActionType.getPrimaryKey(), EventTypes.MODIFY, searchCheckSpellingActionTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return searchCheckSpellingActionTypeDescription;
     }
@@ -1498,14 +1498,14 @@ public class SearchControl
             searchCheckSpellingActionTypeDescription = SearchCheckSpellingActionTypeDescriptionFactory.getInstance().create(searchCheckSpellingActionType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(searchCheckSpellingActionType.getPrimaryKey(), EventTypes.MODIFY.name(), searchCheckSpellingActionTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(searchCheckSpellingActionType.getPrimaryKey(), EventTypes.MODIFY, searchCheckSpellingActionTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteSearchCheckSpellingActionTypeDescription(SearchCheckSpellingActionTypeDescription searchCheckSpellingActionTypeDescription, BasePK deletedBy) {
         searchCheckSpellingActionTypeDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(searchCheckSpellingActionTypeDescription.getSearchCheckSpellingActionTypePK(), EventTypes.MODIFY.name(), searchCheckSpellingActionTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(searchCheckSpellingActionTypeDescription.getSearchCheckSpellingActionTypePK(), EventTypes.MODIFY, searchCheckSpellingActionTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -1544,7 +1544,7 @@ public class SearchControl
         searchDefaultOperator.setLastDetail(searchDefaultOperatorDetail);
         searchDefaultOperator.store();
 
-        sendEventUsingNames(searchDefaultOperator.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(searchDefaultOperator.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return searchDefaultOperator;
     }
@@ -1748,7 +1748,7 @@ public class SearchControl
             searchDefaultOperator.setActiveDetail(searchDefaultOperatorDetail);
             searchDefaultOperator.setLastDetail(searchDefaultOperatorDetail);
 
-            sendEventUsingNames(searchDefaultOperatorPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(searchDefaultOperatorPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -1787,7 +1787,7 @@ public class SearchControl
             }
         }
 
-        sendEventUsingNames(searchDefaultOperator.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(searchDefaultOperator.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteSearchDefaultOperator(SearchDefaultOperator searchDefaultOperator, BasePK deletedBy) {
@@ -1810,7 +1810,7 @@ public class SearchControl
         SearchDefaultOperatorDescription searchDefaultOperatorDescription = SearchDefaultOperatorDescriptionFactory.getInstance().create(searchDefaultOperator, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(searchDefaultOperator.getPrimaryKey(), EventTypes.MODIFY.name(), searchDefaultOperatorDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(searchDefaultOperator.getPrimaryKey(), EventTypes.MODIFY, searchDefaultOperatorDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return searchDefaultOperatorDescription;
     }
@@ -1932,14 +1932,14 @@ public class SearchControl
             searchDefaultOperatorDescription = SearchDefaultOperatorDescriptionFactory.getInstance().create(searchDefaultOperator, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(searchDefaultOperator.getPrimaryKey(), EventTypes.MODIFY.name(), searchDefaultOperatorDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(searchDefaultOperator.getPrimaryKey(), EventTypes.MODIFY, searchDefaultOperatorDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteSearchDefaultOperatorDescription(SearchDefaultOperatorDescription searchDefaultOperatorDescription, BasePK deletedBy) {
         searchDefaultOperatorDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(searchDefaultOperatorDescription.getSearchDefaultOperatorPK(), EventTypes.MODIFY.name(), searchDefaultOperatorDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(searchDefaultOperatorDescription.getSearchDefaultOperatorPK(), EventTypes.MODIFY, searchDefaultOperatorDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -1978,7 +1978,7 @@ public class SearchControl
         searchSortDirection.setLastDetail(searchSortDirectionDetail);
         searchSortDirection.store();
 
-        sendEventUsingNames(searchSortDirection.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(searchSortDirection.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return searchSortDirection;
     }
@@ -2182,7 +2182,7 @@ public class SearchControl
             searchSortDirection.setActiveDetail(searchSortDirectionDetail);
             searchSortDirection.setLastDetail(searchSortDirectionDetail);
 
-            sendEventUsingNames(searchSortDirectionPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(searchSortDirectionPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -2221,7 +2221,7 @@ public class SearchControl
             }
         }
 
-        sendEventUsingNames(searchSortDirection.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(searchSortDirection.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteSearchSortDirection(SearchSortDirection searchSortDirection, BasePK deletedBy) {
@@ -2244,7 +2244,7 @@ public class SearchControl
         SearchSortDirectionDescription searchSortDirectionDescription = SearchSortDirectionDescriptionFactory.getInstance().create(searchSortDirection, language, description,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(searchSortDirection.getPrimaryKey(), EventTypes.MODIFY.name(), searchSortDirectionDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(searchSortDirection.getPrimaryKey(), EventTypes.MODIFY, searchSortDirectionDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return searchSortDirectionDescription;
     }
@@ -2366,14 +2366,14 @@ public class SearchControl
             searchSortDirectionDescription = SearchSortDirectionDescriptionFactory.getInstance().create(searchSortDirection, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(searchSortDirection.getPrimaryKey(), EventTypes.MODIFY.name(), searchSortDirectionDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(searchSortDirection.getPrimaryKey(), EventTypes.MODIFY, searchSortDirectionDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteSearchSortDirectionDescription(SearchSortDirectionDescription searchSortDirectionDescription, BasePK deletedBy) {
         searchSortDirectionDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(searchSortDirectionDescription.getSearchSortDirectionPK(), EventTypes.MODIFY.name(), searchSortDirectionDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(searchSortDirectionDescription.getSearchSortDirectionPK(), EventTypes.MODIFY, searchSortDirectionDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -2413,7 +2413,7 @@ public class SearchControl
         searchKind.setLastDetail(searchKindDetail);
         searchKind.store();
 
-        sendEventUsingNames(searchKind.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(searchKind.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return searchKind;
     }
@@ -2605,7 +2605,7 @@ public class SearchControl
         searchKind.setLastDetail(searchKindDetail);
         searchKind.store();
 
-        sendEventUsingNames(searchKindPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+        sendEvent(searchKindPK, EventTypes.MODIFY, null, null, updatedBy);
     }
 
     public void updateSearchKindFromValue(SearchKindDetailValue searchKindDetailValue, BasePK updatedBy) {
@@ -2641,7 +2641,7 @@ public class SearchControl
             }
         }
 
-        sendEventUsingNames(searchKind.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(searchKind.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteSearchKind(SearchKind searchKind, BasePK deletedBy) {
@@ -2665,7 +2665,7 @@ public class SearchControl
         SearchKindDescription searchKindDescription = SearchKindDescriptionFactory.getInstance().create(searchKind,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(searchKind.getPrimaryKey(), EventTypes.MODIFY.name(), searchKindDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(searchKind.getPrimaryKey(), EventTypes.MODIFY, searchKindDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return searchKindDescription;
     }
@@ -2786,14 +2786,14 @@ public class SearchControl
             searchKindDescription = SearchKindDescriptionFactory.getInstance().create(searchKind, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(searchKind.getPrimaryKey(), EventTypes.MODIFY.name(), searchKindDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(searchKind.getPrimaryKey(), EventTypes.MODIFY, searchKindDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteSearchKindDescription(SearchKindDescription searchKindDescription, BasePK deletedBy) {
         searchKindDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(searchKindDescription.getSearchKindPK(), EventTypes.MODIFY.name(), searchKindDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(searchKindDescription.getSearchKindPK(), EventTypes.MODIFY, searchKindDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -2833,7 +2833,7 @@ public class SearchControl
         searchType.setLastDetail(searchTypeDetail);
         searchType.store();
 
-        sendEventUsingNames(searchType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(searchType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return searchType;
     }
@@ -3034,7 +3034,7 @@ public class SearchControl
             searchType.setActiveDetail(searchTypeDetail);
             searchType.setLastDetail(searchTypeDetail);
 
-            sendEventUsingNames(searchTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(searchTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -3072,7 +3072,7 @@ public class SearchControl
             }
         }
 
-        sendEventUsingNames(searchType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(searchType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteSearchTypesBySearchKind(SearchKind searchKind, BasePK deletedBy) {
@@ -3092,7 +3092,7 @@ public class SearchControl
         SearchTypeDescription searchTypeDescription = SearchTypeDescriptionFactory.getInstance().create(searchType,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(searchType.getPrimaryKey(), EventTypes.MODIFY.name(), searchTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(searchType.getPrimaryKey(), EventTypes.MODIFY, searchTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return searchTypeDescription;
     }
@@ -3213,14 +3213,14 @@ public class SearchControl
             searchTypeDescription = SearchTypeDescriptionFactory.getInstance().create(searchType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(searchType.getPrimaryKey(), EventTypes.MODIFY.name(), searchTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(searchType.getPrimaryKey(), EventTypes.MODIFY, searchTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteSearchTypeDescription(SearchTypeDescription searchTypeDescription, BasePK deletedBy) {
         searchTypeDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(searchTypeDescription.getSearchTypePK(), EventTypes.MODIFY.name(), searchTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(searchTypeDescription.getSearchTypePK(), EventTypes.MODIFY, searchTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -3260,7 +3260,7 @@ public class SearchControl
         searchSortOrder.setLastDetail(searchSortOrderDetail);
         searchSortOrder.store();
 
-        sendEventUsingNames(searchSortOrder.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(searchSortOrder.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return searchSortOrder;
     }
@@ -3461,7 +3461,7 @@ public class SearchControl
             searchSortOrder.setActiveDetail(searchSortOrderDetail);
             searchSortOrder.setLastDetail(searchSortOrderDetail);
 
-            sendEventUsingNames(searchSortOrderPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(searchSortOrderPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
 
@@ -3497,7 +3497,7 @@ public class SearchControl
             }
         }
 
-        sendEventUsingNames(searchSortOrder.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(searchSortOrder.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteSearchSortOrdersBySearchKind(SearchKind searchKind, BasePK deletedBy) {
@@ -3517,7 +3517,7 @@ public class SearchControl
         SearchSortOrderDescription searchSortOrderDescription = SearchSortOrderDescriptionFactory.getInstance().create(searchSortOrder,
                 language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(searchSortOrder.getPrimaryKey(), EventTypes.MODIFY.name(), searchSortOrderDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(searchSortOrder.getPrimaryKey(), EventTypes.MODIFY, searchSortOrderDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return searchSortOrderDescription;
     }
@@ -3638,14 +3638,14 @@ public class SearchControl
             searchSortOrderDescription = SearchSortOrderDescriptionFactory.getInstance().create(searchSortOrder, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(searchSortOrder.getPrimaryKey(), EventTypes.MODIFY.name(), searchSortOrderDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(searchSortOrder.getPrimaryKey(), EventTypes.MODIFY, searchSortOrderDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
     public void deleteSearchSortOrderDescription(SearchSortOrderDescription searchSortOrderDescription, BasePK deletedBy) {
         searchSortOrderDescription.setThruTime(session.START_TIME_LONG);
 
-        sendEventUsingNames(searchSortOrderDescription.getSearchSortOrderPK(), EventTypes.MODIFY.name(), searchSortOrderDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(searchSortOrderDescription.getSearchSortOrderPK(), EventTypes.MODIFY, searchSortOrderDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
 
     }
 
@@ -3666,7 +3666,7 @@ public class SearchControl
         Search search = SearchFactory.getInstance().create(party, partyVerified, searchType, executedTime, searchUseType, cachedSearch,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(search.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(search.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return search;
     }
@@ -3801,7 +3801,7 @@ public class SearchControl
         search.setThruTime(session.START_TIME_LONG);
         search.store();
         
-        sendEventUsingNames(search.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(search.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteSearches(List<Search> searches, BasePK deletedBy) {
@@ -3909,7 +3909,7 @@ public class SearchControl
         CachedSearch cachedSearch = CachedSearchFactory.getInstance().create(index, querySha1Hash, query, parsedQuerySha1Hash, parsedQuery,
                 searchDefaultOperator, searchSortOrder, searchSortDirection, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(cachedSearch.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(cachedSearch.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return cachedSearch;
     }
@@ -4054,7 +4054,7 @@ public class SearchControl
         cachedSearch.setThruTime(session.START_TIME_LONG);
         cachedSearch.store();
 
-        sendEventUsingNames(cachedSearch.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(cachedSearch.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deletedCachedSearches(List<CachedSearch> cachedSearches, BasePK deletedBy) {
@@ -4130,7 +4130,7 @@ public class SearchControl
         CachedSearchIndexField cachedSearchIndexField = CachedSearchIndexFieldFactory.getInstance().create(cachedSearch, indexField, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(cachedSearch.getPrimaryKey(), EventTypes.MODIFY.name(), cachedSearchIndexField.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(cachedSearch.getPrimaryKey(), EventTypes.MODIFY, cachedSearchIndexField.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return cachedSearchIndexField;
     }
@@ -4205,7 +4205,7 @@ public class SearchControl
         cachedSearchIndexField.setThruTime(session.START_TIME_LONG);
         cachedSearchIndexField.store();
 
-        sendEventUsingNames(cachedSearchIndexField.getCachedSearchPK(), EventTypes.MODIFY.name(), cachedSearchIndexField.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(cachedSearchIndexField.getCachedSearchPK(), EventTypes.MODIFY, cachedSearchIndexField.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteCachedSearchIndexFields(List<CachedSearchIndexField> cachedSearchIndexFields, BasePK deletedBy) {
@@ -4230,7 +4230,7 @@ public class SearchControl
         CachedExecutedSearch cachedExecutedSearch = CachedExecutedSearchFactory.getInstance().create(cachedSearch, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(cachedSearch.getPrimaryKey(), EventTypes.MODIFY.name(), cachedExecutedSearch.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(cachedSearch.getPrimaryKey(), EventTypes.MODIFY, cachedExecutedSearch.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return cachedExecutedSearch;
     }
@@ -4271,7 +4271,7 @@ public class SearchControl
         cachedExecutedSearch.setThruTime(session.START_TIME_LONG);
         cachedExecutedSearch.store();
 
-        sendEventUsingNames(cachedExecutedSearch.getCachedSearchPK(), EventTypes.MODIFY.name(), cachedExecutedSearch.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(cachedExecutedSearch.getCachedSearchPK(), EventTypes.MODIFY, cachedExecutedSearch.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     // --------------------------------------------------------------------------------
@@ -4516,7 +4516,7 @@ public class SearchControl
         partySearchTypePreference.setLastDetail(partySearchTypePreferenceDetail);
         partySearchTypePreference.store();
 
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), partySearchTypePreference.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, partySearchTypePreference.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return partySearchTypePreference;
     }
@@ -4685,7 +4685,7 @@ public class SearchControl
             partySearchTypePreference.setActiveDetail(partySearchTypePreferenceDetail);
             partySearchTypePreference.setLastDetail(partySearchTypePreferenceDetail);
 
-            sendEventUsingNames(partyPK, EventTypes.MODIFY.name(), partySearchTypePreferencePK, EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(partyPK, EventTypes.MODIFY, partySearchTypePreferencePK, EventTypes.MODIFY, updatedBy);
         }
     }
 
@@ -4696,7 +4696,7 @@ public class SearchControl
         partySearchTypePreference.setActiveDetail(null);
         partySearchTypePreference.store();
 
-        sendEventUsingNames(partySearchTypePreferenceDetail.getPartyPK(), EventTypes.MODIFY.name(), partySearchTypePreference.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(partySearchTypePreferenceDetail.getPartyPK(), EventTypes.MODIFY, partySearchTypePreference.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     public void deletePartySearchTypePreferences(List<PartySearchTypePreference> partySearchTypePreferences, BasePK deletedBy) {
@@ -4734,7 +4734,7 @@ public class SearchControl
         SearchResultAction searchResultAction = SearchResultActionFactory.getInstance().create(search, searchResultActionType, actionTime, entityInstance,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(search.getPrimaryKey(), EventTypes.MODIFY.name(), searchResultAction.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(search.getPrimaryKey(), EventTypes.MODIFY, searchResultAction.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return searchResultAction;
     }
@@ -4818,7 +4818,7 @@ public class SearchControl
         searchResultAction.setThruTime(session.START_TIME_LONG);
         searchResultAction.store();
         
-        sendEventUsingNames(searchResultAction.getSearch().getPrimaryKey(), EventTypes.DELETE.name(), null, EventTypes.DELETE.name(), deletedBy);
+        sendEvent(searchResultAction.getSearch().getPrimaryKey(), EventTypes.DELETE, null, EventTypes.DELETE, deletedBy);
     }
     
     public void deleteSearchResultActions(List<SearchResultAction> searchResultActions, BasePK deletedBy) {

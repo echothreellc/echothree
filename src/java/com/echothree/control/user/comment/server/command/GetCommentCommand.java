@@ -59,7 +59,7 @@ public class GetCommentCommand
         if(comment != null) {
             result.setComment(commentControl.getCommentTransfer(getUserVisit(), comment));
 
-            sendEventUsingNames(comment.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(comment.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownCommentName.name(), commentName);
         }

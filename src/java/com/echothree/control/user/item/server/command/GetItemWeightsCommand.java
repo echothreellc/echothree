@@ -63,7 +63,7 @@ public class GetItemWeightsCommand
             result.setItem(itemControl.getItemTransfer(userVisit, item));
             result.setItemWeights(itemControl.getItemWeightTransfersByItem(userVisit, item));
             
-            sendEventUsingNames(item.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(item.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownItemName.name(), itemName);
         }

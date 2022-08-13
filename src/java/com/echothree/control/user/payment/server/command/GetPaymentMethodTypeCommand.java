@@ -59,7 +59,7 @@ public class GetPaymentMethodTypeCommand
         PaymentMethodType paymentMethodType = PaymentMethodTypeLogic.getInstance().getPaymentMethodTypeByUniversalSpec(this, form, true);
 
         if(paymentMethodType != null) {
-            sendEventUsingNames(paymentMethodType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(paymentMethodType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return paymentMethodType;

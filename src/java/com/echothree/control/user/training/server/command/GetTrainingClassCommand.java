@@ -112,7 +112,7 @@ public class GetTrainingClassCommand
             if(!hasExecutionErrors()) {
                 result.setTrainingClass(trainingControl.getTrainingClassTransfer(getUserVisit(), trainingClass));
 
-                sendEventUsingNames(trainingClass.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEvent(trainingClass.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());

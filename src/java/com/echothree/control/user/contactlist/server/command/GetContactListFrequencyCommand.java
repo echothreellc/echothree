@@ -73,7 +73,7 @@ public class GetContactListFrequencyCommand
         if(contactListFrequency != null) {
             result.setContactListFrequency(contactListControl.getContactListFrequencyTransfer(getUserVisit(), contactListFrequency));
             
-            sendEventUsingNames(contactListFrequency.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(contactListFrequency.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownContactListFrequencyName.name(), contactListFrequencyName);
         }

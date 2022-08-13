@@ -123,7 +123,7 @@ public class GetRecoveryAnswerCommand
                 if(recoveryAnswer != null) {
                     result.setRecoveryAnswer(userControl.getRecoveryAnswerTransfer(getUserVisit(), recoveryAnswer));
                     
-                    sendEventUsingNames(recoveryAnswer.getPrimaryKey(), EventTypes.READ.name(), null, null, self.getPrimaryKey());
+                    sendEvent(recoveryAnswer.getPrimaryKey(), EventTypes.READ, null, null, self.getPrimaryKey());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownRecoveryAnswer.name());
                 }

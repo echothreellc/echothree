@@ -77,7 +77,7 @@ public class GetFontWeightCommand
             }
 
             if(fontWeight != null) {
-                sendEventUsingNames(fontWeight.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEvent(fontWeight.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());

@@ -59,7 +59,7 @@ public class GetPaymentProcessorResultCodeCommand
         PaymentProcessorResultCode paymentProcessorResultCode = PaymentProcessorResultCodeLogic.getInstance().getPaymentProcessorResultCodeByUniversalSpec(this, form, true);
 
         if(paymentProcessorResultCode != null) {
-            sendEventUsingNames(paymentProcessorResultCode.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(paymentProcessorResultCode.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return paymentProcessorResultCode;

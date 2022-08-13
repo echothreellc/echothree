@@ -59,7 +59,7 @@ public class GetInventoryConditionCommand
         InventoryCondition inventoryCondition = InventoryConditionLogic.getInstance().getInventoryConditionByUniversalSpec(this, form, true);
 
         if(inventoryCondition != null) {
-            sendEventUsingNames(inventoryCondition.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(inventoryCondition.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return inventoryCondition;

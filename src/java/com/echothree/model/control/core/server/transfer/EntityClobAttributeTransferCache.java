@@ -33,14 +33,16 @@ import java.util.Set;
 
 public class EntityClobAttributeTransferCache
         extends BaseCoreTransferCache<EntityClobAttribute, EntityClobAttributeTransfer> {
-    
+
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
     PartyControl partyControl = Session.getModelController(PartyControl.class);
+
     boolean includeClob;
     boolean includeETag;
     
     /** Creates a new instance of EntityClobAttributeTransferCache */
-    public EntityClobAttributeTransferCache(UserVisit userVisit, CoreControl coreControl) {
-        super(userVisit, coreControl);
+    public EntityClobAttributeTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         var options = session.getOptions();
         if(options != null) {

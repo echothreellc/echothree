@@ -73,7 +73,7 @@ public class GetOrderTypeCommand
         if(orderType != null) {
             result.setOrderType(orderTypeControl.getOrderTypeTransfer(getUserVisit(), orderType));
             
-            sendEventUsingNames(orderType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(orderType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownOrderTypeName.name(), orderTypeName);
         }

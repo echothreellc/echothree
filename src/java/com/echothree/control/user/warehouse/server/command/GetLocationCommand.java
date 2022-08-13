@@ -74,7 +74,7 @@ public class GetLocationCommand
                 result.setLocationVolume(warehouseControl.getLocationVolumeTransfer(userVisit, location));
                 result.setLocationCapacities(warehouseControl.getLocationCapacityTransfersByLocation(userVisit, location));
                 
-                sendEventUsingNames(location.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEvent(location.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownLocationName.name(), locationName);
             }

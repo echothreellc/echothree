@@ -16,6 +16,7 @@
 
 package com.echothree.util.server.control;
 
+import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
@@ -96,17 +97,19 @@ public abstract class BaseModelControl {
         return getEntityInstanceByBasePK(baseEntity.getPrimaryKey());
     }
     
-    protected Event sendEventUsingNames(BasePK entityInstancePK, String eventTypeName, BasePK relatedPK, String relatedEventTypeName, BasePK createdByPK) {
-        return getCoreControl().sendEventUsingNames(entityInstancePK, eventTypeName, relatedPK, relatedEventTypeName, createdByPK);
+    protected Event sendEvent(final BasePK entityInstancePK, final EventTypes eventType, final BasePK relatedPK,
+            final EventTypes relatedEventType, final BasePK createdByPK) {
+        return getCoreControl().sendEvent(entityInstancePK, eventType, relatedPK, relatedEventType, createdByPK);
     }
     
-    protected Event sendEventUsingNames(EntityInstance entityInstance, String eventTypeName, BasePK relatedPK, String relatedEventTypeName, BasePK createdByPK) {
-        return getCoreControl().sendEventUsingNames(entityInstance, eventTypeName, relatedPK, relatedEventTypeName, createdByPK);
+    protected Event sendEvent(final EntityInstance entityInstance, final EventTypes eventType, final BasePK relatedPK,
+            final EventTypes relatedEventType, final BasePK createdByPK) {
+        return getCoreControl().sendEvent(entityInstance, eventType, relatedPK, relatedEventType, createdByPK);
     }
     
-    public Event sendEventUsingNames(EntityInstance entityInstance, String eventTypeName, EntityInstance relatedEntityInstance, String relatedEventTypeName,
-            BasePK createdByPK) {
-        return getCoreControl().sendEventUsingNames(entityInstance, eventTypeName, relatedEntityInstance, relatedEventTypeName, createdByPK);
+    public Event sendEvent(final EntityInstance entityInstance, final EventTypes eventType, final EntityInstance relatedEntityInstance,
+            final EventTypes relatedEventType, final BasePK createdByPK) {
+        return getCoreControl().sendEvent(entityInstance, eventType, relatedEntityInstance, relatedEventType, createdByPK);
     }
     
 }

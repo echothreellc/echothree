@@ -98,7 +98,7 @@ public class GetCampaignCommand
 
             if(!hasExecutionErrors()) {
                 result.setCampaign(campaignControl.getCampaignTransfer(getUserVisit(), campaign));
-                sendEventUsingNames(campaign.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEvent(campaign.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());

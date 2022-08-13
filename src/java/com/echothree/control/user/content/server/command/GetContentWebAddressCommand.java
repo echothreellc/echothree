@@ -56,7 +56,7 @@ public class GetContentWebAddressCommand
         ContentWebAddress contentWebAddress = contentControl.getContentWebAddressByName(contentWebAddressName);
         
         if(contentWebAddress != null) {
-            sendEventUsingNames(contentWebAddress.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(contentWebAddress.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownContentWebAddressName.name(), contentWebAddressName);
         }

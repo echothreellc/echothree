@@ -25,11 +25,14 @@ import com.echothree.model.data.core.server.entity.EntityLongRange;
 import com.echothree.model.data.core.server.entity.EntityLongRangeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
+import com.echothree.util.server.persistence.Session;
 import java.util.Set;
 
 public class EntityLongRangeTransferCache
         extends BaseCoreTransferCache<EntityLongRange, EntityLongRangeTransfer> {
-    
+
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
     TransferProperties transferProperties;
     boolean filterEntityAttribute;
     boolean filterEntityLongRangeName;
@@ -41,8 +44,8 @@ public class EntityLongRangeTransferCache
     boolean filterEntityInstance;
 
     /** Creates a new instance of EntityLongRangeTransferCache */
-    public EntityLongRangeTransferCache(UserVisit userVisit, CoreControl coreControl) {
-        super(userVisit, coreControl);
+    public EntityLongRangeTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {

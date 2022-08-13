@@ -59,7 +59,7 @@ public class GetTaxCommand
         if(tax != null) {
             result.setTax(taxControl.getTaxTransfer(getUserVisit(), tax));
             
-            sendEventUsingNames(tax.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(tax.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownTaxName.name(), taxName);
         }

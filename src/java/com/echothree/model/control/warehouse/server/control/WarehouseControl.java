@@ -147,7 +147,7 @@ public class WarehouseControl
         Warehouse warehouse = WarehouseFactory.getInstance().create(party, warehouseName, isDefault, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(party.getPrimaryKey(), EventTypes.MODIFY.name(), warehouse.getPrimaryKey(), null, createdBy);
+        sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, warehouse.getPrimaryKey(), null, createdBy);
         
         return warehouse;
     }
@@ -404,7 +404,7 @@ public class WarehouseControl
             warehouse = WarehouseFactory.getInstance().create(partyPK, warehouseName, isDefault, sortOrder,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(partyPK, EventTypes.MODIFY.name(), warehouse.getPrimaryKey(), null, updatedBy);
+            sendEvent(partyPK, EventTypes.MODIFY, warehouse.getPrimaryKey(), null, updatedBy);
         }
     }
     
@@ -443,7 +443,7 @@ public class WarehouseControl
             }
         }
         
-        sendEventUsingNames(warehouse.getPartyPK(), EventTypes.MODIFY.name(), warehouse.getPrimaryKey(), null, deletedBy);
+        sendEvent(warehouse.getPartyPK(), EventTypes.MODIFY, warehouse.getPrimaryKey(), null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -579,7 +579,7 @@ public class WarehouseControl
         locationType.setLastDetail(locationTypeDetail);
         locationType.store();
         
-        sendEventUsingNames(locationType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(locationType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return locationType;
     }
@@ -812,7 +812,7 @@ public class WarehouseControl
             locationType.setActiveDetail(locationTypeDetail);
             locationType.setLastDetail(locationTypeDetail);
             
-            sendEventUsingNames(locationTypePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(locationTypePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -850,7 +850,7 @@ public class WarehouseControl
             }
         }
         
-        sendEventUsingNames(locationType.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(locationType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteLocationType(LocationType locationType, BasePK deletedBy) {
@@ -874,7 +874,7 @@ public class WarehouseControl
         LocationTypeDescription locationTypeDescription = LocationTypeDescriptionFactory.getInstance().create(locationType, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(locationType.getPrimaryKey(), EventTypes.MODIFY.name(), locationTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(locationType.getPrimaryKey(), EventTypes.MODIFY, locationTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return locationTypeDescription;
     }
@@ -1016,14 +1016,14 @@ public class WarehouseControl
             locationTypeDescription = LocationTypeDescriptionFactory.getInstance().create(locationType, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(locationType.getPrimaryKey(), EventTypes.MODIFY.name(), locationTypeDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(locationType.getPrimaryKey(), EventTypes.MODIFY, locationTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteLocationTypeDescription(LocationTypeDescription locationTypeDescription, BasePK deletedBy) {
         locationTypeDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(locationTypeDescription.getLocationTypePK(), EventTypes.MODIFY.name(), locationTypeDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(locationTypeDescription.getLocationTypePK(), EventTypes.MODIFY, locationTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -1052,7 +1052,7 @@ public class WarehouseControl
         locationNameElement.setLastDetail(locationNameElementDetail);
         locationNameElement.store();
         
-        sendEventUsingNames(locationNameElement.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(locationNameElement.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return locationNameElement;
     }
@@ -1197,7 +1197,7 @@ public class WarehouseControl
             locationNameElement.setActiveDetail(locationNameElementDetail);
             locationNameElement.setLastDetail(locationNameElementDetail);
             
-            sendEventUsingNames(locationNameElementPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(locationNameElementPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -1209,7 +1209,7 @@ public class WarehouseControl
         locationNameElementDetail.store();
         locationNameElement.setActiveDetail(null);
         
-        sendEventUsingNames(locationNameElement.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(locationNameElement.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteLocationNameElementsByLocationType(LocationType locationType, BasePK deletedBy) {
@@ -1229,7 +1229,7 @@ public class WarehouseControl
         LocationNameElementDescription locationNameElementDescription = LocationNameElementDescriptionFactory.getInstance().create(session,
                 locationNameElement, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(locationNameElement.getPrimaryKey(), EventTypes.MODIFY.name(), locationNameElementDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(locationNameElement.getPrimaryKey(), EventTypes.MODIFY, locationNameElementDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return locationNameElementDescription;
     }
@@ -1371,14 +1371,14 @@ public class WarehouseControl
             locationNameElementDescription = LocationNameElementDescriptionFactory.getInstance().create(locationNameElement,
                     language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(locationNameElement.getPrimaryKey(), EventTypes.MODIFY.name(), locationNameElementDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(locationNameElement.getPrimaryKey(), EventTypes.MODIFY, locationNameElementDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteLocationNameElementDescription(LocationNameElementDescription locationNameElementDescription, BasePK deletedBy) {
         locationNameElementDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(locationNameElementDescription.getLocationNameElementPK(), EventTypes.MODIFY.name(), locationNameElementDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(locationNameElementDescription.getLocationNameElementPK(), EventTypes.MODIFY, locationNameElementDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -1406,7 +1406,7 @@ public class WarehouseControl
         location.setLastDetail(locationDetail);
         location.store();
         
-        sendEventUsingNames(location.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(location.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return location;
     }
@@ -1681,7 +1681,7 @@ public class WarehouseControl
             location.setActiveDetail(locationDetail);
             location.setLastDetail(locationDetail);
             
-            sendEventUsingNames(locationPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(locationPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -1698,7 +1698,7 @@ public class WarehouseControl
         locationDetail.store();
         location.setActiveDetail(null);
         
-        sendEventUsingNames(location.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(location.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteLocationsByWarehouseParty(Party warehouseParty, BasePK deletedBy) {
@@ -1733,7 +1733,7 @@ public class WarehouseControl
         LocationDescription locationDescription = LocationDescriptionFactory.getInstance().create(location, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(location.getPrimaryKey(), EventTypes.MODIFY.name(), locationDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(location.getPrimaryKey(), EventTypes.MODIFY, locationDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return locationDescription;
     }
@@ -1874,14 +1874,14 @@ public class WarehouseControl
             locationDescription = LocationDescriptionFactory.getInstance().create(location, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(location.getPrimaryKey(), EventTypes.MODIFY.name(), locationDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(location.getPrimaryKey(), EventTypes.MODIFY, locationDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteLocationDescription(LocationDescription locationDescription, BasePK deletedBy) {
         locationDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(locationDescription.getLocationPK(), EventTypes.MODIFY.name(), locationDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(locationDescription.getLocationPK(), EventTypes.MODIFY, locationDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -1901,7 +1901,7 @@ public class WarehouseControl
         LocationVolume locationVolume = LocationVolumeFactory.getInstance().create(location, height, width, depth,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(location.getPrimaryKey(), EventTypes.MODIFY.name(), locationVolume.getPrimaryKey(), null, createdBy);
+        sendEvent(location.getPrimaryKey(), EventTypes.MODIFY, locationVolume.getPrimaryKey(), null, createdBy);
         
         return locationVolume;
     }
@@ -1976,14 +1976,14 @@ public class WarehouseControl
             locationVolume = LocationVolumeFactory.getInstance().create(locationPK, height,
                     width, depth, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(locationPK, EventTypes.MODIFY.name(), locationVolume.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(locationPK, EventTypes.MODIFY, locationVolume.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteLocationVolume(LocationVolume locationVolume, BasePK deletedBy) {
         locationVolume.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(locationVolume.getLocation().getPrimaryKey(), EventTypes.MODIFY.name(), locationVolume.getPrimaryKey(), null, deletedBy);
+        sendEvent(locationVolume.getLocation().getPrimaryKey(), EventTypes.MODIFY, locationVolume.getPrimaryKey(), null, deletedBy);
     }
     
     public void deleteLocationVolumeByLocation(Location location, BasePK deletedBy) {
@@ -2002,7 +2002,7 @@ public class WarehouseControl
         LocationCapacity locationCapacity = LocationCapacityFactory.getInstance().create(location,
                 unitOfMeasureType, capacity, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(location.getPrimaryKey(), EventTypes.MODIFY.name(), locationCapacity.getPrimaryKey(), null, createdBy);
+        sendEvent(location.getPrimaryKey(), EventTypes.MODIFY, locationCapacity.getPrimaryKey(), null, createdBy);
         
         return locationCapacity;
     }
@@ -2113,7 +2113,7 @@ public class WarehouseControl
             locationCapacity = LocationCapacityFactory.getInstance().create(locationPK, unitOfMeasureTypePK, capacity,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(unitOfMeasureTypePK, EventTypes.MODIFY.name(), locationCapacity.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(unitOfMeasureTypePK, EventTypes.MODIFY, locationCapacity.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -2136,7 +2136,7 @@ public class WarehouseControl
     public void deleteLocationCapacity(LocationCapacity locationCapacity, BasePK deletedBy) {
         locationCapacity.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(locationCapacity.getLocation().getPrimaryKey(), EventTypes.MODIFY.name(), locationCapacity.getPrimaryKey(), null, deletedBy);
+        sendEvent(locationCapacity.getLocation().getPrimaryKey(), EventTypes.MODIFY, locationCapacity.getPrimaryKey(), null, deletedBy);
     }
     
     public void deleteLocationCapacitiesByLocation(Location location, BasePK deletedBy) {

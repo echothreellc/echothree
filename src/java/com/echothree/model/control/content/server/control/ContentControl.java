@@ -243,7 +243,7 @@ public class ContentControl
     public ContentPageAreaType createContentPageAreaType(String contentPageAreaTypeName, BasePK createdBy) {
         ContentPageAreaType contentPageAreaType = ContentPageAreaTypeFactory.getInstance().create(contentPageAreaTypeName);
         
-        sendEventUsingNames(contentPageAreaType.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(contentPageAreaType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
 
         return contentPageAreaType;
     }
@@ -382,7 +382,7 @@ public class ContentControl
         ContentPageAreaTypeDescription contentPageAreaTypeDescription = ContentPageAreaTypeDescriptionFactory.getInstance().create(contentPageAreaType,
                 language, description);
         
-        sendEventUsingNames(contentPageAreaType.getPrimaryKey(), EventTypes.MODIFY.name(), contentPageAreaTypeDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(contentPageAreaType.getPrimaryKey(), EventTypes.MODIFY, contentPageAreaTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return contentPageAreaTypeDescription;
     }
@@ -451,7 +451,7 @@ public class ContentControl
         contentPageLayout.setLastDetail(contentPageLayoutDetail);
         contentPageLayout.store();
         
-        sendEventUsingNames(contentPageLayout.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(contentPageLayout.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return contentPageLayout;
     }
@@ -665,7 +665,7 @@ public class ContentControl
             contentPageLayout.setActiveDetail(contentPageLayoutDetail);
             contentPageLayout.setLastDetail(contentPageLayoutDetail);
             
-            sendEventUsingNames(contentPageLayoutPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(contentPageLayoutPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -699,7 +699,7 @@ public class ContentControl
             }
         }
         
-        sendEventUsingNames(contentPageLayout.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(contentPageLayout.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -710,7 +710,7 @@ public class ContentControl
         ContentPageLayoutDescription contentPageLayoutDescription = ContentPageLayoutDescriptionFactory.getInstance().create(contentPageLayout, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(contentPageLayout.getPrimaryKey(), EventTypes.MODIFY.name(), contentPageLayoutDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(contentPageLayout.getPrimaryKey(), EventTypes.MODIFY, contentPageLayoutDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return contentPageLayoutDescription;
     }
@@ -848,14 +848,14 @@ public class ContentControl
             contentPageLayoutDescription = ContentPageLayoutDescriptionFactory.getInstance().create(contentPageLayout, language, description,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(contentPageLayout.getPrimaryKey(), EventTypes.MODIFY.name(), contentPageLayoutDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(contentPageLayout.getPrimaryKey(), EventTypes.MODIFY, contentPageLayoutDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteContentPageLayoutDescription(ContentPageLayoutDescription contentPageLayoutDescription, BasePK deletedBy) {
         contentPageLayoutDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(contentPageLayoutDescription.getContentPageLayoutPK(), EventTypes.MODIFY.name(), contentPageLayoutDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(contentPageLayoutDescription.getContentPageLayoutPK(), EventTypes.MODIFY, contentPageLayoutDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -1002,7 +1002,7 @@ public class ContentControl
         contentCollection.setLastDetail(contentCollectionDetail);
         contentCollection.store();
         
-        sendEventUsingNames(contentCollection.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(contentCollection.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return contentCollection;
     }
@@ -1142,7 +1142,7 @@ public class ContentControl
             contentCollection.setLastDetail(contentCollectionDetail);
             contentCollection.store();
 
-            sendEventUsingNames(contentCollectionPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(contentCollectionPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -1155,7 +1155,7 @@ public class ContentControl
         contentCollection.getLastDetailForUpdate().setThruTime(session.START_TIME_LONG);
         contentCollection.setActiveDetail(null);
         
-        sendEventUsingNames(contentCollection.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(contentCollection.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     // --------------------------------------------------------------------------------
@@ -1167,7 +1167,7 @@ public class ContentControl
         ContentCollectionDescription contentCollectionDescription = ContentCollectionDescriptionFactory.getInstance().create(contentCollection, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(contentCollection.getPrimaryKey(), EventTypes.MODIFY.name(), contentCollectionDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(contentCollection.getPrimaryKey(), EventTypes.MODIFY, contentCollectionDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return contentCollectionDescription;
     }
@@ -1305,14 +1305,14 @@ public class ContentControl
             
             contentCollectionDescription = ContentCollectionDescriptionFactory.getInstance().create(contentCollection, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(contentCollection.getPrimaryKey(), EventTypes.MODIFY.name(), contentCollectionDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(contentCollection.getPrimaryKey(), EventTypes.MODIFY, contentCollectionDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteContentCollectionDescription(ContentCollectionDescription contentCollectionDescription, BasePK deletedBy) {
         contentCollectionDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(contentCollectionDescription.getContentCollectionPK(), EventTypes.MODIFY.name(), contentCollectionDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(contentCollectionDescription.getContentCollectionPK(), EventTypes.MODIFY, contentCollectionDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -1358,7 +1358,7 @@ public class ContentControl
         contentSection.setLastDetail(contentSectionDetail);
         contentSection.store();
         
-        sendEventUsingNames(contentSection.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(contentSection.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return contentSection;
     }
@@ -1657,7 +1657,7 @@ public class ContentControl
             contentSection.setLastDetail(contentSectionDetail);
             contentSection.store();
 
-            sendEventUsingNames(contentSectionPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(contentSectionPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -1709,7 +1709,7 @@ public class ContentControl
             }
         }
         
-        sendEventUsingNames(contentSection.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(contentSection.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteContentSection(ContentSection contentSection, BasePK deletedBy) {
@@ -1733,7 +1733,7 @@ public class ContentControl
         ContentSectionDescription contentSectionDescription = ContentSectionDescriptionFactory.getInstance().create(contentSection, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(contentSection.getPrimaryKey(), EventTypes.MODIFY.name(), contentSectionDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(contentSection.getPrimaryKey(), EventTypes.MODIFY, contentSectionDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return contentSectionDescription;
     }
@@ -1871,14 +1871,14 @@ public class ContentControl
             
             contentSectionDescription = ContentSectionDescriptionFactory.getInstance().create(contentSection, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(contentSection.getPrimaryKey(), EventTypes.MODIFY.name(), contentSectionDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(contentSection.getPrimaryKey(), EventTypes.MODIFY, contentSectionDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteContentSectionDescription(ContentSectionDescription contentSectionDescription, BasePK deletedBy) {
         contentSectionDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(contentSectionDescription.getContentSectionPK(), EventTypes.MODIFY.name(), contentSectionDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(contentSectionDescription.getContentSectionPK(), EventTypes.MODIFY, contentSectionDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -1915,7 +1915,7 @@ public class ContentControl
         contentPage.setLastDetail(contentPageDetail);
         contentPage.store();
         
-        sendEventUsingNames(contentPage.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(contentPage.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return contentPage;
     }
@@ -2159,7 +2159,7 @@ public class ContentControl
             contentPage.setLastDetail(contentPageDetail);
             contentPage.store();
 
-            sendEventUsingNames(contentPagePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(contentPagePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -2190,7 +2190,7 @@ public class ContentControl
             }
         }
         
-        sendEventUsingNames(contentPage.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(contentPage.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteContentPagesByContentSection(ContentSection contentSection, BasePK deletedBy) {
@@ -2213,7 +2213,7 @@ public class ContentControl
         ContentPageDescription contentPageDescription = ContentPageDescriptionFactory.getInstance().create(contentPage, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(contentPage.getPrimaryKey(), EventTypes.MODIFY.name(), contentPageDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(contentPage.getPrimaryKey(), EventTypes.MODIFY, contentPageDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return contentPageDescription;
     }
@@ -2351,14 +2351,14 @@ public class ContentControl
             
             contentPageDescription = ContentPageDescriptionFactory.getInstance().create(contentPage, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(contentPage.getPrimaryKey(), EventTypes.MODIFY.name(), contentPageDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(contentPage.getPrimaryKey(), EventTypes.MODIFY, contentPageDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteContentPageDescription(ContentPageDescription contentPageDescription, BasePK deletedBy) {
         contentPageDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(contentPageDescription.getContentPagePK(), EventTypes.MODIFY.name(), contentPageDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(contentPageDescription.getContentPagePK(), EventTypes.MODIFY, contentPageDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -2383,7 +2383,7 @@ public class ContentControl
         contentPageArea.setLastDetail(contentPageAreaDetail);
         contentPageArea.store();
         
-        sendEventUsingNames(contentPage.getPrimaryKey(), EventTypes.MODIFY.name(), contentPageArea.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(contentPage.getPrimaryKey(), EventTypes.MODIFY, contentPageArea.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return contentPageArea;
     }
@@ -2563,7 +2563,7 @@ public class ContentControl
             contentPageArea.setActiveDetail(contentPageAreaDetail);
             contentPageArea.setLastDetail(contentPageAreaDetail);
             
-            sendEventUsingNames(contentPagePK, EventTypes.MODIFY.name(), contentPageAreaDetailValue.getContentPageAreaPK(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(contentPagePK, EventTypes.MODIFY, contentPageAreaDetailValue.getContentPageAreaPK(), EventTypes.MODIFY, updatedBy);
         }
         
         return contentPageAreaDetail;
@@ -2575,7 +2575,7 @@ public class ContentControl
         contentPageAreaDetail.setThruTime(session.START_TIME_LONG);
         contentPageArea.setActiveDetail(null);
         
-        sendEventUsingNames(contentPageAreaDetail.getContentPagePK(), EventTypes.MODIFY.name(), contentPageArea.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(contentPageAreaDetail.getContentPagePK(), EventTypes.MODIFY, contentPageArea.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteContentPageAreasByContentPage(ContentPage contentPage, BasePK deletedBy) {
@@ -2720,7 +2720,7 @@ public class ContentControl
         contentCatalog.setLastDetail(contentCatalogDetail);
         contentCatalog.store();
         
-        sendEventUsingNames(contentCatalog.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(contentCatalog.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return contentCatalog;
     }
@@ -2953,7 +2953,7 @@ public class ContentControl
             contentCatalog.setLastDetail(contentCatalogDetail);
             contentCatalog.store();
 
-            sendEventUsingNames(contentCatalogPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(contentCatalogPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -2988,7 +2988,7 @@ public class ContentControl
             }
         }
         
-        sendEventUsingNames(contentCatalog.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(contentCatalog.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteContentCatalogsByContentCollection(ContentCollection contentCollection, BasePK deletedBy) {
@@ -3006,7 +3006,7 @@ public class ContentControl
         ContentCatalogDescription contentCatalogDescription = ContentCatalogDescriptionFactory.getInstance().create(contentCatalog, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(contentCatalog.getPrimaryKey(), EventTypes.MODIFY.name(), contentCatalogDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(contentCatalog.getPrimaryKey(), EventTypes.MODIFY, contentCatalogDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return contentCatalogDescription;
     }
@@ -3144,14 +3144,14 @@ public class ContentControl
             
             contentCatalogDescription = ContentCatalogDescriptionFactory.getInstance().create(contentCatalog, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(contentCatalog.getPrimaryKey(), EventTypes.MODIFY.name(), contentCatalogDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(contentCatalog.getPrimaryKey(), EventTypes.MODIFY, contentCatalogDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteContentCatalogDescription(ContentCatalogDescription contentCatalogDescription, BasePK deletedBy) {
         contentCatalogDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(contentCatalogDescription.getContentCatalogPK(), EventTypes.MODIFY.name(), contentCatalogDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(contentCatalogDescription.getContentCatalogPK(), EventTypes.MODIFY, contentCatalogDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -3170,7 +3170,7 @@ public class ContentControl
         ContentCatalogItem contentCatalogItem = ContentCatalogItemFactory.getInstance().create(contentCatalog, item,
                 inventoryCondition, unitOfMeasureType, currency, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(contentCatalog.getPrimaryKey(), EventTypes.MODIFY.name(), contentCatalogItem.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(contentCatalog.getPrimaryKey(), EventTypes.MODIFY, contentCatalogItem.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return contentCatalogItem;
     }
@@ -3502,7 +3502,7 @@ public class ContentControl
         contentCatalogItem.setThruTime(session.START_TIME_LONG);
         contentCatalogItem.store();
         
-        sendEventUsingNames(contentCatalogItem.getContentCatalogPK(), EventTypes.MODIFY.name(), contentCatalogItem.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(contentCatalogItem.getContentCatalogPK(), EventTypes.MODIFY, contentCatalogItem.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteContentCatalogItems(List<ContentCatalogItem> contentCatalogItems, BasePK deletedBy) {
@@ -3536,7 +3536,7 @@ public class ContentControl
         ContentCatalogItemFixedPrice contentCatalogItemFixedPrice = ContentCatalogItemFixedPriceFactory.getInstance().create(session,
                 contentCatalogItem, unitPrice, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(contentCatalogItem.getContentCatalogPK(), EventTypes.MODIFY.name(), contentCatalogItemFixedPrice.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(contentCatalogItem.getContentCatalogPK(), EventTypes.MODIFY, contentCatalogItemFixedPrice.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return contentCatalogItemFixedPrice;
     }
@@ -3606,7 +3606,7 @@ public class ContentControl
             contentCatalogItemFixedPrice = ContentCatalogItemFixedPriceFactory.getInstance().create(contentCatalogItemPK,
                     unitPrice, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(contentCatalogItemFixedPrice.getContentCatalogItem().getContentCatalogPK(), EventTypes.MODIFY.name(), contentCatalogItemFixedPrice.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(contentCatalogItemFixedPrice.getContentCatalogItem().getContentCatalogPK(), EventTypes.MODIFY, contentCatalogItemFixedPrice.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
@@ -3614,7 +3614,7 @@ public class ContentControl
         contentCatalogItemFixedPrice.setThruTime(session.START_TIME_LONG);
         contentCatalogItemFixedPrice.store();
 
-        sendEventUsingNames(contentCatalogItemFixedPrice.getContentCatalogItem().getContentCatalogPK(), EventTypes.MODIFY.name(), contentCatalogItemFixedPrice.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(contentCatalogItemFixedPrice.getContentCatalogItem().getContentCatalogPK(), EventTypes.MODIFY, contentCatalogItemFixedPrice.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     // --------------------------------------------------------------------------------
@@ -3626,7 +3626,7 @@ public class ContentControl
         ContentCatalogItemVariablePrice contentCatalogItemVariablePrice = ContentCatalogItemVariablePriceFactory.getInstance().create(session,
                 contentCatalogItem, minimumUnitPrice, maximumUnitPrice, unitPriceIncrement, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEventUsingNames(contentCatalogItem.getContentCatalogPK(), EventTypes.MODIFY.name(), contentCatalogItemVariablePrice.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(contentCatalogItem.getContentCatalogPK(), EventTypes.MODIFY, contentCatalogItemVariablePrice.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return contentCatalogItemVariablePrice;
     }
@@ -3698,7 +3698,7 @@ public class ContentControl
             contentCatalogItemVariablePrice = ContentCatalogItemVariablePriceFactory.getInstance().create(contentCatalogItemPK, maximumUnitPrice,
                     minimumUnitPrice, unitPriceIncrement, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEventUsingNames(contentCatalogItemVariablePrice.getContentCatalogItem().getContentCatalogPK(), EventTypes.MODIFY.name(), contentCatalogItemVariablePrice.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(contentCatalogItemVariablePrice.getContentCatalogItem().getContentCatalogPK(), EventTypes.MODIFY, contentCatalogItemVariablePrice.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
@@ -3706,7 +3706,7 @@ public class ContentControl
         contentCatalogItemVariablePrice.setThruTime(session.START_TIME_LONG);
         contentCatalogItemVariablePrice.store();
 
-        sendEventUsingNames(contentCatalogItemVariablePrice.getContentCatalogItem().getContentCatalogPK(), EventTypes.MODIFY.name(), contentCatalogItemVariablePrice.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(contentCatalogItemVariablePrice.getContentCatalogItem().getContentCatalogPK(), EventTypes.MODIFY, contentCatalogItemVariablePrice.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     // --------------------------------------------------------------------------------
@@ -3744,7 +3744,7 @@ public class ContentControl
         contentCategory.setLastDetail(contentCategoryDetail);
         contentCategory.store();
         
-        sendEventUsingNames(contentCategory.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(contentCategory.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return contentCategory;
     }
@@ -4143,7 +4143,7 @@ public class ContentControl
             contentCategory.setLastDetail(contentCategoryDetail);
             contentCategory.store();
 
-            sendEventUsingNames(contentCategoryPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(contentCategoryPK, EventTypes.MODIFY, null, null, updatedBy);
 
             if(contentCategoryDetailValue.getDefaultOfferUsePKHasBeenModified()) {
                 ContentLogic.getInstance().updateContentCatalogItemPricesByContentCategory(contentCategoryDetail.getContentCategory(), updatedBy);
@@ -4196,7 +4196,7 @@ public class ContentControl
             }
         }
         
-        sendEventUsingNames(contentCategory.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(contentCategory.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteContentCategory(ContentCategory contentCategory, BasePK deletedBy) {
@@ -4220,7 +4220,7 @@ public class ContentControl
                 contentCategory, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(contentCategory.getPrimaryKey(), EventTypes.MODIFY.name(), contentCategoryDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(contentCategory.getPrimaryKey(), EventTypes.MODIFY, contentCategoryDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return contentCategoryDescription;
     }
@@ -4359,14 +4359,14 @@ public class ContentControl
             
             contentCategoryDescription = ContentCategoryDescriptionFactory.getInstance().create(contentCategory, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(contentCategory.getPrimaryKey(), EventTypes.MODIFY.name(), contentCategoryDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(contentCategory.getPrimaryKey(), EventTypes.MODIFY, contentCategoryDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteContentCategoryDescription(ContentCategoryDescription contentCategoryDescription, BasePK deletedBy) {
         contentCategoryDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(contentCategoryDescription.getContentCategoryPK(), EventTypes.MODIFY.name(), contentCategoryDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(contentCategoryDescription.getContentCategoryPK(), EventTypes.MODIFY, contentCategoryDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -4399,7 +4399,7 @@ public class ContentControl
                 contentCategory, contentCatalogItem, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(contentCategory.getPrimaryKey(), EventTypes.MODIFY.name(), contentCategoryItem.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(contentCategory.getPrimaryKey(), EventTypes.MODIFY, contentCategoryItem.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return contentCategoryItem;
     }
@@ -4652,7 +4652,7 @@ public class ContentControl
             contentCategoryItem = ContentCategoryItemFactory.getInstance().create(contentCategoryPK, contentCatalogItemPK,
                     isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(contentCategoryPK, EventTypes.MODIFY.name(), contentCategoryItem.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(contentCategoryPK, EventTypes.MODIFY, contentCategoryItem.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
@@ -4687,7 +4687,7 @@ public class ContentControl
             }
         }
 
-        sendEventUsingNames(contentCategoryItem.getContentCategoryPK(), EventTypes.MODIFY.name(), contentCategoryItem.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(contentCategoryItem.getContentCategoryPK(), EventTypes.MODIFY, contentCategoryItem.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     public void deleteContentCategoryItem(ContentCategoryItem contentCategoryItem,BasePK deletedBy) {
@@ -4733,7 +4733,7 @@ public class ContentControl
         contentForum.setLastDetail(contentForumDetail);
         contentForum.store();
         
-        sendEventUsingNames(contentForum.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(contentForum.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return contentForum;
     }
@@ -4922,7 +4922,7 @@ public class ContentControl
             contentForum.setLastDetail(contentForumDetail);
             contentForum.store();
 
-            sendEventUsingNames(contentForumPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(contentForumPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -4954,7 +4954,7 @@ public class ContentControl
             }
         }
         
-        sendEventUsingNames(contentForum.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(contentForum.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteContentForumsByContentCollection(ContentCollection contentCollection, BasePK deletedBy) {
@@ -4978,7 +4978,7 @@ public class ContentControl
         contentWebAddress.setLastDetail(contentWebAddressDetail);
         contentWebAddress.store();
         
-        sendEventUsingNames(contentWebAddress.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(contentWebAddress.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return contentWebAddress;
     }
@@ -5175,7 +5175,7 @@ public class ContentControl
             contentWebAddress.setActiveDetail(contentWebAddressDetail);
             contentWebAddress.setLastDetail(contentWebAddressDetail);
             
-            sendEventUsingNames(contentWebAddressPK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(contentWebAddressPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -5185,7 +5185,7 @@ public class ContentControl
         contentWebAddress.getLastDetailForUpdate().setThruTime(session.START_TIME_LONG);
         contentWebAddress.setActiveDetail(null);
         
-        sendEventUsingNames(contentWebAddress.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(contentWebAddress.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteContentWebAddressesByContentCollection(ContentCollection contentCollection, BasePK deletedBy) {
@@ -5203,7 +5203,7 @@ public class ContentControl
         ContentWebAddressDescription contentWebAddressDescription = ContentWebAddressDescriptionFactory.getInstance().create(contentWebAddress, language, description, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(contentWebAddress.getPrimaryKey(), EventTypes.MODIFY.name(), contentWebAddressDescription.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(contentWebAddress.getPrimaryKey(), EventTypes.MODIFY, contentWebAddressDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return contentWebAddressDescription;
     }
@@ -5341,14 +5341,14 @@ public class ContentControl
             
             contentWebAddressDescription = ContentWebAddressDescriptionFactory.getInstance().create(contentWebAddress, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEventUsingNames(contentWebAddress.getPrimaryKey(), EventTypes.MODIFY.name(), contentWebAddressDescription.getPrimaryKey(), EventTypes.MODIFY.name(), updatedBy);
+            sendEvent(contentWebAddress.getPrimaryKey(), EventTypes.MODIFY, contentWebAddressDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
     public void deleteContentWebAddressDescription(ContentWebAddressDescription contentWebAddressDescription, BasePK deletedBy) {
         contentWebAddressDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(contentWebAddressDescription.getContentWebAddressPK(), EventTypes.MODIFY.name(), contentWebAddressDescription.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(contentWebAddressDescription.getContentWebAddressPK(), EventTypes.MODIFY, contentWebAddressDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
         
     }
     
@@ -5367,7 +5367,7 @@ public class ContentControl
         ContentWebAddressServer contentWebAddressServer = ContentWebAddressServerFactory.getInstance().create(contentWebAddress, server,  session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
-        sendEventUsingNames(contentWebAddress.getPrimaryKey(), EventTypes.MODIFY.name(), contentWebAddressServer.getPrimaryKey(), EventTypes.CREATE.name(), createdBy);
+        sendEvent(contentWebAddress.getPrimaryKey(), EventTypes.MODIFY, contentWebAddressServer.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
         return contentWebAddressServer;
     }
@@ -5458,7 +5458,7 @@ public class ContentControl
     public void deleteContentWebAddressServer(ContentWebAddressServer contentWebAddressServer, BasePK deletedBy) {
         contentWebAddressServer.setThruTime(session.START_TIME_LONG);
         
-        sendEventUsingNames(contentWebAddressServer.getContentWebAddressPK(), EventTypes.MODIFY.name(), contentWebAddressServer.getPrimaryKey(), EventTypes.DELETE.name(), deletedBy);
+        sendEvent(contentWebAddressServer.getContentWebAddressPK(), EventTypes.MODIFY, contentWebAddressServer.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
     public void deleteContentWebAddressServersByContentWebAddress(ContentWebAddress contentWebAddress, BasePK deletedBy) {

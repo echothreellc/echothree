@@ -85,7 +85,7 @@ public class GetOfferItemCommand
                 offerItem = offerItemControl.getOfferItem(offer, item);
                 
                 if(offerItem != null) {
-                    sendEventUsingNames(offerItem.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                    sendEvent(offerItem.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownOfferItem.name(), offer.getLastDetail().getOfferName(),
                             item.getLastDetail().getItemName());

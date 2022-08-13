@@ -59,7 +59,7 @@ public class GetTransactionGroupCommand
         if(transactionGroup != null) {
             result.setTransactionGroup(accountingControl.getTransactionGroupTransfer(getUserVisit(), transactionGroup));
             
-            sendEventUsingNames(transactionGroup.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(transactionGroup.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownTransactionGroupName.name(), transactionGroupName);
         }

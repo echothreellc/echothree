@@ -75,7 +75,7 @@ public class GetItemUseTypeCommand
             }
 
             if(itemUseType != null) {
-                sendEventUsingNames(itemUseType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEvent(itemUseType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());

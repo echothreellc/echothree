@@ -73,7 +73,7 @@ public class GetSalesOrderBatchCommand
 
             result.setSalesOrderBatch(salesOrderBatchControl.getSalesOrderBatchTransfer(getUserVisit(), batch));
 
-            sendEventUsingNames(batch.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(batch.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
         
         return result;

@@ -73,7 +73,7 @@ public class GetContactListGroupCommand
         if(contactListGroup != null) {
             result.setContactListGroup(contactListControl.getContactListGroupTransfer(getUserVisit(), contactListGroup));
             
-            sendEventUsingNames(contactListGroup.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(contactListGroup.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownContactListGroupName.name(), contactListGroupName);
         }

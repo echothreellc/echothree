@@ -69,7 +69,7 @@ public class GetFilterKindCommand
         var filterKind = FilterKindLogic.getInstance().getFilterKindByUniversalSpec(this, form, true);
 
         if(filterKind != null) {
-            sendEventUsingNames(filterKind.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(filterKind.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return filterKind;

@@ -1,24 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <initialData>
     <eventTypes>
-        <eventType eventTypeName="CREATE" updateCreatedTime="true" updateModifiedTime="false" updateDeletedTime="false"
-            updateVisitedTime="false" queueToSubscribers="true" keepHistory="true">
+        <eventType eventTypeName="CREATE">
             <eventTypeDescription languageIsoName="en" description="Create" />
         </eventType>
-        <eventType eventTypeName="READ" updateCreatedTime="false" updateModifiedTime="false" updateDeletedTime="false"
-            updateVisitedTime="true" queueToSubscribers="true" keepHistory="true">
+        <eventType eventTypeName="READ">
             <eventTypeDescription languageIsoName="en" description="Read" />
         </eventType>
-        <eventType eventTypeName="MODIFY" updateCreatedTime="false" updateModifiedTime="true" updateDeletedTime="false"
-            updateVisitedTime="false" queueToSubscribers="true" keepHistory="true">
+        <eventType eventTypeName="MODIFY">
             <eventTypeDescription languageIsoName="en" description="Modify" />
         </eventType>
-        <eventType eventTypeName="TOUCH" updateCreatedTime="false" updateModifiedTime="true" updateDeletedTime="false"
-            updateVisitedTime="false" queueToSubscribers="false" keepHistory="true" maximumHistory="5">
+        <eventType eventTypeName="TOUCH">
             <eventTypeDescription languageIsoName="en" description="Touch" />
         </eventType>
-        <eventType eventTypeName="DELETE" updateCreatedTime="false" updateModifiedTime="false" updateDeletedTime="true"
-            updateVisitedTime="false" queueToSubscribers="true" keepHistory="true">
+        <eventType eventTypeName="DELETE">
             <eventTypeDescription languageIsoName="en" description="Delete" />
         </eventType>
     </eventTypes>

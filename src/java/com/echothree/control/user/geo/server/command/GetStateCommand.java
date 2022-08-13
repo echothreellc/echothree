@@ -131,7 +131,7 @@ public class GetStateCommand
                 if(geoCodeAlias != null) {
                     geoCode = geoCodeAlias.getGeoCode();
 
-                    sendEventUsingNames(geoCode.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                    sendEvent(geoCode.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                 }
             } else {
                 addExecutionError(ExecutionErrors.UnknownGeoCodeScopeName.name(), geoCodeScopeName);

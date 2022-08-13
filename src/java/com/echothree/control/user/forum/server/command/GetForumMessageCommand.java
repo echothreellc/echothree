@@ -90,7 +90,7 @@ public class GetForumMessageCommand
                         || (getParty() == null ? false : getPartyTypeName().equals(PartyTypes.EMPLOYEE.name()))) {
                     if(form.getKey() != null || ForumLogic.getInstance().isForumRoleTypePermitted(this, forumMessage, getParty(), ForumConstants.ForumRoleType_READER)) {
                         result.setForumMessage(forumControl.getForumMessageTransfer(getUserVisit(), forumMessage));
-                        sendEventUsingNames(forumMessage.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                        sendEvent(forumMessage.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                     } else {
                         addExecutionError(ExecutionErrors.MissingRequiredForumRoleType.name(), ForumConstants.ForumRoleType_READER);
                     }

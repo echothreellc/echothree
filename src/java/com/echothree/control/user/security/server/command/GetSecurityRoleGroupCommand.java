@@ -69,7 +69,7 @@ public class GetSecurityRoleGroupCommand
         var securityRoleGroup = SecurityRoleGroupLogic.getInstance().getSecurityRoleGroupByUniversalSpec(this, form, true);
 
         if(securityRoleGroup != null) {
-            sendEventUsingNames(securityRoleGroup.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(securityRoleGroup.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return securityRoleGroup;

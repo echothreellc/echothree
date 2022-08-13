@@ -70,7 +70,7 @@ public class GetOfferUseCommand
         var offerUse = OfferUseLogic.getInstance().getOfferUseByName(this, offerName, useName);;
         
         if(!hasExecutionErrors()) {
-            sendEventUsingNames(offerUse.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(offerUse.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
         
         return offerUse;

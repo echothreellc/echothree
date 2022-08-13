@@ -73,7 +73,7 @@ public class GetJobCommand
         if(job != null) {
             result.setJob(jobControl.getJobTransfer(getUserVisit(), job));
             
-            sendEventUsingNames(job.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(job.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownJobName.name(), jobName);
         }

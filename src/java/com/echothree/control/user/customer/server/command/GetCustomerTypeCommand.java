@@ -80,7 +80,7 @@ public class GetCustomerTypeCommand
             result.setCustomerType(customerControl.getCustomerTypeTransfer(userVisit, customerType));
             result.setOfferCustomerTypes(offerControl.getOfferCustomerTypeTransfersByCustomerType(userVisit, customerType));
             
-            sendEventUsingNames(customerType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(customerType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownCustomerTypeName.name(), customerTypeName);
         }

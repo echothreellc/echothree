@@ -20,13 +20,16 @@ import com.echothree.model.control.core.common.transfer.EventTypeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.EventType;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class EventTypeTransferCache
         extends BaseCoreTransferCache<EventType, EventTypeTransfer> {
-    
+
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
     /** Creates a new instance of EventTypeTransferCache */
-    public EventTypeTransferCache(UserVisit userVisit, CoreControl coreControl) {
-        super(userVisit, coreControl);
+    public EventTypeTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
     
     public EventTypeTransfer getEventTypeTransfer(EventType eventType) {

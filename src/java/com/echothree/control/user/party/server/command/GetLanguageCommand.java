@@ -88,7 +88,7 @@ public class GetLanguageCommand
         }
         
         if(language != null) {
-            sendEventUsingNames(language.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(language.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return language;

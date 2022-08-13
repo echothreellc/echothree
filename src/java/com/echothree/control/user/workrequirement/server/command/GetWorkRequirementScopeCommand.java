@@ -76,7 +76,7 @@ public class GetWorkRequirementScopeCommand
                     
                     result.setWorkRequirementScope(workRequirementControl.getWorkRequirementScopeTransfer(getUserVisit(), workRequirementScope));
                     
-                    sendEventUsingNames(workRequirementType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                    sendEvent(workRequirementType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownWorkRequirementTypeName.name(), workRequirementTypeName);
                 }

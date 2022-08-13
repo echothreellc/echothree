@@ -62,7 +62,7 @@ public class GetEntityAttributeTypeCommand
         GetEntityAttributeTypeResult result = CoreResultFactory.getGetEntityAttributeTypeResult();
 
         if(entityAttributeType != null) {
-            sendEventUsingNames(entityAttributeType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(entityAttributeType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
 
             result.setEntityAttributeType(coreControl.getEntityAttributeTypeTransfer(getUserVisit(), entityAttributeType));
         }

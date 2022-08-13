@@ -27,14 +27,13 @@ import com.echothree.util.server.persistence.Session;
 
 public class CommandMessageTranslationTransferCache
         extends BaseCoreTransferCache<CommandMessageTranslation, CommandMessageTranslationTransfer> {
-    
-    PartyControl partyControl;
+
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+    PartyControl partyControl = Session.getModelController(PartyControl.class);
     
     /** Creates a new instance of CommandMessageTranslationTransferCache */
-    public CommandMessageTranslationTransferCache(UserVisit userVisit, CoreControl coreControl) {
-        super(userVisit, coreControl);
-        
-        partyControl = Session.getModelController(PartyControl.class);
+    public CommandMessageTranslationTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
     
     public CommandMessageTranslationTransfer getCommandMessageTranslationTransfer(CommandMessageTranslation commandMessageTranslation) {

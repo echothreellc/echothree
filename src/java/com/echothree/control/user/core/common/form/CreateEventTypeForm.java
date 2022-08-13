@@ -23,26 +23,5 @@ public interface CreateEventTypeForm
     
     String getEventTypeName();
     void setEventTypeName(String eventTypeName);
-    
-    String getUpdateCreatedTime();
-    void setUpdateCreatedTime(String updateCreatedTime);
-    
-    String getUpdateModifiedTime();
-    void setUpdateModifiedTime(String updateModifiedTime);
-    
-    String getUpdateDeletedTime();
-    void setUpdateDeletedTime(String updateDeletedTime);
-    
-    String getUpdateVisitedTime();
-    void setUpdateVisitedTime(String updateVisitedTime);
-    
-    String getQueueToSubscribers();
-    void setQueueToSubscribers(String queueToSubscribers);
-    
-    String getKeepHistory();
-    void setKeepHistory(String keepHistory);
-    
-    String getMaximumHistory();
-    void setMaximumHistory(String maximumHistory);
-    
+
 }

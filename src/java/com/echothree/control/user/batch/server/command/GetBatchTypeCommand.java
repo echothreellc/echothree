@@ -73,7 +73,7 @@ public class GetBatchTypeCommand
         if(batchType != null) {
             result.setBatchType(batchControl.getBatchTypeTransfer(getUserVisit(), batchType));
             
-            sendEventUsingNames(batchType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(batchType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownBatchTypeName.name(), batchTypeName);
         }

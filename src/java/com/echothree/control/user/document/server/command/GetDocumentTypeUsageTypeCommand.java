@@ -73,7 +73,7 @@ public class GetDocumentTypeUsageTypeCommand
         if(documentTypeUsageType != null) {
             result.setDocumentTypeUsageType(documentControl.getDocumentTypeUsageTypeTransfer(getUserVisit(), documentTypeUsageType));
             
-            sendEventUsingNames(documentTypeUsageType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(documentTypeUsageType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownDocumentTypeUsageTypeName.name(), documentTypeUsageTypeName);
         }

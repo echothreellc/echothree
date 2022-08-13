@@ -104,7 +104,7 @@ public class GetCarrierCommand
             if(!hasExecutionErrors()) {
                 result.setCarrier(carrierControl.getCarrierTransfer(getUserVisit(), carrier));
                 
-                sendEventUsingNames(carrier.getPartyPK(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEvent(carrier.getPartyPK(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());

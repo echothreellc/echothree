@@ -25,10 +25,13 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.EntityDescriptionUtils;
 import com.echothree.util.server.persistence.EntityNamesUtils;
+import com.echothree.util.server.persistence.Session;
 
 public class EntityInstanceTransferCache
         extends BaseCoreTransferCache<EntityInstance, EntityInstanceTransfer> {
-    
+
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
     boolean includeEntityAppearance;
     boolean includeNames;
     boolean includeKeyIfAvailable;
@@ -43,8 +46,8 @@ public class EntityInstanceTransferCache
     boolean filterDescription;
     
     /** Creates a new instance of EntityInstanceTransferCache */
-    public EntityInstanceTransferCache(UserVisit userVisit, CoreControl coreControl) {
-        super(userVisit, coreControl);
+    public EntityInstanceTransferCache(UserVisit userVisit) {
+        super(userVisit);
         
         var options = session.getOptions();
         if(options != null) {

@@ -53,7 +53,7 @@ public class GetPreferredTimeZoneCommand
         TimeZone timeZone = getPreferredTimeZone();
 
         result.setPreferredTimeZone(partyControl.getTimeZoneTransfer(getUserVisit(), timeZone));
-        sendEventUsingNames(timeZone.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+        sendEvent(timeZone.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
 
         return result;
     }

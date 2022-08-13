@@ -71,7 +71,7 @@ public class GetSequenceTypeCommand
         SequenceType sequenceType = SequenceTypeLogic.getInstance().getSequenceTypeByUniversalSpec(this, form, true);
 
         if(sequenceType != null) {
-            sendEventUsingNames(sequenceType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(sequenceType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return sequenceType;

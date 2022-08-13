@@ -69,7 +69,7 @@ public class GetInventoryLocationGroupCommand
             if(inventoryLocationGroup != null) {
                 result.setInventoryLocationGroup(inventoryControl.getInventoryLocationGroupTransfer(getUserVisit(), inventoryLocationGroup));
                 
-                sendEventUsingNames(inventoryLocationGroup.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEvent(inventoryLocationGroup.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownInventoryLocationGroupName.name(), inventoryLocationGroupName);
             }

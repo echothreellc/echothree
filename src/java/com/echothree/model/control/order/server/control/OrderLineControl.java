@@ -77,7 +77,7 @@ public class OrderLineControl
         orderLine.setLastDetail(orderLineDetail);
         orderLine.store();
         
-        sendEventUsingNames(orderLine.getPrimaryKey(), EventTypes.CREATE.name(), null, null, createdBy);
+        sendEvent(orderLine.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         createOrderLineStatus(orderLine);
 
@@ -293,7 +293,7 @@ public class OrderLineControl
             orderLine.setActiveDetail(orderLineDetail);
             orderLine.setLastDetail(orderLineDetail);
             
-            sendEventUsingNames(orderLinePK, EventTypes.MODIFY.name(), null, null, updatedBy);
+            sendEvent(orderLinePK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
@@ -308,7 +308,7 @@ public class OrderLineControl
         orderLine.setActiveDetail(null);
         orderLine.store();
         
-        sendEventUsingNames(orderLine.getPrimaryKey(), EventTypes.DELETE.name(), null, null, deletedBy);
+        sendEvent(orderLine.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteOrderLinesByOrder(List<OrderLine> orderLines, BasePK deletedBy) {

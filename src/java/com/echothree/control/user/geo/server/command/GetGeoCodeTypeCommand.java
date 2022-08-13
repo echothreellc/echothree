@@ -73,7 +73,7 @@ public class GetGeoCodeTypeCommand
         if(geoCodeType != null) {
             result.setGeoCodeType(geoControl.getGeoCodeTypeTransfer(getUserVisit(), geoCodeType));
             
-            sendEventUsingNames(geoCodeType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(geoCodeType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownGeoCodeTypeName.name(), geoCodeTypeName);
         }

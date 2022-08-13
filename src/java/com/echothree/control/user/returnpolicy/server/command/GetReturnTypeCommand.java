@@ -79,7 +79,7 @@ public class GetReturnTypeCommand
             if(returnType != null) {
                 result.setReturnType(returnPolicyControl.getReturnTypeTransfer(getUserVisit(), returnType));
                 
-                sendEventUsingNames(returnType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEvent(returnType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             } else {
                 addExecutionError(ExecutionErrors.UnknownReturnTypeName.name(), returnKindName, returnTypeName);
             }

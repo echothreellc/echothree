@@ -59,7 +59,7 @@ public class GetFreeOnBoardCommand
         FreeOnBoard freeOnBoard = FreeOnBoardLogic.getInstance().getFreeOnBoardByUniversalSpec(this, form, true);
 
         if(freeOnBoard != null) {
-            sendEventUsingNames(freeOnBoard.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(freeOnBoard.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
         return freeOnBoard;

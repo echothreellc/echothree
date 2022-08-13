@@ -73,7 +73,7 @@ public class GetContactListTypeCommand
         if(contactListType != null) {
             result.setContactListType(contactListControl.getContactListTypeTransfer(getUserVisit(), contactListType));
             
-            sendEventUsingNames(contactListType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(contactListType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownContactListTypeName.name(), contactListTypeName);
         }

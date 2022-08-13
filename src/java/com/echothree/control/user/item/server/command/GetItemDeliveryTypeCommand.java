@@ -75,7 +75,7 @@ public class GetItemDeliveryTypeCommand
             }
 
             if(itemDeliveryType != null) {
-                sendEventUsingNames(itemDeliveryType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                sendEvent(itemDeliveryType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());

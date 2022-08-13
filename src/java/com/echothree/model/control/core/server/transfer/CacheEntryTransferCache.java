@@ -30,11 +30,14 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.persistence.type.ByteArray;
 import com.echothree.util.common.transfer.ListWrapper;
+import com.echothree.util.server.persistence.Session;
 import java.util.Set;
 
 public class CacheEntryTransferCache
         extends BaseCoreTransferCache<CacheEntry, CacheEntryTransfer> {
-    
+
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
     boolean includeBlob;
     boolean includeClob;
     boolean includeCacheEntryDependencies;
@@ -48,8 +51,8 @@ public class CacheEntryTransferCache
     boolean filterUnformattedValidUntilTime;
 
     /** Creates a new instance of CacheEntryTransferCache */
-    public CacheEntryTransferCache(UserVisit userVisit, CoreControl coreControl) {
-        super(userVisit, coreControl);
+    public CacheEntryTransferCache(UserVisit userVisit) {
+        super(userVisit);
 
         var options = session.getOptions();
         if(options != null) {

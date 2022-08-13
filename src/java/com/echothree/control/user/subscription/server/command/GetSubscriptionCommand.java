@@ -59,7 +59,7 @@ public class GetSubscriptionCommand
         if(subscription != null) {
             result.setSubscription(subscriptionControl.getSubscriptionTransfer(getUserVisit(), subscription));
             
-            sendEventUsingNames(subscription.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(subscription.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownSubscriptionName.name(), subscriptionName);
         }

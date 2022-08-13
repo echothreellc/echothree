@@ -69,7 +69,7 @@ public class GetContentForumCommand
                 contentForum = contentControl.getContentForum(contentCollection, forum);
                 
                 if(contentForum != null) {
-                    sendEventUsingNames(contentForum.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                    sendEvent(contentForum.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownContentForum.name());
                 }

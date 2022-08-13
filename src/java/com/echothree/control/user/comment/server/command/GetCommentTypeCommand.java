@@ -78,7 +78,7 @@ public class GetCommentTypeCommand
                 if(commentType != null) {
                     result.setCommentType(commentControl.getCommentTypeTransfer(userVisit, commentType));
                     
-                    sendEventUsingNames(commentType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+                    sendEvent(commentType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.UnknownCommentTypeName.name(), commentTypeName);
                 }

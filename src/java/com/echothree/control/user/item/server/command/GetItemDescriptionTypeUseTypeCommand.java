@@ -73,7 +73,7 @@ public class GetItemDescriptionTypeUseTypeCommand
         if(itemDescriptionTypeUseType != null) {
             result.setItemDescriptionTypeUseType(itemControl.getItemDescriptionTypeUseTypeTransfer(getUserVisit(), itemDescriptionTypeUseType));
             
-            sendEventUsingNames(itemDescriptionTypeUseType.getPrimaryKey(), EventTypes.READ.name(), null, null, getPartyPK());
+            sendEvent(itemDescriptionTypeUseType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownItemDescriptionTypeUseTypeName.name(), itemDescriptionTypeUseTypeName);
         }

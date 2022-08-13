@@ -22,13 +22,16 @@ import com.echothree.model.control.core.common.transfer.TextDecorationTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.AppearanceTextDecoration;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.server.persistence.Session;
 
 public class AppearanceTextDecorationTransferCache
         extends BaseCoreTransferCache<AppearanceTextDecoration, AppearanceTextDecorationTransfer> {
 
+    CoreControl coreControl = Session.getModelController(CoreControl.class);
+
     /** Creates a new instance of AppearanceTextDecorationTransferCache */
-    public AppearanceTextDecorationTransferCache(UserVisit userVisit, CoreControl coreControl) {
-        super(userVisit, coreControl);
+    public AppearanceTextDecorationTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
 
     public AppearanceTextDecorationTransfer getAppearanceTextDecorationTransfer(AppearanceTextDecoration appearanceTextDecoration) {
