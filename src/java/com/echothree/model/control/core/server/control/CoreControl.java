@@ -13034,10 +13034,11 @@ public class CoreControl
     private EntityTime createOrGetEntityTime(final EntityInstance entityInstance, final Long eventTime) {
         var entityTime = getEntityTimeForUpdate(entityInstance);
 
+        // This is why we don't call setCreatedTime(...) on CREATE events - it's already taken care of here.
         if(entityTime == null) {
             // Initially created read-only, convert to read/write. If we're in sendEvent(...),
             // we need an EntityTime. If there wasn't one previously, we do the best we can,
-            // using the eventTIme as its createdTime.
+            // using the eventTime as its createdTime.
             createEntityTime(entityInstance, eventTime, null, null);
             entityTime = getEntityTimeForUpdate(entityInstance);
         }
@@ -13084,7 +13085,6 @@ public class CoreControl
 
         switch(eventTypeEnum) {
             case CREATE -> {
-                entityTime.setCreatedTime(eventTime);
                 shouldQueueEntityInstanceToIndexing = true;
                 shouldQueueEventToSubscribers = true;
             }
