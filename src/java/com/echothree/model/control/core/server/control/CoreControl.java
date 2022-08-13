@@ -13113,14 +13113,6 @@ public class CoreControl
             }
         }
         
-        if(shouldClearCache) {
-            removeCacheEntriesByEntityInstance(entityInstance);
-        }
-
-        if(shouldQueueEntityInstanceToIndexing) {
-            queueEntityInstanceToIndexing(entityInstance);
-        }
-
         var shouldSuppressEvent = false;
         if(shouldUpdateVisitedTime && createdByEntityInstance != null) {
             var entityVisit = getEntityVisitForUpdate(createdByEntityInstance, entityInstance);
@@ -13159,6 +13151,14 @@ public class CoreControl
             }
 
             SentEventEventBus.eventBus.post(new SentEvent(event));
+        }
+        
+        if(shouldClearCache) {
+            removeCacheEntriesByEntityInstance(entityInstance);
+        }
+
+        if(shouldQueueEntityInstanceToIndexing) {
+            queueEntityInstanceToIndexing(entityInstance);
         }
 
         return event;
