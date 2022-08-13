@@ -2817,23 +2817,23 @@ public class CoreControl
      * entities scattered through several components that depend on them.
      */
     public void deleteEntityInstanceDependencies(EntityInstance entityInstance, BasePK deletedBy) {
-        ChainControl chainControl = ((ChainControl)Session.getModelController(ChainControl.class));
-        SearchControl searchControl = ((SearchControl)Session.getModelController(SearchControl.class));
+        ChainControl chainControl = Session.getModelController(ChainControl.class);
+        SearchControl searchControl = Session.getModelController(SearchControl.class);
         var securityControl = Session.getModelController(SecurityControl.class);
 
-        ((AccountingControl)Session.getModelController(AccountingControl.class)).deleteTransactionEntityRolesByEntityInstance(entityInstance, deletedBy);
-        ((AssociateControl)Session.getModelController(AssociateControl.class)).deleteAssociateReferralsByTargetEntityInstance(entityInstance, deletedBy);
-        ((BatchControl)Session.getModelController(BatchControl.class)).deleteBatchEntitiesByEntityInstance(entityInstance, deletedBy);
-        ((CommentControl)Session.getModelController(CommentControl.class)).deleteCommentsByEntityInstance(entityInstance, deletedBy);
-        ((MessageControl)Session.getModelController(MessageControl.class)).deleteEntityMessagesByEntityInstance(entityInstance, deletedBy);
-        ((RatingControl)Session.getModelController(RatingControl.class)).deleteRatingsByEntityInstance(entityInstance, deletedBy);
+        Session.getModelController(AccountingControl.class).deleteTransactionEntityRolesByEntityInstance(entityInstance, deletedBy);
+        Session.getModelController(AssociateControl.class).deleteAssociateReferralsByTargetEntityInstance(entityInstance, deletedBy);
+        Session.getModelController(BatchControl.class).deleteBatchEntitiesByEntityInstance(entityInstance, deletedBy);
+        Session.getModelController(CommentControl.class).deleteCommentsByEntityInstance(entityInstance, deletedBy);
+        Session.getModelController(MessageControl.class).deleteEntityMessagesByEntityInstance(entityInstance, deletedBy);
+        Session.getModelController(RatingControl.class).deleteRatingsByEntityInstance(entityInstance, deletedBy);
         searchControl.removeSearchResultsByEntityInstance(entityInstance);
         searchControl.removeCachedExecutedSearchResultsByEntityInstance(entityInstance);
         searchControl.deleteSearchResultActionsByEntityInstance(entityInstance, deletedBy);
         securityControl.deletePartyEntitySecurityRolesByEntityInstance(entityInstance, deletedBy);
-        ((TagControl)Session.getModelController(TagControl.class)).deleteEntityTagsByEntityInstance(entityInstance, deletedBy);
+        Session.getModelController(TagControl.class).deleteEntityTagsByEntityInstance(entityInstance, deletedBy);
         getWorkflowControl().deleteWorkflowEntityStatusesByEntityInstance(entityInstance, deletedBy);
-        ((WorkEffortControl)Session.getModelController(WorkEffortControl.class)).deleteWorkEffortsByOwningEntityInstance(entityInstance, deletedBy);
+        Session.getModelController(WorkEffortControl.class).deleteWorkEffortsByOwningEntityInstance(entityInstance, deletedBy);
 
         // If an EntityInstance is in a role for a ChainInstance, then that ChainInstance should be deleted. Because an individual
         // EntityInstance may be in more than one role, the list of ChainInstances needs to be deduplicated.
