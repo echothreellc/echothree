@@ -3069,6 +3069,10 @@ public class ItemControl
         return getItemAliasTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
+    public ItemAliasType getItemAliasTypeByPK(ItemAliasTypePK pk) {
+        return ItemAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+    }
+
     public long countItemAliasTypes() {
         return session.queryForLong(
                 "SELECT COUNT(*) " +
