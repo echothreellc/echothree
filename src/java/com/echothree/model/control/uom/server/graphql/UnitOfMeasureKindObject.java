@@ -16,8 +16,6 @@
 
 package com.echothree.model.control.uom.server.graphql;
 
-import com.echothree.control.user.uom.server.command.GetUnitOfMeasureKindUsesCommand;
-import com.echothree.control.user.uom.server.command.GetUnitOfMeasureTypeCommand;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.user.server.control.UserControl;
@@ -25,7 +23,6 @@ import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindDetail;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUse;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -56,34 +53,6 @@ public class UnitOfMeasureKindObject
         }
         
         return unitOfMeasureKindDetail;
-    }
-    
-    private Boolean hasUnitOfMeasureTypeAccess;
-    
-    private boolean getHasUnitOfMeasureTypeAccess(final DataFetchingEnvironment env) {
-        if(hasUnitOfMeasureTypeAccess == null) {
-            var baseSingleEntityCommand = new GetUnitOfMeasureTypeCommand(getUserVisitPK(env), null);
-            
-            baseSingleEntityCommand.security();
-            
-            hasUnitOfMeasureTypeAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-        
-        return hasUnitOfMeasureTypeAccess;
-    }
-    
-    private Boolean hasUnitOfMeasureKindUsesAccess;
-    
-    private boolean getHasUnitOfMeasureKindUsesAccess(final DataFetchingEnvironment env) {
-        if(hasUnitOfMeasureKindUsesAccess == null) {
-            BaseMultipleEntitiesCommand baseMultipleEntitiesCommand = new GetUnitOfMeasureKindUsesCommand(getUserVisitPK(env), null);
-            
-            baseMultipleEntitiesCommand.security();
-            
-            hasUnitOfMeasureKindUsesAccess = !baseMultipleEntitiesCommand.hasSecurityMessages();
-        }
-        
-        return hasUnitOfMeasureKindUsesAccess;
     }
     
     @GraphQLField
@@ -127,7 +96,7 @@ public class UnitOfMeasureKindObject
     @GraphQLField
     @GraphQLDescription("unit of measure types")
     public List<UnitOfMeasureTypeObject> getUnitOfMeasureTypes(final DataFetchingEnvironment env) {
-        if(getHasUnitOfMeasureTypeAccess(env)) {
+        if(UomSecurityUtils.getInstance().getHasUnitOfMeasureTypeAccess(env)) {
             var uomControl = Session.getModelController(UomControl.class);
             List<UnitOfMeasureType> entities = uomControl.getUnitOfMeasureTypesByUnitOfMeasureKind(unitOfMeasureKind);
             List<UnitOfMeasureTypeObject> unitOfMeasureTypes = new ArrayList<>(entities.size());
@@ -145,7 +114,7 @@ public class UnitOfMeasureKindObject
     @GraphQLField
     @GraphQLDescription("unit of measure type count")
     public Long getUnitOfMeasureTypeCount(final DataFetchingEnvironment env) {
-        if(getHasUnitOfMeasureTypeAccess(env)) {
+        if(UomSecurityUtils.getInstance().getHasUnitOfMeasureTypeAccess(env)) {
             var uomControl = Session.getModelController(UomControl.class);
 
             return uomControl.countUnitOfMeasureTypesByUnitOfMeasureKind(unitOfMeasureKind);
@@ -157,7 +126,7 @@ public class UnitOfMeasureKindObject
     @GraphQLField
     @GraphQLDescription("unit of measure kind uses")
     public List<UnitOfMeasureKindUseObject> getUnitOfMeasureKindUses(final DataFetchingEnvironment env) {
-        if(getHasUnitOfMeasureKindUsesAccess(env)) {
+        if(UomSecurityUtils.getInstance().getHasUnitOfMeasureKindUsesAccess(env)) {
             var uomControl = Session.getModelController(UomControl.class);
             List<UnitOfMeasureKindUse> entities = uomControl.getUnitOfMeasureKindUsesByUnitOfMeasureKind(unitOfMeasureKind);
             List<UnitOfMeasureKindUseObject> unitOfMeasureKindUses = new ArrayList<>(entities.size());
@@ -175,7 +144,7 @@ public class UnitOfMeasureKindObject
     @GraphQLField
     @GraphQLDescription("unit of measure kind use count")
     public Long getUnitOfMeasureKindUseCount(final DataFetchingEnvironment env) {
-        if(getHasUnitOfMeasureKindUsesAccess(env)) {
+        if(UomSecurityUtils.getInstance().getHasUnitOfMeasureKindUsesAccess(env)) {
             var uomControl = Session.getModelController(UomControl.class);
 
             return uomControl.countUnitOfMeasureKindUsesByUnitOfMeasureKind(unitOfMeasureKind);
