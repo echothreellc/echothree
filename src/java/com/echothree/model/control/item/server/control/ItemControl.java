@@ -3234,27 +3234,27 @@ public class ItemControl
         return new ItemAliasTypeChoicesBean(labels, values, defaultValue);
     }
     
-    private void updateItemAliasTypeFromValue(ItemAliasTypeDetailValue itemAliasTypeDetailValue, boolean checkDefault,
-            BasePK updatedBy) {
+    private void updateItemAliasTypeFromValue(final ItemAliasTypeDetailValue itemAliasTypeDetailValue, final boolean checkDefault,
+            final BasePK updatedBy) {
         if(itemAliasTypeDetailValue.hasBeenModified()) {
-            ItemAliasType itemAliasType = ItemAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            final var itemAliasType = ItemAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      itemAliasTypeDetailValue.getItemAliasTypePK());
-            ItemAliasTypeDetail itemAliasTypeDetail = itemAliasType.getActiveDetailForUpdate();
+            var itemAliasTypeDetail = itemAliasType.getActiveDetailForUpdate();
             
             itemAliasTypeDetail.setThruTime(session.START_TIME_LONG);
             itemAliasTypeDetail.store();
-            
-            ItemAliasTypePK itemAliasTypePK = itemAliasTypeDetail.getItemAliasTypePK();
-            String itemAliasTypeName = itemAliasTypeDetailValue.getItemAliasTypeName();
-            String validationPattern = itemAliasTypeDetailValue.getValidationPattern();
-            ItemAliasChecksumTypePK itemAliasChecksumTypePK = itemAliasTypeDetailValue.getItemAliasChecksumTypePK();
-            Boolean allowMultiple = itemAliasTypeDetailValue.getAllowMultiple();
-            Boolean isDefault = itemAliasTypeDetailValue.getIsDefault();
-            Integer sortOrder = itemAliasTypeDetailValue.getSortOrder();
+
+            final var itemAliasTypePK = itemAliasTypeDetail.getItemAliasTypePK();
+            final var itemAliasTypeName = itemAliasTypeDetailValue.getItemAliasTypeName();
+            final var validationPattern = itemAliasTypeDetailValue.getValidationPattern();
+            final var itemAliasChecksumTypePK = itemAliasTypeDetailValue.getItemAliasChecksumTypePK();
+            final var allowMultiple = itemAliasTypeDetailValue.getAllowMultiple();
+            var isDefault = itemAliasTypeDetailValue.getIsDefault();
+            final var sortOrder = itemAliasTypeDetailValue.getSortOrder();
             
             if(checkDefault) {
-                ItemAliasType defaultItemAliasType = getDefaultItemAliasType();
-                boolean defaultFound = defaultItemAliasType != null && !defaultItemAliasType.equals(itemAliasType);
+                final var defaultItemAliasType = getDefaultItemAliasType();
+                final var defaultFound = defaultItemAliasType != null && !defaultItemAliasType.equals(itemAliasType);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
@@ -3279,7 +3279,7 @@ public class ItemControl
         }
     }
     
-    public void updateItemAliasTypeFromValue(ItemAliasTypeDetailValue itemAliasTypeDetailValue, BasePK updatedBy) {
+    public void updateItemAliasTypeFromValue(final ItemAliasTypeDetailValue itemAliasTypeDetailValue, final BasePK updatedBy) {
         updateItemAliasTypeFromValue(itemAliasTypeDetailValue, true, updatedBy);
     }
     

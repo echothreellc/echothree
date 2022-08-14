@@ -141,8 +141,8 @@ public class ItemAliasTypeLogic
         return getItemAliasTypeByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
     }
 
-    public void updateItemAliasTypeFromValue(ItemAliasTypeDetailValue itemAliasTypeDetailValue, BasePK updatedBy) {
-        var itemControl = Session.getModelController(ItemControl.class);
+    public void updateItemAliasTypeFromValue(final ItemAliasTypeDetailValue itemAliasTypeDetailValue, final BasePK updatedBy) {
+        final var itemControl = Session.getModelController(ItemControl.class);
 
         itemControl.updateItemAliasTypeFromValue(itemAliasTypeDetailValue, updatedBy);
     }

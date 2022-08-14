@@ -29,10 +29,7 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.item.server.entity.ItemAliasChecksumType;
 import com.echothree.model.data.item.server.entity.ItemAliasType;
-import com.echothree.model.data.item.server.entity.ItemAliasTypeDescription;
-import com.echothree.model.data.item.server.entity.ItemAliasTypeDetail;
 import com.echothree.model.data.item.server.value.ItemAliasTypeDescriptionValue;
-import com.echothree.model.data.item.server.value.ItemAliasTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -108,18 +105,18 @@ public class EditItemAliasTypeCommand
     
     @Override
     public void fillInResult(EditItemAliasTypeResult result, ItemAliasType itemAliasType) {
-        var itemControl = Session.getModelController(ItemControl.class);
+        final var itemControl = Session.getModelController(ItemControl.class);
         
         result.setItemAliasType(itemControl.getItemAliasTypeTransfer(getUserVisit(), itemAliasType));
     }
     
-    ItemAliasChecksumType itemAliasChecksumType = null;
+    ItemAliasChecksumType itemAliasChecksumType;
     
     @Override
     public void doLock(ItemAliasTypeEdit edit, ItemAliasType itemAliasType) {
-        var itemControl = Session.getModelController(ItemControl.class);
-        ItemAliasTypeDescription itemAliasTypeDescription = itemControl.getItemAliasTypeDescription(itemAliasType, getPreferredLanguage());
-        ItemAliasTypeDetail itemAliasTypeDetail = itemAliasType.getLastDetail();
+        final var itemControl = Session.getModelController(ItemControl.class);
+        final var itemAliasTypeDescription = itemControl.getItemAliasTypeDescription(itemAliasType, getPreferredLanguage());
+        final var itemAliasTypeDetail = itemAliasType.getLastDetail();
         
         edit.setItemAliasTypeName(itemAliasTypeDetail.getItemAliasTypeName());
         edit.setValidationPattern(itemAliasTypeDetail.getValidationPattern());
@@ -135,12 +132,12 @@ public class EditItemAliasTypeCommand
         
     @Override
     public void canUpdate(ItemAliasType itemAliasType) {
-        var itemControl = Session.getModelController(ItemControl.class);
-        String itemAliasTypeName = edit.getItemAliasTypeName();
-        ItemAliasType duplicateItemAliasType = itemControl.getItemAliasTypeByName(itemAliasTypeName);
+        final var itemControl = Session.getModelController(ItemControl.class);
+        final var itemAliasTypeName = edit.getItemAliasTypeName();
+        final var duplicateItemAliasType = itemControl.getItemAliasTypeByName(itemAliasTypeName);
 
         if(duplicateItemAliasType == null || itemAliasType.equals(duplicateItemAliasType)) {
-            String itemAliasChecksumTypeName = edit.getItemAliasChecksumTypeName();
+            final var itemAliasChecksumTypeName = edit.getItemAliasChecksumTypeName();
 
             itemAliasChecksumType = itemControl.getItemAliasChecksumTypeByName(itemAliasChecksumTypeName);
 
@@ -154,11 +151,11 @@ public class EditItemAliasTypeCommand
     
     @Override
     public void doUpdate(ItemAliasType itemAliasType) {
-        var itemControl = Session.getModelController(ItemControl.class);
-        var partyPK = getPartyPK();
-        ItemAliasTypeDetailValue itemAliasTypeDetailValue = itemControl.getItemAliasTypeDetailValueForUpdate(itemAliasType);
-        ItemAliasTypeDescription itemAliasTypeDescription = itemControl.getItemAliasTypeDescriptionForUpdate(itemAliasType, getPreferredLanguage());
-        String description = edit.getDescription();
+        final var itemControl = Session.getModelController(ItemControl.class);
+        final var partyPK = getPartyPK();
+        final var itemAliasTypeDetailValue = itemControl.getItemAliasTypeDetailValueForUpdate(itemAliasType);
+        final var itemAliasTypeDescription = itemControl.getItemAliasTypeDescriptionForUpdate(itemAliasType, getPreferredLanguage());
+        final var description = edit.getDescription();
 
         itemAliasTypeDetailValue.setItemAliasTypeName(edit.getItemAliasTypeName());
         itemAliasTypeDetailValue.setValidationPattern(edit.getValidationPattern());
