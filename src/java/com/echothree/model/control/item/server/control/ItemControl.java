@@ -3258,7 +3258,7 @@ public class ItemControl
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    ItemAliasTypeDetailValue defaultItemAliasTypeDetailValue = getDefaultItemAliasTypeDetailValueForUpdate();
+                    final var defaultItemAliasTypeDetailValue = getDefaultItemAliasTypeDetailValueForUpdate();
                     
                     defaultItemAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateItemAliasTypeFromValue(defaultItemAliasTypeDetailValue, false, updatedBy);
