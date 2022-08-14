@@ -3524,7 +3524,7 @@ public class ItemControl
                 unitOfMeasureType, Session.MAX_TIME);
     }
 
-    public long countItemAliasesByUnitOfMeasureType(ItemAliasType itemAliasType) {
+    public long countItemAliasesByItemAliasType(ItemAliasType itemAliasType) {
         return session.queryForLong("""
                 SELECT COUNT(*)
                 FROM itemaliases
