@@ -4862,21 +4862,21 @@ public class CoreControl
                 entityInstance);
     }
     
-    public void updateEntityAttributeFromValue(EntityAttributeDetailValue entityAttributeDetailValue, BasePK updatedBy) {
+    public void updateEntityAttributeFromValue(final EntityAttributeDetailValue entityAttributeDetailValue, final BasePK updatedBy) {
         if(entityAttributeDetailValue.hasBeenModified()) {
-            EntityAttribute entityAttribute = EntityAttributeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+            final var entityAttribute = EntityAttributeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
                      entityAttributeDetailValue.getEntityAttributePK());
-            EntityAttributeDetail entityAttributeDetail = entityAttribute.getActiveDetailForUpdate();
+            var entityAttributeDetail = entityAttribute.getActiveDetailForUpdate();
             
             entityAttributeDetail.setThruTime(session.START_TIME_LONG);
             entityAttributeDetail.store();
-            
-            EntityAttributePK entityAttributePK = entityAttributeDetail.getEntityAttributePK(); // Not updated
-            EntityTypePK entityTypePK = entityAttributeDetail.getEntityTypePK(); // Not updated
-            String entityAttributeName = entityAttributeDetailValue.getEntityAttributeName();
-            EntityAttributeTypePK entityAttributeTypePK = entityAttributeDetail.getEntityAttributeTypePK(); // Not updated
-            Boolean trackRevisions = entityAttributeDetailValue.getTrackRevisions();
-            Integer sortOrder = entityAttributeDetailValue.getSortOrder();
+
+            final var entityAttributePK = entityAttributeDetail.getEntityAttributePK(); // Not updated
+            final var entityTypePK = entityAttributeDetail.getEntityTypePK(); // Not updated
+            final var entityAttributeName = entityAttributeDetailValue.getEntityAttributeName();
+            final var entityAttributeTypePK = entityAttributeDetail.getEntityAttributeTypePK(); // Not updated
+            final var trackRevisions = entityAttributeDetailValue.getTrackRevisions();
+            final var sortOrder = entityAttributeDetailValue.getSortOrder();
             
             entityAttributeDetail = EntityAttributeDetailFactory.getInstance().create(entityAttributePK, entityTypePK,
                     entityAttributeName, entityAttributeTypePK, trackRevisions, sortOrder, session.START_TIME_LONG,

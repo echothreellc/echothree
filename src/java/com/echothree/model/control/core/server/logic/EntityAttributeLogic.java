@@ -507,20 +507,21 @@ public class EntityAttributeLogic
         return entityInstanceResults;
     }
     
-    public void updateEntityAttributeFromValue(final Session session, EntityAttributeDetailValue entityAttributeDetailValue, BasePK updatedBy) {
-        var coreControl = Session.getModelController(CoreControl.class);
+    public void updateEntityAttributeFromValue(final Session session, final EntityAttributeDetailValue entityAttributeDetailValue,
+            final BasePK updatedBy) {
+        final var coreControl = Session.getModelController(CoreControl.class);
 
         if(entityAttributeDetailValue.getEntityAttributeNameHasBeenModified()) {
-            var indexControl = Session.getModelController(IndexControl.class);
-            EntityAttribute entityAttribute = coreControl.getEntityAttributeByPK(entityAttributeDetailValue.getEntityAttributePK());
+            final var indexControl = Session.getModelController(IndexControl.class);
+            final var entityAttribute = coreControl.getEntityAttributeByPK(entityAttributeDetailValue.getEntityAttributePK());
             
             if(indexControl.countIndexTypesByEntityType(entityAttribute.getLastDetail().getEntityType()) > 0) {
-                var queueControl = Session.getModelController(QueueControl.class);
-                QueueTypePK queueTypePK = QueueTypeLogic.getInstance().getQueueTypeByName(null, QueueConstants.QueueType_INDEXING).getPrimaryKey();
-                List<EntityInstanceResult> entityInstanceResults = getEntityInstanceResultsByEntityAttributeTypeName(entityAttribute);
-                List<QueuedEntityValue> queuedEntities = new ArrayList<>(entityInstanceResults.size());
+                final var queueControl = Session.getModelController(QueueControl.class);
+                final var queueTypePK = QueueTypeLogic.getInstance().getQueueTypeByName(null, QueueConstants.QueueType_INDEXING).getPrimaryKey();
+                final var entityInstanceResults = getEntityInstanceResultsByEntityAttributeTypeName(entityAttribute);
+                final var queuedEntities = new ArrayList<QueuedEntityValue>(entityInstanceResults.size());
 
-                for(var entityInstanceResult : entityInstanceResults) {
+                for(final var entityInstanceResult : entityInstanceResults) {
                     queuedEntities.add(new QueuedEntityValue(queueTypePK, entityInstanceResult.getEntityInstancePK(), session.START_TIME_LONG));
                 }
 
