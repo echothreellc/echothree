@@ -149,6 +149,13 @@ public class UomControl
         return unitOfMeasureKind;
     }
 
+    public long countUnitOfMeasureKinds() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM unitofmeasurekinds, unitofmeasurekinddetails " +
+                "WHERE uomk_activedetailid = uomkdt_unitofmeasurekinddetailid");
+    }
+
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.UnitOfMeasureKind */
     public UnitOfMeasureKind getUnitOfMeasureKindByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new UnitOfMeasureKindPK(entityInstance.getEntityUniqueId());
