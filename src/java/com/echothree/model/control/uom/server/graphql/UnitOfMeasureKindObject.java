@@ -17,20 +17,26 @@
 package com.echothree.model.control.uom.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.uom.common.UnitOfMeasureKindUseConstants;
+import com.echothree.model.data.uom.common.UnitOfMeasureTypeConstants;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindDetail;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUse;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("unit of measure kind object")
 @GraphQLName("UnitOfMeasureKind")
@@ -92,65 +98,45 @@ public class UnitOfMeasureKindObject
 
         return uomControl.getBestUnitOfMeasureKindDescription(unitOfMeasureKind, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
-    
+
     @GraphQLField
     @GraphQLDescription("unit of measure types")
-    public List<UnitOfMeasureTypeObject> getUnitOfMeasureTypes(final DataFetchingEnvironment env) {
-        if(UomSecurityUtils.getInstance().getHasUnitOfMeasureTypeAccess(env)) {
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<UnitOfMeasureTypeObject> getUnitOfMeasureTypes(final DataFetchingEnvironment env) {
+        if(UomSecurityUtils.getInstance().getHasUnitOfMeasureTypesAccess(env)) {
             var uomControl = Session.getModelController(UomControl.class);
-            List<UnitOfMeasureType> entities = uomControl.getUnitOfMeasureTypesByUnitOfMeasureKind(unitOfMeasureKind);
-            List<UnitOfMeasureTypeObject> unitOfMeasureTypes = new ArrayList<>(entities.size());
-            
-            entities.forEach((entity) -> {
-                unitOfMeasureTypes.add(new UnitOfMeasureTypeObject(entity));
-            });
+            var totalCount = uomControl.countUnitOfMeasureTypesByUnitOfMeasureKind(unitOfMeasureKind);
 
-            return unitOfMeasureTypes;
+            try(var objectLimiter = new ObjectLimiter(env, UnitOfMeasureTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = uomControl.getUnitOfMeasureTypesByUnitOfMeasureKind(unitOfMeasureKind);
+                var unitOfMeasureTypes = entities.stream().map(UnitOfMeasureTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, unitOfMeasureTypes);
+            }
         } else {
-            return null;
+            return Connections.emptyConnection();
         }
     }
-    
-    @GraphQLField
-    @GraphQLDescription("unit of measure type count")
-    public Long getUnitOfMeasureTypeCount(final DataFetchingEnvironment env) {
-        if(UomSecurityUtils.getInstance().getHasUnitOfMeasureTypeAccess(env)) {
-            var uomControl = Session.getModelController(UomControl.class);
 
-            return uomControl.countUnitOfMeasureTypesByUnitOfMeasureKind(unitOfMeasureKind);
-        } else {
-            return null;
-        }
-    }
-    
     @GraphQLField
     @GraphQLDescription("unit of measure kind uses")
-    public List<UnitOfMeasureKindUseObject> getUnitOfMeasureKindUses(final DataFetchingEnvironment env) {
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<UnitOfMeasureKindUseObject> getUnitOfMeasureKindUses(final DataFetchingEnvironment env) {
         if(UomSecurityUtils.getInstance().getHasUnitOfMeasureKindUsesAccess(env)) {
             var uomControl = Session.getModelController(UomControl.class);
-            List<UnitOfMeasureKindUse> entities = uomControl.getUnitOfMeasureKindUsesByUnitOfMeasureKind(unitOfMeasureKind);
-            List<UnitOfMeasureKindUseObject> unitOfMeasureKindUses = new ArrayList<>(entities.size());
-            
-            entities.forEach((entity) -> {
-                unitOfMeasureKindUses.add(new UnitOfMeasureKindUseObject(entity));
-            });
+            var totalCount = uomControl.countUnitOfMeasureKindUsesByUnitOfMeasureKind(unitOfMeasureKind);
 
-            return unitOfMeasureKindUses;
+            try(var objectLimiter = new ObjectLimiter(env, UnitOfMeasureKindUseConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = uomControl.getUnitOfMeasureKindUsesByUnitOfMeasureKind(unitOfMeasureKind);
+                var unitOfMeasureKindUses = entities.stream().map(UnitOfMeasureKindUseObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, unitOfMeasureKindUses);
+            }
         } else {
-            return null;
+            return Connections.emptyConnection();
         }
     }
-    
-    @GraphQLField
-    @GraphQLDescription("unit of measure kind use count")
-    public Long getUnitOfMeasureKindUseCount(final DataFetchingEnvironment env) {
-        if(UomSecurityUtils.getInstance().getHasUnitOfMeasureKindUsesAccess(env)) {
-            var uomControl = Session.getModelController(UomControl.class);
 
-            return uomControl.countUnitOfMeasureKindUsesByUnitOfMeasureKind(unitOfMeasureKind);
-        } else {
-            return null;
-        }
-    }
-    
 }
