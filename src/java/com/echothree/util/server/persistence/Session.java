@@ -78,8 +78,8 @@ public class Session {
     public static final long MAX_TIME = Long.MAX_VALUE;
     public static final Long MAX_TIME_LONG = Long.MAX_VALUE;
 
-    public long START_TIME;
-    public Long START_TIME_LONG;
+    public final long START_TIME;
+    public final Long START_TIME_LONG;
     
     /**
      * Creates a new instance of Session

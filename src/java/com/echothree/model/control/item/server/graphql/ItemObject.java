@@ -313,7 +313,7 @@ public class ItemObject
     }
 
     @GraphQLField
-    @GraphQLDescription("itemAliases")
+    @GraphQLDescription("item aliases")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<ItemAliasObject> getItemAliases(final DataFetchingEnvironment env) {

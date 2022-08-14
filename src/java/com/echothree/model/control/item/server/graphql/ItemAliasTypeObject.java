@@ -17,8 +17,14 @@
 package com.echothree.model.control.item.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.item.common.ItemAliasConstants;
 import com.echothree.model.data.item.server.entity.ItemAliasType;
 import com.echothree.model.data.item.server.entity.ItemAliasTypeDetail;
 import com.echothree.util.server.persistence.Session;
@@ -26,7 +32,10 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("item alias type object")
 @GraphQLName("ItemAliasType")
@@ -102,5 +111,24 @@ public class ItemAliasTypeObject
         return itemControl.getBestItemAliasTypeDescription(itemAliasType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
 
+    @GraphQLField
+    @GraphQLDescription("item aliases")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<ItemAliasObject> getItemAliases(final DataFetchingEnvironment env) {
+        if(ItemSecurityUtils.getInstance().getHasItemAliasesAccess(env)) {
+            var itemControl = Session.getModelController(ItemControl.class);
+            var totalCount = itemControl.countItemAliasesByItemAliasType(itemAliasType);
+
+            try(var objectLimiter = new ObjectLimiter(env, ItemAliasConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = itemControl.getItemAliasesByItemAliasType(itemAliasType);
+                var itemAliases = entities.stream().map(ItemAliasObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, itemAliases);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
 
 }
