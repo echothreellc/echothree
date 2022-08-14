@@ -24,9 +24,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +34,7 @@ public abstract class BaseDatabaseQuery<R extends BaseDatabaseResult> {
     protected final String sql;
     protected final EntityPermission entityPermission;
     
-    protected Class<R> baseDatabaseResultClass;
+    protected final Class<R> baseDatabaseResultClass;
     
     List<DatabaseResultMethod> databaseResultMethods;
     
@@ -48,26 +46,26 @@ public abstract class BaseDatabaseQuery<R extends BaseDatabaseResult> {
         this.baseDatabaseResultClass = (Class<R>)((ParameterizedType)getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
     
-    private DatabaseResultMethod getDatabaseResultMethod(String columnLabel) {
-        DatabaseResultMethod databaseResultMethod = null;
+    private DatabaseResultMethod getDatabaseResultMethod(final String columnLabel) {
+        DatabaseResultMethod databaseResultMethod;
 
         try {
-            Method getMethod = baseDatabaseResultClass.getMethod("get" + columnLabel);
-            Class<?> returnType = getMethod.getReturnType();
-            Method setMethod = baseDatabaseResultClass.getMethod("set" + columnLabel, returnType);
+            final var getMethod = baseDatabaseResultClass.getMethod("get" + columnLabel);
+            final var returnType = getMethod.getReturnType();
+            final var setMethod = baseDatabaseResultClass.getMethod("set" + columnLabel, returnType);
             Object factoryInstance = null;
             Constructor<?> pkConstructor = null;
             Method getEntityFromPkMethod = null;
             
             if(!returnType.equals(Long.class) && !returnType.equals(Integer.class) && !returnType.equals(String.class)) {
-                Class<?> superclass = returnType.getSuperclass();
+                final var superclass = returnType.getSuperclass();
 
                 if(superclass != null) {
                     if(superclass.equals(BasePK.class)) {
                         pkConstructor = returnType.getDeclaredConstructor(Long.class);
                     } else if(superclass.equals(BaseEntity.class)) {
-                        String name = returnType.getName();
-                        String[] nameComponents = Splitter.on('.').trimResults().omitEmptyStrings().splitToList(name).toArray(new String[0]);
+                        final var name = returnType.getName();
+                        final var nameComponents = Splitter.on('.').trimResults().omitEmptyStrings().splitToList(name).toArray(new String[0]);
                         String factoryName = null;
                         String pkName = null;
 
@@ -90,20 +88,16 @@ public abstract class BaseDatabaseQuery<R extends BaseDatabaseResult> {
                         }
 
                         try {
-                            ClassLoader classLoader = returnType.getClassLoader();
-                            Class<?> pkType = classLoader.loadClass(pkName);
-                            Class<?> factoryType = classLoader.loadClass(factoryName);
-                            Method getInstanceMethod = factoryType.getDeclaredMethod("getInstance");
+                            final var classLoader = returnType.getClassLoader();
+                            final var pkType = classLoader.loadClass(pkName);
+                            final var factoryType = classLoader.loadClass(factoryName);
+                            final var getInstanceMethod = factoryType.getDeclaredMethod("getInstance");
 
                             factoryInstance = getInstanceMethod.invoke(null);
                             pkConstructor = pkType.getDeclaredConstructor(Long.class);
                             getEntityFromPkMethod = factoryType.getDeclaredMethod("getEntityFromPK", Session.class, EntityPermission.class, pkType);
-                        } catch(ClassNotFoundException cnfe) {
-                            throw new PersistenceDatabaseException(cnfe);
-                        } catch(java.lang.IllegalAccessException iae) {
-                            throw new PersistenceDatabaseException(iae);
-                        } catch(java.lang.reflect.InvocationTargetException ite) {
-                            throw new PersistenceDatabaseException(ite);
+                        } catch(ClassNotFoundException | IllegalAccessException | InvocationTargetException ex) {
+                            throw new PersistenceDatabaseException(ex);
                         }
                     }
                 }
@@ -121,10 +115,10 @@ public abstract class BaseDatabaseQuery<R extends BaseDatabaseResult> {
         return databaseResultMethod;
     }
 
-    private List<DatabaseResultMethod> getDatabaseResultMethods(ResultSet rs) {
+    private List<DatabaseResultMethod> getDatabaseResultMethods(final ResultSet rs) {
         if(databaseResultMethods == null) {
             try {
-                ResultSetMetaData rsmd = rs.getMetaData();
+                final var rsmd = rs.getMetaData();
 
                 databaseResultMethods = new ArrayList<>();
                 for(int columnIndex = 1; columnIndex <= rsmd.getColumnCount(); columnIndex++) {
@@ -139,24 +133,24 @@ public abstract class BaseDatabaseQuery<R extends BaseDatabaseResult> {
     }
     
     protected List<R> execute(final Object... params) {
-        List<R> results = new ArrayList<>();
-        Session session = ThreadSession.currentSession();
-        PreparedStatement ps = session.prepareStatement(sql);
+        final var results = new ArrayList<R>();
+        final var session = ThreadSession.currentSession();
+        final var ps = session.prepareStatement(sql);
 
         Session.setQueryParams(ps, params);
 
         try {
             ps.execute();
             
-            try (ResultSet rs = ps.getResultSet()) {
+            try(final var rs = ps.getResultSet()) {
                 while(rs.next()) {
                     int columnIndex = 0;
 
                     try {
-                        R baseDatabaseResult = baseDatabaseResultClass.getDeclaredConstructor().newInstance();
+                        final var baseDatabaseResult = baseDatabaseResultClass.getDeclaredConstructor().newInstance();
 
                         for(DatabaseResultMethod databaseResultMethod : getDatabaseResultMethods(rs)) {
-                            Class<?> type = databaseResultMethod.type;
+                            final var type = databaseResultMethod.type;
                             Object param = null;
 
                             columnIndex++;
@@ -167,7 +161,7 @@ public abstract class BaseDatabaseQuery<R extends BaseDatabaseResult> {
                             } else if(type.equals(String.class)) {
                                 param = rs.getString(columnIndex);
                             } else {
-                                Class<?> superclass = type.getSuperclass();
+                                final var superclass = type.getSuperclass();
 
                                 if(superclass != null) {
                                     if(superclass.equals(BasePK.class)) {
@@ -188,14 +182,9 @@ public abstract class BaseDatabaseQuery<R extends BaseDatabaseResult> {
                         }
 
                         results.add(baseDatabaseResult);
-                    } catch (NoSuchMethodException nsme) {
-                        throw new PersistenceDatabaseException(nsme);
-                    } catch (InstantiationException ie) {
-                        throw new PersistenceDatabaseException(ie);
-                    } catch (IllegalAccessException iae) {
-                        throw new PersistenceDatabaseException(iae);
-                    } catch (InvocationTargetException ite) {
-                        throw new PersistenceDatabaseException(ite);
+                    } catch (NoSuchMethodException | InstantiationException | IllegalAccessException |
+                             InvocationTargetException ex) {
+                        throw new PersistenceDatabaseException(ex);
                     }
                 }
             }
