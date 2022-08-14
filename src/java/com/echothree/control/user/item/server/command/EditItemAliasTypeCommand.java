@@ -164,7 +164,7 @@ public class EditItemAliasTypeCommand
         itemAliasTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         itemAliasTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        ItemAliasTypeLogic.getInstance().updateItemAliasTypeFromValue(itemAliasTypeDetailValue, partyPK);
+        ItemAliasTypeLogic.getInstance().updateItemAliasTypeFromValue(session, itemAliasTypeDetailValue, partyPK);
 
         if(itemAliasTypeDescription == null && description != null) {
             itemControl.createItemAliasTypeDescription(itemAliasType, getPreferredLanguage(), description, partyPK);

@@ -25,16 +25,25 @@ import com.echothree.model.control.item.common.exception.DuplicateItemAliasTypeN
 import com.echothree.model.control.item.common.exception.UnknownDefaultItemAliasTypeException;
 import com.echothree.model.control.item.common.exception.UnknownItemAliasTypeNameException;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.item.server.database.ItemEntityInstanceResult;
+import com.echothree.model.control.item.server.database.ItemEntityInstancesByItemAliasTypeQuery;
+import com.echothree.model.control.queue.common.QueueConstants;
+import com.echothree.model.control.queue.server.control.QueueControl;
+import com.echothree.model.control.queue.server.logic.QueueTypeLogic;
+import com.echothree.model.data.item.common.pk.ItemAliasTypePK;
 import com.echothree.model.data.item.server.entity.ItemAliasChecksumType;
 import com.echothree.model.data.item.server.entity.ItemAliasType;
 import com.echothree.model.data.item.server.value.ItemAliasTypeDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
+import com.echothree.model.data.queue.server.value.QueuedEntityValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ItemAliasTypeLogic
     extends BaseLogic {
@@ -141,8 +150,26 @@ public class ItemAliasTypeLogic
         return getItemAliasTypeByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
     }
 
-    public void updateItemAliasTypeFromValue(final ItemAliasTypeDetailValue itemAliasTypeDetailValue, final BasePK updatedBy) {
+    private List<ItemEntityInstanceResult> getItemEntityInstanceResultsByItemAliasType(final ItemAliasTypePK itemAliasTypePK) {
+        return new ItemEntityInstancesByItemAliasTypeQuery().execute(itemAliasTypePK);
+    }
+
+    public void updateItemAliasTypeFromValue(final Session session, final ItemAliasTypeDetailValue itemAliasTypeDetailValue,
+            final BasePK updatedBy) {
         final var itemControl = Session.getModelController(ItemControl.class);
+
+        if(itemAliasTypeDetailValue.getItemAliasTypeNameHasBeenModified()) {
+            final var queueControl = Session.getModelController(QueueControl.class);
+            final var queueTypePK = QueueTypeLogic.getInstance().getQueueTypeByName(null, QueueConstants.QueueType_INDEXING).getPrimaryKey();
+            final var itemEntityInstanceResults = getItemEntityInstanceResultsByItemAliasType(itemAliasTypeDetailValue.getItemAliasTypePK());
+            final var queuedEntities = new ArrayList<QueuedEntityValue>(itemEntityInstanceResults.size());
+
+            for(final var itemEntityInstanceResult : itemEntityInstanceResults) {
+                queuedEntities.add(new QueuedEntityValue(queueTypePK, itemEntityInstanceResult.getEntityInstancePK(), session.START_TIME_LONG));
+            }
+
+            queueControl.createQueuedEntities(queuedEntities);
+        }
 
         itemControl.updateItemAliasTypeFromValue(itemAliasTypeDetailValue, updatedBy);
     }
