@@ -16,6 +16,8 @@
 
 package com.echothree.model.control.item.server.graphql;
 
+import com.echothree.control.user.item.server.command.GetItemAliasChecksumTypeCommand;
+import com.echothree.control.user.item.server.command.GetItemAliasChecksumTypesCommand;
 import com.echothree.control.user.item.server.command.GetItemAliasCommand;
 import com.echothree.control.user.item.server.command.GetItemAliasTypeCommand;
 import com.echothree.control.user.item.server.command.GetItemAliasTypesCommand;
@@ -86,6 +88,14 @@ public final class ItemSecurityUtils
 
     public boolean getHasItemTypesAccess(final DataFetchingEnvironment env) {
         return getGraphQlExecutionContext(env).hasAccess(GetItemTypesCommand.class);
+    }
+
+    public boolean getHasItemAliasChecksumTypeAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetItemAliasChecksumTypeCommand.class);
+    }
+
+    public boolean getHasItemAliasChecksumTypesAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetItemAliasChecksumTypesCommand.class);
     }
 
     public boolean getHasItemAliasTypeAccess(final DataFetchingEnvironment env) {
