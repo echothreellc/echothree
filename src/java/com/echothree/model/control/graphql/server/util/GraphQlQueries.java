@@ -115,6 +115,8 @@ import com.echothree.control.user.inventory.server.command.GetInventoryCondition
 import com.echothree.control.user.inventory.server.command.GetLotCommand;
 import com.echothree.control.user.inventory.server.command.GetLotsCommand;
 import com.echothree.control.user.item.common.ItemUtil;
+import com.echothree.control.user.item.server.command.GetItemAliasChecksumTypeCommand;
+import com.echothree.control.user.item.server.command.GetItemAliasChecksumTypesCommand;
 import com.echothree.control.user.item.server.command.GetItemAliasCommand;
 import com.echothree.control.user.item.server.command.GetItemAliasTypeCommand;
 import com.echothree.control.user.item.server.command.GetItemAliasTypesCommand;
@@ -306,6 +308,7 @@ import com.echothree.model.control.graphql.server.graphql.count.CountingPaginate
 import com.echothree.model.control.inventory.server.graphql.InventoryConditionObject;
 import com.echothree.model.control.inventory.server.graphql.LotObject;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.item.server.graphql.ItemAliasChecksumTypeObject;
 import com.echothree.model.control.item.server.graphql.ItemAliasObject;
 import com.echothree.model.control.item.server.graphql.ItemAliasTypeObject;
 import com.echothree.model.control.item.server.graphql.ItemCategoryObject;
@@ -425,6 +428,7 @@ import com.echothree.model.data.filter.server.entity.FilterStep;
 import com.echothree.model.data.filter.server.entity.FilterType;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.inventory.server.entity.Lot;
+import com.echothree.model.data.item.common.ItemAliasChecksumTypeConstants;
 import com.echothree.model.data.item.common.ItemAliasTypeConstants;
 import com.echothree.model.data.item.common.ItemConstants;
 import com.echothree.model.data.item.common.ItemDeliveryTypeConstants;
@@ -435,6 +439,7 @@ import com.echothree.model.data.item.common.ItemTypeConstants;
 import com.echothree.model.data.item.common.ItemUseTypeConstants;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemAlias;
+import com.echothree.model.data.item.server.entity.ItemAliasChecksumType;
 import com.echothree.model.data.item.server.entity.ItemAliasType;
 import com.echothree.model.data.item.server.entity.ItemCategory;
 import com.echothree.model.data.item.server.entity.ItemDeliveryType;
@@ -5598,7 +5603,55 @@ public final class GraphQlQueries
         return itemPriceObjects;
     }
 
-    public GraphQlQueries() {
+    @GraphQLField
+    @GraphQLName("itemAliasChecksumType")
+    public static ItemAliasChecksumTypeObject itemAliasChecksumType(final DataFetchingEnvironment env,
+            @GraphQLName("itemAliasChecksumTypeName") final String itemAliasChecksumTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        ItemAliasChecksumType itemAliasChecksumType;
+
+        try {
+            var commandForm = ItemUtil.getHome().getGetItemAliasChecksumTypeForm();
+
+            commandForm.setItemAliasChecksumTypeName(itemAliasChecksumTypeName);
+            commandForm.setUlid(id);
+
+            itemAliasChecksumType = new GetItemAliasChecksumTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return itemAliasChecksumType == null ? null : new ItemAliasChecksumTypeObject(itemAliasChecksumType);
+    }
+
+    @GraphQLField
+    @GraphQLName("itemAliasChecksumTypes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public static CountingPaginatedData<ItemAliasChecksumTypeObject> itemAliasChecksumTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<ItemAliasChecksumTypeObject> data;
+
+        try {
+            var itemControl = Session.getModelController(ItemControl.class);
+            var totalCount = itemControl.countItemAliasChecksumTypes();
+
+            try(var objectLimiter = new ObjectLimiter(env, ItemAliasChecksumTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = ItemUtil.getHome().getGetItemAliasChecksumTypesForm();
+                var entities = new GetItemAliasChecksumTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var itemAliasChecksumTypes = entities.stream().map(ItemAliasChecksumTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, itemAliasChecksumTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
     }
 
     @GraphQLField

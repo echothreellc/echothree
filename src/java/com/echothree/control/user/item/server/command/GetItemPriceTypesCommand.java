@@ -20,6 +20,7 @@ import com.echothree.control.user.item.common.form.GetItemPriceTypesForm;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemPriceType;
+import com.echothree.model.data.item.server.factory.ItemPriceTypeFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -55,9 +56,12 @@ public class GetItemPriceTypesCommand
     protected BaseResult getTransfers(Collection<ItemPriceType> entities) {
         var result = ItemResultFactory.getGetItemPriceTypesResult();
         var itemControl = Session.getModelController(ItemControl.class);
-        var userVisit = getUserVisit();
 
-        result.setItemPriceTypes(itemControl.getItemPriceTypeTransfers(userVisit, entities));
+        if(session.hasLimit(ItemPriceTypeFactory.class)) {
+            result.setItemPriceTypeCount(itemControl.countItemPriceTypes());
+        }
+
+        result.setItemPriceTypes(itemControl.getItemPriceTypeTransfers(getUserVisit(), entities));
 
         return result;
     }

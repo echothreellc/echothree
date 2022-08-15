@@ -156,6 +156,7 @@ public enum SecurityRoleGroups {
     Item,
     ItemAccountingCategory,
     ItemAlias,
+    ItemAliasChecksumType,
     ItemAliasType,
     ItemCategory,
     ItemDescription,

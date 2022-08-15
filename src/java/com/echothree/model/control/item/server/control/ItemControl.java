@@ -2826,6 +2826,12 @@ public class ItemControl
         return itemAliasChecksumType;
     }
 
+    public long countItemAliasChecksumTypes() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM itemaliaschecksumtypes");
+    }
+
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.ItemAliasChecksumType */
     public ItemAliasChecksumType getItemAliasChecksumTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ItemAliasChecksumTypePK(entityInstance.getEntityUniqueId());
