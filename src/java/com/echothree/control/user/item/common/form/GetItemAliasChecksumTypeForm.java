@@ -14,19 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.item.common.result;
+package com.echothree.control.user.item.common.form;
 
-import com.echothree.model.control.item.common.transfer.ItemPriceTypeTransfer;
-import com.echothree.util.common.command.BaseResult;
-import java.util.List;
+import com.echothree.control.user.item.common.spec.ItemAliasChecksumTypeUniversalSpec;
 
-public interface GetItemPriceTypesResult
-        extends BaseResult {
-
-    Long getItemPriceTypeCount();
-    void setItemPriceTypeCount(Long itemPriceTypeCount);
-
-    List<ItemPriceTypeTransfer> getItemPriceTypes();
-    void setItemPriceTypes(List<ItemPriceTypeTransfer> itemPriceTypes);
+public interface GetItemAliasChecksumTypeForm
+        extends ItemAliasChecksumTypeUniversalSpec {
+    
+    // Nothing additional beyond ItemAliasChecksumTypeUniversalSpec
     
 }

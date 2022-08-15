@@ -16,60 +16,69 @@
 
 package com.echothree.control.user.item.server.command;
 
-import com.echothree.control.user.item.common.form.GetItemPriceTypeChoicesForm;
-import com.echothree.control.user.item.common.result.GetItemPriceTypeChoicesResult;
+import com.echothree.control.user.item.common.form.GetItemAliasChecksumTypesForm;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.item.server.entity.ItemAliasChecksumType;
+import com.echothree.model.data.item.server.factory.ItemAliasChecksumTypeFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-public class GetItemPriceTypeChoicesCommand
-        extends BaseSimpleCommand<GetItemPriceTypeChoicesForm> {
+public class GetItemAliasChecksumTypesCommand
+        extends BaseMultipleEntitiesCommand<ItemAliasChecksumType, GetItemAliasChecksumTypesForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
-                        new SecurityRoleDefinition(SecurityRoleGroups.ItemPriceType.name(), SecurityRoles.Choices.name())
+                        new SecurityRoleDefinition(SecurityRoleGroups.ItemAliasChecksumType.name(), SecurityRoles.List.name())
                 )))
         )));
 
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-            new FieldDefinition("DefaultItemPriceTypeChoice", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
-        ));
+        FORM_FIELD_DEFINITIONS = List.of(
+        );
     }
-    
-    /** Creates a new instance of GetItemPriceTypeChoicesCommand */
-    public GetItemPriceTypeChoicesCommand(UserVisitPK userVisitPK, GetItemPriceTypeChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+
+    /** Creates a new instance of GetItemAliasChecksumTypesCommand */
+    public GetItemAliasChecksumTypesCommand(UserVisitPK userVisitPK, GetItemAliasChecksumTypesForm form) {
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
+    protected Collection<ItemAliasChecksumType> getEntities() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetItemPriceTypeChoicesResult result = ItemResultFactory.getGetItemPriceTypeChoicesResult();
-        String defaultItemPriceTypeChoice = form.getDefaultItemPriceTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
-        
-        result.setItemPriceTypeChoices(itemControl.getItemPriceTypeChoices(defaultItemPriceTypeChoice, getPreferredLanguage(), allowNullChoice));
-        
+
+        return itemControl.getItemAliasChecksumTypes();
+    }
+
+    @Override
+    protected BaseResult getTransfers(Collection<ItemAliasChecksumType> entities) {
+        var result = ItemResultFactory.getGetItemAliasChecksumTypesResult();
+        var itemControl = Session.getModelController(ItemControl.class);
+
+        if(session.hasLimit(ItemAliasChecksumTypeFactory.class)) {
+            result.setItemAliasChecksumTypeCount(itemControl.countItemAliasChecksumTypes());
+        }
+
+        result.setItemAliasChecksumTypes(itemControl.getItemAliasChecksumTypeTransfers(getUserVisit(), entities));
+
         return result;
     }
-    
+
 }

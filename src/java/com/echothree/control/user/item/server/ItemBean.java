@@ -247,6 +247,16 @@ public class ItemBean
     }
 
     @Override
+    public CommandResult getItemAliasChecksumTypes(UserVisitPK userVisitPK, GetItemAliasChecksumTypesForm form) {
+        return new GetItemAliasChecksumTypesCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getItemAliasChecksumType(UserVisitPK userVisitPK, GetItemAliasChecksumTypeForm form) {
+        return new GetItemAliasChecksumTypeCommand(userVisitPK, form).run();
+    }
+
+    @Override
     public CommandResult getItemAliasChecksumTypeChoices(UserVisitPK userVisitPK, GetItemAliasChecksumTypeChoicesForm form) {
         return new GetItemAliasChecksumTypeChoicesCommand(userVisitPK, form).run();
     }

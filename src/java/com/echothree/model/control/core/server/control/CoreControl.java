@@ -1278,24 +1278,6 @@ public class CoreControl
         return getCommandDetailValueForUpdate(getCommandByNameForUpdate(componentVendor, commandName));
     }
     
-    private final Map<ComponentVendor, Map<String, Command>> commandCache = new HashMap<>();
-    
-    public Command getCommandByNameFromCache(ComponentVendor componentVendor, String commandName) {
-        Map<String, Command> cacheByCompnentVendor = commandCache.computeIfAbsent(componentVendor, k -> new HashMap<>());
-
-        Command command = cacheByCompnentVendor.get(commandName);
-        
-        if(command == null) {
-            command = getCommandByName(componentVendor, commandName);
-            
-            if(command != null) {
-                cacheByCompnentVendor.put(commandName, command);
-            }
-        }
-        
-        return command;
-    }
-    
     private List<Command> getCommandsByComponentVendor(ComponentVendor componentVendor, EntityPermission entityPermission) {
         List<Command> commands;
         

@@ -910,6 +910,30 @@
                 <securityRoleDescription languageIsoName="en" description="Item Unit Of Measure Type Review" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="ItemPriceType" parentSecurityRoleGroupName="ItemComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Item Price Type" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Item Price Type Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Item Price Type Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Item Price Type Delete" />
+            </securityRole>
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Item Price Type List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Item Price Type Review" />
+            </securityRole>
+            <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Item Price Type Choices" />
+            </securityRole>
+            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Item Price Type Description" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="ItemPrice" parentSecurityRoleGroupName="ItemComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Item Price" />
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
@@ -965,6 +989,30 @@
             </securityRole>
             <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Item Volume Review" />
+            </securityRole>
+        </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="ItemAliasChecksumType" parentSecurityRoleGroupName="ItemComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Item Alias Checksum Type" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Item Alias Checksum Type Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Item Alias Checksum Type Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Item Alias Checksum Type Delete" />
+            </securityRole>
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Item Alias Checksum Type List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Item Alias Checksum Type Review" />
+            </securityRole>
+            <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Item Alias Checksum Type Choices" />
+            </securityRole>
+            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Item Alias Checksum Type Description" />
             </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="ItemAlias" parentSecurityRoleGroupName="ItemComponent" isDefault="false" sortOrder="1">
@@ -7439,6 +7487,13 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="ItemUnitOfMeasureType" securityRoleName="Delete" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ItemUnitOfMeasureType" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ItemUnitOfMeasureType" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ItemPriceType" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ItemPriceType" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ItemPriceType" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ItemPriceType" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ItemPriceType" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ItemPriceType" securityRoleName="Choices" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ItemPriceType" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ItemPrice" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ItemPrice" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ItemPrice" securityRoleName="Delete" />
@@ -7455,6 +7510,13 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="ItemVolume" securityRoleName="Delete" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ItemVolume" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ItemVolume" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ItemAliasChecksumType" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ItemAliasChecksumType" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ItemAliasChecksumType" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ItemAliasChecksumType" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ItemAliasChecksumType" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ItemAliasChecksumType" securityRoleName="Choices" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ItemAliasChecksumType" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ItemAlias" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ItemAlias" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ItemAlias" securityRoleName="Delete" />

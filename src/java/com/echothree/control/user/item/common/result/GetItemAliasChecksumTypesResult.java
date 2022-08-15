@@ -16,17 +16,17 @@
 
 package com.echothree.control.user.item.common.result;
 
-import com.echothree.model.control.item.common.transfer.ItemPriceTypeTransfer;
+import com.echothree.model.control.item.common.transfer.ItemAliasChecksumTypeTransfer;
 import com.echothree.util.common.command.BaseResult;
 import java.util.List;
 
-public interface GetItemPriceTypesResult
+public interface GetItemAliasChecksumTypesResult
         extends BaseResult {
 
-    Long getItemPriceTypeCount();
-    void setItemPriceTypeCount(Long itemPriceTypeCount);
+    Long getItemAliasChecksumTypeCount();
+    void setItemAliasChecksumTypeCount(Long itemAliasChecksumTypeCount);
 
-    List<ItemPriceTypeTransfer> getItemPriceTypes();
-    void setItemPriceTypes(List<ItemPriceTypeTransfer> itemPriceTypes);
+    List<ItemAliasChecksumTypeTransfer> getItemAliasChecksumTypes();
+    void setItemAliasChecksumTypes(List<ItemAliasChecksumTypeTransfer> itemAliasChecksumTypes);
     
 }

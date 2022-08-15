@@ -17,14 +17,19 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.GetItemAliasChecksumTypeChoicesForm;
-import com.echothree.control.user.item.common.result.GetItemAliasChecksumTypeChoicesResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
@@ -32,10 +37,17 @@ import java.util.List;
 
 public class GetItemAliasChecksumTypeChoicesCommand
         extends BaseSimpleCommand<GetItemAliasChecksumTypeChoicesForm> {
-    
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                        new SecurityRoleDefinition(SecurityRoleGroups.ItemAliasChecksumType.name(), SecurityRoles.Choices.name())
+                )))
+        )));
+
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
             new FieldDefinition("DefaultItemAliasChecksumTypeChoice", FieldType.ENTITY_NAME, false, null, null),
             new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
@@ -44,18 +56,18 @@ public class GetItemAliasChecksumTypeChoicesCommand
     
     /** Creates a new instance of GetItemAliasChecksumTypeChoicesCommand */
     public GetItemAliasChecksumTypeChoicesCommand(UserVisitPK userVisitPK, GetItemAliasChecksumTypeChoicesForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetItemAliasChecksumTypeChoicesResult result = ItemResultFactory.getGetItemAliasChecksumTypeChoicesResult();
-        String defaultItemAliasChecksumTypeChoice = form.getDefaultItemAliasChecksumTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
+        var result = ItemResultFactory.getGetItemAliasChecksumTypeChoicesResult();
+        var defaultItemAliasChecksumTypeChoice = form.getDefaultItemAliasChecksumTypeChoice();
+        var allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
 
-        result.setItemAliasChecksumTypeChoices(itemControl.getItemAliasChecksumTypeChoices(defaultItemAliasChecksumTypeChoice, getPreferredLanguage(),
-                allowNullChoice));
+        result.setItemAliasChecksumTypeChoices(itemControl.getItemAliasChecksumTypeChoices(defaultItemAliasChecksumTypeChoice,
+                getPreferredLanguage(), allowNullChoice));
 
         return result;
     }
