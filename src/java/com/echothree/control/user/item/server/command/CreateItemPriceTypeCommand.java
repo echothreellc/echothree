@@ -19,6 +19,8 @@ package com.echothree.control.user.item.server.command;
 import com.echothree.control.user.item.common.form.CreateItemPriceTypeForm;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.item.server.entity.ItemPriceType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -28,6 +30,7 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
@@ -40,9 +43,12 @@ public class CreateItemPriceTypeCommand
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
-                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null))
-        );
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                        new SecurityRoleDefinition(SecurityRoleGroups.ItemPriceType.name(), SecurityRoles.Create.name())
+                )))
+        )));
 
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("ItemPriceTypeName", FieldType.ENTITY_NAME, true, null, null),

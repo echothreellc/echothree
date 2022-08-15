@@ -169,6 +169,7 @@ public enum SecurityRoleGroups {
     ItemCountryOfOrigin,
     ItemPackCheckRequirement,
     ItemPrice,
+    ItemPriceType,
     ItemPurchasingCategory,
     ItemShippingTime,
     ItemStatus,
