@@ -232,7 +232,7 @@
         </paymentProcessorResultCode>
     </paymentProcessorResultCodes>
     <paymentProcessorTypes>
-        <paymentProcessorType paymentProcessorTypeName="TEST_PAYMENT_PROCESSOR_TYPE" isDefault="true" sortOrder="1">
+        <paymentProcessorType paymentProcessorTypeName="TEST_PAYMENT_PROCESSOR_TYPE" isDefault="true" sortOrder="2">
             <paymentProcessorTypeDescription languageIsoName="en" description="Test Payment Processor Type" />
             <paymentProcessorTypeCodeType paymentProcessorTypeCodeTypeName="TEST_PAYMENT_PROCESSOR_TYPE_CODE_TYPE_1" isDefault="true" sortOrder="1">
                 <paymentProcessorTypeCodeTypeDescription languageIsoName="en" description="Test Payment Processor Type Code Type 1" />
@@ -259,6 +259,9 @@
             <paymentProcessorTypeAction paymentProcessorActionTypeName="REVERSE_TRANSACTION" isDefault="false" sortOrder="1" />
             <paymentProcessorTypeAction paymentProcessorActionTypeName="VERIFY_CARD" isDefault="false" sortOrder="1" />
             <paymentProcessorTypeAction paymentProcessorActionTypeName="VOID_TRANSACTION" isDefault="false" sortOrder="1" />
+        </paymentProcessorType>
+        <paymentProcessorType paymentProcessorTypeName="MONETRA" isDefault="false" sortOrder="1">
+            <paymentProcessorTypeDescription languageIsoName="en" description="Monetra" />
         </paymentProcessorType>
     </paymentProcessorTypes>
     <paymentProcessors>
