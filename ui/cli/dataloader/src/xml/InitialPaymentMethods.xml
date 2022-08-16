@@ -262,6 +262,12 @@
         </paymentProcessorType>
         <paymentProcessorType paymentProcessorTypeName="MONETRA" isDefault="false" sortOrder="1">
             <paymentProcessorTypeDescription languageIsoName="en" description="Monetra" />
+            <paymentProcessorTypeCodeType paymentProcessorTypeCodeTypeName="PROCESSOR" isDefault="true" sortOrder="1">
+                <paymentProcessorTypeCodeTypeDescription languageIsoName="en" description="Processor" />
+            </paymentProcessorTypeCodeType>
+            <paymentProcessorTypeCodeType paymentProcessorTypeCodeTypeName="SOFTWARE" isDefault="false" sortOrder="1">
+                <paymentProcessorTypeCodeTypeDescription languageIsoName="en" description="Software" />
+            </paymentProcessorTypeCodeType>
         </paymentProcessorType>
     </paymentProcessorTypes>
     <paymentProcessors>
