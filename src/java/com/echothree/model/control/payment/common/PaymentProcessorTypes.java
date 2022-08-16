@@ -18,6 +18,7 @@ package com.echothree.model.control.payment.common;
 
 public enum PaymentProcessorTypes {
 
+    MONETRA,
     TEST_PAYMENT_PROCESSOR_TYPE,
 
 }
