@@ -517,6 +517,13 @@
                     <paymentProcessorTypeCodeDescription languageIsoName="en" description="Auto-denied transaction due to fraud rule" />
                 </paymentProcessorTypeCode>
             </paymentProcessorTypeCodeType>
+            <paymentProcessorTypeAction paymentProcessorActionTypeName="PREAUTHORIZE" isDefault="true" sortOrder="1" />
+            <paymentProcessorTypeAction paymentProcessorActionTypeName="PREAUTHORIZATION_COMPLETION" isDefault="false" sortOrder="1" />
+            <paymentProcessorTypeAction paymentProcessorActionTypeName="REFUND" isDefault="false" sortOrder="1" />
+            <paymentProcessorTypeAction paymentProcessorActionTypeName="REFUND_EXISTING_TRANSACTION" isDefault="false" sortOrder="1" />
+            <paymentProcessorTypeAction paymentProcessorActionTypeName="REVERSE_TRANSACTION" isDefault="false" sortOrder="1" />
+            <paymentProcessorTypeAction paymentProcessorActionTypeName="VERIFY_CARD" isDefault="false" sortOrder="1" />
+            <paymentProcessorTypeAction paymentProcessorActionTypeName="VOID_TRANSACTION" isDefault="false" sortOrder="1" />
         </paymentProcessorType>
     </paymentProcessorTypes>
     <paymentProcessors>
