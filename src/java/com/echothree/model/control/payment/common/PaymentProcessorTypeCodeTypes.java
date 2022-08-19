@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.payment;
+package com.echothree.model.control.payment.common;
 
 public enum PaymentProcessorTypeCodeTypes {
 
