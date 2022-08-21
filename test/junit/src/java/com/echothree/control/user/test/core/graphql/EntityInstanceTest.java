@@ -45,19 +45,23 @@ public class EntityInstanceTest
                             componentVendorName
                         }
                         entityTypeName
-                        entityInstanceCount
                         entityInstances {
-                            ulid
+                            totalCount
+                            edges {
+                                node {
+                                    ulid
+                                }
+                            }
                         }
                     }
                 }
                 """.formatted(ComponentVendors.ECHOTHREE, EntityTypes.GlAccount));
 
-        var entityInstanceCount = getLong(entityTypeBody, "data.entityType.entityInstanceCount");
         assertThat(getString(entityTypeBody, "data.entityType.componentVendor.componentVendorName")).isEqualTo(ComponentVendors.ECHOTHREE.toString());
         assertThat(getString(entityTypeBody, "data.entityType.entityTypeName")).isEqualTo(EntityTypes.GlAccount.toString());
+        var entityInstanceCount = getLong(entityTypeBody, "data.entityType.entityInstances.totalCount");
         assertThat(entityInstanceCount).isGreaterThan(0);
-        assertThat(getList(entityTypeBody, "data.entityType.entityInstances")).size().isEqualTo(entityInstanceCount);
+        assertThat(getList(entityTypeBody, "data.entityType.entityInstances.edges")).size().isEqualTo(entityInstanceCount);
     }
 
     @Test
@@ -115,15 +119,20 @@ public class EntityInstanceTest
                 query {
                     entityType(componentVendorName: "%s", entityTypeName: "%s") {
                         entityInstances {
-                            ulid
+                            edges {
+                                node {
+                                    ulid
+                                }
+                            }
                         }
                     }
                 }
                 """.formatted(ComponentVendors.ECHOTHREE, EntityTypes.GlAccount));
 
-        var entityInstances = getList(entityTypeBody, "data.entityType.entityInstances");
+        var entityInstances = getList(entityTypeBody, "data.entityType.entityInstances.edges");
         var entityInstance = getObject(entityInstances, "[0]");
-        var ulid = getString(entityInstance, "ulid");
+        var ulid = getString(entityInstance, "node.ulid");
+
         var logoutBody = executeUsingPost("""
                 mutation {
                     logout(input: { clientMutationId: "1" }) {
@@ -168,15 +177,20 @@ public class EntityInstanceTest
             query {
                 entityType(componentVendorName: "%s", entityTypeName: "%s") {
                     entityInstances {
-                        ulid
+                        edges {
+                            node {
+                                ulid
+                            }
+                        }
                     }
                 }
             }
             """.formatted(ComponentVendors.ECHOTHREE, EntityTypes.GlAccount));
 
-        var entityInstances = getList(entityTypeBody, "data.entityType.entityInstances");
+        var entityInstances = getList(entityTypeBody, "data.entityType.entityInstances.edges");
         var entityInstance = getObject(entityInstances, "[0]");
-        var ulid = getString(entityInstance, "ulid");
+        var ulid = getString(entityInstance, "node.ulid");
+
         var entityInstanceBody = executeUsingPost("""
             query {
                 entityInstance(id: "%s") {
