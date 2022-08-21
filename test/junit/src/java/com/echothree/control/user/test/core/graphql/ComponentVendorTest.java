@@ -109,18 +109,26 @@ public class ComponentVendorTest
                 query {
                     componentVendor(componentVendorName: "%s") {
                         componentVendorName
-                        entityTypeCount
+                        description
+                        id
                         entityTypes {
-                            entityTypeName
+                            totalCount
+                            edges {
+                                node {
+                                    entityTypeName
+                                    description
+                                    id
+                                }
+                            }
                         }
                     }
                 }
                 """.formatted(ComponentVendors.ECHOTHREE));
 
-        var entityTypeCount = getLong(componentVendorBody, "data.componentVendor.entityTypeCount");
         assertThat(getString(componentVendorBody, "data.componentVendor.componentVendorName")).isEqualTo(ComponentVendors.ECHOTHREE.toString());
+        var entityTypeCount = getLong(componentVendorBody, "data.componentVendor.entityTypes.totalCount");
         assertThat(entityTypeCount).isGreaterThan(0);
-        assertThat(getList(componentVendorBody, "data.componentVendor.entityTypes")).size().isEqualTo(entityTypeCount);
+        assertThat(getList(componentVendorBody, "data.componentVendor.entityTypes.edges")).size().isEqualTo(entityTypeCount);
     }
 
 }
