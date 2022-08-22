@@ -1,5 +1,20 @@
 # Changelog
 
+## 2022-08-21-01
+
+* Add Payment Processor Type Code Types for Monetra [14](https://gitlab.echothree.com/echothree/echothree/-/issues/14)
+* Add Payment Processor Type Codes for Monetra [15](https://gitlab.echothree.com/echothree/echothree/-/issues/15)
+* Add Payment Processor Type for Monetra [20](https://gitlab.echothree.com/echothree/echothree/-/issues/20)
+* Add Payment Processor Type for Simulation [21](https://gitlab.echothree.com/echothree/echothree/-/issues/21)
+* Add Payment Processor Type Actions for Monetra [23](https://gitlab.echothree.com/echothree/echothree/-/issues/23)
+* Add Pagination to entityInstances Field on Entity Type Object [427](https://gitlab.echothree.com/echothree/echothree/-/issues/427)
+* MySQL Connector/J 8.0.30 Upgrade [523](https://gitlab.echothree.com/echothree/echothree/-/issues/523)
+* Add Item Alias Checksum Type Queries [524](https://gitlab.echothree.com/echothree/echothree/-/issues/524)
+* Modifying ItemAliasTypeName Should Reindex All Items Utilizing It [525](https://gitlab.echothree.com/echothree/echothree/-/issues/525)
+* queueEntityInstanceToIndexing(...) Called Too Frequently [526](https://gitlab.echothree.com/echothree/echothree/-/issues/526)
+* ClassGraph 4.8.149 Upgrade [528](https://gitlab.echothree.com/echothree/echothree/-/issues/528)
+* jOOQ 3.17.3 Upgrade [533](https://gitlab.echothree.com/echothree/echothree/-/issues/533)
+
 ## 2022-08-07-01
 
 * Add Item Accounting Category Object and Queries [502](https://gitlab.echothree.com/echothree/echothree/-/issues/502)
