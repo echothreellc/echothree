@@ -80,7 +80,7 @@ public class CreateEntityAttributeCommand
                 new FieldDefinition("EntityAttributeTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("TrackRevisions", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
         
         BLOB_FORM_FIELD_DEFINITIONS = List.of(

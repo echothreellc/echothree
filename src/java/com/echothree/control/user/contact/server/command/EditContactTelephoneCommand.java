@@ -77,7 +77,7 @@ public class EditContactTelephoneCommand
                 new FieldDefinition("AreaCode", FieldType.STRING, false, 1L, 5L),
                 new FieldDefinition("TelephoneNumber", FieldType.STRING, true, 1L, 25L),
                 new FieldDefinition("TelephoneExtension", FieldType.NUMBERS, false, 1L, 10L),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 ));
     }
     

@@ -52,7 +52,7 @@ public class EditNameSuffixCommand
         ));
         
         EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-            new FieldDefinition("Description", FieldType.STRING, true, 1L, 80L),
+            new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L),
             new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
             new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
         ));

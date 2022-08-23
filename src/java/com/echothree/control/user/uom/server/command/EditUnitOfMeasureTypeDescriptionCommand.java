@@ -55,8 +55,8 @@ public class EditUnitOfMeasureTypeDescriptionCommand
                 ));
         
         EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("SingularDescription", FieldType.STRING, true, 1L, 80L),
-                new FieldDefinition("PluralDescription", FieldType.STRING, true, 1L, 80L),
+                new FieldDefinition("SingularDescription", FieldType.STRING, true, 1L, 132L),
+                new FieldDefinition("PluralDescription", FieldType.STRING, true, 1L, 132L),
                 new FieldDefinition("Symbol", FieldType.STRING, true, 1L, 20L)
                 ));
     }

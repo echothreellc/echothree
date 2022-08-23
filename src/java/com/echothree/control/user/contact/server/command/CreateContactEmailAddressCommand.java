@@ -63,7 +63,7 @@ public class CreateContactEmailAddressCommand
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EmailAddress", FieldType.EMAIL_ADDRESS, true, null, null),
                 new FieldDefinition("AllowSolicitation", FieldType.BOOLEAN, true, null, null),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 ));
     }
     

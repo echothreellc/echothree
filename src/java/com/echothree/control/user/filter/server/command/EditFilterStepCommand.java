@@ -78,7 +78,7 @@ public class EditFilterStepCommand
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("FilterStepName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("FilterItemSelectorName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
     

@@ -93,7 +93,7 @@ public class EditContactPostalAddressCommand
                 new FieldDefinition("CountryName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("IsCommercial", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("AllowSolicitation", FieldType.BOOLEAN, true, null, null),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 ));
         
         editOtherFieldDefinitions = Collections.unmodifiableList(Arrays.asList(
@@ -113,7 +113,7 @@ public class EditContactPostalAddressCommand
                 new FieldDefinition("CountryName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("IsCommercial", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("AllowSolicitation", FieldType.BOOLEAN, true, null, null),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 ));
     }
 

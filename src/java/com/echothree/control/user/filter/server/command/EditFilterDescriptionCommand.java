@@ -69,7 +69,7 @@ public class EditFilterDescriptionCommand
         );
         
         EDIT_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("Description", FieldType.STRING, true, 1L, 80L)
+                new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         );
     }
     

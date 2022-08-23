@@ -69,7 +69,7 @@ public class CreatePurchaseInvoiceLineCommand
                 new FieldDefinition("Amount", FieldType.COST_UNIT, true, null, null),
                 new FieldDefinition("InvoiceLineTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("GlAccountName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 ));
     }
     

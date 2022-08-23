@@ -65,7 +65,7 @@ public class EditAssociateProgramCommand
         temp.add(new FieldDefinition("ItemDirectSalePercent", FieldType.FRACTIONAL_PERCENT, false, null, null));
         temp.add(new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null));
         temp.add(new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null));
-        temp.add(new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L));
+        temp.add(new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L));
         EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(temp);
     }
     

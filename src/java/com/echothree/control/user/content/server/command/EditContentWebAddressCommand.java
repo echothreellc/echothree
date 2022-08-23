@@ -68,7 +68,7 @@ public class EditContentWebAddressCommand
         EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("ContentWebAddressName", FieldType.HOST_NAME, true, null, null),
                 new FieldDefinition("ContentCollectionName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 ));
     }
     

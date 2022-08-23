@@ -82,7 +82,7 @@ public class EditContentCollectionCommand
                 new FieldDefinition("DefaultOfferName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("DefaultUseName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("DefaultSourceName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 ));
     }
     

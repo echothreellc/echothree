@@ -50,7 +50,7 @@ public class CreateComponentVendorCommand
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("Description", FieldType.STRING, true, 1L, 80L)
+                new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 ));
     }
     

@@ -57,7 +57,7 @@ public class EditInventoryLocationGroupDescriptionCommand
         SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(temp);
         
         temp = new ArrayList<>(1);
-        temp.add(new FieldDefinition("Description", FieldType.STRING, true, 1L, 80L));
+        temp.add(new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L));
         EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(temp);
     }
     

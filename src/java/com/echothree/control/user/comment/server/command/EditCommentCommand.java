@@ -66,7 +66,7 @@ public class EditCommentCommand
         
         EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L),
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L),
                 new FieldDefinition("MimeTypeName", FieldType.MIME_TYPE, true, null, null),
                 new FieldDefinition("ClobComment", FieldType.STRING, false, 1L, null),
                 new FieldDefinition("StringComment", FieldType.STRING, false, 1L, 512L)

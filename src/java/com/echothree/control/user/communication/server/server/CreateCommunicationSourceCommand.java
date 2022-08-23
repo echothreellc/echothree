@@ -58,7 +58,7 @@ public class CreateCommunicationSourceCommand
             new FieldDefinition("CommunicationSourceName", FieldType.ENTITY_NAME, true, null, null),
             new FieldDefinition("CommunicationSourceTypeName", FieldType.ENTITY_NAME, true, null, null),
             new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
-            new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+            new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         ));
         
         formEmailFieldDefinitions = Collections.unmodifiableList(Arrays.asList(

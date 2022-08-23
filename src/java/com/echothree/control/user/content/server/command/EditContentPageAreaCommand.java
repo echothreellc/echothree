@@ -81,7 +81,7 @@ public class EditContentPageAreaCommand
         
         EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("MimeTypeName", FieldType.MIME_TYPE, true, null, null),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L),
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L),
                 new FieldDefinition("ContentPageAreaClob", FieldType.STRING, false, 1L, null),
                 new FieldDefinition("ContentPageAreaUrl", FieldType.URL, false, 1L, 200L)
                 ));

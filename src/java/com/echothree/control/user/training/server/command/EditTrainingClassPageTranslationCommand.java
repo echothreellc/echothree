@@ -73,7 +73,7 @@ public class EditTrainingClassPageTranslationCommand
                 ));
 
         EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("Description", FieldType.STRING, true, 1L, 80L),
+                new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L),
                 new FieldDefinition("PageMimeTypeName", FieldType.MIME_TYPE, true, null, null),
                 new FieldDefinition("Page", FieldType.STRING, true, null, null)
                 ));
