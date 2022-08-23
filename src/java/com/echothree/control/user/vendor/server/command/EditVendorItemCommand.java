@@ -76,7 +76,7 @@ public class EditVendorItemCommand
         
         EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("VendorItemName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L),
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L),
                 new FieldDefinition("Priority", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("CancellationPolicyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("ReturnPolicyName", FieldType.ENTITY_NAME, false, null, null)

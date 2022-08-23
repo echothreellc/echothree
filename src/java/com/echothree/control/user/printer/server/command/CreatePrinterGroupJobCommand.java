@@ -63,7 +63,7 @@ public class CreatePrinterGroupJobCommand
                 new FieldDefinition("MimeTypeName", FieldType.MIME_TYPE, true, null, null),
                 new FieldDefinition("Copies", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Priority", FieldType.UNSIGNED_INTEGER, true, 1L, 100L),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L),
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L),
                 new FieldDefinition("Clob", FieldType.STRING, false, 1L, null)
                 ));
     }

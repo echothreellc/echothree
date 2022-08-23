@@ -92,7 +92,7 @@ public class CreateSelectorNodeCommand
                 new FieldDefinition("IsRootSelectorNode", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SelectorNodeTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Negate", FieldType.BOOLEAN, true, null, null),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 ));
         
         booleanFormFieldDefinitions = Collections.unmodifiableList(Arrays.asList(

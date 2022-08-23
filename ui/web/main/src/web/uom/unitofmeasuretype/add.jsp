@@ -93,7 +93,7 @@
                     <tr>
                         <td align=right><fmt:message key="label.singularDescription" />:</td>
                         <td>
-                            <html:text property="singularDescription" size="60" maxlength="80" /> (*)
+                            <html:text property="singularDescription" size="60" maxlength="132" /> (*)
                             <et:validationErrors id="errorMessage" property="SingularDescription">
                                 <p><c:out value="${errorMessage}" /></p>
                             </et:validationErrors>
@@ -102,7 +102,7 @@
                     <tr>
                         <td align=right><fmt:message key="label.pluralDescription" />:</td>
                         <td>
-                            <html:text property="pluralDescription" size="60" maxlength="80" /> (*)
+                            <html:text property="pluralDescription" size="60" maxlength="132" /> (*)
                             <et:validationErrors id="errorMessage" property="PluralDescription">
                                 <p><c:out value="${errorMessage}" /></p>
                             </et:validationErrors>

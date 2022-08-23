@@ -74,7 +74,7 @@ public class CreatePurchaseInvoiceCommand
                 new FieldDefinition("TermName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("FreeOnBoardName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("Reference", FieldType.STRING, false, 1L, 40L),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 ));
     }
     

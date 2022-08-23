@@ -70,7 +70,7 @@ public class EditContactEmailAddressCommand
         EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("AllowSolicitation", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("EmailAddress", FieldType.EMAIL_ADDRESS, true, null, null),
-                new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+                new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 ));
     }
     

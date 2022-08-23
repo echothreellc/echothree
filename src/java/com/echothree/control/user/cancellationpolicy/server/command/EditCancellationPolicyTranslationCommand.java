@@ -71,7 +71,7 @@ public class EditCancellationPolicyTranslationCommand
                 ));
 
         EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("Description", FieldType.STRING, true, 1L, 80L),
+                new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L),
                 new FieldDefinition("PolicyMimeTypeName", FieldType.MIME_TYPE, false, null, null),
                 new FieldDefinition("Policy", FieldType.STRING, false, null, null)
                 ));

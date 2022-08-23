@@ -69,7 +69,7 @@ public class EditTrainingClassTranslationCommand
                 ));
 
         EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("Description", FieldType.STRING, true, 1L, 80L),
+                new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L),
                 new FieldDefinition("OverviewMimeTypeName", FieldType.MIME_TYPE, false, null, null),
                 new FieldDefinition("Overview", FieldType.STRING, false, null, null),
                 new FieldDefinition("IntroductionMimeTypeName", FieldType.MIME_TYPE, false, null, null),

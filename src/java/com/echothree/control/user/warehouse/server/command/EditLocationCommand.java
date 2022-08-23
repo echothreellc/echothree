@@ -70,7 +70,7 @@ public class EditLocationCommand
             new FieldDefinition("LocationUseTypeName", FieldType.ENTITY_NAME, true, null, null),
             new FieldDefinition("Velocity", FieldType.UNSIGNED_INTEGER, true, null, null),
             new FieldDefinition("InventoryLocationGroupName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+            new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         ));
     }
     

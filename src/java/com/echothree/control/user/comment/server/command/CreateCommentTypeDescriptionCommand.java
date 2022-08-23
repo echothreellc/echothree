@@ -46,7 +46,7 @@ public class CreateCommentTypeDescriptionCommand
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, true, null, null),
                 new FieldDefinition("CommentTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("Description", FieldType.STRING, true, 1L, 80L)
+                new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 ));
     }
     

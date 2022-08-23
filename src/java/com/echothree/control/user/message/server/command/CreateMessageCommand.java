@@ -55,7 +55,7 @@ public class CreateMessageCommand
             new FieldDefinition("ClobMessage", FieldType.STRING, false, 1L, null),
             new FieldDefinition("StringMessage", FieldType.STRING, false, 1L, 512L),
             // BlobMessage is not validated
-            new FieldDefinition("Description", FieldType.STRING, false, 1L, 80L)
+            new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         ));
     }
     

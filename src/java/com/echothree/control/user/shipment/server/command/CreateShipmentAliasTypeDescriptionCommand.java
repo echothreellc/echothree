@@ -58,7 +58,7 @@ public class CreateShipmentAliasTypeDescriptionCommand
                 new FieldDefinition("ShipmentTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ShipmentAliasTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("Description", FieldType.STRING, true, 1L, 80L)
+                new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
                 ));
     }
     
