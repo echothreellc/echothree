@@ -78,7 +78,7 @@
                     <tr>
                         <td align=right><fmt:message key="label.description" />:</td>
                         <td>
-                            <html:text property="description" size="60" maxlength="80" />
+                            <html:text property="description" size="60" maxlength="132" />
                             <et:validationErrors id="errorMessage" property="Description">
                                 <p><c:out value="${errorMessage}" /></p>
                             </et:validationErrors>
