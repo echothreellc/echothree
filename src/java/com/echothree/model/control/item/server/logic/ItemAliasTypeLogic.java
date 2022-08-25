@@ -27,7 +27,7 @@ import com.echothree.model.control.item.common.exception.UnknownItemAliasTypeNam
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.database.ItemEntityInstanceResult;
 import com.echothree.model.control.item.server.database.ItemEntityInstancesByItemAliasTypeQuery;
-import com.echothree.model.control.queue.common.QueueConstants;
+import com.echothree.model.control.queue.common.QueueTypes;
 import com.echothree.model.control.queue.server.control.QueueControl;
 import com.echothree.model.control.queue.server.logic.QueueTypeLogic;
 import com.echothree.model.data.item.common.pk.ItemAliasTypePK;
@@ -160,7 +160,7 @@ public class ItemAliasTypeLogic
 
         if(itemAliasTypeDetailValue.getItemAliasTypeNameHasBeenModified()) {
             final var queueControl = Session.getModelController(QueueControl.class);
-            final var queueTypePK = QueueTypeLogic.getInstance().getQueueTypeByName(null, QueueConstants.QueueType_INDEXING).getPrimaryKey();
+            final var queueTypePK = QueueTypeLogic.getInstance().getQueueTypeByName(null, QueueTypes.INDEXING.name()).getPrimaryKey();
             final var itemEntityInstanceResults = getItemEntityInstanceResultsByItemAliasType(itemAliasTypeDetailValue.getItemAliasTypePK());
             final var queuedEntities = new ArrayList<QueuedEntityValue>(itemEntityInstanceResults.size());
 

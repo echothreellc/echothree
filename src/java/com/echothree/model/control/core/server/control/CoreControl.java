@@ -201,7 +201,7 @@ import com.echothree.model.control.core.server.transfer.TextTransformationDescri
 import com.echothree.model.control.core.server.transfer.TextTransformationTransferCache;
 import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.message.server.control.MessageControl;
-import com.echothree.model.control.queue.common.QueueConstants;
+import com.echothree.model.control.queue.common.QueueTypes;
 import com.echothree.model.control.queue.common.exception.UnknownQueueTypeNameException;
 import com.echothree.model.control.queue.server.logic.QueuedEntityLogic;
 import com.echothree.model.control.rating.server.control.RatingControl;
@@ -12984,7 +12984,7 @@ public class CoreControl
 
         if(indexControl.isEntityTypeUsedByIndexTypes(entityInstance.getEntityType())) {
             try {
-                QueuedEntityLogic.getInstance().createQueuedEntityUsingNames(null, QueueConstants.QueueType_INDEXING, entityInstance);
+                QueuedEntityLogic.getInstance().createQueuedEntityUsingNames(null, QueueTypes.INDEXING.name(), entityInstance);
             } catch(UnknownQueueTypeNameException uqtne) {
                 // This will be thrown early in the setup process because the QueueType has not yet been created.
                 // Log as an informational message, but otherwise ignore it.
