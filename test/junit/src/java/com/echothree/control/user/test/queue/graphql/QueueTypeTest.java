@@ -17,7 +17,7 @@
 package com.echothree.control.user.test.queue.graphql;
 
 import com.echothree.control.user.test.common.graphql.GraphQlTestCase;
-import com.echothree.model.control.queue.common.QueueConstants;
+import com.echothree.model.control.queue.common.QueueTypes;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import org.junit.Test;
 
@@ -42,7 +42,7 @@ public class QueueTypeTest
                         queuedEntityCount
                     }
                 }
-                """.formatted(QueueConstants.QueueType_INDEXING));
+                """.formatted(QueueTypes.INDEXING.name()));
         
         assertThat(getMap(queueTypeBody, "data.queueType")).isNull();
     }
@@ -81,7 +81,7 @@ public class QueueTypeTest
                         queuedEntityCount
                     }
                 }
-                """.formatted(QueueConstants.QueueType_INDEXING));
+                """.formatted(QueueTypes.INDEXING.name()));
 
         var queueType = getMap(queueTypeBody, "data.queueType");
 
@@ -153,7 +153,7 @@ public class QueueTypeTest
 
         boolean foundIndexing = false;
         for(var queueType : queueTypes) {
-            if(getString(queueType, "queueTypeName").equals(QueueConstants.QueueType_INDEXING)) {
+            if(getString(queueType, "queueTypeName").equals(QueueTypes.INDEXING.name())) {
                 foundIndexing = true;
                 break;
             }

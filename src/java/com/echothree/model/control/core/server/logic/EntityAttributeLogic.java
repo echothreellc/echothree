@@ -66,7 +66,7 @@ import com.echothree.model.control.core.server.database.EntityInstancesByNameEnt
 import com.echothree.model.control.core.server.database.EntityInstancesByStringEntityAttributeQuery;
 import com.echothree.model.control.core.server.database.EntityInstancesByTimeEntityAttributeQuery;
 import com.echothree.model.control.index.server.control.IndexControl;
-import com.echothree.model.control.queue.common.QueueConstants;
+import com.echothree.model.control.queue.common.QueueTypes;
 import com.echothree.model.control.queue.server.control.QueueControl;
 import com.echothree.model.control.queue.server.logic.QueueTypeLogic;
 import com.echothree.model.control.sequence.common.SequenceTypes;
@@ -517,7 +517,7 @@ public class EntityAttributeLogic
             
             if(indexControl.countIndexTypesByEntityType(entityAttribute.getLastDetail().getEntityType()) > 0) {
                 final var queueControl = Session.getModelController(QueueControl.class);
-                final var queueTypePK = QueueTypeLogic.getInstance().getQueueTypeByName(null, QueueConstants.QueueType_INDEXING).getPrimaryKey();
+                final var queueTypePK = QueueTypeLogic.getInstance().getQueueTypeByName(null, QueueTypes.INDEXING.name()).getPrimaryKey();
                 final var entityInstanceResults = getEntityInstanceResultsByEntityAttributeTypeName(entityAttribute);
                 final var queuedEntities = new ArrayList<QueuedEntityValue>(entityInstanceResults.size());
 
@@ -770,7 +770,7 @@ public class EntityAttributeLogic
             
             if(indexControl.countIndexTypesByEntityType(entityAttributeDetail.getEntityType()) > 0) {
                 var queueControl = Session.getModelController(QueueControl.class);
-                QueueTypePK queueTypePK = QueueTypeLogic.getInstance().getQueueTypeByName(null, QueueConstants.QueueType_INDEXING).getPrimaryKey();
+                QueueTypePK queueTypePK = QueueTypeLogic.getInstance().getQueueTypeByName(null, QueueTypes.INDEXING.name()).getPrimaryKey();
                 String entityAttributeTypeName = entityAttributeDetail.getEntityAttributeType().getEntityAttributeTypeName();
 
                 if(entityAttributeTypeName.equals(EntityAttributeTypes.LISTITEM.name())) {

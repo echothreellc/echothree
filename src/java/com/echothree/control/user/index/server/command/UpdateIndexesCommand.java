@@ -34,7 +34,7 @@ import com.echothree.model.control.offer.server.indexer.OfferIndexer;
 import com.echothree.model.control.offer.server.indexer.UseIndexer;
 import com.echothree.model.control.offer.server.indexer.UseTypeIndexer;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.queue.common.QueueConstants;
+import com.echothree.model.control.queue.common.QueueTypes;
 import com.echothree.model.control.queue.server.control.QueueControl;
 import com.echothree.model.control.queue.server.logic.QueueTypeLogic;
 import com.echothree.model.control.search.server.logic.SearchLogic;
@@ -229,7 +229,7 @@ public class UpdateIndexesCommand
     @Override
     protected BaseResult execute() {
         UpdateIndexesResult result = IndexResultFactory.getUpdateIndexesResult();
-        QueueType queueType = QueueTypeLogic.getInstance().getQueueTypeByName(this, QueueConstants.QueueType_INDEXING);
+        QueueType queueType = QueueTypeLogic.getInstance().getQueueTypeByName(this, QueueTypes.INDEXING.name());
         boolean indexingComplete = false; // Indexing is only complete when we can absolutely verify it as being complete.
         
         if(!hasExecutionErrors()) {

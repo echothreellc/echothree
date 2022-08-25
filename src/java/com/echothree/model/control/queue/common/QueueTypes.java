@@ -16,8 +16,8 @@
 
 package com.echothree.model.control.queue.common;
 
-public interface QueueConstants {
+public enum QueueTypes {
     
-    String QueueType_INDEXING = "INDEXING";
+    INDEXING,
 
 }
