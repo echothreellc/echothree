@@ -21,6 +21,7 @@ import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.server.analysis.ContactMechanismAnalyzer;
 import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchSortDirections;
 import com.echothree.model.control.search.server.search.BaseSearchEvaluator;
 import com.echothree.model.control.search.server.search.EntityInstancePKHolder;
 import com.echothree.model.data.party.server.entity.Language;
@@ -49,7 +50,7 @@ public class ContactMechanismSearchEvaluator
     @Override
     protected SortField[] getSortFields(String searchSortOrderName) {
         SortField sortField = null;
-        boolean reverse = searchSortDirection.getLastDetail().getSearchSortDirectionName().equals(SearchConstants.SearchSortDirection_DESCENDING);
+        boolean reverse = searchSortDirection.getLastDetail().getSearchSortDirectionName().equals(SearchSortDirections.DESCENDING.name());
         
         if(searchSortOrderName.equals(SearchConstants.SearchSortOrder_SCORE)) {
             sortField = new SortField(null, SortField.Type.SCORE, reverse);

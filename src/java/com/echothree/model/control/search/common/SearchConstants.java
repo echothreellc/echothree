@@ -24,10 +24,7 @@ public interface SearchConstants {
     
     String SearchDefaultOperator_AND = "AND";
     String SearchDefaultOperator_OR = "OR";
-    
-    String SearchSortDirection_ASCENDING = "ASCENDING";
-    String SearchSortDirection_DESCENDING = "DESCENDING";
-    
+
     String SearchKind_CONTACT_MECHANISM = "CONTACT_MECHANISM";
     String SearchKind_CONTENT_CATEGORY = "CONTENT_CATEGORY";
     String SearchKind_CUSTOMER = "CUSTOMER";
