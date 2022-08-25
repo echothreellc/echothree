@@ -16,11 +16,11 @@
 
 package com.echothree.model.control.search.common;
 
-public interface SearchUseTypes {
+public enum SearchUseTypes {
 
-    String APPEARANCE = "APPEARANCE";
-    String FACETS_ONLY = "FACETS_ONLY";
-    String INITIAL = "INITIAL";
-    String REFINEMENT = "REFINEMENT";
+    APPEARANCE,
+    FACETS_ONLY ,
+    INITIAL,
+    REFINEMENT,
 
 }
