@@ -46,17 +46,7 @@ public interface SearchConstants {
     String SearchKind_USE = "USE";
     String SearchKind_USE_TYPE = "USE_TYPE";
     String SearchKind_VENDOR = "VENDOR";
-    
-    String SearchType_CUSTOMER = "CUSTOMER";
-    String SearchType_EMPLOYEE = "EMPLOYEE";
-    String SearchType_HUMAN_RESOURCES = "HUMAN_RESOURCES";
-    String SearchType_IDENTIFY = "IDENTIFY";
-    String SearchType_ITEM_MAINTENANCE = "ITEM_MAINTENANCE";
-    String SearchType_LEAVE_MAINTENANCE = "LEAVE_MAINTENANCE";
-    String SearchType_ORDER_ENTRY = "ORDER_ENTRY";
-    String SearchType_SALES_ORDER_BATCH_MAINTENANCE = "SALES_ORDER_BATCH_MAINTENANCE";
-    String SearchType_VENDOR_REVIEW = "VENDOR_REVIEW";
-    
+
     String SearchSortOrder_CONTACT_MECHANISM_NAME = "CONTACT_MECHANISM_NAME";
     String SearchSortOrder_CONTENT_CATEGORY_NAME = "CONTENT_CATEGORY_NAME";
     String SearchSortOrder_CREATED_TIME = "CREATED_TIME";
