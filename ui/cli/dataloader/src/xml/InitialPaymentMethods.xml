@@ -792,8 +792,8 @@
         </paymentProcessorType>
     </paymentProcessorTypes>
     <paymentProcessors>
-        <paymentProcessor paymentProcessorTypeName="TEST_PAYMENT_PROCESSOR_TYPE" paymentProcessorName="TEST_PAYMENT_PROCESSOR" isDefault="true" sortOrder="1">
-            <paymentProcessorDescription languageIsoName="en" description="Test Payment Processor" />
+        <paymentProcessor paymentProcessorTypeName="SIMULATION" paymentProcessorName="SIMULATION" isDefault="true" sortOrder="1">
+            <paymentProcessorDescription languageIsoName="en" description="Simulation" />
             <paymentProcessorAction paymentProcessorActionTypeName="PREAUTHORIZE" />
             <paymentProcessorAction paymentProcessorActionTypeName="PREAUTHORIZATION_COMPLETION" />
             <paymentProcessorAction paymentProcessorActionTypeName="REFUND" />
@@ -820,7 +820,7 @@
             <paymentMethodDescription languageIsoName="en" description="COD" />
         </paymentMethod>
 -->
-        <paymentMethod paymentMethodTypeName="CREDIT_CARD" paymentMethodName="DISCOVER" paymentProcessorName="TEST_PAYMENT_PROCESSOR" isDefault="true"
+        <paymentMethod paymentMethodTypeName="CREDIT_CARD" paymentMethodName="DISCOVER" paymentProcessorName="SIMULATION" isDefault="true"
                 sortOrder="1" requestNameOnCard="true" requireNameOnCard="true" checkCardNumber="true" requestExpirationDate="true"
                 requireExpirationDate="true" checkExpirationDate="true" requestSecurityCode="true" requireSecurityCode="true"
                 retainCreditCard="true" retainSecurityCode="false"
@@ -828,7 +828,7 @@
                 securityCodeValidationPattern="^[0-9][0-9][0-9]$" requestBilling="true" requireBilling="true" requestIssuer="true" requireIssuer="false">
             <paymentMethodDescription languageIsoName="en" description="Discover" />
         </paymentMethod>
-        <paymentMethod paymentMethodTypeName="CREDIT_CARD" paymentMethodName="VISA" paymentProcessorName="TEST_PAYMENT_PROCESSOR" isDefault="false"
+        <paymentMethod paymentMethodTypeName="CREDIT_CARD" paymentMethodName="VISA" paymentProcessorName="SIMULATION" isDefault="false"
                 sortOrder="1" requestNameOnCard="true" requireNameOnCard="true" checkCardNumber="true" requestExpirationDate="true"
                 requireExpirationDate="true" checkExpirationDate="true" requestSecurityCode="true" requireSecurityCode="true"
                 retainCreditCard="true" retainSecurityCode="false"
@@ -836,7 +836,7 @@
                 securityCodeValidationPattern="^[0-9][0-9][0-9]$" requestBilling="true" requireBilling="true" requestIssuer="true" requireIssuer="false">
             <paymentMethodDescription languageIsoName="en" description="Visa" />
         </paymentMethod>
-        <paymentMethod paymentMethodTypeName="CREDIT_CARD" paymentMethodName="MASTERCARD" paymentProcessorName="TEST_PAYMENT_PROCESSOR" isDefault="false"
+        <paymentMethod paymentMethodTypeName="CREDIT_CARD" paymentMethodName="MASTERCARD" paymentProcessorName="SIMULATION" isDefault="false"
                 sortOrder="1" requestNameOnCard="true" requireNameOnCard="true" checkCardNumber="true" requestExpirationDate="true"
                 requireExpirationDate="true" checkExpirationDate="true" requestSecurityCode="true" requireSecurityCode="true"
                 retainCreditCard="true" retainSecurityCode="false"
@@ -844,7 +844,7 @@
                 securityCodeValidationPattern="^[0-9][0-9][0-9]$" requestBilling="true" requireBilling="true" requestIssuer="true" requireIssuer="false">
             <paymentMethodDescription languageIsoName="en" description="Mastercard" />
         </paymentMethod>
-        <paymentMethod paymentMethodTypeName="CREDIT_CARD" paymentMethodName="AMERICAN_EXPRESS" paymentProcessorName="TEST_PAYMENT_PROCESSOR" isDefault="false"
+        <paymentMethod paymentMethodTypeName="CREDIT_CARD" paymentMethodName="AMERICAN_EXPRESS" paymentProcessorName="SIMULATION" isDefault="false"
                 sortOrder="1" requestNameOnCard="true" requireNameOnCard="true" checkCardNumber="true" requestExpirationDate="true"
                 requireExpirationDate="true" checkExpirationDate="true" requestSecurityCode="true" requireSecurityCode="true"
                 retainCreditCard="true" retainSecurityCode="false"
