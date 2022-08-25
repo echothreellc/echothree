@@ -17,12 +17,7 @@
 package com.echothree.model.control.search.common;
 
 public interface SearchConstants {
-    
-    String SearchUseType_FACETS_ONLY = "FACETS_ONLY";
-    String SearchUseType_INITIAL = "INITIAL";
-    String SearchUseType_REFINEMENT = "REFINEMENT";
-    String SearchUseType_APPEARANCE = "APPEARANCE";
-    
+
     String SearchResultActionType_CONSIDERED = "CONSIDERED";
     String SearchResultActionType_SELECTED = "SELECTED";
     
