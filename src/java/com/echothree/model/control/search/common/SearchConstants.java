@@ -18,9 +18,6 @@ package com.echothree.model.control.search.common;
 
 public interface SearchConstants {
 
-    String SearchResultActionType_CONSIDERED = "CONSIDERED";
-    String SearchResultActionType_SELECTED = "SELECTED";
-    
     String SearchCheckSpellingActionType_NO_SUGGESTIONS = "NO_SUGGESTIONS";
     String SearchCheckSpellingActionType_HAS_SUGGESTIONS = "HAS_SUGGESTIONS";
     String SearchCheckSpellingActionType_IGNORED = "IGNORED";
