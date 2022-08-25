@@ -22,7 +22,7 @@ import com.echothree.control.user.search.common.form.SearchEmployeesForm;
 import com.echothree.control.user.search.common.result.GetEmployeeResultsResult;
 import com.echothree.control.user.search.common.result.SearchEmployeesResult;
 import com.echothree.model.control.employee.common.transfer.EmployeeResultTransfer;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchTypes;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -64,7 +64,7 @@ public class MainAction
         GetEmployeeResultsForm commandForm = SearchUtil.getHome().getGetEmployeeResultsForm();
         String partyName = null;
         
-        commandForm.setSearchTypeName(SearchConstants.SearchType_HUMAN_RESOURCES);
+        commandForm.setSearchTypeName(SearchTypes.HUMAN_RESOURCES.name());
         
         CommandResult commandResult = SearchUtil.getHome().getEmployeeResults(getUserVisitPK(request), commandForm);
         ExecutionResult executionResult = commandResult.getExecutionResult();
@@ -90,7 +90,7 @@ public class MainAction
         if(wasPost(request)) {
             SearchEmployeesForm commandForm = SearchUtil.getHome().getSearchEmployeesForm();
 
-            commandForm.setSearchTypeName(SearchConstants.SearchType_HUMAN_RESOURCES);
+            commandForm.setSearchTypeName(SearchTypes.HUMAN_RESOURCES.name());
             commandForm.setFirstName(firstName);
             commandForm.setFirstNameSoundex(actionForm.getFirstNameSoundex().toString());
             commandForm.setMiddleName(middleName);

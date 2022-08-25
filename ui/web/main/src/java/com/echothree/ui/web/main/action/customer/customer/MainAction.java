@@ -22,7 +22,7 @@ import com.echothree.control.user.search.common.form.SearchCustomersForm;
 import com.echothree.control.user.search.common.result.GetCustomerResultsResult;
 import com.echothree.control.user.search.common.result.SearchCustomersResult;
 import com.echothree.model.control.customer.common.transfer.CustomerResultTransfer;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchTypes;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -64,7 +64,7 @@ public class MainAction
         GetCustomerResultsForm commandForm = SearchUtil.getHome().getGetCustomerResultsForm();
         String partyName = null;
         
-        commandForm.setSearchTypeName(SearchConstants.SearchType_ORDER_ENTRY);
+        commandForm.setSearchTypeName(SearchTypes.ORDER_ENTRY.name());
         
         CommandResult commandResult = SearchUtil.getHome().getCustomerResults(getUserVisitPK(request), commandForm);
         ExecutionResult executionResult = commandResult.getExecutionResult();
@@ -90,7 +90,7 @@ public class MainAction
         if(wasPost(request)) {
             SearchCustomersForm commandForm = SearchUtil.getHome().getSearchCustomersForm();
 
-            commandForm.setSearchTypeName(SearchConstants.SearchType_ORDER_ENTRY);
+            commandForm.setSearchTypeName(SearchTypes.ORDER_ENTRY.name());
             commandForm.setCustomerTypeName(actionForm.getCustomerTypeChoice());
             commandForm.setFirstName(firstName);
             commandForm.setFirstNameSoundex(actionForm.getFirstNameSoundex().toString());

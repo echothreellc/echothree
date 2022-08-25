@@ -19,8 +19,8 @@ package com.echothree.ui.web.main.action.humanresources.leave;
 import com.echothree.control.user.search.common.SearchUtil;
 import com.echothree.control.user.search.common.form.GetLeaveResultsForm;
 import com.echothree.control.user.search.common.result.GetLeaveResultsResult;
-import com.echothree.model.control.search.common.SearchConstants;
 import com.echothree.model.control.search.common.SearchOptions;
+import com.echothree.model.control.search.common.SearchTypes;
 import com.echothree.model.data.search.common.SearchResultConstants;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -66,7 +66,7 @@ public class ResultAction
         GetLeaveResultsForm commandForm = SearchUtil.getHome().getGetLeaveResultsForm();
         String results = request.getParameter(ParameterConstants.RESULTS);
 
-        commandForm.setSearchTypeName(SearchConstants.SearchType_LEAVE_MAINTENANCE);
+        commandForm.setSearchTypeName(SearchTypes.LEAVE_MAINTENANCE.name());
 
         Set<String> options = new HashSet<>();
         options.add(SearchOptions.LeaveResultIncludeLeave);

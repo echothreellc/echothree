@@ -20,8 +20,8 @@ import com.echothree.control.user.search.common.SearchUtil;
 import com.echothree.control.user.search.common.form.GetEmployeeResultsForm;
 import com.echothree.control.user.search.common.result.GetEmployeeResultsResult;
 import com.echothree.model.control.party.common.PartyOptions;
-import com.echothree.model.control.search.common.SearchConstants;
 import com.echothree.model.control.search.common.SearchOptions;
+import com.echothree.model.control.search.common.SearchTypes;
 import com.echothree.model.data.search.common.SearchResultConstants;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -67,7 +67,7 @@ public class ResultAction
         GetEmployeeResultsForm commandForm = SearchUtil.getHome().getGetEmployeeResultsForm();
         String results = request.getParameter(ParameterConstants.RESULTS);
 
-        commandForm.setSearchTypeName(SearchConstants.SearchType_HUMAN_RESOURCES);
+        commandForm.setSearchTypeName(SearchTypes.HUMAN_RESOURCES.name());
 
         Set<String> options = new HashSet<>();
         options.add(SearchOptions.EmployeeResultIncludeEmployee);

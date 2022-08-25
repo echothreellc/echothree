@@ -22,7 +22,7 @@ import com.echothree.control.user.search.common.form.SearchLeavesForm;
 import com.echothree.control.user.search.common.result.GetLeaveResultsResult;
 import com.echothree.control.user.search.common.result.SearchLeavesResult;
 import com.echothree.model.control.employee.common.transfer.LeaveResultTransfer;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchTypes;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -64,7 +64,7 @@ public class SearchAction
         GetLeaveResultsForm commandForm = SearchUtil.getHome().getGetLeaveResultsForm();
         String leaveName = null;
         
-        commandForm.setSearchTypeName(SearchConstants.SearchType_LEAVE_MAINTENANCE);
+        commandForm.setSearchTypeName(SearchTypes.LEAVE_MAINTENANCE.name());
         
         CommandResult commandResult = SearchUtil.getHome().getLeaveResults(getUserVisitPK(request), commandForm);
         ExecutionResult executionResult = commandResult.getExecutionResult();
@@ -87,7 +87,7 @@ public class SearchAction
         if(wasPost(request)) {
             SearchLeavesForm commandForm = SearchUtil.getHome().getSearchLeavesForm();
 
-            commandForm.setSearchTypeName(SearchConstants.SearchType_LEAVE_MAINTENANCE);
+            commandForm.setSearchTypeName(SearchTypes.LEAVE_MAINTENANCE.name());
             commandForm.setLeaveName(actionForm.getLeaveName());
             commandForm.setLeaveTypeName(actionForm.getLeaveTypeChoice());
             commandForm.setLeaveReasonName(actionForm.getLeaveReasonChoice());

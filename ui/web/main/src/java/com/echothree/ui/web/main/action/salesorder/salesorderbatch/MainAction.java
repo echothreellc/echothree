@@ -22,7 +22,7 @@ import com.echothree.control.user.search.common.form.SearchSalesOrderBatchesForm
 import com.echothree.control.user.search.common.result.GetSalesOrderBatchResultsResult;
 import com.echothree.control.user.search.common.result.SearchSalesOrderBatchesResult;
 import com.echothree.model.control.sales.common.transfer.SalesOrderBatchResultTransfer;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchTypes;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -65,7 +65,7 @@ public class MainAction
         GetSalesOrderBatchResultsForm commandForm = SearchUtil.getHome().getGetSalesOrderBatchResultsForm();
         String batchName = null;
         
-        commandForm.setSearchTypeName(SearchConstants.SearchType_SALES_ORDER_BATCH_MAINTENANCE);
+        commandForm.setSearchTypeName(SearchTypes.SALES_ORDER_BATCH_MAINTENANCE.name());
         
         CommandResult commandResult = SearchUtil.getHome().getSalesOrderBatchResults(getUserVisitPK(request), commandForm);
         ExecutionResult executionResult = commandResult.getExecutionResult();
@@ -91,7 +91,7 @@ public class MainAction
             if(wasPost(request)) {
                 SearchSalesOrderBatchesForm commandForm = SearchUtil.getHome().getSearchSalesOrderBatchesForm();
 
-                commandForm.setSearchTypeName(SearchConstants.SearchType_SALES_ORDER_BATCH_MAINTENANCE);
+                commandForm.setSearchTypeName(SearchTypes.SALES_ORDER_BATCH_MAINTENANCE.name());
                 commandForm.setBatchName(actionForm.getBatchName());
                 commandForm.setCurrencyIsoName(actionForm.getCurrencyChoice());
                 commandForm.setPaymentMethodName(actionForm.getPaymentMethodChoice());
