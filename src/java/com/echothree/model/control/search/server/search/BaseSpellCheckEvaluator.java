@@ -18,6 +18,7 @@ package com.echothree.model.control.search.server.search;
 
 import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.party.common.Languages;
+import com.echothree.model.control.search.common.SearchCheckSpellingActionTypes;
 import com.echothree.model.control.search.common.SearchConstants;
 import com.echothree.model.control.search.common.exception.ComplexQueriesUnsupportedException;
 import com.echothree.model.control.search.common.exception.FieldRequiredException;
@@ -214,11 +215,11 @@ public abstract class BaseSpellCheckEvaluator
             String searchCheckSpellingActionTypeName;
             
             if(analyzedWord == null) {
-                searchCheckSpellingActionTypeName = SearchConstants.SearchCheckSpellingActionType_IGNORED;
+                searchCheckSpellingActionTypeName = SearchCheckSpellingActionTypes.IGNORED.name();
             } else if(checkSpellingSuggestions == null) {
-                searchCheckSpellingActionTypeName = SearchConstants.SearchCheckSpellingActionType_NO_SUGGESTIONS;
+                searchCheckSpellingActionTypeName = SearchCheckSpellingActionTypes.NO_SUGGESTIONS.name();
             } else {
-                searchCheckSpellingActionTypeName = SearchConstants.SearchCheckSpellingActionType_HAS_SUGGESTIONS;
+                searchCheckSpellingActionTypeName = SearchCheckSpellingActionTypes.HAS_SUGGESTIONS.name();
             }
             
             checkSpellingWords.add(new CheckSpellingWordTransfer(word,

@@ -18,10 +18,6 @@ package com.echothree.model.control.search.common;
 
 public interface SearchConstants {
 
-    String SearchCheckSpellingActionType_NO_SUGGESTIONS = "NO_SUGGESTIONS";
-    String SearchCheckSpellingActionType_HAS_SUGGESTIONS = "HAS_SUGGESTIONS";
-    String SearchCheckSpellingActionType_IGNORED = "IGNORED";
-    
     String SearchDefaultOperator_AND = "AND";
     String SearchDefaultOperator_OR = "OR";
 
