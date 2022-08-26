@@ -16,19 +16,9 @@
 
 package com.echothree.model.control.search.server.graphql;
 
-import com.echothree.control.user.search.common.form.CheckItemSpellingForm;
-import com.echothree.control.user.search.common.form.GetItemResultsForm;
 import com.echothree.control.user.search.common.result.CheckItemSpellingResult;
-import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.control.search.common.SearchConstants;
-import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
-import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
-import graphql.annotations.annotationTypes.GraphQLNonNull;
-import graphql.schema.DataFetchingEnvironment;
-import java.util.Collections;
-import java.util.List;
 
 @GraphQLDescription("check item spelling object")
 @GraphQLName("CheckItemSpelling")

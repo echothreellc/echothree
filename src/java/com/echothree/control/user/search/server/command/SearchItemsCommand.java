@@ -21,7 +21,7 @@ import com.echothree.control.user.search.common.result.SearchItemsResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.control.party.server.logic.LanguageLogic;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.item.server.search.ItemSearchEvaluator;
 import com.echothree.model.control.search.server.logic.SearchLogic;
@@ -42,7 +42,6 @@ import com.echothree.model.data.search.server.entity.SearchType;
 import com.echothree.model.data.search.server.entity.SearchUseType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowStep;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -95,7 +94,7 @@ public class SearchItemsCommand
         
         if(parameterCount < 2) {
             SearchLogic searchLogic = SearchLogic.getInstance();
-            SearchKind searchKind = searchLogic.getSearchKindByName(null, SearchConstants.SearchKind_ITEM);
+            SearchKind searchKind = searchLogic.getSearchKindByName(null, SearchKinds.ITEM.name());
 
             if(!hasExecutionErrors()) {
                 String searchTypeName = form.getSearchTypeName();

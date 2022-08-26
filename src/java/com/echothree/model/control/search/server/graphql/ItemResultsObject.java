@@ -26,7 +26,7 @@ import com.echothree.model.control.graphql.server.graphql.count.CountingDataConn
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.graphql.ItemObject;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.data.search.common.SearchResultConstants;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
@@ -42,7 +42,7 @@ public class ItemResultsObject
         extends BaseResultsObject<GetItemResultsForm> {
 
     public ItemResultsObject(GetItemResultsForm form) {
-        super(ComponentVendors.ECHOTHREE.name(), EntityTypes.Item.name(), SearchConstants.SearchKind_ITEM, form);
+        super(ComponentVendors.ECHOTHREE.name(), EntityTypes.Item.name(), SearchKinds.ITEM.name(), form);
     }
 
     @GraphQLField

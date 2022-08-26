@@ -20,7 +20,7 @@ import com.echothree.control.user.search.common.form.GetSalesOrderResultsForm;
 import com.echothree.control.user.search.common.result.GetSalesOrderResultsResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.sales.server.control.SalesOrderControl;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.data.search.server.entity.SearchKind;
@@ -58,7 +58,7 @@ public class GetSalesOrderResultsCommand
     protected BaseResult execute() {
         GetSalesOrderResultsResult result = SearchResultFactory.getGetSalesOrderResultsResult();
         var searchControl = Session.getModelController(SearchControl.class);
-        SearchKind searchKind = searchControl.getSearchKindByName(SearchConstants.SearchKind_SALES_ORDER);
+        SearchKind searchKind = searchControl.getSearchKindByName(SearchKinds.SALES_ORDER.name());
         
         if(searchKind != null) {
             String searchTypeName = form.getSearchTypeName();
@@ -80,10 +80,10 @@ public class GetSalesOrderResultsCommand
                     addExecutionError(ExecutionErrors.UnknownUserVisitSearch.name());
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownSearchTypeName.name(), SearchConstants.SearchKind_SALES_ORDER, searchTypeName);
+                addExecutionError(ExecutionErrors.UnknownSearchTypeName.name(), SearchKinds.SALES_ORDER.name(), searchTypeName);
             }
         } else {
-            addExecutionError(ExecutionErrors.UnknownSearchKindName.name(), SearchConstants.SearchKind_SALES_ORDER);
+            addExecutionError(ExecutionErrors.UnknownSearchKindName.name(), SearchKinds.SALES_ORDER.name());
         }
         
         return result;

@@ -19,7 +19,7 @@ package com.echothree.control.user.search.server.command;
 import com.echothree.control.user.search.common.form.CountContactMechanismResultsForm;
 import com.echothree.control.user.search.common.result.CountContactMechanismResultsResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 
@@ -33,7 +33,7 @@ public class CountContactMechanismResultsCommand
     
     @Override
     protected BaseResult execute() {
-        return execute(SearchConstants.SearchKind_CONTACT_MECHANISM, SearchResultFactory.getCountContactMechanismResultsResult());
+        return execute(SearchKinds.CONTACT_MECHANISM.name(), SearchResultFactory.getCountContactMechanismResultsResult());
     }
     
 }

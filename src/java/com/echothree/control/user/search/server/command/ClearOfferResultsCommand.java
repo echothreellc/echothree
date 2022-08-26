@@ -17,7 +17,7 @@
 package com.echothree.control.user.search.server.command;
 
 import com.echothree.control.user.search.common.form.ClearOfferResultsForm;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 
@@ -31,7 +31,7 @@ public class ClearOfferResultsCommand
     
     @Override
     protected BaseResult execute() {
-        return execute(SearchConstants.SearchKind_OFFER);
+        return execute(SearchKinds.OFFER.name());
     }
     
 }

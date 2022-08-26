@@ -26,7 +26,8 @@ import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
 import com.echothree.model.control.customer.server.search.CustomerSearchEvaluator;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.search.ItemSearchEvaluator;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchKinds;
+import com.echothree.model.control.search.common.SearchTypes;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -175,8 +176,8 @@ public class IdentifyCommand
                 SecurityRoleGroups.Customer.name(), SecurityRoles.Search.name())) {
             var userVisit = getUserVisit();
             var searchLogic = SearchLogic.getInstance();
-            var searchKind = searchLogic.getSearchKindByName(null, SearchConstants.SearchKind_CUSTOMER);
-            var searchType = searchLogic.getSearchTypeByName(null, searchKind, SearchConstants.SearchType_IDENTIFY);
+            var searchKind = searchLogic.getSearchKindByName(null, SearchKinds.CUSTOMER.name());
+            var searchType = searchLogic.getSearchTypeByName(null, searchKind, SearchTypes.IDENTIFY.name());
 
             // First attempt using a first and/or last name isolated from target.
             executeCustomerSearch(userVisit, entityInstances, searchLogic, searchKind, searchType,
@@ -219,8 +220,8 @@ public class IdentifyCommand
                 SecurityRoleGroups.Vendor.name(), SecurityRoles.Search.name())) {
             var userVisit = getUserVisit();
             var searchLogic = SearchLogic.getInstance();
-            var searchKind = searchLogic.getSearchKindByName(null, SearchConstants.SearchKind_VENDOR);
-            var searchType = searchLogic.getSearchTypeByName(null, searchKind, SearchConstants.SearchType_IDENTIFY);
+            var searchKind = searchLogic.getSearchKindByName(null, SearchKinds.VENDOR.name());
+            var searchType = searchLogic.getSearchTypeByName(null, searchKind, SearchTypes.IDENTIFY.name());
 
             // First attempt using a first and/or last name isolated from target.
             executeVendorSearch(userVisit, entityInstances, searchLogic, searchKind, searchType,
@@ -257,8 +258,8 @@ public class IdentifyCommand
                 SecurityRoleGroups.Item.name(), SecurityRoles.Search.name())) {
             var userVisit = getUserVisit();
             var searchLogic = SearchLogic.getInstance();
-            var searchKind = searchLogic.getSearchKindByName(null, SearchConstants.SearchKind_ITEM);
-            var searchType = searchLogic.getSearchTypeByName(null, searchKind, SearchConstants.SearchType_IDENTIFY);
+            var searchKind = searchLogic.getSearchKindByName(null, SearchKinds.ITEM.name());
+            var searchType = searchLogic.getSearchTypeByName(null, searchKind, SearchTypes.IDENTIFY.name());
 
             executeItemSearch(userVisit, entityInstances, searchLogic, searchKind, searchType, target);
         }

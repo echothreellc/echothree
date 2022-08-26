@@ -20,7 +20,7 @@ import com.echothree.control.user.search.common.form.CountEmployeeResultsForm;
 import com.echothree.control.user.search.common.result.CountEmployeeResultsResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -52,7 +52,7 @@ public class CountEmployeeResultsCommand
     
     @Override
     protected BaseResult execute() {
-        return execute(SearchConstants.SearchKind_EMPLOYEE, SearchResultFactory.getCountEmployeeResultsResult());
+        return execute(SearchKinds.EMPLOYEE.name(), SearchResultFactory.getCountEmployeeResultsResult());
     }
     
 }

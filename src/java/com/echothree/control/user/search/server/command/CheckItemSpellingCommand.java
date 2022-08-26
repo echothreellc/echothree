@@ -21,7 +21,7 @@ import com.echothree.control.user.search.common.result.CheckItemSpellingResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.item.server.search.ItemSpellCheckEvaluator;
 import com.echothree.model.control.party.server.logic.LanguageLogic;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -54,7 +54,7 @@ public class CheckItemSpellingCommand
     protected BaseResult execute() {
         var result = SearchResultFactory.getCheckItemSpellingResult();
         var searchLogic = SearchLogic.getInstance();
-        var searchKind = searchLogic.getSearchKindByName(null, SearchConstants.SearchKind_ITEM);
+        var searchKind = searchLogic.getSearchKindByName(null, SearchKinds.ITEM.name());
 
         if(!hasExecutionErrors()) {
             var searchTypeName = form.getSearchTypeName();

@@ -21,7 +21,7 @@ import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.control.user.search.common.result.SearchVendorsResult;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.vendor.server.search.VendorSearchEvaluator;
 import com.echothree.model.control.search.server.logic.SearchLogic;
@@ -89,7 +89,7 @@ public class SearchVendorsCommand
     protected BaseResult execute() {
         SearchVendorsResult result = SearchResultFactory.getSearchVendorsResult();
         var searchControl = Session.getModelController(SearchControl.class);
-        SearchKind searchKind = searchControl.getSearchKindByName(SearchConstants.SearchKind_VENDOR);
+        SearchKind searchKind = searchControl.getSearchKindByName(SearchKinds.VENDOR.name());
         
         if(searchKind != null) {
             String searchTypeName = form.getSearchTypeName();
@@ -145,10 +145,10 @@ public class SearchVendorsCommand
                     }
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownSearchTypeName.name(), SearchConstants.SearchKind_VENDOR, searchTypeName);
+                addExecutionError(ExecutionErrors.UnknownSearchTypeName.name(), SearchKinds.VENDOR.name(), searchTypeName);
             }
         } else {
-            addExecutionError(ExecutionErrors.UnknownSearchKindName.name(), SearchConstants.SearchKind_VENDOR);
+            addExecutionError(ExecutionErrors.UnknownSearchKindName.name(), SearchKinds.VENDOR.name());
         }
         
         return result;

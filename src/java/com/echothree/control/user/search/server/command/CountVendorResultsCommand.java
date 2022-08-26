@@ -20,7 +20,7 @@ import com.echothree.control.user.search.common.form.CountVendorResultsForm;
 import com.echothree.control.user.search.common.result.CountVendorResultsResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -51,7 +51,7 @@ public class CountVendorResultsCommand
     
     @Override
     protected BaseResult execute() {
-        return execute(SearchConstants.SearchKind_VENDOR, SearchResultFactory.getCountVendorResultsResult());
+        return execute(SearchKinds.VENDOR.name(), SearchResultFactory.getCountVendorResultsResult());
     }
     
 }

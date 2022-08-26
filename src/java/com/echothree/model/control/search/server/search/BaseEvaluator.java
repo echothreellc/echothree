@@ -22,7 +22,7 @@ import com.echothree.model.control.index.server.analysis.BasicAnalyzer;
 import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.index.server.logic.IndexLogic;
 import com.echothree.model.control.index.server.logic.IndexTypeLogic;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchDefaultOperators;
 import com.echothree.model.control.search.common.exception.SearchIOErrorException;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.user.server.control.UserControl;
@@ -162,15 +162,10 @@ public abstract class BaseEvaluator
         if(q != null) {
             QueryParser qp = fields == null ? new AttributeQueryParser(eea, getDateFields(), getDateTimeFields(), entityType, userVisit, field, getCachedAnalyzer(null, getLanguage()))
                     : new AttributeMultiFieldQueryParser(eea, getDateFields(), getDateTimeFields(), entityType, userVisit, fields, getCachedAnalyzer(null, getLanguage()));
-            String searchDefaultOperatorName = getSearchDefaultOperatorName();
 
-            switch(searchDefaultOperatorName) {
-                case SearchConstants.SearchDefaultOperator_AND:
-                    qp.setDefaultOperator(QueryParser.Operator.AND);
-                    break;
-                case SearchConstants.SearchDefaultOperator_OR:
-                    qp.setDefaultOperator(QueryParser.Operator.OR);
-                    break;
+            switch(SearchDefaultOperators.valueOf(getSearchDefaultOperatorName())) {
+                case AND -> qp.setDefaultOperator(QueryParser.Operator.AND);
+                case OR -> qp.setDefaultOperator(QueryParser.Operator.OR);
             }
 
             try {

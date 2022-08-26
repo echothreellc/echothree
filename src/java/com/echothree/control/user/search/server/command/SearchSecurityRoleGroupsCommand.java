@@ -20,7 +20,7 @@ import com.echothree.control.user.search.common.form.SearchSecurityRoleGroupsFor
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.control.user.search.common.result.SearchSecurityRoleGroupsResult;
 import com.echothree.model.control.party.server.logic.LanguageLogic;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.security.server.search.SecurityRoleGroupSearchEvaluator;
 import com.echothree.model.control.search.server.logic.SearchLogic;
@@ -75,7 +75,7 @@ public class SearchSecurityRoleGroupsCommand
     protected BaseResult execute() {
         SearchSecurityRoleGroupsResult result = SearchResultFactory.getSearchSecurityRoleGroupsResult();
         SearchLogic searchLogic = SearchLogic.getInstance();
-        SearchKind searchKind = searchLogic.getSearchKindByName(null, SearchConstants.SearchKind_SECURITY_ROLE_GROUP);
+        SearchKind searchKind = searchLogic.getSearchKindByName(null, SearchKinds.SECURITY_ROLE_GROUP.name());
 
         if(!hasExecutionErrors()) {
             String searchTypeName = form.getSearchTypeName();

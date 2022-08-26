@@ -19,7 +19,7 @@ package com.echothree.control.user.search.server.command;
 import com.echothree.control.user.search.common.form.CountOfferResultsForm;
 import com.echothree.control.user.search.common.result.CountOfferResultsResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 
@@ -33,7 +33,7 @@ public class CountOfferResultsCommand
     
     @Override
     protected BaseResult execute() {
-        return execute(SearchConstants.SearchKind_OFFER, SearchResultFactory.getCountOfferResultsResult());
+        return execute(SearchKinds.OFFER.name(), SearchResultFactory.getCountOfferResultsResult());
     }
     
 }

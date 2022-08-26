@@ -20,7 +20,7 @@ import com.echothree.control.user.search.common.form.CountCustomerResultsForm;
 import com.echothree.control.user.search.common.result.CountCustomerResultsResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -52,7 +52,7 @@ public class CountCustomerResultsCommand
     
     @Override
     protected BaseResult execute() {
-        return execute(SearchConstants.SearchKind_CUSTOMER, SearchResultFactory.getCountCustomerResultsResult());
+        return execute(SearchKinds.CUSTOMER.name(), SearchResultFactory.getCountCustomerResultsResult());
     }
     
 }

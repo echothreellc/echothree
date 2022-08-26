@@ -23,7 +23,7 @@ import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.forum.server.logic.ForumLogic;
 import com.echothree.model.control.party.server.logic.LanguageLogic;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.forum.server.search.ForumMessageSearchEvaluator;
 import com.echothree.model.control.search.server.logic.SearchLogic;
@@ -84,7 +84,7 @@ public class SearchForumMessagesCommand
     protected BaseResult execute() {
         SearchForumMessagesResult result = SearchResultFactory.getSearchForumMessagesResult();
         SearchLogic searchLogic = SearchLogic.getInstance();
-        SearchKind searchKind = searchLogic.getSearchKindByName(null, SearchConstants.SearchKind_FORUM_MESSAGE);
+        SearchKind searchKind = searchLogic.getSearchKindByName(null, SearchKinds.FORUM_MESSAGE.name());
 
         if(!hasExecutionErrors()) {
             String searchTypeName = form.getSearchTypeName();

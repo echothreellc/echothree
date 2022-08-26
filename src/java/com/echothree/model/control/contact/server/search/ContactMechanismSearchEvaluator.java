@@ -20,7 +20,8 @@ import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.server.analysis.ContactMechanismAnalyzer;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchSortOrders;
+import com.echothree.model.control.search.common.SearchSortDirections;
 import com.echothree.model.control.search.server.search.BaseSearchEvaluator;
 import com.echothree.model.control.search.server.search.EntityInstancePKHolder;
 import com.echothree.model.data.party.server.entity.Language;
@@ -49,15 +50,15 @@ public class ContactMechanismSearchEvaluator
     @Override
     protected SortField[] getSortFields(String searchSortOrderName) {
         SortField sortField = null;
-        boolean reverse = searchSortDirection.getLastDetail().getSearchSortDirectionName().equals(SearchConstants.SearchSortDirection_DESCENDING);
+        boolean reverse = searchSortDirection.getLastDetail().getSearchSortDirectionName().equals(SearchSortDirections.DESCENDING.name());
         
-        if(searchSortOrderName.equals(SearchConstants.SearchSortOrder_SCORE)) {
+        if(searchSortOrderName.equals(SearchSortOrders.SCORE.name())) {
             sortField = new SortField(null, SortField.Type.SCORE, reverse);
-        } else if(searchSortOrderName.equals(SearchConstants.SearchSortOrder_CONTACT_MECHANISM_NAME)) {
+        } else if(searchSortOrderName.equals(SearchSortOrders.CONTACT_MECHANISM_NAME.name())) {
             sortField = new SortField(IndexConstants.IndexField_ContactMechanismName + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse);
-        } else if(searchSortOrderName.equals(SearchConstants.SearchSortOrder_CREATED_TIME)) {
+        } else if(searchSortOrderName.equals(SearchSortOrders.CREATED_TIME.name())) {
             sortField = new SortField(IndexConstants.IndexField_CreatedTime, SortField.Type.LONG, reverse);
-        } else if(searchSortOrderName.equals(SearchConstants.SearchSortOrder_MODIFIED_TIME)) {
+        } else if(searchSortOrderName.equals(SearchSortOrders.MODIFIED_TIME.name())) {
             sortField = new SortField(IndexConstants.IndexField_ModifiedTime, SortField.Type.LONG, reverse);
         }
         
