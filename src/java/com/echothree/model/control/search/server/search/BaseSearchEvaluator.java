@@ -469,7 +469,7 @@ public abstract class BaseSearchEvaluator
         this.modifiedSince = modifiedSince;
     }
     
-    protected SortField[] getSortFields(String searchSortOrderName) {
+    protected SortField[] getSortFields(final String searchSortOrderName) {
         return null;
     }
     
@@ -477,7 +477,7 @@ public abstract class BaseSearchEvaluator
         String searchSortOrderName = getSearchSortOrderName();
         SortField[] sortFields = getSortFields(searchSortOrderName);
         
-        return sortFields == null || sortFields.length == 0 ? null : new Sort(getSortFields(searchSortOrderName));
+        return sortFields == null || sortFields.length == 0 ? null : new Sort(sortFields);
     }
     
     private void addCachedSearchIndexFields(final CachedSearch cachedSearch) {

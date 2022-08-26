@@ -20,7 +20,7 @@ import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.server.analysis.SecurityRoleGroupAnalyzer;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchSortOrders;
 import com.echothree.model.control.search.common.SearchSortDirections;
 import com.echothree.model.control.search.server.search.BaseSearchEvaluator;
 import com.echothree.model.control.search.server.search.EntityInstancePKHolder;
@@ -52,18 +52,18 @@ public class SecurityRoleGroupSearchEvaluator
         SortField[] sortFields = null;
         boolean reverse = searchSortDirection.getLastDetail().getSearchSortDirectionName().equals(SearchSortDirections.DESCENDING.name());
         
-        if(searchSortOrderName.equals(SearchConstants.SearchSortOrder_SCORE)) {
+        if(searchSortOrderName.equals(SearchSortOrders.SCORE.name())) {
             sortFields = new SortField[]{
                 new SortField(null, SortField.Type.SCORE, reverse),
                 new SortField(IndexConstants.IndexField_Description + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)
             };
-        } else if(searchSortOrderName.equals(SearchConstants.SearchSortOrder_DESCRIPTION)) {
+        } else if(searchSortOrderName.equals(SearchSortOrders.DESCRIPTION.name())) {
             sortFields = new SortField[]{new SortField(IndexConstants.IndexField_Description + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)};
-        } else if(searchSortOrderName.equals(SearchConstants.SearchSortOrder_SECURITY_ROLE_GROUP_NAME)) {
+        } else if(searchSortOrderName.equals(SearchSortOrders.SECURITY_ROLE_GROUP_NAME.name())) {
             sortFields = new SortField[]{new SortField(IndexConstants.IndexField_SecurityRoleGroupName + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)};
-        } else if(searchSortOrderName.equals(SearchConstants.SearchSortOrder_CREATED_TIME)) {
+        } else if(searchSortOrderName.equals(SearchSortOrders.CREATED_TIME.name())) {
             sortFields = new SortField[]{new SortField(IndexConstants.IndexField_CreatedTime, SortField.Type.LONG, reverse)};
-        } else if(searchSortOrderName.equals(SearchConstants.SearchSortOrder_MODIFIED_TIME)) {
+        } else if(searchSortOrderName.equals(SearchSortOrders.MODIFIED_TIME.name())) {
             sortFields = new SortField[]{new SortField(IndexConstants.IndexField_ModifiedTime, SortField.Type.LONG, reverse)};
         }
         
