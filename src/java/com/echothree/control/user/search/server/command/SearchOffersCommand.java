@@ -20,7 +20,7 @@ import com.echothree.control.user.search.common.form.SearchOffersForm;
 import com.echothree.control.user.search.common.result.SearchOffersResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.party.server.logic.LanguageLogic;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.offer.server.search.OfferSearchEvaluator;
 import com.echothree.model.control.search.server.logic.SearchLogic;
@@ -75,7 +75,7 @@ public class SearchOffersCommand
     protected BaseResult execute() {
         SearchOffersResult result = SearchResultFactory.getSearchOffersResult();
         SearchLogic searchLogic = SearchLogic.getInstance();
-        SearchKind searchKind = searchLogic.getSearchKindByName(null, SearchConstants.SearchKind_OFFER);
+        SearchKind searchKind = searchLogic.getSearchKindByName(null, SearchKinds.OFFER.name());
 
         if(!hasExecutionErrors()) {
             String searchTypeName = form.getSearchTypeName();

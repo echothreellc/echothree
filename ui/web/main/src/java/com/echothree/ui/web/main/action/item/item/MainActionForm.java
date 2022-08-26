@@ -34,7 +34,7 @@ import com.echothree.control.user.workflow.common.result.GetWorkflowStepChoicesR
 import com.echothree.model.control.item.common.choice.ItemTypeChoicesBean;
 import com.echothree.model.control.item.common.choice.ItemUseTypeChoicesBean;
 import com.echothree.model.control.item.common.workflow.ItemStatusConstants;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.search.common.SearchTypes;
 import com.echothree.model.control.search.common.choice.SearchDefaultOperatorChoicesBean;
 import com.echothree.model.control.search.common.choice.SearchSortDirectionChoicesBean;
@@ -148,7 +148,7 @@ public class MainActionForm
             try {
                 GetSearchDefaultOperatorChoicesForm form = SearchUtil.getHome().getGetSearchDefaultOperatorChoicesForm();
                 
-                form.setSearchKindName(SearchConstants.SearchKind_ITEM);
+                form.setSearchKindName(SearchKinds.ITEM.name());
                 form.setSearchTypeName(SearchTypes.ITEM_MAINTENANCE.name());
                 form.setDefaultSearchDefaultOperatorChoice(searchDefaultOperatorChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
@@ -173,7 +173,7 @@ public class MainActionForm
             try {
                 GetSearchSortOrderChoicesForm form = SearchUtil.getHome().getGetSearchSortOrderChoicesForm();
                 
-                form.setSearchKindName(SearchConstants.SearchKind_ITEM);
+                form.setSearchKindName(SearchKinds.ITEM.name());
                 form.setSearchTypeName(SearchTypes.ITEM_MAINTENANCE.name());
                 form.setDefaultSearchSortOrderChoice(searchSortOrderChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());
@@ -198,7 +198,7 @@ public class MainActionForm
             try {
                 GetSearchSortDirectionChoicesForm form = SearchUtil.getHome().getGetSearchSortDirectionChoicesForm();
                 
-                form.setSearchKindName(SearchConstants.SearchKind_ITEM);
+                form.setSearchKindName(SearchKinds.ITEM.name());
                 form.setSearchTypeName(SearchTypes.ITEM_MAINTENANCE.name());
                 form.setDefaultSearchSortDirectionChoice(searchSortDirectionChoice);
                 form.setAllowNullChoice(Boolean.TRUE.toString());

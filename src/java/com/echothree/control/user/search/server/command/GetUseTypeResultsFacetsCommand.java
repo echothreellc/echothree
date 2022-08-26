@@ -21,7 +21,7 @@ import com.echothree.control.user.search.common.result.GetUseTypeResultsFacetsRe
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 
@@ -35,7 +35,7 @@ public class GetUseTypeResultsFacetsCommand
 
     @Override
     protected BaseResult execute() {
-        return execute(ComponentVendors.ECHOTHREE.name(), EntityTypes.UseType.name(), SearchConstants.SearchKind_USE_TYPE,
+        return execute(ComponentVendors.ECHOTHREE.name(), EntityTypes.UseType.name(), SearchKinds.USE_TYPE.name(),
                 SearchResultFactory.getGetUseTypeResultsFacetsResult());
     }
 

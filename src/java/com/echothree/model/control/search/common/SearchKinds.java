@@ -14,24 +14,27 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.search.server.command;
+package com.echothree.model.control.search.common;
 
-import com.echothree.control.user.search.common.form.ClearUseResultsForm;
-import com.echothree.model.control.search.common.SearchKinds;
-import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.command.BaseResult;
+public enum SearchKinds {
 
-public class ClearUseResultsCommand
-        extends BaseClearResultsCommand<ClearUseResultsForm> {
-    
-    /** Creates a new instance of ClearUseResultsCommand */
-    public ClearUseResultsCommand(UserVisitPK userVisitPK, ClearUseResultsForm form) {
-        super(userVisitPK, form, null);
-    }
-    
-    @Override
-    protected BaseResult execute() {
-        return execute(SearchKinds.USE.name());
-    }
-    
+    CONTACT_MECHANISM,
+    CONTENT_CATEGORY,
+    CUSTOMER,
+    EMPLOYEE,
+    ENTITY_LIST_ITEM,
+    ENTITY_TYPE,
+    FORUM_MESSAGE,
+    HARMONIZED_TARIFF_SCHEDULE_CODE,
+    ITEM,
+    LEAVE,
+    OFFER,
+    SALES_ORDER,
+    SALES_ORDER_BATCH,
+    SECURITY_ROLE,
+    SECURITY_ROLE_GROUP,
+    USE,
+    USE_TYPE,
+    VENDOR,
+
 }

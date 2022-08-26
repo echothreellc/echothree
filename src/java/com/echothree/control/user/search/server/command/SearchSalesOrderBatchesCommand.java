@@ -23,8 +23,8 @@ import com.echothree.model.control.accounting.server.logic.CurrencyLogic;
 import com.echothree.model.control.batch.common.BatchConstants;
 import com.echothree.model.control.batch.server.logic.BatchLogic;
 import com.echothree.model.control.payment.server.logic.PaymentMethodLogic;
-import com.echothree.model.control.search.common.SearchConstants;
 import com.echothree.model.control.sales.server.search.SalesOrderBatchSearchEvaluator;
+import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.control.sales.common.workflow.SalesOrderBatchStatusConstants;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
@@ -76,7 +76,7 @@ public class SearchSalesOrderBatchesCommand
     protected BaseResult execute() {
         SearchLogic searchLogic = SearchLogic.getInstance();
         SearchSalesOrderBatchesResult result = SearchResultFactory.getSearchSalesOrderBatchesResult();
-        SearchKind searchKind = searchLogic.getSearchKindByName(null, SearchConstants.SearchKind_SALES_ORDER_BATCH);
+        SearchKind searchKind = searchLogic.getSearchKindByName(null, SearchKinds.SALES_ORDER_BATCH.name());
 
         if(!hasExecutionErrors()) {
             String searchTypeName = form.getSearchTypeName();

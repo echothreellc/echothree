@@ -23,7 +23,7 @@ import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.customer.server.search.CustomerSearchEvaluator;
 import com.echothree.model.control.search.server.logic.SearchLogic;
@@ -125,7 +125,7 @@ public class SearchCustomersCommand
     protected BaseResult execute() {
         var searchControl = Session.getModelController(SearchControl.class);
         SearchCustomersResult result = SearchResultFactory.getSearchCustomersResult();
-        SearchKind searchKind = searchControl.getSearchKindByName(SearchConstants.SearchKind_CUSTOMER);
+        SearchKind searchKind = searchControl.getSearchKindByName(SearchKinds.CUSTOMER.name());
         
         if(searchKind != null) {
             String searchTypeName = form.getSearchTypeName();
@@ -222,10 +222,10 @@ public class SearchCustomersCommand
                     addExecutionError(ExecutionErrors.UnknownCustomerTypeName.name(), customerTypeName);
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownSearchTypeName.name(), SearchConstants.SearchKind_CUSTOMER, searchTypeName);
+                addExecutionError(ExecutionErrors.UnknownSearchTypeName.name(), SearchKinds.CUSTOMER.name(), searchTypeName);
             }
         } else {
-            addExecutionError(ExecutionErrors.UnknownSearchKindName.name(), SearchConstants.SearchKind_CUSTOMER);
+            addExecutionError(ExecutionErrors.UnknownSearchKindName.name(), SearchKinds.CUSTOMER.name());
         }
         
         return result;

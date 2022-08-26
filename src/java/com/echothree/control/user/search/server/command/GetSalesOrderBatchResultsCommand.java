@@ -20,7 +20,7 @@ import com.echothree.control.user.search.common.form.GetSalesOrderBatchResultsFo
 import com.echothree.control.user.search.common.result.GetSalesOrderBatchResultsResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.sales.server.control.SalesOrderBatchControl;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.data.search.server.entity.SearchKind;
@@ -58,7 +58,7 @@ public class GetSalesOrderBatchResultsCommand
     protected BaseResult execute() {
         GetSalesOrderBatchResultsResult result = SearchResultFactory.getGetSalesOrderBatchResultsResult();
         var searchControl = Session.getModelController(SearchControl.class);
-        SearchKind searchKind = searchControl.getSearchKindByName(SearchConstants.SearchKind_SALES_ORDER_BATCH);
+        SearchKind searchKind = searchControl.getSearchKindByName(SearchKinds.SALES_ORDER_BATCH.name());
         
         if(searchKind != null) {
             String searchTypeName = form.getSearchTypeName();
@@ -80,10 +80,10 @@ public class GetSalesOrderBatchResultsCommand
                     addExecutionError(ExecutionErrors.UnknownUserVisitSearch.name());
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownSearchTypeName.name(), SearchConstants.SearchKind_SALES_ORDER_BATCH, searchTypeName);
+                addExecutionError(ExecutionErrors.UnknownSearchTypeName.name(), SearchKinds.SALES_ORDER_BATCH.name(), searchTypeName);
             }
         } else {
-            addExecutionError(ExecutionErrors.UnknownSearchKindName.name(), SearchConstants.SearchKind_SALES_ORDER_BATCH);
+            addExecutionError(ExecutionErrors.UnknownSearchKindName.name(), SearchKinds.SALES_ORDER_BATCH.name());
         }
         
         return result;

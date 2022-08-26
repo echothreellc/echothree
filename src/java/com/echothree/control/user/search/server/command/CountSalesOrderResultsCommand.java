@@ -19,7 +19,7 @@ package com.echothree.control.user.search.server.command;
 import com.echothree.control.user.search.common.form.CountSalesOrderResultsForm;
 import com.echothree.control.user.search.common.result.CountSalesOrderResultsResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 
@@ -33,7 +33,7 @@ public class CountSalesOrderResultsCommand
     
     @Override
     protected BaseResult execute() {
-        return execute(SearchConstants.SearchKind_SALES_ORDER, SearchResultFactory.getCountSalesOrderResultsResult());
+        return execute(SearchKinds.SALES_ORDER.name(), SearchResultFactory.getCountSalesOrderResultsResult());
     }
     
 }

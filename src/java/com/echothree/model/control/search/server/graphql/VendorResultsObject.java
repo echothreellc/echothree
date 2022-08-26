@@ -24,7 +24,7 @@ import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
-import com.echothree.model.control.search.common.SearchConstants;
+import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.control.vendor.server.graphql.VendorObject;
 import com.echothree.model.data.search.common.SearchResultConstants;
@@ -42,7 +42,7 @@ public class VendorResultsObject
         extends BaseResultsObject<GetVendorResultsForm> {
 
     public VendorResultsObject(GetVendorResultsForm form) {
-        super(ComponentVendors.ECHOTHREE.name(), EntityTypes.Party.name(), SearchConstants.SearchKind_VENDOR, form);
+        super(ComponentVendors.ECHOTHREE.name(), EntityTypes.Party.name(), SearchKinds.VENDOR.name(), form);
     }
 
     @GraphQLField

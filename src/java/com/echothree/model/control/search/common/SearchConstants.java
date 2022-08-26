@@ -18,25 +18,6 @@ package com.echothree.model.control.search.common;
 
 public interface SearchConstants {
 
-    String SearchKind_CONTACT_MECHANISM = "CONTACT_MECHANISM";
-    String SearchKind_CONTENT_CATEGORY = "CONTENT_CATEGORY";
-    String SearchKind_CUSTOMER = "CUSTOMER";
-    String SearchKind_EMPLOYEE = "EMPLOYEE";
-    String SearchKind_ENTITY_LIST_ITEM = "ENTITY_LIST_ITEM";
-    String SearchKind_ENTITY_TYPE = "ENTITY_TYPE";
-    String SearchKind_FORUM_MESSAGE = "FORUM_MESSAGE";
-    String SearchKind_HARMONIZED_TARIFF_SCHEDULE_CODE = "HARMONIZED_TARIFF_SCHEDULE_CODE";
-    String SearchKind_ITEM = "ITEM";
-    String SearchKind_LEAVE = "LEAVE";
-    String SearchKind_OFFER = "OFFER";
-    String SearchKind_SALES_ORDER = "SALES_ORDER";
-    String SearchKind_SALES_ORDER_BATCH = "SALES_ORDER_BATCH";
-    String SearchKind_SECURITY_ROLE = "SECURITY_ROLE";
-    String SearchKind_SECURITY_ROLE_GROUP = "SECURITY_ROLE_GROUP";
-    String SearchKind_USE = "USE";
-    String SearchKind_USE_TYPE = "USE_TYPE";
-    String SearchKind_VENDOR = "VENDOR";
-
     String SearchSortOrder_CONTACT_MECHANISM_NAME = "CONTACT_MECHANISM_NAME";
     String SearchSortOrder_CONTENT_CATEGORY_NAME = "CONTENT_CATEGORY_NAME";
     String SearchSortOrder_CREATED_TIME = "CREATED_TIME";
