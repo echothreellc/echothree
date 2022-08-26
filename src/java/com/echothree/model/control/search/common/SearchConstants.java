@@ -18,9 +18,6 @@ package com.echothree.model.control.search.common;
 
 public interface SearchConstants {
 
-    String SearchDefaultOperator_AND = "AND";
-    String SearchDefaultOperator_OR = "OR";
-
     String SearchKind_CONTACT_MECHANISM = "CONTACT_MECHANISM";
     String SearchKind_CONTENT_CATEGORY = "CONTENT_CATEGORY";
     String SearchKind_CUSTOMER = "CUSTOMER";
