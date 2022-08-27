@@ -16,13 +16,11 @@
 
 package com.echothree.model.control.index.common;
 
-public interface IndexConstants {
+public enum IndexSubfields {
 
-    // Only used behind-the-scenes, may be a character that QueryParser doesn't like.
-    String IndexFieldVariation_Separator = ":";
-
-    // May be used by users of the system, should be able to be escaped but must not
-    // be a character that's valid in a Name.
-    String IndexSubfield_Separator = ".";
+    latitude,
+    longitude,
+    elevation,
+    altitude,
 
 }

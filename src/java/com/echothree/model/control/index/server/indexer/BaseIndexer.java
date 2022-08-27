@@ -20,6 +20,7 @@ import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.common.IndexFields;
+import com.echothree.model.control.index.common.IndexSubfields;
 import com.echothree.model.control.index.common.exception.IndexIOErrorException;
 import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.index.server.analysis.BasicAnalyzer;
@@ -229,15 +230,15 @@ public abstract class BaseIndexer<BE extends BaseEntity>
                         log.info("--- fieldName = \"" + fieldName + ",\" latitude = \"" + latitude + ",\" longitude = \"" + longitude + ",\" elevation = \"" + elevation + ",\" altitude = \"" + altitude + "\"");
                     }
                     
-                    document.add(new IntPoint(fieldName + IndexConstants.IndexSubfield_Separator + IndexConstants.IndexSubfield_Latitude, latitude));
-                    document.add(new IntPoint(fieldName + IndexConstants.IndexSubfield_Separator + IndexConstants.IndexSubfield_Longitude, longitude));
+                    document.add(new IntPoint(fieldName + IndexConstants.IndexSubfield_Separator + IndexSubfields.latitude.name(), latitude));
+                    document.add(new IntPoint(fieldName + IndexConstants.IndexSubfield_Separator + IndexSubfields.longitude.name(), longitude));
                     
                     if(elevation != null) {
-                        document.add(new LongPoint(fieldName + IndexConstants.IndexSubfield_Separator + IndexConstants.IndexSubfield_Elevation, elevation));
+                        document.add(new LongPoint(fieldName + IndexConstants.IndexSubfield_Separator + IndexSubfields.elevation.name(), elevation));
                     }
                     
                     if(altitude != null) {
-                        document.add(new LongPoint(fieldName + IndexConstants.IndexSubfield_Separator + IndexConstants.IndexSubfield_Altitude, altitude));
+                        document.add(new LongPoint(fieldName + IndexConstants.IndexSubfield_Separator + IndexSubfields.altitude.name(), altitude));
                     }
                 }
             } else if (language != null && entityAttributeTypeName.equals(EntityAttributeTypes.CLOB.name())) {

@@ -21,6 +21,7 @@ import com.echothree.model.control.core.common.exception.InvalidEntityAttributeT
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.common.IndexFields;
+import com.echothree.model.control.index.common.IndexSubfields;
 import com.echothree.model.control.search.common.exception.MissingRequiredSubfieldException;
 import com.echothree.model.control.search.common.exception.MissingValueException;
 import com.echothree.model.control.search.common.exception.MissingValueUnitOfMeasureTypeNameException;
@@ -462,25 +463,25 @@ public class AttributeQueryParserUtils
                                         entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(), entityTypeDetail.getEntityTypeName(),
                                         entityAttributeTypeName);
                             } else {
-                                if(subfield.equals(IndexConstants.IndexSubfield_Latitude)) {
+                                if(subfield.equals(IndexSubfields.latitude.name())) {
                                     var val = latitudeValueOf(term.text());
 
                                     if(!eea.hasExecutionErrors()) {
                                         query = IntPoint.newSetQuery(field + IndexConstants.IndexSubfield_Separator + subfield, val);
                                     }
-                                } else if(subfield.equals(IndexConstants.IndexSubfield_Longitude)) {
+                                } else if(subfield.equals(IndexSubfields.longitude.name())) {
                                     var val = longitudeValueOf(term.text());
 
                                     if(!eea.hasExecutionErrors()) {
                                         query = IntPoint.newSetQuery(field + IndexConstants.IndexSubfield_Separator + subfield, val);
                                     }
-                                } else if(subfield.equals(IndexConstants.IndexSubfield_Elevation)) {
+                                } else if(subfield.equals(IndexSubfields.elevation.name())) {
                                     var val = measurementValueOf(UomConstants.UnitOfMeasureKindUseType_ELEVATION, term.text());
 
                                     if(!eea.hasExecutionErrors()) {
                                         query = LongPoint.newSetQuery(field + IndexConstants.IndexSubfield_Separator + subfield, val);
                                     }
-                                } else if(subfield.equals(IndexConstants.IndexSubfield_Altitude)) {
+                                } else if(subfield.equals(IndexSubfields.altitude.name())) {
                                     var val = measurementValueOf(UomConstants.UnitOfMeasureKindUseType_ALTITUDE, term.text());
 
                                     if(!eea.hasExecutionErrors()) {
@@ -586,7 +587,7 @@ public class AttributeQueryParserUtils
                                             entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(), entityTypeDetail.getEntityTypeName(),
                                             entityAttributeTypeName);
                                 } else {
-                                    if(subfield.equals(IndexConstants.IndexSubfield_Latitude)) {
+                                    if(subfield.equals(IndexSubfields.latitude.name())) {
                                         var valMin = latitudeValueOf(min);
                                         var valMax = latitudeValueOf(max);
 
@@ -594,7 +595,7 @@ public class AttributeQueryParserUtils
                                             query = IntPoint.newRangeQuery(field + IndexConstants.IndexSubfield_Separator + subfield,
                                                     startInclusive ? valMin : Math.addExact(valMin, 1), endInclusive ? valMax : Math.addExact(valMax, -1));
                                         }
-                                    } else if(subfield.equals(IndexConstants.IndexSubfield_Longitude)) {
+                                    } else if(subfield.equals(IndexSubfields.longitude.name())) {
                                         var valMin = longitudeValueOf(min);
                                         var valMax = longitudeValueOf(max);
 
@@ -602,7 +603,7 @@ public class AttributeQueryParserUtils
                                             query = IntPoint.newRangeQuery(field + IndexConstants.IndexSubfield_Separator + subfield,
                                                     startInclusive ? valMin : Math.addExact(valMin, 1), endInclusive ? valMax : Math.addExact(valMax, -1));
                                         }
-                                    } else if(subfield.equals(IndexConstants.IndexSubfield_Elevation)) {
+                                    } else if(subfield.equals(IndexSubfields.elevation.name())) {
                                         var valMin = measurementValueOf(UomConstants.UnitOfMeasureKindUseType_ELEVATION, min);
                                         var valMax = measurementValueOf(UomConstants.UnitOfMeasureKindUseType_ELEVATION, max);
 
@@ -610,7 +611,7 @@ public class AttributeQueryParserUtils
                                             query = LongPoint.newRangeQuery(field + IndexConstants.IndexSubfield_Separator + subfield,
                                                     startInclusive ? valMin : Math.addExact(valMin, 1), endInclusive ? valMax : Math.addExact(valMax, -1));
                                         }
-                                    } else if(subfield.equals(IndexConstants.IndexSubfield_Altitude)) {
+                                    } else if(subfield.equals(IndexSubfields.altitude.name())) {
                                         var valMin = measurementValueOf(UomConstants.UnitOfMeasureKindUseType_ALTITUDE, min);
                                         var valMax = measurementValueOf(UomConstants.UnitOfMeasureKindUseType_ALTITUDE, max);
 
