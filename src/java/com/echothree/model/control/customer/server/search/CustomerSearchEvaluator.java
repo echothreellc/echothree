@@ -17,7 +17,7 @@
 package com.echothree.model.control.customer.server.search;
 
 import com.echothree.model.control.customer.server.control.CustomerControl;
-import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.Indexes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.search.PartySearchEvaluator;
 import com.echothree.model.control.search.server.search.EntityInstancePKHolder;
@@ -41,7 +41,7 @@ public class CustomerSearchEvaluator
     /** Creates a new instance of CustomerSearchEvaluator */
     public CustomerSearchEvaluator(UserVisit userVisit, SearchType searchType, SearchDefaultOperator searchDefaultOperator, SearchSortOrder searchSortOrder,
             SearchSortDirection searchSortDirection) {
-        super(userVisit, searchType, searchDefaultOperator, searchSortOrder, searchSortDirection, PartyTypes.CUSTOMER.name(), IndexConstants.Index_CUSTOMER);
+        super(userVisit, searchType, searchDefaultOperator, searchSortOrder, searchSortDirection, PartyTypes.CUSTOMER.name(), Indexes.CUSTOMER.name());
     }
     
     public EntityInstancePKHolder getEntityInstancePKHolderByCustomerType(CustomerType customerType) {

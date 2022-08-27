@@ -18,10 +18,6 @@ package com.echothree.model.control.index.common;
 
 public interface IndexConstants {
 
-    String Index_CUSTOMER = "CUSTOMER";
-    String Index_EMPLOYEE = "EMPLOYEE";
-    String Index_VENDOR = "VENDOR";
-
     String IndexField_Address1 = "address1";
     String IndexField_Address2 = "address2";
     String IndexField_Address3 = "address3";

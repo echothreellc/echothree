@@ -17,7 +17,7 @@
 package com.echothree.model.control.employee.server.search;
 
 import com.echothree.model.control.employee.server.control.EmployeeControl;
-import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.Indexes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.search.PartySearchEvaluator;
 import com.echothree.model.control.search.server.search.EntityInstancePKHolder;
@@ -42,7 +42,7 @@ public class EmployeeSearchEvaluator
     /** Creates a new instance of EmployeeSearchEvaluator */
     public EmployeeSearchEvaluator(UserVisit userVisit, SearchType searchType, SearchDefaultOperator searchDefaultOperator, SearchSortOrder searchSortOrder,
             SearchSortDirection searchSortDirection) {
-        super(userVisit, searchType, searchDefaultOperator, searchSortOrder, searchSortDirection, PartyTypes.EMPLOYEE.name(), IndexConstants.Index_EMPLOYEE);
+        super(userVisit, searchType, searchDefaultOperator, searchSortOrder, searchSortDirection, PartyTypes.EMPLOYEE.name(), Indexes.EMPLOYEE.name());
     }
     
     public EntityInstancePKHolder getEntityInstancePKHolderByEmployeeStatusWorkflowStep(WorkflowStep employeeStatusWorkflowStep) {
