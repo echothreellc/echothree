@@ -21,6 +21,7 @@ import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.common.IndexTypes;
 import com.echothree.model.control.index.server.analysis.ForumMessageAnalyzer;
 import com.echothree.model.control.search.common.SearchSortOrders;
@@ -149,11 +150,11 @@ public class ForumMessageSearchEvaluator
         } else if(searchSortOrderName.equals(SearchSortOrders.TITLE.name())) {
             sortFields = new SortField[]{new SortField(ForumConstants.ForumMessagePartType_TITLE + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)};
         } else if(searchSortOrderName.equals(SearchSortOrders.POSTED_TIME.name())) {
-            sortFields = new SortField[]{new SortField(IndexConstants.IndexField_PostedTime, SortField.Type.LONG, reverse)};
+            sortFields = new SortField[]{new SortField(IndexFields.postedTime.name(), SortField.Type.LONG, reverse)};
         } else if(searchSortOrderName.equals(SearchSortOrders.CREATED_TIME.name())) {
-            sortFields = new SortField[]{new SortField(IndexConstants.IndexField_CreatedTime, SortField.Type.LONG, reverse)};
+            sortFields = new SortField[]{new SortField(IndexFields.createdTime.name(), SortField.Type.LONG, reverse)};
         } else if(searchSortOrderName.equals(SearchSortOrders.MODIFIED_TIME.name())) {
-            sortFields = new SortField[]{new SortField(IndexConstants.IndexField_ModifiedTime, SortField.Type.LONG, reverse)};
+            sortFields = new SortField[]{new SortField(IndexFields.modifiedTime.name(), SortField.Type.LONG, reverse)};
         }
         
         return sortFields;
@@ -169,7 +170,7 @@ public class ForumMessageSearchEvaluator
     static {
         Set<String> set = new HashSet<>(1);
 
-        set.add(IndexConstants.IndexField_PostedTime);
+        set.add(IndexFields.postedTime.name());
         
         dateTimeFields = Collections.unmodifiableSet(set);
     }

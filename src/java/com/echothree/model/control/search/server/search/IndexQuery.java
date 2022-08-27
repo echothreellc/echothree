@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.search.server.search;
 
-import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.data.core.common.pk.EntityInstancePK;
 import com.echothree.model.data.index.server.entity.Index;
@@ -93,7 +93,7 @@ public class IndexQuery
                 entityInstancePKHolder = new EntityInstancePKHolder(hitCount);
 
                 for(int i = 0 ; i < hitCount ; i++) {
-                    entityInstancePKHolder.add(new EntityInstancePK(is.doc(hits[i].doc).get(IndexConstants.IndexField_EntityInstanceId)), i);
+                    entityInstancePKHolder.add(new EntityInstancePK(is.doc(hits[i].doc).get(IndexFields.entityInstanceId.name())), i);
                 }
             }
         }

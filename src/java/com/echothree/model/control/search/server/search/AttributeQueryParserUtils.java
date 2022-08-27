@@ -20,6 +20,7 @@ import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.common.exception.InvalidEntityAttributeTypeException;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.search.common.exception.MissingRequiredSubfieldException;
 import com.echothree.model.control.search.common.exception.MissingValueException;
 import com.echothree.model.control.search.common.exception.MissingValueUnitOfMeasureTypeNameException;
@@ -92,9 +93,9 @@ public class AttributeQueryParserUtils
             this.dateTimeFields.addAll(dateTimeFields);
         }
         
-        this.dateTimeFields.add(IndexConstants.IndexField_CreatedTime);
-        this.dateTimeFields.add(IndexConstants.IndexField_ModifiedTime);
-        this.dateTimeFields.add(IndexConstants.IndexField_DeletedTime);
+        this.dateTimeFields.add(IndexFields.createdTime.name());
+        this.dateTimeFields.add(IndexFields.modifiedTime.name());
+        this.dateTimeFields.add(IndexFields.deletedTime.name());
     }
 
     protected CoreControl getCoreControl() {

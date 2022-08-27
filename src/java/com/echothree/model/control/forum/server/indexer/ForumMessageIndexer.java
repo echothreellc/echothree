@@ -19,6 +19,7 @@ package com.echothree.model.control.forum.server.indexer;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.server.analysis.ForumMessageAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
 import com.echothree.model.control.index.server.indexer.FieldTypes;
@@ -70,12 +71,12 @@ public class ForumMessageIndexer
         List<ForumMessageTypePartType> forumMessageTypePartTypes = forumControl.getForumMessageTypePartTypesByForumMessageTypeAndIncludeInIndex(forumMessageDetail.getForumMessageType());
         Document document = new Document();
 
-        document.add(new Field(IndexConstants.IndexField_EntityRef, forumMessage.getPrimaryKey().getEntityRef(), FieldTypes.STORED_NOT_TOKENIZED));
-        document.add(new Field(IndexConstants.IndexField_EntityInstanceId, entityInstance.getPrimaryKey().getEntityId().toString(), FieldTypes.STORED_NOT_TOKENIZED));
+        document.add(new Field(IndexFields.entityRef.name(), forumMessage.getPrimaryKey().getEntityRef(), FieldTypes.STORED_NOT_TOKENIZED));
+        document.add(new Field(IndexFields.entityInstanceId.name(), entityInstance.getPrimaryKey().getEntityId().toString(), FieldTypes.STORED_NOT_TOKENIZED));
         
-        document.add(new Field(IndexConstants.IndexField_ForumMessageName, forumMessageDetail.getForumMessageName(), FieldTypes.NOT_STORED_TOKENIZED));
-        document.add(new Field(IndexConstants.IndexField_ForumThreadName, forumThread.getLastDetail().getForumThreadName(), FieldTypes.NOT_STORED_TOKENIZED));
-        document.add(new LongPoint(IndexConstants.IndexField_PostedTime, forumMessageDetail.getPostedTime()));
+        document.add(new Field(IndexFields.forumMessageName.name(), forumMessageDetail.getForumMessageName(), FieldTypes.NOT_STORED_TOKENIZED));
+        document.add(new Field(IndexFields.forumThreadName.name(), forumThread.getLastDetail().getForumThreadName(), FieldTypes.NOT_STORED_TOKENIZED));
+        document.add(new LongPoint(IndexFields.postedTime.name(), forumMessageDetail.getPostedTime()));
 
         indexEntityTimes(document, entityInstance);
         indexEntityAttributes(document, entityInstance);
@@ -117,7 +118,7 @@ public class ForumMessageIndexer
                 forumNames.append(forumForumThread.getForum().getActiveDetail().getForumName());
             });
             
-            document.add(new Field(IndexConstants.IndexField_ForumNames, forumNames.toString(), FieldTypes.NOT_STORED_NOT_TOKENIZED));
+            document.add(new Field(IndexFields.forumNames.name(), forumNames.toString(), FieldTypes.NOT_STORED_NOT_TOKENIZED));
         }
         
         return document;

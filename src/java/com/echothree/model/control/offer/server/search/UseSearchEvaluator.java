@@ -19,6 +19,7 @@ package com.echothree.model.control.offer.server.search;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.common.IndexTypes;
 import com.echothree.model.control.index.server.analysis.SecurityRoleGroupAnalyzer;
 import com.echothree.model.control.search.common.SearchSortOrders;
@@ -45,7 +46,7 @@ public class UseSearchEvaluator
         super(userVisit, searchDefaultOperator, searchType, searchSortOrder, searchSortDirection, searchUseType, ComponentVendors.ECHOTHREE.name(),
                 EntityTypes.Use.name(), IndexTypes.USE.name(), language, null);
         
-        setField(IndexConstants.IndexField_Description);
+        setField(IndexFields.description.name());
     }
 
     @Override
@@ -57,16 +58,16 @@ public class UseSearchEvaluator
             case SCORE ->
                     sortFields = new SortField[]{
                             new SortField(null, SortField.Type.SCORE, reverse),
-                            new SortField(IndexConstants.IndexField_Description + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)};
+                            new SortField(IndexFields.description.name() + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)};
             case DESCRIPTION ->
                     sortFields = new SortField[]{
-                            new SortField(IndexConstants.IndexField_Description + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)};
+                            new SortField(IndexFields.description.name() + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)};
             case USE_NAME ->
-                    sortFields = new SortField[]{new SortField(IndexConstants.IndexField_UseName + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)};
+                    sortFields = new SortField[]{new SortField(IndexFields.useName.name() + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)};
             case CREATED_TIME ->
-                    sortFields = new SortField[]{new SortField(IndexConstants.IndexField_CreatedTime, SortField.Type.LONG, reverse)};
+                    sortFields = new SortField[]{new SortField(IndexFields.createdTime.name(), SortField.Type.LONG, reverse)};
             case MODIFIED_TIME ->
-                    sortFields = new SortField[]{new SortField(IndexConstants.IndexField_ModifiedTime, SortField.Type.LONG, reverse)};
+                    sortFields = new SortField[]{new SortField(IndexFields.modifiedTime.name(), SortField.Type.LONG, reverse)};
             default -> {}
         }
         

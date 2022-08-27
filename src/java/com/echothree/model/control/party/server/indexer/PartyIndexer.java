@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.party.server.indexer;
 
-import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
 import com.echothree.model.control.index.server.indexer.FieldTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
@@ -69,17 +69,17 @@ public abstract class PartyIndexer
 
             document = new Document();
             
-            document.add(new Field(IndexConstants.IndexField_EntityRef, party.getPrimaryKey().getEntityRef(), FieldTypes.STORED_NOT_TOKENIZED));
-        document.add(new Field(IndexConstants.IndexField_EntityInstanceId, entityInstance.getPrimaryKey().getEntityId().toString(), FieldTypes.STORED_NOT_TOKENIZED));
+            document.add(new Field(IndexFields.entityRef.name(), party.getPrimaryKey().getEntityRef(), FieldTypes.STORED_NOT_TOKENIZED));
+        document.add(new Field(IndexFields.entityInstanceId.name(), entityInstance.getPrimaryKey().getEntityId().toString(), FieldTypes.STORED_NOT_TOKENIZED));
             
-            document.add(new Field(IndexConstants.IndexField_PartyName, partyDetail.getPartyName(), FieldTypes.NOT_STORED_NOT_TOKENIZED));
+            document.add(new Field(IndexFields.partyName.name(), partyDetail.getPartyName(), FieldTypes.NOT_STORED_NOT_TOKENIZED));
 
             if(entityName != null) {
                 document.add(new Field(entityNameIndexField, entityName, FieldTypes.NOT_STORED_NOT_TOKENIZED));
             }
 
             if(name != null) {
-                document.add(new Field(IndexConstants.IndexField_Name, name, FieldTypes.NOT_STORED_TOKENIZED));
+                document.add(new Field(IndexFields.name.name(), name, FieldTypes.NOT_STORED_TOKENIZED));
             }
 
             if(person != null) {
@@ -88,13 +88,13 @@ public abstract class PartyIndexer
                 String lastName = person.getLastName();
 
                 if(firstName != null) {
-                    document.add(new Field(IndexConstants.IndexField_FirstName, firstName, FieldTypes.NOT_STORED_TOKENIZED));
+                    document.add(new Field(IndexFields.firstName.name(), firstName, FieldTypes.NOT_STORED_TOKENIZED));
                 }
                 if(middleName != null) {
-                    document.add(new Field(IndexConstants.IndexField_MiddleName, middleName, FieldTypes.NOT_STORED_TOKENIZED));
+                    document.add(new Field(IndexFields.middleName.name(), middleName, FieldTypes.NOT_STORED_TOKENIZED));
                 }
                 if(lastName != null) {
-                    document.add(new Field(IndexConstants.IndexField_LastName, lastName, FieldTypes.NOT_STORED_TOKENIZED));
+                    document.add(new Field(IndexFields.lastName.name(), lastName, FieldTypes.NOT_STORED_TOKENIZED));
                 }
             }
 

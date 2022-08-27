@@ -19,6 +19,7 @@ package com.echothree.model.control.index.server.indexer;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.common.exception.IndexIOErrorException;
 import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.index.server.analysis.BasicAnalyzer;
@@ -157,15 +158,15 @@ public abstract class BaseIndexer<BE extends BaseEntity>
             Long deletedTime = entityTime.getDeletedTime();
 
             if(createdTime != null) {
-                document.add(new LongPoint(IndexConstants.IndexField_CreatedTime, createdTime));
+                document.add(new LongPoint(IndexFields.createdTime.name(), createdTime));
             }
 
             if(modifiedTime != null) {
-                document.add(new LongPoint(IndexConstants.IndexField_ModifiedTime, modifiedTime));
+                document.add(new LongPoint(IndexFields.modifiedTime.name(), modifiedTime));
             }
 
             if(deletedTime != null) {
-                document.add(new LongPoint(IndexConstants.IndexField_DeletedTime, deletedTime));
+                document.add(new LongPoint(IndexFields.deletedTime.name(), deletedTime));
             }
         }
     }
@@ -469,7 +470,7 @@ public abstract class BaseIndexer<BE extends BaseEntity>
     
     protected void removeEntityFromIndex(final BE baseEntity)
         throws IOException {
-        indexWriter.deleteDocuments(new Term(IndexConstants.IndexField_EntityRef, baseEntity.getPrimaryKey().getEntityRef()));
+        indexWriter.deleteDocuments(new Term(IndexFields.entityRef.name(), baseEntity.getPrimaryKey().getEntityRef()));
     }
 
     public void updateIndex(final EntityInstance entityInstance) {

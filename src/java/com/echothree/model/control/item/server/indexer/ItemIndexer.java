@@ -18,6 +18,7 @@ package com.echothree.model.control.item.server.indexer;
 
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.server.analysis.ItemAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
 import com.echothree.model.control.index.server.indexer.FieldTypes;
@@ -91,67 +92,67 @@ public class ItemIndexer
         Long purchaseOrderEndTime = itemDetail.getPurchaseOrderEndTime();
         Document document = new Document();
 
-        document.add(new Field(IndexConstants.IndexField_EntityRef, item.getPrimaryKey().getEntityRef(), FieldTypes.STORED_NOT_TOKENIZED));
-        document.add(new Field(IndexConstants.IndexField_EntityInstanceId, entityInstance.getPrimaryKey().getEntityId().toString(), FieldTypes.STORED_NOT_TOKENIZED));
+        document.add(new Field(IndexFields.entityRef.name(), item.getPrimaryKey().getEntityRef(), FieldTypes.STORED_NOT_TOKENIZED));
+        document.add(new Field(IndexFields.entityInstanceId.name(), entityInstance.getPrimaryKey().getEntityId().toString(), FieldTypes.STORED_NOT_TOKENIZED));
 
-        document.add(new Field(IndexConstants.IndexField_ItemName, itemDetail.getItemName(), FieldTypes.NOT_STORED_TOKENIZED));
-        document.add(new SortedDocValuesField(IndexConstants.IndexField_ItemName + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable,
+        document.add(new Field(IndexFields.itemName.name(), itemDetail.getItemName(), FieldTypes.NOT_STORED_TOKENIZED));
+        document.add(new SortedDocValuesField(IndexFields.itemName.name() + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable,
                 new BytesRef(itemDetail.getItemName())));
-        document.add(new Field(IndexConstants.IndexField_ItemNameAndAliases, itemDetail.getItemName(), FieldTypes.NOT_STORED_TOKENIZED));
+        document.add(new Field(IndexFields.itemNameAndAliases.name(), itemDetail.getItemName(), FieldTypes.NOT_STORED_TOKENIZED));
 
-        document.add(new Field(IndexConstants.IndexField_ItemTypeName, itemDetail.getItemType().getItemTypeName(), FieldTypes.NOT_STORED_TOKENIZED));
-        document.add(new Field(IndexConstants.IndexField_ItemUseTypeName, itemDetail.getItemUseType().getItemUseTypeName(), FieldTypes.NOT_STORED_TOKENIZED));
+        document.add(new Field(IndexFields.itemTypeName.name(), itemDetail.getItemType().getItemTypeName(), FieldTypes.NOT_STORED_TOKENIZED));
+        document.add(new Field(IndexFields.itemUseTypeName.name(), itemDetail.getItemUseType().getItemUseTypeName(), FieldTypes.NOT_STORED_TOKENIZED));
 
         if(itemDeliveryType != null) {
-            document.add(new Field(IndexConstants.IndexField_ItemDeliveryTypeName, itemDeliveryType.getItemDeliveryTypeName(), FieldTypes.NOT_STORED_TOKENIZED));
+            document.add(new Field(IndexFields.itemDeliveryTypeName.name(), itemDeliveryType.getItemDeliveryTypeName(), FieldTypes.NOT_STORED_TOKENIZED));
         }
         
         if(itemInventoryType != null) {
-            document.add(new Field(IndexConstants.IndexField_ItemInventoryTypeName, itemInventoryType.getItemInventoryTypeName(), FieldTypes.NOT_STORED_TOKENIZED));
+            document.add(new Field(IndexFields.itemInventoryTypeName.name(), itemInventoryType.getItemInventoryTypeName(), FieldTypes.NOT_STORED_TOKENIZED));
         }
         
         itemAliases.stream().map((itemAlias) -> {
-            document.add(new Field(IndexConstants.IndexField_Aliases, itemAlias.getAlias(), FieldTypes.NOT_STORED_TOKENIZED));
+            document.add(new Field(IndexFields.aliases.name(), itemAlias.getAlias(), FieldTypes.NOT_STORED_TOKENIZED));
             return itemAlias;
         }).map((itemAlias) -> {
-            document.add(new Field(IndexConstants.IndexField_ItemNameAndAliases, itemAlias.getAlias(), FieldTypes.NOT_STORED_TOKENIZED));
+            document.add(new Field(IndexFields.itemNameAndAliases.name(), itemAlias.getAlias(), FieldTypes.NOT_STORED_TOKENIZED));
             return itemAlias;
         }).forEach((itemAlias) -> {
             document.add(new Field(itemAlias.getItemAliasType().getLastDetail().getItemAliasTypeName(), itemAlias.getAlias(), FieldTypes.NOT_STORED_TOKENIZED));
         });
         
-        document.add(new Field(IndexConstants.IndexField_ItemCategoryName, itemDetail.getItemCategory().getLastDetail().getItemCategoryName(), FieldTypes.NOT_STORED_TOKENIZED));
+        document.add(new Field(IndexFields.itemCategoryName.name(), itemDetail.getItemCategory().getLastDetail().getItemCategoryName(), FieldTypes.NOT_STORED_TOKENIZED));
         
         if(itemAccountingCategory != null) {
-            document.add(new Field(IndexConstants.IndexField_ItemAccountingCategoryName, itemDetail.getItemAccountingCategory().getLastDetail().getItemAccountingCategoryName(), FieldTypes.NOT_STORED_TOKENIZED));
+            document.add(new Field(IndexFields.itemAccountingCategoryName.name(), itemDetail.getItemAccountingCategory().getLastDetail().getItemAccountingCategoryName(), FieldTypes.NOT_STORED_TOKENIZED));
         }
         
         if(itemPurchasingCategory != null) {
-            document.add(new Field(IndexConstants.IndexField_ItemPurchasingCategoryName, itemDetail.getItemPurchasingCategory().getLastDetail().getItemPurchasingCategoryName(), FieldTypes.NOT_STORED_TOKENIZED));
+            document.add(new Field(IndexFields.itemPurchasingCategoryName.name(), itemDetail.getItemPurchasingCategory().getLastDetail().getItemPurchasingCategoryName(), FieldTypes.NOT_STORED_TOKENIZED));
         }
         
         if(inventorySerialized != null) {
-            document.add(new Field(IndexConstants.IndexField_InventorySerialized, itemDetail.getInventorySerialized().toString(), FieldTypes.NOT_STORED_TOKENIZED));
+            document.add(new Field(IndexFields.inventorySerialized.name(), itemDetail.getInventorySerialized().toString(), FieldTypes.NOT_STORED_TOKENIZED));
         }
         
-        document.add(new Field(IndexConstants.IndexField_ShippingChargeExempt, itemDetail.getShippingChargeExempt().toString(), FieldTypes.NOT_STORED_TOKENIZED));
-        document.add(new LongPoint(IndexConstants.IndexField_ShippingStartTime, itemDetail.getShippingStartTime()));
+        document.add(new Field(IndexFields.shippingChargeExempt.name(), itemDetail.getShippingChargeExempt().toString(), FieldTypes.NOT_STORED_TOKENIZED));
+        document.add(new LongPoint(IndexFields.shippingStartTime.name(), itemDetail.getShippingStartTime()));
         if(shippingEndTime != null) {
-            document.add(new LongPoint(IndexConstants.IndexField_ShippingEndTime, shippingEndTime));
+            document.add(new LongPoint(IndexFields.shippingEndTime.name(), shippingEndTime));
         }
-        document.add(new LongPoint(IndexConstants.IndexField_SalesOrderStartTime, itemDetail.getSalesOrderStartTime()));
+        document.add(new LongPoint(IndexFields.salesOrderStartTime.name(), itemDetail.getSalesOrderStartTime()));
         if(salesOrderEndTime != null) {
-            document.add(new LongPoint(IndexConstants.IndexField_SalesOrderEndTime, salesOrderEndTime));
+            document.add(new LongPoint(IndexFields.salesOrderEndTime.name(), salesOrderEndTime));
         }
         if(purchaseOrderStartTime != null) {
-            document.add(new LongPoint(IndexConstants.IndexField_PurchaseOrderStartTime, purchaseOrderStartTime));
+            document.add(new LongPoint(IndexFields.purchaseOrderStartTime.name(), purchaseOrderStartTime));
         }
         if(purchaseOrderEndTime != null) {
-            document.add(new LongPoint(IndexConstants.IndexField_PurchaseOrderEndTime, purchaseOrderEndTime));
+            document.add(new LongPoint(IndexFields.purchaseOrderEndTime.name(), purchaseOrderEndTime));
         }
-        document.add(new Field(IndexConstants.IndexField_AllowClubDiscounts, itemDetail.getAllowClubDiscounts().toString(), FieldTypes.NOT_STORED_TOKENIZED));
-        document.add(new Field(IndexConstants.IndexField_AllowCouponDiscounts, itemDetail.getAllowCouponDiscounts().toString(), FieldTypes.NOT_STORED_TOKENIZED));
-        document.add(new Field(IndexConstants.IndexField_AllowAssociatePayments, itemDetail.getAllowAssociatePayments().toString(), FieldTypes.NOT_STORED_TOKENIZED));
+        document.add(new Field(IndexFields.allowClubDiscounts.name(), itemDetail.getAllowClubDiscounts().toString(), FieldTypes.NOT_STORED_TOKENIZED));
+        document.add(new Field(IndexFields.allowCouponDiscounts.name(), itemDetail.getAllowCouponDiscounts().toString(), FieldTypes.NOT_STORED_TOKENIZED));
+        document.add(new Field(IndexFields.allowAssociatePayments.name(), itemDetail.getAllowAssociatePayments().toString(), FieldTypes.NOT_STORED_TOKENIZED));
 
         indexWorkflowEntityStatuses(document, entityInstance);
         indexEntityTimes(document, entityInstance);

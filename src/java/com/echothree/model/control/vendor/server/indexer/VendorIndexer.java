@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.vendor.server.indexer;
 
-import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.indexer.PartyIndexer;
 import com.echothree.model.control.vendor.server.control.VendorControl;
@@ -32,7 +32,7 @@ public class VendorIndexer
     
     /** Creates a new instance of VendorIndexer */
     public VendorIndexer(final ExecutionErrorAccumulator eea, final Index index) {
-        super(eea, index, PartyTypes.VENDOR.name(), IndexConstants.IndexField_VendorName);
+        super(eea, index, PartyTypes.VENDOR.name(), IndexFields.vendorName.name());
     }
     
     @Override
