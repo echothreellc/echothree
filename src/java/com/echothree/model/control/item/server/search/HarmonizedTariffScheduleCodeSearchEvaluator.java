@@ -19,6 +19,7 @@ package com.echothree.model.control.item.server.search;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexTypes;
 import com.echothree.model.control.index.server.analysis.HarmonizedTariffScheduleCodeAnalyzer;
 import com.echothree.model.control.search.common.SearchSortOrders;
 import com.echothree.model.control.search.common.SearchSortDirections;
@@ -42,7 +43,7 @@ public class HarmonizedTariffScheduleCodeSearchEvaluator
     public HarmonizedTariffScheduleCodeSearchEvaluator(UserVisit userVisit, Language language, SearchType searchType, SearchDefaultOperator searchDefaultOperator,
             SearchSortOrder searchSortOrder, SearchSortDirection searchSortDirection, SearchUseType searchUseType) {
         super(userVisit, searchDefaultOperator, searchType, searchSortOrder, searchSortDirection, searchUseType, ComponentVendors.ECHOTHREE.name(),
-                EntityTypes.HarmonizedTariffScheduleCode.name(), IndexConstants.IndexType_HARMONIZED_TARIFF_SCHEDULE_CODE, language, null);
+                EntityTypes.HarmonizedTariffScheduleCode.name(), IndexTypes.HARMONIZED_TARIFF_SCHEDULE_CODE.name(), language, null);
         
         setField(IndexConstants.IndexField_Description);
     }

@@ -25,7 +25,7 @@ import com.echothree.model.control.core.server.indexer.EntityTypeIndexer;
 import com.echothree.model.control.customer.server.indexer.CustomerIndexer;
 import com.echothree.model.control.employee.server.indexer.EmployeeIndexer;
 import com.echothree.model.control.forum.server.indexer.ForumMessageIndexer;
-import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexTypes;
 import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
 import com.echothree.model.control.item.server.indexer.HarmonizedTariffScheduleCodeIndexer;
@@ -117,35 +117,35 @@ public class UpdateIndexesCommand
             String indexTypeName = indexType.getLastDetail().getIndexTypeName();
             indexes.stream().map((index) -> {
                 BaseIndexer baseIndexer = null;
-                if(indexTypeName.equals(IndexConstants.IndexType_CUSTOMER)) {
+                if(indexTypeName.equals(IndexTypes.CUSTOMER.name())) {
                     baseIndexer = new CustomerIndexer(this, index);
-                } else if(indexTypeName.equals(IndexConstants.IndexType_EMPLOYEE)) {
+                } else if(indexTypeName.equals(IndexTypes.EMPLOYEE.name())) {
                     baseIndexer = new EmployeeIndexer(this, index);
-                } else if(indexTypeName.equals(IndexConstants.IndexType_VENDOR)) {
+                } else if(indexTypeName.equals(IndexTypes.VENDOR.name())) {
                     baseIndexer = new VendorIndexer(this, index);
-                } else if(indexTypeName.equals(IndexConstants.IndexType_ITEM)) {
+                } else if(indexTypeName.equals(IndexTypes.ITEM.name())) {
                     baseIndexer = new ItemIndexer(this, index);
-                } else if(indexTypeName.equals(IndexConstants.IndexType_FORUM_MESSAGE)) {
+                } else if(indexTypeName.equals(IndexTypes.FORUM_MESSAGE.name())) {
                     baseIndexer = new ForumMessageIndexer(this, index);
-                } else if(indexTypeName.equals(IndexConstants.IndexType_ENTITY_LIST_ITEM)) {
+                } else if(indexTypeName.equals(IndexTypes.ENTITY_LIST_ITEM.name())) {
                     baseIndexer = new EntityListItemIndexer(this, index);
-                } else if(indexTypeName.equals(IndexConstants.IndexType_CONTENT_CATEGORY)) {
+                } else if(indexTypeName.equals(IndexTypes.CONTENT_CATEGORY.name())) {
                     baseIndexer = new ContentCategoryIndexer(this, index);
-                } else if(indexTypeName.equals(IndexConstants.IndexType_SECURITY_ROLE_GROUP)) {
+                } else if(indexTypeName.equals(IndexTypes.SECURITY_ROLE_GROUP.name())) {
                     baseIndexer = new SecurityRoleGroupIndexer(this, index);
-                } else if(indexTypeName.equals(IndexConstants.IndexType_SECURITY_ROLE)) {
+                } else if(indexTypeName.equals(IndexTypes.SECURITY_ROLE.name())) {
                     baseIndexer = new SecurityRoleIndexer(this, index);
-                } else if(indexTypeName.equals(IndexConstants.IndexType_HARMONIZED_TARIFF_SCHEDULE_CODE)) {
+                } else if(indexTypeName.equals(IndexTypes.HARMONIZED_TARIFF_SCHEDULE_CODE.name())) {
                     baseIndexer = new HarmonizedTariffScheduleCodeIndexer(this, index);
-                } else if(indexTypeName.equals(IndexConstants.IndexType_ENTITY_TYPE)) {
+                } else if(indexTypeName.equals(IndexTypes.ENTITY_TYPE.name())) {
                     baseIndexer = new EntityTypeIndexer(this, index);
-                } else if(indexTypeName.equals(IndexConstants.IndexType_CONTACT_MECHANISM)) {
+                } else if(indexTypeName.equals(IndexTypes.CONTACT_MECHANISM.name())) {
                     baseIndexer = new ContactMechanismIndexer(this, index);
-                } else if(indexTypeName.equals(IndexConstants.IndexType_OFFER)) {
+                } else if(indexTypeName.equals(IndexTypes.OFFER.name())) {
                     baseIndexer = new OfferIndexer(this, index);
-                } else if(indexTypeName.equals(IndexConstants.IndexType_USE)) {
+                } else if(indexTypeName.equals(IndexTypes.USE.name())) {
                     baseIndexer = new UseIndexer(this, index);
-                } else if(indexTypeName.equals(IndexConstants.IndexType_USE_TYPE)) {
+                } else if(indexTypeName.equals(IndexTypes.USE_TYPE.name())) {
                     baseIndexer = new UseTypeIndexer(this, index);
                 }
                 return baseIndexer;

@@ -19,6 +19,7 @@ package com.echothree.model.control.item.server.search;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexTypes;
 import com.echothree.model.control.index.server.analysis.ItemAnalyzer;
 import com.echothree.model.control.item.common.ItemConstants;
 import com.echothree.model.control.item.server.control.ItemControl;
@@ -58,7 +59,7 @@ public class ItemSearchEvaluator
     public ItemSearchEvaluator(UserVisit userVisit, Language language, SearchType searchType, SearchDefaultOperator searchDefaultOperator, SearchSortOrder searchSortOrder,
             SearchSortDirection searchSortDirection, SearchUseType searchUseType) {
         super(userVisit, searchDefaultOperator, searchType, searchSortOrder, searchSortDirection, searchUseType, ComponentVendors.ECHOTHREE.name(),
-                EntityTypes.Item.name(), IndexConstants.IndexType_ITEM, language, null);
+                EntityTypes.Item.name(), IndexTypes.ITEM.name(), language, null);
         
         setField(ItemDescriptionLogic.getInstance().getIndexDefaultItemDescriptionTypeName());
     }

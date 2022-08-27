@@ -19,6 +19,7 @@ package com.echothree.model.control.core.server.search;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexTypes;
 import com.echothree.model.control.index.server.analysis.EntityTypeAnalyzer;
 import com.echothree.model.control.search.common.SearchSortOrders;
 import com.echothree.model.control.search.common.SearchSortDirections;
@@ -42,7 +43,7 @@ public class EntityTypeSearchEvaluator
     public EntityTypeSearchEvaluator(UserVisit userVisit, Language language, SearchType searchType, SearchDefaultOperator searchDefaultOperator,
             SearchSortOrder searchSortOrder, SearchSortDirection searchSortDirection, SearchUseType searchUseType) {
         super(userVisit, searchDefaultOperator, searchType, searchSortOrder, searchSortDirection, searchUseType, ComponentVendors.ECHOTHREE.name(),
-                EntityTypes.EntityType.name(), IndexConstants.IndexType_ENTITY_TYPE, language, null);
+                EntityTypes.EntityType.name(), IndexTypes.ENTITY_TYPE.name(), language, null);
         
         setField(IndexConstants.IndexField_Description);
     }

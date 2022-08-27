@@ -17,23 +17,7 @@
 package com.echothree.model.control.index.common;
 
 public interface IndexConstants {
-    
-    String IndexType_CONTACT_MECHANISM = "CONTACT_MECHANISM";
-    String IndexType_CONTENT_CATEGORY = "CONTENT_CATEGORY";
-    String IndexType_CUSTOMER = "CUSTOMER";
-    String IndexType_FORUM_MESSAGE = "FORUM_MESSAGE";
-    String IndexType_EMPLOYEE = "EMPLOYEE";
-    String IndexType_ENTITY_LIST_ITEM = "ENTITY_LIST_ITEM";
-    String IndexType_ENTITY_TYPE = "ENTITY_TYPE";
-    String IndexType_HARMONIZED_TARIFF_SCHEDULE_CODE = "HARMONIZED_TARIFF_SCHEDULE_CODE";
-    String IndexType_ITEM = "ITEM";
-    String IndexType_OFFER = "OFFER";
-    String IndexType_SECURITY_ROLE = "SECURITY_ROLE";
-    String IndexType_SECURITY_ROLE_GROUP = "SECURITY_ROLE_GROUP";
-    String IndexType_USE = "USE";
-    String IndexType_USE_TYPE = "USE_TYPE";
-    String IndexType_VENDOR = "VENDOR";
-    
+
     String Index_CUSTOMER = "CUSTOMER";
     String Index_EMPLOYEE = "EMPLOYEE";
     String Index_VENDOR = "VENDOR";

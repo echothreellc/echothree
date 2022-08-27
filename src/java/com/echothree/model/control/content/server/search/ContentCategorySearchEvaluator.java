@@ -19,6 +19,7 @@ package com.echothree.model.control.content.server.search;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexTypes;
 import com.echothree.model.control.index.server.analysis.ContentCategoryAnalyzer;
 import com.echothree.model.control.search.common.SearchSortOrders;
 import com.echothree.model.control.search.common.SearchSortDirections;
@@ -42,7 +43,7 @@ public class ContentCategorySearchEvaluator
     public ContentCategorySearchEvaluator(UserVisit userVisit, Language language, SearchType searchType, SearchDefaultOperator searchDefaultOperator,
             SearchSortOrder searchSortOrder, SearchSortDirection searchSortDirection, SearchUseType searchUseType) {
         super(userVisit, searchDefaultOperator, searchType, searchSortOrder, searchSortDirection, searchUseType, ComponentVendors.ECHOTHREE.name(),
-                EntityTypes.ContentCategory.name(), IndexConstants.IndexType_CONTENT_CATEGORY, language, null);
+                EntityTypes.ContentCategory.name(), IndexTypes.CONTENT_CATEGORY.name(), language, null);
         
         setField(IndexConstants.IndexField_Description);
     }

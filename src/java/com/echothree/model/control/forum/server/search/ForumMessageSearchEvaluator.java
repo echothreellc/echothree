@@ -21,6 +21,7 @@ import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexTypes;
 import com.echothree.model.control.index.server.analysis.ForumMessageAnalyzer;
 import com.echothree.model.control.search.common.SearchSortOrders;
 import com.echothree.model.control.search.common.SearchSortDirections;
@@ -57,7 +58,7 @@ public class ForumMessageSearchEvaluator
     public ForumMessageSearchEvaluator(UserVisit userVisit, Language language, SearchType searchType, SearchDefaultOperator searchDefaultOperator, SearchSortOrder searchSortOrder,
             SearchSortDirection searchSortDirection, SearchUseType searchUseType, Forum forum, ForumMessageType forumMessageType) {
         super(userVisit, searchDefaultOperator, searchType, searchSortOrder, searchSortDirection, searchUseType, ComponentVendors.ECHOTHREE.name(),
-                EntityTypes.ForumMessage.name(), IndexConstants.IndexType_FORUM_MESSAGE, language, null);
+                EntityTypes.ForumMessage.name(), IndexTypes.FORUM_MESSAGE.name(), language, null);
         
         this.forum = forum;
         this.forumMessageType = forumMessageType;
