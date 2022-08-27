@@ -250,7 +250,7 @@ public class ContactMechanismIndexer
         String contactMechanismTypeName = contactMechanismDetail.getContactMechanismType().getContactMechanismTypeName();
         
         document.add(new Field(IndexFields.contactMechanismName.name(), contactMechanismDetail.getContactMechanismName(), FieldTypes.NOT_STORED_TOKENIZED));
-        document.add(new SortedDocValuesField(IndexFields.contactMechanismName.name() + IndexConstants.IndexFieldVariation_Separator + IndexFieldVariations.sortable.name(),
+        document.add(new SortedDocValuesField(IndexFields.contactMechanismName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
                 new BytesRef(contactMechanismDetail.getContactMechanismName())));
 
         document.add(new Field(IndexFields.contactMechanismTypeName.name(), contactMechanismTypeName, FieldTypes.NOT_STORED_TOKENIZED));

@@ -58,15 +58,15 @@ public class ContentCategorySearchEvaluator
         if(searchSortOrderName.equals(SearchSortOrders.SCORE.name())) {
             sortFields = new SortField[]{
                 new SortField(null, SortField.Type.SCORE, reverse),
-                new SortField(IndexFields.description.name() + IndexConstants.IndexFieldVariation_Separator + IndexFieldVariations.sortable.name(), SortField.Type.STRING, reverse)
+                new SortField(IndexFields.description.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(), SortField.Type.STRING, reverse)
             };
         } else if(searchSortOrderName.equals(SearchSortOrders.DESCRIPTION.name())) {
-            sortFields = new SortField[]{new SortField(IndexFields.description.name() + IndexConstants.IndexFieldVariation_Separator + IndexFieldVariations.sortable.name(), SortField.Type.STRING, reverse)};
+            sortFields = new SortField[]{new SortField(IndexFields.description.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(), SortField.Type.STRING, reverse)};
         } else if(searchSortOrderName.equals(SearchSortOrders.CONTENT_CATEGORY_NAME.name())) {
             sortFields = new SortField[]{
-                new SortField(IndexFields.contentCollectionName.name() + IndexConstants.IndexFieldVariation_Separator + IndexFieldVariations.sortable.name(), SortField.Type.STRING, reverse),
-                new SortField(IndexFields.contentCatalogName.name() + IndexConstants.IndexFieldVariation_Separator + IndexFieldVariations.sortable.name(), SortField.Type.STRING, reverse),
-                new SortField(IndexFields.contentCategoryName.name() + IndexConstants.IndexFieldVariation_Separator + IndexFieldVariations.sortable.name(), SortField.Type.STRING, reverse)
+                new SortField(IndexFields.contentCollectionName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(), SortField.Type.STRING, reverse),
+                new SortField(IndexFields.contentCatalogName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(), SortField.Type.STRING, reverse),
+                new SortField(IndexFields.contentCategoryName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(), SortField.Type.STRING, reverse)
             };
         } else if(searchSortOrderName.equals(SearchSortOrders.CREATED_TIME.name())) {
             sortFields = new SortField[]{new SortField(IndexFields.createdTime.name(), SortField.Type.LONG, reverse)};

@@ -58,7 +58,7 @@ public class ContactMechanismSearchEvaluator
         if(searchSortOrderName.equals(SearchSortOrders.SCORE.name())) {
             sortField = new SortField(null, SortField.Type.SCORE, reverse);
         } else if(searchSortOrderName.equals(SearchSortOrders.CONTACT_MECHANISM_NAME.name())) {
-            sortField = new SortField(IndexFields.contactMechanismName.name() + IndexConstants.IndexFieldVariation_Separator + IndexFieldVariations.sortable.name(), SortField.Type.STRING, reverse);
+            sortField = new SortField(IndexFields.contactMechanismName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(), SortField.Type.STRING, reverse);
         } else if(searchSortOrderName.equals(SearchSortOrders.CREATED_TIME.name())) {
             sortField = new SortField(IndexFields.createdTime.name(), SortField.Type.LONG, reverse);
         } else if(searchSortOrderName.equals(SearchSortOrders.MODIFIED_TIME.name())) {

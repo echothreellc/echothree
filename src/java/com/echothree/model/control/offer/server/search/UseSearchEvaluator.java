@@ -59,12 +59,12 @@ public class UseSearchEvaluator
             case SCORE ->
                     sortFields = new SortField[]{
                             new SortField(null, SortField.Type.SCORE, reverse),
-                            new SortField(IndexFields.description.name() + IndexConstants.IndexFieldVariation_Separator + IndexFieldVariations.sortable.name(), SortField.Type.STRING, reverse)};
+                            new SortField(IndexFields.description.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(), SortField.Type.STRING, reverse)};
             case DESCRIPTION ->
                     sortFields = new SortField[]{
-                            new SortField(IndexFields.description.name() + IndexConstants.IndexFieldVariation_Separator + IndexFieldVariations.sortable.name(), SortField.Type.STRING, reverse)};
+                            new SortField(IndexFields.description.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(), SortField.Type.STRING, reverse)};
             case USE_NAME ->
-                    sortFields = new SortField[]{new SortField(IndexFields.useName.name() + IndexConstants.IndexFieldVariation_Separator + IndexFieldVariations.sortable.name(), SortField.Type.STRING, reverse)};
+                    sortFields = new SortField[]{new SortField(IndexFields.useName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(), SortField.Type.STRING, reverse)};
             case CREATED_TIME ->
                     sortFields = new SortField[]{new SortField(IndexFields.createdTime.name(), SortField.Type.LONG, reverse)};
             case MODIFIED_TIME ->

@@ -62,16 +62,16 @@ public class EntityTypeIndexer
 
         document.add(new Field(IndexFields.componentVendorName.name(),
                 entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(), FieldTypes.NOT_STORED_TOKENIZED));
-        document.add(new SortedDocValuesField(IndexFields.componentVendorName.name() + IndexConstants.IndexFieldVariation_Separator + IndexFieldVariations.sortable.name(),
+        document.add(new SortedDocValuesField(IndexFields.componentVendorName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
                 new BytesRef(entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName())));
         document.add(new Field(IndexFields.entityTypeName.name(),
                 entityTypeDetail.getEntityTypeName(), FieldTypes.NOT_STORED_TOKENIZED));
-        document.add(new SortedDocValuesField(IndexFields.entityTypeName.name() + IndexConstants.IndexFieldVariation_Separator + IndexFieldVariations.sortable.name(),
+        document.add(new SortedDocValuesField(IndexFields.entityTypeName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
                 new BytesRef(entityTypeDetail.getEntityTypeName())));
 
         if(description != null) {
             document.add(new Field(IndexFields.description.name(), description, FieldTypes.NOT_STORED_TOKENIZED));
-            document.add(new SortedDocValuesField(IndexFields.description.name() + IndexConstants.IndexFieldVariation_Separator + IndexFieldVariations.sortable.name(),
+            document.add(new SortedDocValuesField(IndexFields.description.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
                     new BytesRef(description)));
         }
         

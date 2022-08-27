@@ -69,7 +69,7 @@ public class HarmonizedTariffScheduleCodeIndexer
         document.add(new Field(IndexFields.countryGeoCodeName.name(), harmonizedTariffScheduleCodeDetail.getCountryGeoCode().getLastDetail().getGeoCodeName(), FieldTypes.NOT_STORED_TOKENIZED));
         
         document.add(new Field(IndexFields.harmonizedTariffScheduleCodeName.name(), harmonizedTariffScheduleCodeDetail.getHarmonizedTariffScheduleCodeName(), FieldTypes.NOT_STORED_TOKENIZED));
-        document.add(new SortedDocValuesField(IndexFields.harmonizedTariffScheduleCodeName.name() + IndexConstants.IndexFieldVariation_Separator + IndexFieldVariations.sortable.name(),
+        document.add(new SortedDocValuesField(IndexFields.harmonizedTariffScheduleCodeName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
                 new BytesRef(harmonizedTariffScheduleCodeDetail.getHarmonizedTariffScheduleCodeName())));
 
         if(harmonizedTariffScheduleCodeTranslation != null) {
@@ -77,7 +77,7 @@ public class HarmonizedTariffScheduleCodeIndexer
             String overview = harmonizedTariffScheduleCodeTranslation.getOverview();
             
             document.add(new Field(IndexFields.description.name(), description, FieldTypes.NOT_STORED_TOKENIZED));
-            document.add(new SortedDocValuesField(IndexFields.description.name() + IndexConstants.IndexFieldVariation_Separator + IndexFieldVariations.sortable.name(),
+            document.add(new SortedDocValuesField(IndexFields.description.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
                     new BytesRef(description)));
             
             if(overview != null) {

@@ -97,7 +97,7 @@ public class ItemIndexer
         document.add(new Field(IndexFields.entityInstanceId.name(), entityInstance.getPrimaryKey().getEntityId().toString(), FieldTypes.STORED_NOT_TOKENIZED));
 
         document.add(new Field(IndexFields.itemName.name(), itemDetail.getItemName(), FieldTypes.NOT_STORED_TOKENIZED));
-        document.add(new SortedDocValuesField(IndexFields.itemName.name() + IndexConstants.IndexFieldVariation_Separator + IndexFieldVariations.sortable.name(),
+        document.add(new SortedDocValuesField(IndexFields.itemName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
                 new BytesRef(itemDetail.getItemName())));
         document.add(new Field(IndexFields.itemNameAndAliases.name(), itemDetail.getItemName(), FieldTypes.NOT_STORED_TOKENIZED));
 
@@ -172,9 +172,9 @@ public class ItemIndexer
                     String stringDescription = itemStringDescription.getStringDescription();
                     
                     document.add(new Field(itemDescriptionTypeName, stringDescription, FieldTypes.NOT_STORED_TOKENIZED));
-                    document.add(new Field(itemDescriptionTypeName + IndexConstants.IndexFieldVariation_Separator + IndexFieldVariations.dictionary.name(),
+                    document.add(new Field(itemDescriptionTypeName + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.dictionary.name(),
                             stringDescription, FieldTypes.NOT_STORED_TOKENIZED));
-                    document.add(new SortedDocValuesField(itemDescriptionTypeName + IndexConstants.IndexFieldVariation_Separator + IndexFieldVariations.sortable.name(),
+                    document.add(new SortedDocValuesField(itemDescriptionTypeName + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
                             new BytesRef(sortableDescriptionProducer.getSortableDescription(stringDescription))));
 
                     if(IndexerDebugFlags.LogItemIndexing) {
