@@ -20,6 +20,5 @@ public enum PaymentProcessorTypes {
 
     MONETRA,
     SIMULATION,
-    TEST_PAYMENT_PROCESSOR_TYPE,
 
 }
