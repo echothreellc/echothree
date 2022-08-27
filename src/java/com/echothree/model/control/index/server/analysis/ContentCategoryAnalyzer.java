@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.index.server.analysis;
 
-import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.party.server.entity.Language;
@@ -42,10 +42,10 @@ public class ContentCategoryAnalyzer
     protected Map<String, Analyzer> getEntityTypeAnalyzers(final Map<String, Analyzer> fieldAnalyzers) {
         super.getEntityTypeAnalyzers(fieldAnalyzers);
         
-        fieldAnalyzers.put(IndexConstants.IndexField_ContentCollectionName, new WhitespaceLowerCaseAnalyzer());
-        fieldAnalyzers.put(IndexConstants.IndexField_ContentCatalogName, new WhitespaceLowerCaseAnalyzer());
-        fieldAnalyzers.put(IndexConstants.IndexField_ContentCategoryName, new WhitespaceLowerCaseAnalyzer());
-        fieldAnalyzers.put(IndexConstants.IndexField_ParentContentCategoryName, new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.contentCollectionName.name(), new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.contentCatalogName.name(), new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.contentCategoryName.name(), new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.parentContentCategoryName.name(), new WhitespaceLowerCaseAnalyzer());
         
         return fieldAnalyzers;
     }

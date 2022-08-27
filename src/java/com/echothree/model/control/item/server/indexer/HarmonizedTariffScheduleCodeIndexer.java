@@ -18,6 +18,8 @@ package com.echothree.model.control.item.server.indexer;
 
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFieldVariations;
+import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.server.analysis.HarmonizedTariffScheduleCodeAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
 import com.echothree.model.control.index.server.indexer.FieldTypes;
@@ -61,27 +63,27 @@ public class HarmonizedTariffScheduleCodeIndexer
         HarmonizedTariffScheduleCodeTranslation harmonizedTariffScheduleCodeTranslation = itemControl.getBestHarmonizedTariffScheduleCodeTranslation(harmonizedTariffScheduleCode, language);
         Document document = new Document();
 
-        document.add(new Field(IndexConstants.IndexField_EntityRef, harmonizedTariffScheduleCode.getPrimaryKey().getEntityRef(), FieldTypes.STORED_NOT_TOKENIZED));
-        document.add(new Field(IndexConstants.IndexField_EntityInstanceId, entityInstance.getPrimaryKey().getEntityId().toString(), FieldTypes.STORED_NOT_TOKENIZED));
+        document.add(new Field(IndexFields.entityRef.name(), harmonizedTariffScheduleCode.getPrimaryKey().getEntityRef(), FieldTypes.STORED_NOT_TOKENIZED));
+        document.add(new Field(IndexFields.entityInstanceId.name(), entityInstance.getPrimaryKey().getEntityId().toString(), FieldTypes.STORED_NOT_TOKENIZED));
 
-        document.add(new Field(IndexConstants.IndexField_CountryGeoCodeName, harmonizedTariffScheduleCodeDetail.getCountryGeoCode().getLastDetail().getGeoCodeName(), FieldTypes.NOT_STORED_TOKENIZED));
+        document.add(new Field(IndexFields.countryGeoCodeName.name(), harmonizedTariffScheduleCodeDetail.getCountryGeoCode().getLastDetail().getGeoCodeName(), FieldTypes.NOT_STORED_TOKENIZED));
         
-        document.add(new Field(IndexConstants.IndexField_HarmonizedTariffScheduleCodeName, harmonizedTariffScheduleCodeDetail.getHarmonizedTariffScheduleCodeName(), FieldTypes.NOT_STORED_TOKENIZED));
-        document.add(new SortedDocValuesField(IndexConstants.IndexField_HarmonizedTariffScheduleCodeName + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable,
+        document.add(new Field(IndexFields.harmonizedTariffScheduleCodeName.name(), harmonizedTariffScheduleCodeDetail.getHarmonizedTariffScheduleCodeName(), FieldTypes.NOT_STORED_TOKENIZED));
+        document.add(new SortedDocValuesField(IndexFields.harmonizedTariffScheduleCodeName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
                 new BytesRef(harmonizedTariffScheduleCodeDetail.getHarmonizedTariffScheduleCodeName())));
 
         if(harmonizedTariffScheduleCodeTranslation != null) {
             String description = harmonizedTariffScheduleCodeTranslation.getDescription();
             String overview = harmonizedTariffScheduleCodeTranslation.getOverview();
             
-            document.add(new Field(IndexConstants.IndexField_Description, description, FieldTypes.NOT_STORED_TOKENIZED));
-            document.add(new SortedDocValuesField(IndexConstants.IndexField_Description + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable,
+            document.add(new Field(IndexFields.description.name(), description, FieldTypes.NOT_STORED_TOKENIZED));
+            document.add(new SortedDocValuesField(IndexFields.description.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
                     new BytesRef(description)));
             
             if(overview != null) {
                 if(harmonizedTariffScheduleCodeTranslation.getOverviewMimeType().getLastDetail().getEntityAttributeType().getEntityAttributeTypeName().equals(EntityAttributeTypes.CLOB.name())) {
                     // TODO: mime type conversion to text/plain happens here
-                    document.add(new Field(IndexConstants.IndexField_Overview, overview, FieldTypes.NOT_STORED_TOKENIZED));
+                    document.add(new Field(IndexFields.overview.name(), overview, FieldTypes.NOT_STORED_TOKENIZED));
                 }
             }
         }

@@ -16,13 +16,22 @@
 
 package com.echothree.model.control.index.common;
 
-public interface IndexConstants {
+public enum IndexTypes {
 
-    // Only used behind-the-scenes, may be a character that QueryParser doesn't like.
-    String INDEX_FIELD_VARIATION_SEPARATOR = ":";
-
-    // May be used by users of the system, should be able to be escaped but must not
-    // be a character that's valid in a Name.
-    String INDEX_SUBFIELD_SEPARATOR = ".";
+    CONTACT_MECHANISM,
+    CONTENT_CATEGORY,
+    CUSTOMER,
+    FORUM_MESSAGE,
+    EMPLOYEE,
+    ENTITY_LIST_ITEM,
+    ENTITY_TYPE,
+    HARMONIZED_TARIFF_SCHEDULE_CODE,
+    ITEM,
+    OFFER,
+    SECURITY_ROLE,
+    SECURITY_ROLE_GROUP,
+    USE,
+    USE_TYPE,
+    VENDOR,
 
 }

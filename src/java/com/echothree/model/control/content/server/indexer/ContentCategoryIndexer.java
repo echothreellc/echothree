@@ -18,6 +18,8 @@ package com.echothree.model.control.content.server.indexer;
 
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFieldVariations;
+import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.server.analysis.ContentCategoryAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
 import com.echothree.model.control.index.server.indexer.FieldTypes;
@@ -62,27 +64,27 @@ public class ContentCategoryIndexer
         String description = contentControl.getBestContentCategoryDescription(contentCategory, language);
         Document document = new Document();
 
-        document.add(new Field(IndexConstants.IndexField_EntityRef, contentCategory.getPrimaryKey().getEntityRef(), FieldTypes.STORED_NOT_TOKENIZED));
-        document.add(new Field(IndexConstants.IndexField_EntityInstanceId, entityInstance.getPrimaryKey().getEntityId().toString(), FieldTypes.STORED_NOT_TOKENIZED));
+        document.add(new Field(IndexFields.entityRef.name(), contentCategory.getPrimaryKey().getEntityRef(), FieldTypes.STORED_NOT_TOKENIZED));
+        document.add(new Field(IndexFields.entityInstanceId.name(), entityInstance.getPrimaryKey().getEntityId().toString(), FieldTypes.STORED_NOT_TOKENIZED));
 
-        document.add(new Field(IndexConstants.IndexField_ContentCollectionName, contentCatalogDetail.getContentCollection().getLastDetail().getContentCollectionName(),
+        document.add(new Field(IndexFields.contentCollectionName.name(), contentCatalogDetail.getContentCollection().getLastDetail().getContentCollectionName(),
                 FieldTypes.NOT_STORED_TOKENIZED));
-        document.add(new SortedDocValuesField(IndexConstants.IndexField_ContentCollectionName + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable,
+        document.add(new SortedDocValuesField(IndexFields.contentCollectionName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
                 new BytesRef(contentCatalogDetail.getContentCollection().getLastDetail().getContentCollectionName())));
-        document.add(new Field(IndexConstants.IndexField_ContentCatalogName, contentCatalogDetail.getContentCatalogName(), FieldTypes.NOT_STORED_TOKENIZED));
-        document.add(new SortedDocValuesField(IndexConstants.IndexField_ContentCatalogName + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable,
+        document.add(new Field(IndexFields.contentCatalogName.name(), contentCatalogDetail.getContentCatalogName(), FieldTypes.NOT_STORED_TOKENIZED));
+        document.add(new SortedDocValuesField(IndexFields.contentCatalogName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
                 new BytesRef(contentCatalogDetail.getContentCatalogName())));
-        document.add(new Field(IndexConstants.IndexField_ContentCategoryName, contentCategoryDetail.getContentCategoryName(), FieldTypes.NOT_STORED_TOKENIZED));
-        document.add(new SortedDocValuesField(IndexConstants.IndexField_ContentCategoryName + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable,
+        document.add(new Field(IndexFields.contentCategoryName.name(), contentCategoryDetail.getContentCategoryName(), FieldTypes.NOT_STORED_TOKENIZED));
+        document.add(new SortedDocValuesField(IndexFields.contentCategoryName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
                 new BytesRef(contentCategoryDetail.getContentCategoryName())));
         if(parentContentCategory != null) {
-            document.add(new Field(IndexConstants.IndexField_ParentContentCategoryName, parentContentCategory.getLastDetail().getContentCategoryName(),
+            document.add(new Field(IndexFields.parentContentCategoryName.name(), parentContentCategory.getLastDetail().getContentCategoryName(),
                     FieldTypes.NOT_STORED_TOKENIZED));
         }
         
         if(description != null) {
-            document.add(new Field(IndexConstants.IndexField_Description, description, FieldTypes.NOT_STORED_TOKENIZED));
-            document.add(new SortedDocValuesField(IndexConstants.IndexField_Description + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable,
+            document.add(new Field(IndexFields.description.name(), description, FieldTypes.NOT_STORED_TOKENIZED));
+            document.add(new SortedDocValuesField(IndexFields.description.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
                     new BytesRef(description)));
         }
         

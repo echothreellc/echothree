@@ -17,6 +17,8 @@
 package com.echothree.model.control.security.server.indexer;
 
 import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFieldVariations;
+import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.server.analysis.SecurityRoleAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
 import com.echothree.model.control.index.server.indexer.FieldTypes;
@@ -59,20 +61,20 @@ public class SecurityRoleIndexer
         String description = securityControl.getBestSecurityRoleDescription(securityRole, language);
         Document document = new Document();
 
-        document.add(new Field(IndexConstants.IndexField_EntityRef, securityRole.getPrimaryKey().getEntityRef(), FieldTypes.STORED_NOT_TOKENIZED));
-        document.add(new Field(IndexConstants.IndexField_EntityInstanceId, entityInstance.getPrimaryKey().getEntityId().toString(), FieldTypes.STORED_NOT_TOKENIZED));
+        document.add(new Field(IndexFields.entityRef.name(), securityRole.getPrimaryKey().getEntityRef(), FieldTypes.STORED_NOT_TOKENIZED));
+        document.add(new Field(IndexFields.entityInstanceId.name(), entityInstance.getPrimaryKey().getEntityId().toString(), FieldTypes.STORED_NOT_TOKENIZED));
 
-        document.add(new Field(IndexConstants.IndexField_SecurityRoleGroupName, securityRoleDetail.getSecurityRoleGroup().getLastDetail().getSecurityRoleGroupName(),
+        document.add(new Field(IndexFields.securityRoleGroupName.name(), securityRoleDetail.getSecurityRoleGroup().getLastDetail().getSecurityRoleGroupName(),
                 FieldTypes.NOT_STORED_TOKENIZED));
-        document.add(new SortedDocValuesField(IndexConstants.IndexField_SecurityRoleGroupName + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable,
+        document.add(new SortedDocValuesField(IndexFields.securityRoleGroupName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
                 new BytesRef(securityRoleDetail.getSecurityRoleGroup().getLastDetail().getSecurityRoleGroupName())));
-        document.add(new Field(IndexConstants.IndexField_SecurityRoleName, securityRoleDetail.getSecurityRoleName(), FieldTypes.NOT_STORED_TOKENIZED));
-        document.add(new SortedDocValuesField(IndexConstants.IndexField_SecurityRoleName + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable,
+        document.add(new Field(IndexFields.securityRoleName.name(), securityRoleDetail.getSecurityRoleName(), FieldTypes.NOT_STORED_TOKENIZED));
+        document.add(new SortedDocValuesField(IndexFields.securityRoleName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
                 new BytesRef(securityRoleDetail.getSecurityRoleName())));
 
         if(description != null) {
-            document.add(new Field(IndexConstants.IndexField_Description, description, FieldTypes.NOT_STORED_TOKENIZED));
-            document.add(new SortedDocValuesField(IndexConstants.IndexField_Description + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable,
+            document.add(new Field(IndexFields.description.name(), description, FieldTypes.NOT_STORED_TOKENIZED));
+            document.add(new SortedDocValuesField(IndexFields.description.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
                     new BytesRef(description)));
         }
         

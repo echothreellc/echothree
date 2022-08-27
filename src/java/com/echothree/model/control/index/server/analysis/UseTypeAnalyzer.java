@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.index.server.analysis;
 
-import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.party.server.entity.Language;
@@ -42,7 +42,7 @@ public class UseTypeAnalyzer
     protected Map<String, Analyzer> getEntityTypeAnalyzers(final Map<String, Analyzer> fieldAnalyzers) {
         super.getEntityTypeAnalyzers(fieldAnalyzers);
         
-        fieldAnalyzers.put(IndexConstants.IndexField_UseTypeName, new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.useTypeName.name(), new WhitespaceLowerCaseAnalyzer());
         
         return fieldAnalyzers;
     }

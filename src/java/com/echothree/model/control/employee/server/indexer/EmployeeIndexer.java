@@ -17,7 +17,7 @@
 package com.echothree.model.control.employee.server.indexer;
 
 import com.echothree.model.control.employee.server.control.EmployeeControl;
-import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.indexer.PartyIndexer;
 import com.echothree.model.data.index.server.entity.Index;
@@ -32,7 +32,7 @@ public class EmployeeIndexer
     
     /** Creates a new instance of EmployeeIndexer */
     public EmployeeIndexer(final ExecutionErrorAccumulator eea, final Index index) {
-        super(eea, index, PartyTypes.EMPLOYEE.name(), IndexConstants.IndexField_PartyEmployeeName);
+        super(eea, index, PartyTypes.EMPLOYEE.name(), IndexFields.PartyEmployeeName.name());
     }
     
     @Override

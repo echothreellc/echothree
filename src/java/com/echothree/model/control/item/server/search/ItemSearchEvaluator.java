@@ -19,6 +19,9 @@ package com.echothree.model.control.item.server.search;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFieldVariations;
+import com.echothree.model.control.index.common.IndexFields;
+import com.echothree.model.control.index.common.IndexTypes;
 import com.echothree.model.control.index.server.analysis.ItemAnalyzer;
 import com.echothree.model.control.item.common.ItemConstants;
 import com.echothree.model.control.item.server.control.ItemControl;
@@ -58,7 +61,7 @@ public class ItemSearchEvaluator
     public ItemSearchEvaluator(UserVisit userVisit, Language language, SearchType searchType, SearchDefaultOperator searchDefaultOperator, SearchSortOrder searchSortOrder,
             SearchSortDirection searchSortDirection, SearchUseType searchUseType) {
         super(userVisit, searchDefaultOperator, searchType, searchSortOrder, searchSortDirection, searchUseType, ComponentVendors.ECHOTHREE.name(),
-                EntityTypes.Item.name(), IndexConstants.IndexType_ITEM, language, null);
+                EntityTypes.Item.name(), IndexTypes.ITEM.name(), language, null);
         
         setField(ItemDescriptionLogic.getInstance().getIndexDefaultItemDescriptionTypeName());
     }
@@ -186,16 +189,16 @@ public class ItemSearchEvaluator
         if(searchSortOrderName.equals(SearchSortOrders.SCORE.name())) {
             sortFields = new SortField[]{
                 new SortField(null, SortField.Type.SCORE, reverse),
-                new SortField(ItemConstants.ItemDescriptionType_DEFAULT_DESCRIPTION + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)
+                new SortField(ItemConstants.ItemDescriptionType_DEFAULT_DESCRIPTION + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(), SortField.Type.STRING, reverse)
             };
         } else if(searchSortOrderName.equals(SearchSortOrders.DEFAULT_DESCRIPTION.name())) {
-            sortFields = new SortField[]{new SortField(ItemConstants.ItemDescriptionType_DEFAULT_DESCRIPTION + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)};
+            sortFields = new SortField[]{new SortField(ItemConstants.ItemDescriptionType_DEFAULT_DESCRIPTION + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(), SortField.Type.STRING, reverse)};
         } else if(searchSortOrderName.equals(SearchSortOrders.ITEM_NAME.name())) {
-            sortFields = new SortField[]{new SortField(IndexConstants.IndexField_ItemName + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)};
+            sortFields = new SortField[]{new SortField(IndexFields.itemName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(), SortField.Type.STRING, reverse)};
         } else if(searchSortOrderName.equals(SearchSortOrders.CREATED_TIME.name())) {
-            sortFields = new SortField[]{new SortField(IndexConstants.IndexField_CreatedTime, SortField.Type.LONG, reverse)};
+            sortFields = new SortField[]{new SortField(IndexFields.createdTime.name(), SortField.Type.LONG, reverse)};
         } else if(searchSortOrderName.equals(SearchSortOrders.MODIFIED_TIME.name())) {
-            sortFields = new SortField[]{new SortField(IndexConstants.IndexField_ModifiedTime, SortField.Type.LONG, reverse)};
+            sortFields = new SortField[]{new SortField(IndexFields.modifiedTime.name(), SortField.Type.LONG, reverse)};
         }
         
         return sortFields;

@@ -18,6 +18,8 @@ package com.echothree.model.control.index.server.analysis;
 
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFieldVariations;
+import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityType;
@@ -63,7 +65,7 @@ public class ItemAnalyzer
         itemControl.getItemDescriptionTypes().stream().map((itemDescriptionType) -> itemDescriptionType.getLastDetail()).forEach((itemDescriptionTypeDetail) -> {
             MimeTypeUsageType mimeTypeUsageType = itemDescriptionTypeDetail.getMimeTypeUsageType();
             if (mimeTypeUsageType == null || mimeTypeUsageType.getMimeTypeUsageTypeName().equals(MimeTypeUsageTypes.TEXT.name())) {
-                fieldAnalyzers.put(itemDescriptionTypeDetail.getItemDescriptionTypeName() + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Dictionary,
+                fieldAnalyzers.put(itemDescriptionTypeDetail.getItemDescriptionTypeName() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.dictionary.name(),
                         new DictionaryAnalyzer());
             }
         });
@@ -75,18 +77,18 @@ public class ItemAnalyzer
     protected Map<String, Analyzer> getEntityTypeAnalyzers(final Map<String, Analyzer> fieldAnalyzers) {
         super.getEntityTypeAnalyzers(fieldAnalyzers);
         
-        fieldAnalyzers.put(IndexConstants.IndexField_Aliases, new WhitespaceLowerCaseAnalyzer());
-        fieldAnalyzers.put(IndexConstants.IndexField_ItemName, new WhitespaceLowerCaseAnalyzer());
-        fieldAnalyzers.put(IndexConstants.IndexField_ItemNameAndAliases, new WhitespaceLowerCaseAnalyzer());
-        fieldAnalyzers.put(IndexConstants.IndexField_ItemTypeName, new WhitespaceLowerCaseAnalyzer());
-        fieldAnalyzers.put(IndexConstants.IndexField_ItemUseTypeName, new WhitespaceLowerCaseAnalyzer());
-        fieldAnalyzers.put(IndexConstants.IndexField_ItemDeliveryTypeName, new WhitespaceLowerCaseAnalyzer());
-        fieldAnalyzers.put(IndexConstants.IndexField_ItemInventoryTypeName, new WhitespaceLowerCaseAnalyzer());
-        fieldAnalyzers.put(IndexConstants.IndexField_InventorySerialized, new WhitespaceLowerCaseAnalyzer());
-        fieldAnalyzers.put(IndexConstants.IndexField_ShippingChargeExempt, new WhitespaceLowerCaseAnalyzer());
-        fieldAnalyzers.put(IndexConstants.IndexField_AllowClubDiscounts, new WhitespaceLowerCaseAnalyzer());
-        fieldAnalyzers.put(IndexConstants.IndexField_AllowCouponDiscounts, new WhitespaceLowerCaseAnalyzer());
-        fieldAnalyzers.put(IndexConstants.IndexField_AllowAssociatePayments, new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.aliases.name(), new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.itemName.name(), new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.itemNameAndAliases.name(), new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.itemTypeName.name(), new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.itemUseTypeName.name(), new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.itemDeliveryTypeName.name(), new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.itemInventoryTypeName.name(), new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.inventorySerialized.name(), new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.shippingChargeExempt.name(), new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.allowClubDiscounts.name(), new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.allowCouponDiscounts.name(), new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.allowAssociatePayments.name(), new WhitespaceLowerCaseAnalyzer());
         
         return getItemDescriptionAnalyzers(getItemAliasTypeAnalyzers(fieldAnalyzers));
     }
