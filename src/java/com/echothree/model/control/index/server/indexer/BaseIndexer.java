@@ -228,15 +228,15 @@ public abstract class BaseIndexer<BE extends BaseEntity>
                         log.info("--- fieldName = \"" + fieldName + ",\" latitude = \"" + latitude + ",\" longitude = \"" + longitude + ",\" elevation = \"" + elevation + ",\" altitude = \"" + altitude + "\"");
                     }
                     
-                    document.add(new IntPoint(fieldName + IndexConstants.IndexSubfieldSeparator + IndexConstants.IndexSubfieldLatitude, latitude));
-                    document.add(new IntPoint(fieldName + IndexConstants.IndexSubfieldSeparator + IndexConstants.IndexSubfieldLongitude, longitude));
+                    document.add(new IntPoint(fieldName + IndexConstants.IndexSubfield_Separator + IndexConstants.IndexSubfield_Latitude, latitude));
+                    document.add(new IntPoint(fieldName + IndexConstants.IndexSubfield_Separator + IndexConstants.IndexSubfield_Longitude, longitude));
                     
                     if(elevation != null) {
-                        document.add(new LongPoint(fieldName + IndexConstants.IndexSubfieldSeparator + IndexConstants.IndexSubfieldElevation, elevation));
+                        document.add(new LongPoint(fieldName + IndexConstants.IndexSubfield_Separator + IndexConstants.IndexSubfield_Elevation, elevation));
                     }
                     
                     if(altitude != null) {
-                        document.add(new LongPoint(fieldName + IndexConstants.IndexSubfieldSeparator + IndexConstants.IndexSubfieldAltitude, altitude));
+                        document.add(new LongPoint(fieldName + IndexConstants.IndexSubfield_Separator + IndexConstants.IndexSubfield_Altitude, altitude));
                     }
                 }
             } else if (language != null && entityAttributeTypeName.equals(EntityAttributeTypes.CLOB.name())) {

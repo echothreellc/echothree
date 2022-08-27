@@ -354,7 +354,7 @@ public class AttributeQueryParserUtils
                 query = getBooleanQuery(clauses);
             }
         } else {
-            var splitField = Splitter.onPattern(Pattern.quote(IndexConstants.IndexSubfieldSeparator)).trimResults().omitEmptyStrings().splitToList(rawField).toArray(new String[0]);
+            var splitField = Splitter.onPattern(Pattern.quote(IndexConstants.IndexSubfield_Separator)).trimResults().omitEmptyStrings().splitToList(rawField).toArray(new String[0]);
             var field = splitField[0];
 
             if(dateFields.contains(field) || dateTimeFields.contains(field)) {
@@ -403,7 +403,7 @@ public class AttributeQueryParserUtils
         
         if(!eea.hasExecutionErrors()) {
             var rawField = term.field();
-            var splitField = Splitter.onPattern(Pattern.quote(IndexConstants.IndexSubfieldSeparator)).trimResults().omitEmptyStrings().splitToList(rawField).toArray(new String[0]);
+            var splitField = Splitter.onPattern(Pattern.quote(IndexConstants.IndexSubfield_Separator)).trimResults().omitEmptyStrings().splitToList(rawField).toArray(new String[0]);
             var field = splitField[0];
             var subfield = splitField.length > 1 ? splitField[1] : null;
             
@@ -461,29 +461,29 @@ public class AttributeQueryParserUtils
                                         entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(), entityTypeDetail.getEntityTypeName(),
                                         entityAttributeTypeName);
                             } else {
-                                if(subfield.equals(IndexConstants.IndexSubfieldLatitude)) {
+                                if(subfield.equals(IndexConstants.IndexSubfield_Latitude)) {
                                     var val = latitudeValueOf(term.text());
 
                                     if(!eea.hasExecutionErrors()) {
-                                        query = IntPoint.newSetQuery(field + IndexConstants.IndexSubfieldSeparator + subfield, val);
+                                        query = IntPoint.newSetQuery(field + IndexConstants.IndexSubfield_Separator + subfield, val);
                                     }
-                                } else if(subfield.equals(IndexConstants.IndexSubfieldLongitude)) {
+                                } else if(subfield.equals(IndexConstants.IndexSubfield_Longitude)) {
                                     var val = longitudeValueOf(term.text());
 
                                     if(!eea.hasExecutionErrors()) {
-                                        query = IntPoint.newSetQuery(field + IndexConstants.IndexSubfieldSeparator + subfield, val);
+                                        query = IntPoint.newSetQuery(field + IndexConstants.IndexSubfield_Separator + subfield, val);
                                     }
-                                } else if(subfield.equals(IndexConstants.IndexSubfieldElevation)) {
+                                } else if(subfield.equals(IndexConstants.IndexSubfield_Elevation)) {
                                     var val = measurementValueOf(UomConstants.UnitOfMeasureKindUseType_ELEVATION, term.text());
 
                                     if(!eea.hasExecutionErrors()) {
-                                        query = LongPoint.newSetQuery(field + IndexConstants.IndexSubfieldSeparator + subfield, val);
+                                        query = LongPoint.newSetQuery(field + IndexConstants.IndexSubfield_Separator + subfield, val);
                                     }
-                                } else if(subfield.equals(IndexConstants.IndexSubfieldAltitude)) {
+                                } else if(subfield.equals(IndexConstants.IndexSubfield_Altitude)) {
                                     var val = measurementValueOf(UomConstants.UnitOfMeasureKindUseType_ALTITUDE, term.text());
 
                                     if(!eea.hasExecutionErrors()) {
-                                        query = LongPoint.newSetQuery(field + IndexConstants.IndexSubfieldSeparator + subfield, val);
+                                        query = LongPoint.newSetQuery(field + IndexConstants.IndexSubfield_Separator + subfield, val);
                                     }
                                 } else {
                                     var entityTypeDetail = entityType.getLastDetail();
@@ -521,7 +521,7 @@ public class AttributeQueryParserUtils
             query = getBooleanQuery(clauses);
         } else {
             if(!eea.hasExecutionErrors()) {
-                var splitField = Splitter.onPattern(Pattern.quote(IndexConstants.IndexSubfieldSeparator)).trimResults().omitEmptyStrings().splitToList(rawField).toArray(new String[0]);
+                var splitField = Splitter.onPattern(Pattern.quote(IndexConstants.IndexSubfield_Separator)).trimResults().omitEmptyStrings().splitToList(rawField).toArray(new String[0]);
                 var field = splitField[0];
                 var subfield = splitField.length > 1 ? splitField[1] : null;
 
@@ -585,36 +585,36 @@ public class AttributeQueryParserUtils
                                             entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(), entityTypeDetail.getEntityTypeName(),
                                             entityAttributeTypeName);
                                 } else {
-                                    if(subfield.equals(IndexConstants.IndexSubfieldLatitude)) {
+                                    if(subfield.equals(IndexConstants.IndexSubfield_Latitude)) {
                                         var valMin = latitudeValueOf(min);
                                         var valMax = latitudeValueOf(max);
 
                                         if(!eea.hasExecutionErrors()) {
-                                            query = IntPoint.newRangeQuery(field + IndexConstants.IndexSubfieldSeparator + subfield,
+                                            query = IntPoint.newRangeQuery(field + IndexConstants.IndexSubfield_Separator + subfield,
                                                     startInclusive ? valMin : Math.addExact(valMin, 1), endInclusive ? valMax : Math.addExact(valMax, -1));
                                         }
-                                    } else if(subfield.equals(IndexConstants.IndexSubfieldLongitude)) {
+                                    } else if(subfield.equals(IndexConstants.IndexSubfield_Longitude)) {
                                         var valMin = longitudeValueOf(min);
                                         var valMax = longitudeValueOf(max);
 
                                         if(!eea.hasExecutionErrors()) {
-                                            query = IntPoint.newRangeQuery(field + IndexConstants.IndexSubfieldSeparator + subfield,
+                                            query = IntPoint.newRangeQuery(field + IndexConstants.IndexSubfield_Separator + subfield,
                                                     startInclusive ? valMin : Math.addExact(valMin, 1), endInclusive ? valMax : Math.addExact(valMax, -1));
                                         }
-                                    } else if(subfield.equals(IndexConstants.IndexSubfieldElevation)) {
+                                    } else if(subfield.equals(IndexConstants.IndexSubfield_Elevation)) {
                                         var valMin = measurementValueOf(UomConstants.UnitOfMeasureKindUseType_ELEVATION, min);
                                         var valMax = measurementValueOf(UomConstants.UnitOfMeasureKindUseType_ELEVATION, max);
 
                                         if(!eea.hasExecutionErrors()) {
-                                            query = LongPoint.newRangeQuery(field + IndexConstants.IndexSubfieldSeparator + subfield,
+                                            query = LongPoint.newRangeQuery(field + IndexConstants.IndexSubfield_Separator + subfield,
                                                     startInclusive ? valMin : Math.addExact(valMin, 1), endInclusive ? valMax : Math.addExact(valMax, -1));
                                         }
-                                    } else if(subfield.equals(IndexConstants.IndexSubfieldAltitude)) {
+                                    } else if(subfield.equals(IndexConstants.IndexSubfield_Altitude)) {
                                         var valMin = measurementValueOf(UomConstants.UnitOfMeasureKindUseType_ALTITUDE, min);
                                         var valMax = measurementValueOf(UomConstants.UnitOfMeasureKindUseType_ALTITUDE, max);
 
                                         if(!eea.hasExecutionErrors()) {
-                                            query = LongPoint.newRangeQuery(field + IndexConstants.IndexSubfieldSeparator + subfield,
+                                            query = LongPoint.newRangeQuery(field + IndexConstants.IndexSubfield_Separator + subfield,
                                                     startInclusive ? valMin : Math.addExact(valMin, 1), endInclusive ? valMax : Math.addExact(valMax, -1));
                                         }
                                     }

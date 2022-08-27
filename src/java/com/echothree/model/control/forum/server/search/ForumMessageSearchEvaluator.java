@@ -143,10 +143,10 @@ public class ForumMessageSearchEvaluator
         if(searchSortOrderName.equals(SearchSortOrders.SCORE.name())) {
             sortFields = new SortField[]{
                 new SortField(null, SortField.Type.SCORE, reverse),
-                new SortField(ForumConstants.ForumMessagePartType_TITLE + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)
+                new SortField(ForumConstants.ForumMessagePartType_TITLE + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)
             };
         } else if(searchSortOrderName.equals(SearchSortOrders.TITLE.name())) {
-            sortFields = new SortField[]{new SortField(ForumConstants.ForumMessagePartType_TITLE + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)};
+            sortFields = new SortField[]{new SortField(ForumConstants.ForumMessagePartType_TITLE + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)};
         } else if(searchSortOrderName.equals(SearchSortOrders.POSTED_TIME.name())) {
             sortFields = new SortField[]{new SortField(IndexConstants.IndexField_PostedTime, SortField.Type.LONG, reverse)};
         } else if(searchSortOrderName.equals(SearchSortOrders.CREATED_TIME.name())) {

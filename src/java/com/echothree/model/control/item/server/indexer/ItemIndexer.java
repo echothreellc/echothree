@@ -95,7 +95,7 @@ public class ItemIndexer
         document.add(new Field(IndexConstants.IndexField_EntityInstanceId, entityInstance.getPrimaryKey().getEntityId().toString(), FieldTypes.STORED_NOT_TOKENIZED));
 
         document.add(new Field(IndexConstants.IndexField_ItemName, itemDetail.getItemName(), FieldTypes.NOT_STORED_TOKENIZED));
-        document.add(new SortedDocValuesField(IndexConstants.IndexField_ItemName + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable,
+        document.add(new SortedDocValuesField(IndexConstants.IndexField_ItemName + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable,
                 new BytesRef(itemDetail.getItemName())));
         document.add(new Field(IndexConstants.IndexField_ItemNameAndAliases, itemDetail.getItemName(), FieldTypes.NOT_STORED_TOKENIZED));
 
@@ -170,9 +170,9 @@ public class ItemIndexer
                     String stringDescription = itemStringDescription.getStringDescription();
                     
                     document.add(new Field(itemDescriptionTypeName, stringDescription, FieldTypes.NOT_STORED_TOKENIZED));
-                    document.add(new Field(itemDescriptionTypeName + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Dictionary,
+                    document.add(new Field(itemDescriptionTypeName + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Dictionary,
                             stringDescription, FieldTypes.NOT_STORED_TOKENIZED));
-                    document.add(new SortedDocValuesField(itemDescriptionTypeName + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable,
+                    document.add(new SortedDocValuesField(itemDescriptionTypeName + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable,
                             new BytesRef(sortableDescriptionProducer.getSortableDescription(stringDescription))));
 
                     if(IndexerDebugFlags.LogItemIndexing) {

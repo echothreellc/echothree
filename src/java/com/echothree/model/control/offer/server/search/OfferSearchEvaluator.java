@@ -56,11 +56,11 @@ public class OfferSearchEvaluator
             case SCORE ->
                     sortFields = new SortField[]{
                             new SortField(null, SortField.Type.SCORE, reverse),
-                            new SortField(IndexConstants.IndexField_Description + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)};
+                            new SortField(IndexConstants.IndexField_Description + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)};
             case DESCRIPTION ->
-                    sortFields = new SortField[]{new SortField(IndexConstants.IndexField_Description + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)};
+                    sortFields = new SortField[]{new SortField(IndexConstants.IndexField_Description + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)};
             case OFFER_NAME ->
-                    sortFields = new SortField[]{new SortField(IndexConstants.IndexField_OfferName + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)};
+                    sortFields = new SortField[]{new SortField(IndexConstants.IndexField_OfferName + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)};
             case CREATED_TIME ->
                     sortFields = new SortField[]{new SortField(IndexConstants.IndexField_CreatedTime, SortField.Type.LONG, reverse)};
             case MODIFIED_TIME ->

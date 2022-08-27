@@ -63,7 +63,7 @@ public class ItemAnalyzer
         itemControl.getItemDescriptionTypes().stream().map((itemDescriptionType) -> itemDescriptionType.getLastDetail()).forEach((itemDescriptionTypeDetail) -> {
             MimeTypeUsageType mimeTypeUsageType = itemDescriptionTypeDetail.getMimeTypeUsageType();
             if (mimeTypeUsageType == null || mimeTypeUsageType.getMimeTypeUsageTypeName().equals(MimeTypeUsageTypes.TEXT.name())) {
-                fieldAnalyzers.put(itemDescriptionTypeDetail.getItemDescriptionTypeName() + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Dictionary,
+                fieldAnalyzers.put(itemDescriptionTypeDetail.getItemDescriptionTypeName() + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Dictionary,
                         new DictionaryAnalyzer());
             }
         });

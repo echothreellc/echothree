@@ -91,7 +91,7 @@ public class ForumMessageIndexer
                     String string = forumControl.getForumStringMessagePart(forumMessagePart).getString();
                     
                     document.add(new Field(forumMessagePartTypeName, string, FieldTypes.NOT_STORED_TOKENIZED));
-                    document.add(new SortedDocValuesField(forumMessagePartTypeName + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable,
+                    document.add(new SortedDocValuesField(forumMessagePartTypeName + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable,
                             new BytesRef(string)));
                 } else {
                     String mimeTypeUsageTypeName = mimeTypeUsageType.getMimeTypeUsageTypeName();

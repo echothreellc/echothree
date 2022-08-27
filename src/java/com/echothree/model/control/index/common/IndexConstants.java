@@ -125,18 +125,18 @@ public interface IndexConstants {
     String IndexField_VendorName = "vendorName";
 
     // Only used behind-the-scenes, may be a character that QueryParser doesn't like.
-    String IndexFieldVariationSeparator = ":";
+    String IndexFieldVariation_Separator = ":";
     
     String IndexFieldVariation_Dictionary = "dictionary";
     String IndexFieldVariation_Sortable = "sortable";
 
     // May be used by users of the system, should be able to be escaped but must not
     // be a character that's valid in a Name.
-    String IndexSubfieldSeparator = ".";
+    String IndexSubfield_Separator = ".";
     
-    String IndexSubfieldLatitude = "latitude";
-    String IndexSubfieldLongitude = "longitude";
-    String IndexSubfieldElevation = "elevation";
-    String IndexSubfieldAltitude = "altitude";
+    String IndexSubfield_Latitude = "latitude";
+    String IndexSubfield_Longitude = "longitude";
+    String IndexSubfield_Elevation = "elevation";
+    String IndexSubfield_Altitude = "altitude";
     
 }

@@ -64,15 +64,15 @@ public class SecurityRoleIndexer
 
         document.add(new Field(IndexConstants.IndexField_SecurityRoleGroupName, securityRoleDetail.getSecurityRoleGroup().getLastDetail().getSecurityRoleGroupName(),
                 FieldTypes.NOT_STORED_TOKENIZED));
-        document.add(new SortedDocValuesField(IndexConstants.IndexField_SecurityRoleGroupName + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable,
+        document.add(new SortedDocValuesField(IndexConstants.IndexField_SecurityRoleGroupName + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable,
                 new BytesRef(securityRoleDetail.getSecurityRoleGroup().getLastDetail().getSecurityRoleGroupName())));
         document.add(new Field(IndexConstants.IndexField_SecurityRoleName, securityRoleDetail.getSecurityRoleName(), FieldTypes.NOT_STORED_TOKENIZED));
-        document.add(new SortedDocValuesField(IndexConstants.IndexField_SecurityRoleName + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable,
+        document.add(new SortedDocValuesField(IndexConstants.IndexField_SecurityRoleName + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable,
                 new BytesRef(securityRoleDetail.getSecurityRoleName())));
 
         if(description != null) {
             document.add(new Field(IndexConstants.IndexField_Description, description, FieldTypes.NOT_STORED_TOKENIZED));
-            document.add(new SortedDocValuesField(IndexConstants.IndexField_Description + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable,
+            document.add(new SortedDocValuesField(IndexConstants.IndexField_Description + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable,
                     new BytesRef(description)));
         }
         

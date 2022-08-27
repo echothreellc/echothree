@@ -55,12 +55,12 @@ public class SecurityRoleGroupSearchEvaluator
         if(searchSortOrderName.equals(SearchSortOrders.SCORE.name())) {
             sortFields = new SortField[]{
                 new SortField(null, SortField.Type.SCORE, reverse),
-                new SortField(IndexConstants.IndexField_Description + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)
+                new SortField(IndexConstants.IndexField_Description + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)
             };
         } else if(searchSortOrderName.equals(SearchSortOrders.DESCRIPTION.name())) {
-            sortFields = new SortField[]{new SortField(IndexConstants.IndexField_Description + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)};
+            sortFields = new SortField[]{new SortField(IndexConstants.IndexField_Description + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)};
         } else if(searchSortOrderName.equals(SearchSortOrders.SECURITY_ROLE_GROUP_NAME.name())) {
-            sortFields = new SortField[]{new SortField(IndexConstants.IndexField_SecurityRoleGroupName + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)};
+            sortFields = new SortField[]{new SortField(IndexConstants.IndexField_SecurityRoleGroupName + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)};
         } else if(searchSortOrderName.equals(SearchSortOrders.CREATED_TIME.name())) {
             sortFields = new SortField[]{new SortField(IndexConstants.IndexField_CreatedTime, SortField.Type.LONG, reverse)};
         } else if(searchSortOrderName.equals(SearchSortOrders.MODIFIED_TIME.name())) {

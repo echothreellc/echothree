@@ -231,7 +231,7 @@ public abstract class BaseSpellCheckEvaluator
 
                 // Switch the default field used by parseQuery(...) over to the dictionary one in order to avoid most analysis
                 // beyond splitting the phrase into simple words.
-                final String dictionaryField = field + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Dictionary;
+                final String dictionaryField = field + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Dictionary;
                 final boolean simpleQuery = isSimpleQuery(eea, dictionaryField, words);
 
                 if(EvaluatorDebugFlags.LogCheckSpelling) {

@@ -186,12 +186,12 @@ public class ItemSearchEvaluator
         if(searchSortOrderName.equals(SearchSortOrders.SCORE.name())) {
             sortFields = new SortField[]{
                 new SortField(null, SortField.Type.SCORE, reverse),
-                new SortField(ItemConstants.ItemDescriptionType_DEFAULT_DESCRIPTION + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)
+                new SortField(ItemConstants.ItemDescriptionType_DEFAULT_DESCRIPTION + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)
             };
         } else if(searchSortOrderName.equals(SearchSortOrders.DEFAULT_DESCRIPTION.name())) {
-            sortFields = new SortField[]{new SortField(ItemConstants.ItemDescriptionType_DEFAULT_DESCRIPTION + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)};
+            sortFields = new SortField[]{new SortField(ItemConstants.ItemDescriptionType_DEFAULT_DESCRIPTION + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)};
         } else if(searchSortOrderName.equals(SearchSortOrders.ITEM_NAME.name())) {
-            sortFields = new SortField[]{new SortField(IndexConstants.IndexField_ItemName + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)};
+            sortFields = new SortField[]{new SortField(IndexConstants.IndexField_ItemName + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)};
         } else if(searchSortOrderName.equals(SearchSortOrders.CREATED_TIME.name())) {
             sortFields = new SortField[]{new SortField(IndexConstants.IndexField_CreatedTime, SortField.Type.LONG, reverse)};
         } else if(searchSortOrderName.equals(SearchSortOrders.MODIFIED_TIME.name())) {

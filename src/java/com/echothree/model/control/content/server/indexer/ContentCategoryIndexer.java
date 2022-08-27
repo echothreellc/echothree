@@ -67,13 +67,13 @@ public class ContentCategoryIndexer
 
         document.add(new Field(IndexConstants.IndexField_ContentCollectionName, contentCatalogDetail.getContentCollection().getLastDetail().getContentCollectionName(),
                 FieldTypes.NOT_STORED_TOKENIZED));
-        document.add(new SortedDocValuesField(IndexConstants.IndexField_ContentCollectionName + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable,
+        document.add(new SortedDocValuesField(IndexConstants.IndexField_ContentCollectionName + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable,
                 new BytesRef(contentCatalogDetail.getContentCollection().getLastDetail().getContentCollectionName())));
         document.add(new Field(IndexConstants.IndexField_ContentCatalogName, contentCatalogDetail.getContentCatalogName(), FieldTypes.NOT_STORED_TOKENIZED));
-        document.add(new SortedDocValuesField(IndexConstants.IndexField_ContentCatalogName + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable,
+        document.add(new SortedDocValuesField(IndexConstants.IndexField_ContentCatalogName + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable,
                 new BytesRef(contentCatalogDetail.getContentCatalogName())));
         document.add(new Field(IndexConstants.IndexField_ContentCategoryName, contentCategoryDetail.getContentCategoryName(), FieldTypes.NOT_STORED_TOKENIZED));
-        document.add(new SortedDocValuesField(IndexConstants.IndexField_ContentCategoryName + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable,
+        document.add(new SortedDocValuesField(IndexConstants.IndexField_ContentCategoryName + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable,
                 new BytesRef(contentCategoryDetail.getContentCategoryName())));
         if(parentContentCategory != null) {
             document.add(new Field(IndexConstants.IndexField_ParentContentCategoryName, parentContentCategory.getLastDetail().getContentCategoryName(),
@@ -82,7 +82,7 @@ public class ContentCategoryIndexer
         
         if(description != null) {
             document.add(new Field(IndexConstants.IndexField_Description, description, FieldTypes.NOT_STORED_TOKENIZED));
-            document.add(new SortedDocValuesField(IndexConstants.IndexField_Description + IndexConstants.IndexFieldVariationSeparator + IndexConstants.IndexFieldVariation_Sortable,
+            document.add(new SortedDocValuesField(IndexConstants.IndexField_Description + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable,
                     new BytesRef(description)));
         }
         
