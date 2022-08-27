@@ -18,6 +18,7 @@ package com.echothree.model.control.item.server.indexer;
 
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFieldVariations;
 import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.server.analysis.HarmonizedTariffScheduleCodeAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
@@ -68,7 +69,7 @@ public class HarmonizedTariffScheduleCodeIndexer
         document.add(new Field(IndexFields.countryGeoCodeName.name(), harmonizedTariffScheduleCodeDetail.getCountryGeoCode().getLastDetail().getGeoCodeName(), FieldTypes.NOT_STORED_TOKENIZED));
         
         document.add(new Field(IndexFields.harmonizedTariffScheduleCodeName.name(), harmonizedTariffScheduleCodeDetail.getHarmonizedTariffScheduleCodeName(), FieldTypes.NOT_STORED_TOKENIZED));
-        document.add(new SortedDocValuesField(IndexFields.harmonizedTariffScheduleCodeName.name() + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable,
+        document.add(new SortedDocValuesField(IndexFields.harmonizedTariffScheduleCodeName.name() + IndexConstants.IndexFieldVariation_Separator + IndexFieldVariations.sortable.name(),
                 new BytesRef(harmonizedTariffScheduleCodeDetail.getHarmonizedTariffScheduleCodeName())));
 
         if(harmonizedTariffScheduleCodeTranslation != null) {
@@ -76,7 +77,7 @@ public class HarmonizedTariffScheduleCodeIndexer
             String overview = harmonizedTariffScheduleCodeTranslation.getOverview();
             
             document.add(new Field(IndexFields.description.name(), description, FieldTypes.NOT_STORED_TOKENIZED));
-            document.add(new SortedDocValuesField(IndexFields.description.name() + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable,
+            document.add(new SortedDocValuesField(IndexFields.description.name() + IndexConstants.IndexFieldVariation_Separator + IndexFieldVariations.sortable.name(),
                     new BytesRef(description)));
             
             if(overview != null) {

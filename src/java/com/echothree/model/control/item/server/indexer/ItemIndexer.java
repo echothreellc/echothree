@@ -18,6 +18,7 @@ package com.echothree.model.control.item.server.indexer;
 
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFieldVariations;
 import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.server.analysis.ItemAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
@@ -96,7 +97,7 @@ public class ItemIndexer
         document.add(new Field(IndexFields.entityInstanceId.name(), entityInstance.getPrimaryKey().getEntityId().toString(), FieldTypes.STORED_NOT_TOKENIZED));
 
         document.add(new Field(IndexFields.itemName.name(), itemDetail.getItemName(), FieldTypes.NOT_STORED_TOKENIZED));
-        document.add(new SortedDocValuesField(IndexFields.itemName.name() + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable,
+        document.add(new SortedDocValuesField(IndexFields.itemName.name() + IndexConstants.IndexFieldVariation_Separator + IndexFieldVariations.sortable.name(),
                 new BytesRef(itemDetail.getItemName())));
         document.add(new Field(IndexFields.itemNameAndAliases.name(), itemDetail.getItemName(), FieldTypes.NOT_STORED_TOKENIZED));
 
@@ -171,9 +172,9 @@ public class ItemIndexer
                     String stringDescription = itemStringDescription.getStringDescription();
                     
                     document.add(new Field(itemDescriptionTypeName, stringDescription, FieldTypes.NOT_STORED_TOKENIZED));
-                    document.add(new Field(itemDescriptionTypeName + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Dictionary,
+                    document.add(new Field(itemDescriptionTypeName + IndexConstants.IndexFieldVariation_Separator + IndexFieldVariations.dictionary.name(),
                             stringDescription, FieldTypes.NOT_STORED_TOKENIZED));
-                    document.add(new SortedDocValuesField(itemDescriptionTypeName + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable,
+                    document.add(new SortedDocValuesField(itemDescriptionTypeName + IndexConstants.IndexFieldVariation_Separator + IndexFieldVariations.sortable.name(),
                             new BytesRef(sortableDescriptionProducer.getSortableDescription(stringDescription))));
 
                     if(IndexerDebugFlags.LogItemIndexing) {

@@ -20,6 +20,7 @@ import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFieldVariations;
 import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.server.analysis.ContactMechanismAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
@@ -249,7 +250,7 @@ public class ContactMechanismIndexer
         String contactMechanismTypeName = contactMechanismDetail.getContactMechanismType().getContactMechanismTypeName();
         
         document.add(new Field(IndexFields.contactMechanismName.name(), contactMechanismDetail.getContactMechanismName(), FieldTypes.NOT_STORED_TOKENIZED));
-        document.add(new SortedDocValuesField(IndexFields.contactMechanismName.name() + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable,
+        document.add(new SortedDocValuesField(IndexFields.contactMechanismName.name() + IndexConstants.IndexFieldVariation_Separator + IndexFieldVariations.sortable.name(),
                 new BytesRef(contactMechanismDetail.getContactMechanismName())));
 
         document.add(new Field(IndexFields.contactMechanismTypeName.name(), contactMechanismTypeName, FieldTypes.NOT_STORED_TOKENIZED));

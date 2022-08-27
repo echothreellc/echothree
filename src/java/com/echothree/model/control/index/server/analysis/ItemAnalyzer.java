@@ -18,6 +18,7 @@ package com.echothree.model.control.index.server.analysis;
 
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFieldVariations;
 import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
@@ -64,7 +65,7 @@ public class ItemAnalyzer
         itemControl.getItemDescriptionTypes().stream().map((itemDescriptionType) -> itemDescriptionType.getLastDetail()).forEach((itemDescriptionTypeDetail) -> {
             MimeTypeUsageType mimeTypeUsageType = itemDescriptionTypeDetail.getMimeTypeUsageType();
             if (mimeTypeUsageType == null || mimeTypeUsageType.getMimeTypeUsageTypeName().equals(MimeTypeUsageTypes.TEXT.name())) {
-                fieldAnalyzers.put(itemDescriptionTypeDetail.getItemDescriptionTypeName() + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Dictionary,
+                fieldAnalyzers.put(itemDescriptionTypeDetail.getItemDescriptionTypeName() + IndexConstants.IndexFieldVariation_Separator + IndexFieldVariations.dictionary.name(),
                         new DictionaryAnalyzer());
             }
         });

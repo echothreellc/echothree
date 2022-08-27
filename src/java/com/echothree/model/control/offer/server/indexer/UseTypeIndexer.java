@@ -17,6 +17,7 @@
 package com.echothree.model.control.offer.server.indexer;
 
 import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFieldVariations;
 import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.server.analysis.UseTypeAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
@@ -64,12 +65,12 @@ public class UseTypeIndexer
         document.add(new Field(IndexFields.entityInstanceId.name(), entityInstance.getPrimaryKey().getEntityId().toString(), FieldTypes.STORED_NOT_TOKENIZED));
 
         document.add(new Field(IndexFields.useTypeName.name(), useTypeDetail.getUseTypeName(), FieldTypes.NOT_STORED_TOKENIZED));
-        document.add(new SortedDocValuesField(IndexFields.useTypeName.name() + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable,
+        document.add(new SortedDocValuesField(IndexFields.useTypeName.name() + IndexConstants.IndexFieldVariation_Separator + IndexFieldVariations.sortable.name(),
                 new BytesRef(useTypeDetail.getUseTypeName())));
         
         if(description != null) {
             document.add(new Field(IndexFields.description.name(), description, FieldTypes.NOT_STORED_TOKENIZED));
-            document.add(new SortedDocValuesField(IndexFields.description.name() + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable,
+            document.add(new SortedDocValuesField(IndexFields.description.name() + IndexConstants.IndexFieldVariation_Separator + IndexFieldVariations.sortable.name(),
                     new BytesRef(description)));
         }
         

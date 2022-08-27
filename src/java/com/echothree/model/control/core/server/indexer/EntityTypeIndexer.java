@@ -17,6 +17,7 @@
 package com.echothree.model.control.core.server.indexer;
 
 import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFieldVariations;
 import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.server.analysis.EntityTypeAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
@@ -61,16 +62,16 @@ public class EntityTypeIndexer
 
         document.add(new Field(IndexFields.componentVendorName.name(),
                 entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(), FieldTypes.NOT_STORED_TOKENIZED));
-        document.add(new SortedDocValuesField(IndexFields.componentVendorName.name() + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable,
+        document.add(new SortedDocValuesField(IndexFields.componentVendorName.name() + IndexConstants.IndexFieldVariation_Separator + IndexFieldVariations.sortable.name(),
                 new BytesRef(entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName())));
         document.add(new Field(IndexFields.entityTypeName.name(),
                 entityTypeDetail.getEntityTypeName(), FieldTypes.NOT_STORED_TOKENIZED));
-        document.add(new SortedDocValuesField(IndexFields.entityTypeName.name() + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable,
+        document.add(new SortedDocValuesField(IndexFields.entityTypeName.name() + IndexConstants.IndexFieldVariation_Separator + IndexFieldVariations.sortable.name(),
                 new BytesRef(entityTypeDetail.getEntityTypeName())));
 
         if(description != null) {
             document.add(new Field(IndexFields.description.name(), description, FieldTypes.NOT_STORED_TOKENIZED));
-            document.add(new SortedDocValuesField(IndexFields.description.name() + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable,
+            document.add(new SortedDocValuesField(IndexFields.description.name() + IndexConstants.IndexFieldVariation_Separator + IndexFieldVariations.sortable.name(),
                     new BytesRef(description)));
         }
         

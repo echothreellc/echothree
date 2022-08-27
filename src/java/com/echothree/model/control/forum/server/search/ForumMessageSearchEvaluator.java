@@ -21,6 +21,7 @@ import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.forum.common.ForumConstants;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFieldVariations;
 import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.common.IndexTypes;
 import com.echothree.model.control.index.server.analysis.ForumMessageAnalyzer;
@@ -145,10 +146,10 @@ public class ForumMessageSearchEvaluator
         if(searchSortOrderName.equals(SearchSortOrders.SCORE.name())) {
             sortFields = new SortField[]{
                 new SortField(null, SortField.Type.SCORE, reverse),
-                new SortField(ForumConstants.ForumMessagePartType_TITLE + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)
+                new SortField(ForumConstants.ForumMessagePartType_TITLE + IndexConstants.IndexFieldVariation_Separator + IndexFieldVariations.sortable.name(), SortField.Type.STRING, reverse)
             };
         } else if(searchSortOrderName.equals(SearchSortOrders.TITLE.name())) {
-            sortFields = new SortField[]{new SortField(ForumConstants.ForumMessagePartType_TITLE + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)};
+            sortFields = new SortField[]{new SortField(ForumConstants.ForumMessagePartType_TITLE + IndexConstants.IndexFieldVariation_Separator + IndexFieldVariations.sortable.name(), SortField.Type.STRING, reverse)};
         } else if(searchSortOrderName.equals(SearchSortOrders.POSTED_TIME.name())) {
             sortFields = new SortField[]{new SortField(IndexFields.postedTime.name(), SortField.Type.LONG, reverse)};
         } else if(searchSortOrderName.equals(SearchSortOrders.CREATED_TIME.name())) {

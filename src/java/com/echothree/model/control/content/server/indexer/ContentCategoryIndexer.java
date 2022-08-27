@@ -18,6 +18,7 @@ package com.echothree.model.control.content.server.indexer;
 
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFieldVariations;
 import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.server.analysis.ContentCategoryAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
@@ -68,13 +69,13 @@ public class ContentCategoryIndexer
 
         document.add(new Field(IndexFields.contentCollectionName.name(), contentCatalogDetail.getContentCollection().getLastDetail().getContentCollectionName(),
                 FieldTypes.NOT_STORED_TOKENIZED));
-        document.add(new SortedDocValuesField(IndexFields.contentCollectionName.name() + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable,
+        document.add(new SortedDocValuesField(IndexFields.contentCollectionName.name() + IndexConstants.IndexFieldVariation_Separator + IndexFieldVariations.sortable.name(),
                 new BytesRef(contentCatalogDetail.getContentCollection().getLastDetail().getContentCollectionName())));
         document.add(new Field(IndexFields.contentCatalogName.name(), contentCatalogDetail.getContentCatalogName(), FieldTypes.NOT_STORED_TOKENIZED));
-        document.add(new SortedDocValuesField(IndexFields.contentCatalogName.name() + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable,
+        document.add(new SortedDocValuesField(IndexFields.contentCatalogName.name() + IndexConstants.IndexFieldVariation_Separator + IndexFieldVariations.sortable.name(),
                 new BytesRef(contentCatalogDetail.getContentCatalogName())));
         document.add(new Field(IndexFields.contentCategoryName.name(), contentCategoryDetail.getContentCategoryName(), FieldTypes.NOT_STORED_TOKENIZED));
-        document.add(new SortedDocValuesField(IndexFields.contentCategoryName.name() + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable,
+        document.add(new SortedDocValuesField(IndexFields.contentCategoryName.name() + IndexConstants.IndexFieldVariation_Separator + IndexFieldVariations.sortable.name(),
                 new BytesRef(contentCategoryDetail.getContentCategoryName())));
         if(parentContentCategory != null) {
             document.add(new Field(IndexFields.parentContentCategoryName.name(), parentContentCategory.getLastDetail().getContentCategoryName(),
@@ -83,7 +84,7 @@ public class ContentCategoryIndexer
         
         if(description != null) {
             document.add(new Field(IndexFields.description.name(), description, FieldTypes.NOT_STORED_TOKENIZED));
-            document.add(new SortedDocValuesField(IndexFields.description.name() + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable,
+            document.add(new SortedDocValuesField(IndexFields.description.name() + IndexConstants.IndexFieldVariation_Separator + IndexFieldVariations.sortable.name(),
                     new BytesRef(description)));
         }
         

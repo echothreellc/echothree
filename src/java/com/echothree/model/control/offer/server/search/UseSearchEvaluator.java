@@ -19,6 +19,7 @@ package com.echothree.model.control.offer.server.search;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFieldVariations;
 import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.common.IndexTypes;
 import com.echothree.model.control.index.server.analysis.SecurityRoleGroupAnalyzer;
@@ -58,12 +59,12 @@ public class UseSearchEvaluator
             case SCORE ->
                     sortFields = new SortField[]{
                             new SortField(null, SortField.Type.SCORE, reverse),
-                            new SortField(IndexFields.description.name() + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)};
+                            new SortField(IndexFields.description.name() + IndexConstants.IndexFieldVariation_Separator + IndexFieldVariations.sortable.name(), SortField.Type.STRING, reverse)};
             case DESCRIPTION ->
                     sortFields = new SortField[]{
-                            new SortField(IndexFields.description.name() + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)};
+                            new SortField(IndexFields.description.name() + IndexConstants.IndexFieldVariation_Separator + IndexFieldVariations.sortable.name(), SortField.Type.STRING, reverse)};
             case USE_NAME ->
-                    sortFields = new SortField[]{new SortField(IndexFields.useName.name() + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable, SortField.Type.STRING, reverse)};
+                    sortFields = new SortField[]{new SortField(IndexFields.useName.name() + IndexConstants.IndexFieldVariation_Separator + IndexFieldVariations.sortable.name(), SortField.Type.STRING, reverse)};
             case CREATED_TIME ->
                     sortFields = new SortField[]{new SortField(IndexFields.createdTime.name(), SortField.Type.LONG, reverse)};
             case MODIFIED_TIME ->

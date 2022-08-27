@@ -19,6 +19,7 @@ package com.echothree.model.control.forum.server.indexer;
 import com.echothree.model.control.core.common.MimeTypeUsageTypes;
 import com.echothree.model.control.forum.server.control.ForumControl;
 import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFieldVariations;
 import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.server.analysis.ForumMessageAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
@@ -92,7 +93,7 @@ public class ForumMessageIndexer
                     String string = forumControl.getForumStringMessagePart(forumMessagePart).getString();
                     
                     document.add(new Field(forumMessagePartTypeName, string, FieldTypes.NOT_STORED_TOKENIZED));
-                    document.add(new SortedDocValuesField(forumMessagePartTypeName + IndexConstants.IndexFieldVariation_Separator + IndexConstants.IndexFieldVariation_Sortable,
+                    document.add(new SortedDocValuesField(forumMessagePartTypeName + IndexConstants.IndexFieldVariation_Separator + IndexFieldVariations.sortable.name(),
                             new BytesRef(string)));
                 } else {
                     String mimeTypeUsageTypeName = mimeTypeUsageType.getMimeTypeUsageTypeName();
