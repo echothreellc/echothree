@@ -38,7 +38,7 @@
             </h2>
         </div>
         <div id="Content">
-            <et:checkSecurityRoles securityRoles="Item.Edit:ItemStatus.Choices:Company.Review:ItemCategory.Review:ItemAccountingCategory.Review:ItemPurchasingCategory.Review:UnitOfMeasureKind.Review:CancellationPolicy.Review:ReturnPolicy.Review:ItemDescription.Create:ItemImageType.Review:ItemUnitOfMeasureType.List:ItemUnitOfMeasureType.Create:ItemUnitOfMeasureType.Edit:ItemUnitOfMeasureType.Delete:ItemPrice.List:ItemPrice.Create:ItemPrice.Edit:ItemPrice.Delete:ItemPrice.History:ItemUnitPriceLimit.List:ItemUnitPriceLimit.Create:ItemUnitPriceLimit.Edit:ItemUnitPriceLimit.Delete:ItemKitMember.List:ItemUnitLimit.List:ItemUnitLimit.Create:ItemUnitLimit.Edit:ItemUnitLimit.Delete:ItemUnitCustomerTypeLimit.List:ItemUnitCustomerTypeLimit.Create:ItemUnitCustomerTypeLimit.Edit:ItemUnitCustomerTypeLimit.Delete:ItemDescription.List:ItemAlias.List:ItemShippingTime.List:ItemPackCheckRequirement.List:ItemPackCheckRequirement.Create:ItemPackCheckRequirement.Edit:ItemPackCheckRequirement.Delete:ItemWeight.List:ItemVolume.List:ItemCountryOfOrigin.List:ItemHarmonizedTariffScheduleCode.List:ItemHarmonizedTariffScheduleCode.Create:ItemHarmonizedTariffScheduleCode.Review:ItemHarmonizedTariffScheduleCode.Edit:ItemHarmonizedTariffScheduleCode.Delete:Country.Review:HarmonizedTariffScheduleCodeUseType.Review:HarmonizedTariffScheduleCode.Review:OfferItem.List:Vendor.Review:VendorItem.Review:VendorItem.List:VendorItemStatus.Choices:Offer.Review:OfferItemPrice.List:OfferItem.Delete:UnitOfMeasureType.Review:Currency.Review:InventoryCondition.Review:CustomerType.Review:Event.List" />
+            <et:checkSecurityRoles securityRoles="Item.Edit:ItemStatus.Choices:Company.Review:ItemCategory.Review:ItemAccountingCategory.Review:ItemPurchasingCategory.Review:UnitOfMeasureKind.Review:CancellationPolicy.Review:ReturnPolicy.Review:ItemDescription.Create:ItemImageType.Review:ItemUnitOfMeasureType.List:ItemUnitOfMeasureType.Create:ItemUnitOfMeasureType.Edit:ItemUnitOfMeasureType.Delete:ItemPrice.List:ItemPrice.Create:ItemPrice.Edit:ItemPrice.Delete:ItemPrice.History:ItemUnitPriceLimit.List:ItemUnitPriceLimit.Create:ItemUnitPriceLimit.Edit:ItemUnitPriceLimit.Delete:ItemKitMember.List:ItemUnitLimit.List:ItemUnitLimit.Create:ItemUnitLimit.Edit:ItemUnitLimit.Delete:ItemUnitCustomerTypeLimit.List:ItemUnitCustomerTypeLimit.Create:ItemUnitCustomerTypeLimit.Edit:ItemUnitCustomerTypeLimit.Delete:ItemDescription.List:ItemAlias.List:ItemAlias.Create:ItemAlias.Edit:ItemAlias.Delete:ItemShippingTime.List:ItemPackCheckRequirement.List:ItemPackCheckRequirement.Create:ItemPackCheckRequirement.Edit:ItemPackCheckRequirement.Delete:ItemWeight.List:ItemVolume.List:ItemCountryOfOrigin.List:ItemHarmonizedTariffScheduleCode.List:ItemHarmonizedTariffScheduleCode.Create:ItemHarmonizedTariffScheduleCode.Review:ItemHarmonizedTariffScheduleCode.Edit:ItemHarmonizedTariffScheduleCode.Delete:Country.Review:HarmonizedTariffScheduleCodeUseType.Review:HarmonizedTariffScheduleCode.Review:OfferItem.List:Vendor.Review:VendorItem.Review:VendorItem.List:VendorItemStatus.Choices:Offer.Review:OfferItemPrice.List:OfferItem.Delete:UnitOfMeasureType.Review:Currency.Review:InventoryCondition.Review:CustomerType.Review:Event.List" />
             <et:hasSecurityRole securityRole="Company.Review" var="includeCompanyUrl" />
             <et:hasSecurityRole securityRole="ItemCategory.Review" var="includeItemCategoryUrl" />
             <et:hasSecurityRole securityRole="ItemAccountingCategory.Review" var="includeItemAccountingCategoryUrl" />
@@ -58,6 +58,9 @@
             <et:hasSecurityRole securityRole="VendorItemStatus.Choices" var="includeEditableVendorItemStatus" />
             <et:hasSecurityRole securityRoles="ItemHarmonizedTariffScheduleCode.Edit:ItemHarmonizedTariffScheduleCode.Delete">
                 <c:set var="linksInItemHarmonizedTariffScheduleCodeFirstRow" value="true" />
+            </et:hasSecurityRole>
+            <et:hasSecurityRole securityRoles="ItemAlias.Edit:ItemAlias.Delete">
+                <c:set var="linksInItemAliasFirstRow" value="true" />
             </et:hasSecurityRole>
             <et:hasSecurityRole securityRoles="ItemPackCheckRequirement.Edit:ItemPackCheckRequirement.Delete">
                 <c:set var="linksInItemPackCheckRequirementFirstRow" value="true" />
@@ -889,35 +892,48 @@
                 <br />
             </et:hasSecurityRole>
             <et:hasSecurityRole securityRole="ItemAlias.List">
-                <c:if test='${item.itemAliases.size > 0}'>
-                    <h2>Item Aliases</h2>
+                <h2>Item Aliases</h2>
+                <et:hasSecurityRole securityRole="ItemAlias.Create">
                     <c:url var="addUrl" value="/action/Item/ItemAlias/Add">
                         <c:param name="ItemName" value="${item.itemName}" />
                     </c:url>
-                    <a href="${addUrl}">Add Item Alias.</a>
-                    <display:table name="item.itemAliases.list" id="itemAlias" class="displaytag">
-                        <display:column titleKey="columnTitle.unitOfMeasureType">
-                            <c:out value="${itemAlias.unitOfMeasureType.description}" />
-                        </display:column>
-                        <display:column titleKey="columnTitle.itemAliasType">
-                            <c:out value="${itemAlias.itemAliasType.description}" />
-                        </display:column>
-                        <display:column property="alias" titleKey="columnTitle.alias" />
-                        <display:column>
-                            <c:url var="editUrl" value="/action/Item/ItemAlias/Edit">
-                                <c:param name="ItemName" value="${itemAlias.item.itemName}" />
-                                <c:param name="OriginalAlias" value="${itemAlias.alias}" />
-                            </c:url>
-                            <a href="${editUrl}">Edit</a>
-                            <c:url var="deleteUrl" value="/action/Item/ItemAlias/Delete">
-                                <c:param name="ItemName" value="${itemAlias.item.itemName}" />
-                                <c:param name="Alias" value="${itemAlias.alias}" />
-                            </c:url>
-                            <a href="${deleteUrl}">Delete</a>
-                        </display:column>
-                    </display:table>
-                    <br />
-                </c:if>
+                    <a href="${addUrl}">Add Item Alias.</a></p>
+                </et:hasSecurityRole>
+                <c:choose>
+                    <c:when test="${item.itemAliases.size == 0}">
+                        No item aliases were found.<br />
+                    </c:when>
+                    <c:otherwise>
+                        <display:table name="item.itemAliases.list" id="itemAlias" class="displaytag">
+                            <display:column titleKey="columnTitle.unitOfMeasureType">
+                                <c:out value="${itemAlias.unitOfMeasureType.description}" />
+                            </display:column>
+                            <display:column titleKey="columnTitle.itemAliasType">
+                                <c:out value="${itemAlias.itemAliasType.description}" />
+                            </display:column>
+                            <display:column property="alias" titleKey="columnTitle.alias" />
+                            <c:if test='${linksInItemAliasFirstRow}'>
+                                <display:column>
+                                    <et:hasSecurityRole securityRole="ItemAlias.Edit">
+                                        <c:url var="editUrl" value="/action/Item/ItemAlias/Edit">
+                                            <c:param name="ItemName" value="${itemAlias.item.itemName}" />
+                                            <c:param name="OriginalAlias" value="${itemAlias.alias}" />
+                                        </c:url>
+                                        <a href="${editUrl}">Edit</a>
+                                    </et:hasSecurityRole>
+                                    <et:hasSecurityRole securityRole="ItemAlias.Delete">
+                                        <c:url var="deleteUrl" value="/action/Item/ItemAlias/Delete">
+                                            <c:param name="ItemName" value="${itemAlias.item.itemName}" />
+                                            <c:param name="Alias" value="${itemAlias.alias}" />
+                                        </c:url>
+                                        <a href="${deleteUrl}">Delete</a>
+                                    </et:hasSecurityRole>
+                                </display:column>
+                            </c:if>
+                        </display:table>
+                    </c:otherwise>
+                </c:choose>
+                <br />
             </et:hasSecurityRole>
             <et:hasSecurityRole securityRole="ItemShippingTime.List">
                 <c:if test='${item.itemShippingTimes.size > 0}'>
