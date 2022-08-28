@@ -52,6 +52,7 @@ public class CreateProfileCommand
         customerFormFieldDefinitions = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("Nickname", FieldType.STRING, true, 1L, 40L),
                 new FieldDefinition("IconName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("Pronunciation", FieldType.STRING, false, 1L, 200L),
                 new FieldDefinition("GenderName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("Pronouns", FieldType.STRING, false, 1L, 50L),
                 new FieldDefinition("Birthday", FieldType.DATE, false, null, null),
@@ -69,6 +70,7 @@ public class CreateProfileCommand
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("Nickname", FieldType.STRING, false, 1L, 40L),
                 new FieldDefinition("IconName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("Pronunciation", FieldType.STRING, false, 1L, 200L),
                 new FieldDefinition("GenderName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("Pronouns", FieldType.STRING, false, 1L, 50L),
                 new FieldDefinition("Birthday", FieldType.DATE, false, null, null),
@@ -149,6 +151,7 @@ public class CreateProfileCommand
                                         MimeType signatureMimeType = signatureMimeTypeName == null? null: coreControl.getMimeTypeByName(signatureMimeTypeName);
 
                                         if(signatureMimeTypeName == null || signatureMimeType != null) {
+                                            String pronunciation = form.getPronunciation();
                                             String pronouns = form.getPronouns();
                                             String occupation = form.getOccupation();
                                             String hobbies = form.getHobbies();
@@ -156,9 +159,9 @@ public class CreateProfileCommand
                                             String rawBirthday = form.getBirthday();
                                             Integer birthday = rawBirthday == null? null: Integer.valueOf(rawBirthday);
 
-                                            partyControl.createProfile(party, nickname, icon, gender, pronouns, birthday, birthdayFormat,
-                                                    occupation, hobbies, location, bioMimeType, bio, signatureMimeType, signature,
-                                                    getPartyPK());
+                                            partyControl.createProfile(party, nickname, icon, pronunciation, gender, pronouns,
+                                                    birthday, birthdayFormat, occupation, hobbies, location, bioMimeType, bio,
+                                                    signatureMimeType, signature, getPartyPK());
                                         } else {
                                             addExecutionError(ExecutionErrors.UnknownSignatureMimeTypeName.name(), signatureMimeTypeName);
                                         }

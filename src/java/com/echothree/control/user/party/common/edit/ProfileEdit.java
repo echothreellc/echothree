@@ -28,6 +28,9 @@ public interface ProfileEdit
     String getNickname();
     void setNickname(String nickname);
 
+    String getPronunciation();
+    void setPronunciation(String pronunciation);
+
     String getPronouns();
     void setPronouns(String pronouns);
 

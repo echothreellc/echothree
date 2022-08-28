@@ -87,6 +87,7 @@ public class EmployeeProfileEditAction
 
                 edit.setNickname(actionForm.getNickname());
                 edit.setIconName(actionForm.getIconChoice());
+                edit.setPronunciation(actionForm.getPronunciation());
                 edit.setGenderName(actionForm.getGenderChoice());
                 edit.setPronouns(actionForm.getPronouns());
                 edit.setBirthday(actionForm.getBirthday());
@@ -132,6 +133,7 @@ public class EmployeeProfileEditAction
                     actionForm.setEmployeeName(employeeName);
                     actionForm.setNickname(edit.getNickname());
                     actionForm.setIconChoice(edit.getIconName());
+                    actionForm.setPronunciation(edit.getPronunciation());
                     actionForm.setGenderChoice(edit.getGenderName());
                     actionForm.setPronouns(edit.getPronouns());
                     actionForm.setBirthday(edit.getBirthday());

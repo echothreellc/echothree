@@ -64,6 +64,7 @@ public class EditProfileCommand
         customerEditFieldDefinitions = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("Nickname", FieldType.STRING, true, 1L, 40L),
                 new FieldDefinition("IconName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("Pronunciation", FieldType.STRING, false, 1L, 200L),
                 new FieldDefinition("GenderName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("Pronouns", FieldType.STRING, false, 1L, 50L),
                 new FieldDefinition("Birthday", FieldType.DATE, false, null, null),
@@ -80,6 +81,7 @@ public class EditProfileCommand
         otherEditFieldDefinitions = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("Nickname", FieldType.STRING, false, 1L, 40L),
                 new FieldDefinition("IconName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("Pronunciation", FieldType.STRING, false, 1L, 200L),
                 new FieldDefinition("GenderName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("Pronouns", FieldType.STRING, false, 1L, 50L),
                 new FieldDefinition("Birthday", FieldType.DATE, false, null, null),
@@ -176,6 +178,7 @@ public class EditProfileCommand
 
         edit.setNickname(profile.getNickname());
         edit.setIconName(icon == null? null: icon.getLastDetail().getIconName());
+        edit.setPronunciation(profile.getPronunciation());
         edit.setGenderName(gender == null? null: gender.getLastDetail().getGenderName());
         edit.setPronouns(profile.getPronouns());
         edit.setBirthday(DateUtils.getInstance().formatDate(getUserVisit(), profile.getBirthday()));
@@ -257,11 +260,13 @@ public class EditProfileCommand
         var partyControl = Session.getModelController(PartyControl.class);
         ProfileValue profileValue = partyControl.getProfileValue(profile);
         String nickname = edit.getNickname();
+        String pronunciation = edit.getPronunciation();
         String pronouns = edit.getPronouns();
         String birthday = edit.getBirthday();
 
         profileValue.setNickname(nickname);
         profileValue.setIconPK(icon == null ? null : icon.getPrimaryKey());
+        profileValue.setPronunciation(pronunciation);
         profileValue.setGenderPK(gender == null ? null : gender.getPrimaryKey());
         profileValue.setPronouns(pronouns);
         profileValue.setBirthday(birthday == null ? null : Integer.valueOf(birthday));

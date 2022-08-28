@@ -55,6 +55,7 @@ public class ProfileAddActionForm
     
     private String nickname;
     private String iconChoice;
+    private String pronunciation;
     private String genderChoice;
     private String pronouns;
     private String birthday;
@@ -195,7 +196,15 @@ public class ProfileAddActionForm
         
         return iconChoice;
     }
-    
+
+    public String getPronunciation() {
+        return pronunciation;
+    }
+
+    public void setPronunciation(String pronunciation) {
+        this.pronunciation = pronunciation;
+    }
+
     public List<LabelValueBean> getGenderChoices()
             throws NamingException {
         List<LabelValueBean> choices = null;
