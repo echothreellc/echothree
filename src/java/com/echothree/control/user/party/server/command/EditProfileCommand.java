@@ -65,6 +65,7 @@ public class EditProfileCommand
                 new FieldDefinition("Nickname", FieldType.STRING, true, 1L, 40L),
                 new FieldDefinition("IconName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("GenderName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("Pronouns", FieldType.STRING, false, 1L, 50L),
                 new FieldDefinition("Birthday", FieldType.DATE, false, null, null),
                 new FieldDefinition("BirthdayFormatName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Occupation", FieldType.STRING, false, 1L, 200L),
@@ -80,6 +81,7 @@ public class EditProfileCommand
                 new FieldDefinition("Nickname", FieldType.STRING, false, 1L, 40L),
                 new FieldDefinition("IconName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("GenderName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("Pronouns", FieldType.STRING, false, 1L, 50L),
                 new FieldDefinition("Birthday", FieldType.DATE, false, null, null),
                 new FieldDefinition("BirthdayFormatName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Occupation", FieldType.STRING, false, 1L, 200L),
@@ -175,6 +177,7 @@ public class EditProfileCommand
         edit.setNickname(profile.getNickname());
         edit.setIconName(icon == null? null: icon.getLastDetail().getIconName());
         edit.setGenderName(gender == null? null: gender.getLastDetail().getGenderName());
+        edit.setPronouns(profile.getPronouns());
         edit.setBirthday(DateUtils.getInstance().formatDate(getUserVisit(), profile.getBirthday()));
         edit.setBirthdayFormatName(profile.getBirthdayFormat().getLastDetail().getBirthdayFormatName());
         edit.setOccupation(profile.getOccupation());
@@ -254,11 +257,13 @@ public class EditProfileCommand
         var partyControl = Session.getModelController(PartyControl.class);
         ProfileValue profileValue = partyControl.getProfileValue(profile);
         String nickname = edit.getNickname();
+        String pronouns = edit.getPronouns();
         String birthday = edit.getBirthday();
 
         profileValue.setNickname(nickname);
         profileValue.setIconPK(icon == null ? null : icon.getPrimaryKey());
         profileValue.setGenderPK(gender == null ? null : gender.getPrimaryKey());
+        profileValue.setPronouns(pronouns);
         profileValue.setBirthday(birthday == null ? null : Integer.valueOf(birthday));
         profileValue.setBirthdayFormatPK(birthdayFormat.getPrimaryKey());
         profileValue.setOccupation(edit.getOccupation());

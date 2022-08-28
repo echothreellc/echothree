@@ -88,6 +88,7 @@ public class CustomerProfileEditAction
                 edit.setNickname(actionForm.getNickname());
                 edit.setIconName(actionForm.getIconChoice());
                 edit.setGenderName(actionForm.getGenderChoice());
+                edit.setPronouns(actionForm.getPronouns());
                 edit.setBirthday(actionForm.getBirthday());
                 edit.setBirthdayFormatName(actionForm.getBirthdayFormatChoice());
                 edit.setOccupation(actionForm.getOccupation());
@@ -132,6 +133,7 @@ public class CustomerProfileEditAction
                     actionForm.setNickname(edit.getNickname());
                     actionForm.setIconChoice(edit.getIconName());
                     actionForm.setGenderChoice(edit.getGenderName());
+                    actionForm.setPronouns(edit.getPronouns());
                     actionForm.setBirthday(edit.getBirthday());
                     actionForm.setBirthdayFormatChoice(edit.getBirthdayFormatName());
                     actionForm.setOccupation(edit.getOccupation());

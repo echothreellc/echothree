@@ -71,6 +71,7 @@ public class EmployeeProfileAddAction
             commandForm.setNickname(actionForm.getNickname());
             commandForm.setIconName(actionForm.getIconChoice());
             commandForm.setGenderName(actionForm.getGenderChoice());
+            commandForm.setPronouns(actionForm.getPronouns());
             commandForm.setBirthday(actionForm.getBirthday());
             commandForm.setBirthdayFormatName(actionForm.getBirthdayFormatChoice());
             commandForm.setOccupation(actionForm.getOccupation());

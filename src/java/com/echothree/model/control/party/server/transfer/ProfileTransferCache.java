@@ -45,6 +45,7 @@ public class ProfileTransferCache
             var iconTransfer = icon == null? null: iconControl.getIconTransfer(userVisit, icon);
             var gender = profile.getGender();
             var genderTransfer = gender == null? null: partyControl.getGenderTransfer(userVisit, gender);
+            var pronouns = profile.getPronouns();
             var unformattedBirthday = profile.getBirthday();
             var birthdayFormat = partyControl.getBirthdayFormatTransfer(userVisit, profile.getBirthdayFormat());
             var birthday = DateUtils.getInstance().formatDate(userVisit, unformattedBirthday);
@@ -58,7 +59,7 @@ public class ProfileTransferCache
             var signatureMimeTypeTransfer = signatureMimeType == null? null: coreControl.getMimeTypeTransfer(userVisit, signatureMimeType);
             var signature = profile.getSignature();
             
-            profileTransfer = new ProfileTransfer(nickname, iconTransfer, genderTransfer, birthday, unformattedBirthday,
+            profileTransfer = new ProfileTransfer(nickname, iconTransfer, genderTransfer, pronouns, birthday, unformattedBirthday,
                     birthdayFormat, occupation, hobbies, location, bioMimeTypeTransfer, bio, signatureMimeTypeTransfer,
                     signature);
             put(profile, profileTransfer);

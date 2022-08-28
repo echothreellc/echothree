@@ -27,7 +27,10 @@ public interface ProfileEdit
     
     String getNickname();
     void setNickname(String nickname);
-    
+
+    String getPronouns();
+    void setPronouns(String pronouns);
+
     String getBirthday();
     void setBirthday(String birthday);
     

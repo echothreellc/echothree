@@ -62,6 +62,9 @@
             <c:if test='${customer.profile.gender != null}'>
                 Gender: ${customer.profile.gender.description}<br />
             </c:if>
+            <c:if test='${customer.profile.pronouns != null}'>
+                Pronouns: ${customer.profile.pronouns}<br />
+            </c:if>
             <c:if test='${customer.profile.birthday != null}'>
                 Birthday: ${customer.profile.birthday}<br />
             </c:if>
