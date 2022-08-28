@@ -54,6 +54,7 @@ public class ProfileAddAction
             
             commandForm.setNickname(actionForm.getNickname());
             commandForm.setIconName(actionForm.getIconChoice());
+            commandForm.setPronunciation(actionForm.getPronunciation());
             commandForm.setGenderName(actionForm.getGenderChoice());
             commandForm.setPronouns(actionForm.getPronouns());
             commandForm.setBirthday(actionForm.getBirthday());

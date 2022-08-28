@@ -1263,6 +1263,7 @@
                         <column name="PartyId" type="ForeignKey" nullAllowed="false" onParentDelete="delete" destinationTable="Parties" destinationColumn="PartyId" />
                         <column name="Nickname" type="String" maxLength="40" nullAllowed="true" />
                         <column name="IconId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Icons" destinationColumn="IconId" />
+                        <column name="Pronunciation" type="String" maxLength="200" nullAllowed="true" />
                         <column name="GenderId" type="ForeignKey" nullAllowed="true" onParentDelete="delete" destinationTable="Genders" destinationColumn="GenderId" />
                         <column name="Pronouns" type="String" maxLength="50" nullAllowed="true" />
                         <column name="Birthday" type="Date" nullAllowed="true" />

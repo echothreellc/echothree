@@ -59,6 +59,9 @@
             <c:if test='${customer.profile.icon != null}'>
                 Icon: ${customer.profile.icon.description}<br />
             </c:if>
+            <c:if test='${customer.profile.pronunciation != null}'>
+                Pronouns: ${customer.profile.pronunciation}<br />
+            </c:if>
             <c:if test='${customer.profile.gender != null}'>
                 Gender: ${customer.profile.gender.description}<br />
             </c:if>

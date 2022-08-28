@@ -76,6 +76,15 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td align=right><fmt:message key="label.pronunciation" />:</td>
+                                <td>
+                                    <html:text property="pronunciation" size="60" maxlength="200" />
+                                    <et:validationErrors id="errorMessage" property="Pronunciation">
+                                        <p><c:out value="${errorMessage}" /></p>
+                                    </et:validationErrors>
+                                </td>
+                            </tr>
+                            <tr>
                                 <td align=right><fmt:message key="label.gender" />:</td>
                                 <td>
                                     <html:select property="genderChoice">

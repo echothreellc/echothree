@@ -6121,12 +6121,12 @@ public class PartyControl
     //   Profiles
     // --------------------------------------------------------------------------------
     
-    public Profile createProfile(Party party, String nickname, Icon icon, Gender gender, String pronouns, Integer birthday, BirthdayFormat birthdayFormat,
-            String occupation, String hobbies, String location, MimeType bioMimeType, String bio, MimeType signatureMimeType,
-            String signature, BasePK createdBy) {
-        Profile profile = ProfileFactory.getInstance().create(party, nickname, icon, gender, pronouns, birthday, birthdayFormat,
-                occupation, hobbies, location, bioMimeType, bio, signatureMimeType, signature, session.START_TIME_LONG,
-                Session.MAX_TIME_LONG);
+    public Profile createProfile(Party party, String nickname, Icon icon, String pronunciation, Gender gender, String pronouns,
+            Integer birthday, BirthdayFormat birthdayFormat, String occupation, String hobbies, String location, MimeType bioMimeType,
+            String bio, MimeType signatureMimeType, String signature, BasePK createdBy) {
+        Profile profile = ProfileFactory.getInstance().create(party, nickname, icon, pronunciation, gender, pronouns,
+                birthday, birthdayFormat, occupation, hobbies, location, bioMimeType, bio, signatureMimeType, signature,
+                session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, profile.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -6228,6 +6228,7 @@ public class PartyControl
             PartyPK partyPK = profile.getPartyPK();
             String nickname = profileValue.getNickname();
             IconPK iconPK = profileValue.getIconPK();
+            String pronunciation = profileValue.getPronunciation();
             GenderPK genderPK = profileValue.getGenderPK();
             String pronouns = profileValue.getPronouns();
             Integer birthday = profileValue.getBirthday();
@@ -6240,9 +6241,9 @@ public class PartyControl
             MimeTypePK signatureMimeTypePK = profileValue.getSignatureMimeTypePK();
             String signature = profileValue.getSignature();
             
-            profile = ProfileFactory.getInstance().create(partyPK, nickname, iconPK, genderPK, pronouns, birthday, birthdayFormatPK,
-                    occupation, hobbies, location, bioMimeTypePK, bio, signatureMimeTypePK, signature, session.START_TIME_LONG,
-                    Session.MAX_TIME_LONG);
+            profile = ProfileFactory.getInstance().create(partyPK, nickname, iconPK, pronunciation, genderPK, pronouns,
+                    birthday, birthdayFormatPK, occupation, hobbies, location, bioMimeTypePK, bio, signatureMimeTypePK,
+                    signature, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
             sendEvent(partyPK, EventTypes.MODIFY, profile.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }

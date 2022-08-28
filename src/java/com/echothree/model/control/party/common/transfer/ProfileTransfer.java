@@ -25,6 +25,7 @@ public class ProfileTransfer
 
     private String nickname;
     private IconTransfer icon;
+    private String pronunciation;
     private GenderTransfer gender;
     private String pronouns;
     private String birthday;
@@ -39,11 +40,12 @@ public class ProfileTransfer
     private String signature;
     
     /** Creates a new instance of ProfileTransfer */
-    public ProfileTransfer(String nickname, IconTransfer icon, GenderTransfer gender, String pronouns, String birthday, Integer unformattedBirthday,
-            BirthdayFormatTransfer birthdayFormat, String occupation, String hobbies, String location, MimeTypeTransfer bioMimeType,
-            String bio, MimeTypeTransfer signatureMimeType, String signature) {
+    public ProfileTransfer(String nickname, IconTransfer icon, String pronunciation, GenderTransfer gender, String pronouns,
+            String birthday, Integer unformattedBirthday, BirthdayFormatTransfer birthdayFormat, String occupation, String hobbies,
+            String location, MimeTypeTransfer bioMimeType, String bio, MimeTypeTransfer signatureMimeType, String signature) {
         this.nickname = nickname;
         this.icon = icon;
+        this.pronunciation = pronunciation;
         this.gender = gender;
         this.pronouns = pronouns;
         this.unformattedBirthday = unformattedBirthday;
@@ -88,6 +90,22 @@ public class ProfileTransfer
      */
     public void setIcon(IconTransfer icon) {
         this.icon = icon;
+    }
+
+    /**
+     * Returns the pronunciation.
+     * @return the pronunciation
+     */
+    public String getPronunciation() {
+        return pronunciation;
+    }
+
+    /**
+     * Sets the pronunciation.
+     * @param pronunciation the pronunciation to set
+     */
+    public void setPronunciation(String pronunciation) {
+        this.pronunciation = pronunciation;
     }
 
     /**
