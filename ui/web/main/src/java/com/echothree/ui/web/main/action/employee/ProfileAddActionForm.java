@@ -56,6 +56,7 @@ public class ProfileAddActionForm
     private String nickname;
     private String iconChoice;
     private String genderChoice;
+    private String pronouns;
     private String birthday;
     private String birthdayFormatChoice;
     private String occupation;
@@ -163,15 +164,15 @@ public class ProfileAddActionForm
             }
         }
     }
-    
+
     public String getNickname() {
         return nickname;
     }
-    
+
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
-    
+
     public List<LabelValueBean> getIconChoices()
             throws NamingException {
         List<LabelValueBean> choices = null;
@@ -217,7 +218,15 @@ public class ProfileAddActionForm
         
         return genderChoice;
     }
-    
+
+    public String getPronouns() {
+        return pronouns;
+    }
+
+    public void setPronouns(String pronouns) {
+        this.pronouns = pronouns;
+    }
+
     public String getBirthday() {
         return birthday;
     }

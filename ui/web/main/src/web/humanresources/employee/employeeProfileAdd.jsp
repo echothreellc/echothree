@@ -80,6 +80,15 @@
                         </td>
                     </tr>
                     <tr>
+                        <td align=right><fmt:message key="label.pronouns" />:</td>
+                        <td>
+                            <html:text property="pronouns" size="50" maxlength="50" />
+                            <et:validationErrors id="errorMessage" property="Pronouns">
+                                <p><c:out value="${errorMessage}" /></p>
+                            </et:validationErrors>
+                        </td>
+                    </tr>
+                    <tr>
                         <td align=right><fmt:message key="label.birthday" />:</td>
                         <td>
                             <html:text property="birthday" size="10" maxlength="10" />

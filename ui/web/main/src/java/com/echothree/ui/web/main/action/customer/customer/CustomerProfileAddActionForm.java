@@ -58,6 +58,7 @@ public class CustomerProfileAddActionForm
     private String nickname;
     private String iconChoice;
     private String genderChoice;
+    private String pronouns;
     private String birthday;
     private String birthdayFormatChoice;
     private String occupation;
@@ -234,6 +235,14 @@ public class CustomerProfileAddActionForm
         setupGenderChoices();
         
         return genderChoice;
+    }
+
+    public String getPronouns() {
+        return pronouns;
+    }
+
+    public void setPronouns(String pronouns) {
+        this.pronouns = pronouns;
     }
 
     public String getBirthday() {

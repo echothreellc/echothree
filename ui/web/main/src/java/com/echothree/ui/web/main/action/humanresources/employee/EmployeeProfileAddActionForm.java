@@ -58,6 +58,7 @@ public class EmployeeProfileAddActionForm
     private String nickname;
     private String iconChoice;
     private String genderChoice;
+    private String pronouns;
     private String birthday;
     private String birthdayFormatChoice;
     private String occupation;
@@ -235,7 +236,15 @@ public class EmployeeProfileAddActionForm
         
         return genderChoice;
     }
-    
+
+    public String getPronouns() {
+        return pronouns;
+    }
+
+    public void setPronouns(String pronouns) {
+        this.pronouns = pronouns;
+    }
+
     public String getBirthday() {
         return birthday;
     }
