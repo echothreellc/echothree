@@ -2320,43 +2320,21 @@ public class DatabaseUtilitiesForJava {
             }
         }
     }
-
-    public void writeConstantsImports(PrintWriter pw)
-            throws Exception {
-        pw.println("import com.echothree.util.server.persistence.BaseEntityConstants;");
-        pw.println("    ");
-    }
-
-    public void writeConstantsVariables(PrintWriter pw, Table theTable)
-            throws Exception {
+    
+    public void writeConstantsInstanceVariables(PrintWriter pw, Table theTable)
+    throws Exception {
         pw.println("    String COMPONENT_VENDOR_NAME = \"ECHOTHREE\";");
         pw.println("    String ENTITY_TYPE_NAME = \"" + theTable.getNameSingular() + "\";");
         pw.println("    ");
     }
-
-    public void writeConstantsFunctions(PrintWriter pw)
-            throws Exception {
-        pw.println("    @Override");
-        pw.println("    default String getComponentVendorName() {");
-        pw.println("        return COMPONENT_VENDOR_NAME;");
-        pw.println("    }");
-        pw.println("    ");
-        pw.println("    @Override");
-        pw.println("    default String getEntityTypeName() {");
-        pw.println("        return ENTITY_TYPE_NAME;");
-        pw.println("    }");
-        pw.println("    ");
-    }
-
+    
     public void writeConstantsClass(PrintWriter pw, Table theTable)
     throws Exception {
-        pw.println("public interface " + theTable.getConstantsClass());
-        pw.println("        extends BaseEntityConstants {");
+        pw.println("public interface " + theTable.getConstantsClass() + " {");
         pw.println("    ");
-
-        writeConstantsVariables(pw, theTable);
-        writeConstantsFunctions(pw);
-
+        
+        writeConstantsInstanceVariables(pw, theTable);
+        
         pw.println("}");
     }
     
@@ -2375,7 +2353,6 @@ public class DatabaseUtilitiesForJava {
                     writeCopyright(pw);
                     writeVersion(pw, classFileName);
                     writePackage(pw, theComponent.getCommonPackage());
-                    writeConstantsImports(pw);
                     writeConstantsClass(pw, theTable);
                 }
             }
