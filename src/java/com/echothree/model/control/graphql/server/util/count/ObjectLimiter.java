@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.graphql.server.graphql;
+package com.echothree.model.control.graphql.server.util.count;
 
 import com.echothree.util.common.transfer.Limit;
 import com.echothree.util.server.persistence.ThreadSession;
