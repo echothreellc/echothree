@@ -28,13 +28,13 @@ public final class GraphQlCursorUtils {
         return GraphQlCursorUtilsHolder.instance;
     }
 
-    public Long fromCursor(final String entityTypeName, final String cursor) {
+    public Long fromCursor(final String componentVendorName, final String entityTypeName, final String cursor) {
         var validatedCursor = Validator.validateUnsignedLong(cursor);
 
         return validatedCursor == null ? null : Long.valueOf(validatedCursor);
     }
 
-    public String toCursor(final String entityTypeName, final long offset) {
+    public String toCursor(final String componentVendorName, final String entityTypeName, final long offset) {
         return Long.toString(offset);
     }
 

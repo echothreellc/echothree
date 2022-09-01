@@ -29,16 +29,23 @@ public class ObjectLimiter
     private static final String PARAMETER_LAST = "last";
     private static final String PARAMETER_BEFORE = "before";
 
-    DataFetchingEnvironment env;
-    String entityTypeName;
+    private final DataFetchingEnvironment env;
+    private final String componentVendorName;
+    private final String entityTypeName;
+    private final long totalCount;
 
-    Map<String, Limit> limits;
-    Limit savedLimit;
-    long totalCount;
-    long limitOffset;
-    long limitCount;
+    private Map<String, Limit> limits;
+    private Limit savedLimit;
+    private long limitOffset;
+    private long limitCount;
 
-    public String getEntityTypeName() {return entityTypeName; }
+    public String getComponentVendorName() {
+        return componentVendorName;
+    }
+
+    public String getEntityTypeName() {
+        return entityTypeName;
+    }
 
     public long getTotalCount() {
         return totalCount;
@@ -52,17 +59,18 @@ public class ObjectLimiter
         return limitCount;
     }
 
-    public ObjectLimiter(final DataFetchingEnvironment env, final String entityTypeName, final long totalCount) {
-
+    public ObjectLimiter(final DataFetchingEnvironment env, final String componentVendorName, final String entityTypeName,
+            final long totalCount) {
         this.env = env;
+        this.componentVendorName = componentVendorName;
         this.entityTypeName = entityTypeName;
         this.totalCount = totalCount;
 
         var session = ThreadSession.currentSession();
         var first = env.<Integer>getArgument(PARAMETER_FIRST);
-        var after = GraphQlCursorUtils.getInstance().fromCursor(entityTypeName, env.getArgument(PARAMETER_AFTER));
+        var after = GraphQlCursorUtils.getInstance().fromCursor(componentVendorName, entityTypeName, env.getArgument(PARAMETER_AFTER));
         var last = env.<Integer>getArgument(PARAMETER_LAST);
-        var before = GraphQlCursorUtils.getInstance().fromCursor(entityTypeName, env.getArgument(PARAMETER_BEFORE));
+        var before = GraphQlCursorUtils.getInstance().fromCursor(componentVendorName, entityTypeName, env.getArgument(PARAMETER_BEFORE));
 
         // Initialize edges to be allEdges.
         limitOffset = 0;

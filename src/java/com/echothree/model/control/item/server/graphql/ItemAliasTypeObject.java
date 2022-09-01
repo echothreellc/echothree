@@ -120,7 +120,7 @@ public class ItemAliasTypeObject
             var itemControl = Session.getModelController(ItemControl.class);
             var totalCount = itemControl.countItemAliasesByItemAliasType(itemAliasType);
 
-            try(var objectLimiter = new ObjectLimiter(env, ItemAliasConstants.ENTITY_TYPE_NAME, totalCount)) {
+            try(var objectLimiter = new ObjectLimiter(env, ItemAliasConstants.COMPONENT_VENDOR_NAME, ItemAliasConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = itemControl.getItemAliasesByItemAliasType(itemAliasType);
                 var itemAliases = entities.stream().map(ItemAliasObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 

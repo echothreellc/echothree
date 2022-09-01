@@ -99,7 +99,7 @@ public class DivisionObject
             var partyControl = Session.getModelController(PartyControl.class);
             var totalCount = partyControl.countPartyDepartments(party);
 
-            try(var objectLimiter = new ObjectLimiter(env, ItemConstants.ENTITY_TYPE_NAME, totalCount)) {
+            try(var objectLimiter = new ObjectLimiter(env, ItemConstants.COMPONENT_VENDOR_NAME, ItemConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = partyControl.getDepartmentsByDivision(party);
                 var departments = entities.stream().map(DepartmentObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 

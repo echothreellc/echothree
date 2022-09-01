@@ -71,7 +71,7 @@ public class OfferItemObject
             var offerItemControl = Session.getModelController(OfferItemControl.class);
             var totalCount = offerItemControl.countOfferItemPricesByOfferItem(offerItem);
 
-            try(var objectLimiter = new ObjectLimiter(env, OfferItemPriceConstants.ENTITY_TYPE_NAME, totalCount)) {
+            try(var objectLimiter = new ObjectLimiter(env, OfferItemPriceConstants.COMPONENT_VENDOR_NAME, OfferItemPriceConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = offerItemControl.getOfferItemPricesByOfferItem(offerItem);
                 var offerItemPrices = entities.stream().map(OfferItemPriceObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 

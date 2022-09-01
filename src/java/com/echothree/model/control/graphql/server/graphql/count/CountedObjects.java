@@ -30,14 +30,14 @@ import java.util.List;
 public class CountedObjects<T>
         implements CountingPaginatedData<T> {
 
-    ObjectLimiter objectLimiter;
-    List<T> entities;
+    private final ObjectLimiter objectLimiter;
+    private final List<T> entities;
 
-    boolean hasPreviousPage;
-    boolean hasNextPage;
-    long cursor;
+    private final boolean hasPreviousPage;
+    private final boolean hasNextPage;
+    private long cursor;
 
-    public CountedObjects(ObjectLimiter objectLimiter, List<T> entities) {
+    public CountedObjects(final ObjectLimiter objectLimiter, final List<T> entities) {
         this.objectLimiter = objectLimiter;
         this.entities = entities;
 
@@ -52,8 +52,8 @@ public class CountedObjects<T>
     }
 
     @Override
-    public String getCursor(T entity) {
-        return GraphQlCursorUtils.getInstance().toCursor(objectLimiter.getEntityTypeName(), cursor += 1);
+    public String getCursor(final T entity) {
+        return GraphQlCursorUtils.getInstance().toCursor(objectLimiter.getComponentVendorName(), objectLimiter.getEntityTypeName(), cursor += 1);
     }
 
     @Override

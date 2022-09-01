@@ -57,7 +57,7 @@ public class CustomerResultsObject
         } else {
             var totalCount = getTotalCount(env);
 
-            try(var objectLimiter = new ObjectLimiter(env, SearchResultConstants.ENTITY_TYPE_NAME, totalCount)) {
+            try(var objectLimiter = new ObjectLimiter(env, SearchResultConstants.COMPONENT_VENDOR_NAME, SearchResultConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var customerControl = Session.getModelController(CustomerControl.class);
                 var customers = customerControl.getCustomerObjectsFromUserVisitSearch(userVisitSearch);
 

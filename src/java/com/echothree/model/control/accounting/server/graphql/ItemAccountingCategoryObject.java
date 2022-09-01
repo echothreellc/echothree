@@ -118,7 +118,7 @@ public class ItemAccountingCategoryObject
             var itemControl = Session.getModelController(ItemControl.class);
             var totalCount = itemControl.countItemsByItemAccountingCategory(itemAccountingCategory);
 
-            try(var objectLimiter = new ObjectLimiter(env, ItemConstants.ENTITY_TYPE_NAME, totalCount)) {
+            try(var objectLimiter = new ObjectLimiter(env, ItemConstants.COMPONENT_VENDOR_NAME, ItemConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = itemControl.getItemsByItemAccountingCategory(itemAccountingCategory);
                 var items = entities.stream().map(ItemObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 

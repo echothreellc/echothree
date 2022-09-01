@@ -108,7 +108,7 @@ public class CancellationKindObject
             var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
             var totalCount = cancellationPolicyControl.countCancellationPoliciesByCancellationKind(cancellationKind);
 
-            try(var objectLimiter = new ObjectLimiter(env, CancellationPolicyConstants.ENTITY_TYPE_NAME, totalCount)) {
+            try(var objectLimiter = new ObjectLimiter(env, CancellationPolicyConstants.COMPONENT_VENDOR_NAME, CancellationPolicyConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = cancellationPolicyControl.getCancellationPolicies(cancellationKind);
                 var items = entities.stream().map(CancellationPolicyObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 

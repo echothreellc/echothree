@@ -82,7 +82,7 @@ public class ComponentVendorObject
             var coreControl = Session.getModelController(CoreControl.class);
             var totalCount = coreControl.countEntityTypesByComponentVendor(componentVendor);
 
-            try(var objectLimiter = new ObjectLimiter(env, EntityTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+            try(var objectLimiter = new ObjectLimiter(env, EntityTypeConstants.COMPONENT_VENDOR_NAME, EntityTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = coreControl.getEntityTypesByComponentVendor(componentVendor);
                 var entityTypes = entities.stream().map(EntityTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 

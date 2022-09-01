@@ -57,7 +57,7 @@ public class EmployeeResultsObject
         } else {
             var totalCount = getTotalCount(env);
 
-            try(var objectLimiter = new ObjectLimiter(env, SearchResultConstants.ENTITY_TYPE_NAME, totalCount)) {
+            try(var objectLimiter = new ObjectLimiter(env, SearchResultConstants.COMPONENT_VENDOR_NAME, SearchResultConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var employeeControl = Session.getModelController(EmployeeControl.class);
                 var employees = employeeControl.getEmployeeObjectsFromUserVisitSearch(userVisitSearch);
 

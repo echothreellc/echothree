@@ -301,7 +301,7 @@ public class ItemObject
             var itemControl = Session.getModelController(ItemControl.class);
             var totalCount = itemControl.countItemPricesByItem(item);
 
-            try(var objectLimiter = new ObjectLimiter(env, ItemPriceConstants.ENTITY_TYPE_NAME, totalCount)) {
+            try(var objectLimiter = new ObjectLimiter(env, ItemPriceConstants.COMPONENT_VENDOR_NAME, ItemPriceConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = itemControl.getItemPricesByItem(item);
                 var itemPrices = entities.stream().map(ItemPriceObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
@@ -321,7 +321,7 @@ public class ItemObject
             var itemControl = Session.getModelController(ItemControl.class);
             var totalCount = itemControl.countItemAliasesByItem(item);
 
-            try(var objectLimiter = new ObjectLimiter(env, ItemAliasConstants.ENTITY_TYPE_NAME, totalCount)) {
+            try(var objectLimiter = new ObjectLimiter(env, ItemAliasConstants.COMPONENT_VENDOR_NAME, ItemAliasConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = itemControl.getItemAliasesByItem(item);
                 var itemAliases = entities.stream().map(ItemAliasObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
@@ -357,7 +357,7 @@ public class ItemObject
             var offerItemControl = Session.getModelController(OfferItemControl.class);
             var totalCount = offerItemControl.countOfferItemsByItem(item);
 
-            try(var objectLimiter = new ObjectLimiter(env, OfferItemConstants.ENTITY_TYPE_NAME, totalCount)) {
+            try(var objectLimiter = new ObjectLimiter(env, OfferItemConstants.COMPONENT_VENDOR_NAME, OfferItemConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = offerItemControl.getOfferItemsByItem(item);
                 var offerItems = entities.stream().map(OfferItemObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 

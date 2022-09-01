@@ -95,7 +95,7 @@ public class CompanyObject
             var partyControl = Session.getModelController(PartyControl.class);
             var totalCount = partyControl.countPartyDivisions(party);
 
-            try(var objectLimiter = new ObjectLimiter(env, ItemConstants.ENTITY_TYPE_NAME, totalCount)) {
+            try(var objectLimiter = new ObjectLimiter(env, ItemConstants.COMPONENT_VENDOR_NAME, ItemConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = partyControl.getDivisionsByCompany(party);
                 var divisions = entities.stream().map(DivisionObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
@@ -115,7 +115,7 @@ public class CompanyObject
             var itemControl = Session.getModelController(ItemControl.class);
             var totalCount = itemControl.countItemsByCompanyParty(party);
 
-            try(var objectLimiter = new ObjectLimiter(env, ItemConstants.ENTITY_TYPE_NAME, totalCount)) {
+            try(var objectLimiter = new ObjectLimiter(env, ItemConstants.COMPONENT_VENDOR_NAME, ItemConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = itemControl.getItemsByCompanyParty(party);
                 var items = entities.stream().map(ItemObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 

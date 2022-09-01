@@ -102,7 +102,7 @@ public class DepartmentObject
             var offerControl = Session.getModelController(OfferControl.class);
             var totalCount = offerControl.countOffersByDepartmentParty(party);
 
-            try(var objectLimiter = new ObjectLimiter(env, OfferConstants.ENTITY_TYPE_NAME, totalCount)) {
+            try(var objectLimiter = new ObjectLimiter(env, OfferConstants.COMPONENT_VENDOR_NAME, OfferConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = offerControl.getOffersByDepartmentParty(party);
                 var departments = entities.stream().map(OfferObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 

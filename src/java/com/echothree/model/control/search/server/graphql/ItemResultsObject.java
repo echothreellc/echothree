@@ -57,7 +57,7 @@ public class ItemResultsObject
         } else {
             var totalCount = getTotalCount(env);
 
-            try(var objectLimiter = new ObjectLimiter(env, SearchResultConstants.ENTITY_TYPE_NAME, totalCount)) {
+            try(var objectLimiter = new ObjectLimiter(env, SearchResultConstants.COMPONENT_VENDOR_NAME, SearchResultConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var itemControl = Session.getModelController(ItemControl.class);
                 var items = itemControl.getItemObjectsFromUserVisitSearch(userVisitSearch);
 
