@@ -53,7 +53,7 @@ public class CountedObjects<T>
 
     @Override
     public String getCursor(T entity) {
-        return GraphQlCursorUtils.getInstance().toCursor(objectLimiter.getEntityName(), cursor += 1);
+        return GraphQlCursorUtils.getInstance().toCursor(objectLimiter.getEntityTypeName(), cursor += 1);
         //return Long.toString(cursor += 1);
     }
 

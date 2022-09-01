@@ -18,9 +18,7 @@ package com.echothree.model.control.graphql.server.util.count;
 
 import com.echothree.util.common.transfer.Limit;
 import com.echothree.util.server.persistence.ThreadSession;
-import com.echothree.util.server.validation.Validator;
 import graphql.schema.DataFetchingEnvironment;
-import java.util.HashMap;
 import java.util.Map;
 
 public class ObjectLimiter
@@ -32,7 +30,7 @@ public class ObjectLimiter
     private static final String PARAMETER_BEFORE = "before";
 
     DataFetchingEnvironment env;
-    String entityName;
+    String entityTypeName;
 
     Map<String, Limit> limits;
     Limit savedLimit;
@@ -40,7 +38,7 @@ public class ObjectLimiter
     long limitOffset;
     long limitCount;
 
-    public String getEntityName() {return entityName; }
+    public String getEntityTypeName() {return entityTypeName; }
 
     public long getTotalCount() {
         return totalCount;
@@ -54,19 +52,19 @@ public class ObjectLimiter
         return limitCount;
     }
 
-    public ObjectLimiter(final DataFetchingEnvironment env, final String entityName, final long totalCount) {
+    public ObjectLimiter(final DataFetchingEnvironment env, final String entityTypeName, final long totalCount) {
 
         this.env = env;
-        this.entityName = entityName;
+        this.entityTypeName = entityTypeName;
         this.totalCount = totalCount;
 
         var session = ThreadSession.currentSession();
         //var after = Validator.validateUnsignedLong(env.getArgument(PARAMETER_AFTER));
         //var before = Validator.validateUnsignedLong(env.getArgument(PARAMETER_BEFORE));
         var first = env.<Integer>getArgument(PARAMETER_FIRST);
-        var afterEdge = GraphQlCursorUtils.getInstance().fromCursor(entityName, env.getArgument(PARAMETER_AFTER)); //after == null ? null : Long.valueOf(after);
+        var afterEdge = GraphQlCursorUtils.getInstance().fromCursor(entityTypeName, env.getArgument(PARAMETER_AFTER)); //after == null ? null : Long.valueOf(after);
         var last = env.<Integer>getArgument(PARAMETER_LAST);
-        var beforeEdge = GraphQlCursorUtils.getInstance().fromCursor(entityName, env.getArgument(PARAMETER_BEFORE)); //before == null ? null : Long.valueOf(before);
+        var beforeEdge = GraphQlCursorUtils.getInstance().fromCursor(entityTypeName, env.getArgument(PARAMETER_BEFORE)); //before == null ? null : Long.valueOf(before);
 
         // Initialize edges to be allEdges.
         limitOffset = 0;
@@ -76,7 +74,7 @@ public class ObjectLimiter
         // 4.4 Pagination algorithm
         if(first != null || afterEdge != null || last != null || beforeEdge != null) {
             limits = session.getLimits();
-            savedLimit = limits.get(entityName);
+            savedLimit = limits.get(entityTypeName);
 
             // If after is set: && If afterEdge exists:
             if(afterEdge != null && afterEdge <= totalCount) {
@@ -114,7 +112,7 @@ public class ObjectLimiter
                 }
             }
 
-            limits.put(entityName, new Limit(Long.toString(limitCount), Long.toString(limitOffset)));
+            limits.put(entityTypeName, new Limit(Long.toString(limitCount), Long.toString(limitOffset)));
         }
     }
 
@@ -122,7 +120,7 @@ public class ObjectLimiter
     public void close() {
         if(limits != null) {
             // Restore previous Limit;
-            limits.put(entityName, savedLimit);
+            limits.put(entityTypeName, savedLimit);
         }
     }
 
