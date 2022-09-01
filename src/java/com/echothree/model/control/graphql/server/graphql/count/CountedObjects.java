@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.graphql.server.graphql.count;
 
+import com.echothree.model.control.graphql.server.util.count.GraphQlCursorUtils;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import graphql.relay.DefaultConnectionCursor;
 import graphql.relay.DefaultEdge;
@@ -52,7 +53,8 @@ public class CountedObjects<T>
 
     @Override
     public String getCursor(T entity) {
-        return Long.toString(cursor += 1);
+        return GraphQlCursorUtils.getInstance().toCursor(objectLimiter.getEntityName(), cursor += 1);
+        //return Long.toString(cursor += 1);
     }
 
     @Override

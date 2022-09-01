@@ -40,6 +40,8 @@ public class ObjectLimiter
     long limitOffset;
     long limitCount;
 
+    public String getEntityName() {return entityName; }
+
     public long getTotalCount() {
         return totalCount;
     }
@@ -59,12 +61,12 @@ public class ObjectLimiter
         this.totalCount = totalCount;
 
         var session = ThreadSession.currentSession();
-        var after = Validator.validateUnsignedLong(env.getArgument(PARAMETER_AFTER));
-        var before = Validator.validateUnsignedLong(env.getArgument(PARAMETER_BEFORE));
+        //var after = Validator.validateUnsignedLong(env.getArgument(PARAMETER_AFTER));
+        //var before = Validator.validateUnsignedLong(env.getArgument(PARAMETER_BEFORE));
         var first = env.<Integer>getArgument(PARAMETER_FIRST);
-        var afterEdge = after == null ? null : Long.valueOf(after);
+        var afterEdge = GraphQlCursorUtils.getInstance().fromCursor(entityName, env.getArgument(PARAMETER_AFTER)); //after == null ? null : Long.valueOf(after);
         var last = env.<Integer>getArgument(PARAMETER_LAST);
-        var beforeEdge = before == null ? null : Long.valueOf(before);
+        var beforeEdge = GraphQlCursorUtils.getInstance().fromCursor(entityName, env.getArgument(PARAMETER_BEFORE)); //before == null ? null : Long.valueOf(before);
 
         // Initialize edges to be allEdges.
         limitOffset = 0;
