@@ -31,8 +31,20 @@ public final class GraphQlCursorUtils {
         return GraphQlCursorUtilsHolder.instance;
     }
 
-    BaseEncoding baseEncoding = BaseEncoding.base64();
-    Pattern cursorPattern = Pattern.compile("^([a-zA-Z0-9-_]+)\\/([a-zA-Z0-9-_]+)\\/([0-9]+)$");
+    private final BaseEncoding baseEncoding = BaseEncoding.base64();
+    private final Pattern cursorPattern = Pattern.compile("^([a-zA-Z0-9-_]+)\\/([a-zA-Z0-9-_]+)\\/([0-9]+)$");
+    private final byte xorValue = (byte)0b10101010;
+
+    // Intended to be as "basic" as it appears - just to prevent casual tampering.
+    private byte[] xorBytes(byte[] originalBytes) {
+        byte[] modifiedBytes = new byte[originalBytes.length];
+
+        for(int i = 0; i < originalBytes.length; i++) {
+            modifiedBytes[i] = (byte)(originalBytes[i] ^ xorValue);
+        }
+
+        return modifiedBytes;
+    }
 
     public Long fromCursor(final String componentVendorName, final String entityTypeName, final String cursor) {
         Long offset = null;
@@ -40,7 +52,8 @@ public final class GraphQlCursorUtils {
         // If it cannot be decoded, offset should remain null.
         if(cursor != null && baseEncoding.canDecode(cursor)) {
             var byteCursor = baseEncoding.decode(cursor);
-            var unencodedCursor = new String(byteCursor, Charsets.UTF_8);
+            var xoredCursor = xorBytes(byteCursor);
+            var unencodedCursor = new String(xoredCursor, Charsets.UTF_8);
             var matcher = cursorPattern.matcher(unencodedCursor);
 
             // If it fails to match against cursorPattern, offset should remain null.
@@ -63,8 +76,9 @@ public final class GraphQlCursorUtils {
     public String toCursor(final String componentVendorName, final String entityTypeName, final long offset) {
         var unencodedCursor = componentVendorName + '/' + entityTypeName + '/' + offset;
         var byteCursor = unencodedCursor.getBytes(Charsets.UTF_8);
+        var xoredCursor = xorBytes(byteCursor);
 
-        return baseEncoding.encode(byteCursor);
+        return baseEncoding.encode(xoredCursor);
     }
 
 }
