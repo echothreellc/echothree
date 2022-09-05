@@ -70,8 +70,10 @@ public class CountedObjects<T>
     @Override
     public PageInfo getPageInfo() {
         var entitiesCount = entities.size();
-        var startCursor = entitiesCount == 0 ? null : new DefaultConnectionCursor(Long.toString(objectLimiter.getLimitOffset() + 1));
-        var endCursor = entitiesCount == 0 ? null : new DefaultConnectionCursor(Long.toString(objectLimiter.getLimitOffset() + objectLimiter.getLimitCount()));
+        var startCursor = entitiesCount == 0 ? null : new DefaultConnectionCursor(
+                GraphQlCursorUtils.getInstance().toCursor(objectLimiter.getComponentVendorName(), objectLimiter.getEntityTypeName(), objectLimiter.getLimitOffset() + 1));
+        var endCursor = entitiesCount == 0 ? null : new DefaultConnectionCursor(
+                GraphQlCursorUtils.getInstance().toCursor(objectLimiter.getComponentVendorName(), objectLimiter.getEntityTypeName(), objectLimiter.getLimitOffset() + objectLimiter.getLimitCount()));
 
         return new DefaultPageInfo(startCursor, endCursor, hasPreviousPage, hasNextPage);
     }
