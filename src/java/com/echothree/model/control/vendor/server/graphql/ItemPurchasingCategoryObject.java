@@ -17,7 +17,7 @@
 package com.echothree.model.control.vendor.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
@@ -111,7 +111,7 @@ public class ItemPurchasingCategoryObject
             var itemControl = Session.getModelController(ItemControl.class);
             var totalCount = itemControl.countItemsByItemPurchasingCategory(itemPurchasingCategory);
 
-            try(var objectLimiter = new ObjectLimiter(env, ItemConstants.ENTITY_TYPE_NAME, totalCount)) {
+            try(var objectLimiter = new ObjectLimiter(env, ItemConstants.COMPONENT_VENDOR_NAME, ItemConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = itemControl.getItemsByItemPurchasingCategory(itemPurchasingCategory);
                 var items = entities.stream().map(ItemObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 

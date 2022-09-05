@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.graphql.server.util;
+package com.echothree.model.control.graphql.server.graphql;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
 import com.echothree.control.user.accounting.server.command.GetCurrenciesCommand;
@@ -300,11 +300,12 @@ import com.echothree.model.control.filter.server.graphql.FilterKindObject;
 import com.echothree.model.control.filter.server.graphql.FilterObject;
 import com.echothree.model.control.filter.server.graphql.FilterStepObject;
 import com.echothree.model.control.filter.server.graphql.FilterTypeObject;
-import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.inventory.server.graphql.InventoryConditionObject;
 import com.echothree.model.control.inventory.server.graphql.LotObject;
 import com.echothree.model.control.item.server.control.ItemControl;
@@ -3913,7 +3914,7 @@ public final class GraphQlQueries
             var uomControl = Session.getModelController(UomControl.class);
             var totalCount = uomControl.countUnitOfMeasureKinds();
 
-            try(var objectLimiter = new ObjectLimiter(env, UnitOfMeasureKindConstants.ENTITY_TYPE_NAME, totalCount)) {
+            try(var objectLimiter = new ObjectLimiter(env, UnitOfMeasureKindConstants.COMPONENT_VENDOR_NAME, UnitOfMeasureKindConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = UomUtil.getHome().getGetUnitOfMeasureKindsForm();
                 var entities = new GetUnitOfMeasureKindsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
 
@@ -5003,7 +5004,7 @@ public final class GraphQlQueries
             var cancellationKindControl = Session.getModelController(CancellationPolicyControl.class);
             var totalCount = cancellationKindControl.countCancellationKinds();
 
-            try(var objectLimiter = new ObjectLimiter(env, CancellationKindConstants.ENTITY_TYPE_NAME, totalCount)) {
+            try(var objectLimiter = new ObjectLimiter(env, CancellationKindConstants.COMPONENT_VENDOR_NAME, CancellationKindConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = CancellationPolicyUtil.getHome().getGetCancellationKindsForm();
                 var entities = new GetCancellationKindsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
 
@@ -5107,7 +5108,7 @@ public final class GraphQlQueries
             var returnKindControl = Session.getModelController(ReturnPolicyControl.class);
             var totalCount = returnKindControl.countReturnKinds();
 
-            try(var objectLimiter = new ObjectLimiter(env, ReturnKindConstants.ENTITY_TYPE_NAME, totalCount)) {
+            try(var objectLimiter = new ObjectLimiter(env, ReturnKindConstants.COMPONENT_VENDOR_NAME, ReturnKindConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = ReturnPolicyUtil.getHome().getGetReturnKindsForm();
                 var entities = new GetReturnKindsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
 
@@ -5213,7 +5214,7 @@ public final class GraphQlQueries
             var itemControl = Session.getModelController(ItemControl.class);
             var totalCount = itemControl.countItems();
 
-            try(var objectLimiter = new ObjectLimiter(env, ItemConstants.ENTITY_TYPE_NAME, totalCount)) {
+            try(var objectLimiter = new ObjectLimiter(env, ItemConstants.COMPONENT_VENDOR_NAME, ItemConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = ItemUtil.getHome().getGetItemsForm();
                 var entities = new GetItemsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
 
@@ -5325,7 +5326,7 @@ public final class GraphQlQueries
             var itemControl = Session.getModelController(ItemControl.class);
             var totalCount = itemControl.countItemTypes();
 
-            try(var objectLimiter = new ObjectLimiter(env, ItemTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+            try(var objectLimiter = new ObjectLimiter(env, ItemTypeConstants.COMPONENT_VENDOR_NAME, ItemTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = ItemUtil.getHome().getGetItemTypesForm();
                 var entities = new GetItemTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
 
@@ -5376,7 +5377,7 @@ public final class GraphQlQueries
             var itemControl = Session.getModelController(ItemControl.class);
             var totalCount = itemControl.countItemUseTypes();
 
-            try(var objectLimiter = new ObjectLimiter(env, ItemUseTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+            try(var objectLimiter = new ObjectLimiter(env, ItemUseTypeConstants.COMPONENT_VENDOR_NAME, ItemUseTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = ItemUtil.getHome().getGetItemUseTypesForm();
                 var entities = new GetItemUseTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
 
@@ -5427,7 +5428,7 @@ public final class GraphQlQueries
             var itemControl = Session.getModelController(ItemControl.class);
             var totalCount = itemControl.countItemPriceTypes();
 
-            try(var objectLimiter = new ObjectLimiter(env, ItemPriceTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+            try(var objectLimiter = new ObjectLimiter(env, ItemPriceTypeConstants.COMPONENT_VENDOR_NAME, ItemPriceTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = ItemUtil.getHome().getGetItemPriceTypesForm();
                 var entities = new GetItemPriceTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
 
@@ -5478,7 +5479,7 @@ public final class GraphQlQueries
             var itemControl = Session.getModelController(ItemControl.class);
             var totalCount = itemControl.countItemDeliveryTypes();
 
-            try(var objectLimiter = new ObjectLimiter(env, ItemDeliveryTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+            try(var objectLimiter = new ObjectLimiter(env, ItemDeliveryTypeConstants.COMPONENT_VENDOR_NAME, ItemDeliveryTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = ItemUtil.getHome().getGetItemDeliveryTypesForm();
                 var entities = new GetItemDeliveryTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
 
@@ -5529,7 +5530,7 @@ public final class GraphQlQueries
             var itemControl = Session.getModelController(ItemControl.class);
             var totalCount = itemControl.countItemInventoryTypes();
 
-            try(var objectLimiter = new ObjectLimiter(env, ItemInventoryTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+            try(var objectLimiter = new ObjectLimiter(env, ItemInventoryTypeConstants.COMPONENT_VENDOR_NAME, ItemInventoryTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = ItemUtil.getHome().getGetItemInventoryTypesForm();
                 var entities = new GetItemInventoryTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
 
@@ -5635,7 +5636,7 @@ public final class GraphQlQueries
             var itemControl = Session.getModelController(ItemControl.class);
             var totalCount = itemControl.countItemAliasChecksumTypes();
 
-            try(var objectLimiter = new ObjectLimiter(env, ItemAliasChecksumTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+            try(var objectLimiter = new ObjectLimiter(env, ItemAliasChecksumTypeConstants.COMPONENT_VENDOR_NAME, ItemAliasChecksumTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = ItemUtil.getHome().getGetItemAliasChecksumTypesForm();
                 var entities = new GetItemAliasChecksumTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
 
@@ -5786,7 +5787,7 @@ public final class GraphQlQueries
             var accountingControl = Session.getModelController(AccountingControl.class);
             var totalCount = accountingControl.countItemAccountingCategories();
 
-            try(var objectLimiter = new ObjectLimiter(env, ItemAccountingCategoryConstants.ENTITY_TYPE_NAME, totalCount)) {
+            try(var objectLimiter = new ObjectLimiter(env, ItemAccountingCategoryConstants.COMPONENT_VENDOR_NAME, ItemAccountingCategoryConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = AccountingUtil.getHome().getGetItemAccountingCategoriesForm();
                 var entities = new GetItemAccountingCategoriesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
 
@@ -5837,7 +5838,7 @@ public final class GraphQlQueries
             var vendorControl = Session.getModelController(VendorControl.class);
             var totalCount = vendorControl.countItemPurchasingCategories();
 
-            try(var objectLimiter = new ObjectLimiter(env, ItemPurchasingCategoryConstants.ENTITY_TYPE_NAME, totalCount)) {
+            try(var objectLimiter = new ObjectLimiter(env, ItemPurchasingCategoryConstants.COMPONENT_VENDOR_NAME, ItemPurchasingCategoryConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = VendorUtil.getHome().getGetItemPurchasingCategoriesForm();
                 var entities = new GetItemPurchasingCategoriesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
 
@@ -5939,7 +5940,7 @@ public final class GraphQlQueries
             var itemControl = Session.getModelController(ItemControl.class);
             var totalCount = itemControl.countItemImageTypes();
 
-            try(var objectLimiter = new ObjectLimiter(env, ItemImageTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+            try(var objectLimiter = new ObjectLimiter(env, ItemImageTypeConstants.COMPONENT_VENDOR_NAME, ItemImageTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = ItemUtil.getHome().getGetItemImageTypesForm();
                 var entities = new GetItemImageTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
 
@@ -5990,7 +5991,7 @@ public final class GraphQlQueries
             var itemControl = Session.getModelController(ItemControl.class);
             var totalCount = itemControl.countItemAliasTypes();
 
-            try(var objectLimiter = new ObjectLimiter(env, ItemAliasTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+            try(var objectLimiter = new ObjectLimiter(env, ItemAliasTypeConstants.COMPONENT_VENDOR_NAME, ItemAliasTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = ItemUtil.getHome().getGetItemAliasTypesForm();
                 var entities = new GetItemAliasTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
 

@@ -19,7 +19,7 @@ package com.echothree.model.control.offer.server.graphql;
 import com.echothree.model.control.filter.server.graphql.FilterObject;
 import com.echothree.model.control.filter.server.graphql.FilterSecurityUtils;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
@@ -32,7 +32,6 @@ import com.echothree.model.control.sequence.server.graphql.SequenceObject;
 import com.echothree.model.control.sequence.server.graphql.SequenceSecurityUtils;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.offer.common.OfferItemConstants;
-import com.echothree.model.data.offer.common.OfferItemPriceConstants;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferDetail;
 import com.echothree.util.server.persistence.Session;
@@ -142,7 +141,7 @@ public class OfferObject
             var offerItemControl = Session.getModelController(OfferItemControl.class);
             var totalCount = offerItemControl.countOfferItemsByOffer(offer);
 
-            try(var objectLimiter = new ObjectLimiter(env, OfferItemConstants.ENTITY_TYPE_NAME, totalCount)) {
+            try(var objectLimiter = new ObjectLimiter(env, OfferItemConstants.COMPONENT_VENDOR_NAME, OfferItemConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = offerItemControl.getOfferItemsByOffer(offer);
                 var offerItems = entities.stream().map(OfferItemObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 

@@ -18,7 +18,7 @@ package com.echothree.model.control.cancellationpolicy.server.graphql;
 
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
@@ -108,7 +108,7 @@ public class CancellationKindObject
             var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
             var totalCount = cancellationPolicyControl.countCancellationPoliciesByCancellationKind(cancellationKind);
 
-            try(var objectLimiter = new ObjectLimiter(env, CancellationPolicyConstants.ENTITY_TYPE_NAME, totalCount)) {
+            try(var objectLimiter = new ObjectLimiter(env, CancellationPolicyConstants.COMPONENT_VENDOR_NAME, CancellationPolicyConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = cancellationPolicyControl.getCancellationPolicies(cancellationKind);
                 var items = entities.stream().map(CancellationPolicyObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 

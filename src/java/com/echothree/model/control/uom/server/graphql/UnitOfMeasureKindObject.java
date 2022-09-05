@@ -17,7 +17,7 @@
 package com.echothree.model.control.uom.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
@@ -108,7 +108,7 @@ public class UnitOfMeasureKindObject
             var uomControl = Session.getModelController(UomControl.class);
             var totalCount = uomControl.countUnitOfMeasureTypesByUnitOfMeasureKind(unitOfMeasureKind);
 
-            try(var objectLimiter = new ObjectLimiter(env, UnitOfMeasureTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+            try(var objectLimiter = new ObjectLimiter(env, UnitOfMeasureTypeConstants.COMPONENT_VENDOR_NAME, UnitOfMeasureTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = uomControl.getUnitOfMeasureTypesByUnitOfMeasureKind(unitOfMeasureKind);
                 var unitOfMeasureTypes = entities.stream().map(UnitOfMeasureTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
@@ -128,7 +128,7 @@ public class UnitOfMeasureKindObject
             var uomControl = Session.getModelController(UomControl.class);
             var totalCount = uomControl.countUnitOfMeasureKindUsesByUnitOfMeasureKind(unitOfMeasureKind);
 
-            try(var objectLimiter = new ObjectLimiter(env, UnitOfMeasureKindUseConstants.ENTITY_TYPE_NAME, totalCount)) {
+            try(var objectLimiter = new ObjectLimiter(env, UnitOfMeasureKindUseConstants.COMPONENT_VENDOR_NAME, UnitOfMeasureKindUseConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = uomControl.getUnitOfMeasureKindUsesByUnitOfMeasureKind(unitOfMeasureKind);
                 var unitOfMeasureKindUses = entities.stream().map(UnitOfMeasureKindUseObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 

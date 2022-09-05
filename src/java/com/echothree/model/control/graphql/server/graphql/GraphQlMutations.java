@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.graphql.server.util;
+package com.echothree.model.control.graphql.server.graphql;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
 import com.echothree.control.user.accounting.common.result.CreateItemAccountingCategoryResult;
@@ -119,6 +119,7 @@ import com.echothree.control.user.vendor.common.result.CreateItemPurchasingCateg
 import com.echothree.control.user.vendor.common.result.EditItemPurchasingCategoryResult;
 import com.echothree.model.control.graphql.server.graphql.CommandResultObject;
 import com.echothree.model.control.graphql.server.graphql.CommandResultWithIdObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.search.server.graphql.SearchCustomersResultObject;
 import com.echothree.model.control.search.server.graphql.SearchEmployeesResultObject;
 import com.echothree.model.control.search.server.graphql.SearchItemsResultObject;

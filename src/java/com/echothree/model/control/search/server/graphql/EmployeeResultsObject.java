@@ -21,7 +21,7 @@ import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.employee.server.graphql.EmployeeObject;
-import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
@@ -57,7 +57,7 @@ public class EmployeeResultsObject
         } else {
             var totalCount = getTotalCount(env);
 
-            try(var objectLimiter = new ObjectLimiter(env, SearchResultConstants.ENTITY_TYPE_NAME, totalCount)) {
+            try(var objectLimiter = new ObjectLimiter(env, SearchResultConstants.COMPONENT_VENDOR_NAME, SearchResultConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var employeeControl = Session.getModelController(EmployeeControl.class);
                 var employees = employeeControl.getEmployeeObjectsFromUserVisitSearch(userVisitSearch);
 

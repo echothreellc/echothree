@@ -19,7 +19,7 @@ package com.echothree.model.control.uom.server.graphql;
 import com.echothree.model.control.accounting.server.graphql.AccountingSecurityUtils;
 import com.echothree.model.control.accounting.server.graphql.SymbolPositionObject;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
@@ -156,7 +156,7 @@ public class UnitOfMeasureTypeObject
             var itemControl = Session.getModelController(ItemControl.class);
             var totalCount = itemControl.countItemAliasesByUnitOfMeasureType(unitOfMeasureType);
 
-            try(var objectLimiter = new ObjectLimiter(env, ItemAliasConstants.ENTITY_TYPE_NAME, totalCount)) {
+            try(var objectLimiter = new ObjectLimiter(env, ItemAliasConstants.COMPONENT_VENDOR_NAME, ItemAliasConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = itemControl.getItemAliasesByUnitOfMeasureType(unitOfMeasureType);
                 var itemAliases = entities.stream().map(ItemAliasObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 

@@ -14,13 +14,11 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.graphql.server.graphql;
+package com.echothree.model.control.graphql.server.util.count;
 
 import com.echothree.util.common.transfer.Limit;
 import com.echothree.util.server.persistence.ThreadSession;
-import com.echothree.util.server.validation.Validator;
 import graphql.schema.DataFetchingEnvironment;
-import java.util.HashMap;
 import java.util.Map;
 
 public class ObjectLimiter
@@ -31,14 +29,23 @@ public class ObjectLimiter
     private static final String PARAMETER_LAST = "last";
     private static final String PARAMETER_BEFORE = "before";
 
-    DataFetchingEnvironment env;
-    String entityName;
+    private final DataFetchingEnvironment env;
+    private final String componentVendorName;
+    private final String entityTypeName;
+    private final long totalCount;
 
-    Map<String, Limit> limits;
-    Limit savedLimit;
-    long totalCount;
-    long limitOffset;
-    long limitCount;
+    private Map<String, Limit> limits;
+    private Limit savedLimit;
+    private long limitOffset;
+    private long limitCount;
+
+    public String getComponentVendorName() {
+        return componentVendorName;
+    }
+
+    public String getEntityTypeName() {
+        return entityTypeName;
+    }
 
     public long getTotalCount() {
         return totalCount;
@@ -52,19 +59,18 @@ public class ObjectLimiter
         return limitCount;
     }
 
-    public ObjectLimiter(final DataFetchingEnvironment env, final String entityName, final long totalCount) {
-
+    public ObjectLimiter(final DataFetchingEnvironment env, final String componentVendorName, final String entityTypeName,
+            final long totalCount) {
         this.env = env;
-        this.entityName = entityName;
+        this.componentVendorName = componentVendorName;
+        this.entityTypeName = entityTypeName;
         this.totalCount = totalCount;
 
         var session = ThreadSession.currentSession();
-        var after = Validator.validateUnsignedLong(env.getArgument(PARAMETER_AFTER));
-        var before = Validator.validateUnsignedLong(env.getArgument(PARAMETER_BEFORE));
         var first = env.<Integer>getArgument(PARAMETER_FIRST);
-        var afterEdge = after == null ? null : Long.valueOf(after);
+        var after = GraphQlCursorUtils.getInstance().fromCursor(componentVendorName, entityTypeName, env.getArgument(PARAMETER_AFTER));
         var last = env.<Integer>getArgument(PARAMETER_LAST);
-        var beforeEdge = before == null ? null : Long.valueOf(before);
+        var before = GraphQlCursorUtils.getInstance().fromCursor(componentVendorName, entityTypeName, env.getArgument(PARAMETER_BEFORE));
 
         // Initialize edges to be allEdges.
         limitOffset = 0;
@@ -72,21 +78,21 @@ public class ObjectLimiter
 
         // Source: https://relay.dev/graphql/connections.htm
         // 4.4 Pagination algorithm
-        if(first != null || afterEdge != null || last != null || beforeEdge != null) {
+        if(first != null || after != null || last != null || before != null) {
             limits = session.getLimits();
-            savedLimit = limits.get(entityName);
+            savedLimit = limits.get(entityTypeName);
 
-            // If after is set: && If afterEdge exists:
-            if(afterEdge != null && afterEdge <= totalCount) {
-                // Remove all elements of edges before and including afterEdge.
-                limitOffset = afterEdge;
-                limitCount -= afterEdge;
+            // If after is set: && If after exists:
+            if(after != null && after <= totalCount) {
+                // Remove all elements of edges before and including after.
+                limitOffset = after;
+                limitCount -= after;
             }
 
-            // If before is set: && If beforeEdge exists:
-            if(beforeEdge != null && beforeEdge > 0 && beforeEdge <= totalCount) {
-                // Remove all elements of edges after and including beforeEdge.
-                limitCount = beforeEdge - limitOffset - 1;
+            // If before is set: && If before exists:
+            if(before != null && before > 0 && before <= totalCount) {
+                // Remove all elements of edges after and including before.
+                limitCount = before - limitOffset - 1;
             }
 
             // TODO: If first is less than 0: Throw an error. (Currently no error is thrown.)
@@ -112,7 +118,7 @@ public class ObjectLimiter
                 }
             }
 
-            limits.put(entityName, new Limit(Long.toString(limitCount), Long.toString(limitOffset)));
+            limits.put(entityTypeName, new Limit(Long.toString(limitCount), Long.toString(limitOffset)));
         }
     }
 
@@ -120,7 +126,7 @@ public class ObjectLimiter
     public void close() {
         if(limits != null) {
             // Restore previous Limit;
-            limits.put(entityName, savedLimit);
+            limits.put(entityTypeName, savedLimit);
         }
     }
 

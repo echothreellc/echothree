@@ -16,19 +16,15 @@
 
 package com.echothree.model.control.party.server.graphql;
 
-import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
-import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.control.item.server.graphql.ItemObject;
-import com.echothree.model.control.item.server.graphql.ItemSecurityUtils;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.graphql.OfferObject;
 import com.echothree.model.control.offer.server.graphql.OfferSecurityUtils;
 import com.echothree.model.control.party.server.control.PartyControl;
-import com.echothree.model.data.item.common.ItemConstants;
 import com.echothree.model.data.offer.common.OfferConstants;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyDepartment;
@@ -40,7 +36,6 @@ import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @GraphQLDescription("department object")
@@ -107,7 +102,7 @@ public class DepartmentObject
             var offerControl = Session.getModelController(OfferControl.class);
             var totalCount = offerControl.countOffersByDepartmentParty(party);
 
-            try(var objectLimiter = new ObjectLimiter(env, OfferConstants.ENTITY_TYPE_NAME, totalCount)) {
+            try(var objectLimiter = new ObjectLimiter(env, OfferConstants.COMPONENT_VENDOR_NAME, OfferConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = offerControl.getOffersByDepartmentParty(party);
                 var departments = entities.stream().map(OfferObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 

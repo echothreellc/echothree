@@ -18,7 +18,7 @@ package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
@@ -114,7 +114,7 @@ public class EntityTypeObject
             var coreControl = Session.getModelController(CoreControl.class);
             var totalCount = coreControl.countEntityInstancesByEntityType(entityType);
 
-            try(var objectLimiter = new ObjectLimiter(env, EntityInstanceConstants.ENTITY_TYPE_NAME, totalCount)) {
+            try(var objectLimiter = new ObjectLimiter(env, EntityInstanceConstants.COMPONENT_VENDOR_NAME, EntityInstanceConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = coreControl.getEntityInstancesByEntityType(entityType);
                 var entityInstances = entities.stream().map(EntityInstanceObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
@@ -134,7 +134,7 @@ public class EntityTypeObject
             var coreControl = Session.getModelController(CoreControl.class);
             var totalCount = coreControl.countEntityAttributesByEntityType(entityType);
 
-            try(var objectLimiter = new ObjectLimiter(env, EntityAttributeConstants.ENTITY_TYPE_NAME, totalCount)) {
+            try(var objectLimiter = new ObjectLimiter(env, EntityAttributeConstants.COMPONENT_VENDOR_NAME, EntityAttributeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = coreControl.getEntityAttributesByEntityType(entityType);
                 var entityAttributes = new ArrayList<EntityAttributeObject>(entities.size());
 

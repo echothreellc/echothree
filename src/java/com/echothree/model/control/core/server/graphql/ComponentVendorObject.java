@@ -18,7 +18,7 @@ package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
@@ -82,7 +82,7 @@ public class ComponentVendorObject
             var coreControl = Session.getModelController(CoreControl.class);
             var totalCount = coreControl.countEntityTypesByComponentVendor(componentVendor);
 
-            try(var objectLimiter = new ObjectLimiter(env, EntityTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+            try(var objectLimiter = new ObjectLimiter(env, EntityTypeConstants.COMPONENT_VENDOR_NAME, EntityTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = coreControl.getEntityTypesByComponentVendor(componentVendor);
                 var entityTypes = entities.stream().map(EntityTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 

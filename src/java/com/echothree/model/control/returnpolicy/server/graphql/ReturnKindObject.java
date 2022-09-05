@@ -17,7 +17,7 @@
 package com.echothree.model.control.returnpolicy.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.graphql.ObjectLimiter;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
@@ -108,7 +108,7 @@ public class ReturnKindObject
             var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
             var totalCount = returnPolicyControl.countReturnPoliciesByReturnKind(returnKind);
     
-            try(var objectLimiter = new ObjectLimiter(env, ReturnPolicyConstants.ENTITY_TYPE_NAME, totalCount)) {
+            try(var objectLimiter = new ObjectLimiter(env, ReturnPolicyConstants.COMPONENT_VENDOR_NAME, ReturnPolicyConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = returnPolicyControl.getReturnPolicies(returnKind);
                 var items = entities.stream().map(ReturnPolicyObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
     
