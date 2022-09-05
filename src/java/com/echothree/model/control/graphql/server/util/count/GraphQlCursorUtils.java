@@ -17,6 +17,9 @@
 package com.echothree.model.control.graphql.server.util.count;
 
 import com.echothree.util.server.validation.Validator;
+import com.google.common.base.Charsets;
+import com.google.common.io.BaseEncoding;
+import java.util.regex.Pattern;
 
 public final class GraphQlCursorUtils {
 
@@ -28,14 +31,40 @@ public final class GraphQlCursorUtils {
         return GraphQlCursorUtilsHolder.instance;
     }
 
-    public Long fromCursor(final String componentVendorName, final String entityTypeName, final String cursor) {
-        var validatedCursor = Validator.validateUnsignedLong(cursor);
+    BaseEncoding baseEncoding = BaseEncoding.base64();
+    Pattern cursorPattern = Pattern.compile("^([a-zA-Z0-9-_]+)\\/([a-zA-Z0-9-_]+)\\/([0-9]+)$");
 
-        return validatedCursor == null ? null : Long.valueOf(validatedCursor);
+    public Long fromCursor(final String componentVendorName, final String entityTypeName, final String cursor) {
+        Long offset = null;
+
+        // If it cannot be decoded, offset should remain null.
+        if(cursor != null && baseEncoding.canDecode(cursor)) {
+            var byteCursor = baseEncoding.decode(cursor);
+            var unencodedCursor = new String(byteCursor, Charsets.UTF_8);
+            var matcher = cursorPattern.matcher(unencodedCursor);
+
+            // If it fails to match against cursorPattern, offset should remain null.
+            if(matcher.matches()) {
+                var foundComponentVendorName = matcher.group(1);
+                var foundEntityTypeName = matcher.group(2);
+
+                if(componentVendorName.equals(foundComponentVendorName) && entityTypeName.equals(foundEntityTypeName)) {
+                    var unvalidatedCursor = matcher.group(3);
+                    var validatedCursor = Validator.validateUnsignedLong(unvalidatedCursor);
+
+                    offset = validatedCursor == null ? null : Long.valueOf(validatedCursor);
+                }
+            }
+        }
+
+        return offset;
     }
 
     public String toCursor(final String componentVendorName, final String entityTypeName, final long offset) {
-        return Long.toString(offset);
+        var unencodedCursor = componentVendorName + '/' + entityTypeName + '/' + offset;
+        var byteCursor = unencodedCursor.getBytes(Charsets.UTF_8);
+
+        return baseEncoding.encode(byteCursor);
     }
 
 }
