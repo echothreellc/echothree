@@ -1,5 +1,18 @@
 # Changelog
 
+## 2022-09-04-01
+
+* Add Pronouns to Profiles [324](https://gitlab.echothree.com/echothree/echothree/-/issues/324)
+* Add Pronunciation to Profiles [325](https://gitlab.echothree.com/echothree/echothree/-/issues/325)
+* Add Opaque GraphQL Pagination Cursors [378](https://gitlab.echothree.com/echothree/echothree/-/issues/378)
+* Impossible to Add Item Alias Unless One Already Exists On Item Review Page [530](https://gitlab.echothree.com/echothree/echothree/-/issues/530)
+* Remove "TEST_PAYMENT_PROCESSOR_TYPE" [531](https://gitlab.echothree.com/echothree/echothree/-/issues/531)
+* Switch "TEST_PAYMENT_PROCESSOR" to "SIMULATION" [532](https://gitlab.echothree.com/echothree/echothree/-/issues/532)
+* Increase Maximum Description Length to 132 Characters [534](https://gitlab.echothree.com/echothree/echothree/-/issues/534)
+* Break Apart IndexConstants into Enums [536](https://gitlab.echothree.com/echothree/echothree/-/issues/536)
+* Break Apart QueueConstants into Enums [537](https://gitlab.echothree.com/echothree/echothree/-/issues/537)
+* Break Apart SearchConstants into Enums [538](https://gitlab.echothree.com/echothree/echothree/-/issues/538)
+
 ## 2022-08-21-01
 
 * Add Payment Processor Type Code Types for Monetra [14](https://gitlab.echothree.com/echothree/echothree/-/issues/14)
