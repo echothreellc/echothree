@@ -3164,8 +3164,9 @@ public class AccountingControl
                     }
                 } else {
                     if(glAccountDetail.getIsDefault() != null) {
-                        // If it was set, but is now going to be null, then we need to pick a new default...
-                        pickDefaultGlAccount(glAccountCategoryPK, updatedBy);
+                        // If it was set, but is now going to be null, then we need to pick a new default
+                        // by going back to the pre-modification entity to get the GL Account Category.
+                        pickDefaultGlAccount(glAccountDetail.getGlAccountCategoryPK(), updatedBy);
                     } else {
                         isDefault = null;
                     }
