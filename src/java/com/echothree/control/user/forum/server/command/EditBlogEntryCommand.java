@@ -139,8 +139,6 @@ public class EditBlogEntryCommand
         forumThreadIcon = forumThreadDetail.getIcon();
         forumMessageIcon = forumMessageDetail.getIcon();
 
-        sendEvent(forumMessage.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-
         edit.setForumThreadIconName(forumThreadIcon == null? null: forumThreadIcon.getLastDetail().getIconName());
         edit.setSortOrder(forumThreadDetail.getSortOrder().toString());
         edit.setForumMessageIconName(forumMessageIcon == null? null: forumMessageIcon.getLastDetail().getIconName());

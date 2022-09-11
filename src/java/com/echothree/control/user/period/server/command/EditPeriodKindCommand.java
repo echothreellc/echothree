@@ -103,7 +103,6 @@ public class EditPeriodKindCommand
                         Workflow workflow = workflowEntrance == null? null: workflowEntrance.getLastDetail().getWorkflow();
 
                         result.setPeriodKind(periodControl.getPeriodKindTransfer(getUserVisit(), periodKind));
-                        sendEvent(periodKind.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
 
                         result.setEdit(edit);
                         edit.setPeriodKindName(periodKindDetail.getPeriodKindName());

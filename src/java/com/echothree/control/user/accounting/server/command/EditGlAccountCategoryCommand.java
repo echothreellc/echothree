@@ -98,7 +98,6 @@ public class EditGlAccountCategoryCommand
                         GlAccountCategory parentGlAccountCategory = glAccountCategoryDetail.getParentGlAccountCategory();
 
                         result.setGlAccountCategory(accountingControl.getGlAccountCategoryTransfer(getUserVisit(), glAccountCategory));
-                        sendEvent(glAccountCategory.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
 
                         result.setEdit(edit);
                         edit.setGlAccountCategoryName(glAccountCategoryDetail.getGlAccountCategoryName());
