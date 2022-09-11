@@ -96,7 +96,6 @@ public class EditGlResourceTypeCommand
                         GlResourceTypeDetail glResourceTypeDetail = glResourceType.getLastDetail();
 
                         result.setGlResourceType(accountingControl.getGlResourceTypeTransfer(getUserVisit(), glResourceType));
-                        sendEvent(glResourceType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
 
                         result.setEdit(edit);
                         edit.setGlResourceTypeName(glResourceTypeDetail.getGlResourceTypeName());

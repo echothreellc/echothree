@@ -109,7 +109,6 @@ public class EditTransactionGlAccountCategoryCommand
                             GlAccountCategory glAccountCategory = transactionGlAccountCategoryDetail.getGlAccountCategory();
 
                             result.setTransactionGlAccountCategory(accountingControl.getTransactionGlAccountCategoryTransfer(getUserVisit(), transactionGlAccountCategory));
-                            sendEvent(transactionGlAccountCategory.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
 
                             result.setEdit(edit);
                             edit.setTransactionGlAccountCategoryName(transactionGlAccountCategoryDetail.getTransactionGlAccountCategoryName());
