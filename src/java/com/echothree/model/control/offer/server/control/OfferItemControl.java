@@ -108,7 +108,7 @@ public class OfferItemControl
         getOfferItemQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private OfferItem getOfferItem(Offer offer, Item item, EntityPermission entityPermission) {
+    public OfferItem getOfferItem(Offer offer, Item item, EntityPermission entityPermission) {
         return OfferItemFactory.getInstance().getEntityFromQuery(entityPermission, getOfferItemQueries,
                 offer, item, Session.MAX_TIME);
     }

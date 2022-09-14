@@ -17,10 +17,12 @@
 package com.echothree.model.control.offer.server.logic;
 
 import com.echothree.model.control.content.server.logic.ContentLogic;
-import com.echothree.model.control.item.common.ItemPriceTypes;
+import com.echothree.model.control.offer.common.exception.DuplicateOfferItemException;
+import com.echothree.model.control.offer.common.exception.InvalidItemCompanyException;
 import com.echothree.model.control.offer.common.exception.UnknownOfferItemException;
 import com.echothree.model.control.offer.common.exception.UnknownOfferItemPriceException;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.item.server.entity.Item;
@@ -36,6 +38,7 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
 
@@ -58,15 +61,38 @@ public class OfferItemLogic
     //   Offer Items
     // --------------------------------------------------------------------------------
 
-    public OfferItem createOfferItem(final Offer offer, final Item item, final BasePK createdBy) {
-        var offerItemControl = Session.getModelController(OfferItemControl.class);
+    public OfferItem createOfferItem(final ExecutionErrorAccumulator eea, final Offer offer, final Item item,
+            final BasePK createdBy) {
+        OfferItem offerItem = null;
+        var partyControl = Session.getModelController(PartyControl.class);
+        var partyDepartment = partyControl.getPartyDepartment(offer.getLastDetail().getDepartmentParty());
+        var partyDivision = partyControl.getPartyDivision(partyDepartment.getDivisionParty());
+        var partyCompany = partyControl.getPartyCompany(partyDivision.getCompanyParty());
 
-        return offerItemControl.createOfferItem(offer, item, createdBy);
+        if(partyCompany.getParty().equals(item.getLastDetail().getCompanyParty())) {
+            var offerItemControl = Session.getModelController(OfferItemControl.class);
+
+            offerItem = offerItemControl.getOfferItem(offer, item);
+
+            if(offerItem == null) {
+                offerItemControl.createOfferItem(offer, item, createdBy);
+            } else {
+                handleExecutionError(DuplicateOfferItemException.class, eea, ExecutionErrors.DuplicateOfferItem.name(),
+                        offer.getLastDetail().getOfferName(), item.getLastDetail().getItemName());
+            }
+        } else {
+            handleExecutionError(InvalidItemCompanyException.class, eea, ExecutionErrors.InvalidItemCompany.name(),
+                    partyCompany.getPartyCompanyName(),
+                    partyControl.getPartyCompany(item.getLastDetail().getCompanyParty()).getPartyCompanyName());
+        }
+
+        return offerItem;
     }
 
-    public OfferItem getOfferItem(final ExecutionErrorAccumulator eea, final Offer offer, final Item item) {
+    public OfferItem getOfferItem(final ExecutionErrorAccumulator eea, final Offer offer, final Item item,
+            final EntityPermission entityPermission) {
         var offerItemControl = Session.getModelController(OfferItemControl.class);
-        var offerItem = offerItemControl.getOfferItem(offer, item);
+        var offerItem = offerItemControl.getOfferItem(offer, item, entityPermission);
 
         if(offerItem == null) {
             handleExecutionError(UnknownOfferItemException.class, eea, ExecutionErrors.UnknownOfferItem.name(),
@@ -74,6 +100,14 @@ public class OfferItemLogic
         }
 
         return offerItem;
+    }
+
+    public OfferItem getOfferItem(final ExecutionErrorAccumulator eea, final Offer offer, final Item item) {
+        return getOfferItem(eea, offer, item, EntityPermission.READ_ONLY);
+    }
+
+    public OfferItem getOfferItemForUpdate(final ExecutionErrorAccumulator eea, final Offer offer, final Item item) {
+        return getOfferItem(eea, offer, item, EntityPermission.READ_WRITE);
     }
 
     public void deleteOfferItem(final OfferItem offerItem, final BasePK deletedBy) {
