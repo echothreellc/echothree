@@ -17,6 +17,8 @@
 package com.echothree.model.control.offer.server.logic;
 
 import com.echothree.model.control.content.server.logic.ContentLogic;
+import com.echothree.model.control.offer.common.exception.CannotManuallyCreateOfferItemWhenOfferItemSelectorSetException;
+import com.echothree.model.control.offer.common.exception.CannotManuallyDeleteOfferItemWhenOfferItemSelectorSetException;
 import com.echothree.model.control.offer.common.exception.DuplicateOfferItemException;
 import com.echothree.model.control.offer.common.exception.InvalidItemCompanyException;
 import com.echothree.model.control.offer.common.exception.UnknownOfferItemException;
@@ -73,26 +75,34 @@ public class OfferItemLogic
     public OfferItem createOfferItem(final ExecutionErrorAccumulator eea, final Offer offer, final Item item,
         final BasePK createdBy) {
         OfferItem offerItem = null;
-        var partyControl = Session.getModelController(PartyControl.class);
-        var partyDepartment = partyControl.getPartyDepartment(offer.getLastDetail().getDepartmentParty());
-        var partyDivision = partyControl.getPartyDivision(partyDepartment.getDivisionParty());
-        var partyCompany = partyControl.getPartyCompany(partyDivision.getCompanyParty());
+        final var offerDetail = offer.getLastDetail();
 
-        if(partyCompany.getParty().equals(item.getLastDetail().getCompanyParty())) {
-            var offerItemControl = Session.getModelController(OfferItemControl.class);
+        if(offer.getLastDetail().getOfferItemSelector() == null) {
+            var partyControl = Session.getModelController(PartyControl.class);
+            var partyDepartment = partyControl.getPartyDepartment(offerDetail.getDepartmentParty());
+            var partyDivision = partyControl.getPartyDivision(partyDepartment.getDivisionParty());
+            var partyCompany = partyControl.getPartyCompany(partyDivision.getCompanyParty());
 
-            offerItem = offerItemControl.getOfferItem(offer, item);
+            if(partyCompany.getParty().equals(item.getLastDetail().getCompanyParty())) {
+                var offerItemControl = Session.getModelController(OfferItemControl.class);
 
-            if(offerItem == null) {
-                createOfferItem(offer, item, createdBy);
+                offerItem = offerItemControl.getOfferItem(offer, item);
+
+                if(offerItem == null) {
+                    createOfferItem(offer, item, createdBy);
+                } else {
+                    handleExecutionError(DuplicateOfferItemException.class, eea, ExecutionErrors.DuplicateOfferItem.name(),
+                            offerDetail.getOfferName(), item.getLastDetail().getItemName());
+                }
             } else {
-                handleExecutionError(DuplicateOfferItemException.class, eea, ExecutionErrors.DuplicateOfferItem.name(),
-                        offer.getLastDetail().getOfferName(), item.getLastDetail().getItemName());
+                handleExecutionError(InvalidItemCompanyException.class, eea, ExecutionErrors.InvalidItemCompany.name(),
+                        partyCompany.getPartyCompanyName(),
+                        partyControl.getPartyCompany(item.getLastDetail().getCompanyParty()).getPartyCompanyName());
             }
         } else {
-            handleExecutionError(InvalidItemCompanyException.class, eea, ExecutionErrors.InvalidItemCompany.name(),
-                    partyCompany.getPartyCompanyName(),
-                    partyControl.getPartyCompany(item.getLastDetail().getCompanyParty()).getPartyCompanyName());
+            handleExecutionError(CannotManuallyCreateOfferItemWhenOfferItemSelectorSetException.class, eea,
+                    ExecutionErrors.CannotManuallyCreateOfferItemWhenOfferItemSelectorSet.name(),
+                    offerDetail.getOfferName());
         }
 
         return offerItem;
@@ -123,6 +133,18 @@ public class OfferItemLogic
         var offerItemControl = Session.getModelController(OfferItemControl.class);
 
         offerItemControl.deleteOfferItem(offerItem, deletedBy);
+    }
+
+    public void deleteOfferItem(final ExecutionErrorAccumulator eea, final OfferItem offerItem, final BasePK deletedBy) {
+        final var offerDetail = offerItem.getOffer().getLastDetail();
+
+        if(offerDetail.getOfferItemSelector() == null) {
+            deleteOfferItem(offerItem, deletedBy);
+        } else {
+            handleExecutionError(CannotManuallyDeleteOfferItemWhenOfferItemSelectorSetException.class, eea,
+                    ExecutionErrors.CannotManuallyDeleteOfferItemWhenOfferItemSelectorSet.name(),
+                    offerDetail.getOfferName());
+        }
     }
 
     public void deleteOfferItems(List<OfferItem> offerItems, BasePK deletedBy) {

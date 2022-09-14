@@ -2247,5 +2247,7 @@ public enum ExecutionErrors {
     UnknownDefaultItemAccountingCategory,
     UnknownDefaultItemPurchasingCategory,
     UnknownDefaultItemAliasChecksumType,
+    CannotManuallyCreateOfferItemWhenOfferItemSelectorSet,
+    CannotManuallyDeleteOfferItemWhenOfferItemSelectorSet,
 
 }

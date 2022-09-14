@@ -69,7 +69,7 @@ public class DeleteOfferItemCommand
             var offerItem = OfferItemLogic.getInstance().getOfferItemForUpdate(this, offer, item);
 
             if(!hasExecutionErrors()) {
-                OfferItemLogic.getInstance().deleteOfferItem(offerItem, getPartyPK());
+                OfferItemLogic.getInstance().deleteOfferItem(this, offerItem, getPartyPK());
             }
         }
 
