@@ -61,8 +61,17 @@ public class OfferItemLogic
     //   Offer Items
     // --------------------------------------------------------------------------------
 
+    // This one is intended to be used internally to ensure any dependent actions occur.
+    public OfferItem createOfferItem(final Offer offer, final Item item, final BasePK createdBy) {
+        var offerItemControl = Session.getModelController(OfferItemControl.class);
+
+        return offerItemControl.createOfferItem(offer, item, createdBy);
+    }
+
+    // This one is intended to be used by interactive users of the application to ensure all necessary
+    // validation occurs.
     public OfferItem createOfferItem(final ExecutionErrorAccumulator eea, final Offer offer, final Item item,
-            final BasePK createdBy) {
+        final BasePK createdBy) {
         OfferItem offerItem = null;
         var partyControl = Session.getModelController(PartyControl.class);
         var partyDepartment = partyControl.getPartyDepartment(offer.getLastDetail().getDepartmentParty());
@@ -75,7 +84,7 @@ public class OfferItemLogic
             offerItem = offerItemControl.getOfferItem(offer, item);
 
             if(offerItem == null) {
-                offerItemControl.createOfferItem(offer, item, createdBy);
+                createOfferItem(offer, item, createdBy);
             } else {
                 handleExecutionError(DuplicateOfferItemException.class, eea, ExecutionErrors.DuplicateOfferItem.name(),
                         offer.getLastDetail().getOfferName(), item.getLastDetail().getItemName());

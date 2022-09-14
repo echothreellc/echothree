@@ -153,7 +153,7 @@ public class OfferItemSelectorEvaluator
             List<ItemPrice> itemPrices = itemControl.getItemPricesByItem(item);
             if (offerItem == null) {
                 // New item in this offer, create it, don't worry about sync'ing prices.
-                offerItem = OfferItemLogic.getInstance().createOfferItem(null, offer, item, evaluatedBy);
+                offerItem = OfferItemLogic.getInstance().createOfferItem(offer, item, evaluatedBy);
                 
                 for(var itemPrice : itemPrices) {
                     createOfferItemPrice(offer, offerItem, itemPriceType, itemPrice);
