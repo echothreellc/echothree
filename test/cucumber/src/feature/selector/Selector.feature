@@ -38,3 +38,14 @@ Feature: Employee selector
     And the user sets the selector's name to the last selector added
     And the user deletes the selector
     Then no error should occur
+
+  Scenario: Existing employee adds a selector with a duplicate name and receives an error
+    Given the employee Test begins using the application
+    When the user begins entering a new selector
+    And the user sets the selector's selector kind name to ITEM
+    And the user sets the selector's selector type name to OFFER
+    And the user sets the selector's name to EXAMPLE_OFFER_ITEM_1
+    And the user sets the selector's sort order to "1"
+    And the user sets the selector to be the default
+    And the user adds the new selector
+    Then the execution error DuplicateSelectorName should occur

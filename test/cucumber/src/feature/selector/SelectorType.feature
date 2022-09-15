@@ -35,3 +35,13 @@ Feature: Employee selector type
     And the user sets the selector type's name to the last selector type added
     And the user deletes the selector type
     Then no error should occur
+
+  Scenario: Existing employee adds a selector type with a duplicate name and receives an error
+    Given the employee Test begins using the application
+    When the user begins entering a new selector type
+    And the user sets the selector type's selector kind name to ITEM
+    And the user sets the selector type's name to OFFER
+    And the user sets the selector type's sort order to "1"
+    And the user sets the selector type to be the default
+    And the user adds the new selector type
+    Then the execution error DuplicateSelectorTypeName should occur

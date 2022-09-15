@@ -32,3 +32,12 @@ Feature: Employee selector kind
     And the user sets the selector kind's name to the last selector kind added
     And the user deletes the selector kind
     Then no error should occur
+
+  Scenario: Existing employee adds a selector kind with a duplicate name and receives an error
+    Given the employee Test begins using the application
+    When the user begins entering a new selector kind
+    And the user sets the selector kind's name to ITEM
+    And the user sets the selector kind's sort order to "1"
+    And the user sets the selector kind to be the default
+    And the user adds the new selector kind
+    Then the execution error DuplicateSelectorKindName should occur
