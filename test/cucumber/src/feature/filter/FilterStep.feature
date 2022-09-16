@@ -55,3 +55,36 @@ Feature: Employee filter step
     And the user sets the filter's name to the last filter added
     And the user deletes the filter
     Then no error should occur
+
+  Scenario: Existing employee adds a filter step with a duplicate name and receives an error
+    Given the employee Test begins using the application
+    When the user begins entering a new filter
+    And the user sets the filter's filter kind name to PRICE
+    And the user sets the filter's filter type name to OFFER_ITEM_PRICE
+    And the user sets the filter's name to TEST_FILTER
+    And the user sets the filter's initial filter adjustment name to "EXAMPLE_ITEM_PRICE"
+    And the user sets the filter's filter item selector name to "ACTIVE_ITEM"
+    And the user sets the filter's sort order to "1"
+    And the user sets the filter to be the default
+    And the user adds the new filter
+    Then no error should occur
+    When the user begins entering a new filter step
+    And the user sets the filter step's filter kind name to PRICE
+    And the user sets the filter step's filter type name to OFFER_ITEM_PRICE
+    And the user sets the filter step's filter name to TEST_FILTER
+    And the user sets the filter step's name to TEST_FILTER_STEP
+    And the user adds the new filter step
+    Then no error should occur
+    When the user begins entering a new filter step
+    And the user sets the filter step's filter kind name to PRICE
+    And the user sets the filter step's filter type name to OFFER_ITEM_PRICE
+    And the user sets the filter step's filter name to TEST_FILTER
+    And the user sets the filter step's name to TEST_FILTER_STEP
+    And the user adds the new filter step
+    Then the execution error DuplicateFilterStepName should occur
+    When the user begins deleting a filter
+    And the user sets the filter's filter kind name to PRICE
+    And the user sets the filter's filter type name to OFFER_ITEM_PRICE
+    And the user sets the filter's name to the last filter added
+    And the user deletes the filter
+    Then no error should occur

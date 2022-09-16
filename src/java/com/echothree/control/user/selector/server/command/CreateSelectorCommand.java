@@ -21,21 +21,15 @@ import com.echothree.control.user.selector.common.result.SelectorResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.selector.server.entity.Selector;
-import com.echothree.model.data.selector.server.entity.SelectorKind;
-import com.echothree.model.data.selector.server.entity.SelectorType;
+import com.echothree.model.control.selector.server.logic.SelectorLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 
 public class CreateSelectorCommand
@@ -70,42 +64,16 @@ public class CreateSelectorCommand
     @Override
     protected BaseResult execute() {
         var result = SelectorResultFactory.getCreateSelectorResult();
-        var selectorControl = Session.getModelController(SelectorControl.class);
-        String selectorKindName = form.getSelectorKindName();
-        SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
-        Selector selector = null;
-        
-        if(selectorKind != null) {
-            String selectorTypeName = form.getSelectorTypeName();
-            SelectorType selectorType = selectorControl.getSelectorTypeByName(selectorKind, selectorTypeName);
-            
-            if(selectorType != null) {
-                String selectorName = form.getSelectorName();
-                
-                selector = selectorControl.getSelectorByName(selectorType, selectorName);
-                
-                if(selector == null) {
-                    var partyPK = getPartyPK();
-                    var isDefault = Boolean.valueOf(form.getIsDefault());
-                    var sortOrder = Integer.valueOf(form.getSortOrder());
-                    var description = form.getDescription();
-                    
-                    selector = selectorControl.createSelector(selectorType, selectorName, isDefault, sortOrder, partyPK);
-                    
-                    if(description != null) {
-                        Language language = getPreferredLanguage();
-                        
-                        selectorControl.createSelectorDescription(selector, language, description, partyPK);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.DuplicateSelectorName.name(), selectorName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownSelectorTypeName.name(), selectorTypeName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownSelectorKindName.name(), selectorKindName);
-        }
+        var selectorKindName = form.getSelectorKindName();
+        var selectorTypeName = form.getSelectorTypeName();
+        var selectorName = form.getSelectorName();
+        var isDefault = Boolean.valueOf(form.getIsDefault());
+        var sortOrder = Integer.valueOf(form.getSortOrder());
+        var description = form.getDescription();
+        var createdBy = getPartyPK();
+
+        var selector = SelectorLogic.getInstance().createSelector(this, selectorKindName, selectorTypeName,
+                selectorName, isDefault, sortOrder, getPreferredLanguage(), description, createdBy);
 
         if(selector != null) {
             var selectorDetail = selector.getLastDetail();

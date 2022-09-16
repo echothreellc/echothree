@@ -35,3 +35,13 @@ Feature: Employee filter type
     And the user sets the filter type's name to the last filter type added
     And the user deletes the filter type
     Then no error should occur
+
+  Scenario: Existing employee adds a filter type with a duplicate name and receives an error
+    Given the employee Test begins using the application
+    When the user begins entering a new filter type
+    And the user sets the filter type's filter kind name to PRICE
+    And the user sets the filter type's name to OFFER_ITEM_PRICE
+    And the user sets the filter type's sort order to "1"
+    And the user sets the filter type to be the default
+    And the user adds the new filter type
+    Then the execution error DuplicateFilterTypeName should occur

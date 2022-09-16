@@ -18,25 +18,21 @@ package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.CreateOfferItemForm;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
-import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.control.offer.server.control.OfferControl;
-import com.echothree.model.control.offer.server.control.OfferItemControl;
+import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.control.offer.server.logic.OfferItemLogic;
+import com.echothree.model.control.offer.server.logic.OfferLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.offer.server.entity.OfferItem;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -70,39 +66,11 @@ public class CreateOfferItemCommand
     protected BaseResult execute() {
         var result = OfferResultFactory.getCreateOfferItemResult();
         OfferItem offerItem = null;
-        var offerName = form.getOfferName();
-        var offerControl = Session.getModelController(OfferControl.class);
-        var offer = offerControl.getOfferByName(offerName);
-        
-        if(offer != null) {
-            var itemControl = Session.getModelController(ItemControl.class);
-            var itemName = form.getItemName();
-            var item = itemControl.getItemByName(itemName);
-            
-            if(item != null) {
-                var partyControl = Session.getModelController(PartyControl.class);
-                var partyDepartment = partyControl.getPartyDepartment(offer.getLastDetail().getDepartmentParty());
-                var partyDivision = partyControl.getPartyDivision(partyDepartment.getDivisionParty());
-                var partyCompany = partyControl.getPartyCompany(partyDivision.getCompanyParty());
-                
-                if(partyCompany.getParty().equals(item.getLastDetail().getCompanyParty())) {
-                    var offerItemControl = Session.getModelController(OfferItemControl.class);
+        var offer = OfferLogic.getInstance().getOfferByName(this, form.getOfferName());
+        var item = ItemLogic.getInstance().getItemByName(this, form.getItemName());
 
-                    offerItem = offerItemControl.getOfferItem(offer, item);
-                    
-                    if(offerItem == null) {
-                        offerItem = OfferItemLogic.getInstance().createOfferItem(offer, item, getPartyPK());
-                    } else {
-                        addExecutionError(ExecutionErrors.DuplicateOfferItem.name(), offerName, itemName);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.InvalidItemCompany.name());
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownItemName.name(), itemName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownOfferName.name(), offerName);
+        if(!hasExecutionErrors()) {
+            offerItem = OfferItemLogic.getInstance().createOfferItem(this, offer, item, getPartyPK());
         }
 
         if(offerItem != null) {

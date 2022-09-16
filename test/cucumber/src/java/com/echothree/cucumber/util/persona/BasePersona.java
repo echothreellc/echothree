@@ -128,6 +128,22 @@ import com.echothree.control.user.purchase.common.edit.PurchaseOrderEdit;
 import com.echothree.control.user.purchase.common.form.CreatePurchaseOrderForm;
 import com.echothree.control.user.purchase.common.form.SetPurchaseOrderStatusForm;
 import com.echothree.control.user.purchase.common.spec.PurchaseOrderSpec;
+import com.echothree.control.user.selector.common.edit.SelectorEdit;
+import com.echothree.control.user.selector.common.edit.SelectorKindEdit;
+import com.echothree.control.user.selector.common.edit.SelectorNodeEdit;
+import com.echothree.control.user.selector.common.edit.SelectorTypeEdit;
+import com.echothree.control.user.selector.common.form.CreateSelectorForm;
+import com.echothree.control.user.selector.common.form.CreateSelectorKindForm;
+import com.echothree.control.user.selector.common.form.CreateSelectorNodeForm;
+import com.echothree.control.user.selector.common.form.CreateSelectorTypeForm;
+import com.echothree.control.user.selector.common.form.DeleteSelectorForm;
+import com.echothree.control.user.selector.common.form.DeleteSelectorKindForm;
+import com.echothree.control.user.selector.common.form.DeleteSelectorNodeForm;
+import com.echothree.control.user.selector.common.form.DeleteSelectorTypeForm;
+import com.echothree.control.user.selector.common.spec.SelectorKindSpec;
+import com.echothree.control.user.selector.common.spec.SelectorNodeSpec;
+import com.echothree.control.user.selector.common.spec.SelectorSpec;
+import com.echothree.control.user.selector.common.spec.SelectorTypeSpec;
 import com.echothree.control.user.vendor.common.edit.VendorEdit;
 import com.echothree.control.user.vendor.common.edit.VendorItemCostEdit;
 import com.echothree.control.user.vendor.common.edit.VendorItemEdit;
@@ -346,7 +362,33 @@ public class BasePersona {
     public String lastSalesOrderBatchName;
     public String lastSalesOrderName;
     public String lastSalesOrderLineSequence;
-    
+
+    // Selector
+    public CreateSelectorKindForm createSelectorKindForm;
+    public DeleteSelectorKindForm deleteSelectorKindForm;
+    public SelectorKindSpec selectorKindSpec;
+    public SelectorKindEdit selectorKindEdit;
+
+    public CreateSelectorTypeForm createSelectorTypeForm;
+    public DeleteSelectorTypeForm deleteSelectorTypeForm;
+    public SelectorTypeSpec selectorTypeSpec;
+    public SelectorTypeEdit selectorTypeEdit;
+
+    public CreateSelectorForm createSelectorForm;
+    public DeleteSelectorForm deleteSelectorForm;
+    public SelectorSpec selectorSpec;
+    public SelectorEdit selectorEdit;
+
+    public CreateSelectorNodeForm createSelectorNodeForm;
+    public DeleteSelectorNodeForm deleteSelectorNodeForm;
+    public SelectorNodeSpec selectorNodeSpec;
+    public SelectorNodeEdit selectorNodeEdit;
+
+    public String lastSelectorKindName;
+    public String lastSelectorTypeName;
+    public String lastSelectorName;
+    public String lastSelectorNodeName;
+
     // Vendor
     public CreateVendorForm createVendorForm;
     public VendorSpec vendorSpec;

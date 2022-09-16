@@ -17,21 +17,19 @@
 package com.echothree.control.user.selector.server.command;
 
 import com.echothree.control.user.selector.common.form.CreateSelectorKindForm;
+import com.echothree.control.user.selector.common.result.SelectorResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.data.selector.server.entity.SelectorKind;
+import com.echothree.model.control.selector.server.logic.SelectorKindLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -65,26 +63,24 @@ public class CreateSelectorKindCommand
     
     @Override
     protected BaseResult execute() {
-        var selectorControl = Session.getModelController(SelectorControl.class);
-        String selectorKindName = form.getSelectorKindName();
-        SelectorKind selectorKind = selectorControl.getSelectorKindByName(selectorKindName);
-        
-        if(selectorKind == null) {
-            var partyPK = getPartyPK();
-            var isDefault = Boolean.valueOf(form.getIsDefault());
-            var sortOrder = Integer.valueOf(form.getSortOrder());
-            var description = form.getDescription();
+        var result = SelectorResultFactory.getCreateSelectorKindResult();
+        var selectorKindName = form.getSelectorKindName();
+        var isDefault = Boolean.valueOf(form.getIsDefault());
+        var sortOrder = Integer.valueOf(form.getSortOrder());
+        var description = form.getDescription();
+        var createdBy = getPartyPK();
 
-            selectorKind = selectorControl.createSelectorKind(selectorKindName, isDefault, sortOrder, partyPK);
+        var selectorKind = SelectorKindLogic.getInstance().createSelectorKind(this, selectorKindName,
+                isDefault, sortOrder, getPreferredLanguage(), description, createdBy);
 
-            if(description != null) {
-                selectorControl.createSelectorKindDescription(selectorKind, getPreferredLanguage(), description, partyPK);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.DuplicateSelectorKindName.name(), selectorKindName);
+        if(selectorKind != null) {
+            var selectorKindDetail = selectorKind.getLastDetail();
+
+            result.setEntityRef(selectorKindDetail.getPrimaryKey().getEntityRef());
+            result.setSelectorKindName(selectorKindDetail.getSelectorKindName());
         }
-        
-        return null;
+
+        return result;
     }
     
 }

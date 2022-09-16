@@ -26,7 +26,6 @@ import com.echothree.model.control.selector.common.exception.UnknownDefaultSelec
 import com.echothree.model.control.selector.common.exception.UnknownDefaultSelectorTypeException;
 import com.echothree.model.control.selector.common.exception.UnknownSelectorTypeNameException;
 import com.echothree.model.control.selector.server.control.SelectorControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
 import com.echothree.model.data.selector.server.entity.SelectorType;
@@ -77,8 +76,10 @@ public class SelectorTypeLogic
                 selectorControl.createSelectorTypeDescription(selectorType, language, description, createdBy);
             }
         } else {
-            handleExecutionError(DuplicateSelectorTypeNameException.class, eea, ExecutionErrors.DuplicateSelectorTypeName.name(), selectorTypeName);
+            handleExecutionError(DuplicateSelectorTypeNameException.class, eea, ExecutionErrors.DuplicateSelectorTypeName.name(),
+                    selectorKind.getLastDetail().getSelectorKindName(), selectorTypeName);
         }
+
         return selectorType;
     }
 

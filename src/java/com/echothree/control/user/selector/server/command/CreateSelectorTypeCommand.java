@@ -17,6 +17,7 @@
 package com.echothree.control.user.selector.server.command;
 
 import com.echothree.control.user.selector.common.form.CreateSelectorTypeForm;
+import com.echothree.control.user.selector.common.result.SelectorResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -63,17 +64,26 @@ public class CreateSelectorTypeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = SelectorResultFactory.getCreateSelectorTypeResult();
         var selectorKindName = form.getSelectorKindName();
         var selectorTypeName = form.getSelectorTypeName();
         var isDefault = Boolean.valueOf(form.getIsDefault());
         var sortOrder = Integer.valueOf(form.getSortOrder());
         var description = form.getDescription();
-        var partyPK = getPartyPK();
+        var createdBy = getPartyPK();
 
-        SelectorTypeLogic.getInstance().createSelectorType(this, selectorKindName, selectorTypeName, isDefault, sortOrder,
-                getPreferredLanguage(), description, partyPK);
+        var selectorType = SelectorTypeLogic.getInstance().createSelectorType(this, selectorKindName,
+                selectorTypeName, isDefault, sortOrder, getPreferredLanguage(), description, createdBy);
 
-        return null;
+        if(selectorType != null) {
+            var selectorTypeDetail = selectorType.getLastDetail();
+
+            result.setEntityRef(selectorType.getPrimaryKey().getEntityRef());
+            result.setSelectorKindName(selectorTypeDetail.getSelectorKind().getLastDetail().getSelectorKindName());
+            result.setSelectorTypeName(selectorTypeDetail.getSelectorTypeName());
+        }
+
+        return result;
     }
     
 }
