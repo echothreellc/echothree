@@ -17,26 +17,18 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.DeleteOfferItemPriceForm;
-import com.echothree.model.control.accounting.server.logic.CurrencyLogic;
-import com.echothree.model.control.inventory.server.logic.InventoryConditionLogic;
-import com.echothree.model.control.item.server.logic.ItemLogic;
-import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.offer.server.logic.OfferItemLogic;
-import com.echothree.model.control.offer.server.logic.OfferLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -76,40 +68,11 @@ public class DeleteOfferItemPriceCommand
         var inventoryConditionName = form.getInventoryConditionName();
         var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
         var currencyIsoName = form.getCurrencyIsoName();
-        var offer = OfferLogic.getInstance().getOfferByName(this, offerName);
-        var item = ItemLogic.getInstance().getItemByName(this, itemName);
-        var inventoryCondition = InventoryConditionLogic.getInstance().getInventoryConditionByName(this, inventoryConditionName);
-        var currency = CurrencyLogic.getInstance().getCurrencyByName(this, currencyIsoName);
 
-        if(!hasExecutionErrors()) {
-            var uomControl = Session.getModelController(UomControl.class);
-            var unitOfMeasureKind = item.getLastDetail().getUnitOfMeasureKind();
-            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
-
-            if(unitOfMeasureType != null) {
-                var offerItemControl = Session.getModelController(OfferItemControl.class);
-                var offerItem = offerItemControl.getOfferItem(offer, item);
-
-                if(offerItem != null) {
-                    var offerItemPrice = offerItemControl.getOfferItemPriceForUpdate(offerItem, inventoryCondition,
-                            unitOfMeasureType, currency);
-
-                    if(offerItemPrice != null) {
-                        OfferItemLogic.getInstance().deleteOfferItemPrice(offerItemPrice, getPartyPK());
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownOfferItemPrice.name(), offerName, itemName, inventoryConditionName,
-                                unitOfMeasureTypeName, currencyIsoName);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownOfferItem.name(), offerName, itemName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownUnitOfMeasureTypeName.name(), unitOfMeasureKind.getLastDetail().getUnitOfMeasureKindName(),
-                        unitOfMeasureTypeName);
-            }
-        }
+        OfferItemLogic.getInstance().deleteOfferItemPrice(this, offerName, itemName, inventoryConditionName,
+                unitOfMeasureTypeName, currencyIsoName, getPartyPK());
 
         return null;
     }
-    
+
 }

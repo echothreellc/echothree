@@ -17,28 +17,18 @@
 package com.echothree.control.user.offer.server.command;
 
 import com.echothree.control.user.offer.common.form.CreateOfferItemPriceForm;
-import com.echothree.model.control.accounting.server.logic.CurrencyLogic;
-import com.echothree.model.control.inventory.server.logic.InventoryConditionLogic;
-import com.echothree.model.control.item.common.ItemPriceTypes;
-import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.control.item.server.logic.ItemLogic;
-import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.offer.server.logic.OfferItemLogic;
-import com.echothree.model.control.offer.server.logic.OfferLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -86,90 +76,12 @@ public class CreateOfferItemPriceCommand
         var strMinimumUnitPrice = form.getMinimumUnitPrice();
         var strMaximumUnitPrice = form.getMaximumUnitPrice();
         var strUnitPriceIncrement = form.getUnitPriceIncrement();
-        var offer = OfferLogic.getInstance().getOfferByName(this, offerName);
-        var item = ItemLogic.getInstance().getItemByName(this, itemName);
-        var inventoryCondition = InventoryConditionLogic.getInstance().getInventoryConditionByName(this, inventoryConditionName);
-        var currency = CurrencyLogic.getInstance().getCurrencyByName(this, currencyIsoName);
 
-        if(!hasExecutionErrors()) {
-            var uomControl = Session.getModelController(UomControl.class);
-            var itemDetail = item.getLastDetail();
-            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(itemDetail.getUnitOfMeasureKind(),
-                    unitOfMeasureTypeName);
+        OfferItemLogic.getInstance().createOfferItemPrice(this, offerName, itemName, inventoryConditionName,
+                unitOfMeasureTypeName, currencyIsoName, strUnitPrice, strMinimumUnitPrice, strMaximumUnitPrice,
+                strUnitPriceIncrement, getPartyPK());
 
-            if(unitOfMeasureType != null) {
-                var offerItemControl = Session.getModelController(OfferItemControl.class);
-                var offerItem = offerItemControl.getOfferItem(offer, item);
-
-                if(offerItem != null) {
-                    var itemControl = Session.getModelController(ItemControl.class);
-                    var itemPrice = itemControl.getItemPrice(item, inventoryCondition, unitOfMeasureType, currency);
-
-                    if(itemPrice != null) {
-                        var offerItemPrice = offerItemControl.getOfferItemPrice(offerItem, inventoryCondition,
-                                unitOfMeasureType, currency);
-
-                        if(offerItemPrice == null) {
-                            var itemPriceTypeName = itemDetail.getItemPriceType().getItemPriceTypeName();
-                            var createdBy = getPartyPK();
-
-                            if(itemPriceTypeName.equals(ItemPriceTypes.FIXED.name())) {
-                                if(strUnitPrice != null) {
-                                    var unitPrice = Long.valueOf(strUnitPrice);
-
-                                    offerItemPrice = OfferItemLogic.getInstance().createOfferItemPrice(offerItem, inventoryCondition,
-                                            unitOfMeasureType, currency, createdBy);
-                                    OfferItemLogic.getInstance().createOfferItemFixedPrice(offerItemPrice, unitPrice, createdBy);
-                                } else {
-                                    addExecutionError(ExecutionErrors.MissingUnitPrice.name());
-                                }
-                            } else if(itemPriceTypeName.equals(ItemPriceTypes.VARIABLE.name())) {
-                                Long minimumUnitPrice = null;
-                                Long maximumUnitPrice = null;
-                                Long unitPriceIncrement = null;
-
-                                if(strMinimumUnitPrice != null) {
-                                    minimumUnitPrice = Long.valueOf(strMinimumUnitPrice);
-                                } else {
-                                    addExecutionError(ExecutionErrors.MissingMinimumUnitPrice.name());
-                                }
-
-                                if(strMaximumUnitPrice != null) {
-                                    maximumUnitPrice = Long.valueOf(strMaximumUnitPrice);
-                                } else {
-                                    addExecutionError(ExecutionErrors.MissingMaximumUnitPrice.name());
-                                }
-
-                                if(strUnitPriceIncrement != null) {
-                                    unitPriceIncrement = Long.valueOf(strUnitPriceIncrement);
-                                } else {
-                                    addExecutionError(ExecutionErrors.MissingUnitPriceIncrement.name());
-                                }
-
-                                if(minimumUnitPrice != null && maximumUnitPrice != null && unitPriceIncrement != null) {
-                                    offerItemPrice = OfferItemLogic.getInstance().createOfferItemPrice(offerItem, inventoryCondition,
-                                            unitOfMeasureType, currency, createdBy);
-                                    OfferItemLogic.getInstance().createOfferItemVariablePrice(offerItemPrice, minimumUnitPrice, maximumUnitPrice,
-                                            unitPriceIncrement, createdBy);
-                                }
-                            } else {
-                                addExecutionError(ExecutionErrors.UnknownItemPriceType.name());
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.DuplicateOfferItemPrice.name());
-                        }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownItemPrice.name());
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownOfferItem.name(), offerName, itemName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownUnitOfMeasureTypeName.name(), unitOfMeasureTypeName);
-            }
-        }
-        
         return null;
     }
-    
+
 }
