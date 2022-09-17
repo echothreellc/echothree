@@ -28,7 +28,9 @@ import com.echothree.model.control.item.common.exception.UnknownItemPriceExcepti
 import com.echothree.model.control.item.common.exception.UnknownItemPriceTypeException;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemLogic;
+import com.echothree.model.control.offer.common.exception.CannotManuallyCreateOfferItemPriceWhenOfferItemPriceFilterSetException;
 import com.echothree.model.control.offer.common.exception.CannotManuallyCreateOfferItemWhenOfferItemSelectorSetException;
+import com.echothree.model.control.offer.common.exception.CannotManuallyDeleteOfferItemPriceWhenOfferItemPriceFilterSetException;
 import com.echothree.model.control.offer.common.exception.CannotManuallyDeleteOfferItemWhenOfferItemSelectorSetException;
 import com.echothree.model.control.offer.common.exception.DuplicateOfferItemException;
 import com.echothree.model.control.offer.common.exception.DuplicateOfferItemPriceException;
@@ -90,7 +92,7 @@ public class OfferItemLogic
         OfferItem offerItem = null;
         final var offerDetail = offer.getLastDetail();
 
-        if(offer.getLastDetail().getOfferItemSelector() == null) {
+        if(offerDetail.getOfferItemSelector() == null) {
             var partyControl = Session.getModelController(PartyControl.class);
             var partyDepartment = partyControl.getPartyDepartment(offerDetail.getDepartmentParty());
             var partyDivision = partyControl.getPartyDivision(partyDepartment.getDivisionParty());
@@ -193,82 +195,93 @@ public class OfferItemLogic
             final String unitOfMeasureTypeName, final String currencyIsoName, final String strUnitPrice, final String strMinimumUnitPrice,
             final String strMaximumUnitPrice, final String strUnitPriceIncrement, final BasePK createdBy) {
         var offer = OfferLogic.getInstance().getOfferByName(eea, offerName);
-        var item = ItemLogic.getInstance().getItemByName(eea, itemName);
-        var inventoryCondition = InventoryConditionLogic.getInstance().getInventoryConditionByName(eea, inventoryConditionName);
-        var currency = CurrencyLogic.getInstance().getCurrencyByName(eea, currencyIsoName);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var itemDetail = item.getLastDetail();
-            var unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();
-            var unitOfMeasureType = UnitOfMeasureTypeLogic.getInstance().getUnitOfMeasureTypeByName(eea,
-                    unitOfMeasureKind, unitOfMeasureTypeName);
+            final var offerDetail = offer.getLastDetail();
 
-            if(eea == null || !eea.hasExecutionErrors()) {
-                var offerItemControl = Session.getModelController(OfferItemControl.class);
-                var offerItem = offerItemControl.getOfferItem(offer, item);
+            if(offerDetail.getOfferItemPriceFilter() == null) {
+                var item = ItemLogic.getInstance().getItemByName(eea, itemName);
+                var inventoryCondition = InventoryConditionLogic.getInstance().getInventoryConditionByName(eea, inventoryConditionName);
+                var currency = CurrencyLogic.getInstance().getCurrencyByName(eea, currencyIsoName);
 
-                if(offerItem != null) {
-                    var itemControl = Session.getModelController(ItemControl.class);
-                    var itemPrice = itemControl.getItemPrice(item, inventoryCondition, unitOfMeasureType, currency);
+                if(eea == null || !eea.hasExecutionErrors()) {
+                    var itemDetail = item.getLastDetail();
+                    var unitOfMeasureKind = itemDetail.getUnitOfMeasureKind();
+                    var unitOfMeasureType = UnitOfMeasureTypeLogic.getInstance().getUnitOfMeasureTypeByName(eea,
+                            unitOfMeasureKind, unitOfMeasureTypeName);
 
-                    if(itemPrice != null) {
-                        var offerItemPrice = offerItemControl.getOfferItemPrice(offerItem, inventoryCondition,
-                                unitOfMeasureType, currency);
+                    if(eea == null || !eea.hasExecutionErrors()) {
+                        var offerItemControl = Session.getModelController(OfferItemControl.class);
+                        var offerItem = offerItemControl.getOfferItem(offer, item);
 
-                        if(offerItemPrice == null) {
-                            var itemPriceTypeName = itemDetail.getItemPriceType().getItemPriceTypeName();
+                        if(offerItem != null) {
+                            var itemControl = Session.getModelController(ItemControl.class);
+                            var itemPrice = itemControl.getItemPrice(item, inventoryCondition, unitOfMeasureType, currency);
 
-                            if(itemPriceTypeName.equals(ItemPriceTypes.FIXED.name())) {
-                                if(strUnitPrice != null) {
-                                    var unitPrice = Long.valueOf(strUnitPrice);
+                            if(itemPrice != null) {
+                                var offerItemPrice = offerItemControl.getOfferItemPrice(offerItem, inventoryCondition,
+                                        unitOfMeasureType, currency);
 
-                                    offerItemPrice = OfferItemLogic.getInstance().createOfferItemPrice(offerItem, inventoryCondition,
-                                            unitOfMeasureType, currency, createdBy);
-                                    OfferItemLogic.getInstance().createOfferItemFixedPrice(offerItemPrice, unitPrice, createdBy);
+                                if(offerItemPrice == null) {
+                                    var itemPriceTypeName = itemDetail.getItemPriceType().getItemPriceTypeName();
+
+                                    if(itemPriceTypeName.equals(ItemPriceTypes.FIXED.name())) {
+                                        if(strUnitPrice != null) {
+                                            var unitPrice = Long.valueOf(strUnitPrice);
+
+                                            offerItemPrice = OfferItemLogic.getInstance().createOfferItemPrice(offerItem, inventoryCondition,
+                                                    unitOfMeasureType, currency, createdBy);
+                                            OfferItemLogic.getInstance().createOfferItemFixedPrice(offerItemPrice, unitPrice, createdBy);
+                                        } else {
+                                            handleExecutionError(MissingUnitPriceException.class, eea, ExecutionErrors.MissingUnitPrice.name());
+                                        }
+                                    } else if(itemPriceTypeName.equals(ItemPriceTypes.VARIABLE.name())) {
+                                        Long minimumUnitPrice = null;
+                                        Long maximumUnitPrice = null;
+                                        Long unitPriceIncrement = null;
+
+                                        if(strMinimumUnitPrice != null) {
+                                            minimumUnitPrice = Long.valueOf(strMinimumUnitPrice);
+                                        } else {
+                                            handleExecutionError(MissingMinimumUnitPriceException.class, eea, ExecutionErrors.MissingMinimumUnitPrice.name());
+                                        }
+
+                                        if(strMaximumUnitPrice != null) {
+                                            maximumUnitPrice = Long.valueOf(strMaximumUnitPrice);
+                                        } else {
+                                            handleExecutionError(MissingMaximumUnitPriceException.class, eea, ExecutionErrors.MissingMaximumUnitPrice.name());
+                                        }
+
+                                        if(strUnitPriceIncrement != null) {
+                                            unitPriceIncrement = Long.valueOf(strUnitPriceIncrement);
+                                        } else {
+                                            handleExecutionError(MissingUnitPriceIncrementException.class, eea, ExecutionErrors.MissingUnitPriceIncrement.name());
+                                        }
+
+                                        if(minimumUnitPrice != null && maximumUnitPrice != null && unitPriceIncrement != null) {
+                                            offerItemPrice = OfferItemLogic.getInstance().createOfferItemPrice(offerItem, inventoryCondition,
+                                                    unitOfMeasureType, currency, createdBy);
+                                            OfferItemLogic.getInstance().createOfferItemVariablePrice(offerItemPrice, minimumUnitPrice, maximumUnitPrice,
+                                                    unitPriceIncrement, createdBy);
+                                        }
+                                    } else {
+                                        handleExecutionError(UnknownItemPriceTypeException.class, eea, ExecutionErrors.UnknownItemPriceType.name());
+                                    }
                                 } else {
-                                    handleExecutionError(MissingUnitPriceException.class, eea, ExecutionErrors.MissingUnitPrice.name());
-                                }
-                            } else if(itemPriceTypeName.equals(ItemPriceTypes.VARIABLE.name())) {
-                                Long minimumUnitPrice = null;
-                                Long maximumUnitPrice = null;
-                                Long unitPriceIncrement = null;
-
-                                if(strMinimumUnitPrice != null) {
-                                    minimumUnitPrice = Long.valueOf(strMinimumUnitPrice);
-                                } else {
-                                    handleExecutionError(MissingMinimumUnitPriceException.class, eea, ExecutionErrors.MissingMinimumUnitPrice.name());
-                                }
-
-                                if(strMaximumUnitPrice != null) {
-                                    maximumUnitPrice = Long.valueOf(strMaximumUnitPrice);
-                                } else {
-                                    handleExecutionError(MissingMaximumUnitPriceException.class, eea, ExecutionErrors.MissingMaximumUnitPrice.name());
-                                }
-
-                                if(strUnitPriceIncrement != null) {
-                                    unitPriceIncrement = Long.valueOf(strUnitPriceIncrement);
-                                } else {
-                                    handleExecutionError(MissingUnitPriceIncrementException.class, eea, ExecutionErrors.MissingUnitPriceIncrement.name());
-                                }
-
-                                if(minimumUnitPrice != null && maximumUnitPrice != null && unitPriceIncrement != null) {
-                                    offerItemPrice = OfferItemLogic.getInstance().createOfferItemPrice(offerItem, inventoryCondition,
-                                            unitOfMeasureType, currency, createdBy);
-                                    OfferItemLogic.getInstance().createOfferItemVariablePrice(offerItemPrice, minimumUnitPrice, maximumUnitPrice,
-                                            unitPriceIncrement, createdBy);
+                                    handleExecutionError(DuplicateOfferItemPriceException.class, eea, ExecutionErrors.DuplicateOfferItemPrice.name());
                                 }
                             } else {
-                                handleExecutionError(UnknownItemPriceTypeException.class, eea, ExecutionErrors.UnknownItemPriceType.name());
+                                handleExecutionError(UnknownItemPriceException.class, eea, ExecutionErrors.UnknownItemPrice.name());
                             }
                         } else {
-                            handleExecutionError(DuplicateOfferItemPriceException.class, eea, ExecutionErrors.DuplicateOfferItemPrice.name());
+                            handleExecutionError(UnknownOfferItemException.class, eea, ExecutionErrors.UnknownOfferItem.name(), offerName, itemName);
                         }
-                    } else {
-                        handleExecutionError(UnknownItemPriceException.class, eea, ExecutionErrors.UnknownItemPrice.name());
                     }
-                } else {
-                    handleExecutionError(UnknownOfferItemException.class, eea, ExecutionErrors.UnknownOfferItem.name(), offerName, itemName);
                 }
+            } else {
+                handleExecutionError(CannotManuallyCreateOfferItemPriceWhenOfferItemPriceFilterSetException.class, eea,
+                        ExecutionErrors.CannotManuallyCreateOfferItemPriceWhenOfferItemPriceFilterSet.name(),
+                        offerDetail.getOfferName());
             }
         }
     }
@@ -317,33 +330,44 @@ public class OfferItemLogic
             final String inventoryConditionName, final String unitOfMeasureTypeName, final String currencyIsoName,
             final BasePK deletedBy) {
         var offer = OfferLogic.getInstance().getOfferByName(eea, offerName);
-        var item = ItemLogic.getInstance().getItemByName(eea, itemName);
-        var inventoryCondition = InventoryConditionLogic.getInstance().getInventoryConditionByName(eea, inventoryConditionName);
-        var currency = CurrencyLogic.getInstance().getCurrencyByName(eea, currencyIsoName);
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            var unitOfMeasureKind = item.getLastDetail().getUnitOfMeasureKind();
-            var unitOfMeasureType = UnitOfMeasureTypeLogic.getInstance().getUnitOfMeasureTypeByName(eea,
-                    unitOfMeasureKind, unitOfMeasureTypeName);
+            final var offerDetail = offer.getLastDetail();
 
-            if(eea == null || !eea.hasExecutionErrors()) {
-                var offerItemControl = Session.getModelController(OfferItemControl.class);
-                var offerItem = offerItemControl.getOfferItem(offer, item);
+            if(offerDetail.getOfferItemPriceFilter() == null) {
+                var item = ItemLogic.getInstance().getItemByName(eea, itemName);
+                var inventoryCondition = InventoryConditionLogic.getInstance().getInventoryConditionByName(eea, inventoryConditionName);
+                var currency = CurrencyLogic.getInstance().getCurrencyByName(eea, currencyIsoName);
 
-                if(offerItem != null) {
-                    var offerItemPrice = offerItemControl.getOfferItemPriceForUpdate(offerItem, inventoryCondition,
-                            unitOfMeasureType, currency);
+                if(eea == null || !eea.hasExecutionErrors()) {
+                    var unitOfMeasureKind = item.getLastDetail().getUnitOfMeasureKind();
+                    var unitOfMeasureType = UnitOfMeasureTypeLogic.getInstance().getUnitOfMeasureTypeByName(eea,
+                            unitOfMeasureKind, unitOfMeasureTypeName);
 
-                    if(offerItemPrice != null) {
-                        deleteOfferItemPrice(offerItemPrice, deletedBy);
-                    } else {
-                        handleExecutionError(UnknownOfferItemPriceException.class, eea, ExecutionErrors.UnknownOfferItemPrice.name(),
-                                offerName, itemName, inventoryConditionName, unitOfMeasureTypeName, currencyIsoName);
+                    if(eea == null || !eea.hasExecutionErrors()) {
+                        var offerItemControl = Session.getModelController(OfferItemControl.class);
+                        var offerItem = offerItemControl.getOfferItem(offer, item);
+
+                        if(offerItem != null) {
+                            var offerItemPrice = offerItemControl.getOfferItemPriceForUpdate(offerItem, inventoryCondition,
+                                    unitOfMeasureType, currency);
+
+                            if(offerItemPrice != null) {
+                                deleteOfferItemPrice(offerItemPrice, deletedBy);
+                            } else {
+                                handleExecutionError(UnknownOfferItemPriceException.class, eea, ExecutionErrors.UnknownOfferItemPrice.name(),
+                                        offerName, itemName, inventoryConditionName, unitOfMeasureTypeName, currencyIsoName);
+                            }
+                        } else {
+                            handleExecutionError(UnknownOfferItemException.class, eea, ExecutionErrors.UnknownOfferItem.name(),
+                                    offerName, itemName);
+                        }
                     }
-                } else {
-                    handleExecutionError(UnknownOfferItemException.class, eea, ExecutionErrors.UnknownOfferItem.name(),
-                            offerName, itemName);
                 }
+            } else {
+                handleExecutionError(CannotManuallyDeleteOfferItemPriceWhenOfferItemPriceFilterSetException.class, eea,
+                        ExecutionErrors.CannotManuallyDeleteOfferItemPriceWhenOfferItemPriceFilterSet.name(),
+                        offerDetail.getOfferName());
             }
         }
     }
