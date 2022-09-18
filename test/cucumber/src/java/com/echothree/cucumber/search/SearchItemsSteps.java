@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class SearchItemsSteps implements En {
 
     public SearchItemsSteps() {
-        When("^the user begins entering a new item search$",
+        And("^the user begins entering a new item search$",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -56,14 +56,36 @@ public class SearchItemsSteps implements En {
                     persona.searchItemsForm = null;
                 });
 
-        When("^the user's search results contain \"([^\"]*)\" result(s|)$",
+        And("^the user begins clearing the item results$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+
+                    assertThat(persona.clearItemResultsForm).isNull();
+
+                    persona.clearItemResultsForm = SearchUtil.getHome().getClearItemResultsForm();
+                });
+
+        When("^the user clears the item results$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+                    var clearItemResultsForm = persona.clearItemResultsForm;
+
+                    assertThat(clearItemResultsForm).isNotNull();
+
+                    var commandResult = SearchUtil.getHome().clearItemResults(persona.userVisitPK, clearItemResultsForm);
+                    LastCommandResult.commandResult = commandResult;
+
+                    persona.clearItemResultsForm = null;
+                });
+
+        And("^the user's search results contain \"([^\"]*)\" result(s|)$",
                 (Long itemSearchCount, String discard1) -> {
                     var persona = CurrentPersona.persona;
 
                     assertThat(persona.lastSearchItemsCount).isEqualTo(itemSearchCount);
                 });
 
-        When("^the user sets the item search's search type to \"([^\"]*)\"$",
+        And("^the user sets the item search's search type to \"([^\"]*)\"$",
                 (String searchTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var searchItemsForm = persona.searchItemsForm;
@@ -73,7 +95,7 @@ public class SearchItemsSteps implements En {
                     searchItemsForm.setSearchTypeName(searchTypeName);
                 });
 
-        When("^the user sets the item search's item name or alias to \"([^\"]*)\"$",
+        And("^the user sets the item search's item name or alias to \"([^\"]*)\"$",
                 (String itemNameOrAlias) -> {
                     var persona = CurrentPersona.persona;
                     var searchItemsForm = persona.searchItemsForm;
@@ -83,7 +105,7 @@ public class SearchItemsSteps implements En {
                     searchItemsForm.setItemNameOrAlias(itemNameOrAlias);
                 });
 
-        When("^the user sets the item search's description to \"([^\"]*)\"$",
+        And("^the user sets the item search's description to \"([^\"]*)\"$",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var searchItemsForm = persona.searchItemsForm;
@@ -92,6 +114,17 @@ public class SearchItemsSteps implements En {
 
                     searchItemsForm.setDescription(description);
                 });
+
+        And("^the user sets the clear item results' search type to \"([^\"]*)\"$",
+                (String searchTypeName) -> {
+                    var persona = CurrentPersona.persona;
+                    var clearItemResultsForm = persona.clearItemResultsForm;
+
+                    assertThat(clearItemResultsForm).isNotNull();
+
+                    clearItemResultsForm.setSearchTypeName(searchTypeName);
+                });
+
     }
 
 }
