@@ -129,6 +129,12 @@ import com.echothree.control.user.purchase.common.edit.PurchaseOrderEdit;
 import com.echothree.control.user.purchase.common.form.CreatePurchaseOrderForm;
 import com.echothree.control.user.purchase.common.form.SetPurchaseOrderStatusForm;
 import com.echothree.control.user.purchase.common.spec.PurchaseOrderSpec;
+import com.echothree.control.user.search.common.form.CheckItemSpellingForm;
+import com.echothree.control.user.search.common.form.ClearItemResultsForm;
+import com.echothree.control.user.search.common.form.CreateItemSearchResultActionForm;
+import com.echothree.control.user.search.common.form.GetItemResultsFacetForm;
+import com.echothree.control.user.search.common.form.GetItemResultsForm;
+import com.echothree.control.user.search.common.form.SearchItemsForm;
 import com.echothree.control.user.selector.common.edit.SelectorEdit;
 import com.echothree.control.user.selector.common.edit.SelectorKindEdit;
 import com.echothree.control.user.selector.common.edit.SelectorNodeEdit;
@@ -367,6 +373,16 @@ public class BasePersona {
     public String lastSalesOrderBatchName;
     public String lastSalesOrderName;
     public String lastSalesOrderLineSequence;
+
+    // Search
+    public SearchItemsForm searchItemsForm;
+    public GetItemResultsForm getItemResultsForm;
+    public GetItemResultsFacetForm getItemResultsFacetForm;
+    public CreateItemSearchResultActionForm createItemSearchResultActionForm;
+    public ClearItemResultsForm clearItemResultsForm;
+    public CheckItemSpellingForm checkItemSpellingForm;
+
+    public Long lastSearchItemsCount;
 
     // Selector
     public CreateSelectorKindForm createSelectorKindForm;
