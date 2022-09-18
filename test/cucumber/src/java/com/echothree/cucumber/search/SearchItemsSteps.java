@@ -56,6 +56,28 @@ public class SearchItemsSteps implements En {
                     persona.searchItemsForm = null;
                 });
 
+        And("^the user begins recording an action on a result of the item search$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+
+                    assertThat(persona.createItemSearchResultActionForm).isNull();
+
+                    persona.createItemSearchResultActionForm = SearchUtil.getHome().getCreateItemSearchResultActionForm();
+                });
+
+        When("^the user records an action on a result of the item search$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+                    var createItemSearchResultActionForm = persona.createItemSearchResultActionForm;
+
+                    assertThat(createItemSearchResultActionForm).isNotNull();
+
+                    var commandResult = SearchUtil.getHome().createItemSearchResultAction(persona.userVisitPK, createItemSearchResultActionForm);
+                    LastCommandResult.commandResult = commandResult;
+
+                    persona.createItemSearchResultActionForm = null;
+                });
+
         And("^the user begins clearing the item results$",
                 () -> {
                     var persona = CurrentPersona.persona;
@@ -113,6 +135,36 @@ public class SearchItemsSteps implements En {
                     assertThat(searchItemsForm).isNotNull();
 
                     searchItemsForm.setDescription(description);
+                });
+
+        And("^the user sets the item search result action's search type to \"([^\"]*)\"$",
+                (String searchTypeName) -> {
+                    var persona = CurrentPersona.persona;
+                    var createItemSearchResultActionForm = persona.createItemSearchResultActionForm;
+
+                    assertThat(createItemSearchResultActionForm).isNotNull();
+
+                    createItemSearchResultActionForm.setSearchTypeName(searchTypeName);
+                });
+
+        And("^the user sets the item search result action's action to \"([^\"]*)\"$",
+                (String searchResultActionTypeName) -> {
+                    var persona = CurrentPersona.persona;
+                    var createItemSearchResultActionForm = persona.createItemSearchResultActionForm;
+
+                    assertThat(createItemSearchResultActionForm).isNotNull();
+
+                    createItemSearchResultActionForm.setSearchResultActionTypeName(searchResultActionTypeName);
+                });
+
+        And("^the user sets the item search result action's item to \"([^\"]*)\"$",
+                (String itemName) -> {
+                    var persona = CurrentPersona.persona;
+                    var createItemSearchResultActionForm = persona.createItemSearchResultActionForm;
+
+                    assertThat(createItemSearchResultActionForm).isNotNull();
+
+                    createItemSearchResultActionForm.setItemName(itemName);
                 });
 
         And("^the user sets the clear item results' search type to \"([^\"]*)\"$",
