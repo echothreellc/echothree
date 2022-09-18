@@ -144,6 +144,7 @@ import com.echothree.control.user.selector.common.spec.SelectorKindSpec;
 import com.echothree.control.user.selector.common.spec.SelectorNodeSpec;
 import com.echothree.control.user.selector.common.spec.SelectorSpec;
 import com.echothree.control.user.selector.common.spec.SelectorTypeSpec;
+import com.echothree.control.user.track.common.form.CreateUserVisitTrackForm;
 import com.echothree.control.user.vendor.common.edit.VendorEdit;
 import com.echothree.control.user.vendor.common.edit.VendorItemCostEdit;
 import com.echothree.control.user.vendor.common.edit.VendorItemEdit;
@@ -388,6 +389,9 @@ public class BasePersona {
     public String lastSelectorTypeName;
     public String lastSelectorName;
     public String lastSelectorNodeName;
+
+    // Track
+    public CreateUserVisitTrackForm createUserVisitTrackForm;
 
     // Vendor
     public CreateVendorForm createVendorForm;

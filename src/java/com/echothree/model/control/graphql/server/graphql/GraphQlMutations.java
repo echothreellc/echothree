@@ -112,6 +112,7 @@ import com.echothree.control.user.sequence.common.result.EditSequenceTypeResult;
 import com.echothree.control.user.shipment.common.ShipmentUtil;
 import com.echothree.control.user.shipment.common.result.CreateFreeOnBoardResult;
 import com.echothree.control.user.shipment.common.result.EditFreeOnBoardResult;
+import com.echothree.control.user.track.common.TrackUtil;
 import com.echothree.control.user.user.common.UserUtil;
 import com.echothree.control.user.user.common.result.EditUserLoginResult;
 import com.echothree.control.user.vendor.common.VendorUtil;
@@ -137,6 +138,26 @@ import javax.naming.NamingException;
 @GraphQLName("mutation")
 public class GraphQlMutations
         extends BaseGraphQl {
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject createUserVisitTrack(final DataFetchingEnvironment env,
+            @GraphQLName("trackValue") final String trackValue) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = TrackUtil.getHome().getCreateUserVisitTrackForm();
+
+            commandForm.setTrackValue(trackValue);
+
+            var commandResult = TrackUtil.getHome().createUserVisitTrack(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
 
     @GraphQLField
     @GraphQLRelayMutation
