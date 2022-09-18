@@ -2365,7 +2365,7 @@
             <entityType entityTypeName="CampaignMediumDescription" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Campaign Medium Description" />
             </entityType>
-            <entityType entityTypeName="CampaignSource" keepAllHistory="false" sortOrder="1">
+            <entityType entityTypeName="CampaignTerm" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Campaign Term" />
             </entityType>
             <entityType entityTypeName="CampaignTermDescription" keepAllHistory="false" sortOrder="1">
