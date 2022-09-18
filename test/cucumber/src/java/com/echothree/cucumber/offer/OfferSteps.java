@@ -219,7 +219,7 @@ public class OfferSteps implements En {
                     Objects.requireNonNullElse(createOfferForm, offerEdit).setOfferItemSelectorName(offerItemSelectorName);
                 });
 
-        When("^the user sets the offer's offer item price filter name price to \"([^\"]*)\"$",
+        When("^the user sets the offer's offer item price filter name to \"([^\"]*)\"$",
                 (String offerItemPriceFilterName) -> {
                     var persona = CurrentPersona.persona;
                     var createOfferForm = persona.createOfferForm;
