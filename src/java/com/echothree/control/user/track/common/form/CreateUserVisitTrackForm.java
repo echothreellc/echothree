@@ -23,17 +23,5 @@ public interface CreateUserVisitTrackForm
     
     String getTrackValue();
     void setTrackValue(String trackValue);
-    
-    String getTrackSourceValue();
-    void setTrackSourceValue(String trackSourceValue);
-    
-    String getTrackMediumValue();
-    void setTrackMediumValue(String trackMediumValue);
-    
-    String getTrackTermValue();
-    void setTrackTermValue(String trackTermValue);
-    
-    String getTrackContentValue();
-    void setTrackContentValue(String trackContentValue);
-    
+
 }
