@@ -193,7 +193,7 @@ public class TrackControl
 
     private Track getTrackByValue(String value, EntityPermission entityPermission) {
         return TrackFactory.getInstance().getEntityFromQuery(entityPermission, getTrackByValueQueries, 
-                Sha1Utils.getInstance().hash(value));
+                Sha1Utils.getInstance().hash(value.toLowerCase()));
     }
 
     public Track getTrackByValue(String value) {
