@@ -20,6 +20,7 @@ import com.echothree.control.user.accounting.common.AccountingUtil;
 import com.echothree.control.user.accounting.common.result.CreateItemAccountingCategoryResult;
 import com.echothree.control.user.accounting.common.result.EditItemAccountingCategoryResult;
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
+import com.echothree.control.user.campaign.common.CampaignUtil;
 import com.echothree.control.user.content.common.ContentUtil;
 import com.echothree.control.user.content.common.result.CreateContentPageLayoutResult;
 import com.echothree.control.user.content.common.result.EditContentPageLayoutResult;
@@ -118,8 +119,6 @@ import com.echothree.control.user.user.common.result.EditUserLoginResult;
 import com.echothree.control.user.vendor.common.VendorUtil;
 import com.echothree.control.user.vendor.common.result.CreateItemPurchasingCategoryResult;
 import com.echothree.control.user.vendor.common.result.EditItemPurchasingCategoryResult;
-import com.echothree.model.control.graphql.server.graphql.CommandResultObject;
-import com.echothree.model.control.graphql.server.graphql.CommandResultWithIdObject;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.search.server.graphql.SearchCustomersResultObject;
 import com.echothree.model.control.search.server.graphql.SearchEmployeesResultObject;
@@ -151,6 +150,34 @@ public class GraphQlMutations
             commandForm.setTrackValue(trackValue);
 
             var commandResult = TrackUtil.getHome().createUserVisitTrack(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject createUserVisitCampaign(final DataFetchingEnvironment env,
+            @GraphQLName("campaignValue") final String campaignValue,
+            @GraphQLName("campaignSourceValue") final String campaignSourceValue,
+            @GraphQLName("campaignMediumValue") final String campaignMediumValue,
+            @GraphQLName("campaignTermValue") final String campaignTermValue,
+            @GraphQLName("campaignContentValue") final String campaignContentValue) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = CampaignUtil.getHome().getCreateUserVisitCampaignForm();
+
+            commandForm.setCampaignValue(campaignValue);
+            commandForm.setCampaignSourceValue(campaignSourceValue);
+            commandForm.setCampaignMediumValue(campaignMediumValue);
+            commandForm.setCampaignTermValue(campaignTermValue);
+            commandForm.setCampaignContentValue(campaignContentValue);
+
+            var commandResult = CampaignUtil.getHome().createUserVisitCampaign(getUserVisitPK(env), commandForm);
             commandResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);

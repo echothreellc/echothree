@@ -22,9 +22,9 @@ import com.echothree.cucumber.util.persona.CurrentPersona;
 import io.cucumber.java8.En;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class UserTrackSteps implements En {
+public class UserVisitTrackSteps implements En {
 
-    public UserTrackSteps() {
+    public UserVisitTrackSteps() {
         When("^the user begins entering a new user visit track$",
                 () -> {
                     var persona = CurrentPersona.persona;
@@ -44,9 +44,8 @@ public class UserTrackSteps implements En {
                     var commandResult = TrackUtil.getHome().createUserVisitTrack(persona.userVisitPK, createUserVisitTrackForm);
                     LastCommandResult.commandResult = commandResult;
 
-                    persona.createFilterKindForm = null;
+                    persona.createUserVisitTrackForm = null;
                 });
-
 
         When("^the user sets the user visit track's track value to \"([^\"]*)\"$",
                 (String trackValue) -> {

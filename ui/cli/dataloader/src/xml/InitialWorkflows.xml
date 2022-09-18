@@ -1350,7 +1350,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Campaign" />
                 <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Party" />
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Campaign" />
         </workflow>
         <workflow workflowName="CAMPAIGN_SOURCE_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="CampaignSourceStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Campaign Source Status" />
@@ -1380,7 +1380,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Campaign Source" />
                 <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Party" />
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="CampaignSource" />
         </workflow>
         <workflow workflowName="CAMPAIGN_MEDIUM_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="CampaignMediumStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Campaign Medium Status" />
@@ -1410,7 +1410,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Campaign Medium" />
                 <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Party" />
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="CampaignMedium" />
         </workflow>
         <workflow workflowName="CAMPAIGN_TERM_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="CampaignTermStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Campaign Term Status" />
@@ -1440,7 +1440,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Campaign Term" />
                 <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Party" />
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="CampaignTerm" />
         </workflow>
         <workflow workflowName="CAMPAIGN_CONTENT_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="CampaignContentStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Campaign Content Status" />
@@ -1470,7 +1470,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Campaign Content" />
                 <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Party" />
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="CampaignContent" />
         </workflow>
         <workflow workflowName="TRACK_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="TrackStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Track Status" />
@@ -1500,7 +1500,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Track" />
                 <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Party" />
+            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Track" />
         </workflow>
     </workflows>
 </initialData>

@@ -258,7 +258,7 @@ public class CampaignControl
 
     private Campaign getCampaignByValue(String value, EntityPermission entityPermission) {
         return CampaignFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignByValueQueries, 
-                Sha1Utils.getInstance().hash(value));
+                Sha1Utils.getInstance().hash(value.toLowerCase()));
     }
 
     public Campaign getCampaignByValue(String value) {
@@ -774,7 +774,7 @@ public class CampaignControl
 
     private CampaignSource getCampaignSourceByValue(String value, EntityPermission entityPermission) {
         return CampaignSourceFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignSourceByValueQueries, 
-                Sha1Utils.getInstance().hash(value));
+                Sha1Utils.getInstance().hash(value.toLowerCase()));
     }
 
     public CampaignSource getCampaignSourceByValue(String value) {
@@ -1290,7 +1290,7 @@ public class CampaignControl
 
     private CampaignMedium getCampaignMediumByValue(String value, EntityPermission entityPermission) {
         return CampaignMediumFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignMediumByValueQueries, 
-                Sha1Utils.getInstance().hash(value));
+                Sha1Utils.getInstance().hash(value.toLowerCase()));
     }
 
     public CampaignMedium getCampaignMediumByValue(String value) {
@@ -1806,7 +1806,7 @@ public class CampaignControl
 
     private CampaignTerm getCampaignTermByValue(String value, EntityPermission entityPermission) {
         return CampaignTermFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignTermByValueQueries, 
-                Sha1Utils.getInstance().hash(value));
+                Sha1Utils.getInstance().hash(value.toLowerCase()));
     }
 
     public CampaignTerm getCampaignTermByValue(String value) {
@@ -2322,7 +2322,7 @@ public class CampaignControl
 
     private CampaignContent getCampaignContentByValue(String value, EntityPermission entityPermission) {
         return CampaignContentFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignContentByValueQueries, 
-                Sha1Utils.getInstance().hash(value));
+                Sha1Utils.getInstance().hash(value.toLowerCase()));
     }
 
     public CampaignContent getCampaignContentByValue(String value) {
