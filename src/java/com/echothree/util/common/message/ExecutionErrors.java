@@ -2249,5 +2249,8 @@ public enum ExecutionErrors {
     UnknownDefaultItemAliasChecksumType,
     CannotManuallyCreateOfferItemWhenOfferItemSelectorSet,
     CannotManuallyDeleteOfferItemWhenOfferItemSelectorSet,
+    CannotManuallyCreateOfferItemPriceWhenOfferItemPriceFilterSet,
+    CannotManuallyEditOfferItemPriceWhenOfferItemPriceFilterSet,
+    CannotManuallyDeleteOfferItemPriceWhenOfferItemPriceFilterSet,
 
 }

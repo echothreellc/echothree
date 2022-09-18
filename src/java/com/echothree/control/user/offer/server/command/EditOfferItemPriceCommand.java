@@ -19,32 +19,23 @@ package com.echothree.control.user.offer.server.command;
 import com.echothree.control.user.offer.common.edit.OfferEditFactory;
 import com.echothree.control.user.offer.common.edit.OfferItemPriceEdit;
 import com.echothree.control.user.offer.common.form.EditOfferItemPriceForm;
-import com.echothree.control.user.offer.common.result.EditOfferItemPriceResult;
 import com.echothree.control.user.offer.common.result.OfferResultFactory;
 import com.echothree.control.user.offer.common.spec.OfferItemPriceSpec;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.accounting.server.logic.CurrencyLogic;
+import com.echothree.model.control.inventory.server.logic.InventoryConditionLogic;
 import com.echothree.model.control.item.common.ItemPriceTypes;
-import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.item.server.logic.ItemLogic;
+import com.echothree.model.control.offer.common.exception.CannotManuallyDeleteOfferItemPriceWhenOfferItemPriceFilterSetException;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.offer.server.logic.OfferItemLogic;
+import com.echothree.model.control.offer.server.logic.OfferLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.data.accounting.server.entity.Currency;
-import com.echothree.model.data.inventory.server.entity.InventoryCondition;
-import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.item.server.entity.ItemDetail;
-import com.echothree.model.data.offer.server.entity.Offer;
-import com.echothree.model.data.offer.server.entity.OfferItem;
-import com.echothree.model.data.offer.server.entity.OfferItemFixedPrice;
-import com.echothree.model.data.offer.server.entity.OfferItemPrice;
-import com.echothree.model.data.offer.server.entity.OfferItemVariablePrice;
+import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
 import com.echothree.model.data.offer.server.value.OfferItemFixedPriceValue;
 import com.echothree.model.data.offer.server.value.OfferItemVariablePriceValue;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
@@ -109,160 +100,147 @@ public class EditOfferItemPriceCommand
     
     @Override
     protected BaseResult execute() {
-        var offerControl = Session.getModelController(OfferControl.class);
-        EditOfferItemPriceResult result = OfferResultFactory.getEditOfferItemPriceResult();
-        String offerName = spec.getOfferName();
-        Offer offer = offerControl.getOfferByName(offerName);
-        
-        if(offer != null) {
-            var itemControl = Session.getModelController(ItemControl.class);
-            String itemName = spec.getItemName();
-            Item item = itemControl.getItemByName(itemName);
-            
-            if(item != null) {
+        var result = OfferResultFactory.getEditOfferItemPriceResult();
+        var offerName = spec.getOfferName();
+        var offer = OfferLogic.getInstance().getOfferByName(this, offerName);
+
+        if(!hasExecutionErrors()) {
+            final var offerDetail = offer.getLastDetail();
+
+            if(offerDetail.getOfferItemPriceFilter() == null) {
+            var itemName = spec.getItemName();
+            var inventoryConditionName = spec.getInventoryConditionName();
+            var unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
+            var currencyIsoName = spec.getCurrencyIsoName();
+            var item = ItemLogic.getInstance().getItemByName(this, itemName);
+            var inventoryCondition = InventoryConditionLogic.getInstance().getInventoryConditionByName(this, inventoryConditionName);
+            var currency = CurrencyLogic.getInstance().getCurrencyByName(this, currencyIsoName);
+
+            if(!hasExecutionErrors()) {
                 var offerItemControl = Session.getModelController(OfferItemControl.class);
-                OfferItem offerItem = offerItemControl.getOfferItem(offer, item);
-                
+                var offerItem = offerItemControl.getOfferItem(offer, item);
+
                 if(offerItem != null) {
-                    var inventoryControl = Session.getModelController(InventoryControl.class);
-                    String inventoryConditionName = spec.getInventoryConditionName();
-                    InventoryCondition inventoryCondition = inventoryControl.getInventoryConditionByName(inventoryConditionName);
-                    
-                    if(inventoryCondition != null) {
-                        var uomControl = Session.getModelController(UomControl.class);
-                        ItemDetail itemDetail = item.getLastDetail();
-                        String unitOfMeasureTypeName = spec.getUnitOfMeasureTypeName();
-                        UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(itemDetail.getUnitOfMeasureKind(),
-                                unitOfMeasureTypeName);
-                        
-                        if(unitOfMeasureType != null) {
-                            var accountingControl = Session.getModelController(AccountingControl.class);
-                            String currencyIsoName = spec.getCurrencyIsoName();
-                            Currency currency = accountingControl.getCurrencyByIsoName(currencyIsoName);
-                            
-                            if(currency != null) {
-                                OfferItemPrice offerItemPrice = offerItemControl.getOfferItemPrice(offerItem, inventoryCondition,
-                                        unitOfMeasureType, currency);
-                                
-                                if(offerItemPrice != null) {
-                                    String itemPriceTypeName = itemDetail.getItemPriceType().getItemPriceTypeName();
-                                    
-                                    if(editMode.equals(EditMode.LOCK)) {
-                                        result.setOfferItemPrice(offerItemControl.getOfferItemPriceTransfer(getUserVisit(), offerItemPrice));
-                                        
-                                        if(lockEntity(offerItem)) {
-                                            OfferItemPriceEdit edit = OfferEditFactory.getOfferItemPriceEdit();
-                                            
-                                            result.setEdit(edit);
-                                            
-                                            if(itemPriceTypeName.equals(ItemPriceTypes.FIXED.name())) {
-                                                OfferItemFixedPrice offerItemFixedPrice = offerItemControl.getOfferItemFixedPrice(offerItemPrice);
-                                                
-                                                edit.setUnitPrice(AmountUtils.getInstance().formatPriceUnit(currency, offerItemFixedPrice.getUnitPrice()));
-                                            } else if(itemPriceTypeName.equals(ItemPriceTypes.VARIABLE.name())) {
-                                                OfferItemVariablePrice offerItemVariablePrice = offerItemControl.getOfferItemVariablePrice(offerItemPrice);
-                                                
-                                                edit.setMinimumUnitPrice(AmountUtils.getInstance().formatPriceUnit(currency, offerItemVariablePrice.getMinimumUnitPrice()));
-                                                edit.setMaximumUnitPrice(AmountUtils.getInstance().formatPriceUnit(currency, offerItemVariablePrice.getMaximumUnitPrice()));
-                                                edit.setUnitPriceIncrement(AmountUtils.getInstance().formatPriceUnit(currency, offerItemVariablePrice.getUnitPriceIncrement()));
-                                            } else {
-                                                addExecutionError(ExecutionErrors.UnknownItemPriceType.name(), itemPriceTypeName);
+                    var itemDetail = item.getLastDetail();
+                    var unitOfMeasureKind = item.getLastDetail().getUnitOfMeasureKind();
+                    var unitOfMeasureType = UnitOfMeasureTypeLogic.getInstance().getUnitOfMeasureTypeByName(this,
+                            unitOfMeasureKind, unitOfMeasureTypeName);
+
+                    if(!hasExecutionErrors()) {
+                        var offerItemPrice = offerItemControl.getOfferItemPrice(offerItem, inventoryCondition,
+                                unitOfMeasureType, currency);
+
+                        if(offerItemPrice != null) {
+                            var itemPriceTypeName = itemDetail.getItemPriceType().getItemPriceTypeName();
+
+                            if(editMode.equals(EditMode.LOCK)) {
+                                result.setOfferItemPrice(offerItemControl.getOfferItemPriceTransfer(getUserVisit(), offerItemPrice));
+
+                                if(lockEntity(offerItem)) {
+                                    var edit = OfferEditFactory.getOfferItemPriceEdit();
+
+                                    result.setEdit(edit);
+
+                                    if(itemPriceTypeName.equals(ItemPriceTypes.FIXED.name())) {
+                                        var offerItemFixedPrice = offerItemControl.getOfferItemFixedPrice(offerItemPrice);
+
+                                        edit.setUnitPrice(AmountUtils.getInstance().formatPriceUnit(currency, offerItemFixedPrice.getUnitPrice()));
+                                    } else if(itemPriceTypeName.equals(ItemPriceTypes.VARIABLE.name())) {
+                                        var offerItemVariablePrice = offerItemControl.getOfferItemVariablePrice(offerItemPrice);
+
+                                        edit.setMinimumUnitPrice(AmountUtils.getInstance().formatPriceUnit(currency, offerItemVariablePrice.getMinimumUnitPrice()));
+                                        edit.setMaximumUnitPrice(AmountUtils.getInstance().formatPriceUnit(currency, offerItemVariablePrice.getMaximumUnitPrice()));
+                                        edit.setUnitPriceIncrement(AmountUtils.getInstance().formatPriceUnit(currency, offerItemVariablePrice.getUnitPriceIncrement()));
+                                    } else {
+                                        addExecutionError(ExecutionErrors.UnknownItemPriceType.name(), itemPriceTypeName);
+                                    }
+                                } else {
+                                    addExecutionError(ExecutionErrors.EntityLockFailed.name());
+                                }
+
+                                result.setEntityLock(getEntityLockTransfer(offerItem));
+                            } else if(editMode.equals(EditMode.UPDATE)) {
+                                if(itemPriceTypeName.equals(ItemPriceTypes.FIXED.name())) {
+                                    var strUnitPrice = edit.getUnitPrice();
+
+                                    if(strUnitPrice != null) {
+                                        var unitPrice = Long.valueOf(strUnitPrice);
+
+                                        if(lockEntityForUpdate(offerItem)) {
+                                            try {
+                                                OfferItemFixedPriceValue offerItemFixedPriceValue = offerItemControl.getOfferItemFixedPriceValueForUpdate(offerItemPrice);
+
+                                                offerItemFixedPriceValue.setUnitPrice(unitPrice);
+
+                                                OfferItemLogic.getInstance().updateOfferItemFixedPriceFromValue(offerItemFixedPriceValue, getPartyPK());
+                                            } finally {
+                                                unlockEntity(offerItem);
                                             }
                                         } else {
-                                            addExecutionError(ExecutionErrors.EntityLockFailed.name());
+                                            addExecutionError(ExecutionErrors.EntityLockStale.name());
                                         }
-                                        
-                                        result.setEntityLock(getEntityLockTransfer(offerItem));
-                                    } else if(editMode.equals(EditMode.UPDATE)) {
-                                        if(itemPriceTypeName.equals(ItemPriceTypes.FIXED.name())) {
-                                            String strUnitPrice = edit.getUnitPrice();
-                                            
-                                            if(strUnitPrice != null) {
-                                                Long unitPrice = Long.valueOf(strUnitPrice);
-                                                
-                                                if(lockEntityForUpdate(offerItem)) {
-                                                    try {
-                                                        OfferItemFixedPriceValue offerItemFixedPriceValue = offerItemControl.getOfferItemFixedPriceValueForUpdate(offerItemPrice);
-                                                        
-                                                        offerItemFixedPriceValue.setUnitPrice(unitPrice);
+                                    } else {
+                                        addExecutionError(ExecutionErrors.MissingUnitPrice.name());
+                                    }
+                                } else if(itemPriceTypeName.equals(ItemPriceTypes.VARIABLE.name())) {
+                                    var strMinimumUnitPrice = edit.getMinimumUnitPrice();
+                                    Long minimumUnitPrice = null;
+                                    var strMaximumUnitPrice = edit.getMaximumUnitPrice();
+                                    Long maximumUnitPrice = null;
+                                    var strUnitPriceIncrement = edit.getUnitPriceIncrement();
+                                    Long unitPriceIncrement = null;
 
-                                                        OfferItemLogic.getInstance().updateOfferItemFixedPriceFromValue(offerItemFixedPriceValue, getPartyPK());
-                                                    } finally {
-                                                        unlockEntity(offerItem);
-                                                    }
-                                                } else {
-                                                    addExecutionError(ExecutionErrors.EntityLockStale.name());
-                                                }
-                                            } else {
-                                                addExecutionError(ExecutionErrors.MissingUnitPrice.name());
-                                            }
-                                        } else if(itemPriceTypeName.equals(ItemPriceTypes.VARIABLE.name())) {
-                                            String strMinimumUnitPrice = edit.getMinimumUnitPrice();
-                                            Long minimumUnitPrice = null;
-                                            String strMaximumUnitPrice = edit.getMaximumUnitPrice();
-                                            Long maximumUnitPrice = null;
-                                            String strUnitPriceIncrement = edit.getUnitPriceIncrement();
-                                            Long unitPriceIncrement = null;
-                                            
-                                            if(strMinimumUnitPrice != null) {
-                                                minimumUnitPrice = Long.valueOf(strMinimumUnitPrice);
-                                            } else {
-                                                addExecutionError(ExecutionErrors.MissingMinimumUnitPrice.name());
-                                            }
-                                            
-                                            if(strMaximumUnitPrice != null) {
-                                                maximumUnitPrice = Long.valueOf(strMaximumUnitPrice);
-                                            } else {
-                                                addExecutionError(ExecutionErrors.MissingMaximumUnitPrice.name());
-                                            }
-                                            
-                                            if(strUnitPriceIncrement != null) {
-                                                unitPriceIncrement = Long.valueOf(strUnitPriceIncrement);
-                                            } else {
-                                                addExecutionError(ExecutionErrors.MissingUnitPriceIncrement.name());
-                                            }
-                                            
-                                            if(minimumUnitPrice != null && maximumUnitPrice != null && unitPriceIncrement != null) {
-                                                if(lockEntityForUpdate(offerItem)) {
-                                                    try {
-                                                        OfferItemVariablePriceValue offerItemVariablePriceValue = offerItemControl.getOfferItemVariablePriceValueForUpdate(offerItemPrice);
-                                                        
-                                                        offerItemVariablePriceValue.setMinimumUnitPrice(minimumUnitPrice);
-                                                        offerItemVariablePriceValue.setMaximumUnitPrice(maximumUnitPrice);
-                                                        offerItemVariablePriceValue.setUnitPriceIncrement(unitPriceIncrement);
+                                    if(strMinimumUnitPrice != null) {
+                                        minimumUnitPrice = Long.valueOf(strMinimumUnitPrice);
+                                    } else {
+                                        addExecutionError(ExecutionErrors.MissingMinimumUnitPrice.name());
+                                    }
 
-                                                        OfferItemLogic.getInstance().updateOfferItemVariablePriceFromValue(offerItemVariablePriceValue, getPartyPK());
-                                                    } finally {
-                                                        unlockEntity(offerItem);
-                                                    }
-                                                } else {
-                                                    addExecutionError(ExecutionErrors.EntityLockStale.name());
-                                                }
+                                    if(strMaximumUnitPrice != null) {
+                                        maximumUnitPrice = Long.valueOf(strMaximumUnitPrice);
+                                    } else {
+                                        addExecutionError(ExecutionErrors.MissingMaximumUnitPrice.name());
+                                    }
+
+                                    if(strUnitPriceIncrement != null) {
+                                        unitPriceIncrement = Long.valueOf(strUnitPriceIncrement);
+                                    } else {
+                                        addExecutionError(ExecutionErrors.MissingUnitPriceIncrement.name());
+                                    }
+
+                                    if(minimumUnitPrice != null && maximumUnitPrice != null && unitPriceIncrement != null) {
+                                        if(lockEntityForUpdate(offerItem)) {
+                                            try {
+                                                OfferItemVariablePriceValue offerItemVariablePriceValue = offerItemControl.getOfferItemVariablePriceValueForUpdate(offerItemPrice);
+
+                                                offerItemVariablePriceValue.setMinimumUnitPrice(minimumUnitPrice);
+                                                offerItemVariablePriceValue.setMaximumUnitPrice(maximumUnitPrice);
+                                                offerItemVariablePriceValue.setUnitPriceIncrement(unitPriceIncrement);
+
+                                                OfferItemLogic.getInstance().updateOfferItemVariablePriceFromValue(offerItemVariablePriceValue, getPartyPK());
+                                            } finally {
+                                                unlockEntity(offerItem);
                                             }
                                         } else {
-                                            addExecutionError(ExecutionErrors.UnknownItemPriceType.name(), itemPriceTypeName);
+                                            addExecutionError(ExecutionErrors.EntityLockStale.name());
                                         }
                                     }
                                 } else {
-                                    addExecutionError(ExecutionErrors.DuplicateOfferItemPrice.name());
+                                    addExecutionError(ExecutionErrors.UnknownItemPriceType.name(), itemPriceTypeName);
                                 }
-                            } else {
-                                addExecutionError(ExecutionErrors.UnknownCurrencyIsoName.name(), currencyIsoName);
                             }
                         } else {
-                            addExecutionError(ExecutionErrors.UnknownUnitOfMeasureTypeName.name(), unitOfMeasureTypeName);
+                            addExecutionError(ExecutionErrors.DuplicateOfferItemPrice.name());
                         }
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownInventoryConditionName.name(), inventoryConditionName);
                     }
                 } else {
                     addExecutionError(ExecutionErrors.UnknownOfferItem.name(), offerName, itemName);
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownItemName.name(), itemName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownOfferName.name(), offerName);
+            } else {
+                addExecutionError(ExecutionErrors.CannotManuallyEditOfferItemPriceWhenOfferItemPriceFilterSet.name(),
+                        offerDetail.getOfferName());
+            }
         }
         
         return result;
