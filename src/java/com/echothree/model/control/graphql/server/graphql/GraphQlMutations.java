@@ -5004,6 +5004,30 @@ public class GraphQlMutations
 
     @GraphQLField
     @GraphQLRelayMutation
+    public static CommandResultObject createItemSearchResultAction(final DataFetchingEnvironment env,
+            @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName,
+            @GraphQLName("searchResultActionTypeName") @GraphQLNonNull final String searchResultActionTypeName,
+            @GraphQLName("itemName") @GraphQLNonNull final String itemName) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = SearchUtil.getHome().getCreateItemSearchResultActionForm();
+
+            commandForm.setSearchTypeName(searchTypeName);
+            commandForm.setSearchResultActionTypeName(searchResultActionTypeName);
+            commandForm.setItemName(itemName);
+
+            var commandResult = SearchUtil.getHome().createItemSearchResultAction(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
     public static CommandResultObject clearItemResults(final DataFetchingEnvironment env,
             @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName) {
         var commandResultObject = new CommandResultObject();

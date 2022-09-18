@@ -19,8 +19,8 @@ package com.echothree.control.user.search.server.command;
 import com.echothree.control.user.search.common.form.BaseCreateSearchResultActionForm;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.persistence.BaseEntity;
@@ -36,8 +36,8 @@ import java.util.List;
     }
     
     protected BaseResult execute(String searchKindName, BaseEntity baseEntity) {
-        SearchLogic.getInstance().createSearchResultAction(this, getUserVisit(), searchKindName, form.getSearchTypeName(), form.getSearchResultActionTypeName(),
-                baseEntity, getPartyPK());
+        SearchLogic.getInstance().createSearchResultAction(this, getUserVisit(), searchKindName, form.getSearchTypeName(),
+                form.getSearchResultActionTypeName(), baseEntity, getPartyPK());
         
         return null;
     }
