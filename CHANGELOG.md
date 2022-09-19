@@ -1,5 +1,14 @@
 # Changelog
 
+## 2022-09-18-01
+
+* Prohibit Manual Offer Item Modifications if Offer Item Selector Set [539](https://gitlab.echothree.com/echothree/echothree/-/issues/539)
+* Prohibit Manual Offer Item Price Modifications if Offer Item Price Filter Set [540](https://gitlab.echothree.com/echothree/echothree/-/issues/540)
+* Editing GL Account With Null GL Account Category Fails With NPE [543](https://gitlab.echothree.com/echothree/echothree/-/issues/543)
+* Add createItemSearchResultAction Mutation [564](https://gitlab.echothree.com/echothree/echothree/-/issues/564)
+* Add createUserVisitCampaign Mutation [565](https://gitlab.echothree.com/echothree/echothree/-/issues/565)
+* Add createUserVisitTrack Mutation [566](https://gitlab.echothree.com/echothree/echothree/-/issues/566)
+
 ## 2022-09-04-01
 
 * Add Pronouns to Profiles [324](https://gitlab.echothree.com/echothree/echothree/-/issues/324)
