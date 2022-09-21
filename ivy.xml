@@ -81,7 +81,7 @@
         <dependency org="org.slf4j" name="slf4j-api" rev="1.7.32" conf="sources->sources" />
         <dependency org="org.slf4j" name="slf4j-log4j12" rev="1.7.32" conf="sources->sources" />
         <dependency org="org.threeten" name="threeten-extra" rev="1.5.0" conf="sources->sources" />
-        <dependency org="org.wildfly" name="wildfly-client-all" rev="26.1.1.Final" conf="sources->sources" />
+        <dependency org="org.wildfly" name="wildfly-client-all" rev="26.1.2.Final" conf="sources->sources" />
         <dependency org="xalan" name="xalan" rev="2.7.2" conf="sources->sources" />
         <dependency org="xerces" name="xercesImpl" rev="2.12.2" conf="sources->sources" />
         <dependency org="xml-apis" name="xml-apis" rev="1.4.01" conf="sources->sources" />
@@ -159,7 +159,7 @@
         <dependency org="org.slf4j" name="slf4j-api" rev="1.7.32" conf="javadoc->javadoc" />
         <dependency org="org.slf4j" name="slf4j-log4j12" rev="1.7.32" conf="javadoc->javadoc" />
         <dependency org="org.threeten" name="threeten-extra" rev="1.5.0" conf="javadoc->javadoc" />
-        <dependency org="org.wildfly" name="wildfly-client-all" rev="26.1.1.Final" conf="javadoc->javadoc" />
+        <dependency org="org.wildfly" name="wildfly-client-all" rev="26.1.2.Final" conf="javadoc->javadoc" />
         <dependency org="xalan" name="xalan" rev="2.7.2" conf="javadoc->javadoc" />
         <dependency org="xerces" name="xercesImpl" rev="2.12.2" conf="javadoc->javadoc" />
         <dependency org="xml-apis" name="xml-apis" rev="1.4.01" conf="javadoc->javadoc" />
@@ -246,7 +246,7 @@
         <dependency org="org.slf4j" name="slf4j-api" rev="1.7.32" conf="binaries->default" />
         <dependency org="org.slf4j" name="slf4j-log4j12" rev="1.7.32" conf="binaries->default" />
         <dependency org="org.threeten" name="threeten-extra" rev="1.5.0" conf="binaries->default" />
-        <dependency org="org.wildfly" name="wildfly-client-all" rev="26.1.1.Final" conf="binaries->default" />
+        <dependency org="org.wildfly" name="wildfly-client-all" rev="26.1.2.Final" conf="binaries->default" />
         <dependency org="xalan" name="xalan" rev="2.7.2" conf="binaries->default" />
         <dependency org="xerces" name="xercesImpl" rev="2.12.2" conf="binaries->default" />
         <dependency org="xml-apis" name="xml-apis" rev="1.4.01" conf="binaries->default" />
