@@ -99,7 +99,7 @@ public class GetEmployeeCommand
         if(parameterCount == 0) {
             var party = getParty();
 
-            PartyLogic.getInstance().checkPartyType(this, party, PartyTypes.CUSTOMER.name());
+            PartyLogic.getInstance().checkPartyType(this, party, PartyTypes.EMPLOYEE.name());
 
             if(!hasExecutionErrors()) {
                 var employeeControl = Session.getModelController(EmployeeControl.class);
