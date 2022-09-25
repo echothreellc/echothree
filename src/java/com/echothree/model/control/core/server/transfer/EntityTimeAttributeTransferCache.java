@@ -40,7 +40,7 @@ public class EntityTimeAttributeTransferCache
         
         if(entityTimeAttributeTransfer == null) {
             EntityAttributeTransfer entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityTimeAttribute.getEntityAttribute(), entityInstance) : null;
-            EntityInstanceTransfer entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityTimeAttribute.getEntityInstance(), false, false, false, false, false);
+            EntityInstanceTransfer entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityTimeAttribute.getEntityInstance(), false, false, false, false, false, false);
             Long unformattedTimeAttribute = entityTimeAttribute.getTimeAttribute();
             String timeAttribute = formatTypicalDateTime(unformattedTimeAttribute);
             

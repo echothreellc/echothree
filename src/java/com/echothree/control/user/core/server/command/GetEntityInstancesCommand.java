@@ -81,7 +81,7 @@ public class GetEntityInstancesCommand
 
         if(entities != null) {
             result.setEntityInstances(getCoreControl().getEntityInstanceTransfers(getUserVisit(), entities,
-                    false, false, false, false, false));
+                    false, false, false, false, false, false));
         }
 
         return result;

@@ -33,6 +33,7 @@ public interface CoreOptions {
     String EntityAttributeIncludeValue = "EntityAttributeIncludeValue";
 
     String EntityInstanceIncludeEntityAppearance = "EntityInstanceIncludeEntityAppearance";
+    String EntityInstanceIncludeEntityVisit = "EntityInstanceIncludeEntityVisit";
     String EntityInstanceIncludeNames = "EntityInstanceIncludeNames";
     String EntityInstanceIncludeKeyIfAvailable = "EntityInstanceIncludeKeyIfAvailable";
     String EntityInstanceIncludeGuidIfAvailable = "EntityInstanceIncludeGuidIfAvailable";
@@ -54,5 +55,9 @@ public interface CoreOptions {
 
     String EntityTypeIncludeIndexTypes = "EntityTypeIncludeIndexTypes";
     String EntityTypeIncludeIndexTypesCount = "EntityTypeIncludeIndexTypesCount";
-    
+
+    String EntityVisitIncludeEntityInstance = "EntityVisitIncludeEntityInstance";
+    String EntityVisitIncludeVisitedEntityInstance = "EntityVisitIncludeVisitedEntityInstance";
+    String EntityVisitIncludeVisitedTime = "EntityVisitIncludeVisitedTime";
+
 }

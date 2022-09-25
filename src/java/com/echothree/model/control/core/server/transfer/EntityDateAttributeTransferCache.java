@@ -41,7 +41,7 @@ public class EntityDateAttributeTransferCache
         
         if(entityDateAttributeTransfer == null) {
             EntityAttributeTransfer entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityDateAttribute.getEntityAttribute(), entityInstance) : null;
-            EntityInstanceTransfer entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityDateAttribute.getEntityInstance(), false, false, false, false, false);
+            EntityInstanceTransfer entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityDateAttribute.getEntityInstance(), false, false, false, false, false, false);
             Integer unformattedDateAttribute = entityDateAttribute.getDateAttribute();
             String dateAttribute = DateUtils.getInstance().formatDate(userVisit, unformattedDateAttribute);
             

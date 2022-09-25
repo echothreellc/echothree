@@ -44,14 +44,14 @@ public class EventTransferCache
             Long unformattedEventTime = event.getEventTime();
             String eventTime = formatTypicalDateTime(unformattedEventTime);
             Integer eventTimeSequence = event.getEventTimeSequence();
-            EntityInstanceTransfer entityInstanceTransfer = entityInstanceTransferCache.getEntityInstanceTransfer(event.getEntityInstance(), false, false, false, false, false);
+            EntityInstanceTransfer entityInstanceTransfer = entityInstanceTransferCache.getEntityInstanceTransfer(event.getEntityInstance(), false, false, false, false, false, false);
             EventTypeTransfer eventTypeTransfer = coreControl.getEventTypeTransfer(userVisit, event.getEventType());
             EntityInstance relatedEntityInstance = event.getRelatedEntityInstance();
-            EntityInstanceTransfer relatedEntityInstanceTransfer = relatedEntityInstance == null ? null : entityInstanceTransferCache.getEntityInstanceTransfer(relatedEntityInstance, false, false, false, false, false);
+            EntityInstanceTransfer relatedEntityInstanceTransfer = relatedEntityInstance == null ? null : entityInstanceTransferCache.getEntityInstanceTransfer(relatedEntityInstance, false, false, false, false, false, false);
             EventType relatedEventType = event.getRelatedEventType();
             EventTypeTransfer relatedEventTypeTransfer = relatedEventType == null ? null : coreControl.getEventTypeTransfer(userVisit, relatedEventType);
             EntityInstance createdBy = event.getCreatedBy();
-            EntityInstanceTransfer createdByTransfer = createdBy == null ? null : entityInstanceTransferCache.getEntityInstanceTransfer(createdBy, false, false, false, false, false);
+            EntityInstanceTransfer createdByTransfer = createdBy == null ? null : entityInstanceTransferCache.getEntityInstanceTransfer(createdBy, false, false, false, false, false, false);
 
             eventTransfer = new EventTransfer(unformattedEventTime, eventTime, eventTimeSequence, entityInstanceTransfer, eventTypeTransfer,
                     relatedEntityInstanceTransfer, relatedEventTypeTransfer, createdByTransfer);

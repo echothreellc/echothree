@@ -45,6 +45,7 @@ public class CoreTransferCaches
     protected MimeTypeTransferCache mimeTypeTransferCache;
     protected MimeTypeDescriptionTransferCache mimeTypeDescriptionTransferCache;
     protected EntityTimeTransferCache entityTimeTransferCache;
+    protected EntityVisitTransferCache entityVisitTransferCache;
     protected EntityInstanceTransferCache entityInstanceTransferCache;
     protected EventGroupTransferCache eventGroupTransferCache;
     protected EventTransferCache eventTransferCache;
@@ -266,10 +267,17 @@ public class CoreTransferCaches
     public EntityTimeTransferCache getEntityTimeTransferCache() {
         if(entityTimeTransferCache == null)
             entityTimeTransferCache = new EntityTimeTransferCache(userVisit);
-        
+
         return entityTimeTransferCache;
     }
-    
+
+    public EntityVisitTransferCache getEntityVisitTransferCache() {
+        if(entityVisitTransferCache == null)
+            entityVisitTransferCache = new EntityVisitTransferCache(userVisit);
+
+        return entityVisitTransferCache;
+    }
+
     public EntityInstanceTransferCache getEntityInstanceTransferCache() {
         if(entityInstanceTransferCache == null)
             entityInstanceTransferCache = new EntityInstanceTransferCache(userVisit);

@@ -77,6 +77,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
 
     boolean includeEntityInstance;
     boolean includeEntityAppearance;
+    boolean includeEntityVisit;
     boolean includeNames;
     boolean includeKey;
     boolean includeGuid;
@@ -302,6 +303,22 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
     }
 
     /**
+     * Returns the includeEntityVisit.
+     * @return the includeEntityVisit
+     */
+    protected boolean getIncludeEntityVisit() {
+        return includeEntityVisit;
+    }
+
+    /**
+     * Sets the includeEntityVisit.
+     * @param includeEntityVisit the includeEntityVisit to set
+     */
+    protected void setIncludeEntityVisit(boolean includeEntityVisit) {
+        this.includeEntityVisit = includeEntityVisit;
+    }
+
+    /**
      * Returns the includeNames.
      * @return the includeNames
      */
@@ -367,8 +384,8 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         // Check to make sure entityInstance is not null. This may happen in a case where a non-versioned entity was
         // converted to a versioned one.
         if(entityInstance != null) {
-            transfer.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityInstance, includeEntityAppearance, includeNames, includeKey,
-                    includeGuid, includeUlid));
+            transfer.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityInstance, includeEntityAppearance,
+                    includeEntityVisit, includeNames, includeKey, includeGuid, includeUlid));
 
             if(includeEntityAttributeGroups || includeTagScopes) {
                 if(includeEntityAttributeGroups) {

@@ -38,7 +38,7 @@ public class EntityAppearanceTransferCache
         EntityAppearanceTransfer entityAppearanceTransfer = get(entityAppearance);
         
         if(entityAppearanceTransfer == null) {
-            EntityInstanceTransfer entityInstance = coreControl.getEntityInstanceTransfer(userVisit, entityAppearance.getEntityInstance(), false, false, false, false, false);
+            EntityInstanceTransfer entityInstance = coreControl.getEntityInstanceTransfer(userVisit, entityAppearance.getEntityInstance(), false, false, false, false, false, false);
             AppearanceTransfer appearance = coreControl.getAppearanceTransfer(userVisit, entityAppearance.getAppearance());
             
             entityAppearanceTransfer = new EntityAppearanceTransfer(entityInstance, appearance);

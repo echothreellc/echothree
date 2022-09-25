@@ -84,7 +84,7 @@ public class GetEntityTagsCommand
                 EntityInstance taggedEntityInstance = coreControl.getEntityInstanceByEntityRef(entityRef);
                 
                 if(taggedEntityInstance != null) {
-                    result.setTaggedEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, taggedEntityInstance, false, false, false, false, false));
+                    result.setTaggedEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, taggedEntityInstance, false, false, false, false, false, false));
                     result.setEntityTags(tagControl.getEntityTagTransfersByTaggedEntityInstance(userVisit, taggedEntityInstance));
                 } else {
                     addExecutionError(ExecutionErrors.UnknownEntityRef.name(), entityRef);

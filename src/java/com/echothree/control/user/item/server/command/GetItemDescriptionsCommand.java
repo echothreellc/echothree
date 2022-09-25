@@ -110,10 +110,6 @@ public class GetItemDescriptionsCommand
                         addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
                     }
                 }
-
-                if(!hasExecutionErrors()) {
-                    sendEvent(item.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-                }
             } else {
                 addExecutionError(ExecutionErrors.UnknownItemDescriptionTypeUseTypeName.name(), itemDescriptionTypeUseTypeName);
             }

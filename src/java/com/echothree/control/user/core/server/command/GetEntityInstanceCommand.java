@@ -60,7 +60,7 @@ public class GetEntityInstanceCommand
 
         if(entityInstance != null) {
             result.setEntityInstance(getCoreControl().getEntityInstanceTransfer(getUserVisit(), entityInstance,
-                    false, false, false, false, false));
+                    false, false, false, false, false, false));
         }
 
         return result;

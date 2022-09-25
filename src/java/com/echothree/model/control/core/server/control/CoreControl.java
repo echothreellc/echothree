@@ -103,6 +103,7 @@ import com.echothree.model.control.core.common.transfer.EntityTimeAttributeTrans
 import com.echothree.model.control.core.common.transfer.EntityTimeTransfer;
 import com.echothree.model.control.core.common.transfer.EntityTypeDescriptionTransfer;
 import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
+import com.echothree.model.control.core.common.transfer.EntityVisitTransfer;
 import com.echothree.model.control.core.common.transfer.EventGroupTransfer;
 import com.echothree.model.control.core.common.transfer.EventTransfer;
 import com.echothree.model.control.core.common.transfer.EventTypeTransfer;
@@ -580,6 +581,8 @@ import com.echothree.model.data.party.common.pk.LanguagePK;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.model.data.search.server.entity.SearchCheckSpellingActionType;
+import com.echothree.model.data.search.server.factory.SearchCheckSpellingActionTypeFactory;
 import com.echothree.model.data.sequence.common.pk.SequencePK;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
@@ -2623,34 +2626,36 @@ public class CoreControl
     }
 
     public EntityInstanceTransfer getEntityInstanceTransfer(UserVisit userVisit, EntityInstance entityInstance, boolean includeEntityAppearance,
-            boolean includeNames, boolean includeKey, boolean includeGuid, boolean includeUlid) {
+            boolean includeEntityVisit, boolean includeNames, boolean includeKey, boolean includeGuid, boolean includeUlid) {
         return getCoreTransferCaches(userVisit).getEntityInstanceTransferCache().getEntityInstanceTransfer(entityInstance, includeEntityAppearance,
-                includeNames, includeKey, includeGuid, includeUlid);
+                includeEntityVisit, includeNames, includeKey, includeGuid, includeUlid);
     }
     
-    public EntityInstanceTransfer getEntityInstanceTransfer(UserVisit userVisit, BaseEntity baseEntity, boolean includeEntityAppearance, boolean includeNames,
-            boolean includeKey, boolean includeGuid, boolean includeUlid) {
-        return getEntityInstanceTransfer(userVisit, getEntityInstanceByBasePK(baseEntity.getPrimaryKey()), includeEntityAppearance, includeNames, includeKey,
-                includeGuid, includeUlid);
+    public EntityInstanceTransfer getEntityInstanceTransfer(UserVisit userVisit, BaseEntity baseEntity, boolean includeEntityAppearance,
+            boolean includeEntityVisit, boolean includeNames, boolean includeKey, boolean includeGuid, boolean includeUlid) {
+        return getEntityInstanceTransfer(userVisit, getEntityInstanceByBasePK(baseEntity.getPrimaryKey()), includeEntityAppearance,
+                includeEntityVisit, includeNames, includeKey, includeGuid, includeUlid);
     }
 
     public List<EntityInstanceTransfer> getEntityInstanceTransfers(UserVisit userVisit, Collection<EntityInstance> entityInstances,
-            boolean includeEntityAppearance, boolean includeNames, boolean includeKey, boolean includeGuid, boolean includeUlid) {
+            boolean includeEntityAppearance, boolean includeEntityVisit, boolean includeNames, boolean includeKey, boolean includeGuid,
+            boolean includeUlid) {
         var entityInstanceTransfers = new ArrayList<EntityInstanceTransfer>(entityInstances.size());
         var entityInstanceTransferCache = getCoreTransferCaches(userVisit).getEntityInstanceTransferCache();
 
         entityInstances.forEach((entityInstance) ->
                 entityInstanceTransfers.add(entityInstanceTransferCache.getEntityInstanceTransfer(entityInstance,
-                        includeEntityAppearance, includeNames, includeKey, includeGuid, includeUlid))
+                        includeEntityAppearance, includeEntityVisit, includeNames, includeKey, includeGuid, includeUlid))
         );
 
         return entityInstanceTransfers;
     }
 
     public List<EntityInstanceTransfer> getEntityInstanceTransfersByEntityType(UserVisit userVisit, EntityType entityType,
-            boolean includeEntityAppearance, boolean includeNames, boolean includeKey, boolean includeGuid, boolean includeUlid) {
+            boolean includeEntityAppearance, boolean includeEntityVisit, boolean includeNames, boolean includeKey, boolean includeGuid,
+            boolean includeUlid) {
         return getEntityInstanceTransfers(userVisit, getEntityInstancesByEntityType(entityType), includeEntityAppearance,
-                includeNames, includeKey, includeGuid, includeUlid);
+                includeEntityVisit, includeNames, includeKey, includeGuid, includeUlid);
     }
 
     /** Gets an EntityInstance for BasePK, creating it if necessary. Overrides function from BaseModelControl.
@@ -3707,49 +3712,42 @@ public class CoreControl
     //   Entity Visits
     // --------------------------------------------------------------------------------
     
-    public EntityVisit createEntityVisit(EntityInstance entityInstance, EntityInstance visitedEntityInstance) {
+    public EntityVisit createEntityVisit(final EntityInstance entityInstance, final EntityInstance visitedEntityInstance) {
         return EntityVisitFactory.getInstance().create(entityInstance, visitedEntityInstance, session.START_TIME_LONG);
     }
-    
-    public EntityVisit getEntityVisit(EntityInstance entityInstance, EntityInstance visitedEntityInstance) {
-        EntityVisit entityVisit;
-        
-        try {
-            PreparedStatement ps = EntityVisitFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM entityvisits " +
-                    "WHERE evis_eni_entityinstanceid = ? AND evis_visitedentityinstanceid = ?");
-            
-            ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
-            ps.setLong(2, visitedEntityInstance.getPrimaryKey().getEntityId());
-            
-            entityVisit = EntityVisitFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityVisit;
+
+    private static final Map<EntityPermission, String> getEntityVisitQueries;
+
+    static {
+        getEntityVisitQueries = Map.of(
+                EntityPermission.READ_ONLY, """
+                        SELECT _ALL_
+                        FROM entityvisits
+                        WHERE evis_eni_entityinstanceid = ? AND evis_visitedentityinstanceid = ?
+                        """,
+                EntityPermission.READ_WRITE, """
+                        SELECT _ALL_
+                        FROM entityvisits
+                        WHERE evis_eni_entityinstanceid = ? AND evis_visitedentityinstanceid = ?
+                        FOR UPDATE
+                        """);
     }
-    
-    public EntityVisit getEntityVisitForUpdate(EntityInstance entityInstance, EntityInstance visitedEntityInstance) {
-        EntityVisit entityVisit;
-        
-        try {
-            PreparedStatement ps = EntityVisitFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM entityvisits " +
-                    "WHERE evis_eni_entityinstanceid = ? AND evis_visitedentityinstanceid = ? " +
-                    "FOR UPDATE");
-            
-            ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
-            ps.setLong(2, visitedEntityInstance.getPrimaryKey().getEntityId());
-            
-            entityVisit = EntityVisitFactory.getInstance().getEntityFromQuery(EntityPermission.READ_WRITE, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return entityVisit;
+
+    private EntityVisit getEntityVisit(final EntityInstance entityInstance, final EntityInstance visitedEntityInstance,
+            final EntityPermission entityPermission) {
+        return EntityVisitFactory.getInstance().getEntityFromQuery(entityPermission, getEntityVisitQueries, entityInstance, visitedEntityInstance);
+    }
+
+    public EntityVisit getEntityVisit(final EntityInstance entityInstance, final EntityInstance visitedEntityInstance) {
+        return getEntityVisit(entityInstance, visitedEntityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public EntityVisit getEntityVisitForUpdate(final EntityInstance entityInstance, final EntityInstance visitedEntityInstance) {
+        return getEntityVisit(entityInstance, visitedEntityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public EntityVisitTransfer getEntityVisitTransfer(UserVisit userVisit, EntityVisit entityVisit) {
+        return getCoreTransferCaches(userVisit).getEntityVisitTransferCache().getEntityVisitTransfer(entityVisit);
     }
     
     // --------------------------------------------------------------------------------
