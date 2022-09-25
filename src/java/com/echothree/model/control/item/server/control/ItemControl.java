@@ -7367,6 +7367,29 @@ public class ItemControl
         return itemDescriptionTypeUseType;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ItemDescriptionTypeUseType */
+    public ItemDescriptionTypeUseType getItemDescriptionTypeUseTypeByEntityInstance(final EntityInstance entityInstance,
+            final EntityPermission entityPermission) {
+        var pk = new ItemDescriptionTypeUseTypePK(entityInstance.getEntityUniqueId());
+
+        return ItemDescriptionTypeUseTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ItemDescriptionTypeUseType getItemDescriptionTypeUseTypeByEntityInstance(final EntityInstance entityInstance) {
+        return getItemDescriptionTypeUseTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ItemDescriptionTypeUseType getItemDescriptionTypeUseTypeByEntityInstanceForUpdate(final EntityInstance entityInstance) {
+        return getItemDescriptionTypeUseTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countItemDescriptionTypeUseTypes() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM itemdescriptiontypeusetypes, itemdescriptiontypeusetypedetails " +
+                "WHERE idtutyp_activedetailid = idtutypdt_itemdescriptiontypeusetypedetailid");
+    }
+
     private static final Map<EntityPermission, String> getItemDescriptionTypeUseTypeByNameQueries;
 
     static {
@@ -7386,7 +7409,7 @@ public class ItemControl
         getItemDescriptionTypeUseTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private ItemDescriptionTypeUseType getItemDescriptionTypeUseTypeByName(String itemDescriptionTypeUseTypeName, EntityPermission entityPermission) {
+    public ItemDescriptionTypeUseType getItemDescriptionTypeUseTypeByName(String itemDescriptionTypeUseTypeName, EntityPermission entityPermission) {
         return ItemDescriptionTypeUseTypeFactory.getInstance().getEntityFromQuery(entityPermission, getItemDescriptionTypeUseTypeByNameQueries, itemDescriptionTypeUseTypeName);
     }
 
@@ -7425,7 +7448,7 @@ public class ItemControl
         getDefaultItemDescriptionTypeUseTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private ItemDescriptionTypeUseType getDefaultItemDescriptionTypeUseType(EntityPermission entityPermission) {
+    public ItemDescriptionTypeUseType getDefaultItemDescriptionTypeUseType(EntityPermission entityPermission) {
         return ItemDescriptionTypeUseTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultItemDescriptionTypeUseTypeQueries);
     }
 
@@ -7515,7 +7538,7 @@ public class ItemControl
         return getItemTransferCaches(userVisit).getItemDescriptionTypeUseTypeTransferCache().getTransfer(itemDescriptionTypeUseType);
     }
 
-    public List<ItemDescriptionTypeUseTypeTransfer> getItemDescriptionTypeUseTypeTransfers(UserVisit userVisit, List<ItemDescriptionTypeUseType> itemDescriptionTypeUseTypes) {
+    public List<ItemDescriptionTypeUseTypeTransfer> getItemDescriptionTypeUseTypeTransfers(UserVisit userVisit, Collection<ItemDescriptionTypeUseType> itemDescriptionTypeUseTypes) {
         List<ItemDescriptionTypeUseTypeTransfer> itemDescriptionTypeUseTypeTransfers = new ArrayList<>(itemDescriptionTypeUseTypes.size());
         ItemDescriptionTypeUseTypeTransferCache itemDescriptionTypeUseTypeTransferCache = getItemTransferCaches(userVisit).getItemDescriptionTypeUseTypeTransferCache();
 

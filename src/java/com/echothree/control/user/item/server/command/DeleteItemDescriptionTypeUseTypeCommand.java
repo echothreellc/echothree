@@ -17,21 +17,18 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.DeleteItemDescriptionTypeUseTypeForm;
-import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.item.server.logic.ItemDescriptionTypeUseTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.item.server.entity.ItemDescriptionTypeUseType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -51,7 +48,11 @@ public class DeleteItemDescriptionTypeUseTypeCommand
                 )));
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("ItemDescriptionTypeUseTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("ItemDescriptionTypeUseTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
                 ));
     }
     
@@ -62,15 +63,9 @@ public class DeleteItemDescriptionTypeUseTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
-        String itemDescriptionTypeUseTypeName = form.getItemDescriptionTypeUseTypeName();
-        ItemDescriptionTypeUseType itemDescriptionTypeUseType = itemControl.getItemDescriptionTypeUseTypeByNameForUpdate(itemDescriptionTypeUseTypeName);
+        var itemDescriptionTypeUseType = ItemDescriptionTypeUseTypeLogic.getInstance().getItemDescriptionTypeUseTypeByUniversalSpecForUpdate(this, form, false);
         
-        if(itemDescriptionTypeUseType != null) {
-            itemControl.deleteItemDescriptionTypeUseType(itemDescriptionTypeUseType, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownItemDescriptionTypeUseTypeName.name(), itemDescriptionTypeUseTypeName);
-        }
+        ItemDescriptionTypeUseTypeLogic.getInstance().deleteItemDescriptionTypeUseType(this, itemDescriptionTypeUseType, getPartyPK());
         
         return null;
     }

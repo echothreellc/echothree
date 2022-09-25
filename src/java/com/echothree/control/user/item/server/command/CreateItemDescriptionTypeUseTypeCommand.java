@@ -17,21 +17,19 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.CreateItemDescriptionTypeUseTypeForm;
-import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.control.user.item.common.result.ItemResultFactory;
+import com.echothree.model.control.item.server.logic.ItemDescriptionTypeUseTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.item.server.entity.ItemDescriptionTypeUseType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -65,26 +63,21 @@ public class CreateItemDescriptionTypeUseTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
-        String itemDescriptionTypeUseTypeName = form.getItemDescriptionTypeUseTypeName();
-        ItemDescriptionTypeUseType itemDescriptionTypeUseType = itemControl.getItemDescriptionTypeUseTypeByName(itemDescriptionTypeUseTypeName);
-        
-        if(itemDescriptionTypeUseType == null) {
-            var partyPK = getPartyPK();
-            var isDefault = Boolean.valueOf(form.getIsDefault());
-            var sortOrder = Integer.valueOf(form.getSortOrder());
-            var description = form.getDescription();
+        var result = ItemResultFactory.getCreateItemDescriptionTypeUseTypeResult();
+        var itemDescriptionTypeUseTypeName = form.getItemDescriptionTypeUseTypeName();
+        var isDefault = Boolean.valueOf(form.getIsDefault());
+        var sortOrder = Integer.valueOf(form.getSortOrder());
+        var description = form.getDescription();
 
-            itemDescriptionTypeUseType = itemControl.createItemDescriptionTypeUseType(itemDescriptionTypeUseTypeName, isDefault, sortOrder, getPartyPK());
+        var itemDescriptionTypeUseType = ItemDescriptionTypeUseTypeLogic.getInstance().createItemDescriptionTypeUseType(this,
+                itemDescriptionTypeUseTypeName, isDefault, sortOrder, getPreferredLanguage(), description, getPartyPK());
 
-            if(description != null) {
-                itemControl.createItemDescriptionTypeUseTypeDescription(itemDescriptionTypeUseType, getPreferredLanguage(), description, partyPK);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.DuplicateItemDescriptionTypeUseTypeName.name(), itemDescriptionTypeUseTypeName);
+        if(itemDescriptionTypeUseType != null) {
+            result.setItemDescriptionTypeUseTypeName(itemDescriptionTypeUseType.getLastDetail().getItemDescriptionTypeUseTypeName());
+            result.setEntityRef(itemDescriptionTypeUseType.getPrimaryKey().getEntityRef());
         }
-        
-        return null;
+
+        return result;
     }
     
 }
