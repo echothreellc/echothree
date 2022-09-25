@@ -76,9 +76,11 @@ public class MainAction
         Set<String> options = new HashSet<>();
         options.add(CoreOptions.EntityInstanceIncludeNames);
         options.add(CoreOptions.EntityInstanceIncludeEntityAppearance);
+        options.add(CoreOptions.EntityInstanceIncludeEntityVisit);
         options.add(CoreOptions.EntityInstanceIncludeKeyIfAvailable);
         options.add(CoreOptions.EntityInstanceIncludeGuidIfAvailable);
         options.add(CoreOptions.EntityInstanceIncludeUlidIfAvailable);
+        options.add(CoreOptions.EntityVisitIncludeVisitedTime);
         commandForm.setOptions(options);
         
         String offsetParameter = request.getParameter(new ParamEncoder("event").encodeParameterName(TableTagParameters.PARAMETER_PAGE));

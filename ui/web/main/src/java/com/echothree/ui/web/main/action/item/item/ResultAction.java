@@ -72,6 +72,7 @@ public class ResultAction
         Set<String> options = new HashSet<>();
         options.add(SearchOptions.ItemResultIncludeItem);
         options.add(CoreOptions.EntityInstanceIncludeEntityAppearance);
+        options.add(CoreOptions.EntityInstanceIncludeEntityVisit);
         options.add(CoreOptions.AppearanceIncludeTextDecorations);
         options.add(CoreOptions.AppearanceIncludeTextTransformations);
         commandForm.setOptions(options);
