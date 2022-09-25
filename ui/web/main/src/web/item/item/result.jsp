@@ -65,6 +65,23 @@
                                 <display:setProperty name="export.pdf.filename" value="Items.pdf" />
                                 <display:setProperty name="export.rtf.filename" value="Items.rtf" />
                                 <display:setProperty name="export.xml.filename" value="Items.xml" />
+                                <display:column media="html">
+                                    <c:choose>
+                                        <c:when test="${itemResult.item.entityInstance.entityVisit == null}">
+                                            New
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:choose>
+                                                <c:when test="${itemResult.item.entityInstance.entityVisit.unformattedVisitedTime >= itemResult.item.entityInstance.entityTime.unformattedModifiedTime}">
+                                                    Unchanged
+                                                </c:when>
+                                                <c:otherwise>
+                                                    Updated
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </display:column>
                                 <display:column titleKey="columnTitle.name" media="html" sortable="true" sortProperty="item.itemName">
                                     <c:choose>
                                         <c:when test="${includeReviewUrl}">
@@ -198,6 +215,23 @@
                         </c:when>
                         <c:otherwise>
                             <display:table name="itemResults.list" id="itemResult" class="displaytag" partialList="true" pagesize="20" size="itemResultCount" requestURI="/action/Item/Item/Result">
+                                <display:column>
+                                    <c:choose>
+                                        <c:when test="${itemResult.item.entityInstance.entityVisit == null}">
+                                            New
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:choose>
+                                                <c:when test="${itemResult.item.entityInstance.entityVisit.unformattedVisitedTime >= itemResult.item.entityInstance.entityTime.unformattedModifiedTime}">
+                                                    Unchanged
+                                                </c:when>
+                                                <c:otherwise>
+                                                    Updated
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </display:column>
                                 <display:column titleKey="columnTitle.name">
                                     <c:choose>
                                         <c:when test="${includeReviewUrl}">

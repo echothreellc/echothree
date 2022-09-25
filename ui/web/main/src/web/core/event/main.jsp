@@ -172,6 +172,16 @@
                             Deleted: <c:out value="${entityInstance.entityTime.deletedTime}" /><br />
                         </c:if>
                     </c:if>
+                    Visited Time:
+                    <c:choose>
+                        <c:when test='${entityInstance.entityVisit == null}'>
+                            <i>Never.</i>
+                        </c:when>
+                        <c:otherwise>
+                            <c:out value="${entityInstance.entityVisit.visitedTime}" />
+                        </c:otherwise>
+                    </c:choose>
+                    <br />
                     <br />
                     <display:table name="events" id="event" class="displaytag" partialList="true" pagesize="20" size="eventCount" requestURI="/action/Core/Event/Main">
                         <display:column titleKey="columnTitle.eventTime">
