@@ -96,7 +96,7 @@ public class GetEventsCommand
                         result.setEventCount(coreControl.countEventsByEntityInstance(entityInstance));
                     }
 
-                    result.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityInstance, false, false, false, false, false));
+                    result.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityInstance, false, false, false, false, false, false));
                     result.setEvents(coreControl.getEventTransfersByEntityInstance(userVisit, entityInstance));
                 }
             } else {
@@ -107,7 +107,7 @@ public class GetEventsCommand
                         result.setEventCount(coreControl.countEventsByCreatedBy(createdBy));
                     }
 
-                    result.setCreatedByEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, createdBy, false, false, false, false, false));
+                    result.setCreatedByEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, createdBy, false, false, false, false, false, false));
                     result.setEvents(coreControl.getEventTransfersByCreatedBy(userVisit, createdBy));
                 }
             }

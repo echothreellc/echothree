@@ -33,6 +33,7 @@ public class EntityInstanceTransferCache
     CoreControl coreControl = Session.getModelController(CoreControl.class);
 
     boolean includeEntityAppearance;
+    boolean includeEntityVisit;
     boolean includeNames;
     boolean includeKeyIfAvailable;
     boolean includeGuidIfAvailable;
@@ -52,6 +53,7 @@ public class EntityInstanceTransferCache
         var options = session.getOptions();
         if(options != null) {
             includeEntityAppearance = options.contains(CoreOptions.EntityInstanceIncludeEntityAppearance);
+            includeEntityVisit = options.contains(CoreOptions.EntityInstanceIncludeEntityVisit);
             includeNames = options.contains(CoreOptions.EntityInstanceIncludeNames);
             includeKeyIfAvailable = options.contains(CoreOptions.EntityInstanceIncludeKeyIfAvailable);
             includeGuidIfAvailable = options.contains(CoreOptions.EntityInstanceIncludeGuidIfAvailable);
@@ -72,8 +74,8 @@ public class EntityInstanceTransferCache
         }
     }
 
-    public EntityInstanceTransfer getEntityInstanceTransfer(EntityInstance entityInstance, boolean includeEntityAppearance, boolean includeNames,
-            boolean includeKey, boolean includeGuid, boolean includeUlid) {
+    public EntityInstanceTransfer getEntityInstanceTransfer(EntityInstance entityInstance, boolean includeEntityAppearance,
+            boolean includeEntityVisit, boolean includeNames, boolean includeKey, boolean includeGuid, boolean includeUlid) {
         EntityInstanceTransfer entityInstanceTransfer = get(entityInstance);
         
         if(entityInstanceTransfer == null) {
@@ -124,13 +126,25 @@ public class EntityInstanceTransferCache
             entityInstanceTransfer = new EntityInstanceTransfer(entityTypeTransfer, entityUniqueId, key, guid, ulid, entityRef,
                     entityTimeTransfer, description);
             put(entityInstance, entityInstanceTransfer);
-            
+
             if(includeEntityAppearance || this.includeEntityAppearance) {
                 var entityAppearance = coreControl.getEntityAppearance(entityInstance);
-                
+
                 entityInstanceTransfer.setEntityAppearance(entityAppearance == null ? null : coreControl.getEntityAppearanceTransfer(userVisit, entityAppearance));
             }
-            
+
+            if(includeEntityVisit || this.includeEntityVisit) {
+                // visitingParty could be null
+                var visitingParty = getUserControl().getPartyFromUserVisit(userVisit);
+                var visitingEntityInstance = visitingParty == null ? null : coreControl.getEntityInstanceByBasePK(visitingParty.getPrimaryKey());
+
+                // visitingEntityInstance = the entityInstance parameter
+                // entityInstance = the visitedEntityInstance parameter
+                var entityVisit = visitingEntityInstance == null ? null : coreControl.getEntityVisit(visitingEntityInstance, entityInstance);
+
+                entityInstanceTransfer.setEntityVisit(entityVisit == null ? null : coreControl.getEntityVisitTransfer(userVisit, entityVisit));
+            }
+
             if(includeNames || this.includeNames) {
                 var entityNamesMapping = EntityNamesUtils.getInstance().getEntityNames(entityInstance);
                 

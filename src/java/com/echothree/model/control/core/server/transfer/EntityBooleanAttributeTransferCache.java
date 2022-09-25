@@ -40,7 +40,7 @@ public class EntityBooleanAttributeTransferCache
         
         if(entityBooleanAttributeTransfer == null) {
             EntityAttributeTransfer entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityBooleanAttribute.getEntityAttribute(), entityInstance) : null;
-            EntityInstanceTransfer entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityBooleanAttribute.getEntityInstance(), false, false, false, false, false);
+            EntityInstanceTransfer entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityBooleanAttribute.getEntityInstance(), false, false, false, false, false, false);
             Boolean booleanAttribute = entityBooleanAttribute.getBooleanAttribute();
             
             entityBooleanAttributeTransfer = new EntityBooleanAttributeTransfer(entityAttribute, entityInstanceTransfer, booleanAttribute);

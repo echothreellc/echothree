@@ -57,7 +57,7 @@ public class EntityBlobAttributeTransferCache
         
         if(entityBlobAttributeTransfer == null) {
             EntityAttributeTransfer entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityBlobAttribute.getEntityAttribute(), entityInstance) : null;
-            EntityInstanceTransfer entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityBlobAttribute.getEntityInstance(), false, false, false, false, false);
+            EntityInstanceTransfer entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityBlobAttribute.getEntityInstance(), false, false, false, false, false, false);
             LanguageTransfer language = partyControl.getLanguageTransfer(userVisit, entityBlobAttribute.getLanguage());
             ByteArray blobAttribute = includeBlob ? entityBlobAttribute.getBlobAttribute() : null;
             MimeTypeTransfer mimeType = coreControl.getMimeTypeTransfer(userVisit, entityBlobAttribute.getMimeType());

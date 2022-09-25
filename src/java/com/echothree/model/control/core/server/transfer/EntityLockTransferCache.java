@@ -105,8 +105,8 @@ public class EntityLockTransferCache
             if(lockedByEntityInstanceId != 0) {
                 EntityInstancePK lockedByEntityInstancePK = new EntityInstancePK(lockedByEntityInstanceId);
                 EntityInstance lockedByEntityInstance = EntityInstanceFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, lockedByEntityInstancePK);
-                EntityInstanceTransfer lockTargetEntityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, lockTargetEntityInstance, false, false, false, false, false);
-                EntityInstanceTransfer lockedByEntityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, lockedByEntityInstance, false, false, false, false, false);
+                EntityInstanceTransfer lockTargetEntityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, lockTargetEntityInstance, false, false, false, false, false, false);
+                EntityInstanceTransfer lockedByEntityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, lockedByEntityInstance, false, false, false, false, false, false);
 
                 if(CoreDebugFlags.LogEntityLocks) {
                     getLog().info("--- lockedByEntityInstancePK=" + lockedByEntityInstancePK);

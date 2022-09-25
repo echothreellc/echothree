@@ -41,7 +41,7 @@ public class EntityMultipleListItemAttributeTransferCache
         
         if(entityMultipleListItemAttributeTransfer == null) {
             EntityAttributeTransfer entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityMultipleListItemAttribute.getEntityAttribute(), entityInstance) : null;
-            EntityInstanceTransfer entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityMultipleListItemAttribute.getEntityInstance(), false, false, false, false, false);
+            EntityInstanceTransfer entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityMultipleListItemAttribute.getEntityInstance(), false, false, false, false, false, false);
             EntityListItemTransfer entityListItem = coreControl.getEntityListItemTransfer(userVisit, entityMultipleListItemAttribute.getEntityListItem(), entityInstance);
             
             entityMultipleListItemAttributeTransfer = new EntityMultipleListItemAttributeTransfer(entityAttribute, entityInstanceTransfer, entityListItem);

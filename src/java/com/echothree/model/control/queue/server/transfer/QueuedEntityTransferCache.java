@@ -40,7 +40,7 @@ public class QueuedEntityTransferCache
 
         if(queuedEntityTransfer == null) {
             QueueTypeTransfer queueType = queueControl.getQueueTypeTransfer(userVisit, queuedEntity.getQueueType());
-            EntityInstanceTransfer entityInstance = coreControl.getEntityInstanceTransfer(userVisit, queuedEntity.getEntityInstance(), true, true, true, true, true);
+            EntityInstanceTransfer entityInstance = coreControl.getEntityInstanceTransfer(userVisit, queuedEntity.getEntityInstance(), true, true, true, true, true, true);
 
             queuedEntityTransfer = new QueuedEntityTransfer(queueType, entityInstance);
             put(queuedEntity, queuedEntityTransfer);

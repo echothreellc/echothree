@@ -83,7 +83,7 @@ public class GetEntityMessageCommand
                     String messageTypeName = form.getMessageTypeName();
                     MessageType messageType = messageControl.getMessageTypeByName(entityType, messageTypeName);
                     
-                    result.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityInstance, false, false, false, false, false));
+                    result.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityInstance, false, false, false, false, false, false));
                     
                     if(messageType != null) {
                         String messageName = form.getMessageName();

@@ -62,7 +62,7 @@ public class WorkEffortTransferCache
         if(workEffortTransfer == null) {
             WorkEffortDetail workEffortDetail = workEffort.getLastDetail();
             String workEffortName = workEffortDetail.getWorkEffortName();
-            EntityInstanceTransfer owningEntityInstance = coreControl.getEntityInstanceTransfer(userVisit, workEffortDetail.getOwningEntityInstance(), false, false, false, false, false);
+            EntityInstanceTransfer owningEntityInstance = coreControl.getEntityInstanceTransfer(userVisit, workEffortDetail.getOwningEntityInstance(), false, false, false, false, false, false);
             WorkEffortScopeTransfer workEffortScope = workEffortControl.getWorkEffortScopeTransfer(userVisit, workEffortDetail.getWorkEffortScope());
             Long unformattedScheduledTime = workEffortDetail.getScheduledTime();
             String scheduledTime = formatUnitOfMeasure(timeUnitOfMeasureKind, unformattedScheduledTime);

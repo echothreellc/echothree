@@ -43,7 +43,7 @@ public class TransactionEntityRoleTransferCache
         if(transactionEntityRoleTransfer == null) {
             TransactionTransfer transaction = accountingControl.getTransactionTransfer(userVisit, transactionEntityRole.getTransaction());
             TransactionEntityRoleTypeTransfer transactionEntityRoleType = accountingControl.getTransactionEntityRoleTypeTransfer(userVisit, transactionEntityRole.getTransactionEntityRoleType());
-            EntityInstanceTransfer entityInstance = coreControl.getEntityInstanceTransfer(userVisit, transactionEntityRole.getEntityInstance(), false, false, false, false, false);
+            EntityInstanceTransfer entityInstance = coreControl.getEntityInstanceTransfer(userVisit, transactionEntityRole.getEntityInstance(), false, false, false, false, false, false);
             
             transactionEntityRoleTransfer = new TransactionEntityRoleTransfer(transaction, transactionEntityRoleType, entityInstance);
             put(transactionEntityRole, transactionEntityRoleTransfer);

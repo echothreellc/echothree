@@ -40,7 +40,7 @@ public class EntityLongAttributeTransferCache
         
         if(entityLongAttributeTransfer == null) {
             EntityAttributeTransfer entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityLongAttribute.getEntityAttribute(), entityInstance) : null;
-            EntityInstanceTransfer entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityLongAttribute.getEntityInstance(), false, false, false, false, false);
+            EntityInstanceTransfer entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityLongAttribute.getEntityInstance(), false, false, false, false, false, false);
             Long longAttribute = entityLongAttribute.getLongAttribute();
             
             entityLongAttributeTransfer = new EntityLongAttributeTransfer(entityAttribute, entityInstanceTransfer, longAttribute);

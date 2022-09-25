@@ -56,7 +56,7 @@ public class CacheEntryDependencyTransferCache
         
         if(cacheEntryDependencyTransfer == null) {
             CacheEntryTransfer cacheEntry = filterCacheEntry ? null : coreControl.getCacheEntryTransfer(userVisit, cacheEntryDependency.getCacheEntry());
-            EntityInstanceTransfer entityInstance = filterEntityInstance ? null : coreControl.getEntityInstanceTransfer(userVisit, cacheEntryDependency.getEntityInstance(), false, false, false, false, false);
+            EntityInstanceTransfer entityInstance = filterEntityInstance ? null : coreControl.getEntityInstanceTransfer(userVisit, cacheEntryDependency.getEntityInstance(), false, false, false, false, false, false);
 
             cacheEntryDependencyTransfer = new CacheEntryDependencyTransfer(cacheEntry, entityInstance);
             put(cacheEntryDependency, cacheEntryDependencyTransfer);

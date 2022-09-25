@@ -52,7 +52,7 @@ public class AssociateReferralTransferCache
             AssociatePartyContactMechanism associatePartyContactMechanism = associateReferralDetail.getAssociatePartyContactMechanism();
             AssociatePartyContactMechanismTransfer associatePartyContactMechanismTransfer = associatePartyContactMechanism == null ? null : associateControl.getAssociatePartyContactMechanismTransfer(userVisit, associatePartyContactMechanism);
             EntityInstance targetEntityInstance = associateReferralDetail.getTargetEntityInstance();
-            EntityInstanceTransfer targetEntityInstanceTransfer = targetEntityInstance == null ? null : coreControl.getEntityInstanceTransfer(userVisit, targetEntityInstance, false, false, false, false, false);
+            EntityInstanceTransfer targetEntityInstanceTransfer = targetEntityInstance == null ? null : coreControl.getEntityInstanceTransfer(userVisit, targetEntityInstance, false, false, false, false, false, false);
             Long unformattedAssociateReferralTime = associateReferralDetail.getAssociateReferralTime();
             String associateReferralTime = formatTypicalDateTime(unformattedAssociateReferralTime);
 

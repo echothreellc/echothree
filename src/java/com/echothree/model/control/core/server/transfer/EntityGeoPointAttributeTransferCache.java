@@ -47,7 +47,7 @@ public class EntityGeoPointAttributeTransferCache
         
         if(entityGeoPointAttributeTransfer == null) {
             var entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityGeoPointAttribute.getEntityAttribute(), entityInstance) : null;
-            var entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityGeoPointAttribute.getEntityInstance(), false, false, false, false, false);
+            var entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityGeoPointAttribute.getEntityInstance(), false, false, false, false, false, false);
             var unformattedLatitude = entityGeoPointAttribute.getLatitude();
             var latitude = geoPointUtils.formatDegrees(unformattedLatitude);
             var unformattedLongitude = entityGeoPointAttribute.getLongitude();

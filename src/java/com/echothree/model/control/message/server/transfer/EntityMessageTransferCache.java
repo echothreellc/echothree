@@ -41,7 +41,7 @@ public class EntityMessageTransferCache
         EntityMessageTransfer entityMessageTransfer = get(entityMessage);
         
         if(entityMessageTransfer == null) {
-            EntityInstanceTransfer entityInstance = coreControl.getEntityInstanceTransfer(userVisit, entityMessage, false, false, false, false, false);
+            EntityInstanceTransfer entityInstance = coreControl.getEntityInstanceTransfer(userVisit, entityMessage, false, false, false, false, false, false);
             MessageTransfer message = messageControl.getMessageTransfer(userVisit, entityMessage.getMessage());
             
             entityMessageTransfer = new EntityMessageTransfer(entityInstance, message);

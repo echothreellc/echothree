@@ -121,11 +121,11 @@ public class EntityTypeTransferCache
             }
             
             if(!filterDescription) {
-                entityTypeTransfer.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityType, false, false, false, false, false));
+                entityTypeTransfer.setDescription(coreControl.getBestEntityTypeDescription(entityType, getLanguage()));
             }
             
             if(!filterEntityInstance) {
-                entityTypeTransfer.setDescription(coreControl.getBestEntityTypeDescription(entityType, getLanguage()));
+                entityTypeTransfer.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityType, false, false, false, false, false, false));
             }
             
             setupEntityInstance(entityType, null, entityTypeTransfer);

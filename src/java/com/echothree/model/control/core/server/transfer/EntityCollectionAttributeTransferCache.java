@@ -40,8 +40,8 @@ public class EntityCollectionAttributeTransferCache
         
         if(entityCollectionAttributeTransfer == null) {
             EntityAttributeTransfer entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityCollectionAttribute.getEntityAttribute(), entityInstance) : null;
-            EntityInstanceTransfer entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityCollectionAttribute.getEntityInstance(), false, false, false, false, false);
-            EntityInstanceTransfer entityInstanceAttribute = coreControl.getEntityInstanceTransfer(userVisit, entityCollectionAttribute.getEntityInstanceAttribute(), false, false, false, false, false);
+            EntityInstanceTransfer entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityCollectionAttribute.getEntityInstance(), false, false, false, false, false, false);
+            EntityInstanceTransfer entityInstanceAttribute = coreControl.getEntityInstanceTransfer(userVisit, entityCollectionAttribute.getEntityInstanceAttribute(), false, false, false, false, false, false);
             
             entityCollectionAttributeTransfer = new EntityCollectionAttributeTransfer(entityAttribute, entityInstanceTransfer, entityInstanceAttribute);
             put(entityCollectionAttribute, entityCollectionAttributeTransfer);

@@ -56,7 +56,7 @@ public class EntityClobAttributeTransferCache
         
         if(entityClobAttributeTransfer == null) {
             EntityAttributeTransfer entityAttribute = entityInstance == null ? coreControl.getEntityAttributeTransfer(userVisit, entityClobAttribute.getEntityAttribute(), entityInstance) : null;
-            EntityInstanceTransfer entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityClobAttribute.getEntityInstance(), false, false, false, false, false);
+            EntityInstanceTransfer entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityClobAttribute.getEntityInstance(), false, false, false, false, false, false);
             LanguageTransfer language = partyControl.getLanguageTransfer(userVisit, entityClobAttribute.getLanguage());
             String clobAttribute = includeClob ? entityClobAttribute.getClobAttribute() : null;
             MimeTypeTransfer mimeType = coreControl.getMimeTypeTransfer(userVisit, entityClobAttribute.getMimeType());

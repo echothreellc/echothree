@@ -39,7 +39,7 @@ public class EntityTagTransferCache
         EntityTagTransfer entityTagTransfer = get(entityTag);
         
         if(entityTagTransfer == null) {
-            EntityInstanceTransfer taggedEntityInstance = coreControl.getEntityInstanceTransfer(userVisit, entityTag.getTaggedEntityInstance(), false, false, false, false, false);
+            EntityInstanceTransfer taggedEntityInstance = coreControl.getEntityInstanceTransfer(userVisit, entityTag.getTaggedEntityInstance(), false, false, false, false, false, false);
             TagTransfer tag = tagControl.getTagTransfer(userVisit, entityTag.getTag());
             
             entityTagTransfer = new EntityTagTransfer(taggedEntityInstance, tag);
