@@ -17,11 +17,11 @@
 package com.echothree.control.user.item.common.form;
 
 import com.echothree.control.user.item.common.edit.ItemDescriptionTypeUseTypeEdit;
-import com.echothree.control.user.item.common.spec.ItemDescriptionTypeUseTypeSpec;
+import com.echothree.control.user.item.common.spec.ItemDescriptionTypeUseTypeUniversalSpec;
 import com.echothree.util.common.form.BaseEditForm;
 
 public interface EditItemDescriptionTypeUseTypeForm
-        extends BaseEditForm<ItemDescriptionTypeUseTypeSpec, ItemDescriptionTypeUseTypeEdit> {
+        extends BaseEditForm<ItemDescriptionTypeUseTypeUniversalSpec, ItemDescriptionTypeUseTypeEdit> {
     
     // Nothing additional beyond BaseEditForm
     

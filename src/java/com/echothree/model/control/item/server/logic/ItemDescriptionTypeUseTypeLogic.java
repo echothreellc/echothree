@@ -26,6 +26,7 @@ import com.echothree.model.control.item.common.exception.UnknownDefaultItemDescr
 import com.echothree.model.control.item.common.exception.UnknownItemDescriptionTypeUseTypeNameException;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.ItemDescriptionTypeUseType;
+import com.echothree.model.data.item.server.value.ItemDescriptionTypeUseTypeDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
@@ -135,6 +136,12 @@ public class ItemDescriptionTypeUseTypeLogic
     public ItemDescriptionTypeUseType getItemDescriptionTypeUseTypeByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
             final ItemDescriptionTypeUseTypeUniversalSpec universalSpec, boolean allowDefault) {
         return getItemDescriptionTypeUseTypeByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
+    }
+
+    public void updateItemDescriptionTypeUseTypeFromValue(ItemDescriptionTypeUseTypeDetailValue itemDescriptionTypeUseTypeDetailValue, BasePK updatedBy) {
+        var itemControl = Session.getModelController(ItemControl.class);
+
+        itemControl.updateItemDescriptionTypeUseTypeFromValue(itemDescriptionTypeUseTypeDetailValue, updatedBy);
     }
 
     public void deleteItemDescriptionTypeUseType(final ExecutionErrorAccumulator eea, final ItemDescriptionTypeUseType itemDescriptionTypeUseType,
