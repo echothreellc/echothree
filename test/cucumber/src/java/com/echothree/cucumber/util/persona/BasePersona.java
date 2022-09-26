@@ -85,14 +85,22 @@ import com.echothree.control.user.filter.common.spec.FilterKindSpec;
 import com.echothree.control.user.filter.common.spec.FilterSpec;
 import com.echothree.control.user.filter.common.spec.FilterStepSpec;
 import com.echothree.control.user.filter.common.spec.FilterTypeSpec;
+import com.echothree.control.user.item.common.edit.ItemDescriptionTypeUseTypeEdit;
 import com.echothree.control.user.item.common.edit.ItemEdit;
+import com.echothree.control.user.item.common.edit.ItemImageTypeEdit;
 import com.echothree.control.user.item.common.edit.ItemPriceEdit;
 import com.echothree.control.user.item.common.edit.ItemUnitOfMeasureTypeEdit;
+import com.echothree.control.user.item.common.form.CreateItemDescriptionTypeUseTypeForm;
 import com.echothree.control.user.item.common.form.CreateItemForm;
+import com.echothree.control.user.item.common.form.CreateItemImageTypeForm;
 import com.echothree.control.user.item.common.form.CreateItemPriceForm;
 import com.echothree.control.user.item.common.form.CreateItemUnitOfMeasureTypeForm;
+import com.echothree.control.user.item.common.form.DeleteItemDescriptionTypeUseTypeForm;
+import com.echothree.control.user.item.common.form.DeleteItemImageTypeForm;
 import com.echothree.control.user.item.common.form.DeleteItemPriceForm;
 import com.echothree.control.user.item.common.form.DeleteItemUnitOfMeasureTypeForm;
+import com.echothree.control.user.item.common.spec.ItemDescriptionTypeUseTypeUniversalSpec;
+import com.echothree.control.user.item.common.spec.ItemImageTypeUniversalSpec;
 import com.echothree.control.user.item.common.spec.ItemPriceSpec;
 import com.echothree.control.user.item.common.spec.ItemSpec;
 import com.echothree.control.user.item.common.spec.ItemUnitOfMeasureTypeSpec;
@@ -312,7 +320,19 @@ public class BasePersona {
     public ItemUnitOfMeasureTypeSpec itemUnitOfMeasureTypeSpec;
     public ItemUnitOfMeasureTypeEdit itemUnitOfMeasureTypeEdit;
 
+    public CreateItemImageTypeForm createItemImageTypeForm;
+    public DeleteItemImageTypeForm deleteItemImageTypeForm;
+    public ItemImageTypeUniversalSpec itemImageTypeSpec;
+    public ItemImageTypeEdit itemImageTypeEdit;
+
+    public CreateItemDescriptionTypeUseTypeForm createItemDescriptionTypeUseTypeForm;
+    public DeleteItemDescriptionTypeUseTypeForm deleteItemDescriptionTypeUseTypeForm;
+    public ItemDescriptionTypeUseTypeUniversalSpec itemDescriptionTypeUseTypeSpec;
+    public ItemDescriptionTypeUseTypeEdit itemDescriptionTypeUseTypeEdit;
+
     public String lastItemName;
+    public String lastItemImageTypeName;
+    public String lastItemDescriptionTypeUseTypeName;
 
     // Offer
     public CreateOfferForm createOfferForm;

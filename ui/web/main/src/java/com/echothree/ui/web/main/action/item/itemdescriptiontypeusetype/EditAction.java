@@ -21,6 +21,7 @@ import com.echothree.control.user.item.common.edit.ItemDescriptionTypeUseTypeEdi
 import com.echothree.control.user.item.common.form.EditItemDescriptionTypeUseTypeForm;
 import com.echothree.control.user.item.common.result.EditItemDescriptionTypeUseTypeResult;
 import com.echothree.control.user.item.common.spec.ItemDescriptionTypeUseTypeSpec;
+import com.echothree.control.user.item.common.spec.ItemDescriptionTypeUseTypeUniversalSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -48,9 +49,9 @@ public class EditAction
         extends MainBaseEditAction<EditActionForm, ItemDescriptionTypeUseTypeSpec, ItemDescriptionTypeUseTypeEdit, EditItemDescriptionTypeUseTypeForm, EditItemDescriptionTypeUseTypeResult> {
     
     @Override
-    protected ItemDescriptionTypeUseTypeSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
+    protected ItemDescriptionTypeUseTypeUniversalSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        ItemDescriptionTypeUseTypeSpec spec = ItemUtil.getHome().getItemDescriptionTypeUseTypeSpec();
+        ItemDescriptionTypeUseTypeUniversalSpec spec = ItemUtil.getHome().getItemDescriptionTypeUseTypeUniversalSpec();
         
         spec.setItemDescriptionTypeUseTypeName(findParameter(request, ParameterConstants.ORIGINAL_ITEM_DESCRIPTION_TYPE_USE_TYPE_NAME, actionForm.getOriginalItemDescriptionTypeUseTypeName()));
         
