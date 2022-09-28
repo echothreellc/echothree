@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.accounting.server.graphql;
 
-import com.echothree.control.user.accounting.server.command.GetSymbolPositionCommand;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.user.server.control.UserControl;
@@ -41,20 +40,6 @@ public class CurrencyObject
         this.currency = currency;
     }
     
-    private Boolean hasSymbolPositionAccess;
-    
-    private boolean getHasSymbolPositionAccess(final DataFetchingEnvironment env) {
-        if(hasSymbolPositionAccess == null) {
-            var baseSingleEntityCommand = new GetSymbolPositionCommand(getUserVisitPK(env), null);
-            
-            baseSingleEntityCommand.security();
-            
-            hasSymbolPositionAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-        
-        return hasSymbolPositionAccess;
-    }
-    
     @GraphQLField
     @GraphQLDescription("currency iso name")
     @GraphQLNonNull
@@ -71,7 +56,7 @@ public class CurrencyObject
     @GraphQLField
     @GraphQLDescription("symbol position")
     public SymbolPositionObject getSymbolPosition(final DataFetchingEnvironment env) {
-        return getHasSymbolPositionAccess(env) ? new SymbolPositionObject(currency.getSymbolPosition()) : null;
+        return AccountingSecurityUtils.getInstance().getHasSymbolPositionAccess(env) ? new SymbolPositionObject(currency.getSymbolPosition()) : null;
     }
     
     @GraphQLField

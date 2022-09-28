@@ -7833,6 +7833,22 @@ public class ItemControl
         return itemDescriptionTypeUse;
     }
 
+    public long countItemDescriptionTypeUsesByItemDescriptionType(ItemDescriptionType itemDescriptionType) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM itemdescriptiontypeuses
+                WHERE idtu_idt_itemdescriptiontypeid = ? AND idtu_thrutime = ?
+                """, itemDescriptionType, Session.MAX_TIME);
+    }
+
+    public long countItemDescriptionTypeUsesByItemDescriptionTypeUseType(ItemDescriptionTypeUseType itemDescriptionTypeUseType) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM itemdescriptiontypeuses
+                WHERE idtu_idtutyp_itemdescriptiontypeusetypeid = ? AND idtu_thrutime = ?
+                """, itemDescriptionTypeUseType, Session.MAX_TIME);
+    }
+
     private static final Map<EntityPermission, String> getItemDescriptionTypeUseQueries;
 
     static {
@@ -7940,7 +7956,7 @@ public class ItemControl
         return getItemTransferCaches(userVisit).getItemDescriptionTypeUseTransferCache().getTransfer(itemDescriptionTypeUse);
     }
 
-    private List<ItemDescriptionTypeUseTransfer> getItemDescriptionTypeUseTransfers(final UserVisit userVisit, final List<ItemDescriptionTypeUse> itemDescriptionTypeUses) {
+    public List<ItemDescriptionTypeUseTransfer> getItemDescriptionTypeUseTransfers(final UserVisit userVisit, final Collection<ItemDescriptionTypeUse> itemDescriptionTypeUses) {
         List<ItemDescriptionTypeUseTransfer> itemDescriptionTypeUseTransfers = new ArrayList<>(itemDescriptionTypeUses.size());
         ItemDescriptionTypeUseTransferCache itemDescriptionTypeUseTransferCache = getItemTransferCaches(userVisit).getItemDescriptionTypeUseTransferCache();
 

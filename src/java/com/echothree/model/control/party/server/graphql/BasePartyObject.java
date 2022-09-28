@@ -16,10 +16,7 @@
 
 package com.echothree.model.control.party.server.graphql;
 
-import com.echothree.control.user.accounting.server.command.GetCurrencyCommand;
-import com.echothree.control.user.party.server.command.GetDateTimeFormatCommand;
-import com.echothree.control.user.party.server.command.GetLanguageCommand;
-import com.echothree.control.user.party.server.command.GetTimeZoneCommand;
+import com.echothree.model.control.accounting.server.graphql.AccountingSecurityUtils;
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.party.server.control.PartyControl;
@@ -32,7 +29,6 @@ import com.echothree.model.data.party.server.entity.PartyDetail;
 import com.echothree.model.data.party.server.entity.PartyGroup;
 import com.echothree.model.data.party.server.entity.Person;
 import com.echothree.model.data.party.server.entity.TimeZone;
-import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -60,62 +56,6 @@ public class BasePartyObject
         return partyDetail;
     }
     
-    private Boolean hasLanguageAccess;
-    
-    private boolean getHasLanguageAccess(final DataFetchingEnvironment env) {
-        if(hasLanguageAccess == null) {
-            var baseSingleEntityCommand = new GetLanguageCommand(getUserVisitPK(env), null);
-            
-            baseSingleEntityCommand.security();
-            
-            hasLanguageAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-        
-        return hasLanguageAccess;
-    }
-        
-    private Boolean hasCurrencyAccess;
-    
-    private boolean getHasCurrencyAccess(final DataFetchingEnvironment env) {
-        if(hasCurrencyAccess == null) {
-            var baseSingleEntityCommand = new GetCurrencyCommand(getUserVisitPK(env), null);
-            
-            baseSingleEntityCommand.security();
-            
-            hasCurrencyAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-        
-        return hasCurrencyAccess;
-    }
-        
-    private Boolean hasTimeZoneAccess;
-    
-    private boolean getHasTimeZoneAccess(final DataFetchingEnvironment env) {
-        if(hasTimeZoneAccess == null) {
-            var baseSingleEntityCommand = new GetTimeZoneCommand(getUserVisitPK(env), null);
-            
-            baseSingleEntityCommand.security();
-            
-            hasTimeZoneAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-        
-        return hasTimeZoneAccess;
-    }
-        
-    private Boolean hasDateTimeFormatAccess;
-    
-    private boolean getHasDateTimeFormatAccess(final DataFetchingEnvironment env) {
-        if(hasDateTimeFormatAccess == null) {
-            var baseSingleEntityCommand = new GetDateTimeFormatCommand(getUserVisitPK(env), null);
-            
-            baseSingleEntityCommand.security();
-            
-            hasDateTimeFormatAccess = !baseSingleEntityCommand.hasSecurityMessages();
-        }
-        
-        return hasDateTimeFormatAccess;
-    }
-    
     @GraphQLField
     @GraphQLDescription("party name")
     @GraphQLNonNull
@@ -135,7 +75,7 @@ public class BasePartyObject
     public LanguageObject getPreferredLanguage(final DataFetchingEnvironment env) {
         Language preferredLanguage = getPartyDetail().getPreferredLanguage();
         
-        return preferredLanguage != null && getHasLanguageAccess(env) ? new LanguageObject(preferredLanguage) : null;
+        return preferredLanguage != null && PartySecurityUtils.getInstance().getHasLanguageAccess(env) ? new LanguageObject(preferredLanguage) : null;
     }
 
     @GraphQLField
@@ -143,7 +83,7 @@ public class BasePartyObject
     public CurrencyObject getPreferredCurrency(final DataFetchingEnvironment env) {
         Currency preferredCurrency = getPartyDetail().getPreferredCurrency();
         
-        return preferredCurrency != null && getHasCurrencyAccess(env) ? new CurrencyObject(preferredCurrency) : null;
+        return preferredCurrency != null && AccountingSecurityUtils.getInstance().getHasCurrencyAccess(env) ? new CurrencyObject(preferredCurrency) : null;
     }
 
     @GraphQLField
@@ -151,7 +91,7 @@ public class BasePartyObject
     public TimeZoneObject getPreferredTimeZone(final DataFetchingEnvironment env) {
         TimeZone preferredTimeZone = getPartyDetail().getPreferredTimeZone();
         
-        return preferredTimeZone != null && getHasTimeZoneAccess(env) ? new TimeZoneObject(preferredTimeZone) : null;
+        return preferredTimeZone != null && PartySecurityUtils.getInstance().getHasTimeZoneAccess(env) ? new TimeZoneObject(preferredTimeZone) : null;
     }
 
     @GraphQLField
@@ -159,7 +99,7 @@ public class BasePartyObject
     public DateTimeFormatObject getPreferredDateTimeFormat(final DataFetchingEnvironment env) {
         DateTimeFormat preferredDateTimeFormat = getPartyDetail().getPreferredDateTimeFormat();
         
-        return preferredDateTimeFormat != null && getHasDateTimeFormatAccess(env) ? new DateTimeFormatObject(preferredDateTimeFormat) : null;
+        return preferredDateTimeFormat != null && PartySecurityUtils.getInstance().getHasDateTimeFormatAccess(env) ? new DateTimeFormatObject(preferredDateTimeFormat) : null;
     }
     
     @GraphQLField
