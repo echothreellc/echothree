@@ -17,11 +17,13 @@
 package com.echothree.model.control.party.server.graphql;
 
 import com.echothree.control.user.party.server.command.GetCompanyCommand;
+import com.echothree.control.user.party.server.command.GetDateTimeFormatCommand;
 import com.echothree.control.user.party.server.command.GetDepartmentCommand;
 import com.echothree.control.user.party.server.command.GetDepartmentsCommand;
 import com.echothree.control.user.party.server.command.GetDivisionCommand;
 import com.echothree.control.user.party.server.command.GetDivisionsCommand;
 import com.echothree.control.user.party.server.command.GetLanguageCommand;
+import com.echothree.control.user.party.server.command.GetTimeZoneCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -42,6 +44,14 @@ public final class PartySecurityUtils
 
     public boolean getHasLanguageAccess(final DataFetchingEnvironment env) {
         return getGraphQlExecutionContext(env).hasAccess(GetLanguageCommand.class);
+    }
+
+    public boolean getHasTimeZoneAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetTimeZoneCommand.class);
+    }
+
+    public boolean getHasDateTimeFormatAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetDateTimeFormatCommand.class);
     }
 
     public boolean getHasDivisionsAccess(final DataFetchingEnvironment env) {

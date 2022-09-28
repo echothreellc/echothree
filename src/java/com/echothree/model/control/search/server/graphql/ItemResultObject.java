@@ -35,21 +35,11 @@ public class ItemResultObject {
         this.item = item;
     }
 
-    private Boolean hasItemAccess;
-
-    private boolean getHasItemAccess(final DataFetchingEnvironment env) {
-        if(hasItemAccess == null) {
-            hasItemAccess = ItemSecurityUtils.getInstance().getHasItemAccess(env);
-        }
-
-        return hasItemAccess;
-    }
-
     @GraphQLField
     @GraphQLDescription("item")
     @GraphQLNonNull
     public ItemObject getItem(final DataFetchingEnvironment env) {
-        return getHasItemAccess(env) ? new ItemObject(item) : null;
+        return ItemSecurityUtils.getInstance().getHasItemAccess(env) ? new ItemObject(item) : null;
     }
     
 }
