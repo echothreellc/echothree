@@ -128,8 +128,10 @@ import com.echothree.control.user.item.server.command.GetItemDeliveryTypeCommand
 import com.echothree.control.user.item.server.command.GetItemDeliveryTypesCommand;
 import com.echothree.control.user.item.server.command.GetItemDescriptionCommand;
 import com.echothree.control.user.item.server.command.GetItemDescriptionTypeCommand;
+import com.echothree.control.user.item.server.command.GetItemDescriptionTypeUseCommand;
 import com.echothree.control.user.item.server.command.GetItemDescriptionTypeUseTypeCommand;
 import com.echothree.control.user.item.server.command.GetItemDescriptionTypeUseTypesCommand;
+import com.echothree.control.user.item.server.command.GetItemDescriptionTypeUsesCommand;
 import com.echothree.control.user.item.server.command.GetItemDescriptionTypesCommand;
 import com.echothree.control.user.item.server.command.GetItemDescriptionsCommand;
 import com.echothree.control.user.item.server.command.GetItemImageTypeCommand;
@@ -318,6 +320,7 @@ import com.echothree.model.control.item.server.graphql.ItemCategoryObject;
 import com.echothree.model.control.item.server.graphql.ItemDeliveryTypeObject;
 import com.echothree.model.control.item.server.graphql.ItemDescriptionObject;
 import com.echothree.model.control.item.server.graphql.ItemDescriptionTypeObject;
+import com.echothree.model.control.item.server.graphql.ItemDescriptionTypeUseObject;
 import com.echothree.model.control.item.server.graphql.ItemDescriptionTypeUseTypeObject;
 import com.echothree.model.control.item.server.graphql.ItemImageTypeObject;
 import com.echothree.model.control.item.server.graphql.ItemInventoryTypeObject;
@@ -450,6 +453,7 @@ import com.echothree.model.data.item.server.entity.ItemCategory;
 import com.echothree.model.data.item.server.entity.ItemDeliveryType;
 import com.echothree.model.data.item.server.entity.ItemDescription;
 import com.echothree.model.data.item.server.entity.ItemDescriptionType;
+import com.echothree.model.data.item.server.entity.ItemDescriptionTypeUse;
 import com.echothree.model.data.item.server.entity.ItemDescriptionTypeUseType;
 import com.echothree.model.data.item.server.entity.ItemImageType;
 import com.echothree.model.data.item.server.entity.ItemInventoryType;
@@ -6013,6 +6017,59 @@ public final class GraphQlQueries
         }
 
         return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("itemDescriptionTypeUse")
+    public static ItemDescriptionTypeUseObject itemDescriptionTypeUse(final DataFetchingEnvironment env,
+            @GraphQLName("itemDescriptionTypeUseTypeName") @GraphQLNonNull final String itemDescriptionTypeUseTypeName,
+            @GraphQLName("itemDescriptionTypeName") @GraphQLNonNull final String itemDescriptionTypeName) {
+        ItemDescriptionTypeUse itemDescriptionTypeUse;
+
+        try {
+            var commandForm = ItemUtil.getHome().getGetItemDescriptionTypeUseForm();
+
+            commandForm.setItemDescriptionTypeUseTypeName(itemDescriptionTypeUseTypeName);
+            commandForm.setItemDescriptionTypeName(itemDescriptionTypeName);
+
+            itemDescriptionTypeUse = new GetItemDescriptionTypeUseCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return itemDescriptionTypeUse == null ? null : new ItemDescriptionTypeUseObject(itemDescriptionTypeUse);
+    }
+
+    @GraphQLField
+    @GraphQLName("itemDescriptionTypeUses")
+    public static Collection<ItemDescriptionTypeUseObject> itemDescriptionTypeUses(final DataFetchingEnvironment env,
+            @GraphQLName("itemDescriptionTypeUseTypeName") final String itemDescriptionTypeUseTypeName,
+            @GraphQLName("itemDescriptionTypeName") final String itemDescriptionTypeName) {
+        Collection<ItemDescriptionTypeUse> itemDescriptionTypeUse;
+        Collection<ItemDescriptionTypeUseObject> itemDescriptionTypeUseObjects;
+
+        try {
+            var commandForm = ItemUtil.getHome().getGetItemDescriptionTypeUsesForm();
+
+            commandForm.setItemDescriptionTypeUseTypeName(itemDescriptionTypeUseTypeName);
+            commandForm.setItemDescriptionTypeName(itemDescriptionTypeName);
+
+            itemDescriptionTypeUse = new GetItemDescriptionTypeUsesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(itemDescriptionTypeUse == null) {
+            itemDescriptionTypeUseObjects = emptyList();
+        } else {
+            itemDescriptionTypeUseObjects = new ArrayList<>(itemDescriptionTypeUse.size());
+
+            itemDescriptionTypeUse.stream()
+                    .map(ItemDescriptionTypeUseObject::new)
+                    .forEachOrdered(itemDescriptionTypeUseObjects::add);
+        }
+
+        return itemDescriptionTypeUseObjects;
     }
 
     @GraphQLField
