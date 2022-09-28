@@ -52,7 +52,7 @@ public class ItemDescriptionTypeUseTypeObject
     }
     
     @GraphQLField
-    @GraphQLDescription("item image type name")
+    @GraphQLDescription("item description type use type name")
     @GraphQLNonNull
     public String getItemDescriptionTypeUseTypeName() {
         return getItemDescriptionTypeUseTypeDetail().getItemDescriptionTypeUseTypeName();
