@@ -5781,6 +5781,49 @@ public class GraphQlMutations
 
     @GraphQLField
     @GraphQLRelayMutation
+    public static CommandResultObject createItemDescriptionTypeUse(final DataFetchingEnvironment env,
+            @GraphQLName("itemDescriptionTypeUseTypeName") @GraphQLNonNull final String itemDescriptionTypeUseTypeName,
+            @GraphQLName("itemDescriptionTypeName") @GraphQLNonNull final String itemDescriptionTypeName) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = ItemUtil.getHome().getCreateItemDescriptionTypeUseForm();
+
+            commandForm.setItemDescriptionTypeUseTypeName(itemDescriptionTypeUseTypeName);
+            commandForm.setItemDescriptionTypeName(itemDescriptionTypeName);
+
+            var commandResult = ItemUtil.getHome().createItemDescriptionTypeUse(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject deleteItemDescriptionTypeUse(final DataFetchingEnvironment env,
+            @GraphQLName("itemDescriptionTypeUseTypeName") @GraphQLNonNull final String itemDescriptionTypeUseTypeName,
+            @GraphQLName("itemDescriptionTypeName") @GraphQLNonNull final String itemDescriptionTypeName) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = ItemUtil.getHome().getDeleteItemDescriptionTypeUseForm();
+
+            commandForm.setItemDescriptionTypeUseTypeName(itemDescriptionTypeUseTypeName);
+            commandForm.setItemDescriptionTypeName(itemDescriptionTypeName);
+
+            commandResultObject.setCommandResult(ItemUtil.getHome().deleteItemDescriptionTypeUse(getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
     public static CommandResultWithIdObject createItemDescriptionType(final DataFetchingEnvironment env,
             @GraphQLName("itemDescriptionTypeName") @GraphQLNonNull final String itemDescriptionTypeName,
             @GraphQLName("parentItemDescriptionTypeName") final String parentItemDescriptionTypeName,
