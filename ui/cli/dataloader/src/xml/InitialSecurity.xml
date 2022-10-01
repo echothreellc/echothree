@@ -7239,7 +7239,10 @@
         </securityRoleGroup>
     </securityRoleGroups>
     <partySecurityRoleTemplates>
-        <partySecurityRoleTemplate partySecurityRoleTemplateName="SAMPLE_TEMPLATE" isDefault="false" sortOrder="1">
+        <partySecurityRoleTemplate partySecurityRoleTemplateName="NO_SECURITY_ROLES" isDefault="true" sortOrder="1">
+            <partySecurityRoleTemplateDescription languageIsoName="en" description="No Security Roles" />
+        </partySecurityRoleTemplate>
+        <partySecurityRoleTemplate partySecurityRoleTemplateName="SAMPLE_TEMPLATE" isDefault="false" sortOrder="2">
             <partySecurityRoleTemplateDescription languageIsoName="en" description="Sample Template" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Company" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Company" securityRoleName="Review" />
