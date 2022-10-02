@@ -596,7 +596,7 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BaseKey;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.persistence.type.ByteArray;
-import com.echothree.util.server.kafka.KafkaQueueResource;
+import com.echothree.util.server.kafka.KafkaConnectionFactoryResource;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.EntityPermission;
@@ -13026,7 +13026,7 @@ public class CoreControl
         final var createdByEntityInstance = createdByPK == null ? null : getEntityInstanceByBasePK(createdByPK);
         Event event = null;
 
-        KafkaQueueResource.getInstance().test("entityInstance = " + getEntityRefByEntityInstance(entityInstance)
+        KafkaConnectionFactoryResource.getInstance().test("entityInstance = " + getEntityRefByEntityInstance(entityInstance)
                 + ", eventType = " + eventType.getEventTypeName()
                 + ", relatedEntityInstance = " + getEntityRefByEntityInstance(relatedEntityInstance)
                 + ", relatedEventType = " + (relatedEventType == null ? "(null)" : relatedEventType.getEventTypeName())

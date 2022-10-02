@@ -23,18 +23,18 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
-public class KafkaQueueResource {
+public class KafkaConnectionFactoryResource {
 
-    private final Log log = LogFactory.getLog(KafkaQueueResource.class);
+    private final Log log = LogFactory.getLog(KafkaConnectionFactoryResource.class);
 
     private static final String KCF = "java:/KafkaConnectionFactory";
 
-    private static final KafkaQueueResource instance = new KafkaQueueResource();
+    private static final KafkaConnectionFactoryResource instance = new KafkaConnectionFactoryResource();
 
     private final KafkaConnectionFactory kafkaConnectionFactory;
 
     @SuppressWarnings("BanJNDI")
-    protected KafkaQueueResource() {
+    protected KafkaConnectionFactoryResource() {
         KafkaConnectionFactory kafkaConnectionFactory;
 
         // This provides a soft failure vs. a hard failure from using @Resource.
@@ -49,7 +49,7 @@ public class KafkaQueueResource {
         this.kafkaConnectionFactory = kafkaConnectionFactory;
     }
 
-    public static KafkaQueueResource getInstance() {
+    public static KafkaConnectionFactoryResource getInstance() {
         return instance;
     }
 
