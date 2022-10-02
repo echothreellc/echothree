@@ -1,0 +1,23 @@
+        <subsystem xmlns="urn:jboss:domain:resource-adapters:6.1">
+            <resource-adapters>
+                <resource-adapter id="kafka">
+                    <archive>
+                        kafka-rar-0.8.0-SNAPSHOT.rar
+                    </archive>
+                    <transaction-support>XATransaction</transaction-support>
+                    <connection-definitions>
+                        <connection-definition
+                                class-name="fish.payara.cloud.connectors.kafka.outbound.KafkaManagedConnectionFactory"
+                                jndi-name="java:/KafkaConnectionFactory" pool-name="ConnectionFactory">
+                            <config-property name="bootstrapServersConfig">kafka1.echothree.com:9092,kafka2.echothree.com:9092,kafka3.echothree.com:9092</config-property>
+                            <xa-pool>
+                                <min-pool-size>1</min-pool-size>
+                                <max-pool-size>20</max-pool-size>
+                                <prefill>false</prefill>
+                                <is-same-rm-override>false</is-same-rm-override>
+                            </xa-pool>
+                        </connection-definition>
+                    </connection-definitions>
+                </resource-adapter>
+            </resource-adapters>
+        </subsystem>
