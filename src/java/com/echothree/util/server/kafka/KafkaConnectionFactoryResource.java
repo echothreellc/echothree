@@ -40,10 +40,10 @@ public class KafkaConnectionFactoryResource {
         // This provides a soft failure vs. a hard failure from using @Resource.
         try {
             kafkaConnectionFactory = InitialContext.doLookup(KCF);
-            log.info("Found " + KCF + ", KafkaConnectionFactory enabled");
+            log.info("Found " + KCF + ", KafkaConnectionFactory available");
         } catch (NamingException ne) {
             kafkaConnectionFactory = null;
-            log.error("Unable to locate " + KCF + ", KafkaConnectionFactory disabled");
+            log.error("Unable to locate " + KCF + ", KafkaConnectionFactory not available");
         }
 
         this.kafkaConnectionFactory = kafkaConnectionFactory;
