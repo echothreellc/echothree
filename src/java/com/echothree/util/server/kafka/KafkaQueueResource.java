@@ -21,7 +21,6 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
-//@Singleton
 public class KafkaQueueResource {
 
     private static final String KCF = "java:/KafkaConnectionFactory";
@@ -30,17 +29,13 @@ public class KafkaQueueResource {
 
     private final KafkaConnectionFactory kafkaConnectionFactory;
 
-//    @Resource(lookup = "java:/KafkaConnectionFactory")
-//    KafkaConnectionFactory factory;
-
     @SuppressWarnings("BanJNDI")
     protected KafkaQueueResource() {
         KafkaConnectionFactory kafkaConnectionFactory;
 
         // This provides a soft failure vs. a hard failure from using @Resource.
         try {
-            var jndiContext = new InitialContext();
-            kafkaConnectionFactory = (KafkaConnectionFactory)jndiContext.lookup(KCF);
+            kafkaConnectionFactory = InitialContext.doLookup(KCF);
         } catch (NamingException ne) {
             kafkaConnectionFactory = null;
         }
