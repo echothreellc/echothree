@@ -59,7 +59,7 @@ public class EventTopic {
                             + ", createdByEntityInstance = " + createdByEntityRef;
 
                     var future = kafkaConnection.send(new ProducerRecord<>(TOPIC, null,
-                            eventTime, entityInstance.getEntityUniqueId().toString(), value));
+                            eventTime, entityRef, value));
 
                     future.get();
                 }
