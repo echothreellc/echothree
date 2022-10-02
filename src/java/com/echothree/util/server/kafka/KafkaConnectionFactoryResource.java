@@ -21,7 +21,6 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.kafka.clients.producer.ProducerRecord;
 
 public class KafkaConnectionFactoryResource {
 
@@ -37,7 +36,7 @@ public class KafkaConnectionFactoryResource {
     protected KafkaConnectionFactoryResource() {
         KafkaConnectionFactory kafkaConnectionFactory;
 
-        // This provides a soft failure vs. a hard failure from using @Resource.
+        // This provides a soft failure vs. the hard failure from using @Resource.
         try {
             kafkaConnectionFactory = InitialContext.doLookup(KCF);
             log.info("Found " + KCF + ", KafkaConnectionFactory available");
@@ -55,20 +54,6 @@ public class KafkaConnectionFactoryResource {
 
     public KafkaConnectionFactory getKafkaConnectionFactory() {
         return kafkaConnectionFactory;
-    }
-
-    public void test(String bar) {
-        try {
-            if(kafkaConnectionFactory != null) {
-                try(var kafkaConnection = kafkaConnectionFactory.createConnection()) {
-                    var future = kafkaConnection.send(new ProducerRecord("my-topic", bar));
-
-                    future.get();
-                }
-            }
-        } catch(Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 
 }
