@@ -13026,7 +13026,7 @@ public class CoreControl
         final var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
 
         return entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName()
-                + "." + entityTypeDetail.getEntityTypeName() + entityInstance.getEntityUniqueId();
+                + "." + entityTypeDetail.getEntityTypeName() + "." + entityInstance.getEntityUniqueId();
     }
 
     @Override
