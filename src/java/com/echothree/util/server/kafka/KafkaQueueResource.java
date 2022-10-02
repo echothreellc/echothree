@@ -19,9 +19,13 @@ package com.echothree.util.server.kafka;
 import fish.payara.cloud.connectors.kafka.api.KafkaConnectionFactory;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
 public class KafkaQueueResource {
+
+    private final Log log = LogFactory.getLog(KafkaQueueResource.class);
 
     private static final String KCF = "java:/KafkaConnectionFactory";
 
@@ -36,8 +40,10 @@ public class KafkaQueueResource {
         // This provides a soft failure vs. a hard failure from using @Resource.
         try {
             kafkaConnectionFactory = InitialContext.doLookup(KCF);
+            log.info("Found " + KCF + ", KafkaConnectionFactory enabled");
         } catch (NamingException ne) {
             kafkaConnectionFactory = null;
+            log.error("Unable to locate " + KCF + ", KafkaConnectionFactory disabled");
         }
 
         this.kafkaConnectionFactory = kafkaConnectionFactory;
