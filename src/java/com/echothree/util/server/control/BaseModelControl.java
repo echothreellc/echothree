@@ -96,7 +96,7 @@ public abstract class BaseModelControl {
     protected EntityInstance getEntityInstanceByBaseEntity(BaseEntity baseEntity) {
         return getEntityInstanceByBasePK(baseEntity.getPrimaryKey());
     }
-    
+
     protected Event sendEvent(final BasePK entityInstancePK, final EventTypes eventType, final BasePK relatedPK,
             final EventTypes relatedEventType, final BasePK createdByPK) {
         return getCoreControl().sendEvent(entityInstancePK, eventType, relatedPK, relatedEventType, createdByPK);

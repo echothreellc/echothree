@@ -596,11 +596,13 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BaseKey;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.persistence.type.ByteArray;
+import com.echothree.util.server.kafka.EventTopic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.Sha1Utils;
+import com.echothree.util.server.string.EntityInstanceUtils;
 import com.echothree.util.server.string.GuidUtils;
 import com.echothree.util.server.string.KeyUtils;
 import com.echothree.util.server.string.UlidUtils;
@@ -13017,13 +13019,6 @@ public class CoreControl
         }
     }
 
-    private String entityInstanceToEntityRef(final EntityInstance entityInstance) {
-        final var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
-
-        return entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName()
-                + "." + entityTypeDetail.getEntityTypeName() + entityInstance.getEntityUniqueId();
-    }
-
     @Override
     public Event sendEvent(final EntityInstance entityInstance, final EventTypes eventTypeEnum, final EntityInstance relatedEntityInstance,
             final EventTypes relatedEventTypeEnum, final BasePK createdByPK) {
@@ -13033,11 +13028,13 @@ public class CoreControl
         Event event = null;
 
         if(CoreDebugFlags.LogSentEvents) {
-            getLog().info("entityInstance = " + (entityInstance == null ? "(null)" : entityInstanceToEntityRef(entityInstance))
-                    + ", eventType = " + (eventType == null ? "(null)" : eventType.getEventTypeName())
-                    + ", relatedEntityInstance = " + (relatedEntityInstance == null ? "(null)" : entityInstanceToEntityRef(relatedEntityInstance))
+            var entityInstanceUtils = EntityInstanceUtils.getInstance();
+
+            getLog().info("entityInstance = " + entityInstanceUtils.getEntityRefByEntityInstance(entityInstance)
+                    + ", eventType = " + eventType.getEventTypeName()
+                    + ", relatedEntityInstance = " + entityInstanceUtils.getEntityRefByEntityInstance(relatedEntityInstance)
                     + ", relatedEventType = " + (relatedEventType == null ? "(null)" : relatedEventType.getEventTypeName())
-                    + ", createdByEntityInstance = " + createdByEntityInstance);
+                    + ", createdByEntityInstance = " + entityInstanceUtils.getEntityRefByEntityInstance(createdByEntityInstance));
         }
 
         final var eventTime = session.START_TIME_LONG;
@@ -13119,6 +13116,8 @@ public class CoreControl
             if(maximumHistory != null) {
                 pruneEvents(entityInstance, eventType, maximumHistory);
             }
+
+            EventTopic.getInstance().sendEvent(event);
 
             SentEventEventBus.eventBus.post(new SentEvent(event));
         }

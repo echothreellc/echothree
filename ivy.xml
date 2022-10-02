@@ -7,6 +7,7 @@
         <conf name="binaries" description="Binary jars"/>
     </configurations>
     <dependencies>
+        <dependency org="org.apache.kafka" name="kafka-clients" rev="3.3.0" conf="sources->sources" />
         <dependency org="com.google.code.gson" name="gson" rev="2.9.0" conf="sources->sources" />
         <dependency org="com.google.errorprone" name="error_prone_core" rev="2.14.0" conf="sources->sources" />
         <dependency org="com.google.guava" name="failureaccess" rev="1.0" conf="sources->sources" />
@@ -32,6 +33,7 @@
         <dependency org="commons-validator" name="commons-validator" rev="1.7" conf="sources->sources" />
         <dependency org="de.odysseus.juel" name="juel-api" rev="2.2.7" conf="sources->sources" />
         <dependency org="de.odysseus.juel" name="juel-impl" rev="2.2.7" conf="sources->sources" />
+        <dependency org="fish.payara.cloud.connectors.kafka" name="kafka-jca-api" rev="0.8.0" conf="sources->sources" />
         <dependency org="io.cucumber" name="cucumber-java8" rev="7.3.4" conf="sources->sources" />
         <dependency org="io.cucumber" name="cucumber-junit" rev="7.3.4" conf="sources->sources" />
         <dependency org="io.github.classgraph" name="classgraph" rev="4.8.149" conf="sources->sources" />
@@ -60,6 +62,7 @@
         <dependency org="org.apache.httpcomponents" name="httpclient-cache" rev="4.5.13" conf="sources->sources" />
         <dependency org="org.apache.httpcomponents" name="httpcore" rev="4.4.15" conf="sources->sources" />
         <dependency org="org.apache.httpcomponents" name="httpmime" rev="4.5.13" conf="sources->sources" />
+        <dependency org="org.apache.kafka" name="kafka-clients" rev="3.3.0" conf="sources->sources" />
         <dependency org="org.apache.lucene" name="lucene-analysis-common" rev="9.3.0" conf="sources->sources" />
         <dependency org="org.apache.lucene" name="lucene-analysis-kuromoji" rev="9.3.0" conf="sources->sources" />
         <dependency org="org.apache.lucene" name="lucene-core" rev="9.3.0" conf="sources->sources" />
@@ -86,6 +89,7 @@
         <dependency org="xerces" name="xercesImpl" rev="2.12.2" conf="sources->sources" />
         <dependency org="xml-apis" name="xml-apis" rev="1.4.01" conf="sources->sources" />
 
+        <dependency org="org.apache.kafka" name="kafka-clients" rev="3.3.0" conf="javadoc->javadoc" />
         <dependency org="com.google.code.gson" name="gson" rev="2.9.0" conf="javadoc->javadoc" />
         <dependency org="com.google.errorprone" name="error_prone_core" rev="2.14.0" conf="javadoc->javadoc" />
         <dependency org="com.google.guava" name="failureaccess" rev="1.0" conf="javadoc->javadoc" />
@@ -111,6 +115,7 @@
         <dependency org="commons-validator" name="commons-validator" rev="1.7" conf="javadoc->javadoc" />
         <dependency org="de.odysseus.juel" name="juel-api" rev="2.2.7" conf="javadoc->javadoc" />
         <dependency org="de.odysseus.juel" name="juel-impl" rev="2.2.7" conf="javadoc->javadoc" />
+        <dependency org="fish.payara.cloud.connectors.kafka" name="kafka-jca-api" rev="0.8.0" conf="javadoc->javadoc" />
         <dependency org="io.cucumber" name="cucumber-java8" rev="7.3.4" conf="javadoc->javadoc" />
         <dependency org="io.cucumber" name="cucumber-junit" rev="7.3.4" conf="javadoc->javadoc" />
         <dependency org="io.github.classgraph" name="classgraph" rev="4.8.149" conf="javadoc->javadoc" />
@@ -138,6 +143,7 @@
         <dependency org="org.apache.httpcomponents" name="httpclient-cache" rev="4.5.13" conf="javadoc->javadoc" />
         <dependency org="org.apache.httpcomponents" name="httpcore" rev="4.4.15" conf="javadoc->javadoc" />
         <dependency org="org.apache.httpcomponents" name="httpmime" rev="4.5.13" conf="javadoc->javadoc" />
+        <dependency org="org.apache.kafka" name="kafka-clients" rev="3.3.0" conf="javadoc->javadoc" />
         <dependency org="org.apache.lucene" name="lucene-analysis-common" rev="9.3.0" conf="javadoc->javadoc" />
         <dependency org="org.apache.lucene" name="lucene-analysis-kuromoji" rev="9.3.0" conf="javadoc->javadoc" />
         <dependency org="org.apache.lucene" name="lucene-core" rev="9.3.0" conf="javadoc->javadoc" />
@@ -191,6 +197,7 @@
         <dependency org="commons-validator" name="commons-validator" rev="1.7" conf="binaries->default" />
         <dependency org="de.odysseus.juel" name="juel-api" rev="2.2.7" conf="binaries->default" />
         <dependency org="de.odysseus.juel" name="juel-impl" rev="2.2.7" conf="binaries->default" />
+        <dependency org="fish.payara.cloud.connectors.kafka" name="kafka-jca-api" rev="0.8.0" conf="binaries->default" />
         <dependency org="io.cucumber" name="cucumber-java8" rev="7.3.4" conf="binaries->default" />
         <dependency org="io.cucumber" name="cucumber-junit" rev="7.3.4" conf="binaries->default" />
         <dependency org="io.github.classgraph" name="classgraph" rev="4.8.149" conf="binaries->default" />
@@ -221,6 +228,7 @@
         <dependency org="org.apache.httpcomponents" name="httpclient-cache" rev="4.5.13" conf="binaries->default" />
         <dependency org="org.apache.httpcomponents" name="httpcore" rev="4.4.15" conf="binaries->default" />
         <dependency org="org.apache.httpcomponents" name="httpmime" rev="4.5.13" conf="binaries->default" />
+        <dependency org="org.apache.kafka" name="kafka-clients" rev="3.3.0" conf="binaries->default" />
         <dependency org="org.apache.lucene" name="lucene-analysis-common" rev="9.3.0" conf="binaries->default" />
         <dependency org="org.apache.lucene" name="lucene-analysis-kuromoji" rev="9.3.0" conf="binaries->default" />
         <dependency org="org.apache.lucene" name="lucene-core" rev="9.3.0" conf="binaries->default" />

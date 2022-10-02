@@ -298,6 +298,9 @@
 
     <target name="ear" depends="jars">
         <ear earfile="${dir.home}/build/ears/echothree.ear" appxml="${dir.home}/build/metadata/server/META-INF/application.xml">
+            <metainf dir="${dir.home}/build/metadata/server/META-INF">
+                <include name="jboss-deployment-structure.xml" />
+            </metainf>
             <fileset dir="${dir.home}/build/jars">
                 <include name="echothree-server.jar" />
             </fileset>
