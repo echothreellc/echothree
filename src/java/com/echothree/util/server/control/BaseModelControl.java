@@ -96,7 +96,18 @@ public abstract class BaseModelControl {
     protected EntityInstance getEntityInstanceByBaseEntity(BaseEntity baseEntity) {
         return getEntityInstanceByBasePK(baseEntity.getPrimaryKey());
     }
-    
+
+    protected String getEntityRefByEntityInstance(final EntityInstance entityInstance) {
+        if(entityInstance == null) {
+            return "(null)";
+        } else {
+            final var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
+
+            return entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName()
+                    + "." + entityTypeDetail.getEntityTypeName() + "." + entityInstance.getEntityUniqueId();
+        }
+    }
+
     protected Event sendEvent(final BasePK entityInstancePK, final EventTypes eventType, final BasePK relatedPK,
             final EventTypes relatedEventType, final BasePK createdByPK) {
         return getCoreControl().sendEvent(entityInstancePK, eventType, relatedPK, relatedEventType, createdByPK);

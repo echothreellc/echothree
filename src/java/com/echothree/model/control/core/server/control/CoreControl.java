@@ -13018,21 +13018,6 @@ public class CoreControl
         }
     }
 
-    private void foo(String bar) {
-        KafkaQueueResource.getInstance().test(bar);
-    }
-
-    private String entityInstanceToEntityRef(final EntityInstance entityInstance) {
-        if(entityInstance == null) {
-            return "(null)";
-        } else {
-            final var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
-
-            return entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName()
-                    + "." + entityTypeDetail.getEntityTypeName() + "." + entityInstance.getEntityUniqueId();
-        }
-    }
-
     @Override
     public Event sendEvent(final EntityInstance entityInstance, final EventTypes eventTypeEnum, final EntityInstance relatedEntityInstance,
             final EventTypes relatedEventTypeEnum, final BasePK createdByPK) {
@@ -13041,18 +13026,18 @@ public class CoreControl
         final var createdByEntityInstance = createdByPK == null ? null : getEntityInstanceByBasePK(createdByPK);
         Event event = null;
 
-        foo("entityInstance = " + entityInstanceToEntityRef(entityInstance)
+        KafkaQueueResource.getInstance().test("entityInstance = " + getEntityRefByEntityInstance(entityInstance)
                 + ", eventType = " + eventType.getEventTypeName()
-                + ", relatedEntityInstance = " + entityInstanceToEntityRef(relatedEntityInstance)
+                + ", relatedEntityInstance = " + getEntityRefByEntityInstance(relatedEntityInstance)
                 + ", relatedEventType = " + (relatedEventType == null ? "(null)" : relatedEventType.getEventTypeName())
-                + ", createdByEntityInstance = " + entityInstanceToEntityRef(createdByEntityInstance));
+                + ", createdByEntityInstance = " + getEntityRefByEntityInstance(createdByEntityInstance));
 
         if(CoreDebugFlags.LogSentEvents) {
-            getLog().info("entityInstance = " + entityInstanceToEntityRef(entityInstance)
+            getLog().info("entityInstance = " + getEntityRefByEntityInstance(entityInstance)
                     + ", eventType = " + eventType.getEventTypeName()
-                    + ", relatedEntityInstance = " + entityInstanceToEntityRef(relatedEntityInstance)
+                    + ", relatedEntityInstance = " + getEntityRefByEntityInstance(relatedEntityInstance)
                     + ", relatedEventType = " + (relatedEventType == null ? "(null)" : relatedEventType.getEventTypeName())
-                    + ", createdByEntityInstance = " + entityInstanceToEntityRef(createdByEntityInstance));
+                    + ", createdByEntityInstance = " + getEntityRefByEntityInstance(createdByEntityInstance));
         }
 
         final var eventTime = session.START_TIME_LONG;
