@@ -581,8 +581,6 @@ import com.echothree.model.data.party.common.pk.LanguagePK;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.search.server.entity.SearchCheckSpellingActionType;
-import com.echothree.model.data.search.server.factory.SearchCheckSpellingActionTypeFactory;
 import com.echothree.model.data.sequence.common.pk.SequencePK;
 import com.echothree.model.data.sequence.server.entity.Sequence;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
@@ -13019,6 +13017,13 @@ public class CoreControl
         }
     }
 
+    private String entityInstanceToEntityRef(final EntityInstance entityInstance) {
+        final var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
+
+        return entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName()
+                + "." + entityTypeDetail.getEntityTypeName() + entityInstance.getEntityUniqueId();
+    }
+
     @Override
     public Event sendEvent(final EntityInstance entityInstance, final EventTypes eventTypeEnum, final EntityInstance relatedEntityInstance,
             final EventTypes relatedEventTypeEnum, final BasePK createdByPK) {
@@ -13028,9 +13033,9 @@ public class CoreControl
         Event event = null;
 
         if(CoreDebugFlags.LogSentEvents) {
-            getLog().info("entityInstance = " + entityInstance
-                    + ", eventType = " + eventType.getEventTypeName()
-                    + ", relatedEntityInstance = " + relatedEntityInstance
+            getLog().info("entityInstance = " + (entityInstance == null ? "(null)" : entityInstanceToEntityRef(entityInstance))
+                    + ", eventType = " + (eventType == null ? "(null)" : eventType.getEventTypeName())
+                    + ", relatedEntityInstance = " + (relatedEntityInstance == null ? "(null)" : entityInstanceToEntityRef(relatedEntityInstance))
                     + ", relatedEventType = " + (relatedEventType == null ? "(null)" : relatedEventType.getEventTypeName())
                     + ", createdByEntityInstance = " + createdByEntityInstance);
         }
