@@ -41,21 +41,9 @@ public class DslContextFactory {
 
     @SuppressWarnings("BanJNDI")
     protected DslContextFactory() {
-        Context jndiContext;
-        
         try {
-            jndiContext = new InitialContext();
-        } catch (NamingException ne) {
-            throw new PersistenceDatabaseException(ne);
-        }
-        
-        try {
+            var jndiContext = new InitialContext();
             ds = (DataSource)jndiContext.lookup(DS);
-        } catch (NamingException ne) {
-            throw new PersistenceDatabaseException(ne);
-        }
-        
-        try {
             ntds = (DataSource)jndiContext.lookup(NTDS);
         } catch (NamingException ne) {
             throw new PersistenceDatabaseException(ne);
@@ -71,6 +59,7 @@ public class DslContextFactory {
         
         if(PersistenceDebugFlags.LogConnections)
             log.info("getDslContext() returning " + dslContent);
+
         return dslContent;
     }
     
@@ -79,6 +68,7 @@ public class DslContextFactory {
         
         if(PersistenceDebugFlags.LogConnections)
             log.info("getNTDslContext() returning " + dslContent);
+
         return dslContent;
     }
     
