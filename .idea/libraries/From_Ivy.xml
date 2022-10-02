@@ -136,6 +136,8 @@
       <root url="jar://$PROJECT_DIR$/build/lib/wildfly-common.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/lucene-analysis-common.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/lucene-analysis-kuromoji.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/kafka-clients.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/kafka-jca-api.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/antlr4-runtime-javadoc.jar!/" />
@@ -202,6 +204,7 @@
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/r2dbc-spi-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/lucene-analysis-common-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/lucene-analysis-kuromoji-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/kafka-clients-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
       <root url="jar://$PROJECT_DIR$/build/lib-sources/activation-sources.jar!/" />
@@ -282,6 +285,8 @@
       <root url="jar://$PROJECT_DIR$/build/lib-sources/r2dbc-spi-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/lucene-analysis-common-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/lucene-analysis-kuromoji-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-sources/kafka-clients-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-sources/kafka-jca-api-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
