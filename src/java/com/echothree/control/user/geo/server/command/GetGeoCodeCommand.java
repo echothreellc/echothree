@@ -18,6 +18,7 @@ package com.echothree.control.user.geo.server.command;
 
 import com.echothree.control.user.geo.common.form.GetGeoCodeForm;
 import com.echothree.control.user.geo.common.result.GeoResultFactory;
+import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.geo.server.logic.GeoCodeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -65,7 +66,13 @@ public class GetGeoCodeCommand
 
     @Override
     protected GeoCode getEntity() {
-        return GeoCodeLogic.getInstance().getGeoCodeByName(this, form.getGeoCodeName());
+        var geoCode = GeoCodeLogic.getInstance().getGeoCodeByName(this, form.getGeoCodeName());
+        
+        if(!hasExecutionErrors()) {
+            sendEvent(geoCode.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+        }
+
+        return geoCode;
     }
 
     @Override
