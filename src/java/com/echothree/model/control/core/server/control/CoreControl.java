@@ -596,9 +596,11 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BaseKey;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.persistence.type.ByteArray;
+import com.echothree.util.server.kafka.KafkaQueueResource;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.BaseEntity;
 import com.echothree.util.server.persistence.EntityPermission;
+import com.echothree.util.server.persistence.SecurityCacheBean;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.Sha1Utils;
 import com.echothree.util.server.string.GuidUtils;
@@ -617,6 +619,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import javax.enterprise.inject.spi.Unmanaged;
 
 public class CoreControl
         extends BaseCoreControl {
@@ -13017,6 +13020,19 @@ public class CoreControl
         }
     }
 
+    private void foo(String bar) {
+//        Unmanaged<KafkaQueueResource> unmanagedKafkaQueueResource = new Unmanaged<>(KafkaQueueResource.class);
+//
+//        var unmanagedKafkaQueueResourceInstance = unmanagedKafkaQueueResource.newInstance();
+//        var kafkaQueueResource = unmanagedKafkaQueueResourceInstance.produce().inject().postConstruct().get();
+//
+//        kafkaQueueResource.test(bar);
+//
+//        unmanagedKafkaQueueResourceInstance.preDestroy().dispose();
+
+        new KafkaQueueResource().test(bar);
+    }
+
     private String entityInstanceToEntityRef(final EntityInstance entityInstance) {
         final var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
 
@@ -13031,6 +13047,12 @@ public class CoreControl
         final var relatedEventType = relatedEventTypeEnum == null? null: getEventTypeByName(relatedEventTypeEnum.name());
         final var createdByEntityInstance = createdByPK == null ? null : getEntityInstanceByBasePK(createdByPK);
         Event event = null;
+
+        foo("entityInstance = " + entityInstanceToEntityRef(entityInstance)
+                + ", eventType = " + eventType.getEventTypeName()
+                + ", relatedEntityInstance = " + (relatedEntityInstance == null ? "(null)" : entityInstanceToEntityRef(relatedEntityInstance))
+                + ", relatedEventType = " + (relatedEventType == null ? "(null)" : relatedEventType.getEventTypeName())
+                + ", createdByEntityInstance = " + (createdByEntityInstance == null ? "(null)" : entityInstanceToEntityRef(createdByEntityInstance)));
 
         if(CoreDebugFlags.LogSentEvents) {
             getLog().info("entityInstance = " + (entityInstance == null ? "(null)" : entityInstanceToEntityRef(entityInstance))
