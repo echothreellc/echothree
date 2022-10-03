@@ -1,5 +1,25 @@
 # Changelog
 
+## 2022-10-02-01
+
+* Add Item Description Type Use Type Object and Queries [549](https://gitlab.echothree.com/echothree/echothree/-/issues/549)
+* Add Item Description Type Use Type Type Mutations [550](https://gitlab.echothree.com/echothree/echothree/-/issues/550)
+* Add Item Description Type Use Object and Queries [551](https://gitlab.echothree.com/echothree/echothree/-/issues/551)
+* Add Item Description Type Use Mutations [552](https://gitlab.echothree.com/echothree/echothree/-/issues/552)
+* WildFly 26.1.2 Upgrade [561](https://gitlab.echothree.com/echothree/echothree/-/issues/561)
+* jOOQ 3.17.4 Upgrade [562](https://gitlab.echothree.com/echothree/echothree/-/issues/562)
+* jQuery 3.6.1 Upgrade [563](https://gitlab.echothree.com/echothree/echothree/-/issues/563)
+* Apache Lucene 9.3.0 Upgrade [569](https://gitlab.echothree.com/echothree/echothree/-/issues/569)
+* Add Entity Visit TO [570](https://gitlab.echothree.com/echothree/echothree/-/issues/570)
+* Add New/Updated/Unchanged Column to Item Search Results [571](https://gitlab.echothree.com/echothree/echothree/-/issues/571)
+* GetEmployee and GetVendor UCs Incorrectly Handling No Parameters [572](https://gitlab.echothree.com/echothree/echothree/-/issues/572)
+* Add Default partySecurityRoleTemplate With No Roles [573](https://gitlab.echothree.com/echothree/echothree/-/issues/573)
+* Get UCs for Multiple Entities Sending READ Events [574](https://gitlab.echothree.com/echothree/echothree/-/issues/574)
+* GetGeoCode UC Not Sending READ Event [575](https://gitlab.echothree.com/echothree/echothree/-/issues/575)
+* sendEvent(...) Should Format EntityInstance Before Logging [576](https://gitlab.echothree.com/echothree/echothree/-/issues/576)
+* Send Events Using Kafka [577](https://gitlab.echothree.com/echothree/echothree/-/issues/577)
+* Remove Documentation for Apache Ivy [578](https://gitlab.echothree.com/echothree/echothree/-/issues/578)
+
 ## 2022-09-18-01
 
 * Prohibit Manual Offer Item Modifications if Offer Item Selector Set [539](https://gitlab.echothree.com/echothree/echothree/-/issues/539)
