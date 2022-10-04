@@ -58,6 +58,16 @@ public class EventTopic {
                             + ", relatedEventType = " + relatedEventTypeName
                             + ", createdByEntityInstance = " + createdByEntityRef;
 
+//                    var eventValue = com.echothree.model.avro.common.Event.newBuilder()
+//                            .setEventTime(eventTime)
+//                            .setEventTimeSequence(eventTimeSequence)
+//                            .setEntityRef(entityRef)
+//                            .setEventTypeName(eventTypeName)
+//                            .setRelatedEntityRef(relatedEntityRef)
+//                            .setRelatedEventTypeName(relatedEventTypeName)
+//                            .setCreatedByEntityRef(createdByEntityRef)
+//                            .build();
+
                     var future = kafkaConnection.send(new ProducerRecord<>(TOPIC, null,
                             eventTime, entityRef, value));
 

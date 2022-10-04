@@ -1,0 +1,13 @@
+{"namespace": "com.echothree.model.avro.common",
+  "type": "record",
+  "name": "Event",
+  "fields": [
+    {"name": "eventTime", "type": "long"},
+    {"name": "eventTimeSequence", "type": "int"},
+    {"name": "entityRef", "type": "string"},
+    {"name": "eventTypeName", "type": "string"},
+    {"name": "relatedEntityRef", "type": ["string", "null"]},
+    {"name": "relatedEventTypeName", "type": ["string", "null"]},
+    {"name": "createdByEntityRef", "type": ["string", "null"]}
+  ]
+}
