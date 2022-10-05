@@ -58,7 +58,7 @@ public class EventTopic {
                             + ", relatedEventType = " + relatedEventTypeName
                             + ", createdByEntityInstance = " + createdByEntityRef;
 
-//                    var eventValue = com.echothree.model.avro.common.Event.newBuilder()
+//                    var eventValue = com.echothree.model.avro.core.common.Event.newBuilder()
 //                            .setEventTime(eventTime)
 //                            .setEventTimeSequence(eventTimeSequence)
 //                            .setEntityRef(entityRef)

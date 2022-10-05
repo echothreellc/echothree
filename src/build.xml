@@ -171,7 +171,7 @@
     <target name="avro" unless="avro.uptodate" depends="prepare">
         <java jar="${dir.build.lib}/avro-tools.jar" fork="true">
             <arg line="compile schema"/>
-            <arg file="avro"/>
+            <arg file="avro/core"/>
             <arg file="${dir.home}/generated/avro/java"/>
         </java>
         <touch file="${dir.home}/generated/avro/java/.flagfile" />
@@ -181,7 +181,7 @@
         <uptodate
                 property="avro.uptodate"
                 targetfile="${dir.home}/generated/avro/java/.flagfile">
-            <srcfiles dir= "${dir.home}/src/avro" includes="*.avsc" />
+            <srcfiles dir= "${dir.home}/src/avro" includes="**/*.avsc" />
         </uptodate>
     </target>
 

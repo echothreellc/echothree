@@ -1,4 +1,4 @@
-{"namespace": "com.echothree.model.avro.common",
+{"namespace": "com.echothree.model.avro.core.common",
   "type": "record",
   "name": "Event",
   "fields": [
