@@ -16,7 +16,8 @@
 
 package com.echothree.model.control.core.server.kafka;
 
-public record Event(long eventTime,
+public record Event(long eventId,
+                    long eventTime,
                     int eventTimeSequence,
                     String entityRef,
                     String eventTypeName,

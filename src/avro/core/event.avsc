@@ -2,6 +2,7 @@
   "type": "record",
   "name": "Event",
   "fields": [
+    {"name": "eventId", "type": "long"},
     {"name": "eventTime", "type": "long"},
     {"name": "eventTimeSequence", "type": "int"},
     {"name": "entityRef", "type": "string"},
