@@ -129,6 +129,10 @@
     </module>
 
     <module>
+        <ejb>avro.jar</ejb>
+    </module>
+
+    <module>
         <ejb>echothree-server.jar</ejb>
     </module>
     

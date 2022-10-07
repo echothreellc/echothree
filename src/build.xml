@@ -115,6 +115,8 @@
         <mkdir dir="${dir.home}/build/metadata/server" />
         <mkdir dir="${dir.home}/build/metadata/server/META-INF" />
         <mkdir dir="${dir.home}/generated" />
+        <mkdir dir="${dir.home}/generated/avro" />
+        <mkdir dir="${dir.home}/generated/avro/java" />
         <mkdir dir="${dir.home}/generated/data" />
         <mkdir dir="${dir.home}/generated/data/java" />
         <mkdir dir="${dir.home}/generated/form" />
@@ -166,14 +168,34 @@
         <touch file="${dir.home}/generated/form/java/.flagfile" />
     </target>
 
+    <target name="avro" unless="avro.uptodate" depends="prepare">
+        <java jar="${dir.build.lib}/avro-tools.jar" fork="true">
+            <arg line="compile schema"/>
+            <arg file="avro/core"/>
+            <arg file="${dir.home}/generated/avro/java"/>
+        </java>
+        <touch file="${dir.home}/generated/avro/java/.flagfile" />
+    </target>
+
+    <target name="avro_uptodate">
+        <uptodate
+                property="avro.uptodate"
+                targetfile="${dir.home}/generated/avro/java/.flagfile">
+            <srcfiles dir= "${dir.home}/src/avro" includes="**/*.avsc" />
+        </uptodate>
+    </target>
+
     <target name="generated_persistence" depends="persistence_uptodate,persistence" />
 
     <target name="generated_form" depends="form_uptodate,form" />
+
+    <target name="generated_avro" depends="avro_uptodate,avro" />
 
     <target name="generated" depends="prepare">
         <parallel>
             <ant target="generated_persistence"/>
             <ant target="generated_form"/>
+            <ant target="generated_avro"/>
         </parallel>
     </target>
 
@@ -187,7 +209,7 @@
         <javac
             fork="true"
             debug="on"
-            srcdir="${dir.home}/generated/data/java:${dir.home}/generated/form/java:java"
+            srcdir="${dir.home}/generated/avro/java:${dir.home}/generated/data/java:${dir.home}/generated/form/java:java"
             destdir="${dir.home}/build/classes"
             includeAntRuntime="false"
             classpath="${compile.task.classpath}"
@@ -230,6 +252,7 @@
             <fileset dir="${dir.home}/build/classes">
                 <include name="com/echothree/control/user/*/common/**/*.class" />
                 <include name="com/echothree/model/control/*/common/**/*.class" />
+                <include name="com/echothree/model/avro/common/**/*.class" />
                 <include name="com/echothree/model/data/*/common/**/*.class" />
                 <include name="com/echothree/util/common/**/*.class" />
                 <include name="com/echothree/view/common/**/*.class" />
@@ -253,6 +276,7 @@
             <fileset dir="${dir.home}/build/classes">
                 <include name="com/echothree/control/user/*/common/**/*.class" />
                 <include name="com/echothree/model/control/*/common/**/*.class" />
+                <include name="com/echothree/model/avro/common/**/*.class" />
                 <include name="com/echothree/model/data/*/common/**/*.class" />
                 <include name="com/echothree/util/common/**/*.class" />
                 <include name="com/echothree/view/common/**/*.class" />
@@ -305,6 +329,7 @@
                 <include name="echothree-server.jar" />
             </fileset>
             <fileset dir="${dir.home}/build/lib">
+                <include name="avro.jar" />
                 <include name="antlr4-runtime.jar" />
                 <include name="classgraph.jar" />
                 <include name="commons-codec.jar" />

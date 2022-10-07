@@ -11,6 +11,9 @@
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
+    <content url="file://$MODULE_DIR$/../generated/avro">
+      <sourceFolder url="file://$MODULE_DIR$/../generated/avro/java" isTestSource="false" />
+    </content>
     <content url="file://$MODULE_DIR$/../generated/data">
       <sourceFolder url="file://$MODULE_DIR$/../generated/data/java" isTestSource="false" />
     </content>
