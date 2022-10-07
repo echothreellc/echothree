@@ -18,12 +18,14 @@ package com.echothree.util.server.kafka;
 
 import com.echothree.model.data.core.server.entity.Event;
 import com.echothree.util.server.string.EntityInstanceUtils;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import fish.payara.cloud.connectors.kafka.api.KafkaConnectionFactory;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
 public class EventTopic {
 
-    private static final String TOPIC = "echothree.events.text";
+    private static final String TOPIC = "echothree.events.json";
 
     private static final EventTopic instance = new EventTopic();
 
@@ -33,6 +35,7 @@ public class EventTopic {
 
     KafkaConnectionFactory kafkaConnectionFactory = KafkaConnectionFactoryResource.getInstance().getKafkaConnectionFactory();
     EntityInstanceUtils entityInstanceUtils = EntityInstanceUtils.getInstance();
+    Gson gson = new GsonBuilder().serializeNulls().create();
 
     protected EventTopic() {}
 
@@ -50,13 +53,13 @@ public class EventTopic {
                     var relatedEventTypeName = relatedEventType == null ? null : relatedEventType.getEventTypeName();
                     var createdByEntityRef = entityInstanceUtils.getEntityRefByEntityInstance(event.getCreatedBy());
 
-                    var value = "eventTime = " + eventTime
-                            + ", eventTimeSequence = " + eventTimeSequence
-                            + ", entityInstance = " + entityRef
-                            + ", eventType = " + eventTypeName
-                            + ", relatedEntityInstance = " + relatedEntityRef
-                            + ", relatedEventType = " + relatedEventTypeName
-                            + ", createdByEntityInstance = " + createdByEntityRef;
+//                    var value = "eventTime = " + eventTime
+//                            + ", eventTimeSequence = " + eventTimeSequence
+//                            + ", entityInstance = " + entityRef
+//                            + ", eventType = " + eventTypeName
+//                            + ", relatedEntityInstance = " + relatedEntityRef
+//                            + ", relatedEventType = " + relatedEventTypeName
+//                            + ", createdByEntityInstance = " + createdByEntityRef;
 
 //                    var eventValue = com.echothree.model.avro.core.common.Event.newBuilder()
 //                            .setEventTime(eventTime)
@@ -68,8 +71,12 @@ public class EventTopic {
 //                            .setCreatedByEntityRef(createdByEntityRef)
 //                            .build();
 
+                    var eventJsonObject = new com.echothree.model.control.core.server.kafka.Event(eventTime, eventTimeSequence,
+                            entityRef, eventTypeName, relatedEntityRef, relatedEventTypeName, createdByEntityRef);
+                    var eventJson = gson.toJson(eventJsonObject);
+
                     var future = kafkaConnection.send(new ProducerRecord<>(TOPIC, null,
-                            eventTime, entityRef, value));
+                            eventTime, entityRef, eventJson));
 
                     future.get();
                 }
