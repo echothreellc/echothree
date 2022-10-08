@@ -34,7 +34,7 @@ public class EntityInstanceUtils {
 
     public String getEntityRefByEntityInstance(final EntityInstance entityInstance) {
         if(entityInstance == null) {
-            return "(null)";
+            return null;
         } else {
             final var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
 
