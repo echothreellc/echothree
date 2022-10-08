@@ -81,7 +81,7 @@
       <root url="jar://$PROJECT_DIR$/build/lib/rxjava.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/serializer.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/slf4j-api.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib/slf4j-log4j12.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/slf4j-reload4j.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/software-and-algorithms.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/tag-expressions.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/textile4j.jar!/" />
@@ -114,7 +114,7 @@
       <root url="jar://$PROJECT_DIR$/build/lib/itext.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/jboss-logging.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/jgroups.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib/log4j.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/reload4j.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/messages.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/mysql-connector-java.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/poi.jar!/" />
@@ -192,7 +192,7 @@
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/org.osgi.service.component.annotations-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/poi-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/slf4j-api-javadoc.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/slf4j-log4j12-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/slf4j-reload4j-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/textile4j-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/validation-api-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/xalan-javadoc.jar!/" />
@@ -252,7 +252,7 @@
       <root url="jar://$PROJECT_DIR$/build/lib-sources/org.osgi.service.component.annotations-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/rome-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/slf4j-api-sources.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib-sources/slf4j-log4j12-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-sources/slf4j-reload4j-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/textile4j-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/guava-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/graphql-java-sources.jar!/" />

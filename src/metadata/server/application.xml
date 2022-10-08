@@ -81,7 +81,7 @@
     </module>
     
     <module>
-        <ejb>slf4j-log4j12.jar</ejb>
+        <ejb>slf4j-reload4j.jar</ejb>
     </module>
     
     <module>

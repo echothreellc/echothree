@@ -52,9 +52,9 @@
             <file file="${build.lib.dir}/commons-configuration.jar"/>
             <file file="${build.lib.dir}/commons-beanutils.jar"/>
             <file file="${build.lib.dir}/commons-collections.jar"/>
-            <file file="${build.lib.dir}/log4j.jar"/>
+            <file file="${build.lib.dir}/reload4j.jar"/>
             <file file="${build.lib.dir}/slf4j-api.jar"/>
-            <file file="${build.lib.dir}/slf4j-log4j12.jar"/>
+            <file file="${build.lib.dir}/slf4j-reload4j.jar"/>
             <file file="${build.lib.dir}/wildfly-client-all.jar"/>
             <file file="${e3.client.jarfile}"/>
             <file file="${ui.cli.mailtransfer.jarfile}"/>

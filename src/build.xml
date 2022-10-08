@@ -355,7 +355,7 @@
                 <include name="r2dbc-spi.jar" />
                 <include name="reactive-streams.jar" />
                 <include name="slf4j-api.jar" />
-                <include name="slf4j-log4j12.jar" />
+                <include name="slf4j-reload4j.jar" />
                 <include name="validation-api.jar" />
                 <include name="xercesImpl.jar" />
                 <include name="xml-apis.jar" />
