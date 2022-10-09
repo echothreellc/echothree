@@ -18,10 +18,12 @@ package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.control.EntityLockControl;
+import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.util.server.persistence.EntityDescriptionUtils;
 import com.echothree.util.server.persistence.EntityNamesUtils;
+import com.echothree.util.server.persistence.PersistenceUtils;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.translator.EntityInstanceAndNames;
 import graphql.annotations.annotationTypes.GraphQLDescription;
@@ -33,11 +35,12 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("entity instance object")
 @GraphQLName("EntityInstance")
 public class EntityInstanceObject
-        extends BaseGraphQl {
+        extends BaseEntityInstanceObject {
     
     private EntityInstance entityInstance; // Always Present
     
     public EntityInstanceObject(EntityInstance entityInstance) {
+        super(PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance));
         this.entityInstance = entityInstance;
     }
     
@@ -76,7 +79,7 @@ public class EntityInstanceObject
 
         return entityInstance.getGuid();
     }
-    
+
     @GraphQLField
     @GraphQLDescription("ulid")
     @GraphQLNonNull
@@ -87,7 +90,18 @@ public class EntityInstanceObject
 
         return entityInstance.getUlid();
     }
-    
+
+    @GraphQLField
+    @GraphQLDescription("entity ref")
+    @GraphQLNonNull
+    public String getEntityRef() {
+        var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
+
+        return new StringBuilder(entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName())
+                .append('.').append(entityTypeDetail.getEntityTypeName())
+                .append('.').append(entityInstance.getEntityUniqueId()).toString();
+    }
+
     @GraphQLField
     @GraphQLDescription("entity time")
     public EntityTimeObject getEntityTime() {
