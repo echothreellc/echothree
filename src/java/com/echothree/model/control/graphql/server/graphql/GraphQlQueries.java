@@ -2617,13 +2617,21 @@ public final class GraphQlQueries
     @GraphQLField
     @GraphQLName("entityInstance")
     public static EntityInstanceObject entityInstance(final DataFetchingEnvironment env,
-            @GraphQLName("id") @GraphQLID final String id) {
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("entityRef") final String entityRef,
+            @GraphQLName("key") final String key,
+            @GraphQLName("guid") final String guid,
+            @GraphQLName("ulid") final String ulid) {
         EntityInstance entityInstance;
 
         try {
             var commandForm = CoreUtil.getHome().getGetEntityInstanceForm();
 
             commandForm.setUlid(id);
+            commandForm.setEntityRef(entityRef);
+            commandForm.setKey(key);
+            commandForm.setGuid(guid);
+            commandForm.setUlid(ulid);
 
             entityInstance = new GetEntityInstanceCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
@@ -2636,8 +2644,8 @@ public final class GraphQlQueries
     @GraphQLField
     @GraphQLName("entityInstances")
     public static Collection<EntityInstanceObject> entityInstances(final DataFetchingEnvironment env,
-            @GraphQLName("componentVendorName") final String componentVendorName,
-            @GraphQLName("entityTypeName") final String entityTypeName) {
+            @GraphQLName("componentVendorName") @GraphQLNonNull final String componentVendorName,
+            @GraphQLName("entityTypeName") @GraphQLNonNull final String entityTypeName) {
         Collection<EntityInstance> entityInstances;
         Collection<EntityInstanceObject> entityInstanceObjects;
 
