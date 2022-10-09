@@ -40,7 +40,8 @@ public class EntityInstanceObject
     private EntityInstance entityInstance; // Always Present
     
     public EntityInstanceObject(EntityInstance entityInstance) {
-        super(PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance));
+        super(entityInstance);
+
         this.entityInstance = entityInstance;
     }
     
