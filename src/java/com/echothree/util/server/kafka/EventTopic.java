@@ -18,10 +18,16 @@ package com.echothree.util.server.kafka;
 
 import com.echothree.model.data.core.server.entity.Event;
 import com.echothree.util.server.string.EntityInstanceUtils;
+import com.google.common.base.Charsets;
+import com.google.common.net.MediaType;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import fish.payara.cloud.connectors.kafka.api.KafkaConnectionFactory;
+import org.apache.http.HttpHeaders;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.common.header.Headers;
+import org.apache.kafka.common.header.internals.RecordHeader;
+import org.apache.kafka.common.header.internals.RecordHeaders;
 
 public class EventTopic {
 
@@ -36,6 +42,9 @@ public class EventTopic {
     KafkaConnectionFactory kafkaConnectionFactory = KafkaConnectionFactoryResource.getInstance().getKafkaConnectionFactory();
     EntityInstanceUtils entityInstanceUtils = EntityInstanceUtils.getInstance();
     Gson gson = new GsonBuilder().serializeNulls().create();
+
+    Headers HEADERS_JSON = new RecordHeaders()
+            .add(new RecordHeader(HttpHeaders.CONTENT_TYPE, MediaType.JSON_UTF_8.toString().getBytes(Charsets.UTF_8)));
 
     protected EventTopic() {}
 
@@ -80,7 +89,7 @@ public class EventTopic {
                     var eventJson = gson.toJson(eventJsonObject);
 
                     var future = kafkaConnection.send(new ProducerRecord<>(TOPIC, null,
-                            eventTime, entityRef, eventJson));
+                            eventTime, entityRef, eventJson, HEADERS_JSON));
 
                     future.get();
                 }
