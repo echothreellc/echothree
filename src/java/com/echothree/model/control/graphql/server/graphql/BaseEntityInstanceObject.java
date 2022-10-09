@@ -65,11 +65,8 @@ public abstract class BaseEntityInstanceObject
     @GraphQLField
     @GraphQLDescription("entity instance")
     public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
-        if(CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env)) {
-            return new EntityInstanceObject(getEntityInstanceByBasePK());
-        } else {
-            return null;
-        }
+        // Allow user to see the EntityInstanceObject regardless of permissions for the GetEntityInstance UC.
+        return new EntityInstanceObject(getEntityInstanceByBasePK());
     }
 
     @GraphQLField
