@@ -22,6 +22,7 @@ import com.echothree.model.control.core.server.graphql.EntityAttributeGroupObjec
 import com.echothree.model.control.core.server.graphql.EntityInstanceObject;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.util.common.persistence.BasePK;
+import com.echothree.util.server.persistence.PersistenceUtils;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -37,7 +38,13 @@ public abstract class BaseEntityInstanceObject
     protected BaseEntityInstanceObject(BasePK basePrimaryKey) {
         super(basePrimaryKey);
     }
-    
+
+    protected BaseEntityInstanceObject(EntityInstance entityInstance) {
+        super(PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance));
+
+        this.entityInstance = entityInstance;
+    }
+
     private EntityInstance entityInstance; // Optional, use getEntityInstanceByBasePK()
     
     protected EntityInstance getEntityInstanceByBasePK() {
@@ -65,11 +72,8 @@ public abstract class BaseEntityInstanceObject
     @GraphQLField
     @GraphQLDescription("entity instance")
     public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
-        if(CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env)) {
-            return new EntityInstanceObject(getEntityInstanceByBasePK());
-        } else {
-            return null;
-        }
+        // Allow user to see the EntityInstanceObject regardless of permissions for the GetEntityInstance UC.
+        return new EntityInstanceObject(getEntityInstanceByBasePK());
     }
 
     @GraphQLField
