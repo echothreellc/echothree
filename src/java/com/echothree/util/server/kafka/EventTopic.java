@@ -31,7 +31,7 @@ import org.apache.kafka.common.header.internals.RecordHeaders;
 
 public class EventTopic {
 
-    private static final String TOPIC = "echothree.events.json";
+    private static final String TOPIC = "echothree-events-json";
 
     private static final EventTopic instance = new EventTopic();
 
