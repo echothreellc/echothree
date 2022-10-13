@@ -60,8 +60,7 @@ public class GetPartyCommand
         ));
 
         FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("Username", FieldType.STRING, false, 1L, 80L)
+                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
 
@@ -71,7 +70,6 @@ public class GetPartyCommand
     }
 
     String partyName;
-    String username;
     int parameterCount;
 
     @Override
@@ -79,8 +77,7 @@ public class GetPartyCommand
         var securityResult = super.security();
 
         partyName = form.getPartyName();
-        username = form.getUsername();
-        parameterCount = (partyName == null ? 0 : 1) + (username == null ? 0 : 1);
+        parameterCount = (partyName == null ? 0 : 1);
 
         if(!canSpecifyParty() && parameterCount != 0) {
             securityResult = getInsufficientSecurityResult();
@@ -98,12 +95,6 @@ public class GetPartyCommand
 
             if(partyName != null) {
                 party = PartyLogic.getInstance().getPartyByName(this, partyName);
-            } else if(username != null) {
-                var userLogin = UserLoginLogic.getInstance().getUserLoginByUsername(this, username);
-
-                if(!hasExecutionErrors()) {
-                    party = userLogin.getParty();
-                }
             }
 
             if(!hasExecutionErrors()) {

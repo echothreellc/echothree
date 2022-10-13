@@ -20,8 +20,8 @@ import com.echothree.control.user.party.common.spec.PartySpec;
 import com.echothree.control.user.user.common.spec.UserLoginSpec;
 
 public interface GetPartyForm
-        extends PartySpec, UserLoginSpec {
+        extends PartySpec {
     
-    // Nothing additional beyond PartySpec, UserLoginSpec
+    // Nothing additional beyond PartySpec
     
 }
