@@ -348,6 +348,7 @@
                 <include name="juel-impl.jar"/>
                 <include name="lucene-analysis-common.jar" />
                 <include name="lucene-analysis-kuromoji.jar" />
+                <include name="lucene-backward-codecs.jar" />
                 <include name="lucene-core.jar" />
                 <include name="lucene-queryparser.jar" />
                 <include name="lucene-suggest.jar" />
