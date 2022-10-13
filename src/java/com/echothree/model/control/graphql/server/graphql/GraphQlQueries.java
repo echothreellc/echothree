@@ -176,6 +176,8 @@ import com.echothree.control.user.party.server.command.GetDivisionsCommand;
 import com.echothree.control.user.party.server.command.GetLanguageCommand;
 import com.echothree.control.user.party.server.command.GetLanguagesCommand;
 import com.echothree.control.user.party.server.command.GetNameSuffixesCommand;
+import com.echothree.control.user.party.server.command.GetPartiesCommand;
+import com.echothree.control.user.party.server.command.GetPartyCommand;
 import com.echothree.control.user.party.server.command.GetPersonalTitlesCommand;
 import com.echothree.control.user.party.server.command.GetTimeZoneCommand;
 import com.echothree.control.user.party.server.command.GetTimeZonesCommand;
@@ -343,6 +345,7 @@ import com.echothree.model.control.party.server.graphql.DepartmentObject;
 import com.echothree.model.control.party.server.graphql.DivisionObject;
 import com.echothree.model.control.party.server.graphql.LanguageObject;
 import com.echothree.model.control.party.server.graphql.NameSuffixObject;
+import com.echothree.model.control.party.server.graphql.PartyObject;
 import com.echothree.model.control.party.server.graphql.PersonalTitleObject;
 import com.echothree.model.control.party.server.graphql.TimeZoneObject;
 import com.echothree.model.control.payment.server.graphql.PaymentMethodTypeObject;
@@ -472,6 +475,7 @@ import com.echothree.model.data.offer.server.entity.UseType;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.NameSuffix;
+import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyCompany;
 import com.echothree.model.data.party.server.entity.PartyDepartment;
 import com.echothree.model.data.party.server.entity.PartyDivision;
@@ -4823,6 +4827,54 @@ public final class GraphQlQueries
         }
 
         return vendorObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("party")
+    public static PartyObject party(final DataFetchingEnvironment env,
+            @GraphQLName("partyName") final String partyName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        Party party;
+
+        try {
+            var commandForm = PartyUtil.getHome().getGetPartyForm();
+
+            commandForm.setPartyName(partyName);
+            commandForm.setUlid(id);
+
+            party = new GetPartyCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return party == null ? null : new PartyObject(party);
+    }
+
+    @GraphQLField
+    @GraphQLName("parties")
+    public static Collection<PartyObject> parties(final DataFetchingEnvironment env) {
+        Collection<Party> parties;
+        Collection<PartyObject> partyObjects;
+
+        try {
+            var commandForm = PartyUtil.getHome().getGetPartiesForm();
+
+            parties = new GetPartiesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(parties == null) {
+            partyObjects = emptyList();
+        } else {
+            partyObjects = new ArrayList<>(parties.size());
+
+            parties.stream()
+                    .map(PartyObject::new)
+                    .forEachOrdered(partyObjects::add);
+        }
+
+        return partyObjects;
     }
 
     @GraphQLField
