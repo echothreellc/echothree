@@ -339,6 +339,7 @@ import com.echothree.model.control.offer.server.graphql.OfferUseObject;
 import com.echothree.model.control.offer.server.graphql.UseNameElementObject;
 import com.echothree.model.control.offer.server.graphql.UseObject;
 import com.echothree.model.control.offer.server.graphql.UseTypeObject;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.party.server.graphql.CompanyObject;
 import com.echothree.model.control.party.server.graphql.DateTimeFormatObject;
 import com.echothree.model.control.party.server.graphql.DepartmentObject;
@@ -472,6 +473,7 @@ import com.echothree.model.data.offer.server.entity.OfferUse;
 import com.echothree.model.data.offer.server.entity.Use;
 import com.echothree.model.data.offer.server.entity.UseNameElement;
 import com.echothree.model.data.offer.server.entity.UseType;
+import com.echothree.model.data.party.common.PartyConstants;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.NameSuffix;
@@ -4852,31 +4854,34 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("parties")
-    public static Collection<PartyObject> parties(final DataFetchingEnvironment env) {
-        Collection<Party> parties;
-        Collection<PartyObject> partyObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public static CountingPaginatedData<PartyObject> parties(final DataFetchingEnvironment env) {
+        CountingPaginatedData<PartyObject> data;
 
         try {
-            var commandForm = PartyUtil.getHome().getGetPartiesForm();
+            var partyControl = Session.getModelController(PartyControl.class);
+            var totalCount = partyControl.countParties();
 
-            parties = new GetPartiesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            try(var objectLimiter = new ObjectLimiter(env, PartyConstants.COMPONENT_VENDOR_NAME, PartyConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = PartyUtil.getHome().getGetPartiesForm();
+                var entities = new GetPartiesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var parties = entities.stream().map(PartyObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, parties);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(parties == null) {
-            partyObjects = emptyList();
-        } else {
-            partyObjects = new ArrayList<>(parties.size());
-
-            parties.stream()
-                    .map(PartyObject::new)
-                    .forEachOrdered(partyObjects::add);
-        }
-
-        return partyObjects;
+        return data;
     }
-
+    
     @GraphQLField
     @GraphQLName("company")
     public static CompanyObject company(final DataFetchingEnvironment env,
