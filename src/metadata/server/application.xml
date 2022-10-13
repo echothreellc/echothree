@@ -41,9 +41,13 @@
     </module>
 
     <module>
-        <ejb>lucene-core.jar</ejb>
+        <ejb>lucene-backward-codecs.jar</ejb>
     </module>
     
+    <module>
+        <ejb>lucene-core.jar</ejb>
+    </module>
+
     <module>
         <ejb>lucene-analysis-common.jar</ejb>
     </module>

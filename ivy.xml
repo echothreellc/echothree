@@ -67,6 +67,7 @@
         <dependency org="org.apache.kafka" name="kafka-clients" rev="3.3.0" conf="sources->sources" />
         <dependency org="org.apache.lucene" name="lucene-analysis-common" rev="9.4.0" conf="sources->sources" />
         <dependency org="org.apache.lucene" name="lucene-analysis-kuromoji" rev="9.4.0" conf="sources->sources" />
+        <dependency org="org.apache.lucene" name="lucene-backward-codecs" rev="9.4.0" conf="sources->sources" />
         <dependency org="org.apache.lucene" name="lucene-core" rev="9.4.0" conf="sources->sources" />
         <dependency org="org.apache.lucene" name="lucene-queryparser" rev="9.4.0" conf="sources->sources" />
         <dependency org="org.apache.lucene" name="lucene-suggest" rev="9.4.0" conf="sources->sources" />
@@ -149,6 +150,7 @@
         <dependency org="org.apache.kafka" name="kafka-clients" rev="3.3.0" conf="javadoc->javadoc" />
         <dependency org="org.apache.lucene" name="lucene-analysis-common" rev="9.4.0" conf="javadoc->javadoc" />
         <dependency org="org.apache.lucene" name="lucene-analysis-kuromoji" rev="9.4.0" conf="javadoc->javadoc" />
+        <dependency org="org.apache.lucene" name="lucene-backward-codecs" rev="9.4.0" conf="javadoc->javadoc" />
         <dependency org="org.apache.lucene" name="lucene-core" rev="9.4.0" conf="javadoc->javadoc" />
         <dependency org="org.apache.lucene" name="lucene-queryparser" rev="9.4.0" conf="javadoc->javadoc" />
         <dependency org="org.apache.lucene" name="lucene-suggest" rev="9.4.0" conf="javadoc->javadoc" />
@@ -236,6 +238,7 @@
         <dependency org="org.apache.kafka" name="kafka-clients" rev="3.3.0" conf="binaries->default" />
         <dependency org="org.apache.lucene" name="lucene-analysis-common" rev="9.4.0" conf="binaries->default" />
         <dependency org="org.apache.lucene" name="lucene-analysis-kuromoji" rev="9.4.0" conf="binaries->default" />
+        <dependency org="org.apache.lucene" name="lucene-backward-codecs" rev="9.4.0" conf="binaries->default" />
         <dependency org="org.apache.lucene" name="lucene-core" rev="9.4.0" conf="binaries->default" />
         <dependency org="org.apache.lucene" name="lucene-queryparser" rev="9.4.0" conf="binaries->default" />
         <dependency org="org.apache.lucene" name="lucene-suggest" rev="9.4.0" conf="binaries->default" />
