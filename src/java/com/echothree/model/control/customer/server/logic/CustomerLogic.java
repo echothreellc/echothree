@@ -39,7 +39,6 @@ import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.customer.server.entity.Customer;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
 import com.echothree.util.common.message.ExecutionErrors;

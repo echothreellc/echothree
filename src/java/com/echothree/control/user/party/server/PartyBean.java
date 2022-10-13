@@ -939,4 +939,9 @@ public class PartyBean
         return new GetPartyCommand(userVisitPK, form).run();
     }
 
+    @Override
+    public CommandResult getParties(UserVisitPK userVisitPK, GetPartiesForm form) {
+        return new GetPartiesCommand(userVisitPK, form).run();
+    }
+
 }

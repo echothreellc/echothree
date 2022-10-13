@@ -14,15 +14,19 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.party.common.form;
+package com.echothree.control.user.party.common.result;
 
-import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
-import com.echothree.control.user.party.common.spec.PartySpec;
-import com.echothree.control.user.user.common.spec.UserLoginSpec;
+import com.echothree.model.control.party.common.transfer.PartyTransfer;
+import com.echothree.util.common.command.BaseResult;
+import java.util.List;
 
-public interface GetPartyForm
-        extends PartySpec, UniversalEntitySpec {
-    
-    // Nothing additional beyond PartySpec, UniversalEntitySpec
+public interface GetPartiesResult
+        extends BaseResult {
+
+    Long getPartyCount();
+    void setPartyCount(Long partyCount);
+
+    List<PartyTransfer> getParties();
+    void setParties(List<PartyTransfer> parties);
     
 }

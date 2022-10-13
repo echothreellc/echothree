@@ -31,7 +31,6 @@ public class PartyTag
         extends BaseTag {
     
     protected String partyName;
-    protected String username;
     protected String options;
     protected TransferProperties transferProperties;
     protected String var;
@@ -41,7 +40,6 @@ public class PartyTag
     
     private void init() {
         partyName = null;
-        username = null;
         options = null;
         transferProperties = null;
         var = null;
@@ -64,10 +62,6 @@ public class PartyTag
 
     public void setPartyName(String partyName) {
         this.partyName = partyName;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public void setOptions(String options) {
@@ -101,8 +95,7 @@ public class PartyTag
             GetPartyForm commandForm = PartyUtil.getHome().getGetPartyForm();
             
             commandForm.setPartyName(partyName);
-            commandForm.setUsername(username);
-            
+
             setOptions(options, null, commandForm);
 
             commandForm.setTransferProperties(transferProperties);

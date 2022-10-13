@@ -68,7 +68,7 @@ public class PartyEmployeeLogic
                 var party = partyControl.getPartyByName(partyName);
 
                 if(party != null) {
-                    PartyLogic.getInstance().checkPartyType(eea, party, PartyTypes.CUSTOMER.name());
+                    PartyLogic.getInstance().checkPartyType(eea, party, PartyTypes.EMPLOYEE.name());
 
                     partyEmployee = employeeControl.getPartyEmployee(party);
                 } else {
@@ -81,7 +81,7 @@ public class PartyEmployeeLogic
                 if(!eea.hasExecutionErrors()) {
                     var party = partyControl.getPartyByEntityInstance(entityInstance);
 
-                    PartyLogic.getInstance().checkPartyType(eea, party, PartyTypes.CUSTOMER.name());
+                    PartyLogic.getInstance().checkPartyType(eea, party, PartyTypes.EMPLOYEE.name());
 
                     partyEmployee = employeeControl.getPartyEmployee(party);
                 }
