@@ -120,7 +120,7 @@ public class PartyTransferCache
         setIncludeEntityInstance(true);
     }
     
-    public PartyTransfer getPartyTransfer(Party party) {
+    public PartyTransfer getTransfer(Party party) {
         PartyTransfer partyTransfer = get(party);
         
         if(partyTransfer == null) {

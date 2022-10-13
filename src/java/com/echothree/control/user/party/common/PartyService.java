@@ -481,4 +481,6 @@ public interface PartyService
 
     CommandResult getParty(UserVisitPK userVisitPK, GetPartyForm form);
 
+    CommandResult getParties(UserVisitPK userVisitPK, GetPartiesForm form);
+
 }
