@@ -55,7 +55,7 @@ public class GetPartyCommand
                 new PartyTypeDefinition(PartyTypes.CUSTOMER.name(), null),
                 new PartyTypeDefinition(PartyTypes.VENDOR.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                        new SecurityRoleDefinition(SecurityRoleGroups.Vendor.name(), SecurityRoles.Review.name())
+                        new SecurityRoleDefinition(SecurityRoleGroups.Party.name(), SecurityRoles.Review.name())
                 ))
         ));
 
