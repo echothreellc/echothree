@@ -211,6 +211,7 @@ public enum SecurityRoleGroups {
     OrderPriority,
     OrderTimeType,
     OrderType,
+    Party,
     PartyAliasType,
     PartyApplicationEditorUse,
     PartyCancellationPolicy,

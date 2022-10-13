@@ -7237,6 +7237,18 @@
                 <securityRoleDescription languageIsoName="en" description="Inactive Track" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="PartyComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Party Component" />
+        </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="Party" parentSecurityRoleGroupName="PartyComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Party" />
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Party List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Party Review" />
+            </securityRole>
+        </securityRoleGroup>
     </securityRoleGroups>
     <partySecurityRoleTemplates>
         <partySecurityRoleTemplate partySecurityRoleTemplateName="NO_SECURITY_ROLES" isDefault="true" sortOrder="1">
@@ -9214,6 +9226,8 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="TrackStatus" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="TrackStatus" securityRoleName="Active" />
             <partySecurityRoleTemplateRole securityRoleGroupName="TrackStatus" securityRoleName="Inactive" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Party" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Party" securityRoleName="Review" />
             <partySecurityRoleTemplateTrainingClass trainingClassName="REQUIRED_TRAINING_CLASS" />
         </partySecurityRoleTemplate>
     </partySecurityRoleTemplates>
