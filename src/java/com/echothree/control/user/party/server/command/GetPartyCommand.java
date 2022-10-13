@@ -16,35 +16,31 @@
 
 package com.echothree.control.user.party.server.command;
 
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 import com.echothree.control.user.party.common.form.GetPartyForm;
-import com.echothree.control.user.party.common.result.GetPartyResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.user.server.logic.UserLoginLogic;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserLogin;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.SecurityResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class GetPartyCommand
-        extends BaseSimpleCommand<GetPartyForm> {
+        extends BaseSingleEntityCommand<Party, GetPartyForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -60,7 +56,11 @@ public class GetPartyCommand
         ));
 
         FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null)
+                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
         );
     }
 
@@ -70,14 +70,17 @@ public class GetPartyCommand
     }
 
     String partyName;
+    UniversalEntitySpec universalEntitySpec;
     int parameterCount;
 
     @Override
-    protected SecurityResult security() {
+    public SecurityResult security() {
         var securityResult = super.security();
 
         partyName = form.getPartyName();
-        parameterCount = (partyName == null ? 0 : 1);
+        universalEntitySpec = form;
+        parameterCount = (partyName == null ? 0 : 1) +
+                EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(!canSpecifyParty() && parameterCount != 0) {
             securityResult = getInsufficientSecurityResult();
@@ -87,27 +90,32 @@ public class GetPartyCommand
     }
 
     @Override
-    protected BaseResult execute() {
+    protected Party getEntity() {
+        Party party;
+
+        if(parameterCount == 0) {
+            party = getParty();
+        } else {
+            party = PartyLogic.getInstance().getPartyByName(this, partyName, universalEntitySpec);
+        }
+
+        if(party != null) {
+            sendEvent(party.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+        }
+
+        return party;
+    }
+
+    @Override
+    protected BaseResult getTransfer(Party party) {
         var result = PartyResultFactory.getGetPartyResult();
 
-        if(parameterCount < 2) {
-            Party party = parameterCount == 0 ? getParty() : null;
+        if(party != null) {
+            var partyControl = Session.getModelController(PartyControl.class);
 
-            if(partyName != null) {
-                party = PartyLogic.getInstance().getPartyByName(this, partyName);
-            }
-
-            if(!hasExecutionErrors()) {
-                var partyControl = Session.getModelController(PartyControl.class);
-                
-                result.setParty(partyControl.getPartyTransfer(getUserVisit(), party));
-
-                sendEvent(party.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-            }
-        } else {
-            addExecutionError(ExecutionErrors.InvalidParameterCount.name());
+            result.setParty(partyControl.getPartyTransfer(getUserVisit(), party));
         }
-        
+
         return result;
     }
 

@@ -16,8 +16,10 @@
 
 package com.echothree.model.control.party.server.logic;
 
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.exception.InvalidPartyTypeException;
 import com.echothree.model.control.party.common.exception.UnknownPartyNameException;
@@ -153,5 +155,35 @@ public class PartyLogic
 
         return party;
     }
-    
+
+    public Party getPartyByName(final ExecutionErrorAccumulator eea, final String partyName,
+            final UniversalEntitySpec universalEntitySpec) {
+        var parameterCount = (partyName == null ? 0 : 1) +
+                EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalEntitySpec);
+        Party party = null;
+
+        if(parameterCount == 1) {
+            var partyControl = Session.getModelController(PartyControl.class);
+
+            if(partyName != null) {
+                party = partyControl.getPartyByName(partyName);
+
+                if(party == null) {
+                    handleExecutionError(UnknownPartyNameException.class, eea, ExecutionErrors.UnknownPartyName.name(), partyName);
+                }
+            } else if(universalEntitySpec != null) {
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalEntitySpec,
+                        ComponentVendors.ECHOTHREE.name(), EntityTypes.Party.name());
+
+                if(!eea.hasExecutionErrors()) {
+                    party = partyControl.getPartyByEntityInstance(entityInstance);
+                }
+            }
+        } else {
+            handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        return party;
+    }
+
 }
