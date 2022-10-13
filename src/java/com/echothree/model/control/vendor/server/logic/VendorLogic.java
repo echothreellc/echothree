@@ -49,7 +49,6 @@ import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.vendor.server.entity.Vendor;
 import com.echothree.model.data.vendor.server.entity.VendorType;
-import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -131,7 +130,7 @@ public class VendorLogic
                 var party = partyControl.getPartyByName(partyName);
 
                 if(party != null) {
-                    PartyLogic.getInstance().checkPartyType(eea, party, PartyTypes.CUSTOMER.name());
+                    PartyLogic.getInstance().checkPartyType(eea, party, PartyTypes.VENDOR.name());
 
                     vendor = vendorControl.getVendor(party);
                 } else {
@@ -144,7 +143,7 @@ public class VendorLogic
                 if(!eea.hasExecutionErrors()) {
                     var party = partyControl.getPartyByEntityInstance(entityInstance);
 
-                    PartyLogic.getInstance().checkPartyType(eea, party, PartyTypes.CUSTOMER.name());
+                    PartyLogic.getInstance().checkPartyType(eea, party, PartyTypes.VENDOR.name());
 
                     vendor = vendorControl.getVendor(party);
                 }
