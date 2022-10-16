@@ -30,6 +30,7 @@ import com.echothree.model.control.offer.server.control.OfferUseControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.offer.server.entity.Offer;
+import com.echothree.model.data.offer.server.factory.OfferFactory;
 import com.echothree.model.data.offer.server.value.OfferDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
@@ -149,6 +150,12 @@ public class OfferLogic
 
     public void updateOfferFromValue(OfferDetailValue offerDetailValue, BasePK updatedBy) {
         var offerControl = Session.getModelController(OfferControl.class);
+
+        if(offerDetailValue.getOfferItemSelectorPKHasBeenModified() && offerDetailValue.getOfferItemSelectorPK() != null) {
+            var offer = OfferFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, offerDetailValue.getOfferPK());
+
+            OfferItemLogic.getInstance().deleteOfferItemsByOffer(offer, updatedBy);
+        }
 
         offerControl.updateOfferFromValue(offerDetailValue, updatedBy);
     }
