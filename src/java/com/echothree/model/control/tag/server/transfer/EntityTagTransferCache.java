@@ -29,10 +29,11 @@ public class EntityTagTransferCache
         extends BaseTagTransferCache<EntityTag, EntityTagTransfer> {
     
     CoreControl coreControl = Session.getModelController(CoreControl.class);
-    
+    TagControl tagControl = Session.getModelController(TagControl.class);
+
     /** Creates a new instance of EntityTagTransferCache */
-    public EntityTagTransferCache(UserVisit userVisit, TagControl tagControl) {
-        super(userVisit, tagControl);
+    public EntityTagTransferCache(UserVisit userVisit) {
+        super(userVisit);
     }
     
     public EntityTagTransfer getEntityTagTransfer(EntityTag entityTag) {

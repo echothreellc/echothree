@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.tag.server.transfer;
 
-import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.server.persistence.BaseEntity;
@@ -25,13 +24,9 @@ import com.echothree.util.server.transfer.BaseTransferCache;
 public abstract class BaseTagTransferCache<K extends BaseEntity, V extends BaseTransfer>
         extends BaseTransferCache<K, V> {
     
-    TagControl tagControl;
-    
     /** Creates a new instance of BaseTagTransferCache */
-    protected BaseTagTransferCache(UserVisit userVisit, TagControl tagControl) {
+    protected BaseTagTransferCache(UserVisit userVisit) {
         super(userVisit);
-        
-        this.tagControl = tagControl;
     }
     
 }

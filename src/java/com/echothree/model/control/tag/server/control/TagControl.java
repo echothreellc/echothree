@@ -29,7 +29,6 @@ import com.echothree.model.control.tag.server.transfer.TagScopeDescriptionTransf
 import com.echothree.model.control.tag.server.transfer.TagScopeEntityTypeTransferCache;
 import com.echothree.model.control.tag.server.transfer.TagScopeTransferCache;
 import com.echothree.model.control.tag.server.transfer.TagTransferCache;
-import com.echothree.model.control.tag.server.transfer.TagTransferCaches;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.party.server.entity.Language;
@@ -56,7 +55,6 @@ import com.echothree.model.data.tag.server.value.TagScopeDetailValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
-import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
@@ -67,25 +65,11 @@ import java.util.List;
 import java.util.Objects;
 
 public class TagControl
-        extends BaseModelControl {
+        extends BaseTagControl {
     
     /** Creates a new instance of TagControl */
     public TagControl() {
         super();
-    }
-    
-    // --------------------------------------------------------------------------------
-    //   Tag Transfer Caches
-    // --------------------------------------------------------------------------------
-    
-    private TagTransferCaches tagTransferCaches;
-    
-    public TagTransferCaches getTagTransferCaches(UserVisit userVisit) {
-        if(tagTransferCaches == null) {
-            tagTransferCaches = new TagTransferCaches(userVisit, this);
-        }
-        
-        return tagTransferCaches;
     }
     
     // --------------------------------------------------------------------------------
