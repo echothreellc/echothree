@@ -104,7 +104,23 @@ public class TagControl
         
         return tagScope;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.TagScope */
+    public TagScope getTagScopeByEntityInstance(final EntityInstance entityInstance,
+            final EntityPermission entityPermission) {
+        var pk = new TagScopePK(entityInstance.getEntityUniqueId());
+
+        return TagScopeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public TagScope getTagScopeByEntityInstance(final EntityInstance entityInstance) {
+        return getTagScopeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public TagScope getTagScopeByEntityInstanceForUpdate(final EntityInstance entityInstance) {
+        return getTagScopeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     private List<TagScope> getTagScopes(EntityPermission entityPermission) {
         String query = null;
         
@@ -174,7 +190,7 @@ public class TagControl
         return getTagScopesByEntityType(entityType, EntityPermission.READ_WRITE);
     }
     
-    private TagScope getDefaultTagScope(EntityPermission entityPermission) {
+    public TagScope getDefaultTagScope(EntityPermission entityPermission) {
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
@@ -205,7 +221,7 @@ public class TagControl
         return getDefaultTagScopeForUpdate().getLastDetailForUpdate().getTagScopeDetailValue().clone();
     }
     
-    private TagScope getTagScopeByName(String tagScopeName, EntityPermission entityPermission) {
+    public TagScope getTagScopeByName(String tagScopeName, EntityPermission entityPermission) {
         TagScope tagScope;
         
         try {
@@ -743,7 +759,23 @@ public class TagControl
         
         return tag;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Tag */
+    public Tag getTagByEntityInstance(final EntityInstance entityInstance,
+            final EntityPermission entityPermission) {
+        var pk = new TagPK(entityInstance.getEntityUniqueId());
+
+        return TagFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Tag getTagByEntityInstance(final EntityInstance entityInstance) {
+        return getTagByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Tag getTagByEntityInstanceForUpdate(final EntityInstance entityInstance) {
+        return getTagByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     private List<Tag> getTags(TagScope tagScope, EntityPermission entityPermission) {
         List<Tag> tags;
         
