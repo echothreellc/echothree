@@ -20,7 +20,21 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.graphql.CoreSecurityUtils;
 import com.echothree.model.control.core.server.graphql.EntityAttributeGroupObject;
 import com.echothree.model.control.core.server.graphql.EntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
+import com.echothree.model.control.offer.server.control.OfferItemControl;
+import com.echothree.model.control.offer.server.graphql.OfferItemObject;
+import com.echothree.model.control.offer.server.graphql.OfferSecurityUtils;
+import com.echothree.model.control.tag.server.control.TagControl;
+import com.echothree.model.control.tag.server.graphql.TagScopeObject;
+import com.echothree.model.control.tag.server.graphql.TagSecurityUtils;
 import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.model.data.offer.common.OfferItemConstants;
+import com.echothree.model.data.tag.common.TagScopeConstants;
+import com.echothree.model.data.tag.server.entity.TagScope;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.PersistenceUtils;
 import com.echothree.util.server.persistence.Session;
@@ -28,9 +42,11 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLID;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class BaseEntityInstanceObject
         extends BaseObject {
@@ -98,4 +114,24 @@ public abstract class BaseEntityInstanceObject
         }
     }
 
+    @GraphQLField
+    @GraphQLDescription("tag scopes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<TagScopeObject> getTagScopes(final DataFetchingEnvironment env) {
+        if(TagSecurityUtils.getInstance().getHasTagScopesAccess(env)) {
+            var tagControl = Session.getModelController(TagControl.class);
+            var totalCount = tagControl.countTagScopesByEntityType(getEntityInstanceByBasePK().getEntityType());
+
+            try(var objectLimiter = new ObjectLimiter(env, TagScopeConstants.COMPONENT_VENDOR_NAME, TagScopeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = tagControl.getTagScopesByEntityType(getEntityInstanceByBasePK().getEntityType());
+                var tagScopes = entities.stream().map(TagScopeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, tagScopes);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+    
 }

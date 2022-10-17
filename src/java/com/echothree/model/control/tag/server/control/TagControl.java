@@ -114,6 +114,15 @@ public class TagControl
                     """);
     }
 
+    public long countTagScopesByEntityType(EntityType entityType) {
+        return session.queryForLong("""
+                    SELECT COUNT(*)
+                    FROM tagscopes, tagscopedetails, tagscopeentitytypes
+                    WHERE ts_activedetailid = tsdt_tagscopedetailid
+                    AND ts_tagscopeid = tent_ts_tagscopeid AND tent_ent_entitytypeid = ? AND tent_thrutime = ?
+                    """, entityType, Session.MAX_TIME);
+    }
+
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.TagScope */
     public TagScope getTagScopeByEntityInstance(final EntityInstance entityInstance,
             final EntityPermission entityPermission) {
