@@ -1,5 +1,21 @@
 # Changelog
 
+## 2022-10-16-01
+
+* Editing Offer to Add Offer Item Selector Should Remove All Offer Items [541](https://gitlab.echothree.com/echothree/echothree/-/issues/541)
+* Add Tag Scope Object and Queries [553](https://gitlab.echothree.com/echothree/echothree/-/issues/553)
+* Apache Lucene 9.4.0 Upgrade [579](https://gitlab.echothree.com/echothree/echothree/-/issues/579)
+* Send Kafka Events in Avro Format [580](https://gitlab.echothree.com/echothree/echothree/-/issues/580)
+* Gson 2.9.1 Upgrade [581](https://gitlab.echothree.com/echothree/echothree/-/issues/581)
+* graphql-java 17.4 and graphql-java-extended-scalars 17.1 Upgrade [582](https://gitlab.echothree.com/echothree/echothree/-/issues/582)
+* Send Kafka Events in JSON Format [583](https://gitlab.echothree.com/echothree/echothree/-/issues/583)
+* SLF4J 1.7.36 Upgrade [584](https://gitlab.echothree.com/echothree/echothree/-/issues/584)
+* Include Content-Type Header for JSON Kafka Events [585](https://gitlab.echothree.com/echothree/echothree/-/issues/585)
+* Allow entityInstance Query to Accept All Types of Entity Instance References [586](https://gitlab.echothree.com/echothree/echothree/-/issues/586)
+* Add Party Queries [587](https://gitlab.echothree.com/echothree/echothree/-/issues/587)
+* Replace Periods With Dashes in Kafka Topic Name [591](https://gitlab.echothree.com/echothree/echothree/-/issues/591)
+* Add lucene-backward-codecs [592](https://gitlab.echothree.com/echothree/echothree/-/issues/592)
+
 ## 2022-10-02-01
 
 * Add Item Description Type Use Type Object and Queries [549](https://gitlab.echothree.com/echothree/echothree/-/issues/549)
