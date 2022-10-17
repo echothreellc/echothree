@@ -234,6 +234,9 @@ import com.echothree.control.user.sequence.server.command.GetSequencesCommand;
 import com.echothree.control.user.shipment.common.ShipmentUtil;
 import com.echothree.control.user.shipment.server.command.GetFreeOnBoardCommand;
 import com.echothree.control.user.shipment.server.command.GetFreeOnBoardsCommand;
+import com.echothree.control.user.tag.common.TagUtil;
+import com.echothree.control.user.tag.server.command.GetTagScopeCommand;
+import com.echothree.control.user.tag.server.command.GetTagScopesCommand;
 import com.echothree.control.user.uom.common.UomUtil;
 import com.echothree.control.user.uom.server.command.GetUnitOfMeasureKindCommand;
 import com.echothree.control.user.uom.server.command.GetUnitOfMeasureKindUseCommand;
@@ -376,6 +379,8 @@ import com.echothree.model.control.sequence.server.graphql.SequenceEncoderTypeOb
 import com.echothree.model.control.sequence.server.graphql.SequenceObject;
 import com.echothree.model.control.sequence.server.graphql.SequenceTypeObject;
 import com.echothree.model.control.shipment.server.graphql.FreeOnBoardObject;
+import com.echothree.model.control.tag.server.control.TagControl;
+import com.echothree.model.control.tag.server.graphql.TagScopeObject;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindObject;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindUseObject;
@@ -505,6 +510,8 @@ import com.echothree.model.data.sequence.server.entity.SequenceChecksumType;
 import com.echothree.model.data.sequence.server.entity.SequenceEncoderType;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
+import com.echothree.model.data.tag.common.TagScopeConstants;
+import com.echothree.model.data.tag.server.entity.TagScope;
 import com.echothree.model.data.uom.common.UnitOfMeasureKindConstants;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUse;
@@ -6281,6 +6288,57 @@ public final class GraphQlQueries
                 .forEachOrdered(nameSuffixObjects::add);
         
         return nameSuffixObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("tagScope")
+    public static TagScopeObject tagScope(final DataFetchingEnvironment env,
+            @GraphQLName("tagScopeName") final String tagScopeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        TagScope tagScope;
+
+        try {
+            var commandForm = TagUtil.getHome().getGetTagScopeForm();
+
+            commandForm.setTagScopeName(tagScopeName);
+            commandForm.setUlid(id);
+
+            tagScope = new GetTagScopeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return tagScope == null ? null : new TagScopeObject(tagScope);
+    }
+
+    @GraphQLField
+    @GraphQLName("tagScopes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public static CountingPaginatedData<TagScopeObject> tagScopes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<TagScopeObject> data;
+
+        try {
+            var tagControl = Session.getModelController(TagControl.class);
+            var totalCount = tagControl.countTagScopes();
+
+            try(var objectLimiter = new ObjectLimiter(env, TagScopeConstants.COMPONENT_VENDOR_NAME, TagScopeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = TagUtil.getHome().getGetTagScopesForm();
+                var entities = new GetTagScopesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var tagScopes = entities.stream().map(TagScopeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, tagScopes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
     }
 
 }

@@ -23,16 +23,18 @@ import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.data.tag.server.entity.Tag;
 import com.echothree.model.data.tag.server.entity.TagDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import java.util.Set;
+import com.echothree.util.server.persistence.Session;
 
 public class TagTransferCache
         extends BaseTagTransferCache<Tag, TagTransfer> {
 
+    TagControl tagControl = Session.getModelController(TagControl.class);
+
     boolean includeUsageCount;
 
     /** Creates a new instance of TagTransferCache */
-    public TagTransferCache(UserVisit userVisit, TagControl tagControl) {
-        super(userVisit, tagControl);
+    public TagTransferCache(UserVisit userVisit) {
+        super(userVisit);
 
         var options = session.getOptions();
         if(options != null) {

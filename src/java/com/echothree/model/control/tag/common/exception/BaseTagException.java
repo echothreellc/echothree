@@ -14,13 +14,32 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.tag.common.form;
+package com.echothree.model.control.tag.common.exception;
 
-import com.echothree.control.user.tag.common.spec.TagScopeUniversalSpec;
+import com.echothree.util.common.exception.BaseException;
+import com.echothree.util.common.message.Message;
 
-public interface GetTagScopeForm
-        extends TagScopeUniversalSpec {
+public abstract class BaseTagException
+        extends BaseException {
     
-    // Nothing additional beyond TagScopeUniversalSpec
+    /** Creates a new instance of BaseTagException */
+    protected BaseTagException() {
+        super();
+    }
     
+    /** Creates a new instance of BaseTagException */
+    protected BaseTagException(String message) {
+        super(message);
+    }
+    
+    /** Creates a new instance of BaseTagException */
+    protected BaseTagException(Throwable cause) {
+        super(cause);
+    }
+    
+    /** Creates a new instance of BaseTagException */
+    protected BaseTagException(Message message) {
+        super(message);
+    }
+
 }

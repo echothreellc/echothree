@@ -2253,5 +2253,6 @@ public enum ExecutionErrors {
     CannotManuallyEditOfferItemPriceWhenOfferItemPriceFilterSet,
     CannotManuallyDeleteOfferItemPriceWhenOfferItemPriceFilterSet,
     UnknownDefaultItemDescriptionTypeUseType,
+    UnknownDefaultTagScope,
 
 }

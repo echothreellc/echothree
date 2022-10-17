@@ -14,19 +14,31 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.tag.server.transfer;
+package com.echothree.model.control.tag.common.exception;
 
-import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.transfer.BaseTransfer;
-import com.echothree.util.server.persistence.BaseEntity;
-import com.echothree.util.server.transfer.BaseTransferCache;
+import com.echothree.util.common.message.Message;
 
-public abstract class BaseTagTransferCache<K extends BaseEntity, V extends BaseTransfer>
-        extends BaseTransferCache<K, V> {
+public class UnknownTagScopeNameException
+        extends BaseTagException {
     
-    /** Creates a new instance of BaseTagTransferCache */
-    protected BaseTagTransferCache(UserVisit userVisit) {
-        super(userVisit);
+    /** Creates a new instance of UnknownTagScopeNameException */
+    public UnknownTagScopeNameException() {
+        super();
     }
     
+    /** Creates a new instance of UnknownTagScopeNameException */
+    public UnknownTagScopeNameException(String message) {
+        super(message);
+    }
+    
+    /** Creates a new instance of UnknownTagScopeNameException */
+    public UnknownTagScopeNameException(Throwable cause) {
+        super(cause);
+    }
+    
+    /** Creates a new instance of UnknownTagScopeNameException */
+    public UnknownTagScopeNameException(Message message) {
+        super(message);
+    }
+
 }

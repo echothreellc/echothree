@@ -29,7 +29,6 @@ import com.echothree.model.control.tag.server.transfer.TagScopeDescriptionTransf
 import com.echothree.model.control.tag.server.transfer.TagScopeEntityTypeTransferCache;
 import com.echothree.model.control.tag.server.transfer.TagScopeTransferCache;
 import com.echothree.model.control.tag.server.transfer.TagTransferCache;
-import com.echothree.model.control.tag.server.transfer.TagTransferCaches;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.party.server.entity.Language;
@@ -56,36 +55,22 @@ import com.echothree.model.data.tag.server.value.TagScopeDetailValue;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
-import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
 public class TagControl
-        extends BaseModelControl {
+        extends BaseTagControl {
     
     /** Creates a new instance of TagControl */
     public TagControl() {
         super();
-    }
-    
-    // --------------------------------------------------------------------------------
-    //   Tag Transfer Caches
-    // --------------------------------------------------------------------------------
-    
-    private TagTransferCaches tagTransferCaches;
-    
-    public TagTransferCaches getTagTransferCaches(UserVisit userVisit) {
-        if(tagTransferCaches == null) {
-            tagTransferCaches = new TagTransferCaches(userVisit, this);
-        }
-        
-        return tagTransferCaches;
     }
     
     // --------------------------------------------------------------------------------
@@ -120,7 +105,40 @@ public class TagControl
         
         return tagScope;
     }
-    
+
+    public long countTagScopes() {
+        return session.queryForLong("""
+                    SELECT COUNT(*)
+                    FROM tagscopes, tagscopedetails
+                    WHERE ts_activedetailid = tsdt_tagscopedetailid
+                    """);
+    }
+
+    public long countTagScopesByEntityType(EntityType entityType) {
+        return session.queryForLong("""
+                    SELECT COUNT(*)
+                    FROM tagscopes, tagscopedetails, tagscopeentitytypes
+                    WHERE ts_activedetailid = tsdt_tagscopedetailid
+                    AND ts_tagscopeid = tent_ts_tagscopeid AND tent_ent_entitytypeid = ? AND tent_thrutime = ?
+                    """, entityType, Session.MAX_TIME);
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.TagScope */
+    public TagScope getTagScopeByEntityInstance(final EntityInstance entityInstance,
+            final EntityPermission entityPermission) {
+        var pk = new TagScopePK(entityInstance.getEntityUniqueId());
+
+        return TagScopeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public TagScope getTagScopeByEntityInstance(final EntityInstance entityInstance) {
+        return getTagScopeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public TagScope getTagScopeByEntityInstanceForUpdate(final EntityInstance entityInstance) {
+        return getTagScopeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     private List<TagScope> getTagScopes(EntityPermission entityPermission) {
         String query = null;
         
@@ -128,7 +146,8 @@ public class TagControl
             query = "SELECT _ALL_ " +
                     "FROM tagscopes, tagscopedetails " +
                     "WHERE ts_activedetailid = tsdt_tagscopedetailid " +
-                    "ORDER BY tsdt_sortorder, tsdt_tagscopename";
+                    "ORDER BY tsdt_sortorder, tsdt_tagscopename " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM tagscopes, tagscopedetails " +
@@ -160,7 +179,8 @@ public class TagControl
                         "FROM tagscopes, tagscopedetails, tagscopeentitytypes " +
                         "WHERE ts_activedetailid = tsdt_tagscopedetailid " +
                         "AND ts_tagscopeid = tent_ts_tagscopeid AND tent_ent_entitytypeid = ? AND tent_thrutime = ? " +
-                        "ORDER BY tsdt_sortorder, tsdt_tagscopename";
+                        "ORDER BY tsdt_sortorder, tsdt_tagscopename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM tagscopes, tagscopedetails, tagscopeentitytypes " +
@@ -190,7 +210,7 @@ public class TagControl
         return getTagScopesByEntityType(entityType, EntityPermission.READ_WRITE);
     }
     
-    private TagScope getDefaultTagScope(EntityPermission entityPermission) {
+    public TagScope getDefaultTagScope(EntityPermission entityPermission) {
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
@@ -221,7 +241,7 @@ public class TagControl
         return getDefaultTagScopeForUpdate().getLastDetailForUpdate().getTagScopeDetailValue().clone();
     }
     
-    private TagScope getTagScopeByName(String tagScopeName, EntityPermission entityPermission) {
+    public TagScope getTagScopeByName(String tagScopeName, EntityPermission entityPermission) {
         TagScope tagScope;
         
         try {
@@ -303,7 +323,7 @@ public class TagControl
         return getTagTransferCaches(userVisit).getTagScopeTransferCache().getTagScopeTransfer(tagScope);
     }
     
-    public List<TagScopeTransfer> getTagScopeTransfers(UserVisit userVisit, List<TagScope> tagScopes) {
+    public List<TagScopeTransfer> getTagScopeTransfers(UserVisit userVisit, Collection<TagScope> tagScopes) {
         List<TagScopeTransfer> tagScopeTransfers = new ArrayList<>(tagScopes.size());
         TagScopeTransferCache tagScopeTransferCache = getTagTransferCaches(userVisit).getTagScopeTransferCache();
         
@@ -469,7 +489,8 @@ public class TagControl
                         "FROM tagscopedescriptions, languages " +
                         "WHERE tsd_ts_tagscopeid = ? AND tsd_thrutime = ? " +
                         "AND tsd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM tagscopedescriptions " +
@@ -627,7 +648,8 @@ public class TagControl
                         "FROM tagscopeentitytypes, entitytypes, entitytypedetails " +
                         "WHERE tent_ts_tagscopeid = ? AND tent_thrutime = ? " +
                         "AND tent_ent_entitytypeid = ent_entitytypeid AND ent_lastdetailid = entdt_entitytypedetailid " +
-                        "ORDER BY entdt_sortorder, entdt_entitytypename";
+                        "ORDER BY entdt_sortorder, entdt_entitytypename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM tagscopeentitytypes " +
@@ -667,7 +689,8 @@ public class TagControl
                         "FROM tagscopeentitytypes, tagscopes, tagscopedetails " +
                         "WHERE tent_ent_entitytypeid = ? AND tent_thrutime = ? " +
                         "AND tent_ts_tagscopeid = ts_tagscopeid AND ts_lastdetailid = tsdt_tagscopedetailid " +
-                        "ORDER BY tsdt_sortorder, tsdt_tagscopename";
+                        "ORDER BY tsdt_sortorder, tsdt_tagscopename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM tagscopeentitytypes " +
@@ -759,7 +782,23 @@ public class TagControl
         
         return tag;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Tag */
+    public Tag getTagByEntityInstance(final EntityInstance entityInstance,
+            final EntityPermission entityPermission) {
+        var pk = new TagPK(entityInstance.getEntityUniqueId());
+
+        return TagFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Tag getTagByEntityInstance(final EntityInstance entityInstance) {
+        return getTagByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Tag getTagByEntityInstanceForUpdate(final EntityInstance entityInstance) {
+        return getTagByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     private List<Tag> getTags(TagScope tagScope, EntityPermission entityPermission) {
         List<Tag> tags;
         
@@ -770,7 +809,8 @@ public class TagControl
                 query = "SELECT _ALL_ " +
                         "FROM tags, tagdetails " +
                         "WHERE t_activedetailid = tdt_tagdetailid AND tdt_ts_tagscopeid = ? " +
-                        "ORDER BY tdt_tagname";
+                        "ORDER BY tdt_tagname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM tags, tagdetails " +
@@ -810,7 +850,8 @@ public class TagControl
                         "FROM tags, tagdetails, entitytags " +
                         "WHERE t_activedetailid = tdt_tagdetailid AND tdt_ts_tagscopeid = ? " +
                         "AND t_tagid = et_t_tagid AND et_taggedentityinstanceid = ? AND et_thrutime = ? " +
-                        "ORDER BY tdt_tagname";
+                        "ORDER BY tdt_tagname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM tags, tagdetails, entitytags " +
@@ -1062,7 +1103,8 @@ public class TagControl
                         "FROM entitytags, tags, tagdetails " +
                         "WHERE et_taggedentityinstanceid = ? AND et_thrutime = ? " +
                         "AND et_t_tagid = t_tagid AND t_lastdetailid = tdt_tagdetailid " +
-                        "ORDER BY tdt_tagname";
+                        "ORDER BY tdt_tagname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM entitytags " +
@@ -1104,7 +1146,8 @@ public class TagControl
                         "AND et_taggedentityinstanceid = eni_entityinstanceid " +
                         "AND eni_ent_entitytypeid = ent_entitytypeid AND ent_lastdetailid = entdt_entitytypedetailid " +
                         "AND entdt_cvnd_componentvendorid = cvnd_componentvendorid AND cvnd_lastdetailid = cvndd_componentvendordetailid " +
-                        "ORDER BY cvndd_componentvendorname, entdt_sortorder, entdt_entitytypename, eni_entityuniqueid";
+                        "ORDER BY cvndd_componentvendorname, entdt_sortorder, entdt_entitytypename, eni_entityuniqueid " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM entitytags " +

@@ -14,13 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.tag.common.form;
+package com.echothree.control.user.tag.common.spec;
 
-import com.echothree.control.user.tag.common.spec.TagScopeUniversalSpec;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetTagScopeForm
-        extends TagScopeUniversalSpec {
+public interface TagScopeUniversalSpec
+        extends TagScopeSpec, UniversalEntitySpec {
     
-    // Nothing additional beyond TagScopeUniversalSpec
+    // Nothing additional beyond TagScopeSpec, UniversalEntitySpec
     
 }

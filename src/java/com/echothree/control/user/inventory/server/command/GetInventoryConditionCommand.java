@@ -56,7 +56,7 @@ public class GetInventoryConditionCommand
     
     @Override
     protected InventoryCondition getEntity() {
-        InventoryCondition inventoryCondition = InventoryConditionLogic.getInstance().getInventoryConditionByUniversalSpec(this, form, true);
+        var inventoryCondition = InventoryConditionLogic.getInstance().getInventoryConditionByUniversalSpec(this, form, true);
 
         if(inventoryCondition != null) {
             sendEvent(inventoryCondition.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
@@ -68,7 +68,7 @@ public class GetInventoryConditionCommand
     @Override
     protected BaseResult getTransfer(InventoryCondition inventoryCondition) {
         var inventoryControl = Session.getModelController(InventoryControl.class);
-        GetInventoryConditionResult result = InventoryResultFactory.getGetInventoryConditionResult();
+        var result = InventoryResultFactory.getGetInventoryConditionResult();
 
         if(inventoryCondition != null) {
             result.setInventoryCondition(inventoryControl.getInventoryConditionTransfer(getUserVisit(), inventoryCondition));
