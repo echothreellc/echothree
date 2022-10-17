@@ -60,6 +60,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -128,7 +129,8 @@ public class TagControl
             query = "SELECT _ALL_ " +
                     "FROM tagscopes, tagscopedetails " +
                     "WHERE ts_activedetailid = tsdt_tagscopedetailid " +
-                    "ORDER BY tsdt_sortorder, tsdt_tagscopename";
+                    "ORDER BY tsdt_sortorder, tsdt_tagscopename " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM tagscopes, tagscopedetails " +
@@ -160,7 +162,8 @@ public class TagControl
                         "FROM tagscopes, tagscopedetails, tagscopeentitytypes " +
                         "WHERE ts_activedetailid = tsdt_tagscopedetailid " +
                         "AND ts_tagscopeid = tent_ts_tagscopeid AND tent_ent_entitytypeid = ? AND tent_thrutime = ? " +
-                        "ORDER BY tsdt_sortorder, tsdt_tagscopename";
+                        "ORDER BY tsdt_sortorder, tsdt_tagscopename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM tagscopes, tagscopedetails, tagscopeentitytypes " +
@@ -303,7 +306,7 @@ public class TagControl
         return getTagTransferCaches(userVisit).getTagScopeTransferCache().getTagScopeTransfer(tagScope);
     }
     
-    public List<TagScopeTransfer> getTagScopeTransfers(UserVisit userVisit, List<TagScope> tagScopes) {
+    public List<TagScopeTransfer> getTagScopeTransfers(UserVisit userVisit, Collection<TagScope> tagScopes) {
         List<TagScopeTransfer> tagScopeTransfers = new ArrayList<>(tagScopes.size());
         TagScopeTransferCache tagScopeTransferCache = getTagTransferCaches(userVisit).getTagScopeTransferCache();
         
@@ -469,7 +472,8 @@ public class TagControl
                         "FROM tagscopedescriptions, languages " +
                         "WHERE tsd_ts_tagscopeid = ? AND tsd_thrutime = ? " +
                         "AND tsd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM tagscopedescriptions " +
@@ -627,7 +631,8 @@ public class TagControl
                         "FROM tagscopeentitytypes, entitytypes, entitytypedetails " +
                         "WHERE tent_ts_tagscopeid = ? AND tent_thrutime = ? " +
                         "AND tent_ent_entitytypeid = ent_entitytypeid AND ent_lastdetailid = entdt_entitytypedetailid " +
-                        "ORDER BY entdt_sortorder, entdt_entitytypename";
+                        "ORDER BY entdt_sortorder, entdt_entitytypename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM tagscopeentitytypes " +
@@ -667,7 +672,8 @@ public class TagControl
                         "FROM tagscopeentitytypes, tagscopes, tagscopedetails " +
                         "WHERE tent_ent_entitytypeid = ? AND tent_thrutime = ? " +
                         "AND tent_ts_tagscopeid = ts_tagscopeid AND ts_lastdetailid = tsdt_tagscopedetailid " +
-                        "ORDER BY tsdt_sortorder, tsdt_tagscopename";
+                        "ORDER BY tsdt_sortorder, tsdt_tagscopename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM tagscopeentitytypes " +
@@ -786,7 +792,8 @@ public class TagControl
                 query = "SELECT _ALL_ " +
                         "FROM tags, tagdetails " +
                         "WHERE t_activedetailid = tdt_tagdetailid AND tdt_ts_tagscopeid = ? " +
-                        "ORDER BY tdt_tagname";
+                        "ORDER BY tdt_tagname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM tags, tagdetails " +
@@ -826,7 +833,8 @@ public class TagControl
                         "FROM tags, tagdetails, entitytags " +
                         "WHERE t_activedetailid = tdt_tagdetailid AND tdt_ts_tagscopeid = ? " +
                         "AND t_tagid = et_t_tagid AND et_taggedentityinstanceid = ? AND et_thrutime = ? " +
-                        "ORDER BY tdt_tagname";
+                        "ORDER BY tdt_tagname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM tags, tagdetails, entitytags " +
@@ -1078,7 +1086,8 @@ public class TagControl
                         "FROM entitytags, tags, tagdetails " +
                         "WHERE et_taggedentityinstanceid = ? AND et_thrutime = ? " +
                         "AND et_t_tagid = t_tagid AND t_lastdetailid = tdt_tagdetailid " +
-                        "ORDER BY tdt_tagname";
+                        "ORDER BY tdt_tagname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM entitytags " +
@@ -1120,7 +1129,8 @@ public class TagControl
                         "AND et_taggedentityinstanceid = eni_entityinstanceid " +
                         "AND eni_ent_entitytypeid = ent_entitytypeid AND ent_lastdetailid = entdt_entitytypedetailid " +
                         "AND entdt_cvnd_componentvendorid = cvnd_componentvendorid AND cvnd_lastdetailid = cvndd_componentvendordetailid " +
-                        "ORDER BY cvndd_componentvendorname, entdt_sortorder, entdt_entitytypename, eni_entityuniqueid";
+                        "ORDER BY cvndd_componentvendorname, entdt_sortorder, entdt_entitytypename, eni_entityuniqueid " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM entitytags " +
