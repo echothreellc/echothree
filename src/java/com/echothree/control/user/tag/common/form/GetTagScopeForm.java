@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.tag.common.form;
 
-import com.echothree.control.user.tag.common.spec.TagScopeSpec;
+import com.echothree.control.user.tag.common.spec.TagScopeUniversalSpec;
 
 public interface GetTagScopeForm
-        extends TagScopeSpec {
+        extends TagScopeUniversalSpec {
     
-    // Nothing additional beyond TagScopeSpec
+    // Nothing additional beyond TagScopeUniversalSpec
     
 }

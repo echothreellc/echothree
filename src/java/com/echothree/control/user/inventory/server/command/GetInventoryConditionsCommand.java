@@ -56,7 +56,7 @@ public class GetInventoryConditionsCommand
     
     @Override
     protected BaseResult getTransfers(Collection<InventoryCondition> entities) {
-        GetInventoryConditionsResult result = InventoryResultFactory.getGetInventoryConditionsResult();
+        var result = InventoryResultFactory.getGetInventoryConditionsResult();
         var inventoryControl = Session.getModelController(InventoryControl.class);
         
         result.setInventoryConditions(inventoryControl.getInventoryConditionTransfers(getUserVisit(), entities));
