@@ -16,7 +16,9 @@
 
 package com.echothree.util.server.kafka;
 
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.Event;
+import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.EntityInstanceUtils;
 import com.google.common.base.Charsets;
 import com.google.common.net.MediaType;
@@ -52,11 +54,13 @@ public class EventTopic {
         if(kafkaConnectionFactory != null) {
             try {
                 try(var kafkaConnection = kafkaConnectionFactory.createConnection()) {
+                    var coreControl = Session.getModelController(CoreControl.class);
                     var eventId = event.getPrimaryKey().getEntityId();
                     var eventTime = event.getEventTime();
                     var eventTimeSequence = event.getEventTimeSequence();
-                    var entityInstance = event.getEntityInstance();
+                    var entityInstance = coreControl.ensureUlidForEntityInstance(event.getEntityInstance(), false);
                     var entityRef = entityInstanceUtils.getEntityRefByEntityInstance(entityInstance);
+                    var id = entityInstance.getUlid();
                     var eventTypeName = event.getEventType().getEventTypeName();
                     var relatedEntityRef = entityInstanceUtils.getEntityRefByEntityInstance(event.getRelatedEntityInstance());
                     var relatedEventType = event.getRelatedEventType();
@@ -66,7 +70,8 @@ public class EventTopic {
 //                    var value = "eventId = " + eventId
 //                            + ", eventTime = " + eventTime
 //                            + ", eventTimeSequence = " + eventTimeSequence
-//                            + ", entityInstance = " + entityRef
+//                            + ", entityRef = " + entityRef
+//                            + ", id = " + id
 //                            + ", eventType = " + eventTypeName
 //                            + ", relatedEntityInstance = " + relatedEntityRef
 //                            + ", relatedEventType = " + relatedEventTypeName
@@ -77,6 +82,7 @@ public class EventTopic {
 //                            .setEventTime(eventTime)
 //                            .setEventTimeSequence(eventTimeSequence)
 //                            .setEntityRef(entityRef)
+//                            .setId(id)
 //                            .setEventTypeName(eventTypeName)
 //                            .setRelatedEntityRef(relatedEntityRef)
 //                            .setRelatedEventTypeName(relatedEventTypeName)
@@ -84,7 +90,7 @@ public class EventTopic {
 //                            .build();
 
                     var eventJsonObject = new com.echothree.model.control.core.server.kafka.Event(eventId, eventTime,
-                            eventTimeSequence, entityRef, eventTypeName, relatedEntityRef, relatedEventTypeName,
+                            eventTimeSequence, entityRef, id, eventTypeName, relatedEntityRef, relatedEventTypeName,
                             createdByEntityRef);
                     var eventJson = gson.toJson(eventJsonObject);
 
