@@ -14,13 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.offer.common.form;
+package com.echothree.control.user.offer.common.spec;
 
-import com.echothree.control.user.offer.common.spec.OfferItemUniversalSpec;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetOfferItemForm
-        extends OfferItemUniversalSpec {
+public interface OfferItemUniversalSpec
+        extends OfferItemSpec, UniversalEntitySpec {
     
-    // Nothing additional beyond OfferItemUniversalSpec
+    // Nothing additional beyond OfferItemSpec, UniversalEntitySpec
     
 }

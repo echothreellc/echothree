@@ -21,13 +21,13 @@ import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.offer.common.transfer.OfferItemPriceTransfer;
 import com.echothree.model.control.offer.common.transfer.OfferItemTransfer;
 import com.echothree.model.control.offer.server.logic.OfferItemLogic;
-import com.echothree.model.control.offer.server.logic.OfferLogic;
 import com.echothree.model.control.offer.server.transfer.OfferItemPriceTransferCache;
 import com.echothree.model.control.offer.server.transfer.OfferItemTransferCache;
 import com.echothree.model.data.accounting.server.entity.Currency;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.item.server.entity.ItemPriceType;
+import com.echothree.model.data.offer.common.pk.OfferItemPK;
 import com.echothree.model.data.offer.common.pk.OfferItemPricePK;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferItem;
@@ -89,6 +89,22 @@ public class OfferItemControl
                         + "FROM offeritems "
                         + "WHERE ofri_itm_itemid = ? AND ofri_thrutime = ?",
                 item, Session.MAX_TIME);
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.OfferItem */
+    public OfferItem getOfferItemByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new OfferItemPK(entityInstance.getEntityUniqueId());
+        var offerItem = OfferItemFactory.getInstance().getEntityFromPK(entityPermission, pk);
+
+        return offerItem;
+    }
+
+    public OfferItem getOfferItemByEntityInstance(EntityInstance entityInstance) {
+        return getOfferItemByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public OfferItem getOfferItemByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getOfferItemByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
     private static final Map<EntityPermission, String> getOfferItemQueries;

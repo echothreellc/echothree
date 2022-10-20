@@ -1793,8 +1793,9 @@ public final class GraphQlQueries
     @GraphQLField
     @GraphQLName("offerItem")
     public static OfferItemObject offerItem(final DataFetchingEnvironment env,
-            @GraphQLName("offerName") @GraphQLNonNull final String offerName,
-            @GraphQLName("itemName") @GraphQLNonNull final String itemName) {
+            @GraphQLName("offerName") final String offerName,
+            @GraphQLName("itemName") final String itemName,
+            @GraphQLName("id") @GraphQLID final String id) {
         OfferItem offerItem;
 
         try {
@@ -1802,6 +1803,7 @@ public final class GraphQlQueries
 
             commandForm.setOfferName(offerName);
             commandForm.setItemName(itemName);
+            commandForm.setUlid(id);
 
             offerItem = new GetOfferItemCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
