@@ -16,8 +16,13 @@
 
 package com.echothree.model.control.offer.server.logic;
 
+import com.echothree.control.user.offer.common.spec.OfferItemUniversalSpec;
 import com.echothree.model.control.accounting.server.logic.CurrencyLogic;
 import com.echothree.model.control.content.server.logic.ContentLogic;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.inventory.server.logic.InventoryConditionLogic;
 import com.echothree.model.control.item.common.ItemPriceTypes;
 import com.echothree.model.control.item.common.exception.MissingMaximumUnitPriceException;
@@ -57,6 +62,7 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.validation.ParameterUtils;
 import java.util.List;
 
 public class OfferItemLogic
@@ -142,6 +148,45 @@ public class OfferItemLogic
 
     public OfferItem getOfferItemForUpdate(final ExecutionErrorAccumulator eea, final Offer offer, final Item item) {
         return getOfferItem(eea, offer, item, EntityPermission.READ_WRITE);
+    }
+
+    public OfferItem getOfferItemByUniversalSpec(final ExecutionErrorAccumulator eea, final OfferItemUniversalSpec universalSpec,
+            final EntityPermission entityPermission) {
+        var offerName = universalSpec.getOfferName();
+        var itemName = universalSpec.getItemName();
+        var nameParameterCount= ParameterUtils.getInstance().countNonNullParameters(offerName, itemName);
+        var possibleEntitySpecs= EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        OfferItem offerItem = null;
+
+        if(nameParameterCount == 2 && possibleEntitySpecs == 0) {
+            var offer = OfferLogic.getInstance().getOfferByName(eea, offerName);
+            var item = ItemLogic.getInstance().getItemByName(eea, itemName);
+
+            if(!eea.hasExecutionErrors()) {
+                offerItem = getOfferItem(eea, offer, item);
+            }
+        } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
+            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    ComponentVendors.ECHOTHREE.name(), EntityTypes.OfferItem.name());
+
+            if(!eea.hasExecutionErrors()) {
+                var offerItemControl = Session.getModelController(OfferItemControl.class);
+
+                offerItem = offerItemControl.getOfferItemByEntityInstance(entityInstance, entityPermission);
+            }
+        } else {
+            handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        return offerItem;
+    }
+
+    public OfferItem getOfferItemByUniversalSpec(final ExecutionErrorAccumulator eea, final OfferItemUniversalSpec universalSpec) {
+        return getOfferItemByUniversalSpec(eea, universalSpec, EntityPermission.READ_ONLY);
+    }
+
+    public OfferItem getOfferItemByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea, final OfferItemUniversalSpec universalSpec) {
+        return getOfferItemByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
     }
 
     public void deleteOfferItem(final OfferItem offerItem, final BasePK deletedBy) {
