@@ -522,6 +522,7 @@ import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.RecoveryQuestion;
 import com.echothree.model.data.user.server.entity.UserLogin;
 import com.echothree.model.data.vendor.common.ItemPurchasingCategoryConstants;
+import com.echothree.model.data.vendor.common.VendorConstants;
 import com.echothree.model.data.vendor.server.entity.ItemPurchasingCategory;
 import com.echothree.model.data.vendor.server.entity.Vendor;
 import com.echothree.model.data.workflow.server.entity.Workflow;
@@ -4820,31 +4821,34 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("vendors")
-    public static Collection<VendorObject> vendors(final DataFetchingEnvironment env) {
-        Collection<Vendor> vendors;
-        Collection<VendorObject> vendorObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public static CountingPaginatedData<VendorObject> vendors(final DataFetchingEnvironment env) {
+        CountingPaginatedData<VendorObject> data;
 
         try {
-            var commandForm = VendorUtil.getHome().getGetVendorsForm();
+            var vendorControl = Session.getModelController(VendorControl.class);
+            var totalCount = vendorControl.countVendors();
 
-            vendors = new GetVendorsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            try(var objectLimiter = new ObjectLimiter(env, VendorConstants.COMPONENT_VENDOR_NAME, VendorConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = VendorUtil.getHome().getGetVendorsForm();
+                var entities = new GetVendorsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var vendors = entities.stream().map(VendorObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, vendors);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(vendors == null) {
-            vendorObjects = emptyList();
-        } else {
-            vendorObjects = new ArrayList<>(vendors.size());
-
-            vendors.stream()
-                    .map(VendorObject::new)
-                    .forEachOrdered(vendorObjects::add);
-        }
-
-        return vendorObjects;
+        return data;
     }
-
+    
     @GraphQLField
     @GraphQLName("party")
     public static PartyObject party(final DataFetchingEnvironment env,
