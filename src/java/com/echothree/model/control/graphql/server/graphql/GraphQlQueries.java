@@ -297,6 +297,7 @@ import com.echothree.model.control.core.server.graphql.MimeTypeObject;
 import com.echothree.model.control.core.server.graphql.MimeTypeUsageTypeObject;
 import com.echothree.model.control.core.server.graphql.TextDecorationObject;
 import com.echothree.model.control.core.server.graphql.TextTransformationObject;
+import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.customer.server.graphql.CustomerObject;
 import com.echothree.model.control.employee.server.graphql.EmployeeObject;
 import com.echothree.model.control.filter.server.graphql.FilterAdjustmentAmountObject;
@@ -430,6 +431,7 @@ import com.echothree.model.data.core.server.entity.MimeTypeFileExtension;
 import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
 import com.echothree.model.data.core.server.entity.TextDecoration;
 import com.echothree.model.data.core.server.entity.TextTransformation;
+import com.echothree.model.data.customer.common.CustomerConstants;
 import com.echothree.model.data.customer.server.entity.Customer;
 import com.echothree.model.data.employee.server.entity.PartyEmployee;
 import com.echothree.model.data.filter.server.entity.Filter;
@@ -4715,31 +4717,34 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("customers")
-    public static Collection<CustomerObject> customers(final DataFetchingEnvironment env) {
-        Collection<Customer> customers;
-        Collection<CustomerObject> customerObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public static CountingPaginatedData<CustomerObject> customers(final DataFetchingEnvironment env) {
+        CountingPaginatedData<CustomerObject> data;
 
         try {
-            var commandForm = CustomerUtil.getHome().getGetCustomersForm();
+            var customerControl = Session.getModelController(CustomerControl.class);
+            var totalCount = customerControl.countCustomers();
 
-            customers = new GetCustomersCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            try(var objectLimiter = new ObjectLimiter(env, CustomerConstants.COMPONENT_VENDOR_NAME, CustomerConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = CustomerUtil.getHome().getGetCustomersForm();
+                var entities = new GetCustomersCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var customers = entities.stream().map(CustomerObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, customers);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(customers == null) {
-            customerObjects = emptyList();
-        } else {
-            customerObjects = new ArrayList<>(customers.size());
-
-            customers.stream()
-                    .map(CustomerObject::new)
-                    .forEachOrdered(customerObjects::add);
-        }
-
-        return customerObjects;
+        return data;
     }
-
+    
     @GraphQLField
     @GraphQLName("employee")
     public static EmployeeObject employee(final DataFetchingEnvironment env,
