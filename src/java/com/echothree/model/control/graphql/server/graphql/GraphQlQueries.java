@@ -2638,8 +2638,7 @@ public final class GraphQlQueries
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("entityRef") final String entityRef,
             @GraphQLName("key") final String key,
-            @GraphQLName("guid") final String guid,
-            @GraphQLName("ulid") final String ulid) {
+            @GraphQLName("guid") final String guid) {
         EntityInstance entityInstance;
 
         try {
@@ -2649,7 +2648,6 @@ public final class GraphQlQueries
             commandForm.setEntityRef(entityRef);
             commandForm.setKey(key);
             commandForm.setGuid(guid);
-            commandForm.setUlid(ulid);
 
             entityInstance = new GetEntityInstanceCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
