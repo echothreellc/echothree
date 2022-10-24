@@ -156,8 +156,7 @@ public class EntityInstanceTest
                 }
                 """.formatted(ulid));
 
-        assertThat(getString(entityInstanceBody, "data.entityInstance.entityType.componentVendor.componentVendorName")).isEqualTo(ComponentVendors.ECHOTHREE.toString());
-        assertThat(getString(entityInstanceBody, "data.entityInstance.entityType.entityTypeName")).isEqualTo(EntityTypes.GlAccount.toString());
+        assertThat(getMap(entityInstanceBody, "data.entityInstance")).isNull();
     }
 
     @Test
