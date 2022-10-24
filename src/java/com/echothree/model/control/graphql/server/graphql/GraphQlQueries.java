@@ -299,6 +299,7 @@ import com.echothree.model.control.core.server.graphql.TextDecorationObject;
 import com.echothree.model.control.core.server.graphql.TextTransformationObject;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.customer.server.graphql.CustomerObject;
+import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.employee.server.graphql.EmployeeObject;
 import com.echothree.model.control.filter.server.graphql.FilterAdjustmentAmountObject;
 import com.echothree.model.control.filter.server.graphql.FilterAdjustmentFixedAmountObject;
@@ -433,6 +434,7 @@ import com.echothree.model.data.core.server.entity.TextDecoration;
 import com.echothree.model.data.core.server.entity.TextTransformation;
 import com.echothree.model.data.customer.common.CustomerConstants;
 import com.echothree.model.data.customer.server.entity.Customer;
+import com.echothree.model.data.employee.common.PartyEmployeeConstants;
 import com.echothree.model.data.employee.server.entity.PartyEmployee;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.filter.server.entity.FilterAdjustment;
@@ -4769,31 +4771,34 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("employees")
-    public static Collection<EmployeeObject> employees(final DataFetchingEnvironment env) {
-        Collection<PartyEmployee> partyEmployees;
-        Collection<EmployeeObject> employeeObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public static CountingPaginatedData<EmployeeObject> employees(final DataFetchingEnvironment env) {
+        CountingPaginatedData<EmployeeObject> data;
 
         try {
-            var commandForm = EmployeeUtil.getHome().getGetEmployeesForm();
+            var employeeControl = Session.getModelController(EmployeeControl.class);
+            var totalCount = employeeControl.countPartyEmployees();
 
-            partyEmployees = new GetEmployeesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            try(var objectLimiter = new ObjectLimiter(env, PartyEmployeeConstants.COMPONENT_VENDOR_NAME, PartyEmployeeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = EmployeeUtil.getHome().getGetEmployeesForm();
+                var entities = new GetEmployeesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var employees = entities.stream().map(EmployeeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, employees);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(partyEmployees == null) {
-            employeeObjects = emptyList();
-        } else {
-            employeeObjects = new ArrayList<>(partyEmployees.size());
-
-            partyEmployees.stream()
-                    .map(EmployeeObject::new)
-                    .forEachOrdered(employeeObjects::add);
-        }
-
-        return employeeObjects;
+        return data;
     }
-
+    
     @GraphQLField
     @GraphQLName("vendor")
     public static VendorObject vendor(final DataFetchingEnvironment env,
