@@ -26,6 +26,7 @@ import com.echothree.model.control.offer.common.exception.DuplicateOfferNameExce
 import com.echothree.model.control.offer.common.exception.UnknownDefaultOfferException;
 import com.echothree.model.control.offer.common.exception.UnknownOfferNameException;
 import com.echothree.model.control.offer.server.control.OfferControl;
+import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.offer.server.control.OfferUseControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.filter.server.entity.Filter;
@@ -155,6 +156,18 @@ public class OfferLogic
             var offer = OfferFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, offerDetailValue.getOfferPK());
 
             OfferItemLogic.getInstance().deleteOfferItemsByOffer(offer, updatedBy);
+        } else if(offerDetailValue.getOfferItemPriceFilterPKHasBeenModified() && offerDetailValue.getOfferItemPriceFilterPK() != null) {
+            var offerItemControl = Session.getModelController(OfferItemControl.class);
+            var offer = OfferFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, offerDetailValue.getOfferPK());
+
+            var offerItems = offerItemControl.getOfferItemsByOffer(offer);
+            for(var offerItem : offerItems) {
+                var offerItemPrices = offerItemControl.getOfferItemPricesByOfferItemForUpdate(offerItem);
+
+                for(var offerItemPrice : offerItemPrices) {
+                    offerItemControl.deleteOfferItemPrice(offerItemPrice, updatedBy);
+                }
+            }
         }
 
         offerControl.updateOfferFromValue(offerDetailValue, updatedBy);
