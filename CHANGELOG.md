@@ -1,5 +1,16 @@
 # Changelog
 
+## 2022-10-30-01
+
+* Editing Offer to Add Offer Item Price Filter Should Remove All Offer Item Prices [542](https://gitlab.echothree.com/echothree/echothree/-/issues/542)
+* Add Pagination to customers Query [588](https://gitlab.echothree.com/echothree/echothree/-/issues/588)
+* Add Pagination to employees Query [589](https://gitlab.echothree.com/echothree/echothree/-/issues/589)
+* Add Pagination to vendors Query [590](https://gitlab.echothree.com/echothree/echothree/-/issues/590)
+* Add UniversalEntitySpec to GetOfferItem UC [593](https://gitlab.echothree.com/echothree/echothree/-/issues/593)
+* Add Id to Events Sent to Kafka Topics [594](https://gitlab.echothree.com/echothree/echothree/-/issues/594)
+* entityInstance Query Not Correctly Handling Ids [595](https://gitlab.echothree.com/echothree/echothree/-/issues/595)
+* Increase Build Memory to 6G [596](https://gitlab.echothree.com/echothree/echothree/-/issues/596)
+
 ## 2022-10-16-01
 
 * Editing Offer to Add Offer Item Selector Should Remove All Offer Items [541](https://gitlab.echothree.com/echothree/echothree/-/issues/541)
