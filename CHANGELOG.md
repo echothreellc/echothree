@@ -1,5 +1,9 @@
 # Changelog
 
+## 2022-11-13-01
+
+* jOOQ 3.17.5 Upgrade [600](https://gitlab.echothree.com/echothree/echothree/-/issues/600)
+
 ## 2022-10-30-01
 
 * Editing Offer to Add Offer Item Price Filter Should Remove All Offer Item Prices [542](https://gitlab.echothree.com/echothree/echothree/-/issues/542)
