@@ -482,6 +482,7 @@ import com.echothree.model.data.offer.server.entity.OfferUse;
 import com.echothree.model.data.offer.server.entity.Use;
 import com.echothree.model.data.offer.server.entity.UseNameElement;
 import com.echothree.model.data.offer.server.entity.UseType;
+import com.echothree.model.data.party.common.LanguageConstants;
 import com.echothree.model.data.party.common.PartyConstants;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.model.data.party.server.entity.Language;
@@ -4572,31 +4573,34 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("languages")
-    public static Collection<LanguageObject> languages(final DataFetchingEnvironment env) {
-        Collection<Language> languages;
-        Collection<LanguageObject> languageObjects;
-        
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public static CountingPaginatedData<LanguageObject> languages(final DataFetchingEnvironment env) {
+        CountingPaginatedData<LanguageObject> data;
+
         try {
-            var commandForm = PartyUtil.getHome().getGetLanguagesForm();
-        
-            languages = new GetLanguagesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            var partyControl = Session.getModelController(PartyControl.class);
+            var totalCount = partyControl.countLanguages();
+
+            try(var objectLimiter = new ObjectLimiter(env, LanguageConstants.COMPONENT_VENDOR_NAME, LanguageConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = PartyUtil.getHome().getGetLanguagesForm();
+                var entities = new GetLanguagesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var languages = entities.stream().map(LanguageObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, languages);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
-        if(languages == null) {
-            languageObjects = emptyList();
-        } else {
-            languageObjects = new ArrayList<>(languages.size());
 
-            languages.stream()
-                    .map(LanguageObject::new)
-                    .forEachOrdered(languageObjects::add);
-        }
-        
-        return languageObjects;
+        return data;
     }
-
+    
     @GraphQLField
     @GraphQLName("dateTimeFormat")
     public static DateTimeFormatObject dateTimeFormat(final DataFetchingEnvironment env,

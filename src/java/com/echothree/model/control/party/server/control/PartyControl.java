@@ -317,7 +317,13 @@ public class PartyControl
     public Language getLanguageByEntityInstanceForUpdate(EntityInstance entityInstance) {
         return getLanguageByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
-    
+
+    public long countLanguages() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM languages");
+    }
+
     public Language getDefaultLanguage() {
         Language language;
         PreparedStatement ps = LanguageFactory.getInstance().prepareStatement(
@@ -364,7 +370,8 @@ public class PartyControl
         PreparedStatement ps = LanguageFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM languages " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                "ORDER BY lang_sortorder, lang_languageisoname " +
+                "_LIMIT_");
         
         languages = LanguageFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
         
