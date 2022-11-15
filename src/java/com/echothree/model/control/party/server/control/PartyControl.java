@@ -494,7 +494,8 @@ public class PartyControl
         PreparedStatement ps = PartyTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM partytypes " +
-                "ORDER BY ptyp_sortorder, ptyp_partytypename");
+                "ORDER BY ptyp_sortorder, ptyp_partytypename " +
+                "_LIMIT_");
         
         return PartyTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -753,7 +754,8 @@ public class PartyControl
             query = "SELECT _ALL_ " +
                     "FROM personaltitles, personaltitledetails " +
                     "WHERE pert_activedetailid = pertd_personaltitledetailid " +
-                    "ORDER BY pertd_sortorder, pertd_description";
+                    "ORDER BY pertd_sortorder, pertd_description " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM personaltitles, personaltitledetails " +
@@ -1002,7 +1004,8 @@ public class PartyControl
             query = "SELECT _ALL_ " +
                     "FROM namesuffixes, namesuffixdetails " +
                     "WHERE nsfx_activedetailid = nsfxd_namesuffixdetailid " +
-                    "ORDER BY nsfxd_sortorder, nsfxd_description";
+                    "ORDER BY nsfxd_sortorder, nsfxd_description " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM namesuffixes, namesuffixdetails " +
@@ -1240,7 +1243,8 @@ public class PartyControl
                     "SELECT _ALL_ " +
                     "FROM timezones, timezonedetails " +
                     "WHERE tz_timezoneid = tzdt_tz_timezoneid AND tzdt_thrutime = ? " +
-                    "ORDER BY tzdt_sortorder, tzdt_javatimezonename");
+                    "ORDER BY tzdt_sortorder, tzdt_javatimezonename " +
+                    "_LIMIT_");
             
             ps.setLong(1, Session.MAX_TIME);
             
@@ -1380,7 +1384,8 @@ public class PartyControl
                 query = "SELECT _ALL_ " +
                         "FROM timezonedescriptions, languages " +
                         "WHERE tzd_tz_timezoneid = ? AND tzd_thrutime = ? AND tzd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM timezonedescriptions " +
@@ -1560,7 +1565,8 @@ public class PartyControl
                     "SELECT _ALL_ " +
                     "FROM datetimeformats, datetimeformatdetails " +
                     "WHERE dtf_datetimeformatid = dtfdt_dtf_datetimeformatid AND dtfdt_thrutime = ? " +
-                    "ORDER BY dtfdt_sortorder, dtfdt_datetimeformatname");
+                    "ORDER BY dtfdt_sortorder, dtfdt_datetimeformatname " +
+                    "_LIMIT_");
             
             ps.setLong(1, Session.MAX_TIME);
             
@@ -1701,7 +1707,8 @@ public class PartyControl
                 query = "SELECT _ALL_ " +
                         "FROM datetimeformatdescriptions, languages " +
                         "WHERE dtfd_dtf_datetimeformatid = ? AND dtfd_thrutime = ? AND dtfd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM datetimeformatdescriptions " +
@@ -2464,7 +2471,8 @@ public class PartyControl
                 "FROM partyaliases, partyes, partydetails " +
                 "WHERE pal_pat_partyaliastypeid = ? AND pal_thrutime = ? " +
                 "AND pal_par_partyid = par_partyid AND p_lastdetailid = pdt_partydetailid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                "ORDER BY lang_sortorder, lang_languageisoname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM partyaliases " +
@@ -2718,7 +2726,8 @@ public class PartyControl
                 "SELECT _ALL_ " +
                 "FROM partyaliastypes, partyaliastypedetails " +
                 "WHERE pat_activedetailid = patdt_partyaliastypedetailid AND patdt_ptyp_partytypeid = ? " +
-                "ORDER BY patdt_sortorder, patdt_partyaliastypename");
+                "ORDER BY patdt_sortorder, patdt_partyaliastypename " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM partyaliastypes, partyaliastypedetails " +
@@ -2938,7 +2947,8 @@ public class PartyControl
                 "SELECT _ALL_ " +
                 "FROM partyaliastypedescriptions, languages " +
                 "WHERE patd_pat_partyaliastypeid = ? AND patd_thrutime = ? AND patd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                "ORDER BY lang_sortorder, lang_languageisoname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM partyaliastypedescriptions " +
@@ -4316,7 +4326,8 @@ public class PartyControl
                 "SELECT _ALL_ " +
                 "FROM partyrelationships " +
                 "WHERE prel_prt_partyrelationshiptypeid = ? AND prel_frompartyid = ? AND prel_fromroletypeid = ? " +
-                "AND prel_thrutime = ?");
+                "AND prel_thrutime = ? " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM partyrelationships " +
@@ -4351,7 +4362,8 @@ public class PartyControl
                 "SELECT _ALL_ " +
                 "FROM partyrelationships " +
                 "WHERE prel_prt_partyrelationshiptypeid = ? AND prel_topartyid = ? AND prel_toroletypeid = ? " +
-                "AND prel_thrutime = ?");
+                "AND prel_thrutime = ? " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM partyrelationships " +
@@ -4385,7 +4397,8 @@ public class PartyControl
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ " +
                 "FROM partyrelationships " +
-                "WHERE prel_frompartyid = ? AND prel_thrutime = ?");
+                "WHERE prel_frompartyid = ? AND prel_thrutime = ? " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM partyrelationships " +
@@ -4415,7 +4428,8 @@ public class PartyControl
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ " +
                 "FROM partyrelationships " +
-                "WHERE prel_topartyid = ? AND prel_thrutime = ?");
+                "WHERE prel_topartyid = ? AND prel_thrutime = ? " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM partyrelationships " +
@@ -4954,7 +4968,8 @@ public class PartyControl
             query = "SELECT _ALL_ " +
                     "FROM genders, genderdetails " +
                     "WHERE gndr_activedetailid = gndrdt_genderdetailid " +
-                    "ORDER BY gndrdt_sortorder, gndrdt_gendername";
+                    "ORDER BY gndrdt_sortorder, gndrdt_gendername " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM genders, genderdetails " +
@@ -5166,7 +5181,8 @@ public class PartyControl
                 query = "SELECT _ALL_ " +
                         "FROM genderdescriptions, languages " +
                         "WHERE gndrd_gndr_genderid = ? AND gndrd_thrutime = ? AND gndrd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM genderdescriptions " +
@@ -5376,7 +5392,8 @@ public class PartyControl
             query = "SELECT _ALL_ " +
                     "FROM moods, mooddetails " +
                     "WHERE md_activedetailid = mddt_mooddetailid " +
-                    "ORDER BY mddt_sortorder, mddt_moodname";
+                    "ORDER BY mddt_sortorder, mddt_moodname " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM moods, mooddetails " +
@@ -5589,7 +5606,8 @@ public class PartyControl
                 query = "SELECT _ALL_ " +
                         "FROM mooddescriptions, languages " +
                         "WHERE mdd_md_moodid = ? AND mdd_thrutime = ? AND mdd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM mooddescriptions " +
@@ -5725,7 +5743,8 @@ public class PartyControl
             query = "SELECT _ALL_ " +
                     "FROM birthdayformats, birthdayformatdetails " +
                     "WHERE bdyf_activedetailid = bdyfdt_birthdayformatdetailid " +
-                    "ORDER BY bdyfdt_sortorder, bdyfdt_birthdayformatname";
+                    "ORDER BY bdyfdt_sortorder, bdyfdt_birthdayformatname " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM birthdayformats, birthdayformatdetails " +
@@ -5757,7 +5776,8 @@ public class PartyControl
                         "FROM birthdayformats, birthdayformatdetails, birthdayformatentitytypes " +
                         "WHERE bdyf_activedetailid = bdyfdt_birthdayformatdetailid " +
                         "AND bdyf_birthdayformatid = tent_bdyf_birthdayformatid AND tent_ent_entitytypeid = ? AND tent_thrutime = ? " +
-                        "ORDER BY bdyfdt_sortorder, bdyfdt_birthdayformatname";
+                        "ORDER BY bdyfdt_sortorder, bdyfdt_birthdayformatname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM birthdayformats, birthdayformatdetails, birthdayformatentitytypes " +
@@ -6064,7 +6084,8 @@ public class PartyControl
                         "FROM birthdayformatdescriptions, languages " +
                         "WHERE bdyfd_bdyf_birthdayformatid = ? AND bdyfd_thrutime = ? " +
                         "AND bdyfd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM birthdayformatdescriptions " +
