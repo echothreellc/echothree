@@ -484,6 +484,7 @@ import com.echothree.model.data.offer.server.entity.UseNameElement;
 import com.echothree.model.data.offer.server.entity.UseType;
 import com.echothree.model.data.party.common.LanguageConstants;
 import com.echothree.model.data.party.common.PartyConstants;
+import com.echothree.model.data.party.common.TimeZoneConstants;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.NameSuffix;
@@ -4672,29 +4673,32 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("timeZones")
-    public static Collection<TimeZoneObject> timeZones(final DataFetchingEnvironment env) {
-        Collection<TimeZone> timeZones;
-        Collection<TimeZoneObject> timeZoneObjects;
-        
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public static CountingPaginatedData<TimeZoneObject> timeZones(final DataFetchingEnvironment env) {
+        CountingPaginatedData<TimeZoneObject> data;
+
         try {
-            var commandForm = PartyUtil.getHome().getGetTimeZonesForm();
-        
-            timeZones = new GetTimeZonesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            var partyControl = Session.getModelController(PartyControl.class);
+            var totalCount = partyControl.countTimeZones();
+
+            try(var objectLimiter = new ObjectLimiter(env, TimeZoneConstants.COMPONENT_VENDOR_NAME, TimeZoneConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = PartyUtil.getHome().getGetTimeZonesForm();
+                var entities = new GetTimeZonesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var timeZones = entities.stream().map(TimeZoneObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, timeZones);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
-        if(timeZones == null) {
-            timeZoneObjects = emptyList();
-        } else {
-            timeZoneObjects = new ArrayList<>(timeZones.size());
 
-            timeZones.stream()
-                    .map(TimeZoneObject::new)
-                    .forEachOrdered(timeZoneObjects::add);
-        }
-        
-        return timeZoneObjects;
+        return data;
     }
 
     @GraphQLField

@@ -1234,7 +1234,29 @@ public class PartyControl
         
         return timeZone;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.TimeZone */
+    public TimeZone getTimeZoneByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new TimeZonePK(entityInstance.getEntityUniqueId());
+
+        return TimeZoneFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public TimeZone getTimeZoneByEntityInstance(EntityInstance entityInstance) {
+        return getTimeZoneByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public TimeZone getTimeZoneByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getTimeZoneByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countTimeZones() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM timezones, timezonedetails " +
+                "WHERE tz_activedetailid = tzdt_timezonedetailid");
+    }
+
     public List<TimeZone> getTimeZones() {
         List<TimeZone> timeZones;
         
@@ -1295,21 +1317,6 @@ public class PartyControl
         return timeZone;
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.TimeZone */
-    public TimeZone getTimeZoneByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        var pk = new TimeZonePK(entityInstance.getEntityUniqueId());
-
-        return TimeZoneFactory.getInstance().getEntityFromPK(entityPermission, pk);
-    }
-
-    public TimeZone getTimeZoneByEntityInstance(EntityInstance entityInstance) {
-        return getTimeZoneByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
-    }
-
-    public TimeZone getTimeZoneByEntityInstanceForUpdate(EntityInstance entityInstance) {
-        return getTimeZoneByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
-    }
-
     public TimeZoneChoicesBean getTimeZoneChoices(String defaultTimeZoneChoice, Language language, boolean allowNullChoice) {
         List<TimeZone> timeZones = getTimeZones();
         var size = timeZones.size();
