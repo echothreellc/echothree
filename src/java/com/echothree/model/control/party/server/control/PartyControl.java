@@ -1563,7 +1563,29 @@ public class PartyControl
         
         return dateTimeFormat;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.DateTimeFormat */
+    public DateTimeFormat getDateTimeFormatByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new DateTimeFormatPK(entityInstance.getEntityUniqueId());
+
+        return DateTimeFormatFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public DateTimeFormat getDateTimeFormatByEntityInstance(EntityInstance entityInstance) {
+        return getDateTimeFormatByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public DateTimeFormat getDateTimeFormatByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getDateTimeFormatByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countDateTimeFormats() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM datetimeformats, datetimeformatdetails " +
+                "WHERE dtf_activedetailid = dtfdt_datetimeformatdetailid");
+    }
+
     public List<DateTimeFormat> getDateTimeFormats() {
         List<DateTimeFormat> dateTimeFormats;
         
@@ -1624,21 +1646,6 @@ public class PartyControl
         return dateTimeFormat;
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.DateTimeFormat */
-    public DateTimeFormat getDateTimeFormatByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        var pk = new DateTimeFormatPK(entityInstance.getEntityUniqueId());
-
-        return DateTimeFormatFactory.getInstance().getEntityFromPK(entityPermission, pk);
-    }
-
-    public DateTimeFormat getDateTimeFormatByEntityInstance(EntityInstance entityInstance) {
-        return getDateTimeFormatByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
-    }
-
-    public DateTimeFormat getDateTimeFormatByEntityInstanceForUpdate(EntityInstance entityInstance) {
-        return getDateTimeFormatByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
-    }
-
     public DateTimeFormatChoicesBean getDateTimeFormatChoices(String defaultDateTimeFormatChoice, Language language, boolean allowNullChoice) {
         List<DateTimeFormat> dateTimeFormats = getDateTimeFormats();
         var size = dateTimeFormats.size();
