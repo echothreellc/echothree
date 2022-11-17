@@ -399,6 +399,7 @@ import com.echothree.model.control.workflow.server.graphql.WorkflowObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowStepObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowStepTypeObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowTypeObject;
+import com.echothree.model.data.accounting.common.CurrencyConstants;
 import com.echothree.model.data.accounting.common.ItemAccountingCategoryConstants;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;
@@ -4525,31 +4526,34 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("currencies")
-    public static Collection<CurrencyObject> currencies(final DataFetchingEnvironment env) {
-        Collection<Currency> currencies;
-        Collection<CurrencyObject> currencyObjects;
-        
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public static CountingPaginatedData<CurrencyObject> currencies(final DataFetchingEnvironment env) {
+        CountingPaginatedData<CurrencyObject> data;
+
         try {
-            var commandForm = AccountingUtil.getHome().getGetCurrenciesForm();
-        
-            currencies = new GetCurrenciesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            var partyControl = Session.getModelController(AccountingControl.class);
+            var totalCount = partyControl.countCurrencies();
+
+            try(var objectLimiter = new ObjectLimiter(env, CurrencyConstants.COMPONENT_VENDOR_NAME, CurrencyConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = AccountingUtil.getHome().getGetCurrenciesForm();
+                var entities = new GetCurrenciesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var currencies = entities.stream().map(CurrencyObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, currencies);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
-        if(currencies == null) {
-            currencyObjects = emptyList();
-        } else {
-            currencyObjects = new ArrayList<>(currencies.size());
 
-            currencies.stream()
-                    .map(CurrencyObject::new)
-                    .forEachOrdered(currencyObjects::add);
-        }
-        
-        return currencyObjects;
+        return data;
     }
-    
+
     @GraphQLField
     @GraphQLName("language")
     public static LanguageObject language(final DataFetchingEnvironment env,
