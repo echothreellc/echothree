@@ -482,6 +482,7 @@ import com.echothree.model.data.offer.server.entity.OfferUse;
 import com.echothree.model.data.offer.server.entity.Use;
 import com.echothree.model.data.offer.server.entity.UseNameElement;
 import com.echothree.model.data.offer.server.entity.UseType;
+import com.echothree.model.data.party.common.DateTimeFormatConstants;
 import com.echothree.model.data.party.common.LanguageConstants;
 import com.echothree.model.data.party.common.PartyConstants;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
@@ -4624,31 +4625,34 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("dateTimeFormats")
-    public static Collection<DateTimeFormatObject> dateTimeFormats(final DataFetchingEnvironment env) {
-        Collection<DateTimeFormat> dateTimeFormats;
-        Collection<DateTimeFormatObject> dateTimeFormatObjects;
-        
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public static CountingPaginatedData<DateTimeFormatObject> dateTimeFormats(final DataFetchingEnvironment env) {
+        CountingPaginatedData<DateTimeFormatObject> data;
+
         try {
-            var commandForm = PartyUtil.getHome().getGetDateTimeFormatsForm();
-        
-            dateTimeFormats = new GetDateTimeFormatsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            var partyControl = Session.getModelController(PartyControl.class);
+            var totalCount = partyControl.countDateTimeFormats();
+
+            try(var objectLimiter = new ObjectLimiter(env, DateTimeFormatConstants.COMPONENT_VENDOR_NAME, DateTimeFormatConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = PartyUtil.getHome().getGetDateTimeFormatsForm();
+                var entities = new GetDateTimeFormatsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var dateTimeFormats = entities.stream().map(DateTimeFormatObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, dateTimeFormats);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
-        if(dateTimeFormats == null) {
-            dateTimeFormatObjects = emptyList();
-        } else {
-            dateTimeFormatObjects = new ArrayList<>(dateTimeFormats.size());
 
-            dateTimeFormats.stream()
-                    .map(DateTimeFormatObject::new)
-                    .forEachOrdered(dateTimeFormatObjects::add);
-        }
-        
-        return dateTimeFormatObjects;
+        return data;
     }
-
+    
     @GraphQLField
     @GraphQLName("timeZone")
     public static TimeZoneObject timeZone(final DataFetchingEnvironment env,
