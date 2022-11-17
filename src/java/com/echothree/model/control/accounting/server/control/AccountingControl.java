@@ -291,12 +291,19 @@ public class AccountingControl
     public Currency getCurrencyByEntityInstanceForUpdate(EntityInstance entityInstance) {
         return getCurrencyByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
-    
+
+    public long countCurrencies() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM currencies");
+    }
+
     public List<Currency> getCurrencies() {
         PreparedStatement ps = CurrencyFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM currencies " +
-                "ORDER BY cur_sortorder, cur_currencyisoname");
+                "ORDER BY cur_sortorder, cur_currencyisoname " +
+                "_LIMIT_");
         
         return CurrencyFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
