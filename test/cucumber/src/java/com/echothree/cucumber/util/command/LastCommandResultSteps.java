@@ -34,13 +34,37 @@ public class LastCommandResultSteps implements En {
             assertThat(commandResult).isNotNull();
 
             if(commandResult.hasErrors()) {
-                var executionResult = commandResult.getExecutionResult();
-                var executionErrors = executionResult.getExecutionErrors().get();
+                if(commandResult.hasSecurityMessages()) {
+                    var securityResult = commandResult.getSecurityResult();
+                    var securityErrors = securityResult.getSecurityMessages().get();
 
-                while(executionErrors.hasNext()) {
-                    var message = executionErrors.next();
+                    while(securityErrors.hasNext()) {
+                        var message = securityErrors.next();
 
-                    scenario.log(message.getKey() + ": " + message.getMessage());
+                        scenario.log(message.getKey() + ": " + message.getMessage());
+                    }
+                }
+                
+                if(commandResult.hasValidationErrors()) {
+                    var validationResult = commandResult.getValidationResult();
+                    var validationErrors = validationResult.getValidationMessages().get();
+
+                    while(validationErrors.hasNext()) {
+                        var message = validationErrors.next();
+
+                        scenario.log(message.getKey() + ": " + message.getMessage());
+                    }
+                }
+                
+                if(commandResult.hasExecutionErrors()) {
+                    var executionResult = commandResult.getExecutionResult();
+                    var executionErrors = executionResult.getExecutionErrors().get();
+
+                    while(executionErrors.hasNext()) {
+                        var message = executionErrors.next();
+
+                        scenario.log(message.getKey() + ": " + message.getMessage());
+                    }
                 }
             }
 
