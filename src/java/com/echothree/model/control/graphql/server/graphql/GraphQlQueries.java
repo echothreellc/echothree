@@ -486,6 +486,7 @@ import com.echothree.model.data.offer.server.entity.UseType;
 import com.echothree.model.data.party.common.DateTimeFormatConstants;
 import com.echothree.model.data.party.common.LanguageConstants;
 import com.echothree.model.data.party.common.PartyConstants;
+import com.echothree.model.data.party.common.PersonalTitleConstants;
 import com.echothree.model.data.party.common.TimeZoneConstants;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.model.data.party.server.entity.Language;
@@ -6278,26 +6279,34 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("personalTitles")
-    public static Collection<PersonalTitleObject> personalTitles(final DataFetchingEnvironment env) {
-        Collection<PersonalTitle> personalTitles;
-        
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public static CountingPaginatedData<PersonalTitleObject> personalTitles(final DataFetchingEnvironment env) {
+        CountingPaginatedData<PersonalTitleObject> data;
+
         try {
-            var commandForm = PartyUtil.getHome().getGetPersonalTitlesForm();
-        
-            personalTitles = new GetPersonalTitlesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            var partyControl = Session.getModelController(PartyControl.class);
+            var totalCount = partyControl.countPersonalTitles();
+
+            try(var objectLimiter = new ObjectLimiter(env, PersonalTitleConstants.COMPONENT_VENDOR_NAME, PersonalTitleConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = PartyUtil.getHome().getGetPersonalTitlesForm();
+                var entities = new GetPersonalTitlesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var personalTitles = entities.stream().map(PersonalTitleObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, personalTitles);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
-        Collection<PersonalTitleObject> personalTitleObjects = new ArrayList<>(personalTitles.size());
-        
-        personalTitles.stream()
-                .map(PersonalTitleObject::new)
-                .forEachOrdered(personalTitleObjects::add);
-        
-        return personalTitleObjects;
-    }
 
+        return data;
+    }
+    
     @GraphQLField
     @GraphQLName("nameSuffixes")
     public static Collection<NameSuffixObject> nameSuffixes(final DataFetchingEnvironment env) {
