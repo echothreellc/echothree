@@ -485,17 +485,16 @@ import com.echothree.model.data.offer.server.entity.UseNameElement;
 import com.echothree.model.data.offer.server.entity.UseType;
 import com.echothree.model.data.party.common.DateTimeFormatConstants;
 import com.echothree.model.data.party.common.LanguageConstants;
+import com.echothree.model.data.party.common.NameSuffixConstants;
 import com.echothree.model.data.party.common.PartyConstants;
 import com.echothree.model.data.party.common.PersonalTitleConstants;
 import com.echothree.model.data.party.common.TimeZoneConstants;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.party.server.entity.NameSuffix;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyCompany;
 import com.echothree.model.data.party.server.entity.PartyDepartment;
 import com.echothree.model.data.party.server.entity.PartyDivision;
-import com.echothree.model.data.party.server.entity.PersonalTitle;
 import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.model.data.payment.server.entity.PaymentMethodType;
 import com.echothree.model.data.payment.server.entity.PaymentProcessor;
@@ -6306,27 +6305,35 @@ public final class GraphQlQueries
 
         return data;
     }
-    
+
     @GraphQLField
     @GraphQLName("nameSuffixes")
-    public static Collection<NameSuffixObject> nameSuffixes(final DataFetchingEnvironment env) {
-        Collection<NameSuffix> nameSuffixes;
-        
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public static CountingPaginatedData<NameSuffixObject> nameSuffixes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<NameSuffixObject> data;
+
         try {
-            var commandForm = PartyUtil.getHome().getGetNameSuffixesForm();
-        
-            nameSuffixes = new GetNameSuffixesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            var partyControl = Session.getModelController(PartyControl.class);
+            var totalCount = partyControl.countNameSuffixes();
+
+            try(var objectLimiter = new ObjectLimiter(env, NameSuffixConstants.COMPONENT_VENDOR_NAME, NameSuffixConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = PartyUtil.getHome().getGetNameSuffixesForm();
+                var entities = new GetNameSuffixesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var nameSuffixes = entities.stream().map(NameSuffixObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, nameSuffixes);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        Collection<NameSuffixObject> nameSuffixObjects = new ArrayList<>(nameSuffixes.size());
-
-        nameSuffixes.stream()
-                .map(NameSuffixObject::new)
-                .forEachOrdered(nameSuffixObjects::add);
-        
-        return nameSuffixObjects;
+        return data;
     }
 
     @GraphQLField

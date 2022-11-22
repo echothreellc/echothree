@@ -1018,7 +1018,29 @@ public class PartyControl
         
         return nameSuffix;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.NameSuffix */
+    public NameSuffix getNameSuffixByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new NameSuffixPK(entityInstance.getEntityUniqueId());
+
+        return NameSuffixFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public NameSuffix getNameSuffixByEntityInstance(EntityInstance entityInstance) {
+        return getNameSuffixByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public NameSuffix getNameSuffixByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getNameSuffixByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countNameSuffixes() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM namesuffixes, namesuffixdetails " +
+                "WHERE nsfx_activedetailid = nsfxd_namesuffixdetailid");
+    }
+
     private List<NameSuffix> getNameSuffixes(EntityPermission entityPermission) {
         String query = null;
         
