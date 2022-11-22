@@ -746,7 +746,29 @@ public class PartyControl
         
         return personalTitle;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.PersonalTitle */
+    public PersonalTitle getPersonalTitleByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new PersonalTitlePK(entityInstance.getEntityUniqueId());
+
+        return PersonalTitleFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public PersonalTitle getPersonalTitleByEntityInstance(EntityInstance entityInstance) {
+        return getPersonalTitleByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public PersonalTitle getPersonalTitleByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getPersonalTitleByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countPersonalTitles() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM personaltitles, personaltitledetails " +
+                "WHERE pert_activedetailid = pertd_personaltitledetailid");
+    }
+
     private List<PersonalTitle> getPersonalTitles(EntityPermission entityPermission) {
         String query = null;
         
