@@ -159,6 +159,16 @@ import com.echothree.control.user.selector.common.spec.SelectorKindSpec;
 import com.echothree.control.user.selector.common.spec.SelectorNodeSpec;
 import com.echothree.control.user.selector.common.spec.SelectorSpec;
 import com.echothree.control.user.selector.common.spec.SelectorTypeSpec;
+import com.echothree.control.user.tag.common.edit.TagEdit;
+import com.echothree.control.user.tag.common.edit.TagScopeEdit;
+import com.echothree.control.user.tag.common.form.CreateTagForm;
+import com.echothree.control.user.tag.common.form.CreateTagScopeEntityTypeForm;
+import com.echothree.control.user.tag.common.form.CreateTagScopeForm;
+import com.echothree.control.user.tag.common.form.DeleteTagForm;
+import com.echothree.control.user.tag.common.form.DeleteTagScopeEntityTypeForm;
+import com.echothree.control.user.tag.common.form.DeleteTagScopeForm;
+import com.echothree.control.user.tag.common.spec.TagScopeSpec;
+import com.echothree.control.user.tag.common.spec.TagSpec;
 import com.echothree.control.user.track.common.form.CreateUserVisitTrackForm;
 import com.echothree.control.user.vendor.common.edit.VendorEdit;
 import com.echothree.control.user.vendor.common.edit.VendorItemCostEdit;
@@ -266,6 +276,8 @@ public class BasePersona {
     public EntityAttributeEntityAttributeGroupSpec entityAttributeEntityAttributeGroupSpec;
     public EntityAttributeEntityAttributeGroupEdit entityAttributeEntityAttributeGroupEdit;
 
+    public String lastComponentVendorName;
+    public String lastEntityTypeName;
     public String lastEntityAttributeGroupName;
     public String lastEntityAttributeName;
     public String lastEntityListItemName;
@@ -430,6 +442,23 @@ public class BasePersona {
     public String lastSelectorName;
     public String lastSelectorNodeName;
 
+    // Tag
+    public CreateTagScopeForm createTagScopeForm;
+    public DeleteTagScopeForm deleteTagScopeForm;
+    public TagScopeSpec tagScopeSpec;
+    public TagScopeEdit tagScopeEdit;
+
+    public CreateTagScopeEntityTypeForm createTagScopeEntityTypeForm;
+    public DeleteTagScopeEntityTypeForm deleteTagScopeEntityTypeForm;
+
+    public CreateTagForm createTagForm;
+    public DeleteTagForm deleteTagForm;
+    public TagSpec tagSpec;
+    public TagEdit tagEdit;
+
+    public String lastTagScopeName;
+    public String lastTagName;
+
     // Track
     public CreateUserVisitTrackForm createUserVisitTrackForm;
 
@@ -453,5 +482,6 @@ public class BasePersona {
 
     // Warehouse
     public String lastWarehouseName;
+    public String lastLocationName;
 
 }
