@@ -16,6 +16,7 @@
 
 package com.echothree.control.user.tag.server.command;
 
+import com.echothree.control.user.tag.common.form.GetTagScopesForm;
 import com.echothree.control.user.tag.common.form.GetTagsForm;
 import com.echothree.control.user.tag.common.result.TagResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -23,21 +24,25 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.control.tag.server.logic.TagScopeLogic;
+import com.echothree.model.data.tag.server.entity.Tag;
+import com.echothree.model.data.tag.server.entity.TagScope;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class GetTagsCommand
-        extends BaseSimpleCommand<GetTagsForm> {
+        extends BaseMultipleEntitiesCommand<Tag, GetTagsForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -59,21 +64,37 @@ public class GetTagsCommand
     public GetTagsCommand(UserVisitPK userVisitPK, GetTagsForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    TagScope tagScope;
+
     @Override
-    protected BaseResult execute() {
-        var result = TagResultFactory.getGetTagsResult();
-        var tagScope = TagScopeLogic.getInstance().getTagScopeByName(this, form.getTagScopeName());
-        
+    protected Collection<Tag> getEntities() {
+        Collection<Tag> entities = null;
+
+        tagScope = TagScopeLogic.getInstance().getTagScopeByName(this, form.getTagScopeName());
+
         if(!hasExecutionErrors()) {
             var tagControl = Session.getModelController(TagControl.class);
-            var userVisit = getUserVisit();
-            
-            result.setTagScope(tagControl.getTagScopeTransfer(userVisit, tagScope));
-            result.setTags(tagControl.getTagTransfersByTagScope(userVisit, tagScope));
+
+            entities = tagControl.getTags(tagScope);
         }
-        
+
+        return entities;
+    }
+
+    @Override
+    protected BaseResult getTransfers(Collection<Tag> entities) {
+        var result = TagResultFactory.getGetTagsResult();
+
+        if(entities != null) {
+            var tagControl = Session.getModelController(TagControl.class);
+            var userVisit = getUserVisit();
+
+            result.setTagScope(tagControl.getTagScopeTransfer(userVisit, tagScope));
+            result.setTags(tagControl.getTagTransfers(userVisit, entities));
+        }
+
         return result;
     }
-    
+
 }
