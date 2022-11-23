@@ -17,21 +17,18 @@
 package com.echothree.control.user.tag.server.command;
 
 import com.echothree.control.user.tag.common.form.GetTagScopeEntityTypesForm;
-import com.echothree.control.user.tag.common.result.GetTagScopeEntityTypesResult;
 import com.echothree.control.user.tag.common.result.TagResultFactory;
+import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.tag.server.control.TagControl;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
-import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.tag.server.entity.TagScope;
+import com.echothree.model.control.tag.server.logic.TagScopeLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -69,42 +66,33 @@ public class GetTagScopeEntityTypesCommand
     
     @Override
     protected BaseResult execute() {
-        GetTagScopeEntityTypesResult result = TagResultFactory.getGetTagScopeEntityTypesResult();
-        String tagScopeName = form.getTagScopeName();
-        String componentVendorName = form.getComponentVendorName();
-        String entityTypeName = form.getEntityTypeName();
+        var result = TagResultFactory.getGetTagScopeEntityTypesResult();
+        var tagScopeName = form.getTagScopeName();
+        var componentVendorName = form.getComponentVendorName();
+        var entityTypeName = form.getEntityTypeName();
         var parameterCount = (tagScopeName == null ? 0 : 1) + (componentVendorName == null && entityTypeName == null ? 0 : 1);
         
         if(parameterCount == 1) {
             var tagControl = Session.getModelController(TagControl.class);
-            UserVisit userVisit = getUserVisit();
+            var userVisit = getUserVisit();
             
             if(tagScopeName != null) {
-                TagScope tagScope = tagControl.getTagScopeByName(tagScopeName);
+                var tagScope = TagScopeLogic.getInstance().getTagScopeByName(this, tagScopeName);
                 
-                if(tagScope != null) {
+                if(!hasExecutionErrors()) {
                     result.setTagScope(tagControl.getTagScopeTransfer(userVisit, tagScope));
                     result.setTagScopeEntityTypes(tagControl.getTagScopeEntityTypeTransfersByTagScope(userVisit, tagScope));
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownTagScopeName.name(), tagScopeName);
                 }
             } else {
-                var coreControl = getCoreControl();
-                ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
-                
-                if(componentVendor != null) {
-                    EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
-                    
-                    if(entityType != null) {
-                        result.setEntityType(coreControl.getEntityTypeTransfer(userVisit, entityType));
-                        result.setTagScopeEntityTypes(tagControl.getTagScopeEntityTypeTransfersByEntityType(userVisit, entityType));
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), componentVendorName, entityTypeName);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
+                var entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, componentVendorName, entityTypeName);
+
+                if(!hasExecutionErrors()) {
+                    var coreControl = getCoreControl();
+
+                    result.setEntityType(coreControl.getEntityTypeTransfer(userVisit, entityType));
+                    result.setTagScopeEntityTypes(tagControl.getTagScopeEntityTypeTransfersByEntityType(userVisit, entityType));
                 }
-            }
+        }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }

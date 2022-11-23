@@ -17,21 +17,18 @@
 package com.echothree.control.user.tag.server.command;
 
 import com.echothree.control.user.tag.common.form.GetTagScopeEntityTypeForm;
-import com.echothree.control.user.tag.common.result.GetTagScopeEntityTypeResult;
 import com.echothree.control.user.tag.common.result.TagResultFactory;
+import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.tag.server.control.TagControl;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
-import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.tag.server.entity.TagScope;
-import com.echothree.model.data.tag.server.entity.TagScopeEntityType;
+import com.echothree.model.control.tag.server.logic.TagScopeLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -70,35 +67,22 @@ public class GetTagScopeEntityTypeCommand
     @Override
     protected BaseResult execute() {
         var tagControl = Session.getModelController(TagControl.class);
-        GetTagScopeEntityTypeResult result = TagResultFactory.getGetTagScopeEntityTypeResult();
-        String tagScopeName = form.getTagScopeName();
-        TagScope tagScope = tagControl.getTagScopeByName(tagScopeName);
+        var result = TagResultFactory.getGetTagScopeEntityTypeResult();
+        var tagScope = TagScopeLogic.getInstance().getTagScopeByName(this, form.getTagScopeName());
+        var entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, form.getComponentVendorName(), form.getEntityTypeName());
         
-        if(tagScope != null) {
-            var coreControl = getCoreControl();
-            String componentVendorName = form.getComponentVendorName();
-            ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
-            
-            if(componentVendor != null) {
-                String entityTypeName = form.getEntityTypeName();
-                EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
-                
-                if(entityType != null) {
-                    TagScopeEntityType tagScopeEntityType = tagControl.getTagScopeEntityType(tagScope, entityType);
-                    
-                    if(tagScopeEntityType != null) {
-                        result.setTagScopeEntityType(tagControl.getTagScopeEntityTypeTransfer(getUserVisit(), tagScopeEntityType));
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownTagScopeEntityType.name(), tagScopeName, componentVendorName, entityTypeName);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), componentVendorName, entityTypeName);
-                }
+        if(!hasExecutionErrors()) {
+            var tagScopeEntityType = tagControl.getTagScopeEntityType(tagScope, entityType);
+
+            if(tagScopeEntityType != null) {
+                result.setTagScopeEntityType(tagControl.getTagScopeEntityTypeTransfer(getUserVisit(), tagScopeEntityType));
             } else {
-                addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
+                var entityTypeDetails = entityType.getLastDetail();
+
+                addExecutionError(ExecutionErrors.UnknownTagScopeEntityType.name(), tagScope.getLastDetail().getTagScopeName(),
+                        entityTypeDetails.getComponentVendor().getLastDetail().getComponentVendorName(),
+                        entityTypeDetails.getEntityTypeName());
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownTagScopeName.name(), tagScopeName);
         }
         
         return result;
