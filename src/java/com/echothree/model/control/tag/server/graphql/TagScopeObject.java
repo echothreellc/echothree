@@ -24,6 +24,7 @@ import com.echothree.model.control.graphql.server.graphql.count.CountingPaginate
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.tag.common.TagConstants;
 import com.echothree.model.data.tag.common.TagScopeEntityTypeConstants;
 import com.echothree.model.data.tag.server.entity.TagScope;
 import com.echothree.model.data.tag.server.entity.TagScopeDetail;
@@ -103,6 +104,26 @@ public class TagScopeObject
             try(var objectLimiter = new ObjectLimiter(env, TagScopeEntityTypeConstants.COMPONENT_VENDOR_NAME, TagScopeEntityTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = tagControl.getTagScopeEntityTypesByTagScope(tagScope);
                 var entityTypes = entities.stream().map(TagScopeEntityTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, entityTypes);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("tags")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<TagObject> getTags(final DataFetchingEnvironment env) {
+        if(TagSecurityUtils.getInstance().getHasTagsAccess(env)) {
+            var tagControl = Session.getModelController(TagControl.class);
+            var totalCount = tagControl.countTagsByTagScope(tagScope);
+
+            try(var objectLimiter = new ObjectLimiter(env, TagConstants.COMPONENT_VENDOR_NAME, TagConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = tagControl.getTags(tagScope);
+                var entityTypes = entities.stream().map(TagObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, entityTypes);
             }

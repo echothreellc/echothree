@@ -16,10 +16,12 @@
 
 package com.echothree.model.control.tag.server.graphql;
 
+import com.echothree.control.user.tag.server.command.GetTagCommand;
 import com.echothree.control.user.tag.server.command.GetTagScopeCommand;
 import com.echothree.control.user.tag.server.command.GetTagScopeEntityTypeCommand;
 import com.echothree.control.user.tag.server.command.GetTagScopeEntityTypesCommand;
 import com.echothree.control.user.tag.server.command.GetTagScopesCommand;
+import com.echothree.control.user.tag.server.command.GetTagsCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
@@ -48,6 +50,14 @@ public final class TagSecurityUtils
 
     public boolean getHasTagScopeEntityTypesAccess(final DataFetchingEnvironment env) {
         return getGraphQlExecutionContext(env).hasAccess(GetTagScopeEntityTypesCommand.class);
+    }
+
+    public boolean getHasTagAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetTagCommand.class);
+    }
+
+    public boolean getHasTagsAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetTagsCommand.class);
     }
 
 }
