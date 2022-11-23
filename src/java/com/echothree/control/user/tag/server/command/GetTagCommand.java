@@ -17,20 +17,16 @@
 package com.echothree.control.user.tag.server.command;
 
 import com.echothree.control.user.tag.common.form.GetTagForm;
-import com.echothree.control.user.tag.common.result.GetTagResult;
 import com.echothree.control.user.tag.common.result.TagResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.tag.server.control.TagControl;
-import com.echothree.model.data.tag.server.entity.Tag;
-import com.echothree.model.data.tag.server.entity.TagScope;
+import com.echothree.model.control.tag.server.logic.TagLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -68,22 +64,11 @@ public class GetTagCommand
     @Override
     protected BaseResult execute() {
         var tagControl = Session.getModelController(TagControl.class);
-        GetTagResult result = TagResultFactory.getGetTagResult();
-        String tagScopeName = form.getTagScopeName();
-        TagScope tagScope = tagControl.getTagScopeByName(tagScopeName);
-        
-        if(tagScope != null) {
-            String tagName = form.getTagName();
-            Tag tag = tagControl.getTagByName(tagScope, tagName);
-            UserVisit userVisit = getUserVisit();
-            
-            if(tag != null) {
-                result.setTag(tagControl.getTagTransfer(userVisit, tag));
-            } else {
-                addExecutionError(ExecutionErrors.UnknownTagName.name(), tagName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownTagScopeName.name(), tagScopeName);
+        var result = TagResultFactory.getGetTagResult();
+        var tag = TagLogic.getInstance().getTagByName(this, form.getTagScopeName(), form.getTagName());
+
+        if(!hasExecutionErrors()) {
+            result.setTag(tagControl.getTagTransfer(getUserVisit(), tag));
         }
         
         return result;

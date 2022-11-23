@@ -923,7 +923,7 @@ public class TagControl
         return getTagsByTagScopeAndEntityInstance(tagScope, entityInstance, EntityPermission.READ_WRITE);
     }
     
-    private Tag getTagByName(TagScope tagScope, String tagName, EntityPermission entityPermission) {
+    public Tag getTagByName(TagScope tagScope, String tagName, EntityPermission entityPermission) {
         Tag tag;
         
         try {
