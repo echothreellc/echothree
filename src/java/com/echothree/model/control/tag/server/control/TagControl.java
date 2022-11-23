@@ -821,6 +821,7 @@ public class TagControl
                     SELECT COUNT(*)
                     FROM tags, tagdetails
                     WHERE t_activedetailid = tdt_tagdetailid
+                    AND tdt_ts_tagscopeid = ?
                     """, tagScope);
     }
 
