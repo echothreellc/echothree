@@ -961,7 +961,7 @@ public class TagControl
         return getTagTransferCaches(userVisit).getTagTransferCache().getTagTransfer(tag);
     }
     
-    public List<TagTransfer> getTagTransfers(UserVisit userVisit, List<Tag> tags) {
+    public List<TagTransfer> getTagTransfers(UserVisit userVisit, Collection<Tag> tags) {
         List<TagTransfer> tagTransfers = new ArrayList<>(tags.size());
         TagTransferCache tagTransferCache = getTagTransferCaches(userVisit).getTagTransferCache();
         
@@ -1180,7 +1180,7 @@ public class TagControl
         return getTagTransferCaches(userVisit).getEntityTagTransferCache().getEntityTagTransfer(entityTag);
     }
     
-    public List<EntityTagTransfer> getEntityTagTransfers(UserVisit userVisit, List<EntityTag> entityTags) {
+    public List<EntityTagTransfer> getEntityTagTransfers(UserVisit userVisit, Collection<EntityTag> entityTags) {
         List<EntityTagTransfer> entityTagTransfers = new ArrayList<>(entityTags.size());
         EntityTagTransferCache entityTagTransferCache = getTagTransferCaches(userVisit).getEntityTagTransferCache();
         

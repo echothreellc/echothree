@@ -70,6 +70,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -1100,7 +1101,7 @@ public class WorkEffortControl
         return getWorkEffortTransferCaches(userVisit).getWorkEffortTransferCache().getWorkEffortTransfer(workEffort);
     }
     
-    public List<WorkEffortTransfer> getWorkEffortTransfers(UserVisit userVisit, List<WorkEffort> workEfforts) {
+    public List<WorkEffortTransfer> getWorkEffortTransfers(UserVisit userVisit, Collection<WorkEffort> workEfforts) {
         List<WorkEffortTransfer> workEffortTransfers = new ArrayList<>(workEfforts.size());
         WorkEffortTransferCache workEffortTransferCache = getWorkEffortTransferCaches(userVisit).getWorkEffortTransferCache();
 

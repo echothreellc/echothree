@@ -2491,7 +2491,7 @@ public class ItemControl
         return getItemUnitOfMeasureTypesByUnitOfMeasureType(unitOfMeasureType, EntityPermission.READ_WRITE);
     }
     
-    public List<ItemUnitOfMeasureTypeTransfer> getItemUnitOfMeasureTypeTransfers(UserVisit userVisit, List<ItemUnitOfMeasureType> itemUnitOfMeasureTypes) {
+    public List<ItemUnitOfMeasureTypeTransfer> getItemUnitOfMeasureTypeTransfers(UserVisit userVisit, Collection<ItemUnitOfMeasureType> itemUnitOfMeasureTypes) {
         List<ItemUnitOfMeasureTypeTransfer> itemUnitOfMeasureTypeTransfers = new ArrayList<>(itemUnitOfMeasureTypes.size());
         ItemUnitOfMeasureTypeTransferCache itemUnitOfMeasureTypeTransferCache = getItemTransferCaches(userVisit).getItemUnitOfMeasureTypeTransferCache();
         
@@ -9723,7 +9723,7 @@ public class ItemControl
         return getItemTransferCaches(userVisit).getRelatedItemTypeTransferCache().getTransfer(relatedItemType);
     }
 
-    public List<RelatedItemTypeTransfer> getRelatedItemTypeTransfers(UserVisit userVisit, List<RelatedItemType> relatedItemTypes) {
+    public List<RelatedItemTypeTransfer> getRelatedItemTypeTransfers(UserVisit userVisit, Collection<RelatedItemType> relatedItemTypes) {
         List<RelatedItemTypeTransfer> relatedItemTypeTransfers = new ArrayList<>(relatedItemTypes.size());
         RelatedItemTypeTransferCache relatedItemTypeTransferCache = getItemTransferCaches(userVisit).getRelatedItemTypeTransferCache();
 
@@ -10285,7 +10285,7 @@ public class ItemControl
         return getItemTransferCaches(userVisit).getRelatedItemTransferCache().getTransfer(relatedItem);
     }
 
-    public List<RelatedItemTransfer> getRelatedItemTransfers(UserVisit userVisit, List<RelatedItem> relatedItems) {
+    public List<RelatedItemTransfer> getRelatedItemTransfers(UserVisit userVisit, Collection<RelatedItem> relatedItems) {
         List<RelatedItemTransfer> relatedItemTransfers = new ArrayList<>(relatedItems.size());
         RelatedItemTransferCache relatedItemTransferCache = getItemTransferCaches(userVisit).getRelatedItemTransferCache();
 
@@ -10640,7 +10640,7 @@ public class ItemControl
         return getItemTransferCaches(userVisit).getHarmonizedTariffScheduleCodeTransferCache().getTransfer(harmonizedTariffScheduleCode);
     }
 
-    public List<HarmonizedTariffScheduleCodeTransfer> getHarmonizedTariffScheduleCodeTransfers(UserVisit userVisit, List<HarmonizedTariffScheduleCode> harmonizedTariffScheduleCodes) {
+    public List<HarmonizedTariffScheduleCodeTransfer> getHarmonizedTariffScheduleCodeTransfers(UserVisit userVisit, Collection<HarmonizedTariffScheduleCode> harmonizedTariffScheduleCodes) {
         List<HarmonizedTariffScheduleCodeTransfer> harmonizedTariffScheduleCodeTransfers = new ArrayList<>(harmonizedTariffScheduleCodes.size());
         HarmonizedTariffScheduleCodeTransferCache harmonizedTariffScheduleCodeTransferCache = getItemTransferCaches(userVisit).getHarmonizedTariffScheduleCodeTransferCache();
 
@@ -12085,7 +12085,7 @@ public class ItemControl
         return getItemTransferCaches(userVisit).getItemHarmonizedTariffScheduleCodeTransferCache().getTransfer(itemHarmonizedTariffScheduleCode);
     }
 
-    public List<ItemHarmonizedTariffScheduleCodeTransfer> getItemHarmonizedTariffScheduleCodeTransfers(UserVisit userVisit, List<ItemHarmonizedTariffScheduleCode> itemHarmonizedTariffScheduleCodes) {
+    public List<ItemHarmonizedTariffScheduleCodeTransfer> getItemHarmonizedTariffScheduleCodeTransfers(UserVisit userVisit, Collection<ItemHarmonizedTariffScheduleCode> itemHarmonizedTariffScheduleCodes) {
         List<ItemHarmonizedTariffScheduleCodeTransfer> itemHarmonizedTariffScheduleCodeTransfers = new ArrayList<>(itemHarmonizedTariffScheduleCodes.size());
         ItemHarmonizedTariffScheduleCodeTransferCache itemHarmonizedTariffScheduleCodeTransferCache = getItemTransferCaches(userVisit).getItemHarmonizedTariffScheduleCodeTransferCache();
 

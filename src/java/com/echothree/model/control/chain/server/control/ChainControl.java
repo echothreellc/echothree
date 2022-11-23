@@ -3379,7 +3379,7 @@ public class ChainControl
         return getChainTransferCaches(userVisit).getChainInstanceTransferCache().getChainInstanceTransfer(chainInstance);
     }
     
-    public List<ChainInstanceTransfer> getChainInstanceTransfers(UserVisit userVisit, List<ChainInstance> chainInstances) {
+    public List<ChainInstanceTransfer> getChainInstanceTransfers(UserVisit userVisit, Collection<ChainInstance> chainInstances) {
         List<ChainInstanceTransfer> chainInstanceTransfers = new ArrayList<>(chainInstances.size());
         ChainInstanceTransferCache chainInstanceTransferCache = getChainTransferCaches(userVisit).getChainInstanceTransferCache();
         
@@ -3797,7 +3797,7 @@ public class ChainControl
         return getChainTransferCaches(userVisit).getChainInstanceEntityRoleTransferCache().getChainInstanceEntityRoleTransfer(chainInstanceEntityRole);
     }
     
-    public List<ChainInstanceEntityRoleTransfer> getChainInstanceEntityRoleTransfers(UserVisit userVisit, List<ChainInstanceEntityRole> chainInstanceEntityRoles) {
+    public List<ChainInstanceEntityRoleTransfer> getChainInstanceEntityRoleTransfers(UserVisit userVisit, Collection<ChainInstanceEntityRole> chainInstanceEntityRoles) {
         List<ChainInstanceEntityRoleTransfer> chainInstanceEntityRoleTransfers = new ArrayList<>(chainInstanceEntityRoles.size());
         ChainInstanceEntityRoleTransferCache chainInstanceEntityRoleTransferCache = getChainTransferCaches(userVisit).getChainInstanceEntityRoleTransferCache();
         

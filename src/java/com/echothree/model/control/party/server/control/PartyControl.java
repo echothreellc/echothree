@@ -551,7 +551,7 @@ public class PartyControl
         return getPartyTransferCaches(userVisit).getPartyTypeTransferCache().getPartyTypeTransfer(partyType);
     }
     
-    public List<PartyTypeTransfer> getPartyTypeTransfers(UserVisit userVisit, List<PartyType> partyTypes) {
+    public List<PartyTypeTransfer> getPartyTypeTransfers(UserVisit userVisit, Collection<PartyType> partyTypes) {
         List<PartyTypeTransfer> partyTypeTransfers = new ArrayList<>(partyTypes.size());
         PartyTypeTransferCache partyTypeTransferCache = getPartyTransferCaches(userVisit).getPartyTypeTransferCache();
         
@@ -4513,7 +4513,7 @@ public class PartyControl
         return getPartyTransferCaches(userVisit).getPartyRelationshipTransferCache().getPartyRelationshipTransfer(partyRelationship);
     }
     
-    public List<PartyRelationshipTransfer> getPartyRelationshipTransfers(UserVisit userVisit, List<PartyRelationship> partyRelationships) {
+    public List<PartyRelationshipTransfer> getPartyRelationshipTransfers(UserVisit userVisit, Collection<PartyRelationship> partyRelationships) {
         List<PartyRelationshipTransfer> partyRelationshipTransfers = new ArrayList<>(partyRelationships.size());
         PartyRelationshipTransferCache partyRelationshipTransferCache = getPartyTransferCaches(userVisit).getPartyRelationshipTransferCache();
         
@@ -5978,7 +5978,7 @@ public class PartyControl
         return getPartyTransferCaches(userVisit).getBirthdayFormatTransferCache().getBirthdayFormatTransfer(birthdayFormat);
     }
 
-    public List<BirthdayFormatTransfer> getBirthdayFormatTransfers(UserVisit userVisit, List<BirthdayFormat> birthdayFormats) {
+    public List<BirthdayFormatTransfer> getBirthdayFormatTransfers(UserVisit userVisit, Collection<BirthdayFormat> birthdayFormats) {
         List<BirthdayFormatTransfer> birthdayFormatTransfers = new ArrayList<>(birthdayFormats.size());
         BirthdayFormatTransferCache birthdayFormatTransferCache = getPartyTransferCaches(userVisit).getBirthdayFormatTransferCache();
 

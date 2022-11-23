@@ -115,6 +115,7 @@ import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1843,7 +1844,7 @@ public class FinancialControl
         return getFinancialAccountRolesByFinancialAccount(financialAccount, EntityPermission.READ_WRITE);
     }
     
-    public List<FinancialAccountRoleTransfer> getFinancialAccountRoleTransfers(UserVisit userVisit, List<FinancialAccountRole> financialAccountRoles) {
+    public List<FinancialAccountRoleTransfer> getFinancialAccountRoleTransfers(UserVisit userVisit, Collection<FinancialAccountRole> financialAccountRoles) {
         List<FinancialAccountRoleTransfer> financialAccountRoleTransfers = new ArrayList<>(financialAccountRoles.size());
         FinancialAccountRoleTransferCache financialAccountRoleTransferCache = getFinancialTransferCaches(userVisit).getFinancialAccountRoleTransferCache();
         

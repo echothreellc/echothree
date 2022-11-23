@@ -54,6 +54,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -320,7 +321,7 @@ public class PaymentMethodControl
         return getPaymentTransferCaches(userVisit).getPaymentMethodTransferCache().getTransfer(paymentMethod);
     }
     
-    public List<PaymentMethodTransfer> getPaymentMethodTransfers(UserVisit userVisit, List<PaymentMethod> paymentMethods) {
+    public List<PaymentMethodTransfer> getPaymentMethodTransfers(UserVisit userVisit, Collection<PaymentMethod> paymentMethods) {
         List<PaymentMethodTransfer> paymentMethodTransfers = new ArrayList<>(paymentMethods.size());
         PaymentMethodTransferCache paymentMethodTransferCache = getPaymentTransferCaches(userVisit).getPaymentMethodTransferCache();
 

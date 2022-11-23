@@ -51,7 +51,6 @@ import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.item.common.pk.ItemPK;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.party.server.entity.Language;
-import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.subscription.common.pk.SubscriptionTypePK;
 import com.echothree.model.data.subscription.server.entity.SubscriptionType;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -63,6 +62,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -824,7 +824,7 @@ public class ClubControl
         return getClubTransferCaches(userVisit).getClubItemTransferCache().getClubItemTransfer(clubItem);
     }
     
-    private List<ClubItemTransfer> getClubItemTransfers(UserVisit userVisit, List<ClubItem> clubItems) {
+    private List<ClubItemTransfer> getClubItemTransfers(UserVisit userVisit, Collection<ClubItem> clubItems) {
         List<ClubItemTransfer> clubItemTransfers = new ArrayList<>(clubItems.size());
         ClubItemTransferCache clubItemTransferCache = getClubTransferCaches(userVisit).getClubItemTransferCache();
         

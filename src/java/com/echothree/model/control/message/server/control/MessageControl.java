@@ -83,6 +83,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -1016,7 +1017,7 @@ public class MessageControl
         return messageString == null? null: getMessageStringValue(messageString);
     }
     
-    public List<MessageStringTransfer> getMessageStringTransfers(UserVisit userVisit, List<MessageString> messageStrings) {
+    public List<MessageStringTransfer> getMessageStringTransfers(UserVisit userVisit, Collection<MessageString> messageStrings) {
         List<MessageStringTransfer> messageStringTransfers = new ArrayList<>(messageStrings.size());
         MessageStringTransferCache messageStringTransferCache = getMessageTransferCaches(userVisit).getMessageStringTransferCache();
         
@@ -1168,7 +1169,7 @@ public class MessageControl
         return messageBlob == null? null: getMessageBlobValue(messageBlob);
     }
     
-    public List<MessageBlobTransfer> getMessageBlobTransfers(UserVisit userVisit, List<MessageBlob> messageBlobs) {
+    public List<MessageBlobTransfer> getMessageBlobTransfers(UserVisit userVisit, Collection<MessageBlob> messageBlobs) {
         List<MessageBlobTransfer> messageBlobTransfers = new ArrayList<>(messageBlobs.size());
         MessageBlobTransferCache messageBlobTransferCache = getMessageTransferCaches(userVisit).getMessageBlobTransferCache();
         
@@ -1321,7 +1322,7 @@ public class MessageControl
         return messageClob == null? null: getMessageClobValue(messageClob);
     }
     
-    public List<MessageClobTransfer> getMessageClobTransfers(UserVisit userVisit, List<MessageClob> messageClobs) {
+    public List<MessageClobTransfer> getMessageClobTransfers(UserVisit userVisit, Collection<MessageClob> messageClobs) {
         List<MessageClobTransfer> messageClobTransfers = new ArrayList<>(messageClobs.size());
         MessageClobTransferCache messageClobTransferCache = getMessageTransferCaches(userVisit).getMessageClobTransferCache();
         
@@ -1507,7 +1508,7 @@ public class MessageControl
         return getMessageTransferCaches(userVisit).getEntityMessageTransferCache().getEntityMessageTransfer(entityMessage);
     }
     
-    public List<EntityMessageTransfer> getEntityMessageTransfers(UserVisit userVisit, List<EntityMessage> entityMessages) {
+    public List<EntityMessageTransfer> getEntityMessageTransfers(UserVisit userVisit, Collection<EntityMessage> entityMessages) {
         List<EntityMessageTransfer> entityMessageTransfers = new ArrayList<>(entityMessages.size());
         EntityMessageTransferCache entityMessageTransferCache = getMessageTransferCaches(userVisit).getEntityMessageTransferCache();
         

@@ -98,6 +98,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -300,7 +301,7 @@ public class CarrierControl
         return getCarrierTransferCaches(userVisit).getCarrierTypeTransferCache().getCarrierTypeTransfer(carrierType);
     }
 
-    public List<CarrierTypeTransfer> getCarrierTypeTransfers(UserVisit userVisit, List<CarrierType> carrierTypes) {
+    public List<CarrierTypeTransfer> getCarrierTypeTransfers(UserVisit userVisit, Collection<CarrierType> carrierTypes) {
         List<CarrierTypeTransfer> carrierTypeTransfers = new ArrayList<>(carrierTypes.size());
         CarrierTypeTransferCache carrierTypeTransferCache = getCarrierTransferCaches(userVisit).getCarrierTypeTransferCache();
 
@@ -2025,7 +2026,7 @@ public class CarrierControl
         return getCarrierTransferCaches(userVisit).getCarrierServiceOptionTransferCache().getCarrierServiceOptionTransfer(carrierServiceOption);
     }
     
-    public List<CarrierServiceOptionTransfer> getCarrierServiceOptionTransfers(UserVisit userVisit, List<CarrierServiceOption> carrierServiceOptions) {
+    public List<CarrierServiceOptionTransfer> getCarrierServiceOptionTransfers(UserVisit userVisit, Collection<CarrierServiceOption> carrierServiceOptions) {
         List<CarrierServiceOptionTransfer> carrierServiceOptionTransfers = new ArrayList<>(carrierServiceOptions.size());
         CarrierServiceOptionTransferCache carrierServiceOptionTransferCache = getCarrierTransferCaches(userVisit).getCarrierServiceOptionTransferCache();
         
@@ -2416,7 +2417,7 @@ public class CarrierControl
         return getCarrierTransferCaches(userVisit).getPartyCarrierAccountTransferCache().getPartyCarrierAccountTransfer(partyCarrierAccount);
     }
 
-    public List<PartyCarrierAccountTransfer> getPartyCarrierAccountTransfers(UserVisit userVisit, List<PartyCarrierAccount> partyCarrierAccounts) {
+    public List<PartyCarrierAccountTransfer> getPartyCarrierAccountTransfers(UserVisit userVisit, Collection<PartyCarrierAccount> partyCarrierAccounts) {
         List<PartyCarrierAccountTransfer> partyCarrierAccountTransfers = new ArrayList<>(partyCarrierAccounts.size());
         PartyCarrierAccountTransferCache partyCarrierAccountTransferCache = getCarrierTransferCaches(userVisit).getPartyCarrierAccountTransferCache();
 

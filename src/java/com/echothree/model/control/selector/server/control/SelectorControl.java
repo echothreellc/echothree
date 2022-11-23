@@ -1406,7 +1406,7 @@ public class SelectorControl
         return getSelectorTransferCaches(userVisit).getSelectorNodeTypeTransferCache().getSelectorNodeTypeTransfer(selectorNodeType);
     }
     
-    public List<SelectorNodeTypeTransfer> getSelectorNodeTypeTransfers(UserVisit userVisit, List<SelectorNodeType> selectorNodeTypes) {
+    public List<SelectorNodeTypeTransfer> getSelectorNodeTypeTransfers(UserVisit userVisit, Collection<SelectorNodeType> selectorNodeTypes) {
         List<SelectorNodeTypeTransfer> selectorNodeTypeTransfers = new ArrayList<>(selectorNodeTypes.size());
         SelectorNodeTypeTransferCache selectorNodeTypeTransferCache = getSelectorTransferCaches(userVisit).getSelectorNodeTypeTransferCache();
         

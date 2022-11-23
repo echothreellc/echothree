@@ -56,6 +56,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class BillingControl
@@ -395,7 +396,7 @@ public class BillingControl
         return getPaymentTransferCaches(userVisit).getBillingAccountTransferCache().getTransfer(billingAccount);
     }
     
-    public List<BillingAccountTransfer> getBillingAccountTransfers(UserVisit userVisit, List<BillingAccount> billingAccounts) {
+    public List<BillingAccountTransfer> getBillingAccountTransfers(UserVisit userVisit, Collection<BillingAccount> billingAccounts) {
         List<BillingAccountTransfer> billingAccountTransfers = new ArrayList<>(billingAccounts.size());
         BillingAccountTransferCache billingAccountTransferCache = getPaymentTransferCaches(userVisit).getBillingAccountTransferCache();
         
@@ -620,7 +621,7 @@ public class BillingControl
         return getPaymentTransferCaches(userVisit).getBillingAccountRoleTransferCache().getTransfer(billingAccountRole);
     }
     
-    public List<BillingAccountRoleTransfer> getBillingAccountRoleTransfers(UserVisit userVisit, List<BillingAccountRole> billingAccountRoles) {
+    public List<BillingAccountRoleTransfer> getBillingAccountRoleTransfers(UserVisit userVisit, Collection<BillingAccountRole> billingAccountRoles) {
         List<BillingAccountRoleTransfer> billingAccountRoleTransfers = new ArrayList<>(billingAccountRoles.size());
         BillingAccountRoleTransferCache billingAccountRoleTransferCache = getPaymentTransferCaches(userVisit).getBillingAccountRoleTransferCache();
         

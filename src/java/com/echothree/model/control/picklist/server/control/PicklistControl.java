@@ -86,6 +86,7 @@ import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1589,7 +1590,7 @@ public class PicklistControl
         return getPicklistTransferCaches(userVisit).getPicklistTimeTransferCache().getPicklistTimeTransfer(picklistTime);
     }
 
-    public List<PicklistTimeTransfer> getPicklistTimeTransfers(UserVisit userVisit, List<PicklistTime> picklistTimes) {
+    public List<PicklistTimeTransfer> getPicklistTimeTransfers(UserVisit userVisit, Collection<PicklistTime> picklistTimes) {
         List<PicklistTimeTransfer> picklistTimeTransfers = new ArrayList<>(picklistTimes.size());
         PicklistTimeTransferCache picklistTimeTransferCache = getPicklistTransferCaches(userVisit).getPicklistTimeTransferCache();
 

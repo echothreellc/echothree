@@ -120,7 +120,6 @@ import com.echothree.model.data.user.server.value.UserKeyDetailValue;
 import com.echothree.model.data.user.server.value.UserLoginPasswordStringValue;
 import com.echothree.model.data.user.server.value.UserLoginValue;
 import com.echothree.model.data.user.server.value.UserVisitGroupDetailValue;
-import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
@@ -564,7 +563,7 @@ public class UserControl
         return getUserTransferCaches(userVisit).getUserVisitGroupTransferCache().getUserVisitGroupTransfer(userVisitGroup);
     }
     
-    public List<UserVisitGroupTransfer> getUserVisitGroupTransfers(UserVisit userVisit, List<UserVisitGroup> userVisitGroups) {
+    public List<UserVisitGroupTransfer> getUserVisitGroupTransfers(UserVisit userVisit, Collection<UserVisitGroup> userVisitGroups) {
         List<UserVisitGroupTransfer> userVisitGroupTransfers = new ArrayList<>(userVisitGroups.size());
         UserVisitGroupTransferCache userVisitGroupTransferCache = getUserTransferCaches(userVisit).getUserVisitGroupTransferCache();
         
@@ -2095,7 +2094,7 @@ public class UserControl
         return getUserTransferCaches(userVisit).getUserLoginPasswordTransferCache().getUserLoginPasswordTransfer(userLoginPassword);
     }
 
-    public List<UserLoginPasswordTransfer> getUserLoginPasswordTransfers(UserVisit userVisit, List<UserLoginPassword> userLoginPasswords) {
+    public List<UserLoginPasswordTransfer> getUserLoginPasswordTransfers(UserVisit userVisit, Collection<UserLoginPassword> userLoginPasswords) {
         List<UserLoginPasswordTransfer> userLoginPasswordTransfers = new ArrayList<>(userLoginPasswords.size());
         UserLoginPasswordTransferCache userLoginPasswordTransferCache = getUserTransferCaches(userVisit).getUserLoginPasswordTransferCache();
 

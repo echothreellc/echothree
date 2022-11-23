@@ -76,6 +76,7 @@ import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -247,7 +248,7 @@ public class ScaleControl
         return getScaleTransferCaches(userVisit).getScaleTypeTransferCache().getScaleTypeTransfer(scaleType);
     }
 
-    public List<ScaleTypeTransfer> getScaleTypeTransfers(UserVisit userVisit, List<ScaleType> scaleTypes) {
+    public List<ScaleTypeTransfer> getScaleTypeTransfers(UserVisit userVisit, Collection<ScaleType> scaleTypes) {
         List<ScaleTypeTransfer> scaleTypeTransfers = new ArrayList<>(scaleTypes.size());
         ScaleTypeTransferCache scaleTypeTransferCache = getScaleTransferCaches(userVisit).getScaleTypeTransferCache();
 
@@ -733,7 +734,7 @@ public class ScaleControl
         return getScaleTransferCaches(userVisit).getScaleTransferCache().getScaleTransfer(scale);
     }
 
-    public List<ScaleTransfer> getScaleTransfers(UserVisit userVisit, List<Scale> scales) {
+    public List<ScaleTransfer> getScaleTransfers(UserVisit userVisit, Collection<Scale> scales) {
         List<ScaleTransfer> scaleTransfers = new ArrayList<>(scales.size());
         ScaleTransferCache scaleTransferCache = getScaleTransferCaches(userVisit).getScaleTransferCache();
 
@@ -1177,7 +1178,7 @@ public class ScaleControl
         return getScaleTransferCaches(userVisit).getScaleUseTypeTransferCache().getScaleUseTypeTransfer(scaleUseType);
     }
 
-    public List<ScaleUseTypeTransfer> getScaleUseTypeTransfers(UserVisit userVisit, List<ScaleUseType> scaleUseTypes) {
+    public List<ScaleUseTypeTransfer> getScaleUseTypeTransfers(UserVisit userVisit, Collection<ScaleUseType> scaleUseTypes) {
         List<ScaleUseTypeTransfer> scaleUseTypeTransfers = new ArrayList<>(scaleUseTypes.size());
         ScaleUseTypeTransferCache scaleUseTypeTransferCache = getScaleTransferCaches(userVisit).getScaleUseTypeTransferCache();
 
@@ -1621,7 +1622,7 @@ public class ScaleControl
         return getScaleTransferCaches(userVisit).getPartyScaleUseTransferCache().getPartyScaleUseTransfer(partyScaleUse);
     }
 
-    public List<PartyScaleUseTransfer> getPartyScaleUseTransfers(UserVisit userVisit, List<PartyScaleUse> partyScaleUses) {
+    public List<PartyScaleUseTransfer> getPartyScaleUseTransfers(UserVisit userVisit, Collection<PartyScaleUse> partyScaleUses) {
         List<PartyScaleUseTransfer> partyScaleUseTransfers = new ArrayList<>(partyScaleUses.size());
         PartyScaleUseTransferCache partyScaleUseTransferCache = getScaleTransferCaches(userVisit).getPartyScaleUseTransferCache();
 

@@ -123,6 +123,7 @@ import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.Sha1Utils;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -2938,7 +2939,7 @@ public class CampaignControl
         return getCampaignTransferCaches(userVisit).getUserVisitCampaignTransferCache().getUserVisitCampaignTransfer(userVisitCampaign);
     }
 
-    public List<UserVisitCampaignTransfer> getUserVisitCampaignTransfers(UserVisit userVisit, List<UserVisitCampaign> userVisitCampaigns) {
+    public List<UserVisitCampaignTransfer> getUserVisitCampaignTransfers(UserVisit userVisit, Collection<UserVisitCampaign> userVisitCampaigns) {
         List<UserVisitCampaignTransfer> userVisitCampaignTransfers = new ArrayList<>(userVisitCampaigns.size());
         UserVisitCampaignTransferCache userVisitCampaignTransferCache = getCampaignTransferCaches(userVisit).getUserVisitCampaignTransferCache();
 

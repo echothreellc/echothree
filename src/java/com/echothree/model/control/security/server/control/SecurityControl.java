@@ -1291,7 +1291,7 @@ public class SecurityControl
         return getSecurityTransferCaches(userVisit).getSecurityRolePartyTypeTransferCache().getSecurityRolePartyTypeTransfer(securityRolePartyType);
     }
     
-    public List<SecurityRolePartyTypeTransfer> getSecurityRolePartyTypeTransfers(UserVisit userVisit, List<SecurityRolePartyType> securityRolePartyTypes) {
+    public List<SecurityRolePartyTypeTransfer> getSecurityRolePartyTypeTransfers(UserVisit userVisit, Collection<SecurityRolePartyType> securityRolePartyTypes) {
         List<SecurityRolePartyTypeTransfer> securityRolePartyTypeTransfers = new ArrayList<>(securityRolePartyTypes.size());
         SecurityRolePartyTypeTransferCache securityRolePartyTypeTransferCache = getSecurityTransferCaches(userVisit).getSecurityRolePartyTypeTransferCache();
         
@@ -1931,7 +1931,7 @@ public class SecurityControl
         return getSecurityTransferCaches(userVisit).getPartySecurityRoleTemplateRoleTransferCache().getPartySecurityRoleTemplateRoleTransfer(partySecurityRoleTemplateRole);
     }
     
-    public List<PartySecurityRoleTemplateRoleTransfer> getPartySecurityRoleTemplateRoleTransfers(UserVisit userVisit, List<PartySecurityRoleTemplateRole> partySecurityRoleTemplateRoles) {
+    public List<PartySecurityRoleTemplateRoleTransfer> getPartySecurityRoleTemplateRoleTransfers(UserVisit userVisit, Collection<PartySecurityRoleTemplateRole> partySecurityRoleTemplateRoles) {
         List<PartySecurityRoleTemplateRoleTransfer> partySecurityRoleTemplateRoleTransfers = new ArrayList<>(partySecurityRoleTemplateRoles.size());
         PartySecurityRoleTemplateRoleTransferCache partySecurityRoleTemplateRoleTransferCache = getSecurityTransferCaches(userVisit).getPartySecurityRoleTemplateRoleTransferCache();
 
@@ -2097,7 +2097,7 @@ public class SecurityControl
         return getSecurityTransferCaches(userVisit).getPartySecurityRoleTemplateTrainingClassTransferCache().getPartySecurityRoleTemplateTrainingClassTransfer(partySecurityRoleTemplateTrainingClass);
     }
     
-    public List<PartySecurityRoleTemplateTrainingClassTransfer> getPartySecurityRoleTemplateTrainingClassTransfers(UserVisit userVisit, List<PartySecurityRoleTemplateTrainingClass> partySecurityRoleTemplateTrainingClasses) {
+    public List<PartySecurityRoleTemplateTrainingClassTransfer> getPartySecurityRoleTemplateTrainingClassTransfers(UserVisit userVisit, Collection<PartySecurityRoleTemplateTrainingClass> partySecurityRoleTemplateTrainingClasses) {
         List<PartySecurityRoleTemplateTrainingClassTransfer> partySecurityRoleTemplateTrainingClassTransfers = new ArrayList<>(partySecurityRoleTemplateTrainingClasses.size());
         PartySecurityRoleTemplateTrainingClassTransferCache partySecurityRoleTemplateTrainingClassTransferCache = getSecurityTransferCaches(userVisit).getPartySecurityRoleTemplateTrainingClassTransferCache();
 

@@ -1182,7 +1182,7 @@ public class VendorControl
         return getVendorTransferCaches(userVisit).getVendorItemTransferCache().getVendorItemTransfer(vendorItem);
     }
     
-    public List<VendorItemTransfer> getVendorItemTransfers(UserVisit userVisit, List<VendorItem> vendorItems) {
+    public List<VendorItemTransfer> getVendorItemTransfers(UserVisit userVisit, Collection<VendorItem> vendorItems) {
         List<VendorItemTransfer> vendorItemTransfers = new ArrayList<>(vendorItems.size());
         VendorItemTransferCache vendorItemTransferCache = getVendorTransferCaches(userVisit).getVendorItemTransferCache();
         
@@ -1436,7 +1436,7 @@ public class VendorControl
         return getVendorTransferCaches(userVisit).getVendorItemCostTransferCache().getVendorItemCostTransfer(vendorItemCost);
     }
     
-    public List<VendorItemCostTransfer> getVendorItemCostTransfers(UserVisit userVisit, List<VendorItemCost> vendorItemCosts) {
+    public List<VendorItemCostTransfer> getVendorItemCostTransfers(UserVisit userVisit, Collection<VendorItemCost> vendorItemCosts) {
         List<VendorItemCostTransfer> vendorItemCostTransfers = vendorItemCostTransfers = new ArrayList<>(vendorItemCosts.size());
         VendorItemCostTransferCache vendorItemCostTransferCache = getVendorTransferCaches(userVisit).getVendorItemCostTransferCache();
         

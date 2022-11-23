@@ -58,6 +58,7 @@ import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.Sha1Utils;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -719,7 +720,7 @@ public class TrackControl
         return getTrackTransferCaches(userVisit).getUserVisitTrackTransferCache().getUserVisitTrackTransfer(userVisitTrack);
     }
 
-    public List<UserVisitTrackTransfer> getUserVisitTrackTransfers(UserVisit userVisit, List<UserVisitTrack> userVisitTracks) {
+    public List<UserVisitTrackTransfer> getUserVisitTrackTransfers(UserVisit userVisit, Collection<UserVisitTrack> userVisitTracks) {
         var userVisitTrackTransfers = new ArrayList<UserVisitTrackTransfer>(userVisitTracks.size());
         var userVisitTrackTransferCache = getTrackTransferCaches(userVisit).getUserVisitTrackTransferCache();
 

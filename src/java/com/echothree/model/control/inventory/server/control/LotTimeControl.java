@@ -44,6 +44,7 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -601,7 +602,7 @@ public class LotTimeControl
         return getInventoryTransferCaches(userVisit).getLotTimeTransferCache().getTransfer(lotTime);
     }
 
-    public List<LotTimeTransfer> getLotTimeTransfers(UserVisit userVisit, List<LotTime> lotTimes) {
+    public List<LotTimeTransfer> getLotTimeTransfers(UserVisit userVisit, Collection<LotTime> lotTimes) {
         List<LotTimeTransfer> lotTimeTransfers = new ArrayList<>(lotTimes.size());
         LotTimeTransferCache lotTimeTransferCache = getInventoryTransferCaches(userVisit).getLotTimeTransferCache();
 

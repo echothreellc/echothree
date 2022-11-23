@@ -85,6 +85,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -1714,7 +1715,7 @@ public class WishlistControl
         return getWishlistTransferCaches(userVisit).getWishlistLineTransferCache().getWishlistLineTransfer(orderLine);
     }
     
-    public List<WishlistLineTransfer> getWishlistLineTransfers(UserVisit userVisit, List<OrderLine> orderLines) {
+    public List<WishlistLineTransfer> getWishlistLineTransfers(UserVisit userVisit, Collection<OrderLine> orderLines) {
         List<WishlistLineTransfer> wishlistLineTransfers = new ArrayList<>(orderLines.size());
         WishlistLineTransferCache wishlistLineTransferCache = getWishlistTransferCaches(userVisit).getWishlistLineTransferCache();
         

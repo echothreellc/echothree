@@ -39,6 +39,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class OrderPaymentPreferenceControl
@@ -260,7 +261,7 @@ public class OrderPaymentPreferenceControl
         return getOrderTransferCaches(userVisit).getOrderPaymentPreferenceTransferCache().getOrderPaymentPreferenceTransfer(orderPaymentPreference);
     }
 
-    public List<OrderPaymentPreferenceTransfer> getOrderPaymentPreferenceTransfers(UserVisit userVisit, List<OrderPaymentPreference> orderPaymentPreferences) {
+    public List<OrderPaymentPreferenceTransfer> getOrderPaymentPreferenceTransfers(UserVisit userVisit, Collection<OrderPaymentPreference> orderPaymentPreferences) {
         List<OrderPaymentPreferenceTransfer> orderPaymentPreferenceTransfers = new ArrayList<>(orderPaymentPreferences.size());
         OrderPaymentPreferenceTransferCache orderPaymentPreferenceTransferCache = getOrderTransferCaches(userVisit).getOrderPaymentPreferenceTransferCache();
 

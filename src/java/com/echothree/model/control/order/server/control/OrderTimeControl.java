@@ -53,6 +53,7 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -626,7 +627,7 @@ public class OrderTimeControl
         return getOrderTransferCaches(userVisit).getOrderTimeTransferCache().getOrderTimeTransfer(orderTime);
     }
 
-    public List<OrderTimeTransfer> getOrderTimeTransfers(UserVisit userVisit, List<OrderTime> orderTimes) {
+    public List<OrderTimeTransfer> getOrderTimeTransfers(UserVisit userVisit, Collection<OrderTime> orderTimes) {
         List<OrderTimeTransfer> orderTimeTransfers = new ArrayList<>(orderTimes.size());
         OrderTimeTransferCache orderTimeTransferCache = getOrderTransferCaches(userVisit).getOrderTimeTransferCache();
 
@@ -826,7 +827,7 @@ public class OrderTimeControl
         return getOrderTransferCaches(userVisit).getOrderLineTimeTransferCache().getOrderLineTimeTransfer(orderLineTime);
     }
 
-    public List<OrderLineTimeTransfer> getOrderLineTimeTransfers(UserVisit userVisit, List<OrderLineTime> orderLineTimes) {
+    public List<OrderLineTimeTransfer> getOrderLineTimeTransfers(UserVisit userVisit, Collection<OrderLineTime> orderLineTimes) {
         List<OrderLineTimeTransfer> orderLineTimeTransfers = new ArrayList<>(orderLineTimes.size());
         OrderLineTimeTransferCache orderLineTimeTransferCache = getOrderTransferCaches(userVisit).getOrderLineTimeTransferCache();
 

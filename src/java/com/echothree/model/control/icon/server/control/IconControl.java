@@ -55,6 +55,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -844,7 +845,7 @@ public class IconControl
         return getIconUsagesByIcon(icon, EntityPermission.READ_WRITE);
     }
     
-    public List<IconUsageTransfer> getIconUsageTransfers(UserVisit userVisit, List<IconUsage> iconUsages) {
+    public List<IconUsageTransfer> getIconUsageTransfers(UserVisit userVisit, Collection<IconUsage> iconUsages) {
         List<IconUsageTransfer> iconUsageTransfers = new ArrayList<>(iconUsages.size());
         IconUsageTransferCache iconUsageTransferCache = getIconTransferCaches(userVisit).getIconUsageTransferCache();
         
