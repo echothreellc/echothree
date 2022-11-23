@@ -2998,7 +2998,7 @@ public class AccountingControl
         return getAccountingTransferCaches(userVisit).getGlAccountTransferCache().getTransfer(glAccount);
     }
     
-    public List<GlAccountTransfer> getGlAccountTransfers(UserVisit userVisit, List<GlAccount> glAccounts) {
+    public List<GlAccountTransfer> getGlAccountTransfers(UserVisit userVisit, Collection<GlAccount> glAccounts) {
         List<GlAccountTransfer> glAccountTransfers = new ArrayList<>(glAccounts.size());
         GlAccountTransferCache glAccountTransferCache = getAccountingTransferCaches(userVisit).getGlAccountTransferCache();
         
@@ -3557,7 +3557,7 @@ public class AccountingControl
         return getAccountingTransferCaches(userVisit).getTransactionTypeTransferCache().getTransfer(transactionType);
     }
     
-    public List<TransactionTypeTransfer> getTransactionTypeTransfers(UserVisit userVisit, List<TransactionType> transactionTypes) {
+    public List<TransactionTypeTransfer> getTransactionTypeTransfers(UserVisit userVisit, Collection<TransactionType> transactionTypes) {
         List<TransactionTypeTransfer> transactionTypeTransfers = new ArrayList<>(transactionTypes.size());
         TransactionTypeTransferCache transactionTypeTransferCache = getAccountingTransferCaches(userVisit).getTransactionTypeTransferCache();
         
@@ -3913,7 +3913,7 @@ public class AccountingControl
         return getAccountingTransferCaches(userVisit).getTransactionGlAccountCategoryTransferCache().getTransfer(transactionGlAccountCategory);
     }
     
-    public List<TransactionGlAccountCategoryTransfer> getTransactionGlAccountCategoryTransfers(UserVisit userVisit, List<TransactionGlAccountCategory> transactionGlAccountCategories) {
+    public List<TransactionGlAccountCategoryTransfer> getTransactionGlAccountCategoryTransfers(UserVisit userVisit, Collection<TransactionGlAccountCategory> transactionGlAccountCategories) {
         List<TransactionGlAccountCategoryTransfer> transactionGlAccountCategoryTransfers = new ArrayList<>(transactionGlAccountCategories.size());
         TransactionGlAccountCategoryTransferCache transactionGlAccountCategoryTransferCache = getAccountingTransferCaches(userVisit).getTransactionGlAccountCategoryTransferCache();
         
@@ -4319,7 +4319,7 @@ public class AccountingControl
         return getAccountingTransferCaches(userVisit).getTransactionEntityRoleTypeTransferCache().getTransfer(transactionEntityRoleType);
     }
     
-    public List<TransactionEntityRoleTypeTransfer> getTransactionEntityRoleTypeTransfers(UserVisit userVisit, List<TransactionEntityRoleType> transactionEntityRoleTypes) {
+    public List<TransactionEntityRoleTypeTransfer> getTransactionEntityRoleTypeTransfers(UserVisit userVisit, Collection<TransactionEntityRoleType> transactionEntityRoleTypes) {
         List<TransactionEntityRoleTypeTransfer> transactionEntityRoleTypeTransfers = new ArrayList<>(transactionEntityRoleTypes.size());
         TransactionEntityRoleTypeTransferCache transactionEntityRoleTypeTransferCache = getAccountingTransferCaches(userVisit).getTransactionEntityRoleTypeTransferCache();
         
@@ -4852,7 +4852,7 @@ public class AccountingControl
         return getAccountingTransferCaches(userVisit).getTransactionGroupTransferCache().getTransfer(transactionGroup);
     }
     
-    public List<TransactionGroupTransfer> getTransactionGroupTransfers(UserVisit userVisit, List<TransactionGroup> transactionGroups) {
+    public List<TransactionGroupTransfer> getTransactionGroupTransfers(UserVisit userVisit, Collection<TransactionGroup> transactionGroups) {
         List<TransactionGroupTransfer> transactionGroupTransfers = new ArrayList<>(transactionGroups.size());
         TransactionGroupTransferCache transactionGroupTransferCache = getAccountingTransferCaches(userVisit).getTransactionGroupTransferCache();
         
@@ -5001,7 +5001,7 @@ public class AccountingControl
         return getAccountingTransferCaches(userVisit).getTransactionTransferCache().getTransfer(transaction);
     }
     
-    public List<TransactionTransfer> getTransactionTransfers(UserVisit userVisit, List<Transaction> transactions) {
+    public List<TransactionTransfer> getTransactionTransfers(UserVisit userVisit, Collection<Transaction> transactions) {
         List<TransactionTransfer> transactionTransfers = new ArrayList<>(transactions.size());
         TransactionTransferCache transactionTransferCache = getAccountingTransferCaches(userVisit).getTransactionTransferCache();
         
@@ -5132,7 +5132,7 @@ public class AccountingControl
         return getAccountingTransferCaches(userVisit).getTransactionGlEntryTransferCache().getTransfer(transactionGlEntry);
     }
     
-    public List<TransactionGlEntryTransfer> getTransactionGlEntryTransfers(UserVisit userVisit, List<TransactionGlEntry> transactionGlEntries) {
+    public List<TransactionGlEntryTransfer> getTransactionGlEntryTransfers(UserVisit userVisit, Collection<TransactionGlEntry> transactionGlEntries) {
         List<TransactionGlEntryTransfer> transactionGlEntryTransfers = new ArrayList<>(transactionGlEntries.size());
         TransactionGlEntryTransferCache transactionGlEntryTransferCache = getAccountingTransferCaches(userVisit).getTransactionGlEntryTransferCache();
         
@@ -5266,7 +5266,7 @@ public class AccountingControl
         return getAccountingTransferCaches(userVisit).getTransactionEntityRoleTransferCache().getTransfer(transactionEntityRole);
     }
     
-    public List<TransactionEntityRoleTransfer> getTransactionEntityRoleTransfers(UserVisit userVisit, List<TransactionEntityRole> transactionEntityRoles) {
+    public List<TransactionEntityRoleTransfer> getTransactionEntityRoleTransfers(UserVisit userVisit, Collection<TransactionEntityRole> transactionEntityRoles) {
         List<TransactionEntityRoleTransfer> transactionEntityRoleTransfers = new ArrayList<>(transactionEntityRoles.size());
         TransactionEntityRoleTransferCache transactionEntityRoleTransferCache = getAccountingTransferCaches(userVisit).getTransactionEntityRoleTransferCache();
         

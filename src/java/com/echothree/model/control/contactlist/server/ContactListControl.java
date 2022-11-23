@@ -37,6 +37,7 @@ import com.echothree.model.control.contactlist.common.transfer.CustomerTypeConta
 import com.echothree.model.control.contactlist.common.transfer.PartyContactListTransfer;
 import com.echothree.model.control.contactlist.common.transfer.PartyTypeContactListGroupTransfer;
 import com.echothree.model.control.contactlist.common.transfer.PartyTypeContactListTransfer;
+import com.echothree.model.control.contactlist.common.workflow.PartyContactListStatusConstants;
 import com.echothree.model.control.contactlist.server.transfer.ContactListContactMechanismPurposeTransferCache;
 import com.echothree.model.control.contactlist.server.transfer.ContactListFrequencyTransferCache;
 import com.echothree.model.control.contactlist.server.transfer.ContactListGroupTransferCache;
@@ -50,7 +51,6 @@ import com.echothree.model.control.contactlist.server.transfer.PartyTypeContactL
 import com.echothree.model.control.contactlist.server.transfer.PartyTypeContactListTransferCache;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.letter.server.control.LetterControl;
-import com.echothree.model.control.contactlist.common.workflow.PartyContactListStatusConstants;
 import com.echothree.model.data.chain.common.pk.ChainPK;
 import com.echothree.model.data.chain.server.entity.Chain;
 import com.echothree.model.data.contact.common.pk.ContactMechanismPurposePK;
@@ -135,6 +135,7 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -2231,7 +2232,7 @@ public class ContactListControl
         return getPartyContactListsByPreferredContactListContactMechanismPurpose(preferredContactListContactMechanismPurpose, EntityPermission.READ_WRITE);
     }
     
-    public List<PartyContactListTransfer> getPartyContactListTransfers(UserVisit userVisit, List<PartyContactList> partyContactLists) {
+    public List<PartyContactListTransfer> getPartyContactListTransfers(UserVisit userVisit, Collection<PartyContactList> partyContactLists) {
         List<PartyContactListTransfer> partyContactListTransfers = new ArrayList<>(partyContactLists.size());
         PartyContactListTransferCache partyContactListTransferCache = getContactListTransferCaches(userVisit).getPartyContactListTransferCache();
         
@@ -2464,7 +2465,7 @@ public class ContactListControl
         return getPartyTypeContactListGroupsByContactListGroup(contactListGroup, EntityPermission.READ_WRITE);
     }
     
-    public List<PartyTypeContactListGroupTransfer> getPartyTypeContactListGroupTransfers(UserVisit userVisit, List<PartyTypeContactListGroup> partyTypeContactListGroups) {
+    public List<PartyTypeContactListGroupTransfer> getPartyTypeContactListGroupTransfers(UserVisit userVisit, Collection<PartyTypeContactListGroup> partyTypeContactListGroups) {
         List<PartyTypeContactListGroupTransfer> partyTypeContactListGroupTransfers = new ArrayList<>(partyTypeContactListGroups.size());
         PartyTypeContactListGroupTransferCache partyTypeContactListGroupTransferCache = getContactListTransferCaches(userVisit).getPartyTypeContactListGroupTransferCache();
         
@@ -2642,7 +2643,7 @@ public class ContactListControl
         return getPartyTypeContactListsByContactList(contactList, EntityPermission.READ_WRITE);
     }
     
-    public List<PartyTypeContactListTransfer> getPartyTypeContactListTransfers(UserVisit userVisit, List<PartyTypeContactList> partyTypeContactLists) {
+    public List<PartyTypeContactListTransfer> getPartyTypeContactListTransfers(UserVisit userVisit, Collection<PartyTypeContactList> partyTypeContactLists) {
         List<PartyTypeContactListTransfer> partyTypeContactListTransfers = new ArrayList<>(partyTypeContactLists.size());
         PartyTypeContactListTransferCache partyTypeContactListTransferCache = getContactListTransferCaches(userVisit).getPartyTypeContactListTransferCache();
         
@@ -2821,7 +2822,7 @@ public class ContactListControl
         return getCustomerTypeContactListGroupsByContactListGroup(contactListGroup, EntityPermission.READ_WRITE);
     }
 
-    public List<CustomerTypeContactListGroupTransfer> getCustomerTypeContactListGroupTransfers(UserVisit userVisit, List<CustomerTypeContactListGroup> customerTypeContactListGroups) {
+    public List<CustomerTypeContactListGroupTransfer> getCustomerTypeContactListGroupTransfers(UserVisit userVisit, Collection<CustomerTypeContactListGroup> customerTypeContactListGroups) {
         List<CustomerTypeContactListGroupTransfer> customerTypeContactListGroupTransfers = new ArrayList<>(customerTypeContactListGroups.size());
         CustomerTypeContactListGroupTransferCache customerTypeContactListGroupTransferCache = getContactListTransferCaches(userVisit).getCustomerTypeContactListGroupTransferCache();
 
@@ -2999,7 +3000,7 @@ public class ContactListControl
         return getCustomerTypeContactListsByContactList(contactList, EntityPermission.READ_WRITE);
     }
 
-    public List<CustomerTypeContactListTransfer> getCustomerTypeContactListTransfers(UserVisit userVisit, List<CustomerTypeContactList> customerTypeContactLists) {
+    public List<CustomerTypeContactListTransfer> getCustomerTypeContactListTransfers(UserVisit userVisit, Collection<CustomerTypeContactList> customerTypeContactLists) {
         List<CustomerTypeContactListTransfer> customerTypeContactListTransfers = new ArrayList<>(customerTypeContactLists.size());
         CustomerTypeContactListTransferCache customerTypeContactListTransferCache = getContactListTransferCaches(userVisit).getCustomerTypeContactListTransferCache();
 

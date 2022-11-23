@@ -82,6 +82,7 @@ import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -736,7 +737,7 @@ public class BatchControl
         return getBatchTransferCaches(userVisit).getBatchTypeEntityTypeTransferCache().getTransfer(batchTypeEntityType);
     }
 
-    public List<BatchTypeEntityTypeTransfer> getBatchTypeEntityTypeTransfers(UserVisit userVisit, List<BatchTypeEntityType> batchTypeEntityTypes) {
+    public List<BatchTypeEntityTypeTransfer> getBatchTypeEntityTypeTransfers(UserVisit userVisit, Collection<BatchTypeEntityType> batchTypeEntityTypes) {
         List<BatchTypeEntityTypeTransfer> batchTypeEntityTypeTransfers = new ArrayList<>(batchTypeEntityTypes.size());
         BatchTypeEntityTypeTransferCache batchTypeEntityTypeTransferCache = getBatchTransferCaches(userVisit).getBatchTypeEntityTypeTransferCache();
 
@@ -1722,7 +1723,7 @@ public class BatchControl
         return getBatchTransferCaches(userVisit).getBatchEntityTransferCache().getTransfer(batchEntity);
     }
 
-    public List<BatchEntityTransfer> getBatchEntityTransfers(UserVisit userVisit, List<BatchEntity> batchEntities) {
+    public List<BatchEntityTransfer> getBatchEntityTransfers(UserVisit userVisit, Collection<BatchEntity> batchEntities) {
         List<BatchEntityTransfer> batchEntityTransfers = new ArrayList<>(batchEntities.size());
         BatchEntityTransferCache batchEntityTransferCache = getBatchTransferCaches(userVisit).getBatchEntityTransferCache();
 

@@ -282,7 +282,7 @@ public class ReturnPolicyControl
         return getReturnPolicyTransferCaches(userVisit).getPartyReturnPolicyTransferCache().getPartyReturnPolicyTransfer(partyReturnPolicy);
     }
 
-    public List<PartyReturnPolicyTransfer> getPartyReturnPolicyTransfers(UserVisit userVisit, List<PartyReturnPolicy> returnPolicies) {
+    public List<PartyReturnPolicyTransfer> getPartyReturnPolicyTransfers(UserVisit userVisit, Collection<PartyReturnPolicy> returnPolicies) {
         List<PartyReturnPolicyTransfer> returnPolicyTransfers = new ArrayList<>(returnPolicies.size());
         PartyReturnPolicyTransferCache returnPolicyTransferCache = getReturnPolicyTransferCaches(userVisit).getPartyReturnPolicyTransferCache();
 
@@ -1432,7 +1432,7 @@ public class ReturnPolicyControl
         return getReturnPolicyReasonsByReturnReason(returnReason, EntityPermission.READ_WRITE);
     }
     
-    public List<ReturnPolicyReasonTransfer> getReturnPolicyReasonTransfers(UserVisit userVisit, List<ReturnPolicyReason> returnPolicyReasons) {
+    public List<ReturnPolicyReasonTransfer> getReturnPolicyReasonTransfers(UserVisit userVisit, Collection<ReturnPolicyReason> returnPolicyReasons) {
         List<ReturnPolicyReasonTransfer> returnPolicyReasonTransfers = new ArrayList<>(returnPolicyReasons.size());
         ReturnPolicyReasonTransferCache returnPolicyReasonTransferCache = getReturnPolicyTransferCaches(userVisit).getReturnPolicyReasonTransferCache();
         
@@ -2201,7 +2201,7 @@ public class ReturnPolicyControl
         return getReturnReasonTypesByReturnType(returnType, EntityPermission.READ_WRITE);
     }
     
-    public List<ReturnReasonTypeTransfer> getReturnReasonTypeTransfers(UserVisit userVisit, List<ReturnReasonType> returnReasonTypes) {
+    public List<ReturnReasonTypeTransfer> getReturnReasonTypeTransfers(UserVisit userVisit, Collection<ReturnReasonType> returnReasonTypes) {
         List<ReturnReasonTypeTransfer> returnReasonTypeTransfers = new ArrayList<>(returnReasonTypes.size());
         ReturnReasonTypeTransferCache returnReasonTypeTransferCache = getReturnPolicyTransferCaches(userVisit).getReturnReasonTypeTransferCache();
         
@@ -2932,7 +2932,7 @@ public class ReturnPolicyControl
         return getReturnTypeShippingMethodsByShippingMethod(shippingMethod, EntityPermission.READ_WRITE);
     }
     
-    public List<ReturnTypeShippingMethodTransfer> getReturnTypeShippingMethodTransfers(UserVisit userVisit, List<ReturnTypeShippingMethod> returnTypeShippingMethods) {
+    public List<ReturnTypeShippingMethodTransfer> getReturnTypeShippingMethodTransfers(UserVisit userVisit, Collection<ReturnTypeShippingMethod> returnTypeShippingMethods) {
         List<ReturnTypeShippingMethodTransfer> returnTypeShippingMethodTransfers = new ArrayList<>(returnTypeShippingMethods.size());
         ReturnTypeShippingMethodTransferCache returnTypeShippingMethodTransferCache = getReturnPolicyTransferCaches(userVisit).getReturnTypeShippingMethodTransferCache();
         

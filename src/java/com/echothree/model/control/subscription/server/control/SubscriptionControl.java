@@ -80,6 +80,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -1146,7 +1147,7 @@ public class SubscriptionControl
         return getSubscriptionTypeChainsBySubscriptionTypeAndChainType(subscriptionType, chainType, EntityPermission.READ_WRITE);
     }
     
-    private List<SubscriptionTypeChainTransfer> getSubscriptionTypeChainTransfers(UserVisit userVisit, List<SubscriptionTypeChain> subscriptionTypeChains) {
+    private List<SubscriptionTypeChainTransfer> getSubscriptionTypeChainTransfers(UserVisit userVisit, Collection<SubscriptionTypeChain> subscriptionTypeChains) {
         List<SubscriptionTypeChainTransfer> subscriptionTypeChainTransfers = new ArrayList<>(subscriptionTypeChains.size());
         SubscriptionTypeChainTransferCache subscriptionTypeChainTransferCache = getSubscriptionTransferCaches(userVisit).getSubscriptionTypeChainTransferCache();
         
@@ -1394,7 +1395,7 @@ public class SubscriptionControl
         return getSubscriptionTransferCaches(userVisit).getSubscriptionTransferCache().getSubscriptionTransfer(subscription);
     }
     
-    private List<SubscriptionTransfer> getSubscriptionTransfers(UserVisit userVisit, List<Subscription> subscriptions) {
+    private List<SubscriptionTransfer> getSubscriptionTransfers(UserVisit userVisit, Collection<Subscription> subscriptions) {
         List<SubscriptionTransfer> subscriptionTransfers = new ArrayList<>(subscriptions.size());
         SubscriptionTransferCache subscriptionTransferCache = getSubscriptionTransferCaches(userVisit).getSubscriptionTransferCache();
         

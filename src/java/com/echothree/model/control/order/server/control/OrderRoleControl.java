@@ -36,6 +36,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -257,7 +258,7 @@ public class OrderRoleControl
         return getOrderTransferCaches(userVisit).getOrderRoleTransferCache().getOrderRoleTransfer(orderRole);
     }
 
-    public List<OrderRoleTransfer> getOrderRoleTransfers(UserVisit userVisit, List<OrderRole> orderRoles) {
+    public List<OrderRoleTransfer> getOrderRoleTransfers(UserVisit userVisit, Collection<OrderRole> orderRoles) {
         List<OrderRoleTransfer> orderRoleTransfers = new ArrayList<>(orderRoles.size());
 
         orderRoles.forEach((orderRole) -> {

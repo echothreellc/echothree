@@ -188,6 +188,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -344,7 +345,7 @@ public class ForumControl
         return getForumTransferCaches(userVisit).getForumGroupTransferCache().getForumGroupTransfer(forumGroup);
     }
     
-    public List<ForumGroupTransfer> getForumGroupTransfers(UserVisit userVisit, List<ForumGroup> forumGroups) {
+    public List<ForumGroupTransfer> getForumGroupTransfers(UserVisit userVisit, Collection<ForumGroup> forumGroups) {
         List<ForumGroupTransfer> forumGroupTransfers = new ArrayList<>(forumGroups.size());
         ForumGroupTransferCache forumGroupTransferCache = getForumTransferCaches(userVisit).getForumGroupTransferCache();
         
@@ -1144,7 +1145,7 @@ public class ForumControl
         return getForumGroupForumsByForum(forum, EntityPermission.READ_WRITE);
     }
     
-    public List<ForumGroupForumTransfer> getForumGroupForumTransfers(UserVisit userVisit, List<ForumGroupForum> forumGroupForums) {
+    public List<ForumGroupForumTransfer> getForumGroupForumTransfers(UserVisit userVisit, Collection<ForumGroupForum> forumGroupForums) {
         List<ForumGroupForumTransfer> forumGroupForumTransfers = new ArrayList<>(forumGroupForums.size());
         ForumGroupForumTransferCache forumGroupForumTransferCache = getForumTransferCaches(userVisit).getForumGroupForumTransferCache();
         
@@ -1714,7 +1715,7 @@ public class ForumControl
         return new MimeTypeChoicesBean(labels, values, defaultValue);
     }
     
-    public List<ForumMimeTypeTransfer> getForumMimeTypeTransfers(UserVisit userVisit, List<ForumMimeType> forumMimeTypes) {
+    public List<ForumMimeTypeTransfer> getForumMimeTypeTransfers(UserVisit userVisit, Collection<ForumMimeType> forumMimeTypes) {
         List<ForumMimeTypeTransfer> forumMimeTypeTransfers = new ArrayList<>(forumMimeTypes.size());
         ForumMimeTypeTransferCache forumMimeTypeTransferCache = getForumTransferCaches(userVisit).getForumMimeTypeTransferCache();
         
@@ -2473,7 +2474,7 @@ public class ForumControl
         return getForumForumThreadsByForumThread(forumThread, EntityPermission.READ_WRITE);
     }
     
-    public List<ForumForumThreadTransfer> getForumForumThreadTransfers(UserVisit userVisit, List<ForumForumThread> forumForumThreads) {
+    public List<ForumForumThreadTransfer> getForumForumThreadTransfers(UserVisit userVisit, Collection<ForumForumThread> forumForumThreads) {
         List<ForumForumThreadTransfer> forumForumThreadTransfers = new ArrayList<>(forumForumThreads.size());
         ForumForumThreadTransferCache forumForumThreadTransferCache = getForumTransferCaches(userVisit).getForumForumThreadTransferCache();
         
@@ -2753,7 +2754,7 @@ public class ForumControl
         return getForumTransferCaches(userVisit).getForumThreadTransferCache().getForumThreadTransfer(forumThread);
     }
     
-    public List<ForumThreadTransfer> getForumThreadTransfers(UserVisit userVisit, List<ForumThread> forumThreads) {
+    public List<ForumThreadTransfer> getForumThreadTransfers(UserVisit userVisit, Collection<ForumThread> forumThreads) {
         List<ForumThreadTransfer> forumThreadTransfers = new ArrayList<>(forumThreads.size());
         ForumThreadTransferCache forumThreadTransferCache = getForumTransferCaches(userVisit).getForumThreadTransferCache();
         
@@ -2998,7 +2999,7 @@ public class ForumControl
         return getForumTransferCaches(userVisit).getForumMessageTransferCache().getForumMessageTransfer(forumMessage);
     }
     
-    public List<ForumMessageTransfer> getForumMessageTransfers(UserVisit userVisit, List<ForumMessage> forumMessages) {
+    public List<ForumMessageTransfer> getForumMessageTransfers(UserVisit userVisit, Collection<ForumMessage> forumMessages) {
         List<ForumMessageTransfer> forumMessageTransfers = new ArrayList<>(forumMessages.size());
         ForumMessageTransferCache forumMessageTransferCache = getForumTransferCaches(userVisit).getForumMessageTransferCache();
         
@@ -3223,7 +3224,7 @@ public class ForumControl
         return getForumTransferCaches(userVisit).getForumMessageAttachmentTransferCache().getForumMessageAttachmentTransfer(forumMessageAttachment);
     }
 
-    public List<ForumMessageAttachmentTransfer> getForumMessageAttachmentTransfers(UserVisit userVisit, List<ForumMessageAttachment> forumMessageAttachments) {
+    public List<ForumMessageAttachmentTransfer> getForumMessageAttachmentTransfers(UserVisit userVisit, Collection<ForumMessageAttachment> forumMessageAttachments) {
         List<ForumMessageAttachmentTransfer> forumMessageAttachmentTransfers = new ArrayList<>(forumMessageAttachments.size());
         ForumMessageAttachmentTransferCache forumMessageAttachmentTransferCache = getForumTransferCaches(userVisit).getForumMessageAttachmentTransferCache();
 
@@ -3723,7 +3724,7 @@ public class ForumControl
         return getForumTransferCaches(userVisit).getForumMessageRoleTransferCache().getForumMessageRoleTransfer(forumMessageRole);
     }
     
-    public List<ForumMessageRoleTransfer> getForumMessageRoleTransfers(UserVisit userVisit, List<ForumMessageRole> forumMessageRoles) {
+    public List<ForumMessageRoleTransfer> getForumMessageRoleTransfers(UserVisit userVisit, Collection<ForumMessageRole> forumMessageRoles) {
         List<ForumMessageRoleTransfer> forumMessageRoleTransfers = new ArrayList<>(forumMessageRoles.size());
         ForumMessageRoleTransferCache forumMessageRoleTransferCache = getForumTransferCaches(userVisit).getForumMessageRoleTransferCache();
         
@@ -3867,7 +3868,7 @@ public class ForumControl
         return getForumTransferCaches(userVisit).getForumMessagePartTransferCache().getForumMessagePartTransfer(forumMessagePart);
     }
     
-    public List<ForumMessagePartTransfer> getForumMessagePartTransfers(UserVisit userVisit, List<ForumMessagePart> forumMessageParts) {
+    public List<ForumMessagePartTransfer> getForumMessagePartTransfers(UserVisit userVisit, Collection<ForumMessagePart> forumMessageParts) {
         List<ForumMessagePartTransfer> forumMessagePartTransfers = new ArrayList<>(forumMessageParts.size());
         ForumMessagePartTransferCache forumMessagePartTransferCache = getForumTransferCaches(userVisit).getForumMessagePartTransferCache();
         

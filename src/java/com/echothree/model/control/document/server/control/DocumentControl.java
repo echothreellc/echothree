@@ -103,6 +103,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1222,7 +1223,7 @@ public class DocumentControl
         return getDocumentTransferCaches(userVisit).getDocumentTypeUsageTransferCache().getDocumentTypeUsageTransfer(documentTypeUsage);
     }
 
-    public List<DocumentTypeUsageTransfer> getDocumentTypeUsageTransfers(UserVisit userVisit, List<DocumentTypeUsage> documentTypeUsages) {
+    public List<DocumentTypeUsageTransfer> getDocumentTypeUsageTransfers(UserVisit userVisit, Collection<DocumentTypeUsage> documentTypeUsages) {
         List<DocumentTypeUsageTransfer> documentTypeUsageTransfers = new ArrayList<>(documentTypeUsages.size());
         DocumentTypeUsageTransferCache documentTypeUsageTransferCache = getDocumentTransferCaches(userVisit).getDocumentTypeUsageTransferCache();
 
@@ -2042,7 +2043,7 @@ public class DocumentControl
         return getDocumentTransferCaches(userVisit).getPartyTypeDocumentTypeUsageTypeTransferCache().getPartyTypeDocumentTypeUsageTypeTransfer(partyTypeDocumentTypeUsageType);
     }
 
-    public List<PartyTypeDocumentTypeUsageTypeTransfer> getPartyTypeDocumentTypeUsageTypeTransfers(UserVisit userVisit, List<PartyTypeDocumentTypeUsageType> partyTypeDocumentTypeUsageTypes) {
+    public List<PartyTypeDocumentTypeUsageTypeTransfer> getPartyTypeDocumentTypeUsageTypeTransfers(UserVisit userVisit, Collection<PartyTypeDocumentTypeUsageType> partyTypeDocumentTypeUsageTypes) {
         List<PartyTypeDocumentTypeUsageTypeTransfer> partyTypeDocumentTypeUsageTypeTransfers = new ArrayList<>(partyTypeDocumentTypeUsageTypes.size());
         PartyTypeDocumentTypeUsageTypeTransferCache partyTypeDocumentTypeUsageTypeTransferCache = getDocumentTransferCaches(userVisit).getPartyTypeDocumentTypeUsageTypeTransferCache();
 
@@ -2366,7 +2367,7 @@ public class DocumentControl
         return getDocumentTransferCaches(userVisit).getPartyDocumentTransferCache().getPartyDocumentTransfer(partyDocument);
     }
 
-    public List<PartyDocumentTransfer> getPartyDocumentTransfers(UserVisit userVisit, List<PartyDocument> partyDocuments) {
+    public List<PartyDocumentTransfer> getPartyDocumentTransfers(UserVisit userVisit, Collection<PartyDocument> partyDocuments) {
         List<PartyDocumentTransfer> partyDocumentTransfers = new ArrayList<>(partyDocuments.size());
         PartyDocumentTransferCache partyDocumentTransferCache = getDocumentTransferCaches(userVisit).getPartyDocumentTransferCache();
 

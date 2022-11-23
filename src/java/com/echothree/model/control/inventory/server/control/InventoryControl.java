@@ -2233,7 +2233,7 @@ public class InventoryControl
         return getInventoryTransferCaches(userVisit).getPartyInventoryLevelTransferCache().getTransfer(partyInventoryLevel);
     }
     
-    public List<PartyInventoryLevelTransfer> getPartyInventoryLevelTransfers(UserVisit userVisit, List<PartyInventoryLevel> partyInventoryLevels) {
+    public List<PartyInventoryLevelTransfer> getPartyInventoryLevelTransfers(UserVisit userVisit, Collection<PartyInventoryLevel> partyInventoryLevels) {
         List<PartyInventoryLevelTransfer> partyInventoryLevelTransfers = new ArrayList<>(partyInventoryLevels.size());
         PartyInventoryLevelTransferCache partyInventoryLevelTransferCache = getInventoryTransferCaches(userVisit).getPartyInventoryLevelTransferCache();
         

@@ -189,6 +189,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -529,7 +530,7 @@ public class ContactControl
         return getContactTransferCaches(userVisit).getContactMechanismAliasTypeTransferCache().getContactMechanismAliasTypeTransfer(contactMechanismAliasType);
     }
 
-    public List<ContactMechanismAliasTypeTransfer> getContactMechanismAliasTypeTransfers(UserVisit userVisit, List<ContactMechanismAliasType> contactMechanismAliasTypes) {
+    public List<ContactMechanismAliasTypeTransfer> getContactMechanismAliasTypeTransfers(UserVisit userVisit, Collection<ContactMechanismAliasType> contactMechanismAliasTypes) {
         List<ContactMechanismAliasTypeTransfer> contactMechanismAliasTypeTransfers = new ArrayList<>(contactMechanismAliasTypes.size());
         ContactMechanismAliasTypeTransferCache contactMechanismAliasTypeTransferCache = getContactTransferCaches(userVisit).getContactMechanismAliasTypeTransferCache();
 
@@ -972,7 +973,7 @@ public class ContactControl
         return getContactTransferCaches(userVisit).getContactMechanismPurposeTransferCache().getContactMechanismPurposeTransfer(contactMechanismPurpose);
     }
     
-    public List<ContactMechanismPurposeTransfer> getContactMechanismPurposeTransfers(UserVisit userVisit, List<ContactMechanismPurpose> entities) {
+    public List<ContactMechanismPurposeTransfer> getContactMechanismPurposeTransfers(UserVisit userVisit, Collection<ContactMechanismPurpose> entities) {
         List<ContactMechanismPurposeTransfer> transfers = new ArrayList<>(entities.size());
         ContactMechanismPurposeTransferCache cache = getContactTransferCaches(userVisit).getContactMechanismPurposeTransferCache();
         
@@ -3423,7 +3424,7 @@ public class ContactControl
         return getContactTransferCaches(userVisit).getPartyContactMechanismRelationshipTransferCache().getPartyContactMechanismRelationshipTransfer(partyContactMechanismRelationship);
     }
 
-    public List<PartyContactMechanismRelationshipTransfer> getPartyContactMechanismRelationshipTransfers(UserVisit userVisit, List<PartyContactMechanismRelationship> partyContactMechanismRelationships) {
+    public List<PartyContactMechanismRelationshipTransfer> getPartyContactMechanismRelationshipTransfers(UserVisit userVisit, Collection<PartyContactMechanismRelationship> partyContactMechanismRelationships) {
         List<PartyContactMechanismRelationshipTransfer> partyContactMechanismRelationshipTransfers = new ArrayList<>(partyContactMechanismRelationships.size());
         PartyContactMechanismRelationshipTransferCache partyContactMechanismRelationshipTransferCache = getContactTransferCaches(userVisit).getPartyContactMechanismRelationshipTransferCache();
         

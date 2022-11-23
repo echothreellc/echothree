@@ -1335,7 +1335,7 @@ public class CoreControl
         return getCoreTransferCaches(userVisit).getCommandTransferCache().getCommandTransfer(command);
     }
     
-    private List<CommandTransfer> getCommandTransfers(UserVisit userVisit, List<Command> commands) {
+    private List<CommandTransfer> getCommandTransfers(UserVisit userVisit, Collection<Command> commands) {
         List<CommandTransfer> commandTransfers = new ArrayList<>(commands.size());
         CommandTransferCache commandTransferCache = getCoreTransferCaches(userVisit).getCommandTransferCache();
         
@@ -2112,7 +2112,7 @@ public class CoreControl
         return getCoreTransferCaches(userVisit).getCommandMessageTransferCache().getCommandMessageTransfer(commandMessage);
     }
     
-    private List<CommandMessageTransfer> getCommandMessageTransfers(UserVisit userVisit, List<CommandMessage> commandMessages) {
+    private List<CommandMessageTransfer> getCommandMessageTransfers(UserVisit userVisit, Collection<CommandMessage> commandMessages) {
         List<CommandMessageTransfer> commandMessageTransfers = new ArrayList<>(commandMessages.size());
         CommandMessageTransferCache commandMessageTransferCache = getCoreTransferCaches(userVisit).getCommandMessageTransferCache();
         
@@ -2283,7 +2283,7 @@ public class CoreControl
         return commandMessageTranslation == null? null: getCommandMessageTranslationValue(commandMessageTranslation);
     }
     
-    public List<CommandMessageTranslationTransfer> getCommandMessageTranslationTransfers(UserVisit userVisit, List<CommandMessageTranslation> commandMessageTranslations) {
+    public List<CommandMessageTranslationTransfer> getCommandMessageTranslationTransfers(UserVisit userVisit, Collection<CommandMessageTranslation> commandMessageTranslations) {
         List<CommandMessageTranslationTransfer> commandMessageTranslationTransfers = new ArrayList<>(commandMessageTranslations.size());
         CommandMessageTranslationTransferCache commandMessageTranslationTransferCache = getCoreTransferCaches(userVisit).getCommandMessageTranslationTransferCache();
         
@@ -3467,7 +3467,7 @@ public class CoreControl
         return getCoreTransferCaches(userVisit).getEventGroupTransferCache().getEventGroupTransfer(eventGroup);
     }
     
-    public List<EventGroupTransfer> getEventGroupTransfers(UserVisit userVisit, List<EventGroup> eventGroups) {
+    public List<EventGroupTransfer> getEventGroupTransfers(UserVisit userVisit, Collection<EventGroup> eventGroups) {
         List<EventGroupTransfer> eventGroupTransfers = new ArrayList<>(eventGroups.size());
         EventGroupTransferCache eventGroupTransferCache = getCoreTransferCaches(userVisit).getEventGroupTransferCache();
         
@@ -3656,7 +3656,7 @@ public class CoreControl
                 entityInstance, eventType);
     }
     
-    public List<EventTransfer> getEventTransfers(UserVisit userVisit, List<Event> events) {
+    public List<EventTransfer> getEventTransfers(UserVisit userVisit, Collection<Event> events) {
         List<EventTransfer> eventTransfers = new ArrayList<>(events.size());
         EventTransferCache eventTransferCache = getCoreTransferCaches(userVisit).getEventTransferCache();
         
@@ -3862,7 +3862,7 @@ public class CoreControl
         return cacheEntryTransfer;
     }
 
-    public List<CacheEntryTransfer> getCacheEntryTransfers(UserVisit userVisit, List<CacheEntry> cacheEntries) {
+    public List<CacheEntryTransfer> getCacheEntryTransfers(UserVisit userVisit, Collection<CacheEntry> cacheEntries) {
         List<CacheEntryTransfer> cacheEntryTransfers = new ArrayList<>(cacheEntries.size());
         CacheEntryTransferCache cacheEntryTransferCache = getCoreTransferCaches(userVisit).getCacheEntryTransferCache();
 
@@ -4073,7 +4073,7 @@ public class CoreControl
         return getCoreTransferCaches(userVisit).getCacheEntryDependencyTransferCache().getCacheEntryDependencyTransfer(cacheEntryDependency);
     }
 
-    public List<CacheEntryDependencyTransfer> getCacheEntryDependencyTransfers(UserVisit userVisit, List<CacheEntryDependency> cacheEntries) {
+    public List<CacheEntryDependencyTransfer> getCacheEntryDependencyTransfers(UserVisit userVisit, Collection<CacheEntryDependency> cacheEntries) {
         List<CacheEntryDependencyTransfer> cacheEntryDependencyTransfers = new ArrayList<>(cacheEntries.size());
         CacheEntryDependencyTransferCache cacheEntryDependencyTransferCache = getCoreTransferCaches(userVisit).getCacheEntryDependencyTransferCache();
 
@@ -10714,7 +10714,7 @@ public class CoreControl
         return getCoreTransferCaches(userVisit).getEntityMultipleListItemAttributeTransferCache().getEntityMultipleListItemAttributeTransfer(entityMultipleListItemAttribute, entityInstance);
     }
     
-    public List<EntityMultipleListItemAttributeTransfer> getEntityMultipleListItemAttributeTransfers(UserVisit userVisit, List<EntityMultipleListItemAttribute> entityMultipleListItemAttributes, EntityInstance entityInstance) {
+    public List<EntityMultipleListItemAttributeTransfer> getEntityMultipleListItemAttributeTransfers(UserVisit userVisit, Collection<EntityMultipleListItemAttribute> entityMultipleListItemAttributes, EntityInstance entityInstance) {
         List<EntityMultipleListItemAttributeTransfer> entityMultipleListItemAttributeTransfers = new ArrayList<>(entityMultipleListItemAttributes.size());
         EntityMultipleListItemAttributeTransferCache entityMultipleListItemAttributeTransferCache = getCoreTransferCaches(userVisit).getEntityMultipleListItemAttributeTransferCache();
         
@@ -11883,7 +11883,7 @@ public class CoreControl
         return getCoreTransferCaches(userVisit).getEntityAttributeEntityTypeTransferCache().getEntityAttributeEntityTypeTransfer(entityAttributeEntityType, entityInstance);
     }
     
-    public List<EntityAttributeEntityTypeTransfer> getEntityAttributeEntityTypeTransfers(UserVisit userVisit, List<EntityAttributeEntityType> entityAttributeEntityTypes, EntityInstance entityInstance) {
+    public List<EntityAttributeEntityTypeTransfer> getEntityAttributeEntityTypeTransfers(UserVisit userVisit, Collection<EntityAttributeEntityType> entityAttributeEntityTypes, EntityInstance entityInstance) {
         List<EntityAttributeEntityTypeTransfer> entityAttributeEntityTypeTransfers = new ArrayList<>(entityAttributeEntityTypes.size());
         EntityAttributeEntityTypeTransferCache entityAttributeEntityTypeTransferCache = getCoreTransferCaches(userVisit).getEntityAttributeEntityTypeTransferCache();
 
@@ -12253,7 +12253,7 @@ public class CoreControl
         return getCoreTransferCaches(userVisit).getEntityCollectionAttributeTransferCache().getEntityCollectionAttributeTransfer(entityCollectionAttribute, entityInstance);
     }
     
-    public List<EntityCollectionAttributeTransfer> getEntityCollectionAttributeTransfers(UserVisit userVisit, List<EntityCollectionAttribute> entityCollectionAttributes, EntityInstance entityInstance) {
+    public List<EntityCollectionAttributeTransfer> getEntityCollectionAttributeTransfers(UserVisit userVisit, Collection<EntityCollectionAttribute> entityCollectionAttributes, EntityInstance entityInstance) {
         List<EntityCollectionAttributeTransfer> entityCollectionAttributeTransfers = new ArrayList<>(entityCollectionAttributes.size());
         EntityCollectionAttributeTransferCache entityCollectionAttributeTransferCache = getCoreTransferCaches(userVisit).getEntityCollectionAttributeTransferCache();
         
@@ -18169,7 +18169,7 @@ public class CoreControl
         return getCoreTransferCaches(userVisit).getAppearanceTextDecorationTransferCache().getAppearanceTextDecorationTransfer(appearanceTextDecoration);
     }
 
-    public List<AppearanceTextDecorationTransfer> getAppearanceTextDecorationTransfers(UserVisit userVisit, List<AppearanceTextDecoration> appearanceTextDecorations) {
+    public List<AppearanceTextDecorationTransfer> getAppearanceTextDecorationTransfers(UserVisit userVisit, Collection<AppearanceTextDecoration> appearanceTextDecorations) {
         List<AppearanceTextDecorationTransfer> appearanceTextDecorationTransfers = new ArrayList<>(appearanceTextDecorations.size());
         AppearanceTextDecorationTransferCache appearanceTextDecorationTransferCache = getCoreTransferCaches(userVisit).getAppearanceTextDecorationTransferCache();
 
@@ -18327,7 +18327,7 @@ public class CoreControl
         return getCoreTransferCaches(userVisit).getAppearanceTextTransformationTransferCache().getAppearanceTextTransformationTransfer(appearanceTextTransformation);
     }
 
-    public List<AppearanceTextTransformationTransfer> getAppearanceTextTransformationTransfers(UserVisit userVisit, List<AppearanceTextTransformation> appearanceTextTransformations) {
+    public List<AppearanceTextTransformationTransfer> getAppearanceTextTransformationTransfers(UserVisit userVisit, Collection<AppearanceTextTransformation> appearanceTextTransformations) {
         List<AppearanceTextTransformationTransfer> appearanceTextTransformationTransfers = new ArrayList<>(appearanceTextTransformations.size());
         AppearanceTextTransformationTransferCache appearanceTextTransformationTransferCache = getCoreTransferCaches(userVisit).getAppearanceTextTransformationTransferCache();
 

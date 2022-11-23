@@ -96,6 +96,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class CommentControl
@@ -1036,7 +1037,7 @@ public class CommentControl
         return getCommentTransferCaches(userVisit).getCommentTransferCache().getCommentTransfer(comment);
     }
     
-    public List<CommentTransfer> getCommentTransfers(UserVisit userVisit, List<Comment> comments) {
+    public List<CommentTransfer> getCommentTransfers(UserVisit userVisit, Collection<Comment> comments) {
         List<CommentTransfer> commentTransfers = new ArrayList<>(comments.size());
         CommentTransferCache commentTransferCache = getCommentTransferCaches(userVisit).getCommentTransferCache();
         

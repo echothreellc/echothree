@@ -69,6 +69,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -1175,7 +1176,7 @@ public class RatingControl
         return getRatingTransferCaches(userVisit).getRatingTransferCache().getRatingTransfer(rating);
     }
     
-    public List<RatingTransfer> getRatingTransfers(UserVisit userVisit, List<Rating> ratings) {
+    public List<RatingTransfer> getRatingTransfers(UserVisit userVisit, Collection<Rating> ratings) {
         List<RatingTransfer> ratingTransfers = new ArrayList<>(ratings.size());
         RatingTransferCache ratingTransferCache = getRatingTransferCaches(userVisit).getRatingTransferCache();
         

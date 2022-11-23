@@ -1978,7 +1978,7 @@ public class GeoControl
         return getGeoTransferCaches(userVisit).getGeoCodeTransferCache().getGeoCodeTransfer(geoCode);
     }
     
-    public List<GeoCodeTransfer> getGeoCodeTransfers(UserVisit userVisit, List<GeoCode> geoCodes) {
+    public List<GeoCodeTransfer> getGeoCodeTransfers(UserVisit userVisit, Collection<GeoCode> geoCodes) {
         List<GeoCodeTransfer> geoCodeTransfers = new ArrayList<>(geoCodes.size());
         GeoCodeTransferCache geoCodeTransferCache = getGeoTransferCaches(userVisit).getGeoCodeTransferCache();
         
@@ -2430,7 +2430,7 @@ public class GeoControl
         return getGeoTransferCaches(userVisit).getGeoCodeAliasTransferCache().getGeoCodeAliasTransfer(geoCodeAlias);
     }
     
-    public List<GeoCodeAliasTransfer> getGeoCodeAliasTransfers(UserVisit userVisit, List<GeoCodeAlias> geoCodeAliases) {
+    public List<GeoCodeAliasTransfer> getGeoCodeAliasTransfers(UserVisit userVisit, Collection<GeoCodeAlias> geoCodeAliases) {
         List<GeoCodeAliasTransfer> geoCodeAliasTransfers = new ArrayList<>(geoCodeAliases.size());
         GeoCodeAliasTransferCache geoCodeAliasTransferCache = getGeoTransferCaches(userVisit).getGeoCodeAliasTransferCache();
         
@@ -2847,7 +2847,7 @@ public class GeoControl
         return getGeoCodeLanguagesByLanguage(language, EntityPermission.READ_WRITE);
     }
     
-    public List<GeoCodeLanguageTransfer> getGeoCodeLanguageTransfers(UserVisit userVisit, List<GeoCodeLanguage> geoCodeLanguages) {
+    public List<GeoCodeLanguageTransfer> getGeoCodeLanguageTransfers(UserVisit userVisit, Collection<GeoCodeLanguage> geoCodeLanguages) {
         List<GeoCodeLanguageTransfer> geoCodeLanguageTransfers = new ArrayList<>(geoCodeLanguages.size());
         GeoCodeLanguageTransferCache geoCodeLanguageTransferCache = getGeoTransferCaches(userVisit).getGeoCodeLanguageTransferCache();
         
@@ -3147,7 +3147,7 @@ public class GeoControl
         return getGeoCodeCurrenciesByCurrency(currency, EntityPermission.READ_WRITE);
     }
     
-    public List<GeoCodeCurrencyTransfer> getGeoCodeCurrencyTransfers(UserVisit userVisit, List<GeoCodeCurrency> geoCodeCurrencies) {
+    public List<GeoCodeCurrencyTransfer> getGeoCodeCurrencyTransfers(UserVisit userVisit, Collection<GeoCodeCurrency> geoCodeCurrencies) {
         List<GeoCodeCurrencyTransfer> geoCodeCurrencyTransfers = new ArrayList<>(geoCodeCurrencies.size());
         GeoCodeCurrencyTransferCache geoCodeCurrencyTransferCache = getGeoTransferCaches(userVisit).getGeoCodeCurrencyTransferCache();
         
@@ -3447,7 +3447,7 @@ public class GeoControl
         return getGeoCodeTimeZonesByTimeZone(timeZone, EntityPermission.READ_WRITE);
     }
     
-    public List<GeoCodeTimeZoneTransfer> getGeoCodeTimeZoneTransfers(UserVisit userVisit, List<GeoCodeTimeZone> geoCodeTimeZones) {
+    public List<GeoCodeTimeZoneTransfer> getGeoCodeTimeZoneTransfers(UserVisit userVisit, Collection<GeoCodeTimeZone> geoCodeTimeZones) {
         List<GeoCodeTimeZoneTransfer> geoCodeTimeZoneTransfers = new ArrayList<>(geoCodeTimeZones.size());
         GeoCodeTimeZoneTransferCache geoCodeTimeZoneTransferCache = getGeoTransferCaches(userVisit).getGeoCodeTimeZoneTransferCache();
         
@@ -3747,7 +3747,7 @@ public class GeoControl
         return getGeoCodeDateTimeFormatsByDateTimeFormat(dateTimeFormat, EntityPermission.READ_WRITE);
     }
     
-    public List<GeoCodeDateTimeFormatTransfer> getGeoCodeDateTimeFormatTransfers(UserVisit userVisit, List<GeoCodeDateTimeFormat> geoCodeDateTimeFormats) {
+    public List<GeoCodeDateTimeFormatTransfer> getGeoCodeDateTimeFormatTransfers(UserVisit userVisit, Collection<GeoCodeDateTimeFormat> geoCodeDateTimeFormats) {
         List<GeoCodeDateTimeFormatTransfer> geoCodeDateTimeFormatTransfers = new ArrayList<>(geoCodeDateTimeFormats.size());
         GeoCodeDateTimeFormatTransferCache geoCodeDateTimeFormatTransferCache = getGeoTransferCaches(userVisit).getGeoCodeDateTimeFormatTransferCache();
         

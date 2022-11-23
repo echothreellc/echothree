@@ -154,6 +154,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1947,7 +1948,7 @@ public class InvoiceControl
         return getInvoiceTransferCaches(userVisit).getInvoiceLineTypeTransferCache().getInvoiceLineTypeTransfer(invoiceLineType);
     }
     
-    public List<InvoiceLineTypeTransfer> getInvoiceLineTypeTransfers(UserVisit userVisit, List<InvoiceLineType> invoiceLineTypes) {
+    public List<InvoiceLineTypeTransfer> getInvoiceLineTypeTransfers(UserVisit userVisit, Collection<InvoiceLineType> invoiceLineTypes) {
         List<InvoiceLineTypeTransfer> invoiceLineTypeTransfers = new ArrayList<>(invoiceLineTypes.size());
         InvoiceLineTypeTransferCache invoiceLineTypeTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceLineTypeTransferCache();
         
@@ -2446,7 +2447,7 @@ public class InvoiceControl
         return getInvoiceRolesByPartyContactMechanism(partyContactMechanism, EntityPermission.READ_WRITE);
     }
     
-    public List<InvoiceTransfer> getInvoiceTransfers(UserVisit userVisit, List<Invoice> invoices) {
+    public List<InvoiceTransfer> getInvoiceTransfers(UserVisit userVisit, Collection<Invoice> invoices) {
         List<InvoiceTransfer> invoiceTransfers = new ArrayList<>(invoices.size());
         InvoiceTransferCache invoiceTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceTransferCache();
         
@@ -2672,7 +2673,7 @@ public class InvoiceControl
         return getInvoiceTransferCaches(userVisit).getInvoiceTransferCache().getInvoiceTransfer(invoice);
     }
     
-    public List<InvoiceRoleTransfer> getInvoiceRoleTransfers(UserVisit userVisit, List<InvoiceRole> invoiceRoles) {
+    public List<InvoiceRoleTransfer> getInvoiceRoleTransfers(UserVisit userVisit, Collection<InvoiceRole> invoiceRoles) {
         List<InvoiceRoleTransfer> invoiceRoleTransfers = new ArrayList<>(invoiceRoles.size());
         InvoiceRoleTransferCache invoiceRoleTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceRoleTransferCache();
         
@@ -2875,7 +2876,7 @@ public class InvoiceControl
         return getInvoiceTransferCaches(userVisit).getInvoiceTimeTransferCache().getInvoiceTimeTransfer(invoiceTime);
     }
 
-    public List<InvoiceTimeTransfer> getInvoiceTimeTransfers(UserVisit userVisit, List<InvoiceTime> invoiceTimes) {
+    public List<InvoiceTimeTransfer> getInvoiceTimeTransfers(UserVisit userVisit, Collection<InvoiceTime> invoiceTimes) {
         List<InvoiceTimeTransfer> invoiceTimeTransfers = new ArrayList<>(invoiceTimes.size());
         InvoiceTimeTransferCache invoiceTimeTransferCache = getInvoiceTransferCaches(userVisit).getInvoiceTimeTransferCache();
 

@@ -38,6 +38,7 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -233,7 +234,7 @@ public class OrderShipmentGroupControl
         return getOrderTransferCaches(userVisit).getOrderShipmentGroupTransferCache().getOrderShipmentGroupTransfer(orderShipmentGroup);
     }
 
-    public List<OrderShipmentGroupTransfer> getOrderShipmentGroupTransfers(UserVisit userVisit, List<OrderShipmentGroup> orderShipmentGroups) {
+    public List<OrderShipmentGroupTransfer> getOrderShipmentGroupTransfers(UserVisit userVisit, Collection<OrderShipmentGroup> orderShipmentGroups) {
         List<OrderShipmentGroupTransfer> orderShipmentGroupTransfers = new ArrayList<>(orderShipmentGroups.size());
         OrderShipmentGroupTransferCache orderShipmentGroupTransferCache = getOrderTransferCaches(userVisit).getOrderShipmentGroupTransferCache();
 

@@ -76,6 +76,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -310,7 +311,7 @@ public class TaxControl
         return getTaxTransferCaches(userVisit).getTaxClassificationTransferCache().getTransfer(taxClassification);
     }
 
-    public List<TaxClassificationTransfer> getTaxClassificationTransfers(UserVisit userVisit, List<TaxClassification> taxClassifications) {
+    public List<TaxClassificationTransfer> getTaxClassificationTransfers(UserVisit userVisit, Collection<TaxClassification> taxClassifications) {
         List<TaxClassificationTransfer> taxClassificationTransfers = new ArrayList<>(taxClassifications.size());
         TaxClassificationTransferCache taxClassificationTransferCache = getTaxTransferCaches(userVisit).getTaxClassificationTransferCache();
 
@@ -719,7 +720,7 @@ public class TaxControl
         return getTaxTransferCaches(userVisit).getItemTaxClassificationTransferCache().getTransfer(itemTaxClassification);
     }
 
-    public List<ItemTaxClassificationTransfer> getItemTaxClassificationTransfers(UserVisit userVisit, List<ItemTaxClassification> itemTaxClassifications) {
+    public List<ItemTaxClassificationTransfer> getItemTaxClassificationTransfers(UserVisit userVisit, Collection<ItemTaxClassification> itemTaxClassifications) {
         List<ItemTaxClassificationTransfer> itemTaxClassificationTransfers = new ArrayList<>(itemTaxClassifications.size());
         ItemTaxClassificationTransferCache itemTaxClassificationTransferCache = getTaxTransferCaches(userVisit).getItemTaxClassificationTransferCache();
 
@@ -1346,7 +1347,7 @@ public class TaxControl
         return getTaxTransferCaches(userVisit).getGeoCodeTaxTransferCache().getTransfer(geoCodeTax);
     }
     
-    private List<GeoCodeTaxTransfer> getGeoCodeTaxTransfers(UserVisit userVisit, List<GeoCodeTax> geoCodeTaxes) {
+    private List<GeoCodeTaxTransfer> getGeoCodeTaxTransfers(UserVisit userVisit, Collection<GeoCodeTax> geoCodeTaxes) {
         List<GeoCodeTaxTransfer> geoCodeTaxTransfers = new ArrayList<>(geoCodeTaxes.size());
         
         geoCodeTaxes.forEach((geoCodeTax) -> {

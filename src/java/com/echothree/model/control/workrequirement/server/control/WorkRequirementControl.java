@@ -17,9 +17,6 @@
 package com.echothree.model.control.workrequirement.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
-import com.echothree.model.control.workrequirement.common.workflow.WorkAssignmentStatusConstants;
-import com.echothree.model.control.workrequirement.common.workflow.WorkRequirementStatusConstants;
-import com.echothree.model.control.workrequirement.common.workflow.WorkTimeStatusConstants;
 import com.echothree.model.control.workrequirement.common.choice.WorkAssignmentStatusChoicesBean;
 import com.echothree.model.control.workrequirement.common.choice.WorkRequirementStatusChoicesBean;
 import com.echothree.model.control.workrequirement.common.choice.WorkTimeStatusChoicesBean;
@@ -29,6 +26,9 @@ import com.echothree.model.control.workrequirement.common.transfer.WorkRequireme
 import com.echothree.model.control.workrequirement.common.transfer.WorkRequirementTypeDescriptionTransfer;
 import com.echothree.model.control.workrequirement.common.transfer.WorkRequirementTypeTransfer;
 import com.echothree.model.control.workrequirement.common.transfer.WorkTimeTransfer;
+import com.echothree.model.control.workrequirement.common.workflow.WorkAssignmentStatusConstants;
+import com.echothree.model.control.workrequirement.common.workflow.WorkRequirementStatusConstants;
+import com.echothree.model.control.workrequirement.common.workflow.WorkTimeStatusConstants;
 import com.echothree.model.control.workrequirement.server.transfer.WorkAssignmentTransferCache;
 import com.echothree.model.control.workrequirement.server.transfer.WorkRequirementScopeTransferCache;
 import com.echothree.model.control.workrequirement.server.transfer.WorkRequirementTransferCache;
@@ -103,6 +103,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -716,7 +717,7 @@ public class WorkRequirementControl
         return getWorkRequirementTransferCaches(userVisit).getWorkRequirementScopeTransferCache().getWorkRequirementScopeTransfer(workRequirementScope);
     }
     
-    public List<WorkRequirementScopeTransfer> getWorkRequirementScopeTransfers(UserVisit userVisit, List<WorkRequirementScope> workRequirementScopes) {
+    public List<WorkRequirementScopeTransfer> getWorkRequirementScopeTransfers(UserVisit userVisit, Collection<WorkRequirementScope> workRequirementScopes) {
         List<WorkRequirementScopeTransfer> workRequirementScopeTransfers = new ArrayList<>(workRequirementScopes.size());
         WorkRequirementScopeTransferCache workRequirementScopeTransferCache = getWorkRequirementTransferCaches(userVisit).getWorkRequirementScopeTransferCache();
         
@@ -979,7 +980,7 @@ public class WorkRequirementControl
         return getWorkRequirementTransferCaches(userVisit).getWorkRequirementTransferCache().getWorkRequirementTransfer(workRequirement);
     }
     
-    public List<WorkRequirementTransfer> getWorkRequirementTransfers(UserVisit userVisit, List<WorkRequirement> workRequirements) {
+    public List<WorkRequirementTransfer> getWorkRequirementTransfers(UserVisit userVisit, Collection<WorkRequirement> workRequirements) {
         List<WorkRequirementTransfer> workRequirementTransfers = new ArrayList<>(workRequirements.size());
         WorkRequirementTransferCache workRequirementTransferCache = getWorkRequirementTransferCaches(userVisit).getWorkRequirementTransferCache();
         
@@ -1285,7 +1286,7 @@ public class WorkRequirementControl
         return getWorkRequirementTransferCaches(userVisit).getWorkAssignmentTransferCache().getWorkAssignmentTransfer(workAssignment);
     }
 
-    public List<WorkAssignmentTransfer> getWorkAssignmentTransfers(UserVisit userVisit, List<WorkAssignment> workAssignments) {
+    public List<WorkAssignmentTransfer> getWorkAssignmentTransfers(UserVisit userVisit, Collection<WorkAssignment> workAssignments) {
         List<WorkAssignmentTransfer> workAssignmentTransfers = new ArrayList<>(workAssignments.size());
         WorkAssignmentTransferCache workAssignmentTransferCache = getWorkRequirementTransferCaches(userVisit).getWorkAssignmentTransferCache();
 
@@ -1536,7 +1537,7 @@ public class WorkRequirementControl
         return getWorkRequirementTransferCaches(userVisit).getWorkTimeTransferCache().getWorkTimeTransfer(workTime);
     }
     
-    public List<WorkTimeTransfer> getWorkTimeTransfers(UserVisit userVisit, List<WorkTime> workTimes) {
+    public List<WorkTimeTransfer> getWorkTimeTransfers(UserVisit userVisit, Collection<WorkTime> workTimes) {
         List<WorkTimeTransfer> workTimeTransfers = new ArrayList<>(workTimes.size());
         WorkTimeTransferCache workTimeTransferCache = getWorkRequirementTransferCaches(userVisit).getWorkTimeTransferCache();
 

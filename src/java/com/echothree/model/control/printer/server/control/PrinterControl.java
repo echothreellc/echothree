@@ -103,6 +103,7 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -274,7 +275,7 @@ public class PrinterControl
         return getPrinterTransferCaches(userVisit).getPrinterGroupTransferCache().getPrinterGroupTransfer(printerGroup);
     }
 
-    public List<PrinterGroupTransfer> getPrinterGroupTransfers(UserVisit userVisit, List<PrinterGroup> printerGroups) {
+    public List<PrinterGroupTransfer> getPrinterGroupTransfers(UserVisit userVisit, Collection<PrinterGroup> printerGroups) {
         List<PrinterGroupTransfer> printerGroupTransfers = new ArrayList<>(printerGroups.size());
         PrinterGroupTransferCache printerGroupTransferCache = getPrinterTransferCaches(userVisit).getPrinterGroupTransferCache();
 
@@ -754,7 +755,7 @@ public class PrinterControl
         return getPrinterTransferCaches(userVisit).getPrinterTransferCache().getPrinterTransfer(printer);
     }
 
-    public List<PrinterTransfer> getPrinterTransfers(UserVisit userVisit, List<Printer> printers) {
+    public List<PrinterTransfer> getPrinterTransfers(UserVisit userVisit, Collection<Printer> printers) {
         List<PrinterTransfer> printerTransfers = new ArrayList<>(printers.size());
         PrinterTransferCache printerTransferCache = getPrinterTransferCaches(userVisit).getPrinterTransferCache();
 
@@ -1248,7 +1249,7 @@ public class PrinterControl
         return getPrinterTransferCaches(userVisit).getPrinterGroupJobTransferCache().getPrinterGroupJobTransfer(printerGroupJob);
     }
 
-    public List<PrinterGroupJobTransfer> getPrinterGroupJobTransfers(UserVisit userVisit, List<PrinterGroupJob> printerGroupJobs) {
+    public List<PrinterGroupJobTransfer> getPrinterGroupJobTransfers(UserVisit userVisit, Collection<PrinterGroupJob> printerGroupJobs) {
         List<PrinterGroupJobTransfer> printerGroupJobTransfers = new ArrayList<>(printerGroupJobs.size());
         PrinterGroupJobTransferCache printerGroupJobTransferCache = getPrinterTransferCaches(userVisit).getPrinterGroupJobTransferCache();
 
@@ -1525,7 +1526,7 @@ public class PrinterControl
         return getPrinterTransferCaches(userVisit).getPrinterGroupUseTypeTransferCache().getPrinterGroupUseTypeTransfer(printerGroupUseType);
     }
 
-    public List<PrinterGroupUseTypeTransfer> getPrinterGroupUseTypeTransfers(UserVisit userVisit, List<PrinterGroupUseType> printerGroupUseTypes) {
+    public List<PrinterGroupUseTypeTransfer> getPrinterGroupUseTypeTransfers(UserVisit userVisit, Collection<PrinterGroupUseType> printerGroupUseTypes) {
         List<PrinterGroupUseTypeTransfer> printerGroupUseTypeTransfers = new ArrayList<>(printerGroupUseTypes.size());
         PrinterGroupUseTypeTransferCache printerGroupUseTypeTransferCache = getPrinterTransferCaches(userVisit).getPrinterGroupUseTypeTransferCache();
 
@@ -1969,7 +1970,7 @@ public class PrinterControl
         return getPrinterTransferCaches(userVisit).getPartyPrinterGroupUseTransferCache().getPartyPrinterGroupUseTransfer(partyPrinterGroupUse);
     }
 
-    public List<PartyPrinterGroupUseTransfer> getPartyPrinterGroupUseTransfers(UserVisit userVisit, List<PartyPrinterGroupUse> partyPrinterGroupUses) {
+    public List<PartyPrinterGroupUseTransfer> getPartyPrinterGroupUseTransfers(UserVisit userVisit, Collection<PartyPrinterGroupUse> partyPrinterGroupUses) {
         List<PartyPrinterGroupUseTransfer> partyPrinterGroupUseTransfers = new ArrayList<>(partyPrinterGroupUses.size());
         PartyPrinterGroupUseTransferCache partyPrinterGroupUseTransferCache = getPrinterTransferCaches(userVisit).getPartyPrinterGroupUseTransferCache();
 

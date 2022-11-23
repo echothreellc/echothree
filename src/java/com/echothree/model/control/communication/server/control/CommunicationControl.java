@@ -101,6 +101,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -881,7 +882,7 @@ public class CommunicationControl
         return getCommunicationTransferCaches(userVisit).getCommunicationEventTransferCache().getCommunicationEventTransfer(communicationEvent);
     }
     
-    public List<CommunicationEventTransfer> getCommunicationEventTransfers(UserVisit userVisit, List<CommunicationEvent> communicationEvents) {
+    public List<CommunicationEventTransfer> getCommunicationEventTransfers(UserVisit userVisit, Collection<CommunicationEvent> communicationEvents) {
         List<CommunicationEventTransfer> communicationEventTransfers = new ArrayList<>(communicationEvents.size());
         CommunicationEventTransferCache communicationEventTransferCache = getCommunicationTransferCaches(userVisit).getCommunicationEventTransferCache();
         
@@ -1293,7 +1294,7 @@ public class CommunicationControl
         return getCommunicationTransferCaches(userVisit).getCommunicationSourceTransferCache().getCommunicationSourceTransfer(communicationSource);
     }
     
-    public List<CommunicationSourceTransfer> getCommunicationSourceTransfers(UserVisit userVisit, List<CommunicationSource> communicationSources) {
+    public List<CommunicationSourceTransfer> getCommunicationSourceTransfers(UserVisit userVisit, Collection<CommunicationSource> communicationSources) {
         List<CommunicationSourceTransfer> communicationSourceTransfers = new ArrayList<>(communicationSources.size());
         CommunicationSourceTransferCache communicationSourceTransferCache = getCommunicationTransferCaches(userVisit).getCommunicationSourceTransferCache();
         

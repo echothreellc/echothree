@@ -692,7 +692,7 @@ public class QueueControl
         return getQueueTransferCaches(userVisit).getQueuedEntityTransferCache().getQueuedEntityTransfer(queuedEntity);
     }
     
-    public List<QueuedEntityTransfer> getQueuedEntityTransfers(UserVisit userVisit, List<QueuedEntity> queuedEntities) {
+    public List<QueuedEntityTransfer> getQueuedEntityTransfers(UserVisit userVisit, Collection<QueuedEntity> queuedEntities) {
         List<QueuedEntityTransfer> queuedEntityTransfers = new ArrayList<>(queuedEntities.size());
         QueuedEntityTransferCache queuedEntityTransferCache = getQueueTransferCaches(userVisit).getQueuedEntityTransferCache();
 

@@ -81,6 +81,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -927,7 +928,7 @@ public class LetterControl
         return getLetterTransferCaches(userVisit).getLetterTransferCache().getLetterTransfer(letter);
     }
     
-    public List<LetterTransfer> getLetterTransfers(UserVisit userVisit, List<Letter> letters) {
+    public List<LetterTransfer> getLetterTransfers(UserVisit userVisit, Collection<Letter> letters) {
         List<LetterTransfer> letterTransfers = new ArrayList<>(letters.size());
         LetterTransferCache letterTransferCache = getLetterTransferCaches(userVisit).getLetterTransferCache();
         
@@ -1583,7 +1584,7 @@ public class LetterControl
         return getLetterTransferCaches(userVisit).getQueuedLetterTransferCache().getQueuedLetterTransfer(queuedLetter);
     }
     
-    public List<QueuedLetterTransfer> getQueuedLetterTransfers(UserVisit userVisit, List<QueuedLetter> queuedLetters) {
+    public List<QueuedLetterTransfer> getQueuedLetterTransfers(UserVisit userVisit, Collection<QueuedLetter> queuedLetters) {
         List<QueuedLetterTransfer> queuedLetterTransfers = new ArrayList<>(queuedLetters.size());
         QueuedLetterTransferCache queuedLetterTransferCache = getLetterTransferCaches(userVisit).getQueuedLetterTransferCache();
 

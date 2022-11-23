@@ -3409,7 +3409,7 @@ public class FilterControl
         return getFilterEntranceStepsByFilterStep(filterStep, EntityPermission.READ_WRITE);
     }
     
-    public List<FilterEntranceStepTransfer> getFilterEntranceStepTransfers(UserVisit userVisit, List<FilterEntranceStep> filterEntranceSteps) {
+    public List<FilterEntranceStepTransfer> getFilterEntranceStepTransfers(UserVisit userVisit, Collection<FilterEntranceStep> filterEntranceSteps) {
         List<FilterEntranceStepTransfer> filterEntranceStepTransfers = new ArrayList<>(filterEntranceSteps.size());
         FilterEntranceStepTransferCache filterEntranceStepTransferCache = getFilterTransferCaches(userVisit).getFilterEntranceStepTransferCache();
         
@@ -3599,7 +3599,7 @@ public class FilterControl
                 toFilterStep, Session.MAX_TIME);
     }
     
-    public List<FilterStepDestinationTransfer> getFilterStepDestinationTransfers(UserVisit userVisit, List<FilterStepDestination> filterStepDestinations) {
+    public List<FilterStepDestinationTransfer> getFilterStepDestinationTransfers(UserVisit userVisit, Collection<FilterStepDestination> filterStepDestinations) {
         List<FilterStepDestinationTransfer> filterStepDestinationTransfers = new ArrayList<>(filterStepDestinations.size());
         FilterStepDestinationTransferCache filterStepDestinationTransferCache = getFilterTransferCaches(userVisit).getFilterStepDestinationTransferCache();
         
@@ -3761,7 +3761,7 @@ public class FilterControl
         return getFilterStepElementsByFilterStep(filterStep, EntityPermission.READ_WRITE);
     }
     
-    public List<FilterStepElementTransfer> getFilterStepElementTransfers(UserVisit userVisit, List<FilterStepElement> filterStepElements) {
+    public List<FilterStepElementTransfer> getFilterStepElementTransfers(UserVisit userVisit, Collection<FilterStepElement> filterStepElements) {
         List<FilterStepElementTransfer> filterStepElementTransfers = new ArrayList<>(filterStepElements.size());
         FilterStepElementTransferCache filterStepElementTransferCache = getFilterTransferCaches(userVisit).getFilterStepElementTransferCache();
         

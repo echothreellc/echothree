@@ -276,7 +276,7 @@ public class CancellationPolicyControl
         return getCancellationPolicyTransferCaches(userVisit).getPartyCancellationPolicyTransferCache().getPartyCancellationPolicyTransfer(partyCancellationPolicy);
     }
     
-    public List<PartyCancellationPolicyTransfer> getPartyCancellationPolicyTransfers(UserVisit userVisit, List<PartyCancellationPolicy> cancellationPolicies) {
+    public List<PartyCancellationPolicyTransfer> getPartyCancellationPolicyTransfers(UserVisit userVisit, Collection<PartyCancellationPolicy> cancellationPolicies) {
         List<PartyCancellationPolicyTransfer> cancellationPolicyTransfers = new ArrayList<>(cancellationPolicies.size());
         PartyCancellationPolicyTransferCache cancellationPolicyTransferCache = getCancellationPolicyTransferCaches(userVisit).getPartyCancellationPolicyTransferCache();
 
@@ -1446,7 +1446,7 @@ public class CancellationPolicyControl
         return getCancellationPolicyReasonsByCancellationReason(cancellationReason, EntityPermission.READ_WRITE);
     }
     
-    public List<CancellationPolicyReasonTransfer> getCancellationPolicyReasonTransfers(UserVisit userVisit, List<CancellationPolicyReason> cancellationPolicyReasons) {
+    public List<CancellationPolicyReasonTransfer> getCancellationPolicyReasonTransfers(UserVisit userVisit, Collection<CancellationPolicyReason> cancellationPolicyReasons) {
         List<CancellationPolicyReasonTransfer> cancellationPolicyReasonTransfers = new ArrayList<>(cancellationPolicyReasons.size());
         CancellationPolicyReasonTransferCache cancellationPolicyReasonTransferCache = getCancellationPolicyTransferCaches(userVisit).getCancellationPolicyReasonTransferCache();
         
@@ -2215,7 +2215,7 @@ public class CancellationPolicyControl
         return getCancellationReasonTypesByCancellationType(cancellationType, EntityPermission.READ_WRITE);
     }
     
-    public List<CancellationReasonTypeTransfer> getCancellationReasonTypeTransfers(UserVisit userVisit, List<CancellationReasonType> cancellationReasonTypes) {
+    public List<CancellationReasonTypeTransfer> getCancellationReasonTypeTransfers(UserVisit userVisit, Collection<CancellationReasonType> cancellationReasonTypes) {
         List<CancellationReasonTypeTransfer> cancellationReasonTypeTransfers = new ArrayList<>(cancellationReasonTypes.size());
         CancellationReasonTypeTransferCache cancellationReasonTypeTransferCache = getCancellationPolicyTransferCaches(userVisit).getCancellationReasonTypeTransferCache();
         

@@ -73,6 +73,7 @@ import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -295,7 +296,7 @@ public class IndexControl
         return getIndexTransferCaches(userVisit).getIndexTypeTransferCache().getIndexTypeTransfer(indexType);
     }
 
-    public List<IndexTypeTransfer> getIndexTypeTransfers(UserVisit userVisit, List<IndexType> indexTypes) {
+    public List<IndexTypeTransfer> getIndexTypeTransfers(UserVisit userVisit, Collection<IndexType> indexTypes) {
         List<IndexTypeTransfer> indexTypeTransfers = new ArrayList<>(indexTypes.size());
         IndexTypeTransferCache indexTypeTransferCache = getIndexTransferCaches(userVisit).getIndexTypeTransferCache();
 

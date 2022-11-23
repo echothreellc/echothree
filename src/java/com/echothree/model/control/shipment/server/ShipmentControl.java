@@ -37,7 +37,6 @@ import com.echothree.model.control.shipment.server.transfer.ShipmentAliasTypeTra
 import com.echothree.model.control.shipment.server.transfer.ShipmentTimeTransferCache;
 import com.echothree.model.control.shipment.server.transfer.ShipmentTimeTypeDescriptionTransferCache;
 import com.echothree.model.control.shipment.server.transfer.ShipmentTimeTypeTransferCache;
-import com.echothree.model.control.shipment.server.transfer.ShipmentTransferCaches;
 import com.echothree.model.control.shipment.server.transfer.ShipmentTypeDescriptionTransferCache;
 import com.echothree.model.control.shipment.server.transfer.ShipmentTypeShippingMethodTransferCache;
 import com.echothree.model.control.shipment.server.transfer.ShipmentTypeTransferCache;
@@ -92,12 +91,12 @@ import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
-import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1228,7 +1227,7 @@ public class ShipmentControl
         return getShipmentTypeShippingMethodsByShippingMethod(shippingMethod, EntityPermission.READ_WRITE);
     }
     
-    public List<ShipmentTypeShippingMethodTransfer> getShipmentTypeShippingMethodTransfers(UserVisit userVisit, List<ShipmentTypeShippingMethod> shipmentTypeShippingMethods) {
+    public List<ShipmentTypeShippingMethodTransfer> getShipmentTypeShippingMethodTransfers(UserVisit userVisit, Collection<ShipmentTypeShippingMethod> shipmentTypeShippingMethods) {
         List<ShipmentTypeShippingMethodTransfer> shipmentTypeShippingMethodTransfers = new ArrayList<>(shipmentTypeShippingMethods.size());
         ShipmentTypeShippingMethodTransferCache shipmentTypeShippingMethodTransferCache = getShipmentTransferCaches(userVisit).getShipmentTypeShippingMethodTransferCache();
         
@@ -1462,7 +1461,7 @@ public class ShipmentControl
         return getShipmentTransferCaches(userVisit).getShipmentTimeTransferCache().getTransfer(shipmentTime);
     }
 
-    public List<ShipmentTimeTransfer> getShipmentTimeTransfers(UserVisit userVisit, List<ShipmentTime> shipmentTimes) {
+    public List<ShipmentTimeTransfer> getShipmentTimeTransfers(UserVisit userVisit, Collection<ShipmentTime> shipmentTimes) {
         List<ShipmentTimeTransfer> shipmentTimeTransfers = new ArrayList<>(shipmentTimes.size());
         ShipmentTimeTransferCache shipmentTimeTransferCache = getShipmentTransferCaches(userVisit).getShipmentTimeTransferCache();
 
