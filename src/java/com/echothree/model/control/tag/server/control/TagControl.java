@@ -723,7 +723,7 @@ public class TagControl
         return getTagTransferCaches(userVisit).getTagScopeEntityTypeTransferCache().getTagScopeEntityTypeTransfer(tagScopeEntityType);
     }
     
-    public List<TagScopeEntityTypeTransfer> getTagScopeEntityTypeTransfers(UserVisit userVisit, List<TagScopeEntityType> tagScopeEntityTypes) {
+    public List<TagScopeEntityTypeTransfer> getTagScopeEntityTypeTransfers(UserVisit userVisit, Collection<TagScopeEntityType> tagScopeEntityTypes) {
         List<TagScopeEntityTypeTransfer> tagScopeEntityTypeTransfers = new ArrayList<>(tagScopeEntityTypes.size());
         TagScopeEntityTypeTransferCache tagScopeEntityTypeTransferCache = getTagTransferCaches(userVisit).getTagScopeEntityTypeTransferCache();
         
