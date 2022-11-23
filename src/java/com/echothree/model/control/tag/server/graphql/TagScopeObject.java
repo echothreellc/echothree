@@ -17,8 +17,14 @@
 package com.echothree.model.control.tag.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.tag.common.TagScopeEntityTypeConstants;
 import com.echothree.model.data.tag.server.entity.TagScope;
 import com.echothree.model.data.tag.server.entity.TagScopeDetail;
 import com.echothree.util.server.persistence.Session;
@@ -26,7 +32,10 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("tag scope object")
 @GraphQLName("TagScope")
@@ -81,5 +90,25 @@ public class TagScopeObject
 
         return tagControl.getBestTagScopeDescription(tagScope, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
-    
+
+    @GraphQLField
+    @GraphQLDescription("tag scope entity types")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<TagScopeEntityTypeObject> getTagScopeEntityTypes(final DataFetchingEnvironment env) {
+        if(TagSecurityUtils.getInstance().getHasTagScopeEntityTypesAccess(env)) {
+            var tagControl = Session.getModelController(TagControl.class);
+            var totalCount = tagControl.countTagScopeEntityTypesByTagScope(tagScope);
+
+            try(var objectLimiter = new ObjectLimiter(env, TagScopeEntityTypeConstants.COMPONENT_VENDOR_NAME, TagScopeEntityTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = tagControl.getTagScopeEntityTypesByTagScope(tagScope);
+                var entityTypes = entities.stream().map(TagScopeEntityTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, entityTypes);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
 }

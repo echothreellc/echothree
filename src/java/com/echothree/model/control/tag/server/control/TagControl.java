@@ -33,6 +33,7 @@ import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.tag.common.pk.TagPK;
+import com.echothree.model.data.tag.common.pk.TagScopeEntityTypePK;
 import com.echothree.model.data.tag.common.pk.TagScopePK;
 import com.echothree.model.data.tag.server.entity.EntityTag;
 import com.echothree.model.data.tag.server.entity.Tag;
@@ -597,7 +598,39 @@ public class TagControl
         
         return tagScopeEntityType;
     }
-    
+
+    public long countTagScopeEntityTypesByTagScope(TagScope tagScope) {
+        return session.queryForLong("""
+                    SELECT COUNT(*)
+                    FROM tagscopeentitytypes
+                    WHERE tent_ts_tagscopeid = ? AND tent_thrutime = ?
+                    """, tagScope, Session.MAX_TIME);
+    }
+
+    public long countTagScopeEntityTypesByEntityType(EntityType entityType) {
+        return session.queryForLong("""
+                    SELECT COUNT(*)
+                    FROM tagscopeentitytypes
+                    WHERE tent_ent_entitytypeid = ? AND tent_thrutime = ?
+                    """, entityType, Session.MAX_TIME);
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.TagScopeEntityType */
+    public TagScopeEntityType getTagScopeEntityTypeByEntityInstance(final EntityInstance entityInstance,
+            final EntityPermission entityPermission) {
+        var pk = new TagScopeEntityTypePK(entityInstance.getEntityUniqueId());
+
+        return TagScopeEntityTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public TagScopeEntityType getTagScopeEntityTypeByEntityInstance(final EntityInstance entityInstance) {
+        return getTagScopeEntityTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public TagScopeEntityType getTagScopeEntityTypeByEntityInstanceForUpdate(final EntityInstance entityInstance) {
+        return getTagScopeEntityTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     private TagScopeEntityType getTagScopeEntityType(TagScope tagScope, EntityType entityType, EntityPermission entityPermission) {
         TagScopeEntityType tagScopeEntityType;
         

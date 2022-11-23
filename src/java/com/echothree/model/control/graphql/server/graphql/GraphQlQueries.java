@@ -236,6 +236,8 @@ import com.echothree.control.user.shipment.server.command.GetFreeOnBoardCommand;
 import com.echothree.control.user.shipment.server.command.GetFreeOnBoardsCommand;
 import com.echothree.control.user.tag.common.TagUtil;
 import com.echothree.control.user.tag.server.command.GetTagScopeCommand;
+import com.echothree.control.user.tag.server.command.GetTagScopeEntityTypeCommand;
+import com.echothree.control.user.tag.server.command.GetTagScopeEntityTypesCommand;
 import com.echothree.control.user.tag.server.command.GetTagScopesCommand;
 import com.echothree.control.user.uom.common.UomUtil;
 import com.echothree.control.user.uom.server.command.GetUnitOfMeasureKindCommand;
@@ -382,6 +384,7 @@ import com.echothree.model.control.sequence.server.graphql.SequenceObject;
 import com.echothree.model.control.sequence.server.graphql.SequenceTypeObject;
 import com.echothree.model.control.shipment.server.graphql.FreeOnBoardObject;
 import com.echothree.model.control.tag.server.control.TagControl;
+import com.echothree.model.control.tag.server.graphql.TagScopeEntityTypeObject;
 import com.echothree.model.control.tag.server.graphql.TagScopeObject;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindObject;
@@ -520,6 +523,7 @@ import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
 import com.echothree.model.data.tag.common.TagScopeConstants;
 import com.echothree.model.data.tag.server.entity.TagScope;
+import com.echothree.model.data.tag.server.entity.TagScopeEntityType;
 import com.echothree.model.data.uom.common.UnitOfMeasureKindConstants;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUse;
@@ -6385,6 +6389,61 @@ public final class GraphQlQueries
         }
 
         return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("tagScopeEntityType")
+    public static TagScopeEntityTypeObject tagScopeEntityType(final DataFetchingEnvironment env,
+            @GraphQLName("tagScopeName") @GraphQLNonNull final String tagScopeName,
+            @GraphQLName("componentVendorName") @GraphQLNonNull final String componentVendorName,
+            @GraphQLName("entityTypeName") @GraphQLNonNull final String entityTypeName) {
+        TagScopeEntityType tagScopeEntityType;
+
+        try {
+            var commandForm = TagUtil.getHome().getGetTagScopeEntityTypeForm();
+
+            commandForm.setTagScopeName(tagScopeName);
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
+
+            tagScopeEntityType = new GetTagScopeEntityTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return tagScopeEntityType == null ? null : new TagScopeEntityTypeObject(tagScopeEntityType);
+    }
+
+    @GraphQLField
+    @GraphQLName("tagScopeEntityTypes")
+    public static Collection<TagScopeEntityTypeObject> tagScopeEntityTypes(final DataFetchingEnvironment env,
+            @GraphQLName("tagScopeName") final String tagScopeName,
+            @GraphQLName("componentVendorName") final String componentVendorName,
+            @GraphQLName("entityTypeName") final String entityTypeName) {
+        Collection<TagScopeEntityType> tagScopeEntityTypes;
+        Collection<TagScopeEntityTypeObject> tagScopeEntityTypeObjects;
+
+        try {
+            var commandForm = TagUtil.getHome().getGetTagScopeEntityTypesForm();
+
+            commandForm.setTagScopeName(tagScopeName);
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
+
+            tagScopeEntityTypes = new GetTagScopeEntityTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(tagScopeEntityTypes == null) {
+            tagScopeEntityTypeObjects = emptyList();
+        } else {
+            tagScopeEntityTypeObjects = new ArrayList<>(tagScopeEntityTypes.size());
+
+            tagScopeEntityTypes.stream().map(TagScopeEntityTypeObject::new).forEachOrdered(tagScopeEntityTypeObjects::add);
+        }
+
+        return tagScopeEntityTypeObjects;
     }
 
 }
