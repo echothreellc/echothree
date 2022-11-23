@@ -816,6 +816,14 @@ public class TagControl
         return tag;
     }
 
+    public long countTagsByTagScope(final TagScope tagScope) {
+        return session.queryForLong("""
+                    SELECT COUNT(*)
+                    FROM tags, tagdetails
+                    WHERE t_activedetailid = tdt_tagdetailid
+                    """, tagScope);
+    }
+
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.Tag */
     public Tag getTagByEntityInstance(final EntityInstance entityInstance,
             final EntityPermission entityPermission) {
