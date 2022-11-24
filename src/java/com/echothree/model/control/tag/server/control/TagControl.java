@@ -825,6 +825,15 @@ public class TagControl
                     """, tagScope);
     }
 
+    public long countTagsByTagScopeAndEntityInstance(final TagScope tagScope, final EntityInstance taggedEntityInstance) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM tags, tagdetails, entitytags
+                WHERE t_activedetailid = tdt_tagdetailid AND tdt_ts_tagscopeid = ?
+                AND t_tagid = et_t_tagid AND et_taggedentityinstanceid = ? AND et_thrutime = ?
+                """, tagScope, taggedEntityInstance, Session.MAX_TIME_LONG);
+    }
+
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.Tag */
     public Tag getTagByEntityInstance(final EntityInstance entityInstance,
             final EntityPermission entityPermission) {
@@ -1078,13 +1087,22 @@ public class TagControl
         
         return entityTag;
     }
-    
-    public long countEntityTagsByTag(Tag tag) {
+
+    public long countEntityTagsByTag(final Tag tag) {
         return session.queryForLong(
                 "SELECT COUNT(*) " +
                 "FROM entitytags " +
                 "WHERE et_t_tagid = ? AND et_thrutime = ?",
                 tag, Session.MAX_TIME_LONG);
+    }
+
+    public long countEntityTagsByTagScopeAndEntityInstance(final TagScope tagScope, final EntityInstance taggedEntityInstance) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM tags, tagdetails, entitytags " +
+                "WHERE t_activedetailid = tdt_tagdetailid AND tdt_ts_tagscopeid = ? " +
+                "AND t_tagid = et_t_tagid AND et_taggedentityinstanceid = ? AND et_thrutime = ?",
+                tagScope, taggedEntityInstance, Session.MAX_TIME_LONG);
     }
 
     private EntityTag getEntityTag(EntityInstance taggedEntityInstance, Tag tag, EntityPermission entityPermission) {

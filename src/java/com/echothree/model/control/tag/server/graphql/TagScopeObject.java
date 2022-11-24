@@ -24,6 +24,7 @@ import com.echothree.model.control.graphql.server.graphql.count.CountingPaginate
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.tag.common.TagConstants;
 import com.echothree.model.data.tag.common.TagScopeEntityTypeConstants;
 import com.echothree.model.data.tag.server.entity.TagScope;
@@ -42,13 +43,15 @@ import java.util.stream.Collectors;
 @GraphQLName("TagScope")
 public class TagScopeObject
         extends BaseEntityInstanceObject {
-    
+
     private final TagScope tagScope; // Always Present
-    
-    public TagScopeObject(TagScope tagScope) {
+    private final EntityInstance entityInstance; // Optional
+
+    public TagScopeObject(final TagScope tagScope, final EntityInstance entityInstance) {
         super(tagScope.getPrimaryKey());
-        
+
         this.tagScope = tagScope;
+        this.entityInstance = entityInstance;
     }
 
     private TagScopeDetail tagScopeDetail; // Optional, use getTagScopeDetail()
@@ -119,13 +122,25 @@ public class TagScopeObject
     public CountingPaginatedData<TagObject> getTags(final DataFetchingEnvironment env) {
         if(TagSecurityUtils.getInstance().getHasTagsAccess(env)) {
             var tagControl = Session.getModelController(TagControl.class);
-            var totalCount = tagControl.countTagsByTagScope(tagScope);
 
-            try(var objectLimiter = new ObjectLimiter(env, TagConstants.COMPONENT_VENDOR_NAME, TagConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var entities = tagControl.getTags(tagScope);
-                var entityTypes = entities.stream().map(TagObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+            if(entityInstance == null) {
+                var totalCount = tagControl.countTagsByTagScope(tagScope);
 
-                return new CountedObjects<>(objectLimiter, entityTypes);
+                try(var objectLimiter = new ObjectLimiter(env, TagConstants.COMPONENT_VENDOR_NAME, TagConstants.ENTITY_TYPE_NAME, totalCount)) {
+                    var entities = tagControl.getTags(tagScope);
+                    var entityTypes = entities.stream().map(TagObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    return new CountedObjects<>(objectLimiter, entityTypes);
+                }
+            } else {
+                var totalCount = tagControl.countTagsByTagScopeAndEntityInstance(tagScope, entityInstance);
+
+                try(var objectLimiter = new ObjectLimiter(env, TagConstants.COMPONENT_VENDOR_NAME, TagConstants.ENTITY_TYPE_NAME, totalCount)) {
+                    var entities = tagControl.getTagsByTagScopeAndEntityInstance(tagScope, entityInstance);
+                    var entityTypes = entities.stream().map(TagObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    return new CountedObjects<>(objectLimiter, entityTypes);
+                }
             }
         } else {
             return Connections.emptyConnection();

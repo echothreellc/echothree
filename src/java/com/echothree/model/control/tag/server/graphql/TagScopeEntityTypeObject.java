@@ -48,7 +48,7 @@ public class TagScopeEntityTypeObject
     @GraphQLDescription("tag scope")
     @GraphQLNonNull
     public TagScopeObject getTagScope(final DataFetchingEnvironment env) {
-        return TagSecurityUtils.getInstance().getHasTagScopeAccess(env) ? new TagScopeObject(tagScopeEntityType.getTagScope()): null;
+        return TagSecurityUtils.getInstance().getHasTagScopeAccess(env) ? new TagScopeObject(tagScopeEntityType.getTagScope(), null): null;
     }
 
     @GraphQLField

@@ -6362,7 +6362,7 @@ public final class GraphQlQueries
             throw new RuntimeException(ex);
         }
 
-        return tagScope == null ? null : new TagScopeObject(tagScope);
+        return tagScope == null ? null : new TagScopeObject(tagScope, null);
     }
 
     @GraphQLField
@@ -6383,7 +6383,13 @@ public final class GraphQlQueries
                 if(entities == null) {
                     data = Connections.emptyConnection();
                 } else {
-                    var tagScopes = entities.stream().map(TagScopeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var tagScopes = new ArrayList<TagScopeObject>(entities.size());
+
+                    for(var entity : entities) {
+                        var tagScopeObject = new TagScopeObject(entity, null);
+
+                        tagScopes.add(tagScopeObject);
+                    }
 
                     data = new CountedObjects<>(objectLimiter, tagScopes);
                 }
