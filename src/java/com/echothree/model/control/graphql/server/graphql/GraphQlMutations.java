@@ -3536,6 +3536,54 @@ public class GraphQlMutations
 
     @GraphQLField
     @GraphQLRelayMutation
+    public static CommandResultObject createTagScopeEntityType(final DataFetchingEnvironment env,
+            @GraphQLName("tagScopeName") @GraphQLNonNull final String tagScopeName,
+            @GraphQLName("componentVendorName") @GraphQLNonNull final String componentVendorName,
+            @GraphQLName("entityTypeName") @GraphQLNonNull final String entityTypeName) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = TagUtil.getHome().getCreateTagScopeEntityTypeForm();
+
+            commandForm.setTagScopeName(tagScopeName);
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
+
+            var commandResult = TagUtil.getHome().createTagScopeEntityType(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject deleteTagScopeEntityType(final DataFetchingEnvironment env,
+            @GraphQLName("tagScopeName") @GraphQLNonNull final String tagScopeName,
+            @GraphQLName("componentVendorName") @GraphQLNonNull final String componentVendorName,
+            @GraphQLName("entityTypeName") @GraphQLNonNull final String entityTypeName) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = TagUtil.getHome().getDeleteTagScopeEntityTypeForm();
+
+            commandForm.setTagScopeName(tagScopeName);
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
+
+            var commandResult = TagUtil.getHome().deleteTagScopeEntityType(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
     public static CommandResultWithIdObject createTag(final DataFetchingEnvironment env,
             @GraphQLName("tagScopeName") @GraphQLNonNull final String tagScopeName,
             @GraphQLName("tagName") @GraphQLNonNull final String tagName) {
