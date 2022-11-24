@@ -125,7 +125,13 @@ public abstract class BaseEntityInstanceObject
 
             try(var objectLimiter = new ObjectLimiter(env, TagScopeConstants.COMPONENT_VENDOR_NAME, TagScopeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = tagControl.getTagScopesByEntityType(getEntityInstanceByBasePK().getEntityType());
-                var tagScopes = entities.stream().map(TagScopeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                var tagScopes = new ArrayList<TagScopeObject>(entities.size());
+
+                for(var entity : entities) {
+                    var tagScopeObject = new TagScopeObject(entity, entityInstance);
+
+                    tagScopes.add(tagScopeObject);
+                }
 
                 return new CountedObjects<>(objectLimiter, tagScopes);
             }

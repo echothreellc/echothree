@@ -14,13 +14,31 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.tag.common.form;
+package com.echothree.model.control.tag.common.exception;
 
-import com.echothree.control.user.tag.common.spec.TagUniversalSpec;
+import com.echothree.util.common.message.Message;
 
-public interface GetTagForm
-        extends TagUniversalSpec {
+public class UnknownTagNameException
+        extends BaseTagException {
     
-    // Nothing additional beyond TagUniversalSpec
+    /** Creates a new instance of UnknownTagNameException */
+    public UnknownTagNameException() {
+        super();
+    }
     
+    /** Creates a new instance of UnknownTagNameException */
+    public UnknownTagNameException(String message) {
+        super(message);
+    }
+    
+    /** Creates a new instance of UnknownTagNameException */
+    public UnknownTagNameException(Throwable cause) {
+        super(cause);
+    }
+    
+    /** Creates a new instance of UnknownTagNameException */
+    public UnknownTagNameException(Message message) {
+        super(message);
+    }
+
 }

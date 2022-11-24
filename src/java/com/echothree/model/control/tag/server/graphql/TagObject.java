@@ -16,14 +16,10 @@
 
 package com.echothree.model.control.tag.server.graphql;
 
-import com.echothree.model.control.core.server.graphql.CoreSecurityUtils;
-import com.echothree.model.control.core.server.graphql.EntityTypeObject;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.tag.server.control.TagControl;
-import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.data.tag.server.entity.TagScope;
-import com.echothree.model.data.tag.server.entity.TagScopeDetail;
-import com.echothree.model.data.tag.server.entity.TagScopeEntityType;
+import com.echothree.model.data.tag.server.entity.Tag;
+import com.echothree.model.data.tag.server.entity.TagDetail;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -31,31 +27,50 @@ import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 
-@GraphQLDescription("tag scope entity type object")
-@GraphQLName("TagScopeEntityType")
-public class TagScopeEntityTypeObject
+@GraphQLDescription("tag object")
+@GraphQLName("Tag")
+public class TagObject
         extends BaseEntityInstanceObject {
-
-    private final TagScopeEntityType tagScopeEntityType; // Always Present
-
-    public TagScopeEntityTypeObject(TagScopeEntityType tagScopeEntityType) {
-        super(tagScopeEntityType.getPrimaryKey());
+    
+    private final Tag tag; // Always Present
+    
+    public TagObject(Tag tag) {
+        super(tag.getPrimaryKey());
         
-        this.tagScopeEntityType = tagScopeEntityType;
+        this.tag = tag;
+    }
+
+    private TagDetail tagDetail; // Optional, use getTagDetail()
+    
+    private TagDetail getTagDetail() {
+        if(tagDetail == null) {
+            tagDetail = tag.getLastDetail();
+        }
+        
+        return tagDetail;
     }
 
     @GraphQLField
     @GraphQLDescription("tag scope")
     @GraphQLNonNull
     public TagScopeObject getTagScope(final DataFetchingEnvironment env) {
-        return TagSecurityUtils.getInstance().getHasTagScopeAccess(env) ? new TagScopeObject(tagScopeEntityType.getTagScope(), null): null;
+        return TagSecurityUtils.getInstance().getHasTagScopeAccess(env) ? new TagScopeObject(getTagDetail().getTagScope(), null): null;
     }
 
     @GraphQLField
-    @GraphQLDescription("entity type")
+    @GraphQLDescription("tag scope name")
     @GraphQLNonNull
-    public EntityTypeObject getEntityType(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityTypeAccess(env) ? new EntityTypeObject(tagScopeEntityType.getEntityType()): null;
+    public String getTagName() {
+        return getTagDetail().getTagName();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("usage count")
+    @GraphQLNonNull
+    public long getUsageCount() {
+        var tagControl = Session.getModelController(TagControl.class);
+
+        return tagControl.countEntityTagsByTag(tag);
     }
 
 }
