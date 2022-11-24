@@ -24,7 +24,6 @@ import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.tag.common.exception.DuplicateTagNameException;
 import com.echothree.model.control.tag.common.exception.UnknownTagNameException;
 import com.echothree.model.control.tag.server.control.TagControl;
-import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.tag.server.entity.Tag;
 import com.echothree.model.data.tag.server.entity.TagScope;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -100,8 +99,8 @@ public class TagLogic
         return getTagByName(eea, tagScopeName, tagName, EntityPermission.READ_WRITE);
     }
 
-    public Tag getTagByUniversalSpec(final ExecutionErrorAccumulator eea,
-            final TagUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
+    public Tag getTagByUniversalSpec(final ExecutionErrorAccumulator eea, final TagUniversalSpec universalSpec,
+            final EntityPermission entityPermission) {
         var tagControl = Session.getModelController(TagControl.class);
         var tagScopeName = universalSpec.getTagScopeName();
         var tagName = universalSpec.getTagName();
@@ -136,14 +135,12 @@ public class TagLogic
         return tag;
     }
 
-    public Tag getTagByUniversalSpec(final ExecutionErrorAccumulator eea,
-            final TagUniversalSpec universalSpec, boolean allowDefault) {
-        return getTagByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_ONLY);
+    public Tag getTagByUniversalSpec(final ExecutionErrorAccumulator eea, final TagUniversalSpec universalSpec) {
+        return getTagByUniversalSpec(eea, universalSpec, EntityPermission.READ_ONLY);
     }
 
-    public Tag getTagByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
-            final TagUniversalSpec universalSpec, boolean allowDefault) {
-        return getTagByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
+    public Tag getTagByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea, final TagUniversalSpec universalSpec) {
+        return getTagByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
     }
 
     public void deleteTag(final ExecutionErrorAccumulator eea, final Tag tag,

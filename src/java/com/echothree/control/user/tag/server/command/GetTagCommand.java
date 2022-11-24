@@ -17,7 +17,6 @@
 package com.echothree.control.user.tag.server.command;
 
 import com.echothree.control.user.tag.common.form.GetTagForm;
-import com.echothree.control.user.tag.common.form.GetTagScopeForm;
 import com.echothree.control.user.tag.common.result.TagResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -25,14 +24,11 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.control.tag.server.logic.TagLogic;
-import com.echothree.model.control.tag.server.logic.TagScopeLogic;
 import com.echothree.model.data.tag.server.entity.Tag;
-import com.echothree.model.data.tag.server.entity.TagScope;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -57,8 +53,12 @@ public class GetTagCommand
                 )));
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("TagScopeName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("TagName", FieldType.TAG, true, null, null)
+                new FieldDefinition("TagScopeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("TagName", FieldType.TAG, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
                 ));
     }
     
@@ -69,7 +69,7 @@ public class GetTagCommand
 
     @Override
     protected Tag getEntity() {
-        var tag = TagLogic.getInstance().getTagByName(this, form.getTagScopeName(), form.getTagName());
+        var tag = TagLogic.getInstance().getTagByUniversalSpec(this, form);
 
         if(tag != null) {
             sendEvent(tag.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
