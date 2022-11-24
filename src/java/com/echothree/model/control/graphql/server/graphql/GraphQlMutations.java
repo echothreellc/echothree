@@ -118,7 +118,9 @@ import com.echothree.control.user.shipment.common.ShipmentUtil;
 import com.echothree.control.user.shipment.common.result.CreateFreeOnBoardResult;
 import com.echothree.control.user.shipment.common.result.EditFreeOnBoardResult;
 import com.echothree.control.user.tag.common.TagUtil;
+import com.echothree.control.user.tag.common.result.CreateTagResult;
 import com.echothree.control.user.tag.common.result.CreateTagScopeResult;
+import com.echothree.control.user.tag.common.result.EditTagResult;
 import com.echothree.control.user.tag.common.result.EditTagScopeResult;
 import com.echothree.control.user.track.common.TrackUtil;
 import com.echothree.control.user.user.common.UserUtil;
@@ -3572,6 +3574,102 @@ public class GraphQlMutations
             commandForm.setEntityTypeName(entityTypeName);
 
             var commandResult = TagUtil.getHome().deleteTagScopeEntityType(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultWithIdObject createTag(final DataFetchingEnvironment env,
+            @GraphQLName("tagScopeName") @GraphQLNonNull final String tagScopeName,
+            @GraphQLName("tagName") @GraphQLNonNull final String tagName) {
+        var commandResultObject = new CommandResultWithIdObject();
+
+        try {
+            var commandForm = TagUtil.getHome().getCreateTagForm();
+
+            commandForm.setTagScopeName(tagScopeName);
+            commandForm.setTagName(tagName);
+
+            var commandResult = TagUtil.getHome().createTag(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateTagResult)commandResult.getExecutionResult().getResult();
+
+                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject deleteTag(final DataFetchingEnvironment env,
+            @GraphQLName("tagScopeName") @GraphQLNonNull final String tagScopeName,
+            @GraphQLName("tagName") @GraphQLNonNull final String tagName) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = TagUtil.getHome().getDeleteTagForm();
+
+            commandForm.setTagScopeName(tagScopeName);
+            commandForm.setTagName(tagName);
+
+            var commandResult = TagUtil.getHome().deleteTag(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultWithIdObject editTag(final DataFetchingEnvironment env,
+            @GraphQLName("tagScopeName") @GraphQLNonNull final String tagScopeName,
+            @GraphQLName("originalTagName") @GraphQLNonNull final String originalTagName,
+            @GraphQLName("tagName") final String tagName) {
+        var commandResultObject = new CommandResultWithIdObject();
+
+        try {
+            var spec = TagUtil.getHome().getTagSpec();
+
+            spec.setTagScopeName(tagScopeName);
+            spec.setTagName(originalTagName);
+
+            var commandForm = TagUtil.getHome().getEditTagForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = TagUtil.getHome().editTag(getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditTagResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                commandResultObject.setEntityInstance(result.getTag().getEntityInstance());
+
+                if(arguments.containsKey("tagName"))
+                    edit.setTagName(tagName);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = TagUtil.getHome().editTag(getUserVisitPK(env), commandForm);
+            }
+
             commandResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
