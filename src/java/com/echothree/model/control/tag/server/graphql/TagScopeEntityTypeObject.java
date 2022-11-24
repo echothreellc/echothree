@@ -18,13 +18,8 @@ package com.echothree.model.control.tag.server.graphql;
 
 import com.echothree.model.control.core.server.graphql.CoreSecurityUtils;
 import com.echothree.model.control.core.server.graphql.EntityTypeObject;
-import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.tag.server.control.TagControl;
-import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.data.tag.server.entity.TagScope;
-import com.echothree.model.data.tag.server.entity.TagScopeDetail;
+import com.echothree.model.control.graphql.server.graphql.BaseObject;
 import com.echothree.model.data.tag.server.entity.TagScopeEntityType;
-import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -34,7 +29,7 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("tag scope entity type object")
 @GraphQLName("TagScopeEntityType")
 public class TagScopeEntityTypeObject
-        extends BaseEntityInstanceObject {
+        extends BaseObject {
 
     private final TagScopeEntityType tagScopeEntityType; // Always Present
 
