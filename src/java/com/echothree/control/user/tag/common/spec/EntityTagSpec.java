@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.tag.common.spec;
 
-import com.echothree.control.user.core.common.spec.EntityRefSpec;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
 public interface EntityTagSpec
-        extends EntityRefSpec, TagSpec {
+        extends UniversalEntitySpec, TagSpec {
     
-    // Nothing additional beyond EntityRefSpec, TagSpec
+    // Nothing additional beyond UniversalEntitySpec, TagSpec
     
 }

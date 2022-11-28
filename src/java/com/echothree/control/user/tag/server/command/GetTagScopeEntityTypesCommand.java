@@ -99,7 +99,6 @@ public class GetTagScopeEntityTypesCommand
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
 
-
         return entities;
     }
 

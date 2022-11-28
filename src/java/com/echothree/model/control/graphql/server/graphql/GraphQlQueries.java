@@ -235,6 +235,8 @@ import com.echothree.control.user.shipment.common.ShipmentUtil;
 import com.echothree.control.user.shipment.server.command.GetFreeOnBoardCommand;
 import com.echothree.control.user.shipment.server.command.GetFreeOnBoardsCommand;
 import com.echothree.control.user.tag.common.TagUtil;
+import com.echothree.control.user.tag.server.command.GetEntityTagCommand;
+import com.echothree.control.user.tag.server.command.GetEntityTagsCommand;
 import com.echothree.control.user.tag.server.command.GetTagCommand;
 import com.echothree.control.user.tag.server.command.GetTagScopeCommand;
 import com.echothree.control.user.tag.server.command.GetTagScopeEntityTypeCommand;
@@ -386,6 +388,7 @@ import com.echothree.model.control.sequence.server.graphql.SequenceObject;
 import com.echothree.model.control.sequence.server.graphql.SequenceTypeObject;
 import com.echothree.model.control.shipment.server.graphql.FreeOnBoardObject;
 import com.echothree.model.control.tag.server.control.TagControl;
+import com.echothree.model.control.tag.server.graphql.EntityTagObject;
 import com.echothree.model.control.tag.server.graphql.TagObject;
 import com.echothree.model.control.tag.server.graphql.TagScopeEntityTypeObject;
 import com.echothree.model.control.tag.server.graphql.TagScopeObject;
@@ -525,6 +528,7 @@ import com.echothree.model.data.sequence.server.entity.SequenceEncoderType;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
 import com.echothree.model.data.tag.common.TagScopeConstants;
+import com.echothree.model.data.tag.server.entity.EntityTag;
 import com.echothree.model.data.tag.server.entity.Tag;
 import com.echothree.model.data.tag.server.entity.TagScope;
 import com.echothree.model.data.tag.server.entity.TagScopeEntityType;
@@ -6506,5 +6510,60 @@ public final class GraphQlQueries
 
         return tagObjects;
     }
-    
+
+    @GraphQLField
+    @GraphQLName("entityTag")
+    public static EntityTagObject entityTag(final DataFetchingEnvironment env,
+            @GraphQLName("id") @GraphQLNonNull final String id,
+            @GraphQLName("tagScopeName") @GraphQLNonNull final String tagScopeName,
+            @GraphQLName("tagName") @GraphQLNonNull final String tagName) {
+        EntityTag entityTag;
+
+        try {
+            var commandForm = TagUtil.getHome().getGetEntityTagForm();
+
+            commandForm.setUlid(id);
+            commandForm.setTagScopeName(tagScopeName);
+            commandForm.setTagName(tagName);
+
+            entityTag = new GetEntityTagCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return entityTag == null ? null : new EntityTagObject(entityTag);
+    }
+
+    @GraphQLField
+    @GraphQLName("entityTags")
+    public static Collection<EntityTagObject> entityTags(final DataFetchingEnvironment env,
+            @GraphQLName("id") final String id,
+            @GraphQLName("tagScopeName") final String tagScopeName,
+            @GraphQLName("tagName") final String tagName) {
+        Collection<EntityTag> entityTags;
+        Collection<EntityTagObject> entityTagObjects;
+
+        try {
+            var commandForm = TagUtil.getHome().getGetEntityTagsForm();
+
+            commandForm.setUlid(id);
+            commandForm.setTagScopeName(tagScopeName);
+            commandForm.setTagName(tagName);
+
+            entityTags = new GetEntityTagsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(entityTags == null) {
+            entityTagObjects = emptyList();
+        } else {
+            entityTagObjects = new ArrayList<>(entityTags.size());
+
+            entityTags.stream().map(EntityTagObject::new).forEachOrdered(entityTagObjects::add);
+        }
+
+        return entityTagObjects;
+    }
+
 }
