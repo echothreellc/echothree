@@ -65,7 +65,6 @@ public class GetTagScopeEntityTypeCommand
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
-
     @Override
     protected TagScopeEntityType getEntity() {
         var tagControl = Session.getModelController(TagControl.class);
