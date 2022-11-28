@@ -3680,6 +3680,54 @@ public class GraphQlMutations
 
     @GraphQLField
     @GraphQLRelayMutation
+    public static CommandResultObject createEntityTag(final DataFetchingEnvironment env,
+            @GraphQLName("id") @GraphQLNonNull final String id,
+            @GraphQLName("tagScopeName") @GraphQLNonNull final String tagScopeName,
+            @GraphQLName("tagName") @GraphQLNonNull final String tagName) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = TagUtil.getHome().getCreateEntityTagForm();
+
+            commandForm.setUlid(id);
+            commandForm.setTagScopeName(tagScopeName);
+            commandForm.setTagName(tagName);
+
+            var commandResult = TagUtil.getHome().createEntityTag(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject deleteEntityTag(final DataFetchingEnvironment env,
+            @GraphQLName("id") @GraphQLNonNull final String id,
+            @GraphQLName("tagScopeName") @GraphQLNonNull final String tagScopeName,
+            @GraphQLName("tagName") @GraphQLNonNull final String tagName) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = TagUtil.getHome().getDeleteEntityTagForm();
+
+            commandForm.setUlid(id);
+            commandForm.setTagScopeName(tagScopeName);
+            commandForm.setTagName(tagName);
+
+            var commandResult = TagUtil.getHome().deleteEntityTag(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
     public static CommandResultWithIdObject createEntityAttributeGroup(final DataFetchingEnvironment env,
             @GraphQLName("entityAttributeGroupName") @GraphQLNonNull final String entityAttributeGroupName,
             @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
