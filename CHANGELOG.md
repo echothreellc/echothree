@@ -1,5 +1,23 @@
 # Changelog
 
+## 2022-11-27-01
+
+* Add Tag Scope Mutations [554](https://gitlab.echothree.com/echothree/echothree/-/issues/554)
+* Add Tag Scope Entity Type Object and Queries [555](https://gitlab.echothree.com/echothree/echothree/-/issues/555)
+* Add Tag Scope Entity Type Mutations [556](https://gitlab.echothree.com/echothree/echothree/-/issues/556)
+* Add Tag Object and Queries [557](https://gitlab.echothree.com/echothree/echothree/-/issues/557)
+* Add Tag Mutations [558](https://gitlab.echothree.com/echothree/echothree/-/issues/558)
+* Add Entity Tag Object and Queries [559](https://gitlab.echothree.com/echothree/echothree/-/issues/559)
+* Add Entity Tag Mutations [560](https://gitlab.echothree.com/echothree/echothree/-/issues/560)
+* Add Pagination to languages Query [602](https://gitlab.echothree.com/echothree/echothree/-/issues/602)
+* Add Pagination to currencies Query [603](https://gitlab.echothree.com/echothree/echothree/-/issues/603)
+* Add Pagination to timeZones Query [604](https://gitlab.echothree.com/echothree/echothree/-/issues/604)
+* Add Pagination to dateTimeFormats Query [605](https://gitlab.echothree.com/echothree/echothree/-/issues/605)
+* Add Pagination to personalTitles Query [606](https://gitlab.echothree.com/echothree/echothree/-/issues/606)
+* Add Pagination to nameSuffixes Query [607](https://gitlab.echothree.com/echothree/echothree/-/issues/607)
+* Apache Ivy 2.5.1 Upgrade [608](https://gitlab.echothree.com/echothree/echothree/-/issues/608)
+* Add Entity Attribute Group Mutations [609](https://gitlab.echothree.com/echothree/echothree/-/issues/609)
+
 ## 2022-11-13-01
 
 * jOOQ 3.17.5 Upgrade [600](https://gitlab.echothree.com/echothree/echothree/-/issues/600)
