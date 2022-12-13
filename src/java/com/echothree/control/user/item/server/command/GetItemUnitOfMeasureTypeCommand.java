@@ -17,19 +17,14 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.GetItemUnitOfMeasureTypeForm;
-import com.echothree.control.user.item.common.result.GetItemUnitOfMeasureTypeResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.uom.server.control.UomControl;
-import com.echothree.model.data.item.server.entity.Item;
-import com.echothree.model.data.item.server.entity.ItemUnitOfMeasureType;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
-import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -56,27 +51,29 @@ public class GetItemUnitOfMeasureTypeCommand
     @Override
     protected BaseResult execute() {
         var itemControl = Session.getModelController(ItemControl.class);
-        GetItemUnitOfMeasureTypeResult result = ItemResultFactory.getGetItemUnitOfMeasureTypeResult();
-        String itemName = form.getItemName();
-        Item item = itemControl.getItemByName(itemName);
+        var result = ItemResultFactory.getGetItemUnitOfMeasureTypeResult();
+        var itemName = form.getItemName();
+        var item = itemControl.getItemByName(itemName);
         
         if(item != null) {
             var uomControl = Session.getModelController(UomControl.class);
-            String unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
-            UnitOfMeasureKind unitOfMeasureKind = item.getLastDetail().getUnitOfMeasureKind();
-            UnitOfMeasureType unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
+            var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
+            var unitOfMeasureKind = item.getLastDetail().getUnitOfMeasureKind();
+            var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(unitOfMeasureKind, unitOfMeasureTypeName);
             
             if(unitOfMeasureType != null) {
-                ItemUnitOfMeasureType itemUnitOfMeasureType = itemControl.getItemUnitOfMeasureType(item,
+                var itemUnitOfMeasureType = itemControl.getItemUnitOfMeasureType(item,
                         unitOfMeasureType);
                 
                 if(itemUnitOfMeasureType != null) {
                     result.setItemUnitOfMeasureType(itemControl.getItemUnitOfMeasureTypeTransfer(getUserVisit(), itemUnitOfMeasureType));
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownItemUnitOfMeasureType.name(), itemName, unitOfMeasureTypeName);
+                    addExecutionError(ExecutionErrors.UnknownItemUnitOfMeasureType.name(),
+                            item.getLastDetail().getItemName(), unitOfMeasureType.getLastDetail().getUnitOfMeasureTypeName());
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownUnitOfMeasureTypeName.name(), unitOfMeasureKind.getLastDetail().getUnitOfMeasureKindName(), unitOfMeasureTypeName);
+                addExecutionError(ExecutionErrors.UnknownUnitOfMeasureTypeName.name(),
+                        unitOfMeasureKind.getLastDetail().getUnitOfMeasureKindName(), unitOfMeasureTypeName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownItemName.name(), itemName);
