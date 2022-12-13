@@ -19,7 +19,9 @@ package com.echothree.control.user.item.server.command;
 import com.echothree.control.user.item.common.form.GetItemUnitOfMeasureTypesForm;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.control.uom.server.control.UomControl;
+import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
@@ -50,12 +52,11 @@ public class GetItemUnitOfMeasureTypesCommand
     
     @Override
     protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
         var result = ItemResultFactory.getGetItemUnitOfMeasureTypesResult();
-        var itemName = form.getItemName();
-        var item = itemControl.getItemByName(itemName);
+        var item = ItemLogic.getInstance().getItemByName(this, form.getItemName());
         
-        if(item != null) {
+        if(!hasExecutionErrors()) {
+            var itemControl = Session.getModelController(ItemControl.class);
             var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
             
             if(unitOfMeasureTypeName == null) {
@@ -63,20 +64,17 @@ public class GetItemUnitOfMeasureTypesCommand
                 result.setItemUnitOfMeasureTypes(itemControl.getItemUnitOfMeasureTypeTransfersByItem(getUserVisit(),
                         item));
             } else {
-                var uomControl = Session.getModelController(UomControl.class);
-                var unitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(item.getLastDetail().getUnitOfMeasureKind(),
-                        unitOfMeasureTypeName);
-                
-                if(unitOfMeasureType != null) {
+                var unitOfMeasureType = UnitOfMeasureTypeLogic.getInstance().getUnitOfMeasureTypeByName(this,
+                        item.getLastDetail().getUnitOfMeasureKind(), unitOfMeasureTypeName);
+
+                if(!hasExecutionErrors()) {
+                    var uomControl = Session.getModelController(UomControl.class);
+
                     result.setUnitOfMeasureType(uomControl.getUnitOfMeasureTypeTransfer(getUserVisit(), unitOfMeasureType));
                     result.setItemUnitOfMeasureTypes(itemControl.getItemUnitOfMeasureTypeTransfersByUnitOfMeasureType(getUserVisit(),
                             unitOfMeasureType));
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownUnitOfMeasureTypeName.name(), unitOfMeasureTypeName);
                 }
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownItemName.name(), itemName);
         }
         
         return result;
