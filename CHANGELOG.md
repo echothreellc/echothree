@@ -1,5 +1,9 @@
 # Changelog
 
+## 2022-12-11-01
+
+* jOOQ 3.17.6 Upgrade [611](https://gitlab.echothree.com/echothree/echothree/-/issues/611)
+
 ## 2022-11-27-01
 
 * Add Tag Scope Mutations [554](https://gitlab.echothree.com/echothree/echothree/-/issues/554)
