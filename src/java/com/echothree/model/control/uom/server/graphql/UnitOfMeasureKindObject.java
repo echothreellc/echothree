@@ -22,8 +22,14 @@ import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.item.server.graphql.ItemObject;
+import com.echothree.model.control.item.server.graphql.ItemSecurityUtils;
+import com.echothree.model.control.item.server.graphql.ItemUnitOfMeasureTypeObject;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.item.common.ItemConstants;
+import com.echothree.model.data.item.common.ItemUnitOfMeasureTypeConstants;
 import com.echothree.model.data.uom.common.UnitOfMeasureKindUseConstants;
 import com.echothree.model.data.uom.common.UnitOfMeasureTypeConstants;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
@@ -139,4 +145,24 @@ public class UnitOfMeasureKindObject
         }
     }
 
+    @GraphQLField
+    @GraphQLDescription("items")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<ItemObject> getItems(final DataFetchingEnvironment env) {
+        if(ItemSecurityUtils.getInstance().getHasItemsAccess(env)) {
+            var itemControl = Session.getModelController(ItemControl.class);
+            var totalCount = itemControl.countItemsByUnitOfMeasureKind(unitOfMeasureKind);
+
+            try(var objectLimiter = new ObjectLimiter(env, ItemConstants.COMPONENT_VENDOR_NAME, ItemConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = itemControl.getItemsByUnitOfMeasureKind(unitOfMeasureKind);
+                var itemAliass = entities.stream().map(ItemObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, itemAliass);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+    
 }
