@@ -21,11 +21,11 @@ import com.echothree.model.control.accounting.server.graphql.ItemAccountingCateg
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationPolicyObject;
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationPolicySecurityUtils;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.item.common.ItemConstants;
 import com.echothree.model.control.item.common.workflow.ItemStatusConstants;
 import com.echothree.model.control.item.server.control.ItemControl;
@@ -45,6 +45,7 @@ import com.echothree.model.control.vendor.server.graphql.VendorSecurityUtils;
 import com.echothree.model.control.workflow.server.graphql.WorkflowEntityStatusObject;
 import com.echothree.model.data.item.common.ItemAliasConstants;
 import com.echothree.model.data.item.common.ItemPriceConstants;
+import com.echothree.model.data.item.common.ItemUnitOfMeasureTypeConstants;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemDetail;
 import com.echothree.model.data.offer.common.OfferItemConstants;
@@ -306,6 +307,26 @@ public class ItemObject
                 var itemPrices = entities.stream().map(ItemPriceObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, itemPrices);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("item unit of measure types")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<ItemUnitOfMeasureTypeObject> getItemUnitOfMeasureTypes(final DataFetchingEnvironment env) {
+        if(ItemSecurityUtils.getInstance().getHasItemUnitOfMeasureTypesAccess(env)) {
+            var itemControl = Session.getModelController(ItemControl.class);
+            var totalCount = itemControl.countItemUnitOfMeasureTypesByItem(item);
+
+            try(var objectLimiter = new ObjectLimiter(env, ItemUnitOfMeasureTypeConstants.COMPONENT_VENDOR_NAME, ItemUnitOfMeasureTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = itemControl.getItemUnitOfMeasureTypesByItem(item);
+                var itemAliass = entities.stream().map(ItemUnitOfMeasureTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, itemAliass);
             }
         } else {
             return Connections.emptyConnection();
