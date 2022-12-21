@@ -45,6 +45,8 @@ import com.echothree.control.user.item.server.command.GetItemPriceTypesCommand;
 import com.echothree.control.user.item.server.command.GetItemPricesCommand;
 import com.echothree.control.user.item.server.command.GetItemTypeCommand;
 import com.echothree.control.user.item.server.command.GetItemTypesCommand;
+import com.echothree.control.user.item.server.command.GetItemUnitOfMeasureTypeCommand;
+import com.echothree.control.user.item.server.command.GetItemUnitOfMeasureTypesCommand;
 import com.echothree.control.user.item.server.command.GetItemUseTypeCommand;
 import com.echothree.control.user.item.server.command.GetItemUseTypesCommand;
 import com.echothree.control.user.item.server.command.GetItemsCommand;
@@ -68,6 +70,14 @@ public final class ItemSecurityUtils
 
     public boolean getHasItemsAccess(final DataFetchingEnvironment env) {
         return getGraphQlExecutionContext(env).hasAccess(GetItemsCommand.class);
+    }
+
+    public boolean getHasItemUnitOfMeasureTypeAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetItemUnitOfMeasureTypeCommand.class);
+    }
+
+    public boolean getHasItemUnitOfMeasureTypesAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetItemUnitOfMeasureTypesCommand.class);
     }
 
     public boolean getHasItemDescriptionAccess(final DataFetchingEnvironment env) {

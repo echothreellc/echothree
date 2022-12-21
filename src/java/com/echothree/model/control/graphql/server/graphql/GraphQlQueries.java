@@ -144,6 +144,8 @@ import com.echothree.control.user.item.server.command.GetItemPriceTypesCommand;
 import com.echothree.control.user.item.server.command.GetItemPricesCommand;
 import com.echothree.control.user.item.server.command.GetItemTypeCommand;
 import com.echothree.control.user.item.server.command.GetItemTypesCommand;
+import com.echothree.control.user.item.server.command.GetItemUnitOfMeasureTypeCommand;
+import com.echothree.control.user.item.server.command.GetItemUnitOfMeasureTypesCommand;
 import com.echothree.control.user.item.server.command.GetItemUseTypeCommand;
 import com.echothree.control.user.item.server.command.GetItemUseTypesCommand;
 import com.echothree.control.user.item.server.command.GetItemsCommand;
@@ -341,6 +343,7 @@ import com.echothree.model.control.item.server.graphql.ItemObject;
 import com.echothree.model.control.item.server.graphql.ItemPriceObject;
 import com.echothree.model.control.item.server.graphql.ItemPriceTypeObject;
 import com.echothree.model.control.item.server.graphql.ItemTypeObject;
+import com.echothree.model.control.item.server.graphql.ItemUnitOfMeasureTypeObject;
 import com.echothree.model.control.item.server.graphql.ItemUseTypeObject;
 import com.echothree.model.control.offer.server.graphql.OfferItemObject;
 import com.echothree.model.control.offer.server.graphql.OfferItemPriceObject;
@@ -483,6 +486,7 @@ import com.echothree.model.data.item.server.entity.ItemInventoryType;
 import com.echothree.model.data.item.server.entity.ItemPrice;
 import com.echothree.model.data.item.server.entity.ItemPriceType;
 import com.echothree.model.data.item.server.entity.ItemType;
+import com.echothree.model.data.item.server.entity.ItemUnitOfMeasureType;
 import com.echothree.model.data.item.server.entity.ItemUseType;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferItem;
@@ -5355,6 +5359,60 @@ public final class GraphQlQueries
 
         return data;
     }
+
+    @GraphQLField
+    @GraphQLName("itemUnitOfMeasureType")
+    public static ItemUnitOfMeasureTypeObject itemUnitOfMeasureType(final DataFetchingEnvironment env,
+            @GraphQLName("itemName") @GraphQLNonNull final String itemName,
+            @GraphQLName("unitOfMeasureTypeName") @GraphQLNonNull final String unitOfMeasureTypeName) {
+        ItemUnitOfMeasureType itemUnitOfMeasureType;
+
+        try {
+            var commandForm = ItemUtil.getHome().getGetItemUnitOfMeasureTypeForm();
+
+            commandForm.setItemName(itemName);
+            commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
+
+            itemUnitOfMeasureType = new GetItemUnitOfMeasureTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return itemUnitOfMeasureType == null ? null : new ItemUnitOfMeasureTypeObject(itemUnitOfMeasureType);
+    }
+
+    @GraphQLField
+    @GraphQLName("itemUnitOfMeasureTypes")
+    public static Collection<ItemUnitOfMeasureTypeObject> itemUnitOfMeasureTypes(final DataFetchingEnvironment env,
+            @GraphQLName("itemName") @GraphQLNonNull final String itemName,
+            @GraphQLName("unitOfMeasureTypeName") final String unitOfMeasureTypeName) {
+        Collection<ItemUnitOfMeasureType> itemUnitOfMeasureType;
+        Collection<ItemUnitOfMeasureTypeObject> itemUnitOfMeasureTypeObjects;
+
+        try {
+            var commandForm = ItemUtil.getHome().getGetItemUnitOfMeasureTypesForm();
+
+            commandForm.setItemName(itemName);
+            commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
+
+            itemUnitOfMeasureType = new GetItemUnitOfMeasureTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(itemUnitOfMeasureType == null) {
+            itemUnitOfMeasureTypeObjects = emptyList();
+        } else {
+            itemUnitOfMeasureTypeObjects = new ArrayList<>(itemUnitOfMeasureType.size());
+
+            itemUnitOfMeasureType.stream()
+                    .map(ItemUnitOfMeasureTypeObject::new)
+                    .forEachOrdered(itemUnitOfMeasureTypeObjects::add);
+        }
+
+        return itemUnitOfMeasureTypeObjects;
+    }
+
 
     @GraphQLField
     @GraphQLName("itemDescription")
