@@ -72,6 +72,7 @@ import com.echothree.control.user.item.common.result.EditItemDescriptionTypeUseT
 import com.echothree.control.user.item.common.result.EditItemImageTypeResult;
 import com.echothree.control.user.item.common.result.EditItemPriceResult;
 import com.echothree.control.user.item.common.result.EditItemResult;
+import com.echothree.control.user.item.common.result.EditItemUnitOfMeasureTypeResult;
 import com.echothree.control.user.offer.common.OfferUtil;
 import com.echothree.control.user.offer.common.result.CreateOfferItemResult;
 import com.echothree.control.user.offer.common.result.CreateOfferNameElementResult;
@@ -6854,6 +6855,100 @@ public class GraphQlMutations
         return commandResultObject;
     }
 
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject createItemUnitOfMeasureType(final DataFetchingEnvironment env,
+            @GraphQLName("itemName") @GraphQLNonNull final String itemName,
+            @GraphQLName("unitOfMeasureTypeName") @GraphQLNonNull final String unitOfMeasureTypeName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = ItemUtil.getHome().getCreateItemUnitOfMeasureTypeForm();
+
+            commandForm.setItemName(itemName);
+            commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+
+            var commandResult = ItemUtil.getHome().createItemUnitOfMeasureType(getUserVisitPK(env), commandForm);
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject editItemUnitOfMeasureType(final DataFetchingEnvironment env,
+            @GraphQLName("itemName") @GraphQLNonNull final String itemName,
+            @GraphQLName("unitOfMeasureTypeName") @GraphQLNonNull final String unitOfMeasureTypeName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var spec = ItemUtil.getHome().getItemUnitOfMeasureTypeSpec();
+
+            spec.setItemName(itemName);
+            spec.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
+
+            var commandForm = ItemUtil.getHome().getEditItemUnitOfMeasureTypeForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = ItemUtil.getHome().editItemUnitOfMeasureType(getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditItemUnitOfMeasureTypeResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = ItemUtil.getHome().editItemUnitOfMeasureType(getUserVisitPK(env), commandForm);
+            }
+
+            commandResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static CommandResultObject deleteItemUnitOfMeasureType(final DataFetchingEnvironment env,
+            @GraphQLName("itemName") @GraphQLNonNull final String itemName,
+            @GraphQLName("unitOfMeasureTypeName") @GraphQLNonNull final String unitOfMeasureTypeName) {
+        var commandResultObject = new CommandResultObject();
+
+        try {
+            var commandForm = ItemUtil.getHome().getDeleteItemUnitOfMeasureTypeForm();
+
+            commandForm.setItemName(itemName);
+            commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
+
+            commandResultObject.setCommandResult(ItemUtil.getHome().deleteItemUnitOfMeasureType(getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return commandResultObject;
+    }
+    
     @GraphQLField
     @GraphQLRelayMutation
     public static CommandResultWithIdObject createItemDescription(final DataFetchingEnvironment env,
