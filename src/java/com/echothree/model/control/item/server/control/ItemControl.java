@@ -2027,7 +2027,6 @@ public class ItemControl
         return items;
     }
 
-
     public List<Item> getItemsByItemAccountingCategory(ItemAccountingCategory itemAccountingCategory) {
         return getItemsByItemAccountingCategory(EntityPermission.READ_ONLY, itemAccountingCategory);
     }
@@ -2114,6 +2113,45 @@ public class ItemControl
 
     public List<Item> getItemsByCompanyPartyForUpdate(Party companyParty) {
         return getItemsByCompanyParty(EntityPermission.READ_WRITE, companyParty);
+    }
+
+    private List<Item> getItemsByUnitOfMeasureKind(EntityPermission entityPermission, UnitOfMeasureKind unitOfMeasureKind) {
+        List<Item> items;
+
+        try {
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM items, itemdetails " +
+                        "WHERE itm_activedetailid = itmdt_itemdetailid AND itmdt_uomk_unitofmeasurekindid = ? " +
+                        "ORDER BY itmdt_itemname " +
+                        "_LIMIT_";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM items, itemdetails " +
+                        "WHERE itm_activedetailid = itmdt_itemdetailid AND itmdt_uomk_unitofmeasurekindid = ? " +
+                        "FOR UPDATE";
+            }
+
+            PreparedStatement ps = ItemFactory.getInstance().prepareStatement(query);
+
+            ps.setLong(1, unitOfMeasureKind.getPrimaryKey().getEntityId());
+
+            items = ItemFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return items;
+    }
+
+    public List<Item> getItemsByUnitOfMeasureKind(UnitOfMeasureKind unitOfMeasureKind) {
+        return getItemsByUnitOfMeasureKind(EntityPermission.READ_ONLY, unitOfMeasureKind);
+    }
+
+    public List<Item> getItemsByUnitOfMeasureKindForUpdate(UnitOfMeasureKind unitOfMeasureKind) {
+        return getItemsByUnitOfMeasureKind(EntityPermission.READ_WRITE, unitOfMeasureKind);
     }
 
     private Item getItemByName(String itemName, EntityPermission entityPermission) {
@@ -2316,7 +2354,23 @@ public class ItemControl
         
         return itemUnitOfMeasureType;
     }
-    
+
+    public long countItemUnitOfMeasureTypesByItem(Item item) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM itemunitofmeasuretypes
+                WHERE iuomt_itm_itemid = ? AND iuomt_thrutime = ?""",
+                item, Session.MAX_TIME);
+    }
+
+    public long countItemUnitOfMeasureTypesByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM itemunitofmeasuretypes
+                WHERE iuomt_uomt_unitofmeasuretypeid = ? AND iuomt_thrutime = ?""",
+                unitOfMeasureType, Session.MAX_TIME);
+    }
+
     private ItemUnitOfMeasureType getItemUnitOfMeasureType(Item item, UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
         ItemUnitOfMeasureType itemUnitOfMeasureType;
         
@@ -2422,7 +2476,8 @@ public class ItemControl
                         "WHERE iuomt_itm_itemid = ? AND iuomt_thrutime = ? " +
                         "AND iuomt_uomt_unitofmeasuretypeid = uomt_unitofmeasuretypeid AND uomt_lastdetailid = uomtdt_unitofmeasuretypedetailid " +
                         "AND uomtdt_uomk_unitofmeasurekindid = uomk_unitofmeasurekindid AND uomk_lastdetailid = uomkdt_unitofmeasurekinddetailid " +
-                        "ORDER BY uomtdt_sortorder, uomtdt_unitofmeasuretypename, uomkdt_sortorder, uomkdt_unitofmeasurekindname";
+                        "ORDER BY uomtdt_sortorder, uomtdt_unitofmeasuretypename, uomkdt_sortorder, uomkdt_unitofmeasurekindname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM itemunitofmeasuretypes " +
@@ -2462,7 +2517,8 @@ public class ItemControl
                         "FROM itemunitofmeasuretypes, items, itemdetails " +
                         "WHERE iuomt_uomt_unitofmeasuretypeid = ? AND iuomt_thrutime = ? " +
                         "AND iuomt_itm_itemid = itm_itemid AND itm_lastdetailid = itmdt_itemdetailid " +
-                        "ORDER BY itmdt_itemname";
+                        "ORDER BY itmdt_itemname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM itemunitofmeasuretypes " +

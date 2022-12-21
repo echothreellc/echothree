@@ -22,20 +22,23 @@ import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.ItemLogic;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.uom.server.logic.UnitOfMeasureTypeLogic;
+import com.echothree.model.data.item.server.entity.Item;
+import com.echothree.model.data.item.server.entity.ItemUnitOfMeasureType;
+import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class GetItemUnitOfMeasureTypesCommand
-        extends BaseSimpleCommand<GetItemUnitOfMeasureTypesForm> {
-    
+        extends BaseMultipleEntitiesCommand<ItemUnitOfMeasureType, GetItemUnitOfMeasureTypesForm> {
+
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
@@ -49,35 +52,58 @@ public class GetItemUnitOfMeasureTypesCommand
     public GetItemUnitOfMeasureTypesCommand(UserVisitPK userVisitPK, GetItemUnitOfMeasureTypesForm form) {
         super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    Item item;
+    UnitOfMeasureType unitOfMeasureType;
+
     @Override
-    protected BaseResult execute() {
-        var result = ItemResultFactory.getGetItemUnitOfMeasureTypesResult();
-        var item = ItemLogic.getInstance().getItemByName(this, form.getItemName());
-        
+    protected Collection<ItemUnitOfMeasureType> getEntities() {
+        Collection<ItemUnitOfMeasureType> entities = null;
+
+        item = ItemLogic.getInstance().getItemByName(this, form.getItemName());
+
         if(!hasExecutionErrors()) {
             var itemControl = Session.getModelController(ItemControl.class);
             var unitOfMeasureTypeName = form.getUnitOfMeasureTypeName();
-            
+
             if(unitOfMeasureTypeName == null) {
-                result.setItem(itemControl.getItemTransfer(getUserVisit(), item));
-                result.setItemUnitOfMeasureTypes(itemControl.getItemUnitOfMeasureTypeTransfersByItem(getUserVisit(),
-                        item));
+                entities = itemControl.getItemUnitOfMeasureTypesByItem(item);
             } else {
-                var unitOfMeasureType = UnitOfMeasureTypeLogic.getInstance().getUnitOfMeasureTypeByName(this,
+                unitOfMeasureType = UnitOfMeasureTypeLogic.getInstance().getUnitOfMeasureTypeByName(this,
                         item.getLastDetail().getUnitOfMeasureKind(), unitOfMeasureTypeName);
 
                 if(!hasExecutionErrors()) {
-                    var uomControl = Session.getModelController(UomControl.class);
-
-                    result.setUnitOfMeasureType(uomControl.getUnitOfMeasureTypeTransfer(getUserVisit(), unitOfMeasureType));
-                    result.setItemUnitOfMeasureTypes(itemControl.getItemUnitOfMeasureTypeTransfersByUnitOfMeasureType(getUserVisit(),
-                            unitOfMeasureType));
+                    entities = itemControl.getItemUnitOfMeasureTypesByUnitOfMeasureType(unitOfMeasureType);
                 }
             }
         }
-        
+
+        return entities;
+    }
+
+    @Override
+    protected BaseResult getTransfers(Collection<ItemUnitOfMeasureType> entities) {
+        var result = ItemResultFactory.getGetItemUnitOfMeasureTypesResult();
+
+        if(entities != null) {
+            var itemControl = Session.getModelController(ItemControl.class);
+            var userVisit = getUserVisit();
+
+            if(item != null) {
+                result.setItem(itemControl.getItemTransfer(userVisit, item));
+            }
+
+            if(unitOfMeasureType != null) {
+                var uomControl = Session.getModelController(UomControl.class);
+
+                result.setUnitOfMeasureType(uomControl.getUnitOfMeasureTypeTransfer(userVisit, unitOfMeasureType));
+            }
+
+            result.setItemUnitOfMeasureTypes(itemControl.getItemUnitOfMeasureTypeTransfers(userVisit,
+                    entities));
+        }
+
         return result;
     }
-    
+
 }
