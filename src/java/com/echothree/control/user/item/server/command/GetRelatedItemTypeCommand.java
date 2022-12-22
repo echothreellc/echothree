@@ -17,20 +17,19 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.GetRelatedItemTypeForm;
-import com.echothree.control.user.item.common.result.GetRelatedItemTypeResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.item.server.logic.RelatedItemTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.item.server.entity.RelatedItemType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -40,7 +39,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class GetRelatedItemTypeCommand
-        extends BaseSimpleCommand<GetRelatedItemTypeForm> {
+        extends BaseSingleEntityCommand<RelatedItemType, GetRelatedItemTypeForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -54,7 +53,11 @@ public class GetRelatedItemTypeCommand
                 )));
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("RelatedItemTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("RelatedItemTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
                 ));
     }
     
@@ -62,22 +65,27 @@ public class GetRelatedItemTypeCommand
     public GetRelatedItemTypeCommand(UserVisitPK userVisitPK, GetRelatedItemTypeForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
-        GetRelatedItemTypeResult result = ItemResultFactory.getGetRelatedItemTypeResult();
-        String relatedItemTypeName = form.getRelatedItemTypeName();
-        RelatedItemType relatedItemType = itemControl.getRelatedItemTypeByName(relatedItemTypeName);
-        
-        if(relatedItemType != null) {
-            result.setRelatedItemType(itemControl.getRelatedItemTypeTransfer(getUserVisit(), relatedItemType));
-            
-            sendEvent(relatedItemType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownRelatedItemTypeName.name(), relatedItemTypeName);
+    protected RelatedItemType getEntity() {
+        var itemAliasType = RelatedItemTypeLogic.getInstance().getRelatedItemTypeByUniversalSpec(this, form, true);
+
+        if(itemAliasType != null) {
+            sendEvent(itemAliasType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
-        
+
+        return itemAliasType;
+    }
+
+    @Override
+    protected BaseResult getTransfer(RelatedItemType itemAliasType) {
+        var itemAliasTypeControl = Session.getModelController(ItemControl.class);
+        var result = ItemResultFactory.getGetRelatedItemTypeResult();
+
+        if(itemAliasType != null) {
+            result.setRelatedItemType(itemAliasTypeControl.getRelatedItemTypeTransfer(getUserVisit(), itemAliasType));
+        }
+
         return result;
     }
     

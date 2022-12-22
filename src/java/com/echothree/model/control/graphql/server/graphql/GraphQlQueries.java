@@ -149,6 +149,8 @@ import com.echothree.control.user.item.server.command.GetItemUnitOfMeasureTypesC
 import com.echothree.control.user.item.server.command.GetItemUseTypeCommand;
 import com.echothree.control.user.item.server.command.GetItemUseTypesCommand;
 import com.echothree.control.user.item.server.command.GetItemsCommand;
+import com.echothree.control.user.item.server.command.GetRelatedItemTypeCommand;
+import com.echothree.control.user.item.server.command.GetRelatedItemTypesCommand;
 import com.echothree.control.user.offer.common.OfferUtil;
 import com.echothree.control.user.offer.server.command.GetOfferCommand;
 import com.echothree.control.user.offer.server.command.GetOfferItemCommand;
@@ -345,6 +347,7 @@ import com.echothree.model.control.item.server.graphql.ItemPriceTypeObject;
 import com.echothree.model.control.item.server.graphql.ItemTypeObject;
 import com.echothree.model.control.item.server.graphql.ItemUnitOfMeasureTypeObject;
 import com.echothree.model.control.item.server.graphql.ItemUseTypeObject;
+import com.echothree.model.control.item.server.graphql.RelatedItemTypeObject;
 import com.echothree.model.control.offer.server.graphql.OfferItemObject;
 import com.echothree.model.control.offer.server.graphql.OfferItemPriceObject;
 import com.echothree.model.control.offer.server.graphql.OfferNameElementObject;
@@ -471,6 +474,7 @@ import com.echothree.model.data.item.common.ItemInventoryTypeConstants;
 import com.echothree.model.data.item.common.ItemPriceTypeConstants;
 import com.echothree.model.data.item.common.ItemTypeConstants;
 import com.echothree.model.data.item.common.ItemUseTypeConstants;
+import com.echothree.model.data.item.common.RelatedItemTypeConstants;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemAlias;
 import com.echothree.model.data.item.server.entity.ItemAliasChecksumType;
@@ -488,6 +492,7 @@ import com.echothree.model.data.item.server.entity.ItemPriceType;
 import com.echothree.model.data.item.server.entity.ItemType;
 import com.echothree.model.data.item.server.entity.ItemUnitOfMeasureType;
 import com.echothree.model.data.item.server.entity.ItemUseType;
+import com.echothree.model.data.item.server.entity.RelatedItemType;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferItem;
 import com.echothree.model.data.offer.server.entity.OfferItemPrice;
@@ -6286,6 +6291,57 @@ public final class GraphQlQueries
                     var itemAliasTypes = entities.stream().map(ItemAliasTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, itemAliasTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("relatedItemType")
+    public static RelatedItemTypeObject relatedItemType(final DataFetchingEnvironment env,
+            @GraphQLName("relatedItemTypeName") final String relatedItemTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        RelatedItemType relatedItemType;
+
+        try {
+            var commandForm = ItemUtil.getHome().getGetRelatedItemTypeForm();
+
+            commandForm.setRelatedItemTypeName(relatedItemTypeName);
+            commandForm.setUlid(id);
+
+            relatedItemType = new GetRelatedItemTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return relatedItemType == null ? null : new RelatedItemTypeObject(relatedItemType);
+    }
+
+    @GraphQLField
+    @GraphQLName("relatedItemTypes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public static CountingPaginatedData<RelatedItemTypeObject> relatedItemTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<RelatedItemTypeObject> data;
+
+        try {
+            var itemControl = Session.getModelController(ItemControl.class);
+            var totalCount = itemControl.countRelatedItemTypes();
+
+            try(var objectLimiter = new ObjectLimiter(env, RelatedItemTypeConstants.COMPONENT_VENDOR_NAME, RelatedItemTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = ItemUtil.getHome().getGetRelatedItemTypesForm();
+                var entities = new GetRelatedItemTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var relatedItemTypes = entities.stream().map(RelatedItemTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, relatedItemTypes);
                 }
             }
         } catch (NamingException ex) {
