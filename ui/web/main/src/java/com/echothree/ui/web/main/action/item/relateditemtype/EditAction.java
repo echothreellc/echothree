@@ -50,7 +50,7 @@ public class EditAction
     @Override
     protected RelatedItemTypeSpec getSpec(HttpServletRequest request, EditActionForm actionForm)
             throws NamingException {
-        RelatedItemTypeSpec spec = ItemUtil.getHome().getRelatedItemTypeSpec();
+        var spec = ItemUtil.getHome().getRelatedItemTypeUniversalSpec();
         
         spec.setRelatedItemTypeName(findParameter(request, ParameterConstants.ORIGINAL_RELATED_ITEM_TYPE_NAME, actionForm.getOriginalRelatedItemTypeName()));
         
