@@ -2254,5 +2254,6 @@ public enum ExecutionErrors {
     CannotManuallyDeleteOfferItemPriceWhenOfferItemPriceFilterSet,
     UnknownDefaultItemDescriptionTypeUseType,
     UnknownDefaultTagScope,
+    UnknownDefaultRelatedItemType,
 
 }

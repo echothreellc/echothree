@@ -9639,6 +9639,33 @@ public class ItemControl
         return relatedItemType;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.RelatedItemType */
+    public RelatedItemType getRelatedItemTypeByEntityInstance(final EntityInstance entityInstance,
+            final EntityPermission entityPermission) {
+        var pk = new RelatedItemTypePK(entityInstance.getEntityUniqueId());
+
+        return RelatedItemTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public RelatedItemType getRelatedItemTypeByEntityInstance(final EntityInstance entityInstance) {
+        return getRelatedItemTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public RelatedItemType getRelatedItemTypeByEntityInstanceForUpdate(final EntityInstance entityInstance) {
+        return getRelatedItemTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public RelatedItemType getRelatedItemTypeByPK(RelatedItemTypePK pk) {
+        return RelatedItemTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+    }
+
+    public long countRelatedItemTypes() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM relateditemtypes, relateditemtypedetails " +
+                "WHERE rltityp_activedetailid = rltitypdt_relateditemtypedetailid");
+    }
+
     private static final Map<EntityPermission, String> getRelatedItemTypeByNameQueries;
 
     static {
@@ -9658,7 +9685,7 @@ public class ItemControl
         getRelatedItemTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private RelatedItemType getRelatedItemTypeByName(String relatedItemTypeName, EntityPermission entityPermission) {
+    public RelatedItemType getRelatedItemTypeByName(String relatedItemTypeName, EntityPermission entityPermission) {
         return RelatedItemTypeFactory.getInstance().getEntityFromQuery(entityPermission, getRelatedItemTypeByNameQueries, relatedItemTypeName);
     }
 
@@ -9697,7 +9724,7 @@ public class ItemControl
         getDefaultRelatedItemTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private RelatedItemType getDefaultRelatedItemType(EntityPermission entityPermission) {
+    public RelatedItemType getDefaultRelatedItemType(EntityPermission entityPermission) {
         return RelatedItemTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultRelatedItemTypeQueries);
     }
 
