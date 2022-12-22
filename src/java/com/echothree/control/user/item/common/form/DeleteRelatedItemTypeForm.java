@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.item.common.form;
 
-import com.echothree.control.user.item.common.spec.RelatedItemTypeSpec;
+import com.echothree.control.user.item.common.spec.RelatedItemTypeUniversalSpec;
 
 public interface DeleteRelatedItemTypeForm
-        extends RelatedItemTypeSpec {
+        extends RelatedItemTypeUniversalSpec {
     
-    // Nothing additional beyond RelatedItemTypeSpec
+    // Nothing additional beyond RelatedItemTypeUniversalSpec
     
 }

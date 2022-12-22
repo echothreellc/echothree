@@ -14,15 +14,15 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.item.common.form;
+package com.echothree.control.user.item.common.result;
 
-import com.echothree.control.user.item.common.edit.RelatedItemTypeEdit;
-import com.echothree.control.user.item.common.spec.RelatedItemTypeUniversalSpec;
-import com.echothree.util.common.form.BaseEditForm;
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
+import com.echothree.control.user.item.common.spec.RelatedItemTypeSpec;
+import com.echothree.util.common.command.BaseResult;
 
-public interface EditRelatedItemTypeForm
-        extends BaseEditForm<RelatedItemTypeUniversalSpec, RelatedItemTypeEdit> {
+public interface CreateRelatedItemTypeResult
+        extends RelatedItemTypeSpec, EntityRefSpec, BaseResult {
     
-    // Nothing additional beyond BaseEditForm
+    // Nothing additional beyond RelatedItemTypeSpec, EntityRefSpec, BaseResult
     
 }
