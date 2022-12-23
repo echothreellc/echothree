@@ -17,11 +17,11 @@
 package com.echothree.control.user.search.common.form;
 
 import com.echothree.control.user.search.common.edit.SearchResultActionTypeEdit;
-import com.echothree.control.user.search.common.spec.SearchResultActionTypeSpec;
+import com.echothree.control.user.search.common.spec.SearchResultActionTypeUniversalSpec;
 import com.echothree.util.common.form.BaseEditForm;
 
 public interface EditSearchResultActionTypeForm
-        extends BaseEditForm<SearchResultActionTypeSpec, SearchResultActionTypeEdit> {
+        extends BaseEditForm<SearchResultActionTypeUniversalSpec, SearchResultActionTypeEdit> {
     
     // Nothing additional beyond BaseEditForm
     
