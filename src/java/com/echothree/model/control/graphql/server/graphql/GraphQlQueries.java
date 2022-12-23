@@ -215,6 +215,8 @@ import com.echothree.control.user.search.server.command.GetEmployeeResultsComman
 import com.echothree.control.user.search.server.command.GetItemResultsCommand;
 import com.echothree.control.user.search.server.command.GetSearchCheckSpellingActionTypeCommand;
 import com.echothree.control.user.search.server.command.GetSearchCheckSpellingActionTypesCommand;
+import com.echothree.control.user.search.server.command.GetSearchResultActionTypeCommand;
+import com.echothree.control.user.search.server.command.GetSearchResultActionTypesCommand;
 import com.echothree.control.user.search.server.command.GetVendorResultsCommand;
 import com.echothree.control.user.security.common.SecurityUtil;
 import com.echothree.control.user.security.server.command.GetSecurityRoleGroupCommand;
@@ -378,11 +380,13 @@ import com.echothree.model.control.queue.server.graphql.QueueTypeObject;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.control.returnpolicy.server.graphql.ReturnKindObject;
 import com.echothree.model.control.returnpolicy.server.graphql.ReturnPolicyObject;
+import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.search.server.graphql.CheckItemSpellingObject;
 import com.echothree.model.control.search.server.graphql.CustomerResultsObject;
 import com.echothree.model.control.search.server.graphql.EmployeeResultsObject;
 import com.echothree.model.control.search.server.graphql.ItemResultsObject;
 import com.echothree.model.control.search.server.graphql.SearchCheckSpellingActionTypeObject;
+import com.echothree.model.control.search.server.graphql.SearchResultActionTypeObject;
 import com.echothree.model.control.search.server.graphql.VendorResultsObject;
 import com.echothree.model.control.security.server.graphql.SecurityRoleGroupObject;
 import com.echothree.model.control.selector.server.graphql.SelectorKindObject;
@@ -526,7 +530,9 @@ import com.echothree.model.data.queue.server.entity.QueueType;
 import com.echothree.model.data.returnpolicy.common.ReturnKindConstants;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnKind;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
+import com.echothree.model.data.search.common.SearchResultActionTypeConstants;
 import com.echothree.model.data.search.server.entity.SearchCheckSpellingActionType;
+import com.echothree.model.data.search.server.entity.SearchResultActionType;
 import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
@@ -572,6 +578,57 @@ import javax.naming.NamingException;
 @GraphQLName("query")
 public final class GraphQlQueries
         extends BaseGraphQl {
+
+    @GraphQLField
+    @GraphQLName("searchResultActionType")
+    public static SearchResultActionTypeObject searchResultActionType(final DataFetchingEnvironment env,
+            @GraphQLName("searchResultActionTypeName") final String searchResultActionTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        SearchResultActionType searchResultActionType;
+
+        try {
+            var commandForm = SearchUtil.getHome().getGetSearchResultActionTypeForm();
+
+            commandForm.setSearchResultActionTypeName(searchResultActionTypeName);
+            commandForm.setUlid(id);
+
+            searchResultActionType = new GetSearchResultActionTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return searchResultActionType == null ? null : new SearchResultActionTypeObject(searchResultActionType);
+    }
+
+    @GraphQLField
+    @GraphQLName("searchResultActionTypes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public static CountingPaginatedData<SearchResultActionTypeObject> searchResultActionTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<SearchResultActionTypeObject> data;
+
+        try {
+            var searchControl = Session.getModelController(SearchControl.class);
+            var totalCount = searchControl.countSearchResultActionTypes();
+
+            try(var objectLimiter = new ObjectLimiter(env, SearchResultActionTypeConstants.COMPONENT_VENDOR_NAME, SearchResultActionTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = SearchUtil.getHome().getGetSearchResultActionTypesForm();
+                var entities = new GetSearchResultActionTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var searchResultActionTypes = entities.stream().map(SearchResultActionTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, searchResultActionTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
 
     @GraphQLField
     @GraphQLName("searchCheckSpellingActionType")

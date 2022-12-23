@@ -58,9 +58,6 @@ import com.echothree.model.data.core.common.pk.EntityInstancePK;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.model.data.index.server.entity.IndexField;
-import com.echothree.model.data.item.common.pk.ItemAliasTypePK;
-import com.echothree.model.data.item.server.entity.ItemAliasType;
-import com.echothree.model.data.item.server.factory.ItemAliasTypeFactory;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
@@ -806,8 +803,7 @@ public class SearchControl
         return getSearchTransferCaches(userVisit).getSearchResultActionTypeTransferCache().getSearchResultActionTypeTransfer(searchResultActionType);
     }
 
-    public List<SearchResultActionTypeTransfer> getSearchResultActionTypeTransfers(UserVisit userVisit) {
-        List<SearchResultActionType> searchResultActionTypes = getSearchResultActionTypes();
+    public List<SearchResultActionTypeTransfer> getSearchResultActionTypeTransfers(UserVisit userVisit, Collection<SearchResultActionType> searchResultActionTypes) {
         List<SearchResultActionTypeTransfer> searchResultActionTypeTransfers = new ArrayList<>(searchResultActionTypes.size());
         SearchResultActionTypeTransferCache searchResultActionTypeTransferCache = getSearchTransferCaches(userVisit).getSearchResultActionTypeTransferCache();
 
@@ -816,6 +812,10 @@ public class SearchControl
         );
 
         return searchResultActionTypeTransfers;
+    }
+
+    public List<SearchResultActionTypeTransfer> getSearchResultActionTypeTransfers(UserVisit userVisit) {
+        return getSearchResultActionTypeTransfers(userVisit, getSearchResultActionTypes());
     }
 
     public SearchResultActionTypeChoicesBean getSearchResultActionTypeChoices(String defaultSearchResultActionTypeChoice, Language language, boolean allowNullChoice) {
