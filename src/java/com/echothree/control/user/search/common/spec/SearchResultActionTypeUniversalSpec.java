@@ -14,14 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.search.common.form;
+package com.echothree.control.user.search.common.spec;
 
 import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
-import com.echothree.control.user.search.common.spec.SearchResultActionTypeUniversalSpec;
 
-public interface GetSearchResultActionTypeForm
-        extends SearchResultActionTypeUniversalSpec, UniversalEntitySpec {
-    
-    // Nothing additional beyond SearchResultActionTypeUniversalSpec, UniversalEntitySpec
+public interface SearchResultActionTypeUniversalSpec
+        extends SearchResultActionTypeSpec, UniversalEntitySpec {
+
+    // Nothing additional beyond SearchResultActionTypeSpec, UniversalEntitySpec
     
 }

@@ -545,7 +545,8 @@ public class SearchControl
                 "SELECT _ALL_ " +
                 "FROM searchusetypedescriptions, languages " +
                 "WHERE srchutypd_srchutyp_searchusetypeid = ? AND srchutypd_thrutime = ? AND srchutypd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                "ORDER BY lang_sortorder, lang_languageisoname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM searchusetypedescriptions " +
@@ -667,13 +668,32 @@ public class SearchControl
     }
 
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.SearchResultActionType */
-    public SearchResultActionType getSearchResultActionTypeByEntityInstance(EntityInstance entityInstance) {
-        SearchResultActionTypePK pk = new SearchResultActionTypePK(entityInstance.getEntityUniqueId());
-        SearchResultActionType searchResultActionType = SearchResultActionTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+    public SearchResultActionType getSearchResultActionTypeByEntityInstance(final EntityInstance entityInstance,
+            final EntityPermission entityPermission) {
+        var pk = new SearchResultActionTypePK(entityInstance.getEntityUniqueId());
 
-        return searchResultActionType;
+        return SearchResultActionTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
+    public SearchResultActionType getSearchResultActionTypeByEntityInstance(final EntityInstance entityInstance) {
+        return getSearchResultActionTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public SearchResultActionType getSearchResultActionTypeByEntityInstanceForUpdate(final EntityInstance entityInstance) {
+        return getSearchResultActionTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public SearchResultActionType getSearchResultActionTypeByPK(SearchResultActionTypePK pk) {
+        return SearchResultActionTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+    }
+
+    public long countSearchResultActionTypes() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM searchresultactiontypes, searchresultactiontypedetails " +
+                "WHERE srchracttyp_activedetailid = srchracttypdt_searchresultactiontypedetailid");
+    }
+    
     private static final Map<EntityPermission, String> getSearchResultActionTypeByNameQueries;
 
     static {
@@ -693,7 +713,7 @@ public class SearchControl
         getSearchResultActionTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private SearchResultActionType getSearchResultActionTypeByName(String searchResultActionTypeName, EntityPermission entityPermission) {
+    public SearchResultActionType getSearchResultActionTypeByName(String searchResultActionTypeName, EntityPermission entityPermission) {
         return SearchResultActionTypeFactory.getInstance().getEntityFromQuery(entityPermission, getSearchResultActionTypeByNameQueries, searchResultActionTypeName);
     }
 
@@ -732,7 +752,7 @@ public class SearchControl
         getDefaultSearchResultActionTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private SearchResultActionType getDefaultSearchResultActionType(EntityPermission entityPermission) {
+    public SearchResultActionType getDefaultSearchResultActionType(EntityPermission entityPermission) {
         return SearchResultActionTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultSearchResultActionTypeQueries);
     }
 
@@ -783,8 +803,7 @@ public class SearchControl
         return getSearchTransferCaches(userVisit).getSearchResultActionTypeTransferCache().getSearchResultActionTypeTransfer(searchResultActionType);
     }
 
-    public List<SearchResultActionTypeTransfer> getSearchResultActionTypeTransfers(UserVisit userVisit) {
-        List<SearchResultActionType> searchResultActionTypes = getSearchResultActionTypes();
+    public List<SearchResultActionTypeTransfer> getSearchResultActionTypeTransfers(UserVisit userVisit, Collection<SearchResultActionType> searchResultActionTypes) {
         List<SearchResultActionTypeTransfer> searchResultActionTypeTransfers = new ArrayList<>(searchResultActionTypes.size());
         SearchResultActionTypeTransferCache searchResultActionTypeTransferCache = getSearchTransferCaches(userVisit).getSearchResultActionTypeTransferCache();
 
@@ -793,6 +812,10 @@ public class SearchControl
         );
 
         return searchResultActionTypeTransfers;
+    }
+
+    public List<SearchResultActionTypeTransfer> getSearchResultActionTypeTransfers(UserVisit userVisit) {
+        return getSearchResultActionTypeTransfers(userVisit, getSearchResultActionTypes());
     }
 
     public SearchResultActionTypeChoicesBean getSearchResultActionTypeChoices(String defaultSearchResultActionTypeChoice, Language language, boolean allowNullChoice) {
@@ -978,7 +1001,8 @@ public class SearchControl
                 "SELECT _ALL_ " +
                 "FROM searchresultactiontypedescriptions, languages " +
                 "WHERE srchracttypd_srchracttyp_searchresultactiontypeid = ? AND srchracttypd_thrutime = ? AND srchracttypd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                "ORDER BY lang_sortorder, lang_languageisoname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM searchresultactiontypedescriptions " +
@@ -1428,7 +1452,8 @@ public class SearchControl
                 "SELECT _ALL_ " +
                 "FROM searchcheckspellingactiontypedescriptions, languages " +
                 "WHERE srchcksacttypd_srchcksacttyp_searchcheckspellingactiontypeid = ? AND srchcksacttypd_thrutime = ? AND srchcksacttypd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                "ORDER BY lang_sortorder, lang_languageisoname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM searchcheckspellingactiontypedescriptions " +
@@ -1862,7 +1887,8 @@ public class SearchControl
                 "SELECT _ALL_ " +
                 "FROM searchdefaultoperatordescriptions, languages " +
                 "WHERE srchdefopd_srchdefop_searchdefaultoperatorid = ? AND srchdefopd_thrutime = ? AND srchdefopd_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                "ORDER BY lang_sortorder, lang_languageisoname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM searchdefaultoperatordescriptions " +
@@ -2296,7 +2322,8 @@ public class SearchControl
                 "SELECT _ALL_ " +
                 "FROM searchsortdirectiondescriptions, languages " +
                 "WHERE srchsrtdird_srchsrtdir_searchsortdirectionid = ? AND srchsrtdird_thrutime = ? AND srchsrtdird_lang_languageid = lang_languageid " +
-                "ORDER BY lang_sortorder, lang_languageisoname");
+                "ORDER BY lang_sortorder, lang_languageisoname " +
+                "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM searchsortdirectiondescriptions " +
@@ -2498,7 +2525,8 @@ public class SearchControl
                 "SELECT _ALL_ "
                 + "FROM searchkinds, searchkinddetails "
                 + "WHERE srchk_activedetailid = srchkdt_searchkinddetailid "
-                + "ORDER BY srchkdt_sortorder, srchkdt_searchkindname");
+                + "ORDER BY srchkdt_sortorder, srchkdt_searchkindname "
+                + "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM searchkinds, searchkinddetails "
@@ -2717,7 +2745,8 @@ public class SearchControl
                 "SELECT _ALL_ "
                 + "FROM searchkinddescriptions, languages "
                 + "WHERE srchkd_srchk_searchkindid = ? AND srchkd_thrutime = ? AND srchkd_lang_languageid = lang_languageid "
-                + "ORDER BY lang_sortorder, lang_languageisoname");
+                + "ORDER BY lang_sortorder, lang_languageisoname "
+                + "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM searchkinddescriptions "
@@ -2847,7 +2876,8 @@ public class SearchControl
                 "SELECT _ALL_ "
                 + "FROM searchtypes, searchtypedetails "
                 + "WHERE srchtyp_activedetailid = srchtypdt_searchtypedetailid AND srchtypdt_srchk_searchkindid = ? "
-                + "ORDER BY srchtypdt_sortorder, srchtypdt_searchtypename");
+                + "ORDER BY srchtypdt_sortorder, srchtypdt_searchtypename "
+                + "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM searchtypes, searchtypedetails "
@@ -3144,7 +3174,8 @@ public class SearchControl
                 "SELECT _ALL_ "
                 + "FROM searchtypedescriptions, languages "
                 + "WHERE srchtypd_srchtyp_searchtypeid = ? AND srchtypd_thrutime = ? AND srchtypd_lang_languageid = lang_languageid "
-                + "ORDER BY lang_sortorder, lang_languageisoname");
+                + "ORDER BY lang_sortorder, lang_languageisoname "
+                + "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM searchtypedescriptions "
@@ -3274,7 +3305,8 @@ public class SearchControl
                 "SELECT _ALL_ "
                 + "FROM searchsortorders, searchsortorderdetails "
                 + "WHERE srchsrtord_activedetailid = srchsrtorddt_searchsortorderdetailid AND srchsrtorddt_srchk_searchkindid = ? "
-                + "ORDER BY srchsrtorddt_sortorder, srchsrtorddt_searchsortordername");
+                + "ORDER BY srchsrtorddt_sortorder, srchsrtorddt_searchsortordername "
+                + "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM searchsortorders, searchsortorderdetails "
@@ -3569,7 +3601,8 @@ public class SearchControl
                 "SELECT _ALL_ "
                 + "FROM searchsortorderdescriptions, languages "
                 + "WHERE srchsrtordd_srchsrtord_searchsortorderid = ? AND srchsrtordd_thrutime = ? AND srchsrtordd_lang_languageid = lang_languageid "
-                + "ORDER BY lang_sortorder, lang_languageisoname");
+                + "ORDER BY lang_sortorder, lang_languageisoname "
+                + "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM searchsortorderdescriptions "
@@ -3679,7 +3712,8 @@ public class SearchControl
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ "
                 + "FROM searchresults "
-                + "WHERE srch_par_partyid = ?"); // TODO: ORDER BY needed.
+                + "WHERE srch_par_partyid = ? "
+                + "_LIMIT_"); // TODO: ORDER BY needed.
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM searchresults "
@@ -3709,7 +3743,8 @@ public class SearchControl
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ "
                 + "FROM searchresults "
-                + "WHERE srch_srchtyp_searchtypeid = ?"); // TODO: ORDER BY needed.
+                + "WHERE srch_srchtyp_searchtypeid = ? "
+                + "_LIMIT_"); // TODO: ORDER BY needed.
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM searchresults "
@@ -3739,7 +3774,8 @@ public class SearchControl
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ "
                 + "FROM searchresults "
-                + "WHERE srch_srchutyp_searchusetypeid = ?"); // TODO: ORDER BY needed.
+                + "WHERE srch_srchutyp_searchusetypeid = ? "
+                + "_LIMIT_"); // TODO: ORDER BY needed.
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM searchresults "
@@ -3769,7 +3805,8 @@ public class SearchControl
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ "
                 + "FROM searchresults "
-                + "WHERE srch_csrch_cachedsearchid = ?"); // TODO: ORDER BY needed.
+                + "WHERE srch_csrch_cachedsearchid = ? "
+                + "_LIMIT_"); // TODO: ORDER BY needed.
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM searchresults "
@@ -3856,7 +3893,8 @@ public class SearchControl
                 "SELECT _ALL_ "
                 + "FROM searchresults "
                 + "WHERE srchr_srch_searchid = ? "
-                + "ORDER BY srchr_sortorder");
+                + "ORDER BY srchr_sortorder "
+                + "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM searchresults "
@@ -4299,7 +4337,8 @@ public class SearchControl
                 "SELECT _ALL_ "
                 + "FROM cachedexecutedsearchresults "
                 + "WHERE cxsrchr_cxsrch_cachedexecutedsearchid = ? "
-                + "ORDER BY cxsrchr_sortorder");
+                + "ORDER BY cxsrchr_sortorder "
+                + "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM cachedexecutedsearchresults "
@@ -4389,7 +4428,8 @@ public class SearchControl
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ "
                 + "FROM uservisitsearches "
-                + "WHERE uvissrch_uvis_uservisitid = ?");
+                + "WHERE uvissrch_uvis_uservisitid = ? "
+                + "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM uservisitsearches "
@@ -4419,7 +4459,8 @@ public class SearchControl
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ "
                 + "FROM uservisitsearches "
-                + "WHERE uvissrch_srchtyp_searchtypeid = ?");
+                + "WHERE uvissrch_srchtyp_searchtypeid = ? "
+                + "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM uservisitsearches "
@@ -4449,7 +4490,8 @@ public class SearchControl
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ "
                 + "FROM uservisitsearches "
-                + "WHERE uvissrch_srch_searchid = ?");
+                + "WHERE uvissrch_srch_searchid = ? "
+                + "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM uservisitsearches "
