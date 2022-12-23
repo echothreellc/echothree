@@ -139,7 +139,7 @@ public class SearchResultActionTypeLogic
         return getSearchResultActionTypeByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
     }
 
-    public void updateSearchResultActionTypeFromValue(final Session session, final SearchResultActionTypeDetailValue searchResultActionTypeDetailValue,
+    public void updateSearchResultActionTypeFromValue(final SearchResultActionTypeDetailValue searchResultActionTypeDetailValue,
             final BasePK updatedBy) {
         final var searchControl = Session.getModelController(SearchControl.class);
 
