@@ -2255,5 +2255,6 @@ public enum ExecutionErrors {
     UnknownDefaultItemDescriptionTypeUseType,
     UnknownDefaultTagScope,
     UnknownDefaultRelatedItemType,
+    UnknownDefaultSearchResultActionType,
 
 }

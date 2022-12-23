@@ -58,6 +58,9 @@ import com.echothree.model.data.core.common.pk.EntityInstancePK;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.model.data.index.server.entity.IndexField;
+import com.echothree.model.data.item.common.pk.ItemAliasTypePK;
+import com.echothree.model.data.item.server.entity.ItemAliasType;
+import com.echothree.model.data.item.server.factory.ItemAliasTypeFactory;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
@@ -668,13 +671,32 @@ public class SearchControl
     }
 
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.SearchResultActionType */
-    public SearchResultActionType getSearchResultActionTypeByEntityInstance(EntityInstance entityInstance) {
-        SearchResultActionTypePK pk = new SearchResultActionTypePK(entityInstance.getEntityUniqueId());
-        SearchResultActionType searchResultActionType = SearchResultActionTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+    public SearchResultActionType getSearchResultActionTypeByEntityInstance(final EntityInstance entityInstance,
+            final EntityPermission entityPermission) {
+        var pk = new SearchResultActionTypePK(entityInstance.getEntityUniqueId());
 
-        return searchResultActionType;
+        return SearchResultActionTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
+    public SearchResultActionType getSearchResultActionTypeByEntityInstance(final EntityInstance entityInstance) {
+        return getSearchResultActionTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public SearchResultActionType getSearchResultActionTypeByEntityInstanceForUpdate(final EntityInstance entityInstance) {
+        return getSearchResultActionTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public SearchResultActionType getSearchResultActionTypeByPK(SearchResultActionTypePK pk) {
+        return SearchResultActionTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+    }
+
+    public long countSearchResultActionTypes() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM searchresultactiontypes, searchresultactiontypedetails " +
+                "WHERE srchracttyp_activedetailid = srchracttypdt_searchresultactiontypedetailid");
+    }
+    
     private static final Map<EntityPermission, String> getSearchResultActionTypeByNameQueries;
 
     static {
@@ -694,7 +716,7 @@ public class SearchControl
         getSearchResultActionTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private SearchResultActionType getSearchResultActionTypeByName(String searchResultActionTypeName, EntityPermission entityPermission) {
+    public SearchResultActionType getSearchResultActionTypeByName(String searchResultActionTypeName, EntityPermission entityPermission) {
         return SearchResultActionTypeFactory.getInstance().getEntityFromQuery(entityPermission, getSearchResultActionTypeByNameQueries, searchResultActionTypeName);
     }
 
@@ -733,7 +755,7 @@ public class SearchControl
         getDefaultSearchResultActionTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private SearchResultActionType getDefaultSearchResultActionType(EntityPermission entityPermission) {
+    public SearchResultActionType getDefaultSearchResultActionType(EntityPermission entityPermission) {
         return SearchResultActionTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultSearchResultActionTypeQueries);
     }
 
