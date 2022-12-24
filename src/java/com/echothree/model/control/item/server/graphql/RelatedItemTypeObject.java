@@ -52,7 +52,7 @@ public class RelatedItemTypeObject
     }
 
     @GraphQLField
-    @GraphQLDescription("item alias type name")
+    @GraphQLDescription("related item type name")
     @GraphQLNonNull
     public String getRelatedItemTypeName() {
         return getRelatedItemTypeDetail().getRelatedItemTypeName();
