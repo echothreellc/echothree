@@ -30,6 +30,8 @@ public class RelatedItemTransferCache
     /** Creates a new instance of RelatedItemTransferCache */
     public RelatedItemTransferCache(UserVisit userVisit, ItemControl itemControl) {
         super(userVisit, itemControl);
+
+        setIncludeEntityInstance(true);
     }
     
     @Override
