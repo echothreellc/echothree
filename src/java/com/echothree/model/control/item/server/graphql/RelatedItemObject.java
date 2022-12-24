@@ -52,7 +52,7 @@ public class RelatedItemObject
     @GraphQLDescription("related item type")
     @GraphQLNonNull
     public RelatedItemTypeObject getRelatedItemType(final DataFetchingEnvironment env) {
-        return ItemSecurityUtils.getInstance().getHasItemAliasTypeAccess(env) ? new RelatedItemTypeObject(getRelatedItemDetail().getRelatedItemType()) : null;
+        return ItemSecurityUtils.getInstance().getHasItemAliasTypeAccess(env) ? new RelatedItemTypeObject(getRelatedItemDetail().getRelatedItemType(), null) : null;
     }
 
     @GraphQLField
