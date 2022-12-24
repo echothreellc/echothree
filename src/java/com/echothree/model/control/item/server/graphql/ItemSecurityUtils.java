@@ -50,8 +50,10 @@ import com.echothree.control.user.item.server.command.GetItemUnitOfMeasureTypesC
 import com.echothree.control.user.item.server.command.GetItemUseTypeCommand;
 import com.echothree.control.user.item.server.command.GetItemUseTypesCommand;
 import com.echothree.control.user.item.server.command.GetItemsCommand;
+import com.echothree.control.user.item.server.command.GetRelatedItemCommand;
 import com.echothree.control.user.item.server.command.GetRelatedItemTypeCommand;
 import com.echothree.control.user.item.server.command.GetRelatedItemTypesCommand;
+import com.echothree.control.user.item.server.command.GetRelatedItemsCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
@@ -208,6 +210,14 @@ public final class ItemSecurityUtils
 
     public boolean getHasRelatedItemTypesAccess(final DataFetchingEnvironment env) {
         return getGraphQlExecutionContext(env).hasAccess(GetRelatedItemTypesCommand.class);
+    }
+
+    public boolean getHasRelatedItemAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetRelatedItemCommand.class);
+    }
+
+    public boolean getHasRelatedItemsAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetRelatedItemsCommand.class);
     }
 
 }

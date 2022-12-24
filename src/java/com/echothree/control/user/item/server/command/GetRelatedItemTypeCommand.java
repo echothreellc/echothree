@@ -21,18 +21,12 @@ import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.logic.RelatedItemTypeLogic;
-import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.security.common.SecurityRoleGroups;
-import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.item.server.entity.RelatedItemType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
-import com.echothree.util.server.control.CommandSecurityDefinition;
-import com.echothree.util.server.control.PartyTypeDefinition;
-import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
@@ -40,18 +34,11 @@ import java.util.List;
 
 public class GetRelatedItemTypeCommand
         extends BaseSingleEntityCommand<RelatedItemType, GetRelatedItemTypeForm> {
-    
-    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
+
+    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
-                        new SecurityRoleDefinition(SecurityRoleGroups.RelatedItemType.name(), SecurityRoles.Review.name())
-                        )))
-                )));
-        
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("RelatedItemTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
@@ -63,7 +50,7 @@ public class GetRelatedItemTypeCommand
     
     /** Creates a new instance of GetRelatedItemTypeCommand */
     public GetRelatedItemTypeCommand(UserVisitPK userVisitPK, GetRelatedItemTypeForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override

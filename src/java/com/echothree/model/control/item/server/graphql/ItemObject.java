@@ -46,8 +46,10 @@ import com.echothree.model.control.workflow.server.graphql.WorkflowEntityStatusO
 import com.echothree.model.data.item.common.ItemAliasConstants;
 import com.echothree.model.data.item.common.ItemPriceConstants;
 import com.echothree.model.data.item.common.ItemUnitOfMeasureTypeConstants;
+import com.echothree.model.data.item.common.RelatedItemTypeConstants;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemDetail;
+import com.echothree.model.data.item.server.entity.RelatedItemType;
 import com.echothree.model.data.offer.common.OfferItemConstants;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.DateUtils;
@@ -383,6 +385,28 @@ public class ItemObject
                 var offerItems = entities.stream().map(OfferItemObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, offerItems);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("related item types")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<RelatedItemTypeObject> getRelatedItemTypes(final DataFetchingEnvironment env) {
+        if(ItemSecurityUtils.getInstance().getHasRelatedItemTypesAccess(env)) {
+            var itemControl = Session.getModelController(ItemControl.class);
+            var totalCount = itemControl.countRelatedItemTypes();
+
+            try(var objectLimiter = new ObjectLimiter(env, RelatedItemTypeConstants.COMPONENT_VENDOR_NAME, RelatedItemTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = itemControl.getRelatedItemTypes();
+                var relatedItemTypes = entities.stream()
+                        .map((RelatedItemType relatedItemType) -> new RelatedItemTypeObject(relatedItemType, item))
+                        .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, relatedItemTypes);
             }
         } else {
             return Connections.emptyConnection();

@@ -19,17 +19,11 @@ package com.echothree.control.user.item.server.command;
 import com.echothree.control.user.item.common.form.GetRelatedItemTypesForm;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
-import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.security.common.SecurityRoleGroups;
-import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.item.server.entity.RelatedItemType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
-import com.echothree.util.server.control.CommandSecurityDefinition;
-import com.echothree.util.server.control.PartyTypeDefinition;
-import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collection;
@@ -38,25 +32,18 @@ import java.util.List;
 
 public class GetRelatedItemTypesCommand
         extends BaseMultipleEntitiesCommand<RelatedItemType, GetRelatedItemTypesForm> {
-    
-    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
+
+    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
-                        new SecurityRoleDefinition(SecurityRoleGroups.RelatedItemType.name(), SecurityRoles.List.name())
-                        )))
-                )));
-        
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 ));
     }
     
     /** Creates a new instance of GetRelatedItemTypesCommand */
     public GetRelatedItemTypesCommand(UserVisitPK userVisitPK, GetRelatedItemTypesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
+        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override
