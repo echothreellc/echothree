@@ -149,8 +149,10 @@ import com.echothree.control.user.item.server.command.GetItemUnitOfMeasureTypesC
 import com.echothree.control.user.item.server.command.GetItemUseTypeCommand;
 import com.echothree.control.user.item.server.command.GetItemUseTypesCommand;
 import com.echothree.control.user.item.server.command.GetItemsCommand;
+import com.echothree.control.user.item.server.command.GetRelatedItemCommand;
 import com.echothree.control.user.item.server.command.GetRelatedItemTypeCommand;
 import com.echothree.control.user.item.server.command.GetRelatedItemTypesCommand;
+import com.echothree.control.user.item.server.command.GetRelatedItemsCommand;
 import com.echothree.control.user.offer.common.OfferUtil;
 import com.echothree.control.user.offer.server.command.GetOfferCommand;
 import com.echothree.control.user.offer.server.command.GetOfferItemCommand;
@@ -349,6 +351,7 @@ import com.echothree.model.control.item.server.graphql.ItemPriceTypeObject;
 import com.echothree.model.control.item.server.graphql.ItemTypeObject;
 import com.echothree.model.control.item.server.graphql.ItemUnitOfMeasureTypeObject;
 import com.echothree.model.control.item.server.graphql.ItemUseTypeObject;
+import com.echothree.model.control.item.server.graphql.RelatedItemObject;
 import com.echothree.model.control.item.server.graphql.RelatedItemTypeObject;
 import com.echothree.model.control.offer.server.graphql.OfferItemObject;
 import com.echothree.model.control.offer.server.graphql.OfferItemPriceObject;
@@ -496,6 +499,7 @@ import com.echothree.model.data.item.server.entity.ItemPriceType;
 import com.echothree.model.data.item.server.entity.ItemType;
 import com.echothree.model.data.item.server.entity.ItemUnitOfMeasureType;
 import com.echothree.model.data.item.server.entity.ItemUseType;
+import com.echothree.model.data.item.server.entity.RelatedItem;
 import com.echothree.model.data.item.server.entity.RelatedItemType;
 import com.echothree.model.data.offer.server.entity.Offer;
 import com.echothree.model.data.offer.server.entity.OfferItem;
@@ -6408,6 +6412,63 @@ public final class GraphQlQueries
         }
 
         return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("relatedItem")
+    public static RelatedItemObject relatedItem(final DataFetchingEnvironment env,
+            @GraphQLName("relatedItemTypeName") @GraphQLNonNull final String relatedItemTypeName,
+            @GraphQLName("fromItemName") @GraphQLNonNull final String fromItemName,
+            @GraphQLName("toItemName") @GraphQLNonNull final String toItemName) {
+        RelatedItem relatedItem;
+
+        try {
+            var commandForm = ItemUtil.getHome().getGetRelatedItemForm();
+
+            commandForm.setRelatedItemTypeName(relatedItemTypeName);
+            commandForm.setFromItemName(fromItemName);
+            commandForm.setToItemName(toItemName);
+
+            relatedItem = new GetRelatedItemCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return relatedItem == null ? null : new RelatedItemObject(relatedItem);
+    }
+
+    @GraphQLField
+    @GraphQLName("relatedItems")
+    public static Collection<RelatedItemObject> relatedItems(final DataFetchingEnvironment env,
+            @GraphQLName("relatedItemTypeName") final String relatedItemTypeName,
+            @GraphQLName("fromItemName") final String fromItemName,
+            @GraphQLName("toItemName") final String toItemName) {
+        Collection<RelatedItem> relatedItems;
+        Collection<RelatedItemObject> relatedItemObjects;
+
+        try {
+            var commandForm = ItemUtil.getHome().getGetRelatedItemsForm();
+
+            commandForm.setRelatedItemTypeName(relatedItemTypeName);
+            commandForm.setFromItemName(fromItemName);
+            commandForm.setToItemName(toItemName);
+
+            relatedItems = new GetRelatedItemsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(relatedItems == null) {
+            relatedItemObjects = emptyList();
+        } else {
+            relatedItemObjects = new ArrayList<>(relatedItems.size());
+
+            relatedItems.stream()
+                    .map(RelatedItemObject::new)
+                    .forEachOrdered(relatedItemObjects::add);
+        }
+
+        return relatedItemObjects;
     }
 
     @GraphQLField
