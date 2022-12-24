@@ -10426,7 +10426,7 @@ public class ItemControl
         relatedItem.setActiveDetail(null);
         relatedItem.store();
 
-        sendEvent(relatedItemDetail.getFromItemPK(), EventTypes.MODIFY, relatedItem.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(relatedItem.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
 
     public void deleteRelatedItems(List<RelatedItem> relatedItems, BasePK deletedBy) {
