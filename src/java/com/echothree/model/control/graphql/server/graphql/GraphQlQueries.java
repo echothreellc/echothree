@@ -6375,7 +6375,7 @@ public final class GraphQlQueries
             throw new RuntimeException(ex);
         }
 
-        return relatedItemType == null ? null : new RelatedItemTypeObject(relatedItemType);
+        return relatedItemType == null ? null : new RelatedItemTypeObject(relatedItemType, null);
     }
 
     @GraphQLField
@@ -6396,7 +6396,9 @@ public final class GraphQlQueries
                 if(entities == null) {
                     data = Connections.emptyConnection();
                 } else {
-                    var relatedItemTypes = entities.stream().map(RelatedItemTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var relatedItemTypes = entities.stream()
+                            .map((RelatedItemType relatedItemType) -> new RelatedItemTypeObject(relatedItemType, null))
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, relatedItemTypes);
                 }

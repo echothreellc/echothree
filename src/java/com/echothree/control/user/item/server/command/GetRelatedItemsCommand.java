@@ -17,27 +17,28 @@
 package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.GetRelatedItemsForm;
-import com.echothree.control.user.item.common.result.GetRelatedItemsResult;
 import com.echothree.control.user.item.common.result.ItemResultFactory;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.data.item.server.entity.Item;
+import com.echothree.model.data.item.server.entity.RelatedItem;
 import com.echothree.model.data.item.server.entity.RelatedItemType;
 import com.echothree.model.data.item.server.factory.RelatedItemFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class GetRelatedItemsCommand
-        extends BaseSimpleCommand<GetRelatedItemsForm> {
-    
+        extends BaseMultipleEntitiesCommand<RelatedItem, GetRelatedItemsForm> {
+
+    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
@@ -52,66 +53,60 @@ public class GetRelatedItemsCommand
     public GetRelatedItemsCommand(UserVisitPK userVisitPK, GetRelatedItemsForm form) {
         super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    RelatedItemType relatedItemType;
+    Item fromItem;
+    Item toItem;
+    Long relatedItemCount;
+
     @Override
-    protected BaseResult execute() {
-        var itemControl = Session.getModelController(ItemControl.class);
-        GetRelatedItemsResult result = ItemResultFactory.getGetRelatedItemsResult();
-        String fromItemName = form.getFromItemName();
-        String toItemName = form.getToItemName();
+    protected Collection<RelatedItem> getEntities() {
+        var fromItemName = form.getFromItemName();
+        var toItemName = form.getToItemName();
         var parameterCount = (fromItemName == null ? 0 : 1) + (toItemName == null ? 0 : 1);
+        Collection<RelatedItem> relatedItems = null;
 
         if(parameterCount == 1) {
-            String relatedItemTypeName = form.getRelatedItemTypeName();
-            RelatedItemType relatedItemType = relatedItemTypeName == null ? null : itemControl.getRelatedItemTypeByName(relatedItemTypeName);
+            var itemControl = Session.getModelController(ItemControl.class);
+            var relatedItemTypeName = form.getRelatedItemTypeName();
+
+            relatedItemType = relatedItemTypeName == null ? null : itemControl.getRelatedItemTypeByName(relatedItemTypeName);
 
             if(relatedItemTypeName == null || relatedItemType != null) {
-                Item fromItem = fromItemName == null ? null : itemControl.getItemByName(fromItemName);
+                fromItem = fromItemName == null ? null : itemControl.getItemByName(fromItemName);
 
                 if(fromItemName == null || fromItem != null) {
-                    Item toItem = toItemName == null ? null : itemControl.getItemByName(toItemName);
+                    toItem = toItemName == null ? null : itemControl.getItemByName(toItemName);
 
                     if(toItemName == null || toItem != null) {
-                        UserVisit userVisit = getUserVisit();
-
                         if(relatedItemType == null) {
                             if(fromItem != null) {
                                 if(session.hasLimit(RelatedItemFactory.class)) {
-                                    result.setRelatedItemCount(itemControl.countRelatedItemsByFromItem(fromItem));
+                                    relatedItemCount = itemControl.countRelatedItemsByFromItem(fromItem);
                                 }
 
-                                result.setRelatedItems(itemControl.getRelatedItemTransfersByFromItem(userVisit, fromItem));
+                                relatedItems = itemControl.getRelatedItemsByFromItem(fromItem);
                             } else if(toItem != null) {
                                 if(session.hasLimit(RelatedItemFactory.class)) {
-                                    result.setRelatedItemCount(itemControl.countRelatedItemsByToItem(toItem));
+                                    relatedItemCount = itemControl.countRelatedItemsByToItem(toItem);
                                 }
 
-                                result.setRelatedItems(itemControl.getRelatedItemTransfersByToItem(userVisit, toItem));
+                                relatedItems = itemControl.getRelatedItemsByToItem(toItem);
                             }
                         } else {
-                            result.setRelatedItemType(itemControl.getRelatedItemTypeTransfer(getUserVisit(), relatedItemType));
-
                             if(fromItem != null) {
                                 if(session.hasLimit(RelatedItemFactory.class)) {
-                                    result.setRelatedItemCount(itemControl.countRelatedItemsByRelatedItemTypeAndFromItem(relatedItemType, fromItem));
+                                    relatedItemCount = itemControl.countRelatedItemsByRelatedItemTypeAndFromItem(relatedItemType, fromItem);
                                 }
 
-                                result.setRelatedItems(itemControl.getRelatedItemTransfersByRelatedItemTypeAndFromItem(userVisit, relatedItemType, fromItem));
+                                relatedItems = itemControl.getRelatedItemsByRelatedItemTypeAndFromItem(relatedItemType, fromItem);
                             } else if(toItem != null) {
                                 if(session.hasLimit(RelatedItemFactory.class)) {
-                                    result.setRelatedItemCount(itemControl.countRelatedItemsByRelatedItemTypeAndToItem(relatedItemType, toItem));
+                                    relatedItemCount = itemControl.countRelatedItemsByRelatedItemTypeAndToItem(relatedItemType, toItem);
                                 }
 
-                                result.setRelatedItems(itemControl.getRelatedItemTransfersByRelatedItemTypeAndToItem(userVisit, relatedItemType, toItem));
+                                relatedItems = itemControl.getRelatedItemsByRelatedItemTypeAndToItem(relatedItemType, toItem);
                             }
-                        }
-
-                        if(fromItem != null) {
-                            result.setFromItem(itemControl.getItemTransfer(userVisit, fromItem));
-                        }
-
-                        if(toItem != null) {
-                            result.setToItem(itemControl.getItemTransfer(userVisit, toItem));
                         }
                     } else {
                         addExecutionError(ExecutionErrors.UnknownToItemName.name(), toItemName);
@@ -125,8 +120,38 @@ public class GetRelatedItemsCommand
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
-        
+
+        return relatedItems;
+    }
+
+    @Override
+    protected BaseResult getTransfers(Collection<RelatedItem> entities) {
+        var result = ItemResultFactory.getGetRelatedItemsResult();
+
+        if(entities != null) {
+            var itemControl = Session.getModelController(ItemControl.class);
+            var userVisit = getUserVisit();
+
+            if(relatedItemType != null) {
+                result.setRelatedItemType(itemControl.getRelatedItemTypeTransfer(userVisit, relatedItemType));
+            }
+
+            if(fromItem != null) {
+                result.setFromItem(itemControl.getItemTransfer(userVisit, fromItem));
+            }
+
+            if(toItem != null) {
+                result.setToItem(itemControl.getItemTransfer(userVisit, toItem));
+            }
+
+            if(session.hasLimit(RelatedItemFactory.class)) {
+                result.setRelatedItemCount(relatedItemCount);
+            }
+
+            result.setRelatedItems(itemControl.getRelatedItemTransfers(userVisit, entities));
+        }
+
         return result;
     }
-    
+
 }

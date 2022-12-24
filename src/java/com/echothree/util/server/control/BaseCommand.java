@@ -465,6 +465,11 @@ public abstract class BaseCommand
 
     protected void setupSession() {
         preservedState = ThreadUtils.preserveState();
+        initSession();
+    }
+
+    // Called by setupSession() and canQueryByGraphQl()
+    protected void initSession() {
         session = ThreadSession.currentSession();
     }
 
