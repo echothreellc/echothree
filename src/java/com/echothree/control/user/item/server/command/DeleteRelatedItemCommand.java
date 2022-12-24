@@ -18,6 +18,9 @@ package com.echothree.control.user.item.server.command;
 
 import com.echothree.control.user.item.common.form.DeleteRelatedItemForm;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.RelatedItem;
 import com.echothree.model.data.item.server.entity.RelatedItemType;
@@ -27,6 +30,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
@@ -34,10 +40,18 @@ import java.util.List;
 
 public class DeleteRelatedItemCommand
         extends BaseSimpleCommand<DeleteRelatedItemForm> {
-    
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                        new SecurityRoleDefinition(SecurityRoleGroups.RelatedItem.name(), SecurityRoles.Delete.name())
+                )))
+        )));
+
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("RelatedItemTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("FromItemName", FieldType.ENTITY_NAME, true, null, null),
@@ -47,7 +61,7 @@ public class DeleteRelatedItemCommand
     
     /** Creates a new instance of DeleteRelatedItemCommand */
     public DeleteRelatedItemCommand(UserVisitPK userVisitPK, DeleteRelatedItemForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
