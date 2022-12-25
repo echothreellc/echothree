@@ -1,5 +1,16 @@
 # Changelog
 
+## 2022-12-25-01
+
+* Add Related Item Type Object and Queries [545](https://gitlab.echothree.com/echothree/echothree/-/issues/545)
+* Add Related Item Type Mutations [546](https://gitlab.echothree.com/echothree/echothree/-/issues/546)
+* Add Related Item Object and Queries [547](https://gitlab.echothree.com/echothree/echothree/-/issues/547)
+* Add Related Item Mutations [548](https://gitlab.echothree.com/echothree/echothree/-/issues/548)
+* Add Search Result Action Type Object and Queries [567](https://gitlab.echothree.com/echothree/echothree/-/issues/567)
+* Add Search Result Action Type Mutations [568](https://gitlab.echothree.com/echothree/echothree/-/issues/568)
+* Add Item Unit of Measure Type Object and Queries [598](https://gitlab.echothree.com/echothree/echothree/-/issues/598)
+* Add Item Unit of Measure Type Mutations [599](https://gitlab.echothree.com/echothree/echothree/-/issues/599)
+
 ## 2022-12-11-01
 
 * jOOQ 3.17.6 Upgrade [611](https://gitlab.echothree.com/echothree/echothree/-/issues/611)
