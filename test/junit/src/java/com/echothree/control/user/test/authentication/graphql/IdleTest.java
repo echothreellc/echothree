@@ -29,12 +29,14 @@ public class IdleTest
         var body = executeUsingPost("""
                 mutation {
                     idle(input: {clientMutationId: "1"}) { 
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
 
-        assertThat(getBoolean(body, "data.idle.hasErrors")).isFalse();
+        assertThat(getBoolean(body, "data.idle.commandResult.hasErrors")).isFalse();
     }
     
     @Test
@@ -44,41 +46,43 @@ public class IdleTest
                 mutation {
                     idle(input: { clientMutationId: "1" }) {
                         clientMutationId
-                        hasWarnings
-                        hasErrors
-                        hasSecurityMessages
-                        securityMessages {
-                            key message
-                        }
-                        hasValidationErrors
-                        validationErrors {
-                            property key message
-                        }
-                        hasExecutionWarnings
-                        executionWarnings {
-                            key
-                            message
-                        }
-                        hasExecutionErrors
-                        executionErrors {
-                            key
-                            message
+                        commandResult {
+                            hasWarnings
+                            hasErrors
+                            hasSecurityMessages
+                            securityMessages {
+                                key message
+                            }
+                            hasValidationErrors
+                            validationErrors {
+                                property key message
+                            }
+                            hasExecutionWarnings
+                            executionWarnings {
+                                key
+                                message
+                            }
+                            hasExecutionErrors
+                            executionErrors {
+                                key
+                                message
+                            }
                         }
                     }
                 }
                 """);
         
         assertThat(getString(body, "data.idle.clientMutationId")).isEqualTo("1");
-        assertThat(getBoolean(body, "data.idle.hasWarnings")).isFalse();
-        assertThat(getBoolean(body, "data.idle.hasErrors")).isFalse();
-        assertThat(getBoolean(body, "data.idle.hasSecurityMessages")).isFalse();
-        assertThat(getObject(body, "data.idle.securityMessages")).isNull();
-        assertThat(getBoolean(body, "data.idle.hasValidationErrors")).isFalse();
-        assertThat(getObject(body, "data.idle.validationErrors")).isNull();
-        assertThat(getBoolean(body, "data.idle.hasExecutionWarnings")).isFalse();
-        assertThat(getObject(body, "data.idle.executionWarnings")).isNull();
-        assertThat(getBoolean(body, "data.idle.hasExecutionErrors")).isFalse();
-        assertThat(getObject(body, "data.idle.executionErrors")).isNull();
+        assertThat(getBoolean(body, "data.idle.commandResult.hasWarnings")).isFalse();
+        assertThat(getBoolean(body, "data.idle.commandResult.hasErrors")).isFalse();
+        assertThat(getBoolean(body, "data.idle.commandResult.hasSecurityMessages")).isFalse();
+        assertThat(getObject(body, "data.idle.commandResult.securityMessages")).isNull();
+        assertThat(getBoolean(body, "data.idle.commandResult.hasValidationErrors")).isFalse();
+        assertThat(getObject(body, "data.idle.commandResult.validationErrors")).isNull();
+        assertThat(getBoolean(body, "data.idle.commandResult.hasExecutionWarnings")).isFalse();
+        assertThat(getObject(body, "data.idle.commandResult.executionWarnings")).isNull();
+        assertThat(getBoolean(body, "data.idle.commandResult.hasExecutionErrors")).isFalse();
+        assertThat(getObject(body, "data.idle.commandResult.executionErrors")).isNull();
     }
     
 }

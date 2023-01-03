@@ -29,12 +29,14 @@ public class PreferredTimeZoneTest
         var setUserVisitPreferredTimeZone = executeUsingPost("""
                 mutation {
                     setUserVisitPreferredTimeZone(input: { javaTimeZoneName: "US/Pacific", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
 
-        assertThat(getBoolean(setUserVisitPreferredTimeZone, "data.setUserVisitPreferredTimeZone.hasErrors")).isFalse();
+        assertThat(getBoolean(setUserVisitPreferredTimeZone, "data.setUserVisitPreferredTimeZone.commandResult.hasErrors")).isFalse();
     }
 
 }

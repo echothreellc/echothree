@@ -29,12 +29,14 @@ public class LogoutTest
         var body = executeUsingPost("""
                 mutation {
                     logout(input: { clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
 
-        assertThat(getBoolean(body, "data.logout.hasErrors")).isFalse();
+        assertThat(getBoolean(body, "data.logout.commandResult.hasErrors")).isFalse();
     }
     
     @Test
@@ -43,22 +45,26 @@ public class LogoutTest
         var body1 = executeUsingPost("""
                 mutation {
                     logout(input: { clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
 
-        assertThat(getBoolean(body1, "data.logout.hasErrors")).isFalse();
+        assertThat(getBoolean(body1, "data.logout.commandResult.hasErrors")).isFalse();
 
         var body2 = executeUsingPost("""
                 mutation {
                     logout(input: { clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
 
-        assertThat(getBoolean(body2, "data.logout.hasErrors")).isFalse();
+        assertThat(getBoolean(body2, "data.logout.commandResult.hasErrors")).isFalse();
     }
     
 }

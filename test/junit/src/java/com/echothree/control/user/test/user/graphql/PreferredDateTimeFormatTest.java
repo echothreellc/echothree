@@ -29,12 +29,14 @@ public class PreferredDateTimeFormatTest
         var setUserVisitPreferredDateTimeFormat = executeUsingPost("""
                 mutation {
                     setUserVisitPreferredDateTimeFormat(input: { dateTimeFormatName: "DEFAULT", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
 
-        assertThat(getBoolean(setUserVisitPreferredDateTimeFormat, "data.setUserVisitPreferredDateTimeFormat.hasErrors")).isFalse();
+        assertThat(getBoolean(setUserVisitPreferredDateTimeFormat, "data.setUserVisitPreferredDateTimeFormat.commandResult.hasErrors")).isFalse();
     }
 
 }

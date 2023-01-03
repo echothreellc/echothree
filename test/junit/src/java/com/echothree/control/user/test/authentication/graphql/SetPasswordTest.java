@@ -29,12 +29,14 @@ public class SetPasswordTest
         var setPasswordBody = executeUsingPost("""
                 mutation {
                     setPassword(input: { oldPassword: "password", newPassword1: "newpassword", newPassword2: "newpassword", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
 
-        assertThat(getBoolean(setPasswordBody, "data.setPassword.hasErrors")).isTrue();
+        assertThat(getBoolean(setPasswordBody, "data.setPassword.commandResult.hasErrors")).isTrue();
     }
 
     @Test
@@ -43,32 +45,38 @@ public class SetPasswordTest
         var loginBody = executeUsingPost("""
                 mutation {
                     employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
 
-        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
+        assertThat(getBoolean(loginBody, "data.employeeLogin.commandResult.hasErrors")).isFalse();
 
         var setPassword1Body = executeUsingPost("""
                 mutation {
                     setPassword(input: { oldPassword: "password", newPassword1: "newpassword", newPassword2: "newpassword", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
 
-        assertThat(getBoolean(setPassword1Body, "data.setPassword.hasErrors")).isFalse();
+        assertThat(getBoolean(setPassword1Body, "data.setPassword.commandResult.hasErrors")).isFalse();
 
         var setPassword2Body = executeUsingPost("""
                 mutation {
                     setPassword(input: { oldPassword: "newpassword", newPassword1: "password", newPassword2: "password", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
 
-        assertThat(getBoolean(setPassword2Body, "data.setPassword.hasErrors")).isFalse();
+        assertThat(getBoolean(setPassword2Body, "data.setPassword.commandResult.hasErrors")).isFalse();
     }
 
     @Test
@@ -77,32 +85,38 @@ public class SetPasswordTest
         var loginBody = executeUsingPost("""
                 mutation {
                     customerLogin(input: { username: "TestC@echothree.com", password: "password", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
 
-        assertThat(getBoolean(loginBody, "data.customerLogin.hasErrors")).isFalse();
+        assertThat(getBoolean(loginBody, "data.customerLogin.commandResult.hasErrors")).isFalse();
 
         var setPassword1Body = executeUsingPost("""
                 mutation {
                     setPassword(input: { oldPassword: "password", newPassword1: "newpassword", newPassword2: "newpassword", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
 
-        assertThat(getBoolean(setPassword1Body, "data.setPassword.hasErrors")).isFalse();
+        assertThat(getBoolean(setPassword1Body, "data.setPassword.commandResult.hasErrors")).isFalse();
 
         var setPassword2Body = executeUsingPost("""
                 mutation {
                     setPassword(input: { oldPassword: "newpassword", newPassword1: "password", newPassword2: "password", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
 
-        assertThat(getBoolean(setPassword2Body, "data.setPassword.hasErrors")).isFalse();
+        assertThat(getBoolean(setPassword2Body, "data.setPassword.commandResult.hasErrors")).isFalse();
     }
     
 }

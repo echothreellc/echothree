@@ -29,12 +29,14 @@ public class EmployeeLoginTest
         var body = executeUsingPost("""
                 mutation {
                     employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
 
-        assertThat(getBoolean(body, "data.employeeLogin.hasErrors")).isFalse();
+        assertThat(getBoolean(body, "data.employeeLogin.commandResult.hasErrors")).isFalse();
     }
     
     @Test
@@ -43,12 +45,14 @@ public class EmployeeLoginTest
         var body = executeUsingPost("""
                 mutation {
                     employeeLogin(input: { username: "test e", password: "not-the-password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
 
-        assertThat(getBoolean(body, "data.employeeLogin.hasErrors")).isTrue();
+        assertThat(getBoolean(body, "data.employeeLogin.commandResult.hasErrors")).isTrue();
     }
     
 }

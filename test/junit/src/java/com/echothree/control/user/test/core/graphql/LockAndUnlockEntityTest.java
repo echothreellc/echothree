@@ -28,12 +28,14 @@ public class LockAndUnlockEntityTest
         var loginBody = executeUsingPost("""
                 mutation {
                     employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
         
-        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
+        assertThat(getBoolean(loginBody, "data.employeeLogin.commandResult.hasErrors")).isFalse();
 
         var itemCategoryBody = executeUsingPost("""
                 query {
@@ -48,22 +50,26 @@ public class LockAndUnlockEntityTest
         var lockEntityBody = executeUsingPost("""
                 mutation {
                     lockEntity(input: { id: "%s", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """.formatted(id));
 
-        assertThat(getBoolean(lockEntityBody, "data.lockEntity.hasErrors")).isFalse();
+        assertThat(getBoolean(lockEntityBody, "data.lockEntity.commandResult.hasErrors")).isFalse();
 
         var unlockEntityBody = executeUsingPost("""
                 mutation {
                     unlockEntity(input: { id: "%s", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """.formatted(id));
         
-        assertThat(getBoolean(unlockEntityBody, "data.unlockEntity.hasErrors")).isFalse();
+        assertThat(getBoolean(unlockEntityBody, "data.unlockEntity.commandResult.hasErrors")).isFalse();
     }
     
     @Test
@@ -72,12 +78,14 @@ public class LockAndUnlockEntityTest
         var loginBody = executeUsingPost("""
                 mutation {
                     employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
         
-        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
+        assertThat(getBoolean(loginBody, "data.employeeLogin.commandResult.hasErrors")).isFalse();
 
         var itemCategoryBody = executeUsingPost("""
                 query {
@@ -91,22 +99,26 @@ public class LockAndUnlockEntityTest
         var logoutBody = executeUsingPost("""
                 mutation {
                     logout(input: { clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
         
-        assertThat(getBoolean(logoutBody, "data.logout.hasErrors")).isFalse();
+        assertThat(getBoolean(logoutBody, "data.logout.commandResult.hasErrors")).isFalse();
 
         var lockEntityBody = executeUsingPost("""
                 mutation {
                     lockEntity(input: { id: "%s", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """.formatted(id));
         
-        assertThat(getBoolean(lockEntityBody, "data.lockEntity.hasErrors")).isTrue();
+        assertThat(getBoolean(lockEntityBody, "data.lockEntity.commandResult.hasErrors")).isTrue();
     }
     
     @Test
@@ -115,12 +127,14 @@ public class LockAndUnlockEntityTest
         var loginBody = executeUsingPost("""
                 mutation {
                     employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
         
-        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
+        assertThat(getBoolean(loginBody, "data.employeeLogin.commandResult.hasErrors")).isFalse();
 
         var itemCategoryBody = executeUsingPost("""
                 query {
@@ -134,22 +148,26 @@ public class LockAndUnlockEntityTest
         var logoutBody = executeUsingPost("""
                 mutation {
                     logout(input: { clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
         
-        assertThat(getBoolean(logoutBody, "data.logout.hasErrors")).isFalse();
+        assertThat(getBoolean(logoutBody, "data.logout.commandResult.hasErrors")).isFalse();
 
         var unlockEntityBody = executeUsingPost("""
                 mutation {
                     unlockEntity(input: { id: "%s", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """.formatted(id));
         
-        assertThat(getBoolean(unlockEntityBody, "data.unlockEntity.hasErrors")).isTrue();
+        assertThat(getBoolean(unlockEntityBody, "data.unlockEntity.commandResult.hasErrors")).isTrue();
     }
     
     @Test
@@ -158,22 +176,26 @@ public class LockAndUnlockEntityTest
         var loginBody = executeUsingPost("""
                 mutation {
                     employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
         
-        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
+        assertThat(getBoolean(loginBody, "data.employeeLogin.commandResult.hasErrors")).isFalse();
 
         var lockEntityBody = executeUsingPost("""
                 mutation {
                     lockEntity(input: { id: "IDONOTEXIST", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
         
-        assertThat(getBoolean(lockEntityBody, "data.lockEntity.hasErrors")).isTrue();
+        assertThat(getBoolean(lockEntityBody, "data.lockEntity.commandResult.hasErrors")).isTrue();
     }
     
     @Test
@@ -182,22 +204,26 @@ public class LockAndUnlockEntityTest
         var loginBody = executeUsingPost("""
                 mutation {
                     employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
         
-        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
+        assertThat(getBoolean(loginBody, "data.employeeLogin.commandResult.hasErrors")).isFalse();
 
         var lockEntityBody = executeUsingPost("""
                 mutation {
                     unlockEntity(input: { id: "IDONOTEXIST", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
         
-        assertThat(getBoolean(lockEntityBody, "data.unlockEntity.hasErrors")).isTrue();
+        assertThat(getBoolean(lockEntityBody, "data.unlockEntity.commandResult.hasErrors")).isTrue();
     }
     
 }

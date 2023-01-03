@@ -24,10 +24,10 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 
-@GraphQLDescription("command result with id object")
-@GraphQLName("CommandResultWithId")
-public class CommandResultWithIdObject
-        extends CommandResultObject{
+@GraphQLDescription("mutation result with id object")
+@GraphQLName("MutationResultWithIdO")
+public class MutationResultWithIdObject
+        extends MutationResultObject {
     
     private EntityInstance entityInstance; // Optional, use getEntityInstance()
     
@@ -58,7 +58,6 @@ public class CommandResultWithIdObject
             var coreControl = Session.getModelController(CoreControl.class);
 
             entityInstance = coreControl.ensureUlidForEntityInstance(entityInstance, false);
-
             id = entityInstance.getUlid();
         }
         

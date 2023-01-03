@@ -35,12 +35,14 @@ public class UserSessionTest
                         clientMutationId: "1"
                     })
                     {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
 
-        assertThat(getBoolean(employeeLoginBody, "data.employeeLogin.hasErrors")).isFalse();
+        assertThat(getBoolean(employeeLoginBody, "data.employeeLogin.commandResult.hasErrors")).isFalse();
 
         var userSessionBody = executeUsingPost("""
                 query {

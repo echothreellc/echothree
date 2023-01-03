@@ -156,9 +156,9 @@ public class GraphQlMutations
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject createUserVisitTrack(final DataFetchingEnvironment env,
+    public static MutationResultObject createUserVisitTrack(final DataFetchingEnvironment env,
             @GraphQLName("trackValue") final String trackValue) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = TrackUtil.getHome().getCreateUserVisitTrackForm();
@@ -166,23 +166,23 @@ public class GraphQlMutations
             commandForm.setTrackValue(trackValue);
 
             var commandResult = TrackUtil.getHome().createUserVisitTrack(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject createUserVisitCampaign(final DataFetchingEnvironment env,
+    public static MutationResultObject createUserVisitCampaign(final DataFetchingEnvironment env,
             @GraphQLName("campaignValue") final String campaignValue,
             @GraphQLName("campaignSourceValue") final String campaignSourceValue,
             @GraphQLName("campaignMediumValue") final String campaignMediumValue,
             @GraphQLName("campaignTermValue") final String campaignTermValue,
             @GraphQLName("campaignContentValue") final String campaignContentValue) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = CampaignUtil.getHome().getCreateUserVisitCampaignForm();
@@ -194,24 +194,24 @@ public class GraphQlMutations
             commandForm.setCampaignContentValue(campaignContentValue);
 
             var commandResult = CampaignUtil.getHome().createUserVisitCampaign(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject createSelector(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject createSelector(final DataFetchingEnvironment env,
             @GraphQLName("selectorKindName") @GraphQLNonNull final String selectorKindName,
             @GraphQLName("selectorTypeName") @GraphQLNonNull final String selectorTypeName,
             @GraphQLName("selectorName") @GraphQLNonNull final String selectorName,
             @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
             @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var commandForm = SelectorUtil.getHome().getCreateSelectorForm();
@@ -224,27 +224,27 @@ public class GraphQlMutations
             commandForm.setDescription(description);
 
             var commandResult = SelectorUtil.getHome().createSelector(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
                 var result = (CreateSelectorResult)commandResult.getExecutionResult().getResult();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteSelector(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteSelector(final DataFetchingEnvironment env,
             @GraphQLName("selectorKindName") @GraphQLNonNull final String selectorKindName,
             @GraphQLName("selectorTypeName") @GraphQLNonNull final String selectorTypeName,
             @GraphQLName("selectorName") @GraphQLNonNull final String selectorName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = SelectorUtil.getHome().getDeleteSelectorForm();
@@ -253,17 +253,17 @@ public class GraphQlMutations
             commandForm.setSelectorName(selectorName);
 
             var commandResult = SelectorUtil.getHome().deleteSelector(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject editSelector(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject editSelector(final DataFetchingEnvironment env,
             @GraphQLName("selectorKindName") @GraphQLNonNull final String selectorKindName,
             @GraphQLName("selectorTypeName") @GraphQLNonNull final String selectorTypeName,
             @GraphQLName("originalSelectorName") final String originalSelectorName,
@@ -272,7 +272,7 @@ public class GraphQlMutations
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var spec = SelectorUtil.getHome().getSelectorUniversalSpec();
@@ -295,7 +295,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstance(result.getSelector().getEntityInstance());
+                mutationResultObject.setEntityInstance(result.getSelector().getEntityInstance());
 
                 if(arguments.containsKey("selectorName"))
                     edit.setSelectorName(selectorName);
@@ -312,17 +312,17 @@ public class GraphQlMutations
                 commandResult = SelectorUtil.getHome().editSelector(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject createFilter(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject createFilter(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
             @GraphQLName("filterTypeName") @GraphQLNonNull final String filterTypeName,
             @GraphQLName("filterName") @GraphQLNonNull final String filterName,
@@ -331,7 +331,7 @@ public class GraphQlMutations
             @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
             @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var commandForm = FilterUtil.getHome().getCreateFilterForm();
@@ -346,27 +346,27 @@ public class GraphQlMutations
             commandForm.setDescription(description);
 
             var commandResult = FilterUtil.getHome().createFilter(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
                 var result = (CreateFilterResult)commandResult.getExecutionResult().getResult();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteFilter(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteFilter(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
             @GraphQLName("filterTypeName") @GraphQLNonNull final String filterTypeName,
             @GraphQLName("filterName") @GraphQLNonNull final String filterName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = FilterUtil.getHome().getDeleteFilterForm();
@@ -375,17 +375,17 @@ public class GraphQlMutations
             commandForm.setFilterName(filterName);
 
             var commandResult = FilterUtil.getHome().deleteFilter(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject editFilter(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject editFilter(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
             @GraphQLName("filterTypeName") @GraphQLNonNull final String filterTypeName,
             @GraphQLName("originalFilterName") final String originalFilterName,
@@ -396,7 +396,7 @@ public class GraphQlMutations
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var spec = FilterUtil.getHome().getFilterUniversalSpec();
@@ -419,7 +419,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstance(result.getFilter().getEntityInstance());
+                mutationResultObject.setEntityInstance(result.getFilter().getEntityInstance());
 
                 if(arguments.containsKey("filterName"))
                     edit.setFilterName(filterName);
@@ -440,24 +440,24 @@ public class GraphQlMutations
                 commandResult = FilterUtil.getHome().editFilter(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject createFilterStep(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject createFilterStep(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
             @GraphQLName("filterTypeName") @GraphQLNonNull final String filterTypeName,
             @GraphQLName("filterStepName") @GraphQLNonNull final String filterStepName,
             @GraphQLName("filterName") @GraphQLNonNull final String filterName,
             @GraphQLName("filterItemSelectorName") final String filterItemSelectorName,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var commandForm = FilterUtil.getHome().getCreateFilterStepForm();
@@ -470,28 +470,28 @@ public class GraphQlMutations
             commandForm.setDescription(description);
 
             var commandResult = FilterUtil.getHome().createFilterStep(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
                 var result = (CreateFilterStepResult)commandResult.getExecutionResult().getResult();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteFilterStep(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteFilterStep(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
             @GraphQLName("filterTypeName") @GraphQLNonNull final String filterTypeName,
             @GraphQLName("filterName") @GraphQLNonNull final String filterName,
             @GraphQLName("filterStepName") @GraphQLNonNull final String filterStepName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = FilterUtil.getHome().getDeleteFilterStepForm();
@@ -501,17 +501,17 @@ public class GraphQlMutations
             commandForm.setFilterName(filterName);
 
             var commandResult = FilterUtil.getHome().deleteFilterStep(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject editFilterStep(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject editFilterStep(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
             @GraphQLName("filterTypeName") @GraphQLNonNull final String filterTypeName,
             @GraphQLName("filterName") @GraphQLNonNull final String filterName,
@@ -520,7 +520,7 @@ public class GraphQlMutations
             @GraphQLName("filterStepName") final String filterStepName,
             @GraphQLName("filterItemSelectorName") final String filterItemSelectorName,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var spec = FilterUtil.getHome().getFilterStepUniversalSpec();
@@ -544,7 +544,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstance(result.getFilterStep().getEntityInstance());
+                mutationResultObject.setEntityInstance(result.getFilterStep().getEntityInstance());
 
                 if(arguments.containsKey("filterStepName"))
                     edit.setFilterStepName(filterStepName);
@@ -559,17 +559,17 @@ public class GraphQlMutations
                 commandResult = FilterUtil.getHome().editFilterStep(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject createFilterAdjustment(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject createFilterAdjustment(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
             @GraphQLName("filterAdjustmentName") @GraphQLNonNull final String filterAdjustmentName,
             @GraphQLName("filterAdjustmentSourceName") @GraphQLNonNull final String filterAdjustmentSourceName,
@@ -577,7 +577,7 @@ public class GraphQlMutations
             @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
             @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var commandForm = FilterUtil.getHome().getCreateFilterAdjustmentForm();
@@ -591,26 +591,26 @@ public class GraphQlMutations
             commandForm.setDescription(description);
 
             var commandResult = FilterUtil.getHome().createFilterAdjustment(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
                 var result = (CreateFilterAdjustmentResult)commandResult.getExecutionResult().getResult();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteFilterAdjustment(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteFilterAdjustment(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
             @GraphQLName("filterAdjustmentName") @GraphQLNonNull final String filterAdjustmentName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = FilterUtil.getHome().getDeleteFilterAdjustmentForm();
@@ -619,17 +619,17 @@ public class GraphQlMutations
             commandForm.setFilterAdjustmentName(filterAdjustmentName);
 
             var commandResult = FilterUtil.getHome().deleteFilterAdjustment(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject editFilterAdjustment(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject editFilterAdjustment(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
             @GraphQLName("originalFilterAdjustmentName") final String originalFilterAdjustmentName,
             @GraphQLName("id") @GraphQLID final String id,
@@ -638,7 +638,7 @@ public class GraphQlMutations
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var spec = FilterUtil.getHome().getFilterAdjustmentUniversalSpec();
@@ -660,7 +660,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstance(result.getFilterAdjustment().getEntityInstance());
+                mutationResultObject.setEntityInstance(result.getFilterAdjustment().getEntityInstance());
 
                 if(arguments.containsKey("filterAdjustmentName"))
                     edit.setFilterAdjustmentName(filterAdjustmentName);
@@ -679,17 +679,17 @@ public class GraphQlMutations
                 commandResult = FilterUtil.getHome().editFilterAdjustment(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject createFilterAdjustmentAmount(final DataFetchingEnvironment env,
+    public static MutationResultObject createFilterAdjustmentAmount(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
             @GraphQLName("filterAdjustmentName") @GraphQLNonNull final String filterAdjustmentName,
             @GraphQLName("unitOfMeasureName") final String unitOfMeasureName,
@@ -697,7 +697,7 @@ public class GraphQlMutations
             @GraphQLName("unitOfMeasureTypeName") final String unitOfMeasureTypeName,
             @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName,
             @GraphQLName("amount") @GraphQLNonNull final String amount) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = FilterUtil.getHome().getCreateFilterAdjustmentAmountForm();
@@ -711,24 +711,24 @@ public class GraphQlMutations
             commandForm.setAmount(amount);
 
             var commandResult = FilterUtil.getHome().createFilterAdjustmentAmount(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteFilterAdjustmentAmount(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteFilterAdjustmentAmount(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
             @GraphQLName("filterAdjustmentName") @GraphQLNonNull final String filterAdjustmentName,
             @GraphQLName("unitOfMeasureName") final String unitOfMeasureName,
             @GraphQLName("unitOfMeasureKindName") final String unitOfMeasureKindName,
             @GraphQLName("unitOfMeasureTypeName") final String unitOfMeasureTypeName,
             @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = FilterUtil.getHome().getDeleteFilterAdjustmentAmountForm();
@@ -741,17 +741,17 @@ public class GraphQlMutations
             commandForm.setCurrencyIsoName(currencyIsoName);
 
             var commandResult = FilterUtil.getHome().deleteFilterAdjustmentAmount(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject editFilterAdjustmentAmount(final DataFetchingEnvironment env,
+    public static MutationResultObject editFilterAdjustmentAmount(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
             @GraphQLName("filterAdjustmentName") @GraphQLNonNull final String filterAdjustmentName,
             @GraphQLName("unitOfMeasureName") final String unitOfMeasureName,
@@ -759,7 +759,7 @@ public class GraphQlMutations
             @GraphQLName("unitOfMeasureTypeName") final String unitOfMeasureTypeName,
             @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName,
             @GraphQLName("amount") @GraphQLNonNull final String amount) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var spec = FilterUtil.getHome().getFilterAdjustmentAmountSpec();
@@ -793,17 +793,17 @@ public class GraphQlMutations
                 commandResult = FilterUtil.getHome().editFilterAdjustmentAmount(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject createFilterAdjustmentFixedAmount(final DataFetchingEnvironment env,
+    public static MutationResultObject createFilterAdjustmentFixedAmount(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
             @GraphQLName("filterAdjustmentName") @GraphQLNonNull final String filterAdjustmentName,
             @GraphQLName("unitOfMeasureName") final String unitOfMeasureName,
@@ -811,7 +811,7 @@ public class GraphQlMutations
             @GraphQLName("unitOfMeasureTypeName") final String unitOfMeasureTypeName,
             @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName,
             @GraphQLName("unitAmount") @GraphQLNonNull final String unitAmount) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = FilterUtil.getHome().getCreateFilterAdjustmentFixedAmountForm();
@@ -825,24 +825,24 @@ public class GraphQlMutations
             commandForm.setUnitAmount(unitAmount);
 
             var commandResult = FilterUtil.getHome().createFilterAdjustmentFixedAmount(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteFilterAdjustmentFixedAmount(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteFilterAdjustmentFixedAmount(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
             @GraphQLName("filterAdjustmentName") @GraphQLNonNull final String filterAdjustmentName,
             @GraphQLName("unitOfMeasureName") final String unitOfMeasureName,
             @GraphQLName("unitOfMeasureKindName") final String unitOfMeasureKindName,
             @GraphQLName("unitOfMeasureTypeName") final String unitOfMeasureTypeName,
             @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = FilterUtil.getHome().getDeleteFilterAdjustmentFixedAmountForm();
@@ -855,17 +855,17 @@ public class GraphQlMutations
             commandForm.setCurrencyIsoName(currencyIsoName);
 
             var commandResult = FilterUtil.getHome().deleteFilterAdjustmentFixedAmount(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject editFilterAdjustmentFixedAmount(final DataFetchingEnvironment env,
+    public static MutationResultObject editFilterAdjustmentFixedAmount(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
             @GraphQLName("filterAdjustmentName") @GraphQLNonNull final String filterAdjustmentName,
             @GraphQLName("unitOfMeasureName") final String unitOfMeasureName,
@@ -873,7 +873,7 @@ public class GraphQlMutations
             @GraphQLName("unitOfMeasureTypeName") final String unitOfMeasureTypeName,
             @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName,
             @GraphQLName("unitAmount") @GraphQLNonNull final String unitAmount) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var spec = FilterUtil.getHome().getFilterAdjustmentFixedAmountSpec();
@@ -907,17 +907,17 @@ public class GraphQlMutations
                 commandResult = FilterUtil.getHome().editFilterAdjustmentFixedAmount(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject createFilterAdjustmentPercent(final DataFetchingEnvironment env,
+    public static MutationResultObject createFilterAdjustmentPercent(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
             @GraphQLName("filterAdjustmentName") @GraphQLNonNull final String filterAdjustmentName,
             @GraphQLName("unitOfMeasureName") final String unitOfMeasureName,
@@ -925,7 +925,7 @@ public class GraphQlMutations
             @GraphQLName("unitOfMeasureTypeName") final String unitOfMeasureTypeName,
             @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName,
             @GraphQLName("percent") @GraphQLNonNull final String percent) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = FilterUtil.getHome().getCreateFilterAdjustmentPercentForm();
@@ -939,24 +939,24 @@ public class GraphQlMutations
             commandForm.setPercent(percent);
 
             var commandResult = FilterUtil.getHome().createFilterAdjustmentPercent(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteFilterAdjustmentPercent(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteFilterAdjustmentPercent(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
             @GraphQLName("filterAdjustmentName") @GraphQLNonNull final String filterAdjustmentName,
             @GraphQLName("unitOfMeasureName") final String unitOfMeasureName,
             @GraphQLName("unitOfMeasureKindName") final String unitOfMeasureKindName,
             @GraphQLName("unitOfMeasureTypeName") final String unitOfMeasureTypeName,
             @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = FilterUtil.getHome().getDeleteFilterAdjustmentPercentForm();
@@ -969,17 +969,17 @@ public class GraphQlMutations
             commandForm.setCurrencyIsoName(currencyIsoName);
 
             var commandResult = FilterUtil.getHome().deleteFilterAdjustmentPercent(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject editFilterAdjustmentPercent(final DataFetchingEnvironment env,
+    public static MutationResultObject editFilterAdjustmentPercent(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
             @GraphQLName("filterAdjustmentName") @GraphQLNonNull final String filterAdjustmentName,
             @GraphQLName("unitOfMeasureName") final String unitOfMeasureName,
@@ -987,7 +987,7 @@ public class GraphQlMutations
             @GraphQLName("unitOfMeasureTypeName") final String unitOfMeasureTypeName,
             @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName,
             @GraphQLName("percent") @GraphQLNonNull final String percent) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var spec = FilterUtil.getHome().getFilterAdjustmentPercentSpec();
@@ -1021,17 +1021,17 @@ public class GraphQlMutations
                 commandResult = FilterUtil.getHome().editFilterAdjustmentPercent(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject createSequence(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject createSequence(final DataFetchingEnvironment env,
             @GraphQLName("sequenceTypeName") @GraphQLNonNull final String sequenceTypeName,
             @GraphQLName("sequenceName") @GraphQLNonNull final String sequenceName,
             @GraphQLName("chunkSize") final String chunkSize,
@@ -1039,7 +1039,7 @@ public class GraphQlMutations
             @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
             @GraphQLName("value") @GraphQLNonNull final String value,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var commandForm = SequenceUtil.getHome().getCreateSequenceForm();
@@ -1053,26 +1053,26 @@ public class GraphQlMutations
             commandForm.setDescription(description);
 
             var commandResult = SequenceUtil.getHome().createSequence(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
                 var result = (CreateSequenceResult)commandResult.getExecutionResult().getResult();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteSequence(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteSequence(final DataFetchingEnvironment env,
             @GraphQLName("sequenceTypeName") @GraphQLNonNull final String sequenceTypeName,
             @GraphQLName("sequenceName") @GraphQLNonNull final String sequenceName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = SequenceUtil.getHome().getDeleteSequenceForm();
@@ -1081,17 +1081,17 @@ public class GraphQlMutations
             commandForm.setSequenceName(sequenceName);
 
             var commandResult = SequenceUtil.getHome().deleteSequence(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject editSequence(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject editSequence(final DataFetchingEnvironment env,
             @GraphQLName("sequenceTypeName") @GraphQLNonNull final String sequenceTypeName,
             @GraphQLName("originalSequenceName") final String originalSequenceName,
             @GraphQLName("id") @GraphQLID final String id,
@@ -1100,7 +1100,7 @@ public class GraphQlMutations
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var spec = SequenceUtil.getHome().getSequenceUniversalSpec();
@@ -1122,7 +1122,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstance(result.getSequence().getEntityInstance());
+                mutationResultObject.setEntityInstance(result.getSequence().getEntityInstance());
 
                 if(arguments.containsKey("sequenceName"))
                     edit.setSequenceName(sequenceName);
@@ -1141,22 +1141,22 @@ public class GraphQlMutations
                 commandResult = SequenceUtil.getHome().editSequence(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
     @GraphQLName("setSequenceValue")
-    public static CommandResultObject setSequenceValue(final DataFetchingEnvironment env,
+    public static MutationResultObject setSequenceValue(final DataFetchingEnvironment env,
             @GraphQLName("sequenceTypeName") @GraphQLNonNull final String sequenceTypeName,
             @GraphQLName("sequenceName") @GraphQLNonNull final String sequenceName,
             @GraphQLName("value") @GraphQLNonNull final String value) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = SequenceUtil.getHome().getSetSequenceValueForm();
@@ -1166,17 +1166,17 @@ public class GraphQlMutations
             commandForm.setValue(value);
 
             var commandResult = SequenceUtil.getHome().setSequenceValue(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject createSequenceType(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject createSequenceType(final DataFetchingEnvironment env,
             @GraphQLName("sequenceTypeName") @GraphQLNonNull final String sequenceTypeName,
             @GraphQLName("prefix") final String prefix,
             @GraphQLName("suffix") final String suffix,
@@ -1186,7 +1186,7 @@ public class GraphQlMutations
             @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
             @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var commandForm = SequenceUtil.getHome().getCreateSequenceTypeForm();
@@ -1202,25 +1202,25 @@ public class GraphQlMutations
             commandForm.setDescription(description);
 
             var commandResult = SequenceUtil.getHome().createSequenceType(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
                 var result = (CreateSequenceTypeResult)commandResult.getExecutionResult().getResult();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteSequenceType(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteSequenceType(final DataFetchingEnvironment env,
             @GraphQLName("sequenceTypeName") @GraphQLNonNull final String sequenceTypeName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = SequenceUtil.getHome().getDeleteSequenceTypeForm();
@@ -1228,17 +1228,17 @@ public class GraphQlMutations
             commandForm.setSequenceTypeName(sequenceTypeName);
 
             var commandResult = SequenceUtil.getHome().deleteSequenceType(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject editSequenceType(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject editSequenceType(final DataFetchingEnvironment env,
             @GraphQLName("originalSequenceTypeName") final String originalSequenceTypeName,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("sequenceTypeName") final String sequenceTypeName,
@@ -1250,7 +1250,7 @@ public class GraphQlMutations
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var spec = SequenceUtil.getHome().getSequenceTypeUniversalSpec();
@@ -1271,7 +1271,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstance(result.getSequenceType().getEntityInstance());
+                mutationResultObject.setEntityInstance(result.getSequenceType().getEntityInstance());
 
                 if(arguments.containsKey("sequenceTypeName"))
                     edit.setSequenceTypeName(sequenceTypeName);
@@ -1298,21 +1298,21 @@ public class GraphQlMutations
                 commandResult = SequenceUtil.getHome().editSequenceType(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject createOfferUse(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject createOfferUse(final DataFetchingEnvironment env,
             @GraphQLName("offerName") @GraphQLNonNull final String offerName,
             @GraphQLName("useName") @GraphQLNonNull final String useName,
             @GraphQLName("salesOrderSequenceName") final String salesOrderSequenceName) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var commandForm = OfferUtil.getHome().getCreateOfferUseForm();
@@ -1322,26 +1322,26 @@ public class GraphQlMutations
             commandForm.setSalesOrderSequenceName(salesOrderSequenceName);
 
             var commandResult = OfferUtil.getHome().createOfferUse(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
                 var result = (CreateOfferUseResult)commandResult.getExecutionResult().getResult();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteOfferUse(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteOfferUse(final DataFetchingEnvironment env,
             @GraphQLName("offerName") @GraphQLNonNull final String offerName,
             @GraphQLName("useName") @GraphQLNonNull final String useName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = OfferUtil.getHome().getDeleteOfferUseForm();
@@ -1350,21 +1350,21 @@ public class GraphQlMutations
             commandForm.setUseName(useName);
 
             var commandResult = OfferUtil.getHome().deleteOfferUse(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject editOfferUse(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject editOfferUse(final DataFetchingEnvironment env,
             @GraphQLName("offerName") @GraphQLNonNull final String offerName,
             @GraphQLName("useName") @GraphQLNonNull final String useName,
             @GraphQLName("salesOrderSequenceName") final String salesOrderSequenceName) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var spec = OfferUtil.getHome().getOfferUseSpec();
@@ -1385,7 +1385,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstance(result.getOfferUse().getEntityInstance());
+                mutationResultObject.setEntityInstance(result.getOfferUse().getEntityInstance());
 
                 if(arguments.containsKey("salesOrderSequenceName"))
                     edit.setSalesOrderSequenceName(salesOrderSequenceName);
@@ -1396,17 +1396,17 @@ public class GraphQlMutations
                 commandResult = OfferUtil.getHome().editOfferUse(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject createOffer(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject createOffer(final DataFetchingEnvironment env,
             @GraphQLName("offerName") @GraphQLNonNull final String offerName,
             @GraphQLName("salesOrderSequenceName") final String salesOrderSequenceName,
             @GraphQLName("companyName") final String companyName,
@@ -1417,7 +1417,7 @@ public class GraphQlMutations
             @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
             @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var commandForm = OfferUtil.getHome().getCreateOfferForm();
@@ -1434,25 +1434,25 @@ public class GraphQlMutations
             commandForm.setDescription(description);
 
             var commandResult = OfferUtil.getHome().createOffer(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
                 var result = (CreateOfferResult)commandResult.getExecutionResult().getResult();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteOffer(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteOffer(final DataFetchingEnvironment env,
             @GraphQLName("offerName") @GraphQLNonNull final String offerName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = OfferUtil.getHome().getDeleteOfferForm();
@@ -1460,17 +1460,17 @@ public class GraphQlMutations
             commandForm.setOfferName(offerName);
 
             var commandResult = OfferUtil.getHome().deleteOffer(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject editOffer(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject editOffer(final DataFetchingEnvironment env,
             @GraphQLName("originalOfferName") final String originalOfferName,
             //@GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("offerName") final String offerName,
@@ -1480,7 +1480,7 @@ public class GraphQlMutations
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var spec = OfferUtil.getHome().getOfferUniversalSpec();
@@ -1501,7 +1501,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstance(result.getOffer().getEntityInstance());
+                mutationResultObject.setEntityInstance(result.getOffer().getEntityInstance());
 
                 if(arguments.containsKey("offerName"))
                     edit.setOfferName(offerName);
@@ -1524,20 +1524,20 @@ public class GraphQlMutations
                 commandResult = OfferUtil.getHome().editOffer(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject createOfferItem(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject createOfferItem(final DataFetchingEnvironment env,
             @GraphQLName("offerName") @GraphQLNonNull final String offerName,
             @GraphQLName("itemName") @GraphQLNonNull final String itemName) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var commandForm = OfferUtil.getHome().getCreateOfferItemForm();
@@ -1546,26 +1546,26 @@ public class GraphQlMutations
             commandForm.setItemName(itemName);
 
             var commandResult = OfferUtil.getHome().createOfferItem(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
                 var result = (CreateOfferItemResult)commandResult.getExecutionResult().getResult();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteOfferItem(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteOfferItem(final DataFetchingEnvironment env,
             @GraphQLName("offerName") @GraphQLNonNull final String offerName,
             @GraphQLName("itemName") @GraphQLNonNull final String itemName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = OfferUtil.getHome().getDeleteOfferItemForm();
@@ -1574,17 +1574,17 @@ public class GraphQlMutations
             commandForm.setItemName(itemName);
 
             var commandResult = OfferUtil.getHome().deleteOfferItem(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject createOfferItemPrice(final DataFetchingEnvironment env,
+    public static MutationResultObject createOfferItemPrice(final DataFetchingEnvironment env,
             @GraphQLName("offerName") @GraphQLNonNull final String offerName,
             @GraphQLName("itemName") @GraphQLNonNull final String itemName,
             @GraphQLName("inventoryConditionName") @GraphQLNonNull final String inventoryConditionName,
@@ -1594,7 +1594,7 @@ public class GraphQlMutations
             @GraphQLName("minimumUnitPrice") final String minimumUnitPrice,
             @GraphQLName("maximumUnitPrice") final String maximumUnitPrice,
             @GraphQLName("unitPriceIncrement") final String unitPriceIncrement) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = OfferUtil.getHome().getCreateOfferItemPriceForm();
@@ -1610,23 +1610,23 @@ public class GraphQlMutations
             commandForm.setUnitPriceIncrement(unitPriceIncrement);
 
             var commandResult = OfferUtil.getHome().createOfferItemPrice(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteOfferItemPrice(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteOfferItemPrice(final DataFetchingEnvironment env,
             @GraphQLName("offerName") @GraphQLNonNull final String offerName,
             @GraphQLName("itemName") @GraphQLNonNull final String itemName,
             @GraphQLName("inventoryConditionName") @GraphQLNonNull final String inventoryConditionName,
             @GraphQLName("unitOfMeasureTypeName") @GraphQLNonNull final String unitOfMeasureTypeName,
             @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = OfferUtil.getHome().getDeleteOfferItemPriceForm();
@@ -1638,17 +1638,17 @@ public class GraphQlMutations
             commandForm.setCurrencyIsoName(currencyIsoName);
 
             var commandResult = OfferUtil.getHome().deleteOfferItemPrice(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject editOfferItemPrice(final DataFetchingEnvironment env,
+    public static MutationResultObject editOfferItemPrice(final DataFetchingEnvironment env,
             @GraphQLName("offerName") @GraphQLNonNull final String offerName,
             @GraphQLName("itemName") @GraphQLNonNull final String itemName,
             @GraphQLName("inventoryConditionName") @GraphQLNonNull final String inventoryConditionName,
@@ -1658,7 +1658,7 @@ public class GraphQlMutations
             @GraphQLName("minimumUnitPrice") final String minimumUnitPrice,
             @GraphQLName("maximumUnitPrice") final String maximumUnitPrice,
             @GraphQLName("unitPriceIncrement") final String unitPriceIncrement) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var spec = OfferUtil.getHome().getOfferItemPriceSpec();
@@ -1697,23 +1697,23 @@ public class GraphQlMutations
                 commandResult = OfferUtil.getHome().editOfferItemPrice(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject createUse(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject createUse(final DataFetchingEnvironment env,
             @GraphQLName("useName") @GraphQLNonNull final String useName,
             @GraphQLName("useTypeName") @GraphQLNonNull final String useTypeName,
             @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
             @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var commandForm = OfferUtil.getHome().getCreateUseForm();
@@ -1725,25 +1725,25 @@ public class GraphQlMutations
             commandForm.setDescription(description);
 
             var commandResult = OfferUtil.getHome().createUse(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
                 var result = (CreateUseResult)commandResult.getExecutionResult().getResult();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteUse(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteUse(final DataFetchingEnvironment env,
             @GraphQLName("useName") @GraphQLNonNull final String useName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = OfferUtil.getHome().getDeleteUseForm();
@@ -1751,17 +1751,17 @@ public class GraphQlMutations
             commandForm.setUseName(useName);
 
             var commandResult = OfferUtil.getHome().deleteUse(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject editUse(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject editUse(final DataFetchingEnvironment env,
             @GraphQLName("originalUseName") final String originalUseName,
             //@GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("useName") final String useName,
@@ -1769,7 +1769,7 @@ public class GraphQlMutations
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var spec = OfferUtil.getHome().getUseUniversalSpec();
@@ -1790,7 +1790,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstance(result.getUse().getEntityInstance());
+                mutationResultObject.setEntityInstance(result.getUse().getEntityInstance());
 
                 if(arguments.containsKey("useName"))
                     edit.setUseName(useName);
@@ -1809,23 +1809,23 @@ public class GraphQlMutations
                 commandResult = OfferUtil.getHome().editUse(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject createOfferNameElement(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject createOfferNameElement(final DataFetchingEnvironment env,
             @GraphQLName("offerNameElementName") @GraphQLNonNull final String offerNameElementName,
             @GraphQLName("offset") @GraphQLNonNull final String offset,
             @GraphQLName("length") @GraphQLNonNull final String length,
             @GraphQLName("validationPattern") final String validationPattern,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var commandForm = OfferUtil.getHome().getCreateOfferNameElementForm();
@@ -1837,25 +1837,25 @@ public class GraphQlMutations
             commandForm.setDescription(description);
 
             var commandResult = OfferUtil.getHome().createOfferNameElement(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
                 var result = (CreateOfferNameElementResult)commandResult.getExecutionResult().getResult();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteOfferNameElement(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteOfferNameElement(final DataFetchingEnvironment env,
             @GraphQLName("offerNameElementName") @GraphQLNonNull final String offerNameElementName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = OfferUtil.getHome().getDeleteOfferNameElementForm();
@@ -1863,17 +1863,17 @@ public class GraphQlMutations
             commandForm.setOfferNameElementName(offerNameElementName);
 
             var commandResult = OfferUtil.getHome().deleteOfferNameElement(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject editOfferNameElement(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject editOfferNameElement(final DataFetchingEnvironment env,
             @GraphQLName("originalOfferNameElementName") final String originalOfferNameElementName,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("offerNameElementName") final String offerNameElementName,
@@ -1881,7 +1881,7 @@ public class GraphQlMutations
             @GraphQLName("length") final String length,
             @GraphQLName("validationPattern") final String validationPattern,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var spec = OfferUtil.getHome().getOfferNameElementUniversalSpec();
@@ -1902,7 +1902,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstance(result.getOfferNameElement().getEntityInstance());
+                mutationResultObject.setEntityInstance(result.getOfferNameElement().getEntityInstance());
 
                 if(arguments.containsKey("offerNameElementName"))
                     edit.setOfferNameElementName(offerNameElementName);
@@ -1921,23 +1921,23 @@ public class GraphQlMutations
                 commandResult = OfferUtil.getHome().editOfferNameElement(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject createUseNameElement(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject createUseNameElement(final DataFetchingEnvironment env,
             @GraphQLName("useNameElementName") @GraphQLNonNull final String useNameElementName,
             @GraphQLName("offset") @GraphQLNonNull final String offset,
             @GraphQLName("length") @GraphQLNonNull final String length,
             @GraphQLName("validationPattern") final String validationPattern,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var commandForm = OfferUtil.getHome().getCreateUseNameElementForm();
@@ -1949,25 +1949,25 @@ public class GraphQlMutations
             commandForm.setDescription(description);
 
             var commandResult = OfferUtil.getHome().createUseNameElement(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
                 var result = (CreateUseNameElementResult)commandResult.getExecutionResult().getResult();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteUseNameElement(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteUseNameElement(final DataFetchingEnvironment env,
             @GraphQLName("useNameElementName") @GraphQLNonNull final String useNameElementName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = OfferUtil.getHome().getDeleteUseNameElementForm();
@@ -1975,17 +1975,17 @@ public class GraphQlMutations
             commandForm.setUseNameElementName(useNameElementName);
 
             var commandResult = OfferUtil.getHome().deleteUseNameElement(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject editUseNameElement(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject editUseNameElement(final DataFetchingEnvironment env,
             @GraphQLName("originalUseNameElementName") final String originalUseNameElementName,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("useNameElementName") final String useNameElementName,
@@ -1993,7 +1993,7 @@ public class GraphQlMutations
             @GraphQLName("length") final String length,
             @GraphQLName("validationPattern") final String validationPattern,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var spec = OfferUtil.getHome().getUseNameElementUniversalSpec();
@@ -2014,7 +2014,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstance(result.getUseNameElement().getEntityInstance());
+                mutationResultObject.setEntityInstance(result.getUseNameElement().getEntityInstance());
 
                 if(arguments.containsKey("useNameElementName"))
                     edit.setUseNameElementName(useNameElementName);
@@ -2033,22 +2033,22 @@ public class GraphQlMutations
                 commandResult = OfferUtil.getHome().editUseNameElement(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject createUseType(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject createUseType(final DataFetchingEnvironment env,
             @GraphQLName("useTypeName") @GraphQLNonNull final String useTypeName,
             @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
             @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var commandForm = OfferUtil.getHome().getCreateUseTypeForm();
@@ -2059,25 +2059,25 @@ public class GraphQlMutations
             commandForm.setDescription(description);
 
             var commandResult = OfferUtil.getHome().createUseType(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
                 var result = (CreateUseTypeResult)commandResult.getExecutionResult().getResult();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteUseType(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteUseType(final DataFetchingEnvironment env,
             @GraphQLName("useTypeName") @GraphQLNonNull final String useTypeName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = OfferUtil.getHome().getDeleteUseTypeForm();
@@ -2085,24 +2085,24 @@ public class GraphQlMutations
             commandForm.setUseTypeName(useTypeName);
 
             var commandResult = OfferUtil.getHome().deleteUseType(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject editUseType(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject editUseType(final DataFetchingEnvironment env,
             @GraphQLName("originalUseTypeName") final String originalUseTypeName,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("useTypeName") final String useTypeName,
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var spec = OfferUtil.getHome().getUseTypeUniversalSpec();
@@ -2123,7 +2123,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstance(result.getUseType().getEntityInstance());
+                mutationResultObject.setEntityInstance(result.getUseType().getEntityInstance());
 
                 if(arguments.containsKey("useTypeName"))
                     edit.setUseTypeName(useTypeName);
@@ -2140,22 +2140,22 @@ public class GraphQlMutations
                 commandResult = OfferUtil.getHome().editUseType(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject createFreeOnBoard(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject createFreeOnBoard(final DataFetchingEnvironment env,
             @GraphQLName("freeOnBoardName") @GraphQLNonNull final String freeOnBoardName,
             @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
             @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var commandForm = ShipmentUtil.getHome().getCreateFreeOnBoardForm();
@@ -2166,25 +2166,25 @@ public class GraphQlMutations
             commandForm.setDescription(description);
 
             var commandResult = ShipmentUtil.getHome().createFreeOnBoard(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
                 var result = (CreateFreeOnBoardResult)commandResult.getExecutionResult().getResult();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteFreeOnBoard(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteFreeOnBoard(final DataFetchingEnvironment env,
             @GraphQLName("freeOnBoardName") @GraphQLNonNull final String freeOnBoardName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = ShipmentUtil.getHome().getDeleteFreeOnBoardForm();
@@ -2192,24 +2192,24 @@ public class GraphQlMutations
             commandForm.setFreeOnBoardName(freeOnBoardName);
 
             var commandResult = ShipmentUtil.getHome().deleteFreeOnBoard(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject editFreeOnBoard(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject editFreeOnBoard(final DataFetchingEnvironment env,
             @GraphQLName("originalFreeOnBoardName") final String originalFreeOnBoardName,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("freeOnBoardName") final String freeOnBoardName,
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var spec = ShipmentUtil.getHome().getFreeOnBoardUniversalSpec();
@@ -2230,7 +2230,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstance(result.getFreeOnBoard().getEntityInstance());
+                mutationResultObject.setEntityInstance(result.getFreeOnBoard().getEntityInstance());
 
                 if(arguments.containsKey("freeOnBoardName"))
                     edit.setFreeOnBoardName(freeOnBoardName);
@@ -2247,22 +2247,22 @@ public class GraphQlMutations
                 commandResult = ShipmentUtil.getHome().editFreeOnBoard(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject createPaymentProcessor(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject createPaymentProcessor(final DataFetchingEnvironment env,
             @GraphQLName("paymentProcessorName") @GraphQLNonNull final String paymentProcessorName,
             @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
             @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var commandForm = PaymentUtil.getHome().getCreatePaymentProcessorForm();
@@ -2273,25 +2273,25 @@ public class GraphQlMutations
             commandForm.setDescription(description);
 
             var commandResult = PaymentUtil.getHome().createPaymentProcessor(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
                 var result = (CreatePaymentProcessorResult)commandResult.getExecutionResult().getResult();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deletePaymentProcessor(final DataFetchingEnvironment env,
+    public static MutationResultObject deletePaymentProcessor(final DataFetchingEnvironment env,
             @GraphQLName("paymentProcessorName") @GraphQLNonNull final String paymentProcessorName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = PaymentUtil.getHome().getDeletePaymentProcessorForm();
@@ -2299,24 +2299,24 @@ public class GraphQlMutations
             commandForm.setPaymentProcessorName(paymentProcessorName);
 
             var commandResult = PaymentUtil.getHome().deletePaymentProcessor(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject editPaymentProcessor(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject editPaymentProcessor(final DataFetchingEnvironment env,
             @GraphQLName("originalPaymentProcessorName") final String originalPaymentProcessorName,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("paymentProcessorName") final String paymentProcessorName,
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var spec = PaymentUtil.getHome().getPaymentProcessorUniversalSpec();
@@ -2337,7 +2337,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstance(result.getPaymentProcessor().getEntityInstance());
+                mutationResultObject.setEntityInstance(result.getPaymentProcessor().getEntityInstance());
 
                 if(arguments.containsKey("paymentProcessorName"))
                     edit.setPaymentProcessorName(paymentProcessorName);
@@ -2354,22 +2354,22 @@ public class GraphQlMutations
                 commandResult = PaymentUtil.getHome().editPaymentProcessor(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject createPaymentProcessorType(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject createPaymentProcessorType(final DataFetchingEnvironment env,
             @GraphQLName("paymentProcessorTypeName") @GraphQLNonNull final String paymentProcessorTypeName,
             @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
             @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var commandForm = PaymentUtil.getHome().getCreatePaymentProcessorTypeForm();
@@ -2380,25 +2380,25 @@ public class GraphQlMutations
             commandForm.setDescription(description);
 
             var commandResult = PaymentUtil.getHome().createPaymentProcessorType(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
                 var result = (CreatePaymentProcessorTypeResult)commandResult.getExecutionResult().getResult();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deletePaymentProcessorType(final DataFetchingEnvironment env,
+    public static MutationResultObject deletePaymentProcessorType(final DataFetchingEnvironment env,
             @GraphQLName("paymentProcessorTypeName") @GraphQLNonNull final String paymentProcessorTypeName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = PaymentUtil.getHome().getDeletePaymentProcessorTypeForm();
@@ -2406,24 +2406,24 @@ public class GraphQlMutations
             commandForm.setPaymentProcessorTypeName(paymentProcessorTypeName);
 
             var commandResult = PaymentUtil.getHome().deletePaymentProcessorType(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject editPaymentProcessorType(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject editPaymentProcessorType(final DataFetchingEnvironment env,
             @GraphQLName("originalPaymentProcessorTypeName") final String originalPaymentProcessorTypeName,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("paymentProcessorTypeName") final String paymentProcessorTypeName,
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var spec = PaymentUtil.getHome().getPaymentProcessorTypeUniversalSpec();
@@ -2444,7 +2444,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstance(result.getPaymentProcessorType().getEntityInstance());
+                mutationResultObject.setEntityInstance(result.getPaymentProcessorType().getEntityInstance());
 
                 if(arguments.containsKey("paymentProcessorTypeName"))
                     edit.setPaymentProcessorTypeName(paymentProcessorTypeName);
@@ -2461,22 +2461,22 @@ public class GraphQlMutations
                 commandResult = PaymentUtil.getHome().editPaymentProcessorType(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject createPaymentMethodType(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject createPaymentMethodType(final DataFetchingEnvironment env,
             @GraphQLName("paymentMethodTypeName") @GraphQLNonNull final String paymentMethodTypeName,
             @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
             @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var commandForm = PaymentUtil.getHome().getCreatePaymentMethodTypeForm();
@@ -2487,25 +2487,25 @@ public class GraphQlMutations
             commandForm.setDescription(description);
 
             var commandResult = PaymentUtil.getHome().createPaymentMethodType(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
                 var result = (CreatePaymentMethodTypeResult)commandResult.getExecutionResult().getResult();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deletePaymentMethodType(final DataFetchingEnvironment env,
+    public static MutationResultObject deletePaymentMethodType(final DataFetchingEnvironment env,
             @GraphQLName("paymentMethodTypeName") @GraphQLNonNull final String paymentMethodTypeName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = PaymentUtil.getHome().getDeletePaymentMethodTypeForm();
@@ -2513,24 +2513,24 @@ public class GraphQlMutations
             commandForm.setPaymentMethodTypeName(paymentMethodTypeName);
 
             var commandResult = PaymentUtil.getHome().deletePaymentMethodType(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject editPaymentMethodType(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject editPaymentMethodType(final DataFetchingEnvironment env,
             @GraphQLName("originalPaymentMethodTypeName") final String originalPaymentMethodTypeName,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("paymentMethodTypeName") final String paymentMethodTypeName,
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var spec = PaymentUtil.getHome().getPaymentMethodTypeUniversalSpec();
@@ -2551,7 +2551,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstance(result.getPaymentMethodType().getEntityInstance());
+                mutationResultObject.setEntityInstance(result.getPaymentMethodType().getEntityInstance());
 
                 if(arguments.containsKey("paymentMethodTypeName"))
                     edit.setPaymentMethodTypeName(paymentMethodTypeName);
@@ -2568,22 +2568,22 @@ public class GraphQlMutations
                 commandResult = PaymentUtil.getHome().editPaymentMethodType(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject createPaymentProcessorResultCode(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject createPaymentProcessorResultCode(final DataFetchingEnvironment env,
             @GraphQLName("paymentProcessorResultCodeName") @GraphQLNonNull final String paymentProcessorResultCodeName,
             @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
             @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var commandForm = PaymentUtil.getHome().getCreatePaymentProcessorResultCodeForm();
@@ -2594,25 +2594,25 @@ public class GraphQlMutations
             commandForm.setDescription(description);
 
             var commandResult = PaymentUtil.getHome().createPaymentProcessorResultCode(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
                 var result = (CreatePaymentProcessorResultCodeResult)commandResult.getExecutionResult().getResult();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deletePaymentProcessorResultCode(final DataFetchingEnvironment env,
+    public static MutationResultObject deletePaymentProcessorResultCode(final DataFetchingEnvironment env,
             @GraphQLName("paymentProcessorResultCodeName") @GraphQLNonNull final String paymentProcessorResultCodeName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = PaymentUtil.getHome().getDeletePaymentProcessorResultCodeForm();
@@ -2620,24 +2620,24 @@ public class GraphQlMutations
             commandForm.setPaymentProcessorResultCodeName(paymentProcessorResultCodeName);
 
             var commandResult = PaymentUtil.getHome().deletePaymentProcessorResultCode(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject editPaymentProcessorResultCode(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject editPaymentProcessorResultCode(final DataFetchingEnvironment env,
             @GraphQLName("originalPaymentProcessorResultCodeName") final String originalPaymentProcessorResultCodeName,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("paymentProcessorResultCodeName") final String paymentProcessorResultCodeName,
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var spec = PaymentUtil.getHome().getPaymentProcessorResultCodeUniversalSpec();
@@ -2658,7 +2658,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstance(result.getPaymentProcessorResultCode().getEntityInstance());
+                mutationResultObject.setEntityInstance(result.getPaymentProcessorResultCode().getEntityInstance());
 
                 if(arguments.containsKey("paymentProcessorResultCodeName"))
                     edit.setPaymentProcessorResultCodeName(paymentProcessorResultCodeName);
@@ -2675,22 +2675,22 @@ public class GraphQlMutations
                 commandResult = PaymentUtil.getHome().editPaymentProcessorResultCode(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject createPaymentProcessorActionType(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject createPaymentProcessorActionType(final DataFetchingEnvironment env,
             @GraphQLName("paymentProcessorActionTypeName") @GraphQLNonNull final String paymentProcessorActionTypeName,
             @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
             @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var commandForm = PaymentUtil.getHome().getCreatePaymentProcessorActionTypeForm();
@@ -2701,25 +2701,25 @@ public class GraphQlMutations
             commandForm.setDescription(description);
 
             var commandResult = PaymentUtil.getHome().createPaymentProcessorActionType(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
                 var result = (CreatePaymentProcessorActionTypeResult)commandResult.getExecutionResult().getResult();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deletePaymentProcessorActionType(final DataFetchingEnvironment env,
+    public static MutationResultObject deletePaymentProcessorActionType(final DataFetchingEnvironment env,
             @GraphQLName("paymentProcessorActionTypeName") @GraphQLNonNull final String paymentProcessorActionTypeName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = PaymentUtil.getHome().getDeletePaymentProcessorActionTypeForm();
@@ -2727,24 +2727,24 @@ public class GraphQlMutations
             commandForm.setPaymentProcessorActionTypeName(paymentProcessorActionTypeName);
 
             var commandResult = PaymentUtil.getHome().deletePaymentProcessorActionType(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject editPaymentProcessorActionType(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject editPaymentProcessorActionType(final DataFetchingEnvironment env,
             @GraphQLName("originalPaymentProcessorActionTypeName") final String originalPaymentProcessorActionTypeName,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("paymentProcessorActionTypeName") final String paymentProcessorActionTypeName,
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var spec = PaymentUtil.getHome().getPaymentProcessorActionTypeUniversalSpec();
@@ -2765,7 +2765,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstance(result.getPaymentProcessorActionType().getEntityInstance());
+                mutationResultObject.setEntityInstance(result.getPaymentProcessorActionType().getEntityInstance());
 
                 if(arguments.containsKey("paymentProcessorActionTypeName"))
                     edit.setPaymentProcessorActionTypeName(paymentProcessorActionTypeName);
@@ -2782,22 +2782,22 @@ public class GraphQlMutations
                 commandResult = PaymentUtil.getHome().editPaymentProcessorActionType(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject createInventoryCondition(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject createInventoryCondition(final DataFetchingEnvironment env,
             @GraphQLName("inventoryConditionName") @GraphQLNonNull final String inventoryConditionName,
             @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
             @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var commandForm = InventoryUtil.getHome().getCreateInventoryConditionForm();
@@ -2808,25 +2808,25 @@ public class GraphQlMutations
             commandForm.setDescription(description);
 
             var commandResult = InventoryUtil.getHome().createInventoryCondition(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
                 var result = (CreateInventoryConditionResult)commandResult.getExecutionResult().getResult();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteInventoryCondition(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteInventoryCondition(final DataFetchingEnvironment env,
             @GraphQLName("inventoryConditionName") @GraphQLNonNull final String inventoryConditionName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = InventoryUtil.getHome().getDeleteInventoryConditionForm();
@@ -2834,24 +2834,24 @@ public class GraphQlMutations
             commandForm.setInventoryConditionName(inventoryConditionName);
 
             var commandResult = InventoryUtil.getHome().deleteInventoryCondition(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject editInventoryCondition(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject editInventoryCondition(final DataFetchingEnvironment env,
             @GraphQLName("originalInventoryConditionName") final String originalInventoryConditionName,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("inventoryConditionName") final String inventoryConditionName,
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var spec = InventoryUtil.getHome().getInventoryConditionUniversalSpec();
@@ -2872,7 +2872,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
                 
-                commandResultObject.setEntityInstance(result.getInventoryCondition().getEntityInstance());
+                mutationResultObject.setEntityInstance(result.getInventoryCondition().getEntityInstance());
 
                 if(arguments.containsKey("inventoryConditionName"))
                     edit.setInventoryConditionName(inventoryConditionName);
@@ -2889,22 +2889,22 @@ public class GraphQlMutations
                 commandResult = InventoryUtil.getHome().editInventoryCondition(getUserVisitPK(env), commandForm);
             }
             
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject createContentPageLayout(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject createContentPageLayout(final DataFetchingEnvironment env,
             @GraphQLName("contentPageLayoutName") @GraphQLNonNull final String contentPageLayoutName,
             @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
             @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var commandForm = ContentUtil.getHome().getCreateContentPageLayoutForm();
@@ -2915,25 +2915,25 @@ public class GraphQlMutations
             commandForm.setDescription(description);
 
             var commandResult = ContentUtil.getHome().createContentPageLayout(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
                 var result = (CreateContentPageLayoutResult)commandResult.getExecutionResult().getResult();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteContentPageLayout(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteContentPageLayout(final DataFetchingEnvironment env,
             @GraphQLName("contentPageLayoutName") @GraphQLNonNull final String contentPageLayoutName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = ContentUtil.getHome().getDeleteContentPageLayoutForm();
@@ -2941,24 +2941,24 @@ public class GraphQlMutations
             commandForm.setContentPageLayoutName(contentPageLayoutName);
 
             var commandResult = ContentUtil.getHome().deleteContentPageLayout(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject editContentPageLayout(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject editContentPageLayout(final DataFetchingEnvironment env,
             @GraphQLName("originalContentPageLayoutName") final String originalContentPageLayoutName,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("contentPageLayoutName") final String contentPageLayoutName,
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var spec = ContentUtil.getHome().getContentPageLayoutUniversalSpec();
@@ -2979,7 +2979,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
                 
-                commandResultObject.setEntityInstance(result.getContentPageLayout().getEntityInstance());
+                mutationResultObject.setEntityInstance(result.getContentPageLayout().getEntityInstance());
 
                 if(arguments.containsKey("contentPageLayoutName"))
                     edit.setContentPageLayoutName(contentPageLayoutName);
@@ -2996,20 +2996,20 @@ public class GraphQlMutations
                 commandResult = ContentUtil.getHome().editContentPageLayout(getUserVisitPK(env), commandForm);
             }
             
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
     @GraphQLName("setUserVisitPreferredLanguage")
-    public static CommandResultObject setUserVisitPreferredLanguage(final DataFetchingEnvironment env,
+    public static MutationResultObject setUserVisitPreferredLanguage(final DataFetchingEnvironment env,
             @GraphQLName("languageIsoName") @GraphQLNonNull final String languageIsoName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = UserUtil.getHome().getSetUserVisitPreferredLanguageForm();
@@ -3017,20 +3017,20 @@ public class GraphQlMutations
             commandForm.setLanguageIsoName(languageIsoName);
 
             var commandResult = UserUtil.getHome().setUserVisitPreferredLanguage(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
     @GraphQLName("setUserVisitPreferredCurrency")
-    public static CommandResultObject setUserVisitPreferredCurrency(final DataFetchingEnvironment env,
+    public static MutationResultObject setUserVisitPreferredCurrency(final DataFetchingEnvironment env,
             @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = UserUtil.getHome().getSetUserVisitPreferredCurrencyForm();
@@ -3038,20 +3038,20 @@ public class GraphQlMutations
             commandForm.setCurrencyIsoName(currencyIsoName);
 
             var commandResult = UserUtil.getHome().setUserVisitPreferredCurrency(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
     @GraphQLName("setUserVisitPreferredTimeZone")
-    public static CommandResultObject setUserVisitPreferredTimeZone(final DataFetchingEnvironment env,
+    public static MutationResultObject setUserVisitPreferredTimeZone(final DataFetchingEnvironment env,
             @GraphQLName("javaTimeZoneName") @GraphQLNonNull final String javaTimeZoneName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = UserUtil.getHome().getSetUserVisitPreferredTimeZoneForm();
@@ -3059,20 +3059,20 @@ public class GraphQlMutations
             commandForm.setJavaTimeZoneName(javaTimeZoneName);
 
             var commandResult = UserUtil.getHome().setUserVisitPreferredTimeZone(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
     @GraphQLName("setUserVisitPreferredDateTimeFormat")
-    public static CommandResultObject setUserVisitPreferredDateTimeFormat(final DataFetchingEnvironment env,
+    public static MutationResultObject setUserVisitPreferredDateTimeFormat(final DataFetchingEnvironment env,
             @GraphQLName("dateTimeFormatName") @GraphQLNonNull final String dateTimeFormatName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = UserUtil.getHome().getSetUserVisitPreferredDateTimeFormatForm();
@@ -3080,22 +3080,22 @@ public class GraphQlMutations
             commandForm.setDateTimeFormatName(dateTimeFormatName);
 
             var commandResult = UserUtil.getHome().setUserVisitPreferredDateTimeFormat(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject createTagScope(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject createTagScope(final DataFetchingEnvironment env,
             @GraphQLName("tagScopeName") @GraphQLNonNull final String tagScopeName,
             @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
             @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var commandForm = TagUtil.getHome().getCreateTagScopeForm();
@@ -3106,25 +3106,25 @@ public class GraphQlMutations
             commandForm.setDescription(description);
 
             var commandResult = TagUtil.getHome().createTagScope(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
                 var result = (CreateTagScopeResult)commandResult.getExecutionResult().getResult();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteTagScope(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteTagScope(final DataFetchingEnvironment env,
             @GraphQLName("tagScopeName") @GraphQLNonNull final String tagScopeName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = TagUtil.getHome().getDeleteTagScopeForm();
@@ -3132,23 +3132,23 @@ public class GraphQlMutations
             commandForm.setTagScopeName(tagScopeName);
 
             var commandResult = TagUtil.getHome().deleteTagScope(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject editTagScope(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject editTagScope(final DataFetchingEnvironment env,
             @GraphQLName("originalTagScopeName") @GraphQLNonNull final String originalTagScopeName,
             @GraphQLName("tagScopeName") final String tagScopeName,
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var spec = TagUtil.getHome().getTagScopeSpec();
@@ -3168,7 +3168,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstance(result.getTagScope().getEntityInstance());
+                mutationResultObject.setEntityInstance(result.getTagScope().getEntityInstance());
 
                 if(arguments.containsKey("tagScopeName"))
                     edit.setTagScopeName(tagScopeName);
@@ -3185,21 +3185,21 @@ public class GraphQlMutations
                 commandResult = TagUtil.getHome().editTagScope(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject createTagScopeEntityType(final DataFetchingEnvironment env,
+    public static MutationResultObject createTagScopeEntityType(final DataFetchingEnvironment env,
             @GraphQLName("tagScopeName") @GraphQLNonNull final String tagScopeName,
             @GraphQLName("componentVendorName") @GraphQLNonNull final String componentVendorName,
             @GraphQLName("entityTypeName") @GraphQLNonNull final String entityTypeName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = TagUtil.getHome().getCreateTagScopeEntityTypeForm();
@@ -3209,21 +3209,21 @@ public class GraphQlMutations
             commandForm.setEntityTypeName(entityTypeName);
 
             var commandResult = TagUtil.getHome().createTagScopeEntityType(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteTagScopeEntityType(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteTagScopeEntityType(final DataFetchingEnvironment env,
             @GraphQLName("tagScopeName") @GraphQLNonNull final String tagScopeName,
             @GraphQLName("componentVendorName") @GraphQLNonNull final String componentVendorName,
             @GraphQLName("entityTypeName") @GraphQLNonNull final String entityTypeName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = TagUtil.getHome().getDeleteTagScopeEntityTypeForm();
@@ -3233,20 +3233,20 @@ public class GraphQlMutations
             commandForm.setEntityTypeName(entityTypeName);
 
             var commandResult = TagUtil.getHome().deleteTagScopeEntityType(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject createTag(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject createTag(final DataFetchingEnvironment env,
             @GraphQLName("tagScopeName") @GraphQLNonNull final String tagScopeName,
             @GraphQLName("tagName") @GraphQLNonNull final String tagName) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var commandForm = TagUtil.getHome().getCreateTagForm();
@@ -3255,26 +3255,26 @@ public class GraphQlMutations
             commandForm.setTagName(tagName);
 
             var commandResult = TagUtil.getHome().createTag(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
                 var result = (CreateTagResult)commandResult.getExecutionResult().getResult();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteTag(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteTag(final DataFetchingEnvironment env,
             @GraphQLName("tagScopeName") @GraphQLNonNull final String tagScopeName,
             @GraphQLName("tagName") @GraphQLNonNull final String tagName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = TagUtil.getHome().getDeleteTagForm();
@@ -3283,21 +3283,21 @@ public class GraphQlMutations
             commandForm.setTagName(tagName);
 
             var commandResult = TagUtil.getHome().deleteTag(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject editTag(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject editTag(final DataFetchingEnvironment env,
             @GraphQLName("tagScopeName") @GraphQLNonNull final String tagScopeName,
             @GraphQLName("originalTagName") @GraphQLNonNull final String originalTagName,
             @GraphQLName("tagName") final String tagName) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var spec = TagUtil.getHome().getTagSpec();
@@ -3318,7 +3318,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstance(result.getTag().getEntityInstance());
+                mutationResultObject.setEntityInstance(result.getTag().getEntityInstance());
 
                 if(arguments.containsKey("tagName"))
                     edit.setTagName(tagName);
@@ -3329,21 +3329,21 @@ public class GraphQlMutations
                 commandResult = TagUtil.getHome().editTag(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject createEntityTag(final DataFetchingEnvironment env,
+    public static MutationResultObject createEntityTag(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull final String id,
             @GraphQLName("tagScopeName") @GraphQLNonNull final String tagScopeName,
             @GraphQLName("tagName") @GraphQLNonNull final String tagName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = TagUtil.getHome().getCreateEntityTagForm();
@@ -3353,21 +3353,21 @@ public class GraphQlMutations
             commandForm.setTagName(tagName);
 
             var commandResult = TagUtil.getHome().createEntityTag(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteEntityTag(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteEntityTag(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull final String id,
             @GraphQLName("tagScopeName") @GraphQLNonNull final String tagScopeName,
             @GraphQLName("tagName") @GraphQLNonNull final String tagName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = TagUtil.getHome().getDeleteEntityTagForm();
@@ -3377,22 +3377,22 @@ public class GraphQlMutations
             commandForm.setTagName(tagName);
 
             var commandResult = TagUtil.getHome().deleteEntityTag(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject createEntityAttributeGroup(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject createEntityAttributeGroup(final DataFetchingEnvironment env,
             @GraphQLName("entityAttributeGroupName") @GraphQLNonNull final String entityAttributeGroupName,
             @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
             @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var commandForm = CoreUtil.getHome().getCreateEntityAttributeGroupForm();
@@ -3403,25 +3403,25 @@ public class GraphQlMutations
             commandForm.setDescription(description);
 
             var commandResult = CoreUtil.getHome().createEntityAttributeGroup(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
                 var result = (CreateEntityAttributeGroupResult)commandResult.getExecutionResult().getResult();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteEntityAttributeGroup(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteEntityAttributeGroup(final DataFetchingEnvironment env,
             @GraphQLName("entityAttributeGroupName") @GraphQLNonNull final String entityAttributeGroupName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityAttributeGroupForm();
@@ -3429,23 +3429,23 @@ public class GraphQlMutations
             commandForm.setEntityAttributeGroupName(entityAttributeGroupName);
 
             var commandResult = CoreUtil.getHome().deleteEntityAttributeGroup(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject editEntityAttributeGroup(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject editEntityAttributeGroup(final DataFetchingEnvironment env,
             @GraphQLName("originalEntityAttributeGroupName") @GraphQLNonNull final String originalEntityAttributeGroupName,
             @GraphQLName("entityAttributeGroupName") final String entityAttributeGroupName,
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var spec = CoreUtil.getHome().getEntityAttributeGroupSpec();
@@ -3465,7 +3465,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstance(result.getEntityAttributeGroup().getEntityInstance());
+                mutationResultObject.setEntityInstance(result.getEntityAttributeGroup().getEntityInstance());
 
                 if(arguments.containsKey("entityAttributeGroupName"))
                     edit.setEntityAttributeGroupName(entityAttributeGroupName);
@@ -3482,17 +3482,17 @@ public class GraphQlMutations
                 commandResult = CoreUtil.getHome().editEntityAttributeGroup(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject createEntityAttribute(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject createEntityAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("componentVendorName") final String componentVendorName,
             @GraphQLName("entityTypeName") final String entityTypeName,
@@ -3514,7 +3514,7 @@ public class GraphQlMutations
             @GraphQLName("unitOfMeasureKindName") final String unitOfMeasureKindName,
             @GraphQLName("unitOfMeasureTypeName") final String unitOfMeasureTypeName,
             @GraphQLName("entityListItemSequenceName") final String entityListItemSequenceName) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var commandForm = CoreUtil.getHome().getCreateEntityAttributeForm();
@@ -3542,23 +3542,23 @@ public class GraphQlMutations
             commandForm.setEntityListItemSequenceName(entityListItemSequenceName);
 
             var commandResult = CoreUtil.getHome().createEntityAttribute(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
                 var result = (CreateEntityAttributeResult)commandResult.getExecutionResult().getResult();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject editEntityAttribute(final DataFetchingEnvironment env,
+    public static MutationResultObject editEntityAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("componentVendorName") final String componentVendorName,
             @GraphQLName("entityTypeName") final String entityTypeName,
@@ -3567,7 +3567,7 @@ public class GraphQlMutations
             @GraphQLName("trackRevisions") final String trackRevisions,
             @GraphQLName("sortOrder") final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var spec = CoreUtil.getHome().getEntityAttributeUniversalSpec();
@@ -3605,22 +3605,22 @@ public class GraphQlMutations
                 commandResult = CoreUtil.getHome().editEntityAttribute(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteEntityAttribute(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteEntityAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("componentVendorName") final String componentVendorName,
             @GraphQLName("entityTypeName") final String entityTypeName,
             @GraphQLName("entityAttributeName") final String entityAttributeName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityAttributeForm();
@@ -3631,17 +3631,17 @@ public class GraphQlMutations
             commandForm.setEntityAttributeName(entityAttributeName);
 
             var commandResult = CoreUtil.getHome().deleteEntityAttribute(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject createEntityListItem(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject createEntityListItem(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("componentVendorName") final String componentVendorName,
             @GraphQLName("entityTypeName") final String entityTypeName,
@@ -3650,7 +3650,7 @@ public class GraphQlMutations
             @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
             @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var commandForm = CoreUtil.getHome().getCreateEntityListItemForm();
@@ -3665,23 +3665,23 @@ public class GraphQlMutations
             commandForm.setDescription(description);
 
             var commandResult = CoreUtil.getHome().createEntityListItem(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
                 var result = (CreateEntityListItemResult)commandResult.getExecutionResult().getResult();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject editEntityListItem(final DataFetchingEnvironment env,
+    public static MutationResultObject editEntityListItem(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("componentVendorName") final String componentVendorName,
             @GraphQLName("entityTypeName") final String entityTypeName,
@@ -3691,7 +3691,7 @@ public class GraphQlMutations
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var spec = CoreUtil.getHome().getEntityListItemUniversalSpec();
@@ -3730,23 +3730,23 @@ public class GraphQlMutations
                 commandResult = CoreUtil.getHome().editEntityListItem(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteEntityListItem(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteEntityListItem(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("componentVendorName") final String componentVendorName,
             @GraphQLName("entityTypeName") final String entityTypeName,
             @GraphQLName("entityAttributeName") final String entityAttributeName,
             @GraphQLName("entityListItemName") final String entityListItemName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityListItemForm();
@@ -3758,23 +3758,23 @@ public class GraphQlMutations
             commandForm.setEntityListItemName(entityListItemName);
 
             var commandResult = CoreUtil.getHome().deleteEntityListItem(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject createEntityListItemAttribute(final DataFetchingEnvironment env,
+    public static MutationResultObject createEntityListItemAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("entityAttributeName") final String entityAttributeName,
             @GraphQLName("entityAttributeId") @GraphQLID final String entityAttributeId,
             @GraphQLName("entityListItemName") final String entityListItemName,
             @GraphQLName("entityListItemId") @GraphQLID final String entityListItemId) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getCreateEntityListItemAttributeForm();
@@ -3786,23 +3786,23 @@ public class GraphQlMutations
             commandForm.setEntityListItemUlid(entityListItemId);
 
             var commandResult = CoreUtil.getHome().createEntityListItemAttribute(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject editEntityListItemAttribute(final DataFetchingEnvironment env,
+    public static MutationResultObject editEntityListItemAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("entityAttributeName") final String entityAttributeName,
             @GraphQLName("entityAttributeId") @GraphQLID final String entityAttributeId,
             @GraphQLName("entityListItemName") final String entityListItemName,
             @GraphQLName("entityListItemId") @GraphQLID final String entityListItemId) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var spec = CoreUtil.getHome().getEntityListItemAttributeSpec();
@@ -3835,21 +3835,21 @@ public class GraphQlMutations
                 commandResult = CoreUtil.getHome().editEntityListItemAttribute(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteEntityListItemAttribute(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteEntityListItemAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("entityAttributeName") final String entityAttributeName,
             @GraphQLName("entityAttributeId") @GraphQLID final String entityAttributeId) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityListItemAttributeForm();
@@ -3859,23 +3859,23 @@ public class GraphQlMutations
             commandForm.setEntityAttributeUlid(entityAttributeId);
 
             var commandResult = CoreUtil.getHome().deleteEntityListItemAttribute(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject createEntityMultipleListItemAttribute(final DataFetchingEnvironment env,
+    public static MutationResultObject createEntityMultipleListItemAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("entityAttributeName") final String entityAttributeName,
             @GraphQLName("entityAttributeId") @GraphQLID final String entityAttributeId,
             @GraphQLName("entityListItemName") final String entityListItemName,
             @GraphQLName("entityListItemId") @GraphQLID final String entityListItemId) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getCreateEntityMultipleListItemAttributeForm();
@@ -3887,23 +3887,23 @@ public class GraphQlMutations
             commandForm.setEntityListItemUlid(entityListItemId);
 
             var commandResult = CoreUtil.getHome().createEntityMultipleListItemAttribute(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteEntityMultipleListItemAttribute(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteEntityMultipleListItemAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("entityAttributeName") final String entityAttributeName,
             @GraphQLName("entityAttributeId") @GraphQLID final String entityAttributeId,
             @GraphQLName("entityListItemName") final String entityListItemName,
             @GraphQLName("entityListItemId") @GraphQLID final String entityListItemId) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityMultipleListItemAttributeForm();
@@ -3915,21 +3915,21 @@ public class GraphQlMutations
             commandForm.setEntityListItemUlid(entityListItemId);
 
             var commandResult = CoreUtil.getHome().deleteEntityMultipleListItemAttribute(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject createEntityBooleanAttribute(final DataFetchingEnvironment env,
+    public static MutationResultObject createEntityBooleanAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
             @GraphQLName("booleanAttribute") @GraphQLNonNull final String booleanAttribute) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getCreateEntityBooleanAttributeForm();
@@ -3938,21 +3938,21 @@ public class GraphQlMutations
             commandForm.setEntityAttributeUlid(entityAttributeId);
             commandForm.setBooleanAttribute(booleanAttribute);
 
-            commandResultObject.setCommandResult(CoreUtil.getHome().createEntityBooleanAttribute(getUserVisitPK(env), commandForm));
+            mutationResultObject.setCommandResult(CoreUtil.getHome().createEntityBooleanAttribute(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject editEntityBooleanAttribute(final DataFetchingEnvironment env,
+    public static MutationResultObject editEntityBooleanAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
             @GraphQLName("booleanAttribute") @GraphQLNonNull final String booleanAttribute) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var spec = CoreUtil.getHome().getEntityBooleanAttributeSpec();
@@ -3982,20 +3982,20 @@ public class GraphQlMutations
                 commandResult = CoreUtil.getHome().editEntityBooleanAttribute(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteEntityBooleanAttribute(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteEntityBooleanAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityBooleanAttributeForm();
@@ -4003,21 +4003,21 @@ public class GraphQlMutations
             commandForm.setUlid(id);
             commandForm.setEntityAttributeUlid(entityAttributeId);
 
-            commandResultObject.setCommandResult(CoreUtil.getHome().deleteEntityBooleanAttribute(getUserVisitPK(env), commandForm));
+            mutationResultObject.setCommandResult(CoreUtil.getHome().deleteEntityBooleanAttribute(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject createEntityIntegerAttribute(final DataFetchingEnvironment env,
+    public static MutationResultObject createEntityIntegerAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
             @GraphQLName("integerAttribute") @GraphQLNonNull final String integerAttribute) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getCreateEntityIntegerAttributeForm();
@@ -4026,21 +4026,21 @@ public class GraphQlMutations
             commandForm.setEntityAttributeUlid(entityAttributeId);
             commandForm.setIntegerAttribute(integerAttribute);
 
-            commandResultObject.setCommandResult(CoreUtil.getHome().createEntityIntegerAttribute(getUserVisitPK(env), commandForm));
+            mutationResultObject.setCommandResult(CoreUtil.getHome().createEntityIntegerAttribute(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject editEntityIntegerAttribute(final DataFetchingEnvironment env,
+    public static MutationResultObject editEntityIntegerAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
             @GraphQLName("integerAttribute") @GraphQLNonNull final String integerAttribute) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var spec = CoreUtil.getHome().getEntityIntegerAttributeSpec();
@@ -4070,20 +4070,20 @@ public class GraphQlMutations
                 commandResult = CoreUtil.getHome().editEntityIntegerAttribute(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteEntityIntegerAttribute(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteEntityIntegerAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityIntegerAttributeForm();
@@ -4091,21 +4091,21 @@ public class GraphQlMutations
             commandForm.setUlid(id);
             commandForm.setEntityAttributeUlid(entityAttributeId);
 
-            commandResultObject.setCommandResult(CoreUtil.getHome().deleteEntityIntegerAttribute(getUserVisitPK(env), commandForm));
+            mutationResultObject.setCommandResult(CoreUtil.getHome().deleteEntityIntegerAttribute(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject createEntityLongAttribute(final DataFetchingEnvironment env,
+    public static MutationResultObject createEntityLongAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
             @GraphQLName("longAttribute") @GraphQLNonNull final String longAttribute) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getCreateEntityLongAttributeForm();
@@ -4114,21 +4114,21 @@ public class GraphQlMutations
             commandForm.setEntityAttributeUlid(entityAttributeId);
             commandForm.setLongAttribute(longAttribute);
 
-            commandResultObject.setCommandResult(CoreUtil.getHome().createEntityLongAttribute(getUserVisitPK(env), commandForm));
+            mutationResultObject.setCommandResult(CoreUtil.getHome().createEntityLongAttribute(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject editEntityLongAttribute(final DataFetchingEnvironment env,
+    public static MutationResultObject editEntityLongAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
             @GraphQLName("longAttribute") @GraphQLNonNull final String longAttribute) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var spec = CoreUtil.getHome().getEntityLongAttributeSpec();
@@ -4158,20 +4158,20 @@ public class GraphQlMutations
                 commandResult = CoreUtil.getHome().editEntityLongAttribute(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteEntityLongAttribute(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteEntityLongAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityLongAttributeForm();
@@ -4179,22 +4179,22 @@ public class GraphQlMutations
             commandForm.setUlid(id);
             commandForm.setEntityAttributeUlid(entityAttributeId);
 
-            commandResultObject.setCommandResult(CoreUtil.getHome().deleteEntityLongAttribute(getUserVisitPK(env), commandForm));
+            mutationResultObject.setCommandResult(CoreUtil.getHome().deleteEntityLongAttribute(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject createEntityStringAttribute(final DataFetchingEnvironment env,
+    public static MutationResultObject createEntityStringAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
             @GraphQLName("languageId") @GraphQLNonNull @GraphQLID final String languageId,
             @GraphQLName("stringAttribute") @GraphQLNonNull final String stringAttribute) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getCreateEntityStringAttributeForm();
@@ -4204,22 +4204,22 @@ public class GraphQlMutations
             commandForm.setLanguageUlid(languageId);
             commandForm.setStringAttribute(stringAttribute);
 
-            commandResultObject.setCommandResult(CoreUtil.getHome().createEntityStringAttribute(getUserVisitPK(env), commandForm));
+            mutationResultObject.setCommandResult(CoreUtil.getHome().createEntityStringAttribute(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject editEntityStringAttribute(final DataFetchingEnvironment env,
+    public static MutationResultObject editEntityStringAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
             @GraphQLName("languageId") @GraphQLNonNull @GraphQLID final String languageId,
             @GraphQLName("stringAttribute") @GraphQLNonNull final String stringAttribute) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var spec = CoreUtil.getHome().getEntityStringAttributeSpec();
@@ -4250,21 +4250,21 @@ public class GraphQlMutations
                 commandResult = CoreUtil.getHome().editEntityStringAttribute(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteEntityStringAttribute(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteEntityStringAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
             @GraphQLName("languageId") @GraphQLNonNull final String languageId) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityStringAttributeForm();
@@ -4273,23 +4273,23 @@ public class GraphQlMutations
             commandForm.setEntityAttributeUlid(entityAttributeId);
             commandForm.setLanguageUlid(languageId);
 
-            commandResultObject.setCommandResult(CoreUtil.getHome().deleteEntityStringAttribute(getUserVisitPK(env), commandForm));
+            mutationResultObject.setCommandResult(CoreUtil.getHome().deleteEntityStringAttribute(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject createEntityClobAttribute(final DataFetchingEnvironment env,
+    public static MutationResultObject createEntityClobAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
             @GraphQLName("languageId") @GraphQLNonNull @GraphQLID final String languageId,
             @GraphQLName("clobAttribute") @GraphQLNonNull final String clobAttribute,
             @GraphQLName("mimeTypeName") @GraphQLNonNull final String mimeTypeName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getCreateEntityClobAttributeForm();
@@ -4300,23 +4300,23 @@ public class GraphQlMutations
             commandForm.setClobAttribute(clobAttribute);
             commandForm.setMimeTypeName(mimeTypeName);
 
-            commandResultObject.setCommandResult(CoreUtil.getHome().createEntityClobAttribute(getUserVisitPK(env), commandForm));
+            mutationResultObject.setCommandResult(CoreUtil.getHome().createEntityClobAttribute(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject editEntityClobAttribute(final DataFetchingEnvironment env,
+    public static MutationResultObject editEntityClobAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
             @GraphQLName("languageId") @GraphQLNonNull @GraphQLID final String languageId,
             @GraphQLName("clobAttribute") final String clobAttribute,
             @GraphQLName("mimeTypeName") final String mimeTypeName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var spec = CoreUtil.getHome().getEntityClobAttributeSpec();
@@ -4349,21 +4349,21 @@ public class GraphQlMutations
                 commandResult = CoreUtil.getHome().editEntityClobAttribute(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteEntityClobAttribute(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteEntityClobAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
             @GraphQLName("languageId") @GraphQLNonNull final String languageId) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityClobAttributeForm();
@@ -4372,21 +4372,21 @@ public class GraphQlMutations
             commandForm.setEntityAttributeUlid(entityAttributeId);
             commandForm.setLanguageUlid(languageId);
 
-            commandResultObject.setCommandResult(CoreUtil.getHome().deleteEntityClobAttribute(getUserVisitPK(env), commandForm));
+            mutationResultObject.setCommandResult(CoreUtil.getHome().deleteEntityClobAttribute(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject createEntityNameAttribute(final DataFetchingEnvironment env,
+    public static MutationResultObject createEntityNameAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
             @GraphQLName("nameAttribute") @GraphQLNonNull final String nameAttribute) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getCreateEntityNameAttributeForm();
@@ -4395,21 +4395,21 @@ public class GraphQlMutations
             commandForm.setEntityAttributeUlid(entityAttributeId);
             commandForm.setNameAttribute(nameAttribute);
 
-            commandResultObject.setCommandResult(CoreUtil.getHome().createEntityNameAttribute(getUserVisitPK(env), commandForm));
+            mutationResultObject.setCommandResult(CoreUtil.getHome().createEntityNameAttribute(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject editEntityNameAttribute(final DataFetchingEnvironment env,
+    public static MutationResultObject editEntityNameAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
             @GraphQLName("nameAttribute") @GraphQLNonNull final String nameAttribute) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var spec = CoreUtil.getHome().getEntityNameAttributeSpec();
@@ -4439,20 +4439,20 @@ public class GraphQlMutations
                 commandResult = CoreUtil.getHome().editEntityNameAttribute(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteEntityNameAttribute(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteEntityNameAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityNameAttributeForm();
@@ -4460,21 +4460,21 @@ public class GraphQlMutations
             commandForm.setUlid(id);
             commandForm.setEntityAttributeUlid(entityAttributeId);
 
-            commandResultObject.setCommandResult(CoreUtil.getHome().deleteEntityNameAttribute(getUserVisitPK(env), commandForm));
+            mutationResultObject.setCommandResult(CoreUtil.getHome().deleteEntityNameAttribute(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject createEntityDateAttribute(final DataFetchingEnvironment env,
+    public static MutationResultObject createEntityDateAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
             @GraphQLName("dateAttribute") @GraphQLNonNull final String dateAttribute) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getCreateEntityDateAttributeForm();
@@ -4483,21 +4483,21 @@ public class GraphQlMutations
             commandForm.setEntityAttributeUlid(entityAttributeId);
             commandForm.setDateAttribute(dateAttribute);
 
-            commandResultObject.setCommandResult(CoreUtil.getHome().createEntityDateAttribute(getUserVisitPK(env), commandForm));
+            mutationResultObject.setCommandResult(CoreUtil.getHome().createEntityDateAttribute(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject editEntityDateAttribute(final DataFetchingEnvironment env,
+    public static MutationResultObject editEntityDateAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
             @GraphQLName("dateAttribute") @GraphQLNonNull final String dateAttribute) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var spec = CoreUtil.getHome().getEntityDateAttributeSpec();
@@ -4527,20 +4527,20 @@ public class GraphQlMutations
                 commandResult = CoreUtil.getHome().editEntityDateAttribute(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteEntityDateAttribute(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteEntityDateAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityDateAttributeForm();
@@ -4548,21 +4548,21 @@ public class GraphQlMutations
             commandForm.setUlid(id);
             commandForm.setEntityAttributeUlid(entityAttributeId);
 
-            commandResultObject.setCommandResult(CoreUtil.getHome().deleteEntityDateAttribute(getUserVisitPK(env), commandForm));
+            mutationResultObject.setCommandResult(CoreUtil.getHome().deleteEntityDateAttribute(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject createEntityTimeAttribute(final DataFetchingEnvironment env,
+    public static MutationResultObject createEntityTimeAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
             @GraphQLName("timeAttribute") @GraphQLNonNull final String timeAttribute) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getCreateEntityTimeAttributeForm();
@@ -4571,21 +4571,21 @@ public class GraphQlMutations
             commandForm.setEntityAttributeUlid(entityAttributeId);
             commandForm.setTimeAttribute(timeAttribute);
 
-            commandResultObject.setCommandResult(CoreUtil.getHome().createEntityTimeAttribute(getUserVisitPK(env), commandForm));
+            mutationResultObject.setCommandResult(CoreUtil.getHome().createEntityTimeAttribute(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject editEntityTimeAttribute(final DataFetchingEnvironment env,
+    public static MutationResultObject editEntityTimeAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
             @GraphQLName("timeAttribute") @GraphQLNonNull final String timeAttribute) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var spec = CoreUtil.getHome().getEntityTimeAttributeSpec();
@@ -4615,20 +4615,20 @@ public class GraphQlMutations
                 commandResult = CoreUtil.getHome().editEntityTimeAttribute(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteEntityTimeAttribute(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteEntityTimeAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityTimeAttributeForm();
@@ -4636,17 +4636,17 @@ public class GraphQlMutations
             commandForm.setUlid(id);
             commandForm.setEntityAttributeUlid(entityAttributeId);
 
-            commandResultObject.setCommandResult(CoreUtil.getHome().deleteEntityTimeAttribute(getUserVisitPK(env), commandForm));
+            mutationResultObject.setCommandResult(CoreUtil.getHome().deleteEntityTimeAttribute(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject createEntityGeoPointAttribute(final DataFetchingEnvironment env,
+    public static MutationResultObject createEntityGeoPointAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
             @GraphQLName("latitude") @GraphQLNonNull final String latitude,
@@ -4655,7 +4655,7 @@ public class GraphQlMutations
             @GraphQLName("elevationUnitOfMeasureTypeName") final String elevationUnitOfMeasureTypeName,
             @GraphQLName("altitude") final String altitude,
             @GraphQLName("altitudeUnitOfMeasureTypeName") final String altitudeUnitOfMeasureTypeName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getCreateEntityGeoPointAttributeForm();
@@ -4669,17 +4669,17 @@ public class GraphQlMutations
             commandForm.setAltitude(altitude);
             commandForm.setAltitudeUnitOfMeasureTypeName(altitudeUnitOfMeasureTypeName);
 
-            commandResultObject.setCommandResult(CoreUtil.getHome().createEntityGeoPointAttribute(getUserVisitPK(env), commandForm));
+            mutationResultObject.setCommandResult(CoreUtil.getHome().createEntityGeoPointAttribute(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject editEntityGeoPointAttribute(final DataFetchingEnvironment env,
+    public static MutationResultObject editEntityGeoPointAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
             @GraphQLName("latitude") final String latitude,
@@ -4688,7 +4688,7 @@ public class GraphQlMutations
             @GraphQLName("elevationUnitOfMeasureTypeName") final String elevationUnitOfMeasureTypeName,
             @GraphQLName("altitude") final String altitude,
             @GraphQLName("altitudeUnitOfMeasureTypeName") final String altitudeUnitOfMeasureTypeName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var spec = CoreUtil.getHome().getEntityGeoPointAttributeSpec();
@@ -4728,20 +4728,20 @@ public class GraphQlMutations
                 commandResult = CoreUtil.getHome().editEntityGeoPointAttribute(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteEntityGeoPointAttribute(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteEntityGeoPointAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityGeoPointAttributeForm();
@@ -4749,21 +4749,21 @@ public class GraphQlMutations
             commandForm.setUlid(id);
             commandForm.setEntityAttributeUlid(entityAttributeId);
 
-            commandResultObject.setCommandResult(CoreUtil.getHome().deleteEntityGeoPointAttribute(getUserVisitPK(env), commandForm));
+            mutationResultObject.setCommandResult(CoreUtil.getHome().deleteEntityGeoPointAttribute(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject createEntityEntityAttribute(final DataFetchingEnvironment env,
+    public static MutationResultObject createEntityEntityAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
             @GraphQLName("entityRefAttribute") @GraphQLNonNull final String entityRefAttribute) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getCreateEntityEntityAttributeForm();
@@ -4772,21 +4772,21 @@ public class GraphQlMutations
             commandForm.setEntityAttributeUlid(entityAttributeId);
             commandForm.setEntityRefAttribute(entityRefAttribute);
 
-            commandResultObject.setCommandResult(CoreUtil.getHome().createEntityEntityAttribute(getUserVisitPK(env), commandForm));
+            mutationResultObject.setCommandResult(CoreUtil.getHome().createEntityEntityAttribute(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject editEntityEntityAttribute(final DataFetchingEnvironment env,
+    public static MutationResultObject editEntityEntityAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
             @GraphQLName("entityRefAttribute") @GraphQLNonNull final String entityRefAttribute) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var spec = CoreUtil.getHome().getEntityEntityAttributeSpec();
@@ -4816,20 +4816,20 @@ public class GraphQlMutations
                 commandResult = CoreUtil.getHome().editEntityEntityAttribute(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteEntityEntityAttribute(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteEntityEntityAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityEntityAttributeForm();
@@ -4837,21 +4837,21 @@ public class GraphQlMutations
             commandForm.setUlid(id);
             commandForm.setEntityAttributeUlid(entityAttributeId);
 
-            commandResultObject.setCommandResult(CoreUtil.getHome().deleteEntityEntityAttribute(getUserVisitPK(env), commandForm));
+            mutationResultObject.setCommandResult(CoreUtil.getHome().deleteEntityEntityAttribute(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject createEntityCollectionAttribute(final DataFetchingEnvironment env,
+    public static MutationResultObject createEntityCollectionAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
             @GraphQLName("entityRefAttribute") @GraphQLNonNull final String entityRefAttribute) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getCreateEntityCollectionAttributeForm();
@@ -4860,21 +4860,21 @@ public class GraphQlMutations
             commandForm.setEntityAttributeUlid(entityAttributeId);
             commandForm.setEntityRefAttribute(entityRefAttribute);
 
-            commandResultObject.setCommandResult(CoreUtil.getHome().createEntityCollectionAttribute(getUserVisitPK(env), commandForm));
+            mutationResultObject.setCommandResult(CoreUtil.getHome().createEntityCollectionAttribute(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteEntityCollectionAttribute(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteEntityCollectionAttribute(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
             @GraphQLName("entityAttributeId") @GraphQLNonNull @GraphQLID final String entityAttributeId,
             @GraphQLName("entityRefAttribute") @GraphQLNonNull final String entityRefAttribute) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getDeleteEntityCollectionAttributeForm();
@@ -4883,22 +4883,22 @@ public class GraphQlMutations
             commandForm.setEntityAttributeUlid(entityAttributeId);
             commandForm.setEntityRefAttribute(entityRefAttribute);
 
-            commandResultObject.setCommandResult(CoreUtil.getHome().deleteEntityCollectionAttribute(getUserVisitPK(env), commandForm));
+            mutationResultObject.setCommandResult(CoreUtil.getHome().deleteEntityCollectionAttribute(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject createSearchResultActionType(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject createSearchResultActionType(final DataFetchingEnvironment env,
             @GraphQLName("searchResultActionTypeName") @GraphQLNonNull final String searchResultActionTypeName,
             @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
             @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var commandForm = SearchUtil.getHome().getCreateSearchResultActionTypeForm();
@@ -4909,30 +4909,30 @@ public class GraphQlMutations
             commandForm.setDescription(description);
 
             var commandResult = SearchUtil.getHome().createSearchResultActionType(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
                 var result = (CreateSearchResultActionTypeResult)commandResult.getExecutionResult().getResult();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject editSearchResultActionType(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject editSearchResultActionType(final DataFetchingEnvironment env,
             @GraphQLName("originalSearchResultActionTypeName") final String originalSearchResultActionTypeName,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("searchResultActionTypeName") final String searchResultActionTypeName,
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var spec = SearchUtil.getHome().getSearchResultActionTypeUniversalSpec();
@@ -4953,7 +4953,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstance(result.getSearchResultActionType().getEntityInstance());
+                mutationResultObject.setEntityInstance(result.getSearchResultActionType().getEntityInstance());
 
                 if(arguments.containsKey("searchResultActionTypeName"))
                     edit.setSearchResultActionTypeName(searchResultActionTypeName);
@@ -4970,20 +4970,20 @@ public class GraphQlMutations
                 commandResult = SearchUtil.getHome().editSearchResultActionType(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteSearchResultActionType(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteSearchResultActionType(final DataFetchingEnvironment env,
             @GraphQLName("searchResultActionTypeName") final String searchResultActionTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = SearchUtil.getHome().getDeleteSearchResultActionTypeForm();
@@ -4991,12 +4991,12 @@ public class GraphQlMutations
             commandForm.setSearchResultActionTypeName(searchResultActionTypeName);
             commandForm.setUlid(id);
 
-            commandResultObject.setCommandResult(SearchUtil.getHome().deleteSearchResultActionType(getUserVisitPK(env), commandForm));
+            mutationResultObject.setCommandResult(SearchUtil.getHome().deleteSearchResultActionType(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
@@ -5022,7 +5022,7 @@ public class GraphQlMutations
             @GraphQLName("alias") final String alias,
             @GraphQLName("createdSince") final String createdSince,
             @GraphQLName("modifiedSince") final String modifiedSince) {
-        var commandResultObject = new SearchCustomersResultObject();
+        var mutationResultObject = new SearchCustomersResultObject();
 
         try {
             var commandForm = SearchUtil.getHome().getSearchCustomersForm();
@@ -5049,20 +5049,20 @@ public class GraphQlMutations
             commandForm.setModifiedSince(modifiedSince);
 
             var commandResult = SearchUtil.getHome().searchCustomers(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
-            commandResultObject.setResult(commandResult.hasErrors() ? null : (SearchCustomersResult)commandResult.getExecutionResult().getResult());
+            mutationResultObject.setCommandResult(commandResult);
+            mutationResultObject.setResult(commandResult.hasErrors() ? null : (SearchCustomersResult)commandResult.getExecutionResult().getResult());
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject clearCustomerResults(final DataFetchingEnvironment env,
+    public static MutationResultObject clearCustomerResults(final DataFetchingEnvironment env,
             @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = SearchUtil.getHome().getClearCustomerResultsForm();
@@ -5070,12 +5070,12 @@ public class GraphQlMutations
             commandForm.setSearchTypeName(searchTypeName);
 
             var commandResult = SearchUtil.getHome().clearCustomerResults(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
@@ -5097,7 +5097,7 @@ public class GraphQlMutations
             @GraphQLName("createdSince") final String createdSince,
             @GraphQLName("modifiedSince") final String modifiedSince,
             @GraphQLName("fields") final String fields) {
-        var commandResultObject = new SearchEmployeesResultObject();
+        var mutationResultObject = new SearchEmployeesResultObject();
 
         try {
             var commandForm = SearchUtil.getHome().getSearchEmployeesForm();
@@ -5121,20 +5121,20 @@ public class GraphQlMutations
 
 
             var commandResult = SearchUtil.getHome().searchEmployees(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
-            commandResultObject.setResult(commandResult.hasErrors() ? null : (SearchEmployeesResult)commandResult.getExecutionResult().getResult());
+            mutationResultObject.setCommandResult(commandResult);
+            mutationResultObject.setResult(commandResult.hasErrors() ? null : (SearchEmployeesResult)commandResult.getExecutionResult().getResult());
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject clearEmployeeResults(final DataFetchingEnvironment env,
+    public static MutationResultObject clearEmployeeResults(final DataFetchingEnvironment env,
             @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = SearchUtil.getHome().getClearEmployeeResultsForm();
@@ -5142,12 +5142,12 @@ public class GraphQlMutations
             commandForm.setSearchTypeName(searchTypeName);
 
             var commandResult = SearchUtil.getHome().clearEmployeeResults(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
@@ -5169,7 +5169,7 @@ public class GraphQlMutations
             @GraphQLName("fields") final String fields,
             @GraphQLName("rememberPreferences") final String rememberPreferences,
             @GraphQLName("searchUseTypeName") final String searchUseTypeName) {
-        var commandResultObject = new SearchItemsResultObject();
+        var mutationResultObject = new SearchItemsResultObject();
 
         try {
             var commandForm = SearchUtil.getHome().getSearchItemsForm();
@@ -5192,22 +5192,22 @@ public class GraphQlMutations
             commandForm.setSearchUseTypeName(searchUseTypeName);
 
             var commandResult = SearchUtil.getHome().searchItems(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
-            commandResultObject.setResult(commandResult.hasErrors() ? null : (SearchItemsResult)commandResult.getExecutionResult().getResult());
+            mutationResultObject.setCommandResult(commandResult);
+            mutationResultObject.setResult(commandResult.hasErrors() ? null : (SearchItemsResult)commandResult.getExecutionResult().getResult());
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject createItemSearchResultAction(final DataFetchingEnvironment env,
+    public static MutationResultObject createItemSearchResultAction(final DataFetchingEnvironment env,
             @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName,
             @GraphQLName("searchResultActionTypeName") @GraphQLNonNull final String searchResultActionTypeName,
             @GraphQLName("itemName") @GraphQLNonNull final String itemName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = SearchUtil.getHome().getCreateItemSearchResultActionForm();
@@ -5217,19 +5217,19 @@ public class GraphQlMutations
             commandForm.setItemName(itemName);
 
             var commandResult = SearchUtil.getHome().createItemSearchResultAction(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject clearItemResults(final DataFetchingEnvironment env,
+    public static MutationResultObject clearItemResults(final DataFetchingEnvironment env,
             @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = SearchUtil.getHome().getClearItemResultsForm();
@@ -5237,12 +5237,12 @@ public class GraphQlMutations
             commandForm.setSearchTypeName(searchTypeName);
 
             var commandResult = SearchUtil.getHome().clearItemResults(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
@@ -5263,7 +5263,7 @@ public class GraphQlMutations
             @GraphQLName("createdSince") final String createdSince,
             @GraphQLName("modifiedSince") final String modifiedSince,
             @GraphQLName("fields") final String fields) {
-        var commandResultObject = new SearchVendorsResultObject();
+        var mutationResultObject = new SearchVendorsResultObject();
 
         try {
             var commandForm = SearchUtil.getHome().getSearchVendorsForm();
@@ -5285,20 +5285,20 @@ public class GraphQlMutations
             commandForm.setFields(fields);
 
             var commandResult = SearchUtil.getHome().searchVendors(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
-            commandResultObject.setResult(commandResult.hasErrors() ? null : (SearchVendorsResult)commandResult.getExecutionResult().getResult());
+            mutationResultObject.setCommandResult(commandResult);
+            mutationResultObject.setResult(commandResult.hasErrors() ? null : (SearchVendorsResult)commandResult.getExecutionResult().getResult());
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject clearVendorResults(final DataFetchingEnvironment env,
+    public static MutationResultObject clearVendorResults(final DataFetchingEnvironment env,
             @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = SearchUtil.getHome().getClearVendorResultsForm();
@@ -5306,17 +5306,17 @@ public class GraphQlMutations
             commandForm.setSearchTypeName(searchTypeName);
 
             var commandResult = SearchUtil.getHome().clearVendorResults(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject createUserLogin(final DataFetchingEnvironment env,
+    public static MutationResultObject createUserLogin(final DataFetchingEnvironment env,
             @GraphQLName("partyName") final String partyName,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("username") final String username,
@@ -5324,7 +5324,7 @@ public class GraphQlMutations
             @GraphQLName("password2") @GraphQLNonNull final String password2,
             @GraphQLName("recoveryQuestionName") final String recoveryQuestionName,
             @GraphQLName("answer") final String answer) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = UserUtil.getHome().getCreateUserLoginForm();
@@ -5338,21 +5338,21 @@ public class GraphQlMutations
             commandForm.setAnswer(answer);
 
             var commandResult = UserUtil.getHome().createUserLogin(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject editUserLogin(final DataFetchingEnvironment env,
+    public static MutationResultObject editUserLogin(final DataFetchingEnvironment env,
             @GraphQLName("partyName") final String partyName,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("username") @GraphQLNonNull final String username) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var spec = PartyUtil.getHome().getPartyUniversalSpec();
@@ -5382,20 +5382,20 @@ public class GraphQlMutations
                 commandResult = UserUtil.getHome().editUserLogin(getUserVisitPK(env), commandForm);
             }
             
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteUserLogin(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteUserLogin(final DataFetchingEnvironment env,
             @GraphQLName("partyName") final String partyName,
             @GraphQLName("id") @GraphQLID final String id) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = UserUtil.getHome().getDeleteUserLoginForm();
@@ -5403,23 +5403,23 @@ public class GraphQlMutations
             commandForm.setPartyName(partyName);
             commandForm.setUlid(id);
 
-            commandResultObject.setCommandResult(UserUtil.getHome().deleteUserLogin(getUserVisitPK(env), commandForm));    
+            mutationResultObject.setCommandResult(UserUtil.getHome().deleteUserLogin(getUserVisitPK(env), commandForm));    
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject createItemCategory(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject createItemCategory(final DataFetchingEnvironment env,
             @GraphQLName("itemCategoryName") @GraphQLNonNull final String itemCategoryName,
             @GraphQLName("parentItemCategoryName") final String parentItemCategoryName,
             @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
             @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var commandForm = ItemUtil.getHome().getCreateItemCategoryForm();
@@ -5431,23 +5431,23 @@ public class GraphQlMutations
             commandForm.setDescription(description);
 
             var commandResult = ItemUtil.getHome().createItemCategory(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
                 var result = (CreateItemCategoryResult)commandResult.getExecutionResult().getResult();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject editItemCategory(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject editItemCategory(final DataFetchingEnvironment env,
             @GraphQLName("originalItemCategoryName") final String originalItemCategoryName,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("itemCategoryName") final String itemCategoryName,
@@ -5455,7 +5455,7 @@ public class GraphQlMutations
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var spec = ItemUtil.getHome().getItemCategoryUniversalSpec();
@@ -5476,7 +5476,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstance(result.getItemCategory().getEntityInstance());
+                mutationResultObject.setEntityInstance(result.getItemCategory().getEntityInstance());
 
                 if(arguments.containsKey("itemCategoryName"))
                     edit.setItemCategoryName(itemCategoryName);
@@ -5495,20 +5495,20 @@ public class GraphQlMutations
                 commandResult = ItemUtil.getHome().editItemCategory(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteItemCategory(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteItemCategory(final DataFetchingEnvironment env,
             @GraphQLName("itemCategoryName") final String itemCategoryName,
             @GraphQLName("id") @GraphQLID final String id) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = ItemUtil.getHome().getDeleteItemCategoryForm();
@@ -5516,23 +5516,23 @@ public class GraphQlMutations
             commandForm.setItemCategoryName(itemCategoryName);
             commandForm.setUlid(id);
 
-            commandResultObject.setCommandResult(ItemUtil.getHome().deleteItemCategory(getUserVisitPK(env), commandForm));
+            mutationResultObject.setCommandResult(ItemUtil.getHome().deleteItemCategory(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject createItemAccountingCategory(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject createItemAccountingCategory(final DataFetchingEnvironment env,
             @GraphQLName("itemAccountingCategoryName") @GraphQLNonNull final String itemAccountingCategoryName,
             @GraphQLName("parentItemAccountingCategoryName") final String parentItemAccountingCategoryName,
             @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
             @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var commandForm = AccountingUtil.getHome().getCreateItemAccountingCategoryForm();
@@ -5544,23 +5544,23 @@ public class GraphQlMutations
             commandForm.setDescription(description);
 
             var commandResult = AccountingUtil.getHome().createItemAccountingCategory(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
                 var result = (CreateItemAccountingCategoryResult)commandResult.getExecutionResult().getResult();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject editItemAccountingCategory(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject editItemAccountingCategory(final DataFetchingEnvironment env,
             @GraphQLName("originalItemAccountingCategoryName") final String originalItemAccountingCategoryName,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("itemAccountingCategoryName") final String itemAccountingCategoryName,
@@ -5568,7 +5568,7 @@ public class GraphQlMutations
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var spec = AccountingUtil.getHome().getItemAccountingCategoryUniversalSpec();
@@ -5589,7 +5589,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstance(result.getItemAccountingCategory().getEntityInstance());
+                mutationResultObject.setEntityInstance(result.getItemAccountingCategory().getEntityInstance());
 
                 if(arguments.containsKey("itemAccountingCategoryName"))
                     edit.setItemAccountingCategoryName(itemAccountingCategoryName);
@@ -5608,20 +5608,20 @@ public class GraphQlMutations
                 commandResult = AccountingUtil.getHome().editItemAccountingCategory(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteItemAccountingCategory(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteItemAccountingCategory(final DataFetchingEnvironment env,
             @GraphQLName("itemAccountingCategoryName") final String itemAccountingCategoryName,
             @GraphQLName("id") @GraphQLID final String id) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = AccountingUtil.getHome().getDeleteItemAccountingCategoryForm();
@@ -5629,23 +5629,23 @@ public class GraphQlMutations
             commandForm.setItemAccountingCategoryName(itemAccountingCategoryName);
             commandForm.setUlid(id);
 
-            commandResultObject.setCommandResult(AccountingUtil.getHome().deleteItemAccountingCategory(getUserVisitPK(env), commandForm));
+            mutationResultObject.setCommandResult(AccountingUtil.getHome().deleteItemAccountingCategory(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject createItemPurchasingCategory(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject createItemPurchasingCategory(final DataFetchingEnvironment env,
             @GraphQLName("itemPurchasingCategoryName") @GraphQLNonNull final String itemPurchasingCategoryName,
             @GraphQLName("parentItemPurchasingCategoryName") final String parentItemPurchasingCategoryName,
             @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
             @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var commandForm = VendorUtil.getHome().getCreateItemPurchasingCategoryForm();
@@ -5657,23 +5657,23 @@ public class GraphQlMutations
             commandForm.setDescription(description);
 
             var commandResult = VendorUtil.getHome().createItemPurchasingCategory(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
                 var result = (CreateItemPurchasingCategoryResult)commandResult.getExecutionResult().getResult();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject editItemPurchasingCategory(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject editItemPurchasingCategory(final DataFetchingEnvironment env,
             @GraphQLName("originalItemPurchasingCategoryName") final String originalItemPurchasingCategoryName,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("itemPurchasingCategoryName") final String itemPurchasingCategoryName,
@@ -5681,7 +5681,7 @@ public class GraphQlMutations
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var spec = VendorUtil.getHome().getItemPurchasingCategoryUniversalSpec();
@@ -5702,7 +5702,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstance(result.getItemPurchasingCategory().getEntityInstance());
+                mutationResultObject.setEntityInstance(result.getItemPurchasingCategory().getEntityInstance());
 
                 if(arguments.containsKey("itemPurchasingCategoryName"))
                     edit.setItemPurchasingCategoryName(itemPurchasingCategoryName);
@@ -5721,20 +5721,20 @@ public class GraphQlMutations
                 commandResult = VendorUtil.getHome().editItemPurchasingCategory(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteItemPurchasingCategory(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteItemPurchasingCategory(final DataFetchingEnvironment env,
             @GraphQLName("itemPurchasingCategoryName") final String itemPurchasingCategoryName,
             @GraphQLName("id") @GraphQLID final String id) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = VendorUtil.getHome().getDeleteItemPurchasingCategoryForm();
@@ -5742,24 +5742,24 @@ public class GraphQlMutations
             commandForm.setItemPurchasingCategoryName(itemPurchasingCategoryName);
             commandForm.setUlid(id);
 
-            commandResultObject.setCommandResult(VendorUtil.getHome().deleteItemPurchasingCategory(getUserVisitPK(env), commandForm));
+            mutationResultObject.setCommandResult(VendorUtil.getHome().deleteItemPurchasingCategory(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject createItemImageType(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject createItemImageType(final DataFetchingEnvironment env,
             @GraphQLName("itemImageTypeName") @GraphQLNonNull final String itemImageTypeName,
             @GraphQLName("preferredMimeTypeName") final String preferredMimeTypeName,
             @GraphQLName("quality") final String quality,
             @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
             @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var commandForm = ItemUtil.getHome().getCreateItemImageTypeForm();
@@ -5772,23 +5772,23 @@ public class GraphQlMutations
             commandForm.setDescription(description);
 
             var commandResult = ItemUtil.getHome().createItemImageType(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
                 var result = (CreateItemImageTypeResult)commandResult.getExecutionResult().getResult();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject editItemImageType(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject editItemImageType(final DataFetchingEnvironment env,
             @GraphQLName("originalItemImageTypeName") final String originalItemImageTypeName,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("itemImageTypeName") final String itemImageTypeName,
@@ -5797,7 +5797,7 @@ public class GraphQlMutations
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var spec = ItemUtil.getHome().getItemImageTypeUniversalSpec();
@@ -5818,7 +5818,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstance(result.getItemImageType().getEntityInstance());
+                mutationResultObject.setEntityInstance(result.getItemImageType().getEntityInstance());
 
                 if(arguments.containsKey("itemImageTypeName"))
                     edit.setItemImageTypeName(itemImageTypeName);
@@ -5839,20 +5839,20 @@ public class GraphQlMutations
                 commandResult = ItemUtil.getHome().editItemImageType(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteItemImageType(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteItemImageType(final DataFetchingEnvironment env,
             @GraphQLName("itemImageTypeName") final String itemImageTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = ItemUtil.getHome().getDeleteItemImageTypeForm();
@@ -5860,22 +5860,22 @@ public class GraphQlMutations
             commandForm.setItemImageTypeName(itemImageTypeName);
             commandForm.setUlid(id);
 
-            commandResultObject.setCommandResult(ItemUtil.getHome().deleteItemImageType(getUserVisitPK(env), commandForm));
+            mutationResultObject.setCommandResult(ItemUtil.getHome().deleteItemImageType(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject createItemDescriptionTypeUseType(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject createItemDescriptionTypeUseType(final DataFetchingEnvironment env,
             @GraphQLName("itemDescriptionTypeUseTypeName") @GraphQLNonNull final String itemDescriptionTypeUseTypeName,
             @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
             @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var commandForm = ItemUtil.getHome().getCreateItemDescriptionTypeUseTypeForm();
@@ -5886,30 +5886,30 @@ public class GraphQlMutations
             commandForm.setDescription(description);
 
             var commandResult = ItemUtil.getHome().createItemDescriptionTypeUseType(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
                 var result = (CreateItemDescriptionTypeUseTypeResult)commandResult.getExecutionResult().getResult();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject editItemDescriptionTypeUseType(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject editItemDescriptionTypeUseType(final DataFetchingEnvironment env,
             @GraphQLName("originalItemDescriptionTypeUseTypeName") final String originalItemDescriptionTypeUseTypeName,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("itemDescriptionTypeUseTypeName") final String itemDescriptionTypeUseTypeName,
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var spec = ItemUtil.getHome().getItemDescriptionTypeUseTypeUniversalSpec();
@@ -5930,7 +5930,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstance(result.getItemDescriptionTypeUseType().getEntityInstance());
+                mutationResultObject.setEntityInstance(result.getItemDescriptionTypeUseType().getEntityInstance());
 
                 if(arguments.containsKey("itemDescriptionTypeUseTypeName"))
                     edit.setItemDescriptionTypeUseTypeName(itemDescriptionTypeUseTypeName);
@@ -5947,20 +5947,20 @@ public class GraphQlMutations
                 commandResult = ItemUtil.getHome().editItemDescriptionTypeUseType(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteItemDescriptionTypeUseType(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteItemDescriptionTypeUseType(final DataFetchingEnvironment env,
             @GraphQLName("itemDescriptionTypeUseTypeName") final String itemDescriptionTypeUseTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = ItemUtil.getHome().getDeleteItemDescriptionTypeUseTypeForm();
@@ -5968,20 +5968,20 @@ public class GraphQlMutations
             commandForm.setItemDescriptionTypeUseTypeName(itemDescriptionTypeUseTypeName);
             commandForm.setUlid(id);
 
-            commandResultObject.setCommandResult(ItemUtil.getHome().deleteItemDescriptionTypeUseType(getUserVisitPK(env), commandForm));
+            mutationResultObject.setCommandResult(ItemUtil.getHome().deleteItemDescriptionTypeUseType(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject createItemDescriptionTypeUse(final DataFetchingEnvironment env,
+    public static MutationResultObject createItemDescriptionTypeUse(final DataFetchingEnvironment env,
             @GraphQLName("itemDescriptionTypeUseTypeName") @GraphQLNonNull final String itemDescriptionTypeUseTypeName,
             @GraphQLName("itemDescriptionTypeName") @GraphQLNonNull final String itemDescriptionTypeName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = ItemUtil.getHome().getCreateItemDescriptionTypeUseForm();
@@ -5990,20 +5990,20 @@ public class GraphQlMutations
             commandForm.setItemDescriptionTypeName(itemDescriptionTypeName);
 
             var commandResult = ItemUtil.getHome().createItemDescriptionTypeUse(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteItemDescriptionTypeUse(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteItemDescriptionTypeUse(final DataFetchingEnvironment env,
             @GraphQLName("itemDescriptionTypeUseTypeName") @GraphQLNonNull final String itemDescriptionTypeUseTypeName,
             @GraphQLName("itemDescriptionTypeName") @GraphQLNonNull final String itemDescriptionTypeName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = ItemUtil.getHome().getDeleteItemDescriptionTypeUseForm();
@@ -6011,17 +6011,17 @@ public class GraphQlMutations
             commandForm.setItemDescriptionTypeUseTypeName(itemDescriptionTypeUseTypeName);
             commandForm.setItemDescriptionTypeName(itemDescriptionTypeName);
 
-            commandResultObject.setCommandResult(ItemUtil.getHome().deleteItemDescriptionTypeUse(getUserVisitPK(env), commandForm));
+            mutationResultObject.setCommandResult(ItemUtil.getHome().deleteItemDescriptionTypeUse(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject createItemDescriptionType(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject createItemDescriptionType(final DataFetchingEnvironment env,
             @GraphQLName("itemDescriptionTypeName") @GraphQLNonNull final String itemDescriptionTypeName,
             @GraphQLName("parentItemDescriptionTypeName") final String parentItemDescriptionTypeName,
             @GraphQLName("useParentIfMissing") @GraphQLNonNull final String useParentIfMissing,
@@ -6041,7 +6041,7 @@ public class GraphQlMutations
             @GraphQLName("preferredMimeTypeName") final String preferredMimeTypeName,
             @GraphQLName("quality") final String quality,
             @GraphQLName("scaleFromParent") final String scaleFromParent) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var commandForm = ItemUtil.getHome().getCreateItemDescriptionTypeForm();
@@ -6067,23 +6067,23 @@ public class GraphQlMutations
             commandForm.setScaleFromParent(scaleFromParent);
 
             var commandResult = ItemUtil.getHome().createItemDescriptionType(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
                 var result = (CreateItemDescriptionTypeResult)commandResult.getExecutionResult().getResult();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject editItemDescriptionType(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject editItemDescriptionType(final DataFetchingEnvironment env,
             @GraphQLName("originalItemDescriptionTypeName") final String originalItemDescriptionTypeName,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("itemDescriptionTypeName") final String itemDescriptionTypeName,
@@ -6104,7 +6104,7 @@ public class GraphQlMutations
             @GraphQLName("preferredMimeTypeName") final String preferredMimeTypeName,
             @GraphQLName("quality") final String quality,
             @GraphQLName("scaleFromParent") final String scaleFromParent) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var spec = ItemUtil.getHome().getItemDescriptionTypeUniversalSpec();
@@ -6125,7 +6125,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstance(result.getItemDescriptionType().getEntityInstance());
+                mutationResultObject.setEntityInstance(result.getItemDescriptionType().getEntityInstance());
 
                 if(arguments.containsKey("itemDescriptionTypeName"))
                     edit.setItemDescriptionTypeName(itemDescriptionTypeName);
@@ -6168,20 +6168,20 @@ public class GraphQlMutations
                 commandResult = ItemUtil.getHome().editItemDescriptionType(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteItemDescriptionType(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteItemDescriptionType(final DataFetchingEnvironment env,
             @GraphQLName("itemDescriptionTypeName") final String itemDescriptionTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = ItemUtil.getHome().getDeleteItemDescriptionTypeForm();
@@ -6189,17 +6189,17 @@ public class GraphQlMutations
             commandForm.setItemDescriptionTypeName(itemDescriptionTypeName);
             commandForm.setUlid(id);
 
-            commandResultObject.setCommandResult(ItemUtil.getHome().deleteItemDescriptionType(getUserVisitPK(env), commandForm));
+            mutationResultObject.setCommandResult(ItemUtil.getHome().deleteItemDescriptionType(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject createItemAliasType(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject createItemAliasType(final DataFetchingEnvironment env,
             @GraphQLName("itemAliasTypeName") @GraphQLNonNull final String itemAliasTypeName,
             @GraphQLName("validationPattern") final String validationPattern,
             @GraphQLName("itemAliasChecksumTypeName") @GraphQLNonNull final String itemAliasChecksumTypeName,
@@ -6207,7 +6207,7 @@ public class GraphQlMutations
             @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
             @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var commandForm = ItemUtil.getHome().getCreateItemAliasTypeForm();
@@ -6221,23 +6221,23 @@ public class GraphQlMutations
             commandForm.setDescription(description);
 
             var commandResult = ItemUtil.getHome().createItemAliasType(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
                 var result = (CreateItemAliasTypeResult)commandResult.getExecutionResult().getResult();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject editItemAliasType(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject editItemAliasType(final DataFetchingEnvironment env,
             @GraphQLName("originalItemAliasTypeName") final String originalItemAliasTypeName,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("itemAliasTypeName") final String itemAliasTypeName,
@@ -6247,7 +6247,7 @@ public class GraphQlMutations
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var spec = ItemUtil.getHome().getItemAliasTypeUniversalSpec();
@@ -6268,7 +6268,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstance(result.getItemAliasType().getEntityInstance());
+                mutationResultObject.setEntityInstance(result.getItemAliasType().getEntityInstance());
 
                 if(arguments.containsKey("itemAliasTypeName"))
                     edit.setItemAliasTypeName(itemAliasTypeName);
@@ -6291,20 +6291,20 @@ public class GraphQlMutations
                 commandResult = ItemUtil.getHome().editItemAliasType(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteItemAliasType(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteItemAliasType(final DataFetchingEnvironment env,
             @GraphQLName("itemAliasTypeName") final String itemAliasTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = ItemUtil.getHome().getDeleteItemAliasTypeForm();
@@ -6312,22 +6312,22 @@ public class GraphQlMutations
             commandForm.setItemAliasTypeName(itemAliasTypeName);
             commandForm.setUlid(id);
 
-            commandResultObject.setCommandResult(ItemUtil.getHome().deleteItemAliasType(getUserVisitPK(env), commandForm));
+            mutationResultObject.setCommandResult(ItemUtil.getHome().deleteItemAliasType(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject createItemAlias(final DataFetchingEnvironment env,
+    public static MutationResultObject createItemAlias(final DataFetchingEnvironment env,
             @GraphQLName("itemName") @GraphQLNonNull final String itemName,
             @GraphQLName("unitOfMeasureTypeName") @GraphQLNonNull final String unitOfMeasureTypeName,
             @GraphQLName("itemAliasTypeName") @GraphQLNonNull final String itemAliasTypeName,
             @GraphQLName("alias") @GraphQLNonNull final String alias) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = ItemUtil.getHome().getCreateItemAliasForm();
@@ -6338,22 +6338,22 @@ public class GraphQlMutations
             commandForm.setAlias(alias);
 
             var commandResult = ItemUtil.getHome().createItemAlias(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject editItemAlias(final DataFetchingEnvironment env,
+    public static MutationResultObject editItemAlias(final DataFetchingEnvironment env,
             @GraphQLName("originalAlias") @GraphQLNonNull final String originalAlias,
             @GraphQLName("unitOfMeasureTypeName") final String unitOfMeasureTypeName,
             @GraphQLName("itemAliasTypeName") final String itemAliasTypeName,
             @GraphQLName("alias") final String alias) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var spec = ItemUtil.getHome().getItemAliasSpec();
@@ -6386,41 +6386,41 @@ public class GraphQlMutations
                 commandResult = ItemUtil.getHome().editItemAlias(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteItemAlias(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteItemAlias(final DataFetchingEnvironment env,
             @GraphQLName("alias") @GraphQLID final String alias) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = ItemUtil.getHome().getDeleteItemAliasForm();
 
             commandForm.setAlias(alias);
 
-            commandResultObject.setCommandResult(ItemUtil.getHome().deleteItemAlias(getUserVisitPK(env), commandForm));
+            mutationResultObject.setCommandResult(ItemUtil.getHome().deleteItemAlias(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject createRelatedItemType(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject createRelatedItemType(final DataFetchingEnvironment env,
             @GraphQLName("relatedItemTypeName") @GraphQLNonNull final String relatedItemTypeName,
             @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
             @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var commandForm = ItemUtil.getHome().getCreateRelatedItemTypeForm();
@@ -6431,30 +6431,30 @@ public class GraphQlMutations
             commandForm.setDescription(description);
 
             var commandResult = ItemUtil.getHome().createRelatedItemType(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
                 var result = (CreateRelatedItemTypeResult)commandResult.getExecutionResult().getResult();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject editRelatedItemType(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject editRelatedItemType(final DataFetchingEnvironment env,
             @GraphQLName("originalRelatedItemTypeName") final String originalRelatedItemTypeName,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("relatedItemTypeName") final String relatedItemTypeName,
             @GraphQLName("isDefault") final String isDefault,
             @GraphQLName("sortOrder") final String sortOrder,
             @GraphQLName("description") final String description) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var spec = ItemUtil.getHome().getRelatedItemTypeUniversalSpec();
@@ -6475,7 +6475,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstance(result.getRelatedItemType().getEntityInstance());
+                mutationResultObject.setEntityInstance(result.getRelatedItemType().getEntityInstance());
 
                 if(arguments.containsKey("relatedItemTypeName"))
                     edit.setRelatedItemTypeName(relatedItemTypeName);
@@ -6492,20 +6492,20 @@ public class GraphQlMutations
                 commandResult = ItemUtil.getHome().editRelatedItemType(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteRelatedItemType(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteRelatedItemType(final DataFetchingEnvironment env,
             @GraphQLName("relatedItemTypeName") final String relatedItemTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = ItemUtil.getHome().getDeleteRelatedItemTypeForm();
@@ -6513,22 +6513,22 @@ public class GraphQlMutations
             commandForm.setRelatedItemTypeName(relatedItemTypeName);
             commandForm.setUlid(id);
 
-            commandResultObject.setCommandResult(ItemUtil.getHome().deleteRelatedItemType(getUserVisitPK(env), commandForm));
+            mutationResultObject.setCommandResult(ItemUtil.getHome().deleteRelatedItemType(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject createRelatedItem(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject createRelatedItem(final DataFetchingEnvironment env,
             @GraphQLName("relatedItemTypeName") @GraphQLNonNull final String relatedItemTypeName,
             @GraphQLName("fromItemName") @GraphQLNonNull final String fromItemName,
             @GraphQLName("toItemName") @GraphQLNonNull final String toItemName,
             @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var commandForm = ItemUtil.getHome().getCreateRelatedItemForm();
@@ -6539,28 +6539,28 @@ public class GraphQlMutations
             commandForm.setSortOrder(sortOrder);
 
             var commandResult = ItemUtil.getHome().createRelatedItem(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
                 var result = (CreateRelatedItemResult)commandResult.getExecutionResult().getResult();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject editRelatedItem(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject editRelatedItem(final DataFetchingEnvironment env,
             @GraphQLName("relatedItemTypeName") @GraphQLNonNull final String relatedItemTypeName,
             @GraphQLName("fromItemName") @GraphQLNonNull final String fromItemName,
             @GraphQLName("toItemName") @GraphQLNonNull final String toItemName,
             @GraphQLName("sortOrder") final String sortOrder) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var spec = ItemUtil.getHome().getRelatedItemSpec();
@@ -6582,7 +6582,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstance(result.getRelatedItem().getEntityInstance());
+                mutationResultObject.setEntityInstance(result.getRelatedItem().getEntityInstance());
 
                 if(arguments.containsKey("sortOrder"))
                     edit.setSortOrder(sortOrder);
@@ -6593,21 +6593,21 @@ public class GraphQlMutations
                 commandResult = ItemUtil.getHome().editRelatedItem(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteRelatedItem(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteRelatedItem(final DataFetchingEnvironment env,
             @GraphQLName("relatedItemTypeName") @GraphQLNonNull final String relatedItemTypeName,
             @GraphQLName("fromItemName") @GraphQLNonNull final String fromItemName,
             @GraphQLName("toItemName") @GraphQLNonNull final String toItemName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = ItemUtil.getHome().getDeleteRelatedItemForm();
@@ -6616,17 +6616,17 @@ public class GraphQlMutations
             commandForm.setFromItemName(fromItemName);
             commandForm.setToItemName(toItemName);
 
-            commandResultObject.setCommandResult(ItemUtil.getHome().deleteRelatedItem(getUserVisitPK(env), commandForm));
+            mutationResultObject.setCommandResult(ItemUtil.getHome().deleteRelatedItem(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject createItem(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject createItem(final DataFetchingEnvironment env,
             @GraphQLName("itemName") final String itemName,
             @GraphQLName("itemTypeName") @GraphQLNonNull final String itemTypeName,
             @GraphQLName("itemUseTypeName") @GraphQLNonNull final String itemUseTypeName,
@@ -6652,7 +6652,7 @@ public class GraphQlMutations
             @GraphQLName("itemPriceTypeName") @GraphQLNonNull final String itemPriceTypeName,
             @GraphQLName("cancellationPolicyName") final String cancellationPolicyName,
             @GraphQLName("returnPolicyName") final String returnPolicyName) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var commandForm = ItemUtil.getHome().getCreateItemForm();
@@ -6684,23 +6684,23 @@ public class GraphQlMutations
             commandForm.setReturnPolicyName(returnPolicyName);
 
             var commandResult = ItemUtil.getHome().createItem(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
                 var result = (CreateItemResult)commandResult.getExecutionResult().getResult();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject editItem(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject editItem(final DataFetchingEnvironment env,
             @GraphQLName("originalItemName") @GraphQLNonNull final String originalItemName,
             // @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("itemName") final String itemName,
@@ -6719,7 +6719,7 @@ public class GraphQlMutations
             @GraphQLName("allowAssociatePayments") final String allowAssociatePayments,
             @GraphQLName("cancellationPolicyName") final String cancellationPolicyName,
             @GraphQLName("returnPolicyName") final String returnPolicyName) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var spec = ItemUtil.getHome().getItemUniversalSpec();
@@ -6740,7 +6740,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstance(result.getItem().getEntityInstance());
+                mutationResultObject.setEntityInstance(result.getItem().getEntityInstance());
 
                 if(arguments.containsKey("itemName"))
                     edit.setItemName(itemName);
@@ -6781,21 +6781,21 @@ public class GraphQlMutations
                 commandResult = ItemUtil.getHome().editItem(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
     @GraphQLName("setItemStatus")
-    public static CommandResultObject setItemStatus(final DataFetchingEnvironment env,
+    public static MutationResultObject setItemStatus(final DataFetchingEnvironment env,
             @GraphQLName("itemName") @GraphQLNonNull final String itemStatusName,
             @GraphQLName("itemStatusChoice") @GraphQLNonNull final String ItemStatusChoice) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = ItemUtil.getHome().getSetItemStatusForm();
@@ -6803,22 +6803,22 @@ public class GraphQlMutations
             commandForm.setItemName(itemStatusName);
             commandForm.setItemStatusChoice(ItemStatusChoice);
 
-            commandResultObject.setCommandResult(ItemUtil.getHome().setItemStatus(getUserVisitPK(env), commandForm));
+            mutationResultObject.setCommandResult(ItemUtil.getHome().setItemStatus(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject createItemUnitOfMeasureType(final DataFetchingEnvironment env,
+    public static MutationResultObject createItemUnitOfMeasureType(final DataFetchingEnvironment env,
             @GraphQLName("itemName") @GraphQLNonNull final String itemName,
             @GraphQLName("unitOfMeasureTypeName") @GraphQLNonNull final String unitOfMeasureTypeName,
             @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
             @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = ItemUtil.getHome().getCreateItemUnitOfMeasureTypeForm();
@@ -6829,22 +6829,22 @@ public class GraphQlMutations
             commandForm.setSortOrder(sortOrder);
 
             var commandResult = ItemUtil.getHome().createItemUnitOfMeasureType(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject editItemUnitOfMeasureType(final DataFetchingEnvironment env,
+    public static MutationResultObject editItemUnitOfMeasureType(final DataFetchingEnvironment env,
             @GraphQLName("itemName") @GraphQLNonNull final String itemName,
             @GraphQLName("unitOfMeasureTypeName") @GraphQLNonNull final String unitOfMeasureTypeName,
             @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
             @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var spec = ItemUtil.getHome().getItemUnitOfMeasureTypeSpec();
@@ -6876,20 +6876,20 @@ public class GraphQlMutations
                 commandResult = ItemUtil.getHome().editItemUnitOfMeasureType(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteItemUnitOfMeasureType(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteItemUnitOfMeasureType(final DataFetchingEnvironment env,
             @GraphQLName("itemName") @GraphQLNonNull final String itemName,
             @GraphQLName("unitOfMeasureTypeName") @GraphQLNonNull final String unitOfMeasureTypeName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = ItemUtil.getHome().getDeleteItemUnitOfMeasureTypeForm();
@@ -6897,17 +6897,17 @@ public class GraphQlMutations
             commandForm.setItemName(itemName);
             commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
 
-            commandResultObject.setCommandResult(ItemUtil.getHome().deleteItemUnitOfMeasureType(getUserVisitPK(env), commandForm));
+            mutationResultObject.setCommandResult(ItemUtil.getHome().deleteItemUnitOfMeasureType(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
     
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject createItemDescription(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject createItemDescription(final DataFetchingEnvironment env,
             @GraphQLName("itemName") @GraphQLNonNull final String itemName,
             @GraphQLName("itemDescriptionTypeName") @GraphQLNonNull final String itemDescriptionTypeName,
             @GraphQLName("languageIsoName") @GraphQLNonNull final String languageIsoName,
@@ -6915,7 +6915,7 @@ public class GraphQlMutations
             @GraphQLName("itemImageTypeName") final String itemImageTypeName,
             @GraphQLName("clobDescription") final String clobDescription,
             @GraphQLName("stringDescription") final String stringDescription) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var commandForm = ItemUtil.getHome().getCreateItemDescriptionForm();
@@ -6929,23 +6929,23 @@ public class GraphQlMutations
             commandForm.setStringDescription(stringDescription);
 
             var commandResult = ItemUtil.getHome().createItemDescription(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
                 var result = (CreateItemDescriptionResult)commandResult.getExecutionResult().getResult();
 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject editItemDescription(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject editItemDescription(final DataFetchingEnvironment env,
             @GraphQLName("itemName") @GraphQLNonNull final String itemName,
             @GraphQLName("itemDescriptionTypeName") @GraphQLNonNull final String itemDescriptionTypeName,
             @GraphQLName("languageIsoName") @GraphQLNonNull final String languageIsoName,
@@ -6953,7 +6953,7 @@ public class GraphQlMutations
             @GraphQLName("itemImageTypeName") final String itemImageTypeName,
             @GraphQLName("clobDescription") final String clobDescription,
             @GraphQLName("stringDescription") final String stringDescription) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var spec = ItemUtil.getHome().getItemDescriptionUniversalSpec();
@@ -6975,7 +6975,7 @@ public class GraphQlMutations
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
 
-                commandResultObject.setEntityInstance(result.getItemDescription().getEntityInstance());
+                mutationResultObject.setEntityInstance(result.getItemDescription().getEntityInstance());
 
                 if(arguments.containsKey("mimeTypeName"))
                     edit.setMimeTypeName(mimeTypeName);
@@ -6992,21 +6992,21 @@ public class GraphQlMutations
                 commandResult = ItemUtil.getHome().editItemDescription(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteItemDescription(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteItemDescription(final DataFetchingEnvironment env,
             @GraphQLName("itemName") @GraphQLNonNull final String itemName,
             @GraphQLName("itemDescriptionTypeName") @GraphQLNonNull final String itemDescriptionTypeName,
             @GraphQLName("languageIsoName") @GraphQLNonNull final String languageIsoName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = ItemUtil.getHome().getDeleteItemDescriptionForm();
@@ -7015,17 +7015,17 @@ public class GraphQlMutations
             commandForm.setItemDescriptionTypeName(itemDescriptionTypeName);
             commandForm.setLanguageIsoName(languageIsoName);
 
-            commandResultObject.setCommandResult(ItemUtil.getHome().deleteItemDescription(getUserVisitPK(env), commandForm));
+            mutationResultObject.setCommandResult(ItemUtil.getHome().deleteItemDescription(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject createItemPrice(final DataFetchingEnvironment env,
+    public static MutationResultObject createItemPrice(final DataFetchingEnvironment env,
             @GraphQLName("itemName") @GraphQLNonNull final String itemName,
             @GraphQLName("inventoryConditionName") @GraphQLNonNull final String inventoryConditionName,
             @GraphQLName("unitOfMeasureTypeName") @GraphQLNonNull final String unitOfMeasureTypeName,
@@ -7034,7 +7034,7 @@ public class GraphQlMutations
             @GraphQLName("minimumUnitPrice") final String minimumUnitPrice,
             @GraphQLName("maximumUnitPrice") final String maximumUnitPrice,
             @GraphQLName("unitPriceIncrement") final String unitPriceIncrement) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = ItemUtil.getHome().getCreateItemPriceForm();
@@ -7049,22 +7049,22 @@ public class GraphQlMutations
             commandForm.setUnitPriceIncrement(unitPriceIncrement);
 
             var commandResult = ItemUtil.getHome().createItemPrice(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject deleteItemPrice(final DataFetchingEnvironment env,
+    public static MutationResultObject deleteItemPrice(final DataFetchingEnvironment env,
             @GraphQLName("itemName") @GraphQLNonNull final String itemName,
             @GraphQLName("inventoryConditionName") @GraphQLNonNull final String inventoryConditionName,
             @GraphQLName("unitOfMeasureTypeName") @GraphQLNonNull final String unitOfMeasureTypeName,
             @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = ItemUtil.getHome().getDeleteItemPriceForm();
@@ -7075,17 +7075,17 @@ public class GraphQlMutations
             commandForm.setCurrencyIsoName(currencyIsoName);
 
             var commandResult = ItemUtil.getHome().deleteItemPrice(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject editItemPrice(final DataFetchingEnvironment env,
+    public static MutationResultObject editItemPrice(final DataFetchingEnvironment env,
             @GraphQLName("itemName") @GraphQLNonNull final String itemName,
             @GraphQLName("inventoryConditionName") @GraphQLNonNull final String inventoryConditionName,
             @GraphQLName("unitOfMeasureTypeName") @GraphQLNonNull final String unitOfMeasureTypeName,
@@ -7094,7 +7094,7 @@ public class GraphQlMutations
             @GraphQLName("minimumUnitPrice") final String minimumUnitPrice,
             @GraphQLName("maximumUnitPrice") final String maximumUnitPrice,
             @GraphQLName("unitPriceIncrement") final String unitPriceIncrement) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var spec = ItemUtil.getHome().getItemPriceSpec();
@@ -7132,58 +7132,58 @@ public class GraphQlMutations
                 commandResult = ItemUtil.getHome().editItemPrice(getUserVisitPK(env), commandForm);
             }
 
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
     
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject unlockEntity(final DataFetchingEnvironment env,
+    public static MutationResultObject unlockEntity(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull final String id) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getUnlockEntityForm();
 
             commandForm.setUlid(id);
 
-            commandResultObject.setCommandResult(CoreUtil.getHome().unlockEntity(getUserVisitPK(env), commandForm));    
+            mutationResultObject.setCommandResult(CoreUtil.getHome().unlockEntity(getUserVisitPK(env), commandForm));    
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject lockEntity(final DataFetchingEnvironment env,
+    public static MutationResultObject lockEntity(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull final String id) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = CoreUtil.getHome().getLockEntityForm();
 
             commandForm.setUlid(id);
 
-            commandResultObject.setCommandResult(CoreUtil.getHome().lockEntity(getUserVisitPK(env), commandForm));    
+            mutationResultObject.setCommandResult(CoreUtil.getHome().lockEntity(getUserVisitPK(env), commandForm));    
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject customerLogin(final DataFetchingEnvironment env,
+    public static MutationResultObject customerLogin(final DataFetchingEnvironment env,
             @GraphQLName("username") @GraphQLNonNull final String username,
             @GraphQLName("password") @GraphQLNonNull final String password) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = AuthenticationUtil.getHome().getCustomerLoginForm();
@@ -7192,17 +7192,17 @@ public class GraphQlMutations
             commandForm.setPassword(password);
             commandForm.setRemoteInet4Address(getRemoteInet4Address(env));
 
-            commandResultObject.setCommandResult(AuthenticationUtil.getHome().customerLogin(getUserVisitPK(env), commandForm));
+            mutationResultObject.setCommandResult(AuthenticationUtil.getHome().customerLogin(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject createCustomer(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject createCustomer(final DataFetchingEnvironment env,
             @GraphQLName("personalTitleId") final String personalTitleId,
             @GraphQLName("firstName") @GraphQLNonNull final String firstName,
             @GraphQLName("lastName") @GraphQLNonNull final String lastName,
@@ -7213,7 +7213,7 @@ public class GraphQlMutations
             @GraphQLName("initialSourceName") final String initialSourceName,
             @GraphQLName("emailAddress") final String emailAddress,
             @GraphQLName("allowSolicitation") @GraphQLNonNull final String allowSolicitation) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var commandForm = PartyUtil.getHome().getCreateCustomerForm();
@@ -7230,23 +7230,23 @@ public class GraphQlMutations
             commandForm.setAllowSolicitation(allowSolicitation);
 
             var commandResult = PartyUtil.getHome().createCustomer(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
                 var result = (CreateCustomerResult)commandResult.getExecutionResult().getResult();
                 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultWithIdObject createCustomerWithLogin(final DataFetchingEnvironment env,
+    public static MutationResultWithIdObject createCustomerWithLogin(final DataFetchingEnvironment env,
             @GraphQLName("personalTitleId") final String personalTitleId,
             @GraphQLName("firstName") @GraphQLNonNull final String firstName,
             @GraphQLName("lastName") @GraphQLNonNull final String lastName,
@@ -7262,7 +7262,7 @@ public class GraphQlMutations
             @GraphQLName("password2") @GraphQLNonNull final String password2,
             @GraphQLName("recoveryQuestionName") @GraphQLNonNull final String recoveryQuestionName,
             @GraphQLName("answer") @GraphQLNonNull final String answer) {
-        var commandResultObject = new CommandResultWithIdObject();
+        var mutationResultObject = new MutationResultWithIdObject();
 
         try {
             var commandForm = PartyUtil.getHome().getCreateCustomerWithLoginForm();
@@ -7284,27 +7284,27 @@ public class GraphQlMutations
             commandForm.setAnswer(answer);
 
             var commandResult = PartyUtil.getHome().createCustomerWithLogin(getUserVisitPK(env), commandForm);
-            commandResultObject.setCommandResult(commandResult);
+            mutationResultObject.setCommandResult(commandResult);
 
             if(!commandResult.hasErrors()) {
                 var result = (CreateCustomerWithLoginResult)commandResult.getExecutionResult().getResult();
                 
-                commandResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
             }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject employeeLogin(final DataFetchingEnvironment env,
+    public static MutationResultObject employeeLogin(final DataFetchingEnvironment env,
             @GraphQLName("username") @GraphQLNonNull final String username,
             @GraphQLName("password") @GraphQLNonNull final String password,
             @GraphQLName("companyName") @GraphQLNonNull final String companyName) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = AuthenticationUtil.getHome().getEmployeeLoginForm();
@@ -7314,20 +7314,20 @@ public class GraphQlMutations
             commandForm.setRemoteInet4Address(getRemoteInet4Address(env));
             commandForm.setCompanyName(companyName);
 
-            commandResultObject.setCommandResult(AuthenticationUtil.getHome().employeeLogin(getUserVisitPK(env), commandForm));
+            mutationResultObject.setCommandResult(AuthenticationUtil.getHome().employeeLogin(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject vendorLogin(final DataFetchingEnvironment env,
+    public static MutationResultObject vendorLogin(final DataFetchingEnvironment env,
             @GraphQLName("username") @GraphQLNonNull final String username,
             @GraphQLName("password") @GraphQLNonNull final String password) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = AuthenticationUtil.getHome().getVendorLoginForm();
@@ -7336,18 +7336,18 @@ public class GraphQlMutations
             commandForm.setPassword(password);
             commandForm.setRemoteInet4Address(getRemoteInet4Address(env));
 
-            commandResultObject.setCommandResult(AuthenticationUtil.getHome().vendorLogin(getUserVisitPK(env), commandForm));
+            mutationResultObject.setCommandResult(AuthenticationUtil.getHome().vendorLogin(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
     @GraphQLName("setPassword")
-    public static CommandResultObject setPassword(final DataFetchingEnvironment env,
+    public static MutationResultObject setPassword(final DataFetchingEnvironment env,
             @GraphQLName("partyName") final String partyName,
             @GraphQLName("employeeName") final String employeeName,
             @GraphQLName("customerName") final String customerName,
@@ -7355,7 +7355,7 @@ public class GraphQlMutations
             @GraphQLName("oldPassword") final String oldPassword,
             @GraphQLName("newPassword1") @GraphQLNonNull final String newPassword1,
             @GraphQLName("newPassword2") @GraphQLNonNull final String newPassword2) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = AuthenticationUtil.getHome().getSetPasswordForm();
@@ -7368,21 +7368,21 @@ public class GraphQlMutations
             commandForm.setNewPassword1(newPassword1);
             commandForm.setNewPassword2(newPassword2);
 
-            commandResultObject.setCommandResult(AuthenticationUtil.getHome().setPassword(getUserVisitPK(env), commandForm));    
+            mutationResultObject.setCommandResult(AuthenticationUtil.getHome().setPassword(getUserVisitPK(env), commandForm));    
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject recoverPassword(final DataFetchingEnvironment env,
+    public static MutationResultObject recoverPassword(final DataFetchingEnvironment env,
             @GraphQLName("partyName") final String partyName,
             @GraphQLName("username") final String username,
             @GraphQLName("answer") final String answer) {
-        var commandResultObject = new CommandResultObject();
+        var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = AuthenticationUtil.getHome().getRecoverPasswordForm();
@@ -7391,40 +7391,40 @@ public class GraphQlMutations
             commandForm.setUsername(username);
             commandForm.setAnswer(answer);
 
-            commandResultObject.setCommandResult(AuthenticationUtil.getHome().recoverPassword(getUserVisitPK(env), commandForm));    
+            mutationResultObject.setCommandResult(AuthenticationUtil.getHome().recoverPassword(getUserVisitPK(env), commandForm));    
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject idle(final DataFetchingEnvironment env) {
-        var commandResultObject = new CommandResultObject();
+    public static MutationResultObject idle(final DataFetchingEnvironment env) {
+        var mutationResultObject = new MutationResultObject();
 
         try {
-            commandResultObject.setCommandResult(AuthenticationUtil.getHome().idle(getUserVisitPK(env)));    
+            mutationResultObject.setCommandResult(AuthenticationUtil.getHome().idle(getUserVisitPK(env)));    
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
     @GraphQLField
     @GraphQLRelayMutation
-    public static CommandResultObject logout(final DataFetchingEnvironment env) {
-        var commandResultObject = new CommandResultObject();
+    public static MutationResultObject logout(final DataFetchingEnvironment env) {
+        var mutationResultObject = new MutationResultObject();
 
         try {
-            commandResultObject.setCommandResult(AuthenticationUtil.getHome().logout(getUserVisitPK(env)));    
+            mutationResultObject.setCommandResult(AuthenticationUtil.getHome().logout(getUserVisitPK(env)));    
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return commandResultObject;
+        return mutationResultObject;
     }
 
 }

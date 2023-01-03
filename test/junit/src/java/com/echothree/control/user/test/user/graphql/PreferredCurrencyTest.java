@@ -29,12 +29,14 @@ public class PreferredCurrencyTest
         var setUserVisitPreferredCurrency = executeUsingPost("""
                 mutation {
                     setUserVisitPreferredCurrency(input: { currencyIsoName: "X-1", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
 
-        assertThat(getBoolean(setUserVisitPreferredCurrency, "data.setUserVisitPreferredCurrency.hasErrors")).isFalse();
+        assertThat(getBoolean(setUserVisitPreferredCurrency, "data.setUserVisitPreferredCurrency.commandResult.hasErrors")).isFalse();
     }
 
 }
