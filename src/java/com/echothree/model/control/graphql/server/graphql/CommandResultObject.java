@@ -25,10 +25,10 @@ import com.echothree.util.common.message.Messages;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
+import graphql.annotations.annotationTypes.GraphQLNonNull;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import graphql.annotations.annotationTypes.GraphQLNonNull;
 
 @GraphQLDescription("command result object")
 @GraphQLName("CommandResult")
@@ -36,7 +36,7 @@ public class CommandResultObject {
     
     private CommandResult commandResult; // Always Present
     
-    public void setCommandResult(CommandResult commandResult) {
+    public CommandResultObject(CommandResult commandResult) {
         this.commandResult = commandResult;
     }
 

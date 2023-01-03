@@ -17,7 +17,7 @@
 package com.echothree.model.control.search.server.graphql;
 
 import com.echothree.control.user.search.common.result.SearchVendorsResult;
-import com.echothree.model.control.graphql.server.graphql.CommandResultObject;
+import com.echothree.model.control.graphql.server.graphql.MutationResultObject;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -25,7 +25,7 @@ import graphql.annotations.annotationTypes.GraphQLName;
 @GraphQLDescription("search vendors result object")
 @GraphQLName("SearchVendorsResult")
 public class SearchVendorsResultObject
-        extends CommandResultObject{
+        extends MutationResultObject {
     
     private SearchVendorsResult result;
     
