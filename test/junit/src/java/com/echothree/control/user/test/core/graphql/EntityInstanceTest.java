@@ -31,12 +31,14 @@ public class EntityInstanceTest
         var loginBody = executeUsingPost("""
                 mutation {
                     employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
         
-        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
+        assertThat(getBoolean(loginBody, "data.employeeLogin.commandResult.hasErrors")).isFalse();
 
         var entityTypeBody = executeUsingPost("""
                 query {
@@ -84,12 +86,14 @@ public class EntityInstanceTest
         var loginBody = executeUsingPost("""
                 mutation {
                     employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
         
-        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
+        assertThat(getBoolean(loginBody, "data.employeeLogin.commandResult.hasErrors")).isFalse();
 
         var entityInstancesBody = executeUsingPost("""
                 query {
@@ -108,12 +112,14 @@ public class EntityInstanceTest
         var loginBody = executeUsingPost("""
                 mutation {
                     employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
         
-        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
+        assertThat(getBoolean(loginBody, "data.employeeLogin.commandResult.hasErrors")).isFalse();
 
         var entityTypeBody = executeUsingPost("""
                 query {
@@ -136,12 +142,14 @@ public class EntityInstanceTest
         var logoutBody = executeUsingPost("""
                 mutation {
                     logout(input: { clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
         
-        assertThat(getBoolean(logoutBody, "data.logout.hasErrors")).isFalse();
+        assertThat(getBoolean(logoutBody, "data.logout.commandResult.hasErrors")).isFalse();
 
         var entityInstanceBody = executeUsingPost("""
                 query {
@@ -163,45 +171,47 @@ public class EntityInstanceTest
     public void entityInstanceQueryUsingId()
             throws Exception {
         var loginBody = executeUsingPost("""
-            mutation {
-                employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
-                    hasErrors
+                mutation {
+                    employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
+                        commandResult {
+                            hasErrors
+                        }
+                    }
                 }
-            }
-            """);
+                """);
         
-        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
+        assertThat(getBoolean(loginBody, "data.employeeLogin.commandResult.hasErrors")).isFalse();
 
         var entityTypeBody = executeUsingPost("""
-            query {
-                entityType(componentVendorName: "%s", entityTypeName: "%s") {
-                    entityInstances {
-                        edges {
-                            node {
-                                ulid
+                query {
+                    entityType(componentVendorName: "%s", entityTypeName: "%s") {
+                        entityInstances {
+                            edges {
+                                node {
+                                    ulid
+                                }
                             }
                         }
                     }
                 }
-            }
-            """.formatted(ComponentVendors.ECHOTHREE, EntityTypes.GlAccount));
+                """.formatted(ComponentVendors.ECHOTHREE, EntityTypes.GlAccount));
 
         var entityInstances = getList(entityTypeBody, "data.entityType.entityInstances.edges");
         var entityInstance = getObject(entityInstances, "[0]");
         var ulid = getString(entityInstance, "node.ulid");
 
         var entityInstanceBody = executeUsingPost("""
-            query {
-                entityInstance(id: "%s") {
-                    entityType {
-                        entityTypeName
-                        componentVendor {
-                            componentVendorName
+                query {
+                    entityInstance(id: "%s") {
+                        entityType {
+                            entityTypeName
+                            componentVendor {
+                                componentVendorName
+                            }
                         }
                     }
                 }
-            }
-            """.formatted(ulid));
+                """.formatted(ulid));
 
         assertThat(getString(entityInstanceBody, "data.entityInstance.entityType.componentVendor.componentVendorName")).isEqualTo(ComponentVendors.ECHOTHREE.toString());
         assertThat(getString(entityInstanceBody, "data.entityInstance.entityType.entityTypeName")).isEqualTo(EntityTypes.GlAccount.toString());

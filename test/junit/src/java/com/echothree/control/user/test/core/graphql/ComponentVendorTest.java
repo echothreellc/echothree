@@ -28,7 +28,11 @@ public class ComponentVendorTest
     public void componentVendorsQueryNoAuth()
             throws Exception {
         var componentVendorsBody = executeUsingPost("""
-        query { componentVendors { componentVendorName } }
+                query {
+                    componentVendors {
+                        componentVendorName
+                    }
+                }
         """);
 
         assertThat(getList(componentVendorsBody, "data.componentVendors")).size().isEqualTo(0);
@@ -38,7 +42,11 @@ public class ComponentVendorTest
     public void componentVendorQueryNoAuth()
             throws Exception {
         var componentVendorBody = executeUsingPost("""
-                query { componentVendor(componentVendorName: "%s") { componentVendorName } }
+                query {
+                    componentVendor(componentVendorName: "%s") {
+                        componentVendorName
+                    }
+                }
                 """.formatted(ComponentVendors.ECHOTHREE));
 
         assertThat(getMap(componentVendorBody, "data.componentVendor")).isNull();
@@ -50,12 +58,14 @@ public class ComponentVendorTest
         var loginBody = executeUsingPost("""
                 mutation {
                     employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
         
-        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
+        assertThat(getBoolean(loginBody, "data.employeeLogin.commandResult.hasErrors")).isFalse();
 
         var componentVendorsBody = executeUsingPost("""
                 query {
@@ -74,12 +84,14 @@ public class ComponentVendorTest
         var loginBody = executeUsingPost("""
                 mutation {
                     employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
         
-        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
+        assertThat(getBoolean(loginBody, "data.employeeLogin.commandResult.hasErrors")).isFalse();
 
         var componentVendorBody = executeUsingPost("""
                 query {
@@ -98,12 +110,14 @@ public class ComponentVendorTest
         var loginBody = executeUsingPost("""
                 mutation {
                     employeeLogin(input: { username: "test e", password: "password", companyName: "TEST_COMPANY", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
         
-        assertThat(getBoolean(loginBody, "data.employeeLogin.hasErrors")).isFalse();
+        assertThat(getBoolean(loginBody, "data.employeeLogin.commandResult.hasErrors")).isFalse();
 
         var componentVendorBody = executeUsingPost("""
                 query {

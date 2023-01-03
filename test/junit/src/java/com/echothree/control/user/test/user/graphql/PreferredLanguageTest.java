@@ -29,12 +29,14 @@ public class PreferredLanguageTest
         var setUserVisitPreferredLanguage = executeUsingPost("""
                 mutation {
                     setUserVisitPreferredLanguage(input: { languageIsoName: "de", clientMutationId: "1" }) {
-                        hasErrors
+                        commandResult {
+                            hasErrors
+                        }
                     }
                 }
                 """);
 
-        assertThat(getBoolean(setUserVisitPreferredLanguage, "data.setUserVisitPreferredLanguage.hasErrors")).isFalse();
+        assertThat(getBoolean(setUserVisitPreferredLanguage, "data.setUserVisitPreferredLanguage.commandResult.hasErrors")).isFalse();
     }
 
 }
