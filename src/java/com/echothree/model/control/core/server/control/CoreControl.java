@@ -5714,7 +5714,23 @@ public class CoreControl
         
         return entityAttributeEntityAttributeGroup;
     }
-    
+
+    public long countEntityAttributeEntityAttributeGroupsByEntityAttribute(EntityAttribute entityAttribute) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM entityattributeentityattributegroups " +
+                "WHERE enaenagp_ena_entityattributeid = ? AND enaenagp_thrutime = ?",
+                entityAttribute, Session.MAX_TIME_LONG);
+    }
+
+    public long countEntityAttributeEntityAttributeGroupsByEntityAttributeGroup(EntityAttributeGroup entityAttributeGroup) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM entityattributeentityattributegroups " +
+                "WHERE enaenagp_enagp_entityattributegroupid = ? AND enaenagp_thrutime = ?",
+                entityAttributeGroup, Session.MAX_TIME_LONG);
+    }
+
     private EntityAttributeEntityAttributeGroup getEntityAttributeEntityAttributeGroup(EntityAttribute entityAttribute,
             EntityAttributeGroup entityAttributeGroup, EntityPermission entityPermission) {
         EntityAttributeEntityAttributeGroup entityAttributeEntityAttributeGroup;
