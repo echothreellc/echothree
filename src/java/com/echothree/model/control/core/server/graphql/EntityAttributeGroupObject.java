@@ -29,6 +29,7 @@ import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @GraphQLDescription("entity attribute group object")
@@ -103,5 +104,24 @@ public class EntityAttributeGroupObject
             return null;
         }
     }
-    
+
+    @GraphQLField
+    @GraphQLDescription("entity attribute entity attribute groups")
+    public Collection<EntityAttributeEntityAttributeGroupObject> getEntityAttributeEntityAttributeGroups(final DataFetchingEnvironment env) {
+        Collection<EntityAttributeEntityAttributeGroupObject> entityAttributeEntityAttributeGroupObjects = null;
+
+        if(CoreSecurityUtils.getInstance().getHasEntityAttributeEntityAttributeGroupsAccess(env)) {
+            var coreControl = Session.getModelController(CoreControl.class);
+            var entityAttributeEntityAttributeGroups = coreControl.getEntityAttributeEntityAttributeGroupsByEntityAttributeGroup(entityAttributeGroup);
+
+            entityAttributeEntityAttributeGroupObjects = new ArrayList<>(entityAttributeEntityAttributeGroups.size());
+
+            for(var entityAttributeEntityAttributeGroup : entityAttributeEntityAttributeGroups) {
+                entityAttributeEntityAttributeGroupObjects.add(new EntityAttributeEntityAttributeGroupObject(entityAttributeEntityAttributeGroup));
+            }
+        }
+
+        return entityAttributeEntityAttributeGroupObjects;
+    }
+
 }
