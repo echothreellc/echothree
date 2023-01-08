@@ -2815,6 +2815,7 @@ public class CoreControl
         chainControl.deleteChainInstances(chainInstances, deletedBy);
 
         deleteEntityAttributesByEntityInstance(entityInstance, deletedBy);
+        deleteEntityAppearancesByEntityInstance(entityInstance, deletedBy);
     }
     
     public void removeEntityInstance(EntityInstance entityInstance) {
@@ -18436,6 +18437,27 @@ public class CoreControl
 
     private static final Map<EntityPermission, String> getEntityAppearancesByAppearanceQueries;
 
+    public List<EntityAppearance> getEntityAppearancesByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        List<EntityAppearance> entityAppearances;
+
+        try {
+            var ps = EntityAppearanceFactory.getInstance().prepareStatement(
+                    "SELECT _ALL_ " +
+                    "FROM entityappearances " +
+                    "WHERE eniapprnc_eni_entityinstanceid = ? AND eniapprnc_thrutime = ? " +
+                    "FOR UPDATE");
+
+            ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
+            ps.setLong(2, Session.MAX_TIME);
+
+            entityAppearances = EntityAppearanceFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return entityAppearances;
+    }
+
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
@@ -18507,10 +18529,18 @@ public class CoreControl
         sendEvent(entityAppearance.getEntityInstance(), EventTypes.MODIFY, entityAppearance.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
-    public void deleteEntityAppearancesByAppearance(Appearance appearance, BasePK deletedBy) {
-        List<EntityAppearance> entityAppearances = getEntityAppearancesByAppearanceForUpdate(appearance);
+    public void deleteEntityAppearancesByEntityInstance(EntityInstance entityInstance, BasePK deletedBy) {
+        var entityAppearances = getEntityAppearancesByEntityInstanceForUpdate(entityInstance);
 
-        entityAppearances.forEach((entityAppearance) -> 
+        entityAppearances.forEach((entityAppearance) ->
+                deleteEntityAppearance(entityAppearance, deletedBy)
+        );
+    }
+
+    public void deleteEntityAppearancesByAppearance(Appearance appearance, BasePK deletedBy) {
+        var entityAppearances = getEntityAppearancesByAppearanceForUpdate(appearance);
+
+        entityAppearances.forEach((entityAppearance) ->
                 deleteEntityAppearance(entityAppearance, deletedBy)
         );
     }
