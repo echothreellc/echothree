@@ -2858,7 +2858,23 @@ public class CoreControl
         
         return eventType;
     }
-    
+
+    private final Map<EventTypes, EventType> eventTypeCache = new HashMap<>();
+
+    public EventType getEventTypeByEventTypesFromCache(EventTypes eventTypeEnum) {
+        EventType eventType = eventTypeCache.get(eventTypeEnum);
+
+        if(eventType == null) {
+            eventType = getEventTypeByName(eventTypeEnum.name());
+
+            if(eventType != null) {
+                eventTypeCache.put(eventTypeEnum, eventType);
+            }
+        }
+
+        return eventType;
+    }
+
     public List<EventType> getEventTypes() {
         PreparedStatement ps = EventTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
@@ -13039,8 +13055,8 @@ public class CoreControl
     @Override
     public Event sendEvent(final EntityInstance entityInstance, final EventTypes eventTypeEnum, final EntityInstance relatedEntityInstance,
             final EventTypes relatedEventTypeEnum, final BasePK createdByPK) {
-        final var eventType = getEventTypeByName(eventTypeEnum.name());
-        final var relatedEventType = relatedEventTypeEnum == null? null: getEventTypeByName(relatedEventTypeEnum.name());
+        final var eventType = getEventTypeByEventTypesFromCache(eventTypeEnum);
+        final var relatedEventType = relatedEventTypeEnum == null? null: getEventTypeByEventTypesFromCache(relatedEventTypeEnum);
         final var createdByEntityInstance = createdByPK == null ? null : getEntityInstanceByBasePK(createdByPK);
         Event event = null;
 
