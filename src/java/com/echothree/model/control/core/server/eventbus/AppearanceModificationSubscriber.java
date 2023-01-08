@@ -14,22 +14,17 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.filter.server.eventbus;
+package com.echothree.model.control.core.server.eventbus;
 
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.core.server.eventbus.SentEvent;
-import com.echothree.model.control.core.server.eventbus.SentEventSubscriber;
-import com.echothree.model.control.filter.server.control.FilterControl;
-import com.echothree.model.data.core.server.entity.Event;
-import com.echothree.model.data.filter.common.FilterStepConstants;
-import com.echothree.util.common.persistence.BasePK;
+import com.echothree.model.data.core.common.AppearanceConstants;
 import com.echothree.util.server.persistence.PersistenceUtils;
 import com.echothree.util.server.persistence.Session;
 import com.google.common.eventbus.Subscribe;
 
 @SentEventSubscriber
-public class FilterModificationEventRecorder {
+public class AppearanceModificationSubscriber {
 
     @Subscribe
     public void recordSentEvent(SentEvent se) {
@@ -40,16 +35,21 @@ public class FilterModificationEventRecorder {
         var entityTypeName = lastEntityTypeDetail.getEntityTypeName();
         var componentVendor = lastEntityTypeDetail.getComponentVendor();
         var componentVendorName = componentVendor.getLastDetail().getComponentVendorName();
+        var eventType = event.getEventType();
+        var eventTypeName = eventType.getEventTypeName();
 
-        if(FilterStepConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
-                && FilterStepConstants.ENTITY_TYPE_NAME.equals(entityTypeName)) {
+        if(AppearanceConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
+                && AppearanceConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
+                && EventTypes.MODIFY.name().equals(eventTypeName)) {
             var coreControl = Session.getModelController(CoreControl.class);
-            var filterControl = Session.getModelController(FilterControl.class);
-            var filterStep = filterControl.getFilterStepByEntityInstance(event.getEntityInstance());
+            var appearance = coreControl.getAppearanceByEntityInstance(entityInstance);
+            var entityAppearances = coreControl.getEntityAppearancesByAppearance(appearance);
+            var createdBy = PersistenceUtils.getInstance().getBasePKFromEntityInstance(event.getCreatedBy());
 
-            coreControl.sendEvent(filterStep.getLastDetail().getFilter().getPrimaryKey(),
-                    EventTypes.TOUCH, filterStep.getPrimaryKey(), EventTypes.valueOf(event.getEventType().getEventTypeName()),
-                    PersistenceUtils.getInstance().getBasePKFromEntityInstance(event.getCreatedBy()));
+            for(var entityAppearance : entityAppearances) {
+                coreControl.sendEvent(entityAppearance.getEntityInstance(), EventTypes.TOUCH,
+                        entityInstance, EventTypes.MODIFY, createdBy);
+            }
         }
     }
 
