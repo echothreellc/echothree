@@ -890,15 +890,15 @@ public class CoreControl
     private final Map<ComponentVendor, Map<String, EntityType>> entityTypeCache = new HashMap<>();
     
     public EntityType getEntityTypeByNameFromCache(ComponentVendor componentVendor, String entityTypeName) {
-        Map<String, EntityType> cacheByCompnentVendor = entityTypeCache.computeIfAbsent(componentVendor, k -> new HashMap<>());
+        Map<String, EntityType> cacheByComponentVendor = entityTypeCache.computeIfAbsent(componentVendor, k -> new HashMap<>());
 
-        EntityType entityType = cacheByCompnentVendor.get(entityTypeName);
+        EntityType entityType = cacheByComponentVendor.get(entityTypeName);
         
         if(entityType == null) {
             entityType = getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                cacheByCompnentVendor.put(entityTypeName, entityType);
+                cacheByComponentVendor.put(entityTypeName, entityType);
             }
         }
         
