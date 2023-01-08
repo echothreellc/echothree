@@ -17856,6 +17856,7 @@ public class CoreControl
         deleteAppearanceTextDecorationsByAppearance(appearance, deletedBy);
         deleteAppearanceTextTransformationsByAppearance(appearance, deletedBy);
         deleteAppearanceDescriptionsByAppearance(appearance, deletedBy);
+        deleteEntityAppearancesByAppearance(appearance, deletedBy);
 
         appearanceDetail.setThruTime(session.START_TIME_LONG);
         appearance.setActiveDetail(null);
