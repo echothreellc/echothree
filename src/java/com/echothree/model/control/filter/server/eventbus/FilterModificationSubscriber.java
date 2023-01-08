@@ -21,15 +21,13 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.eventbus.SentEvent;
 import com.echothree.model.control.core.server.eventbus.SentEventSubscriber;
 import com.echothree.model.control.filter.server.control.FilterControl;
-import com.echothree.model.data.core.server.entity.Event;
 import com.echothree.model.data.filter.common.FilterStepConstants;
-import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.PersistenceUtils;
 import com.echothree.util.server.persistence.Session;
 import com.google.common.eventbus.Subscribe;
 
 @SentEventSubscriber
-public class FilterModificationEventRecorder {
+public class FilterModificationSubscriber {
 
     @Subscribe
     public void recordSentEvent(SentEvent se) {

@@ -890,15 +890,15 @@ public class CoreControl
     private final Map<ComponentVendor, Map<String, EntityType>> entityTypeCache = new HashMap<>();
     
     public EntityType getEntityTypeByNameFromCache(ComponentVendor componentVendor, String entityTypeName) {
-        Map<String, EntityType> cacheByCompnentVendor = entityTypeCache.computeIfAbsent(componentVendor, k -> new HashMap<>());
+        Map<String, EntityType> cacheByComponentVendor = entityTypeCache.computeIfAbsent(componentVendor, k -> new HashMap<>());
 
-        EntityType entityType = cacheByCompnentVendor.get(entityTypeName);
+        EntityType entityType = cacheByComponentVendor.get(entityTypeName);
         
         if(entityType == null) {
             entityType = getEntityTypeByName(componentVendor, entityTypeName);
             
             if(entityType != null) {
-                cacheByCompnentVendor.put(entityTypeName, entityType);
+                cacheByComponentVendor.put(entityTypeName, entityType);
             }
         }
         
@@ -2815,6 +2815,7 @@ public class CoreControl
         chainControl.deleteChainInstances(chainInstances, deletedBy);
 
         deleteEntityAttributesByEntityInstance(entityInstance, deletedBy);
+        deleteEntityAppearancesByEntityInstance(entityInstance, deletedBy);
     }
     
     public void removeEntityInstance(EntityInstance entityInstance) {
@@ -2857,7 +2858,23 @@ public class CoreControl
         
         return eventType;
     }
-    
+
+    private final Map<EventTypes, EventType> eventTypeCache = new HashMap<>();
+
+    public EventType getEventTypeByEventTypesFromCache(EventTypes eventTypeEnum) {
+        EventType eventType = eventTypeCache.get(eventTypeEnum);
+
+        if(eventType == null) {
+            eventType = getEventTypeByName(eventTypeEnum.name());
+
+            if(eventType != null) {
+                eventTypeCache.put(eventTypeEnum, eventType);
+            }
+        }
+
+        return eventType;
+    }
+
     public List<EventType> getEventTypes() {
         PreparedStatement ps = EventTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
@@ -13038,8 +13055,8 @@ public class CoreControl
     @Override
     public Event sendEvent(final EntityInstance entityInstance, final EventTypes eventTypeEnum, final EntityInstance relatedEntityInstance,
             final EventTypes relatedEventTypeEnum, final BasePK createdByPK) {
-        final var eventType = getEventTypeByName(eventTypeEnum.name());
-        final var relatedEventType = relatedEventTypeEnum == null? null: getEventTypeByName(relatedEventTypeEnum.name());
+        final var eventType = getEventTypeByEventTypesFromCache(eventTypeEnum);
+        final var relatedEventType = relatedEventTypeEnum == null? null: getEventTypeByEventTypesFromCache(relatedEventTypeEnum);
         final var createdByEntityInstance = createdByPK == null ? null : getEntityInstanceByBasePK(createdByPK);
         Event event = null;
 
@@ -17856,6 +17873,7 @@ public class CoreControl
         deleteAppearanceTextDecorationsByAppearance(appearance, deletedBy);
         deleteAppearanceTextTransformationsByAppearance(appearance, deletedBy);
         deleteAppearanceDescriptionsByAppearance(appearance, deletedBy);
+        deleteEntityAppearancesByAppearance(appearance, deletedBy);
 
         appearanceDetail.setThruTime(session.START_TIME_LONG);
         appearance.setActiveDetail(null);
@@ -18435,6 +18453,27 @@ public class CoreControl
 
     private static final Map<EntityPermission, String> getEntityAppearancesByAppearanceQueries;
 
+    public List<EntityAppearance> getEntityAppearancesByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        List<EntityAppearance> entityAppearances;
+
+        try {
+            var ps = EntityAppearanceFactory.getInstance().prepareStatement(
+                    "SELECT _ALL_ " +
+                    "FROM entityappearances " +
+                    "WHERE eniapprnc_eni_entityinstanceid = ? AND eniapprnc_thrutime = ? " +
+                    "FOR UPDATE");
+
+            ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
+            ps.setLong(2, Session.MAX_TIME);
+
+            entityAppearances = EntityAppearanceFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return entityAppearances;
+    }
+
     static {
         Map<EntityPermission, String> queryMap = new HashMap<>(2);
 
@@ -18506,10 +18545,18 @@ public class CoreControl
         sendEvent(entityAppearance.getEntityInstance(), EventTypes.MODIFY, entityAppearance.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
-    public void deleteEntityAppearancesByAppearance(Appearance appearance, BasePK deletedBy) {
-        List<EntityAppearance> entityAppearances = getEntityAppearancesByAppearanceForUpdate(appearance);
+    public void deleteEntityAppearancesByEntityInstance(EntityInstance entityInstance, BasePK deletedBy) {
+        var entityAppearances = getEntityAppearancesByEntityInstanceForUpdate(entityInstance);
 
-        entityAppearances.forEach((entityAppearance) -> 
+        entityAppearances.forEach((entityAppearance) ->
+                deleteEntityAppearance(entityAppearance, deletedBy)
+        );
+    }
+
+    public void deleteEntityAppearancesByAppearance(Appearance appearance, BasePK deletedBy) {
+        var entityAppearances = getEntityAppearancesByAppearanceForUpdate(appearance);
+
+        entityAppearances.forEach((entityAppearance) ->
                 deleteEntityAppearance(entityAppearance, deletedBy)
         );
     }
