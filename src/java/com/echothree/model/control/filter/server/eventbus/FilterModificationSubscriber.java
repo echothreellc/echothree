@@ -27,7 +27,7 @@ import com.echothree.util.server.persistence.Session;
 import com.google.common.eventbus.Subscribe;
 
 @SentEventSubscriber
-public class FilterModificationEventRecorder {
+public class FilterModificationSubscriber {
 
     @Subscribe
     public void recordSentEvent(SentEvent se) {
