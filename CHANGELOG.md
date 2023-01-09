@@ -1,5 +1,14 @@
 # Changelog
 
+## 2023-01-08-01
+
+* Modifying Appearance Should TOUCH Entity Instances With That Appearance [601](https://gitlab.echothree.com/echothree/echothree/-/issues/601)
+* Add Entity Attribute Entity Attribute Group Mutations [610](https://gitlab.echothree.com/echothree/echothree/-/issues/610)
+* 2023 Copyright Update [612](https://gitlab.echothree.com/echothree/echothree/-/issues/612)
+* ICU4J 72.1 Upgrade [613](https://gitlab.echothree.com/echothree/echothree/-/issues/613)
+* Remove setDefault* Mutations [614](https://gitlab.echothree.com/echothree/echothree/-/issues/614)
+* Move CommandResult fields to CommandResult object [633](https://gitlab.echothree.com/echothree/echothree/-/issues/633)
+
 ## 2022-12-25-01
 
 * Add Related Item Type Object and Queries [545](https://gitlab.echothree.com/echothree/echothree/-/issues/545)
