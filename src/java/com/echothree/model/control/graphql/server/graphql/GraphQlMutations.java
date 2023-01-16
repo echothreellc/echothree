@@ -23,9 +23,11 @@ import com.echothree.control.user.authentication.common.AuthenticationUtil;
 import com.echothree.control.user.campaign.common.CampaignUtil;
 import com.echothree.control.user.content.common.ContentUtil;
 import com.echothree.control.user.content.common.result.CreateContentCatalogResult;
+import com.echothree.control.user.content.common.result.CreateContentCategoryResult;
 import com.echothree.control.user.content.common.result.CreateContentCollectionResult;
 import com.echothree.control.user.content.common.result.CreateContentPageLayoutResult;
 import com.echothree.control.user.content.common.result.EditContentCatalogResult;
+import com.echothree.control.user.content.common.result.EditContentCategoryResult;
 import com.echothree.control.user.content.common.result.EditContentCollectionResult;
 import com.echothree.control.user.content.common.result.EditContentPageLayoutResult;
 import com.echothree.control.user.core.common.CoreUtil;
@@ -385,6 +387,148 @@ public class GraphQlMutations
                 commandForm.setEditMode(EditMode.UPDATE);
 
                 commandResult = ContentUtil.getHome().editContentCatalog(getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static MutationResultWithIdObject createContentCategory(final DataFetchingEnvironment env,
+            @GraphQLName("contentCollectionName") @GraphQLNonNull final String contentCollectionName,
+            @GraphQLName("contentCatalogName") @GraphQLNonNull final String contentCatalogName,
+            @GraphQLName("contentCategoryName") @GraphQLNonNull final String contentCategoryName,
+            @GraphQLName("parentContentCategoryName") final String parentContentCategoryName,
+            @GraphQLName("defaultOfferName") final String defaultOfferName,
+            @GraphQLName("defaultUseName") final String defaultUseName,
+            @GraphQLName("defaultSourceName") final String defaultSourceName,
+            @GraphQLName("contentCategoryItemSelectorName") final String contentCategoryItemSelectorName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = ContentUtil.getHome().getCreateContentCategoryForm();
+
+            commandForm.setContentCollectionName(contentCollectionName);
+            commandForm.setContentCatalogName(contentCatalogName);
+            commandForm.setContentCategoryName(contentCategoryName);
+            commandForm.setParentContentCategoryName(parentContentCategoryName);
+            commandForm.setDefaultOfferName(defaultOfferName);
+            commandForm.setDefaultUseName(defaultUseName);
+            commandForm.setDefaultSourceName(defaultSourceName);
+            commandForm.setContentCategoryItemSelectorName(contentCategoryItemSelectorName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            var commandResult = ContentUtil.getHome().createContentCategory(getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateContentCategoryResult)commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static MutationResultObject deleteContentCategory(final DataFetchingEnvironment env,
+            @GraphQLName("contentCollectionName") @GraphQLNonNull final String contentCollectionName,
+            @GraphQLName("contentCatalogName") @GraphQLNonNull final String contentCatalogName,
+            @GraphQLName("contentCategoryName") @GraphQLNonNull final String contentCategoryName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = ContentUtil.getHome().getDeleteContentCategoryForm();
+
+            commandForm.setContentCollectionName(contentCollectionName);
+            commandForm.setContentCatalogName(contentCatalogName);
+            commandForm.setContentCategoryName(contentCategoryName);
+
+            var commandResult = ContentUtil.getHome().deleteContentCategory(getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static MutationResultWithIdObject editContentCategory(final DataFetchingEnvironment env,
+            @GraphQLName("contentCollectionName") @GraphQLNonNull final String contentCollectionName,
+            @GraphQLName("contentCatalogName") @GraphQLNonNull final String contentCatalogName,
+            @GraphQLName("originalContentCategoryName") @GraphQLNonNull final String originalContentCategoryName,
+            @GraphQLName("contentCategoryName") final String contentCategoryName,
+            @GraphQLName("parentContentCategoryName") final String parentContentCategoryName,
+            @GraphQLName("defaultOfferName") final String defaultOfferName,
+            @GraphQLName("defaultUseName") final String defaultUseName,
+            @GraphQLName("defaultSourceName") final String defaultSourceName,
+            @GraphQLName("contentCategoryItemSelectorName") final String contentCategoryItemSelectorName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var spec = ContentUtil.getHome().getContentCategorySpec();
+
+            spec.setContentCollectionName(contentCollectionName);
+            spec.setContentCatalogName(contentCatalogName);
+            spec.setContentCategoryName(originalContentCategoryName);
+
+            var commandForm = ContentUtil.getHome().getEditContentCategoryForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = ContentUtil.getHome().editContentCategory(getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditContentCategoryResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                mutationResultObject.setEntityInstance(result.getContentCategory().getEntityInstance());
+
+                if(arguments.containsKey("contentCategoryName"))
+                    edit.setContentCategoryName(contentCategoryName);
+                if(arguments.containsKey("parentContentCategoryName"))
+                    edit.setDefaultOfferName(parentContentCategoryName);
+                if(arguments.containsKey("defaultOfferName"))
+                    edit.setDefaultOfferName(defaultOfferName);
+                if(arguments.containsKey("defaultUseName"))
+                    edit.setDefaultUseName(defaultUseName);
+                if(arguments.containsKey("defaultSourceName"))
+                    edit.setDefaultSourceName(defaultSourceName);
+                if(arguments.containsKey("contentCategoryItemSelectorName"))
+                    edit.setIsDefault(contentCategoryItemSelectorName);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = ContentUtil.getHome().editContentCategory(getUserVisitPK(env), commandForm);
             }
 
             mutationResultObject.setCommandResult(commandResult);
