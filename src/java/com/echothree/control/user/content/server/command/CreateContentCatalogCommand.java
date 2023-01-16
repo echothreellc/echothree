@@ -17,6 +17,7 @@
 package com.echothree.control.user.content.server.command;
 
 import com.echothree.control.user.content.common.form.CreateContentCatalogForm;
+import com.echothree.control.user.content.common.result.ContentResultFactory;
 import com.echothree.model.control.content.common.ContentCategories;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
@@ -80,13 +81,16 @@ public class CreateContentCatalogCommand
     
     @Override
     protected BaseResult execute() {
+        var result = ContentResultFactory.getCreateContentCatalogResult();
         var contentControl = Session.getModelController(ContentControl.class);
-        String contentCollectionName = form.getContentCollectionName();
-        ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        var contentCollectionName = form.getContentCollectionName();
+        var contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        ContentCatalog contentCatalog = null;
         
         if(contentCollection != null) {
             String contentCatalogName = form.getContentCatalogName();
-            ContentCatalog contentCatalog = contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
+            
+            contentCatalog = contentControl.getContentCatalogByName(contentCollection, contentCatalogName);
             
             if(contentCatalog == null) {
                 String defaultOfferName = form.getDefaultOfferName();
@@ -153,8 +157,16 @@ public class CreateContentCatalogCommand
         } else {
             addExecutionError(ExecutionErrors.UnknownContentCollectionName.name(), contentCollectionName);
         }
-        
-        return null;
+
+        if(contentCatalog != null) {
+            var contentCatalogDetail = contentCatalog.getLastDetail();
+
+            result.setContentCollectionName(contentCatalogDetail.getContentCollection().getLastDetail().getContentCollectionName());
+            result.setContentCatalogName(contentCatalogDetail.getContentCatalogName());
+            result.setEntityRef(contentCatalog.getPrimaryKey().getEntityRef());
+        }
+
+        return result;
     }
     
 }
