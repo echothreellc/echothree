@@ -22,7 +22,9 @@ import com.echothree.control.user.accounting.common.result.EditItemAccountingCat
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
 import com.echothree.control.user.campaign.common.CampaignUtil;
 import com.echothree.control.user.content.common.ContentUtil;
+import com.echothree.control.user.content.common.result.CreateContentCollectionResult;
 import com.echothree.control.user.content.common.result.CreateContentPageLayoutResult;
+import com.echothree.control.user.content.common.result.EditContentCollectionResult;
 import com.echothree.control.user.content.common.result.EditContentPageLayoutResult;
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.result.CreateEntityAttributeGroupResult;
@@ -154,6 +156,116 @@ import javax.naming.NamingException;
 @GraphQLName("mutation")
 public class GraphQlMutations
         extends BaseGraphQl {
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static MutationResultWithIdObject createContentCollection(final DataFetchingEnvironment env,
+            @GraphQLName("contentCollectionName") @GraphQLNonNull final String contentCollectionName,
+            @GraphQLName("defaultOfferName") final String defaultOfferName,
+            @GraphQLName("defaultUseName") final String defaultUseName,
+            @GraphQLName("defaultSourceName") final String defaultSourceName,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = ContentUtil.getHome().getCreateContentCollectionForm();
+
+            commandForm.setContentCollectionName(contentCollectionName);
+            commandForm.setDefaultOfferName(defaultOfferName);
+            commandForm.setDefaultUseName(defaultUseName);
+            commandForm.setDefaultSourceName(defaultSourceName);
+            commandForm.setDescription(description);
+
+            var commandResult = ContentUtil.getHome().createContentCollection(getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateContentCollectionResult)commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static MutationResultObject deleteContentCollection(final DataFetchingEnvironment env,
+            @GraphQLName("contentCollectionName") @GraphQLNonNull final String contentCollectionName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = ContentUtil.getHome().getDeleteContentCollectionForm();
+
+            commandForm.setContentCollectionName(contentCollectionName);
+
+            var commandResult = ContentUtil.getHome().deleteContentCollection(getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static MutationResultWithIdObject editContentCollection(final DataFetchingEnvironment env,
+            @GraphQLName("originalContentCollectionName") @GraphQLNonNull final String originalContentCollectionName,
+            @GraphQLName("contentCollectionName") final String contentCollectionName,
+            @GraphQLName("defaultOfferName") final String defaultOfferName,
+            @GraphQLName("defaultUseName") final String defaultUseName,
+            @GraphQLName("defaultSourceName") final String defaultSourceName,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var spec = ContentUtil.getHome().getContentCollectionSpec();
+
+            spec.setContentCollectionName(originalContentCollectionName);
+
+            var commandForm = ContentUtil.getHome().getEditContentCollectionForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = ContentUtil.getHome().editContentCollection(getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditContentCollectionResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                mutationResultObject.setEntityInstance(result.getContentCollection().getEntityInstance());
+
+                if(arguments.containsKey("contentCollectionName"))
+                    edit.setContentCollectionName(contentCollectionName);
+                if(arguments.containsKey("defaultOfferName"))
+                    edit.setDefaultOfferName(defaultOfferName);
+                if(arguments.containsKey("defaultUseName"))
+                    edit.setDefaultUseName(defaultUseName);
+                if(arguments.containsKey("defaultSourceName"))
+                    edit.setDefaultSourceName(defaultSourceName);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = ContentUtil.getHome().editContentCollection(getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
 
     @GraphQLField
     @GraphQLRelayMutation
