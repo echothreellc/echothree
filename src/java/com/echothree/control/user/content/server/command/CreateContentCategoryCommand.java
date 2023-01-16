@@ -17,6 +17,7 @@
 package com.echothree.control.user.content.server.command;
 
 import com.echothree.control.user.content.common.form.CreateContentCategoryForm;
+import com.echothree.control.user.content.common.result.ContentResultFactory;
 import com.echothree.model.control.content.common.ContentCategories;
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.offer.server.control.OfferControl;
@@ -94,9 +95,11 @@ public class CreateContentCategoryCommand
     
     @Override
     protected BaseResult execute() {
+        var result = ContentResultFactory.getCreateContentCategoryResult();
         var contentControl = Session.getModelController(ContentControl.class);
         String contentCollectionName = form.getContentCollectionName();
         ContentCollection contentCollection = contentControl.getContentCollectionByName(contentCollectionName);
+        ContentCategory contentCategory = null;
         
         if(contentCollection != null) {
             String contentCatalogName = form.getContentCatalogName();
@@ -104,7 +107,8 @@ public class CreateContentCategoryCommand
             
             if(contentCatalog != null) {
                 String contentCategoryName = form.getContentCategoryName();
-                ContentCategory contentCategory = contentControl.getContentCategoryByName(contentCatalog, contentCategoryName);
+                
+                contentCategory = contentControl.getContentCategoryByName(contentCatalog, contentCategoryName);
                 
                 if(contentCategory == null) {
                     String parentContentCategoryName = form.getParentContentCategoryName();
@@ -233,8 +237,18 @@ public class CreateContentCategoryCommand
         } else {
             addExecutionError(ExecutionErrors.UnknownContentCollectionName.name(), contentCollectionName);
         }
-        
-        return null;
+
+        if(contentCategory != null) {
+            var contentCategoryDetail = contentCategory.getLastDetail();
+            var contentCatalogDetail = contentCategoryDetail.getContentCatalog().getLastDetail();
+
+            result.setContentCollectionName(contentCatalogDetail.getContentCollection().getLastDetail().getContentCollectionName());
+            result.setContentCatalogName(contentCatalogDetail.getContentCatalogName());
+            result.setContentCategoryName(contentCategoryDetail.getContentCategoryName());
+            result.setEntityRef(contentCategory.getPrimaryKey().getEntityRef());
+        }
+
+        return result;
     }
     
 }
