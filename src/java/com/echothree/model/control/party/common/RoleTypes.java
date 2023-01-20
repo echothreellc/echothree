@@ -21,6 +21,6 @@ public enum RoleTypes {
     CONSUMER,
     EMPLOYEE,
     EMPLOYER,
-    SUPPLIER,
+    VENDOR,
 
 }

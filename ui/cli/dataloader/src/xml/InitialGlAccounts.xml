@@ -148,8 +148,8 @@ limitations under the License.
         <glAccountCategory glAccountCategoryName="SALES_RETURNS" isDefault="false" sortOrder="0">
             <glAccountCategoryDescription languageIsoName="en" description="Customer Returns" />
         </glAccountCategory>
-        <glAccountCategory glAccountCategoryName="SUPPLIER_ACCOUNT" isDefault="false" sortOrder="0">
-            <glAccountCategoryDescription languageIsoName="en" description="Supplier" />
+        <glAccountCategory glAccountCategoryName="VENDOR_ACCOUNT" isDefault="false" sortOrder="0">
+            <glAccountCategoryDescription languageIsoName="en" description="Vendor" />
         </glAccountCategory>
         <glAccountCategory glAccountCategoryName="TAX_ACCOUNT" isDefault="false" sortOrder="0">
             <glAccountCategoryDescription languageIsoName="en" description="Tax" />
