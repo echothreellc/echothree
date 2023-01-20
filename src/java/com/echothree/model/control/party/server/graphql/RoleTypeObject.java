@@ -39,7 +39,7 @@ public class RoleTypeObject
     }
     
     @GraphQLField
-    @GraphQLDescription("party type name")
+    @GraphQLDescription("role type name")
     @GraphQLNonNull
     public String getRoleTypeName() {
         return roleType.getRoleTypeName();
