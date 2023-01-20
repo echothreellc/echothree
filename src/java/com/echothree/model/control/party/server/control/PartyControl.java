@@ -2665,7 +2665,24 @@ public class PartyControl
         
         return partyRelationshipTypeDescription;
     }
-    
+
+    public String getBestPartyRelationshipTypeDescription(PartyRelationshipType partyRelationshipType, Language language) {
+        var partyRelationshipTypeDescription = getPartyRelationshipTypeDescription(partyRelationshipType, language);
+        String description;
+
+        if(partyRelationshipTypeDescription == null && !language.getIsDefault()) {
+            partyRelationshipTypeDescription = getPartyRelationshipTypeDescription(partyRelationshipType, getPartyControl().getDefaultLanguage());
+        }
+
+        if(partyRelationshipTypeDescription == null) {
+            description = partyRelationshipType.getPartyRelationshipTypeName();
+        } else {
+            description = partyRelationshipTypeDescription.getDescription();
+        }
+
+        return description;
+    }
+
     // --------------------------------------------------------------------------------
     //   Party Alias Types
     // --------------------------------------------------------------------------------
