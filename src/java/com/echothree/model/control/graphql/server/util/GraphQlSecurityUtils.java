@@ -56,12 +56,12 @@ public final class GraphQlSecurityUtils {
         return foundCtor;
     }
 
-    public boolean hasAccess(final GraphQlExecutionContext context, final Class<? extends GraphQlSecurityCommand> command) {
+    public boolean hasAccess(final GraphQlExecutionContext context, final Class<? extends GraphQlSecurityCommand> command, final BaseForm form) {
         boolean hasAccess;
 
         try {
             var ctor = findConstructor(command); // Search for the Constructor that's required here
-            var commandInstance = ctor.newInstance(context.getUserVisitPK(), null);
+            var commandInstance = ctor.newInstance(context.getUserVisitPK(), form);
             var graphQlSecurityCommand = (GraphQlSecurityCommand) commandInstance;
 
             // Execute the instantiated command's security check function for the current user.
