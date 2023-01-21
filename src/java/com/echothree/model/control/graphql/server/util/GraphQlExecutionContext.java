@@ -55,14 +55,21 @@ public class GraphQlExecutionContext {
     }
 
     public boolean hasAccess(final Class<? extends GraphQlSecurityCommand> command) {
-        var hasAccess = securityCache.get(command);
-        
+        return hasAccess(command, true);
+    }
+
+    public boolean hasAccess(final Class<? extends GraphQlSecurityCommand> command, boolean canCache) {
+        var hasAccess = canCache ? securityCache.get(command) : null; // Bypass if it cannot be cached.
+
         if(hasAccess == null) {
             hasAccess = GraphQlSecurityUtils.getInstance().hasAccess(this, command);
-            securityCache.put(command, hasAccess);
+
+            if(canCache) {
+                securityCache.put(command, hasAccess);
+            }
         }
-        
+
         return hasAccess;
     }
-    
+
 }
