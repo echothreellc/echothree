@@ -16,8 +16,11 @@
 
 package com.echothree.model.control.party.server.graphql;
 
+import com.echothree.control.user.customer.common.CustomerUtil;
 import com.echothree.control.user.customer.server.command.GetCustomerCommand;
+import com.echothree.control.user.employee.common.EmployeeUtil;
 import com.echothree.control.user.employee.server.command.GetEmployeeCommand;
+import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.server.command.GetCompanyCommand;
 import com.echothree.control.user.party.server.command.GetDateTimeFormatCommand;
 import com.echothree.control.user.party.server.command.GetDepartmentCommand;
@@ -25,15 +28,19 @@ import com.echothree.control.user.party.server.command.GetDepartmentsCommand;
 import com.echothree.control.user.party.server.command.GetDivisionCommand;
 import com.echothree.control.user.party.server.command.GetDivisionsCommand;
 import com.echothree.control.user.party.server.command.GetLanguageCommand;
+import com.echothree.control.user.party.server.command.GetPartyCommand;
 import com.echothree.control.user.party.server.command.GetPartyRelationshipCommand;
 import com.echothree.control.user.party.server.command.GetPartyRelationshipsCommand;
 import com.echothree.control.user.party.server.command.GetTimeZoneCommand;
+import com.echothree.control.user.vendor.common.VendorUtil;
 import com.echothree.control.user.vendor.server.command.GetVendorCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.server.control.GraphQlSecurityCommand;
 import graphql.schema.DataFetchingEnvironment;
+import javax.naming.NamingException;
 
 public final class PartySecurityUtils
         extends BaseGraphQl {
@@ -75,19 +82,70 @@ public final class PartySecurityUtils
     }
 
     public boolean getHasPartyAccess(final DataFetchingEnvironment env, final Party party) {
-        var partyTypeEnum = PartyTypes.valueOf(party.getLastDetail().getPartyType().getPartyTypeName());
+        var partyDetail = party.getLastDetail();
+        var partyTypeEnum = PartyTypes.valueOf(partyDetail.getPartyType().getPartyTypeName());
+        Class<? extends GraphQlSecurityCommand> command;
+        BaseForm baseForm = null;
 
-        Class<? extends GraphQlSecurityCommand> command = switch(partyTypeEnum) {
-            case CUSTOMER -> GetCustomerCommand.class;
-            case EMPLOYEE -> GetEmployeeCommand.class;
-            case VENDOR -> GetVendorCommand.class;
-            case COMPANY -> GetCompanyCommand.class;
-            case DIVISION -> GetDivisionCommand.class;
-            case DEPARTMENT -> GetDepartmentCommand.class;
+        switch(partyTypeEnum) {
+            case CUSTOMER ->
+            {
+                command = GetCustomerCommand.class;
+
+                // GetCustomerCommand has a security() function that needs the form to be available.
+                try {
+                    var commandForm = CustomerUtil.getHome().getGetCustomerForm();
+
+                    commandForm.setPartyName(partyDetail.getPartyName());
+                    baseForm = commandForm;
+                } catch (NamingException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+            case EMPLOYEE ->
+            {
+                command = GetEmployeeCommand.class;
+
+                // GetEmployeeCommand has a security() function that needs the form to be available.
+                try {
+                    var commandForm = EmployeeUtil.getHome().getGetEmployeeForm();
+
+                    commandForm.setPartyName(partyDetail.getPartyName());
+                    baseForm = commandForm;
+                } catch (NamingException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+            case VENDOR ->
+            {
+                command = GetVendorCommand.class;
+
+                // GetVendorCommand has a security() function that needs the form to be available.
+                try {
+                    var commandForm = VendorUtil.getHome().getGetVendorForm();
+
+                    commandForm.setPartyName(partyDetail.getPartyName());
+                    baseForm = commandForm;
+                } catch (NamingException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+            case COMPANY ->
+            {
+                command = GetCompanyCommand.class;
+            }
+            case DIVISION ->
+            {
+                command = GetDivisionCommand.class;
+            }
+            case DEPARTMENT ->
+            {
+                command = GetDepartmentCommand.class;
+            }
             default -> throw new RuntimeException("Unhandled PartyType");
         };
 
-        return getGraphQlExecutionContext(env).hasAccess(command);
+        return getGraphQlExecutionContext(env).hasAccess(command, baseForm);
     }
 
 }
