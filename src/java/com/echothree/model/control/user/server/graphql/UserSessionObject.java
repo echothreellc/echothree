@@ -18,6 +18,8 @@ package com.echothree.model.control.user.server.graphql;
 
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.party.server.graphql.PartyObject;
+import com.echothree.model.control.party.server.graphql.PartyRelationshipObject;
+import com.echothree.model.control.party.server.graphql.PartySecurityUtils;
 import com.echothree.model.data.user.server.entity.UserSession;
 import com.echothree.util.server.string.DateUtils;
 import graphql.annotations.annotationTypes.GraphQLDescription;
@@ -51,11 +53,11 @@ public class UserSessionObject
         return new PartyObject(userSession.getParty());
     }
 
-//    @GraphQLField
-//    @GraphQLDescription("party relationship")
-//    public PartyRelationshipObject getPartyRelationship() {
-//        return new PartyRelationshipObject(userSession.getPartyRelationship());
-//    }
+    @GraphQLField
+    @GraphQLDescription("party relationship")
+    public PartyRelationshipObject getPartyRelationship(final DataFetchingEnvironment env) {
+        return PartySecurityUtils.getInstance().getHasPartyRelationshipAccess(env) ? new PartyRelationshipObject(userSession.getPartyRelationship()) : null;
+    }
 
     @GraphQLField
     @GraphQLDescription("unformatted password verified time")
