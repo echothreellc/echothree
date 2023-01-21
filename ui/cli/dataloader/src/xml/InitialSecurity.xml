@@ -7248,6 +7248,9 @@
             <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Party Review" />
             </securityRole>
+            <securityRole securityRoleName="PartyRelationship" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Party Relationship" />
+            </securityRole>
         </securityRoleGroup>
     </securityRoleGroups>
     <partySecurityRoleTemplates>
@@ -9228,6 +9231,7 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="TrackStatus" securityRoleName="Inactive" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Party" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Party" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Party" securityRoleName="PartyRelationship" />
             <partySecurityRoleTemplateTrainingClass trainingClassName="REQUIRED_TRAINING_CLASS" />
         </partySecurityRoleTemplate>
     </partySecurityRoleTemplates>

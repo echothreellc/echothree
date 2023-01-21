@@ -18,6 +18,7 @@ package com.echothree.model.control.graphql.server.util;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserSession;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.common.form.BaseForm;
 import com.echothree.util.server.control.GraphQlSecurityCommand;
 import java.util.HashMap;
 import java.util.Map;
@@ -55,14 +56,22 @@ public class GraphQlExecutionContext {
     }
 
     public boolean hasAccess(final Class<? extends GraphQlSecurityCommand> command) {
-        var hasAccess = securityCache.get(command);
-        
+        return hasAccess(command, null);
+    }
+
+    public boolean hasAccess(final Class<? extends GraphQlSecurityCommand> command, final BaseForm form) {
+        var canCache = form == null;
+        var hasAccess = canCache ? securityCache.get(command) : null; // Bypass if it cannot be cached.
+
         if(hasAccess == null) {
-            hasAccess = GraphQlSecurityUtils.getInstance().hasAccess(this, command);
-            securityCache.put(command, hasAccess);
+            hasAccess = GraphQlSecurityUtils.getInstance().hasAccess(this, command, form);
+
+            if(canCache) {
+                securityCache.put(command, hasAccess);
+            }
         }
-        
+
         return hasAccess;
     }
-    
+
 }

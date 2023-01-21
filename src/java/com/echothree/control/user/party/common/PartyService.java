@@ -304,9 +304,11 @@ public interface PartyService
     // --------------------------------------------------------------------------------
     //   Party Relationships
     // --------------------------------------------------------------------------------
-    
+
     CommandResult getPartyRelationships(UserVisitPK userVisitPK, GetPartyRelationshipsForm form);
-    
+
+    CommandResult getPartyRelationship(UserVisitPK userVisitPK, GetPartyRelationshipForm form);
+
     // --------------------------------------------------------------------------------
     //   Role Types
     // --------------------------------------------------------------------------------
