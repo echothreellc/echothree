@@ -504,12 +504,17 @@ public class PartyBean
     // --------------------------------------------------------------------------------
     //   Party Relationships
     // --------------------------------------------------------------------------------
-    
+
     @Override
     public CommandResult getPartyRelationships(UserVisitPK userVisitPK, GetPartyRelationshipsForm form) {
         return new GetPartyRelationshipsCommand(userVisitPK, form).run();
     }
-    
+
+    @Override
+    public CommandResult getPartyRelationship(UserVisitPK userVisitPK, GetPartyRelationshipForm form) {
+        return new GetPartyRelationshipCommand(userVisitPK, form).run();
+    }
+
     // -------------------------------------------------------------------------
     //   Role Types
     // -------------------------------------------------------------------------
