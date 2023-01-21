@@ -22,54 +22,53 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.party.server.entity.PartyRelationship;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class GetPartyRelationshipCommand
-        extends BaseSimpleCommand<GetPartyRelationshipForm> {
+        extends BaseSingleEntityCommand<PartyRelationship, GetPartyRelationshipForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.Party.name(), SecurityRoles.PartyRelationship.name())
-                )))
-        )));
-
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-            new FieldDefinition("PartyRelationshipTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("FromPartyName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("FromRoleTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("ToPartyName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("ToRoleTypeName", FieldType.ENTITY_NAME, true, null, null)
+                ))
         ));
+
+        FORM_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("PartyRelationshipTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("FromPartyName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("FromRoleTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("ToPartyName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("ToRoleTypeName", FieldType.ENTITY_NAME, true, null, null)
+        );
     }
     
     /** Creates a new instance of GetPartyRelationshipCommand */
     public GetPartyRelationshipCommand(UserVisitPK userVisitPK, GetPartyRelationshipForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var result = PartyResultFactory.getGetPartyRelationshipResult();
+    protected PartyRelationship getEntity() {
         var partyControl = Session.getModelController(PartyControl.class);
         var partyRelationshipTypeName = form.getPartyRelationshipTypeName();
         var partyRelationshipType = partyControl.getPartyRelationshipTypeByName(partyRelationshipTypeName);
+        PartyRelationship partyRelationship = null;
 
         if(partyRelationshipType != null) {
             var fromPartyName = form.getFromPartyName();
@@ -88,8 +87,7 @@ public class GetPartyRelationshipCommand
                         var toRoleType = partyControl.getRoleTypeByName(toRoleTypeName);
 
                         if(toRoleType != null) {
-                            result.setPartyRelationship(partyControl.getPartyRelationshipTransfer(getUserVisit(),
-                                    partyControl.getPartyRelationship(partyRelationshipType, fromParty, fromRoleType, toParty, toRoleType)));
+                            partyRelationship = partyControl.getPartyRelationship(partyRelationshipType, fromParty, fromRoleType, toParty, toRoleType);
                         } else {
                             addExecutionError(ExecutionErrors.UnknownToRoleTypeName.name(), toRoleTypeName);
                         }
@@ -106,7 +104,20 @@ public class GetPartyRelationshipCommand
             addExecutionError(ExecutionErrors.UnknownPartyRelationshipTypeName.name(), partyRelationshipTypeName);
         }
 
+        return partyRelationship;
+    }
+
+    @Override
+    protected BaseResult getTransfer(PartyRelationship partyRelationship) {
+        var result = PartyResultFactory.getGetPartyRelationshipResult();
+
+        if(partyRelationship != null) {
+            var partyControl = Session.getModelController(PartyControl.class);
+
+            result.setPartyRelationship(partyControl.getPartyRelationshipTransfer(getUserVisit(), partyRelationship));
+        }
+
         return result;
     }
-    
+
 }
