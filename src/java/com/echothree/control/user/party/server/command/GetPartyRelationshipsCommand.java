@@ -19,7 +19,10 @@ package com.echothree.control.user.party.server.command;
 import com.echothree.control.user.party.common.form.GetPartyRelationshipsForm;
 import com.echothree.control.user.party.common.result.GetPartyRelationshipsResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyRelationshipType;
 import com.echothree.model.data.party.server.entity.RoleType;
@@ -30,6 +33,9 @@ import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
@@ -37,10 +43,18 @@ import java.util.List;
 
 public class GetPartyRelationshipsCommand
         extends BaseSimpleCommand<GetPartyRelationshipsForm> {
-    
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                        new SecurityRoleDefinition(SecurityRoleGroups.Party.name(), SecurityRoles.PartyRelationship.name())
+                )))
+        )));
+
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
             new FieldDefinition("PartyRelationshipTypeName", FieldType.ENTITY_NAME, true, null, null),
             new FieldDefinition("FromPartyName", FieldType.ENTITY_NAME, false, null, null),
@@ -52,7 +66,7 @@ public class GetPartyRelationshipsCommand
     
     /** Creates a new instance of GetPartyRelationshipsCommand */
     public GetPartyRelationshipsCommand(UserVisitPK userVisitPK, GetPartyRelationshipsForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
