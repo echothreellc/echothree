@@ -1,5 +1,17 @@
 # Changelog
 
+## 2023-01-22-01
+
+* Add Content Category Item Mutations [615](https://gitlab.echothree.com/echothree/echothree/-/issues/615)
+* Add Content Catalog Mutations [616](https://gitlab.echothree.com/echothree/echothree/-/issues/616)
+* Add Content Category Mutations [617](https://gitlab.echothree.com/echothree/echothree/-/issues/617)
+* Add Content Collection Mutations [618](https://gitlab.echothree.com/echothree/echothree/-/issues/618)
+* jOOQ 3.17.7 Upgrade [634](https://gitlab.echothree.com/echothree/echothree/-/issues/634)
+* Add Role Type object [635](https://gitlab.echothree.com/echothree/echothree/-/issues/635)
+* Add Party Relationship object [636](https://gitlab.echothree.com/echothree/echothree/-/issues/636)
+* Replace Role Type of SUPPLIER with VENDOR [637](https://gitlab.echothree.com/echothree/echothree/-/issues/637)
+* Add Party Relationship Type Object [638](https://gitlab.echothree.com/echothree/echothree/-/issues/638)
+
 ## 2023-01-08-01
 
 * Modifying Appearance Should TOUCH Entity Instances With That Appearance [601](https://gitlab.echothree.com/echothree/echothree/-/issues/601)
