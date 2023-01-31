@@ -16,12 +16,9 @@
 
 package com.echothree.model.control.user.server.graphql;
 
-import com.echothree.control.user.accounting.server.command.GetCurrencyCommand;
-import com.echothree.control.user.party.server.command.GetDateTimeFormatCommand;
-import com.echothree.control.user.party.server.command.GetLanguageCommand;
-import com.echothree.control.user.party.server.command.GetTimeZoneCommand;
 import com.echothree.model.control.accounting.server.graphql.AccountingSecurityUtils;
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
+import com.echothree.model.control.graphql.server.graphql.TimeObject;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.offer.server.graphql.OfferSecurityUtils;
 import com.echothree.model.control.offer.server.graphql.OfferUseObject;
@@ -34,7 +31,6 @@ import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.util.server.string.DateUtils;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -101,17 +97,10 @@ public class UserVisitObject
     }
 
     @GraphQLField
-    @GraphQLDescription("unformatted last command time")
-    @GraphQLNonNull
-    public Long getUnformattedLastCommandTime() {
-        return userVisit.getLastCommandTime();
-    }
-    
-    @GraphQLField
     @GraphQLDescription("last command time")
     @GraphQLNonNull
-    public String getLastCommandTime(final DataFetchingEnvironment env) {
-        return DateUtils.getInstance().formatTypicalDateTime(getUserVisit(env), userVisit.getLastCommandTime());
+    public TimeObject getLastCommandTime(final DataFetchingEnvironment env) {
+        return new TimeObject(userVisit.getLastCommandTime());
     }
     
     @GraphQLField
@@ -124,22 +113,16 @@ public class UserVisitObject
 //    @GraphQLField
 //    @GraphQLDescription("associate referral")
 //    public AssociateReferralObject getAssociateReferral() {
-//        AssociateReferral associateReferral = userVisit.getAssociateReferral();
+//        var associateReferral = userVisit.getAssociateReferral();
 //
 //        return associateReferral != null && AssociateSecurityUtils.getInstance().getHasAssociateReferralAccess(env) ? new AssociateReferralObject(associateReferral) : null;
 //    }
 
     @GraphQLField
-    @GraphQLDescription("unformatted retain until time")
-    public Long getUnformattedRetainUntilTime() {
-        return userVisit.getRetainUntilTime();
-    }
-    
-    @GraphQLField
     @GraphQLDescription("retain until time")
-    public String getRetainUntilTime(final DataFetchingEnvironment env) {
-        Long retainUntilTime = userVisit.getRetainUntilTime();
+    public TimeObject getRetainUntilTime(final DataFetchingEnvironment env) {
+        var retainUntilTime = userVisit.getRetainUntilTime();
 
-        return retainUntilTime == null ? null : DateUtils.getInstance().formatTypicalDateTime(getUserVisit(env), retainUntilTime);
+        return retainUntilTime == null ? null : new TimeObject(retainUntilTime);
     }
 }
