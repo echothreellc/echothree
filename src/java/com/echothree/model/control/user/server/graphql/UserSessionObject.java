@@ -64,7 +64,7 @@ public class UserSessionObject
     public Long getUnformattedPasswordVerifiedTime() {
         Long passwordVerifiedTime = userSession.getPasswordVerifiedTime();
         
-        return passwordVerifiedTime == null ? null : passwordVerifiedTime;
+        return passwordVerifiedTime;
     }
     
     @GraphQLField
