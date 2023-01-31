@@ -47,12 +47,14 @@ public class UserSessionTest
         var userSessionBody = executeUsingPost("""
                 query {
                     userSession {
-                        passwordVerifiedTime
+                        passwordVerifiedTime {
+                          unformattedTime
+                        }
                     }
                 }
                 """);
 
-        assertThat(getString(userSessionBody, "data.userSession.passwordVerifiedTime")).isNotNull();
+        assertThat(getLong(userSessionBody, "data.userSession.passwordVerifiedTime.unformattedTime")).isNotNull();
     }
 
 }

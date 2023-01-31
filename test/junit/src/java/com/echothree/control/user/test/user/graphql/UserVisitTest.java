@@ -41,8 +41,12 @@ public class UserVisitTest
                         preferredDateTimeFormat {
                             description
                         }
-                        lastCommandTime
-                	    retainUntilTime
+                        lastCommandTime {
+                          unformattedTime
+                        }
+                	    retainUntilTime {
+                          unformattedTime
+                        }
                     }
                 }
                 """);
@@ -51,8 +55,8 @@ public class UserVisitTest
         assertThat(getString(userVisitBody, "data.userVisit.preferredCurrency.description")).isNotNull();
         assertThat(getString(userVisitBody, "data.userVisit.preferredTimeZone.description")).isNotNull();
         assertThat(getString(userVisitBody, "data.userVisit.preferredDateTimeFormat.description")).isNotNull();
-        assertThat(getString(userVisitBody, "data.userVisit.lastCommandTime")).isNotNull();
-        assertThat(getString(userVisitBody, "data.userVisit.retainUntilTime")).isNull();
+        assertThat(getLong(userVisitBody, "data.userVisit.lastCommandTime.unformattedTime")).isNotNull();
+        assertThat(getMap(userVisitBody, "data.userVisit.retainUntilTime")).isNull();
     }
 
 }
