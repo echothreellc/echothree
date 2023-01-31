@@ -16,9 +16,9 @@
 
 package com.echothree.model.control.core.server.graphql;
 
+import com.echothree.model.control.graphql.server.graphql.DateObject;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.data.core.server.entity.EntityDateAttribute;
-import com.echothree.util.server.string.DateUtils;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -50,17 +50,10 @@ public class EntityDateAttributeObject
     }
 
     @GraphQLField
-    @GraphQLDescription("unformatted date attribute")
-    @GraphQLNonNull
-    public int getUnformattedDateAttribute() {
-        return entityDateAttribute.getDateAttribute();
-    }
-
-    @GraphQLField
     @GraphQLDescription("date attribute")
     @GraphQLNonNull
-    public String getDateAttribute(final DataFetchingEnvironment env) {
-        return DateUtils.getInstance().formatDate(getUserVisit(env), entityDateAttribute.getDateAttribute());
+    public DateObject getDateAttribute(final DataFetchingEnvironment env) {
+        return new DateObject(entityDateAttribute.getDateAttribute());
     }
 
 }

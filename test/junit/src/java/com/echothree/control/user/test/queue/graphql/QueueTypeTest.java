@@ -35,10 +35,12 @@ public class QueueTypeTest
                         sortOrder
                         description
                         id
-                        unformattedOldestQueuedEntityTime
-                        oldestQueuedEntityTime
-                        unformattedLatestQueuedEntityTime
-                        latestQueuedEntityTime
+                        oldestQueuedEntityTime {
+                          unformattedTime
+                        }
+                        latestQueuedEntityTime {
+                          unformattedTime
+                        }
                         queuedEntityCount
                     }
                 }
@@ -76,10 +78,12 @@ public class QueueTypeTest
                         sortOrder
                         description
                         id
-                        unformattedOldestQueuedEntityTime
-                        oldestQueuedEntityTime
-                        unformattedLatestQueuedEntityTime
-                        latestQueuedEntityTime
+                        oldestQueuedEntityTime {
+                          unformattedTime
+                        }
+                        latestQueuedEntityTime {
+                          unformattedTime
+                        }
                         queuedEntityCount
                     }
                 }
@@ -101,10 +105,12 @@ public class QueueTypeTest
                         sortOrder
                         description
                         id
-                        unformattedOldestQueuedEntityTime
-                        oldestQueuedEntityTime
-                        unformattedLatestQueuedEntityTime
-                        latestQueuedEntityTime
+                        oldestQueuedEntityTime {
+                          unformattedTime
+                        }
+                        latestQueuedEntityTime {
+                          unformattedTime
+                        }
                         queuedEntityCount
                     }
                 }
@@ -143,10 +149,12 @@ public class QueueTypeTest
                         sortOrder
                         description
                         id
-                        unformattedOldestQueuedEntityTime
-                        oldestQueuedEntityTime
-                        unformattedLatestQueuedEntityTime
-                        latestQueuedEntityTime
+                        oldestQueuedEntityTime {
+                          unformattedTime
+                        }
+                        latestQueuedEntityTime {
+                          unformattedTime
+                        }
                         queuedEntityCount
                     }
                 }

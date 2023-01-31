@@ -16,12 +16,12 @@
 
 package com.echothree.model.control.user.server.graphql;
 
+import com.echothree.model.control.graphql.server.graphql.TimeObject;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.party.server.graphql.PartyObject;
 import com.echothree.model.control.party.server.graphql.PartyRelationshipObject;
 import com.echothree.model.control.party.server.graphql.PartySecurityUtils;
 import com.echothree.model.data.user.server.entity.UserSession;
-import com.echothree.util.server.string.DateUtils;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -60,19 +60,11 @@ public class UserSessionObject
     }
 
     @GraphQLField
-    @GraphQLDescription("unformatted password verified time")
-    public Long getUnformattedPasswordVerifiedTime() {
-        Long passwordVerifiedTime = userSession.getPasswordVerifiedTime();
-        
-        return passwordVerifiedTime == null ? null : passwordVerifiedTime;
-    }
-    
-    @GraphQLField
     @GraphQLDescription("password verified time")
-    public String getPasswordVerifiedTime(final DataFetchingEnvironment env) {
-        Long passwordVerifiedTime = userSession.getPasswordVerifiedTime();
+    public TimeObject getPasswordVerifiedTime(final DataFetchingEnvironment env) {
+        var passwordVerifiedTime = userSession.getPasswordVerifiedTime();
 
-        return passwordVerifiedTime == null ? null : DateUtils.getInstance().formatTypicalDateTime(getUserVisit(env), passwordVerifiedTime);
+        return new TimeObject(passwordVerifiedTime);
     }
     
 }

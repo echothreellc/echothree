@@ -18,9 +18,9 @@ package com.echothree.model.control.workflow.server.graphql;
 
 import com.echothree.model.control.core.server.graphql.CoreSecurityUtils;
 import com.echothree.model.control.core.server.graphql.EntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.TimeObject;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
-import com.echothree.util.server.string.DateUtils;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -61,31 +61,17 @@ public class WorkflowEntityStatusObject
     // TODO: WorkEffortScope
 
     @GraphQLField
-    @GraphQLDescription("unformatted from time")
-    @GraphQLNonNull
-    public Long getUnformattedFromTime() {
-        return workflowEntityStatus.getFromTime();
-    }
-
-    @GraphQLField
     @GraphQLDescription("from time")
     @GraphQLNonNull
-    public String getFromTime(final DataFetchingEnvironment env) {
-        return DateUtils.getInstance().formatTypicalDateTime(getUserVisit(env), workflowEntityStatus.getFromTime());
-    }
-
-    @GraphQLField
-    @GraphQLDescription("unformatted thru time")
-    @GraphQLNonNull
-    public Long getUnformattedThruTime() {
-        return workflowEntityStatus.getThruTime();
+    public TimeObject getFromTime(final DataFetchingEnvironment env) {
+        return new TimeObject(workflowEntityStatus.getFromTime());
     }
 
     @GraphQLField
     @GraphQLDescription("thru time")
     @GraphQLNonNull
-    public String getThruTime(final DataFetchingEnvironment env) {
-        return DateUtils.getInstance().formatTypicalDateTime(getUserVisit(env), workflowEntityStatus.getThruTime());
+    public TimeObject getThruTime(final DataFetchingEnvironment env) {
+        return new TimeObject(workflowEntityStatus.getThruTime());
     }
 
 }

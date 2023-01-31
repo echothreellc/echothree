@@ -18,7 +18,6 @@ package com.echothree.util.server.string;
 
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
-import com.echothree.model.data.party.server.entity.DateTimeFormatDetail;
 import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.string.DateFormatter;
@@ -60,7 +59,7 @@ public class DateUtils {
     }
     
     protected UserControl getUserControl() {
-        return (UserControl)Session.getModelController(UserControl.class);
+        return Session.getModelController(UserControl.class);
     }
     
     protected TimeZone getTimeZone(UserVisit userVisit) {
@@ -80,21 +79,23 @@ public class DateUtils {
     }
     
     protected String formatDateUsingShortDateFormat(UserVisit userVisit, DateTimeFormat dateTimeFormat, Date time) {
-        SimpleDateFormat sdfShortDateFormat = new SimpleDateFormat(dateTimeFormat.getLastDetail().getJavaShortDateFormat());
+        var sdfShortDateFormat = new SimpleDateFormat(dateTimeFormat.getLastDetail().getJavaShortDateFormat());
+
         sdfShortDateFormat.setTimeZone(getJavaTimeZone(userVisit));
         
         return sdfShortDateFormat.format(time);
     }
     
     protected String formatTimeUsingTimeFormatSeconds(UserVisit userVisit, DateTimeFormat dateTimeFormat, Date time) {
-        SimpleDateFormat sdfTimeFormatSeconds = new SimpleDateFormat(dateTimeFormat.getLastDetail().getJavaTimeFormatSeconds());
+        var sdfTimeFormatSeconds = new SimpleDateFormat(dateTimeFormat.getLastDetail().getJavaTimeFormatSeconds());
+
         sdfTimeFormatSeconds.setTimeZone(getJavaTimeZone(userVisit));
         
         return sdfTimeFormatSeconds.format(time);
     }
     
     public String formatTypicalDateTime(UserVisit userVisit, DateTimeFormat dateTimeFormat, Date time) {
-        return new StringBuilder(formatDateUsingShortDateFormat(userVisit, dateTimeFormat, time)).append(' ').append(formatTimeUsingTimeFormatSeconds(userVisit, dateTimeFormat, time)).toString();
+        return formatDateUsingShortDateFormat(userVisit, dateTimeFormat, time) + ' ' + formatTimeUsingTimeFormatSeconds(userVisit, dateTimeFormat, time);
     }
     
     public String formatTypicalDateTime(UserVisit userVisit, Date time) {
@@ -110,52 +111,35 @@ public class DateUtils {
     }
     
     public DateFormatter getDateFormatter(UserVisit userVisit, DateTimeFormatType dtft) {
+        var dtfd = getDateTimeFormat(userVisit).getLastDetail();
         String pattern = null;
-        DateTimeFormatDetail dtfd = getDateTimeFormat(userVisit).getLastDetail();
-        
+
         switch(dtft) {
-            case SHORT_DATE:
-                pattern = dtfd.getJavaShortDateFormat();
-                break;
-            case ABBREV_DATE:
-                pattern = dtfd.getJavaAbbrevDateFormat();
-                break;
-            case ABBREV_DATE_WITH_WEEKDAY:
-                pattern = dtfd.getJavaAbbrevDateFormatWeekday();
-                break;
-            case LONG_DATE:
-                pattern = dtfd.getJavaLongDateFormat();
-                break;
-            case LONG_DATE_WITH_WEEKDAY:
-                pattern = dtfd.getJavaLongDateFormatWeekday();
-                break;
-            default:
-                break;
+            case SHORT_DATE -> pattern = dtfd.getJavaShortDateFormat();
+            case ABBREV_DATE -> pattern = dtfd.getJavaAbbrevDateFormat();
+            case ABBREV_DATE_WITH_WEEKDAY -> pattern = dtfd.getJavaAbbrevDateFormatWeekday();
+            case LONG_DATE -> pattern = dtfd.getJavaLongDateFormat();
+            case LONG_DATE_WITH_WEEKDAY -> pattern = dtfd.getJavaLongDateFormatWeekday();
+            default -> { throw new IllegalArgumentException(); }
         }
         
         return new DateFormatter(pattern);
     }
     
     public DateTimeFormatter getDateTimeFormatter(UserVisit userVisit, DateTimeFormatType dtft) {
+        var dtfd = getDateTimeFormat(userVisit).getLastDetail();
         String pattern = null;
-        DateTimeFormatDetail dtfd = getDateTimeFormat(userVisit).getLastDetail();
-        
-        if(dtft.equals(DateTimeFormatType.SHORT_DATE)) {
-            pattern = dtfd.getJavaShortDateFormat();
-        } else if(dtft.equals(DateTimeFormatType.ABBREV_DATE)) {
-            pattern = dtfd.getJavaAbbrevDateFormat();
-        } else if(dtft.equals(DateTimeFormatType.ABBREV_DATE_WITH_WEEKDAY)) {
-            pattern = dtfd.getJavaAbbrevDateFormatWeekday();
-        } else if(dtft.equals(DateTimeFormatType.LONG_DATE)) {
-            pattern = dtfd.getJavaLongDateFormat();
-        } else if(dtft.equals(DateTimeFormatType.LONG_DATE_WITH_WEEKDAY)) {
-            pattern = dtfd.getJavaLongDateFormatWeekday();
-        } else if(dtft.equals(DateTimeFormatType.TIME)) {
-            pattern = dtfd.getJavaTimeFormat();
-        } else if(dtft.equals(DateTimeFormatType.TIME_WITH_SECONDS)) {
-            pattern = dtfd.getJavaTimeFormatSeconds();
+
+        switch(dtft) {
+            case SHORT_DATE -> pattern = dtfd.getJavaShortDateFormat();
+            case ABBREV_DATE -> pattern = dtfd.getJavaAbbrevDateFormat();
+            case ABBREV_DATE_WITH_WEEKDAY -> pattern = dtfd.getJavaAbbrevDateFormatWeekday();
+            case LONG_DATE -> pattern = dtfd.getJavaLongDateFormat();
+            case LONG_DATE_WITH_WEEKDAY -> pattern = dtfd.getJavaLongDateFormatWeekday();
+            case TIME -> pattern = dtfd.getJavaTimeFormat();
+            case TIME_WITH_SECONDS -> pattern = dtfd.getJavaTimeFormatSeconds();
         }
-        
+
         return new DateTimeFormatter(getJavaTimeZoneName(userVisit), pattern);
     }
     
