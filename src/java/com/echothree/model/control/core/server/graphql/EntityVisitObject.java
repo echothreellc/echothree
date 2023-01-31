@@ -16,9 +16,9 @@
 
 package com.echothree.model.control.core.server.graphql;
 
+import com.echothree.model.control.graphql.server.graphql.TimeObject;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.data.core.server.entity.EntityVisit;
-import com.echothree.util.server.string.DateUtils;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -49,17 +49,10 @@ public class EntityVisitObject
     }
     
     @GraphQLField
-    @GraphQLDescription("unformatted visited time")
-    @GraphQLNonNull
-    public Long getUnformattedVisitedTime() {
-        return entityVisit.getVisitedTime();
-    }
-    
-    @GraphQLField
     @GraphQLDescription("visited time")
     @GraphQLNonNull
-    public String getVisitedTime(final DataFetchingEnvironment env) {
-        return DateUtils.getInstance().formatTypicalDateTime(getUserVisit(env), entityVisit.getVisitedTime());
+    public TimeObject getVisitedTime(final DataFetchingEnvironment env) {
+        return new TimeObject(entityVisit.getVisitedTime());
     }
         
 }

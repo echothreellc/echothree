@@ -16,9 +16,9 @@
 
 package com.echothree.model.control.core.server.graphql;
 
+import com.echothree.model.control.graphql.server.graphql.TimeObject;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.data.core.server.entity.EntityTimeAttribute;
-import com.echothree.util.server.string.DateUtils;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -50,17 +50,10 @@ public class EntityTimeAttributeObject
     }
 
     @GraphQLField
-    @GraphQLDescription("unformatted time attribute")
-    @GraphQLNonNull
-    public long getUnformattedTimeAttribute() {
-        return entityTimeAttribute.getTimeAttribute();
-    }
-
-    @GraphQLField
     @GraphQLDescription("time attribute")
     @GraphQLNonNull
-    public String getTimeAttribute(final DataFetchingEnvironment env) {
-        return DateUtils.getInstance().formatTypicalDateTime(getUserVisit(env), entityTimeAttribute.getTimeAttribute());
+    public TimeObject getTimeAttribute(final DataFetchingEnvironment env) {
+        return new TimeObject(entityTimeAttribute.getTimeAttribute());
     }
 
 }

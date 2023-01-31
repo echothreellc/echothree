@@ -16,9 +16,9 @@
 
 package com.echothree.model.control.core.server.graphql;
 
+import com.echothree.model.control.graphql.server.graphql.TimeObject;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.data.core.server.entity.EntityTime;
-import com.echothree.util.server.string.DateUtils;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -43,45 +43,26 @@ public class EntityTimeObject
     }
     
     @GraphQLField
-    @GraphQLDescription("unformatted created time")
-    @GraphQLNonNull
-    public Long getUnformattedCreatedTime() {
-        return entityTime.getCreatedTime();
-    }
-    
-    @GraphQLField
     @GraphQLDescription("created time")
     @GraphQLNonNull
-    public String getCreatedTime(final DataFetchingEnvironment env) {
-        return DateUtils.getInstance().formatTypicalDateTime(getUserVisit(env), entityTime.getCreatedTime());
-    }
-    
-    @GraphQLField
-    @GraphQLDescription("unformatted modified time")
-    public Long getUnformattedModifiedTime() {
-        return entityTime.getModifiedTime();
+    public TimeObject getCreatedTime(final DataFetchingEnvironment env) {
+        return new TimeObject(entityTime.getCreatedTime());
     }
     
     @GraphQLField
     @GraphQLDescription("modified time")
-    public String getModifiedTime(final DataFetchingEnvironment env) {
-        Long modifiedTime = entityTime.getModifiedTime();
+    public TimeObject getModifiedTime(final DataFetchingEnvironment env) {
+        var modifiedTime = entityTime.getModifiedTime();
         
-        return modifiedTime == null ? null : DateUtils.getInstance().formatTypicalDateTime(getUserVisit(env), modifiedTime);
-    }
-    
-    @GraphQLField
-    @GraphQLDescription("unformatted deleted time")
-    public Long getUnformattedDeletedTime() {
-        return entityTime.getDeletedTime();
+        return modifiedTime == null ? null : new TimeObject(modifiedTime);
     }
     
     @GraphQLField
     @GraphQLDescription("deleted time")
-    public String getDeletedTime(final DataFetchingEnvironment env) {
-        Long deletedTime = entityTime.getDeletedTime();
+    public TimeObject getDeletedTime(final DataFetchingEnvironment env) {
+        var deletedTime = entityTime.getDeletedTime();
         
-        return deletedTime == null ? null : DateUtils.getInstance().formatTypicalDateTime(getUserVisit(env), deletedTime);
+        return deletedTime == null ? null : new TimeObject(deletedTime);
     }
     
 }
