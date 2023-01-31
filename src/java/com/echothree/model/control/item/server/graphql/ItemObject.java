@@ -21,6 +21,7 @@ import com.echothree.model.control.accounting.server.graphql.ItemAccountingCateg
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationPolicyObject;
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationPolicySecurityUtils;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.TimeObject;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
@@ -52,7 +53,6 @@ import com.echothree.model.data.item.server.entity.ItemDetail;
 import com.echothree.model.data.item.server.entity.RelatedItemType;
 import com.echothree.model.data.offer.common.OfferItemConstants;
 import com.echothree.util.server.persistence.Session;
-import com.echothree.util.server.string.DateUtils;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -169,79 +169,49 @@ public class ItemObject
     }
 
     @GraphQLField
-    @GraphQLDescription("unformatted shipping start time")
-    @GraphQLNonNull
-    public Long getUnformattedShippingStartTime() {
-        return getItemDetail().getShippingStartTime();
-    }
-
-    @GraphQLField
     @GraphQLDescription("shipping start time")
     @GraphQLNonNull
-    public String getShippingStartTime(final DataFetchingEnvironment env) {
-        return DateUtils.getInstance().formatTypicalDateTime(getUserVisit(env), getItemDetail().getShippingStartTime());
+    public TimeObject getShippingStartTime(final DataFetchingEnvironment env) {
+        return new TimeObject(getItemDetail().getShippingStartTime());
     }
     
-    @GraphQLField
-    @GraphQLDescription("unformatted shipping end time")
-    public Long getUnformattedShippingEndTime() {
-        return getItemDetail().getShippingEndTime();
-    }
-
     @GraphQLField
     @GraphQLDescription("shipping end time")
-    public String getShippingEndTime(final DataFetchingEnvironment env) {
-        return DateUtils.getInstance().formatTypicalDateTime(getUserVisit(env), getItemDetail().getShippingEndTime());
+    public TimeObject getShippingEndTime(final DataFetchingEnvironment env) {
+        var shippingEndTime = getItemDetail().getShippingEndTime();
+
+        return shippingEndTime == null ? null : new TimeObject(shippingEndTime);
     }
     
-    @GraphQLField
-    @GraphQLDescription("unformatted sales order start time")
-    @GraphQLNonNull
-    public Long getUnformattedSalesOrderStartTime() {
-        return getItemDetail().getSalesOrderStartTime();
-    }
-
     @GraphQLField
     @GraphQLDescription("sales order start time")
     @GraphQLNonNull
-    public String getSalesOrderStartTime(final DataFetchingEnvironment env) {
-        return DateUtils.getInstance().formatTypicalDateTime(getUserVisit(env), getItemDetail().getSalesOrderStartTime());
-    }
-
-    @GraphQLField
-    @GraphQLDescription("unformatted sales order end time")
-    public Long getUnformattedSalesOrderEndTime() {
-        return getItemDetail().getSalesOrderEndTime();
+    public TimeObject getSalesOrderStartTime(final DataFetchingEnvironment env) {
+        return new TimeObject(getItemDetail().getSalesOrderStartTime());
     }
 
     @GraphQLField
     @GraphQLDescription("sales order end time")
-    public String getSalesOrderEndTime(final DataFetchingEnvironment env) {
-        return DateUtils.getInstance().formatTypicalDateTime(getUserVisit(env), getItemDetail().getSalesOrderEndTime());
-    }
+    public TimeObject getSalesOrderEndTime(final DataFetchingEnvironment env) {
+        var salesOrderEndTime = getItemDetail().getSalesOrderEndTime();
 
-    @GraphQLField
-    @GraphQLDescription("unformatted purchase order start time")
-    public Long getUnformattedPurchaseOrderStartTime() {
-        return getItemDetail().getPurchaseOrderStartTime();
+        return salesOrderEndTime == null ? null : new TimeObject(salesOrderEndTime);
     }
 
     @GraphQLField
     @GraphQLDescription("purchase order start time")
-    public String getPurchaseOrderStartTime(final DataFetchingEnvironment env) {
-        return DateUtils.getInstance().formatTypicalDateTime(getUserVisit(env), getItemDetail().getPurchaseOrderStartTime());
+    public TimeObject getPurchaseOrderStartTime(final DataFetchingEnvironment env) {
+        var purchaseOrderStartTime = getItemDetail().getPurchaseOrderStartTime();
+
+        return purchaseOrderStartTime == null ? null : new TimeObject(purchaseOrderStartTime);
     }
     
     @GraphQLField
-    @GraphQLDescription("unformatted purchase order end time")
-    public Long getUnformattedPurchaseOrderEndTime() {
-        return getItemDetail().getPurchaseOrderEndTime();
-    }
-
-    @GraphQLField
     @GraphQLDescription("purchase order end time")
-    public String getPurchaseOrderEndTime(final DataFetchingEnvironment env) {
-        return DateUtils.getInstance().formatTypicalDateTime(getUserVisit(env), getItemDetail().getPurchaseOrderEndTime());
+    public TimeObject getPurchaseOrderEndTime(final DataFetchingEnvironment env) {
+        var purchaseOrderEndTime = getItemDetail().getPurchaseOrderEndTime();
+
+        return purchaseOrderEndTime == null ? null : new TimeObject(purchaseOrderEndTime);
     }
 
     @GraphQLField
