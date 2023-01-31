@@ -25,8 +25,8 @@ import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 
-@GraphQLDescription("command result object")
-@GraphQLName("CommandResult")
+@GraphQLDescription("date object")
+@GraphQLName("Date")
 public class DateObject
         extends BaseGraphQl {
 

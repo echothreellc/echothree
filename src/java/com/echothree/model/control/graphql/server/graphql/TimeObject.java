@@ -25,8 +25,8 @@ import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 
-@GraphQLDescription("command result object")
-@GraphQLName("CommandResult")
+@GraphQLDescription("time object")
+@GraphQLName("Time")
 public class TimeObject
         extends BaseGraphQl {
 
