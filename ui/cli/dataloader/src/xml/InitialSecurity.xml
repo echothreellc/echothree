@@ -2350,6 +2350,30 @@
         <securityRoleGroup securityRoleGroupName="WishlistComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Wishlist Component" />
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="WishlistType" parentSecurityRoleGroupName="WishlistComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Wishlist Type" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Wishlist Type Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Wishlist Type Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Wishlist Type Delete" />
+            </securityRole>
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Wishlist Type List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Wishlist Type Review" />
+            </securityRole>
+            <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Wishlist Type Choices" />
+            </securityRole>
+            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Wishlist Type Description" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="Wishlist" parentSecurityRoleGroupName="WishlistComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Wishlist" />
             <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
@@ -8083,6 +8107,13 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="VendorItemCost" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Warehouse" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Warehouse" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="WishlistType" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="WishlistType" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="WishlistType" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="WishlistType" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="WishlistType" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="WishlistType" securityRoleName="Choices" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="WishlistType" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Wishlist" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Wishlist" securityRoleName="Search" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowType" securityRoleName="List" />
