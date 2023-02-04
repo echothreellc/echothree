@@ -65,12 +65,12 @@ public class GetRelatedItemTypeCommand
     }
 
     @Override
-    protected BaseResult getTransfer(RelatedItemType itemAliasType) {
+    protected BaseResult getTransfer(RelatedItemType relatedItemType) {
         var itemControl = Session.getModelController(ItemControl.class);
         var result = ItemResultFactory.getGetRelatedItemTypeResult();
 
-        if(itemAliasType != null) {
-            result.setRelatedItemType(itemControl.getRelatedItemTypeTransfer(getUserVisit(), itemAliasType));
+        if(relatedItemType != null) {
+            result.setRelatedItemType(itemControl.getRelatedItemTypeTransfer(getUserVisit(), relatedItemType));
         }
 
         return result;
