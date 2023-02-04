@@ -17,41 +17,49 @@
 package com.echothree.control.user.wishlist.server.command;
 
 import com.echothree.control.user.wishlist.common.form.GetWishlistTypesForm;
-import com.echothree.control.user.wishlist.common.result.GetWishlistTypesResult;
 import com.echothree.control.user.wishlist.common.result.WishlistResultFactory;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.model.data.wishlist.server.entity.WishlistType;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.List;
 
 public class GetWishlistTypesCommand
-        extends BaseSimpleCommand<GetWishlistTypesForm> {
+        extends BaseMultipleEntitiesCommand<WishlistType, GetWishlistTypesForm> {
 
     // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                ));
+        FORM_FIELD_DEFINITIONS = List.of();
     }
     
     /** Creates a new instance of GetWishlistTypesCommand */
     public GetWishlistTypesCommand(UserVisitPK userVisitPK, GetWishlistTypesForm form) {
         super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        GetWishlistTypesResult result = WishlistResultFactory.getGetWishlistTypesResult();
+    protected Collection<WishlistType> getEntities() {
         var wishlistControl = Session.getModelController(WishlistControl.class);
-        
-        result.setWishlistTypes(wishlistControl.getWishlistTypeTransfers(getUserVisit()));
-        
+
+        return wishlistControl.getWishlistTypes();
+    }
+
+    @Override
+    protected BaseResult getTransfers(Collection<WishlistType> entities) {
+        var result = WishlistResultFactory.getGetWishlistTypesResult();
+
+        if(entities != null) {
+            var wishlistControl = Session.getModelController(WishlistControl.class);
+
+            result.setWishlistTypes(wishlistControl.getWishlistTypeTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
     

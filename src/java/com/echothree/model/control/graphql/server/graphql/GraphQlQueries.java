@@ -269,6 +269,9 @@ import com.echothree.control.user.vendor.server.command.GetItemPurchasingCategor
 import com.echothree.control.user.vendor.server.command.GetItemPurchasingCategoryCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorsCommand;
+import com.echothree.control.user.wishlist.common.WishlistUtil;
+import com.echothree.control.user.wishlist.server.command.GetWishlistTypeCommand;
+import com.echothree.control.user.wishlist.server.command.GetWishlistTypesCommand;
 import com.echothree.control.user.workflow.common.WorkflowUtil;
 import com.echothree.control.user.workflow.server.command.GetWorkflowCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowStepCommand;
@@ -417,6 +420,8 @@ import com.echothree.model.control.user.server.graphql.UserVisitObject;
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.control.vendor.server.graphql.ItemPurchasingCategoryObject;
 import com.echothree.model.control.vendor.server.graphql.VendorObject;
+import com.echothree.model.control.wishlist.server.control.WishlistControl;
+import com.echothree.model.control.wishlist.server.graphql.WishlistTypeObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowStepObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowStepTypeObject;
@@ -562,6 +567,8 @@ import com.echothree.model.data.vendor.common.ItemPurchasingCategoryConstants;
 import com.echothree.model.data.vendor.common.VendorConstants;
 import com.echothree.model.data.vendor.server.entity.ItemPurchasingCategory;
 import com.echothree.model.data.vendor.server.entity.Vendor;
+import com.echothree.model.data.wishlist.common.WishlistTypeConstants;
+import com.echothree.model.data.wishlist.server.entity.WishlistType;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowStep;
 import com.echothree.model.data.workflow.server.entity.WorkflowStepType;
@@ -6471,6 +6478,59 @@ public final class GraphQlQueries
         return relatedItemObjects;
     }
 
+    @GraphQLField
+    @GraphQLName("wishlistType")
+    public static WishlistTypeObject wishlistType(final DataFetchingEnvironment env,
+            @GraphQLName("wishlistTypeName") final String wishlistTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        WishlistType wishlistType;
+
+        try {
+            var commandForm = WishlistUtil.getHome().getGetWishlistTypeForm();
+
+            commandForm.setWishlistTypeName(wishlistTypeName);
+            commandForm.setUlid(id);
+
+            wishlistType = new GetWishlistTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return wishlistType == null ? null : new WishlistTypeObject(wishlistType);
+    }
+
+    @GraphQLField
+    @GraphQLName("wishlistTypes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public static CountingPaginatedData<WishlistTypeObject> wishlistTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<WishlistTypeObject> data;
+
+        try {
+            var wishlistControl = Session.getModelController(WishlistControl.class);
+            var totalCount = wishlistControl.countWishlistTypes();
+
+            try(var objectLimiter = new ObjectLimiter(env, WishlistTypeConstants.COMPONENT_VENDOR_NAME, WishlistTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = WishlistUtil.getHome().getGetWishlistTypesForm();
+                var entities = new GetWishlistTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var wishlistTypes = entities.stream()
+                            .map(WishlistTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, wishlistTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+    
     @GraphQLField
     @GraphQLName("securityRoleGroup")
     public static SecurityRoleGroupObject securityRoleGroup(final DataFetchingEnvironment env,
