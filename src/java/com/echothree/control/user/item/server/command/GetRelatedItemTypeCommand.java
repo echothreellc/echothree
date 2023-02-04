@@ -55,22 +55,22 @@ public class GetRelatedItemTypeCommand
 
     @Override
     protected RelatedItemType getEntity() {
-        var itemAliasType = RelatedItemTypeLogic.getInstance().getRelatedItemTypeByUniversalSpec(this, form, true);
+        var relatedItemType = RelatedItemTypeLogic.getInstance().getRelatedItemTypeByUniversalSpec(this, form, true);
 
-        if(itemAliasType != null) {
-            sendEvent(itemAliasType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+        if(relatedItemType != null) {
+            sendEvent(relatedItemType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
-        return itemAliasType;
+        return relatedItemType;
     }
 
     @Override
-    protected BaseResult getTransfer(RelatedItemType itemAliasType) {
-        var itemAliasTypeControl = Session.getModelController(ItemControl.class);
+    protected BaseResult getTransfer(RelatedItemType relatedItemType) {
+        var itemControl = Session.getModelController(ItemControl.class);
         var result = ItemResultFactory.getGetRelatedItemTypeResult();
 
-        if(itemAliasType != null) {
-            result.setRelatedItemType(itemAliasTypeControl.getRelatedItemTypeTransfer(getUserVisit(), itemAliasType));
+        if(relatedItemType != null) {
+            result.setRelatedItemType(itemControl.getRelatedItemTypeTransfer(getUserVisit(), relatedItemType));
         }
 
         return result;

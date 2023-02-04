@@ -39,6 +39,7 @@ import com.echothree.model.control.wishlist.server.transfer.WishlistTypeTransfer
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.associate.common.pk.AssociateReferralPK;
 import com.echothree.model.data.associate.server.entity.AssociateReferral;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.offer.common.pk.OfferUsePK;
@@ -144,7 +145,34 @@ public class WishlistControl
         
         return wishlistType;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.WishlistType */
+    public WishlistType getWishlistTypeByEntityInstance(final EntityInstance entityInstance,
+            final EntityPermission entityPermission) {
+        var pk = new WishlistTypePK(entityInstance.getEntityUniqueId());
+
+        return WishlistTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public WishlistType getWishlistTypeByEntityInstance(final EntityInstance entityInstance) {
+        return getWishlistTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public WishlistType getWishlistTypeByEntityInstanceForUpdate(final EntityInstance entityInstance) {
+        return getWishlistTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public WishlistType getWishlistTypeByPK(WishlistTypePK pk) {
+        return WishlistTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+    }
+
+    public long countWishlistTypes() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM wishlisttypes, wishlisttypedetails " +
+                "WHERE wshlty_activedetailid = wshltydt_wishlisttypedetailid");
+    }
+
     private List<WishlistType> getWishlistTypes(EntityPermission entityPermission) {
         String query = null;
         
@@ -173,7 +201,7 @@ public class WishlistControl
         return getWishlistTypes(EntityPermission.READ_WRITE);
     }
     
-    private WishlistType getDefaultWishlistType(EntityPermission entityPermission) {
+    public WishlistType getDefaultWishlistType(EntityPermission entityPermission) {
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
@@ -204,7 +232,7 @@ public class WishlistControl
         return getDefaultWishlistTypeForUpdate().getLastDetailForUpdate().getWishlistTypeDetailValue().clone();
     }
     
-    private WishlistType getWishlistTypeByName(String wishlistTypeName, EntityPermission entityPermission) {
+    public WishlistType getWishlistTypeByName(String wishlistTypeName, EntityPermission entityPermission) {
         WishlistType wishlistType;
         
         try {
@@ -286,19 +314,22 @@ public class WishlistControl
     public WishlistTypeTransfer getWishlistTypeTransfer(UserVisit userVisit, WishlistType wishlistType) {
         return getWishlistTransferCaches(userVisit).getWishlistTypeTransferCache().getWishlistTypeTransfer(wishlistType);
     }
-    
-    public List<WishlistTypeTransfer> getWishlistTypeTransfers(UserVisit userVisit) {
-        List<WishlistType> wishlistTypes = getWishlistTypes();
+
+    public List<WishlistTypeTransfer> getWishlistTypeTransfers(UserVisit userVisit, Collection<WishlistType> wishlistTypes) {
         List<WishlistTypeTransfer> wishlistTypeTransfers = new ArrayList<>(wishlistTypes.size());
         WishlistTypeTransferCache wishlistTypeTransferCache = getWishlistTransferCaches(userVisit).getWishlistTypeTransferCache();
-        
+
         wishlistTypes.forEach((wishlistType) ->
                 wishlistTypeTransfers.add(wishlistTypeTransferCache.getWishlistTypeTransfer(wishlistType))
         );
-        
+
         return wishlistTypeTransfers;
     }
-    
+
+    public List<WishlistTypeTransfer> getWishlistTypeTransfers(UserVisit userVisit) {
+        return getWishlistTypeTransfers(userVisit, getWishlistTypes());
+    }
+
     private void updateWishlistTypeFromValue(WishlistTypeDetailValue wishlistTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(wishlistTypeDetailValue.hasBeenModified()) {

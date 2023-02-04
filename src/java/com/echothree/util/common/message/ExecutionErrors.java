@@ -2256,5 +2256,6 @@ public enum ExecutionErrors {
     UnknownDefaultTagScope,
     UnknownDefaultRelatedItemType,
     UnknownDefaultSearchResultActionType,
+    UnknownDefaultWishlistType,
 
 }

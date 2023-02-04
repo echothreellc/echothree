@@ -349,6 +349,7 @@ public enum SecurityRoleGroups {
     VendorStatus,
     VendorType,
     Wishlist,
+    WishlistType,
     WorkEffortType,
     WorkEffortScope,
     Workflow,
