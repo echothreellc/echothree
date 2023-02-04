@@ -170,6 +170,9 @@ import com.echothree.control.user.offer.server.command.GetUseNameElementsCommand
 import com.echothree.control.user.offer.server.command.GetUseTypeCommand;
 import com.echothree.control.user.offer.server.command.GetUseTypesCommand;
 import com.echothree.control.user.offer.server.command.GetUsesCommand;
+import com.echothree.control.user.order.common.OrderUtil;
+import com.echothree.control.user.order.server.command.GetOrderTypeCommand;
+import com.echothree.control.user.order.server.command.GetOrderTypesCommand;
 import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.server.command.GetCompaniesCommand;
 import com.echothree.control.user.party.server.command.GetCompanyCommand;
@@ -364,6 +367,8 @@ import com.echothree.model.control.offer.server.graphql.OfferUseObject;
 import com.echothree.model.control.offer.server.graphql.UseNameElementObject;
 import com.echothree.model.control.offer.server.graphql.UseObject;
 import com.echothree.model.control.offer.server.graphql.UseTypeObject;
+import com.echothree.model.control.order.server.control.OrderTypeControl;
+import com.echothree.model.control.order.server.graphql.OrderTypeObject;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.party.server.graphql.CompanyObject;
 import com.echothree.model.control.party.server.graphql.DateTimeFormatObject;
@@ -514,6 +519,8 @@ import com.echothree.model.data.offer.server.entity.OfferUse;
 import com.echothree.model.data.offer.server.entity.Use;
 import com.echothree.model.data.offer.server.entity.UseNameElement;
 import com.echothree.model.data.offer.server.entity.UseType;
+import com.echothree.model.data.order.common.OrderTypeConstants;
+import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.party.common.DateTimeFormatConstants;
 import com.echothree.model.data.party.common.LanguageConstants;
 import com.echothree.model.data.party.common.NameSuffixConstants;
@@ -6479,6 +6486,59 @@ public final class GraphQlQueries
     }
 
     @GraphQLField
+    @GraphQLName("orderType")
+    public static OrderTypeObject orderType(final DataFetchingEnvironment env,
+            @GraphQLName("orderTypeName") final String orderTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        OrderType orderType;
+
+        try {
+            var commandForm = OrderUtil.getHome().getGetOrderTypeForm();
+
+            commandForm.setOrderTypeName(orderTypeName);
+            commandForm.setUlid(id);
+
+            orderType = new GetOrderTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return orderType == null ? null : new OrderTypeObject(orderType);
+    }
+
+    @GraphQLField
+    @GraphQLName("orderTypes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public static CountingPaginatedData<OrderTypeObject> orderTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<OrderTypeObject> data;
+
+        try {
+            var orderTypeControl = Session.getModelController(OrderTypeControl.class);
+            var totalCount = orderTypeControl.countOrderTypes();
+
+            try(var objectLimiter = new ObjectLimiter(env, OrderTypeConstants.COMPONENT_VENDOR_NAME, OrderTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = OrderUtil.getHome().getGetOrderTypesForm();
+                var entities = new GetOrderTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var orderTypes = entities.stream()
+                            .map(OrderTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, orderTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
     @GraphQLName("wishlistType")
     public static WishlistTypeObject wishlistType(final DataFetchingEnvironment env,
             @GraphQLName("wishlistTypeName") final String wishlistTypeName,
@@ -6530,7 +6590,7 @@ public final class GraphQlQueries
 
         return data;
     }
-    
+
     @GraphQLField
     @GraphQLName("securityRoleGroup")
     public static SecurityRoleGroupObject securityRoleGroup(final DataFetchingEnvironment env,
