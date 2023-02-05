@@ -22,6 +22,7 @@ import com.echothree.model.control.order.common.transfer.OrderPriorityDescriptio
 import com.echothree.model.control.order.common.transfer.OrderPriorityTransfer;
 import com.echothree.model.control.order.server.transfer.OrderPriorityDescriptionTransferCache;
 import com.echothree.model.control.order.server.transfer.OrderPriorityTransferCache;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.order.common.pk.OrderPriorityPK;
 import com.echothree.model.data.order.common.pk.OrderTypePK;
 import com.echothree.model.data.order.server.entity.OrderPriority;
@@ -39,6 +40,7 @@ import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -88,6 +90,35 @@ public class OrderPriorityControl
         return orderPriority;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.OrderPriority */
+    public OrderPriority getOrderPriorityByEntityInstance(final EntityInstance entityInstance,
+            final EntityPermission entityPermission) {
+        var pk = new OrderPriorityPK(entityInstance.getEntityUniqueId());
+
+        return OrderPriorityFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public OrderPriority getOrderPriorityByEntityInstance(final EntityInstance entityInstance) {
+        return getOrderPriorityByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public OrderPriority getOrderPriorityByEntityInstanceForUpdate(final EntityInstance entityInstance) {
+        return getOrderPriorityByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public OrderPriority getOrderPriorityByPK(OrderPriorityPK pk) {
+        return OrderPriorityFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+    }
+
+    public long countOrderPriorities(OrderType orderType) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM orderpriorities, orderprioritydetails " +
+                "WHERE ordpr_activedetailid = ordprdt_orderprioritydetailid " +
+                "AND ordprdt_ordtyp_ordertypeid = ?",
+                orderType);
+    }
+
     private static final Map<EntityPermission, String> getOrderPriorityByNameQueries;
 
     static {
@@ -107,7 +138,7 @@ public class OrderPriorityControl
         getOrderPriorityByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private OrderPriority getOrderPriorityByName(OrderType orderType, String orderPriorityName, EntityPermission entityPermission) {
+    public OrderPriority getOrderPriorityByName(OrderType orderType, String orderPriorityName, EntityPermission entityPermission) {
         return OrderPriorityFactory.getInstance().getEntityFromQuery(entityPermission, getOrderPriorityByNameQueries,
                 orderType, orderPriorityName);
     }
@@ -147,7 +178,7 @@ public class OrderPriorityControl
         getDefaultOrderPriorityQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private OrderPriority getDefaultOrderPriority(OrderType orderType, EntityPermission entityPermission) {
+    public OrderPriority getDefaultOrderPriority(OrderType orderType, EntityPermission entityPermission) {
         return OrderPriorityFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultOrderPriorityQueries,
                 orderType);
     }
@@ -201,8 +232,7 @@ public class OrderPriorityControl
         return getOrderTransferCaches(userVisit).getOrderPriorityTransferCache().getOrderPriorityTransfer(orderPriority);
     }
 
-    public List<OrderPriorityTransfer> getOrderPriorityTransfers(UserVisit userVisit, OrderType orderType) {
-        List<OrderPriority> orderPriorities = getOrderPriorities(orderType);
+    public List<OrderPriorityTransfer> getOrderPriorityTransfers(UserVisit userVisit, Collection<OrderPriority> orderPriorities) {
         List<OrderPriorityTransfer> orderPriorityTransfers = new ArrayList<>(orderPriorities.size());
         OrderPriorityTransferCache orderPriorityTransferCache = getOrderTransferCaches(userVisit).getOrderPriorityTransferCache();
 
@@ -211,6 +241,10 @@ public class OrderPriorityControl
         );
 
         return orderPriorityTransfers;
+    }
+
+    public List<OrderPriorityTransfer> getOrderPriorityTransfers(UserVisit userVisit, OrderType orderType) {
+        return getOrderPriorityTransfers(userVisit, getOrderPriorities(orderType));
     }
 
     public OrderPriorityChoicesBean getOrderPriorityChoices(String defaultOrderPriorityChoice, Language language, boolean allowNullChoice,
