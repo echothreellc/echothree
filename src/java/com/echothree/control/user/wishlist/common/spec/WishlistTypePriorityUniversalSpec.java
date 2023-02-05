@@ -14,23 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.wishlist.common.result;
+package com.echothree.control.user.wishlist.common.spec;
 
-import com.echothree.model.control.wishlist.common.transfer.WishlistTypePriorityTransfer;
-import com.echothree.model.control.wishlist.common.transfer.WishlistTypeTransfer;
-import com.echothree.util.common.command.BaseResult;
-import java.util.List;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetWishlistTypePrioritiesResult
-        extends BaseResult {
+public interface WishlistTypePriorityUniversalSpec
+        extends WishlistTypePrioritySpec, UniversalEntitySpec {
     
-    WishlistTypeTransfer getWishlistType();
-    void setWishlistType(WishlistTypeTransfer wishlistType);
-
-    Long getWishlistTypePriorityCount();
-    void setWishlistTypePriorityCount(Long wishlistTypePriorityCount);
-
-    List<WishlistTypePriorityTransfer> getWishlistTypePriorities();
-    void setWishlistTypePriorities(List<WishlistTypePriorityTransfer> wishlistTypePriorities);
+    // Nothing additional beyond WishlistTypePrioritySpec, UniversalEntitySpec
     
 }

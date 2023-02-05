@@ -610,7 +610,36 @@ public class WishlistControl
         
         return wishlistTypePriority;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.WishlistTypePriority */
+    public WishlistTypePriority getWishlistTypePriorityByEntityInstance(final EntityInstance entityInstance,
+            final EntityPermission entityPermission) {
+        var pk = new WishlistTypePriorityPK(entityInstance.getEntityUniqueId());
+
+        return WishlistTypePriorityFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public WishlistTypePriority getWishlistTypePriorityByEntityInstance(final EntityInstance entityInstance) {
+        return getWishlistTypePriorityByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public WishlistTypePriority getWishlistTypePriorityByEntityInstanceForUpdate(final EntityInstance entityInstance) {
+        return getWishlistTypePriorityByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public WishlistTypePriority getWishlistTypePriorityByPK(WishlistTypePriorityPK pk) {
+        return WishlistTypePriorityFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+    }
+
+    public long countWishlistTypePrioritiesByWishlistType(final WishlistType wishlistType) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM wishlisttypepriorities, wishlisttypeprioritydetails " +
+                "WHERE wshltyprty_activedetailid = wshltyprtydt_wishlisttypeprioritydetailid " +
+                "AND wshltyprtydt_wshlty_wishlisttypeid = ?",
+                wishlistType);
+    }
+
     private List<WishlistTypePriority> getWishlistTypePriorities(WishlistType wishlistType, EntityPermission entityPermission) {
         List<WishlistTypePriority> wishlistTypePriorities;
         
@@ -649,7 +678,7 @@ public class WishlistControl
         return getWishlistTypePriorities(wishlistType, EntityPermission.READ_WRITE);
     }
     
-    private WishlistTypePriority getDefaultWishlistTypePriority(WishlistType wishlistType, EntityPermission entityPermission) {
+    public WishlistTypePriority getDefaultWishlistTypePriority(WishlistType wishlistType, EntityPermission entityPermission) {
         WishlistTypePriority wishlistTypePriority;
         
         try {
@@ -692,7 +721,7 @@ public class WishlistControl
         return getDefaultWishlistTypePriorityForUpdate(wishlistType).getLastDetailForUpdate().getWishlistTypePriorityDetailValue().clone();
     }
     
-    private WishlistTypePriority getWishlistTypePriorityByName(WishlistType wishlistType, String wishlistTypePriorityName, EntityPermission entityPermission) {
+    public WishlistTypePriority getWishlistTypePriorityByName(WishlistType wishlistType, String wishlistTypePriorityName, EntityPermission entityPermission) {
         WishlistTypePriority wishlistTypePriority;
         
         try {
@@ -777,19 +806,22 @@ public class WishlistControl
     public WishlistTypePriorityTransfer getWishlistTypePriorityTransfer(UserVisit userVisit, WishlistTypePriority wishlistTypePriority) {
         return getWishlistTransferCaches(userVisit).getWishlistTypePriorityTransferCache().getWishlistTypePriorityTransfer(wishlistTypePriority);
     }
-    
-    public List<WishlistTypePriorityTransfer> getWishlistTypePriorityTransfers(UserVisit userVisit, WishlistType wishlistType) {
-        List<WishlistTypePriority> wishlistTypePriorities = getWishlistTypePriorities(wishlistType);
+
+    public List<WishlistTypePriorityTransfer> getWishlistTypePriorityTransfers(UserVisit userVisit, Collection<WishlistTypePriority> wishlistTypePriorities) {
         List<WishlistTypePriorityTransfer> wishlistTypePriorityTransfers = new ArrayList<>(wishlistTypePriorities.size());
         WishlistTypePriorityTransferCache wishlistTypePriorityTransferCache = getWishlistTransferCaches(userVisit).getWishlistTypePriorityTransferCache();
-        
+
         wishlistTypePriorities.forEach((wishlistTypePriority) ->
                 wishlistTypePriorityTransfers.add(wishlistTypePriorityTransferCache.getWishlistTypePriorityTransfer(wishlistTypePriority))
         );
-        
+
         return wishlistTypePriorityTransfers;
     }
-    
+
+    public List<WishlistTypePriorityTransfer> getWishlistTypePriorityTransfers(UserVisit userVisit, WishlistType wishlistType) {
+        return getWishlistTypePriorityTransfers(userVisit, getWishlistTypePriorities(wishlistType));
+    }
+
     private void updateWishlistTypePriorityFromValue(WishlistTypePriorityDetailValue wishlistTypePriorityDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(wishlistTypePriorityDetailValue.hasBeenModified()) {
