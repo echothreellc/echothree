@@ -17,26 +17,27 @@
 package com.echothree.control.user.order.server.command;
 
 import com.echothree.control.user.order.common.form.GetOrderTypesForm;
-import com.echothree.control.user.order.common.result.GetOrderTypesResult;
 import com.echothree.control.user.order.common.result.OrderResultFactory;
 import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class GetOrderTypesCommand
-        extends BaseSimpleCommand<GetOrderTypesForm> {
+        extends BaseMultipleEntitiesCommand<OrderType, GetOrderTypesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -49,22 +50,31 @@ public class GetOrderTypesCommand
                         )))
                 )));
         
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                ));
+        FORM_FIELD_DEFINITIONS = List.of();
     }
     
     /** Creates a new instance of GetOrderTypesCommand */
     public GetOrderTypesCommand(UserVisitPK userVisitPK, GetOrderTypesForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
+    protected Collection<OrderType> getEntities() {
         var orderTypeControl = Session.getModelController(OrderTypeControl.class);
-        GetOrderTypesResult result = OrderResultFactory.getGetOrderTypesResult();
-        
-        result.setOrderTypes(orderTypeControl.getOrderTypeTransfers(getUserVisit()));
-        
+
+        return orderTypeControl.getOrderTypes();
+    }
+
+    @Override
+    protected BaseResult getTransfers(Collection<OrderType> entities) {
+        var result = OrderResultFactory.getGetOrderTypesResult();
+
+        if(entities != null) {
+            var orderTypeControl = Session.getModelController(OrderTypeControl.class);
+
+            result.setOrderTypes(orderTypeControl.getOrderTypeTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
     

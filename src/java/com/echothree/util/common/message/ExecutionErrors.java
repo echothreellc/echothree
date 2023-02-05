@@ -2257,5 +2257,6 @@ public enum ExecutionErrors {
     UnknownDefaultRelatedItemType,
     UnknownDefaultSearchResultActionType,
     UnknownDefaultWishlistType,
+    UnknownDefaultOrderType,
 
 }
