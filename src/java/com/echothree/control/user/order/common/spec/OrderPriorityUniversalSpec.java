@@ -14,13 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.order.common.form;
+package com.echothree.control.user.order.common.spec;
 
-import com.echothree.control.user.order.common.spec.OrderPriorityUniversalSpec;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetOrderPriorityForm
-        extends OrderPriorityUniversalSpec {
+public interface OrderPriorityUniversalSpec
+        extends OrderPrioritySpec, UniversalEntitySpec {
     
-    // Nothing additional beyond OrderPriorityUniversalSpec
+    // Nothing additional beyond OrderPrioritySpec, UniversalEntitySpec
     
 }

@@ -17,22 +17,19 @@
 package com.echothree.control.user.order.server.command;
 
 import com.echothree.control.user.order.common.form.GetOrderPriorityForm;
-import com.echothree.control.user.order.common.result.GetOrderPriorityResult;
 import com.echothree.control.user.order.common.result.OrderResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.order.server.control.OrderPriorityControl;
-import com.echothree.model.control.order.server.control.OrderTypeControl;
+import com.echothree.model.control.order.server.logic.OrderPriorityLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.order.server.entity.OrderPriority;
-import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -42,7 +39,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class GetOrderPriorityCommand
-        extends BaseSimpleCommand<GetOrderPriorityForm> {
+        extends BaseSingleEntityCommand<OrderPriority, GetOrderPriorityForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -56,8 +53,12 @@ public class GetOrderPriorityCommand
                 )));
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("OrderTypeName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("OrderPriorityName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("OrderTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("OrderPriorityName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
                 ));
     }
     
@@ -65,31 +66,28 @@ public class GetOrderPriorityCommand
     public GetOrderPriorityCommand(UserVisitPK userVisitPK, GetOrderPriorityForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
-        GetOrderPriorityResult result = OrderResultFactory.getGetOrderPriorityResult();
-        var orderTypeName = form.getOrderTypeName();
-        var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
+    protected OrderPriority getEntity() {
+        var orderPriority = OrderPriorityLogic.getInstance().getOrderPriorityByUniversalSpec(this, form, true);
 
-        if(orderType != null) {
-            var orderPriorityControl = Session.getModelController(OrderPriorityControl.class);
-            String orderPriorityName = form.getOrderPriorityName();
-            OrderPriority orderPriority = orderPriorityControl.getOrderPriorityByName(orderType, orderPriorityName);
+        if(orderPriority != null) {
+            sendEvent(orderPriority.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+        }
 
-            if(orderPriority != null) {
-                result.setOrderPriority(orderPriorityControl.getOrderPriorityTransfer(getUserVisit(), orderPriority));
+        return orderPriority;
+    }
 
-                sendEvent(orderPriority.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-            } else {
-                addExecutionError(ExecutionErrors.UnknownOrderPriorityName.name(), orderPriorityName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownOrderTypeName.name(), orderTypeName);
+    @Override
+    protected BaseResult getTransfer(OrderPriority orderPriority) {
+        var orderPriorityControl = Session.getModelController(OrderPriorityControl.class);
+        var result = OrderResultFactory.getGetOrderPriorityResult();
+
+        if(orderPriority != null) {
+            result.setOrderPriority(orderPriorityControl.getOrderPriorityTransfer(getUserVisit(), orderPriority));
         }
 
         return result;
     }
-    
+
 }

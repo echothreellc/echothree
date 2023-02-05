@@ -171,6 +171,8 @@ import com.echothree.control.user.offer.server.command.GetUseTypeCommand;
 import com.echothree.control.user.offer.server.command.GetUseTypesCommand;
 import com.echothree.control.user.offer.server.command.GetUsesCommand;
 import com.echothree.control.user.order.common.OrderUtil;
+import com.echothree.control.user.order.server.command.GetOrderPrioritiesCommand;
+import com.echothree.control.user.order.server.command.GetOrderPriorityCommand;
 import com.echothree.control.user.order.server.command.GetOrderTypeCommand;
 import com.echothree.control.user.order.server.command.GetOrderTypesCommand;
 import com.echothree.control.user.party.common.PartyUtil;
@@ -370,6 +372,7 @@ import com.echothree.model.control.offer.server.graphql.UseNameElementObject;
 import com.echothree.model.control.offer.server.graphql.UseObject;
 import com.echothree.model.control.offer.server.graphql.UseTypeObject;
 import com.echothree.model.control.order.server.control.OrderTypeControl;
+import com.echothree.model.control.order.server.graphql.OrderPriorityObject;
 import com.echothree.model.control.order.server.graphql.OrderTypeObject;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.party.server.graphql.CompanyObject;
@@ -523,6 +526,7 @@ import com.echothree.model.data.offer.server.entity.Use;
 import com.echothree.model.data.offer.server.entity.UseNameElement;
 import com.echothree.model.data.offer.server.entity.UseType;
 import com.echothree.model.data.order.common.OrderTypeConstants;
+import com.echothree.model.data.order.server.entity.OrderPriority;
 import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.party.common.DateTimeFormatConstants;
 import com.echothree.model.data.party.common.LanguageConstants;
@@ -6540,6 +6544,59 @@ public final class GraphQlQueries
         }
 
         return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("orderPriority")
+    public static OrderPriorityObject orderPriority(final DataFetchingEnvironment env,
+            @GraphQLName("orderTypeName") final String orderTypeName,
+            @GraphQLName("orderPriorityName") final String orderPriorityName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        OrderPriority orderPriority;
+
+        try {
+            var commandForm = OrderUtil.getHome().getGetOrderPriorityForm();
+
+            commandForm.setOrderTypeName(orderTypeName);
+            commandForm.setOrderPriorityName(orderPriorityName);
+            commandForm.setUlid(id);
+
+            orderPriority = new GetOrderPriorityCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return orderPriority == null ? null : new OrderPriorityObject(orderPriority);
+    }
+
+    @GraphQLField
+    @GraphQLName("orderPriorities")
+    public static Collection<OrderPriorityObject> orderPriorities(final DataFetchingEnvironment env,
+            @GraphQLName("orderTypeName") @GraphQLNonNull final String orderTypeName) {
+        Collection<OrderPriority> orderPriorities;
+        Collection<OrderPriorityObject> orderPriorityObjects;
+
+        try {
+            var commandForm = OrderUtil.getHome().getGetOrderPrioritiesForm();
+
+            commandForm.setOrderTypeName(orderTypeName);
+
+            orderPriorities = new GetOrderPrioritiesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(orderPriorities == null) {
+            orderPriorityObjects = emptyList();
+        } else {
+            orderPriorityObjects = new ArrayList<>(orderPriorities.size());
+
+            orderPriorities.stream()
+                    .map(OrderPriorityObject::new)
+                    .forEachOrdered(orderPriorityObjects::add);
+        }
+
+        return orderPriorityObjects;
     }
 
     @GraphQLField

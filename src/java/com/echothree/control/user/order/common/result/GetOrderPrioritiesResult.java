@@ -17,11 +17,18 @@
 package com.echothree.control.user.order.common.result;
 
 import com.echothree.model.control.order.common.transfer.OrderPriorityTransfer;
+import com.echothree.model.control.order.common.transfer.OrderTypeTransfer;
 import com.echothree.util.common.command.BaseResult;
 import java.util.List;
 
 public interface GetOrderPrioritiesResult
         extends BaseResult {
+
+    OrderTypeTransfer getOrderType();
+    void setOrderType(OrderTypeTransfer orderType);
+
+    Long getOrderPriorityCount();
+    void setOrderPriorityCount(Long orderPriorityCount);
     
     List<OrderPriorityTransfer> getOrderPriorities();
     void setOrderPriorities(List<OrderPriorityTransfer> orderPriorities);

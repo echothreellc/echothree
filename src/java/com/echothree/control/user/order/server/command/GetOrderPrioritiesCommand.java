@@ -17,30 +17,32 @@
 package com.echothree.control.user.order.server.command;
 
 import com.echothree.control.user.order.common.form.GetOrderPrioritiesForm;
-import com.echothree.control.user.order.common.result.GetOrderPrioritiesResult;
 import com.echothree.control.user.order.common.result.OrderResultFactory;
 import com.echothree.model.control.order.server.control.OrderPriorityControl;
 import com.echothree.model.control.order.server.control.OrderTypeControl;
+import com.echothree.model.control.order.server.logic.OrderTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.order.server.entity.OrderPriority;
 import com.echothree.model.data.order.server.entity.OrderType;
+import com.echothree.model.data.order.server.factory.OrderPriorityFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class GetOrderPrioritiesCommand
-        extends BaseSimpleCommand<GetOrderPrioritiesForm> {
+        extends BaseMultipleEntitiesCommand<OrderPriority, GetOrderPrioritiesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -63,19 +65,31 @@ public class GetOrderPrioritiesCommand
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
-    @Override
-    protected BaseResult execute() {
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
-        GetOrderPrioritiesResult result = OrderResultFactory.getGetOrderPrioritiesResult();
-        var orderTypeName = form.getOrderTypeName();
-        var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
+    OrderType orderType;
 
-        if(orderType != null) {
+    @Override
+    protected Collection<OrderPriority> getEntities() {
+        var orderPriorityControl = Session.getModelController(OrderPriorityControl.class);
+
+        orderType = OrderTypeLogic.getInstance().getOrderTypeByName(this, form.getOrderTypeName());
+
+        return hasExecutionErrors() ? null : orderPriorityControl.getOrderPriorities(orderType);
+    }
+
+    @Override
+    protected BaseResult getTransfers(Collection<OrderPriority> entities) {
+        var result = OrderResultFactory.getGetOrderPrioritiesResult();
+
+        if(entities != null) {
+            var orderTypeControl = Session.getModelController(OrderTypeControl.class);
             var orderPriorityControl = Session.getModelController(OrderPriorityControl.class);
 
-            result.setOrderPriorities(orderPriorityControl.getOrderPriorityTransfers(getUserVisit(), orderType));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownOrderTypeName.name(), orderTypeName);
+            if(session.hasLimit(OrderPriorityFactory.class)) {
+                result.setOrderPriorityCount(orderPriorityControl.countOrderPriorities(orderType));
+            }
+
+            result.setOrderType(orderTypeControl.getOrderTypeTransfer(getUserVisit(), orderType));
+            result.setOrderPriorities(orderPriorityControl.getOrderPriorityTransfers(getUserVisit(), entities));
         }
 
         return result;

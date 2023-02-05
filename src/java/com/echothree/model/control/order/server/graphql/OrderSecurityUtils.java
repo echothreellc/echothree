@@ -16,6 +16,8 @@
 
 package com.echothree.model.control.order.server.graphql;
 
+import com.echothree.control.user.order.server.command.GetOrderPrioritiesCommand;
+import com.echothree.control.user.order.server.command.GetOrderPriorityCommand;
 import com.echothree.control.user.order.server.command.GetOrderTypeCommand;
 import com.echothree.control.user.order.server.command.GetOrderTypesCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
@@ -38,6 +40,14 @@ public final class OrderSecurityUtils
 
     public boolean getHasOrderTypesAccess(final DataFetchingEnvironment env) {
         return getGraphQlExecutionContext(env).hasAccess(GetOrderTypesCommand.class);
+    }
+
+    public boolean getHasOrderPriorityAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetOrderPriorityCommand.class);
+    }
+
+    public boolean getHasOrderPrioritiesAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetOrderPrioritiesCommand.class);
     }
 
 }
