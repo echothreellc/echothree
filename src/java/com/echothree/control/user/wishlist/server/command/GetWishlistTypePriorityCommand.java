@@ -17,31 +17,35 @@
 package com.echothree.control.user.wishlist.server.command;
 
 import com.echothree.control.user.wishlist.common.form.GetWishlistTypePriorityForm;
-import com.echothree.control.user.wishlist.common.result.GetWishlistTypePriorityResult;
 import com.echothree.control.user.wishlist.common.result.WishlistResultFactory;
+import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
+import com.echothree.model.control.wishlist.server.logic.WishlistTypePriorityLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.wishlist.server.entity.WishlistType;
 import com.echothree.model.data.wishlist.server.entity.WishlistTypePriority;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class GetWishlistTypePriorityCommand
-        extends BaseSimpleCommand<GetWishlistTypePriorityForm> {
-    
+        extends BaseSingleEntityCommand<WishlistTypePriority, GetWishlistTypePriorityForm> {
+
+    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-            new FieldDefinition("WishlistTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("WishlistTypePriorityName", FieldType.ENTITY_NAME, true, null, null)
+            new FieldDefinition("WishlistTypeName", FieldType.ENTITY_NAME, false, null, null),
+            new FieldDefinition("WishlistTypePriorityName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
         ));
     }
     
@@ -49,28 +53,28 @@ public class GetWishlistTypePriorityCommand
     public GetWishlistTypePriorityCommand(UserVisitPK userVisitPK, GetWishlistTypePriorityForm form) {
         super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var wishlistControl = Session.getModelController(WishlistControl.class);
-        GetWishlistTypePriorityResult result = WishlistResultFactory.getGetWishlistTypePriorityResult();
-        String wishlistTypeName = form.getWishlistTypeName();
-        WishlistType wishlistType = wishlistControl.getWishlistTypeByName(wishlistTypeName);
-        
-        if(wishlistType != null) {
-            String wishlistTypePriorityName = form.getWishlistTypePriorityName();
-            WishlistTypePriority wishlistTypePriority = wishlistControl.getWishlistTypePriorityByName(wishlistType, wishlistTypePriorityName);
-            
-            if(wishlistTypePriority != null) {
-                result.setWishlistTypePriority(wishlistControl.getWishlistTypePriorityTransfer(getUserVisit(), wishlistTypePriority));
-            } else {
-                addExecutionError(ExecutionErrors.UnknownWishlistTypePriorityName.name(), wishlistTypePriorityName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownWishlistTypeName.name(), wishlistTypeName);
+    protected WishlistTypePriority getEntity() {
+        var wishlistTypePriority = WishlistTypePriorityLogic.getInstance().getWishlistTypePriorityByUniversalSpec(this, form, true);
+
+        if(wishlistTypePriority != null) {
+            sendEvent(wishlistTypePriority.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
-        
+
+        return wishlistTypePriority;
+    }
+
+    @Override
+    protected BaseResult getTransfer(WishlistTypePriority wishlistTypePriority) {
+        var wishlistControl = Session.getModelController(WishlistControl.class);
+        var result = WishlistResultFactory.getGetWishlistTypePriorityResult();
+
+        if(wishlistTypePriority != null) {
+            result.setWishlistTypePriority(wishlistControl.getWishlistTypePriorityTransfer(getUserVisit(), wishlistTypePriority));
+        }
+
         return result;
     }
-    
+
 }
