@@ -1,5 +1,16 @@
 # Changelog
 
+## 2023-02-05-01
+
+* Add Wishlist Type Object and Queries [639](https://gitlab.echothree.com/echothree/echothree/-/issues/639)
+* Add Wishlist Type Priority Object and Queries [641](https://gitlab.echothree.com/echothree/echothree/-/issues/641)
+* Add Order Type Object and Queries [643](https://gitlab.echothree.com/echothree/echothree/-/issues/643)
+* Add Order Priority Object and Queries [645](https://gitlab.echothree.com/echothree/echothree/-/issues/645)
+* Gson 2.10.1 Upgrade [647](https://gitlab.echothree.com/echothree/echothree/-/issues/647)
+* Apache Lucene 9.4.2 Upgrade [648](https://gitlab.echothree.com/echothree/echothree/-/issues/648)
+* Replace Date and Time Strings with Date and Time Objects [649](https://gitlab.echothree.com/echothree/echothree/-/issues/649)
+* cucumber-java8/cucumber-junit 7.11.1 Upgrade [650](https://gitlab.echothree.com/echothree/echothree/-/issues/650)
+
 ## 2023-01-22-01
 
 * Add Content Category Item Mutations [615](https://gitlab.echothree.com/echothree/echothree/-/issues/615)
