@@ -18,6 +18,9 @@ package com.echothree.control.user.workflow.server.command;
 
 import com.echothree.control.user.workflow.common.form.GetWorkflowEntranceForm;
 import com.echothree.control.user.workflow.common.result.WorkflowResultFactory;
+import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workflow.server.logic.WorkflowEntranceLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -26,43 +29,53 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class GetWorkflowEntranceCommand
         extends BaseSingleEntityCommand<WorkflowEntrance, GetWorkflowEntranceForm> {
 
-    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("WorkflowEntranceName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.WorkflowEntrance.name(), SecurityRoles.Review.name())
+                ))
+        ));
+
+        FORM_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("WorkflowEntranceName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
+        );
     }
     
     /** Creates a new instance of GetWorkflowEntranceCommand */
     public GetWorkflowEntranceCommand(UserVisitPK userVisitPK, GetWorkflowEntranceForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override
     protected WorkflowEntrance getEntity() {
-        var workflowName = form.getWorkflowName();
-        var workflowEntranceName = form.getWorkflowEntranceName();
-
-        return WorkflowEntranceLogic.getInstance().getWorkflowEntranceByName(this, workflowName, workflowEntranceName);
+        return WorkflowEntranceLogic.getInstance().getWorkflowEntranceByUniversalSpec(this, form, true);
     }
 
     @Override
     protected BaseResult getTransfer(WorkflowEntrance workflowEntrance) {
-        var workflowControl = Session.getModelController(WorkflowControl.class);
         var result = WorkflowResultFactory.getGetWorkflowEntranceResult();
 
         if(workflowEntrance != null) {
+            var workflowControl = Session.getModelController(WorkflowControl.class);
+
             result.setWorkflowEntrance(workflowControl.getWorkflowEntranceTransfer(getUserVisit(), workflowEntrance));
         }
 
