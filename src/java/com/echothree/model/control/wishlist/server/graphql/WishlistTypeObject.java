@@ -97,11 +97,11 @@ public class WishlistTypeObject
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<WishlistTypePriorityObject> getWishlistTypePriorities(final DataFetchingEnvironment env) {
         if(WishlistSecurityUtils.getInstance().getHasWishlistTypePrioritiesAccess(env)) {
-            var uomControl = Session.getModelController(WishlistControl.class);
-            var totalCount = uomControl.countWishlistTypePrioritiesByWishlistType(wishlistType);
+            var wishlistControl = Session.getModelController(WishlistControl.class);
+            var totalCount = wishlistControl.countWishlistTypePrioritiesByWishlistType(wishlistType);
 
             try(var objectLimiter = new ObjectLimiter(env, WishlistTypePriorityConstants.COMPONENT_VENDOR_NAME, WishlistTypePriorityConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var entities = uomControl.getWishlistTypePriorities(wishlistType);
+                var entities = wishlistControl.getWishlistTypePriorities(wishlistType);
                 var wishlistTypePriorities = entities.stream().map(WishlistTypePriorityObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, wishlistTypePriorities);
