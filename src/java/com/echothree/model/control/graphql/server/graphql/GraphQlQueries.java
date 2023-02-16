@@ -281,6 +281,8 @@ import com.echothree.control.user.wishlist.server.command.GetWishlistTypePriorit
 import com.echothree.control.user.wishlist.server.command.GetWishlistTypesCommand;
 import com.echothree.control.user.workflow.common.WorkflowUtil;
 import com.echothree.control.user.workflow.server.command.GetWorkflowCommand;
+import com.echothree.control.user.workflow.server.command.GetWorkflowEntranceCommand;
+import com.echothree.control.user.workflow.server.command.GetWorkflowEntrancesCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowStepCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowStepTypeCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowStepTypesCommand;
@@ -433,6 +435,7 @@ import com.echothree.model.control.vendor.server.graphql.VendorObject;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.control.wishlist.server.graphql.WishlistTypeObject;
 import com.echothree.model.control.wishlist.server.graphql.WishlistTypePriorityObject;
+import com.echothree.model.control.workflow.server.graphql.WorkflowEntranceObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowStepObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowStepTypeObject;
@@ -585,6 +588,7 @@ import com.echothree.model.data.wishlist.common.WishlistTypeConstants;
 import com.echothree.model.data.wishlist.server.entity.WishlistType;
 import com.echothree.model.data.wishlist.server.entity.WishlistTypePriority;
 import com.echothree.model.data.workflow.server.entity.Workflow;
+import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.model.data.workflow.server.entity.WorkflowStep;
 import com.echothree.model.data.workflow.server.entity.WorkflowStepType;
 import com.echothree.model.data.workflow.server.entity.WorkflowType;
@@ -806,6 +810,59 @@ public final class GraphQlQueries
         }
 
         return workflowStepObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("workflowEntrance")
+    public static WorkflowEntranceObject workflowEntrance(final DataFetchingEnvironment env,
+            @GraphQLName("workflowName") final String workflowName,
+            @GraphQLName("workflowEntranceName") final String workflowEntranceName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        WorkflowEntrance workflowEntrance;
+
+        try {
+            var commandForm = WorkflowUtil.getHome().getGetWorkflowEntranceForm();
+
+            commandForm.setWorkflowName(workflowName);
+            commandForm.setWorkflowEntranceName(workflowEntranceName);
+            commandForm.setUlid(id);
+
+            workflowEntrance = new GetWorkflowEntranceCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return workflowEntrance == null ? null : new WorkflowEntranceObject(workflowEntrance);
+    }
+
+    @GraphQLField
+    @GraphQLName("workflowEntrances")
+    public static Collection<WorkflowEntranceObject> workflowEntrances(final DataFetchingEnvironment env,
+            @GraphQLName("workflowName") @GraphQLNonNull final String workflowName) {
+        Collection<WorkflowEntrance> workflowEntrances;
+        Collection<WorkflowEntranceObject> workflowEntranceObjects;
+
+        try {
+            var commandForm = WorkflowUtil.getHome().getGetWorkflowEntrancesForm();
+
+            commandForm.setWorkflowName(workflowName);
+
+            workflowEntrances = new GetWorkflowEntrancesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(workflowEntrances == null) {
+            workflowEntranceObjects = emptyList();
+        } else {
+            workflowEntranceObjects = new ArrayList<>(workflowEntrances.size());
+
+            workflowEntrances.stream()
+                    .map(WorkflowEntranceObject::new)
+                    .forEachOrdered(workflowEntranceObjects::add);
+        }
+
+        return workflowEntranceObjects;
     }
 
     @GraphQLField
