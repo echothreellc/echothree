@@ -27,6 +27,7 @@ import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.sequence.server.graphql.SequenceSecurityUtils;
 import com.echothree.model.control.sequence.server.graphql.SequenceTypeObject;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.control.workflow.server.graphql.WorkflowEntranceObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowSecurityUtils;
 import com.echothree.model.data.order.common.OrderPriorityConstants;
@@ -96,13 +97,13 @@ public class OrderTypeObject
         return orderWorkflow == null ? null : (WorkflowSecurityUtils.getInstance().getHasWorkflowAccess(env) ? new WorkflowObject(orderWorkflow) : null);
     }
 
-//    @GraphQLField
-//    @GraphQLDescription("order workflow entrance")
-//    public WorkflowEntranceObject getOrderWorkflowEntrance(final DataFetchingEnvironment env) {
-//        var orderWorkflowEntrance = getOrderTypeDetail().getOrderWorkflowEntrance();
-//
-//        return orderWorkflowEntrance == null ? null : (WorkflowSecurityUtils.getInstance().getHasWorkflowEntranceAccess(env) ? new WorkflowEntranceObject(orderWorkflowEntrance) : null);
-//    }
+    @GraphQLField
+    @GraphQLDescription("order workflow entrance")
+    public WorkflowEntranceObject getOrderWorkflowEntrance(final DataFetchingEnvironment env) {
+        var orderWorkflowEntrance = getOrderTypeDetail().getOrderWorkflowEntrance();
+
+        return orderWorkflowEntrance == null ? null : (WorkflowSecurityUtils.getInstance().getHasWorkflowEntranceAccess(env) ? new WorkflowEntranceObject(orderWorkflowEntrance) : null);
+    }
 
     @GraphQLField
     @GraphQLDescription("is default")

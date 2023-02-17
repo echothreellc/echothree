@@ -17,12 +17,20 @@
 package com.echothree.model.control.workflow.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.security.server.graphql.SecurityRoleGroupObject;
 import com.echothree.model.control.security.server.graphql.SecuritySecurityUtils;
 import com.echothree.model.control.selector.server.graphql.SelectorSecurityUtils;
 import com.echothree.model.control.selector.server.graphql.SelectorTypeObject;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.control.wishlist.server.graphql.WishlistSecurityUtils;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
+import com.echothree.model.data.workflow.common.WorkflowEntranceConstants;
+import com.echothree.model.data.workflow.common.WorkflowStepConstants;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowDetail;
 import com.echothree.util.server.persistence.Session;
@@ -30,9 +38,10 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("workflow object")
 @GraphQLName("Workflow")
@@ -112,22 +121,43 @@ public class WorkflowObject
     }
 
     @GraphQLField
-    @GraphQLDescription("workflow steps")
-    public Collection<WorkflowStepObject> getWorkflowSteps(final DataFetchingEnvironment env) {
-        Collection<WorkflowStepObject> workflowStepObjects = null;
-
-        if(WorkflowSecurityUtils.getInstance().getHasWorkflowStepsAccess(env)) {
+    @GraphQLDescription("workflow entrances")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<WorkflowEntranceObject> getWorkflowEntrances(final DataFetchingEnvironment env) {
+        if(WishlistSecurityUtils.getInstance().getHasWishlistTypePrioritiesAccess(env)) {
             var workflowControl = Session.getModelController(WorkflowControl.class);
-            var workflowSteps = workflowControl.getWorkflowStepsByWorkflow(workflow);
+            var totalCount = workflowControl.countWorkflowEntrancesByWorkflow(workflow);
 
-            workflowStepObjects = new ArrayList<>(workflowSteps.size());
+            try(var objectLimiter = new ObjectLimiter(env, WorkflowEntranceConstants.COMPONENT_VENDOR_NAME, WorkflowEntranceConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = workflowControl.getWorkflowEntrancesByWorkflow(workflow);
+                var wishlistTypePriorities = entities.stream().map(WorkflowEntranceObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-            workflowSteps.stream()
-                    .map(WorkflowStepObject::new)
-                    .forEachOrdered(workflowStepObjects::add);
+                return new CountedObjects<>(objectLimiter, wishlistTypePriorities);
+            }
+        } else {
+            return Connections.emptyConnection();
         }
+    }
 
-        return workflowStepObjects;
+    @GraphQLField
+    @GraphQLDescription("workflow steps")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<WorkflowStepObject> getWorkflowSteps(final DataFetchingEnvironment env) {
+        if(WishlistSecurityUtils.getInstance().getHasWishlistTypePrioritiesAccess(env)) {
+            var workflowControl = Session.getModelController(WorkflowControl.class);
+            var totalCount = workflowControl.countWorkflowStepsByWorkflow(workflow);
+
+            try(var objectLimiter = new ObjectLimiter(env, WorkflowStepConstants.COMPONENT_VENDOR_NAME, WorkflowStepConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = workflowControl.getWorkflowStepsByWorkflow(workflow);
+                var wishlistTypePriorities = entities.stream().map(WorkflowStepObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, wishlistTypePriorities);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
     }
 
 }

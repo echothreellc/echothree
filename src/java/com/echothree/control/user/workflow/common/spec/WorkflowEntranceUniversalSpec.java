@@ -14,13 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.workflow.common.form;
+package com.echothree.control.user.workflow.common.spec;
 
-import com.echothree.control.user.workflow.common.spec.WorkflowEntranceUniversalSpec;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetWorkflowEntranceForm
-        extends WorkflowEntranceUniversalSpec {
-    
-    // Nothing additional beyond WorkflowEntranceUniversalSpec
+public interface WorkflowEntranceUniversalSpec
+        extends WorkflowEntranceSpec, UniversalEntitySpec {
+
+    // Nothing additional beyond WorkflowEntranceSpec, UniversalEntitySpec
     
 }

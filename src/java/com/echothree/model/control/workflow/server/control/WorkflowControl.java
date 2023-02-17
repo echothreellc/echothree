@@ -1638,7 +1638,31 @@ public class WorkflowControl
         
         return workflowEntrance;
     }
-    
+
+    public long countWorkflowEntrancesByWorkflow(Workflow workflow) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM workflowentrances, workflowentrancedetails " +
+                "WHERE wkflen_activedetailid = wkflendt_workflowentrancedetailid " +
+                "AND wkflendt_wkfl_workflowid = ?",
+                workflow);
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.WorkflowEntrance */
+    public WorkflowEntrance getWorkflowEntranceByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new WorkflowEntrancePK(entityInstance.getEntityUniqueId());
+
+        return WorkflowEntranceFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public WorkflowEntrance getWorkflowEntranceByEntityInstance(EntityInstance entityInstance) {
+        return getWorkflowEntranceByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public WorkflowEntrance getWorkflowEntranceByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getWorkflowEntranceByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     private static final Map<EntityPermission, String> getDefaultWorkflowEntranceQueries;
 
     static {
@@ -1658,7 +1682,7 @@ public class WorkflowControl
         getDefaultWorkflowEntranceQueries = Collections.unmodifiableMap(queryMap);
     }
     
-    private WorkflowEntrance getDefaultWorkflowEntrance(Workflow workflow, EntityPermission entityPermission) {
+    public WorkflowEntrance getDefaultWorkflowEntrance(Workflow workflow, EntityPermission entityPermission) {
         return WorkflowEntranceFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultWorkflowEntranceQueries,
                 workflow);
     }
@@ -1725,7 +1749,7 @@ public class WorkflowControl
         getWorkflowEntrancesByNameQueries = Collections.unmodifiableMap(queryMap);
     }
     
-    private WorkflowEntrance getWorkflowEntranceByName(Workflow workflow, String workflowEntranceName, EntityPermission entityPermission) {
+    public WorkflowEntrance getWorkflowEntranceByName(Workflow workflow, String workflowEntranceName, EntityPermission entityPermission) {
         return WorkflowEntranceFactory.getInstance().getEntityFromQuery(entityPermission, getWorkflowEntrancesByNameQueries,
                 workflow, workflowEntranceName);
     }
