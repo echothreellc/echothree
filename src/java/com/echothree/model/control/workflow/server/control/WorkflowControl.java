@@ -71,9 +71,6 @@ import com.echothree.model.control.workrequirement.server.control.WorkRequiremen
 import com.echothree.model.control.workrequirement.server.logic.WorkRequirementLogic;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.filter.common.pk.FilterKindPK;
-import com.echothree.model.data.filter.server.entity.FilterKind;
-import com.echothree.model.data.filter.server.factory.FilterKindFactory;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.PartyType;
@@ -2642,7 +2639,24 @@ public class WorkflowControl
         
         return workflowEntranceStep;
     }
-    
+
+    public long countWorkflowEntranceStepsByWorkflowEntrance(WorkflowEntrance workflowEntrance) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM workflowentrancesteps " +
+                "WHERE wkflens_wkflen_workflowentranceid = ? AND wkflens_thrutime = ?",
+                workflowEntrance, Session.MAX_TIME);
+    }
+
+
+    public long countWorkflowEntranceStepsByWorkflowStep(WorkflowStep workflowStep) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM workflowentrancesteps " +
+                "WHERE wkflens_wkfls_workflowstepid = ? AND wkflens_thrutime = ?",
+                workflowStep, session.MAX_TIME);
+    }
+
     private static final Map<EntityPermission, String> getWorkflowEntranceStepsByWorkflowStepQueries;
 
     static {
@@ -2743,14 +2757,6 @@ public class WorkflowControl
     
     public WorkflowEntranceStep getWorkflowEntranceStepForUpdate(WorkflowEntrance workflowEntrance, WorkflowStep workflowStep) {
         return getWorkflowEntranceStep(workflowEntrance, workflowStep, EntityPermission.READ_WRITE);
-    }
-    
-    public long countWorkflowEntranceStepsByWorkflowEntrance(WorkflowEntrance workflowEntrance) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM workflowentrancesteps " +
-                "WHERE wkflens_wkflen_workflowentranceid = ? AND wkflens_thrutime = ?",
-                workflowEntrance, Session.MAX_TIME);
     }
     
     public WorkflowEntranceStepTransfer getWorkflowEntranceStepTransfer(UserVisit userVisit, WorkflowEntranceStep workflowEntranceStep) {
