@@ -1,5 +1,11 @@
 # Changelog
 
+## 2023-02-19-01
+
+* Add Workflow Entrance Object and Queries [651](https://gitlab.echothree.com/echothree/echothree/-/issues/651)
+* Add Workflow Entrance Steps Object and Queries [656](https://gitlab.echothree.com/echothree/echothree/-/issues/656)
+* MySQL Connector/J 8.0.32 Upgrade [661](https://gitlab.echothree.com/echothree/echothree/-/issues/661)
+
 ## 2023-02-05-01
 
 * Add Wishlist Type Object and Queries [639](https://gitlab.echothree.com/echothree/echothree/-/issues/639)
