@@ -89,6 +89,16 @@ public class WorkflowDestinationLogic
         return workflowDestination;
     }
 
+    public WorkflowDestination getWorkflowDestinationByName(final ExecutionErrorAccumulator eea, final WorkflowStep workflowStep,
+            final String workflowDestinationName) {
+        return getWorkflowDestinationByName(eea, workflowStep, workflowDestinationName, EntityPermission.READ_ONLY);
+    }
+
+    public WorkflowDestination getWorkflowDestinationByNameForUpdate(final ExecutionErrorAccumulator eea, final WorkflowStep workflowStep,
+            final String workflowDestinationName) {
+        return getWorkflowDestinationByName(eea, workflowStep, workflowDestinationName, EntityPermission.READ_WRITE);
+    }
+
     public WorkflowDestination getWorkflowDestinationByName(final ExecutionErrorAccumulator eea, final Workflow workflow, final String workflowStepName,
             final String workflowDestinationName) {
         WorkflowStep workflowStep = WorkflowStepLogic.getInstance().getWorkflowStepByName(eea, workflow, workflowStepName);
