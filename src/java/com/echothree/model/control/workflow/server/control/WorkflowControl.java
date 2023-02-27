@@ -2818,7 +2818,31 @@ public class WorkflowControl
         
         return workflowDestination;
     }
-    
+
+    public long countWorkflowDestinationsByWorkflowStep(WorkflowStep workflowStep) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM workflowdestinations, workflowdestinationdetails " +
+                "WHERE wkfldn_activedetailid = wkfldndt_workflowdestinationdetailid " +
+                "AND wkfldndt_wkfls_workflowstepid = ?",
+                workflowStep);
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.WorkflowDestination */
+    public WorkflowDestination getWorkflowDestinationByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new WorkflowDestinationPK(entityInstance.getEntityUniqueId());
+
+        return WorkflowDestinationFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public WorkflowDestination getWorkflowDestinationByEntityInstance(EntityInstance entityInstance) {
+        return getWorkflowDestinationByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public WorkflowDestination getWorkflowDestinationByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getWorkflowDestinationByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     private static final Map<EntityPermission, String> getDefaultWorkflowDestinationQueries;
 
     static {
@@ -2838,7 +2862,7 @@ public class WorkflowControl
         getDefaultWorkflowDestinationQueries = Collections.unmodifiableMap(queryMap);
     }
     
-    private WorkflowDestination getDefaultWorkflowDestination(WorkflowStep workflowStep, EntityPermission entityPermission) {
+    public WorkflowDestination getDefaultWorkflowDestination(WorkflowStep workflowStep, EntityPermission entityPermission) {
         return WorkflowDestinationFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultWorkflowDestinationQueries,
                 workflowStep);
     }
@@ -2905,7 +2929,7 @@ public class WorkflowControl
         getWorkflowDestinationsByNameQueries = Collections.unmodifiableMap(queryMap);
     }
     
-    private WorkflowDestination getWorkflowDestinationByName(WorkflowStep workflowStep, String workflowDestinationName, EntityPermission entityPermission) {
+    public WorkflowDestination getWorkflowDestinationByName(WorkflowStep workflowStep, String workflowDestinationName, EntityPermission entityPermission) {
         return WorkflowDestinationFactory.getInstance().getEntityFromQuery(entityPermission, getWorkflowDestinationsByNameQueries,
                 workflowStep, workflowDestinationName);
     }
@@ -2995,14 +3019,6 @@ public class WorkflowControl
         return getWorkflowDestinationTransfers(userVisit, getWorkflowDestinationsByWorkflowStep(workflowStep));
     }
 
-    public long countWorkflowDestinationsByWorkflowStep(WorkflowStep workflowStep) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM workflowdestinations, workflowdestinationdetails " +
-                "WHERE wkfldn_activedetailid = wkfldndt_workflowdestinationdetailid AND wkfldndt_wkfls_workflowstepid = ?",
-                workflowStep.getPrimaryKey().getEntityId());
-    }
-    
     private void updateWorkflowDestinationFromValue(WorkflowDestinationDetailValue workflowDestinationDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(workflowDestinationDetailValue.hasBeenModified()) {
             WorkflowDestination workflowDestination = WorkflowDestinationFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,

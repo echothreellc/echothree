@@ -2261,5 +2261,7 @@ public enum ExecutionErrors {
     UnknownDefaultWishlistTypePriority,
     UnknownDefaultOrderPriority,
     UnknownDefaultWorkflowEntrance,
+    UnknownDefaultWorkflowDestination,
+    MissingRequiredWorkflowStepName,
 
 }
