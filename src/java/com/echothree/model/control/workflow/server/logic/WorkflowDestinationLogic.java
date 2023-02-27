@@ -16,9 +16,17 @@
 
 package com.echothree.model.control.workflow.server.logic;
 
+import com.echothree.control.user.workflow.common.spec.WorkflowDestinationUniversalSpec;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.control.selector.server.logic.SelectorLogic;
+import com.echothree.model.control.workflow.common.exception.MissingRequiredWorkflowNameException;
+import com.echothree.model.control.workflow.common.exception.MissingRequiredWorkflowStepNameException;
+import com.echothree.model.control.workflow.common.exception.UnknownDefaultWorkflowDestinationException;
 import com.echothree.model.control.workflow.common.exception.UnknownDestinationWorkflowNameException;
 import com.echothree.model.control.workflow.common.exception.UnknownDestinationWorkflowStepNameException;
 import com.echothree.model.control.workflow.common.exception.UnknownWorkflowDestinationPartyTypeException;
@@ -43,6 +51,7 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.validation.ParameterUtils;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -64,9 +73,11 @@ public class WorkflowDestinationLogic
         return WorkflowDestinationLogicHolder.instance;
     }
     
-    public WorkflowDestination getWorkflowDestinationByName(final ExecutionErrorAccumulator eea, final WorkflowStep workflowStep, final String workflowDestinationName) {
+    public WorkflowDestination getWorkflowDestinationByName(final ExecutionErrorAccumulator eea, final WorkflowStep workflowStep,
+            final String workflowDestinationName, final EntityPermission entityPermission) {
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        WorkflowDestination workflowDestination = workflowControl.getWorkflowDestinationByName(workflowStep, workflowDestinationName);
+        WorkflowDestination workflowDestination = workflowControl.getWorkflowDestinationByName(workflowStep, workflowDestinationName,
+                entityPermission);
 
         if(workflowDestination == null) {
             WorkflowStepDetail workflowStepDetail = workflowStep.getLastDetail();
@@ -82,11 +93,11 @@ public class WorkflowDestinationLogic
             final String workflowDestinationName) {
         WorkflowStep workflowStep = WorkflowStepLogic.getInstance().getWorkflowStepByName(eea, workflow, workflowStepName);
         WorkflowDestination workflowDestination = null;
-        
+
         if(eea == null || !eea.hasExecutionErrors()) {
-            workflowDestination = getWorkflowDestinationByName(eea, workflowStep, workflowDestinationName);
+            workflowDestination = getWorkflowDestinationByName(eea, workflowStep, workflowDestinationName, EntityPermission.READ_ONLY);
         }
-        
+
         return workflowDestination;
     }
 
@@ -96,10 +107,74 @@ public class WorkflowDestinationLogic
         WorkflowDestination workflowDestination = null;
         
         if(eea == null || !eea.hasExecutionErrors()) {
-            workflowDestination = getWorkflowDestinationByName(eea, workflowStep, workflowDestinationName);
+            workflowDestination = getWorkflowDestinationByName(eea, workflowStep, workflowDestinationName, EntityPermission.READ_ONLY);
         }
         
         return workflowDestination;
+    }
+
+    public WorkflowDestination getWorkflowDestinationByUniversalSpec(final ExecutionErrorAccumulator eea, final WorkflowDestinationUniversalSpec universalSpec,
+            final boolean allowDefault, final EntityPermission entityPermission) {
+        var workflowControl = Session.getModelController(WorkflowControl.class);
+        var workflowName = universalSpec.getWorkflowName();
+        var workflowStepName = universalSpec.getWorkflowStepName();
+        var workflowDestinationName = universalSpec.getWorkflowDestinationName();
+        var nameParameterCount= ParameterUtils.getInstance().countNonNullParameters(workflowName, workflowStepName, workflowDestinationName);
+        var possibleEntitySpecs= EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
+        WorkflowDestination workflowDestination = null;
+
+        if(nameParameterCount < 4 && possibleEntitySpecs == 0) {
+            WorkflowStep workflowStep = null;
+
+            if(workflowName != null && workflowStepName != null) {
+                workflowStep = WorkflowStepLogic.getInstance().getWorkflowStepByName(eea, workflowName, workflowStepName);
+            } else {
+                if(workflowName != null) {
+                    handleExecutionError(MissingRequiredWorkflowNameException.class, eea, ExecutionErrors.MissingRequiredWorkflowName.name());
+                }
+
+                if(workflowStepName != null) {
+                    handleExecutionError(MissingRequiredWorkflowStepNameException.class, eea, ExecutionErrors.MissingRequiredWorkflowStepName.name());
+                }
+            }
+
+            if(!eea.hasExecutionErrors()) {
+                if(workflowDestinationName == null) {
+                    if(allowDefault) {
+                        workflowDestination = workflowControl.getDefaultWorkflowDestination(workflowStep, entityPermission);
+
+                        if(workflowDestination == null) {
+                            handleExecutionError(UnknownDefaultWorkflowDestinationException.class, eea, ExecutionErrors.UnknownDefaultWorkflowDestination.name());
+                        }
+                    } else {
+                        handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+                    }
+                } else {
+                    workflowDestination = getWorkflowDestinationByName(eea, workflowStep, workflowDestinationName, entityPermission);
+                }
+            }
+        } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
+            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
+                    ComponentVendors.ECHOTHREE.name(), EntityTypes.WorkflowDestination.name());
+
+            if(!eea.hasExecutionErrors()) {
+                workflowDestination = workflowControl.getWorkflowDestinationByEntityInstance(entityInstance, entityPermission);
+            }
+        } else {
+            handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        return workflowDestination;
+    }
+
+    public WorkflowDestination getWorkflowDestinationByUniversalSpec(final ExecutionErrorAccumulator eea, final WorkflowDestinationUniversalSpec universalSpec,
+            boolean allowDefault) {
+        return getWorkflowDestinationByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_ONLY);
+    }
+
+    public WorkflowDestination getWorkflowDestinationByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea, final WorkflowDestinationUniversalSpec universalSpec,
+            boolean allowDefault) {
+        return getWorkflowDestinationByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
     }
 
     public Set<WorkflowStep> getWorkflowDestinationStepsAsSet(final WorkflowDestination workflowDestination) {

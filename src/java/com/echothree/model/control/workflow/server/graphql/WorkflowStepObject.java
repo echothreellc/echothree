@@ -25,6 +25,7 @@ import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.wishlist.server.graphql.WishlistSecurityUtils;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
+import com.echothree.model.data.workflow.common.WorkflowDestinationConstants;
 import com.echothree.model.data.workflow.common.WorkflowEntranceStepConstants;
 import com.echothree.model.data.workflow.server.entity.WorkflowStep;
 import com.echothree.model.data.workflow.server.entity.WorkflowStepDetail;
@@ -104,6 +105,25 @@ public class WorkflowStepObject
         return workflowControl.getBestWorkflowStepDescription(workflowStep, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
 
+    @GraphQLField
+    @GraphQLDescription("workflow destinations")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<WorkflowDestinationObject> getWorkflowDestinations(final DataFetchingEnvironment env) {
+        if(WishlistSecurityUtils.getInstance().getHasWishlistTypePrioritiesAccess(env)) {
+            var workflowControl = Session.getModelController(WorkflowControl.class);
+            var totalCount = workflowControl.countWorkflowDestinationsByWorkflowStep(workflowStep);
+
+            try(var objectLimiter = new ObjectLimiter(env, WorkflowDestinationConstants.COMPONENT_VENDOR_NAME, WorkflowDestinationConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = workflowControl.getWorkflowDestinationsByWorkflowStep(workflowStep);
+                var wishlistTypePriorities = entities.stream().map(WorkflowDestinationObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, wishlistTypePriorities);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
 
     @GraphQLField
     @GraphQLDescription("workflow entrance steps")
