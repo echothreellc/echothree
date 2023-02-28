@@ -282,6 +282,8 @@ import com.echothree.control.user.wishlist.server.command.GetWishlistTypesComman
 import com.echothree.control.user.workflow.common.WorkflowUtil;
 import com.echothree.control.user.workflow.server.command.GetWorkflowCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowDestinationCommand;
+import com.echothree.control.user.workflow.server.command.GetWorkflowDestinationStepCommand;
+import com.echothree.control.user.workflow.server.command.GetWorkflowDestinationStepsCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowDestinationsCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowEntranceCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowEntranceStepCommand;
@@ -440,6 +442,7 @@ import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.control.wishlist.server.graphql.WishlistTypeObject;
 import com.echothree.model.control.wishlist.server.graphql.WishlistTypePriorityObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowDestinationObject;
+import com.echothree.model.control.workflow.server.graphql.WorkflowDestinationStepObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowEntranceObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowEntranceStepObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowObject;
@@ -595,6 +598,7 @@ import com.echothree.model.data.wishlist.server.entity.WishlistType;
 import com.echothree.model.data.wishlist.server.entity.WishlistTypePriority;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
+import com.echothree.model.data.workflow.server.entity.WorkflowDestinationStep;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntranceStep;
 import com.echothree.model.data.workflow.server.entity.WorkflowStep;
@@ -876,6 +880,67 @@ public final class GraphQlQueries
 
         return workflowDestinationObjects;
     }
+
+    @GraphQLField
+    @GraphQLName("workflowDestinationStep")
+    public static WorkflowDestinationStepObject workflowDestinationStep(final DataFetchingEnvironment env,
+            @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
+            @GraphQLName("workflowStepName") @GraphQLNonNull final String workflowStepName,
+            @GraphQLName("workflowDestinationName") @GraphQLNonNull final String workflowDestinationName,
+            @GraphQLName("destinationWorkflowName") @GraphQLNonNull final String destinationWorkflowName,
+            @GraphQLName("destinationWorkflowStepName") @GraphQLNonNull final String destinationWorkflowStepName) {
+        WorkflowDestinationStep workflowDestinationStep;
+
+        try {
+            var commandForm = WorkflowUtil.getHome().getGetWorkflowDestinationStepForm();
+
+            commandForm.setWorkflowName(workflowName);
+            commandForm.setWorkflowStepName(workflowStepName);
+            commandForm.setWorkflowDestinationName(workflowDestinationName);
+            commandForm.setDestinationWorkflowName(destinationWorkflowName);
+            commandForm.setDestinationWorkflowStepName(destinationWorkflowStepName);
+
+            workflowDestinationStep = new GetWorkflowDestinationStepCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return workflowDestinationStep == null ? null : new WorkflowDestinationStepObject(workflowDestinationStep);
+    }
+
+    @GraphQLField
+    @GraphQLName("workflowDestinationSteps")
+    public static Collection<WorkflowDestinationStepObject> workflowDestinationSteps(final DataFetchingEnvironment env,
+            @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
+            @GraphQLName("workflowStepName") @GraphQLNonNull final String workflowStepName,
+            @GraphQLName("workflowDestinationName") @GraphQLNonNull final String workflowDestinationName) {
+        Collection<WorkflowDestinationStep> workflowDestinationSteps;
+        Collection<WorkflowDestinationStepObject> workflowDestinationStepObjects;
+
+        try {
+            var commandForm = WorkflowUtil.getHome().getGetWorkflowDestinationStepsForm();
+
+            commandForm.setWorkflowName(workflowName);
+            commandForm.setWorkflowStepName(workflowStepName);
+            commandForm.setWorkflowDestinationName(workflowDestinationName);
+
+            workflowDestinationSteps = new GetWorkflowDestinationStepsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(workflowDestinationSteps == null) {
+            workflowDestinationStepObjects = emptyList();
+        } else {
+            workflowDestinationStepObjects = new ArrayList<>(workflowDestinationSteps.size());
+
+            workflowDestinationSteps.stream()
+                    .map(WorkflowDestinationStepObject::new)
+                    .forEachOrdered(workflowDestinationStepObjects::add);
+        }
+
+        return workflowDestinationStepObjects;
+    }
     
     @GraphQLField
     @GraphQLName("workflowEntrance")
@@ -933,10 +998,10 @@ public final class GraphQlQueries
     @GraphQLField
     @GraphQLName("workflowEntranceStep")
     public static WorkflowEntranceStepObject workflowEntranceStep(final DataFetchingEnvironment env,
-            @GraphQLName("workflowName") final String workflowName,
-            @GraphQLName("workflowEntranceName") final String workflowEntranceName,
-            @GraphQLName("entranceWorkflowName") final String entranceWorkflowName,
-            @GraphQLName("entranceWorkflowStepName") final String entranceWorkflowStepName) {
+            @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
+            @GraphQLName("workflowEntranceName") @GraphQLNonNull final String workflowEntranceName,
+            @GraphQLName("entranceWorkflowName") @GraphQLNonNull final String entranceWorkflowName,
+            @GraphQLName("entranceWorkflowStepName") @GraphQLNonNull final String entranceWorkflowStepName) {
         WorkflowEntranceStep workflowEntranceStep;
 
         try {
@@ -959,7 +1024,7 @@ public final class GraphQlQueries
     @GraphQLName("workflowEntranceSteps")
     public static Collection<WorkflowEntranceStepObject> workflowEntranceSteps(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
-            @GraphQLName("workflowEntranceName") final String workflowEntranceName) {
+            @GraphQLName("workflowEntranceName") @GraphQLNonNull final String workflowEntranceName) {
         Collection<WorkflowEntranceStep> workflowEntranceSteps;
         Collection<WorkflowEntranceStepObject> workflowEntranceStepObjects;
 
@@ -1109,7 +1174,7 @@ public final class GraphQlQueries
     @GraphQLField
     @GraphQLName("sequences")
     public static Collection<SequenceObject> sequences(final DataFetchingEnvironment env,
-            @GraphQLName("sequenceTypeName") final String sequenceTypeName) {
+            @GraphQLName("sequenceTypeName") @GraphQLNonNull final String sequenceTypeName) {
         Collection<Sequence> sequences;
         Collection<SequenceObject> sequenceObjects;
 
@@ -1350,7 +1415,7 @@ public final class GraphQlQueries
     @GraphQLField
     @GraphQLName("selectorTypes")
     public static Collection<SelectorTypeObject> selectorTypes(final DataFetchingEnvironment env,
-            @GraphQLName("selectorKindName") final String selectorKindName) {
+            @GraphQLName("selectorKindName") @GraphQLNonNull final String selectorKindName) {
         Collection<SelectorType> selectorTypes;
         Collection<SelectorTypeObject> selectorTypeObjects;
 
@@ -1405,8 +1470,8 @@ public final class GraphQlQueries
     @GraphQLField
     @GraphQLName("selectors")
     public static Collection<SelectorObject> selectors(final DataFetchingEnvironment env,
-            @GraphQLName("selectorKindName") final String selectorKindName,
-            @GraphQLName("selectorTypeName") final String selectorTypeName) {
+            @GraphQLName("selectorKindName") @GraphQLNonNull final String selectorKindName,
+            @GraphQLName("selectorTypeName") @GraphQLNonNull final String selectorTypeName) {
         Collection<Selector> selectors;
         Collection<SelectorObject> selectorObjects;
 
@@ -1624,7 +1689,7 @@ public final class GraphQlQueries
     public static Collection<FilterStepObject> filterSteps(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
             @GraphQLName("filterTypeName") @GraphQLNonNull final String filterTypeName,
-            @GraphQLName("filterName") final String filterName) {
+            @GraphQLName("filterName") @GraphQLNonNull final String filterName) {
         Collection<FilterStep> filterSteps;
         Collection<FilterStepObject> filterStepObjects;
 
