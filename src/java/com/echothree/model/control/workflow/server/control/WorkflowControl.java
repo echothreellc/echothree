@@ -3743,7 +3743,24 @@ public class WorkflowControl
         
         return workflowDestinationStep;
     }
-    
+
+    public long countWorkflowDestinationStepsByWorkflowDestination(WorkflowDestination workflowDestination) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM workflowdestinationsteps " +
+                "WHERE wkfldns_wkfldn_workflowdestinationid = ? AND wkfldns_thrutime = ?",
+                workflowDestination, Session.MAX_TIME);
+    }
+
+
+    public long countWorkflowDestinationStepsByWorkflowStep(WorkflowStep workflowStep) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM workflowdestinationsteps " +
+                "WHERE wkfldns_wkfls_workflowstepid = ? AND wkfldns_thrutime = ?",
+                workflowStep, session.MAX_TIME);
+    }
+
     private static final Map<EntityPermission, String> getWorkflowDestinationStepsByWorkflowStepQueries;
 
     static {
