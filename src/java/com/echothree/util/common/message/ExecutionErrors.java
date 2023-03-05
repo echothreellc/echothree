@@ -2263,5 +2263,7 @@ public enum ExecutionErrors {
     UnknownDefaultWorkflowEntrance,
     UnknownDefaultWorkflowDestination,
     MissingRequiredWorkflowStepName,
+    MissingRequiredSecurityRoleGroupName,
+    UnknownDefaultSecurityRole,
 
 }

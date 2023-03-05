@@ -17,16 +17,29 @@
 package com.echothree.model.control.security.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.control.wishlist.server.graphql.WishlistSecurityUtils;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
+import com.echothree.model.control.workflow.server.graphql.WorkflowStepObject;
+import com.echothree.model.data.security.common.SecurityRoleConstants;
 import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
 import com.echothree.model.data.security.server.entity.SecurityRoleGroupDetail;
+import com.echothree.model.data.workflow.common.WorkflowStepConstants;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("security role group object")
 @GraphQLName("SecurityRoleGroup")
@@ -88,6 +101,26 @@ public class SecurityRoleGroupObject
         var userControl = Session.getModelController(UserControl.class);
 
         return securityControl.getBestSecurityRoleGroupDescription(securityRoleGroup, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+    }
+
+    @GraphQLField
+    @GraphQLDescription("security roles")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<SecurityRoleObject> getSecurityRoles(final DataFetchingEnvironment env) {
+        if(SecuritySecurityUtils.getInstance().getHasSecurityRolesAccess(env)) {
+            var securityControl = Session.getModelController(SecurityControl.class);
+            var totalCount = securityControl.countSecurityRolesBySecurityRoleGroup(securityRoleGroup);
+
+            try(var objectLimiter = new ObjectLimiter(env, SecurityRoleConstants.COMPONENT_VENDOR_NAME, SecurityRoleConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = securityControl.getSecurityRoles(securityRoleGroup);
+                var wishlistTypePriorities = entities.stream().map(SecurityRoleObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, wishlistTypePriorities);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
     }
 
 }

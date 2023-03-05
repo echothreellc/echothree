@@ -16,8 +16,10 @@
 
 package com.echothree.model.control.security.server.graphql;
 
+import com.echothree.control.user.security.server.command.GetSecurityRoleCommand;
 import com.echothree.control.user.security.server.command.GetSecurityRoleGroupCommand;
 import com.echothree.control.user.security.server.command.GetSecurityRoleGroupsCommand;
+import com.echothree.control.user.security.server.command.GetSecurityRolesCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
@@ -38,6 +40,14 @@ public final class SecuritySecurityUtils
 
     public boolean getHasSecurityRoleGroupAccess(final DataFetchingEnvironment env) {
         return getGraphQlExecutionContext(env).hasAccess(GetSecurityRoleGroupCommand.class);
+    }
+
+    public boolean getHasSecurityRolesAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetSecurityRolesCommand.class);
+    }
+
+    public boolean getHasSecurityRoleAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetSecurityRoleCommand.class);
     }
 
 }
