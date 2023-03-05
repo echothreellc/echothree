@@ -3931,7 +3931,23 @@ public class WorkflowControl
         
         return workflowSelectorKind;
     }
-    
+
+    public long countWorkflowSelectorKindsByWorkflow(Workflow workflow) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM workflowselectorkinds " +
+                "WHERE wkflslk_wkfl_workflowid = ? AND wkflslk_thrutime = ?",
+                workflow, Session.MAX_TIME);
+    }
+
+    public long countWorkflowSelectorKindsBySelectorKind(SelectorKind selectorKind) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM workflowselectorkinds " +
+                "WHERE wkflslk_slk_selectorkindid = ? AND wkflslk_thrutime = ?",
+                selectorKind, Session.MAX_TIME);
+    }
+
     private List<WorkflowSelectorKind> getWorkflowSelectorKindsByWorkflow(Workflow workflow,
             EntityPermission entityPermission) {
         List<WorkflowSelectorKind> workflowSelectorKinds;
