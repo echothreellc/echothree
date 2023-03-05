@@ -31,6 +31,7 @@ import com.echothree.model.control.wishlist.server.graphql.WishlistSecurityUtils
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.workflow.common.WorkflowEntityTypeConstants;
 import com.echothree.model.data.workflow.common.WorkflowEntranceConstants;
+import com.echothree.model.data.workflow.common.WorkflowSelectorKindConstants;
 import com.echothree.model.data.workflow.common.WorkflowStepConstants;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowDetail;
@@ -162,7 +163,7 @@ public class WorkflowObject
     }
 
     @GraphQLField
-    @GraphQLDescription("workflow entrances")
+    @GraphQLDescription("workflow entity types")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<WorkflowEntityTypeObject> getWorkflowEntityTypes(final DataFetchingEnvironment env) {
@@ -173,6 +174,26 @@ public class WorkflowObject
             try(var objectLimiter = new ObjectLimiter(env, WorkflowEntityTypeConstants.COMPONENT_VENDOR_NAME, WorkflowEntityTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = workflowControl.getWorkflowEntityTypesByWorkflow(workflow);
                 var wishlistTypePriorities = entities.stream().map(WorkflowEntityTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, wishlistTypePriorities);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("workflow selector kinds")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<WorkflowSelectorKindObject> getWorkflowSelectorKinds(final DataFetchingEnvironment env) {
+        if(WishlistSecurityUtils.getInstance().getHasWishlistTypePrioritiesAccess(env)) {
+            var workflowControl = Session.getModelController(WorkflowControl.class);
+            var totalCount = workflowControl.countWorkflowSelectorKindsByWorkflow(workflow);
+
+            try(var objectLimiter = new ObjectLimiter(env, WorkflowSelectorKindConstants.COMPONENT_VENDOR_NAME, WorkflowSelectorKindConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = workflowControl.getWorkflowSelectorKindsByWorkflow(workflow);
+                var wishlistTypePriorities = entities.stream().map(WorkflowSelectorKindObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, wishlistTypePriorities);
             }
