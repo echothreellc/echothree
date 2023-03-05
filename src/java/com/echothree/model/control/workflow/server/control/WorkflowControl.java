@@ -1476,7 +1476,23 @@ public class WorkflowControl
         
         return workflowEntityType;
     }
-    
+
+    public long countWorkflowEntityTypesByWorkflow(Workflow workflow) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM workflowentitytypes " +
+                "WHERE wkflent_wkfl_workflowid = ? AND wkflent_thrutime = ?",
+                workflow, Session.MAX_TIME);
+    }
+
+    public long countWorkflowEntityTypesByEntityType(EntityType entityType) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM workflowentitytypes " +
+                "WHERE wkflent_ent_entitytypeid = ? AND wkflent_thrutime = ?",
+                entityType, Session.MAX_TIME);
+    }
+
     private static final Map<EntityPermission, String> getWorkflowEntityTypeQueries;
 
     static {
