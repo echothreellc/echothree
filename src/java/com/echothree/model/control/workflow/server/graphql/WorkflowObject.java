@@ -27,7 +27,6 @@ import com.echothree.model.control.security.server.graphql.SecuritySecurityUtils
 import com.echothree.model.control.selector.server.graphql.SelectorSecurityUtils;
 import com.echothree.model.control.selector.server.graphql.SelectorTypeObject;
 import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.control.wishlist.server.graphql.WishlistSecurityUtils;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.workflow.common.WorkflowEntityTypeConstants;
 import com.echothree.model.data.workflow.common.WorkflowEntranceConstants;
@@ -127,7 +126,7 @@ public class WorkflowObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<WorkflowEntranceObject> getWorkflowEntrances(final DataFetchingEnvironment env) {
-        if(WishlistSecurityUtils.getInstance().getHasWishlistTypePrioritiesAccess(env)) {
+        if(WorkflowSecurityUtils.getInstance().getHasWorkflowEntrancesAccess(env)) {
             var workflowControl = Session.getModelController(WorkflowControl.class);
             var totalCount = workflowControl.countWorkflowEntrancesByWorkflow(workflow);
 
@@ -147,7 +146,7 @@ public class WorkflowObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<WorkflowStepObject> getWorkflowSteps(final DataFetchingEnvironment env) {
-        if(WishlistSecurityUtils.getInstance().getHasWishlistTypePrioritiesAccess(env)) {
+        if(WorkflowSecurityUtils.getInstance().getHasWorkflowStepsAccess(env)) {
             var workflowControl = Session.getModelController(WorkflowControl.class);
             var totalCount = workflowControl.countWorkflowStepsByWorkflow(workflow);
 
@@ -167,7 +166,7 @@ public class WorkflowObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<WorkflowEntityTypeObject> getWorkflowEntityTypes(final DataFetchingEnvironment env) {
-        if(WishlistSecurityUtils.getInstance().getHasWishlistTypePrioritiesAccess(env)) {
+        if(WorkflowSecurityUtils.getInstance().getHasWorkflowEntityTypesAccess(env)) {
             var workflowControl = Session.getModelController(WorkflowControl.class);
             var totalCount = workflowControl.countWorkflowEntityTypesByWorkflow(workflow);
 
@@ -187,7 +186,7 @@ public class WorkflowObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<WorkflowSelectorKindObject> getWorkflowSelectorKinds(final DataFetchingEnvironment env) {
-        if(WishlistSecurityUtils.getInstance().getHasWishlistTypePrioritiesAccess(env)) {
+        if(WorkflowSecurityUtils.getInstance().getHasWorkflowSelectorKindsAccess(env)) {
             var workflowControl = Session.getModelController(WorkflowControl.class);
             var totalCount = workflowControl.countWorkflowSelectorKindsByWorkflow(workflow);
 
