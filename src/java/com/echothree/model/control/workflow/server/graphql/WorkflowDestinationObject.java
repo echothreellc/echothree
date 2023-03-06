@@ -23,7 +23,6 @@ import com.echothree.model.control.graphql.server.graphql.count.CountingDataConn
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.control.wishlist.server.graphql.WishlistSecurityUtils;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.workflow.common.WorkflowDestinationStepConstants;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
@@ -103,7 +102,7 @@ public class WorkflowDestinationObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<WorkflowDestinationStepObject> getWorkflowDestinationSteps(final DataFetchingEnvironment env) {
-        if(WishlistSecurityUtils.getInstance().getHasWishlistTypePrioritiesAccess(env)) {
+        if(WorkflowSecurityUtils.getInstance().getHasWorkflowDestinationStepsAccess(env)) {
             var workflowControl = Session.getModelController(WorkflowControl.class);
             var totalCount = workflowControl.countWorkflowDestinationStepsByWorkflowDestination(workflowDestination);
 

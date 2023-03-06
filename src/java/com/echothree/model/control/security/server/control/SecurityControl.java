@@ -716,13 +716,20 @@ public class SecurityControl
     }
 
     /** Assume that the entityInstance passed to this function is a ECHOTHREE.SecurityRole */
-    public SecurityRole getSecurityRoleByEntityInstance(EntityInstance entityInstance) {
-        SecurityRolePK pk = new SecurityRolePK(entityInstance.getEntityUniqueId());
-        SecurityRole securityRole = SecurityRoleFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
-        
-        return securityRole;
+    public SecurityRole getSecurityRoleByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new SecurityRolePK(entityInstance.getEntityUniqueId());
+
+        return SecurityRoleFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
-    
+
+    public SecurityRole getSecurityRoleByEntityInstance(EntityInstance entityInstance) {
+        return getSecurityRoleByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public SecurityRole getSecurityRoleByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getSecurityRoleByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     private List<SecurityRole> getSecurityRoles(SecurityRoleGroup securityRoleGroup, EntityPermission entityPermission) {
         List<SecurityRole> securityRoles;
         
@@ -778,7 +785,7 @@ public class SecurityControl
                 securityRoleGroup);
     }
 
-    private SecurityRole getDefaultSecurityRole(SecurityRoleGroup securityRoleGroup, EntityPermission entityPermission) {
+    public SecurityRole getDefaultSecurityRole(SecurityRoleGroup securityRoleGroup, EntityPermission entityPermission) {
         SecurityRole securityRole;
         
         try {
@@ -821,7 +828,7 @@ public class SecurityControl
         return getDefaultSecurityRoleForUpdate(securityRoleGroup).getLastDetailForUpdate().getSecurityRoleDetailValue().clone();
     }
     
-    private SecurityRole getSecurityRoleByName(SecurityRoleGroup securityRoleGroup, String securityRoleName, EntityPermission entityPermission) {
+    public SecurityRole getSecurityRoleByName(SecurityRoleGroup securityRoleGroup, String securityRoleName, EntityPermission entityPermission) {
         SecurityRole securityRole;
         
         try {
@@ -906,19 +913,22 @@ public class SecurityControl
     public SecurityRoleTransfer getSecurityRoleTransfer(UserVisit userVisit, SecurityRole securityRole) {
         return getSecurityTransferCaches(userVisit).getSecurityRoleTransferCache().getSecurityRoleTransfer(securityRole);
     }
-    
-    public List<SecurityRoleTransfer> getSecurityRoleTransfersBySecurityRoleGroup(UserVisit userVisit, SecurityRoleGroup securityRoleGroup) {
-        List<SecurityRole> securityRoles = getSecurityRoles(securityRoleGroup);
+
+    public List<SecurityRoleTransfer> getSecurityRoleTransfers(UserVisit userVisit, Collection<SecurityRole> securityRoles) {
         List<SecurityRoleTransfer> securityRoleTransfers = new ArrayList<>(securityRoles.size());
         SecurityRoleTransferCache securityRoleTransferCache = getSecurityTransferCaches(userVisit).getSecurityRoleTransferCache();
-        
+
         securityRoles.forEach((securityRole) ->
                 securityRoleTransfers.add(securityRoleTransferCache.getSecurityRoleTransfer(securityRole))
         );
-        
+
         return securityRoleTransfers;
     }
-    
+
+    public List<SecurityRoleTransfer> getSecurityRoleTransfersBySecurityRoleGroup(UserVisit userVisit, SecurityRoleGroup securityRoleGroup) {
+        return getSecurityRoleTransfers(userVisit, getSecurityRoles(securityRoleGroup));
+    }
+
     private void updateSecurityRoleFromValue(SecurityRoleDetailValue securityRoleDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(securityRoleDetailValue.hasBeenModified()) {

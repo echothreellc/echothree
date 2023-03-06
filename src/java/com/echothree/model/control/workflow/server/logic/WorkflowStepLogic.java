@@ -120,7 +120,7 @@ public class WorkflowStepLogic
         var workflow = WorkflowLogic.getInstance().getWorkflowByName(eea, workflowName);
         WorkflowStep workflowStep = null;
 
-        if(!eea.hasExecutionErrors()) {
+        if(eea == null || !eea.hasExecutionErrors()) {
             workflowStep = getWorkflowStepByName(UnknownWorkflowStepNameException.class, ExecutionErrors.UnknownWorkflowStepName,
                     eea, workflow, workflowStepName, entityPermission);
         }

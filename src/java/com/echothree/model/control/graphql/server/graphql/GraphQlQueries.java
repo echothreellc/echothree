@@ -226,8 +226,10 @@ import com.echothree.control.user.search.server.command.GetSearchResultActionTyp
 import com.echothree.control.user.search.server.command.GetSearchResultActionTypesCommand;
 import com.echothree.control.user.search.server.command.GetVendorResultsCommand;
 import com.echothree.control.user.security.common.SecurityUtil;
+import com.echothree.control.user.security.server.command.GetSecurityRoleCommand;
 import com.echothree.control.user.security.server.command.GetSecurityRoleGroupCommand;
 import com.echothree.control.user.security.server.command.GetSecurityRoleGroupsCommand;
+import com.echothree.control.user.security.server.command.GetSecurityRolesCommand;
 import com.echothree.control.user.selector.common.SelectorUtil;
 import com.echothree.control.user.selector.server.command.GetSelectorCommand;
 import com.echothree.control.user.selector.server.command.GetSelectorKindCommand;
@@ -417,6 +419,7 @@ import com.echothree.model.control.search.server.graphql.SearchCheckSpellingActi
 import com.echothree.model.control.search.server.graphql.SearchResultActionTypeObject;
 import com.echothree.model.control.search.server.graphql.VendorResultsObject;
 import com.echothree.model.control.security.server.graphql.SecurityRoleGroupObject;
+import com.echothree.model.control.security.server.graphql.SecurityRoleObject;
 import com.echothree.model.control.selector.server.graphql.SelectorKindObject;
 import com.echothree.model.control.selector.server.graphql.SelectorObject;
 import com.echothree.model.control.selector.server.graphql.SelectorTypeObject;
@@ -574,6 +577,7 @@ import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.search.common.SearchResultActionTypeConstants;
 import com.echothree.model.data.search.server.entity.SearchCheckSpellingActionType;
 import com.echothree.model.data.search.server.entity.SearchResultActionType;
+import com.echothree.model.data.security.server.entity.SecurityRole;
 import com.echothree.model.data.security.server.entity.SecurityRoleGroup;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.selector.server.entity.SelectorKind;
@@ -7066,7 +7070,7 @@ public final class GraphQlQueries
 
         return wishlistTypePriorityObjects;
     }
-    
+
     @GraphQLField
     @GraphQLName("securityRoleGroup")
     public static SecurityRoleGroupObject securityRoleGroup(final DataFetchingEnvironment env,
@@ -7116,6 +7120,59 @@ public final class GraphQlQueries
         }
 
         return securityRoleGroupObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("securityRole")
+    public static SecurityRoleObject securityRole(final DataFetchingEnvironment env,
+            @GraphQLName("securityRoleGroupName") final String securityRoleGroupName,
+            @GraphQLName("securityRoleName") final String securityRoleName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        SecurityRole securityRole;
+
+        try {
+            var commandForm = SecurityUtil.getHome().getGetSecurityRoleForm();
+
+            commandForm.setSecurityRoleGroupName(securityRoleGroupName);
+            commandForm.setSecurityRoleName(securityRoleName);
+            commandForm.setUlid(id);
+
+            securityRole = new GetSecurityRoleCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return securityRole == null ? null : new SecurityRoleObject(securityRole);
+    }
+
+    @GraphQLField
+    @GraphQLName("securityRoles")
+    public static Collection<SecurityRoleObject> securityRoles(final DataFetchingEnvironment env,
+            @GraphQLName("securityRoleGroupName") @GraphQLNonNull final String securityRoleGroupName) {
+        Collection<SecurityRole> securityRoles;
+        Collection<SecurityRoleObject> securityRoleObjects;
+
+        try {
+            var commandForm = SecurityUtil.getHome().getGetSecurityRolesForm();
+
+            commandForm.setSecurityRoleGroupName(securityRoleGroupName);
+
+            securityRoles = new GetSecurityRolesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(securityRoles == null) {
+            securityRoleObjects = emptyList();
+        } else {
+            securityRoleObjects = new ArrayList<>(securityRoles.size());
+
+            securityRoles.stream()
+                    .map(SecurityRoleObject::new)
+                    .forEachOrdered(securityRoleObjects::add);
+        }
+
+        return securityRoleObjects;
     }
 
     @GraphQLField
