@@ -25,6 +25,8 @@ import com.echothree.control.user.workflow.server.command.GetWorkflowEntityStatu
 import com.echothree.control.user.workflow.server.command.GetWorkflowEntityTypeCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowEntityTypesCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowEntranceCommand;
+import com.echothree.control.user.workflow.server.command.GetWorkflowEntrancePartyTypeCommand;
+import com.echothree.control.user.workflow.server.command.GetWorkflowEntrancePartyTypesCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowEntranceStepCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowEntranceStepsCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowEntrancesCommand;
@@ -101,6 +103,14 @@ public final class WorkflowSecurityUtils
 
     public boolean getHasWorkflowEntranceStepAccess(final DataFetchingEnvironment env) {
         return getGraphQlExecutionContext(env).hasAccess(GetWorkflowEntranceStepCommand.class);
+    }
+
+    public boolean getHasWorkflowEntrancePartyTypesAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetWorkflowEntrancePartyTypesCommand.class);
+    }
+
+    public boolean getHasWorkflowEntrancePartyTypeAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetWorkflowEntrancePartyTypeCommand.class);
     }
 
     public boolean getHasWorkflowDestinationsAccess(final DataFetchingEnvironment env) {

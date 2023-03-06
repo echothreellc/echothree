@@ -52,7 +52,7 @@ public class WorkflowSecurityLogic {
         var workflowControl = Session.getModelController(WorkflowControl.class);
         boolean checkPassed = false;
 
-        if(workflowControl.countWorkflowEntrancePartyTypes(workflowEntrance) != 0) {
+        if(workflowControl.countWorkflowEntrancePartyTypesByWorkflowEntrance(workflowEntrance) != 0) {
             Party party = PartyFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, partyPK);
             PartyType partyType = party.getLastDetail().getPartyType();
             WorkflowEntrancePartyType workflowEntrancePartyType = workflowControl.getWorkflowEntrancePartyType(workflowEntrance, partyType);
