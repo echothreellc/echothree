@@ -2382,7 +2382,23 @@ public class WorkflowControl
         
         return workflowEntrancePartyType;
     }
-    
+
+    public long countWorkflowEntrancePartyTypesByWorkflowEntrance(WorkflowEntrance workflowEntrance) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM workflowentrancepartytypes " +
+                "WHERE wkflenptyp_wkflen_workflowentranceid = ? AND wkflenptyp_thrutime = ?",
+                workflowEntrance, Session.MAX_TIME_LONG);
+    }
+
+    public long countWorkflowEntrancePartyTypesByPartyType(PartyType partyType) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM workflowentrancepartytypes " +
+                "WHERE wkflenptyp_ptyp_partytypeid = ? AND wkflenptyp_thrutime = ?",
+                partyType, Session.MAX_TIME_LONG);
+    }
+
     private List<WorkflowEntrancePartyType> getWorkflowEntrancePartyTypesByWorkflowEntrance(WorkflowEntrance workflowEntrance,
             EntityPermission entityPermission) {
         List<WorkflowEntrancePartyType> workflowEntrancePartyTypes;
@@ -2462,14 +2478,6 @@ public class WorkflowControl
     
     public WorkflowEntrancePartyType getWorkflowEntrancePartyTypeForUpdate(WorkflowEntrance workflowEntrance, PartyType partyType) {
         return getWorkflowEntrancePartyType(workflowEntrance, partyType, EntityPermission.READ_WRITE);
-    }
-    
-    public long countWorkflowEntrancePartyTypes(WorkflowEntrance workflowEntrance) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM workflowentrancepartytypes " +
-                "WHERE wkflenptyp_wkflen_workflowentranceid = ?",
-                workflowEntrance);
     }
     
     public WorkflowEntrancePartyTypeTransfer getWorkflowEntrancePartyTypeTransfer(UserVisit userVisit, WorkflowEntrancePartyType workflowEntrancePartyType) {
