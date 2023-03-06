@@ -25,6 +25,7 @@ import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.workflow.common.WorkflowEntrancePartyTypeConstants;
+import com.echothree.model.data.workflow.common.WorkflowEntranceSelectorConstants;
 import com.echothree.model.data.workflow.common.WorkflowEntranceStepConstants;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntranceDetail;
@@ -130,6 +131,26 @@ public class WorkflowEntranceObject
             try(var objectLimiter = new ObjectLimiter(env, WorkflowEntrancePartyTypeConstants.COMPONENT_VENDOR_NAME, WorkflowEntrancePartyTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = workflowControl.getWorkflowEntrancePartyTypesByWorkflowEntrance(workflowEntrance);
                 var wishlistTypePriorities = entities.stream().map(WorkflowEntrancePartyTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, wishlistTypePriorities);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("workflow entrance selectors")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<WorkflowEntranceSelectorObject> getWorkflowEntranceSelectors(final DataFetchingEnvironment env) {
+        if(WorkflowSecurityUtils.getInstance().getHasWorkflowEntranceSelectorsAccess(env)) {
+            var workflowControl = Session.getModelController(WorkflowControl.class);
+            var totalCount = workflowControl.countWorkflowEntranceSelectorsByWorkflowEntrance(workflowEntrance);
+
+            try(var objectLimiter = new ObjectLimiter(env, WorkflowEntranceSelectorConstants.COMPONENT_VENDOR_NAME, WorkflowEntranceSelectorConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = workflowControl.getWorkflowEntranceSelectorsByWorkflowEntrance(workflowEntrance);
+                var wishlistTypePriorities = entities.stream().map(WorkflowEntranceSelectorObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, wishlistTypePriorities);
             }
