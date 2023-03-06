@@ -1,5 +1,15 @@
 # Changelog
 
+## 2023-03-05-01
+
+* Add Workflow Entrance Party Types Object and Queries [653](https://gitlab.echothree.com/echothree/echothree/-/issues/653)
+* Add Workflow Entrance Selectors Object and Queries [655](https://gitlab.echothree.com/echothree/echothree/-/issues/655)
+* Add Workflow Destinations Object and Queries [662](https://gitlab.echothree.com/echothree/echothree/-/issues/662)
+* Add Workflow Destination Steps Object and Queries [664](https://gitlab.echothree.com/echothree/echothree/-/issues/664)
+* Add Workflow Selector Kind Object and Queries [666](https://gitlab.echothree.com/echothree/echothree/-/issues/666)
+* Add Workflow Entity Type Object and Queries [668](https://gitlab.echothree.com/echothree/echothree/-/issues/668)
+* Add Security Role Object and Queries [682](https://gitlab.echothree.com/echothree/echothree/-/issues/682)
+
 ## 2023-02-19-01
 
 * Add Workflow Entrance Object and Queries [651](https://gitlab.echothree.com/echothree/echothree/-/issues/651)
