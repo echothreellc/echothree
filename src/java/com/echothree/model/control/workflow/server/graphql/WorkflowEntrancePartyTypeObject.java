@@ -17,14 +17,26 @@
 package com.echothree.model.control.workflow.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.party.server.graphql.PartySecurityUtils;
 import com.echothree.model.control.party.server.graphql.PartyTypeObject;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
+import com.echothree.model.data.workflow.common.WorkflowEntrancePartyTypeConstants;
+import com.echothree.model.data.workflow.common.WorkflowEntranceSecurityRoleConstants;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrancePartyType;
+import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("workflow entrance party type object")
 @GraphQLName("WorkflowEntrancePartyType")
@@ -50,6 +62,26 @@ public class WorkflowEntrancePartyTypeObject
     @GraphQLNonNull
     public PartyTypeObject getPartyType() {
         return new PartyTypeObject(workflowEntrancePartyType.getPartyType());
+    }
+
+    @GraphQLField
+    @GraphQLDescription("workflow entrance security roles")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<WorkflowEntranceSecurityRoleObject> getWorkflowEntranceSecurityRoles(final DataFetchingEnvironment env) {
+        if(WorkflowSecurityUtils.getInstance().getHasWorkflowEntranceSecurityRolesAccess(env)) {
+            var workflowControl = Session.getModelController(WorkflowControl.class);
+            var totalCount = workflowControl.countWorkflowEntranceSecurityRolesByWorkflowEntrancePartyType(workflowEntrancePartyType);
+
+            try(var objectLimiter = new ObjectLimiter(env, WorkflowEntranceSecurityRoleConstants.COMPONENT_VENDOR_NAME, WorkflowEntranceSecurityRoleConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = workflowControl.getWorkflowEntranceSecurityRolesByWorkflowEntrancePartyType(workflowEntrancePartyType);
+                var wishlistTypePriorities = entities.stream().map(WorkflowEntranceSecurityRoleObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, wishlistTypePriorities);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
     }
 
 }

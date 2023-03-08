@@ -2560,7 +2560,23 @@ public class WorkflowControl
         
         return workflowEntranceSecurityRole;
     }
-    
+
+    public long countWorkflowEntranceSecurityRolesByWorkflowEntrancePartyType(WorkflowEntrancePartyType workflowEntrancePartyType) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM workflowentrancesecurityroles " +
+                "WHERE wkflensrol_wkflenptyp_workflowentrancepartytypeid = ? AND wkflensrol_thrutime = ?",
+                workflowEntrancePartyType, Session.MAX_TIME);
+    }
+
+    public long countWorkflowEntranceSecurityRolesBySecurityRole(SecurityRole securityRole) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM workflowentrancesecurityroles " +
+                "WHERE wkflens_wkfls_worwkflensrol_srol_securityroleidkflowstepid = ? AND wkflensrol_thrutime = ?",
+                securityRole, session.MAX_TIME);
+    }
+
     private List<WorkflowEntranceSecurityRole> getWorkflowEntranceSecurityRolesByWorkflowEntrancePartyType(WorkflowEntrancePartyType workflowEntrancePartyType,
             EntityPermission entityPermission) {
         List<WorkflowEntranceSecurityRole> workflowEntranceSecurityRoles;
