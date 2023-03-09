@@ -3563,7 +3563,23 @@ public class WorkflowControl
         
         return workflowDestinationPartyType;
     }
-    
+
+    public long countWorkflowDestinationPartyTypesByWorkflowDestination(WorkflowDestination workflowDestination) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM workflowdestinationpartytypes " +
+                "WHERE wkfldnptyp_wkfldn_workflowdestinationid = ? AND wkfldnptyp_thrutime = ?",
+                workflowDestination, Session.MAX_TIME_LONG);
+    }
+
+    public long countWorkflowDestinationPartyTypesByPartyType(PartyType partyType) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM workflowdestinationpartytypes " +
+                "WHERE wkfldnptyp_ptyp_partytypeid = ? AND wkfldnptyp_thrutime = ?",
+                partyType, Session.MAX_TIME_LONG);
+    }
+
     private List<WorkflowDestinationPartyType> getWorkflowDestinationPartyTypesByWorkflowDestination(WorkflowDestination workflowDestination,
             EntityPermission entityPermission) {
         List<WorkflowDestinationPartyType> workflowDestinationPartyTypes;
