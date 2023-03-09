@@ -245,7 +245,7 @@ $ ant compile
 
 As jboss:
 ```
-$ cp EchoThree/EchoThree/build/lib/mysql-connector-java.jar wildfly-latest/standalone/deployments/mysql-connector-java.jar
+$ cp EchoThree/EchoThree/build/lib/mysql-connector-j.jar wildfly-latest/standalone/deployments/mysql-connector-j.jar
 $ cd EchoThree
 $ ant deploy
 ```

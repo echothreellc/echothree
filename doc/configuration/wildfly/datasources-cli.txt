@@ -5,7 +5,7 @@ jndi-name=java:/EchoThreeNTDS, \
 jta=false, \
 connection-url="jdbc:mysql://127.0.0.1:3306/echothree?serverTimezone=US/Central", \
 driver-class=com.mysql.cj.jdbc.Driver, \
-driver-name=mysql-connector-java.jar, \
+driver-name=mysql-connector-j.jar, \
 min-pool-size=5, \
 user-name=echothree, \
 password="$Exampl3Passw0rd#", \
@@ -17,7 +17,7 @@ exception-sorter-class-name=org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLEx
 xa-data-source add --name=EchoThreeDS \
 --jndi-name=java:/EchoThreeDS \
 --xa-datasource-class=com.mysql.cj.jdbc.MysqlXADataSource \
---driver-name=mysql-connector-java.jar \
+--driver-name=mysql-connector-j.jar \
 --xa-datasource-properties=ServerName=127.0.0.1,DatabaseName=echothree,serverTimezone=US/Central \
 --min-pool-size=5 \
 --user-name=echothree \

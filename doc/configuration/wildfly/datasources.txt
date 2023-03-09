@@ -1,7 +1,7 @@
                 <datasource jta="false" jndi-name="java:/EchoThreeNTDS" pool-name="EchoThreeNTDS">
                     <connection-url>jdbc:mysql://127.0.0.1:3306/echothree?serverTimezone=US/Central</connection-url>
                     <driver-class>com.mysql.cj.jdbc.Driver</driver-class>
-                    <driver>mysql-connector-java.jar</driver>
+                    <driver>mysql-connector-j.jar</driver>
                     <pool>
                         <min-pool-size>5</min-pool-size>
                     </pool>
@@ -26,7 +26,7 @@
                         US/Central
                     </xa-datasource-property>
                     <xa-datasource-class>com.mysql.cj.jdbc.MysqlXADataSource</xa-datasource-class>
-                    <driver>mysql-connector-java.jar</driver>
+                    <driver>mysql-connector-j.jar</driver>
                     <xa-pool>
                         <min-pool-size>5</min-pool-size>
                     </xa-pool>

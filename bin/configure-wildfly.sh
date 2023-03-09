@@ -2,7 +2,7 @@
 $JBOSS_HOME/bin/jboss-cli.sh --connect --file="doc/configuration/wildfly/infinispan-cli.txt"
 $JBOSS_HOME/bin/jboss-cli.sh --connect --command="reload"
 
-$JBOSS_HOME/bin/jboss-cli.sh --connect --command="deploy build/lib/mysql-connector-java.jar"
+$JBOSS_HOME/bin/jboss-cli.sh --connect --command="deploy build/lib/mysql-connector-j.jar"
 $JBOSS_HOME/bin/jboss-cli.sh --connect --file="doc/configuration/wildfly/datasources-cli.txt"
 
 $JBOSS_HOME/bin/jboss-cli.sh --connect --command="deploy build/ears/echothree.ear
