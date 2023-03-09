@@ -42,7 +42,7 @@
         <property name="ui.cli.dataloader.jarfile" value="${ui.cli.dataloader.jardir}/dataloader.jar" />
 
         <path id="runtime.classpath">
-            <file file="${build.lib.dir}/mysql-connector-java.jar"/>
+            <file file="${build.lib.dir}/mysql-connector-j.jar"/>
             <file file="${build.lib.dir}/guava.jar"/>
             <file file="${build.lib.dir}/icu4j.jar"/>
             <file file="${build.lib.dir}/commons-cli.jar"/>

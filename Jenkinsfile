@@ -32,7 +32,7 @@ pipeline {
                 stage('Deployables') {
                     steps {
                         script {
-                            archiveArtifacts artifacts: 'build/ears/*.ear,build/ui/web/**/*.war,build/service/**/*.war,build/service/**/*.jar,build/lib/mysql-connector-java.jar'
+                            archiveArtifacts artifacts: 'build/ears/*.ear,build/ui/web/**/*.war,build/service/**/*.war,build/service/**/*.jar,build/lib/mysql-connector-j.jar'
                             currentBuild.result = 'SUCCESS'
                         }
                     }

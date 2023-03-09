@@ -116,7 +116,7 @@
       <root url="jar://$PROJECT_DIR$/build/lib/jgroups.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/reload4j.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/messages.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib/mysql-connector-java.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/mysql-connector-j.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/poi.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/protobuf-java.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/protostream.jar!/" />
@@ -274,7 +274,7 @@
       <root url="jar://$PROJECT_DIR$/build/lib-sources/junit-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/lucene-core-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/lucene-queryparser-sources.jar!/" />
-      <root url="jar://$PROJECT_DIR$/build/lib-sources/mysql-connector-java-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-sources/mysql-connector-j-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/poi-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/validation-api-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/wildfly-client-all-sources.jar!/" />
