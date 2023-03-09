@@ -18,6 +18,12 @@ package com.echothree.model.control.workflow.server.graphql;
 
 import com.echothree.control.user.workflow.server.command.GetWorkflowCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowDestinationCommand;
+import com.echothree.control.user.workflow.server.command.GetWorkflowDestinationPartyTypeCommand;
+import com.echothree.control.user.workflow.server.command.GetWorkflowDestinationPartyTypesCommand;
+import com.echothree.control.user.workflow.server.command.GetWorkflowDestinationSecurityRoleCommand;
+import com.echothree.control.user.workflow.server.command.GetWorkflowDestinationSecurityRolesCommand;
+import com.echothree.control.user.workflow.server.command.GetWorkflowDestinationSelectorCommand;
+import com.echothree.control.user.workflow.server.command.GetWorkflowDestinationSelectorsCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowDestinationStepCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowDestinationStepsCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowDestinationsCommand;
@@ -147,6 +153,30 @@ public final class WorkflowSecurityUtils
 
     public boolean getHasWorkflowDestinationStepAccess(final DataFetchingEnvironment env) {
         return getGraphQlExecutionContext(env).hasAccess(GetWorkflowDestinationStepCommand.class);
+    }
+
+    public boolean getHasWorkflowDestinationPartyTypesAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetWorkflowDestinationPartyTypesCommand.class);
+    }
+
+    public boolean getHasWorkflowDestinationPartyTypeAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetWorkflowDestinationPartyTypeCommand.class);
+    }
+
+    public boolean getHasWorkflowDestinationSecurityRolesAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetWorkflowDestinationSecurityRolesCommand.class);
+    }
+
+    public boolean getHasWorkflowDestinationSecurityRoleAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetWorkflowDestinationSecurityRoleCommand.class);
+    }
+
+    public boolean getHasWorkflowDestinationSelectorsAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetWorkflowDestinationSelectorsCommand.class);
+    }
+
+    public boolean getHasWorkflowDestinationSelectorAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetWorkflowDestinationSelectorCommand.class);
     }
 
     public boolean getHasWorkflowEntityTypesAccess(final DataFetchingEnvironment env) {

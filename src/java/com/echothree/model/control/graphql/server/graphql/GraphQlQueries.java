@@ -284,6 +284,8 @@ import com.echothree.control.user.wishlist.server.command.GetWishlistTypesComman
 import com.echothree.control.user.workflow.common.WorkflowUtil;
 import com.echothree.control.user.workflow.server.command.GetWorkflowCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowDestinationCommand;
+import com.echothree.control.user.workflow.server.command.GetWorkflowDestinationSelectorCommand;
+import com.echothree.control.user.workflow.server.command.GetWorkflowDestinationSelectorsCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowDestinationStepCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowDestinationStepsCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowDestinationsCommand;
@@ -455,6 +457,7 @@ import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.control.wishlist.server.graphql.WishlistTypeObject;
 import com.echothree.model.control.wishlist.server.graphql.WishlistTypePriorityObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowDestinationObject;
+import com.echothree.model.control.workflow.server.graphql.WorkflowDestinationSelectorObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowDestinationStepObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowEntityTypeObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowEntranceObject;
@@ -617,6 +620,7 @@ import com.echothree.model.data.wishlist.server.entity.WishlistType;
 import com.echothree.model.data.wishlist.server.entity.WishlistTypePriority;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
+import com.echothree.model.data.workflow.server.entity.WorkflowDestinationSelector;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestinationStep;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntityType;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
@@ -1074,6 +1078,61 @@ public final class GraphQlQueries
         }
 
         return workflowDestinationStepObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("workflowDestinationSelector")
+    public static WorkflowDestinationSelectorObject workflowDestinationSelector(final DataFetchingEnvironment env,
+            @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
+            @GraphQLName("workflowDestinationName") @GraphQLNonNull final String workflowDestinationName,
+            @GraphQLName("selectorName") @GraphQLNonNull final String selectorName) {
+        WorkflowDestinationSelector workflowDestinationSelector;
+
+        try {
+            var commandForm = WorkflowUtil.getHome().getGetWorkflowDestinationSelectorForm();
+
+            commandForm.setWorkflowName(workflowName);
+            commandForm.setWorkflowDestinationName(workflowDestinationName);
+            commandForm.setSelectorName(selectorName);
+
+            workflowDestinationSelector = new GetWorkflowDestinationSelectorCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return workflowDestinationSelector == null ? null : new WorkflowDestinationSelectorObject(workflowDestinationSelector);
+    }
+
+    @GraphQLField
+    @GraphQLName("workflowDestinationSelectors")
+    public static Collection<WorkflowDestinationSelectorObject> workflowDestinationSelectors(final DataFetchingEnvironment env,
+            @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
+            @GraphQLName("workflowDestinationName") @GraphQLNonNull final String workflowDestinationName) {
+        Collection<WorkflowDestinationSelector> workflowDestinationSelectors;
+        Collection<WorkflowDestinationSelectorObject> workflowDestinationSelectorObjects;
+
+        try {
+            var commandForm = WorkflowUtil.getHome().getGetWorkflowDestinationSelectorsForm();
+
+            commandForm.setWorkflowName(workflowName);
+            commandForm.setWorkflowDestinationName(workflowDestinationName);
+
+            workflowDestinationSelectors = new GetWorkflowDestinationSelectorsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(workflowDestinationSelectors == null) {
+            workflowDestinationSelectorObjects = emptyList();
+        } else {
+            workflowDestinationSelectorObjects = new ArrayList<>(workflowDestinationSelectors.size());
+
+            workflowDestinationSelectors.stream()
+                    .map(WorkflowDestinationSelectorObject::new)
+                    .forEachOrdered(workflowDestinationSelectorObjects::add);
+        }
+
+        return workflowDestinationSelectorObjects;
     }
 
     @GraphQLField
