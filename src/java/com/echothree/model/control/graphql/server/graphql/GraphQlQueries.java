@@ -284,6 +284,8 @@ import com.echothree.control.user.wishlist.server.command.GetWishlistTypesComman
 import com.echothree.control.user.workflow.common.WorkflowUtil;
 import com.echothree.control.user.workflow.server.command.GetWorkflowCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowDestinationCommand;
+import com.echothree.control.user.workflow.server.command.GetWorkflowDestinationPartyTypeCommand;
+import com.echothree.control.user.workflow.server.command.GetWorkflowDestinationPartyTypesCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowDestinationSelectorCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowDestinationSelectorsCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowDestinationStepCommand;
@@ -457,6 +459,7 @@ import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.control.wishlist.server.graphql.WishlistTypeObject;
 import com.echothree.model.control.wishlist.server.graphql.WishlistTypePriorityObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowDestinationObject;
+import com.echothree.model.control.workflow.server.graphql.WorkflowDestinationPartyTypeObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowDestinationSelectorObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowDestinationStepObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowEntityTypeObject;
@@ -620,6 +623,7 @@ import com.echothree.model.data.wishlist.server.entity.WishlistType;
 import com.echothree.model.data.wishlist.server.entity.WishlistTypePriority;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
+import com.echothree.model.data.workflow.server.entity.WorkflowDestinationPartyType;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestinationSelector;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestinationStep;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntityType;
@@ -1081,9 +1085,69 @@ public final class GraphQlQueries
     }
 
     @GraphQLField
+    @GraphQLName("workflowDestinationPartyType")
+    public static WorkflowDestinationPartyTypeObject workflowDestinationPartyType(final DataFetchingEnvironment env,
+            @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
+            @GraphQLName("workflowStepName") @GraphQLNonNull final String workflowStepName,
+            @GraphQLName("workflowDestinationName") @GraphQLNonNull final String workflowDestinationName,
+            @GraphQLName("partyTypeName") @GraphQLNonNull final String partyTypeName) {
+        WorkflowDestinationPartyType workflowDestinationPartyType;
+
+        try {
+            var commandForm = WorkflowUtil.getHome().getGetWorkflowDestinationPartyTypeForm();
+
+            commandForm.setWorkflowName(workflowName);
+            commandForm.setWorkflowStepName(workflowStepName);
+            commandForm.setWorkflowDestinationName(workflowDestinationName);
+            commandForm.setPartyTypeName(partyTypeName);
+
+            workflowDestinationPartyType = new GetWorkflowDestinationPartyTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return workflowDestinationPartyType == null ? null : new WorkflowDestinationPartyTypeObject(workflowDestinationPartyType);
+    }
+
+    @GraphQLField
+    @GraphQLName("workflowDestinationPartyTypes")
+    public static Collection<WorkflowDestinationPartyTypeObject> workflowDestinationPartyTypes(final DataFetchingEnvironment env,
+            @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
+            @GraphQLName("workflowStepName") @GraphQLNonNull final String workflowStepName,
+            @GraphQLName("workflowDestinationName") @GraphQLNonNull final String workflowDestinationName) {
+        Collection<WorkflowDestinationPartyType> workflowDestinationPartyTypes;
+        Collection<WorkflowDestinationPartyTypeObject> workflowDestinationPartyTypeObjects;
+
+        try {
+            var commandForm = WorkflowUtil.getHome().getGetWorkflowDestinationPartyTypesForm();
+
+            commandForm.setWorkflowName(workflowName);
+            commandForm.setWorkflowStepName(workflowStepName);
+            commandForm.setWorkflowDestinationName(workflowDestinationName);
+
+            workflowDestinationPartyTypes = new GetWorkflowDestinationPartyTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(workflowDestinationPartyTypes == null) {
+            workflowDestinationPartyTypeObjects = emptyList();
+        } else {
+            workflowDestinationPartyTypeObjects = new ArrayList<>(workflowDestinationPartyTypes.size());
+
+            workflowDestinationPartyTypes.stream()
+                    .map(WorkflowDestinationPartyTypeObject::new)
+                    .forEachOrdered(workflowDestinationPartyTypeObjects::add);
+        }
+
+        return workflowDestinationPartyTypeObjects;
+    }
+
+    @GraphQLField
     @GraphQLName("workflowDestinationSelector")
     public static WorkflowDestinationSelectorObject workflowDestinationSelector(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
+            @GraphQLName("workflowStepName") @GraphQLNonNull final String workflowStepName,
             @GraphQLName("workflowDestinationName") @GraphQLNonNull final String workflowDestinationName,
             @GraphQLName("selectorName") @GraphQLNonNull final String selectorName) {
         WorkflowDestinationSelector workflowDestinationSelector;
@@ -1092,6 +1156,7 @@ public final class GraphQlQueries
             var commandForm = WorkflowUtil.getHome().getGetWorkflowDestinationSelectorForm();
 
             commandForm.setWorkflowName(workflowName);
+            commandForm.setWorkflowStepName(workflowStepName);
             commandForm.setWorkflowDestinationName(workflowDestinationName);
             commandForm.setSelectorName(selectorName);
 
@@ -1107,6 +1172,7 @@ public final class GraphQlQueries
     @GraphQLName("workflowDestinationSelectors")
     public static Collection<WorkflowDestinationSelectorObject> workflowDestinationSelectors(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
+            @GraphQLName("workflowStepName") @GraphQLNonNull final String workflowStepName,
             @GraphQLName("workflowDestinationName") @GraphQLNonNull final String workflowDestinationName) {
         Collection<WorkflowDestinationSelector> workflowDestinationSelectors;
         Collection<WorkflowDestinationSelectorObject> workflowDestinationSelectorObjects;
@@ -1115,6 +1181,7 @@ public final class GraphQlQueries
             var commandForm = WorkflowUtil.getHome().getGetWorkflowDestinationSelectorsForm();
 
             commandForm.setWorkflowName(workflowName);
+            commandForm.setWorkflowStepName(workflowStepName);
             commandForm.setWorkflowDestinationName(workflowDestinationName);
 
             workflowDestinationSelectors = new GetWorkflowDestinationSelectorsCommand(getUserVisitPK(env), commandForm).runForGraphQl();

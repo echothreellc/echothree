@@ -53,7 +53,7 @@ public class GetWorkflowDestinationSelectorCommand
 
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("WorkflowName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("WorkflowSelectorName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("WorkflowStepName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("WorkflowDestinationName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("SelectorName", FieldType.ENTITY_NAME, true, null, null)
                 ));
