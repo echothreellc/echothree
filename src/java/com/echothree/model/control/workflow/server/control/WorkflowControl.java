@@ -3363,7 +3363,23 @@ public class WorkflowControl
         
         return workflowDestinationSelector;
     }
-    
+
+    public long countWorkflowDestinationSelectorsByWorkflowDestination(WorkflowDestination workflowDestination) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM workflowdestinationselectors " +
+                "WHERE wkfldnsl_wkfldn_workflowdestinationid = ? AND wkfldnsl_thrutime = ?",
+                workflowDestination, Session.MAX_TIME_LONG);
+    }
+
+    public long countWorkflowDestinationSelectorsBySelector(Selector selector) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM workflowdestinationselectors " +
+                "WHERE wkfldnsl_sl_selectorid = ? AND wkfldnsl_thrutime = ?",
+                selector, Session.MAX_TIME_LONG);
+    }
+
     private List<WorkflowDestinationSelector> getWorkflowDestinationSelectorsBySelector(Selector selector, EntityPermission entityPermission) {
         List<WorkflowDestinationSelector> workflowDestinationSelectors;
         
@@ -3415,11 +3431,13 @@ public class WorkflowControl
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
-                        "FROM workflowdestinationselectors, selectors, selectordetails, selectortypes, selectorkinds " +
+                        "FROM workflowdestinationselectors, selectors, selectordetails, selectortypes, selectortypedetails, selectorkinds, selectorkinddetails " +
                         "WHERE wkfldnsl_wkfldn_workflowdestinationid = ? AND wkfldnsl_thrutime = ? " +
                         "AND wkfldnsl_sl_selectorid = sl_selectorid AND sl_lastdetailid = sldt_selectordetailid " +
-                        "AND sldt_slt_selectortypeid = slt_selectortypeid AND slt_slk_selectorkindid = slk_selectorkindid " +
-                        "ORDER BY sldt_sortorder, sldt_selectorname, slt_sortorder, slt_selectortypename, slk_sortorder, slk_selectorkindname " +
+                        "AND sldt_slt_selectortypeid = slt_selectortypeid " +
+                        "AND slt_lastdetailid = sltdt_selectortypedetailid AND sltdt_slk_selectorkindid = slk_selectorkindid " +
+                        "AND slk_lastdetailid = slkdt_selectorkinddetailid " +
+                        "ORDER BY sldt_sortorder, sldt_selectorname, sltdt_sortorder, sltdt_selectortypename, slkdt_sortorder, slkdt_selectorkindname " +
                         "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
