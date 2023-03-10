@@ -181,7 +181,29 @@ public class VendorControl
         
         return vendorType;
     }
-    
+
+    public long countVendorTypes() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM vendortypes, vendortypedetails " +
+                "WHERE vndrty_activedetailid = vndrtydt_vendortypedetailid");
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.VendorType */
+    public VendorType getVendorTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new VendorTypePK(entityInstance.getEntityUniqueId());
+
+        return VendorTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public VendorType getVendorTypeByEntityInstance(EntityInstance entityInstance) {
+        return getVendorTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public VendorType getVendorTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getVendorTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     private List<VendorType> getVendorTypes(EntityPermission entityPermission) {
         String query = null;
         
@@ -211,7 +233,7 @@ public class VendorControl
         return getVendorTypes(EntityPermission.READ_WRITE);
     }
     
-    private VendorType getDefaultVendorType(EntityPermission entityPermission) {
+    public VendorType getDefaultVendorType(EntityPermission entityPermission) {
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
@@ -242,7 +264,7 @@ public class VendorControl
         return getDefaultVendorTypeForUpdate().getLastDetailForUpdate().getVendorTypeDetailValue().clone();
     }
     
-    private VendorType getVendorTypeByName(String vendorTypeName, EntityPermission entityPermission) {
+    public VendorType getVendorTypeByName(String vendorTypeName, EntityPermission entityPermission) {
         VendorType vendorType;
         
         try {
