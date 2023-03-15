@@ -28,7 +28,7 @@ import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 
-@GraphQLDescription("payment processor action type object")
+@GraphQLDescription("free on board object")
 @GraphQLName("FreeOnBoard")
 public class FreeOnBoardObject
         extends BaseEntityInstanceObject {
@@ -52,7 +52,7 @@ public class FreeOnBoardObject
     }
     
     @GraphQLField
-    @GraphQLDescription("payment processor action type name")
+    @GraphQLDescription("free on board name")
     @GraphQLNonNull
     public String getFreeOnBoardName() {
         return getFreeOnBoardDetail().getFreeOnBoardName();
