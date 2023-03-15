@@ -71,13 +71,13 @@ public class VendorObject
         return getVendor().getVendorName();
     }
 
-//    @GraphQLField
-//    @GraphQLDescription("vendor type")
-//    @GraphQLNonNull
-//    public VendorTypeObject getVendorType(final DataFetchingEnvironment env) {
-//        return VendorSecurityUtils.getInstance().getHasVendorTypeAccess(env) ?
-//                new VendorTypeObject(getVendor().getVendorType()) : null;
-//    }
+    @GraphQLField
+    @GraphQLDescription("vendor type")
+    @GraphQLNonNull
+    public VendorTypeObject getVendorType(final DataFetchingEnvironment env) {
+        return VendorSecurityUtils.getInstance().getHasVendorTypeAccess(env) ?
+                new VendorTypeObject(getVendor().getVendorType()) : null;
+    }
 
     @GraphQLField
     @GraphQLDescription("minimum purchase order lines")
@@ -143,7 +143,7 @@ public class VendorObject
 //        var apGlAccount = getVendor().getApGlAccount();
 //
 //        return apGlAccount == null ? null : AccountingSecurityUtils.getInstance().getHasGlAccountAccess(env) ?
-//                new GlAccountObject(getVendor().getApGlAccount()) : null;
+//                new GlAccountObject(apGlAccount) : null;
 //    }
 
     @GraphQLField

@@ -346,24 +346,27 @@ public class VendorControl
     public VendorTypeTransfer getVendorTypeTransfer(UserVisit userVisit, VendorType vendorType) {
         return getVendorTransferCaches(userVisit).getVendorTypeTransferCache().getVendorTypeTransfer(vendorType);
     }
-    
-    public List<VendorTypeTransfer> getVendorTypeTransfers(UserVisit userVisit) {
-        List<VendorType> vendorTypes = getVendorTypes();
+
+    public List<VendorTypeTransfer> getVendorTypeTransfers(UserVisit userVisit, Collection<VendorType> vendorTypes) {
         List<VendorTypeTransfer> vendorTypeTransfers = null;
-        
+
         if(vendorTypes != null) {
             VendorTypeTransferCache vendorTypeTransferCache = getVendorTransferCaches(userVisit).getVendorTypeTransferCache();
-            
+
             vendorTypeTransfers = new ArrayList<>(vendorTypes.size());
-            
+
             for(var vendorType : vendorTypes) {
                 vendorTypeTransfers.add(vendorTypeTransferCache.getVendorTypeTransfer(vendorType));
             }
         }
-        
+
         return vendorTypeTransfers;
     }
-    
+
+    public List<VendorTypeTransfer> getVendorTypeTransfers(UserVisit userVisit) {
+        return getVendorTypeTransfers(userVisit, getVendorTypes());
+    }
+
     private void updateVendorTypeFromValue(VendorTypeDetailValue vendorTypeDetailValue, boolean checkDefault,
             BasePK updatedBy) {
         if(vendorTypeDetailValue.hasBeenModified()) {

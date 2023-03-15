@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetVendorTypesResult
         extends BaseResult {
-    
+
+    Long getVendorTypeCount();
+    void setVendorTypeCount(Long vendorTypesCount);
+
     List<VendorTypeTransfer> getVendorTypes();
     void setVendorTypes(List<VendorTypeTransfer> vendorTypes);
     

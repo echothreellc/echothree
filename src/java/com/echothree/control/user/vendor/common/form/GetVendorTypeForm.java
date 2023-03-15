@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.vendor.common.form;
 
-import com.echothree.control.user.vendor.common.spec.VendorTypeSpec;
+import com.echothree.control.user.vendor.common.spec.VendorTypeUniversalSpec;
 
 public interface GetVendorTypeForm
-        extends VendorTypeSpec {
+        extends VendorTypeUniversalSpec {
     
-    // Nothing additional beyond VendorTypeSpec
+    // Nothing additional beyond VendorTypeUniversalSpec
     
 }
