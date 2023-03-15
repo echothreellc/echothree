@@ -14,19 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.vendor.common.result;
+package com.echothree.control.user.vendor.common.spec;
 
-import com.echothree.model.control.vendor.common.transfer.VendorTypeTransfer;
-import com.echothree.util.common.command.BaseResult;
-import java.util.List;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetVendorTypesResult
-        extends BaseResult {
-
-    Long getVendorTypeCount();
-    void setVendorTypeCount(Long vendorTypesCount);
-
-    List<VendorTypeTransfer> getVendorTypes();
-    void setVendorTypes(List<VendorTypeTransfer> vendorTypes);
+public interface VendorTypeUniversalSpec
+        extends VendorTypeSpec, UniversalEntitySpec {
+    
+    // Nothing additional beyond VendorTypeSpec, UniversalEntitySpec
     
 }

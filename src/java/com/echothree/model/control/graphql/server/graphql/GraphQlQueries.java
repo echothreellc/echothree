@@ -275,6 +275,8 @@ import com.echothree.control.user.vendor.common.VendorUtil;
 import com.echothree.control.user.vendor.server.command.GetItemPurchasingCategoriesCommand;
 import com.echothree.control.user.vendor.server.command.GetItemPurchasingCategoryCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorCommand;
+import com.echothree.control.user.vendor.server.command.GetVendorTypeCommand;
+import com.echothree.control.user.vendor.server.command.GetVendorTypesCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorsCommand;
 import com.echothree.control.user.wishlist.common.WishlistUtil;
 import com.echothree.control.user.wishlist.server.command.GetWishlistTypeCommand;
@@ -457,6 +459,7 @@ import com.echothree.model.control.user.server.graphql.UserVisitObject;
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.control.vendor.server.graphql.ItemPurchasingCategoryObject;
 import com.echothree.model.control.vendor.server.graphql.VendorObject;
+import com.echothree.model.control.vendor.server.graphql.VendorTypeObject;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.control.wishlist.server.graphql.WishlistTypeObject;
 import com.echothree.model.control.wishlist.server.graphql.WishlistTypePriorityObject;
@@ -619,8 +622,10 @@ import com.echothree.model.data.user.server.entity.RecoveryQuestion;
 import com.echothree.model.data.user.server.entity.UserLogin;
 import com.echothree.model.data.vendor.common.ItemPurchasingCategoryConstants;
 import com.echothree.model.data.vendor.common.VendorConstants;
+import com.echothree.model.data.vendor.common.VendorTypeConstants;
 import com.echothree.model.data.vendor.server.entity.ItemPurchasingCategory;
 import com.echothree.model.data.vendor.server.entity.Vendor;
+import com.echothree.model.data.vendor.server.entity.VendorType;
 import com.echothree.model.data.wishlist.common.WishlistTypeConstants;
 import com.echothree.model.data.wishlist.server.entity.WishlistType;
 import com.echothree.model.data.wishlist.server.entity.WishlistTypePriority;
@@ -5658,7 +5663,58 @@ public final class GraphQlQueries
 
         return data;
     }
-    
+
+    @GraphQLField
+    @GraphQLName("vendorType")
+    public static VendorTypeObject vendorType(final DataFetchingEnvironment env,
+            @GraphQLName("vendorTypeName") final String vendorTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        VendorType vendorType;
+
+        try {
+            var commandForm = VendorUtil.getHome().getGetVendorTypeForm();
+
+            commandForm.setVendorTypeName(vendorTypeName);
+            commandForm.setUlid(id);
+
+            vendorType = new GetVendorTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return vendorType == null ? null : new VendorTypeObject(vendorType);
+    }
+
+    @GraphQLField
+    @GraphQLName("vendorTypes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public static CountingPaginatedData<VendorTypeObject> vendorTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<VendorTypeObject> data;
+
+        try {
+            var vendorControl = Session.getModelController(VendorControl.class);
+            var totalCount = vendorControl.countVendorTypes();
+
+            try(var objectLimiter = new ObjectLimiter(env, VendorTypeConstants.COMPONENT_VENDOR_NAME, VendorTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = VendorUtil.getHome().getGetVendorTypesForm();
+                var entities = new GetVendorTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var vendorTypes = entities.stream().map(VendorTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, vendorTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
     @GraphQLField
     @GraphQLName("vendor")
     public static VendorObject vendor(final DataFetchingEnvironment env,
@@ -5711,7 +5767,7 @@ public final class GraphQlQueries
 
         return data;
     }
-    
+
     @GraphQLField
     @GraphQLName("party")
     public static PartyObject party(final DataFetchingEnvironment env,

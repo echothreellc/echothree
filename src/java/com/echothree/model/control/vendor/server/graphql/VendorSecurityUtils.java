@@ -19,6 +19,8 @@ package com.echothree.model.control.vendor.server.graphql;
 import com.echothree.control.user.vendor.server.command.GetItemPurchasingCategoriesCommand;
 import com.echothree.control.user.vendor.server.command.GetItemPurchasingCategoryCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorCommand;
+import com.echothree.control.user.vendor.server.command.GetVendorTypeCommand;
+import com.echothree.control.user.vendor.server.command.GetVendorTypesCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorsCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
@@ -48,6 +50,14 @@ public final class VendorSecurityUtils
 
     public boolean getHasVendorsAccess(final DataFetchingEnvironment env) {
         return getGraphQlExecutionContext(env).hasAccess(GetVendorsCommand.class);
+    }
+
+    public boolean getHasVendorTypeAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetVendorTypeCommand.class);
+    }
+
+    public boolean getHasVendorTypesAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetVendorTypesCommand.class);
     }
 
 }

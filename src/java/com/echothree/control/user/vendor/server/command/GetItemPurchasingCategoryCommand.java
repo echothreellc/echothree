@@ -68,22 +68,22 @@ public class GetItemPurchasingCategoryCommand
 
     @Override
     protected ItemPurchasingCategory getEntity() {
-        var returnKind = ItemPurchasingCategoryLogic.getInstance().getItemPurchasingCategoryByUniversalSpec(this, form, true);
+        var itemPurchasingCategory = ItemPurchasingCategoryLogic.getInstance().getItemPurchasingCategoryByUniversalSpec(this, form, true);
 
-        if(returnKind != null) {
-            sendEvent(returnKind.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+        if(itemPurchasingCategory != null) {
+            sendEvent(itemPurchasingCategory.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
-        return returnKind;
+        return itemPurchasingCategory;
     }
 
     @Override
-    protected BaseResult getTransfer(ItemPurchasingCategory returnKind) {
+    protected BaseResult getTransfer(ItemPurchasingCategory itemPurchasingCategory) {
         var vendorControl = Session.getModelController(VendorControl.class);
         var result = VendorResultFactory.getGetItemPurchasingCategoryResult();
 
-        if(returnKind != null) {
-            result.setItemPurchasingCategory(vendorControl.getItemPurchasingCategoryTransfer(getUserVisit(), returnKind));
+        if(itemPurchasingCategory != null) {
+            result.setItemPurchasingCategory(vendorControl.getItemPurchasingCategoryTransfer(getUserVisit(), itemPurchasingCategory));
         }
 
         return result;

@@ -23,7 +23,7 @@ import java.util.List;
 public interface GetItemPurchasingCategoriesResult
         extends BaseResult {
 
-    Long getItemPurchasingCategory();
+    Long getItemPurchasingCategoryCount();
     void setItemPurchasingCategoryCount(Long itemPurchasingCategoryCount);
 
     List<ItemPurchasingCategoryTransfer> getItemPurchasingCategories();

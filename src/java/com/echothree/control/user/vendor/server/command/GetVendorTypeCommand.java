@@ -17,20 +17,19 @@
 package com.echothree.control.user.vendor.server.command;
 
 import com.echothree.control.user.vendor.common.form.GetVendorTypeForm;
-import com.echothree.control.user.vendor.common.result.GetVendorTypeResult;
 import com.echothree.control.user.vendor.common.result.VendorResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.vendor.server.control.VendorControl;
+import com.echothree.model.control.vendor.server.logic.VendorTypeLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.vendor.server.entity.VendorType;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -40,7 +39,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class GetVendorTypeCommand
-        extends BaseSimpleCommand<GetVendorTypeForm> {
+        extends BaseSingleEntityCommand<VendorType, GetVendorTypeForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -54,7 +53,11 @@ public class GetVendorTypeCommand
                 )));
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("VendorTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("VendorTypeName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
                 ));
     }
     
@@ -62,22 +65,27 @@ public class GetVendorTypeCommand
     public GetVendorTypeCommand(UserVisitPK userVisitPK, GetVendorTypeForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
+    protected VendorType getEntity() {
+        var vendorType = VendorTypeLogic.getInstance().getVendorTypeByUniversalSpec(this, form, true);
+
+        if(vendorType != null) {
+            sendEvent(vendorType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+        }
+
+        return vendorType;
+    }
+
+    @Override
+    protected BaseResult getTransfer(VendorType vendorType) {
         var vendorControl = Session.getModelController(VendorControl.class);
-        GetVendorTypeResult result = VendorResultFactory.getGetVendorTypeResult();
-        String vendorTypeName = form.getVendorTypeName();
-        VendorType vendorType = vendorControl.getVendorTypeByName(vendorTypeName);
-        
+        var result = VendorResultFactory.getGetVendorTypeResult();
+
         if(vendorType != null) {
             result.setVendorType(vendorControl.getVendorTypeTransfer(getUserVisit(), vendorType));
-            
-            sendEvent(vendorType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownVendorTypeName.name(), vendorTypeName);
         }
-        
+
         return result;
     }
     
