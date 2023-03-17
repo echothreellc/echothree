@@ -19,6 +19,8 @@ package com.echothree.model.control.vendor.server.graphql;
 import com.echothree.control.user.vendor.server.command.GetItemPurchasingCategoriesCommand;
 import com.echothree.control.user.vendor.server.command.GetItemPurchasingCategoryCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorCommand;
+import com.echothree.control.user.vendor.server.command.GetVendorItemCommand;
+import com.echothree.control.user.vendor.server.command.GetVendorItemsCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorTypeCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorTypesCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorsCommand;
@@ -44,6 +46,14 @@ public final class VendorSecurityUtils
         return getGraphQlExecutionContext(env).hasAccess(GetItemPurchasingCategoriesCommand.class);
     }
 
+    public boolean getHasVendorTypeAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetVendorTypeCommand.class);
+    }
+
+    public boolean getHasVendorTypesAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetVendorTypesCommand.class);
+    }
+
     public boolean getHasVendorAccess(final DataFetchingEnvironment env) {
         return getGraphQlExecutionContext(env).hasAccess(GetVendorCommand.class);
     }
@@ -52,12 +62,12 @@ public final class VendorSecurityUtils
         return getGraphQlExecutionContext(env).hasAccess(GetVendorsCommand.class);
     }
 
-    public boolean getHasVendorTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetVendorTypeCommand.class);
+    public boolean getHasVendorItemAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetVendorItemCommand.class);
     }
 
-    public boolean getHasVendorTypesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetVendorTypesCommand.class);
+    public boolean getHasVendorItemsAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetVendorItemsCommand.class);
     }
 
 }
