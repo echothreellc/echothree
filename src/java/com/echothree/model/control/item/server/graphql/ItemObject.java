@@ -41,7 +41,9 @@ import com.echothree.model.control.sequence.server.graphql.SequenceObject;
 import com.echothree.model.control.sequence.server.graphql.SequenceSecurityUtils;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindObject;
 import com.echothree.model.control.uom.server.graphql.UomSecurityUtils;
+import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.control.vendor.server.graphql.ItemPurchasingCategoryObject;
+import com.echothree.model.control.vendor.server.graphql.VendorItemObject;
 import com.echothree.model.control.vendor.server.graphql.VendorSecurityUtils;
 import com.echothree.model.control.workflow.server.graphql.WorkflowEntityStatusObject;
 import com.echothree.model.data.item.common.ItemAliasConstants;
@@ -52,6 +54,7 @@ import com.echothree.model.data.item.server.entity.Item;
 import com.echothree.model.data.item.server.entity.ItemDetail;
 import com.echothree.model.data.item.server.entity.RelatedItemType;
 import com.echothree.model.data.offer.common.OfferItemConstants;
+import com.echothree.model.data.vendor.common.VendorItemConstants;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -377,6 +380,27 @@ public class ItemObject
                         .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, relatedItemTypes);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
+
+    @GraphQLField
+    @GraphQLDescription("vendor items")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<VendorItemObject> getVendorItems(final DataFetchingEnvironment env) {
+        if(VendorSecurityUtils.getInstance().getHasVendorItemsAccess(env)) {
+            var itemControl = Session.getModelController(VendorControl.class);
+            var totalCount = itemControl.countVendorItemsByItem(item);
+
+            try(var objectLimiter = new ObjectLimiter(env, VendorItemConstants.COMPONENT_VENDOR_NAME, VendorItemConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = itemControl.getVendorItemsByItem(item);
+                var items = entities.stream().map(VendorItemObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, items);
             }
         } else {
             return Connections.emptyConnection();

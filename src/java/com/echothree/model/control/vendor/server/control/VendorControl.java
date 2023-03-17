@@ -949,15 +949,7 @@ public class VendorControl
         
         return vendorItem;
     }
-    
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.VendorItem */
-    public VendorItem getVendorItemByEntityInstance(EntityInstance entityInstance) {
-        VendorItemPK pk = new VendorItemPK(entityInstance.getEntityUniqueId());
-        VendorItem vendorItem = VendorItemFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
-        
-        return vendorItem;
-    }
-    
+
     public long countVendorItemsByItem(Item item) {
         return session.queryForLong(
                 "SELECT COUNT(*) " +
@@ -966,7 +958,7 @@ public class VendorControl
                 "AND vndritmdt_itm_itemid = ?",
                 item);
     }
-    
+
     public long countVendorItemsByVendorParty(Party vendorParty) {
         return session.queryForLong(
                 "SELECT COUNT(*) " +
@@ -975,7 +967,7 @@ public class VendorControl
                 "AND vndritmdt_vendorpartyid = ?",
                 vendorParty);
     }
-    
+
     public long countVendorItemsByCancellationPolicy(CancellationPolicy cancellationPolicy) {
         return session.queryForLong(
                 "SELECT COUNT(*) " +
@@ -994,6 +986,21 @@ public class VendorControl
                 returnPolicy);
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.VendorItem */
+    public VendorItem getVendorItemByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new VendorItemPK(entityInstance.getEntityUniqueId());
+
+        return VendorItemFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public VendorItem getVendorItemByEntityInstance(EntityInstance entityInstance) {
+        return getVendorItemByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public VendorItem getVendorItemByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getVendorItemByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+    
     private VendorItem getVendorItemByVendorPartyAndVendorItemName(Party vendorParty, String vendorItemName, EntityPermission entityPermission) {
         VendorItem vendorItem;
         
