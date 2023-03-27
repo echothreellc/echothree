@@ -63,7 +63,9 @@ public class VendorItemObject
     @GraphQLField
     @GraphQLDescription("vendor")
     public VendorObject getVendor(final DataFetchingEnvironment env) {
-        return VendorSecurityUtils.getInstance().getHasVendorAccess(env) ? new VendorObject(getVendorItemDetail().getVendorParty()) : null;
+        var party = getVendorItemDetail().getVendorParty();
+
+        return VendorSecurityUtils.getInstance().getHasVendorAccess(env, party) ? new VendorObject(party) : null;
     }
 
     @GraphQLField

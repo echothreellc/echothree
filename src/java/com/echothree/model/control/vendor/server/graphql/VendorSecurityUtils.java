@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.vendor.server.graphql;
 
+import com.echothree.control.user.vendor.common.VendorUtil;
 import com.echothree.control.user.vendor.server.command.GetItemPurchasingCategoriesCommand;
 import com.echothree.control.user.vendor.server.command.GetItemPurchasingCategoryCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorCommand;
@@ -25,7 +26,10 @@ import com.echothree.control.user.vendor.server.command.GetVendorTypeCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorTypesCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorsCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.util.common.form.BaseForm;
 import graphql.schema.DataFetchingEnvironment;
+import javax.naming.NamingException;
 
 public final class VendorSecurityUtils
         extends BaseGraphQl {
@@ -54,8 +58,21 @@ public final class VendorSecurityUtils
         return getGraphQlExecutionContext(env).hasAccess(GetVendorTypesCommand.class);
     }
 
-    public boolean getHasVendorAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetVendorCommand.class);
+    public boolean getHasVendorAccess(final DataFetchingEnvironment env, final Party party) {
+        var partyDetail = party.getLastDetail();
+        BaseForm baseForm;
+
+        // GetVendorCommand has a security() function that needs the form to be available.
+        try {
+            var commandForm = VendorUtil.getHome().getGetVendorForm();
+
+            commandForm.setPartyName(partyDetail.getPartyName());
+            baseForm = commandForm;
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return getGraphQlExecutionContext(env).hasAccess(GetVendorCommand.class, baseForm);
     }
 
     public boolean getHasVendorsAccess(final DataFetchingEnvironment env) {
