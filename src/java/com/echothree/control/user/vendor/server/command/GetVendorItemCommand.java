@@ -22,11 +22,10 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.vendor.server.control.VendorControl;
-import com.echothree.model.control.vendor.server.logic.VendorLogic;
+import com.echothree.model.control.vendor.server.logic.VendorItemLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.vendor.server.entity.VendorItem;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
@@ -34,8 +33,6 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class GetVendorItemCommand
@@ -45,18 +42,22 @@ public class GetVendorItemCommand
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.VendorItem.name(), SecurityRoles.Review.name())
-                        )))
-                )));
+                ))
+        ));
         
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("VendorName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("VendorItemName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+                new FieldDefinition("VendorItemName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
+        );
     }
 
     /** Creates a new instance of GetVendorItemCommand */
@@ -66,24 +67,7 @@ public class GetVendorItemCommand
 
     @Override
     protected VendorItem getEntity() {
-        var vendorName = form.getVendorName();
-        var partyName = form.getPartyName();
-        var vendor = VendorLogic.getInstance().getVendorByName(this, vendorName, partyName, null);
-        VendorItem vendorItem = null;
-
-        if(!hasExecutionErrors()) {
-            var vendorControl = Session.getModelController(VendorControl.class);
-            var vendorParty = vendor.getParty();
-            var vendorItemName = form.getVendorItemName();
-
-            vendorItem = vendorControl.getVendorItemByVendorPartyAndVendorItemName(vendorParty, vendorItemName);
-
-            if(vendorItem == null) {
-                addExecutionError(ExecutionErrors.UnknownVendorItemName.name(), vendor.getVendorName(), vendorItemName);
-            }
-        }
-
-        return vendorItem;
+        return VendorItemLogic.getInstance().getVendorItemByUniversalSpec(this, form);
     }
 
     @Override

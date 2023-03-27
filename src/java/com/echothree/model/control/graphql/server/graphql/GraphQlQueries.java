@@ -275,6 +275,8 @@ import com.echothree.control.user.vendor.common.VendorUtil;
 import com.echothree.control.user.vendor.server.command.GetItemPurchasingCategoriesCommand;
 import com.echothree.control.user.vendor.server.command.GetItemPurchasingCategoryCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorCommand;
+import com.echothree.control.user.vendor.server.command.GetVendorItemCommand;
+import com.echothree.control.user.vendor.server.command.GetVendorItemsCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorTypeCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorTypesCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorsCommand;
@@ -458,6 +460,7 @@ import com.echothree.model.control.user.server.graphql.UserSessionObject;
 import com.echothree.model.control.user.server.graphql.UserVisitObject;
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.control.vendor.server.graphql.ItemPurchasingCategoryObject;
+import com.echothree.model.control.vendor.server.graphql.VendorItemObject;
 import com.echothree.model.control.vendor.server.graphql.VendorObject;
 import com.echothree.model.control.vendor.server.graphql.VendorTypeObject;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
@@ -625,6 +628,7 @@ import com.echothree.model.data.vendor.common.VendorConstants;
 import com.echothree.model.data.vendor.common.VendorTypeConstants;
 import com.echothree.model.data.vendor.server.entity.ItemPurchasingCategory;
 import com.echothree.model.data.vendor.server.entity.Vendor;
+import com.echothree.model.data.vendor.server.entity.VendorItem;
 import com.echothree.model.data.vendor.server.entity.VendorType;
 import com.echothree.model.data.wishlist.common.WishlistTypeConstants;
 import com.echothree.model.data.wishlist.server.entity.WishlistType;
@@ -5766,6 +5770,63 @@ public final class GraphQlQueries
         }
 
         return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("vendorItem")
+    public static VendorItemObject vendorItem(final DataFetchingEnvironment env,
+            @GraphQLName("vendorName") final String vendorName,
+            @GraphQLName("partyName") final String partyName,
+            @GraphQLName("vendorItemName") final String vendorItemName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        VendorItem vendorItem;
+
+        try {
+            var commandForm = VendorUtil.getHome().getGetVendorItemForm();
+
+            commandForm.setVendorName(vendorName);
+            commandForm.setPartyName(partyName);
+            commandForm.setVendorItemName(vendorItemName);
+            commandForm.setUlid(id);
+
+            vendorItem = new GetVendorItemCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return vendorItem == null ? null : new VendorItemObject(vendorItem);
+    }
+
+    @GraphQLField
+    @GraphQLName("vendorItems")
+    public static Collection<VendorItemObject> vendorItems(final DataFetchingEnvironment env,
+            @GraphQLName("vendorName") final String vendorName,
+            @GraphQLName("itemName") final String itemName) {
+        Collection<VendorItem> vendorItems;
+        Collection<VendorItemObject> vendorItemObjects;
+
+        try {
+            var commandForm = VendorUtil.getHome().getGetVendorItemsForm();
+
+            commandForm.setVendorName(vendorName);
+            commandForm.setItemName(itemName);
+
+            vendorItems = new GetVendorItemsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(vendorItems == null) {
+            vendorItemObjects = emptyList();
+        } else {
+            vendorItemObjects = new ArrayList<>(vendorItems.size());
+
+            vendorItems.stream()
+                    .map(VendorItemObject::new)
+                    .forEachOrdered(vendorItemObjects::add);
+        }
+
+        return vendorItemObjects;
     }
 
     @GraphQLField
