@@ -276,6 +276,8 @@ import com.echothree.control.user.vendor.server.command.GetItemPurchasingCategor
 import com.echothree.control.user.vendor.server.command.GetItemPurchasingCategoryCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorItemCommand;
+import com.echothree.control.user.vendor.server.command.GetVendorItemCostCommand;
+import com.echothree.control.user.vendor.server.command.GetVendorItemCostsCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorItemsCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorTypeCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorTypesCommand;
@@ -460,6 +462,7 @@ import com.echothree.model.control.user.server.graphql.UserSessionObject;
 import com.echothree.model.control.user.server.graphql.UserVisitObject;
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.control.vendor.server.graphql.ItemPurchasingCategoryObject;
+import com.echothree.model.control.vendor.server.graphql.VendorItemCostObject;
 import com.echothree.model.control.vendor.server.graphql.VendorItemObject;
 import com.echothree.model.control.vendor.server.graphql.VendorObject;
 import com.echothree.model.control.vendor.server.graphql.VendorTypeObject;
@@ -629,6 +632,7 @@ import com.echothree.model.data.vendor.common.VendorTypeConstants;
 import com.echothree.model.data.vendor.server.entity.ItemPurchasingCategory;
 import com.echothree.model.data.vendor.server.entity.Vendor;
 import com.echothree.model.data.vendor.server.entity.VendorItem;
+import com.echothree.model.data.vendor.server.entity.VendorItemCost;
 import com.echothree.model.data.vendor.server.entity.VendorType;
 import com.echothree.model.data.wishlist.common.WishlistTypeConstants;
 import com.echothree.model.data.wishlist.server.entity.WishlistType;
@@ -5827,6 +5831,65 @@ public final class GraphQlQueries
         }
 
         return vendorItemObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("vendorItemCost")
+    public static VendorItemCostObject vendorItemCost(final DataFetchingEnvironment env,
+            @GraphQLName("vendorName") final String vendorName,
+            @GraphQLName("partyName") final String partyName,
+            @GraphQLName("vendorItemName") @GraphQLNonNull final String vendorItemName,
+            @GraphQLName("inventoryConditionName") @GraphQLNonNull final String inventoryConditionName,
+            @GraphQLName("unitOfMeasureTypeName") @GraphQLNonNull final String unitOfMeasureTypeName) {
+        VendorItemCost vendorItemCost;
+
+        try {
+            var commandForm = VendorUtil.getHome().getGetVendorItemCostForm();
+
+            commandForm.setVendorName(vendorName);
+            commandForm.setPartyName(partyName);
+            commandForm.setVendorItemName(vendorItemName);
+            commandForm.setInventoryConditionName(inventoryConditionName);
+            commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
+
+            vendorItemCost = new GetVendorItemCostCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return vendorItemCost == null ? null : new VendorItemCostObject(vendorItemCost);
+    }
+
+    @GraphQLField
+    @GraphQLName("vendorItemCosts")
+    public static Collection<VendorItemCostObject> vendorItemCosts(final DataFetchingEnvironment env,
+            @GraphQLName("vendorName") @GraphQLNonNull final String vendorName,
+            @GraphQLName("vendorItemName") @GraphQLNonNull final String vendorItemName) {
+        Collection<VendorItemCost> vendorItemCosts;
+        Collection<VendorItemCostObject> vendorItemCostObjects;
+
+        try {
+            var commandForm = VendorUtil.getHome().getGetVendorItemCostsForm();
+
+            commandForm.setVendorName(vendorName);
+            commandForm.setVendorItemName(vendorItemName);
+
+            vendorItemCosts = new GetVendorItemCostsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(vendorItemCosts == null) {
+            vendorItemCostObjects = emptyList();
+        } else {
+            vendorItemCostObjects = new ArrayList<>(vendorItemCosts.size());
+
+            vendorItemCosts.stream()
+                    .map(VendorItemCostObject::new)
+                    .forEachOrdered(vendorItemCostObjects::add);
+        }
+
+        return vendorItemCostObjects;
     }
 
     @GraphQLField

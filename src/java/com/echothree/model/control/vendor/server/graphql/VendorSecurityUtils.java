@@ -21,6 +21,8 @@ import com.echothree.control.user.vendor.server.command.GetItemPurchasingCategor
 import com.echothree.control.user.vendor.server.command.GetItemPurchasingCategoryCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorItemCommand;
+import com.echothree.control.user.vendor.server.command.GetVendorItemCostCommand;
+import com.echothree.control.user.vendor.server.command.GetVendorItemCostsCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorItemsCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorTypeCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorTypesCommand;
@@ -85,6 +87,14 @@ public final class VendorSecurityUtils
 
     public boolean getHasVendorItemsAccess(final DataFetchingEnvironment env) {
         return getGraphQlExecutionContext(env).hasAccess(GetVendorItemsCommand.class);
+    }
+
+    public boolean getHasVendorItemCostAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetVendorItemCostCommand.class);
+    }
+
+    public boolean getHasVendorItemCostsAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetVendorItemCostsCommand.class);
     }
 
 }
