@@ -68,6 +68,7 @@ import com.echothree.model.data.uom.common.pk.UnitOfMeasureTypePK;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.vendor.common.pk.ItemPurchasingCategoryPK;
+import com.echothree.model.data.vendor.common.pk.VendorItemCostPK;
 import com.echothree.model.data.vendor.common.pk.VendorItemPK;
 import com.echothree.model.data.vendor.common.pk.VendorTypePK;
 import com.echothree.model.data.vendor.server.entity.ItemPurchasingCategory;
@@ -1300,7 +1301,46 @@ public class VendorControl
         
         return vendorItemCost;
     }
-    
+
+    public long countVendorItemCostsByVendorItem(VendorItem vendorItem) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM vendoritemcosts " +
+                "WHERE vndritmc_vndritm_vendoritemid = ? AND vndritmc_thrutime = ?",
+                vendorItem, Session.MAX_TIME_LONG);
+    }
+
+    public long countVendorItemCostsByInventoryCondition(InventoryCondition inventoryCondition) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM vendoritemcosts " +
+                "WHERE vndritmc_invcon_inventoryconditionid = ? AND vndritmc_thrutime = ?",
+                inventoryCondition, Session.MAX_TIME_LONG);
+    }
+
+    public long countVendorItemCostsByUnitOfMeasureType(UnitOfMeasureType unitOfMeasureType) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM vendoritemcosts " +
+                "WHERE vndritmc_uomt_unitofmeasuretypeid = ? AND vndritmc_thrutime = ?",
+                unitOfMeasureType, Session.MAX_TIME_LONG);
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.VendorItemCost */
+    public VendorItemCost getVendorItemCostByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new VendorItemCostPK(entityInstance.getEntityUniqueId());
+
+        return VendorItemCostFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public VendorItemCost getVendorItemCostByEntityInstance(EntityInstance entityInstance) {
+        return getVendorItemCostByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public VendorItemCost getVendorItemCostByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getVendorItemCostByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     private VendorItemCost getVendorItemCost(VendorItem vendorItem, InventoryCondition inventoryCondition,
             UnitOfMeasureType unitOfMeasureType, EntityPermission entityPermission) {
         VendorItemCost vendorItemCost;

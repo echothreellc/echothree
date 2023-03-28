@@ -19,17 +19,28 @@ package com.echothree.model.control.vendor.server.graphql;
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationPolicyObject;
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationPolicySecurityUtils;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.item.server.graphql.ItemObject;
 import com.echothree.model.control.item.server.graphql.ItemSecurityUtils;
 import com.echothree.model.control.returnpolicy.server.graphql.ReturnPolicyObject;
 import com.echothree.model.control.returnpolicy.server.graphql.ReturnPolicySecurityUtils;
+import com.echothree.model.control.vendor.server.control.VendorControl;
+import com.echothree.model.data.vendor.common.VendorItemCostConstants;
 import com.echothree.model.data.vendor.server.entity.VendorItem;
 import com.echothree.model.data.vendor.server.entity.VendorItemDetail;
+import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("vendor item object")
 @GraphQLName("VendorItem")
@@ -106,4 +117,24 @@ public class VendorItemObject
                 new ReturnPolicyObject(defaultReturnPolicy) : null;
     }
 
+    @GraphQLField
+    @GraphQLDescription("vendor item costs")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<VendorItemCostObject> getVendorItemCosts(final DataFetchingEnvironment env) {
+        if(VendorSecurityUtils.getInstance().getHasVendorItemCostsAccess(env)) {
+            var vendorControl = Session.getModelController(VendorControl.class);
+            var totalCount = vendorControl.countVendorItemCostsByVendorItem(vendorItem);
+
+            try(var objectLimiter = new ObjectLimiter(env, VendorItemCostConstants.COMPONENT_VENDOR_NAME, VendorItemCostConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = vendorControl.getVendorItemCostsByVendorItem(vendorItem);
+                var items = entities.stream().map(VendorItemCostObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, items);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+    
 }
