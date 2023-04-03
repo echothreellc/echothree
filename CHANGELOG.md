@@ -1,5 +1,12 @@
 # Changelog
 
+## 2023-04-02-01
+
+* Add Vendor Item Object and Queries [688](https://gitlab.echothree.com/echothree/echothree/-/issues/688)
+* Add Vendor Item Cost Object and Queries [690](https://gitlab.echothree.com/echothree/echothree/-/issues/690)
+* cucumber-java8/cucumber-junit 7.11.2 Upgrade [695](https://gitlab.echothree.com/echothree/echothree/-/issues/695)
+* jOOQ 3.17.11 Upgrade [696](https://gitlab.echothree.com/echothree/echothree/-/issues/696)
+
 ## 2023-03-19-01
 
 * Add Workflow Entrance Party Types Object and Queries [653](https://gitlab.echothree.com/echothree/echothree/-/issues/653)
