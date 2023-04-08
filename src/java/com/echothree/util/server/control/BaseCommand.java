@@ -611,9 +611,19 @@ public abstract class BaseCommand
     // --------------------------------------------------------------------------------
 
     protected boolean canSpecifyParty() {
-        var partyTypeName = getPartyType().getPartyTypeName();
+        var partyType = getPartyType();
+        var result = false; // Default to most restrictive result.
 
-        return !(partyTypeName.equals(PartyTypes.CUSTOMER.name()) || partyTypeName.equals(PartyTypes.VENDOR.name()));
+        if(partyType != null) {
+            var partyTypeName = partyType.getPartyTypeName();
+
+            // Of PartyTypes that may login, only EMPLOYEEs or UTILITYs may specify another Party, CUSTOMERs and
+            // VENDORs may not.
+            result = partyTypeName.equals(PartyTypes.EMPLOYEE.name())
+                    || partyTypeName.equals(PartyTypes.UTILITY.name());
+        }
+
+        return result;
     }
 
     protected SecurityResult selfOnly(PartySpec spec) {
