@@ -14,13 +14,16 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.vendor.common.form;
+package com.echothree.control.user.vendor.common.result;
 
-import com.echothree.control.user.vendor.common.spec.VendorTypeUniversalSpec;
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
+import com.echothree.control.user.vendor.common.spec.ItemPurchasingCategorySpec;
+import com.echothree.control.user.vendor.common.spec.VendorTypeSpec;
+import com.echothree.util.common.command.BaseResult;
 
-public interface DeleteVendorTypeForm
-        extends VendorTypeUniversalSpec {
+public interface CreateVendorTypeResult
+        extends VendorTypeSpec, EntityRefSpec, BaseResult {
     
-    // Nothing additional beyond VendorTypeUniversalSpec
+    // Nothing additional beyond VendorTypeSpec, EntityRefSpec, BaseResult
     
 }

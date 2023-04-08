@@ -20,18 +20,15 @@ import com.echothree.control.user.vendor.common.form.DeleteVendorTypeForm;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.vendor.server.control.VendorControl;
+import com.echothree.model.control.vendor.server.logic.VendorTypeLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.vendor.server.entity.VendorType;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -51,7 +48,11 @@ public class DeleteVendorTypeCommand
                 )));
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("VendorTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("VendorTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
                 ));
     }
     
@@ -62,14 +63,10 @@ public class DeleteVendorTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var vendorControl = Session.getModelController(VendorControl.class);
-        String vendorTypeName = form.getVendorTypeName();
-        VendorType vendorType = vendorControl.getVendorTypeByNameForUpdate(vendorTypeName);
+        var vendorType = VendorTypeLogic.getInstance().getVendorTypeByUniversalSpecForUpdate(this, form, false);
         
-        if(vendorType != null) {
-            vendorControl.deleteVendorType(vendorType, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownVendorTypeName.name(), vendorTypeName);
+        if(!hasExecutionErrors()) {
+            VendorTypeLogic.getInstance().deleteVendorType(this, vendorType, getPartyPK());
         }
         
         return null;

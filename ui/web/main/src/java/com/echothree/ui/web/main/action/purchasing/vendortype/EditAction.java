@@ -64,7 +64,7 @@ public class EditAction
             if(forwardKey == null) {
                 EditActionForm actionForm = (EditActionForm)form;
                 EditVendorTypeForm commandForm = VendorUtil.getHome().getEditVendorTypeForm();
-                VendorTypeSpec spec = VendorUtil.getHome().getVendorTypeSpec();
+                var spec = VendorUtil.getHome().getVendorTypeUniversalSpec();
                 
                 if(originalVendorTypeName == null)
                     originalVendorTypeName = actionForm.getOriginalVendorTypeName();

@@ -17,6 +17,7 @@
 package com.echothree.control.user.vendor.server.command;
 
 import com.echothree.control.user.vendor.common.form.CreateVendorTypeForm;
+import com.echothree.control.user.vendor.common.result.VendorResultFactory;
 import com.echothree.model.control.accounting.common.AccountingConstants;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
@@ -29,9 +30,11 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.shipment.server.logic.FreeOnBoardLogic;
 import com.echothree.model.control.term.server.logic.TermLogic;
 import com.echothree.model.control.vendor.server.control.VendorControl;
+import com.echothree.model.control.vendor.server.logic.VendorTypeLogic;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.vendor.server.entity.VendorType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -86,86 +89,88 @@ public class CreateVendorTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var vendorControl = Session.getModelController(VendorControl.class);
-        var vendorTypeName = form.getVendorTypeName();
-        var vendorType = vendorControl.getVendorTypeByName(vendorTypeName);
+        var result = VendorResultFactory.getCreateVendorTypeResult();
+        VendorType vendorType = null;
+        var defaultTermName = form.getDefaultTermName();
+        var defaultFreeOnBoardName = form.getDefaultFreeOnBoardName();
+        var defaultTerm = defaultTermName == null ? null : TermLogic.getInstance().getTermByName(this, defaultTermName);
+        var defaultFreeOnBoard = defaultFreeOnBoardName == null ? null : FreeOnBoardLogic.getInstance().getFreeOnBoardByName(this, defaultFreeOnBoardName);
 
-        if(vendorType == null) {
-            var defaultTermName = form.getDefaultTermName();
-            var defaultFreeOnBoardName = form.getDefaultFreeOnBoardName();
-            var defaultTerm = defaultTermName == null ? null : TermLogic.getInstance().getTermByName(this, defaultTermName);
-            var defaultFreeOnBoard = defaultFreeOnBoardName == null ? null : FreeOnBoardLogic.getInstance().getFreeOnBoardByName(this, defaultFreeOnBoardName);
+        if(!hasExecutionErrors()) {
+            var defaultCancellationPolicyName = form.getDefaultCancellationPolicyName();
+            CancellationPolicy defaultCancellationPolicy = null;
 
-            if(!hasExecutionErrors()) {
-                var defaultCancellationPolicyName = form.getDefaultCancellationPolicyName();
-                CancellationPolicy defaultCancellationPolicy = null;
+            if(defaultCancellationPolicyName != null) {
+                var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
+                var returnKind = cancellationPolicyControl.getCancellationKindByName(CancellationKinds.CUSTOMER_CANCELLATION.name());
 
-                if(defaultCancellationPolicyName != null) {
-                    var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-                    var returnKind = cancellationPolicyControl.getCancellationKindByName(CancellationKinds.CUSTOMER_CANCELLATION.name());
+                defaultCancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(returnKind, defaultCancellationPolicyName);
+            }
 
-                    defaultCancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(returnKind, defaultCancellationPolicyName);
+            if(defaultCancellationPolicyName == null || defaultCancellationPolicy != null) {
+                var defaultReturnPolicyName = form.getDefaultReturnPolicyName();
+                ReturnPolicy defaultReturnPolicy = null;
+
+                if(defaultReturnPolicyName != null) {
+                    var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
+                    var returnKind = returnPolicyControl.getReturnKindByName(ReturnKinds.CUSTOMER_RETURN.name());
+
+                    defaultReturnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, defaultReturnPolicyName);
                 }
 
-                if(defaultCancellationPolicyName == null || defaultCancellationPolicy != null) {
-                    var defaultReturnPolicyName = form.getDefaultReturnPolicyName();
-                    ReturnPolicy defaultReturnPolicy = null;
+                if(defaultReturnPolicyName == null || defaultReturnPolicy != null) {
+                    var accountingControl = Session.getModelController(AccountingControl.class);
+                    var defaultApGlAccountName = form.getDefaultApGlAccountName();
+                    var defaultApGlAccount = defaultApGlAccountName == null ? null : accountingControl.getGlAccountByName(defaultApGlAccountName);
 
-                    if(defaultReturnPolicyName != null) {
-                        var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-                        var returnKind = returnPolicyControl.getReturnKindByName(ReturnKinds.CUSTOMER_RETURN.name());
+                    if(defaultApGlAccountName == null || defaultApGlAccount != null) {
+                        var glAccountCategoryName = defaultApGlAccount == null ? null : defaultApGlAccount.getLastDetail().getGlAccountCategory().getLastDetail().getGlAccountCategoryName();
 
-                        defaultReturnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, defaultReturnPolicyName);
-                    }
+                        if(glAccountCategoryName == null || glAccountCategoryName.equals(AccountingConstants.GlAccountCategory_ACCOUNTS_PAYABLE)) {
+                            var partyPK = getPartyPK();
+                            var vendorTypeName = form.getVendorTypeName();
+                            var defaultHoldUntilComplete = Boolean.valueOf(form.getDefaultHoldUntilComplete());
+                            var defaultAllowBackorders = Boolean.valueOf(form.getDefaultAllowBackorders());
+                            var defaultAllowSubstitutions = Boolean.valueOf(form.getDefaultAllowSubstitutions());
+                            var defaultAllowCombiningShipments = Boolean.valueOf(form.getDefaultAllowCombiningShipments());
+                            var defaultRequireReference = Boolean.valueOf(form.getDefaultRequireReference());
+                            var defaultAllowReferenceDuplicates = Boolean.valueOf(form.getDefaultAllowReferenceDuplicates());
+                            var defaultReferenceValidationPattern = form.getDefaultReferenceValidationPattern();
+                            var isDefault = Boolean.valueOf(form.getIsDefault());
+                            var sortOrder = Integer.valueOf(form.getSortOrder());
+                            var description = form.getDescription();
 
-                    if(defaultReturnPolicyName == null || defaultReturnPolicy != null) {
-                        var accountingControl = Session.getModelController(AccountingControl.class);
-                        var defaultApGlAccountName = form.getDefaultApGlAccountName();
-                        var defaultApGlAccount = defaultApGlAccountName == null ? null : accountingControl.getGlAccountByName(defaultApGlAccountName);
+                            vendorType = VendorTypeLogic.getInstance().createVendorType(this, vendorTypeName, defaultTerm, defaultFreeOnBoard,
+                                    defaultCancellationPolicy, defaultReturnPolicy, defaultApGlAccount, defaultHoldUntilComplete,
+                                    defaultAllowBackorders, defaultAllowSubstitutions, defaultAllowCombiningShipments,
+                                    defaultRequireReference, defaultAllowReferenceDuplicates, defaultReferenceValidationPattern,
+                                    isDefault, sortOrder, partyPK);
 
-                        if(defaultApGlAccountName == null || defaultApGlAccount != null) {
-                            var glAccountCategoryName = defaultApGlAccount == null ? null : defaultApGlAccount.getLastDetail().getGlAccountCategory().getLastDetail().getGlAccountCategoryName();
+                            if(description != null) {
+                                var vendorControl = Session.getModelController(VendorControl.class);
 
-                            if(glAccountCategoryName == null || glAccountCategoryName.equals(AccountingConstants.GlAccountCategory_ACCOUNTS_PAYABLE)) {
-                                var partyPK = getPartyPK();
-                                var defaultHoldUntilComplete = Boolean.valueOf(form.getDefaultHoldUntilComplete());
-                                var defaultAllowBackorders = Boolean.valueOf(form.getDefaultAllowBackorders());
-                                var defaultAllowSubstitutions = Boolean.valueOf(form.getDefaultAllowSubstitutions());
-                                var defaultAllowCombiningShipments = Boolean.valueOf(form.getDefaultAllowCombiningShipments());
-                                var defaultRequireReference = Boolean.valueOf(form.getDefaultRequireReference());
-                                var defaultAllowReferenceDuplicates = Boolean.valueOf(form.getDefaultAllowReferenceDuplicates());
-                                var defaultReferenceValidationPattern = form.getDefaultReferenceValidationPattern();
-                                var isDefault = Boolean.valueOf(form.getIsDefault());
-                                var sortOrder = Integer.valueOf(form.getSortOrder());
-                                var description = form.getDescription();
-
-                                vendorType = vendorControl.createVendorType(vendorTypeName, defaultTerm, defaultFreeOnBoard,
-                                        defaultCancellationPolicy, defaultReturnPolicy, defaultApGlAccount, defaultHoldUntilComplete,
-                                        defaultAllowBackorders, defaultAllowSubstitutions, defaultAllowCombiningShipments,
-                                        defaultRequireReference, defaultAllowReferenceDuplicates, defaultReferenceValidationPattern,
-                                        isDefault, sortOrder, partyPK);
-
-                                if(description != null) {
-                                    vendorControl.createVendorTypeDescription(vendorType, getPreferredLanguage(), description, partyPK);
-                                }
-                            } else {
-                                addExecutionError(ExecutionErrors.InvalidGlAccountCategory.name(), glAccountCategoryName);
+                                vendorControl.createVendorTypeDescription(vendorType, getPreferredLanguage(), description, partyPK);
                             }
                         } else {
-                            addExecutionError(ExecutionErrors.UnknownDefaultApGlAccountName.name(), defaultApGlAccountName);
+                            addExecutionError(ExecutionErrors.InvalidGlAccountCategory.name(), glAccountCategoryName);
                         }
                     } else {
-                        addExecutionError(ExecutionErrors.UnknownReturnPolicyName.name(), defaultReturnPolicyName);
+                        addExecutionError(ExecutionErrors.UnknownDefaultApGlAccountName.name(), defaultApGlAccountName);
                     }
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownCancellationPolicyName.name(), defaultCancellationPolicyName);
+                    addExecutionError(ExecutionErrors.UnknownReturnPolicyName.name(), defaultReturnPolicyName);
                 }
+            } else {
+                addExecutionError(ExecutionErrors.UnknownCancellationPolicyName.name(), defaultCancellationPolicyName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.DuplicateVendorTypeName.name(), vendorTypeName);
         }
 
-        return null;
+        if(vendorType != null) {
+            result.setEntityRef(vendorType.getPrimaryKey().getEntityRef());
+            result.setVendorTypeName(vendorType.getLastDetail().getVendorTypeName());
+        }
+
+        return result;
     }
     
 }

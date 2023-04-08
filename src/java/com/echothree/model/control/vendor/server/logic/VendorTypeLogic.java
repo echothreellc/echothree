@@ -21,11 +21,19 @@ import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
+import com.echothree.model.control.vendor.common.exception.DuplicateVendorTypeNameException;
 import com.echothree.model.control.vendor.common.exception.UnknownDefaultVendorTypeException;
 import com.echothree.model.control.vendor.common.exception.UnknownVendorTypeNameException;
 import com.echothree.model.control.vendor.server.control.VendorControl;
+import com.echothree.model.data.accounting.server.entity.GlAccount;
+import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
+import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
+import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
+import com.echothree.model.data.term.server.entity.Term;
 import com.echothree.model.data.vendor.server.entity.VendorType;
+import com.echothree.model.data.vendor.server.value.VendorTypeDetailValue;
 import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
@@ -44,6 +52,27 @@ public class VendorTypeLogic
     
     public static VendorTypeLogic getInstance() {
         return VendorTypeLogicHolder.instance;
+    }
+
+    public VendorType createVendorType(final ExecutionErrorAccumulator eea, String vendorTypeName, Term defaultTerm, FreeOnBoard defaultFreeOnBoard,
+            CancellationPolicy defaultCancellationPolicy, ReturnPolicy defaultReturnPolicy,
+            GlAccount defaultApGlAccount, Boolean defaultHoldUntilComplete, Boolean defaultAllowBackorders, Boolean defaultAllowSubstitutions,
+            Boolean defaultAllowCombiningShipments, Boolean defaultRequireReference, Boolean defaultAllowReferenceDuplicates,
+            String defaultReferenceValidationPattern, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
+        var vendorControl = Session.getModelController(VendorControl.class);
+        var vendorType = vendorControl.getVendorTypeByName(vendorTypeName);
+
+        if(vendorType == null) {
+            vendorType = vendorControl.createVendorType(vendorTypeName, defaultTerm, defaultFreeOnBoard,
+                    defaultCancellationPolicy, defaultReturnPolicy, defaultApGlAccount, defaultHoldUntilComplete,
+                    defaultAllowBackorders, defaultAllowSubstitutions, defaultAllowCombiningShipments,
+                    defaultRequireReference, defaultAllowReferenceDuplicates, defaultReferenceValidationPattern,
+                    isDefault, sortOrder, createdBy);
+        } else {
+            handleExecutionError(DuplicateVendorTypeNameException.class, eea, ExecutionErrors.DuplicateVendorTypeName.name(), vendorTypeName);
+        }
+
+        return vendorType;
     }
 
     public VendorType getVendorTypeByName(final ExecutionErrorAccumulator eea, final String vendorTypeName,
@@ -113,6 +142,18 @@ public class VendorTypeLogic
     public VendorType getVendorTypeByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
             final VendorTypeUniversalSpec universalSpec, boolean allowDefault) {
         return getVendorTypeByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
+    }
+
+    public void updateVendorTypeFromValue(final ExecutionErrorAccumulator eea, VendorTypeDetailValue vendorTypeDetailValue, BasePK updatedBy) {
+        var vendorControl = Session.getModelController(VendorControl.class);
+
+        vendorControl.updateVendorTypeFromValue(vendorTypeDetailValue, updatedBy);
+    }
+
+    public void deleteVendorType(final ExecutionErrorAccumulator eea, VendorType vendorType, BasePK deletedBy) {
+        var vendorControl = Session.getModelController(VendorControl.class);
+
+        vendorControl.deleteVendorType(vendorType, deletedBy);
     }
 
 }
