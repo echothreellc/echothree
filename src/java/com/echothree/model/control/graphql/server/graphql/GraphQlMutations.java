@@ -142,8 +142,10 @@ import com.echothree.control.user.user.common.UserUtil;
 import com.echothree.control.user.user.common.result.EditUserLoginResult;
 import com.echothree.control.user.vendor.common.VendorUtil;
 import com.echothree.control.user.vendor.common.result.CreateItemPurchasingCategoryResult;
+import com.echothree.control.user.vendor.common.result.CreateVendorItemResult;
 import com.echothree.control.user.vendor.common.result.CreateVendorTypeResult;
 import com.echothree.control.user.vendor.common.result.EditItemPurchasingCategoryResult;
+import com.echothree.control.user.vendor.common.result.EditVendorItemResult;
 import com.echothree.control.user.vendor.common.result.EditVendorTypeResult;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.search.server.graphql.SearchCustomersResultObject;
@@ -151,6 +153,7 @@ import com.echothree.model.control.search.server.graphql.SearchEmployeesResultOb
 import com.echothree.model.control.search.server.graphql.SearchItemsResultObject;
 import com.echothree.model.control.search.server.graphql.SearchVendorsResultObject;
 import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLID;
@@ -6365,7 +6368,7 @@ public class GraphQlMutations
 
         return mutationResultObject;
     }
-    
+
     @GraphQLField
     @GraphQLRelayMutation
     public static MutationResultWithIdObject createVendorType(final DataFetchingEnvironment env,
@@ -6512,7 +6515,7 @@ public class GraphQlMutations
 
         return mutationResultObject;
     }
-    
+
     @GraphQLField
     @GraphQLRelayMutation
     public static MutationResultObject deleteVendorType(final DataFetchingEnvironment env,
@@ -6527,6 +6530,131 @@ public class GraphQlMutations
             commandForm.setUlid(id);
 
             mutationResultObject.setCommandResult(VendorUtil.getHome().deleteVendorType(getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static MutationResultWithIdObject createVendorItem(final DataFetchingEnvironment env,
+            @GraphQLName("itemName") @GraphQLNonNull final String itemName,
+            @GraphQLName("vendorName") @GraphQLNonNull final String vendorName,
+            @GraphQLName("vendorItemName") final String vendorItemName,
+            @GraphQLName("description") final String description,
+            @GraphQLName("priority") @GraphQLNonNull final String priority,
+            @GraphQLName("cancellationPolicyName") final String cancellationPolicyName,
+            @GraphQLName("returnPolicyName") final String returnPolicyName) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = VendorUtil.getHome().getCreateVendorItemForm();
+
+            commandForm.setItemName(itemName);
+            commandForm.setVendorName(vendorName);
+            commandForm.setVendorItemName(vendorItemName);
+            commandForm.setDescription(description);
+            commandForm.setPriority(priority);
+            commandForm.setCancellationPolicyName(cancellationPolicyName);
+            commandForm.setReturnPolicyName(returnPolicyName);
+
+            var commandResult = VendorUtil.getHome().createVendorItem(getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateVendorItemResult)commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static MutationResultWithIdObject editVendorItem(final DataFetchingEnvironment env,
+            @GraphQLName("vendorName") final String vendorName,
+            @GraphQLName("partyName") final String partyName,
+            @GraphQLName("originalVendorItemName") final String originalVendorItemName,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("vendorItemName") final String vendorItemName,
+            @GraphQLName("description") final String description,
+            @GraphQLName("priority") final String priority,
+            @GraphQLName("cancellationPolicyName") final String cancellationPolicyName,
+            @GraphQLName("returnPolicyName") final String returnPolicyName) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var spec = VendorUtil.getHome().getVendorItemUniversalSpec();
+
+            spec.setVendorName(vendorName);
+            spec.setPartyName(partyName);
+            spec.setVendorItemName(originalVendorItemName);
+            spec.setUlid(id);
+
+            var commandForm = VendorUtil.getHome().getEditVendorItemForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = VendorUtil.getHome().editVendorItem(getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditVendorItemResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                mutationResultObject.setEntityInstance(result.getVendorItem().getEntityInstance());
+
+                if(arguments.containsKey("vendorItemName"))
+                    edit.setVendorItemName(vendorItemName);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+                if(arguments.containsKey("priority"))
+                    edit.setPriority(priority);
+                if(arguments.containsKey("cancellationPolicyName"))
+                    edit.setCancellationPolicyName(cancellationPolicyName);
+                if(arguments.containsKey("returnPolicyName"))
+                    edit.setReturnPolicyName(returnPolicyName);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = VendorUtil.getHome().editVendorItem(getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static MutationResultObject deleteVendorItem(final DataFetchingEnvironment env,
+            @GraphQLName("vendorName") final String vendorName,
+            @GraphQLName("partyName") final String partyName,
+            @GraphQLName("vendorItemName") final String vendorItemName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = VendorUtil.getHome().getDeleteVendorItemForm();
+
+            commandForm.setVendorName(vendorName);
+            commandForm.setPartyName(partyName);
+            commandForm.setVendorItemName(vendorItemName);
+            commandForm.setUlid(id);
+
+            mutationResultObject.setCommandResult(VendorUtil.getHome().deleteVendorItem(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }

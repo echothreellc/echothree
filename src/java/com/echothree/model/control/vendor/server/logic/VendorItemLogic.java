@@ -62,7 +62,7 @@ public class VendorItemLogic
                 var vendor = VendorLogic.getInstance().getVendorByName(eea, vendorName, partyName, null);
                 var vendorParty = vendor.getParty();
 
-                vendorItem = vendorControl.getVendorItemByVendorPartyAndVendorItemName(vendorParty, vendorItemName);
+                vendorItem = vendorControl.getVendorItemByVendorPartyAndVendorItemName(vendorParty, vendorItemName, entityPermission);
 
                 if(vendorItem == null) {
                     handleExecutionError(UnknownVendorItemNameException.class, eea, ExecutionErrors.UnknownVendorItemName.name(),
@@ -93,4 +93,5 @@ public class VendorItemLogic
     public VendorItem getVendorItemByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea, final VendorItemUniversalSpec universalSpec) {
         return getVendorItemByUniversalSpec(eea, universalSpec, EntityPermission.READ_WRITE);
     }
+
 }

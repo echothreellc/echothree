@@ -18,10 +18,11 @@ package com.echothree.control.user.vendor.common.form;
 
 import com.echothree.control.user.vendor.common.edit.VendorItemEdit;
 import com.echothree.control.user.vendor.common.spec.VendorItemSpec;
+import com.echothree.control.user.vendor.common.spec.VendorItemUniversalSpec;
 import com.echothree.util.common.form.BaseEditForm;
 
 public interface EditVendorItemForm
-        extends BaseEditForm<VendorItemSpec, VendorItemEdit> {
+        extends BaseEditForm<VendorItemUniversalSpec, VendorItemEdit> {
     
     // Nothing additional beyond BaseEditForm
     

@@ -19,9 +19,8 @@ package com.echothree.control.user.vendor.server.command;
 import com.echothree.control.user.vendor.common.edit.VendorEditFactory;
 import com.echothree.control.user.vendor.common.edit.VendorItemEdit;
 import com.echothree.control.user.vendor.common.form.EditVendorItemForm;
-import com.echothree.control.user.vendor.common.result.EditVendorItemResult;
 import com.echothree.control.user.vendor.common.result.VendorResultFactory;
-import com.echothree.control.user.vendor.common.spec.VendorItemSpec;
+import com.echothree.control.user.vendor.common.spec.VendorItemUniversalSpec;
 import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.party.common.PartyTypes;
@@ -30,14 +29,12 @@ import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyContr
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.vendor.server.control.VendorControl;
+import com.echothree.model.control.vendor.server.logic.VendorItemLogic;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnKind;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.vendor.server.entity.Vendor;
-import com.echothree.model.data.vendor.server.entity.VendorItem;
 import com.echothree.model.data.vendor.server.entity.VendorItemDetail;
 import com.echothree.model.data.vendor.server.value.VendorItemDetailValue;
 import com.echothree.util.common.command.BaseResult;
@@ -55,7 +52,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class EditVendorItemCommand
-        extends BaseEditCommand<VendorItemSpec, VendorItemEdit> {
+        extends BaseEditCommand<VendorItemUniversalSpec, VendorItemEdit> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
@@ -70,8 +67,13 @@ public class EditVendorItemCommand
                 )));
         
         SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("VendorName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("VendorItemName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("VendorName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("VendorItemName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
                 ));
         
         EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
@@ -91,104 +93,91 @@ public class EditVendorItemCommand
     @Override
     protected BaseResult execute() {
         var vendorControl = Session.getModelController(VendorControl.class);
-        EditVendorItemResult result = VendorResultFactory.getEditVendorItemResult();
-        String vendorName = spec.getVendorName();
-        Vendor vendor = vendorControl.getVendorByName(vendorName);
-        
-        if(vendor != null) {
-            Party vendorParty = vendor.getParty();
-            String vendorItemName = spec.getVendorItemName();
-            
-            if(editMode.equals(EditMode.LOCK)) {
-                VendorItem vendorItem = vendorControl.getVendorItemByVendorPartyAndVendorItemName(vendorParty, vendorItemName);
-                
-                if(vendorItem != null) {
-                    result.setVendorItem(vendorControl.getVendorItemTransfer(getUserVisit(), vendorItem));
-                    
-                    if(lockEntity(vendorItem)) {
-                        VendorItemEdit edit = VendorEditFactory.getVendorItemEdit();
-                        VendorItemDetail vendorItemDetail = vendorItem.getLastDetail();
-                        CancellationPolicy cancellationPolicy = vendorItemDetail.getCancellationPolicy();
-                        ReturnPolicy returnPolicy = vendorItemDetail.getReturnPolicy();
-                        
-                        result.setEdit(edit);
-                        edit.setVendorItemName(vendorItemDetail.getVendorItemName());
-                        edit.setDescription(vendorItemDetail.getDescription());
-                        edit.setPriority(vendorItemDetail.getPriority().toString());
-                        edit.setCancellationPolicyName(cancellationPolicy == null? null: cancellationPolicy.getLastDetail().getCancellationPolicyName());
-                        edit.setReturnPolicyName(returnPolicy == null? null: returnPolicy.getLastDetail().getReturnPolicyName());
-                    } else {
-                        addExecutionError(ExecutionErrors.EntityLockFailed.name());
-                    }
-                    
-                    result.setEntityLock(getEntityLockTransfer(vendorItem));
+        var result = VendorResultFactory.getEditVendorItemResult();
+
+        if(editMode.equals(EditMode.LOCK)) {
+            var vendorItem = VendorItemLogic.getInstance().getVendorItemByUniversalSpec(this, spec);
+
+            if(!hasExecutionErrors()) {
+                result.setVendorItem(vendorControl.getVendorItemTransfer(getUserVisit(), vendorItem));
+
+                if(lockEntity(vendorItem)) {
+                    VendorItemEdit edit = VendorEditFactory.getVendorItemEdit();
+                    VendorItemDetail vendorItemDetail = vendorItem.getLastDetail();
+                    CancellationPolicy cancellationPolicy = vendorItemDetail.getCancellationPolicy();
+                    ReturnPolicy returnPolicy = vendorItemDetail.getReturnPolicy();
+
+                    result.setEdit(edit);
+                    edit.setVendorItemName(vendorItemDetail.getVendorItemName());
+                    edit.setDescription(vendorItemDetail.getDescription());
+                    edit.setPriority(vendorItemDetail.getPriority().toString());
+                    edit.setCancellationPolicyName(cancellationPolicy == null? null: cancellationPolicy.getLastDetail().getCancellationPolicyName());
+                    edit.setReturnPolicyName(returnPolicy == null? null: returnPolicy.getLastDetail().getReturnPolicyName());
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownVendorItemName.name(), vendorItemName);
+                    addExecutionError(ExecutionErrors.EntityLockFailed.name());
                 }
-            } else if(editMode.equals(EditMode.UPDATE)) {
-                VendorItem vendorItem = vendorControl.getVendorItemByVendorPartyAndVendorItemNameForUpdate(vendorParty, vendorItemName);
-                
-                if(vendorItem != null) {
-                    vendorItemName = edit.getVendorItemName();
-                    VendorItem duplicateVendorItem = vendorControl.getVendorItemByVendorPartyAndVendorItemName(vendorParty, vendorItemName);
-                    
-                    if(duplicateVendorItem == null || vendorItem.equals(duplicateVendorItem)) {
-                        String cancellationPolicyName = edit.getCancellationPolicyName();
-                        CancellationPolicy cancellationPolicy = null;
-                        
-                        if(cancellationPolicyName != null) {
-                            var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
-                            CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(CancellationKinds.VENDOR_CANCELLATION.name());
-                            
-                            cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
+
+                result.setEntityLock(getEntityLockTransfer(vendorItem));
+            }
+        } else if(editMode.equals(EditMode.UPDATE)) {
+            var vendorItem = VendorItemLogic.getInstance().getVendorItemByUniversalSpecForUpdate(this, spec);
+
+            if(!hasExecutionErrors()) {
+                var vendorItemName = edit.getVendorItemName();
+                var duplicateVendorItem = vendorControl.getVendorItemByVendorPartyAndVendorItemName(vendorItem.getLastDetail().getVendorParty(), vendorItemName);
+
+                if(duplicateVendorItem == null || vendorItem.equals(duplicateVendorItem)) {
+                    String cancellationPolicyName = edit.getCancellationPolicyName();
+                    CancellationPolicy cancellationPolicy = null;
+
+                    if(cancellationPolicyName != null) {
+                        var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
+                        CancellationKind cancellationKind = cancellationPolicyControl.getCancellationKindByName(CancellationKinds.VENDOR_CANCELLATION.name());
+
+                        cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByName(cancellationKind, cancellationPolicyName);
+                    }
+
+                    if(cancellationPolicyName == null || cancellationPolicy != null) {
+                        String returnPolicyName = edit.getReturnPolicyName();
+                        ReturnPolicy returnPolicy = null;
+
+                        if(returnPolicyName != null) {
+                            var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
+                            ReturnKind returnKind = returnPolicyControl.getReturnKindByName(ReturnKinds.VENDOR_RETURN.name());
+
+                            returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
                         }
-                        
-                        if(cancellationPolicyName == null || cancellationPolicy != null) {
-                            String returnPolicyName = edit.getReturnPolicyName();
-                            ReturnPolicy returnPolicy = null;
-                            
-                            if(returnPolicyName != null) {
-                                var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
-                                ReturnKind returnKind = returnPolicyControl.getReturnKindByName(ReturnKinds.VENDOR_RETURN.name());
-                                
-                                returnPolicy = returnPolicyControl.getReturnPolicyByName(returnKind, returnPolicyName);
-                            }
-                            
-                            if(returnPolicyName == null || returnPolicy != null) {
-                                if(lockEntityForUpdate(vendorItem)) {
-                                    try {
-                                        VendorItemDetailValue vendorItemDetailValue = vendorControl.getVendorItemDetailValueForUpdate(vendorItem);
-                                        
-                                        vendorItemDetailValue.setVendorItemName(edit.getVendorItemName());
-                                        vendorItemDetailValue.setDescription(edit.getDescription());
-                                        vendorItemDetailValue.setPriority(Integer.valueOf(edit.getPriority()));
-                                        vendorItemDetailValue.setCancellationPolicyPK(cancellationPolicy == null? null: cancellationPolicy.getPrimaryKey());
-                                        vendorItemDetailValue.setReturnPolicyPK(returnPolicy == null? null: returnPolicy.getPrimaryKey());
-                                        
-                                        vendorControl.updateVendorItemFromValue(vendorItemDetailValue, getPartyPK());
-                                    } finally {
-                                        unlockEntity(vendorItem);
-                                    }
-                                } else {
-                                    addExecutionError(ExecutionErrors.EntityLockStale.name());
+
+                        if(returnPolicyName == null || returnPolicy != null) {
+                            if(lockEntityForUpdate(vendorItem)) {
+                                try {
+                                    VendorItemDetailValue vendorItemDetailValue = vendorControl.getVendorItemDetailValueForUpdate(vendorItem);
+
+                                    vendorItemDetailValue.setVendorItemName(edit.getVendorItemName());
+                                    vendorItemDetailValue.setDescription(edit.getDescription());
+                                    vendorItemDetailValue.setPriority(Integer.valueOf(edit.getPriority()));
+                                    vendorItemDetailValue.setCancellationPolicyPK(cancellationPolicy == null? null: cancellationPolicy.getPrimaryKey());
+                                    vendorItemDetailValue.setReturnPolicyPK(returnPolicy == null? null: returnPolicy.getPrimaryKey());
+
+                                    vendorControl.updateVendorItemFromValue(vendorItemDetailValue, getPartyPK());
+                                } finally {
+                                    unlockEntity(vendorItem);
                                 }
                             } else {
-                                addExecutionError(ExecutionErrors.UnknownReturnPolicyName.name(), returnPolicyName);
+                                addExecutionError(ExecutionErrors.EntityLockStale.name());
                             }
                         } else {
-                            addExecutionError(ExecutionErrors.UnknownCancellationPolicyName.name(), cancellationPolicyName);
+                            addExecutionError(ExecutionErrors.UnknownReturnPolicyName.name(), returnPolicyName);
                         }
                     } else {
-                        addExecutionError(ExecutionErrors.DuplicateVendorItemName.name(), vendorItemName);
+                        addExecutionError(ExecutionErrors.UnknownCancellationPolicyName.name(), cancellationPolicyName);
                     }
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownVendorItemName.name(), vendorItemName);
+                    addExecutionError(ExecutionErrors.DuplicateVendorItemName.name(), vendorItemName);
                 }
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownVendorName.name(), vendorName);
         }
-        
+
         return result;
     }
     
