@@ -153,8 +153,6 @@ import com.echothree.model.control.search.server.graphql.SearchEmployeesResultOb
 import com.echothree.model.control.search.server.graphql.SearchItemsResultObject;
 import com.echothree.model.control.search.server.graphql.SearchVendorsResultObject;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.common.validation.FieldType;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLID;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -6639,6 +6637,34 @@ public class GraphQlMutations
 
     @GraphQLField
     @GraphQLRelayMutation
+    @GraphQLName("setVendorItemStatus")
+    public static MutationResultObject setVendorItemStatus(final DataFetchingEnvironment env,
+            @GraphQLName("vendorName") final String vendorName,
+            @GraphQLName("partyName") final String partyName,
+            @GraphQLName("vendorItemName") final String vendorItemName,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("vendorItemStatusChoice") @GraphQLNonNull final String vendorItemStatusChoice) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = VendorUtil.getHome().getSetVendorItemStatusForm();
+
+            commandForm.setVendorName(vendorName);
+            commandForm.setPartyName(partyName);
+            commandForm.setVendorItemName(vendorItemName);
+            commandForm.setUlid(id);
+            commandForm.setVendorItemStatusChoice(vendorItemStatusChoice);
+
+            mutationResultObject.setCommandResult(VendorUtil.getHome().setVendorItemStatus(getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
     public static MutationResultObject deleteVendorItem(final DataFetchingEnvironment env,
             @GraphQLName("vendorName") final String vendorName,
             @GraphQLName("partyName") final String partyName,
@@ -7706,14 +7732,14 @@ public class GraphQlMutations
     @GraphQLName("setItemStatus")
     public static MutationResultObject setItemStatus(final DataFetchingEnvironment env,
             @GraphQLName("itemName") @GraphQLNonNull final String itemStatusName,
-            @GraphQLName("itemStatusChoice") @GraphQLNonNull final String ItemStatusChoice) {
+            @GraphQLName("itemStatusChoice") @GraphQLNonNull final String itemStatusChoice) {
         var mutationResultObject = new MutationResultObject();
 
         try {
             var commandForm = ItemUtil.getHome().getSetItemStatusForm();
 
             commandForm.setItemName(itemStatusName);
-            commandForm.setItemStatusChoice(ItemStatusChoice);
+            commandForm.setItemStatusChoice(itemStatusChoice);
 
             mutationResultObject.setCommandResult(ItemUtil.getHome().setItemStatus(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
