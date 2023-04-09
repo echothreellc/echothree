@@ -21,14 +21,11 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.vendor.server.control.VendorControl;
-import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.model.control.vendor.server.logic.VendorItemLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.vendor.server.entity.Vendor;
-import com.echothree.model.data.vendor.server.entity.VendorItem;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -53,8 +50,13 @@ public class SetVendorItemStatusCommand
                 )));
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("VendorName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("VendorName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("VendorItemName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null),
                 new FieldDefinition("VendorItemStatusChoice", FieldType.ENTITY_NAME, true, null, null)
                 ));
     }
@@ -66,24 +68,13 @@ public class SetVendorItemStatusCommand
     
     @Override
     protected BaseResult execute() {
-        var vendorControl = Session.getModelController(VendorControl.class);
-        String vendorName = form.getVendorName();
-        Vendor vendor = vendorControl.getVendorByName(vendorName);
+        var vendorItem = VendorItemLogic.getInstance().getVendorItemByUniversalSpecForUpdate(this, form);
 
-        if(vendor != null) {
-            Party vendorParty = vendor.getParty();
-            String vendorItemName = form.getVendorItemName();
-            VendorItem vendorItem = vendorControl.getVendorItemByVendorPartyAndVendorItemName(vendorParty, vendorItemName);
+        if(!hasExecutionErrors()) {
+            var vendorControl = Session.getModelController(VendorControl.class);
+            var vendorItemStatusChoice = form.getVendorItemStatusChoice();
 
-            if(vendorItem != null) {
-                String vendorItemStatusChoice = form.getVendorItemStatusChoice();
-
-                vendorControl.setVendorItemStatus(this, vendorItem, vendorItemStatusChoice, getPartyPK());
-            } else {
-                addExecutionError(ExecutionErrors.UnknownVendorItemName.name(), vendorName, vendorItemName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownVendorName.name(), vendorName);
+            vendorControl.setVendorItemStatus(this, vendorItem, vendorItemStatusChoice, getPartyPK());
         }
         
         return null;

@@ -16,10 +16,10 @@
 
 package com.echothree.control.user.vendor.common.form;
 
-import com.echothree.control.user.vendor.common.spec.VendorItemSpec;
+import com.echothree.control.user.vendor.common.spec.VendorItemUniversalSpec;
 
 public interface SetVendorItemStatusForm
-        extends VendorItemSpec {
+        extends VendorItemUniversalSpec {
     
     String getVendorItemStatusChoice();
     void setVendorItemStatusChoice(String vendorItemStatusChoice);
