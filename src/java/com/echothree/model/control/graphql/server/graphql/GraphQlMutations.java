@@ -145,6 +145,7 @@ import com.echothree.control.user.vendor.common.result.CreateItemPurchasingCateg
 import com.echothree.control.user.vendor.common.result.CreateVendorItemResult;
 import com.echothree.control.user.vendor.common.result.CreateVendorTypeResult;
 import com.echothree.control.user.vendor.common.result.EditItemPurchasingCategoryResult;
+import com.echothree.control.user.vendor.common.result.EditVendorItemCostResult;
 import com.echothree.control.user.vendor.common.result.EditVendorItemResult;
 import com.echothree.control.user.vendor.common.result.EditVendorTypeResult;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
@@ -6681,6 +6682,107 @@ public class GraphQlMutations
             commandForm.setUlid(id);
 
             mutationResultObject.setCommandResult(VendorUtil.getHome().deleteVendorItem(getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static MutationResultObject createVendorItemCost(final DataFetchingEnvironment env,
+            @GraphQLName("vendorName") @GraphQLNonNull final String vendorName,
+            @GraphQLName("vendorItemName") @GraphQLNonNull final String vendorItemName,
+            @GraphQLName("inventoryConditionName") @GraphQLNonNull final String inventoryConditionName,
+            @GraphQLName("unitOfMeasureTypeName") @GraphQLNonNull final String unitOfMeasureTypeName,
+            @GraphQLName("unitCost") @GraphQLNonNull final String unitCost) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = VendorUtil.getHome().getCreateVendorItemCostForm();
+
+            commandForm.setVendorName(vendorName);
+            commandForm.setVendorItemName(vendorItemName);
+            commandForm.setInventoryConditionName(inventoryConditionName);
+            commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
+            commandForm.setUnitCost(unitCost);
+
+            var commandResult = VendorUtil.getHome().createVendorItemCost(getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static MutationResultObject editVendorItemCost(final DataFetchingEnvironment env,
+            @GraphQLName("vendorName") @GraphQLNonNull final String vendorName,
+            @GraphQLName("vendorItemName") @GraphQLNonNull final String vendorItemName,
+            @GraphQLName("inventoryConditionName") @GraphQLNonNull final String inventoryConditionName,
+            @GraphQLName("unitOfMeasureTypeName") @GraphQLNonNull final String unitOfMeasureTypeName,
+            @GraphQLName("unitCost") final String unitCost) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var spec = VendorUtil.getHome().getVendorItemCostSpec();
+
+            spec.setVendorName(vendorName);
+            spec.setVendorItemName(vendorItemName);
+            spec.setInventoryConditionName(inventoryConditionName);
+            spec.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
+
+            var commandForm = VendorUtil.getHome().getEditVendorItemCostForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = VendorUtil.getHome().editVendorItemCost(getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditVendorItemCostResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                if(arguments.containsKey("unitCost"))
+                    edit.setUnitCost(unitCost);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = VendorUtil.getHome().editVendorItemCost(getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static MutationResultObject deleteVendorItemCost(final DataFetchingEnvironment env,
+            @GraphQLName("vendorName") @GraphQLNonNull final String vendorName,
+            @GraphQLName("vendorItemName") @GraphQLNonNull final String vendorItemName,
+            @GraphQLName("inventoryConditionName") @GraphQLNonNull final String inventoryConditionName,
+            @GraphQLName("unitOfMeasureTypeName") @GraphQLNonNull final String unitOfMeasureTypeName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = VendorUtil.getHome().getDeleteVendorItemCostForm();
+
+            commandForm.setVendorName(vendorName);
+            commandForm.setVendorItemName(vendorItemName);
+            commandForm.setInventoryConditionName(inventoryConditionName);
+            commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
+
+            mutationResultObject.setCommandResult(VendorUtil.getHome().deleteVendorItemCost(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
