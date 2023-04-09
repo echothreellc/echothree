@@ -186,7 +186,7 @@ public class CreateVendorItemCommand
         } else {
             addExecutionError(ExecutionErrors.UnknownVendorName.name(), vendorName);
         }
-        
+
         if(vendorItem != null) {
             result.setEntityRef(vendorItem.getPrimaryKey().getEntityRef());
             result.setVendorItemName(vendorItem.getLastDetail().getVendorItemName());
