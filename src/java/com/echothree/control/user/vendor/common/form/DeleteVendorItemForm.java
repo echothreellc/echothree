@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.vendor.common.form;
 
-import com.echothree.control.user.vendor.common.spec.VendorItemSpec;
+import com.echothree.control.user.vendor.common.spec.VendorItemUniversalSpec;
 
 public interface DeleteVendorItemForm
-        extends VendorItemSpec {
+        extends VendorItemUniversalSpec {
     
-    // Nothing additional beyond VendorItemSpec
+    // Nothing additional beyond VendorItemUniversalSpec
     
 }

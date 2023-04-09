@@ -343,7 +343,6 @@ public class ItemObject
         return getWorkflowEntityStatusObject(env, ItemStatusConstants.Workflow_ITEM_STATUS);
     }
 
-
     @GraphQLField
     @GraphQLDescription("offer items")
     @GraphQLNonNull

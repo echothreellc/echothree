@@ -179,7 +179,7 @@ import com.echothree.control.user.vendor.common.form.DeleteVendorItemCostForm;
 import com.echothree.control.user.vendor.common.form.DeleteVendorItemForm;
 import com.echothree.control.user.vendor.common.form.SetVendorItemStatusForm;
 import com.echothree.control.user.vendor.common.spec.VendorItemCostSpec;
-import com.echothree.control.user.vendor.common.spec.VendorItemSpec;
+import com.echothree.control.user.vendor.common.spec.VendorItemUniversalSpec;
 import com.echothree.control.user.vendor.common.spec.VendorSpec;
 import com.echothree.cucumber.authentication.UserVisits;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -470,7 +470,7 @@ public class BasePersona {
     public CreateVendorItemForm createVendorItemForm;
     public SetVendorItemStatusForm setVendorItemStatusForm;
     public DeleteVendorItemForm deleteVendorItemForm;
-    public VendorItemSpec vendorItemSpec;
+    public VendorItemUniversalSpec vendorItemUniversalSpec;
     public VendorItemEdit vendorItemEdit;
 
     public CreateVendorItemCostForm createVendorItemCostForm;

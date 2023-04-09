@@ -17,6 +17,7 @@
 package com.echothree.control.user.vendor.server.command;
 
 import com.echothree.control.user.vendor.common.form.CreateVendorItemForm;
+import com.echothree.control.user.vendor.common.result.VendorResultFactory;
 import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.item.server.control.ItemControl;
@@ -89,6 +90,8 @@ public class CreateVendorItemCommand
     
     @Override
     protected BaseResult execute() {
+        var result = VendorResultFactory.getCreateVendorItemResult();
+        VendorItem vendorItem = null;
         var vendorControl = Session.getModelController(VendorControl.class);
         String vendorName = form.getVendorName();
         Vendor vendor = vendorControl.getVendorByName(vendorName);
@@ -129,7 +132,8 @@ public class CreateVendorItemCommand
                 
                 if(!hasExecutionErrors()) {
                     Party vendorParty = vendor.getParty();
-                    VendorItem vendorItem = vendorControl.getVendorItemByVendorPartyAndVendorItemName(vendorParty, vendorItemName);
+                    
+                    vendorItem = vendorControl.getVendorItemByVendorPartyAndVendorItemName(vendorParty, vendorItemName);
                     
                     if(vendorItem == null) {
                         String cancellationPolicyName = form.getCancellationPolicyName();
@@ -182,8 +186,13 @@ public class CreateVendorItemCommand
         } else {
             addExecutionError(ExecutionErrors.UnknownVendorName.name(), vendorName);
         }
-        
-        return null;
+
+        if(vendorItem != null) {
+            result.setEntityRef(vendorItem.getPrimaryKey().getEntityRef());
+            result.setVendorItemName(vendorItem.getLastDetail().getVendorItemName());
+        }
+
+        return result;
     }
     
 }

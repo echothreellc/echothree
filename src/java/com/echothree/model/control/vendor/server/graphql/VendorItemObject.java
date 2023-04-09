@@ -28,7 +28,9 @@ import com.echothree.model.control.item.server.graphql.ItemObject;
 import com.echothree.model.control.item.server.graphql.ItemSecurityUtils;
 import com.echothree.model.control.returnpolicy.server.graphql.ReturnPolicyObject;
 import com.echothree.model.control.returnpolicy.server.graphql.ReturnPolicySecurityUtils;
+import com.echothree.model.control.vendor.common.workflow.VendorItemStatusConstants;
 import com.echothree.model.control.vendor.server.control.VendorControl;
+import com.echothree.model.control.workflow.server.graphql.WorkflowEntityStatusObject;
 import com.echothree.model.data.vendor.common.VendorItemCostConstants;
 import com.echothree.model.data.vendor.server.entity.VendorItem;
 import com.echothree.model.data.vendor.server.entity.VendorItemDetail;
@@ -115,6 +117,12 @@ public class VendorItemObject
 
         return defaultReturnPolicy == null ? null : ReturnPolicySecurityUtils.getInstance().getHasReturnPolicyAccess(env) ?
                 new ReturnPolicyObject(defaultReturnPolicy) : null;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("vendor item status")
+    public WorkflowEntityStatusObject getVendorItemStatus(final DataFetchingEnvironment env) {
+        return getWorkflowEntityStatusObject(env, VendorItemStatusConstants.Workflow_VENDOR_ITEM_STATUS);
     }
 
     @GraphQLField

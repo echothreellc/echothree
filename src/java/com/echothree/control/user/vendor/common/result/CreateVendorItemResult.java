@@ -14,16 +14,15 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.vendor.common.form;
+package com.echothree.control.user.vendor.common.result;
 
-import com.echothree.control.user.vendor.common.edit.VendorItemEdit;
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
 import com.echothree.control.user.vendor.common.spec.VendorItemSpec;
-import com.echothree.control.user.vendor.common.spec.VendorItemUniversalSpec;
-import com.echothree.util.common.form.BaseEditForm;
+import com.echothree.util.common.command.BaseResult;
 
-public interface EditVendorItemForm
-        extends BaseEditForm<VendorItemUniversalSpec, VendorItemEdit> {
+public interface CreateVendorItemResult
+        extends VendorItemSpec, EntityRefSpec, BaseResult {
     
-    // Nothing additional beyond BaseEditForm
+    // Nothing additional beyond VendorItemSpec, EntityRefSpec, BaseResult
     
 }

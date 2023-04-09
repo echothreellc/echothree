@@ -1002,7 +1002,7 @@ public class VendorControl
         return getVendorItemByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
     
-    private VendorItem getVendorItemByVendorPartyAndVendorItemName(Party vendorParty, String vendorItemName, EntityPermission entityPermission) {
+    public VendorItem getVendorItemByVendorPartyAndVendorItemName(Party vendorParty, String vendorItemName, EntityPermission entityPermission) {
         VendorItem vendorItem;
         
         try {
