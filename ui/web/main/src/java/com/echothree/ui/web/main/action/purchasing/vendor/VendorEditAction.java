@@ -51,7 +51,7 @@ public class VendorEditAction
     @Override
     protected VendorSpec getSpec(HttpServletRequest request, VendorEditActionForm actionForm)
             throws NamingException {
-        var spec = VendorUtil.getHome().getVendorSpec();
+        var spec = VendorUtil.getHome().getVendorUniversalSpec();
 
         spec.setVendorName(findParameter(request, ParameterConstants.ORIGINAL_VENDOR_NAME, actionForm.getOriginalVendorName()));
 

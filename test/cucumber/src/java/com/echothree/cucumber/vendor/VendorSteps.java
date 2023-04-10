@@ -37,7 +37,7 @@ public class VendorSteps
                     var persona = CurrentPersona.persona;
 
                     assertThat(persona.createVendorForm).isNull();
-                    assertThat(persona.vendorSpec).isNull();
+                    assertThat(persona.vendorUniversalSpec).isNull();
 
                     persona.createVendorForm = PartyUtil.getHome().getCreateVendorForm();
                 });
@@ -81,13 +81,13 @@ public class VendorSteps
                     assertThat(persona.createVendorForm).isNull();
                     assertThat(persona.entityListItemUniversalSpec).isNull();
 
-                    persona.vendorSpec = VendorUtil.getHome().getVendorSpec();
+                    persona.vendorUniversalSpec = VendorUtil.getHome().getVendorUniversalSpec();
                 });
 
         When("^the user begins editing the vendor$",
                 () -> {
                     var persona = CurrentPersona.persona;
-                    var spec = persona.vendorSpec;
+                    var spec = persona.vendorUniversalSpec;
 
                     assertThat(spec).isNotNull();
 
@@ -110,7 +110,7 @@ public class VendorSteps
         When("^the user finishes editing the vendor$",
                 () -> {
                     var persona = CurrentPersona.persona;
-                    var spec = persona.vendorSpec;
+                    var spec = persona.vendorUniversalSpec;
                     var edit = persona.vendorEdit;
 
                     assertThat(edit).isNotNull();
@@ -124,7 +124,7 @@ public class VendorSteps
                     var commandResult = VendorUtil.getHome().editVendor(persona.userVisitPK, commandForm);
                     LastCommandResult.commandResult = commandResult;
 
-                    persona.vendorSpec = null;
+                    persona.vendorUniversalSpec = null;
                     persona.vendorEdit = null;
                 });
 
@@ -132,7 +132,7 @@ public class VendorSteps
                 (String vendorName) -> {
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;
-                    var vendorSpec = persona.vendorSpec;
+                    var vendorSpec = persona.vendorUniversalSpec;
 
                     assertThat(createVendorForm != null || vendorSpec != null).isTrue();
 
@@ -147,7 +147,7 @@ public class VendorSteps
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createVendorForm = persona.createVendorForm;
-                    var vendorSpec = persona.vendorSpec;
+                    var vendorSpec = persona.vendorUniversalSpec;
 
                     assertThat(createVendorForm != null || vendorSpec != null).isTrue();
 

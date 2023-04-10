@@ -180,7 +180,7 @@ import com.echothree.control.user.vendor.common.form.DeleteVendorItemForm;
 import com.echothree.control.user.vendor.common.form.SetVendorItemStatusForm;
 import com.echothree.control.user.vendor.common.spec.VendorItemCostSpec;
 import com.echothree.control.user.vendor.common.spec.VendorItemUniversalSpec;
-import com.echothree.control.user.vendor.common.spec.VendorSpec;
+import com.echothree.control.user.vendor.common.spec.VendorUniversalSpec;
 import com.echothree.cucumber.authentication.UserVisits;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import javax.naming.NamingException;
@@ -464,7 +464,7 @@ public class BasePersona {
 
     // Vendor
     public CreateVendorForm createVendorForm;
-    public VendorSpec vendorSpec;
+    public VendorUniversalSpec vendorUniversalSpec;
     public VendorEdit vendorEdit;
 
     public CreateVendorItemForm createVendorItemForm;

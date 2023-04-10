@@ -103,6 +103,7 @@ import com.echothree.control.user.offer.common.result.EditUseTypeResult;
 import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.common.result.CreateCustomerResult;
 import com.echothree.control.user.party.common.result.CreateCustomerWithLoginResult;
+import com.echothree.control.user.party.common.result.CreateVendorResult;
 import com.echothree.control.user.payment.common.PaymentUtil;
 import com.echothree.control.user.payment.common.result.CreatePaymentMethodTypeResult;
 import com.echothree.control.user.payment.common.result.CreatePaymentProcessorActionTypeResult;
@@ -147,6 +148,7 @@ import com.echothree.control.user.vendor.common.result.CreateVendorTypeResult;
 import com.echothree.control.user.vendor.common.result.EditItemPurchasingCategoryResult;
 import com.echothree.control.user.vendor.common.result.EditVendorItemCostResult;
 import com.echothree.control.user.vendor.common.result.EditVendorItemResult;
+import com.echothree.control.user.vendor.common.result.EditVendorResult;
 import com.echothree.control.user.vendor.common.result.EditVendorTypeResult;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.search.server.graphql.SearchCustomersResultObject;
@@ -6529,6 +6531,232 @@ public class GraphQlMutations
             commandForm.setUlid(id);
 
             mutationResultObject.setCommandResult(VendorUtil.getHome().deleteVendorType(getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static MutationResultWithIdObject createVendor(final DataFetchingEnvironment env,
+            @GraphQLName("vendorName") final String vendorName,
+            @GraphQLName("vendorTypeName") final String vendorTypeName,
+            @GraphQLName("cancellationPolicyName") final String cancellationPolicyName,
+            @GraphQLName("returnPolicyName") final String returnPolicyName,
+            @GraphQLName("apGlAccountName") final String apGlAccountName,
+            @GraphQLName("minimumPurchaseOrderLines") final String minimumPurchaseOrderLines,
+            @GraphQLName("maximumPurchaseOrderLines") final String maximumPurchaseOrderLines,
+            @GraphQLName("minimumPurchaseOrderAmount") final String minimumPurchaseOrderAmount,
+            @GraphQLName("maximumPurchaseOrderAmount") final String maximumPurchaseOrderAmount,
+            @GraphQLName("useItemPurchasingCategories") @GraphQLNonNull final String useItemPurchasingCategories,
+            @GraphQLName("defaultItemAliasTypeName") final String defaultItemAliasTypeName,
+            @GraphQLName("personalTitleId") final String personalTitleId,
+            @GraphQLName("firstName") final String firstName,
+            @GraphQLName("middleName") final String middleName,
+            @GraphQLName("lastName") final String lastName,
+            @GraphQLName("nameSuffixId") final String nameSuffixId,
+            @GraphQLName("name") final String name,
+            @GraphQLName("preferredLanguageIsoName") final String preferredLanguageIsoName,
+            @GraphQLName("preferredCurrencyIsoName") final String preferredCurrencyIsoName,
+            @GraphQLName("preferredJavaTimeZoneName") final String preferredJavaTimeZoneName,
+            @GraphQLName("preferredDateTimeFormatName") final String preferredDateTimeFormatName,
+            @GraphQLName("emailAddress") final String emailAddress,
+            @GraphQLName("allowSolicitation") @GraphQLNonNull final String allowSolicitation) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = PartyUtil.getHome().getCreateVendorForm();
+
+            commandForm.setVendorName(vendorName);
+            commandForm.setVendorTypeName(vendorTypeName);
+            commandForm.setCancellationPolicyName(cancellationPolicyName);
+            commandForm.setReturnPolicyName(returnPolicyName);
+            commandForm.setApGlAccountName(apGlAccountName);
+            commandForm.setMinimumPurchaseOrderLines(minimumPurchaseOrderLines);
+            commandForm.setMaximumPurchaseOrderLines(maximumPurchaseOrderLines);
+            commandForm.setMinimumPurchaseOrderAmount(minimumPurchaseOrderAmount);
+            commandForm.setMaximumPurchaseOrderLines(maximumPurchaseOrderAmount);
+            commandForm.setUseItemPurchasingCategories(useItemPurchasingCategories);
+            commandForm.setDefaultItemAliasTypeName(defaultItemAliasTypeName);
+            commandForm.setPersonalTitleId(personalTitleId);
+            commandForm.setFirstName(firstName);
+            commandForm.setMiddleName(middleName);
+            commandForm.setLastName(lastName);
+            commandForm.setNameSuffixId(nameSuffixId);
+            commandForm.setName(name);
+            commandForm.setPreferredLanguageIsoName(preferredLanguageIsoName);
+            commandForm.setPreferredCurrencyIsoName(preferredCurrencyIsoName);
+            commandForm.setPreferredJavaTimeZoneName(preferredJavaTimeZoneName);
+            commandForm.setPreferredDateTimeFormatName(preferredDateTimeFormatName);
+            commandForm.setEmailAddress(emailAddress);
+            commandForm.setAllowSolicitation(allowSolicitation);
+
+            var commandResult = PartyUtil.getHome().createVendor(getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateVendorResult)commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static MutationResultWithIdObject editVendor(final DataFetchingEnvironment env,
+            @GraphQLName("originalVendorName") final String originalVendorName,
+            @GraphQLName("partyName") final String partyName,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("vendorName") final String vendorName,
+            @GraphQLName("vendorTypeName") final String vendorTypeName,
+            @GraphQLName("minimumPurchaseOrderLines") final String minimumPurchaseOrderLines,
+            @GraphQLName("maximumPurchaseOrderLines") final String maximumPurchaseOrderLines,
+            @GraphQLName("minimumPurchaseOrderAmount") final String minimumPurchaseOrderAmount,
+            @GraphQLName("maximumPurchaseOrderAmount") final String maximumPurchaseOrderAmount,
+            @GraphQLName("useItemPurchasingCategories") final String useItemPurchasingCategories,
+            @GraphQLName("defaultItemAliasTypeName") final String defaultItemAliasTypeName,
+            @GraphQLName("cancellationPolicyName") final String cancellationPolicyName,
+            @GraphQLName("returnPolicyName") final String returnPolicyName,
+            @GraphQLName("apGlAccountName") final String apGlAccountName,
+            @GraphQLName("personalTitleId") final String personalTitleId,
+            @GraphQLName("firstName") final String firstName,
+            @GraphQLName("middleName") final String middleName,
+            @GraphQLName("lastName") final String lastName,
+            @GraphQLName("nameSuffixId") final String nameSuffixId,
+            @GraphQLName("name") final String name,
+            @GraphQLName("preferredLanguageIsoName") final String preferredLanguageIsoName,
+            @GraphQLName("preferredCurrencyIsoName") final String preferredCurrencyIsoName,
+            @GraphQLName("preferredJavaTimeZoneName") final String preferredJavaTimeZoneName,
+            @GraphQLName("preferredDateTimeFormatName") final String preferredDateTimeFormatName,
+            @GraphQLName("holdUntilComplete") final String holdUntilComplete,
+            @GraphQLName("allowBackorders") final String allowBackorders,
+            @GraphQLName("allowSubstitutions") final String allowSubstitutions,
+            @GraphQLName("allowCombiningShipments") final String allowCombiningShipments,
+            @GraphQLName("requireReference") final String requireReference,
+            @GraphQLName("allowReferenceDuplicates") final String allowReferenceDuplicates,
+            @GraphQLName("referenceValidationPattern") final String referenceValidationPattern
+    ) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var spec = VendorUtil.getHome().getVendorUniversalSpec();
+
+            spec.setVendorName(originalVendorName);
+            spec.setPartyName(partyName);
+            spec.setUlid(id);
+
+            var commandForm = VendorUtil.getHome().getEditVendorForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = VendorUtil.getHome().editVendor(getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditVendorResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                mutationResultObject.setEntityInstance(result.getVendor().getEntityInstance());
+
+                if(arguments.containsKey("vendorName"))
+                    edit.setVendorName(vendorName);
+                if(arguments.containsKey("vendorTypeName"))
+                    edit.setVendorTypeName(vendorTypeName);
+                if(arguments.containsKey("minimumPurchaseOrderLines"))
+                    edit.setMinimumPurchaseOrderLines(minimumPurchaseOrderLines);
+                if(arguments.containsKey("maximumPurchaseOrderLines"))
+                    edit.setMaximumPurchaseOrderLines(maximumPurchaseOrderLines);
+                if(arguments.containsKey("minimumPurchaseOrderAmount"))
+                    edit.setMinimumPurchaseOrderAmount(minimumPurchaseOrderAmount);
+                if(arguments.containsKey("maximumPurchaseOrderAmount"))
+                    edit.setMaximumPurchaseOrderAmount(maximumPurchaseOrderAmount);
+                if(arguments.containsKey("useItemPurchasingCategories"))
+                    edit.setUseItemPurchasingCategories(useItemPurchasingCategories);
+                if(arguments.containsKey("defaultItemAliasTypeName"))
+                    edit.setDefaultItemAliasTypeName(defaultItemAliasTypeName);
+                if(arguments.containsKey("cancellationPolicyName"))
+                    edit.setCancellationPolicyName(cancellationPolicyName);
+                if(arguments.containsKey("returnPolicyName"))
+                    edit.setReturnPolicyName(returnPolicyName);
+                if(arguments.containsKey("apGlAccountName"))
+                    edit.setApGlAccountName(apGlAccountName);
+                if(arguments.containsKey("personalTitleId"))
+                    edit.setPersonalTitleId(personalTitleId);
+                if(arguments.containsKey("firstName"))
+                    edit.setFirstName(firstName);
+                if(arguments.containsKey("middleName"))
+                    edit.setMiddleName(middleName);
+                if(arguments.containsKey("lastName"))
+                    edit.setLastName(lastName);
+                if(arguments.containsKey("nameSuffixId"))
+                    edit.setNameSuffixId(nameSuffixId);
+                if(arguments.containsKey("name"))
+                    edit.setName(name);
+                if(arguments.containsKey("preferredLanguageIsoName"))
+                    edit.setPreferredLanguageIsoName(preferredLanguageIsoName);
+                if(arguments.containsKey("preferredCurrencyIsoName"))
+                    edit.setPreferredCurrencyIsoName(preferredCurrencyIsoName);
+                if(arguments.containsKey("preferredJavaTimeZoneName"))
+                    edit.setPreferredJavaTimeZoneName(preferredJavaTimeZoneName);
+                if(arguments.containsKey("preferredDateTimeFormatName"))
+                    edit.setPreferredDateTimeFormatName(preferredDateTimeFormatName);
+                if(arguments.containsKey("holdUntilComplete"))
+                    edit.setHoldUntilComplete(holdUntilComplete);
+                if(arguments.containsKey("allowBackorders"))
+                    edit.setAllowBackorders(allowBackorders);
+                if(arguments.containsKey("allowSubstitutions"))
+                    edit.setAllowSubstitutions(allowSubstitutions);
+                if(arguments.containsKey("allowCombiningShipments"))
+                    edit.setAllowCombiningShipments(allowCombiningShipments);
+                if(arguments.containsKey("requireReference"))
+                    edit.setRequireReference(requireReference);
+                if(arguments.containsKey("allowReferenceDuplicates"))
+                    edit.setAllowReferenceDuplicates(allowReferenceDuplicates);
+                if(arguments.containsKey("referenceValidationPattern"))
+                    edit.setReferenceValidationPattern(referenceValidationPattern);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = VendorUtil.getHome().editVendor(getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    @GraphQLName("setVendorStatus")
+    public static MutationResultObject setVendorStatus(final DataFetchingEnvironment env,
+            @GraphQLName("vendorName") final String vendorName,
+            @GraphQLName("partyName") final String partyName,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("vendorStatusChoice") @GraphQLNonNull final String vendorStatusChoice) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = PartyUtil.getHome().getSetVendorStatusForm();
+
+            commandForm.setVendorName(vendorName);
+            commandForm.setPartyName(partyName);
+            commandForm.setUlid(id);
+            commandForm.setVendorStatusChoice(vendorStatusChoice);
+
+            mutationResultObject.setCommandResult(PartyUtil.getHome().setVendorStatus(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
