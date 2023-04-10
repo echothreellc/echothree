@@ -21,7 +21,7 @@ import com.echothree.control.user.vendor.common.edit.VendorEditFactory;
 import com.echothree.control.user.vendor.common.form.EditVendorForm;
 import com.echothree.control.user.vendor.common.result.EditVendorResult;
 import com.echothree.control.user.vendor.common.result.VendorResultFactory;
-import com.echothree.control.user.vendor.common.spec.VendorSpec;
+import com.echothree.control.user.vendor.common.spec.VendorUniversalSpec;
 import com.echothree.model.control.accounting.common.AccountingConstants;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
@@ -34,6 +34,7 @@ import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyContr
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.vendor.server.control.VendorControl;
+import com.echothree.model.control.vendor.server.logic.VendorLogic;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
@@ -66,7 +67,7 @@ import java.util.List;
 import org.apache.commons.codec.language.Soundex;
 
 public class EditVendorCommand
-        extends BaseAbstractEditCommand<VendorSpec, VendorEdit, EditVendorResult, Party, Party> {
+        extends BaseAbstractEditCommand<VendorUniversalSpec, VendorEdit, EditVendorResult, Party, Party> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
@@ -81,8 +82,13 @@ public class EditVendorCommand
                 )));
         
         SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("VendorName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+                new FieldDefinition("VendorName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
+        ));
         
         EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("VendorName", FieldType.ENTITY_NAME, true, null, null),
@@ -151,18 +157,15 @@ public class EditVendorCommand
     public Party getEntity(EditVendorResult result) {
         var vendorControl = Session.getModelController(VendorControl.class);
         Vendor vendor;
-        var vendorName = spec.getVendorName();
 
         if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            vendor = vendorControl.getVendorByName(vendorName);
+            vendor = VendorLogic.getInstance().getVendorByUniversalSpec(this, spec);
         } else { // EditMode.UPDATE
-            vendor = vendorControl.getVendorByNameForUpdate(vendorName);
+            vendor = VendorLogic.getInstance().getVendorByUniversalSpecForUpdate(this, spec);
         }
 
-        if(vendor != null) {
+        if(!hasExecutionErrors()) {
             result.setVendor(vendorControl.getVendorTransfer(getUserVisit(), vendor));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownVendorName.name(), vendorName);
         }
 
         return vendor.getParty();

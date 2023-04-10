@@ -709,7 +709,7 @@ public class VendorControl
         return getVendors(EntityPermission.READ_WRITE);
     }
 
-    private Vendor getVendor(Party party, EntityPermission entityPermission) {
+    public Vendor getVendor(Party party, EntityPermission entityPermission) {
         Vendor vendor;
         
         try {
@@ -747,7 +747,7 @@ public class VendorControl
         return getVendor(party, EntityPermission.READ_WRITE);
     }
     
-    private Vendor getVendorByName(String vendorName, EntityPermission entityPermission) {
+    public Vendor getVendorByName(String vendorName, EntityPermission entityPermission) {
         Vendor vendor;
         
         try {

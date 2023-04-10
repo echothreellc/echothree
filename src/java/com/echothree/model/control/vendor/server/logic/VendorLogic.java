@@ -17,6 +17,8 @@
 package com.echothree.model.control.vendor.server.logic;
 
 import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
+import com.echothree.control.user.vendor.common.spec.VendorItemUniversalSpec;
+import com.echothree.control.user.vendor.common.spec.VendorUniversalSpec;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
@@ -48,6 +50,7 @@ import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.selector.server.entity.Selector;
 import com.echothree.model.data.vendor.server.entity.Vendor;
+import com.echothree.model.data.vendor.server.entity.VendorItem;
 import com.echothree.model.data.vendor.server.entity.VendorType;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
@@ -55,6 +58,7 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.util.Map;
 import java.util.Set;
@@ -111,7 +115,7 @@ public class VendorLogic
     }
 
     public Vendor getVendorByName(final ExecutionErrorAccumulator eea, final String vendorName, final String partyName,
-            final UniversalEntitySpec universalEntitySpec) {
+            final UniversalEntitySpec universalEntitySpec, final EntityPermission entityPermission) {
         var parameterCount = (vendorName == null ? 0 : 1) + (partyName == null ? 0 : 1) +
                 EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalEntitySpec);
         Vendor vendor = null;
@@ -121,7 +125,7 @@ public class VendorLogic
             var partyControl = Session.getModelController(PartyControl.class);
 
             if(vendorName != null) {
-                vendor = vendorControl.getVendorByName(vendorName);
+                vendor = vendorControl.getVendorByName(vendorName, entityPermission);
 
                 if(vendor == null) {
                     handleExecutionError(UnknownVendorNameException.class, eea, ExecutionErrors.UnknownVendorName.name(), vendorName);
@@ -132,7 +136,7 @@ public class VendorLogic
                 if(party != null) {
                     PartyLogic.getInstance().checkPartyType(eea, party, PartyTypes.VENDOR.name());
 
-                    vendor = vendorControl.getVendor(party);
+                    vendor = vendorControl.getVendor(party, entityPermission);
                 } else {
                     handleExecutionError(UnknownPartyNameException.class, eea, ExecutionErrors.UnknownPartyName.name(), partyName);
                 }
@@ -145,7 +149,7 @@ public class VendorLogic
 
                     PartyLogic.getInstance().checkPartyType(eea, party, PartyTypes.VENDOR.name());
 
-                    vendor = vendorControl.getVendor(party);
+                    vendor = vendorControl.getVendor(party, entityPermission);
                 }
             }
         } else {
@@ -153,6 +157,24 @@ public class VendorLogic
         }
 
         return vendor;
+    }
+
+    public Vendor getVendorByName(final ExecutionErrorAccumulator eea, final String vendorName, final String partyName,
+            final UniversalEntitySpec universalEntitySpec) {
+        return getVendorByName(eea, vendorName, partyName, universalEntitySpec, EntityPermission.READ_ONLY);
+    }
+
+    public Vendor getVendorByNameForUpdate(final ExecutionErrorAccumulator eea, final String vendorName, final String partyName,
+            final UniversalEntitySpec universalEntitySpec) {
+        return getVendorByName(eea, vendorName, partyName, universalEntitySpec, EntityPermission.READ_WRITE);
+    }
+
+    public Vendor getVendorByUniversalSpec(final ExecutionErrorAccumulator eea, final VendorUniversalSpec universalSpec) {
+        return getVendorByName(eea, universalSpec.getVendorName(), universalSpec.getPartyName(), universalSpec);
+    }
+
+    public Vendor getVendorByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea, final VendorUniversalSpec universalSpec) {
+        return getVendorByNameForUpdate(eea, universalSpec.getVendorName(), universalSpec.getPartyName(), universalSpec);
     }
 
     public void setVendorStatus(final Session session, ExecutionErrorAccumulator eea, Party party, String vendorStatusChoice, PartyPK modifiedBy) {
