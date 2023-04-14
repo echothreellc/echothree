@@ -20,7 +20,6 @@ import com.echothree.control.user.wishlist.common.WishlistUtil;
 import com.echothree.control.user.wishlist.common.edit.WishlistTypeEdit;
 import com.echothree.control.user.wishlist.common.form.EditWishlistTypeForm;
 import com.echothree.control.user.wishlist.common.result.EditWishlistTypeResult;
-import com.echothree.control.user.wishlist.common.spec.WishlistTypeSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -64,7 +63,7 @@ public class EditAction
             if(forwardKey == null) {
                 EditActionForm actionForm = (EditActionForm)form;
                 EditWishlistTypeForm commandForm = WishlistUtil.getHome().getEditWishlistTypeForm();
-                WishlistTypeSpec spec = WishlistUtil.getHome().getWishlistTypeSpec();
+                var spec = WishlistUtil.getHome().getWishlistTypeUniversalSpec();
                 
                 if(originalWishlistTypeName == null)
                     originalWishlistTypeName = actionForm.getOriginalWishlistTypeName();

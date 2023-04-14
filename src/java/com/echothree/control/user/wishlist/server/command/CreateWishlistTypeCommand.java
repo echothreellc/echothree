@@ -21,19 +21,15 @@ import com.echothree.control.user.wishlist.common.result.WishlistResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.wishlist.server.control.WishlistControl;
-import com.echothree.model.data.party.common.pk.PartyPK;
+import com.echothree.model.control.wishlist.server.logic.WishlistTypeLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.wishlist.server.entity.WishlistType;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -68,24 +64,14 @@ public class CreateWishlistTypeCommand
     @Override
     protected BaseResult execute() {
         var result = WishlistResultFactory.getCreateWishlistTypeResult();
-        var wishlistControl = Session.getModelController(WishlistControl.class);
         var wishlistTypeName = form.getWishlistTypeName();
-        var wishlistType = wishlistControl.getWishlistTypeByName(wishlistTypeName);
-        
-        if(wishlistType == null) {
-            var createdBy = getPartyPK();
-            var isDefault = Boolean.valueOf(form.getIsDefault());
-            var sortOrder = Integer.valueOf(form.getSortOrder());
-            var description = form.getDescription();
-            
-            wishlistType = wishlistControl.createWishlistType(wishlistTypeName, isDefault, sortOrder, createdBy);
-            
-            if(description != null) {
-                wishlistControl.createWishlistTypeDescription(wishlistType, getPreferredLanguage(), description, createdBy);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.DuplicateWishlistTypeName.name(), wishlistTypeName);
-        }
+        var isDefault = Boolean.valueOf(form.getIsDefault());
+        var sortOrder = Integer.valueOf(form.getSortOrder());
+        var description = form.getDescription();
+        var createdBy = getPartyPK();
+
+        var wishlistType = WishlistTypeLogic.getInstance().createWishlistType(this, wishlistTypeName, isDefault,
+                sortOrder, getPreferredLanguage(),  description, createdBy);
 
         if(wishlistType != null) {
             result.setEntityRef(wishlistType.getPrimaryKey().getEntityRef());

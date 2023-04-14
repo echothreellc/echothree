@@ -21,12 +21,11 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
+import com.echothree.model.control.wishlist.server.logic.WishlistTypeLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.wishlist.server.entity.WishlistType;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -51,7 +50,11 @@ public class DeleteWishlistTypeCommand
         )));
 
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-            new FieldDefinition("WishlistTypeName", FieldType.ENTITY_NAME, true, null, null)
+            new FieldDefinition("WishlistTypeName", FieldType.ENTITY_NAME, false, null, null),
+            new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+            new FieldDefinition("Key", FieldType.KEY, false, null, null),
+            new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+            new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
         ));
     }
     
@@ -62,16 +65,12 @@ public class DeleteWishlistTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var wishlistControl = Session.getModelController(WishlistControl.class);
-        String wishlistTypeName = form.getWishlistTypeName();
-        WishlistType wishlistType = wishlistControl.getWishlistTypeByNameForUpdate(wishlistTypeName);
-        
-        if(wishlistType != null) {
-            wishlistControl.deleteWishlistType(wishlistType, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownWishlistTypeName.name(), wishlistTypeName);
+        var wishlistType = WishlistTypeLogic.getInstance().getWishlistTypeByUniversalSpecForUpdate(this, form, false);
+
+        if(!hasExecutionErrors()) {
+            WishlistTypeLogic.getInstance().deleteWishlistType(this, wishlistType, getPartyPK());
         }
-        
+
         return null;
     }
     
