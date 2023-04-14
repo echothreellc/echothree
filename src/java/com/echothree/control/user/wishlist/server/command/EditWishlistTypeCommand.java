@@ -21,22 +21,23 @@ import com.echothree.control.user.wishlist.common.edit.WishlistTypeEdit;
 import com.echothree.control.user.wishlist.common.form.EditWishlistTypeForm;
 import com.echothree.control.user.wishlist.common.result.EditWishlistTypeResult;
 import com.echothree.control.user.wishlist.common.result.WishlistResultFactory;
-import com.echothree.control.user.wishlist.common.spec.WishlistTypeSpec;
+import com.echothree.control.user.wishlist.common.spec.WishlistTypeUniversalSpec;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
+import com.echothree.model.control.wishlist.server.logic.WishlistTypeLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.wishlist.server.entity.WishlistType;
 import com.echothree.model.data.wishlist.server.entity.WishlistTypeDescription;
 import com.echothree.model.data.wishlist.server.entity.WishlistTypeDetail;
 import com.echothree.model.data.wishlist.server.value.WishlistTypeDescriptionValue;
 import com.echothree.model.data.wishlist.server.value.WishlistTypeDetailValue;
+import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -47,7 +48,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class EditWishlistTypeCommand
-        extends BaseEditCommand<WishlistTypeSpec, WishlistTypeEdit> {
+        extends BaseEditCommand<WishlistTypeUniversalSpec, WishlistTypeEdit> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
@@ -62,7 +63,11 @@ public class EditWishlistTypeCommand
         )));
 
         SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("WishlistTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("WishlistTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
                 ));
         
         EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
@@ -85,9 +90,9 @@ public class EditWishlistTypeCommand
         
         if(editMode.equals(EditMode.LOCK)) {
             String wishlistTypeName = spec.getWishlistTypeName();
-            WishlistType wishlistType = wishlistControl.getWishlistTypeByName(wishlistTypeName);
+            var wishlistType = WishlistTypeLogic.getInstance().getWishlistTypeByUniversalSpec(this, spec, false);
             
-            if(wishlistType != null) {
+            if(!hasExecutionErrors()) {
                 result.setWishlistType(wishlistControl.getWishlistTypeTransfer(getUserVisit(), wishlistType));
                 
                 if(lockEntity(wishlistType)) {
@@ -112,9 +117,9 @@ public class EditWishlistTypeCommand
             }
         } else if(editMode.equals(EditMode.UPDATE)) {
             String wishlistTypeName = spec.getWishlistTypeName();
-            WishlistType wishlistType = wishlistControl.getWishlistTypeByNameForUpdate(wishlistTypeName);
+            var wishlistType = WishlistTypeLogic.getInstance().getWishlistTypeByUniversalSpecForUpdate(this, spec, false);
             
-            if(wishlistType != null) {
+            if(!hasExecutionErrors()) {
                 wishlistTypeName = edit.getWishlistTypeName();
                 WishlistType duplicateWishlistType = wishlistControl.getWishlistTypeByName(wishlistTypeName);
                 
@@ -130,7 +135,7 @@ public class EditWishlistTypeCommand
                             wishlistTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
                             wishlistTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
                             
-                            wishlistControl.updateWishlistTypeFromValue(wishlistTypeDetailValue, partyPK);
+                            WishlistTypeLogic.getInstance().updateWishlistTypeFromValue(wishlistTypeDetailValue, partyPK);
                             
                             if(wishlistTypeDescription == null && description != null) {
                                 wishlistControl.createWishlistTypeDescription(wishlistType, getPreferredLanguage(), description, partyPK);

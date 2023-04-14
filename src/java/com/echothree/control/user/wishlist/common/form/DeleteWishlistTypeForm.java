@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.wishlist.common.form;
 
-import com.echothree.control.user.wishlist.common.spec.WishlistTypeSpec;
+import com.echothree.control.user.wishlist.common.spec.WishlistTypeUniversalSpec;
 
 public interface DeleteWishlistTypeForm
-        extends WishlistTypeSpec {
+        extends WishlistTypeUniversalSpec {
     
-    // Nothing additional beyond WishlistTypeSpec
+    // Nothing additional beyond WishlistTypeUniversalSpec
     
 }

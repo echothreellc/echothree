@@ -14,15 +14,15 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.wishlist.common.form;
+package com.echothree.control.user.wishlist.common.result;
 
-import com.echothree.control.user.wishlist.common.edit.WishlistTypeEdit;
-import com.echothree.control.user.wishlist.common.spec.WishlistTypeUniversalSpec;
-import com.echothree.util.common.form.BaseEditForm;
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
+import com.echothree.control.user.wishlist.common.spec.WishlistTypeSpec;
+import com.echothree.util.common.command.BaseResult;
 
-public interface EditWishlistTypeForm
-        extends BaseEditForm<WishlistTypeUniversalSpec, WishlistTypeEdit> {
+public interface CreateWishlistTypeResult
+        extends WishlistTypeSpec, EntityRefSpec, BaseResult {
     
-    // Nothing additional beyond BaseEditForm
+    // Nothing additional beyond WishlistTypeSpec, EntityRefSpec, BaseResult
     
 }

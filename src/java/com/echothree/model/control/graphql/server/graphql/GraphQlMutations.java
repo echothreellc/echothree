@@ -150,6 +150,9 @@ import com.echothree.control.user.vendor.common.result.EditVendorItemCostResult;
 import com.echothree.control.user.vendor.common.result.EditVendorItemResult;
 import com.echothree.control.user.vendor.common.result.EditVendorResult;
 import com.echothree.control.user.vendor.common.result.EditVendorTypeResult;
+import com.echothree.control.user.wishlist.common.WishlistUtil;
+import com.echothree.control.user.wishlist.common.result.CreateWishlistTypeResult;
+import com.echothree.control.user.wishlist.common.result.EditWishlistTypeResult;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.search.server.graphql.SearchCustomersResultObject;
 import com.echothree.model.control.search.server.graphql.SearchEmployeesResultObject;
@@ -8407,7 +8410,115 @@ public class GraphQlMutations
 
         return mutationResultObject;
     }
-    
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static MutationResultWithIdObject createWishlistType(final DataFetchingEnvironment env,
+            @GraphQLName("wishlistTypeName") @GraphQLNonNull final String wishlistTypeName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = WishlistUtil.getHome().getCreateWishlistTypeForm();
+
+            commandForm.setWishlistTypeName(wishlistTypeName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            var commandResult = WishlistUtil.getHome().createWishlistType(getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateWishlistTypeResult)commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static MutationResultWithIdObject editWishlistType(final DataFetchingEnvironment env,
+            @GraphQLName("originalWishlistTypeName") final String originalWishlistTypeName,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("wishlistTypeName") final String wishlistTypeName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var spec = WishlistUtil.getHome().getWishlistTypeUniversalSpec();
+
+            spec.setWishlistTypeName(originalWishlistTypeName);
+            spec.setUlid(id);
+
+            var commandForm = WishlistUtil.getHome().getEditWishlistTypeForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = WishlistUtil.getHome().editWishlistType(getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditWishlistTypeResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                mutationResultObject.setEntityInstance(result.getWishlistType().getEntityInstance());
+
+                if(arguments.containsKey("wishlistTypeName"))
+                    edit.setWishlistTypeName(wishlistTypeName);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = WishlistUtil.getHome().editWishlistType(getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static MutationResultObject deleteWishlistType(final DataFetchingEnvironment env,
+            @GraphQLName("wishlistTypeName") final String wishlistTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = WishlistUtil.getHome().getDeleteWishlistTypeForm();
+
+            commandForm.setWishlistTypeName(wishlistTypeName);
+            commandForm.setUlid(id);
+
+            mutationResultObject.setCommandResult(WishlistUtil.getHome().deleteWishlistType(getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
     @GraphQLField
     @GraphQLRelayMutation
     public static MutationResultObject unlockEntity(final DataFetchingEnvironment env,
