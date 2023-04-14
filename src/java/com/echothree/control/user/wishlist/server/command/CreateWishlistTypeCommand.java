@@ -17,6 +17,7 @@
 package com.echothree.control.user.wishlist.server.command;
 
 import com.echothree.control.user.wishlist.common.form.CreateWishlistTypeForm;
+import com.echothree.control.user.wishlist.common.result.WishlistResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -24,10 +25,10 @@ import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.wishlist.server.entity.WishlistType;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -66,12 +67,13 @@ public class CreateWishlistTypeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = WishlistResultFactory.getCreateWishlistTypeResult();
         var wishlistControl = Session.getModelController(WishlistControl.class);
-        String wishlistTypeName = form.getWishlistTypeName();
-        WishlistType wishlistType = wishlistControl.getWishlistTypeByName(wishlistTypeName);
+        var wishlistTypeName = form.getWishlistTypeName();
+        var wishlistType = wishlistControl.getWishlistTypeByName(wishlistTypeName);
         
         if(wishlistType == null) {
-            PartyPK createdBy = getPartyPK();
+            var createdBy = getPartyPK();
             var isDefault = Boolean.valueOf(form.getIsDefault());
             var sortOrder = Integer.valueOf(form.getSortOrder());
             var description = form.getDescription();
@@ -84,8 +86,13 @@ public class CreateWishlistTypeCommand
         } else {
             addExecutionError(ExecutionErrors.DuplicateWishlistTypeName.name(), wishlistTypeName);
         }
-        
-        return null;
+
+        if(wishlistType != null) {
+            result.setEntityRef(wishlistType.getPrimaryKey().getEntityRef());
+            result.setWishlistTypeName(wishlistType.getLastDetail().getWishlistTypeName());
+        }
+
+        return result;
     }
     
 }
