@@ -14,13 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.ui.web.main.action.wishlist.wishlisttypepriority;
+package com.echothree.ui.web.main.action.wishlist.wishlistpriority;
 
 import com.echothree.control.user.wishlist.common.WishlistUtil;
-import com.echothree.control.user.wishlist.common.edit.WishlistTypePriorityDescriptionEdit;
-import com.echothree.control.user.wishlist.common.form.EditWishlistTypePriorityDescriptionForm;
-import com.echothree.control.user.wishlist.common.result.EditWishlistTypePriorityDescriptionResult;
-import com.echothree.control.user.wishlist.common.spec.WishlistTypePriorityDescriptionSpec;
+import com.echothree.control.user.wishlist.common.edit.WishlistPriorityDescriptionEdit;
+import com.echothree.control.user.wishlist.common.form.EditWishlistPriorityDescriptionForm;
+import com.echothree.control.user.wishlist.common.result.EditWishlistPriorityDescriptionResult;
+import com.echothree.control.user.wishlist.common.spec.WishlistPriorityDescriptionSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -43,15 +43,15 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 @SproutAction(
-    path = "/Wishlist/WishlistTypePriority/DescriptionEdit",
+    path = "/Wishlist/WishlistPriority/DescriptionEdit",
     mappingClass = SecureActionMapping.class,
-    name = "WishlistTypePriorityDescriptionEdit",
+    name = "WishlistPriorityDescriptionEdit",
     properties = {
         @SproutProperty(property = "secure", value = "true")
     },
     forwards = {
-        @SproutForward(name = "Display", path = "/action/Wishlist/WishlistTypePriority/Description", redirect = true),
-        @SproutForward(name = "Form", path = "/wishlist/wishlisttypepriority/descriptionEdit.jsp")
+        @SproutForward(name = "Display", path = "/action/Wishlist/WishlistPriority/Description", redirect = true),
+        @SproutForward(name = "Form", path = "/wishlist/wishlistpriority/descriptionEdit.jsp")
     }
 )
 public class DescriptionEditAction
@@ -62,41 +62,41 @@ public class DescriptionEditAction
     throws Exception {
         String forwardKey = null;
         String wishlistTypeName = request.getParameter(ParameterConstants.WISHLIST_TYPE_NAME);
-        String wishlistTypePriorityName = request.getParameter(ParameterConstants.WISHLIST_TYPE_PRIORITY_NAME);
+        String wishlistPriorityName = request.getParameter(ParameterConstants.WISHLIST_TYPE_PRIORITY_NAME);
         String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
         
         try {
             if(forwardKey == null) {
                 DescriptionEditActionForm actionForm = (DescriptionEditActionForm)form;
-                EditWishlistTypePriorityDescriptionForm commandForm = WishlistUtil.getHome().getEditWishlistTypePriorityDescriptionForm();
-                WishlistTypePriorityDescriptionSpec spec = WishlistUtil.getHome().getWishlistTypePriorityDescriptionSpec();
+                EditWishlistPriorityDescriptionForm commandForm = WishlistUtil.getHome().getEditWishlistPriorityDescriptionForm();
+                WishlistPriorityDescriptionSpec spec = WishlistUtil.getHome().getWishlistPriorityDescriptionSpec();
                 
                 if(wishlistTypeName == null)
                     wishlistTypeName = actionForm.getWishlistTypeName();
-                if(wishlistTypePriorityName == null)
-                    wishlistTypePriorityName = actionForm.getWishlistTypePriorityName();
+                if(wishlistPriorityName == null)
+                    wishlistPriorityName = actionForm.getWishlistPriorityName();
                 if(languageIsoName == null)
                     languageIsoName = actionForm.getLanguageIsoName();
                 
                 commandForm.setSpec(spec);
                 spec.setWishlistTypeName(wishlistTypeName);
-                spec.setWishlistTypePriorityName(wishlistTypePriorityName);
+                spec.setWishlistPriorityName(wishlistPriorityName);
                 spec.setLanguageIsoName(languageIsoName);
                 
                 if(wasPost(request)) {
-                    WishlistTypePriorityDescriptionEdit edit = WishlistUtil.getHome().getWishlistTypePriorityDescriptionEdit();
+                    WishlistPriorityDescriptionEdit edit = WishlistUtil.getHome().getWishlistPriorityDescriptionEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     edit.setDescription(actionForm.getDescription());
                     
-                    CommandResult commandResult = WishlistUtil.getHome().editWishlistTypePriorityDescription(getUserVisitPK(request), commandForm);
+                    CommandResult commandResult = WishlistUtil.getHome().editWishlistPriorityDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         ExecutionResult executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditWishlistTypePriorityDescriptionResult result = (EditWishlistTypePriorityDescriptionResult)executionResult.getResult();
+                            EditWishlistPriorityDescriptionResult result = (EditWishlistPriorityDescriptionResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -110,16 +110,16 @@ public class DescriptionEditAction
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
                     
-                    CommandResult commandResult = WishlistUtil.getHome().editWishlistTypePriorityDescription(getUserVisitPK(request), commandForm);
+                    CommandResult commandResult = WishlistUtil.getHome().editWishlistPriorityDescription(getUserVisitPK(request), commandForm);
                     ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditWishlistTypePriorityDescriptionResult result = (EditWishlistTypePriorityDescriptionResult)executionResult.getResult();
+                    EditWishlistPriorityDescriptionResult result = (EditWishlistPriorityDescriptionResult)executionResult.getResult();
                     
                     if(result != null) {
-                        WishlistTypePriorityDescriptionEdit edit = result.getEdit();
+                        WishlistPriorityDescriptionEdit edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setWishlistTypeName(wishlistTypeName);
-                            actionForm.setWishlistTypePriorityName(wishlistTypePriorityName);
+                            actionForm.setWishlistPriorityName(wishlistPriorityName);
                             actionForm.setLanguageIsoName(languageIsoName);
                             actionForm.setDescription(edit.getDescription());
                         }
@@ -139,13 +139,13 @@ public class DescriptionEditAction
         CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.WISHLIST_TYPE_NAME, wishlistTypeName);
-            request.setAttribute(AttributeConstants.WISHLIST_TYPE_PRIORITY_NAME, wishlistTypePriorityName);
+            request.setAttribute(AttributeConstants.WISHLIST_TYPE_PRIORITY_NAME, wishlistPriorityName);
             request.setAttribute(AttributeConstants.LANGUAGE_ISO_NAME, languageIsoName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(2);
             
             parameters.put(ParameterConstants.WISHLIST_TYPE_NAME, wishlistTypeName);
-            parameters.put(ParameterConstants.WISHLIST_TYPE_PRIORITY_NAME, wishlistTypePriorityName);
+            parameters.put(ParameterConstants.WISHLIST_TYPE_PRIORITY_NAME, wishlistPriorityName);
             customActionForward.setParameters(parameters);
         }
         

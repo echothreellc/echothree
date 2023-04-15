@@ -18,9 +18,9 @@ package com.echothree.control.user.wishlist.common.spec;
 
 import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface WishlistTypePriorityUniversalSpec
-        extends WishlistTypePrioritySpec, UniversalEntitySpec {
+public interface WishlistPriorityUniversalSpec
+        extends WishlistPrioritySpec, UniversalEntitySpec {
     
-    // Nothing additional beyond WishlistTypePrioritySpec, UniversalEntitySpec
+    // Nothing additional beyond WishlistPrioritySpec, UniversalEntitySpec
     
 }

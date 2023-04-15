@@ -18,9 +18,9 @@ package com.echothree.control.user.wishlist.common.spec;
 
 import com.echothree.control.user.party.common.spec.LanguageSpec;
 
-public interface WishlistTypePriorityDescriptionSpec
-        extends WishlistTypePrioritySpec, LanguageSpec {
+public interface WishlistPriorityDescriptionSpec
+        extends WishlistPrioritySpec, LanguageSpec {
     
-    // Nothing additional beyond WishlistTypePrioritySpec, LanguageSpec
+    // Nothing additional beyond WishlistPrioritySpec, LanguageSpec
     
 }

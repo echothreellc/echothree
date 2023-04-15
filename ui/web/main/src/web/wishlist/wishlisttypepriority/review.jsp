@@ -20,7 +20,7 @@
 
 <html:html xhtml="true">
     <head>
-        <title>Review (<c:out value="${wishlistTypePriority.wishlistTypePriorityName}" />)</title>
+        <title>Review (<c:out value="${wishlistPriority.wishlistPriorityName}" />)</title>
         <html:base/>
         <%@ include file="../../include/environment.jsp" %>
     </head>
@@ -30,31 +30,31 @@
                 <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
                 <a href="<c:url value="/action/Wishlist/Main" />">Wishlists</a> &gt;&gt;
                 <a href="<c:url value="/action/Wishlist/WishlistType/Main" />">Types</a> &gt;&gt;
-                <c:url var="wishlistTypePrioritiesUrl" value="/action/Wishlist/WishlistTypePriority/Main">
-                    <c:param name="WishlistTypeName" value="${wishlistTypePriority.wishlistType.wishlistTypeName}" />
+                <c:url var="wishlistPrioritiesUrl" value="/action/Wishlist/WishlistPriority/Main">
+                    <c:param name="WishlistTypeName" value="${wishlistPriority.wishlistType.wishlistTypeName}" />
                 </c:url>
-                <a href="${wishlistTypePrioritiesUrl}">Priorities</a> &gt;&gt;
-                Review (<c:out value="${wishlistTypePriority.wishlistTypePriorityName}" />)
+                <a href="${wishlistPrioritiesUrl}">Priorities</a> &gt;&gt;
+                Review (<c:out value="${wishlistPriority.wishlistPriorityName}" />)
             </h2>
         </div>
         <div id="Content">
-            <p><font size="+2"><b><c:out value="${wishlistTypePriority.description}" /></b></font></p>
+            <p><font size="+2"><b><c:out value="${wishlistPriority.description}" /></b></font></p>
             <br />
-            Wishlist Type Priority Name: ${wishlistTypePriority.wishlistTypePriorityName}<br />
+            Wishlist Type Priority Name: ${wishlistPriority.wishlistPriorityName}<br />
             <br />
             <br />
             <br />
-            Created: <c:out value="${wishlistTypePriority.entityInstance.entityTime.createdTime}" /><br />
-            <c:if test='${wishlistTypePriority.entityInstance.entityTime.modifiedTime != null}'>
-                Modified: <c:out value="${wishlistTypePriority.entityInstance.entityTime.modifiedTime}" /><br />
+            Created: <c:out value="${wishlistPriority.entityInstance.entityTime.createdTime}" /><br />
+            <c:if test='${wishlistPriority.entityInstance.entityTime.modifiedTime != null}'>
+                Modified: <c:out value="${wishlistPriority.entityInstance.entityTime.modifiedTime}" /><br />
             </c:if>
-            <c:if test='${wishlistTypePriority.entityInstance.entityTime.deletedTime != null}'>
-                Deleted: <c:out value="${wishlistTypePriority.entityInstance.entityTime.deletedTime}" /><br />
+            <c:if test='${wishlistPriority.entityInstance.entityTime.deletedTime != null}'>
+                Deleted: <c:out value="${wishlistPriority.entityInstance.entityTime.deletedTime}" /><br />
             </c:if>
             <et:checkSecurityRoles securityRoles="Event.List" />
             <et:hasSecurityRole securityRole="Event.List">
                 <c:url var="eventsUrl" value="/action/Core/Event/Main">
-                    <c:param name="EntityRef" value="${wishlistTypePriority.entityInstance.entityRef}" />
+                    <c:param name="EntityRef" value="${wishlistPriority.entityInstance.entityRef}" />
                 </c:url>
                 <a href="${eventsUrl}">Events</a>
             </et:hasSecurityRole>

@@ -18,7 +18,7 @@ package com.echothree.control.user.wishlist.common.form;
 
 import com.echothree.control.user.wishlist.common.spec.WishlistTypeSpec;
 
-public interface GetWishlistTypePrioritiesForm
+public interface GetWishlistPrioritiesForm
         extends WishlistTypeSpec {
     
     // Nothing additional beyond WishlistTypeSpec

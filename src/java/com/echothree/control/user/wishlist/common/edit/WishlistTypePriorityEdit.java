@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.wishlist.common.edit;
 
-public interface WishlistTypePriorityEdit
-        extends WishlistTypePriorityDescriptionEdit {
+public interface WishlistPriorityEdit
+        extends WishlistPriorityDescriptionEdit {
     
-    String getWishlistTypePriorityName();
-    void setWishlistTypePriorityName(String unitOfMeasureKindName);
+    String getWishlistPriorityName();
+    void setWishlistPriorityName(String unitOfMeasureKindName);
     
     String getIsDefault();
     void setIsDefault(String isDefault);

@@ -19,11 +19,11 @@ package com.echothree.model.control.wishlist.common.choice;
 import com.echothree.view.common.BaseChoicesBean;
 import java.util.List;
 
-public class WishlistTypePriorityChoicesBean
+public class WishlistPriorityChoicesBean
         extends BaseChoicesBean {
     
-    /** Creates a new instance of WishlistTypePriorityChoicesBean */
-    public WishlistTypePriorityChoicesBean(List<String> labels, List<String> values, String defaultValue) {
+    /** Creates a new instance of WishlistPriorityChoicesBean */
+    public WishlistPriorityChoicesBean(List<String> labels, List<String> values, String defaultValue) {
         super(labels, values, defaultValue);
     }
     

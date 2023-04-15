@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.wishlist.common.form;
 
-import com.echothree.control.user.wishlist.common.edit.WishlistTypePriorityDescriptionEdit;
-import com.echothree.control.user.wishlist.common.spec.WishlistTypePriorityDescriptionSpec;
+import com.echothree.control.user.wishlist.common.edit.WishlistPriorityDescriptionEdit;
+import com.echothree.control.user.wishlist.common.spec.WishlistPriorityDescriptionSpec;
 import com.echothree.util.common.form.BaseEditForm;
 
-public interface EditWishlistTypePriorityDescriptionForm
-        extends BaseEditForm<WishlistTypePriorityDescriptionSpec, WishlistTypePriorityDescriptionEdit> {
+public interface EditWishlistPriorityDescriptionForm
+        extends BaseEditForm<WishlistPriorityDescriptionSpec, WishlistPriorityDescriptionEdit> {
     
     // Nothing additional beyond BaseEditForm
     

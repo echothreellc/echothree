@@ -16,14 +16,14 @@
 
 package com.echothree.control.user.wishlist.server.command;
 
-import com.echothree.control.user.wishlist.common.form.CreateWishlistTypePriorityDescriptionForm;
+import com.echothree.control.user.wishlist.common.form.CreateWishlistPriorityDescriptionForm;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.wishlist.server.entity.WishlistType;
-import com.echothree.model.data.wishlist.server.entity.WishlistTypePriority;
-import com.echothree.model.data.wishlist.server.entity.WishlistTypePriorityDescription;
+import com.echothree.model.data.wishlist.server.entity.WishlistPriority;
+import com.echothree.model.data.wishlist.server.entity.WishlistPriorityDescription;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -34,22 +34,22 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class CreateWishlistTypePriorityDescriptionCommand
-        extends BaseSimpleCommand<CreateWishlistTypePriorityDescriptionForm> {
+public class CreateWishlistPriorityDescriptionCommand
+        extends BaseSimpleCommand<CreateWishlistPriorityDescriptionForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
             new FieldDefinition("WishlistTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("WishlistTypePriorityName", FieldType.ENTITY_NAME, true, null, null),
+            new FieldDefinition("WishlistPriorityName", FieldType.ENTITY_NAME, true, null, null),
             new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null),
             new FieldDefinition("Description", FieldType.STRING, true, 1L, 132L)
         ));
     }
     
-    /** Creates a new instance of CreateWishlistTypePriorityDescriptionCommand */
-    public CreateWishlistTypePriorityDescriptionCommand(UserVisitPK userVisitPK, CreateWishlistTypePriorityDescriptionForm form) {
+    /** Creates a new instance of CreateWishlistPriorityDescriptionCommand */
+    public CreateWishlistPriorityDescriptionCommand(UserVisitPK userVisitPK, CreateWishlistPriorityDescriptionForm form) {
         super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
     }
     
@@ -60,29 +60,29 @@ public class CreateWishlistTypePriorityDescriptionCommand
         WishlistType wishlistType = wishlistControl.getWishlistTypeByName(wishlistTypeName);
         
         if(wishlistType != null) {
-            String wishlistTypePriorityName = form.getWishlistTypePriorityName();
-            WishlistTypePriority wishlistTypePriority = wishlistControl.getWishlistTypePriorityByName(wishlistType, wishlistTypePriorityName);
+            String wishlistPriorityName = form.getWishlistPriorityName();
+            WishlistPriority wishlistPriority = wishlistControl.getWishlistPriorityByName(wishlistType, wishlistPriorityName);
             
-            if(wishlistTypePriority != null) {
+            if(wishlistPriority != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
                 String languageIsoName = form.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
-                    WishlistTypePriorityDescription wishlistTypePriorityDescription = wishlistControl.getWishlistTypePriorityDescription(wishlistTypePriority, language);
+                    WishlistPriorityDescription wishlistPriorityDescription = wishlistControl.getWishlistPriorityDescription(wishlistPriority, language);
                     
-                    if(wishlistTypePriorityDescription == null) {
+                    if(wishlistPriorityDescription == null) {
                         var description = form.getDescription();
                         
-                        wishlistControl.createWishlistTypePriorityDescription(wishlistTypePriority, language, description, getPartyPK());
+                        wishlistControl.createWishlistPriorityDescription(wishlistPriority, language, description, getPartyPK());
                     } else {
-                        addExecutionError(ExecutionErrors.DuplicateWishlistTypePriorityDescription.name());
+                        addExecutionError(ExecutionErrors.DuplicateWishlistPriorityDescription.name());
                     }
                 } else {
                     addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownWishlistTypePriorityName.name(), wishlistTypePriorityName);
+                addExecutionError(ExecutionErrors.UnknownWishlistPriorityName.name(), wishlistPriorityName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownWishlistTypeName.name(), wishlistTypeName);

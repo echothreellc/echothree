@@ -14,10 +14,10 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.ui.web.main.action.wishlist.wishlisttypepriority;
+package com.echothree.ui.web.main.action.wishlist.wishlistpriority;
 
 import com.echothree.control.user.wishlist.common.WishlistUtil;
-import com.echothree.control.user.wishlist.common.form.DeleteWishlistTypePriorityDescriptionForm;
+import com.echothree.control.user.wishlist.common.form.DeleteWishlistPriorityDescriptionForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -36,13 +36,13 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 @SproutAction(
-    path = "/Wishlist/WishlistTypePriority/DescriptionDelete",
+    path = "/Wishlist/WishlistPriority/DescriptionDelete",
     mappingClass = SecureActionMapping.class,
     properties = {
         @SproutProperty(property = "secure", value = "true")
     },
     forwards = {
-        @SproutForward(name = "Display", path = "/action/Wishlist/WishlistTypePriority/Description", redirect = true)
+        @SproutForward(name = "Display", path = "/action/Wishlist/WishlistPriority/Description", redirect = true)
     }
 )
 public class DescriptionDeleteAction
@@ -53,17 +53,17 @@ public class DescriptionDeleteAction
     throws Exception {
         String forwardKey;
         String wishlistTypeName = request.getParameter(ParameterConstants.WISHLIST_TYPE_NAME);
-        String wishlistTypePriorityName = request.getParameter(ParameterConstants.WISHLIST_TYPE_PRIORITY_NAME);
+        String wishlistPriorityName = request.getParameter(ParameterConstants.WISHLIST_TYPE_PRIORITY_NAME);
         
         try {
             String languageIsoName = request.getParameter(ParameterConstants.LANGUAGE_ISO_NAME);
-            DeleteWishlistTypePriorityDescriptionForm commandForm = WishlistUtil.getHome().getDeleteWishlistTypePriorityDescriptionForm();
+            DeleteWishlistPriorityDescriptionForm commandForm = WishlistUtil.getHome().getDeleteWishlistPriorityDescriptionForm();
             
             commandForm.setWishlistTypeName(wishlistTypeName);
-            commandForm.setWishlistTypePriorityName(wishlistTypePriorityName);
+            commandForm.setWishlistPriorityName(wishlistPriorityName);
             commandForm.setLanguageIsoName(languageIsoName);
             
-            WishlistUtil.getHome().deleteWishlistTypePriorityDescription(getUserVisitPK(request), commandForm);
+            WishlistUtil.getHome().deleteWishlistPriorityDescription(getUserVisitPK(request), commandForm);
             
             forwardKey = ForwardConstants.DISPLAY;
         } catch (NamingException ne) {
@@ -75,7 +75,7 @@ public class DescriptionDeleteAction
             Map<String, String> parameters = new HashMap<>(2);
             
             parameters.put(ParameterConstants.WISHLIST_TYPE_NAME, wishlistTypeName);
-            parameters.put(ParameterConstants.WISHLIST_TYPE_PRIORITY_NAME, wishlistTypePriorityName);
+            parameters.put(ParameterConstants.WISHLIST_TYPE_PRIORITY_NAME, wishlistPriorityName);
             customActionForward.setParameters(parameters);
         }
         

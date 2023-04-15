@@ -16,13 +16,13 @@
 
 package com.echothree.control.user.wishlist.common.result;
 
-import com.echothree.model.control.wishlist.common.choice.WishlistTypePriorityChoicesBean;
+import com.echothree.model.control.wishlist.common.choice.WishlistPriorityChoicesBean;
 import com.echothree.util.common.command.BaseResult;
 
-public interface GetWishlistTypePriorityChoicesResult
+public interface GetWishlistPriorityChoicesResult
         extends BaseResult {
     
-    WishlistTypePriorityChoicesBean getWishlistTypePriorityChoices();
-    void setWishlistTypePriorityChoices(WishlistTypePriorityChoicesBean wishlistTypePriorityChoices);
+    WishlistPriorityChoicesBean getWishlistPriorityChoices();
+    void setWishlistPriorityChoices(WishlistPriorityChoicesBean wishlistPriorityChoices);
     
 }

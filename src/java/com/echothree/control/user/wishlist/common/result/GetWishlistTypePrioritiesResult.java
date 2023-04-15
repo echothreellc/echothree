@@ -16,21 +16,21 @@
 
 package com.echothree.control.user.wishlist.common.result;
 
-import com.echothree.model.control.wishlist.common.transfer.WishlistTypePriorityTransfer;
+import com.echothree.model.control.wishlist.common.transfer.WishlistPriorityTransfer;
 import com.echothree.model.control.wishlist.common.transfer.WishlistTypeTransfer;
 import com.echothree.util.common.command.BaseResult;
 import java.util.List;
 
-public interface GetWishlistTypePrioritiesResult
+public interface GetWishlistPrioritiesResult
         extends BaseResult {
     
     WishlistTypeTransfer getWishlistType();
     void setWishlistType(WishlistTypeTransfer wishlistType);
 
-    Long getWishlistTypePriorityCount();
-    void setWishlistTypePriorityCount(Long wishlistTypePriorityCount);
+    Long getWishlistPriorityCount();
+    void setWishlistPriorityCount(Long wishlistPriorityCount);
 
-    List<WishlistTypePriorityTransfer> getWishlistTypePriorities();
-    void setWishlistTypePriorities(List<WishlistTypePriorityTransfer> wishlistTypePriorities);
+    List<WishlistPriorityTransfer> getWishlistPriorities();
+    void setWishlistPriorities(List<WishlistPriorityTransfer> wishlistPriorities);
     
 }

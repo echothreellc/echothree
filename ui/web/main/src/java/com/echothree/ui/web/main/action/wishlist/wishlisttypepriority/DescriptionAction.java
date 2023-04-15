@@ -14,11 +14,11 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.ui.web.main.action.wishlist.wishlisttypepriority;
+package com.echothree.ui.web.main.action.wishlist.wishlistpriority;
 
 import com.echothree.control.user.wishlist.common.WishlistUtil;
-import com.echothree.control.user.wishlist.common.form.GetWishlistTypePriorityDescriptionsForm;
-import com.echothree.control.user.wishlist.common.result.GetWishlistTypePriorityDescriptionsResult;
+import com.echothree.control.user.wishlist.common.form.GetWishlistPriorityDescriptionsForm;
+import com.echothree.control.user.wishlist.common.result.GetWishlistPriorityDescriptionsResult;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -37,13 +37,13 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 @SproutAction(
-    path = "/Wishlist/WishlistTypePriority/Description",
+    path = "/Wishlist/WishlistPriority/Description",
     mappingClass = SecureActionMapping.class,
     properties = {
         @SproutProperty(property = "secure", value = "true")
     },
     forwards = {
-        @SproutForward(name = "Display", path = "/wishlist/wishlisttypepriority/description.jsp")
+        @SproutForward(name = "Display", path = "/wishlist/wishlistpriority/description.jsp")
     }
 )
 public class DescriptionAction
@@ -56,18 +56,18 @@ public class DescriptionAction
         
         try {
             String wishlistTypeName = request.getParameter(ParameterConstants.WISHLIST_TYPE_NAME);
-            String wishlistTypePriorityName = request.getParameter(ParameterConstants.WISHLIST_TYPE_PRIORITY_NAME);
-            GetWishlistTypePriorityDescriptionsForm commandForm = WishlistUtil.getHome().getGetWishlistTypePriorityDescriptionsForm();
+            String wishlistPriorityName = request.getParameter(ParameterConstants.WISHLIST_TYPE_PRIORITY_NAME);
+            GetWishlistPriorityDescriptionsForm commandForm = WishlistUtil.getHome().getGetWishlistPriorityDescriptionsForm();
             
             commandForm.setWishlistTypeName(wishlistTypeName);
-            commandForm.setWishlistTypePriorityName(wishlistTypePriorityName);
+            commandForm.setWishlistPriorityName(wishlistPriorityName);
             
-            CommandResult commandResult = WishlistUtil.getHome().getWishlistTypePriorityDescriptions(getUserVisitPK(request), commandForm);
+            CommandResult commandResult = WishlistUtil.getHome().getWishlistPriorityDescriptions(getUserVisitPK(request), commandForm);
             ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetWishlistTypePriorityDescriptionsResult result = (GetWishlistTypePriorityDescriptionsResult)executionResult.getResult();
+            GetWishlistPriorityDescriptionsResult result = (GetWishlistPriorityDescriptionsResult)executionResult.getResult();
             
-            request.setAttribute(AttributeConstants.WISHLIST_TYPE_PRIORITY, result.getWishlistTypePriority());
-            request.setAttribute(AttributeConstants.WISHLIST_TYPE_PRIORITY_DESCRIPTIONS, result.getWishlistTypePriorityDescriptions());
+            request.setAttribute(AttributeConstants.WISHLIST_TYPE_PRIORITY, result.getWishlistPriority());
+            request.setAttribute(AttributeConstants.WISHLIST_TYPE_PRIORITY_DESCRIPTIONS, result.getWishlistPriorityDescriptions());
             forwardKey = ForwardConstants.DISPLAY;
         } catch (NamingException ne) {
             forwardKey = ForwardConstants.ERROR_500;

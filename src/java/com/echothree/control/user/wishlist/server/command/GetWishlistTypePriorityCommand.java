@@ -16,13 +16,13 @@
 
 package com.echothree.control.user.wishlist.server.command;
 
-import com.echothree.control.user.wishlist.common.form.GetWishlistTypePriorityForm;
+import com.echothree.control.user.wishlist.common.form.GetWishlistPriorityForm;
 import com.echothree.control.user.wishlist.common.result.WishlistResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
-import com.echothree.model.control.wishlist.server.logic.WishlistTypePriorityLogic;
+import com.echothree.model.control.wishlist.server.logic.WishlistPriorityLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.wishlist.server.entity.WishlistTypePriority;
+import com.echothree.model.data.wishlist.server.entity.WishlistPriority;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -32,8 +32,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class GetWishlistTypePriorityCommand
-        extends BaseSingleEntityCommand<WishlistTypePriority, GetWishlistTypePriorityForm> {
+public class GetWishlistPriorityCommand
+        extends BaseSingleEntityCommand<WishlistPriority, GetWishlistPriorityForm> {
 
     // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -41,7 +41,7 @@ public class GetWishlistTypePriorityCommand
     static {
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
             new FieldDefinition("WishlistTypeName", FieldType.ENTITY_NAME, false, null, null),
-            new FieldDefinition("WishlistTypePriorityName", FieldType.ENTITY_NAME, false, null, null),
+            new FieldDefinition("WishlistPriorityName", FieldType.ENTITY_NAME, false, null, null),
             new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
             new FieldDefinition("Key", FieldType.KEY, false, null, null),
             new FieldDefinition("Guid", FieldType.GUID, false, null, null),
@@ -49,29 +49,29 @@ public class GetWishlistTypePriorityCommand
         ));
     }
     
-    /** Creates a new instance of GetWishlistTypePriorityCommand */
-    public GetWishlistTypePriorityCommand(UserVisitPK userVisitPK, GetWishlistTypePriorityForm form) {
+    /** Creates a new instance of GetWishlistPriorityCommand */
+    public GetWishlistPriorityCommand(UserVisitPK userVisitPK, GetWishlistPriorityForm form) {
         super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
     }
 
     @Override
-    protected WishlistTypePriority getEntity() {
-        var wishlistTypePriority = WishlistTypePriorityLogic.getInstance().getWishlistTypePriorityByUniversalSpec(this, form, true);
+    protected WishlistPriority getEntity() {
+        var wishlistPriority = WishlistPriorityLogic.getInstance().getWishlistPriorityByUniversalSpec(this, form, true);
 
-        if(wishlistTypePriority != null) {
-            sendEvent(wishlistTypePriority.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+        if(wishlistPriority != null) {
+            sendEvent(wishlistPriority.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
-        return wishlistTypePriority;
+        return wishlistPriority;
     }
 
     @Override
-    protected BaseResult getTransfer(WishlistTypePriority wishlistTypePriority) {
+    protected BaseResult getTransfer(WishlistPriority wishlistPriority) {
         var wishlistControl = Session.getModelController(WishlistControl.class);
-        var result = WishlistResultFactory.getGetWishlistTypePriorityResult();
+        var result = WishlistResultFactory.getGetWishlistPriorityResult();
 
-        if(wishlistTypePriority != null) {
-            result.setWishlistTypePriority(wishlistControl.getWishlistTypePriorityTransfer(getUserVisit(), wishlistTypePriority));
+        if(wishlistPriority != null) {
+            result.setWishlistPriority(wishlistControl.getWishlistPriorityTransfer(getUserVisit(), wishlistPriority));
         }
 
         return result;

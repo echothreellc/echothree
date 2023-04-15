@@ -14,10 +14,10 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.ui.web.main.action.wishlist.wishlisttypepriority;
+package com.echothree.ui.web.main.action.wishlist.wishlistpriority;
 
 import com.echothree.control.user.wishlist.common.WishlistUtil;
-import com.echothree.control.user.wishlist.common.form.CreateWishlistTypePriorityForm;
+import com.echothree.control.user.wishlist.common.form.CreateWishlistPriorityForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -38,15 +38,15 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 @SproutAction(
-    path = "/Wishlist/WishlistTypePriority/Add",
+    path = "/Wishlist/WishlistPriority/Add",
     mappingClass = SecureActionMapping.class,
-    name = "WishlistTypePriorityAdd",
+    name = "WishlistPriorityAdd",
     properties = {
         @SproutProperty(property = "secure", value = "true")
     },
     forwards = {
-        @SproutForward(name = "Display", path = "/action/Wishlist/WishlistTypePriority/Main", redirect = true),
-        @SproutForward(name = "Form", path = "/wishlist/wishlisttypepriority/add.jsp")
+        @SproutForward(name = "Display", path = "/action/Wishlist/WishlistPriority/Main", redirect = true),
+        @SproutForward(name = "Form", path = "/wishlist/wishlistpriority/add.jsp")
     }
 )
 public class AddAction
@@ -63,18 +63,18 @@ public class AddAction
                 AddActionForm actionForm = (AddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateWishlistTypePriorityForm commandForm = WishlistUtil.getHome().getCreateWishlistTypePriorityForm();
+                    CreateWishlistPriorityForm commandForm = WishlistUtil.getHome().getCreateWishlistPriorityForm();
                     
                     if(wishlistTypeName == null)
                         wishlistTypeName = actionForm.getWishlistTypeName();
                     
                     commandForm.setWishlistTypeName(wishlistTypeName);
-                    commandForm.setWishlistTypePriorityName(actionForm.getWishlistTypePriorityName());
+                    commandForm.setWishlistPriorityName(actionForm.getWishlistPriorityName());
                     commandForm.setIsDefault(actionForm.getIsDefault().toString());
                     commandForm.setSortOrder(actionForm.getSortOrder());
                     commandForm.setDescription(actionForm.getDescription());
                     
-                    CommandResult commandResult = WishlistUtil.getHome().createWishlistTypePriority(getUserVisitPK(request), commandForm);
+                    CommandResult commandResult = WishlistUtil.getHome().createWishlistPriority(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);

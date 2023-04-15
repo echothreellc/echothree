@@ -17,32 +17,32 @@
 package com.echothree.model.control.wishlist.server.transfer;
 
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
-import com.echothree.model.control.wishlist.common.transfer.WishlistTypePriorityDescriptionTransfer;
-import com.echothree.model.control.wishlist.common.transfer.WishlistTypePriorityTransfer;
+import com.echothree.model.control.wishlist.common.transfer.WishlistPriorityDescriptionTransfer;
+import com.echothree.model.control.wishlist.common.transfer.WishlistPriorityTransfer;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.data.wishlist.server.entity.WishlistTypePriorityDescription;
+import com.echothree.model.data.wishlist.server.entity.WishlistPriorityDescription;
 
-public class WishlistTypePriorityDescriptionTransferCache
-        extends BaseWishlistDescriptionTransferCache<WishlistTypePriorityDescription, WishlistTypePriorityDescriptionTransfer> {
+public class WishlistPriorityDescriptionTransferCache
+        extends BaseWishlistDescriptionTransferCache<WishlistPriorityDescription, WishlistPriorityDescriptionTransfer> {
     
-    /** Creates a new instance of WishlistTypePriorityDescriptionTransferCache */
-    public WishlistTypePriorityDescriptionTransferCache(UserVisit userVisit, WishlistControl wishlistControl) {
+    /** Creates a new instance of WishlistPriorityDescriptionTransferCache */
+    public WishlistPriorityDescriptionTransferCache(UserVisit userVisit, WishlistControl wishlistControl) {
         super(userVisit, wishlistControl);
     }
     
-    public WishlistTypePriorityDescriptionTransfer getWishlistTypePriorityDescriptionTransfer(WishlistTypePriorityDescription wishlistTypePriorityDescription) {
-        WishlistTypePriorityDescriptionTransfer wishlistTypePriorityDescriptionTransfer = get(wishlistTypePriorityDescription);
+    public WishlistPriorityDescriptionTransfer getWishlistPriorityDescriptionTransfer(WishlistPriorityDescription wishlistPriorityDescription) {
+        WishlistPriorityDescriptionTransfer wishlistPriorityDescriptionTransfer = get(wishlistPriorityDescription);
         
-        if(wishlistTypePriorityDescriptionTransfer == null) {
-            WishlistTypePriorityTransfer wishlistTypePriorityTransfer = wishlistControl.getWishlistTypePriorityTransfer(userVisit, wishlistTypePriorityDescription.getWishlistTypePriority());
-            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, wishlistTypePriorityDescription.getLanguage());
+        if(wishlistPriorityDescriptionTransfer == null) {
+            WishlistPriorityTransfer wishlistPriorityTransfer = wishlistControl.getWishlistPriorityTransfer(userVisit, wishlistPriorityDescription.getWishlistPriority());
+            LanguageTransfer languageTransfer = partyControl.getLanguageTransfer(userVisit, wishlistPriorityDescription.getLanguage());
             
-            wishlistTypePriorityDescriptionTransfer = new WishlistTypePriorityDescriptionTransfer(languageTransfer, wishlistTypePriorityTransfer, wishlistTypePriorityDescription.getDescription());
-            put(wishlistTypePriorityDescription, wishlistTypePriorityDescriptionTransfer);
+            wishlistPriorityDescriptionTransfer = new WishlistPriorityDescriptionTransfer(languageTransfer, wishlistPriorityTransfer, wishlistPriorityDescription.getDescription());
+            put(wishlistPriorityDescription, wishlistPriorityDescriptionTransfer);
         }
         
-        return wishlistTypePriorityDescriptionTransfer;
+        return wishlistPriorityDescriptionTransfer;
     }
     
 }

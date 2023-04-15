@@ -16,8 +16,8 @@
 
 package com.echothree.control.user.wishlist.server.command;
 
-import com.echothree.control.user.wishlist.common.form.GetWishlistTypePriorityChoicesForm;
-import com.echothree.control.user.wishlist.common.result.GetWishlistTypePriorityChoicesResult;
+import com.echothree.control.user.wishlist.common.form.GetWishlistPriorityChoicesForm;
+import com.echothree.control.user.wishlist.common.result.GetWishlistPriorityChoicesResult;
 import com.echothree.control.user.wishlist.common.result.WishlistResultFactory;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -32,36 +32,36 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class GetWishlistTypePriorityChoicesCommand
-        extends BaseSimpleCommand<GetWishlistTypePriorityChoicesForm> {
+public class GetWishlistPriorityChoicesCommand
+        extends BaseSimpleCommand<GetWishlistPriorityChoicesForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
             new FieldDefinition("WishlistTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("DefaultWishlistTypePriorityChoice", FieldType.ENTITY_NAME, false, null, null),
+            new FieldDefinition("DefaultWishlistPriorityChoice", FieldType.ENTITY_NAME, false, null, null),
             new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
         ));
     }
     
-    /** Creates a new instance of GetWishlistTypePriorityChoicesCommand */
-    public GetWishlistTypePriorityChoicesCommand(UserVisitPK userVisitPK, GetWishlistTypePriorityChoicesForm form) {
+    /** Creates a new instance of GetWishlistPriorityChoicesCommand */
+    public GetWishlistPriorityChoicesCommand(UserVisitPK userVisitPK, GetWishlistPriorityChoicesForm form) {
         super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
         var wishlistControl = Session.getModelController(WishlistControl.class);
-        GetWishlistTypePriorityChoicesResult result = WishlistResultFactory.getGetWishlistTypePriorityChoicesResult();
+        GetWishlistPriorityChoicesResult result = WishlistResultFactory.getGetWishlistPriorityChoicesResult();
         String wishlistTypeName = form.getWishlistTypeName();
         WishlistType wishlistType = wishlistControl.getWishlistTypeByName(wishlistTypeName);
         
         if(wishlistType != null) {
-            String defaultWishlistTypePriorityChoice = form.getDefaultWishlistTypePriorityChoice();
+            String defaultWishlistPriorityChoice = form.getDefaultWishlistPriorityChoice();
             boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
             
-            result.setWishlistTypePriorityChoices(wishlistControl.getWishlistTypePriorityChoices(defaultWishlistTypePriorityChoice,
+            result.setWishlistPriorityChoices(wishlistControl.getWishlistPriorityChoices(defaultWishlistPriorityChoice,
                     getPreferredLanguage(), allowNullChoice, wishlistType));
         } else {
             addExecutionError(ExecutionErrors.UnknownWishlistTypeName.name(), wishlistTypeName);

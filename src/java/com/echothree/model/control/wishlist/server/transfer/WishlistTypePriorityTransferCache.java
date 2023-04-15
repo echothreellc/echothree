@@ -16,40 +16,40 @@
 
 package com.echothree.model.control.wishlist.server.transfer;
 
-import com.echothree.model.control.wishlist.common.transfer.WishlistTypePriorityTransfer;
+import com.echothree.model.control.wishlist.common.transfer.WishlistPriorityTransfer;
 import com.echothree.model.control.wishlist.common.transfer.WishlistTypeTransfer;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
-import com.echothree.model.data.wishlist.server.entity.WishlistTypePriority;
-import com.echothree.model.data.wishlist.server.entity.WishlistTypePriorityDetail;
+import com.echothree.model.data.wishlist.server.entity.WishlistPriority;
+import com.echothree.model.data.wishlist.server.entity.WishlistPriorityDetail;
 
-public class WishlistTypePriorityTransferCache
-        extends BaseWishlistTransferCache<WishlistTypePriority, WishlistTypePriorityTransfer> {
+public class WishlistPriorityTransferCache
+        extends BaseWishlistTransferCache<WishlistPriority, WishlistPriorityTransfer> {
     
-    /** Creates a new instance of WishlistTypePriorityTransferCache */
-    public WishlistTypePriorityTransferCache(UserVisit userVisit, WishlistControl wishlistControl) {
+    /** Creates a new instance of WishlistPriorityTransferCache */
+    public WishlistPriorityTransferCache(UserVisit userVisit, WishlistControl wishlistControl) {
         super(userVisit, wishlistControl);
         
         setIncludeEntityInstance(true);
     }
     
-    public WishlistTypePriorityTransfer getWishlistTypePriorityTransfer(WishlistTypePriority wishlistTypePriority) {
-        WishlistTypePriorityTransfer wishlistTypePriorityTransfer = get(wishlistTypePriority);
+    public WishlistPriorityTransfer getWishlistPriorityTransfer(WishlistPriority wishlistPriority) {
+        WishlistPriorityTransfer wishlistPriorityTransfer = get(wishlistPriority);
         
-        if(wishlistTypePriorityTransfer == null) {
-            WishlistTypePriorityDetail wishlistTypePriorityDetail = wishlistTypePriority.getLastDetail();
-            WishlistTypeTransfer wishlistType = wishlistControl.getWishlistTypeTransfer(userVisit, wishlistTypePriorityDetail.getWishlistType());
-            String wishlistTypePriorityName = wishlistTypePriorityDetail.getWishlistTypePriorityName();
-            Boolean isDefault = wishlistTypePriorityDetail.getIsDefault();
-            Integer sortOrder = wishlistTypePriorityDetail.getSortOrder();
-            String description = wishlistControl.getBestWishlistTypePriorityDescription(wishlistTypePriority, getLanguage());
+        if(wishlistPriorityTransfer == null) {
+            WishlistPriorityDetail wishlistPriorityDetail = wishlistPriority.getLastDetail();
+            WishlistTypeTransfer wishlistType = wishlistControl.getWishlistTypeTransfer(userVisit, wishlistPriorityDetail.getWishlistType());
+            String wishlistPriorityName = wishlistPriorityDetail.getWishlistPriorityName();
+            Boolean isDefault = wishlistPriorityDetail.getIsDefault();
+            Integer sortOrder = wishlistPriorityDetail.getSortOrder();
+            String description = wishlistControl.getBestWishlistPriorityDescription(wishlistPriority, getLanguage());
             
-            wishlistTypePriorityTransfer = new WishlistTypePriorityTransfer(wishlistType, wishlistTypePriorityName, isDefault,
+            wishlistPriorityTransfer = new WishlistPriorityTransfer(wishlistType, wishlistPriorityName, isDefault,
                     sortOrder, description);
-            put(wishlistTypePriority, wishlistTypePriorityTransfer);
+            put(wishlistPriority, wishlistPriorityTransfer);
         }
         
-        return wishlistTypePriorityTransfer;
+        return wishlistPriorityTransfer;
     }
     
 }

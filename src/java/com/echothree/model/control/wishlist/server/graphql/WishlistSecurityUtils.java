@@ -17,8 +17,8 @@
 package com.echothree.model.control.wishlist.server.graphql;
 
 import com.echothree.control.user.wishlist.server.command.GetWishlistTypeCommand;
-import com.echothree.control.user.wishlist.server.command.GetWishlistTypePrioritiesCommand;
-import com.echothree.control.user.wishlist.server.command.GetWishlistTypePriorityCommand;
+import com.echothree.control.user.wishlist.server.command.GetWishlistPrioritiesCommand;
+import com.echothree.control.user.wishlist.server.command.GetWishlistPriorityCommand;
 import com.echothree.control.user.wishlist.server.command.GetWishlistTypesCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
@@ -42,12 +42,12 @@ public final class WishlistSecurityUtils
         return getGraphQlExecutionContext(env).hasAccess(GetWishlistTypesCommand.class);
     }
 
-    public boolean getHasWishlistTypePriorityAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWishlistTypePriorityCommand.class);
+    public boolean getHasWishlistPriorityAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetWishlistPriorityCommand.class);
     }
 
-    public boolean getHasWishlistTypePrioritiesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWishlistTypePrioritiesCommand.class);
+    public boolean getHasWishlistPrioritiesAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetWishlistPrioritiesCommand.class);
     }
 
 }

@@ -18,20 +18,20 @@ package com.echothree.model.control.wishlist.common.transfer;
 
 import com.echothree.util.common.transfer.BaseTransfer;
 
-public class WishlistTypePriorityTransfer
+public class WishlistPriorityTransfer
         extends BaseTransfer {
     
     private WishlistTypeTransfer wishlistType;
-    private String wishlistTypePriorityName;
+    private String wishlistPriorityName;
     private Boolean isDefault;
     private Integer sortOrder;
     private String description;
     
-    /** Creates a new instance of WishlistTypePriorityTransfer */
-    public WishlistTypePriorityTransfer(WishlistTypeTransfer wishlistType, String wishlistTypePriorityName, Boolean isDefault,
+    /** Creates a new instance of WishlistPriorityTransfer */
+    public WishlistPriorityTransfer(WishlistTypeTransfer wishlistType, String wishlistPriorityName, Boolean isDefault,
             Integer sortOrder, String description) {
         this.wishlistType = wishlistType;
-        this.wishlistTypePriorityName = wishlistTypePriorityName;
+        this.wishlistPriorityName = wishlistPriorityName;
         this.isDefault = isDefault;
         this.sortOrder = sortOrder;
         this.description = description;
@@ -45,12 +45,12 @@ public class WishlistTypePriorityTransfer
         this.wishlistType = wishlistType;
     }
     
-    public String getWishlistTypePriorityName() {
-        return wishlistTypePriorityName;
+    public String getWishlistPriorityName() {
+        return wishlistPriorityName;
     }
     
-    public void setWishlistTypePriorityName(String wishlistTypePriorityName) {
-        this.wishlistTypePriorityName = wishlistTypePriorityName;
+    public void setWishlistPriorityName(String wishlistPriorityName) {
+        this.wishlistPriorityName = wishlistPriorityName;
     }
     
     public Boolean getIsDefault() {

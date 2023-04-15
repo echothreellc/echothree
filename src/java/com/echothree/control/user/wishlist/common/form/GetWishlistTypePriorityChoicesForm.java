@@ -18,11 +18,11 @@ package com.echothree.control.user.wishlist.common.form;
 
 import com.echothree.control.user.wishlist.common.spec.WishlistTypeSpec;
 
-public interface GetWishlistTypePriorityChoicesForm
+public interface GetWishlistPriorityChoicesForm
         extends WishlistTypeSpec {
     
-    String getDefaultWishlistTypePriorityChoice();
-    void setDefaultWishlistTypePriorityChoice(String defaultWishlistTypePriorityChoice);
+    String getDefaultWishlistPriorityChoice();
+    void setDefaultWishlistPriorityChoice(String defaultWishlistPriorityChoice);
     
     String getAllowNullChoice();
     void setAllowNullChoice(String allowNullChoice);

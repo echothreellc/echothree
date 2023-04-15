@@ -14,13 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.ui.web.main.action.wishlist.wishlisttypepriority;
+package com.echothree.ui.web.main.action.wishlist.wishlistpriority;
 
 import com.echothree.control.user.wishlist.common.WishlistUtil;
-import com.echothree.control.user.wishlist.common.edit.WishlistTypePriorityEdit;
-import com.echothree.control.user.wishlist.common.form.EditWishlistTypePriorityForm;
-import com.echothree.control.user.wishlist.common.result.EditWishlistTypePriorityResult;
-import com.echothree.control.user.wishlist.common.spec.WishlistTypePrioritySpec;
+import com.echothree.control.user.wishlist.common.edit.WishlistPriorityEdit;
+import com.echothree.control.user.wishlist.common.form.EditWishlistPriorityForm;
+import com.echothree.control.user.wishlist.common.result.EditWishlistPriorityResult;
+import com.echothree.control.user.wishlist.common.spec.WishlistPrioritySpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -43,15 +43,15 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 @SproutAction(
-    path = "/Wishlist/WishlistTypePriority/Edit",
+    path = "/Wishlist/WishlistPriority/Edit",
     mappingClass = SecureActionMapping.class,
-    name = "WishlistTypePriorityEdit",
+    name = "WishlistPriorityEdit",
     properties = {
         @SproutProperty(property = "secure", value = "true")
     },
     forwards = {
-        @SproutForward(name = "Display", path = "/action/Wishlist/WishlistTypePriority/Main", redirect = true),
-        @SproutForward(name = "Form", path = "/wishlist/wishlisttypepriority/edit.jsp")
+        @SproutForward(name = "Display", path = "/action/Wishlist/WishlistPriority/Main", redirect = true),
+        @SproutForward(name = "Form", path = "/wishlist/wishlistpriority/edit.jsp")
     }
 )
 public class EditAction
@@ -62,41 +62,41 @@ public class EditAction
     throws Exception {
         String forwardKey = null;
         String wishlistTypeName = request.getParameter(ParameterConstants.WISHLIST_TYPE_NAME);
-        String originalWishlistTypePriorityName = request.getParameter(ParameterConstants.ORIGINAL_WISHLIST_TYPE_PRIORITY_NAME);
+        String originalWishlistPriorityName = request.getParameter(ParameterConstants.ORIGINAL_WISHLIST_TYPE_PRIORITY_NAME);
         
         try {
             if(forwardKey == null) {
                 EditActionForm actionForm = (EditActionForm)form;
-                EditWishlistTypePriorityForm commandForm = WishlistUtil.getHome().getEditWishlistTypePriorityForm();
-                WishlistTypePrioritySpec spec = WishlistUtil.getHome().getWishlistTypePrioritySpec();
+                EditWishlistPriorityForm commandForm = WishlistUtil.getHome().getEditWishlistPriorityForm();
+                WishlistPrioritySpec spec = WishlistUtil.getHome().getWishlistPrioritySpec();
                 
                 if(wishlistTypeName == null)
                     wishlistTypeName = actionForm.getWishlistTypeName();
-                if(originalWishlistTypePriorityName == null)
-                    originalWishlistTypePriorityName = actionForm.getOriginalWishlistTypePriorityName();
+                if(originalWishlistPriorityName == null)
+                    originalWishlistPriorityName = actionForm.getOriginalWishlistPriorityName();
                 
                 commandForm.setSpec(spec);
                 spec.setWishlistTypeName(wishlistTypeName);
-                spec.setWishlistTypePriorityName(originalWishlistTypePriorityName);
+                spec.setWishlistPriorityName(originalWishlistPriorityName);
                 
                 if(wasPost(request)) {
-                    WishlistTypePriorityEdit edit = WishlistUtil.getHome().getWishlistTypePriorityEdit();
+                    WishlistPriorityEdit edit = WishlistUtil.getHome().getWishlistPriorityEdit();
                     
                     commandForm.setEditMode(EditMode.UPDATE);
                     commandForm.setEdit(edit);
                     
-                    edit.setWishlistTypePriorityName(actionForm.getWishlistTypePriorityName());
+                    edit.setWishlistPriorityName(actionForm.getWishlistPriorityName());
                     edit.setIsDefault(actionForm.getIsDefault().toString());
                     edit.setSortOrder(actionForm.getSortOrder());
                     edit.setDescription(actionForm.getDescription());
                     
-                    CommandResult commandResult = WishlistUtil.getHome().editWishlistTypePriority(getUserVisitPK(request), commandForm);
+                    CommandResult commandResult = WishlistUtil.getHome().editWishlistPriority(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         ExecutionResult executionResult = commandResult.getExecutionResult();
                         
                         if(executionResult != null) {
-                            EditWishlistTypePriorityResult result = (EditWishlistTypePriorityResult)executionResult.getResult();
+                            EditWishlistPriorityResult result = (EditWishlistPriorityResult)executionResult.getResult();
                             
                             request.setAttribute(AttributeConstants.ENTITY_LOCK, result.getEntityLock());
                         }
@@ -110,17 +110,17 @@ public class EditAction
                 } else {
                     commandForm.setEditMode(EditMode.LOCK);
                     
-                    CommandResult commandResult = WishlistUtil.getHome().editWishlistTypePriority(getUserVisitPK(request), commandForm);
+                    CommandResult commandResult = WishlistUtil.getHome().editWishlistPriority(getUserVisitPK(request), commandForm);
                     ExecutionResult executionResult = commandResult.getExecutionResult();
-                    EditWishlistTypePriorityResult result = (EditWishlistTypePriorityResult)executionResult.getResult();
+                    EditWishlistPriorityResult result = (EditWishlistPriorityResult)executionResult.getResult();
                     
                     if(result != null) {
-                        WishlistTypePriorityEdit edit = result.getEdit();
+                        WishlistPriorityEdit edit = result.getEdit();
                         
                         if(edit != null) {
                             actionForm.setWishlistTypeName(wishlistTypeName);
-                            actionForm.setOriginalWishlistTypePriorityName(edit.getWishlistTypePriorityName());
-                            actionForm.setWishlistTypePriorityName(edit.getWishlistTypePriorityName());
+                            actionForm.setOriginalWishlistPriorityName(edit.getWishlistPriorityName());
+                            actionForm.setWishlistPriorityName(edit.getWishlistPriorityName());
                             actionForm.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
                             actionForm.setSortOrder(edit.getSortOrder());
                             actionForm.setDescription(edit.getDescription());

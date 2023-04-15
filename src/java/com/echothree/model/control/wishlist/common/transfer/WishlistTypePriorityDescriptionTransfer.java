@@ -19,17 +19,17 @@ package com.echothree.model.control.wishlist.common.transfer;
 import com.echothree.model.control.party.common.transfer.LanguageTransfer;
 import com.echothree.util.common.transfer.BaseTransfer;
 
-public class WishlistTypePriorityDescriptionTransfer
+public class WishlistPriorityDescriptionTransfer
         extends BaseTransfer {
     
     private LanguageTransfer language;
-    private WishlistTypePriorityTransfer wishlistTypePriority;
+    private WishlistPriorityTransfer wishlistPriority;
     private String description;
     
-    /** Creates a new instance of WishlistTypePriorityDescriptionTransfer */
-    public WishlistTypePriorityDescriptionTransfer(LanguageTransfer language, WishlistTypePriorityTransfer wishlistTypePriority, String description) {
+    /** Creates a new instance of WishlistPriorityDescriptionTransfer */
+    public WishlistPriorityDescriptionTransfer(LanguageTransfer language, WishlistPriorityTransfer wishlistPriority, String description) {
         this.language = language;
-        this.wishlistTypePriority = wishlistTypePriority;
+        this.wishlistPriority = wishlistPriority;
         this.description = description;
     }
     
@@ -41,12 +41,12 @@ public class WishlistTypePriorityDescriptionTransfer
         this.language = language;
     }
     
-    public WishlistTypePriorityTransfer getWishlistTypePriority() {
-        return wishlistTypePriority;
+    public WishlistPriorityTransfer getWishlistPriority() {
+        return wishlistPriority;
     }
     
-    public void setWishlistTypePriority(WishlistTypePriorityTransfer wishlistTypePriority) {
-        this.wishlistTypePriority = wishlistTypePriority;
+    public void setWishlistPriority(WishlistPriorityTransfer wishlistPriority) {
+        this.wishlistPriority = wishlistPriority;
     }
     
     public String getDescription() {

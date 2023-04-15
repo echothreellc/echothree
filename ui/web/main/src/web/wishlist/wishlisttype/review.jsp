@@ -41,55 +41,55 @@
             <br />
             <br />
             <et:checkSecurityRoles securityRoles="Event.List" />
-            <c:if test='${wishlistTypePriorities != null}'>
+            <c:if test='${wishlistPriorities != null}'>
                 <h2>Wishlist Type Priorities</h2>
-                <display:table name="wishlistTypePriorities" id="wishlistTypePriority" class="displaytag">
+                <display:table name="wishlistPriorities" id="wishlistPriority" class="displaytag">
                     <display:column titleKey="columnTitle.name">
-                        <c:url var="reviewUrl" value="/action/Wishlist/WishlistTypePriority/Review">
-                            <c:param name="WishlistTypeName" value="${wishlistTypePriority.wishlistType.wishlistTypeName}" />
-                            <c:param name="WishlistTypePriorityName" value="${wishlistTypePriority.wishlistTypePriorityName}" />
+                        <c:url var="reviewUrl" value="/action/Wishlist/WishlistPriority/Review">
+                            <c:param name="WishlistTypeName" value="${wishlistPriority.wishlistType.wishlistTypeName}" />
+                            <c:param name="WishlistPriorityName" value="${wishlistPriority.wishlistPriorityName}" />
                         </c:url>
-                        <a href="${reviewUrl}"><c:out value="${wishlistTypePriority.wishlistTypePriorityName}" /></a>
+                        <a href="${reviewUrl}"><c:out value="${wishlistPriority.wishlistPriorityName}" /></a>
                     </display:column>
                     <display:column property="sortOrder" titleKey="columnTitle.sortOrder" />
                     <display:column titleKey="columnTitle.default">
                         <c:choose>
-                            <c:when test="${wishlistTypePriority.isDefault}">
+                            <c:when test="${wishlistPriority.isDefault}">
                                 Default
                             </c:when>
                             <c:otherwise>
-                                <c:url var="setDefaultUrl" value="/action/Wishlist/WishlistTypePriority/SetDefault">
-                                    <c:param name="WishlistTypeName" value="${wishlistTypePriority.wishlistType.wishlistTypeName}" />
-                                    <c:param name="WishlistTypePriorityName" value="${wishlistTypePriority.wishlistTypePriorityName}" />
+                                <c:url var="setDefaultUrl" value="/action/Wishlist/WishlistPriority/SetDefault">
+                                    <c:param name="WishlistTypeName" value="${wishlistPriority.wishlistType.wishlistTypeName}" />
+                                    <c:param name="WishlistPriorityName" value="${wishlistPriority.wishlistPriorityName}" />
                                 </c:url>
                                 <a href="${setDefaultUrl}">Set Default</a>
                             </c:otherwise>
                         </c:choose>
                     </display:column>
                     <display:column titleKey="columnTitle.description">
-                        <c:out value="${wishlistTypePriority.description}" />
+                        <c:out value="${wishlistPriority.description}" />
                     </display:column>
                     <display:column>
-                        <c:url var="editUrl" value="/action/Wishlist/WishlistTypePriority/Edit">
-                            <c:param name="WishlistTypeName" value="${wishlistTypePriority.wishlistType.wishlistTypeName}" />
-                            <c:param name="OriginalWishlistTypePriorityName" value="${wishlistTypePriority.wishlistTypePriorityName}" />
+                        <c:url var="editUrl" value="/action/Wishlist/WishlistPriority/Edit">
+                            <c:param name="WishlistTypeName" value="${wishlistPriority.wishlistType.wishlistTypeName}" />
+                            <c:param name="OriginalWishlistPriorityName" value="${wishlistPriority.wishlistPriorityName}" />
                         </c:url>
                         <a href="${editUrl}">Edit</a>
-                        <c:url var="descriptionsUrl" value="/action/Wishlist/WishlistTypePriority/Description">
-                            <c:param name="WishlistTypeName" value="${wishlistTypePriority.wishlistType.wishlistTypeName}" />
-                            <c:param name="WishlistTypePriorityName" value="${wishlistTypePriority.wishlistTypePriorityName}" />
+                        <c:url var="descriptionsUrl" value="/action/Wishlist/WishlistPriority/Description">
+                            <c:param name="WishlistTypeName" value="${wishlistPriority.wishlistType.wishlistTypeName}" />
+                            <c:param name="WishlistPriorityName" value="${wishlistPriority.wishlistPriorityName}" />
                         </c:url>
                         <a href="${descriptionsUrl}">Descriptions</a>
-                        <c:url var="deleteUrl" value="/action/Wishlist/WishlistTypePriority/Delete">
-                            <c:param name="WishlistTypeName" value="${wishlistTypePriority.wishlistType.wishlistTypeName}" />
-                            <c:param name="WishlistTypePriorityName" value="${wishlistTypePriority.wishlistTypePriorityName}" />
+                        <c:url var="deleteUrl" value="/action/Wishlist/WishlistPriority/Delete">
+                            <c:param name="WishlistTypeName" value="${wishlistPriority.wishlistType.wishlistTypeName}" />
+                            <c:param name="WishlistPriorityName" value="${wishlistPriority.wishlistPriorityName}" />
                         </c:url>
                         <a href="${deleteUrl}">Delete</a>
                     </display:column>
                     <et:hasSecurityRole securityRole="Event.List">
                         <display:column>
                             <c:url var="eventsUrl" value="/action/Core/Event/Main">
-                                <c:param name="EntityRef" value="${wishlistTypePriority.entityInstance.entityRef}" />
+                                <c:param name="EntityRef" value="${wishlistPriority.entityInstance.entityRef}" />
                             </c:url>
                             <a href="${eventsUrl}">Events</a>
                         </display:column>

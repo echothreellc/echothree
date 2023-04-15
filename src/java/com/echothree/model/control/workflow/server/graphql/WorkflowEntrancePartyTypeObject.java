@@ -75,9 +75,9 @@ public class WorkflowEntrancePartyTypeObject
 
             try(var objectLimiter = new ObjectLimiter(env, WorkflowEntranceSecurityRoleConstants.COMPONENT_VENDOR_NAME, WorkflowEntranceSecurityRoleConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = workflowControl.getWorkflowEntranceSecurityRolesByWorkflowEntrancePartyType(workflowEntrancePartyType);
-                var wishlistTypePriorities = entities.stream().map(WorkflowEntranceSecurityRoleObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                var wishlistPriorities = entities.stream().map(WorkflowEntranceSecurityRoleObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-                return new CountedObjects<>(objectLimiter, wishlistTypePriorities);
+                return new CountedObjects<>(objectLimiter, wishlistPriorities);
             }
         } else {
             return Connections.emptyConnection();

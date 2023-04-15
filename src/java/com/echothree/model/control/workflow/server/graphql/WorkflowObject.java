@@ -132,9 +132,9 @@ public class WorkflowObject
 
             try(var objectLimiter = new ObjectLimiter(env, WorkflowEntranceConstants.COMPONENT_VENDOR_NAME, WorkflowEntranceConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = workflowControl.getWorkflowEntrancesByWorkflow(workflow);
-                var wishlistTypePriorities = entities.stream().map(WorkflowEntranceObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                var wishlistPriorities = entities.stream().map(WorkflowEntranceObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-                return new CountedObjects<>(objectLimiter, wishlistTypePriorities);
+                return new CountedObjects<>(objectLimiter, wishlistPriorities);
             }
         } else {
             return Connections.emptyConnection();
@@ -152,9 +152,9 @@ public class WorkflowObject
 
             try(var objectLimiter = new ObjectLimiter(env, WorkflowStepConstants.COMPONENT_VENDOR_NAME, WorkflowStepConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = workflowControl.getWorkflowStepsByWorkflow(workflow);
-                var wishlistTypePriorities = entities.stream().map(WorkflowStepObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                var wishlistPriorities = entities.stream().map(WorkflowStepObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-                return new CountedObjects<>(objectLimiter, wishlistTypePriorities);
+                return new CountedObjects<>(objectLimiter, wishlistPriorities);
             }
         } else {
             return Connections.emptyConnection();
@@ -172,9 +172,9 @@ public class WorkflowObject
 
             try(var objectLimiter = new ObjectLimiter(env, WorkflowEntityTypeConstants.COMPONENT_VENDOR_NAME, WorkflowEntityTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = workflowControl.getWorkflowEntityTypesByWorkflow(workflow);
-                var wishlistTypePriorities = entities.stream().map(WorkflowEntityTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                var wishlistPriorities = entities.stream().map(WorkflowEntityTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-                return new CountedObjects<>(objectLimiter, wishlistTypePriorities);
+                return new CountedObjects<>(objectLimiter, wishlistPriorities);
             }
         } else {
             return Connections.emptyConnection();
@@ -192,9 +192,9 @@ public class WorkflowObject
 
             try(var objectLimiter = new ObjectLimiter(env, WorkflowSelectorKindConstants.COMPONENT_VENDOR_NAME, WorkflowSelectorKindConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = workflowControl.getWorkflowSelectorKindsByWorkflow(workflow);
-                var wishlistTypePriorities = entities.stream().map(WorkflowSelectorKindObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                var wishlistPriorities = entities.stream().map(WorkflowSelectorKindObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-                return new CountedObjects<>(objectLimiter, wishlistTypePriorities);
+                return new CountedObjects<>(objectLimiter, wishlistPriorities);
             }
         } else {
             return Connections.emptyConnection();

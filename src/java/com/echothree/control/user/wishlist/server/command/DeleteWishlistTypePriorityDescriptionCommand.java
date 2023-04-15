@@ -16,14 +16,14 @@
 
 package com.echothree.control.user.wishlist.server.command;
 
-import com.echothree.control.user.wishlist.common.form.DeleteWishlistTypePriorityDescriptionForm;
+import com.echothree.control.user.wishlist.common.form.DeleteWishlistPriorityDescriptionForm;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.wishlist.server.entity.WishlistType;
-import com.echothree.model.data.wishlist.server.entity.WishlistTypePriority;
-import com.echothree.model.data.wishlist.server.entity.WishlistTypePriorityDescription;
+import com.echothree.model.data.wishlist.server.entity.WishlistPriority;
+import com.echothree.model.data.wishlist.server.entity.WishlistPriorityDescription;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -34,8 +34,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class DeleteWishlistTypePriorityDescriptionCommand
-        extends BaseSimpleCommand<DeleteWishlistTypePriorityDescriptionForm> {
+public class DeleteWishlistPriorityDescriptionCommand
+        extends BaseSimpleCommand<DeleteWishlistPriorityDescriptionForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
@@ -46,8 +46,8 @@ public class DeleteWishlistTypePriorityDescriptionCommand
         ));
     }
     
-    /** Creates a new instance of DeleteWishlistTypePriorityDescriptionCommand */
-    public DeleteWishlistTypePriorityDescriptionCommand(UserVisitPK userVisitPK, DeleteWishlistTypePriorityDescriptionForm form) {
+    /** Creates a new instance of DeleteWishlistPriorityDescriptionCommand */
+    public DeleteWishlistPriorityDescriptionCommand(UserVisitPK userVisitPK, DeleteWishlistPriorityDescriptionForm form) {
         super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
     }
     
@@ -58,27 +58,27 @@ public class DeleteWishlistTypePriorityDescriptionCommand
         WishlistType wishlistType = wishlistControl.getWishlistTypeByName(wishlistTypeName);
         
         if(wishlistType != null) {
-            String wishlistTypePriorityName = form.getWishlistTypePriorityName();
-            WishlistTypePriority wishlistTypePriority = wishlistControl.getWishlistTypePriorityByName(wishlistType, wishlistTypePriorityName);
+            String wishlistPriorityName = form.getWishlistPriorityName();
+            WishlistPriority wishlistPriority = wishlistControl.getWishlistPriorityByName(wishlistType, wishlistPriorityName);
             
-            if(wishlistTypePriority != null) {
+            if(wishlistPriority != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
                 String languageIsoName = form.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
-                    WishlistTypePriorityDescription wishlistTypePriorityDescription = wishlistControl.getWishlistTypePriorityDescriptionForUpdate(wishlistTypePriority, language);
+                    WishlistPriorityDescription wishlistPriorityDescription = wishlistControl.getWishlistPriorityDescriptionForUpdate(wishlistPriority, language);
                     
-                    if(wishlistTypePriorityDescription != null) {
-                        wishlistControl.deleteWishlistTypePriorityDescription(wishlistTypePriorityDescription, getPartyPK());
+                    if(wishlistPriorityDescription != null) {
+                        wishlistControl.deleteWishlistPriorityDescription(wishlistPriorityDescription, getPartyPK());
                     } else {
-                        addExecutionError(ExecutionErrors.UnknownWishlistTypePriorityDescription.name());
+                        addExecutionError(ExecutionErrors.UnknownWishlistPriorityDescription.name());
                     }
                 } else {
                     addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownWishlistTypePriorityName.name(), wishlistTypePriorityName);
+                addExecutionError(ExecutionErrors.UnknownWishlistPriorityName.name(), wishlistPriorityName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownWishlistTypeName.name(), wishlistTypeName);

@@ -16,13 +16,13 @@
 
 package com.echothree.control.user.wishlist.common.result;
 
-import com.echothree.model.control.wishlist.common.transfer.WishlistTypePriorityTransfer;
+import com.echothree.model.control.wishlist.common.transfer.WishlistPriorityTransfer;
 import com.echothree.util.common.command.BaseResult;
 
-public interface GetWishlistTypePriorityResult
+public interface GetWishlistPriorityResult
         extends BaseResult {
     
-    WishlistTypePriorityTransfer getWishlistTypePriority();
-    void setWishlistTypePriority(WishlistTypePriorityTransfer wishlistTypePriority);
+    WishlistPriorityTransfer getWishlistPriority();
+    void setWishlistPriority(WishlistPriorityTransfer wishlistPriority);
     
 }

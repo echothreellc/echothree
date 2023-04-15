@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.wishlist.server.command;
 
-import com.echothree.control.user.wishlist.common.form.DeleteWishlistTypePriorityForm;
+import com.echothree.control.user.wishlist.common.form.DeleteWishlistPriorityForm;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.wishlist.server.entity.WishlistType;
-import com.echothree.model.data.wishlist.server.entity.WishlistTypePriority;
+import com.echothree.model.data.wishlist.server.entity.WishlistPriority;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -31,20 +31,20 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class DeleteWishlistTypePriorityCommand
-        extends BaseSimpleCommand<DeleteWishlistTypePriorityForm> {
+public class DeleteWishlistPriorityCommand
+        extends BaseSimpleCommand<DeleteWishlistPriorityForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
             new FieldDefinition("WishlistTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("WishlistTypePriorityName", FieldType.ENTITY_NAME, true, null, null)
+            new FieldDefinition("WishlistPriorityName", FieldType.ENTITY_NAME, true, null, null)
         ));
     }
     
-    /** Creates a new instance of DeleteWishlistTypePriorityCommand */
-    public DeleteWishlistTypePriorityCommand(UserVisitPK userVisitPK, DeleteWishlistTypePriorityForm form) {
+    /** Creates a new instance of DeleteWishlistPriorityCommand */
+    public DeleteWishlistPriorityCommand(UserVisitPK userVisitPK, DeleteWishlistPriorityForm form) {
         super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
     }
     
@@ -55,13 +55,13 @@ public class DeleteWishlistTypePriorityCommand
         WishlistType wishlistType = wishlistControl.getWishlistTypeByName(wishlistTypeName);
         
         if(wishlistType != null) {
-            String wishlistTypePriorityName = form.getWishlistTypePriorityName();
-            WishlistTypePriority wishlistTypePriority = wishlistControl.getWishlistTypePriorityByNameForUpdate(wishlistType, wishlistTypePriorityName);
+            String wishlistPriorityName = form.getWishlistPriorityName();
+            WishlistPriority wishlistPriority = wishlistControl.getWishlistPriorityByNameForUpdate(wishlistType, wishlistPriorityName);
             
-            if(wishlistTypePriority != null) {
-                wishlistControl.deleteWishlistTypePriority(wishlistTypePriority, getPartyPK());
+            if(wishlistPriority != null) {
+                wishlistControl.deleteWishlistPriority(wishlistPriority, getPartyPK());
             } else {
-                addExecutionError(ExecutionErrors.UnknownWishlistTypePriorityName.name(), wishlistTypePriorityName);
+                addExecutionError(ExecutionErrors.UnknownWishlistPriorityName.name(), wishlistPriorityName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownWishlistTypeName.name(), wishlistTypeName);

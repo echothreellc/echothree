@@ -30,13 +30,13 @@
                 <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
                 <a href="<c:url value="/action/Wishlist/Main" />">Wishlists</a> &gt;&gt;
                 <a href="<c:url value="/action/Wishlist/WishlistType/Main" />">Types</a> &gt;&gt;
-                <c:url var="wishlistTypePrioritiesUrl" value="/action/Wishlist/WishlistTypePriority/Main">
+                <c:url var="wishlistPrioritiesUrl" value="/action/Wishlist/WishlistPriority/Main">
                     <c:param name="WishlistTypeName" value="${wishlistTypeName}" />
                 </c:url>
-                <a href="${wishlistTypePrioritiesUrl}">Priorities</a> &gt;&gt;
-                <c:url var="descriptionsUrl" value="/action/Wishlist/WishlistTypePriority/Description">
+                <a href="${wishlistPrioritiesUrl}">Priorities</a> &gt;&gt;
+                <c:url var="descriptionsUrl" value="/action/Wishlist/WishlistPriority/Description">
                     <c:param name="WishlistTypeName" value="${wishlistTypeName}" />
-                    <c:param name="WishlistTypePriorityName" value="${wishlistTypePriorityName}" />
+                    <c:param name="WishlistPriorityName" value="${wishlistPriorityName}" />
                 </c:url>
                 <a href="${descriptionsUrl}">Descriptions</a> &gt;&gt;
                 Add
@@ -46,7 +46,7 @@
             <et:executionErrors id="errorMessage">
                 <p class="executionErrors"><c:out value="${errorMessage}" /></p><br />
             </et:executionErrors>
-            <html:form action="/Wishlist/WishlistTypePriority/DescriptionAdd" method="POST" focus="description">
+            <html:form action="/Wishlist/WishlistPriority/DescriptionAdd" method="POST" focus="description">
                 <table>
                     <tr>
                         <td align=right><fmt:message key="label.language" />:</td>
@@ -71,7 +71,7 @@
                     <tr>
                         <td>
                             <html:hidden property="wishlistTypeName" />
-                            <html:hidden property="wishlistTypePriorityName" />
+                            <html:hidden property="wishlistPriorityName" />
                         </td>
                         <td><html:submit onclick="onSubmitDisable(this);" /><input type="hidden" name="submitButton" /></td>
                     </tr>

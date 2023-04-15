@@ -18,7 +18,7 @@ package com.echothree.ui.cli.dataloader.util.data.handler.wishlist;
 
 import com.echothree.control.user.wishlist.common.WishlistUtil;
 import com.echothree.control.user.wishlist.common.WishlistService;
-import com.echothree.control.user.wishlist.common.form.CreateWishlistTypePriorityDescriptionForm;
+import com.echothree.control.user.wishlist.common.form.CreateWishlistPriorityDescriptionForm;
 import com.echothree.control.user.wishlist.common.form.WishlistFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -26,15 +26,15 @@ import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-public class WishlistTypePriorityHandler
+public class WishlistPriorityHandler
         extends BaseHandler {
     WishlistService wishlistService;
     String wishlistTypeName;
-    String wishlistTypePriorityName;
+    String wishlistPriorityName;
     
-    /** Creates a new instance of WishlistTypePriorityHandler */
-    public WishlistTypePriorityHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String wishlistTypeName,
-            String wishlistTypePriorityName) {
+    /** Creates a new instance of WishlistPriorityHandler */
+    public WishlistPriorityHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String wishlistTypeName,
+            String wishlistPriorityName) {
         super(initialDataParser, parentHandler);
         
         try {
@@ -44,13 +44,13 @@ public class WishlistTypePriorityHandler
         }
         
         this.wishlistTypeName = wishlistTypeName;
-        this.wishlistTypePriorityName = wishlistTypePriorityName;
+        this.wishlistPriorityName = wishlistPriorityName;
     }
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
     throws SAXException {
-        if(localName.equals("wishlistTypePriorityDescription")) {
+        if(localName.equals("wishlistPriorityDescription")) {
             String languageIsoName = null;
             String description = null;
             
@@ -63,14 +63,14 @@ public class WishlistTypePriorityHandler
             }
             
             try {
-                CreateWishlistTypePriorityDescriptionForm form = WishlistFormFactory.getCreateWishlistTypePriorityDescriptionForm();
+                CreateWishlistPriorityDescriptionForm form = WishlistFormFactory.getCreateWishlistPriorityDescriptionForm();
                 
                 form.setWishlistTypeName(wishlistTypeName);
-                form.setWishlistTypePriorityName(wishlistTypePriorityName);
+                form.setWishlistPriorityName(wishlistPriorityName);
                 form.setLanguageIsoName(languageIsoName);
                 form.setDescription(description);
                 
-                wishlistService.createWishlistTypePriorityDescription(initialDataParser.getUserVisit(), form);
+                wishlistService.createWishlistPriorityDescription(initialDataParser.getUserVisit(), form);
             } catch (Exception e) {
                 throw new SAXException(e);
             }
@@ -80,7 +80,7 @@ public class WishlistTypePriorityHandler
     @Override
     public void endElement(String namespaceURI, String localName, String qName)
     throws SAXException {
-        if(localName.equals("wishlistTypePriority")) {
+        if(localName.equals("wishlistPriority")) {
             initialDataParser.popHandler();
         }
     }

@@ -16,12 +16,12 @@
 
 package com.echothree.control.user.wishlist.server.command;
 
-import com.echothree.control.user.wishlist.common.form.CreateWishlistTypePriorityForm;
+import com.echothree.control.user.wishlist.common.form.CreateWishlistPriorityForm;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.wishlist.server.entity.WishlistType;
-import com.echothree.model.data.wishlist.server.entity.WishlistTypePriority;
+import com.echothree.model.data.wishlist.server.entity.WishlistPriority;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -32,23 +32,23 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class CreateWishlistTypePriorityCommand
-        extends BaseSimpleCommand<CreateWishlistTypePriorityForm> {
+public class CreateWishlistPriorityCommand
+        extends BaseSimpleCommand<CreateWishlistPriorityForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
             new FieldDefinition("WishlistTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("WishlistTypePriorityName", FieldType.ENTITY_NAME, true, null, null),
+            new FieldDefinition("WishlistPriorityName", FieldType.ENTITY_NAME, true, null, null),
             new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
             new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
             new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         ));
     }
     
-    /** Creates a new instance of CreateWishlistTypePriorityCommand */
-    public CreateWishlistTypePriorityCommand(UserVisitPK userVisitPK, CreateWishlistTypePriorityForm form) {
+    /** Creates a new instance of CreateWishlistPriorityCommand */
+    public CreateWishlistPriorityCommand(UserVisitPK userVisitPK, CreateWishlistPriorityForm form) {
         super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
     }
     
@@ -59,24 +59,24 @@ public class CreateWishlistTypePriorityCommand
         WishlistType wishlistType = wishlistControl.getWishlistTypeByName(wishlistTypeName);
         
         if(wishlistType != null) {
-            String wishlistTypePriorityName = form.getWishlistTypePriorityName();
-            WishlistTypePriority wishlistTypePriority = wishlistControl.getWishlistTypePriorityByName(wishlistType, wishlistTypePriorityName);
+            String wishlistPriorityName = form.getWishlistPriorityName();
+            WishlistPriority wishlistPriority = wishlistControl.getWishlistPriorityByName(wishlistType, wishlistPriorityName);
             
-            if(wishlistTypePriority == null) {
+            if(wishlistPriority == null) {
                 PartyPK createdBy = getPartyPK();
                 var isDefault = Boolean.valueOf(form.getIsDefault());
                 var sortOrder = Integer.valueOf(form.getSortOrder());
                 var description = form.getDescription();
                 
-                wishlistTypePriority = wishlistControl.createWishlistTypePriority(wishlistType, wishlistTypePriorityName, isDefault,
+                wishlistPriority = wishlistControl.createWishlistPriority(wishlistType, wishlistPriorityName, isDefault,
                         sortOrder, createdBy);
                 
                 if(description != null) {
-                    wishlistControl.createWishlistTypePriorityDescription(wishlistTypePriority, getPreferredLanguage(), description,
+                    wishlistControl.createWishlistPriorityDescription(wishlistPriority, getPreferredLanguage(), description,
                             createdBy);
                 }
             } else {
-                addExecutionError(ExecutionErrors.DuplicateWishlistTypePriorityName.name(), wishlistTypePriorityName);
+                addExecutionError(ExecutionErrors.DuplicateWishlistPriorityName.name(), wishlistPriorityName);
             }
         } else {
             addExecutionError(ExecutionErrors.DuplicateWishlistTypeName.name(), wishlistTypeName);

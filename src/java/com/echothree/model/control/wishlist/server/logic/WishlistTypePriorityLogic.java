@@ -16,19 +16,19 @@
 
 package com.echothree.model.control.wishlist.server.logic;
 
-import com.echothree.control.user.wishlist.common.spec.WishlistTypePriorityUniversalSpec;
+import com.echothree.control.user.wishlist.common.spec.WishlistPriorityUniversalSpec;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
-import com.echothree.model.control.wishlist.common.exception.DuplicateWishlistTypePriorityNameException;
+import com.echothree.model.control.wishlist.common.exception.DuplicateWishlistPriorityNameException;
 import com.echothree.model.control.wishlist.common.exception.UnknownDefaultWishlistTypeException;
-import com.echothree.model.control.wishlist.common.exception.UnknownDefaultWishlistTypePriorityException;
-import com.echothree.model.control.wishlist.common.exception.UnknownWishlistTypePriorityNameException;
+import com.echothree.model.control.wishlist.common.exception.UnknownDefaultWishlistPriorityException;
+import com.echothree.model.control.wishlist.common.exception.UnknownWishlistPriorityNameException;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.wishlist.server.entity.WishlistType;
-import com.echothree.model.data.wishlist.server.entity.WishlistTypePriority;
+import com.echothree.model.data.wishlist.server.entity.WishlistPriority;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
@@ -37,101 +37,101 @@ import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.validation.ParameterUtils;
 
-public class WishlistTypePriorityLogic
+public class WishlistPriorityLogic
         extends BaseLogic {
 
-    private WishlistTypePriorityLogic() {
+    private WishlistPriorityLogic() {
         super();
     }
 
-    private static class WishlistTypePriorityLogicHolder {
-        static WishlistTypePriorityLogic instance = new WishlistTypePriorityLogic();
+    private static class WishlistPriorityLogicHolder {
+        static WishlistPriorityLogic instance = new WishlistPriorityLogic();
     }
 
-    public static WishlistTypePriorityLogic getInstance() {
-        return WishlistTypePriorityLogic.WishlistTypePriorityLogicHolder.instance;
+    public static WishlistPriorityLogic getInstance() {
+        return WishlistPriorityLogic.WishlistPriorityLogicHolder.instance;
     }
 
-    public WishlistTypePriority createWishlistTypePriority(final ExecutionErrorAccumulator eea, final String wishlistTypeName, final String wishlistTypePriorityName,
+    public WishlistPriority createWishlistPriority(final ExecutionErrorAccumulator eea, final String wishlistTypeName, final String wishlistPriorityName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description, final BasePK createdBy) {
         var wishlistType = WishlistTypeLogic.getInstance().getWishlistTypeByName(eea, wishlistTypeName);
-        WishlistTypePriority wishlistTypePriority = null;
+        WishlistPriority wishlistPriority = null;
 
         if(eea == null || !eea.hasExecutionErrors()) {
-            wishlistTypePriority = createWishlistTypePriority(eea, wishlistType, wishlistTypePriorityName, isDefault, sortOrder, language, description, createdBy);
+            wishlistPriority = createWishlistPriority(eea, wishlistType, wishlistPriorityName, isDefault, sortOrder, language, description, createdBy);
         }
 
-        return wishlistTypePriority;
+        return wishlistPriority;
     }
 
-    public WishlistTypePriority createWishlistTypePriority(final ExecutionErrorAccumulator eea, final WishlistType wishlistType, final String wishlistTypePriorityName,
+    public WishlistPriority createWishlistPriority(final ExecutionErrorAccumulator eea, final WishlistType wishlistType, final String wishlistPriorityName,
             final Boolean isDefault, final Integer sortOrder, final Language language, final String description, final BasePK createdBy) {
         var wishlistControl = Session.getModelController(WishlistControl.class);
-        var wishlistTypePriority = wishlistControl.getWishlistTypePriorityByName(wishlistType, wishlistTypePriorityName);
+        var wishlistPriority = wishlistControl.getWishlistPriorityByName(wishlistType, wishlistPriorityName);
 
-        if(wishlistTypePriority == null) {
-            wishlistTypePriority = wishlistControl.createWishlistTypePriority(wishlistType, wishlistTypePriorityName, isDefault, sortOrder, createdBy);
+        if(wishlistPriority == null) {
+            wishlistPriority = wishlistControl.createWishlistPriority(wishlistType, wishlistPriorityName, isDefault, sortOrder, createdBy);
 
             if(description != null) {
-                wishlistControl.createWishlistTypePriorityDescription(wishlistTypePriority, language, description, createdBy);
+                wishlistControl.createWishlistPriorityDescription(wishlistPriority, language, description, createdBy);
             }
         } else {
-            handleExecutionError(DuplicateWishlistTypePriorityNameException.class, eea, ExecutionErrors.DuplicateWishlistTypePriorityName.name(),
-                    wishlistType.getLastDetail().getWishlistTypeName(), wishlistTypePriorityName);
+            handleExecutionError(DuplicateWishlistPriorityNameException.class, eea, ExecutionErrors.DuplicateWishlistPriorityName.name(),
+                    wishlistType.getLastDetail().getWishlistTypeName(), wishlistPriorityName);
         }
 
-        return wishlistTypePriority;
+        return wishlistPriority;
     }
 
-    public WishlistTypePriority getWishlistTypePriorityByName(final ExecutionErrorAccumulator eea, final WishlistType wishlistType, final String wishlistTypePriorityName,
+    public WishlistPriority getWishlistPriorityByName(final ExecutionErrorAccumulator eea, final WishlistType wishlistType, final String wishlistPriorityName,
             final EntityPermission entityPermission) {
         var wishlistControl = Session.getModelController(WishlistControl.class);
-        var wishlistTypePriority = wishlistControl.getWishlistTypePriorityByName(wishlistType, wishlistTypePriorityName, entityPermission);
+        var wishlistPriority = wishlistControl.getWishlistPriorityByName(wishlistType, wishlistPriorityName, entityPermission);
 
-        if(wishlistTypePriority == null) {
-            handleExecutionError(UnknownWishlistTypePriorityNameException.class, eea, ExecutionErrors.UnknownWishlistTypePriorityName.name(),
-                    wishlistType.getLastDetail().getWishlistTypeName(), wishlistTypePriorityName);
+        if(wishlistPriority == null) {
+            handleExecutionError(UnknownWishlistPriorityNameException.class, eea, ExecutionErrors.UnknownWishlistPriorityName.name(),
+                    wishlistType.getLastDetail().getWishlistTypeName(), wishlistPriorityName);
         }
 
-        return wishlistTypePriority;
+        return wishlistPriority;
     }
 
-    public WishlistTypePriority getWishlistTypePriorityByName(final ExecutionErrorAccumulator eea, final WishlistType wishlistType, final String wishlistTypePriorityName) {
-        return getWishlistTypePriorityByName(eea, wishlistType, wishlistTypePriorityName, EntityPermission.READ_ONLY);
+    public WishlistPriority getWishlistPriorityByName(final ExecutionErrorAccumulator eea, final WishlistType wishlistType, final String wishlistPriorityName) {
+        return getWishlistPriorityByName(eea, wishlistType, wishlistPriorityName, EntityPermission.READ_ONLY);
     }
 
-    public WishlistTypePriority getWishlistTypePriorityByNameForUpdate(final ExecutionErrorAccumulator eea, final WishlistType wishlistType, final String wishlistTypePriorityName) {
-        return getWishlistTypePriorityByName(eea, wishlistType, wishlistTypePriorityName, EntityPermission.READ_WRITE);
+    public WishlistPriority getWishlistPriorityByNameForUpdate(final ExecutionErrorAccumulator eea, final WishlistType wishlistType, final String wishlistPriorityName) {
+        return getWishlistPriorityByName(eea, wishlistType, wishlistPriorityName, EntityPermission.READ_WRITE);
     }
 
-    public WishlistTypePriority getWishlistTypePriorityByName(final ExecutionErrorAccumulator eea, final String wishlistTypeName, final String wishlistTypePriorityName,
+    public WishlistPriority getWishlistPriorityByName(final ExecutionErrorAccumulator eea, final String wishlistTypeName, final String wishlistPriorityName,
             final EntityPermission entityPermission) {
         var wishlistType = WishlistTypeLogic.getInstance().getWishlistTypeByName(eea, wishlistTypeName);
-        WishlistTypePriority wishlistTypePriority = null;
+        WishlistPriority wishlistPriority = null;
 
         if(!eea.hasExecutionErrors()) {
-            wishlistTypePriority = getWishlistTypePriorityByName(eea, wishlistType, wishlistTypePriorityName, entityPermission);
+            wishlistPriority = getWishlistPriorityByName(eea, wishlistType, wishlistPriorityName, entityPermission);
         }
 
-        return wishlistTypePriority;
+        return wishlistPriority;
     }
 
-    public WishlistTypePriority getWishlistTypePriorityByName(final ExecutionErrorAccumulator eea, final String wishlistTypeName, final String wishlistTypePriorityName) {
-        return getWishlistTypePriorityByName(eea, wishlistTypeName, wishlistTypePriorityName, EntityPermission.READ_ONLY);
+    public WishlistPriority getWishlistPriorityByName(final ExecutionErrorAccumulator eea, final String wishlistTypeName, final String wishlistPriorityName) {
+        return getWishlistPriorityByName(eea, wishlistTypeName, wishlistPriorityName, EntityPermission.READ_ONLY);
     }
 
-    public WishlistTypePriority getWishlistTypePriorityByNameForUpdate(final ExecutionErrorAccumulator eea, final String wishlistTypeName, final String wishlistTypePriorityName) {
-        return getWishlistTypePriorityByName(eea, wishlistTypeName, wishlistTypePriorityName, EntityPermission.READ_WRITE);
+    public WishlistPriority getWishlistPriorityByNameForUpdate(final ExecutionErrorAccumulator eea, final String wishlistTypeName, final String wishlistPriorityName) {
+        return getWishlistPriorityByName(eea, wishlistTypeName, wishlistPriorityName, EntityPermission.READ_WRITE);
     }
 
-    public WishlistTypePriority getWishlistTypePriorityByUniversalSpec(final ExecutionErrorAccumulator eea, final WishlistTypePriorityUniversalSpec universalSpec,
+    public WishlistPriority getWishlistPriorityByUniversalSpec(final ExecutionErrorAccumulator eea, final WishlistPriorityUniversalSpec universalSpec,
             final boolean allowDefault, final EntityPermission entityPermission) {
         var wishlistControl = Session.getModelController(WishlistControl.class);
         var wishlistTypeName = universalSpec.getWishlistTypeName();
-        var wishlistTypePriorityName = universalSpec.getWishlistTypePriorityName();
-        var nameParameterCount= ParameterUtils.getInstance().countNonNullParameters(wishlistTypeName, wishlistTypePriorityName);
+        var wishlistPriorityName = universalSpec.getWishlistPriorityName();
+        var nameParameterCount= ParameterUtils.getInstance().countNonNullParameters(wishlistTypeName, wishlistPriorityName);
         var possibleEntitySpecs= EntityInstanceLogic.getInstance().countPossibleEntitySpecs(universalSpec);
-        WishlistTypePriority wishlistTypePriority = null;
+        WishlistPriority wishlistPriority = null;
 
         if(nameParameterCount < 3 && possibleEntitySpecs == 0) {
             WishlistType wishlistType = null;
@@ -151,49 +151,49 @@ public class WishlistTypePriorityLogic
             }
 
             if(!eea.hasExecutionErrors()) {
-                if(wishlistTypePriorityName == null) {
+                if(wishlistPriorityName == null) {
                     if(allowDefault) {
-                        wishlistTypePriority = wishlistControl.getDefaultWishlistTypePriority(wishlistType, entityPermission);
+                        wishlistPriority = wishlistControl.getDefaultWishlistPriority(wishlistType, entityPermission);
 
-                        if(wishlistTypePriority == null) {
-                            handleExecutionError(UnknownDefaultWishlistTypePriorityException.class, eea, ExecutionErrors.UnknownDefaultWishlistTypePriority.name());
+                        if(wishlistPriority == null) {
+                            handleExecutionError(UnknownDefaultWishlistPriorityException.class, eea, ExecutionErrors.UnknownDefaultWishlistPriority.name());
                         }
                     } else {
                         handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
                     }
                 } else {
-                    wishlistTypePriority = getWishlistTypePriorityByName(eea, wishlistType, wishlistTypePriorityName, entityPermission);
+                    wishlistPriority = getWishlistPriorityByName(eea, wishlistType, wishlistPriorityName, entityPermission);
                 }
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                    ComponentVendors.ECHOTHREE.name(), EntityTypes.WishlistTypePriority.name());
+                    ComponentVendors.ECHOTHREE.name(), EntityTypes.WishlistPriority.name());
 
             if(!eea.hasExecutionErrors()) {
-                wishlistTypePriority = wishlistControl.getWishlistTypePriorityByEntityInstance(entityInstance, entityPermission);
+                wishlistPriority = wishlistControl.getWishlistPriorityByEntityInstance(entityInstance, entityPermission);
             }
         } else {
             handleExecutionError(InvalidParameterCountException.class, eea, ExecutionErrors.InvalidParameterCount.name());
         }
 
-        return wishlistTypePriority;
+        return wishlistPriority;
     }
 
-    public WishlistTypePriority getWishlistTypePriorityByUniversalSpec(final ExecutionErrorAccumulator eea, final WishlistTypePriorityUniversalSpec universalSpec,
+    public WishlistPriority getWishlistPriorityByUniversalSpec(final ExecutionErrorAccumulator eea, final WishlistPriorityUniversalSpec universalSpec,
             boolean allowDefault) {
-        return getWishlistTypePriorityByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_ONLY);
+        return getWishlistPriorityByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_ONLY);
     }
 
-    public WishlistTypePriority getWishlistTypePriorityByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea, final WishlistTypePriorityUniversalSpec universalSpec,
+    public WishlistPriority getWishlistPriorityByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea, final WishlistPriorityUniversalSpec universalSpec,
             boolean allowDefault) {
-        return getWishlistTypePriorityByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
+        return getWishlistPriorityByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
     }
 
-    public void deleteWishlistTypePriority(final ExecutionErrorAccumulator eea, final WishlistTypePriority wishlistTypePriority,
+    public void deleteWishlistPriority(final ExecutionErrorAccumulator eea, final WishlistPriority wishlistPriority,
             final BasePK deletedBy) {
         var wishlistControl = Session.getModelController(WishlistControl.class);
 
-        wishlistControl.deleteWishlistTypePriority(wishlistTypePriority, deletedBy);
+        wishlistControl.deleteWishlistPriority(wishlistPriority, deletedBy);
     }
 
 }

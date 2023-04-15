@@ -63,31 +63,31 @@ public interface WishlistService
     //   Wishlist Type Priorities
     // -------------------------------------------------------------------------
     
-    CommandResult createWishlistTypePriority(UserVisitPK userVisitPK, CreateWishlistTypePriorityForm form);
+    CommandResult createWishlistPriority(UserVisitPK userVisitPK, CreateWishlistPriorityForm form);
     
-    CommandResult getWishlistTypePriority(UserVisitPK userVisitPK, GetWishlistTypePriorityForm form);
+    CommandResult getWishlistPriority(UserVisitPK userVisitPK, GetWishlistPriorityForm form);
     
-    CommandResult getWishlistTypePriorities(UserVisitPK userVisitPK, GetWishlistTypePrioritiesForm form);
+    CommandResult getWishlistPriorities(UserVisitPK userVisitPK, GetWishlistPrioritiesForm form);
     
-    CommandResult getWishlistTypePriorityChoices(UserVisitPK userVisitPK, GetWishlistTypePriorityChoicesForm form);
+    CommandResult getWishlistPriorityChoices(UserVisitPK userVisitPK, GetWishlistPriorityChoicesForm form);
     
-    CommandResult setDefaultWishlistTypePriority(UserVisitPK userVisitPK, SetDefaultWishlistTypePriorityForm form);
+    CommandResult setDefaultWishlistPriority(UserVisitPK userVisitPK, SetDefaultWishlistPriorityForm form);
     
-    CommandResult editWishlistTypePriority(UserVisitPK userVisitPK, EditWishlistTypePriorityForm form);
+    CommandResult editWishlistPriority(UserVisitPK userVisitPK, EditWishlistPriorityForm form);
     
-    CommandResult deleteWishlistTypePriority(UserVisitPK userVisitPK, DeleteWishlistTypePriorityForm form);
+    CommandResult deleteWishlistPriority(UserVisitPK userVisitPK, DeleteWishlistPriorityForm form);
     
     // -------------------------------------------------------------------------
     //   Wishlist Type Priority Descriptions
     // -------------------------------------------------------------------------
     
-    CommandResult createWishlistTypePriorityDescription(UserVisitPK userVisitPK, CreateWishlistTypePriorityDescriptionForm form);
+    CommandResult createWishlistPriorityDescription(UserVisitPK userVisitPK, CreateWishlistPriorityDescriptionForm form);
     
-    CommandResult getWishlistTypePriorityDescriptions(UserVisitPK userVisitPK, GetWishlistTypePriorityDescriptionsForm form);
+    CommandResult getWishlistPriorityDescriptions(UserVisitPK userVisitPK, GetWishlistPriorityDescriptionsForm form);
     
-    CommandResult editWishlistTypePriorityDescription(UserVisitPK userVisitPK, EditWishlistTypePriorityDescriptionForm form);
+    CommandResult editWishlistPriorityDescription(UserVisitPK userVisitPK, EditWishlistPriorityDescriptionForm form);
     
-    CommandResult deleteWishlistTypePriorityDescription(UserVisitPK userVisitPK, DeleteWishlistTypePriorityDescriptionForm form);
+    CommandResult deleteWishlistPriorityDescription(UserVisitPK userVisitPK, DeleteWishlistPriorityDescriptionForm form);
     
     // -------------------------------------------------------------------------
     //   Wishlist Lines

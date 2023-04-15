@@ -18,26 +18,26 @@ package com.echothree.model.control.wishlist.common.exception;
 
 import com.echothree.util.common.message.Message;
 
-public class UnknownWishlistTypePriorityNameException
+public class UnknownWishlistPriorityNameException
         extends BaseWishlistException {
     
-    /** Creates a new instance of UnknownWishlistTypePriorityNameException */
-    public UnknownWishlistTypePriorityNameException() {
+    /** Creates a new instance of UnknownWishlistPriorityNameException */
+    public UnknownWishlistPriorityNameException() {
         super();
     }
     
-    /** Creates a new instance of UnknownWishlistTypePriorityNameException */
-    public UnknownWishlistTypePriorityNameException(String message) {
+    /** Creates a new instance of UnknownWishlistPriorityNameException */
+    public UnknownWishlistPriorityNameException(String message) {
         super(message);
     }
     
-    /** Creates a new instance of UnknownWishlistTypePriorityNameException */
-    public UnknownWishlistTypePriorityNameException(Throwable cause) {
+    /** Creates a new instance of UnknownWishlistPriorityNameException */
+    public UnknownWishlistPriorityNameException(Throwable cause) {
         super(cause);
     }
     
-    /** Creates a new instance of UnknownWishlistTypePriorityNameException */
-    public UnknownWishlistTypePriorityNameException(Message message) {
+    /** Creates a new instance of UnknownWishlistPriorityNameException */
+    public UnknownWishlistPriorityNameException(Message message) {
         super(message);
     }
 

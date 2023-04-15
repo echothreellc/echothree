@@ -30,10 +30,10 @@
                 <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
                 <a href="<c:url value="/action/Wishlist/Main" />">Wishlists</a> &gt;&gt;
                 <a href="<c:url value="/action/Wishlist/WishlistType/Main" />">Types</a> &gt;&gt;
-                <c:url var="wishlistTypePrioritiesUrl" value="/action/Wishlist/WishlistTypePriority/Main">
+                <c:url var="wishlistPrioritiesUrl" value="/action/Wishlist/WishlistPriority/Main">
                     <c:param name="WishlistTypeName" value="${wishlistTypeName}" />
                 </c:url>
-                <a href="${wishlistTypePrioritiesUrl}">Priorities</a> &gt;&gt;
+                <a href="${wishlistPrioritiesUrl}">Priorities</a> &gt;&gt;
                 Edit
             </h2>
         </div>
@@ -48,13 +48,13 @@
                     <et:executionErrors id="errorMessage">
                         <p class="executionErrors"><c:out value="${errorMessage}" /></p><br />
                     </et:executionErrors>
-                    <html:form action="/Wishlist/WishlistTypePriority/Edit" method="POST" focus="wishlistTypePriorityName">
+                    <html:form action="/Wishlist/WishlistPriority/Edit" method="POST" focus="wishlistPriorityName">
                         <table>
                             <tr>
-                                <td align=right><fmt:message key="label.wishlistTypePriorityName" />:</td>
+                                <td align=right><fmt:message key="label.wishlistPriorityName" />:</td>
                                 <td>
-                                    <html:text property="wishlistTypePriorityName" size="40" maxlength="40" /> (*)
-                                    <et:validationErrors id="errorMessage" property="WishlistTypePriorityName">
+                                    <html:text property="wishlistPriorityName" size="40" maxlength="40" /> (*)
+                                    <et:validationErrors id="errorMessage" property="WishlistPriorityName">
                                         <p><c:out value="${errorMessage}" /></p>
                                     </et:validationErrors>
                                 </td>
@@ -89,7 +89,7 @@
                             <tr>
                                 <td>
                                     <html:hidden property="wishlistTypeName" />
-                                    <html:hidden property="originalWishlistTypePriorityName" />
+                                    <html:hidden property="originalWishlistPriorityName" />
                                 </td>
                                 <td><html:submit onclick="onSubmitDisable(this);" />&nbsp;<html:reset /><html:hidden property="submitButton" /></td>
                             </tr>

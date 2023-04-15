@@ -14,10 +14,10 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.ui.web.main.action.wishlist.wishlisttypepriority;
+package com.echothree.ui.web.main.action.wishlist.wishlistpriority;
 
 import com.echothree.control.user.wishlist.common.WishlistUtil;
-import com.echothree.control.user.wishlist.common.form.DeleteWishlistTypePriorityForm;
+import com.echothree.control.user.wishlist.common.form.DeleteWishlistPriorityForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -36,13 +36,13 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 @SproutAction(
-    path = "/Wishlist/WishlistTypePriority/Delete",
+    path = "/Wishlist/WishlistPriority/Delete",
     mappingClass = SecureActionMapping.class,
     properties = {
         @SproutProperty(property = "secure", value = "true")
     },
     forwards = {
-        @SproutForward(name = "Display", path = "/action/Wishlist/WishlistTypePriority/Main", redirect = true)
+        @SproutForward(name = "Display", path = "/action/Wishlist/WishlistPriority/Main", redirect = true)
     }
 )
 public class DeleteAction
@@ -55,13 +55,13 @@ public class DeleteAction
         String wishlistTypeName = request.getParameter(ParameterConstants.WISHLIST_TYPE_NAME);
         
         try {
-            DeleteWishlistTypePriorityForm commandForm = WishlistUtil.getHome().getDeleteWishlistTypePriorityForm();
-            String wishlistTypePriorityName = request.getParameter(ParameterConstants.WISHLIST_TYPE_PRIORITY_NAME);
+            DeleteWishlistPriorityForm commandForm = WishlistUtil.getHome().getDeleteWishlistPriorityForm();
+            String wishlistPriorityName = request.getParameter(ParameterConstants.WISHLIST_TYPE_PRIORITY_NAME);
             
             commandForm.setWishlistTypeName(wishlistTypeName);
-            commandForm.setWishlistTypePriorityName(wishlistTypePriorityName);
+            commandForm.setWishlistPriorityName(wishlistPriorityName);
             
-            WishlistUtil.getHome().deleteWishlistTypePriority(getUserVisitPK(request), commandForm);
+            WishlistUtil.getHome().deleteWishlistPriority(getUserVisitPK(request), commandForm);
             
             forwardKey = ForwardConstants.DISPLAY;
         } catch (NamingException ne) {

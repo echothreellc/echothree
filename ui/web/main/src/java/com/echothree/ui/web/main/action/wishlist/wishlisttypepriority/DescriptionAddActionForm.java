@@ -14,19 +14,19 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.ui.web.main.action.wishlist.wishlisttypepriority;
+package com.echothree.ui.web.main.action.wishlist.wishlistpriority;
 
 import com.echothree.view.client.web.struts.BaseLanguageActionForm;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.struts.action.ActionMapping;
 
-@SproutForm(name="WishlistTypePriorityDescriptionAdd")
+@SproutForm(name="WishlistPriorityDescriptionAdd")
 public class DescriptionAddActionForm
         extends BaseLanguageActionForm {
     
     private String wishlistTypeName;
-    private String wishlistTypePriorityName;
+    private String wishlistPriorityName;
     private String description;
     
     public void setWishlistTypeName(String wishlistTypeName) {
@@ -37,12 +37,12 @@ public class DescriptionAddActionForm
         return wishlistTypeName;
     }
     
-    public void setWishlistTypePriorityName(String wishlistTypePriorityName) {
-        this.wishlistTypePriorityName = wishlistTypePriorityName;
+    public void setWishlistPriorityName(String wishlistPriorityName) {
+        this.wishlistPriorityName = wishlistPriorityName;
     }
     
-    public String getWishlistTypePriorityName() {
-        return wishlistTypePriorityName;
+    public String getWishlistPriorityName() {
+        return wishlistPriorityName;
     }
     
     public void setDescription(String description) {

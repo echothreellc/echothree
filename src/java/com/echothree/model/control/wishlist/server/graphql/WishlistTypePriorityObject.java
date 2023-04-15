@@ -19,8 +19,8 @@ package com.echothree.model.control.wishlist.server.graphql;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
-import com.echothree.model.data.wishlist.server.entity.WishlistTypePriority;
-import com.echothree.model.data.wishlist.server.entity.WishlistTypePriorityDetail;
+import com.echothree.model.data.wishlist.server.entity.WishlistPriority;
+import com.echothree.model.data.wishlist.server.entity.WishlistPriorityDetail;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -29,54 +29,54 @@ import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("wishlist type priority object")
-@GraphQLName("WishlistTypePriority")
-public class WishlistTypePriorityObject
+@GraphQLName("WishlistPriority")
+public class WishlistPriorityObject
         extends BaseEntityInstanceObject {
     
-    private final WishlistTypePriority wishlistTypePriority; // Always Present
+    private final WishlistPriority wishlistPriority; // Always Present
 
-    public WishlistTypePriorityObject(final WishlistTypePriority wishlistTypePriority) {
-        super(wishlistTypePriority.getPrimaryKey());
+    public WishlistPriorityObject(final WishlistPriority wishlistPriority) {
+        super(wishlistPriority.getPrimaryKey());
 
-        this.wishlistTypePriority = wishlistTypePriority;
+        this.wishlistPriority = wishlistPriority;
     }
 
-    private WishlistTypePriorityDetail wishlistTypePriorityDetail; // Optional, use getWishlistTypePriorityDetail()
+    private WishlistPriorityDetail wishlistPriorityDetail; // Optional, use getWishlistPriorityDetail()
     
-    private WishlistTypePriorityDetail getWishlistTypePriorityDetail() {
-        if(wishlistTypePriorityDetail == null) {
-            wishlistTypePriorityDetail = wishlistTypePriority.getLastDetail();
+    private WishlistPriorityDetail getWishlistPriorityDetail() {
+        if(wishlistPriorityDetail == null) {
+            wishlistPriorityDetail = wishlistPriority.getLastDetail();
         }
         
-        return wishlistTypePriorityDetail;
+        return wishlistPriorityDetail;
     }
 
     @GraphQLField
     @GraphQLDescription("wishlist type priority name")
     @GraphQLNonNull
-    public String getWishlistTypePriorityName() {
-        return getWishlistTypePriorityDetail().getWishlistTypePriorityName();
+    public String getWishlistPriorityName() {
+        return getWishlistPriorityDetail().getWishlistPriorityName();
     }
 
     @GraphQLField
     @GraphQLDescription("wishlist type")
     @GraphQLNonNull
     public WishlistTypeObject getWishlistType(final DataFetchingEnvironment env) {
-        return WishlistSecurityUtils.getInstance().getHasWishlistTypeAccess(env) ? new WishlistTypeObject(getWishlistTypePriorityDetail().getWishlistType()) : null;
+        return WishlistSecurityUtils.getInstance().getHasWishlistTypeAccess(env) ? new WishlistTypeObject(getWishlistPriorityDetail().getWishlistType()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("is default")
     @GraphQLNonNull
     public boolean getIsDefault() {
-        return getWishlistTypePriorityDetail().getIsDefault();
+        return getWishlistPriorityDetail().getIsDefault();
     }
 
     @GraphQLField
     @GraphQLDescription("sort order")
     @GraphQLNonNull
     public int getSortOrder() {
-        return getWishlistTypePriorityDetail().getSortOrder();
+        return getWishlistPriorityDetail().getSortOrder();
     }
     
     @GraphQLField
@@ -86,7 +86,7 @@ public class WishlistTypePriorityObject
         var wishlistControl = Session.getModelController(WishlistControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return wishlistControl.getBestWishlistTypePriorityDescription(wishlistTypePriority, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return wishlistControl.getBestWishlistPriorityDescription(wishlistPriority, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
 
 }

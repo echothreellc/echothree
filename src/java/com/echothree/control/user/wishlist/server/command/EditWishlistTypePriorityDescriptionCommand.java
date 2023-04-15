@@ -17,19 +17,19 @@
 package com.echothree.control.user.wishlist.server.command;
 
 import com.echothree.control.user.wishlist.common.edit.WishlistEditFactory;
-import com.echothree.control.user.wishlist.common.edit.WishlistTypePriorityDescriptionEdit;
-import com.echothree.control.user.wishlist.common.form.EditWishlistTypePriorityDescriptionForm;
-import com.echothree.control.user.wishlist.common.result.EditWishlistTypePriorityDescriptionResult;
+import com.echothree.control.user.wishlist.common.edit.WishlistPriorityDescriptionEdit;
+import com.echothree.control.user.wishlist.common.form.EditWishlistPriorityDescriptionForm;
+import com.echothree.control.user.wishlist.common.result.EditWishlistPriorityDescriptionResult;
 import com.echothree.control.user.wishlist.common.result.WishlistResultFactory;
-import com.echothree.control.user.wishlist.common.spec.WishlistTypePriorityDescriptionSpec;
+import com.echothree.control.user.wishlist.common.spec.WishlistPriorityDescriptionSpec;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.wishlist.server.entity.WishlistType;
-import com.echothree.model.data.wishlist.server.entity.WishlistTypePriority;
-import com.echothree.model.data.wishlist.server.entity.WishlistTypePriorityDescription;
-import com.echothree.model.data.wishlist.server.value.WishlistTypePriorityDescriptionValue;
+import com.echothree.model.data.wishlist.server.entity.WishlistPriority;
+import com.echothree.model.data.wishlist.server.entity.WishlistPriorityDescription;
+import com.echothree.model.data.wishlist.server.value.WishlistPriorityDescriptionValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -41,8 +41,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class EditWishlistTypePriorityDescriptionCommand
-        extends BaseEditCommand<WishlistTypePriorityDescriptionSpec, WishlistTypePriorityDescriptionEdit> {
+public class EditWishlistPriorityDescriptionCommand
+        extends BaseEditCommand<WishlistPriorityDescriptionSpec, WishlistPriorityDescriptionEdit> {
     
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
@@ -50,7 +50,7 @@ public class EditWishlistTypePriorityDescriptionCommand
     static {
         SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
             new FieldDefinition("WishlistTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("WishlistTypePriorityName", FieldType.ENTITY_NAME, true, null, null),
+            new FieldDefinition("WishlistPriorityName", FieldType.ENTITY_NAME, true, null, null),
             new FieldDefinition("LanguageIsoName", FieldType.ENTITY_NAME, true, null, null)
         ));
         
@@ -59,73 +59,73 @@ public class EditWishlistTypePriorityDescriptionCommand
         ));
     }
     
-    /** Creates a new instance of EditWishlistTypePriorityDescriptionCommand */
-    public EditWishlistTypePriorityDescriptionCommand(UserVisitPK userVisitPK, EditWishlistTypePriorityDescriptionForm form) {
+    /** Creates a new instance of EditWishlistPriorityDescriptionCommand */
+    public EditWishlistPriorityDescriptionCommand(UserVisitPK userVisitPK, EditWishlistPriorityDescriptionForm form) {
         super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override
     protected BaseResult execute() {
         var wishlistControl = Session.getModelController(WishlistControl.class);
-        EditWishlistTypePriorityDescriptionResult result = WishlistResultFactory.getEditWishlistTypePriorityDescriptionResult();
+        EditWishlistPriorityDescriptionResult result = WishlistResultFactory.getEditWishlistPriorityDescriptionResult();
         String wishlistTypeName = spec.getWishlistTypeName();
         WishlistType wishlistType = wishlistControl.getWishlistTypeByName(wishlistTypeName);
         
         if(wishlistType != null) {
-            String wishlistTypePriorityName = spec.getWishlistTypePriorityName();
-            WishlistTypePriority wishlistTypePriority = wishlistControl.getWishlistTypePriorityByName(wishlistType, wishlistTypePriorityName);
+            String wishlistPriorityName = spec.getWishlistPriorityName();
+            WishlistPriority wishlistPriority = wishlistControl.getWishlistPriorityByName(wishlistType, wishlistPriorityName);
             
-            if(wishlistTypePriority != null) {
+            if(wishlistPriority != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
                 String languageIsoName = spec.getLanguageIsoName();
                 Language language = partyControl.getLanguageByIsoName(languageIsoName);
                 
                 if(language != null) {
                     if(editMode.equals(EditMode.LOCK)) {
-                        WishlistTypePriorityDescription wishlistTypePriorityDescription = wishlistControl.getWishlistTypePriorityDescription(wishlistTypePriority, language);
+                        WishlistPriorityDescription wishlistPriorityDescription = wishlistControl.getWishlistPriorityDescription(wishlistPriority, language);
                         
-                        if(wishlistTypePriorityDescription != null) {
-                            result.setWishlistTypePriorityDescription(wishlistControl.getWishlistTypePriorityDescriptionTransfer(getUserVisit(), wishlistTypePriorityDescription));
+                        if(wishlistPriorityDescription != null) {
+                            result.setWishlistPriorityDescription(wishlistControl.getWishlistPriorityDescriptionTransfer(getUserVisit(), wishlistPriorityDescription));
                             
-                            if(lockEntity(wishlistTypePriority)) {
-                                WishlistTypePriorityDescriptionEdit edit = WishlistEditFactory.getWishlistTypePriorityDescriptionEdit();
+                            if(lockEntity(wishlistPriority)) {
+                                WishlistPriorityDescriptionEdit edit = WishlistEditFactory.getWishlistPriorityDescriptionEdit();
                                 
                                 result.setEdit(edit);
-                                edit.setDescription(wishlistTypePriorityDescription.getDescription());
+                                edit.setDescription(wishlistPriorityDescription.getDescription());
                             } else {
                                 addExecutionError(ExecutionErrors.EntityLockFailed.name());
                             }
                             
-                            result.setEntityLock(getEntityLockTransfer(wishlistTypePriority));
+                            result.setEntityLock(getEntityLockTransfer(wishlistPriority));
                         } else {
-                            addExecutionError(ExecutionErrors.UnknownWishlistTypePriorityDescription.name());
+                            addExecutionError(ExecutionErrors.UnknownWishlistPriorityDescription.name());
                         }
                     } else if(editMode.equals(EditMode.UPDATE)) {
-                        WishlistTypePriorityDescriptionValue wishlistTypePriorityDescriptionValue = wishlistControl.getWishlistTypePriorityDescriptionValueForUpdate(wishlistTypePriority, language);
+                        WishlistPriorityDescriptionValue wishlistPriorityDescriptionValue = wishlistControl.getWishlistPriorityDescriptionValueForUpdate(wishlistPriority, language);
                         
-                        if(wishlistTypePriorityDescriptionValue != null) {
-                            if(lockEntityForUpdate(wishlistTypePriority)) {
+                        if(wishlistPriorityDescriptionValue != null) {
+                            if(lockEntityForUpdate(wishlistPriority)) {
                                 try {
                                     String description = edit.getDescription();
                                     
-                                    wishlistTypePriorityDescriptionValue.setDescription(description);
+                                    wishlistPriorityDescriptionValue.setDescription(description);
                                     
-                                    wishlistControl.updateWishlistTypePriorityDescriptionFromValue(wishlistTypePriorityDescriptionValue, getPartyPK());
+                                    wishlistControl.updateWishlistPriorityDescriptionFromValue(wishlistPriorityDescriptionValue, getPartyPK());
                                 } finally {
-                                    unlockEntity(wishlistTypePriority);
+                                    unlockEntity(wishlistPriority);
                                 }
                             } else {
                                 addExecutionError(ExecutionErrors.EntityLockStale.name());
                             }
                         } else {
-                            addExecutionError(ExecutionErrors.UnknownWishlistTypePriorityDescription.name());
+                            addExecutionError(ExecutionErrors.UnknownWishlistPriorityDescription.name());
                         }
                     }
                 } else {
                     addExecutionError(ExecutionErrors.UnknownLanguageIsoName.name(), languageIsoName);
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownWishlistTypePriorityName.name(), wishlistTypePriorityName);
+                addExecutionError(ExecutionErrors.UnknownWishlistPriorityName.name(), wishlistPriorityName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownWishlistTypeName.name(), wishlistTypeName);

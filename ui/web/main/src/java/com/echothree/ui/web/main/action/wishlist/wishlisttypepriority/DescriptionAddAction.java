@@ -14,10 +14,10 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.ui.web.main.action.wishlist.wishlisttypepriority;
+package com.echothree.ui.web.main.action.wishlist.wishlistpriority;
 
 import com.echothree.control.user.wishlist.common.WishlistUtil;
-import com.echothree.control.user.wishlist.common.form.CreateWishlistTypePriorityDescriptionForm;
+import com.echothree.control.user.wishlist.common.form.CreateWishlistPriorityDescriptionForm;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -38,15 +38,15 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 @SproutAction(
-    path = "/Wishlist/WishlistTypePriority/DescriptionAdd",
+    path = "/Wishlist/WishlistPriority/DescriptionAdd",
     mappingClass = SecureActionMapping.class,
-    name = "WishlistTypePriorityDescriptionAdd",
+    name = "WishlistPriorityDescriptionAdd",
     properties = {
         @SproutProperty(property = "secure", value = "true")
     },
     forwards = {
-        @SproutForward(name = "Display", path = "/action/Wishlist/WishlistTypePriority/Description", redirect = true),
-        @SproutForward(name = "Form", path = "/wishlist/wishlisttypepriority/descriptionAdd.jsp")
+        @SproutForward(name = "Display", path = "/action/Wishlist/WishlistPriority/Description", redirect = true),
+        @SproutForward(name = "Form", path = "/wishlist/wishlistpriority/descriptionAdd.jsp")
     }
 )
 public class DescriptionAddAction
@@ -57,26 +57,26 @@ public class DescriptionAddAction
     throws Exception {
         String forwardKey = null;
         String wishlistTypeName = request.getParameter(ParameterConstants.WISHLIST_TYPE_NAME);
-        String wishlistTypePriorityName = request.getParameter(ParameterConstants.WISHLIST_TYPE_PRIORITY_NAME);
+        String wishlistPriorityName = request.getParameter(ParameterConstants.WISHLIST_TYPE_PRIORITY_NAME);
         
         try {
             if(forwardKey == null) {
                 DescriptionAddActionForm actionForm = (DescriptionAddActionForm)form;
                 
                 if(wasPost(request)) {
-                    CreateWishlistTypePriorityDescriptionForm commandForm = WishlistUtil.getHome().getCreateWishlistTypePriorityDescriptionForm();
+                    CreateWishlistPriorityDescriptionForm commandForm = WishlistUtil.getHome().getCreateWishlistPriorityDescriptionForm();
                     
                     if(wishlistTypeName == null)
                         wishlistTypeName = actionForm.getWishlistTypeName();
-                    if(wishlistTypePriorityName == null)
-                        wishlistTypePriorityName = actionForm.getWishlistTypePriorityName();
+                    if(wishlistPriorityName == null)
+                        wishlistPriorityName = actionForm.getWishlistPriorityName();
                     
                     commandForm.setWishlistTypeName(wishlistTypeName);
-                    commandForm.setWishlistTypePriorityName(wishlistTypePriorityName);
+                    commandForm.setWishlistPriorityName(wishlistPriorityName);
                     commandForm.setLanguageIsoName(actionForm.getLanguageChoice());
                     commandForm.setDescription(actionForm.getDescription());
                     
-                    CommandResult commandResult = WishlistUtil.getHome().createWishlistTypePriorityDescription(getUserVisitPK(request), commandForm);
+                    CommandResult commandResult = WishlistUtil.getHome().createWishlistPriorityDescription(getUserVisitPK(request), commandForm);
                     
                     if(commandResult.hasErrors()) {
                         setCommandResultAttribute(request, commandResult);
@@ -86,7 +86,7 @@ public class DescriptionAddAction
                     }
                 } else {
                     actionForm.setWishlistTypeName(wishlistTypeName);
-                    actionForm.setWishlistTypePriorityName(wishlistTypePriorityName);
+                    actionForm.setWishlistPriorityName(wishlistPriorityName);
                     forwardKey = ForwardConstants.FORM;
                 }
             }
@@ -97,12 +97,12 @@ public class DescriptionAddAction
         CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.WISHLIST_TYPE_NAME, wishlistTypeName);
-            request.setAttribute(AttributeConstants.WISHLIST_TYPE_PRIORITY_NAME, wishlistTypePriorityName);
+            request.setAttribute(AttributeConstants.WISHLIST_TYPE_PRIORITY_NAME, wishlistPriorityName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(2);
             
             parameters.put(ParameterConstants.WISHLIST_TYPE_NAME, wishlistTypeName);
-            parameters.put(ParameterConstants.WISHLIST_TYPE_PRIORITY_NAME, wishlistTypePriorityName);
+            parameters.put(ParameterConstants.WISHLIST_TYPE_PRIORITY_NAME, wishlistPriorityName);
             customActionForward.setParameters(parameters);
         }
         

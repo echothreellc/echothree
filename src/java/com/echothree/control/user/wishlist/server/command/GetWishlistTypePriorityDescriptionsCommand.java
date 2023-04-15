@@ -16,13 +16,13 @@
 
 package com.echothree.control.user.wishlist.server.command;
 
-import com.echothree.control.user.wishlist.common.form.GetWishlistTypePriorityDescriptionsForm;
-import com.echothree.control.user.wishlist.common.result.GetWishlistTypePriorityDescriptionsResult;
+import com.echothree.control.user.wishlist.common.form.GetWishlistPriorityDescriptionsForm;
+import com.echothree.control.user.wishlist.common.result.GetWishlistPriorityDescriptionsResult;
 import com.echothree.control.user.wishlist.common.result.WishlistResultFactory;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.wishlist.server.entity.WishlistType;
-import com.echothree.model.data.wishlist.server.entity.WishlistTypePriority;
+import com.echothree.model.data.wishlist.server.entity.WishlistPriority;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -33,39 +33,39 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class GetWishlistTypePriorityDescriptionsCommand
-        extends BaseSimpleCommand<GetWishlistTypePriorityDescriptionsForm> {
+public class GetWishlistPriorityDescriptionsCommand
+        extends BaseSimpleCommand<GetWishlistPriorityDescriptionsForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
             new FieldDefinition("WishlistTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("WishlistTypePriorityName", FieldType.ENTITY_NAME, true, null, null)
+            new FieldDefinition("WishlistPriorityName", FieldType.ENTITY_NAME, true, null, null)
         ));
     }
     
-    /** Creates a new instance of GetWishlistTypePriorityDescriptionsCommand */
-    public GetWishlistTypePriorityDescriptionsCommand(UserVisitPK userVisitPK, GetWishlistTypePriorityDescriptionsForm form) {
+    /** Creates a new instance of GetWishlistPriorityDescriptionsCommand */
+    public GetWishlistPriorityDescriptionsCommand(UserVisitPK userVisitPK, GetWishlistPriorityDescriptionsForm form) {
         super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
     }
     
     @Override
     protected BaseResult execute() {
         var wishlistControl = Session.getModelController(WishlistControl.class);
-        GetWishlistTypePriorityDescriptionsResult result = WishlistResultFactory.getGetWishlistTypePriorityDescriptionsResult();
+        GetWishlistPriorityDescriptionsResult result = WishlistResultFactory.getGetWishlistPriorityDescriptionsResult();
         String wishlistTypeName = form.getWishlistTypeName();
         WishlistType wishlistType = wishlistControl.getWishlistTypeByName(wishlistTypeName);
         
         if(wishlistType != null) {
-            String wishlistTypePriorityName = form.getWishlistTypePriorityName();
-            WishlistTypePriority wishlistTypePriority = wishlistControl.getWishlistTypePriorityByName(wishlistType, wishlistTypePriorityName);
+            String wishlistPriorityName = form.getWishlistPriorityName();
+            WishlistPriority wishlistPriority = wishlistControl.getWishlistPriorityByName(wishlistType, wishlistPriorityName);
             
-            if(wishlistTypePriority != null) {
-                result.setWishlistTypePriority(wishlistControl.getWishlistTypePriorityTransfer(getUserVisit(), wishlistTypePriority));
-                result.setWishlistTypePriorityDescriptions(wishlistControl.getWishlistTypePriorityDescriptionTransfers(getUserVisit(), wishlistTypePriority));
+            if(wishlistPriority != null) {
+                result.setWishlistPriority(wishlistControl.getWishlistPriorityTransfer(getUserVisit(), wishlistPriority));
+                result.setWishlistPriorityDescriptions(wishlistControl.getWishlistPriorityDescriptionTransfers(getUserVisit(), wishlistPriority));
             } else {
-                addExecutionError(ExecutionErrors.UnknownWishlistTypePriorityName.name(), wishlistTypePriorityName);
+                addExecutionError(ExecutionErrors.UnknownWishlistPriorityName.name(), wishlistPriorityName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownWishlistTypeName.name(), wishlistTypeName);

@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.wishlist.common.form;
 
-import com.echothree.control.user.wishlist.common.spec.WishlistTypePrioritySpec;
+import com.echothree.control.user.wishlist.common.spec.WishlistPrioritySpec;
 
-public interface SetDefaultWishlistTypePriorityForm
-        extends WishlistTypePrioritySpec {
+public interface SetDefaultWishlistPriorityForm
+        extends WishlistPrioritySpec {
     
-    // Nothing additional beyond WishlistTypePrioritySpec
+    // Nothing additional beyond WishlistPrioritySpec
     
 }

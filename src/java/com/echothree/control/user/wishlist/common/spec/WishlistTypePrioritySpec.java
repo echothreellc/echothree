@@ -16,10 +16,10 @@
 
 package com.echothree.control.user.wishlist.common.spec;
 
-public interface WishlistTypePrioritySpec
+public interface WishlistPrioritySpec
         extends WishlistTypeSpec {
     
-    String getWishlistTypePriorityName();
-    void setWishlistTypePriorityName(String unitOfMeasureKindName);
+    String getWishlistPriorityName();
+    void setWishlistPriorityName(String unitOfMeasureKindName);
     
 }

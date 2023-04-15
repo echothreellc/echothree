@@ -22,19 +22,19 @@ import com.echothree.model.control.order.common.OrderTypes;
 import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.order.server.control.OrderLineControl;
 import com.echothree.model.control.wishlist.common.choice.WishlistTypeChoicesBean;
-import com.echothree.model.control.wishlist.common.choice.WishlistTypePriorityChoicesBean;
+import com.echothree.model.control.wishlist.common.choice.WishlistPriorityChoicesBean;
 import com.echothree.model.control.wishlist.common.transfer.WishlistLineTransfer;
 import com.echothree.model.control.wishlist.common.transfer.WishlistTransfer;
 import com.echothree.model.control.wishlist.common.transfer.WishlistTypeDescriptionTransfer;
-import com.echothree.model.control.wishlist.common.transfer.WishlistTypePriorityDescriptionTransfer;
-import com.echothree.model.control.wishlist.common.transfer.WishlistTypePriorityTransfer;
+import com.echothree.model.control.wishlist.common.transfer.WishlistPriorityDescriptionTransfer;
+import com.echothree.model.control.wishlist.common.transfer.WishlistPriorityTransfer;
 import com.echothree.model.control.wishlist.common.transfer.WishlistTypeTransfer;
 import com.echothree.model.control.wishlist.server.transfer.WishlistLineTransferCache;
 import com.echothree.model.control.wishlist.server.transfer.WishlistTransferCache;
 import com.echothree.model.control.wishlist.server.transfer.WishlistTransferCaches;
 import com.echothree.model.control.wishlist.server.transfer.WishlistTypeDescriptionTransferCache;
-import com.echothree.model.control.wishlist.server.transfer.WishlistTypePriorityDescriptionTransferCache;
-import com.echothree.model.control.wishlist.server.transfer.WishlistTypePriorityTransferCache;
+import com.echothree.model.control.wishlist.server.transfer.WishlistPriorityDescriptionTransferCache;
+import com.echothree.model.control.wishlist.server.transfer.WishlistPriorityTransferCache;
 import com.echothree.model.control.wishlist.server.transfer.WishlistTypeTransferCache;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.associate.common.pk.AssociateReferralPK;
@@ -55,28 +55,28 @@ import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.wishlist.common.pk.WishlistTypePK;
-import com.echothree.model.data.wishlist.common.pk.WishlistTypePriorityPK;
+import com.echothree.model.data.wishlist.common.pk.WishlistPriorityPK;
 import com.echothree.model.data.wishlist.server.entity.Wishlist;
 import com.echothree.model.data.wishlist.server.entity.WishlistLine;
 import com.echothree.model.data.wishlist.server.entity.WishlistType;
 import com.echothree.model.data.wishlist.server.entity.WishlistTypeDescription;
 import com.echothree.model.data.wishlist.server.entity.WishlistTypeDetail;
-import com.echothree.model.data.wishlist.server.entity.WishlistTypePriority;
-import com.echothree.model.data.wishlist.server.entity.WishlistTypePriorityDescription;
-import com.echothree.model.data.wishlist.server.entity.WishlistTypePriorityDetail;
+import com.echothree.model.data.wishlist.server.entity.WishlistPriority;
+import com.echothree.model.data.wishlist.server.entity.WishlistPriorityDescription;
+import com.echothree.model.data.wishlist.server.entity.WishlistPriorityDetail;
 import com.echothree.model.data.wishlist.server.factory.WishlistFactory;
 import com.echothree.model.data.wishlist.server.factory.WishlistLineFactory;
 import com.echothree.model.data.wishlist.server.factory.WishlistTypeDescriptionFactory;
 import com.echothree.model.data.wishlist.server.factory.WishlistTypeDetailFactory;
 import com.echothree.model.data.wishlist.server.factory.WishlistTypeFactory;
-import com.echothree.model.data.wishlist.server.factory.WishlistTypePriorityDescriptionFactory;
-import com.echothree.model.data.wishlist.server.factory.WishlistTypePriorityDetailFactory;
-import com.echothree.model.data.wishlist.server.factory.WishlistTypePriorityFactory;
+import com.echothree.model.data.wishlist.server.factory.WishlistPriorityDescriptionFactory;
+import com.echothree.model.data.wishlist.server.factory.WishlistPriorityDetailFactory;
+import com.echothree.model.data.wishlist.server.factory.WishlistPriorityFactory;
 import com.echothree.model.data.wishlist.server.value.WishlistLineValue;
 import com.echothree.model.data.wishlist.server.value.WishlistTypeDescriptionValue;
 import com.echothree.model.data.wishlist.server.value.WishlistTypeDetailValue;
-import com.echothree.model.data.wishlist.server.value.WishlistTypePriorityDescriptionValue;
-import com.echothree.model.data.wishlist.server.value.WishlistTypePriorityDetailValue;
+import com.echothree.model.data.wishlist.server.value.WishlistPriorityDescriptionValue;
+import com.echothree.model.data.wishlist.server.value.WishlistPriorityDetailValue;
 import com.echothree.model.data.wishlist.server.value.WishlistValue;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
@@ -380,7 +380,7 @@ public class WishlistControl
         
         deleteWishlistTypeDescriptionsByWishlistType(wishlistType, deletedBy);
         deleteOrdersByWishlistType(wishlistType, deletedBy);
-        deleteWishlistTypePrioritiesByWishlistType(wishlistType, deletedBy);
+        deleteWishlistPrioritiesByWishlistType(wishlistType, deletedBy);
         orderControl.deleteOrdersByWishlistType(wishlistType, deletedBy);
         
         WishlistTypeDetail wishlistTypeDetail = wishlistType.getLastDetailForUpdate();
@@ -580,199 +580,199 @@ public class WishlistControl
     //   Wishlist Type Priorities
     // --------------------------------------------------------------------------------
     
-    public WishlistTypePriority createWishlistTypePriority(WishlistType wishlistType, String wishlistTypePriorityName,
+    public WishlistPriority createWishlistPriority(WishlistType wishlistType, String wishlistPriorityName,
             Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        WishlistTypePriority defaultWishlistTypePriority = getDefaultWishlistTypePriority(wishlistType);
-        boolean defaultFound = defaultWishlistTypePriority != null;
+        WishlistPriority defaultWishlistPriority = getDefaultWishlistPriority(wishlistType);
+        boolean defaultFound = defaultWishlistPriority != null;
         
         if(defaultFound && isDefault) {
-            WishlistTypePriorityDetailValue defaultWishlistTypePriorityDetailValue = getDefaultWishlistTypePriorityDetailValueForUpdate(wishlistType);
+            WishlistPriorityDetailValue defaultWishlistPriorityDetailValue = getDefaultWishlistPriorityDetailValueForUpdate(wishlistType);
             
-            defaultWishlistTypePriorityDetailValue.setIsDefault(Boolean.FALSE);
-            updateWishlistTypePriorityFromValue(defaultWishlistTypePriorityDetailValue, false, createdBy);
+            defaultWishlistPriorityDetailValue.setIsDefault(Boolean.FALSE);
+            updateWishlistPriorityFromValue(defaultWishlistPriorityDetailValue, false, createdBy);
         } else if(!defaultFound) {
             isDefault = Boolean.TRUE;
         }
         
-        WishlistTypePriority wishlistTypePriority = WishlistTypePriorityFactory.getInstance().create();
-        WishlistTypePriorityDetail wishlistTypePriorityDetail = WishlistTypePriorityDetailFactory.getInstance().create(session,
-                wishlistTypePriority, wishlistType, wishlistTypePriorityName, isDefault, sortOrder, session.START_TIME_LONG,
+        WishlistPriority wishlistPriority = WishlistPriorityFactory.getInstance().create();
+        WishlistPriorityDetail wishlistPriorityDetail = WishlistPriorityDetailFactory.getInstance().create(session,
+                wishlistPriority, wishlistType, wishlistPriorityName, isDefault, sortOrder, session.START_TIME_LONG,
                 Session.MAX_TIME_LONG);
         
         // Convert to R/W
-        wishlistTypePriority = WishlistTypePriorityFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
-                wishlistTypePriority.getPrimaryKey());
-        wishlistTypePriority.setActiveDetail(wishlistTypePriorityDetail);
-        wishlistTypePriority.setLastDetail(wishlistTypePriorityDetail);
-        wishlistTypePriority.store();
+        wishlistPriority = WishlistPriorityFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                wishlistPriority.getPrimaryKey());
+        wishlistPriority.setActiveDetail(wishlistPriorityDetail);
+        wishlistPriority.setLastDetail(wishlistPriorityDetail);
+        wishlistPriority.store();
         
-        sendEvent(wishlistTypePriority.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+        sendEvent(wishlistPriority.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
-        return wishlistTypePriority;
+        return wishlistPriority;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.WishlistTypePriority */
-    public WishlistTypePriority getWishlistTypePriorityByEntityInstance(final EntityInstance entityInstance,
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.WishlistPriority */
+    public WishlistPriority getWishlistPriorityByEntityInstance(final EntityInstance entityInstance,
             final EntityPermission entityPermission) {
-        var pk = new WishlistTypePriorityPK(entityInstance.getEntityUniqueId());
+        var pk = new WishlistPriorityPK(entityInstance.getEntityUniqueId());
 
-        return WishlistTypePriorityFactory.getInstance().getEntityFromPK(entityPermission, pk);
+        return WishlistPriorityFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
 
-    public WishlistTypePriority getWishlistTypePriorityByEntityInstance(final EntityInstance entityInstance) {
-        return getWishlistTypePriorityByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    public WishlistPriority getWishlistPriorityByEntityInstance(final EntityInstance entityInstance) {
+        return getWishlistPriorityByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
     }
 
-    public WishlistTypePriority getWishlistTypePriorityByEntityInstanceForUpdate(final EntityInstance entityInstance) {
-        return getWishlistTypePriorityByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    public WishlistPriority getWishlistPriorityByEntityInstanceForUpdate(final EntityInstance entityInstance) {
+        return getWishlistPriorityByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
-    public WishlistTypePriority getWishlistTypePriorityByPK(WishlistTypePriorityPK pk) {
-        return WishlistTypePriorityFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+    public WishlistPriority getWishlistPriorityByPK(WishlistPriorityPK pk) {
+        return WishlistPriorityFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
     }
 
-    public long countWishlistTypePrioritiesByWishlistType(final WishlistType wishlistType) {
+    public long countWishlistPrioritiesByWishlistType(final WishlistType wishlistType) {
         return session.queryForLong(
                 "SELECT COUNT(*) " +
-                "FROM wishlisttypepriorities, wishlisttypeprioritydetails " +
-                "WHERE wshltyprty_activedetailid = wshltyprtydt_wishlisttypeprioritydetailid " +
-                "AND wshltyprtydt_wshlty_wishlisttypeid = ?",
+                "FROM wishlistpriorities, wishlistprioritydetails " +
+                "WHERE wshlprty_activedetailid = wshlprtydt_wishlistprioritydetailid " +
+                "AND wshlprtydt_wshlty_wishlisttypeid = ?",
                 wishlistType);
     }
 
-    private List<WishlistTypePriority> getWishlistTypePriorities(WishlistType wishlistType, EntityPermission entityPermission) {
-        List<WishlistTypePriority> wishlistTypePriorities;
+    private List<WishlistPriority> getWishlistPriorities(WishlistType wishlistType, EntityPermission entityPermission) {
+        List<WishlistPriority> wishlistPriorities;
         
         try {
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
-                        "FROM wishlisttypepriorities, wishlisttypeprioritydetails " +
-                        "WHERE wshltyprty_activedetailid = wshltyprtydt_wishlisttypeprioritydetailid AND wshltyprtydt_wshlty_wishlisttypeid = ? " +
-                        "ORDER BY wshltyprtydt_sortorder, wshltyprtydt_wishlisttypepriorityname";
+                        "FROM wishlistpriorities, wishlistprioritydetails " +
+                        "WHERE wshlprty_activedetailid = wshlprtydt_wishlistprioritydetailid AND wshlprtydt_wshlty_wishlisttypeid = ? " +
+                        "ORDER BY wshlprtydt_sortorder, wshlprtydt_wishlistpriorityname";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
-                        "FROM wishlisttypepriorities, wishlisttypeprioritydetails " +
-                        "WHERE wshltyprty_activedetailid = wshltyprtydt_wishlisttypeprioritydetailid AND wshltyprtydt_wshlty_wishlisttypeid = ? " +
+                        "FROM wishlistpriorities, wishlistprioritydetails " +
+                        "WHERE wshlprty_activedetailid = wshlprtydt_wishlistprioritydetailid AND wshlprtydt_wshlty_wishlisttypeid = ? " +
                         "FOR UPDATE";
             }
             
-            PreparedStatement ps = WishlistTypePriorityFactory.getInstance().prepareStatement(query);
+            PreparedStatement ps = WishlistPriorityFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, wishlistType.getPrimaryKey().getEntityId());
             
-            wishlistTypePriorities = WishlistTypePriorityFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            wishlistPriorities = WishlistPriorityFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
         
-        return wishlistTypePriorities;
+        return wishlistPriorities;
     }
     
-    public List<WishlistTypePriority> getWishlistTypePriorities(WishlistType wishlistType) {
-        return getWishlistTypePriorities(wishlistType, EntityPermission.READ_ONLY);
+    public List<WishlistPriority> getWishlistPriorities(WishlistType wishlistType) {
+        return getWishlistPriorities(wishlistType, EntityPermission.READ_ONLY);
     }
     
-    public List<WishlistTypePriority> getWishlistTypePrioritiesForUpdate(WishlistType wishlistType) {
-        return getWishlistTypePriorities(wishlistType, EntityPermission.READ_WRITE);
+    public List<WishlistPriority> getWishlistPrioritiesForUpdate(WishlistType wishlistType) {
+        return getWishlistPriorities(wishlistType, EntityPermission.READ_WRITE);
     }
     
-    public WishlistTypePriority getDefaultWishlistTypePriority(WishlistType wishlistType, EntityPermission entityPermission) {
-        WishlistTypePriority wishlistTypePriority;
+    public WishlistPriority getDefaultWishlistPriority(WishlistType wishlistType, EntityPermission entityPermission) {
+        WishlistPriority wishlistPriority;
         
         try {
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
-                        "FROM wishlisttypepriorities, wishlisttypeprioritydetails " +
-                        "WHERE wshltyprty_activedetailid = wshltyprtydt_wishlisttypeprioritydetailid " +
-                        "AND wshltyprtydt_wshlty_wishlisttypeid = ? AND wshltyprtydt_isdefault = 1";
+                        "FROM wishlistpriorities, wishlistprioritydetails " +
+                        "WHERE wshlprty_activedetailid = wshlprtydt_wishlistprioritydetailid " +
+                        "AND wshlprtydt_wshlty_wishlisttypeid = ? AND wshlprtydt_isdefault = 1";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
-                        "FROM wishlisttypepriorities, wishlisttypeprioritydetails " +
-                        "WHERE wshltyprty_activedetailid = wshltyprtydt_wishlisttypeprioritydetailid " +
-                        "AND wshltyprtydt_wshlty_wishlisttypeid = ? AND wshltyprtydt_isdefault = 1 " +
+                        "FROM wishlistpriorities, wishlistprioritydetails " +
+                        "WHERE wshlprty_activedetailid = wshlprtydt_wishlistprioritydetailid " +
+                        "AND wshlprtydt_wshlty_wishlisttypeid = ? AND wshlprtydt_isdefault = 1 " +
                         "FOR UPDATE";
             }
             
-            PreparedStatement ps = WishlistTypePriorityFactory.getInstance().prepareStatement(query);
+            PreparedStatement ps = WishlistPriorityFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, wishlistType.getPrimaryKey().getEntityId());
             
-            wishlistTypePriority = WishlistTypePriorityFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            wishlistPriority = WishlistPriorityFactory.getInstance().getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
         
-        return wishlistTypePriority;
+        return wishlistPriority;
     }
     
-    public WishlistTypePriority getDefaultWishlistTypePriority(WishlistType wishlistType) {
-        return getDefaultWishlistTypePriority(wishlistType, EntityPermission.READ_ONLY);
+    public WishlistPriority getDefaultWishlistPriority(WishlistType wishlistType) {
+        return getDefaultWishlistPriority(wishlistType, EntityPermission.READ_ONLY);
     }
     
-    public WishlistTypePriority getDefaultWishlistTypePriorityForUpdate(WishlistType wishlistType) {
-        return getDefaultWishlistTypePriority(wishlistType, EntityPermission.READ_WRITE);
+    public WishlistPriority getDefaultWishlistPriorityForUpdate(WishlistType wishlistType) {
+        return getDefaultWishlistPriority(wishlistType, EntityPermission.READ_WRITE);
     }
     
-    public WishlistTypePriorityDetailValue getDefaultWishlistTypePriorityDetailValueForUpdate(WishlistType wishlistType) {
-        return getDefaultWishlistTypePriorityForUpdate(wishlistType).getLastDetailForUpdate().getWishlistTypePriorityDetailValue().clone();
+    public WishlistPriorityDetailValue getDefaultWishlistPriorityDetailValueForUpdate(WishlistType wishlistType) {
+        return getDefaultWishlistPriorityForUpdate(wishlistType).getLastDetailForUpdate().getWishlistPriorityDetailValue().clone();
     }
     
-    public WishlistTypePriority getWishlistTypePriorityByName(WishlistType wishlistType, String wishlistTypePriorityName, EntityPermission entityPermission) {
-        WishlistTypePriority wishlistTypePriority;
+    public WishlistPriority getWishlistPriorityByName(WishlistType wishlistType, String wishlistPriorityName, EntityPermission entityPermission) {
+        WishlistPriority wishlistPriority;
         
         try {
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
-                        "FROM wishlisttypepriorities, wishlisttypeprioritydetails " +
-                        "WHERE wshltyprty_activedetailid = wshltyprtydt_wishlisttypeprioritydetailid " +
-                        "AND wshltyprtydt_wshlty_wishlisttypeid = ? AND wshltyprtydt_wishlisttypepriorityname = ?";
+                        "FROM wishlistpriorities, wishlistprioritydetails " +
+                        "WHERE wshlprty_activedetailid = wshlprtydt_wishlistprioritydetailid " +
+                        "AND wshlprtydt_wshlty_wishlisttypeid = ? AND wshlprtydt_wishlistpriorityname = ?";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
-                        "FROM wishlisttypepriorities, wishlisttypeprioritydetails " +
-                        "WHERE wshltyprty_activedetailid = wshltyprtydt_wishlisttypeprioritydetailid " +
-                        "AND wshltyprtydt_wshlty_wishlisttypeid = ? AND wshltyprtydt_wishlisttypepriorityname = ? " +
+                        "FROM wishlistpriorities, wishlistprioritydetails " +
+                        "WHERE wshlprty_activedetailid = wshlprtydt_wishlistprioritydetailid " +
+                        "AND wshlprtydt_wshlty_wishlisttypeid = ? AND wshlprtydt_wishlistpriorityname = ? " +
                         "FOR UPDATE";
             }
             
-            PreparedStatement ps = WishlistTypePriorityFactory.getInstance().prepareStatement(query);
+            PreparedStatement ps = WishlistPriorityFactory.getInstance().prepareStatement(query);
             
             ps.setLong(1, wishlistType.getPrimaryKey().getEntityId());
-            ps.setString(2, wishlistTypePriorityName);
+            ps.setString(2, wishlistPriorityName);
             
-            wishlistTypePriority = WishlistTypePriorityFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            wishlistPriority = WishlistPriorityFactory.getInstance().getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
         
-        return wishlistTypePriority;
+        return wishlistPriority;
     }
     
-    public WishlistTypePriority getWishlistTypePriorityByName(WishlistType wishlistType, String wishlistTypePriorityName) {
-        return getWishlistTypePriorityByName(wishlistType, wishlistTypePriorityName, EntityPermission.READ_ONLY);
+    public WishlistPriority getWishlistPriorityByName(WishlistType wishlistType, String wishlistPriorityName) {
+        return getWishlistPriorityByName(wishlistType, wishlistPriorityName, EntityPermission.READ_ONLY);
     }
     
-    public WishlistTypePriority getWishlistTypePriorityByNameForUpdate(WishlistType wishlistType, String wishlistTypePriorityName) {
-        return getWishlistTypePriorityByName(wishlistType, wishlistTypePriorityName, EntityPermission.READ_WRITE);
+    public WishlistPriority getWishlistPriorityByNameForUpdate(WishlistType wishlistType, String wishlistPriorityName) {
+        return getWishlistPriorityByName(wishlistType, wishlistPriorityName, EntityPermission.READ_WRITE);
     }
     
-    public WishlistTypePriorityDetailValue getWishlistTypePriorityDetailValueForUpdate(WishlistTypePriority wishlistTypePriority) {
-        return wishlistTypePriority == null? null: wishlistTypePriority.getLastDetailForUpdate().getWishlistTypePriorityDetailValue().clone();
+    public WishlistPriorityDetailValue getWishlistPriorityDetailValueForUpdate(WishlistPriority wishlistPriority) {
+        return wishlistPriority == null? null: wishlistPriority.getLastDetailForUpdate().getWishlistPriorityDetailValue().clone();
     }
     
-    public WishlistTypePriorityDetailValue getWishlistTypePriorityDetailValueByNameForUpdate(WishlistType wishlistType, String wishlistTypePriorityName) {
-        return getWishlistTypePriorityDetailValueForUpdate(getWishlistTypePriorityByNameForUpdate(wishlistType, wishlistTypePriorityName));
+    public WishlistPriorityDetailValue getWishlistPriorityDetailValueByNameForUpdate(WishlistType wishlistType, String wishlistPriorityName) {
+        return getWishlistPriorityDetailValueForUpdate(getWishlistPriorityByNameForUpdate(wishlistType, wishlistPriorityName));
     }
     
-    public WishlistTypePriorityChoicesBean getWishlistTypePriorityChoices(String defaultWishlistTypePriorityChoice, Language language,
+    public WishlistPriorityChoicesBean getWishlistPriorityChoices(String defaultWishlistPriorityChoice, Language language,
             boolean allowNullChoice, WishlistType wishlistType) {
-        List<WishlistTypePriority> wishlistTypePriorities = getWishlistTypePriorities(wishlistType);
-        var size = wishlistTypePriorities.size();
+        List<WishlistPriority> wishlistPriorities = getWishlistPriorities(wishlistType);
+        var size = wishlistPriorities.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
         String defaultValue = null;
@@ -781,129 +781,129 @@ public class WishlistControl
             labels.add("");
             values.add("");
             
-            if(defaultWishlistTypePriorityChoice == null) {
+            if(defaultWishlistPriorityChoice == null) {
                 defaultValue = "";
             }
         }
         
-        for(var wishlistTypePriority : wishlistTypePriorities) {
-            WishlistTypePriorityDetail wishlistTypePriorityDetail = wishlistTypePriority.getLastDetail();
-            var label = getBestWishlistTypePriorityDescription(wishlistTypePriority, language);
-            var value = wishlistTypePriorityDetail.getWishlistTypePriorityName();
+        for(var wishlistPriority : wishlistPriorities) {
+            WishlistPriorityDetail wishlistPriorityDetail = wishlistPriority.getLastDetail();
+            var label = getBestWishlistPriorityDescription(wishlistPriority, language);
+            var value = wishlistPriorityDetail.getWishlistPriorityName();
             
             labels.add(label == null? value: label);
             values.add(value);
             
-            var usingDefaultChoice = defaultWishlistTypePriorityChoice != null && defaultWishlistTypePriorityChoice.equals(value);
-            if(usingDefaultChoice || (defaultValue == null && wishlistTypePriorityDetail.getIsDefault())) {
+            var usingDefaultChoice = defaultWishlistPriorityChoice != null && defaultWishlistPriorityChoice.equals(value);
+            if(usingDefaultChoice || (defaultValue == null && wishlistPriorityDetail.getIsDefault())) {
                 defaultValue = value;
             }
         }
         
-        return new WishlistTypePriorityChoicesBean(labels, values, defaultValue);
+        return new WishlistPriorityChoicesBean(labels, values, defaultValue);
     }
     
-    public WishlistTypePriorityTransfer getWishlistTypePriorityTransfer(UserVisit userVisit, WishlistTypePriority wishlistTypePriority) {
-        return getWishlistTransferCaches(userVisit).getWishlistTypePriorityTransferCache().getWishlistTypePriorityTransfer(wishlistTypePriority);
+    public WishlistPriorityTransfer getWishlistPriorityTransfer(UserVisit userVisit, WishlistPriority wishlistPriority) {
+        return getWishlistTransferCaches(userVisit).getWishlistPriorityTransferCache().getWishlistPriorityTransfer(wishlistPriority);
     }
 
-    public List<WishlistTypePriorityTransfer> getWishlistTypePriorityTransfers(UserVisit userVisit, Collection<WishlistTypePriority> wishlistTypePriorities) {
-        List<WishlistTypePriorityTransfer> wishlistTypePriorityTransfers = new ArrayList<>(wishlistTypePriorities.size());
-        WishlistTypePriorityTransferCache wishlistTypePriorityTransferCache = getWishlistTransferCaches(userVisit).getWishlistTypePriorityTransferCache();
+    public List<WishlistPriorityTransfer> getWishlistPriorityTransfers(UserVisit userVisit, Collection<WishlistPriority> wishlistPriorities) {
+        List<WishlistPriorityTransfer> wishlistPriorityTransfers = new ArrayList<>(wishlistPriorities.size());
+        WishlistPriorityTransferCache wishlistPriorityTransferCache = getWishlistTransferCaches(userVisit).getWishlistPriorityTransferCache();
 
-        wishlistTypePriorities.forEach((wishlistTypePriority) ->
-                wishlistTypePriorityTransfers.add(wishlistTypePriorityTransferCache.getWishlistTypePriorityTransfer(wishlistTypePriority))
+        wishlistPriorities.forEach((wishlistPriority) ->
+                wishlistPriorityTransfers.add(wishlistPriorityTransferCache.getWishlistPriorityTransfer(wishlistPriority))
         );
 
-        return wishlistTypePriorityTransfers;
+        return wishlistPriorityTransfers;
     }
 
-    public List<WishlistTypePriorityTransfer> getWishlistTypePriorityTransfers(UserVisit userVisit, WishlistType wishlistType) {
-        return getWishlistTypePriorityTransfers(userVisit, getWishlistTypePriorities(wishlistType));
+    public List<WishlistPriorityTransfer> getWishlistPriorityTransfers(UserVisit userVisit, WishlistType wishlistType) {
+        return getWishlistPriorityTransfers(userVisit, getWishlistPriorities(wishlistType));
     }
 
-    private void updateWishlistTypePriorityFromValue(WishlistTypePriorityDetailValue wishlistTypePriorityDetailValue, boolean checkDefault,
+    private void updateWishlistPriorityFromValue(WishlistPriorityDetailValue wishlistPriorityDetailValue, boolean checkDefault,
             BasePK updatedBy) {
-        if(wishlistTypePriorityDetailValue.hasBeenModified()) {
-            WishlistTypePriority wishlistTypePriority = WishlistTypePriorityFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
-                     wishlistTypePriorityDetailValue.getWishlistTypePriorityPK());
-            WishlistTypePriorityDetail wishlistTypePriorityDetail = wishlistTypePriority.getActiveDetailForUpdate();
+        if(wishlistPriorityDetailValue.hasBeenModified()) {
+            WishlistPriority wishlistPriority = WishlistPriorityFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                     wishlistPriorityDetailValue.getWishlistPriorityPK());
+            WishlistPriorityDetail wishlistPriorityDetail = wishlistPriority.getActiveDetailForUpdate();
             
-            wishlistTypePriorityDetail.setThruTime(session.START_TIME_LONG);
-            wishlistTypePriorityDetail.store();
+            wishlistPriorityDetail.setThruTime(session.START_TIME_LONG);
+            wishlistPriorityDetail.store();
             
-            WishlistTypePriorityPK wishlistTypePriorityPK = wishlistTypePriorityDetail.getWishlistTypePriorityPK();
-            WishlistType wishlistType = wishlistTypePriorityDetail.getWishlistType();
+            WishlistPriorityPK wishlistPriorityPK = wishlistPriorityDetail.getWishlistPriorityPK();
+            WishlistType wishlistType = wishlistPriorityDetail.getWishlistType();
             WishlistTypePK wishlistTypePK = wishlistType.getPrimaryKey();
-            String wishlistTypePriorityName = wishlistTypePriorityDetailValue.getWishlistTypePriorityName();
-            Boolean isDefault = wishlistTypePriorityDetailValue.getIsDefault();
-            Integer sortOrder = wishlistTypePriorityDetailValue.getSortOrder();
+            String wishlistPriorityName = wishlistPriorityDetailValue.getWishlistPriorityName();
+            Boolean isDefault = wishlistPriorityDetailValue.getIsDefault();
+            Integer sortOrder = wishlistPriorityDetailValue.getSortOrder();
             
             if(checkDefault) {
-                WishlistTypePriority defaultWishlistTypePriority = getDefaultWishlistTypePriority(wishlistType);
-                boolean defaultFound = defaultWishlistTypePriority != null && !defaultWishlistTypePriority.equals(wishlistTypePriority);
+                WishlistPriority defaultWishlistPriority = getDefaultWishlistPriority(wishlistType);
+                boolean defaultFound = defaultWishlistPriority != null && !defaultWishlistPriority.equals(wishlistPriority);
                 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    WishlistTypePriorityDetailValue defaultWishlistTypePriorityDetailValue = getDefaultWishlistTypePriorityDetailValueForUpdate(wishlistType);
+                    WishlistPriorityDetailValue defaultWishlistPriorityDetailValue = getDefaultWishlistPriorityDetailValueForUpdate(wishlistType);
                     
-                    defaultWishlistTypePriorityDetailValue.setIsDefault(Boolean.FALSE);
-                    updateWishlistTypePriorityFromValue(defaultWishlistTypePriorityDetailValue, false, updatedBy);
+                    defaultWishlistPriorityDetailValue.setIsDefault(Boolean.FALSE);
+                    updateWishlistPriorityFromValue(defaultWishlistPriorityDetailValue, false, updatedBy);
                 } else if(!isDefault && !defaultFound) {
                     // If I'm not the default, and no other default exists...
                     isDefault = Boolean.TRUE;
                 }
             }
             
-            wishlistTypePriorityDetail = WishlistTypePriorityDetailFactory.getInstance().create(wishlistTypePriorityPK,
-                    wishlistTypePK, wishlistTypePriorityName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            wishlistPriorityDetail = WishlistPriorityDetailFactory.getInstance().create(wishlistPriorityPK,
+                    wishlistTypePK, wishlistPriorityName, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            wishlistTypePriority.setActiveDetail(wishlistTypePriorityDetail);
-            wishlistTypePriority.setLastDetail(wishlistTypePriorityDetail);
+            wishlistPriority.setActiveDetail(wishlistPriorityDetail);
+            wishlistPriority.setLastDetail(wishlistPriorityDetail);
             
-            sendEvent(wishlistTypePriorityPK, EventTypes.MODIFY, null, null, updatedBy);
+            sendEvent(wishlistPriorityPK, EventTypes.MODIFY, null, null, updatedBy);
         }
     }
     
-    public void updateWishlistTypePriorityFromValue(WishlistTypePriorityDetailValue wishlistTypePriorityDetailValue, BasePK updatedBy) {
-        updateWishlistTypePriorityFromValue(wishlistTypePriorityDetailValue, true, updatedBy);
+    public void updateWishlistPriorityFromValue(WishlistPriorityDetailValue wishlistPriorityDetailValue, BasePK updatedBy) {
+        updateWishlistPriorityFromValue(wishlistPriorityDetailValue, true, updatedBy);
     }
     
-    public void deleteWishlistTypePriority(WishlistTypePriority wishlistTypePriority, BasePK deletedBy) {
-        deleteWishlistTypePriorityDescriptionsByWishlistTypePriority(wishlistTypePriority, deletedBy);
-        deleteOrderLinesByWishlistTypePriority(wishlistTypePriority, deletedBy);
+    public void deleteWishlistPriority(WishlistPriority wishlistPriority, BasePK deletedBy) {
+        deleteWishlistPriorityDescriptionsByWishlistPriority(wishlistPriority, deletedBy);
+        deleteOrderLinesByWishlistPriority(wishlistPriority, deletedBy);
         
-        WishlistTypePriorityDetail wishlistTypePriorityDetail = wishlistTypePriority.getLastDetailForUpdate();
-        wishlistTypePriorityDetail.setThruTime(session.START_TIME_LONG);
-        wishlistTypePriority.setActiveDetail(null);
-        wishlistTypePriority.store();
+        WishlistPriorityDetail wishlistPriorityDetail = wishlistPriority.getLastDetailForUpdate();
+        wishlistPriorityDetail.setThruTime(session.START_TIME_LONG);
+        wishlistPriority.setActiveDetail(null);
+        wishlistPriority.store();
         
         // Check for default, and pick one if necessary
-        WishlistType wishlistType = wishlistTypePriorityDetail.getWishlistType();
-        WishlistTypePriority defaultWishlistTypePriority = getDefaultWishlistTypePriority(wishlistType);
-        if(defaultWishlistTypePriority == null) {
-            List<WishlistTypePriority> wishlistTypePriorities = getWishlistTypePrioritiesForUpdate(wishlistType);
+        WishlistType wishlistType = wishlistPriorityDetail.getWishlistType();
+        WishlistPriority defaultWishlistPriority = getDefaultWishlistPriority(wishlistType);
+        if(defaultWishlistPriority == null) {
+            List<WishlistPriority> wishlistPriorities = getWishlistPrioritiesForUpdate(wishlistType);
             
-            if(!wishlistTypePriorities.isEmpty()) {
-                Iterator<WishlistTypePriority> iter = wishlistTypePriorities.iterator();
+            if(!wishlistPriorities.isEmpty()) {
+                Iterator<WishlistPriority> iter = wishlistPriorities.iterator();
                 if(iter.hasNext()) {
-                    defaultWishlistTypePriority = iter.next();
+                    defaultWishlistPriority = iter.next();
                 }
-                WishlistTypePriorityDetailValue wishlistTypePriorityDetailValue = Objects.requireNonNull(defaultWishlistTypePriority).getLastDetailForUpdate().getWishlistTypePriorityDetailValue().clone();
+                WishlistPriorityDetailValue wishlistPriorityDetailValue = Objects.requireNonNull(defaultWishlistPriority).getLastDetailForUpdate().getWishlistPriorityDetailValue().clone();
                 
-                wishlistTypePriorityDetailValue.setIsDefault(Boolean.TRUE);
-                updateWishlistTypePriorityFromValue(wishlistTypePriorityDetailValue, false, deletedBy);
+                wishlistPriorityDetailValue.setIsDefault(Boolean.TRUE);
+                updateWishlistPriorityFromValue(wishlistPriorityDetailValue, false, deletedBy);
             }
         }
         
-        sendEvent(wishlistTypePriority.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+        sendEvent(wishlistPriority.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
-    public void deleteWishlistTypePrioritiesByWishlistType(WishlistType wishlistType, BasePK deletedBy) {
-        List<WishlistTypePriority> wishlistTypePriorities = getWishlistTypePrioritiesForUpdate(wishlistType);
+    public void deleteWishlistPrioritiesByWishlistType(WishlistType wishlistType, BasePK deletedBy) {
+        List<WishlistPriority> wishlistPriorities = getWishlistPrioritiesForUpdate(wishlistType);
         
-        wishlistTypePriorities.forEach((wishlistTypePriority) -> 
-                deleteWishlistTypePriority(wishlistTypePriority, deletedBy)
+        wishlistPriorities.forEach((wishlistPriority) -> 
+                deleteWishlistPriority(wishlistPriority, deletedBy)
         );
     }
     
@@ -911,166 +911,166 @@ public class WishlistControl
     //   Wishlist Type Priority Descriptions
     // --------------------------------------------------------------------------------
     
-    public WishlistTypePriorityDescription createWishlistTypePriorityDescription(WishlistTypePriority wishlistTypePriority,
+    public WishlistPriorityDescription createWishlistPriorityDescription(WishlistPriority wishlistPriority,
             Language language, String description, BasePK createdBy) {
-        WishlistTypePriorityDescription wishlistTypePriorityDescription = WishlistTypePriorityDescriptionFactory.getInstance().create(session,
-                wishlistTypePriority, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        WishlistPriorityDescription wishlistPriorityDescription = WishlistPriorityDescriptionFactory.getInstance().create(session,
+                wishlistPriority, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEvent(wishlistTypePriority.getPrimaryKey(), EventTypes.MODIFY, wishlistTypePriorityDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(wishlistPriority.getPrimaryKey(), EventTypes.MODIFY, wishlistPriorityDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
-        return wishlistTypePriorityDescription;
+        return wishlistPriorityDescription;
     }
     
-    private WishlistTypePriorityDescription getWishlistTypePriorityDescription(WishlistTypePriority wishlistTypePriority, Language language, EntityPermission entityPermission) {
-        WishlistTypePriorityDescription wishlistTypePriorityDescription;
+    private WishlistPriorityDescription getWishlistPriorityDescription(WishlistPriority wishlistPriority, Language language, EntityPermission entityPermission) {
+        WishlistPriorityDescription wishlistPriorityDescription;
         
         try {
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
-                        "FROM wishlisttypeprioritydescriptions " +
-                        "WHERE wshltyprtyd_wshltyprty_wishlisttypepriorityid = ? AND wshltyprtyd_lang_languageid = ? AND wshltyprtyd_thrutime = ?";
+                        "FROM wishlistprioritydescriptions " +
+                        "WHERE wshlprtyd_wshlprty_wishlistpriorityid = ? AND wshlprtyd_lang_languageid = ? AND wshlprtyd_thrutime = ?";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
-                        "FROM wishlisttypeprioritydescriptions " +
-                        "WHERE wshltyprtyd_wshltyprty_wishlisttypepriorityid = ? AND wshltyprtyd_lang_languageid = ? AND wshltyprtyd_thrutime = ? " +
+                        "FROM wishlistprioritydescriptions " +
+                        "WHERE wshlprtyd_wshlprty_wishlistpriorityid = ? AND wshlprtyd_lang_languageid = ? AND wshlprtyd_thrutime = ? " +
                         "FOR UPDATE";
             }
             
-            PreparedStatement ps = WishlistTypePriorityDescriptionFactory.getInstance().prepareStatement(query);
+            PreparedStatement ps = WishlistPriorityDescriptionFactory.getInstance().prepareStatement(query);
             
-            ps.setLong(1, wishlistTypePriority.getPrimaryKey().getEntityId());
+            ps.setLong(1, wishlistPriority.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
             ps.setLong(3, Session.MAX_TIME);
             
-            wishlistTypePriorityDescription = WishlistTypePriorityDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+            wishlistPriorityDescription = WishlistPriorityDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
         
-        return wishlistTypePriorityDescription;
+        return wishlistPriorityDescription;
     }
     
-    public WishlistTypePriorityDescription getWishlistTypePriorityDescription(WishlistTypePriority wishlistTypePriority, Language language) {
-        return getWishlistTypePriorityDescription(wishlistTypePriority, language, EntityPermission.READ_ONLY);
+    public WishlistPriorityDescription getWishlistPriorityDescription(WishlistPriority wishlistPriority, Language language) {
+        return getWishlistPriorityDescription(wishlistPriority, language, EntityPermission.READ_ONLY);
     }
     
-    public WishlistTypePriorityDescription getWishlistTypePriorityDescriptionForUpdate(WishlistTypePriority wishlistTypePriority, Language language) {
-        return getWishlistTypePriorityDescription(wishlistTypePriority, language, EntityPermission.READ_WRITE);
+    public WishlistPriorityDescription getWishlistPriorityDescriptionForUpdate(WishlistPriority wishlistPriority, Language language) {
+        return getWishlistPriorityDescription(wishlistPriority, language, EntityPermission.READ_WRITE);
     }
     
-    public WishlistTypePriorityDescriptionValue getWishlistTypePriorityDescriptionValue(WishlistTypePriorityDescription wishlistTypePriorityDescription) {
-        return wishlistTypePriorityDescription == null? null: wishlistTypePriorityDescription.getWishlistTypePriorityDescriptionValue().clone();
+    public WishlistPriorityDescriptionValue getWishlistPriorityDescriptionValue(WishlistPriorityDescription wishlistPriorityDescription) {
+        return wishlistPriorityDescription == null? null: wishlistPriorityDescription.getWishlistPriorityDescriptionValue().clone();
     }
     
-    public WishlistTypePriorityDescriptionValue getWishlistTypePriorityDescriptionValueForUpdate(WishlistTypePriority wishlistTypePriority, Language language) {
-        return getWishlistTypePriorityDescriptionValue(getWishlistTypePriorityDescriptionForUpdate(wishlistTypePriority, language));
+    public WishlistPriorityDescriptionValue getWishlistPriorityDescriptionValueForUpdate(WishlistPriority wishlistPriority, Language language) {
+        return getWishlistPriorityDescriptionValue(getWishlistPriorityDescriptionForUpdate(wishlistPriority, language));
     }
     
-    private List<WishlistTypePriorityDescription> getWishlistTypePriorityDescriptionsByWishlistTypePriority(WishlistTypePriority wishlistTypePriority, EntityPermission entityPermission) {
-        List<WishlistTypePriorityDescription> wishlistTypePriorityDescriptions;
+    private List<WishlistPriorityDescription> getWishlistPriorityDescriptionsByWishlistPriority(WishlistPriority wishlistPriority, EntityPermission entityPermission) {
+        List<WishlistPriorityDescription> wishlistPriorityDescriptions;
         
         try {
             String query = null;
             
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
-                        "FROM wishlisttypeprioritydescriptions, languages " +
-                        "WHERE wshltyprtyd_wshltyprty_wishlisttypepriorityid = ? AND wshltyprtyd_thrutime = ? " +
-                        "AND wshltyprtyd_lang_languageid = lang_languageid " +
+                        "FROM wishlistprioritydescriptions, languages " +
+                        "WHERE wshlprtyd_wshlprty_wishlistpriorityid = ? AND wshlprtyd_thrutime = ? " +
+                        "AND wshlprtyd_lang_languageid = lang_languageid " +
                         "ORDER BY lang_sortorder, lang_languageisoname";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
-                        "FROM wishlisttypeprioritydescriptions " +
-                        "WHERE wshltyprtyd_wshltyprty_wishlisttypepriorityid = ? AND wshltyprtyd_thrutime = ? " +
+                        "FROM wishlistprioritydescriptions " +
+                        "WHERE wshlprtyd_wshlprty_wishlistpriorityid = ? AND wshlprtyd_thrutime = ? " +
                         "FOR UPDATE";
             }
             
-            PreparedStatement ps = WishlistTypePriorityDescriptionFactory.getInstance().prepareStatement(query);
+            PreparedStatement ps = WishlistPriorityDescriptionFactory.getInstance().prepareStatement(query);
             
-            ps.setLong(1, wishlistTypePriority.getPrimaryKey().getEntityId());
+            ps.setLong(1, wishlistPriority.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
-            wishlistTypePriorityDescriptions = WishlistTypePriorityDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+            wishlistPriorityDescriptions = WishlistPriorityDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
         
-        return wishlistTypePriorityDescriptions;
+        return wishlistPriorityDescriptions;
     }
     
-    public List<WishlistTypePriorityDescription> getWishlistTypePriorityDescriptionsByWishlistTypePriority(WishlistTypePriority wishlistTypePriority) {
-        return getWishlistTypePriorityDescriptionsByWishlistTypePriority(wishlistTypePriority, EntityPermission.READ_ONLY);
+    public List<WishlistPriorityDescription> getWishlistPriorityDescriptionsByWishlistPriority(WishlistPriority wishlistPriority) {
+        return getWishlistPriorityDescriptionsByWishlistPriority(wishlistPriority, EntityPermission.READ_ONLY);
     }
     
-    public List<WishlistTypePriorityDescription> getWishlistTypePriorityDescriptionsByWishlistTypePriorityForUpdate(WishlistTypePriority wishlistTypePriority) {
-        return getWishlistTypePriorityDescriptionsByWishlistTypePriority(wishlistTypePriority, EntityPermission.READ_WRITE);
+    public List<WishlistPriorityDescription> getWishlistPriorityDescriptionsByWishlistPriorityForUpdate(WishlistPriority wishlistPriority) {
+        return getWishlistPriorityDescriptionsByWishlistPriority(wishlistPriority, EntityPermission.READ_WRITE);
     }
     
-    public String getBestWishlistTypePriorityDescription(WishlistTypePriority wishlistTypePriority, Language language) {
+    public String getBestWishlistPriorityDescription(WishlistPriority wishlistPriority, Language language) {
         String description;
-        WishlistTypePriorityDescription wishlistTypePriorityDescription = getWishlistTypePriorityDescription(wishlistTypePriority, language);
+        WishlistPriorityDescription wishlistPriorityDescription = getWishlistPriorityDescription(wishlistPriority, language);
         
-        if(wishlistTypePriorityDescription == null && !language.getIsDefault()) {
-            wishlistTypePriorityDescription = getWishlistTypePriorityDescription(wishlistTypePriority, getPartyControl().getDefaultLanguage());
+        if(wishlistPriorityDescription == null && !language.getIsDefault()) {
+            wishlistPriorityDescription = getWishlistPriorityDescription(wishlistPriority, getPartyControl().getDefaultLanguage());
         }
         
-        if(wishlistTypePriorityDescription == null) {
-            description = wishlistTypePriority.getLastDetail().getWishlistTypePriorityName();
+        if(wishlistPriorityDescription == null) {
+            description = wishlistPriority.getLastDetail().getWishlistPriorityName();
         } else {
-            description = wishlistTypePriorityDescription.getDescription();
+            description = wishlistPriorityDescription.getDescription();
         }
         
         return description;
     }
     
-    public WishlistTypePriorityDescriptionTransfer getWishlistTypePriorityDescriptionTransfer(UserVisit userVisit, WishlistTypePriorityDescription wishlistTypePriorityDescription) {
-        return getWishlistTransferCaches(userVisit).getWishlistTypePriorityDescriptionTransferCache().getWishlistTypePriorityDescriptionTransfer(wishlistTypePriorityDescription);
+    public WishlistPriorityDescriptionTransfer getWishlistPriorityDescriptionTransfer(UserVisit userVisit, WishlistPriorityDescription wishlistPriorityDescription) {
+        return getWishlistTransferCaches(userVisit).getWishlistPriorityDescriptionTransferCache().getWishlistPriorityDescriptionTransfer(wishlistPriorityDescription);
     }
     
-    public List<WishlistTypePriorityDescriptionTransfer> getWishlistTypePriorityDescriptionTransfers(UserVisit userVisit, WishlistTypePriority wishlistTypePriority) {
-        List<WishlistTypePriorityDescription> wishlistTypePriorityDescriptions = getWishlistTypePriorityDescriptionsByWishlistTypePriority(wishlistTypePriority);
-        List<WishlistTypePriorityDescriptionTransfer> wishlistTypePriorityDescriptionTransfers = new ArrayList<>(wishlistTypePriorityDescriptions.size());
-        WishlistTypePriorityDescriptionTransferCache wishlistTypePriorityDescriptionTransferCache = getWishlistTransferCaches(userVisit).getWishlistTypePriorityDescriptionTransferCache();
+    public List<WishlistPriorityDescriptionTransfer> getWishlistPriorityDescriptionTransfers(UserVisit userVisit, WishlistPriority wishlistPriority) {
+        List<WishlistPriorityDescription> wishlistPriorityDescriptions = getWishlistPriorityDescriptionsByWishlistPriority(wishlistPriority);
+        List<WishlistPriorityDescriptionTransfer> wishlistPriorityDescriptionTransfers = new ArrayList<>(wishlistPriorityDescriptions.size());
+        WishlistPriorityDescriptionTransferCache wishlistPriorityDescriptionTransferCache = getWishlistTransferCaches(userVisit).getWishlistPriorityDescriptionTransferCache();
         
-        wishlistTypePriorityDescriptions.forEach((wishlistTypePriorityDescription) ->
-                wishlistTypePriorityDescriptionTransfers.add(wishlistTypePriorityDescriptionTransferCache.getWishlistTypePriorityDescriptionTransfer(wishlistTypePriorityDescription))
+        wishlistPriorityDescriptions.forEach((wishlistPriorityDescription) ->
+                wishlistPriorityDescriptionTransfers.add(wishlistPriorityDescriptionTransferCache.getWishlistPriorityDescriptionTransfer(wishlistPriorityDescription))
         );
         
-        return wishlistTypePriorityDescriptionTransfers;
+        return wishlistPriorityDescriptionTransfers;
     }
     
-    public void updateWishlistTypePriorityDescriptionFromValue(WishlistTypePriorityDescriptionValue wishlistTypePriorityDescriptionValue, BasePK updatedBy) {
-        if(wishlistTypePriorityDescriptionValue.hasBeenModified()) {
-            WishlistTypePriorityDescription wishlistTypePriorityDescription = WishlistTypePriorityDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
-                     wishlistTypePriorityDescriptionValue.getPrimaryKey());
+    public void updateWishlistPriorityDescriptionFromValue(WishlistPriorityDescriptionValue wishlistPriorityDescriptionValue, BasePK updatedBy) {
+        if(wishlistPriorityDescriptionValue.hasBeenModified()) {
+            WishlistPriorityDescription wishlistPriorityDescription = WishlistPriorityDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                     wishlistPriorityDescriptionValue.getPrimaryKey());
             
-            wishlistTypePriorityDescription.setThruTime(session.START_TIME_LONG);
-            wishlistTypePriorityDescription.store();
+            wishlistPriorityDescription.setThruTime(session.START_TIME_LONG);
+            wishlistPriorityDescription.store();
             
-            WishlistTypePriority wishlistTypePriority = wishlistTypePriorityDescription.getWishlistTypePriority();
-            Language language = wishlistTypePriorityDescription.getLanguage();
-            String description = wishlistTypePriorityDescriptionValue.getDescription();
+            WishlistPriority wishlistPriority = wishlistPriorityDescription.getWishlistPriority();
+            Language language = wishlistPriorityDescription.getLanguage();
+            String description = wishlistPriorityDescriptionValue.getDescription();
             
-            wishlistTypePriorityDescription = WishlistTypePriorityDescriptionFactory.getInstance().create(wishlistTypePriority, language,
+            wishlistPriorityDescription = WishlistPriorityDescriptionFactory.getInstance().create(wishlistPriority, language,
                     description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
-            sendEvent(wishlistTypePriority.getPrimaryKey(), EventTypes.MODIFY, wishlistTypePriorityDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(wishlistPriority.getPrimaryKey(), EventTypes.MODIFY, wishlistPriorityDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
     
-    public void deleteWishlistTypePriorityDescription(WishlistTypePriorityDescription wishlistTypePriorityDescription, BasePK deletedBy) {
-        wishlistTypePriorityDescription.setThruTime(session.START_TIME_LONG);
+    public void deleteWishlistPriorityDescription(WishlistPriorityDescription wishlistPriorityDescription, BasePK deletedBy) {
+        wishlistPriorityDescription.setThruTime(session.START_TIME_LONG);
         
-        sendEvent(wishlistTypePriorityDescription.getWishlistTypePriorityPK(), EventTypes.MODIFY, wishlistTypePriorityDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(wishlistPriorityDescription.getWishlistPriorityPK(), EventTypes.MODIFY, wishlistPriorityDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
     
-    public void deleteWishlistTypePriorityDescriptionsByWishlistTypePriority(WishlistTypePriority wishlistTypePriority, BasePK deletedBy) {
-        List<WishlistTypePriorityDescription> wishlistTypePriorityDescriptions = getWishlistTypePriorityDescriptionsByWishlistTypePriorityForUpdate(wishlistTypePriority);
+    public void deleteWishlistPriorityDescriptionsByWishlistPriority(WishlistPriority wishlistPriority, BasePK deletedBy) {
+        List<WishlistPriorityDescription> wishlistPriorityDescriptions = getWishlistPriorityDescriptionsByWishlistPriorityForUpdate(wishlistPriority);
         
-        wishlistTypePriorityDescriptions.forEach((wishlistTypePriorityDescription) -> 
-                deleteWishlistTypePriorityDescription(wishlistTypePriorityDescription, deletedBy)
+        wishlistPriorityDescriptions.forEach((wishlistPriorityDescription) -> 
+                deleteWishlistPriorityDescription(wishlistPriorityDescription, deletedBy)
         );
     }
     
@@ -1222,10 +1222,10 @@ public class WishlistControl
     //   Wishlist Lines
     // --------------------------------------------------------------------------------
     
-    public WishlistLine createWishlistLine(OrderLine orderLine, OfferUse offerUse, WishlistTypePriority wishlistTypePriority,
+    public WishlistLine createWishlistLine(OrderLine orderLine, OfferUse offerUse, WishlistPriority wishlistPriority,
             AssociateReferral associateReferral, String comment, BasePK createdBy) {
         WishlistLine wishlistLine = WishlistLineFactory.getInstance().create(orderLine, offerUse,
-                wishlistTypePriority, associateReferral, comment, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                wishlistPriority, associateReferral, comment, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(orderLine.getPrimaryKey(), EventTypes.MODIFY, wishlistLine.getPrimaryKey(), EventTypes.CREATE, createdBy);
         
@@ -1240,12 +1240,12 @@ public class WishlistControl
                 offerUse, Session.MAX_TIME_LONG);
     }
 
-    public long countWishlistLinesByWishlistTypePriority(final WishlistTypePriority wishlistTypePriority) {
+    public long countWishlistLinesByWishlistPriority(final WishlistPriority wishlistPriority) {
         return session.queryForLong(
                 "SELECT COUNT(*) " +
                         "FROM wishlistlines " +
-                        "WHERE wshll_wshltyprty_wishlisttypepriorityid = ? AND wshll_thrutime = ?",
-                wishlistTypePriority, Session.MAX_TIME_LONG);
+                        "WHERE wshll_wshlprty_wishlistpriorityid = ? AND wshll_thrutime = ?",
+                wishlistPriority, Session.MAX_TIME_LONG);
     }
 
     public long countWishlistLinesByAssociateReferral(final AssociateReferral associateReferral) {
@@ -1256,7 +1256,7 @@ public class WishlistControl
                 associateReferral, Session.MAX_TIME_LONG);
     }
 
-    private List<WishlistLine> getWishlistLinesByWishlistTypePriority(WishlistTypePriority wishlistTypePriority,
+    private List<WishlistLine> getWishlistLinesByWishlistPriority(WishlistPriority wishlistPriority,
             EntityPermission entityPermission) {
         List<WishlistLine> wishlistLines;
         
@@ -1266,20 +1266,20 @@ public class WishlistControl
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
                         "FROM wishlists, orderlines, orderlinedetails, orders, orderdetails " +
-                        "WHERE wshll_wshltyprty_wishlisttypepriorityid = ? AND wshll_thrutime = ? " +
+                        "WHERE wshll_wshlprty_wishlistpriorityid = ? AND wshll_thrutime = ? " +
                         "AND wshll_ordl_orderlineid = ordl_orderlineid AND ordl_activedetailid = ordldt_orderlinedetailid " +
                         "AND ordldt_ord_orderid = ord_orderid AND ord_lastdetailid = orddt_orderdetailid " +
                         "ORDER BY orddt_ordername, ordldt_orderlinesequence";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM wishlistlines " +
-                        "WHERE wshll_wshltyprty_wishlisttypepriorityid = ? AND wshll_thrutime = ? " +
+                        "WHERE wshll_wshlprty_wishlistpriorityid = ? AND wshll_thrutime = ? " +
                         "FOR UPDATE";
             }
             
             PreparedStatement ps = WishlistLineFactory.getInstance().prepareStatement(query);
             
-            ps.setLong(1, wishlistTypePriority.getPrimaryKey().getEntityId());
+            ps.setLong(1, wishlistPriority.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
             wishlistLines = WishlistLineFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
@@ -1290,12 +1290,12 @@ public class WishlistControl
         return wishlistLines;
     }
     
-    public List<WishlistLine> getWishlistLinesByWishlistTypePriority(WishlistTypePriority wishlistTypePriority) {
-        return getWishlistLinesByWishlistTypePriority(wishlistTypePriority, EntityPermission.READ_ONLY);
+    public List<WishlistLine> getWishlistLinesByWishlistPriority(WishlistPriority wishlistPriority) {
+        return getWishlistLinesByWishlistPriority(wishlistPriority, EntityPermission.READ_ONLY);
     }
     
-    public List<WishlistLine> getWishlistLinesByWishlistTypePriorityForUpdate(WishlistTypePriority wishlistTypePriority) {
-        return getWishlistLinesByWishlistTypePriority(wishlistTypePriority, EntityPermission.READ_WRITE);
+    public List<WishlistLine> getWishlistLinesByWishlistPriorityForUpdate(WishlistPriority wishlistPriority) {
+        return getWishlistLinesByWishlistPriority(wishlistPriority, EntityPermission.READ_WRITE);
     }
     
     private WishlistLine getWishlistLine(OrderLine orderLine, EntityPermission entityPermission) {
@@ -1354,12 +1354,12 @@ public class WishlistControl
             
             OrderLinePK orderLinePK = wishlistLine.getOrderLinePK(); // Not updated
             OfferUsePK offerUsePK = wishlistLineValue.getOfferUsePK();
-            WishlistTypePriorityPK wishlistTypePriorityPK = wishlistLineValue.getWishlistTypePriorityPK();
+            WishlistPriorityPK wishlistPriorityPK = wishlistLineValue.getWishlistPriorityPK();
             AssociateReferralPK associateReferralPK = wishlistLineValue.getAssociateReferralPK();
             String comment = wishlistLineValue.getComment();
             
             wishlistLine = WishlistLineFactory.getInstance().create(orderLinePK, offerUsePK,
-                    wishlistTypePriorityPK, associateReferralPK, comment, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+                    wishlistPriorityPK, associateReferralPK, comment, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
             sendEvent(orderLinePK, EventTypes.MODIFY, wishlistLine.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
@@ -1733,7 +1733,7 @@ public class WishlistControl
         return getWishlistLinesByItem(item, EntityPermission.READ_WRITE);
     }
     
-    private List<OrderLine> getOrderLinesByWishlistTypePriority(WishlistTypePriority wishlistTypePriority,
+    private List<OrderLine> getOrderLinesByWishlistPriority(WishlistPriority wishlistPriority,
             EntityPermission entityPermission) {
         List<OrderLine> orderLines;
         
@@ -1743,19 +1743,19 @@ public class WishlistControl
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
                         "FROM wishlistlines, orderlines " +
-                        "WHERE wshll_wshltyprty_wishlisttypepriorityid = ? AND wshll_thrutime = ? " +
+                        "WHERE wshll_wshlprty_wishlistpriorityid = ? AND wshll_thrutime = ? " +
                         "AND wshll_ordl_orderlineid = ordl_orderlineid";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM wishlistlines, orderlines " +
-                        "WHERE wshll_wshltyprty_wishlisttypepriorityid = ? AND wshll_thrutime = ? " +
+                        "WHERE wshll_wshlprty_wishlistpriorityid = ? AND wshll_thrutime = ? " +
                         "AND wshll_ordl_orderlineid = ordl_orderlineid " +
                         "FOR UPDATE";
             }
             
             PreparedStatement ps = OrderLineFactory.getInstance().prepareStatement(query);
             
-            ps.setLong(1, wishlistTypePriority.getPrimaryKey().getEntityId());
+            ps.setLong(1, wishlistPriority.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             
             orderLines = OrderLineFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
@@ -1766,12 +1766,12 @@ public class WishlistControl
         return orderLines;
     }
     
-    public List<OrderLine> getOrderLinesByWishlistTypePriority(WishlistTypePriority wishlistTypePriority) {
-        return getOrderLinesByWishlistTypePriority(wishlistTypePriority, EntityPermission.READ_ONLY);
+    public List<OrderLine> getOrderLinesByWishlistPriority(WishlistPriority wishlistPriority) {
+        return getOrderLinesByWishlistPriority(wishlistPriority, EntityPermission.READ_ONLY);
     }
     
-    public List<OrderLine> getOrderLinesByWishlistTypePriorityForUpdate(WishlistTypePriority wishlistTypePriority) {
-        return getOrderLinesByWishlistTypePriority(wishlistTypePriority, EntityPermission.READ_WRITE);
+    public List<OrderLine> getOrderLinesByWishlistPriorityForUpdate(WishlistPriority wishlistPriority) {
+        return getOrderLinesByWishlistPriority(wishlistPriority, EntityPermission.READ_WRITE);
     }
     
     public WishlistLineTransfer getWishlistLineTransfer(UserVisit userVisit, OrderLine orderLine) {
@@ -1797,9 +1797,9 @@ public class WishlistControl
         return getWishlistLineTransfers(userVisit, getWishlistLinesByItem(item));
     }
     
-    public void deleteOrderLinesByWishlistTypePriority(WishlistTypePriority wishlistTypePriority, BasePK deletedBy) {
+    public void deleteOrderLinesByWishlistPriority(WishlistPriority wishlistPriority, BasePK deletedBy) {
         var orderLineControl = Session.getModelController(OrderLineControl.class);
-        List<OrderLine> orderLines = getOrderLinesByWishlistTypePriorityForUpdate(wishlistTypePriority);
+        List<OrderLine> orderLines = getOrderLinesByWishlistPriorityForUpdate(wishlistPriority);
         
         orderLines.forEach((orderLine) -> {
             orderLineControl.deleteOrderLine(orderLine, deletedBy);

@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.wishlist.server.command;
 
-import com.echothree.control.user.wishlist.common.form.SetDefaultWishlistTypePriorityForm;
+import com.echothree.control.user.wishlist.common.form.SetDefaultWishlistPriorityForm;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.wishlist.server.entity.WishlistType;
-import com.echothree.model.data.wishlist.server.value.WishlistTypePriorityDetailValue;
+import com.echothree.model.data.wishlist.server.value.WishlistPriorityDetailValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
@@ -31,20 +31,20 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class SetDefaultWishlistTypePriorityCommand
-        extends BaseSimpleCommand<SetDefaultWishlistTypePriorityForm> {
+public class SetDefaultWishlistPriorityCommand
+        extends BaseSimpleCommand<SetDefaultWishlistPriorityForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
             new FieldDefinition("WishlistTypeName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("WishlistTypePriorityName", FieldType.ENTITY_NAME, true, null, null)
+            new FieldDefinition("WishlistPriorityName", FieldType.ENTITY_NAME, true, null, null)
         ));
     }
     
-    /** Creates a new instance of SetDefaultWishlistTypePriorityCommand */
-    public SetDefaultWishlistTypePriorityCommand(UserVisitPK userVisitPK, SetDefaultWishlistTypePriorityForm form) {
+    /** Creates a new instance of SetDefaultWishlistPriorityCommand */
+    public SetDefaultWishlistPriorityCommand(UserVisitPK userVisitPK, SetDefaultWishlistPriorityForm form) {
         super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, false);
     }
     
@@ -55,14 +55,14 @@ public class SetDefaultWishlistTypePriorityCommand
         WishlistType wishlistType = wishlistControl.getWishlistTypeByName(wishlistTypeName);
         
         if(wishlistType != null) {
-            String wishlistTypePriorityName = form.getWishlistTypePriorityName();
-            WishlistTypePriorityDetailValue wishlistTypePriorityDetailValue = wishlistControl.getWishlistTypePriorityDetailValueByNameForUpdate(wishlistType, wishlistTypePriorityName);
+            String wishlistPriorityName = form.getWishlistPriorityName();
+            WishlistPriorityDetailValue wishlistPriorityDetailValue = wishlistControl.getWishlistPriorityDetailValueByNameForUpdate(wishlistType, wishlistPriorityName);
             
-            if(wishlistTypePriorityDetailValue != null) {
-                wishlistTypePriorityDetailValue.setIsDefault(Boolean.TRUE);
-                wishlistControl.updateWishlistTypePriorityFromValue(wishlistTypePriorityDetailValue, getPartyPK());
+            if(wishlistPriorityDetailValue != null) {
+                wishlistPriorityDetailValue.setIsDefault(Boolean.TRUE);
+                wishlistControl.updateWishlistPriorityFromValue(wishlistPriorityDetailValue, getPartyPK());
             } else {
-                addExecutionError(ExecutionErrors.UnknownWishlistTypePriorityName.name(), wishlistTypePriorityName);
+                addExecutionError(ExecutionErrors.UnknownWishlistPriorityName.name(), wishlistPriorityName);
             }
         } else {
             addExecutionError(ExecutionErrors.UnknownWishlistTypeName.name(), wishlistTypeName);

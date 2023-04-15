@@ -30,37 +30,37 @@
                 <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
                 <a href="<c:url value="/action/Wishlist/Main" />">Wishlists</a> &gt;&gt;
                 <a href="<c:url value="/action/Wishlist/WishlistType/Main" />">Types</a> &gt;&gt;
-                <c:url var="wishlistTypePrioritiesUrl" value="/action/Wishlist/WishlistTypePriority/Main">
-                    <c:param name="WishlistTypeName" value="${wishlistTypePriority.wishlistType.wishlistTypeName}" />
+                <c:url var="wishlistPrioritiesUrl" value="/action/Wishlist/WishlistPriority/Main">
+                    <c:param name="WishlistTypeName" value="${wishlistPriority.wishlistType.wishlistTypeName}" />
                 </c:url>
-                <a href="${wishlistTypePrioritiesUrl}">Priorities</a> &gt;&gt;
+                <a href="${wishlistPrioritiesUrl}">Priorities</a> &gt;&gt;
                 Descriptions
             </h2>
         </div>
         <div id="Content">
-            <c:url var="addUrl" value="/action/Wishlist/WishlistTypePriority/DescriptionAdd">
-                <c:param name="WishlistTypeName" value="${wishlistTypePriority.wishlistType.wishlistTypeName}" />
-                <c:param name="WishlistTypePriorityName" value="${wishlistTypePriority.wishlistTypePriorityName}" />
+            <c:url var="addUrl" value="/action/Wishlist/WishlistPriority/DescriptionAdd">
+                <c:param name="WishlistTypeName" value="${wishlistPriority.wishlistType.wishlistTypeName}" />
+                <c:param name="WishlistPriorityName" value="${wishlistPriority.wishlistPriorityName}" />
             </c:url>
             <p><a href="${addUrl}">Add Description.</a></p>
-            <display:table name="wishlistTypePriorityDescriptions" id="wishlistTypePriorityDescription" class="displaytag">
+            <display:table name="wishlistPriorityDescriptions" id="wishlistPriorityDescription" class="displaytag">
                 <display:column titleKey="columnTitle.language">
-                    <c:out value="${wishlistTypePriorityDescription.language.description}" />
+                    <c:out value="${wishlistPriorityDescription.language.description}" />
                 </display:column>
                 <display:column titleKey="columnTitle.description">
-                    <c:out value="${wishlistTypePriorityDescription.description}" />
+                    <c:out value="${wishlistPriorityDescription.description}" />
                 </display:column>
                 <display:column>
-                    <c:url var="editUrl" value="/action/Wishlist/WishlistTypePriority/DescriptionEdit">
-                        <c:param name="WishlistTypeName" value="${wishlistTypePriorityDescription.wishlistTypePriority.wishlistType.wishlistTypeName}" />
-                        <c:param name="WishlistTypePriorityName" value="${wishlistTypePriorityDescription.wishlistTypePriority.wishlistTypePriorityName}" />
-                        <c:param name="LanguageIsoName" value="${wishlistTypePriorityDescription.language.languageIsoName}" />
+                    <c:url var="editUrl" value="/action/Wishlist/WishlistPriority/DescriptionEdit">
+                        <c:param name="WishlistTypeName" value="${wishlistPriorityDescription.wishlistPriority.wishlistType.wishlistTypeName}" />
+                        <c:param name="WishlistPriorityName" value="${wishlistPriorityDescription.wishlistPriority.wishlistPriorityName}" />
+                        <c:param name="LanguageIsoName" value="${wishlistPriorityDescription.language.languageIsoName}" />
                     </c:url>
                     <a href="${editUrl}">Edit</a>
-                    <c:url var="deleteUrl" value="/action/Wishlist/WishlistTypePriority/DescriptionDelete">
-                        <c:param name="WishlistTypeName" value="${wishlistTypePriorityDescription.wishlistTypePriority.wishlistType.wishlistTypeName}" />
-                        <c:param name="WishlistTypePriorityName" value="${wishlistTypePriorityDescription.wishlistTypePriority.wishlistTypePriorityName}" />
-                        <c:param name="LanguageIsoName" value="${wishlistTypePriorityDescription.language.languageIsoName}" />
+                    <c:url var="deleteUrl" value="/action/Wishlist/WishlistPriority/DescriptionDelete">
+                        <c:param name="WishlistTypeName" value="${wishlistPriorityDescription.wishlistPriority.wishlistType.wishlistTypeName}" />
+                        <c:param name="WishlistPriorityName" value="${wishlistPriorityDescription.wishlistPriority.wishlistPriorityName}" />
+                        <c:param name="LanguageIsoName" value="${wishlistPriorityDescription.language.languageIsoName}" />
                     </c:url>
                     <a href="${deleteUrl}">Delete</a>
                 </display:column>

@@ -18,7 +18,7 @@ package com.echothree.control.user.wishlist.common.edit;
 
 import com.echothree.util.common.form.BaseEdit;
 
-public interface WishlistTypePriorityDescriptionEdit
+public interface WishlistPriorityDescriptionEdit
         extends BaseEdit {
     
     String getDescription();
