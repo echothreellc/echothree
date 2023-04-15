@@ -18,7 +18,7 @@
     <associatePrograms>
         <associateProgram associateProgramName="DEFAULT" itemIndirectSalePercent="8.000%" itemDirectSalePercent="10.000%"
         isDefault="true" sortOrder="1">
-            <wishlistPriorityDescription languageIsoName="en" description="Default Associate Program" />
+            <associateProgramDescription languageIsoName="en" description="Default Associate Program" />
         </associateProgram>
     </associatePrograms>
 </initialData>
