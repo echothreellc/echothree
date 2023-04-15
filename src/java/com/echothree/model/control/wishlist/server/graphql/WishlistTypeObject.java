@@ -24,7 +24,7 @@ import com.echothree.model.control.graphql.server.graphql.count.CountingPaginate
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
-import com.echothree.model.data.wishlist.common.WishlistTypePriorityConstants;
+import com.echothree.model.data.wishlist.common.WishlistPriorityConstants;
 import com.echothree.model.data.wishlist.server.entity.WishlistType;
 import com.echothree.model.data.wishlist.server.entity.WishlistTypeDetail;
 import com.echothree.util.server.persistence.Session;
@@ -95,16 +95,16 @@ public class WishlistTypeObject
     @GraphQLDescription("wishlist type priorities")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public CountingPaginatedData<WishlistTypePriorityObject> getWishlistTypePriorities(final DataFetchingEnvironment env) {
-        if(WishlistSecurityUtils.getInstance().getHasWishlistTypePrioritiesAccess(env)) {
+    public CountingPaginatedData<WishlistPriorityObject> getWishlistPriorities(final DataFetchingEnvironment env) {
+        if(WishlistSecurityUtils.getInstance().getHasWishlistPrioritiesAccess(env)) {
             var wishlistControl = Session.getModelController(WishlistControl.class);
-            var totalCount = wishlistControl.countWishlistTypePrioritiesByWishlistType(wishlistType);
+            var totalCount = wishlistControl.countWishlistPrioritiesByWishlistType(wishlistType);
 
-            try(var objectLimiter = new ObjectLimiter(env, WishlistTypePriorityConstants.COMPONENT_VENDOR_NAME, WishlistTypePriorityConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var entities = wishlistControl.getWishlistTypePriorities(wishlistType);
-                var wishlistTypePriorities = entities.stream().map(WishlistTypePriorityObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+            try(var objectLimiter = new ObjectLimiter(env, WishlistPriorityConstants.COMPONENT_VENDOR_NAME, WishlistPriorityConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = wishlistControl.getWishlistPriorities(wishlistType);
+                var wishlistPriorities = entities.stream().map(WishlistPriorityObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-                return new CountedObjects<>(objectLimiter, wishlistTypePriorities);
+                return new CountedObjects<>(objectLimiter, wishlistPriorities);
             }
         } else {
             return Connections.emptyConnection();

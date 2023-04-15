@@ -21,10 +21,10 @@ import com.echothree.control.user.inventory.common.spec.InventoryConditionSpec;
 import com.echothree.control.user.item.common.spec.ItemSpec;
 import com.echothree.control.user.offer.common.spec.SourceSpec;
 import com.echothree.control.user.party.common.spec.PartySpec;
-import com.echothree.control.user.wishlist.common.spec.WishlistTypePrioritySpec;
+import com.echothree.control.user.wishlist.common.spec.WishlistPrioritySpec;
 
 public interface CreateWishlistLineForm
-        extends PartySpec, WishlistTypePrioritySpec, CurrencySpec, SourceSpec, ItemSpec, InventoryConditionSpec {
+        extends PartySpec, WishlistPrioritySpec, CurrencySpec, SourceSpec, ItemSpec, InventoryConditionSpec {
     
     String getUnitOfMeasureTypeName();
     void setUnitOfMeasureTypeName(String unitOfMeasureTypeName);

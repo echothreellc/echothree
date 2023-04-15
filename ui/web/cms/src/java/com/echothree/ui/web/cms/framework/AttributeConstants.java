@@ -424,10 +424,10 @@ public interface AttributeConstants {
     String RECOVERY_QUESTIONS = "recoveryQuestions";
     String RECOVERY_QUESTION_NAME = "recoveryQuestionName";
     String RECOVERY_QUESTION_DESCRIPTIONS = "recoveryQuestionDescriptions";
-    String WISHLIST_TYPE_PRIORITY = "wishlistTypePriority";
-    String WISHLIST_TYPE_PRIORITY_NAME = "wishlistTypePriorityName";
-    String WISHLIST_TYPE_PRIORITY_DESCRIPTIONS = "wishlistTypePriorityDescriptions";
-    String WISHLIST_TYPE_PRIORITIES = "wishlistTypePriorities";
+    String WISHLIST_TYPE_PRIORITY = "wishlistPriority";
+    String WISHLIST_TYPE_PRIORITY_NAME = "wishlistPriorityName";
+    String WISHLIST_TYPE_PRIORITY_DESCRIPTIONS = "wishlistPriorityDescriptions";
+    String WISHLIST_TYPE_PRIORITIES = "wishlistPriorities";
     String LOCATION_TYPE_NAME = "locationTypeName";
     String LOCATION_NAME_ELEMENT_NAME = "locationNameElementName";
     String LOCATION_VOLUME = "locationVolume";

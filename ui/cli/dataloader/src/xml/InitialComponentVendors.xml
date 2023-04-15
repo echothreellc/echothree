@@ -1690,10 +1690,10 @@
             <entityType entityTypeName="WishlistTypeDescription" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Wishlist Type Description" />
             </entityType>
-            <entityType entityTypeName="WishlistTypePriority" keepAllHistory="false" sortOrder="1">
+            <entityType entityTypeName="WishlistPriority" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Wishlist Type Priority" />
             </entityType>
-            <entityType entityTypeName="WishlistTypePriorityDescription" keepAllHistory="false" sortOrder="1">
+            <entityType entityTypeName="WishlistPriorityDescription" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Wishlist Type Priority Description" />
             </entityType>
             <entityType entityTypeName="WorkflowType" keepAllHistory="false" sortOrder="1">

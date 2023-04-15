@@ -110,9 +110,9 @@ public class SecurityRoleGroupObject
 
             try(var objectLimiter = new ObjectLimiter(env, SecurityRoleConstants.COMPONENT_VENDOR_NAME, SecurityRoleConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = securityControl.getSecurityRoles(securityRoleGroup);
-                var wishlistTypePriorities = entities.stream().map(SecurityRoleObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                var wishlistPriorities = entities.stream().map(SecurityRoleObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-                return new CountedObjects<>(objectLimiter, wishlistTypePriorities);
+                return new CountedObjects<>(objectLimiter, wishlistPriorities);
             }
         } else {
             return Connections.emptyConnection();

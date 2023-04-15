@@ -110,9 +110,9 @@ public class WorkflowEntranceObject
 
             try(var objectLimiter = new ObjectLimiter(env, WorkflowEntranceStepConstants.COMPONENT_VENDOR_NAME, WorkflowEntranceStepConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = workflowControl.getWorkflowEntranceStepsByWorkflowEntrance(workflowEntrance);
-                var wishlistTypePriorities = entities.stream().map(WorkflowEntranceStepObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                var wishlistPriorities = entities.stream().map(WorkflowEntranceStepObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-                return new CountedObjects<>(objectLimiter, wishlistTypePriorities);
+                return new CountedObjects<>(objectLimiter, wishlistPriorities);
             }
         } else {
             return Connections.emptyConnection();
@@ -130,9 +130,9 @@ public class WorkflowEntranceObject
 
             try(var objectLimiter = new ObjectLimiter(env, WorkflowEntrancePartyTypeConstants.COMPONENT_VENDOR_NAME, WorkflowEntrancePartyTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = workflowControl.getWorkflowEntrancePartyTypesByWorkflowEntrance(workflowEntrance);
-                var wishlistTypePriorities = entities.stream().map(WorkflowEntrancePartyTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                var wishlistPriorities = entities.stream().map(WorkflowEntrancePartyTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-                return new CountedObjects<>(objectLimiter, wishlistTypePriorities);
+                return new CountedObjects<>(objectLimiter, wishlistPriorities);
             }
         } else {
             return Connections.emptyConnection();
@@ -150,9 +150,9 @@ public class WorkflowEntranceObject
 
             try(var objectLimiter = new ObjectLimiter(env, WorkflowEntranceSelectorConstants.COMPONENT_VENDOR_NAME, WorkflowEntranceSelectorConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = workflowControl.getWorkflowEntranceSelectorsByWorkflowEntrance(workflowEntrance);
-                var wishlistTypePriorities = entities.stream().map(WorkflowEntranceSelectorObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                var wishlistPriorities = entities.stream().map(WorkflowEntranceSelectorObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-                return new CountedObjects<>(objectLimiter, wishlistTypePriorities);
+                return new CountedObjects<>(objectLimiter, wishlistPriorities);
             }
         } else {
             return Connections.emptyConnection();

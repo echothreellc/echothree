@@ -86,12 +86,12 @@
                 <display:column titleKey="columnTitle.unitPrice" class="amount">
                     <c:out value="${wishlistLine.unitAmount}" />
                 </display:column>
-                <display:column titleKey="columnTitle.priority" sortable="true" sortProperty="wishlistTypePriority.wishlistTypePriorityName">
-                    <c:url var="wishlistTypePriorityUrl" value="/action/Inventory/InventoryCondition/Review">
-                        <c:param name="WishlistTypeName" value="${wishlistLine.wishlistTypePriority.wishlistType.wishlistTypeName}" />
-                        <c:param name="WishlistTypePriorityName" value="${wishlistLine.wishlistTypePriority.wishlistTypePriorityName}" />
+                <display:column titleKey="columnTitle.priority" sortable="true" sortProperty="wishlistPriority.wishlistPriorityName">
+                    <c:url var="wishlistPriorityUrl" value="/action/Inventory/InventoryCondition/Review">
+                        <c:param name="WishlistTypeName" value="${wishlistLine.wishlistPriority.wishlistType.wishlistTypeName}" />
+                        <c:param name="WishlistPriorityName" value="${wishlistLine.wishlistPriority.wishlistPriorityName}" />
                     </c:url>
-                    <a href="${wishlistTypePriorityUrl}"><c:out value="${wishlistLine.wishlistTypePriority.description}" /></a>
+                    <a href="${wishlistPriorityUrl}"><c:out value="${wishlistLine.wishlistPriority.description}" /></a>
                 </display:column>
                 <et:hasSecurityRole securityRole="Event.List">
                     <display:column>

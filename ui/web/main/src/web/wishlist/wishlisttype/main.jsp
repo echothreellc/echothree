@@ -60,10 +60,10 @@
                     <c:out value="${wishlistType.description}" />
                 </display:column>
                 <display:column>
-                    <c:url var="wishlistTypePrioritiesUrl" value="/action/Wishlist/WishlistTypePriority/Main">
+                    <c:url var="wishlistPrioritiesUrl" value="/action/Wishlist/WishlistPriority/Main">
                         <c:param name="WishlistTypeName" value="${wishlistType.wishlistTypeName}" />
                     </c:url>
-                    <a href="${wishlistTypePrioritiesUrl}">Priorities</a><br />
+                    <a href="${wishlistPrioritiesUrl}">Priorities</a><br />
                     <c:url var="editUrl" value="/action/Wishlist/WishlistType/Edit">
                         <c:param name="OriginalWishlistTypeName" value="${wishlistType.wishlistTypeName}" />
                     </c:url>

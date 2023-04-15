@@ -111,9 +111,9 @@ public class WorkflowDestinationObject
 
             try(var objectLimiter = new ObjectLimiter(env, WorkflowDestinationStepConstants.COMPONENT_VENDOR_NAME, WorkflowDestinationStepConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = workflowControl.getWorkflowDestinationStepsByWorkflowDestination(workflowDestination);
-                var wishlistTypePriorities = entities.stream().map(WorkflowDestinationStepObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                var wishlistPriorities = entities.stream().map(WorkflowDestinationStepObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-                return new CountedObjects<>(objectLimiter, wishlistTypePriorities);
+                return new CountedObjects<>(objectLimiter, wishlistPriorities);
             }
         } else {
             return Connections.emptyConnection();
@@ -131,9 +131,9 @@ public class WorkflowDestinationObject
 
             try(var objectLimiter = new ObjectLimiter(env, WorkflowDestinationPartyTypeConstants.COMPONENT_VENDOR_NAME, WorkflowDestinationPartyTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = workflowControl.getWorkflowDestinationPartyTypesByWorkflowDestination(workflowDestination);
-                var wishlistTypePriorities = entities.stream().map(WorkflowDestinationPartyTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                var wishlistPriorities = entities.stream().map(WorkflowDestinationPartyTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-                return new CountedObjects<>(objectLimiter, wishlistTypePriorities);
+                return new CountedObjects<>(objectLimiter, wishlistPriorities);
             }
         } else {
             return Connections.emptyConnection();
@@ -151,9 +151,9 @@ public class WorkflowDestinationObject
 
             try(var objectLimiter = new ObjectLimiter(env, WorkflowDestinationSelectorConstants.COMPONENT_VENDOR_NAME, WorkflowDestinationSelectorConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var entities = workflowControl.getWorkflowDestinationSelectorsByWorkflowDestination(workflowDestination);
-                var wishlistTypePriorities = entities.stream().map(WorkflowDestinationSelectorObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                var wishlistPriorities = entities.stream().map(WorkflowDestinationSelectorObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-                return new CountedObjects<>(objectLimiter, wishlistTypePriorities);
+                return new CountedObjects<>(objectLimiter, wishlistPriorities);
             }
         } else {
             return Connections.emptyConnection();

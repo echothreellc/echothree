@@ -56,7 +56,7 @@ public class WishlistHandler
         if(localName.equals("wishlistLine")) {
             String itemName = null;
             String inventoryConditionName = null;
-            String wishlistTypePriorityName = null;
+            String wishlistPriorityName = null;
             String comment = null;
             
             int count = attrs.getLength();
@@ -65,8 +65,8 @@ public class WishlistHandler
                     itemName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("inventoryConditionName"))
                     inventoryConditionName = attrs.getValue(i);
-                else if(attrs.getQName(i).equals("wishlistTypePriorityName"))
-                    wishlistTypePriorityName = attrs.getValue(i);
+                else if(attrs.getQName(i).equals("wishlistPriorityName"))
+                    wishlistPriorityName = attrs.getValue(i);
                 else if(attrs.getQName(i).equals("comment"))
                     comment = attrs.getValue(i);
             }
@@ -80,7 +80,7 @@ public class WishlistHandler
                 form.setSourceName(sourceName);
                 form.setItemName(itemName);
                 form.setInventoryConditionName(inventoryConditionName);
-                form.setWishlistTypePriorityName(wishlistTypePriorityName);
+                form.setWishlistPriorityName(wishlistPriorityName);
                 form.setComment(comment);
                 
                 wishlistService.createWishlistLine(initialDataParser.getUserVisit(), form);

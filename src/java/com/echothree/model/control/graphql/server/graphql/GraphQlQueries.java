@@ -284,8 +284,8 @@ import com.echothree.control.user.vendor.server.command.GetVendorTypesCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorsCommand;
 import com.echothree.control.user.wishlist.common.WishlistUtil;
 import com.echothree.control.user.wishlist.server.command.GetWishlistTypeCommand;
-import com.echothree.control.user.wishlist.server.command.GetWishlistTypePrioritiesCommand;
-import com.echothree.control.user.wishlist.server.command.GetWishlistTypePriorityCommand;
+import com.echothree.control.user.wishlist.server.command.GetWishlistPrioritiesCommand;
+import com.echothree.control.user.wishlist.server.command.GetWishlistPriorityCommand;
 import com.echothree.control.user.wishlist.server.command.GetWishlistTypesCommand;
 import com.echothree.control.user.workflow.common.WorkflowUtil;
 import com.echothree.control.user.workflow.server.command.GetWorkflowCommand;
@@ -468,7 +468,7 @@ import com.echothree.model.control.vendor.server.graphql.VendorObject;
 import com.echothree.model.control.vendor.server.graphql.VendorTypeObject;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.control.wishlist.server.graphql.WishlistTypeObject;
-import com.echothree.model.control.wishlist.server.graphql.WishlistTypePriorityObject;
+import com.echothree.model.control.wishlist.server.graphql.WishlistPriorityObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowDestinationObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowDestinationPartyTypeObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowDestinationSecurityRoleObject;
@@ -636,7 +636,7 @@ import com.echothree.model.data.vendor.server.entity.VendorItemCost;
 import com.echothree.model.data.vendor.server.entity.VendorType;
 import com.echothree.model.data.wishlist.common.WishlistTypeConstants;
 import com.echothree.model.data.wishlist.server.entity.WishlistType;
-import com.echothree.model.data.wishlist.server.entity.WishlistTypePriority;
+import com.echothree.model.data.wishlist.server.entity.WishlistPriority;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestinationPartyType;
@@ -7573,56 +7573,56 @@ public final class GraphQlQueries
     }
 
     @GraphQLField
-    @GraphQLName("wishlistTypePriority")
-    public static WishlistTypePriorityObject wishlistTypePriority(final DataFetchingEnvironment env,
+    @GraphQLName("wishlistPriority")
+    public static WishlistPriorityObject wishlistPriority(final DataFetchingEnvironment env,
             @GraphQLName("wishlistTypeName") final String wishlistTypeName,
-            @GraphQLName("wishlistTypePriorityName") final String wishlistTypePriorityName,
+            @GraphQLName("wishlistPriorityName") final String wishlistPriorityName,
             @GraphQLName("id") @GraphQLID final String id) {
-        WishlistTypePriority wishlistTypePriority;
+        WishlistPriority wishlistPriority;
 
         try {
-            var commandForm = WishlistUtil.getHome().getGetWishlistTypePriorityForm();
+            var commandForm = WishlistUtil.getHome().getGetWishlistPriorityForm();
 
             commandForm.setWishlistTypeName(wishlistTypeName);
-            commandForm.setWishlistTypePriorityName(wishlistTypePriorityName);
+            commandForm.setWishlistPriorityName(wishlistPriorityName);
             commandForm.setUlid(id);
 
-            wishlistTypePriority = new GetWishlistTypePriorityCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            wishlistPriority = new GetWishlistPriorityCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        return wishlistTypePriority == null ? null : new WishlistTypePriorityObject(wishlistTypePriority);
+        return wishlistPriority == null ? null : new WishlistPriorityObject(wishlistPriority);
     }
 
     @GraphQLField
-    @GraphQLName("wishlistTypePriorities")
-    public static Collection<WishlistTypePriorityObject> wishlistTypePriorities(final DataFetchingEnvironment env,
+    @GraphQLName("wishlistPriorities")
+    public static Collection<WishlistPriorityObject> wishlistPriorities(final DataFetchingEnvironment env,
             @GraphQLName("wishlistTypeName") @GraphQLNonNull final String wishlistTypeName) {
-        Collection<WishlistTypePriority> wishlistTypePriorities;
-        Collection<WishlistTypePriorityObject> wishlistTypePriorityObjects;
+        Collection<WishlistPriority> wishlistPriorities;
+        Collection<WishlistPriorityObject> wishlistPriorityObjects;
 
         try {
-            var commandForm = WishlistUtil.getHome().getGetWishlistTypePrioritiesForm();
+            var commandForm = WishlistUtil.getHome().getGetWishlistPrioritiesForm();
 
             commandForm.setWishlistTypeName(wishlistTypeName);
 
-            wishlistTypePriorities = new GetWishlistTypePrioritiesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            wishlistPriorities = new GetWishlistPrioritiesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(wishlistTypePriorities == null) {
-            wishlistTypePriorityObjects = emptyList();
+        if(wishlistPriorities == null) {
+            wishlistPriorityObjects = emptyList();
         } else {
-            wishlistTypePriorityObjects = new ArrayList<>(wishlistTypePriorities.size());
+            wishlistPriorityObjects = new ArrayList<>(wishlistPriorities.size());
 
-            wishlistTypePriorities.stream()
-                    .map(WishlistTypePriorityObject::new)
-                    .forEachOrdered(wishlistTypePriorityObjects::add);
+            wishlistPriorities.stream()
+                    .map(WishlistPriorityObject::new)
+                    .forEachOrdered(wishlistPriorityObjects::add);
         }
 
-        return wishlistTypePriorityObjects;
+        return wishlistPriorityObjects;
     }
 
     @GraphQLField

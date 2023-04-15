@@ -41,7 +41,7 @@ import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.uom.common.pk.UnitOfMeasureTypePK;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.wishlist.server.entity.WishlistLine;
-import com.echothree.model.data.wishlist.server.entity.WishlistTypePriority;
+import com.echothree.model.data.wishlist.server.entity.WishlistPriority;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.EntityPermission;
@@ -325,9 +325,9 @@ public class OrderLineControl
         deleteOrderLinesByOrder(getOrderLinesByOrderShipmentGroupForUpdate(orderShipmentGroup), deletedBy);
     }
     
-    public void deleteOrderLinesByWishlistTypePriority(WishlistTypePriority wishlistTypePriority, BasePK deletedBy) {
+    public void deleteOrderLinesByWishlistPriority(WishlistPriority wishlistPriority, BasePK deletedBy) {
         var wishlistControl = Session.getModelController(WishlistControl.class);
-        List<WishlistLine> wishlistLines = wishlistControl.getWishlistLinesByWishlistTypePriorityForUpdate(wishlistTypePriority);
+        List<WishlistLine> wishlistLines = wishlistControl.getWishlistLinesByWishlistPriorityForUpdate(wishlistPriority);
         
         wishlistLines.forEach((wishlistLine) -> {
             deleteOrderLine(wishlistLine.getOrderLineForUpdate(), deletedBy);
