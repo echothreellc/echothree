@@ -100,6 +100,9 @@ import com.echothree.control.user.offer.common.result.EditOfferUseResult;
 import com.echothree.control.user.offer.common.result.EditUseNameElementResult;
 import com.echothree.control.user.offer.common.result.EditUseResult;
 import com.echothree.control.user.offer.common.result.EditUseTypeResult;
+import com.echothree.control.user.order.common.OrderUtil;
+import com.echothree.control.user.order.common.result.CreateOrderTypeResult;
+import com.echothree.control.user.order.common.result.EditOrderTypeResult;
 import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.common.result.CreateCustomerResult;
 import com.echothree.control.user.party.common.result.CreateCustomerWithLoginResult;
@@ -161,6 +164,8 @@ import com.echothree.model.control.search.server.graphql.SearchEmployeesResultOb
 import com.echothree.model.control.search.server.graphql.SearchItemsResultObject;
 import com.echothree.model.control.search.server.graphql.SearchVendorsResultObject;
 import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.common.validation.FieldType;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLID;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -8406,6 +8411,134 @@ public class GraphQlMutations
             }
 
             mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static MutationResultWithIdObject createOrderType(final DataFetchingEnvironment env,
+            @GraphQLName("orderTypeName") @GraphQLNonNull final String orderTypeName,
+            @GraphQLName("parentOrderTypeName") final String parentOrderTypeName,
+            @GraphQLName("orderSequenceTypeName") final String orderSequenceTypeName,
+            @GraphQLName("orderWorkflowName") final String orderWorkflowName,
+            @GraphQLName("orderWorkflowEntranceName") final String orderWorkflowEntranceName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = OrderUtil.getHome().getCreateOrderTypeForm();
+
+            commandForm.setOrderTypeName(orderTypeName);
+            commandForm.setParentOrderTypeName(parentOrderTypeName);
+            commandForm.setOrderSequenceTypeName(orderSequenceTypeName);
+            commandForm.setOrderWorkflowName(orderWorkflowName);
+            commandForm.setOrderWorkflowEntranceName(orderWorkflowEntranceName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            var commandResult = OrderUtil.getHome().createOrderType(getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateOrderTypeResult)commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static MutationResultWithIdObject editOrderType(final DataFetchingEnvironment env,
+            @GraphQLName("originalOrderTypeName") final String originalOrderTypeName,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("orderTypeName") final String orderTypeName,
+            @GraphQLName("parentOrderTypeName") final String parentOrderTypeName,
+            @GraphQLName("orderSequenceTypeName") final String orderSequenceTypeName,
+            @GraphQLName("orderWorkflowName") final String orderWorkflowName,
+            @GraphQLName("orderWorkflowEntranceName") final String orderWorkflowEntranceName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var spec = OrderUtil.getHome().getOrderTypeUniversalSpec();
+
+            spec.setOrderTypeName(originalOrderTypeName);
+            spec.setUlid(id);
+
+            var commandForm = OrderUtil.getHome().getEditOrderTypeForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = OrderUtil.getHome().editOrderType(getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditOrderTypeResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                mutationResultObject.setEntityInstance(result.getOrderType().getEntityInstance());
+
+                if(arguments.containsKey("orderTypeName"))
+                    edit.setOrderTypeName(orderTypeName);
+                if(arguments.containsKey("parentOrderTypeName"))
+                    edit.setParentOrderTypeName(parentOrderTypeName);
+                if(arguments.containsKey("orderSequenceTypeName"))
+                    edit.setOrderSequenceTypeName(orderSequenceTypeName);
+                if(arguments.containsKey("orderWorkflowName"))
+                    edit.setOrderWorkflowName(orderWorkflowName);
+                if(arguments.containsKey("orderWorkflowEntranceName"))
+                    edit.setOrderWorkflowEntranceName(orderWorkflowEntranceName);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = OrderUtil.getHome().editOrderType(getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static MutationResultObject deleteOrderType(final DataFetchingEnvironment env,
+            @GraphQLName("orderTypeName") final String orderTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = OrderUtil.getHome().getDeleteOrderTypeForm();
+
+            commandForm.setOrderTypeName(orderTypeName);
+            commandForm.setUlid(id);
+
+            mutationResultObject.setCommandResult(OrderUtil.getHome().deleteOrderType(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
