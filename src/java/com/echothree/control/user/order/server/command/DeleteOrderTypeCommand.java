@@ -17,21 +17,18 @@
 package com.echothree.control.user.order.server.command;
 
 import com.echothree.control.user.order.common.form.DeleteOrderTypeForm;
-import com.echothree.model.control.order.server.control.OrderTypeControl;
+import com.echothree.model.control.order.server.logic.OrderTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -51,7 +48,11 @@ public class DeleteOrderTypeCommand
                 )));
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("OrderTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("OrderTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
                 ));
     }
     
@@ -62,14 +63,10 @@ public class DeleteOrderTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
-        var orderTypeName = form.getOrderTypeName();
-        OrderType orderType = orderTypeControl.getOrderTypeByNameForUpdate(orderTypeName);
+        var orderType = OrderTypeLogic.getInstance().getOrderTypeByUniversalSpecForUpdate(this, form, false);
         
-        if(orderType != null) {
-            orderTypeControl.deleteOrderType(orderType, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownOrderTypeName.name(), orderTypeName);
+        if(!hasExecutionErrors()) {
+            OrderTypeLogic.getInstance().deleteOrderType(this, orderType, getPartyPK());
         }
         
         return null;

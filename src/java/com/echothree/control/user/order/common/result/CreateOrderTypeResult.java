@@ -14,13 +14,15 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.order.common.form;
+package com.echothree.control.user.order.common.result;
 
-import com.echothree.control.user.order.common.spec.OrderTypeUniversalSpec;
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
+import com.echothree.control.user.order.common.spec.OrderTypeSpec;
+import com.echothree.util.common.command.BaseResult;
 
-public interface DeleteOrderTypeForm
-        extends OrderTypeUniversalSpec {
+public interface CreateOrderTypeResult
+        extends OrderTypeSpec, EntityRefSpec, BaseResult {
     
-    // Nothing additional beyond OrderTypeUniversalSpec
+    // Nothing additional beyond OrderTypeSpec, EntityRefSpec, BaseResult
     
 }
