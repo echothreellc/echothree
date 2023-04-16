@@ -14,13 +14,15 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.wishlist.common.form;
+package com.echothree.control.user.wishlist.common.result;
 
-import com.echothree.control.user.wishlist.common.spec.WishlistPriorityUniversalSpec;
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
+import com.echothree.control.user.wishlist.common.spec.WishlistPrioritySpec;
+import com.echothree.util.common.command.BaseResult;
 
-public interface DeleteWishlistPriorityForm
-        extends WishlistPriorityUniversalSpec {
+public interface CreateWishlistPriorityResult
+        extends WishlistPrioritySpec, EntityRefSpec, BaseResult {
     
-    // Nothing additional beyond WishlistPriorityUniversalSpec
+    // Nothing additional beyond WishlistPrioritySpec, EntityRefSpec, BaseResult
     
 }
