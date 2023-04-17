@@ -1,5 +1,21 @@
 # Changelog
 
+## 2023-04-16-01
+
+* Add Wishlist Type Mutations [640](https://gitlab.echothree.com/echothree/echothree/-/issues/640)
+* Add Wishlist Priority Mutations [642](https://gitlab.echothree.com/echothree/echothree/-/issues/642)
+* Add Order Type Mutations [644](https://gitlab.echothree.com/echothree/echothree/-/issues/644)
+* Add Order Priority Mutations [646](https://gitlab.echothree.com/echothree/echothree/-/issues/646)
+* Add Vendor Item Mutations [689](https://gitlab.echothree.com/echothree/echothree/-/issues/689)
+* Add Vendor Item Cost Mutations [691](https://gitlab.echothree.com/echothree/echothree/-/issues/691)
+* Add Vendor Type Mutations [693](https://gitlab.echothree.com/echothree/echothree/-/issues/693)
+* jOOQ 3.18.2 Upgrade [697](https://gitlab.echothree.com/echothree/echothree/-/issues/697)
+* Apache Lucene 9.5.0 Upgrade [698](https://gitlab.echothree.com/echothree/echothree/-/issues/698)
+* canSpecifyParty() Throwing NPE [699](https://gitlab.echothree.com/echothree/echothree/-/issues/699)
+* Add Vendor Mutations [700](https://gitlab.echothree.com/echothree/echothree/-/issues/700)
+* jOOQ 3.18.3 Upgrade [710](https://gitlab.echothree.com/echothree/echothree/-/issues/710)
+* Rename Wishlist Type Priorities to Wishlist Priorities [711](https://gitlab.echothree.com/echothree/echothree/-/issues/711)
+
 ## 2023-04-02-01
 
 * Add Vendor Item Object and Queries [688](https://gitlab.echothree.com/echothree/echothree/-/issues/688)
