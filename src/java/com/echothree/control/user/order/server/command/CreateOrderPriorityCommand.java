@@ -17,6 +17,7 @@
 package com.echothree.control.user.order.server.command;
 
 import com.echothree.control.user.order.common.form.CreateOrderPriorityForm;
+import com.echothree.control.user.order.common.result.OrderResultFactory;
 import com.echothree.model.control.order.server.control.OrderControl;
 import com.echothree.model.control.order.server.control.OrderPriorityControl;
 import com.echothree.model.control.order.server.control.OrderTypeControl;
@@ -71,14 +72,17 @@ public class CreateOrderPriorityCommand
     
     @Override
     protected BaseResult execute() {
+        var result = OrderResultFactory.getCreateOrderPriorityResult();
         var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         var orderTypeName = form.getOrderTypeName();
         var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
+        OrderPriority orderPriority = null;
 
         if(orderType != null) {
             var orderPriorityControl = Session.getModelController(OrderPriorityControl.class);
             String orderPriorityName = form.getOrderPriorityName();
-            OrderPriority orderPriority = orderPriorityControl.getOrderPriorityByName(orderType, orderPriorityName);
+
+            orderPriority = orderPriorityControl.getOrderPriorityByName(orderType, orderPriorityName);
 
             if(orderPriority == null) {
                 var partyPK = getPartyPK();
@@ -98,8 +102,13 @@ public class CreateOrderPriorityCommand
         } else {
             addExecutionError(ExecutionErrors.UnknownOrderTypeName.name(), orderTypeName);
         }
+        
+        if(orderPriority != null) {
+            result.setEntityRef(orderPriority.getPrimaryKey().getEntityRef());
+            result.setOrderPriorityName(orderPriority.getLastDetail().getOrderPriorityName());
+        }
 
-        return null;
+        return result;
     }
     
 }
