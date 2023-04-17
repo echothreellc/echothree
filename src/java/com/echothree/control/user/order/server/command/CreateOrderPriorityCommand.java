@@ -18,25 +18,20 @@ package com.echothree.control.user.order.server.command;
 
 import com.echothree.control.user.order.common.form.CreateOrderPriorityForm;
 import com.echothree.control.user.order.common.result.OrderResultFactory;
-import com.echothree.model.control.order.server.control.OrderControl;
-import com.echothree.model.control.order.server.control.OrderPriorityControl;
-import com.echothree.model.control.order.server.control.OrderTypeControl;
+import com.echothree.model.control.order.server.logic.OrderPriorityLogic;
+import com.echothree.model.control.order.server.logic.OrderTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.order.server.entity.OrderPriority;
-import com.echothree.model.data.order.server.entity.OrderType;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -73,34 +68,20 @@ public class CreateOrderPriorityCommand
     @Override
     protected BaseResult execute() {
         var result = OrderResultFactory.getCreateOrderPriorityResult();
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         var orderTypeName = form.getOrderTypeName();
-        var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
+        var orderType = OrderTypeLogic.getInstance().getOrderTypeByName(this, orderTypeName);
         OrderPriority orderPriority = null;
 
-        if(orderType != null) {
-            var orderPriorityControl = Session.getModelController(OrderPriorityControl.class);
-            String orderPriorityName = form.getOrderPriorityName();
+        if(!hasExecutionErrors()) {
+            var orderPriorityName = form.getOrderPriorityName();
+            var priority = Integer.valueOf(form.getPriority());
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
+            var description = form.getDescription();
+            var partyPK = getPartyPK();
 
-            orderPriority = orderPriorityControl.getOrderPriorityByName(orderType, orderPriorityName);
-
-            if(orderPriority == null) {
-                var partyPK = getPartyPK();
-                Integer priority = Integer.valueOf(form.getPriority());
-                var isDefault = Boolean.valueOf(form.getIsDefault());
-                var sortOrder = Integer.valueOf(form.getSortOrder());
-                var description = form.getDescription();
-
-                orderPriority = orderPriorityControl.createOrderPriority(orderType, orderPriorityName, priority, isDefault, sortOrder, partyPK);
-
-                if(description != null) {
-                    orderPriorityControl.createOrderPriorityDescription(orderPriority, getPreferredLanguage(), description, partyPK);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.DuplicateOrderPriorityName.name(), orderTypeName, orderPriorityName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownOrderTypeName.name(), orderTypeName);
+            orderPriority = OrderPriorityLogic.getInstance().createOrderPriority(this, orderType, orderPriorityName,
+                    priority, isDefault, sortOrder, getPreferredLanguage(), description, partyPK);
         }
         
         if(orderPriority != null) {

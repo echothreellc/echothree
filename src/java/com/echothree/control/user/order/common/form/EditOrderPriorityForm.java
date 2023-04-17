@@ -17,11 +17,11 @@
 package com.echothree.control.user.order.common.form;
 
 import com.echothree.control.user.order.common.edit.OrderPriorityEdit;
-import com.echothree.control.user.order.common.spec.OrderPrioritySpec;
+import com.echothree.control.user.order.common.spec.OrderPriorityUniversalSpec;
 import com.echothree.util.common.form.BaseEditForm;
 
 public interface EditOrderPriorityForm
-        extends BaseEditForm<OrderPrioritySpec, OrderPriorityEdit> {
+        extends BaseEditForm<OrderPriorityUniversalSpec, OrderPriorityEdit> {
     
     // Nothing additional beyond BaseEditForm
     
