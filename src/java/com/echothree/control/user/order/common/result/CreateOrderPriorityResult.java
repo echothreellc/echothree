@@ -14,15 +14,15 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.order.common.form;
+package com.echothree.control.user.order.common.result;
 
-import com.echothree.control.user.order.common.edit.OrderPriorityEdit;
-import com.echothree.control.user.order.common.spec.OrderPriorityUniversalSpec;
-import com.echothree.util.common.form.BaseEditForm;
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
+import com.echothree.control.user.order.common.spec.OrderPrioritySpec;
+import com.echothree.util.common.command.BaseResult;
 
-public interface EditOrderPriorityForm
-        extends BaseEditForm<OrderPriorityUniversalSpec, OrderPriorityEdit> {
+public interface CreateOrderPriorityResult
+        extends OrderPrioritySpec, EntityRefSpec, BaseResult {
     
-    // Nothing additional beyond BaseEditForm
+    // Nothing additional beyond OrderPrioritySpec, EntityRefSpec, BaseResult
     
 }

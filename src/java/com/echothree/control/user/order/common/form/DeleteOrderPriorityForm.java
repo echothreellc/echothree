@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.order.common.form;
 
-import com.echothree.control.user.order.common.spec.OrderPrioritySpec;
+import com.echothree.control.user.order.common.spec.OrderPriorityUniversalSpec;
 
 public interface DeleteOrderPriorityForm
-        extends OrderPrioritySpec {
+        extends OrderPriorityUniversalSpec {
     
-    // Nothing additional beyond OrderPrioritySpec
+    // Nothing additional beyond OrderPriorityUniversalSpec
     
 }
