@@ -101,7 +101,9 @@ import com.echothree.control.user.offer.common.result.EditUseNameElementResult;
 import com.echothree.control.user.offer.common.result.EditUseResult;
 import com.echothree.control.user.offer.common.result.EditUseTypeResult;
 import com.echothree.control.user.order.common.OrderUtil;
+import com.echothree.control.user.order.common.result.CreateOrderPriorityResult;
 import com.echothree.control.user.order.common.result.CreateOrderTypeResult;
+import com.echothree.control.user.order.common.result.EditOrderPriorityResult;
 import com.echothree.control.user.order.common.result.EditOrderTypeResult;
 import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.common.result.CreateCustomerResult;
@@ -164,8 +166,6 @@ import com.echothree.model.control.search.server.graphql.SearchEmployeesResultOb
 import com.echothree.model.control.search.server.graphql.SearchItemsResultObject;
 import com.echothree.model.control.search.server.graphql.SearchVendorsResultObject;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.common.validation.FieldType;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLID;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -8539,6 +8539,125 @@ public class GraphQlMutations
             commandForm.setUlid(id);
 
             mutationResultObject.setCommandResult(OrderUtil.getHome().deleteOrderType(getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static MutationResultWithIdObject createOrderPriority(final DataFetchingEnvironment env,
+            @GraphQLName("orderTypeName") @GraphQLNonNull final String orderTypeName,
+            @GraphQLName("orderPriorityName") @GraphQLNonNull final String orderPriorityName,
+            @GraphQLName("priority") @GraphQLNonNull final String priority,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = OrderUtil.getHome().getCreateOrderPriorityForm();
+
+            commandForm.setOrderTypeName(orderTypeName);
+            commandForm.setOrderPriorityName(orderPriorityName);
+            commandForm.setPriority(priority);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            var commandResult = OrderUtil.getHome().createOrderPriority(getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateOrderPriorityResult)commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static MutationResultWithIdObject editOrderPriority(final DataFetchingEnvironment env,
+            @GraphQLName("orderTypeName") final String orderTypeName,
+            @GraphQLName("originalOrderPriorityName") final String originalOrderPriorityName,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("orderPriorityName") final String orderPriorityName,
+            @GraphQLName("priority") final String priority,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var spec = OrderUtil.getHome().getOrderPriorityUniversalSpec();
+
+            spec.setOrderTypeName(orderTypeName);
+            spec.setOrderPriorityName(originalOrderPriorityName);
+            spec.setUlid(id);
+
+            var commandForm = OrderUtil.getHome().getEditOrderPriorityForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = OrderUtil.getHome().editOrderPriority(getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditOrderPriorityResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                mutationResultObject.setEntityInstance(result.getOrderPriority().getEntityInstance());
+
+                if(arguments.containsKey("orderPriorityName"))
+                    edit.setOrderPriorityName(orderPriorityName);
+                if(arguments.containsKey("priority"))
+                    edit.setPriority(priority);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = OrderUtil.getHome().editOrderPriority(getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static MutationResultObject deleteOrderPriority(final DataFetchingEnvironment env,
+            @GraphQLName("orderTypeName") final String orderTypeName,
+            @GraphQLName("orderPriorityName") final String orderPriorityName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = OrderUtil.getHome().getDeleteOrderPriorityForm();
+
+            commandForm.setOrderTypeName(orderTypeName);
+            commandForm.setOrderPriorityName(orderPriorityName);
+            commandForm.setUlid(id);
+
+            mutationResultObject.setCommandResult(OrderUtil.getHome().deleteOrderPriority(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
