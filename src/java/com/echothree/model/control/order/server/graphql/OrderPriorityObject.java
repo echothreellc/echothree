@@ -66,6 +66,13 @@ public class OrderPriorityObject
     }
 
     @GraphQLField
+    @GraphQLDescription("priority")
+    @GraphQLNonNull
+    public int getPriority() {
+        return getOrderPriorityDetail().getPriority();
+    }
+
+    @GraphQLField
     @GraphQLDescription("is default")
     @GraphQLNonNull
     public boolean getIsDefault() {
