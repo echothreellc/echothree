@@ -53,7 +53,7 @@ public class CreateWorkflowStepTypeCommand
     
     @Override
     protected BaseResult execute() {
-        String workflowStepTypeName = form.getWorkflowStepTypeName();
+        var workflowStepTypeName = form.getWorkflowStepTypeName();
         var isDefault = Boolean.valueOf(form.getIsDefault());
         var sortOrder = Integer.valueOf(form.getSortOrder());
 
