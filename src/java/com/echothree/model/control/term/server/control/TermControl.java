@@ -33,6 +33,7 @@ import com.echothree.model.control.term.server.transfer.TermTransferCaches;
 import com.echothree.model.control.term.server.transfer.TermTypeTransferCache;
 import com.echothree.model.data.accounting.common.pk.CurrencyPK;
 import com.echothree.model.data.accounting.server.entity.Currency;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.customer.common.pk.CustomerTypePK;
 import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.party.common.pk.PartyPK;
@@ -76,8 +77,12 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class TermControl
@@ -105,132 +110,225 @@ public class TermControl
     // --------------------------------------------------------------------------------
     //   Term Types
     // --------------------------------------------------------------------------------
-    
-    public TermType createTermType(String termTypeName, Boolean isDefault, Integer sortOrder) {
-        return TermTypeFactory.getInstance().create(termTypeName, isDefault, sortOrder);
-    }
-    
-    public TermType getTermTypeByName(String termTypeName) {
-        TermType termType;
-        
-        try {
-            PreparedStatement ps = TermTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM termtypes " +
-                    "WHERE trmtyp_termtypename = ?");
-            
-            ps.setString(1, termTypeName);
-            
-            termType = TermTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
+
+    public TermType createTermType(String termTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
+        var termType = TermTypeFactory.getInstance().create(termTypeName, isDefault, sortOrder);
+
+        sendEvent(termType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+
         return termType;
     }
-    
-    public List<TermType> getTermTypes() {
-        PreparedStatement ps = TermTypeFactory.getInstance().prepareStatement(
+
+    public long countTermTypes() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                    "FROM termtypes");
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.TermType */
+    public TermType getTermTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new TermTypePK(entityInstance.getEntityUniqueId());
+
+        return TermTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public TermType getTermTypeByEntityInstance(EntityInstance entityInstance) {
+        return getTermTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public TermType getTermTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getTermTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    private static final Map<EntityPermission, String> getTermTypeByNameQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ " +
                 "FROM termtypes " +
-                "ORDER BY trmtyp_sortorder, trmtyp_termtypename");
-        
-        return TermTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+                "WHERE trmtyp_termtypename = ?");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                "FROM termtypes " +
+                "WHERE trmtyp_termtypename = ? " +
+                "FOR UPDATE");
+        getTermTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
-    
-    public TermTypeChoicesBean getTermTypeChoices(String defaultTermTypeChoice, Language language, boolean allowNullChoice) {
+
+    public TermType getTermTypeByName(String termTypeName, EntityPermission entityPermission) {
+        return TermTypeFactory.getInstance().getEntityFromQuery(entityPermission, getTermTypeByNameQueries, termTypeName);
+    }
+
+    public TermType getTermTypeByName(String termTypeName) {
+        return getTermTypeByName(termTypeName, EntityPermission.READ_ONLY);
+    }
+
+    public TermType getTermTypeByNameForUpdate(String termTypeName) {
+        return getTermTypeByName(termTypeName, EntityPermission.READ_WRITE);
+    }
+
+    private static final Map<EntityPermission, String> getDefaultTermTypeQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                "FROM termtypes " +
+                "WHERE trmtyp_isdefault = 1");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                "FROM termtypes " +
+                "WHERE trmtyp_isdefault = 1 " +
+                "FOR UPDATE");
+        getDefaultTermTypeQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    public TermType getDefaultTermType(EntityPermission entityPermission) {
+        return TermTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultTermTypeQueries);
+    }
+
+    public TermType getDefaultTermType() {
+        return getDefaultTermType(EntityPermission.READ_ONLY);
+    }
+
+    public TermType getDefaultTermTypeForUpdate() {
+        return getDefaultTermType(EntityPermission.READ_WRITE);
+    }
+
+    private static final Map<EntityPermission, String> getTermTypesQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                "FROM termtypes " +
+                "ORDER BY trmtyp_sortorder, trmtyp_termtypename " +
+                "_LIMIT_");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                "FROM termtypes " +
+                "FOR UPDATE");
+        getTermTypesQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    private List<TermType> getTermTypes(EntityPermission entityPermission) {
+        return TermTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getTermTypesQueries);
+    }
+
+    public List<TermType> getTermTypes() {
+        return getTermTypes(EntityPermission.READ_ONLY);
+    }
+
+    public List<TermType> getTermTypesForUpdate() {
+        return getTermTypes(EntityPermission.READ_WRITE);
+    }
+
+    public TermTypeTransfer getTermTypeTransfer(UserVisit userVisit, TermType termType) {
+        return getTermTransferCaches(userVisit).getTermTypeTransferCache().getTermTypeTransfer(termType);
+    }
+
+    public List<TermTypeTransfer> getTermTypeTransfers(UserVisit userVisit, Collection<TermType> termTypes) {
+        List<TermTypeTransfer> termTypeTransfers = new ArrayList<>(termTypes.size());
+        TermTypeTransferCache termTypeTransferCache = getTermTransferCaches(userVisit).getTermTypeTransferCache();
+
+        termTypes.forEach((termType) ->
+                termTypeTransfers.add(termTypeTransferCache.getTermTypeTransfer(termType))
+        );
+
+        return termTypeTransfers;
+    }
+
+    public List<TermTypeTransfer> getTermTypeTransfers(UserVisit userVisit) {
+        return getTermTypeTransfers(userVisit, getTermTypes());
+    }
+
+    public TermTypeChoicesBean getTermTypeChoices(String defaultTermTypeChoice,
+            Language language, boolean allowNullChoice) {
         List<TermType> termTypes = getTermTypes();
         var size = termTypes.size();
         var labels = new ArrayList<String>(size);
         var values = new ArrayList<String>(size);
         String defaultValue = null;
-        
+
         if(allowNullChoice) {
             labels.add("");
             values.add("");
-            
+
             if(defaultTermTypeChoice == null) {
                 defaultValue = "";
             }
         }
-        
+
         for(var termType : termTypes) {
             var label = getBestTermTypeDescription(termType, language);
             var value = termType.getTermTypeName();
-            
+
             labels.add(label == null? value: label);
             values.add(value);
-            
+
             var usingDefaultChoice = defaultTermTypeChoice != null && defaultTermTypeChoice.equals(value);
             if(usingDefaultChoice || (defaultValue == null && termType.getIsDefault())) {
                 defaultValue = value;
             }
         }
-        
+
         return new TermTypeChoicesBean(labels, values, defaultValue);
     }
-    
-    public TermTypeTransfer getTermTypeTransfer(UserVisit userVisit, TermType termType) {
-        return getTermTransferCaches(userVisit).getTermTypeTransferCache().getTermTypeTransfer(termType);
-    }
-    
-    public List<TermTypeTransfer> getTermTypeTransfers(UserVisit userVisit) {
-        List<TermType> termTypes = getTermTypes();
-        List<TermTypeTransfer> termTypeTransfers = new ArrayList<>(termTypes.size());
-        TermTypeTransferCache termTypeTransferCache = getTermTransferCaches(userVisit).getTermTypeTransferCache();
-        
-        termTypes.forEach((termType) ->
-                termTypeTransfers.add(termTypeTransferCache.getTermTypeTransfer(termType))
-        );
-        
-        return termTypeTransfers;
-    }
-    
+
     // --------------------------------------------------------------------------------
     //   Term Type Descriptions
     // --------------------------------------------------------------------------------
-    
-    public TermTypeDescription createTermTypeDescription(TermType termType, Language language, String description) {
-        return TermTypeDescriptionFactory.getInstance().create(termType, language, description);
+
+    public TermTypeDescription createTermTypeDescription(TermType termType, Language language,
+            String description, BasePK createdBy) {
+        var termTypeDescription = TermTypeDescriptionFactory.getInstance().create(termType, language, description);
+
+        sendEvent(termType.getPrimaryKey(), EventTypes.MODIFY, termTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+
+        return termTypeDescription;
     }
-    
+
     public TermTypeDescription getTermTypeDescription(TermType termType, Language language) {
         TermTypeDescription termTypeDescription;
-        
+
         try {
             PreparedStatement ps = TermTypeDescriptionFactory.getInstance().prepareStatement(
                     "SELECT _ALL_ " +
                     "FROM termtypedescriptions " +
                     "WHERE trmtypd_trmtyp_termtypeid = ? AND trmtypd_lang_languageid = ?");
-            
+
             ps.setLong(1, termType.getPrimaryKey().getEntityId());
             ps.setLong(2, language.getPrimaryKey().getEntityId());
-            
+
             termTypeDescription = TermTypeDescriptionFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
-        
+
         return termTypeDescription;
     }
-    
+
     public String getBestTermTypeDescription(TermType termType, Language language) {
         String description;
         TermTypeDescription termTypeDescription = getTermTypeDescription(termType, language);
-        
+
         if(termTypeDescription == null && !language.getIsDefault()) {
             termTypeDescription = getTermTypeDescription(termType, getPartyControl().getDefaultLanguage());
         }
-        
+
         if(termTypeDescription == null) {
             description = termType.getTermTypeName();
         } else {
             description = termTypeDescription.getDescription();
         }
-        
+
         return description;
     }
-    
+
     // --------------------------------------------------------------------------------
     //   Terms
     // --------------------------------------------------------------------------------

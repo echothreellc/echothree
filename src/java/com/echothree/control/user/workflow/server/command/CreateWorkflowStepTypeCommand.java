@@ -26,8 +26,6 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class CreateWorkflowStepTypeCommand
@@ -37,15 +35,15 @@ public class CreateWorkflowStepTypeCommand
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null)
-                )));
+        ));
 
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("WorkflowStepTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null)
-                ));
+        );
     }
     
     /** Creates a new instance of CreateWorkflowStepTypeCommand */
@@ -55,7 +53,7 @@ public class CreateWorkflowStepTypeCommand
     
     @Override
     protected BaseResult execute() {
-        String workflowStepTypeName = form.getWorkflowStepTypeName();
+        var workflowStepTypeName = form.getWorkflowStepTypeName();
         var isDefault = Boolean.valueOf(form.getIsDefault());
         var sortOrder = Integer.valueOf(form.getSortOrder());
 

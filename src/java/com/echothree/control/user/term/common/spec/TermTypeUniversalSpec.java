@@ -14,19 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.term.common.result;
+package com.echothree.control.user.term.common.spec;
 
-import com.echothree.model.control.term.common.transfer.TermTypeTransfer;
-import com.echothree.util.common.command.BaseResult;
-import java.util.List;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetTermTypesResult
-        extends BaseResult {
+public interface TermTypeUniversalSpec
+        extends TermTypeSpec, UniversalEntitySpec {
 
-    Long getTermTypeCount();
-    void setTermTypeCount(Long termTypeCount);
-
-    List<TermTypeTransfer> getTermTypes();
-    void setTermTypes(List<TermTypeTransfer> termTypes);
+    // Nothing additional beyond TermTypeSpec, UniversalEntitySpec
     
 }

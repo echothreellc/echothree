@@ -17,40 +17,55 @@
 package com.echothree.control.user.term.server.command;
 
 import com.echothree.control.user.term.common.form.GetTermTypesForm;
-import com.echothree.control.user.term.common.result.GetTermTypesResult;
+import com.echothree.control.user.term.common.result.TermResultFactory;
+import com.echothree.control.user.term.common.form.GetTermTypesForm;
 import com.echothree.control.user.term.common.result.TermResultFactory;
 import com.echothree.model.control.term.server.control.TermControl;
+import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.model.data.term.server.entity.TermType;
+import com.echothree.model.data.term.server.factory.TermTypeFactory;
 import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.List;
 
 public class GetTermTypesCommand
-        extends BaseSimpleCommand<GetTermTypesForm> {
-    
+        extends BaseMultipleEntitiesCommand<TermType, GetTermTypesForm> {
+
+    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                ));
+        FORM_FIELD_DEFINITIONS = List.of();
     }
     
     /** Creates a new instance of GetTermTypesCommand */
     public GetTermTypesCommand(UserVisitPK userVisitPK, GetTermTypesForm form) {
         super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        GetTermTypesResult result = TermResultFactory.getGetTermTypesResult();
-        var partyControl = Session.getModelController(TermControl.class);
-        
-        result.setTermTypes(partyControl.getTermTypeTransfers(getUserVisit()));
-        
+    protected Collection<TermType> getEntities() {
+        var termControl = Session.getModelController(TermControl.class);
+
+        return termControl.getTermTypes();
+    }
+
+    @Override
+    protected BaseResult getTransfers(Collection<TermType> entities) {
+        var result = TermResultFactory.getGetTermTypesResult();
+        var termControl = Session.getModelController(TermControl.class);
+
+        if(session.hasLimit(TermTypeFactory.class)) {
+            result.setTermTypeCount(termControl.countTermTypes());
+        }
+
+        result.setTermTypes(termControl.getTermTypeTransfers(getUserVisit(), entities));
+
         return result;
     }
     

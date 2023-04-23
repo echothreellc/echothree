@@ -1561,6 +1561,12 @@
             <entityType entityTypeName="ReturnTypeShippingMethod" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Return Type Shipping Method" />
             </entityType>
+            <entityType entityTypeName="TermType" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Term Type" />
+            </entityType>
+            <entityType entityTypeName="TermTypeDescription" keepAllHistory="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Term Type Destination" />
+            </entityType>
             <entityType entityTypeName="Term" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Term" />
             </entityType>

@@ -260,6 +260,9 @@ import com.echothree.control.user.tag.server.command.GetTagScopeEntityTypeComman
 import com.echothree.control.user.tag.server.command.GetTagScopeEntityTypesCommand;
 import com.echothree.control.user.tag.server.command.GetTagScopesCommand;
 import com.echothree.control.user.tag.server.command.GetTagsCommand;
+import com.echothree.control.user.term.common.TermUtil;
+import com.echothree.control.user.term.server.command.GetTermTypeCommand;
+import com.echothree.control.user.term.server.command.GetTermTypesCommand;
 import com.echothree.control.user.uom.common.UomUtil;
 import com.echothree.control.user.uom.server.command.GetUnitOfMeasureKindCommand;
 import com.echothree.control.user.uom.server.command.GetUnitOfMeasureKindUseCommand;
@@ -285,9 +288,9 @@ import com.echothree.control.user.vendor.server.command.GetVendorTypeCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorTypesCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorsCommand;
 import com.echothree.control.user.wishlist.common.WishlistUtil;
-import com.echothree.control.user.wishlist.server.command.GetWishlistTypeCommand;
 import com.echothree.control.user.wishlist.server.command.GetWishlistPrioritiesCommand;
 import com.echothree.control.user.wishlist.server.command.GetWishlistPriorityCommand;
+import com.echothree.control.user.wishlist.server.command.GetWishlistTypeCommand;
 import com.echothree.control.user.wishlist.server.command.GetWishlistTypesCommand;
 import com.echothree.control.user.workflow.common.WorkflowUtil;
 import com.echothree.control.user.workflow.server.command.GetWorkflowCommand;
@@ -456,6 +459,8 @@ import com.echothree.model.control.tag.server.graphql.EntityTagObject;
 import com.echothree.model.control.tag.server.graphql.TagObject;
 import com.echothree.model.control.tag.server.graphql.TagScopeEntityTypeObject;
 import com.echothree.model.control.tag.server.graphql.TagScopeObject;
+import com.echothree.model.control.term.server.control.TermControl;
+import com.echothree.model.control.term.server.graphql.TermTypeObject;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindObject;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindUseObject;
@@ -472,8 +477,8 @@ import com.echothree.model.control.vendor.server.graphql.VendorItemObject;
 import com.echothree.model.control.vendor.server.graphql.VendorObject;
 import com.echothree.model.control.vendor.server.graphql.VendorTypeObject;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
-import com.echothree.model.control.wishlist.server.graphql.WishlistTypeObject;
 import com.echothree.model.control.wishlist.server.graphql.WishlistPriorityObject;
+import com.echothree.model.control.wishlist.server.graphql.WishlistTypeObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowDestinationObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowDestinationPartyTypeObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowDestinationSecurityRoleObject;
@@ -628,6 +633,8 @@ import com.echothree.model.data.tag.server.entity.EntityTag;
 import com.echothree.model.data.tag.server.entity.Tag;
 import com.echothree.model.data.tag.server.entity.TagScope;
 import com.echothree.model.data.tag.server.entity.TagScopeEntityType;
+import com.echothree.model.data.term.common.TermTypeConstants;
+import com.echothree.model.data.term.server.entity.TermType;
 import com.echothree.model.data.uom.common.UnitOfMeasureKindConstants;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUse;
@@ -644,8 +651,8 @@ import com.echothree.model.data.vendor.server.entity.VendorItem;
 import com.echothree.model.data.vendor.server.entity.VendorItemCost;
 import com.echothree.model.data.vendor.server.entity.VendorType;
 import com.echothree.model.data.wishlist.common.WishlistTypeConstants;
-import com.echothree.model.data.wishlist.server.entity.WishlistType;
 import com.echothree.model.data.wishlist.server.entity.WishlistPriority;
+import com.echothree.model.data.wishlist.server.entity.WishlistType;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestinationPartyType;
@@ -7697,6 +7704,57 @@ public final class GraphQlQueries
         return wishlistPriorityObjects;
     }
 
+    @GraphQLField
+    @GraphQLName("termType")
+    public static TermTypeObject termType(final DataFetchingEnvironment env,
+            @GraphQLName("termTypeName") final String termTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        TermType termType;
+
+        try {
+            var commandForm = TermUtil.getHome().getGetTermTypeForm();
+
+            commandForm.setTermTypeName(termTypeName);
+            commandForm.setUlid(id);
+
+            termType = new GetTermTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return termType == null ? null : new TermTypeObject(termType);
+    }
+
+    @GraphQLField
+    @GraphQLName("termTypes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public static CountingPaginatedData<TermTypeObject> termTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<TermTypeObject> data;
+
+        try {
+            var termControl = Session.getModelController(TermControl.class);
+            var totalCount = termControl.countTermTypes();
+
+            try(var objectLimiter = new ObjectLimiter(env, TermTypeConstants.COMPONENT_VENDOR_NAME, TermTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = TermUtil.getHome().getGetTermTypesForm();
+                var entities = new GetTermTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var termTypes = entities.stream().map(TermTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, termTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+    
     @GraphQLField
     @GraphQLName("securityRoleGroup")
     public static SecurityRoleGroupObject securityRoleGroup(final DataFetchingEnvironment env,

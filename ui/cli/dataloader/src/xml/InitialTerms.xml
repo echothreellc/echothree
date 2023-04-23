@@ -22,7 +22,7 @@
         <termType termTypeName="PREPAID" isDefault="false" sortOrder="1">
             <termTypeDescription languageIsoName="en" description="Prepaid" />
         </termType>
-        <termType termTypeName="STANDARD" isDefault="false" sortOrder="1">
+        <termType termTypeName="STANDARD" isDefault="true" sortOrder="1">
             <termTypeDescription languageIsoName="en" description="Standard" />
         </termType>
     </termTypes>
