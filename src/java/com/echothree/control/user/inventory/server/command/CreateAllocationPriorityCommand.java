@@ -17,6 +17,7 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.CreateAllocationPriorityForm;
+import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -67,13 +68,14 @@ public class CreateAllocationPriorityCommand
     
     @Override
     protected BaseResult execute() {
+        var result = InventoryResultFactory.getCreateAllocationPriorityResult();
         var inventoryControl = Session.getModelController(InventoryControl.class);
-        String allocationPriorityName = form.getAllocationPriorityName();
-        AllocationPriority allocationPriority = inventoryControl.getAllocationPriorityByName(allocationPriorityName);
+        var allocationPriorityName = form.getAllocationPriorityName();
+        var allocationPriority = inventoryControl.getAllocationPriorityByName(allocationPriorityName);
 
         if(allocationPriority == null) {
             var partyPK = getPartyPK();
-            Integer priority = Integer.valueOf(form.getPriority());
+            var priority = Integer.valueOf(form.getPriority());
             var isDefault = Boolean.valueOf(form.getIsDefault());
             var sortOrder = Integer.valueOf(form.getSortOrder());
             var description = form.getDescription();
@@ -87,7 +89,12 @@ public class CreateAllocationPriorityCommand
             addExecutionError(ExecutionErrors.DuplicateAllocationPriorityName.name(), allocationPriorityName);
         }
 
-        return null;
+        if(allocationPriority != null && !hasExecutionErrors()) {
+            result.setAllocationPriorityName(allocationPriority.getLastDetail().getAllocationPriorityName());
+            result.setEntityRef(allocationPriority.getPrimaryKey().getEntityRef());
+        }
+
+        return result;
     }
     
 }
