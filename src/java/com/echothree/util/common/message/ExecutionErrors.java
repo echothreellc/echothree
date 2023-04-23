@@ -2265,5 +2265,6 @@ public enum ExecutionErrors {
     MissingRequiredWorkflowStepName,
     MissingRequiredSecurityRoleGroupName,
     UnknownDefaultSecurityRole,
+    UnknownDefaultAllocationPriority,
 
 }

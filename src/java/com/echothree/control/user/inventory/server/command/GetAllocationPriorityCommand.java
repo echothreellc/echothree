@@ -17,65 +17,71 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.GetAllocationPriorityForm;
-import com.echothree.control.user.inventory.common.result.GetAllocationPriorityResult;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.logic.AllocationPriorityLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.inventory.server.entity.AllocationPriority;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class GetAllocationPriorityCommand
-        extends BaseSimpleCommand<GetAllocationPriorityForm> {
+        extends BaseSingleEntityCommand<AllocationPriority, GetAllocationPriorityForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.AllocationPriority.name(), SecurityRoles.Review.name())
-                        )))
-                )));
+                ))
+        ));
         
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("AllocationPriorityName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+        FORM_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("AllocationPriorityName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
+        );
     }
     
     /** Creates a new instance of GetAllocationPriorityCommand */
     public GetAllocationPriorityCommand(UserVisitPK userVisitPK, GetAllocationPriorityForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
+    protected AllocationPriority getEntity() {
+        var entity = AllocationPriorityLogic.getInstance().getAllocationPriorityByUniversalSpec(this, form, true);
+
+        if(entity != null) {
+            sendEvent(entity.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+        }
+
+        return entity;
+    }
+
+    @Override
+    protected BaseResult getTransfer(AllocationPriority entity) {
         var inventoryControl = Session.getModelController(InventoryControl.class);
-        GetAllocationPriorityResult result = InventoryResultFactory.getGetAllocationPriorityResult();
-        String allocationPriorityName = form.getAllocationPriorityName();
-        AllocationPriority allocationPriority = inventoryControl.getAllocationPriorityByName(allocationPriorityName);
+        var result = InventoryResultFactory.getGetAllocationPriorityResult();
 
-        if(allocationPriority != null) {
-            result.setAllocationPriority(inventoryControl.getAllocationPriorityTransfer(getUserVisit(), allocationPriority));
-
-            sendEvent(allocationPriority.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownAllocationPriorityName.name(), allocationPriorityName);
+        if(entity != null) {
+            result.setAllocationPriority(inventoryControl.getAllocationPriorityTransfer(getUserVisit(), entity));
         }
 
         return result;

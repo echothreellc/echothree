@@ -14,13 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.inventory.common.form;
+package com.echothree.control.user.inventory.common.spec;
 
-import com.echothree.control.user.inventory.common.spec.AllocationPriorityUniversalSpec;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetAllocationPriorityForm
-        extends AllocationPriorityUniversalSpec {
+public interface AllocationPriorityUniversalSpec
+        extends AllocationPrioritySpec, UniversalEntitySpec {
     
-    // Nothing additional beyond AllocationPriorityUniversalSpec
+    // Nothing additional beyond AllocationPrioritySpec, UniversalEntitySpec
     
 }

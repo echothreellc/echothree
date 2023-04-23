@@ -18,17 +18,14 @@ package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.GetInventoryConditionsForm;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
-import com.echothree.control.user.inventory.common.result.GetInventoryConditionsResult;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class GetInventoryConditionsCommand
@@ -38,8 +35,7 @@ public class GetInventoryConditionsCommand
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
 
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                ));
+        FORM_FIELD_DEFINITIONS = List.of();
     }
     
     /** Creates a new instance of GetInventoryConditionsCommand */
@@ -57,10 +53,13 @@ public class GetInventoryConditionsCommand
     @Override
     protected BaseResult getTransfers(Collection<InventoryCondition> entities) {
         var result = InventoryResultFactory.getGetInventoryConditionsResult();
-        var inventoryControl = Session.getModelController(InventoryControl.class);
-        
-        result.setInventoryConditions(inventoryControl.getInventoryConditionTransfers(getUserVisit(), entities));
-        
+
+        if(entities != null) {
+            var inventoryControl = Session.getModelController(InventoryControl.class);
+
+            result.setInventoryConditions(inventoryControl.getInventoryConditionTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
     
