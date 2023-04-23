@@ -2337,6 +2337,22 @@ public class InventoryControl
         return allocationPriority;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.AllocationPriority */
+    public AllocationPriority getAllocationPriorityByEntityInstance(final EntityInstance entityInstance,
+            final EntityPermission entityPermission) {
+        var pk = new AllocationPriorityPK(entityInstance.getEntityUniqueId());
+
+        return AllocationPriorityFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public AllocationPriority getAllocationPriorityByEntityInstance(final EntityInstance entityInstance) {
+        return getAllocationPriorityByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public AllocationPriority getAllocationPriorityByEntityInstanceForUpdate(final EntityInstance entityInstance) {
+        return getAllocationPriorityByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     private static final Map<EntityPermission, String> getAllocationPriorityByNameQueries;
 
     static {
@@ -2356,7 +2372,7 @@ public class InventoryControl
         getAllocationPriorityByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private AllocationPriority getAllocationPriorityByName(String allocationPriorityName, EntityPermission entityPermission) {
+    public AllocationPriority getAllocationPriorityByName(String allocationPriorityName, EntityPermission entityPermission) {
         return AllocationPriorityFactory.getInstance().getEntityFromQuery(entityPermission, getAllocationPriorityByNameQueries,
                 allocationPriorityName);
     }
@@ -2396,7 +2412,7 @@ public class InventoryControl
         getDefaultAllocationPriorityQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private AllocationPriority getDefaultAllocationPriority(EntityPermission entityPermission) {
+    public AllocationPriority getDefaultAllocationPriority(EntityPermission entityPermission) {
         return AllocationPriorityFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultAllocationPriorityQueries);
     }
 
