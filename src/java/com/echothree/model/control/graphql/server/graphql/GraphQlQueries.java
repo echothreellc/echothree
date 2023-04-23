@@ -376,6 +376,7 @@ import com.echothree.model.control.graphql.server.graphql.count.CountingPaginate
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.control.LotControl;
 import com.echothree.model.control.inventory.server.graphql.AllocationPriorityObject;
 import com.echothree.model.control.inventory.server.graphql.InventoryConditionObject;
 import com.echothree.model.control.inventory.server.graphql.LotObject;
@@ -539,6 +540,7 @@ import com.echothree.model.data.filter.server.entity.FilterStep;
 import com.echothree.model.data.filter.server.entity.FilterType;
 import com.echothree.model.data.inventory.common.AllocationPriorityConstants;
 import com.echothree.model.data.inventory.common.InventoryConditionConstants;
+import com.echothree.model.data.inventory.common.LotConstants;
 import com.echothree.model.data.inventory.server.entity.AllocationPriority;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.inventory.server.entity.Lot;
@@ -3783,29 +3785,34 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("lots")
-    public static Collection<LotObject> lots(final DataFetchingEnvironment env) {
-        Collection<Lot> lots;
-        Collection<LotObject> lotObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public static CountingPaginatedData<LotObject> lots(final DataFetchingEnvironment env) {
+        CountingPaginatedData<LotObject> data;
 
         try {
-            var commandForm = InventoryUtil.getHome().getGetLotsForm();
+            var lotControl = Session.getModelController(LotControl.class);
+            var totalCount = lotControl.countLots();
 
-            lots = new GetLotsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            try(var objectLimiter = new ObjectLimiter(env, LotConstants.COMPONENT_VENDOR_NAME, LotConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = InventoryUtil.getHome().getGetLotsForm();
+                var entitys = new GetLotsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+
+                if(entitys == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var lots = entitys.stream()
+                            .map(LotObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entitys.size())));
+
+                    data = new CountedObjects<>(objectLimiter, lots);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(lots == null) {
-            lotObjects = emptyList();
-        } else {
-            lotObjects = new ArrayList<>(lots.size());
-
-            lots.stream()
-                    .map(LotObject::new)
-                    .forEachOrdered(lotObjects::add);
-        }
-
-        return lotObjects;
+        return data;
     }
 
     @GraphQLField

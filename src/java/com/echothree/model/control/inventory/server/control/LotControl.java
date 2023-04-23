@@ -85,6 +85,13 @@ public class LotControl
         return getLotByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
+    public long countLots() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM lots, lotdetails " +
+                "WHERE lt_activedetailid = ltdt_lotdetailid");
+    }
+
     private static final Map<EntityPermission, String> getLotByNameQueries = Map.of(
             EntityPermission.READ_ONLY,
             "SELECT _ALL_ " +
