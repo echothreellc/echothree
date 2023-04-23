@@ -61,7 +61,9 @@ import com.echothree.control.user.filter.common.result.EditFilterAdjustmentResul
 import com.echothree.control.user.filter.common.result.EditFilterResult;
 import com.echothree.control.user.filter.common.result.EditFilterStepResult;
 import com.echothree.control.user.inventory.common.InventoryUtil;
+import com.echothree.control.user.inventory.common.result.CreateAllocationPriorityResult;
 import com.echothree.control.user.inventory.common.result.CreateInventoryConditionResult;
+import com.echothree.control.user.inventory.common.result.EditAllocationPriorityResult;
 import com.echothree.control.user.inventory.common.result.EditInventoryConditionResult;
 import com.echothree.control.user.item.common.ItemUtil;
 import com.echothree.control.user.item.common.result.CreateItemAliasTypeResult;
@@ -3320,6 +3322,118 @@ public class GraphQlMutations
 
     @GraphQLField
     @GraphQLRelayMutation
+    public static MutationResultWithIdObject createAllocationPriority(final DataFetchingEnvironment env,
+            @GraphQLName("allocationPriorityName") @GraphQLNonNull final String allocationPriorityName,
+            @GraphQLName("priority") @GraphQLNonNull final String priority,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = InventoryUtil.getHome().getCreateAllocationPriorityForm();
+
+            commandForm.setAllocationPriorityName(allocationPriorityName);
+            commandForm.setPriority(priority);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            var commandResult = InventoryUtil.getHome().createAllocationPriority(getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateAllocationPriorityResult)commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static MutationResultObject deleteAllocationPriority(final DataFetchingEnvironment env,
+            @GraphQLName("allocationPriorityName") @GraphQLNonNull final String allocationPriorityName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = InventoryUtil.getHome().getDeleteAllocationPriorityForm();
+
+            commandForm.setAllocationPriorityName(allocationPriorityName);
+
+            var commandResult = InventoryUtil.getHome().deleteAllocationPriority(getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static MutationResultWithIdObject editAllocationPriority(final DataFetchingEnvironment env,
+            @GraphQLName("originalAllocationPriorityName") final String originalAllocationPriorityName,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("allocationPriorityName") final String allocationPriorityName,
+            @GraphQLName("priority") final String priority,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var spec = InventoryUtil.getHome().getAllocationPriorityUniversalSpec();
+
+            spec.setAllocationPriorityName(originalAllocationPriorityName);
+            spec.setUlid(id);
+
+            var commandForm = InventoryUtil.getHome().getEditAllocationPriorityForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = InventoryUtil.getHome().editAllocationPriority(getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditAllocationPriorityResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                mutationResultObject.setEntityInstance(result.getAllocationPriority().getEntityInstance());
+
+                if(arguments.containsKey("allocationPriorityName"))
+                    edit.setAllocationPriorityName(allocationPriorityName);
+                if(arguments.containsKey("priority"))
+                    edit.setPriority(priority);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = InventoryUtil.getHome().editAllocationPriority(getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
     public static MutationResultWithIdObject createInventoryCondition(final DataFetchingEnvironment env,
             @GraphQLName("inventoryConditionName") @GraphQLNonNull final String inventoryConditionName,
             @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
@@ -3386,20 +3500,20 @@ public class GraphQlMutations
 
             spec.setInventoryConditionName(originalInventoryConditionName);
             spec.setUlid(id);
-            
+
             var commandForm = InventoryUtil.getHome().getEditInventoryConditionForm();
-            
+
             commandForm.setSpec(spec);
             commandForm.setEditMode(EditMode.LOCK);
 
             var commandResult = InventoryUtil.getHome().editInventoryCondition(getUserVisitPK(env), commandForm);
-            
+
             if(!commandResult.hasErrors()) {
                 var executionResult = commandResult.getExecutionResult();
-                var result = (EditInventoryConditionResult)executionResult.getResult();                
+                var result = (EditInventoryConditionResult)executionResult.getResult();
                 Map<String, Object> arguments = env.getArgument("input");
                 var edit = result.getEdit();
-                
+
                 mutationResultObject.setEntityInstance(result.getInventoryCondition().getEntityInstance());
 
                 if(arguments.containsKey("inventoryConditionName"))
@@ -3410,13 +3524,13 @@ public class GraphQlMutations
                     edit.setSortOrder(sortOrder);
                 if(arguments.containsKey("description"))
                     edit.setDescription(description);
-                
+
                 commandForm.setEdit(edit);
                 commandForm.setEditMode(EditMode.UPDATE);
-                
+
                 commandResult = InventoryUtil.getHome().editInventoryCondition(getUserVisitPK(env), commandForm);
             }
-            
+
             mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
