@@ -36,7 +36,6 @@ import com.echothree.model.control.inventory.common.transfer.InventoryLocationGr
 import com.echothree.model.control.inventory.common.transfer.PartyInventoryLevelTransfer;
 import com.echothree.model.control.inventory.common.workflow.InventoryLocationGroupStatusConstants;
 import com.echothree.model.control.inventory.server.transfer.AllocationPriorityDescriptionTransferCache;
-import com.echothree.model.control.inventory.server.transfer.AllocationPriorityTransferCache;
 import com.echothree.model.control.inventory.server.transfer.InventoryConditionGlAccountTransferCache;
 import com.echothree.model.control.inventory.server.transfer.InventoryConditionUseTransferCache;
 import com.echothree.model.control.inventory.server.transfer.InventoryConditionUseTypeTransferCache;
@@ -2353,6 +2352,13 @@ public class InventoryControl
         return getAllocationPriorityByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
+    public long countAllocationPriorities() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM allocationpriorities, allocationprioritydetails " +
+                "WHERE allocpr_activedetailid = allocprdt_allocationprioritydetailid");
+    }
+
     private static final Map<EntityPermission, String> getAllocationPriorityByNameQueries;
 
     static {
@@ -2463,16 +2469,19 @@ public class InventoryControl
         return getInventoryTransferCaches(userVisit).getAllocationPriorityTransferCache().getTransfer(allocationPriority);
     }
 
-    public List<AllocationPriorityTransfer> getAllocationPriorityTransfers(UserVisit userVisit) {
-        List<AllocationPriority> allocationPriorities = getAllocationPriorities();
-        List<AllocationPriorityTransfer> allocationPriorityTransfers = new ArrayList<>(allocationPriorities.size());
-        AllocationPriorityTransferCache allocationPriorityTransferCache = getInventoryTransferCaches(userVisit).getAllocationPriorityTransferCache();
+    public List<AllocationPriorityTransfer> getAllocationPriorityTransfers(UserVisit userVisit, Collection<AllocationPriority> allocationPriorities) {
+        var allocationPriorityTransfers = new ArrayList<AllocationPriorityTransfer>(allocationPriorities.size());
+        var allocationPriorityTransferCache = getInventoryTransferCaches(userVisit).getAllocationPriorityTransferCache();
 
         allocationPriorities.forEach((allocationPriority) ->
                 allocationPriorityTransfers.add(allocationPriorityTransferCache.getTransfer(allocationPriority))
         );
 
         return allocationPriorityTransfers;
+    }
+
+    public List<AllocationPriorityTransfer> getAllocationPriorityTransfers(UserVisit userVisit) {
+        return getAllocationPriorityTransfers(userVisit, getAllocationPriorities());
     }
 
     public AllocationPriorityChoicesBean getAllocationPriorityChoices(String defaultAllocationPriorityChoice, Language language, boolean allowNullChoice) {
