@@ -18,25 +18,31 @@ package com.echothree.control.user.term.server.command;
 
 import com.echothree.control.user.term.common.form.GetTermTypeForm;
 import com.echothree.control.user.term.common.result.TermResultFactory;
+import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.term.server.control.TermControl;
+import com.echothree.model.control.term.server.logic.TermTypeLogic;
+import com.echothree.model.data.term.server.entity.TermType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
 
 public class GetTermTypeCommand
-        extends BaseSimpleCommand<GetTermTypeForm> {
+        extends BaseSingleEntityCommand<TermType, GetTermTypeForm> {
 
     // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("TermTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("TermTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
         );
     }
     
@@ -44,20 +50,27 @@ public class GetTermTypeCommand
     public GetTermTypeCommand(UserVisitPK userVisitPK, GetTermTypeForm form) {
         super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
-        var termControl = Session.getModelController(TermControl.class);
+    protected TermType getEntity() {
+        var termType = TermTypeLogic.getInstance().getTermTypeByUniversalSpec(this, form, true);
+
+        if(termType != null) {
+            sendEvent(termType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+        }
+
+        return termType;
+    }
+
+    @Override
+    protected BaseResult getTransfer(TermType termType) {
         var result = TermResultFactory.getGetTermTypeResult();
-        var termTypeName = form.getTermTypeName();
-        var termType = termControl.getTermTypeByName(termTypeName);
-        
+        var termControl = Session.getModelController(TermControl.class);
+
         if(termType != null) {
             result.setTermType(termControl.getTermTypeTransfer(getUserVisit(), termType));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownTermTypeName.name(), termTypeName);
         }
-        
+
         return result;
     }
     

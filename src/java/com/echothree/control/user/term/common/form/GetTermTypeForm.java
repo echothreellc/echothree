@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.term.common.form;
 
-import com.echothree.control.user.term.common.spec.TermTypeSpec;
+import com.echothree.control.user.term.common.spec.TermTypeUniversalSpec;
 
 public interface GetTermTypeForm
-        extends TermTypeSpec {
+        extends TermTypeUniversalSpec {
     
-    // Nothing additional beyond TermTypeSpec
+    // Nothing additional beyond TermTypeUniversalSpec
     
 }

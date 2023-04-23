@@ -18,16 +18,14 @@ package com.echothree.control.user.term.server.command;
 
 import com.echothree.control.user.term.common.form.CreateTermTypeForm;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.term.server.control.TermControl;
+import com.echothree.model.control.term.server.logic.TermTypeLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.List;
 
 public class CreateTermTypeCommand
@@ -55,19 +53,13 @@ public class CreateTermTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var termControl = Session.getModelController(TermControl.class);
         var termTypeName = form.getTermTypeName();
-        var termType = termControl.getTermTypeByName(termTypeName);
-        
-        if(termType == null) {
-            var isDefault = Boolean.valueOf(form.getIsDefault());
-            var sortOrder = Integer.valueOf(form.getSortOrder());
-            
-            termControl.createTermType(termTypeName, isDefault, sortOrder);
-        } else {
-            addExecutionError(ExecutionErrors.DuplicateTermTypeName.name(), termTypeName);
-        }
-        
+        var isDefault = Boolean.valueOf(form.getIsDefault());
+        var sortOrder = Integer.valueOf(form.getSortOrder());
+
+        TermTypeLogic.getInstance().createTermType(this, termTypeName, isDefault, sortOrder, null,
+                null, getPartyPK());
+
         return null;
     }
     

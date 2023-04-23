@@ -2266,5 +2266,6 @@ public enum ExecutionErrors {
     MissingRequiredSecurityRoleGroupName,
     UnknownDefaultSecurityRole,
     UnknownDefaultAllocationPriority,
+    UnknownDefaultTermType,
 
 }

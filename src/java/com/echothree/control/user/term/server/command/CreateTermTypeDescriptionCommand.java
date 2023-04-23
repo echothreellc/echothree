@@ -68,7 +68,7 @@ public class CreateTermTypeDescriptionCommand
                 if(termTypeDescription == null) {
                     var description = form.getDescription();
                     
-                    termControl.createTermTypeDescription(termType, language, description);
+                    termControl.createTermTypeDescription(termType, language, description, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateTermTypeDescription.name());
                 }
