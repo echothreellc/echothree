@@ -538,6 +538,7 @@ import com.echothree.model.data.filter.server.entity.FilterKind;
 import com.echothree.model.data.filter.server.entity.FilterStep;
 import com.echothree.model.data.filter.server.entity.FilterType;
 import com.echothree.model.data.inventory.common.AllocationPriorityConstants;
+import com.echothree.model.data.inventory.common.InventoryConditionConstants;
 import com.echothree.model.data.inventory.server.entity.AllocationPriority;
 import com.echothree.model.data.inventory.server.entity.InventoryCondition;
 import com.echothree.model.data.inventory.server.entity.Lot;
@@ -3676,29 +3677,34 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("inventoryConditions")
-    public static Collection<InventoryConditionObject> inventoryConditions(final DataFetchingEnvironment env) {
-        Collection<InventoryCondition> inventoryConditions;
-        Collection<InventoryConditionObject> inventoryConditionObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public static CountingPaginatedData<InventoryConditionObject> inventoryConditions(final DataFetchingEnvironment env) {
+        CountingPaginatedData<InventoryConditionObject> data;
 
         try {
-            var commandForm = InventoryUtil.getHome().getGetInventoryConditionsForm();
+            var inventoryControl = Session.getModelController(InventoryControl.class);
+            var totalCount = inventoryControl.countInventoryConditions();
 
-            inventoryConditions = new GetInventoryConditionsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            try(var objectLimiter = new ObjectLimiter(env, InventoryConditionConstants.COMPONENT_VENDOR_NAME, InventoryConditionConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = InventoryUtil.getHome().getGetInventoryConditionsForm();
+                var entitys = new GetInventoryConditionsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+
+                if(entitys == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var inventoryConditions = entitys.stream()
+                            .map(InventoryConditionObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entitys.size())));
+
+                    data = new CountedObjects<>(objectLimiter, inventoryConditions);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(inventoryConditions == null) {
-            inventoryConditionObjects = emptyList();
-        } else {
-            inventoryConditionObjects = new ArrayList<>(inventoryConditions.size());
-
-            inventoryConditions.stream()
-                    .map(InventoryConditionObject::new)
-                    .forEachOrdered(inventoryConditionObjects::add);
-        }
-
-        return inventoryConditionObjects;
+        return data;
     }
 
     @GraphQLField

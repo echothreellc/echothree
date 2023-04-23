@@ -955,7 +955,14 @@ public class InventoryControl
     public InventoryCondition getInventoryConditionByEntityInstanceForUpdate(final EntityInstance entityInstance) {
         return getInventoryConditionByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
-    
+
+    public long countInventoryConditions() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM inventoryconditions, inventoryconditiondetails " +
+                "WHERE invcon_activedetailid = invcondt_inventoryconditiondetailid");
+    }
+
     private static final Map<EntityPermission, String> getInventoryConditionByNameQueries = Map.of(
             EntityPermission.READ_ONLY,
             "SELECT _ALL_ " +
