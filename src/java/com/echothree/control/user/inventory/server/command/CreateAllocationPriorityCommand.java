@@ -18,22 +18,18 @@ package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.CreateAllocationPriorityForm;
 import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
-import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.inventory.server.logic.AllocationPriorityLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.inventory.server.entity.AllocationPriority;
-import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -69,27 +65,17 @@ public class CreateAllocationPriorityCommand
     @Override
     protected BaseResult execute() {
         var result = InventoryResultFactory.getCreateAllocationPriorityResult();
-        var inventoryControl = Session.getModelController(InventoryControl.class);
         var allocationPriorityName = form.getAllocationPriorityName();
-        var allocationPriority = inventoryControl.getAllocationPriorityByName(allocationPriorityName);
+        var priority = Integer.valueOf(form.getPriority());
+        var isDefault = Boolean.valueOf(form.getIsDefault());
+        var sortOrder = Integer.valueOf(form.getSortOrder());
+        var description = form.getDescription();
+        var partyPK = getPartyPK();
 
-        if(allocationPriority == null) {
-            var partyPK = getPartyPK();
-            var priority = Integer.valueOf(form.getPriority());
-            var isDefault = Boolean.valueOf(form.getIsDefault());
-            var sortOrder = Integer.valueOf(form.getSortOrder());
-            var description = form.getDescription();
+        var allocationPriority = AllocationPriorityLogic.getInstance().createAllocationPriority(this, allocationPriorityName,
+                priority, isDefault, sortOrder, getPreferredLanguage(), description, partyPK);
 
-            allocationPriority = inventoryControl.createAllocationPriority(allocationPriorityName, priority, isDefault, sortOrder, partyPK);
-
-            if(description != null) {
-                inventoryControl.createAllocationPriorityDescription(allocationPriority, getPreferredLanguage(), description, partyPK);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.DuplicateAllocationPriorityName.name(), allocationPriorityName);
-        }
-
-        if(allocationPriority != null && !hasExecutionErrors()) {
+        if(allocationPriority != null) {
             result.setAllocationPriorityName(allocationPriority.getLastDetail().getAllocationPriorityName());
             result.setEntityRef(allocationPriority.getPrimaryKey().getEntityRef());
         }

@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.inventory.common.form;
 
-import com.echothree.control.user.inventory.common.spec.AllocationPrioritySpec;
+import com.echothree.control.user.inventory.common.spec.AllocationPriorityUniversalSpec;
 
 public interface DeleteAllocationPriorityForm
-        extends AllocationPrioritySpec {
+        extends AllocationPriorityUniversalSpec {
     
-    // Nothing additional beyond AllocationPrioritySpec
+    // Nothing additional beyond AllocationPriorityUniversalSpec
     
 }

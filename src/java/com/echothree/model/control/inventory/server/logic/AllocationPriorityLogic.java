@@ -26,6 +26,7 @@ import com.echothree.model.control.inventory.common.exception.UnknownAllocationP
 import com.echothree.model.control.inventory.common.exception.UnknownDefaultAllocationPriorityException;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.data.inventory.server.entity.AllocationPriority;
+import com.echothree.model.data.inventory.server.value.AllocationPriorityDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
@@ -137,6 +138,13 @@ public class AllocationPriorityLogic
         return getAllocationPriorityByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
     }
 
+    public void updateAllocationPriorityFromValue(final AllocationPriorityDetailValue allocationPriorityDetailValue,
+            final BasePK updatedBy) {
+        var inventoryControl = Session.getModelController(InventoryControl.class);
+
+        inventoryControl.updateAllocationPriorityFromValue(allocationPriorityDetailValue, updatedBy);
+    }
+    
     public void deleteAllocationPriority(final ExecutionErrorAccumulator eea, final AllocationPriority allocationPriority,
             final BasePK deletedBy) {
         var inventoryControl = Session.getModelController(InventoryControl.class);

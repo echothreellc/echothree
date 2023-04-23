@@ -17,11 +17,11 @@
 package com.echothree.control.user.inventory.common.form;
 
 import com.echothree.control.user.inventory.common.edit.AllocationPriorityEdit;
-import com.echothree.control.user.inventory.common.spec.AllocationPrioritySpec;
+import com.echothree.control.user.inventory.common.spec.AllocationPriorityUniversalSpec;
 import com.echothree.util.common.form.BaseEditForm;
 
 public interface EditAllocationPriorityForm
-        extends BaseEditForm<AllocationPrioritySpec, AllocationPriorityEdit> {
+        extends BaseEditForm<AllocationPriorityUniversalSpec, AllocationPriorityEdit> {
     
     // Nothing additional beyond BaseEditForm
     
