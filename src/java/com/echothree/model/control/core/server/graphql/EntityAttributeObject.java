@@ -359,7 +359,7 @@ public class EntityAttributeObject
     @GraphQLField
     @GraphQLDescription("attribute")
     public AttributeInterface getAttribute(final DataFetchingEnvironment env) {
-        AttributeInterface entityAttributeValueInterface = null;
+        AttributeInterface attributeInterface = null;
 
         if(entityInstance != null) {
             var entityAttributeType = EntityAttributeTypes.valueOf(getEntityAttributeDetail().getEntityAttributeType().getEntityAttributeTypeName());
@@ -370,71 +370,71 @@ public class EntityAttributeObject
                 case BOOLEAN -> {
                     var entityBooleanAttribute = coreControl.getEntityBooleanAttribute(entityAttribute, entityInstance);
 
-                    entityAttributeValueInterface = entityBooleanAttribute == null ? null : new EntityBooleanAttributeObject(entityBooleanAttribute);
+                    attributeInterface = entityBooleanAttribute == null ? null : new EntityBooleanAttributeObject(entityBooleanAttribute);
                 }
                 case CLOB -> {
                     var userControl = Session.getModelController(UserControl.class);
                     var entityClobAttribute = coreControl.getBestEntityClobAttribute(entityAttribute, entityInstance, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
 
-                    entityAttributeValueInterface = entityClobAttribute == null ? null : new EntityClobAttributeObject(entityClobAttribute);
+                    attributeInterface = entityClobAttribute == null ? null : new EntityClobAttributeObject(entityClobAttribute);
                 }
                 case COLLECTION -> {
-                    entityAttributeValueInterface = new EntityCollectionAttributesObject(entityAttribute, entityInstance);
+                    attributeInterface = new EntityCollectionAttributesObject(entityAttribute, entityInstance);
                 }
                 case DATE -> {
                     var entityDateAttribute = coreControl.getEntityDateAttribute(entityAttribute, entityInstance);
 
-                    entityAttributeValueInterface = entityDateAttribute == null ? null : new EntityDateAttributeObject(entityDateAttribute);
+                    attributeInterface = entityDateAttribute == null ? null : new EntityDateAttributeObject(entityDateAttribute);
                 }
                 case ENTITY -> {
                     var entityEntityAttribute = coreControl.getEntityEntityAttribute(entityAttribute, entityInstance);
 
-                    entityAttributeValueInterface = entityEntityAttribute == null ? null : new EntityEntityAttributeObject(entityEntityAttribute);
+                    attributeInterface = entityEntityAttribute == null ? null : new EntityEntityAttributeObject(entityEntityAttribute);
                 }
                 case GEOPOINT -> {
                     var entityGeoPointAttribute = coreControl.getEntityGeoPointAttribute(entityAttribute, entityInstance);
 
-                    entityAttributeValueInterface = entityGeoPointAttribute == null ? null : new EntityGeoPointAttributeObject(entityGeoPointAttribute);
+                    attributeInterface = entityGeoPointAttribute == null ? null : new EntityGeoPointAttributeObject(entityGeoPointAttribute);
                 }
                 case INTEGER -> {
                     var entityIntegerAttribute = coreControl.getEntityIntegerAttribute(entityAttribute, entityInstance);
 
-                    entityAttributeValueInterface = entityIntegerAttribute == null ? null : new EntityIntegerAttributeObject(entityIntegerAttribute);
+                    attributeInterface = entityIntegerAttribute == null ? null : new EntityIntegerAttributeObject(entityIntegerAttribute);
                 }
                 case LISTITEM -> {
                     var entityListItemAttribute = coreControl.getEntityListItemAttribute(entityAttribute, entityInstance);
 
-                    entityAttributeValueInterface = entityListItemAttribute == null ? null : new EntityListItemAttributeObject(entityListItemAttribute);
+                    attributeInterface = entityListItemAttribute == null ? null : new EntityListItemAttributeObject(entityListItemAttribute);
                 }
                 case LONG -> {
                     var entityLongAttribute = coreControl.getEntityLongAttribute(entityAttribute, entityInstance);
 
-                    entityAttributeValueInterface = entityLongAttribute == null ? null : new EntityLongAttributeObject(entityLongAttribute);
+                    attributeInterface = entityLongAttribute == null ? null : new EntityLongAttributeObject(entityLongAttribute);
                 }
                 case MULTIPLELISTITEM -> {
-                    entityAttributeValueInterface = new EntityMultipleListItemAttributesObject(entityAttribute, entityInstance);
+                    attributeInterface = new EntityMultipleListItemAttributesObject(entityAttribute, entityInstance);
                 }
                 case NAME -> {
                     var entityNameAttribute = coreControl.getEntityNameAttribute(entityAttribute, entityInstance);
 
-                    entityAttributeValueInterface = entityNameAttribute == null ? null : new EntityNameAttributeObject(entityNameAttribute);
+                    attributeInterface = entityNameAttribute == null ? null : new EntityNameAttributeObject(entityNameAttribute);
                 }
                 case STRING -> {
                     var userControl = Session.getModelController(UserControl.class);
                     var entityStringAttribute = coreControl.getBestEntityStringAttribute(entityAttribute, entityInstance, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
 
-                    entityAttributeValueInterface = entityStringAttribute == null ? null : new EntityStringAttributeObject(entityStringAttribute);
+                    attributeInterface = entityStringAttribute == null ? null : new EntityStringAttributeObject(entityStringAttribute);
                 }
                 case TIME -> {
                     var entityTimeAttribute = coreControl.getEntityTimeAttribute(entityAttribute, entityInstance);
 
-                    entityAttributeValueInterface = entityTimeAttribute == null ? null : new EntityTimeAttributeObject(entityTimeAttribute);
+                    attributeInterface = entityTimeAttribute == null ? null : new EntityTimeAttributeObject(entityTimeAttribute);
                 }
-                default -> {} // Leave entityAttributeValueInterface null
+                default -> {} // Leave attributeInterface null
             }
         }
 
-        return entityAttributeValueInterface;
+        return attributeInterface;
     }
 
     @GraphQLField
