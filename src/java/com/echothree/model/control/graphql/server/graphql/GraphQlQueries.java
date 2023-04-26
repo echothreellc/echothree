@@ -261,8 +261,10 @@ import com.echothree.control.user.tag.server.command.GetTagScopeEntityTypesComma
 import com.echothree.control.user.tag.server.command.GetTagScopesCommand;
 import com.echothree.control.user.tag.server.command.GetTagsCommand;
 import com.echothree.control.user.term.common.TermUtil;
+import com.echothree.control.user.term.server.command.GetTermCommand;
 import com.echothree.control.user.term.server.command.GetTermTypeCommand;
 import com.echothree.control.user.term.server.command.GetTermTypesCommand;
+import com.echothree.control.user.term.server.command.GetTermsCommand;
 import com.echothree.control.user.uom.common.UomUtil;
 import com.echothree.control.user.uom.server.command.GetUnitOfMeasureKindCommand;
 import com.echothree.control.user.uom.server.command.GetUnitOfMeasureKindUseCommand;
@@ -460,6 +462,7 @@ import com.echothree.model.control.tag.server.graphql.TagObject;
 import com.echothree.model.control.tag.server.graphql.TagScopeEntityTypeObject;
 import com.echothree.model.control.tag.server.graphql.TagScopeObject;
 import com.echothree.model.control.term.server.control.TermControl;
+import com.echothree.model.control.term.server.graphql.TermObject;
 import com.echothree.model.control.term.server.graphql.TermTypeObject;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureKindObject;
@@ -633,7 +636,9 @@ import com.echothree.model.data.tag.server.entity.EntityTag;
 import com.echothree.model.data.tag.server.entity.Tag;
 import com.echothree.model.data.tag.server.entity.TagScope;
 import com.echothree.model.data.tag.server.entity.TagScopeEntityType;
+import com.echothree.model.data.term.common.TermConstants;
 import com.echothree.model.data.term.common.TermTypeConstants;
+import com.echothree.model.data.term.server.entity.Term;
 import com.echothree.model.data.term.server.entity.TermType;
 import com.echothree.model.data.uom.common.UnitOfMeasureKindConstants;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
@@ -7754,7 +7759,58 @@ public final class GraphQlQueries
 
         return data;
     }
-    
+
+    @GraphQLField
+    @GraphQLName("term")
+    public static TermObject term(final DataFetchingEnvironment env,
+            @GraphQLName("termName") final String termName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        Term term;
+
+        try {
+            var commandForm = TermUtil.getHome().getGetTermForm();
+
+            commandForm.setTermName(termName);
+            commandForm.setUlid(id);
+
+            term = new GetTermCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return term == null ? null : new TermObject(term);
+    }
+
+    @GraphQLField
+    @GraphQLName("terms")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public static CountingPaginatedData<TermObject> terms(final DataFetchingEnvironment env) {
+        CountingPaginatedData<TermObject> data;
+
+        try {
+            var termControl = Session.getModelController(TermControl.class);
+            var totalCount = termControl.countTerms();
+
+            try(var objectLimiter = new ObjectLimiter(env, TermConstants.COMPONENT_VENDOR_NAME, TermConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = TermUtil.getHome().getGetTermsForm();
+                var entities = new GetTermsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var terms = entities.stream().map(TermObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, terms);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
     @GraphQLField
     @GraphQLName("securityRoleGroup")
     public static SecurityRoleGroupObject securityRoleGroup(final DataFetchingEnvironment env,

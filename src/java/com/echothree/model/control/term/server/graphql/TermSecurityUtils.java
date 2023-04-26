@@ -16,8 +16,10 @@
 
 package com.echothree.model.control.term.server.graphql;
 
+import com.echothree.control.user.term.server.command.GetTermCommand;
 import com.echothree.control.user.term.server.command.GetTermTypeCommand;
 import com.echothree.control.user.term.server.command.GetTermTypesCommand;
+import com.echothree.control.user.term.server.command.GetTermsCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
@@ -38,6 +40,14 @@ public final class TermSecurityUtils
 
     public boolean getHasTermTypeAccess(final DataFetchingEnvironment env) {
         return getGraphQlExecutionContext(env).hasAccess(GetTermTypeCommand.class);
+    }
+
+    public boolean getHasTermsAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetTermsCommand.class);
+    }
+
+    public boolean getHasTermAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetTermCommand.class);
     }
 
 }

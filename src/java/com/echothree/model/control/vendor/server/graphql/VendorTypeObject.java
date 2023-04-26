@@ -23,6 +23,8 @@ import com.echothree.model.control.returnpolicy.server.graphql.ReturnPolicyObjec
 import com.echothree.model.control.returnpolicy.server.graphql.ReturnPolicySecurityUtils;
 import com.echothree.model.control.shipment.server.graphql.FreeOnBoardObject;
 import com.echothree.model.control.shipment.server.graphql.ShipmentSecurityUtils;
+import com.echothree.model.control.term.server.graphql.TermObject;
+import com.echothree.model.control.term.server.graphql.TermSecurityUtils;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.vendor.server.entity.VendorType;
@@ -64,14 +66,14 @@ public class VendorTypeObject
         return getVendorTypeDetail().getVendorTypeName();
     }
 
-//    @GraphQLField
-//    @GraphQLDescription("default term")
-//    public TermObject getDefaultTerm(final DataFetchingEnvironment env) {
-//        var defaultTerm = getVendorTypeDetail().getDefaultTerm();
-//
-//        return defaultTerm == null ? null : TermSecurityUtils.getInstance().getHasTermAccess(env) ?
-//                new TermObject(defaultTerm) : null;
-//    }
+    @GraphQLField
+    @GraphQLDescription("default term")
+    public TermObject getDefaultTerm(final DataFetchingEnvironment env) {
+        var defaultTerm = getVendorTypeDetail().getDefaultTerm();
+
+        return defaultTerm == null ? null : TermSecurityUtils.getInstance().getHasTermAccess(env) ?
+                new TermObject(defaultTerm) : null;
+    }
 
     @GraphQLField
     @GraphQLDescription("default free on board")

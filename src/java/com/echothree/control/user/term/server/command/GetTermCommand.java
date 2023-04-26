@@ -17,53 +17,59 @@
 package com.echothree.control.user.term.server.command;
 
 import com.echothree.control.user.term.common.form.GetTermForm;
-import com.echothree.control.user.term.common.result.GetTermResult;
 import com.echothree.control.user.term.common.result.TermResultFactory;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.term.server.control.TermControl;
+import com.echothree.model.control.term.server.logic.TermLogic;
 import com.echothree.model.data.term.server.entity.Term;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class GetTermCommand
-        extends BaseSimpleCommand<GetTermForm> {
+        extends BaseSingleEntityCommand<Term, GetTermForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("TermName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+        FORM_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("TermName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
+        );
     }
     
     /** Creates a new instance of GetTermCommand */
     public GetTermCommand(UserVisitPK userVisitPK, GetTermForm form) {
         super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
+    protected Term getEntity() {
+        var term = TermLogic.getInstance().getTermByUniversalSpec(this, form, true);
+
+        if(term != null) {
+            sendEvent(term.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+        }
+
+        return term;
+    }
+
+    @Override
+    protected BaseResult getTransfer(Term term) {
+        var result = TermResultFactory.getGetTermResult();
         var termControl = Session.getModelController(TermControl.class);
-        GetTermResult result = TermResultFactory.getGetTermResult();
-        String termName = form.getTermName();
-        Term term = termControl.getTermByName(termName);
-        
+
         if(term != null) {
             result.setTerm(termControl.getTermTransfer(getUserVisit(), term));
-            
-            sendEvent(term.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownTermName.name(), termName);
         }
-        
+
         return result;
     }
     
