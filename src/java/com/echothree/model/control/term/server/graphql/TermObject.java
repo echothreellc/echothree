@@ -17,6 +17,7 @@
 package com.echothree.model.control.term.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.term.common.TermTypes;
 import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.term.server.entity.Term;
@@ -77,7 +78,26 @@ public class TermObject
     public int getSortOrder() {
         return getTermDetail().getSortOrder();
     }
-    
+
+    @GraphQLField
+    @GraphQLDescription("term")
+    public TermInterface getTerm(final DataFetchingEnvironment env) {
+        var termType = TermTypes.valueOf(getTermDetail().getTermType().getTermTypeName());
+        var termControl = Session.getModelController(TermControl.class);
+        TermInterface termInterface = null;
+
+        switch(termType) {
+            case DATE_DRIVEN -> {
+                termInterface = new DateDrivenTermObject(termControl.getDateDrivenTerm(term));
+            }
+            case STANDARD -> {
+                termInterface = new StandardTermObject(termControl.getStandardTerm(term));
+            }
+        }
+
+        return termInterface;
+    }
+
     @GraphQLField
     @GraphQLDescription("description")
     @GraphQLNonNull
