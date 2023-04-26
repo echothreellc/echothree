@@ -162,7 +162,6 @@ public class EntityAttributeObject
     
     @GraphQLField
     @GraphQLDescription("entity attribute type")
-    @GraphQLNonNull
     public EntityAttributeTypeObject getEntityAttributeType(final DataFetchingEnvironment env) {
         return CoreSecurityUtils.getInstance().getHasEntityAttributeTypeAccess(env) ? new EntityAttributeTypeObject(getEntityAttributeDetail().getEntityAttributeType()) : null;
     }
