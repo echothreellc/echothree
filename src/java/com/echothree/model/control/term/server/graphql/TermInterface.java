@@ -14,13 +14,11 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.term.common.form;
+package com.echothree.model.control.term.server.graphql;
 
-import com.echothree.control.user.term.common.spec.TermUniversalSpec;
+import graphql.annotations.annotationTypes.GraphQLUnion;
 
-public interface GetTermForm
-        extends TermUniversalSpec {
-    
-    // Nothing additional beyond TermUniversalSpec
-    
+@GraphQLUnion(possibleTypes = {DateDrivenTermObject.class, StandardTermObject.class})
+public interface TermInterface {
+
 }

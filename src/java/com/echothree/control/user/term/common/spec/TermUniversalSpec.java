@@ -14,13 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.term.common.form;
+package com.echothree.control.user.term.common.spec;
 
-import com.echothree.control.user.term.common.spec.TermUniversalSpec;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetTermForm
-        extends TermUniversalSpec {
-    
-    // Nothing additional beyond TermUniversalSpec
+public interface TermUniversalSpec
+        extends TermSpec, UniversalEntitySpec {
+
+    // Nothing additional beyond TermSpec, UniversalEntitySpec
     
 }

@@ -361,8 +361,30 @@ public class TermControl
         
         return term;
     }
-    
-    private Term getTermByName(String termName, EntityPermission entityPermission) {
+
+    public long countTerms() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM terms, termtypes " +
+                "WHERE trm_activedetailid = trmtyp_termtypeid");
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Term */
+    public Term getTermByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new TermPK(entityInstance.getEntityUniqueId());
+
+        return TermFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Term getTermByEntityInstance(EntityInstance entityInstance) {
+        return getTermByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Term getTermByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getTermByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public Term getTermByName(String termName, EntityPermission entityPermission) {
         Term term;
         
         try {
@@ -403,7 +425,7 @@ public class TermControl
         return getTermByName(termName, EntityPermission.READ_WRITE).getLastDetailForUpdate().getTermDetailValue();
     }
     
-    private Term getDefaultTerm(EntityPermission entityPermission) {
+    public Term getDefaultTerm(EntityPermission entityPermission) {
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
@@ -441,7 +463,8 @@ public class TermControl
             query = "SELECT _ALL_ " +
                     "FROM terms, termdetails " +
                     "WHERE trm_activedetailid = trmdt_termdetailid " +
-                    "ORDER BY trmdt_sortorder, trmdt_termname";
+                    "ORDER BY trmdt_sortorder, trmdt_termname " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM terms, termdetails " +
@@ -499,19 +522,22 @@ public class TermControl
     public TermTransfer getTermTransfer(UserVisit userVisit, Term term) {
         return getTermTransferCaches(userVisit).getTermTransferCache().getTermTransfer(term);
     }
-    
-    public List<TermTransfer> getTermTransfers(UserVisit userVisit) {
-        List<Term> terms = getTerms();
+
+    public List<TermTransfer> getTermTransfers(UserVisit userVisit, Collection<Term> terms) {
         List<TermTransfer> termTransfers = new ArrayList<>(terms.size());
         TermTransferCache termTransferCache = getTermTransferCaches(userVisit).getTermTransferCache();
-        
+
         terms.forEach((term) ->
                 termTransfers.add(termTransferCache.getTermTransfer(term))
         );
-        
+
         return termTransfers;
     }
-    
+
+    public List<TermTransfer> getTermTransfers(UserVisit userVisit) {
+        return getTermTransfers(userVisit, getTerms());
+    }
+
     private void updateTermFromValue(TermDetailValue termDetailValue, boolean checkDefault, BasePK updatedBy) {
         Term term = TermFactory.getInstance().getEntityFromPK(session,
                 EntityPermission.READ_WRITE, termDetailValue.getTermPK());

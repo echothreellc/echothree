@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetTermsResult
         extends BaseResult {
-    
+
+    Long getTermCount();
+    void setTermCount(Long termCount);
+
     List<TermTransfer> getTerms();
     void setTerms(List<TermTransfer> terms);
     

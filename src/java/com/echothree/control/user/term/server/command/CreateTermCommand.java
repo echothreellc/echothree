@@ -17,6 +17,7 @@
 package com.echothree.control.user.term.server.command;
 
 import com.echothree.control.user.term.common.form.CreateTermForm;
+import com.echothree.control.user.term.common.result.TermResultFactory;
 import com.echothree.model.control.term.common.TermTypes;
 import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.data.term.server.entity.Term;
@@ -88,6 +89,7 @@ public class CreateTermCommand
     
     @Override
     protected BaseResult execute() {
+        var result = TermResultFactory.getCreateTermResult();
         var termControl = Session.getModelController(TermControl.class);
         String termName = form.getTermName();
         Term term = termControl.getTermByName(termName);
@@ -130,8 +132,13 @@ public class CreateTermCommand
         } else {
             addExecutionError(ExecutionErrors.DuplicateTermName.name(), termName);
         }
-        
-        return null;
+
+        if(term != null) {
+            result.setEntityRef(term.getPrimaryKey().getEntityRef());
+            result.setTermName(term.getLastDetail().getTermName());
+        }
+
+        return result;
     }
     
 }

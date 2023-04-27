@@ -14,13 +14,31 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.term.common.form;
+package com.echothree.model.control.term.common.exception;
 
-import com.echothree.control.user.term.common.spec.TermUniversalSpec;
+import com.echothree.util.common.message.Message;
 
-public interface GetTermForm
-        extends TermUniversalSpec {
+public class DuplicateTermNameException
+        extends BaseTermException {
     
-    // Nothing additional beyond TermUniversalSpec
+    /** Creates a new instance of DuplicateTermNameException */
+    public DuplicateTermNameException() {
+        super();
+    }
     
+    /** Creates a new instance of DuplicateTermNameException */
+    public DuplicateTermNameException(String message) {
+        super(message);
+    }
+    
+    /** Creates a new instance of DuplicateTermNameException */
+    public DuplicateTermNameException(Throwable cause) {
+        super(cause);
+    }
+    
+    /** Creates a new instance of DuplicateTermNameException */
+    public DuplicateTermNameException(Message message) {
+        super(message);
+    }
+
 }
