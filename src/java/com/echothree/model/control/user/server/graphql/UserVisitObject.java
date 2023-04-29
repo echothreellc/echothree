@@ -106,8 +106,9 @@ public class UserVisitObject
     @GraphQLField
     @GraphQLDescription("offer use")
     public OfferUseObject getOfferUse(final DataFetchingEnvironment env) {
-        return OfferSecurityUtils.getInstance().getHasOfferUseAccess(env) ?
-                new OfferUseObject(userVisit.getOfferUse()) : null;
+        var offeruse = userVisit.getOfferUse();
+
+        return offeruse != null && OfferSecurityUtils.getInstance().getHasOfferUseAccess(env) ? new OfferUseObject(userVisit.getOfferUse()) : null;
     }
 
 //    @GraphQLField
