@@ -24,7 +24,7 @@
 * jOOQ 3.17.11 Upgrade [696](https://gitlab.echothree.com/echothree/echothree/-/issues/696)
 
 ## 2023-03-19-01
-* 
+
 * Add Workflow Entrance Security Roles Object and Queries [654](https://gitlab.echothree.com/echothree/echothree/-/issues/654)
 * Add Workflow Destination Party Type Object and Queries [676](https://gitlab.echothree.com/echothree/echothree/-/issues/676)
 * Add Workflow Destination Security Role Object and Queries [678](https://gitlab.echothree.com/echothree/echothree/-/issues/678)
