@@ -135,7 +135,7 @@ public abstract class MainBaseAction<A extends ActionForm>
         String forwardKey = null;
         String returnUrl = null;
         
-        if(partyRequired && (party == null || (party != null && userSession.getPasswordVerifiedTime() == null))) {
+        if(partyRequired && (party == null || (party != null && userSession.getIdentityVerifiedTime() == null))) {
             if(request.getMethod().equals(WebConstants.Method_GET)) {
                 String servletPath = request.getServletPath();
                 String pathInfo = request.getPathInfo();

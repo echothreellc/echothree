@@ -110,7 +110,7 @@ public abstract class CmsBaseAction<A extends ActionForm>
             UserSessionTransfer userSession = result.getUserSession();
             PartyTransfer party = userSession == null? null: userSession.getParty();
 
-            if(partyRequired && (party == null || (party != null && userSession.getPasswordVerifiedTime() == null))) {
+            if(partyRequired && (party == null || (party != null && userSession.getIdentityVerifiedTime() == null))) {
                 forwardKey = ForwardConstants.LOGIN;
             } else {
                 if(userSession != null) {

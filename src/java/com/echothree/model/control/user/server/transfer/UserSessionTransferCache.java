@@ -47,11 +47,11 @@ public class UserSessionTransferCache
             PartyTransfer partyTransfer = partyControl.getPartyTransfer(userVisit, userSession.getParty());
             PartyRelationship partyRelationship = userSession.getPartyRelationship();
             PartyRelationshipTransfer partyRelationshipTransfer = partyRelationship == null ? null : partyControl.getPartyRelationshipTransfer(userVisit, partyRelationship);
-            Long unformattedPasswordVerifiedTime = userSession.getPasswordVerifiedTime();
-            String passwordVerifiedTime = unformattedPasswordVerifiedTime == null ? null : formatTypicalDateTime(unformattedPasswordVerifiedTime);
+            Long unformattedIdentityVerifiedTime = userSession.getIdentityVerifiedTime();
+            String identityVerifiedTime = unformattedIdentityVerifiedTime == null ? null : formatTypicalDateTime(unformattedIdentityVerifiedTime);
             
-            userSessionTransfer = new UserSessionTransfer(userVisitTransfer, partyTransfer, partyRelationshipTransfer, unformattedPasswordVerifiedTime,
-                    passwordVerifiedTime);
+            userSessionTransfer = new UserSessionTransfer(userVisitTransfer, partyTransfer, partyRelationshipTransfer, unformattedIdentityVerifiedTime,
+                    identityVerifiedTime);
             put(userSession, userSessionTransfer);
         }
         

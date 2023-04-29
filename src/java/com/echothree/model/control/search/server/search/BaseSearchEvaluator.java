@@ -83,7 +83,7 @@ public abstract class BaseSearchEvaluator
         if(userSession != null) {
             party = userSession.getParty();
             partyPK = party == null ? null : party.getPrimaryKey(); // For convenience.
-            partyVerified = userSession.getPasswordVerifiedTime() != null;
+            partyVerified = userSession.getIdentityVerifiedTime() != null;
         }
     }
     
