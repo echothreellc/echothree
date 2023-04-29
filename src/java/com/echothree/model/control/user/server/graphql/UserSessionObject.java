@@ -64,7 +64,7 @@ public class UserSessionObject
     public TimeObject getPasswordVerifiedTime(final DataFetchingEnvironment env) {
         var passwordVerifiedTime = userSession.getPasswordVerifiedTime();
 
-        return new TimeObject(passwordVerifiedTime);
+        return passwordVerifiedTime == null ? null : new TimeObject(passwordVerifiedTime);
     }
     
 }
