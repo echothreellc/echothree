@@ -61,10 +61,10 @@ public class UserSessionObject
 
     @GraphQLField
     @GraphQLDescription("password verified time")
-    public TimeObject getPasswordVerifiedTime(final DataFetchingEnvironment env) {
-        var passwordVerifiedTime = userSession.getPasswordVerifiedTime();
+    public TimeObject getIdentityVerifiedTime(final DataFetchingEnvironment env) {
+        var identityVerifiedTime = userSession.getIdentityVerifiedTime();
 
-        return passwordVerifiedTime == null ? null : new TimeObject(passwordVerifiedTime);
+        return identityVerifiedTime == null ? null : new TimeObject(identityVerifiedTime);
     }
     
 }

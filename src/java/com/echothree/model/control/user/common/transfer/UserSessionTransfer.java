@@ -26,17 +26,17 @@ public class UserSessionTransfer
     private UserVisitTransfer userVisit;
     private PartyTransfer party;
     private PartyRelationshipTransfer partyRelationship;
-    private Long unformattedPasswordVerifiedTime;
-    private String passwordVerifiedTime;
+    private Long unformattedIdentityVerifiedTime;
+    private String identityVerifiedTime;
     
     /** Creates a new instance of UserSessionTransfer */
     public UserSessionTransfer(UserVisitTransfer userVisit, PartyTransfer party, PartyRelationshipTransfer partyRelationship,
-            Long unformattedPasswordVerifiedTime, String passwordVerifiedTime) {
+            Long unformattedIdentityVerifiedTime, String identityVerifiedTime) {
         this.userVisit = userVisit;
         this.party = party;
         this.partyRelationship = partyRelationship;
-        this.unformattedPasswordVerifiedTime = unformattedPasswordVerifiedTime;
-        this.passwordVerifiedTime = passwordVerifiedTime;
+        this.unformattedIdentityVerifiedTime = unformattedIdentityVerifiedTime;
+        this.identityVerifiedTime = identityVerifiedTime;
     }
 
     /**
@@ -88,35 +88,35 @@ public class UserSessionTransfer
     }
 
     /**
-     * Returns the unformattedPasswordVerifiedTime.
-     * @return the unformattedPasswordVerifiedTime
+     * Returns the unformattedIdentityVerifiedTime.
+     * @return the unformattedIdentityVerifiedTime
      */
-    public Long getUnformattedPasswordVerifiedTime() {
-        return unformattedPasswordVerifiedTime;
+    public Long getUnformattedIdentityVerifiedTime() {
+        return unformattedIdentityVerifiedTime;
     }
 
     /**
-     * Sets the unformattedPasswordVerifiedTime.
-     * @param unformattedPasswordVerifiedTime the unformattedPasswordVerifiedTime to set
+     * Sets the unformattedIdentityVerifiedTime.
+     * @param unformattedIdentityVerifiedTime the unformattedIdentityVerifiedTime to set
      */
-    public void setUnformattedPasswordVerifiedTime(Long unformattedPasswordVerifiedTime) {
-        this.unformattedPasswordVerifiedTime = unformattedPasswordVerifiedTime;
+    public void setUnformattedIdentityVerifiedTime(Long unformattedIdentityVerifiedTime) {
+        this.unformattedIdentityVerifiedTime = unformattedIdentityVerifiedTime;
     }
 
     /**
-     * Returns the passwordVerifiedTime.
-     * @return the passwordVerifiedTime
+     * Returns the identityVerifiedTime.
+     * @return the identityVerifiedTime
      */
-    public String getPasswordVerifiedTime() {
-        return passwordVerifiedTime;
+    public String getIdentityVerifiedTime() {
+        return identityVerifiedTime;
     }
 
     /**
-     * Sets the passwordVerifiedTime.
-     * @param passwordVerifiedTime the passwordVerifiedTime to set
+     * Sets the identityVerifiedTime.
+     * @param identityVerifiedTime the identityVerifiedTime to set
      */
-    public void setPasswordVerifiedTime(String passwordVerifiedTime) {
-        this.passwordVerifiedTime = passwordVerifiedTime;
+    public void setIdentityVerifiedTime(String identityVerifiedTime) {
+        this.identityVerifiedTime = identityVerifiedTime;
     }
     
 }

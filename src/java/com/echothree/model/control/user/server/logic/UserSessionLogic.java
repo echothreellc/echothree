@@ -47,7 +47,7 @@ public class UserSessionLogic {
      * @return An invalid UserSession (may be the same as the userSession parameter).
      */
     public UserSession invalidateUserSession(UserSession userSession) {
-        if(userSession.getPasswordVerifiedTime() != null) {
+        if(userSession.getIdentityVerifiedTime() != null) {
             var userControl = Session.getModelController(UserControl.class);
 
             if(!userSession.getEntityPermission().equals(EntityPermission.READ_WRITE)) {

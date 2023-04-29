@@ -87,7 +87,7 @@ public abstract class BaseCommand
     private String componentVendorName = null;
     private String commandName = null;
     private UserControl userControl = null;
-    private boolean checkPasswordVerifiedTime = true;
+    private boolean checkIdentityVerifiedTime = true;
     private boolean updateLastCommandTime = true;
     private boolean logCommand = true;
 
@@ -258,12 +258,12 @@ public abstract class BaseCommand
         return getUserControl().getPreferredDateTimeFormatFromParty(party);
     }
     
-    public boolean getCheckPasswordVerifiedTime() {
-        return checkPasswordVerifiedTime;
+    public boolean getCheckIdentityVerifiedTime() {
+        return checkIdentityVerifiedTime;
     }
 
-    public void setCheckPasswordVerifiedTime(boolean checkPasswordVerifiedTime) {
-        this.checkPasswordVerifiedTime = checkPasswordVerifiedTime;
+    public void setCheckIdentityVerifiedTime(boolean checkIdentityVerifiedTime) {
+        this.checkIdentityVerifiedTime = checkIdentityVerifiedTime;
     }
 
     public boolean getUpdateLastCommandTime() {
@@ -286,10 +286,10 @@ public abstract class BaseCommand
         if(getUserVisit() != null) {
             userSession = getUserControl().getUserSessionByUserVisit(userVisit);
 
-            if(userSession != null && checkPasswordVerifiedTime) {
-                Long passwordVerifiedTime = userSession.getPasswordVerifiedTime();
+            if(userSession != null && checkIdentityVerifiedTime) {
+                Long identityVerifiedTime = userSession.getIdentityVerifiedTime();
 
-                if(passwordVerifiedTime != null) {
+                if(identityVerifiedTime != null) {
                     long timeSinceLastCommand = session.START_TIME - userVisit.getLastCommandTime();
 
                     // If it has been > 15 minutes since their last command, invalidate the UserSession.
@@ -544,7 +544,7 @@ public abstract class BaseCommand
 
                         if(componentVendor != null) {
                             getCommandName();
-                            getParty(); // TODO: should only use if UserSession.PasswordVerifiedTime != null
+                            getParty(); // TODO: should only use if UserSession.IdentityVerifiedTime != null
 
                             if(ControlDebugFlags.CheckCommandNameLength) {
                                 if(commandName.length() > 80) {

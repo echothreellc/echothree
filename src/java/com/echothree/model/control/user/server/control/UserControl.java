@@ -922,7 +922,7 @@ public class UserControl
     
     /** Associate a Party with a UserVisit, copy all Preferred* properties to the UserVisit.
      */
-    public UserSession associatePartyToUserVisit(UserVisit userVisit, Party party, PartyRelationship partyRelationship, Long passwordVerifiedTime) {
+    public UserSession associatePartyToUserVisit(UserVisit userVisit, Party party, PartyRelationship partyRelationship, Long identityVerifiedTime) {
         UserSession userSession = getUserSessionByUserVisitForUpdate(userVisit);
         PartyDetail partyDetail = party.getLastDetail();
         
@@ -931,7 +931,7 @@ public class UserControl
             userSession.store();
         }
         
-        userSession = createUserSession(userVisit, party, partyRelationship, passwordVerifiedTime);
+        userSession = createUserSession(userVisit, party, partyRelationship, identityVerifiedTime);
         
         Language preferredLanguage = partyDetail.getPreferredLanguage();
         if(preferredLanguage != null) {
@@ -1090,7 +1090,7 @@ public class UserControl
     /** Use associatePartyToUserVisit to associate a Party with a UserVisit, rather than using this
      * function directly.
      */
-    public UserSession createUserSession(UserVisit userVisit, Party party, PartyRelationship partyRelationship, Long passwordVerifiedTime) {
+    public UserSession createUserSession(UserVisit userVisit, Party party, PartyRelationship partyRelationship, Long identityVerifiedTime) {
         PartyType partyType = party.getLastDetail().getPartyType();
         PartyTypeAuditPolicy partyTypeAuditPolicy = getPartyControl().getPartyTypeAuditPolicy(partyType);
         Long retainUserVisitsTime = partyTypeAuditPolicy == null? null: partyTypeAuditPolicy.getLastDetail().getRetainUserVisitsTime();
@@ -1104,7 +1104,7 @@ public class UserControl
             }
         }
         
-        return UserSessionFactory.getInstance().create(userVisit, party, partyRelationship, passwordVerifiedTime, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        return UserSessionFactory.getInstance().create(userVisit, party, partyRelationship, identityVerifiedTime, session.START_TIME_LONG, Session.MAX_TIME_LONG);
     }
     
     private static final Map<EntityPermission, String> getUserSessionsByPartyQueries;
