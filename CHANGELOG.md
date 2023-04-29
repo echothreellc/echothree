@@ -24,14 +24,13 @@
 * jOOQ 3.17.11 Upgrade [696](https://gitlab.echothree.com/echothree/echothree/-/issues/696)
 
 ## 2023-03-19-01
-
-* Add Workflow Entrance Party Types Object and Queries [653](https://gitlab.echothree.com/echothree/echothree/-/issues/653)
-* Add Workflow Entrance Selectors Object and Queries [655](https://gitlab.echothree.com/echothree/echothree/-/issues/655)
-* Add Workflow Destinations Object and Queries [662](https://gitlab.echothree.com/echothree/echothree/-/issues/662)
-* Add Workflow Destination Steps Object and Queries [664](https://gitlab.echothree.com/echothree/echothree/-/issues/664)
-* Add Workflow Selector Kind Object and Queries [666](https://gitlab.echothree.com/echothree/echothree/-/issues/666)
-* Add Workflow Entity Type Object and Queries [668](https://gitlab.echothree.com/echothree/echothree/-/issues/668)
-* Add Security Role Object and Queries [682](https://gitlab.echothree.com/echothree/echothree/-/issues/682)
+* 
+* Add Workflow Entrance Security Roles Object and Queries [654](https://gitlab.echothree.com/echothree/echothree/-/issues/654)
+* Add Workflow Destination Party Type Object and Queries [676](https://gitlab.echothree.com/echothree/echothree/-/issues/676)
+* Add Workflow Destination Security Role Object and Queries [678](https://gitlab.echothree.com/echothree/echothree/-/issues/678)
+* Add Workflow Destination Selector Object and Queries [680](https://gitlab.echothree.com/echothree/echothree/-/issues/680)
+* Add Vendor Type Object and Queries [692](https://gitlab.echothree.com/echothree/echothree/-/issues/692)
+* WildFly 26.1.3 Upgrade [694](https://gitlab.echothree.com/echothree/echothree/-/issues/694)
 
 ## 2023-03-05-01
 
