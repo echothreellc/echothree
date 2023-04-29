@@ -207,20 +207,26 @@ public class InventoryConditionTest
         var queryBody = executeUsingPost("""
                 query {
                     inventoryConditions {
-                        id
-                        sortOrder
-                        description
+                        edges {
+                            node {
+                                id
+                                sortOrder
+                                description
+                            }
+                        }
                     }
                 }
                 """);
         
-        var inventoryConditions = getList(queryBody, "data.inventoryConditions");
+        var inventoryConditionEdges = getList(queryBody, "data.inventoryConditions.edges");
         
         var foundInventoryCondition = false;
-        for(Map<String, Object> inventoryCondition : inventoryConditions) {
-            if(id.equals(getString(inventoryCondition, "id"))) {
-                assertThat(getInteger(inventoryCondition, "sortOrder")).isEqualTo(ORIGINAL_SORT_ORDER);
-                assertThat(getString(inventoryCondition, "description")).isEqualTo(ORIGINAL_DESCRIPTION);
+        for(Map<String, Object> inventoryConditionEdge : inventoryConditionEdges) {
+            var inventoryConditionNode = getMap(inventoryConditionEdge, "node");
+
+            if(id.equals(getString(inventoryConditionNode, "id"))) {
+                assertThat(getInteger(inventoryConditionNode, "sortOrder")).isEqualTo(ORIGINAL_SORT_ORDER);
+                assertThat(getString(inventoryConditionNode, "description")).isEqualTo(ORIGINAL_DESCRIPTION);
                 foundInventoryCondition = true;
             }
         }
