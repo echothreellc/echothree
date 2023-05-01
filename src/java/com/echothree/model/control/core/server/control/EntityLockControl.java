@@ -146,7 +146,8 @@ public class EntityLockControl
                 // only updating a record, and it will either exist or it will not.
                 if((currentLockedByEntityInstanceId != 0) && (currentLockExpirationTime != 0) && (currentLockExpirationTime < currentTime)) {
                     try(var ps = conn.prepareStatement("""
-                                UPDATE entitylocks SET lcks_lockedbyentityinstanceid = ?, lcks_lockedtime = ?, lcks_lockexpirationtime = ?
+                                UPDATE entitylocks
+                                SET lcks_lockedbyentityinstanceid = ?, lcks_lockedtime = ?, lcks_lockexpirationtime = ?
                                 WHERE lcks_locktargetentityinstanceid = ? AND lcks_lockedbyentityinstanceid = ?
                                 AND lcks_lockedtime = ? AND lcks_lockexpirationtime = ?
                                 """)) {
@@ -177,8 +178,8 @@ public class EntityLockControl
                 // statement was tried.
                 if(currentLockedByEntityInstanceId == 0) {
                     try(var ps = conn.prepareStatement("""
-                                INSERT INTO entitylocks (lcks_locktargetentityinstanceid, lcks_lockedbyentityinstanceid,
-                                lcks_lockedtime, lcks_lockexpirationtime)
+                                INSERT INTO entitylocks
+                                (lcks_locktargetentityinstanceid, lcks_lockedbyentityinstanceid, lcks_lockedtime, lcks_lockexpirationtime)
                                 VALUES (?, ?, ?, ?)
                                 """)) {
                         ps.setLong(1, lockTargetEntityInstanceId);
@@ -352,7 +353,8 @@ public class EntityLockControl
             try(var conn = DslContextFactory.getInstance().getNTDslContext().parsingConnection()) {
                 if(lockedBy == null) {
                     try(var ps = conn.prepareStatement("""
-                                DELETE FROM entitylocks WHERE lcks_locktargetentityinstanceid = ?
+                                DELETE FROM entitylocks
+                                WHERE lcks_locktargetentityinstanceid = ?
                                 """)) {
                         ps.setLong(1, lockTargetEntityInstanceId);
 
@@ -369,8 +371,8 @@ public class EntityLockControl
                     
                     if(lockedByEntityInstanceId != 0) {
                         try(var ps = conn.prepareStatement("""
-                                DELETE FROM entitylocks WHERE lcks_locktargetentityinstanceid = ?
-                                AND lcks_lockedbyentityinstanceid = ?
+                                DELETE FROM entitylocks
+                                WHERE lcks_locktargetentityinstanceid = ? AND lcks_lockedbyentityinstanceid = ?
                                 """)) {
                             ps.setLong(1, lockTargetEntityInstanceId);
                             ps.setLong(2, lockedByEntityInstanceId);
