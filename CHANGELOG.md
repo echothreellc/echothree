@@ -1,5 +1,19 @@
 # Changelog
 
+## 2023-04-30-01
+
+* Add Term Type Object and Queries [684](https://gitlab.echothree.com/echothree/echothree/-/issues/684)
+* Add Term Object and Queries [686](https://gitlab.echothree.com/echothree/echothree/-/issues/686)
+* Allow Entity Lock Recovery [701](https://gitlab.echothree.com/echothree/echothree/-/issues/701)
+* Add Allocation Priorty Object and Queries [706](https://gitlab.echothree.com/echothree/echothree/-/issues/706)
+* Add Allocation Priority Mutations [707](https://gitlab.echothree.com/echothree/echothree/-/issues/707)
+* ICU4J 73.1 Upgrade [713](https://gitlab.echothree.com/echothree/echothree/-/issues/713)
+* ClassGraph 4.8.157 Upgrade [714](https://gitlab.echothree.com/echothree/echothree/-/issues/714)
+* graphql-java 17.6 Upgrade [715](https://gitlab.echothree.com/echothree/echothree/-/issues/715)
+* Null passwordVerifiedTime Throws Exception [716](https://gitlab.echothree.com/echothree/echothree/-/issues/716)
+* Null offerUse Throws Exception [717](https://gitlab.echothree.com/echothree/echothree/-/issues/717)
+* Rename UserSession's PasswordVerifiedTime to IdentityVerifiedTime [718](https://gitlab.echothree.com/echothree/echothree/-/issues/718)
+
 ## 2023-04-16-01
 
 * Add Wishlist Type Mutations [640](https://gitlab.echothree.com/echothree/echothree/-/issues/640)
