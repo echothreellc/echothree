@@ -88,7 +88,17 @@ public class EntityLockControl
             throws EntityLockException {
         return lockEntity(lockTarget.getPrimaryKey(), lockedBy);
     }
-    
+
+    // Must be held by any other EntityInstance, must have an expiration time, and that expiration time must be before the current time.
+    private static boolean doesTargetEntityInstanceHaveExpiredLock(final long currentTime, final long currentLockedByEntityInstanceId, final long currentLockExpirationTime) {
+        return (currentLockedByEntityInstanceId != 0) && (currentLockExpirationTime != 0) && (currentLockExpirationTime < currentTime);
+    }
+
+    // Must be held by the EntityInstance requesting the lock, and it must have an expiration time.
+    private static boolean doesLockedByEntityInstanceHaveCurrentLock(final long currentLockedByEntityInstanceId, final long lockedByEntityInstanceId, final long currentLockExpirationTime) {
+        return (currentLockedByEntityInstanceId == lockedByEntityInstanceId) && (currentLockExpirationTime != 0);
+    }
+
     /** Create a lock on a given entity.
      * @param lockTarget Entity to hold the lock on
      * @param lockedBy Entity holding the lock on lockTarget
@@ -141,10 +151,13 @@ public class EntityLockControl
                     throw new EntityLockException(se);
                 }
 
-                // Secondly, we try to reuse an existing lock, as long as it has expired.
-                // There should not be any exceptions thrown by this code, since we're
-                // only updating a record, and it will either exist or it will not.
-                if((currentLockedByEntityInstanceId != 0) && (currentLockExpirationTime != 0) && (currentLockExpirationTime < currentTime)) {
+                // Secondly, we try to reuse an existing lock, based on one of two possible criteria passing.
+                // First, try to claim an existing, expired lock, held by any Entity Instance. Secondly, we
+                // will try to reclaim a lock held by ourselves - expiration status does not matter.
+                // There should not be any exceptions thrown by this code, since we're only updating a record,
+                // and it will either exist or it will not.
+                if(doesTargetEntityInstanceHaveExpiredLock(currentTime, currentLockedByEntityInstanceId, currentLockExpirationTime)
+                || doesLockedByEntityInstanceHaveCurrentLock(currentLockedByEntityInstanceId, lockedByEntityInstanceId, currentLockExpirationTime)) {
                     try(var ps = conn.prepareStatement("""
                                 UPDATE entitylocks
                                 SET lcks_lockedbyentityinstanceid = ?, lcks_lockedtime = ?, lcks_lockexpirationtime = ?
@@ -206,7 +219,7 @@ public class EntityLockControl
         
         return lockExpirationTime;
     }
-    
+
     /** Converts an existing lock that is held on an entity into one that is no longer
      * time limited.
      * @return Returns a Boolean value indicating whether the lock was successful
