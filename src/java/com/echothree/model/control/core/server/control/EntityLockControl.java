@@ -46,7 +46,7 @@ public class EntityLockControl
         return getEntityLockTransfer(userVisit, lockTarget.getPrimaryKey());
     }
     
-    public EntityLockTransfer getEntityLockTransfer(UserVisit userVisit, BaseValue lockTarget)
+    public EntityLockTransfer getEntityLockTransfer(UserVisit userVisit, BaseValue<?> lockTarget)
             throws EntityLockException {
         return getEntityLockTransfer(userVisit, lockTarget.getPrimaryKey());
     }
@@ -84,7 +84,7 @@ public class EntityLockControl
      * @return Returns a Long value indicating the expiration time of the lock. If 0 is
      * returned, then a lock was not able to be obtained.
      */
-    public long lockEntity(BaseValue lockTarget, BasePK lockedBy)
+    public long lockEntity(BaseValue<?> lockTarget, BasePK lockedBy)
             throws EntityLockException {
         return lockEntity(lockTarget.getPrimaryKey(), lockedBy);
     }
@@ -172,7 +172,7 @@ public class EntityLockControl
                     lockExpirationTime = 0;
                 }
 
-                // Finally, if there was no lock aleady being held on it, and the lockExpirationTime
+                // Finally, if there was no lock already being held on it, and the lockExpirationTime
                 // is 0, then we need to attempt to insert a new lock. This code may generate
                 // an exception if someone else tries this between now and the time the SELECT
                 // statement was tried.
@@ -220,7 +220,7 @@ public class EntityLockControl
      * time limited.
      * @return Returns a Boolean value indicating whether the lock was successful
      */
-    public boolean lockEntityForUpdate(final BaseValue lockTarget, final BasePK lockedBy)
+    public boolean lockEntityForUpdate(final BaseValue<?> lockTarget, final BasePK lockedBy)
             throws EntityLockException {
         return lockEntityForUpdate(lockTarget.getPrimaryKey(), lockedBy);
     }
@@ -243,8 +243,8 @@ public class EntityLockControl
         
         if(lockTargetEntityInstanceId != 0 && lockedByEntityInstanceId != 0) {
             try(var conn = DslContextFactory.getInstance().getNTDslContext().parsingConnection()){
-                // First, we check to make sure that we do infact have a lock on the
-                // the entity. Also, enough information is retried so that we can use it
+                // First, we check to make sure that we do in fact have a lock on the
+                // entity. Also, enough information is retried so that we can use it
                 // in the next step to properly identify the lock.
                 var currentLockedTime = 0L;
                 var currentLockExpirationTime = 0L;
@@ -268,7 +268,7 @@ public class EntityLockControl
                 }
 
                 // Secondly, we try to set the lock expiration time to 0 to indicate that
-                // we're going to hold onto it indefinately. If the lock's expiration time is
+                // we're going to hold onto it indefinitely. If the lock's expiration time is
                 // before the current time, we're going to allow the user to reclaim their expired
                 // locked, as long as it was locked by them (indicated by the currentLockExpirationTime
                 // being != 0).
@@ -399,8 +399,8 @@ public class EntityLockControl
         return wasUnlocked;
     }
     
-    /** Tests whether or not a valid lock is being held on a given entity.
-     * @param lockTarget Entity your are testing to see if it is locked or not
+    /** Tests whether a valid lock is being held on a given entity.
+     * @param lockTarget Entity you are testing to see if it is locked or not
      * @param lockedBy Optional parameter if you want to see if the lock on lockTarget is being held by
      * a specific entity
      * @return Returns a Boolean value indicating whether lockTarget has a lock on it
@@ -410,8 +410,8 @@ public class EntityLockControl
         return isEntityLocked(lockTarget.getPrimaryKey(), lockedBy);
     }
     
-    /** Tests whether or not a valid lock is being held on a given entity.
-     * @param lockTarget Entity your are testing to see if it is locked or not
+    /** Tests whether  a valid lock is being held on a given entity.
+     * @param lockTarget Entity you are testing to see if it is locked or not
      * @param lockedBy Optional parameter if you want to see if the lock on lockTarget is being held by
      * a specific entity
      * @return Returns a Boolean value indicating whether lockTarget has a lock on it
@@ -439,8 +439,8 @@ public class EntityLockControl
         return isLocked;
     }
     
-    /** Tests whether or not a valid lock is being held on a given entity.
-     * @param lockTarget Entity your are testing to see if it is locked or not
+    /** Tests whether a valid lock is being held on a given entity.
+     * @param lockTarget Entity you are testing to see if it is locked or not
      * @param lockedBy Optional parameter if you want to see if the lock on lockTarget is being held by
      * a specific entity
      * @return Returns a Boolean value indicating whether lockTarget has a lock on it
