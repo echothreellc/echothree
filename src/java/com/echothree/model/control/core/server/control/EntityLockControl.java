@@ -507,12 +507,10 @@ public class EntityLockControl
     }
     
     public void removeEntityLocksByLockExpirationTime(final Long lockExpirationTime) {
-        try {
-            var ps = session.getConnection().prepareStatement("""
+        try(var ps = session.getConnection().prepareStatement("""
                     DELETE FROM entitylocks
                     WHERE lcks_lockexpirationtime < ?
-                    """);
-            
+                    """)) {
             ps.setLong(1, lockExpirationTime);
             ps.execute();
         } catch (SQLException se) {
