@@ -121,10 +121,11 @@ public class EntityLockControl
                 var currentLockedTime = 0L;
                 var currentLockExpirationTime = 0L;
 
-                try(var ps = conn.prepareStatement(
-                        "SELECT lcks_lockedbyentityinstanceid, lcks_lockedtime, lcks_lockexpirationtime "
-                        + "FROM entitylocks "
-                        + "WHERE lcks_locktargetentityinstanceid = ?")) {
+                try(var ps = conn.prepareStatement("""
+                            SELECT lcks_lockedbyentityinstanceid, lcks_lockedtime, lcks_lockexpirationtime
+                            FROM entitylocks
+                            WHERE lcks_locktargetentityinstanceid = ?
+                            """)) {
                     ps.setLong(1, lockTargetEntityInstanceId);
 
                     try(var rs = ps.executeQuery()) {
@@ -144,10 +145,11 @@ public class EntityLockControl
                 // There should not be any exceptions thrown by this code, since we're
                 // only updating a record, and it will either exist or it will not.
                 if((currentLockedByEntityInstanceId != 0) && (currentLockExpirationTime != 0) && (currentLockExpirationTime < currentTime)) {
-                    try(var ps = conn.prepareStatement(
-                            "UPDATE entitylocks SET lcks_lockedbyentityinstanceid = ?, lcks_lockedtime = ?, lcks_lockexpirationtime = ? "
-                            + "WHERE lcks_locktargetentityinstanceid = ? AND lcks_lockedbyentityinstanceid = ? "
-                            + "AND lcks_lockedtime = ? AND lcks_lockexpirationtime = ?")) {
+                    try(var ps = conn.prepareStatement("""
+                                UPDATE entitylocks SET lcks_lockedbyentityinstanceid = ?, lcks_lockedtime = ?, lcks_lockexpirationtime = ?
+                                WHERE lcks_locktargetentityinstanceid = ? AND lcks_lockedbyentityinstanceid = ?
+                                AND lcks_lockedtime = ? AND lcks_lockexpirationtime = ?
+                                """)) {
                         ps.setLong(1, lockedByEntityInstanceId);
                         ps.setLong(2, currentTime);
                         ps.setLong(3, proposedExpirationTime);
@@ -174,10 +176,11 @@ public class EntityLockControl
                 // an exception if someone else tries this between now and the time the SELECT
                 // statement was tried.
                 if(currentLockedByEntityInstanceId == 0) {
-                    try(var ps = conn.prepareStatement(
-                            "INSERT INTO entitylocks (lcks_locktargetentityinstanceid, lcks_lockedbyentityinstanceid,"
-                            + "lcks_lockedtime, lcks_lockexpirationtime) "
-                            + "VALUES (?, ?, ?, ?)")) {
+                    try(var ps = conn.prepareStatement("""
+                                INSERT INTO entitylocks (lcks_locktargetentityinstanceid, lcks_lockedbyentityinstanceid,
+                                lcks_lockedtime, lcks_lockexpirationtime)
+                                VALUES (?, ?, ?, ?)
+                                """)) {
                         ps.setLong(1, lockTargetEntityInstanceId);
                         ps.setLong(2, lockedByEntityInstanceId);
                         ps.setLong(3, currentTime);
@@ -245,10 +248,11 @@ public class EntityLockControl
                 var currentLockedTime = 0L;
                 var currentLockExpirationTime = 0L;
 
-                try(var ps = conn.prepareStatement(
-                        "SELECT lcks_lockedtime, lcks_lockexpirationtime "
-                        + "FROM entitylocks "
-                        + "WHERE lcks_locktargetentityinstanceid = ? AND lcks_lockedbyentityinstanceid = ?")) {
+                try(var ps = conn.prepareStatement("""
+                            SELECT lcks_lockedtime, lcks_lockexpirationtime
+                            FROM entitylocks
+                            WHERE lcks_locktargetentityinstanceid = ? AND lcks_lockedbyentityinstanceid = ?
+                            """)) {
                     ps.setLong(1, lockTargetEntityInstanceId);
                     ps.setLong(2, lockedByEntityInstanceId);
 
@@ -268,10 +272,11 @@ public class EntityLockControl
                 // locked, as long as it was locked by them (indicated by the currentLockExpirationTime
                 // being != 0).
                 if(currentLockExpirationTime != 0) {
-                    try(var ps = conn.prepareStatement(
-                            "UPDATE entitylocks SET lcks_lockexpirationtime = 0 "
-                            + "WHERE lcks_locktargetentityinstanceid = ? AND lcks_lockedbyentityinstanceid = ? "
-                            + "AND lcks_lockedtime = ? AND lcks_lockexpirationtime = ?")) {
+                    try(var ps = conn.prepareStatement("""
+                                UPDATE entitylocks SET lcks_lockexpirationtime = 0
+                                WHERE lcks_locktargetentityinstanceid = ? AND lcks_lockedbyentityinstanceid = ?
+                                AND lcks_lockedtime = ? AND lcks_lockexpirationtime = ?
+                                """)) {
                         ps.setLong(1, lockTargetEntityInstanceId);
                         ps.setLong(2, lockedByEntityInstanceId);
                         ps.setLong(3, currentLockedTime);
@@ -346,8 +351,9 @@ public class EntityLockControl
         if(lockTargetEntityInstanceId != 0) {
             try(var conn = DslContextFactory.getInstance().getNTDslContext().parsingConnection()) {
                 if(lockedBy == null) {
-                    try(var ps = conn.prepareStatement(
-                            "DELETE FROM entitylocks WHERE lcks_locktargetentityinstanceid = ?")) {
+                    try(var ps = conn.prepareStatement("""
+                                DELETE FROM entitylocks WHERE lcks_locktargetentityinstanceid = ?
+                                """)) {
                         ps.setLong(1, lockTargetEntityInstanceId);
 
                         wasUnlocked = getUnlockEntityResult(ps);
@@ -362,9 +368,10 @@ public class EntityLockControl
                     }
                     
                     if(lockedByEntityInstanceId != 0) {
-                        try(var ps = conn.prepareStatement(
-                                "DELETE FROM entitylocks WHERE lcks_locktargetentityinstanceid = ? "
-                                + "AND lcks_lockedbyentityinstanceid = ?")) {
+                        try(var ps = conn.prepareStatement("""
+                                DELETE FROM entitylocks WHERE lcks_locktargetentityinstanceid = ?
+                                AND lcks_lockedbyentityinstanceid = ?
+                                """)) {
                             ps.setLong(1, lockTargetEntityInstanceId);
                             ps.setLong(2, lockedByEntityInstanceId);
 
@@ -450,10 +457,11 @@ public class EntityLockControl
         if(lockTargetEntityInstanceId != 0) {
             try(var conn = DslContextFactory.getInstance().getNTDslContext().parsingConnection()) {
                 if(lockedBy == null) {
-                    try(var ps = conn.prepareStatement(
-                            "SELECT lcks_lockexpirationtime "
-                            + "FROM entitylocks "
-                            + "WHERE lcks_locktargetentityinstanceid = ?")) {
+                    try(var ps = conn.prepareStatement("""
+                                SELECT lcks_lockexpirationtime
+                                FROM entitylocks
+                                WHERE lcks_locktargetentityinstanceid = ?
+                                """)) {
                         ps.setLong(1, lockTargetEntityInstanceId);
 
                         isLocked = getIsEntityLockedResult(ps);
@@ -467,10 +475,11 @@ public class EntityLockControl
                     }
                     
                     if(lockedByEntityInstanceId != 0) {
-                        try(var ps = conn.prepareStatement(
-                                "SELECT lcks_lockexpirationtime "
-                                + "FROM entitylocks "
-                                + "WHERE lcks_locktargetentityinstanceid = ? AND lcks_lockedbyentityinstanceid = ?")) {
+                        try(var ps = conn.prepareStatement("""
+                                    SELECT lcks_lockexpirationtime
+                                    FROM entitylocks
+                                    WHERE lcks_locktargetentityinstanceid = ? AND lcks_lockedbyentityinstanceid = ?
+                                    """)) {
                             ps.setLong(1, lockTargetEntityInstanceId);
                             ps.setLong(2, lockedByEntityInstanceId);
 
@@ -499,9 +508,10 @@ public class EntityLockControl
     
     public void removeEntityLocksByLockExpirationTime(final Long lockExpirationTime) {
         try {
-            var ps = session.getConnection().prepareStatement(
-                    "DELETE FROM entitylocks "
-                    + "WHERE lcks_lockexpirationtime < ?");
+            var ps = session.getConnection().prepareStatement("""
+                    DELETE FROM entitylocks
+                    WHERE lcks_lockexpirationtime < ?
+                    """);
             
             ps.setLong(1, lockExpirationTime);
             ps.execute();
