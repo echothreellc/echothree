@@ -26,6 +26,7 @@ import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
 import com.echothree.model.control.customer.server.search.CustomerSearchEvaluator;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.search.ItemSearchEvaluator;
+import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.search.common.SearchTypes;
 import com.echothree.model.control.search.server.control.SearchControl;
@@ -35,6 +36,7 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.control.vendor.server.search.VendorSearchEvaluator;
+import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.search.server.entity.SearchKind;
 import com.echothree.model.data.search.server.entity.SearchType;
@@ -117,6 +119,36 @@ public class IdentifyCommand
         }
     }
     
+    private void checkCompanies(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
+                SecurityRoleGroups.Company.name(), SecurityRoles.Search.name())) {
+            var partyControl = Session.getModelController(PartyControl.class);
+            var partyCompany = partyControl.getPartyCompanyByName(target);
+
+            if(partyCompany != null) {
+                var entityInstance = getCoreControl().getEntityInstanceByBasePK(partyCompany.getParty().getPrimaryKey());
+                var entityInstanceAndNames = EntityNamesUtils.getInstance().getEntityNames(entityInstance);
+
+                entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
+            }
+        }
+    }
+
+    private void checkWarehouses(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
+                SecurityRoleGroups.Warehouse.name(), SecurityRoles.Search.name())) {
+            var warehouseControl = Session.getModelController(WarehouseControl.class);
+            var warehouse = warehouseControl.getWarehouseByName(target);
+
+            if(warehouse != null) {
+                var entityInstance = getCoreControl().getEntityInstanceByBasePK(warehouse.getParty().getPrimaryKey());
+                var entityInstanceAndNames = EntityNamesUtils.getInstance().getEntityNames(entityInstance);
+
+                entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
+            }
+        }
+    }
+
     private void checkVendors(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
         if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
                 SecurityRoleGroups.Vendor.name(), SecurityRoles.Search.name())) {
@@ -131,7 +163,7 @@ public class IdentifyCommand
             }
         }
     }
-    
+
     private void checkVendorItems(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
         if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
                 SecurityRoleGroups.VendorItem.name(), SecurityRoles.Search.name())) {
@@ -289,6 +321,8 @@ public class IdentifyCommand
         // Compile a list of all possible EntityInstances that the target may refer to.
         checkSequenceTypes(party, entityInstances, target);
         checkItems(party, entityInstances, target);
+        checkCompanies(party, entityInstances, target);
+        checkWarehouses(party, entityInstances, target);
         checkVendors(party, entityInstances, target);
         checkVendorItems(party, entityInstances, target);
 

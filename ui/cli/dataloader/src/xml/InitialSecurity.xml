@@ -30,6 +30,9 @@
             <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Company Review" />
             </securityRole>
+            <securityRole securityRoleName="Search" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Company Search" />
+            </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="Division" parentSecurityRoleGroupName="AccountingComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Division" />
@@ -39,6 +42,9 @@
             <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Division Review" />
             </securityRole>
+            <securityRole securityRoleName="Search" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Division Search" />
+            </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="Department" parentSecurityRoleGroupName="AccountingComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Department" />
@@ -47,6 +53,9 @@
             </securityRole>
             <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Department Review" />
+            </securityRole>
+            <securityRole securityRoleName="Search" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Department Search" />
             </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="GlAccount" parentSecurityRoleGroupName="AccountingComponent" isDefault="false" sortOrder="1">
@@ -2345,6 +2354,9 @@
             </securityRole>
             <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Warehouse Review" />
+            </securityRole>
+            <securityRole securityRoleName="Search" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Warehosue Search" />
             </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="WishlistComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
@@ -7285,10 +7297,13 @@
             <partySecurityRoleTemplateDescription languageIsoName="en" description="Sample Template" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Company" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Company" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Company" securityRoleName="Search" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Division" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Division" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Division" securityRoleName="Search" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Department" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Department" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Department" securityRoleName="Search" />
             <partySecurityRoleTemplateRole securityRoleGroupName="GlAccount" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="GlAccount" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="GlAccount" securityRoleName="Delete" />
@@ -8107,6 +8122,7 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="VendorItemCost" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Warehouse" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Warehouse" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Warehouse" securityRoleName="Search" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WishlistType" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WishlistType" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WishlistType" securityRoleName="Delete" />
