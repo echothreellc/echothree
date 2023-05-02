@@ -596,6 +596,7 @@ import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.party.common.DateTimeFormatConstants;
 import com.echothree.model.data.party.common.LanguageConstants;
 import com.echothree.model.data.party.common.NameSuffixConstants;
+import com.echothree.model.data.party.common.PartyCompanyConstants;
 import com.echothree.model.data.party.common.PartyConstants;
 import com.echothree.model.data.party.common.PersonalTitleConstants;
 import com.echothree.model.data.party.common.TimeZoneConstants;
@@ -6052,29 +6053,32 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("companies")
-    public static Collection<CompanyObject> companies(final DataFetchingEnvironment env) {
-        Collection<PartyCompany> partyCompanies;
-        Collection<CompanyObject> companyObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public static CountingPaginatedData<CompanyObject> compompanies(final DataFetchingEnvironment env) {
+        CountingPaginatedData<CompanyObject> data;
 
         try {
-            var commandForm = PartyUtil.getHome().getGetCompaniesForm();
+            var partyControl = Session.getModelController(PartyControl.class);
+            var totalCount = partyControl.countPartyCompanies();
 
-            partyCompanies = new GetCompaniesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            try(var objectLimiter = new ObjectLimiter(env, PartyCompanyConstants.COMPONENT_VENDOR_NAME, PartyCompanyConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = PartyUtil.getHome().getGetCompaniesForm();
+                var entities = new GetCompaniesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var compompanies = entities.stream().map(CompanyObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, compompanies);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(partyCompanies == null) {
-            companyObjects = emptyList();
-        } else {
-            companyObjects = new ArrayList<>(partyCompanies.size());
-
-            partyCompanies.stream()
-                    .map(CompanyObject::new)
-                    .forEachOrdered(companyObjects::add);
-        }
-
-        return companyObjects;
+        return data;
     }
 
     @GraphQLField
