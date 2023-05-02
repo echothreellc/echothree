@@ -33,10 +33,10 @@ import com.echothree.model.control.warehouse.common.transfer.LocationTypeTransfe
 import com.echothree.model.control.warehouse.common.transfer.LocationUseTypeTransfer;
 import com.echothree.model.control.warehouse.common.transfer.LocationVolumeTransfer;
 import com.echothree.model.control.warehouse.common.transfer.WarehouseTransfer;
+import com.echothree.model.control.warehouse.common.workflow.LocationStatusConstants;
 import com.echothree.model.control.warehouse.server.transfer.LocationCapacityTransferCache;
 import com.echothree.model.control.warehouse.server.transfer.LocationNameElementTransferCache;
 import com.echothree.model.control.warehouse.server.transfer.WarehouseTransferCaches;
-import com.echothree.model.control.warehouse.common.workflow.LocationStatusConstants;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.inventory.common.pk.InventoryLocationGroupPK;
 import com.echothree.model.data.inventory.server.entity.InventoryLocationGroup;
@@ -101,6 +101,7 @@ import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -151,7 +152,15 @@ public class WarehouseControl
         
         return warehouse;
     }
-    
+
+    public long countWarehouses() {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM warehouses
+                WHERE whse_thrutime = ?
+                """, Session.MAX_TIME);
+    }
+
     private Warehouse getWarehouse(Party party, EntityPermission entityPermission) {
         Warehouse warehouse;
         
@@ -360,18 +369,21 @@ public class WarehouseControl
     public WarehouseTransfer getWarehouseTransfer(UserVisit userVisit, Party party) {
         return getWarehouseTransfer(userVisit, getWarehouse(party));
     }
-    
-    public List<WarehouseTransfer> getWarehouseTransfers(UserVisit userVisit) {
-        List<Warehouse> warehouses = getWarehouses();
+
+    public List<WarehouseTransfer> getWarehouseTransfers(UserVisit userVisit, Collection<Warehouse> warehouses) {
         List<WarehouseTransfer> warehouseTransfers = new ArrayList<>(warehouses.size());
-        
+
         warehouses.forEach((warehouse) -> {
             warehouseTransfers.add(getWarehouseTransferCaches(userVisit).getWarehouseTransferCache().getWarehouseTransfer(warehouse));
         });
-        
+
         return warehouseTransfers;
     }
-    
+
+    public List<WarehouseTransfer> getWarehouseTransfers(UserVisit userVisit) {
+        return getWarehouseTransfers(userVisit, getWarehouses());
+    }
+
     private void updateWarehouseFromValue(WarehouseValue warehouseValue, boolean checkDefault, BasePK updatedBy) {
         if(warehouseValue.hasBeenModified()) {
             Warehouse warehouse = WarehouseFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
