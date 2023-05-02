@@ -69,7 +69,6 @@ public class CreateEntityTagCommand
     
     @Override
     protected BaseResult execute() {
-        var coreControl = getCoreControl();
         var possibleEntitySpecs = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
 
         if(possibleEntitySpecs == 1) {
