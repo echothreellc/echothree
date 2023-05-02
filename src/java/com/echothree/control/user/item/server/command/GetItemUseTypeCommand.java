@@ -65,7 +65,7 @@ public class GetItemUseTypeCommand
         if(parameterCount == 1) {
             if(itemUseTypeName == null) {
                 var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
-                        ComponentVendors.ECHOTHREE.name(), EntityTypes.ItemUseType.name());
+                        ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemUseType.name());
 
                 if(!hasExecutionErrors()) {
                     itemUseType = itemControl.getItemUseTypeByEntityInstance(entityInstance);

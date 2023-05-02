@@ -110,7 +110,7 @@ public class LotLogic
             case 1:
                 if(lotName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.Lot.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.Lot.name());
 
                     if(!eea.hasExecutionErrors()) {
                         lot = lotControl.getLotByEntityInstance(entityInstance, entityPermission);

@@ -78,7 +78,7 @@ public class DeleteItemAccountingCategoryCommand
             ItemAccountingCategory itemAccountingCategory = null;
 
             if(itemAccountingCategoryName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHOTHREE.name(),
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
                         EntityTypes.ItemAccountingCategory.name());
 
                 if(!hasExecutionErrors()) {

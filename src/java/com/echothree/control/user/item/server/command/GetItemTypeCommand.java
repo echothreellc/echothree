@@ -65,7 +65,7 @@ public class GetItemTypeCommand
         if(parameterCount == 1) {
             if(itemTypeName == null) {
                 var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
-                        ComponentVendors.ECHOTHREE.name(), EntityTypes.ItemType.name());
+                        ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemType.name());
 
                 if(!hasExecutionErrors()) {
                     itemType = itemControl.getItemTypeByEntityInstance(entityInstance);

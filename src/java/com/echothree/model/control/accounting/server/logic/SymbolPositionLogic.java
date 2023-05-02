@@ -59,7 +59,7 @@ public class SymbolPositionLogic
         SymbolPosition symbolPosition = null;
         
         var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
-                ComponentVendors.ECHOTHREE.name(), EntityTypes.SymbolPosition.name());
+                ComponentVendors.ECHO_THREE.name(), EntityTypes.SymbolPosition.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
             var accountingControl = Session.getModelController(AccountingControl.class);

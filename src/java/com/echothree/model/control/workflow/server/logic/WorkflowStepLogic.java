@@ -171,7 +171,7 @@ public class WorkflowStepLogic
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                    ComponentVendors.ECHOTHREE.name(), EntityTypes.WorkflowStep.name());
+                    ComponentVendors.ECHO_THREE.name(), EntityTypes.WorkflowStep.name());
 
             if(!eea.hasExecutionErrors()) {
                 workflowStep = workflowControl.getWorkflowStepByEntityInstance(entityInstance, entityPermission);

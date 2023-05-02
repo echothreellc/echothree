@@ -115,7 +115,7 @@ public class EditUserLoginCommand
             
             if(partyName == null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, spec, ComponentVendors.ECHOTHREE.name(),
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, spec, ComponentVendors.ECHO_THREE.name(),
                         EntityTypes.Party.name());
 
                 if(!hasExecutionErrors()) {

@@ -123,7 +123,7 @@ public class ItemAliasTypeLogic
             case 1:
                 if(itemAliasTypeName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.ItemAliasType.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemAliasType.name());
 
                     if(!eea.hasExecutionErrors()) {
                         itemAliasType = itemControl.getItemAliasTypeByEntityInstance(entityInstance, entityPermission);

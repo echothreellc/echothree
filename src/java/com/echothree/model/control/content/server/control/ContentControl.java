@@ -248,7 +248,7 @@ public class ContentControl
         return contentPageAreaType;
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ContentPageAreaType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContentPageAreaType */
     public ContentPageAreaType getContentPageAreaTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ContentPageAreaTypePK(entityInstance.getEntityUniqueId());
 
@@ -456,7 +456,7 @@ public class ContentControl
         return contentPageLayout;
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ContentPageLayout */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContentPageLayout */
     public ContentPageLayout getContentPageLayoutByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ContentPageLayoutPK(entityInstance.getEntityUniqueId());
 
@@ -3749,7 +3749,7 @@ public class ContentControl
         return contentCategory;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ContentCategory */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContentCategory */
     public ContentCategory getContentCategoryByEntityInstance(EntityInstance entityInstance) {
         ContentCategoryPK pk = new ContentCategoryPK(entityInstance.getEntityUniqueId());
         ContentCategory contentCategory = ContentCategoryFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);

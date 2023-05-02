@@ -33,7 +33,7 @@ public class ItemSpellCheckEvaluator
     
     /** Creates a new instance of ItemSearchEvaluator */
     public ItemSpellCheckEvaluator(UserVisit userVisit, Language language, SearchDefaultOperator searchDefaultOperator) {
-        super(userVisit, searchDefaultOperator, ComponentVendors.ECHOTHREE.name(), EntityTypes.Item.name(),
+        super(userVisit, searchDefaultOperator, ComponentVendors.ECHO_THREE.name(), EntityTypes.Item.name(),
                 IndexTypes.ITEM.name(), language, null);
         
         setField(ItemDescriptionLogic.getInstance().getIndexDefaultItemDescriptionTypeName());

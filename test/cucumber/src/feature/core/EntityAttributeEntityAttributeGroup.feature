@@ -14,7 +14,7 @@ Feature: Employee entity attribute
   Scenario: Existing employee adds an entity attribute entity attribute group and then deletes it
     Given the employee Test begins using the application
     And the user begins entering a new entity attribute
-    And the user sets the entity attribute's component vendor to ECHOTHREE
+    And the user sets the entity attribute's component vendor to ECHO_THREE
     And the user sets the entity attribute's entity type to Item
     And the user sets the entity attribute's entity attribute type to INTEGER
     And the user sets the entity attribute to track revisions when modified
@@ -33,7 +33,7 @@ Feature: Employee entity attribute
     And the user adds the new entity attribute group
     Then no error should occur
     And the user begins entering a new entity attribute entity attribute group
-    And the user sets the entity attribute entity attribute group's component vendor to ECHOTHREE
+    And the user sets the entity attribute entity attribute group's component vendor to ECHO_THREE
     And the user sets the entity attribute entity attribute group's entity type to Item
     And the user sets the entity attribute entity attribute group's entity attribute to the last entity attribute added
     And the user sets the entity attribute entity attribute group's entity attribute group to the last entity attribute group added
@@ -41,7 +41,7 @@ Feature: Employee entity attribute
     And the user adds the new entity attribute entity attribute group
     Then no error should occur
     And the user begins deleting an entity attribute entity attribute group
-    And the user sets the entity attribute entity attribute group's component vendor to ECHOTHREE
+    And the user sets the entity attribute entity attribute group's component vendor to ECHO_THREE
     And the user sets the entity attribute entity attribute group's entity type to Item
     And the user sets the entity attribute entity attribute group's entity attribute to the last entity attribute added
     And the user sets the entity attribute entity attribute group's entity attribute group to the last entity attribute group added
@@ -52,7 +52,7 @@ Feature: Employee entity attribute
     And the user deletes the entity attribute group
     Then no error should occur
     And the user begins deleting an entity attribute
-    And the user sets the entity attribute's component vendor to ECHOTHREE
+    And the user sets the entity attribute's component vendor to ECHO_THREE
     And the user sets the entity attribute's entity type to Item
     And the user sets the entity attribute's name to the last entity attribute added
     And the user deletes the entity attribute

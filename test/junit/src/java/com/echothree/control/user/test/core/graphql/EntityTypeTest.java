@@ -34,7 +34,7 @@ public class EntityTypeTest
                         entityTypeName
                     }
                 }
-                """.formatted(ComponentVendors.ECHOTHREE));
+                """.formatted(ComponentVendors.ECHO_THREE));
 
         assertThat(getList(entityTypesBody, "data.entityTypes")).size().isEqualTo(0);
     }
@@ -48,7 +48,7 @@ public class EntityTypeTest
                         entityTypeName
                     }
                 }
-                """.formatted(ComponentVendors.ECHOTHREE, EntityTypes.GlAccount));
+                """.formatted(ComponentVendors.ECHO_THREE, EntityTypes.GlAccount));
 
         assertThat(getMap(entityTypeBody, "data.entityType")).isNull();
     }
@@ -74,7 +74,7 @@ public class EntityTypeTest
                         entityTypeName
                     }
                 }
-                """.formatted(ComponentVendors.ECHOTHREE));
+                """.formatted(ComponentVendors.ECHO_THREE));
 
         assertThat(getList(entityTypesBody, "data.entityTypes")).size().isGreaterThan(0);
     }
@@ -100,7 +100,7 @@ public class EntityTypeTest
                         entityTypeName
                     }
                 }
-                """.formatted(ComponentVendors.ECHOTHREE, EntityTypes.GlAccount));
+                """.formatted(ComponentVendors.ECHO_THREE, EntityTypes.GlAccount));
 
         assertThat(getString(entityTypeBody, "data.entityType.entityTypeName")).isEqualTo(EntityTypes.GlAccount.toString());
     }
@@ -126,7 +126,7 @@ public class EntityTypeTest
                         entityTypeName
                     }
                 }
-                """.formatted(ComponentVendors.ECHOTHREE));
+                """.formatted(ComponentVendors.ECHO_THREE));
 
         assertThat(getMap(entityTypeBody, "data.entityType")).isNull();
     }
@@ -178,7 +178,7 @@ public class EntityTypeTest
                         id
                     }
                 }
-                """.formatted(ComponentVendors.ECHOTHREE, EntityTypes.GlAccount));
+                """.formatted(ComponentVendors.ECHO_THREE, EntityTypes.GlAccount));
 
         var id = getString(entityTypeBodyUsingNames, "data.entityType.id");
 
@@ -194,7 +194,7 @@ public class EntityTypeTest
                 }
                 """.formatted(id));
 
-        assertThat(getString(entityTypeBodyUsingId, "data.entityType.componentVendor.componentVendorName")).isEqualTo(ComponentVendors.ECHOTHREE.toString());
+        assertThat(getString(entityTypeBodyUsingId, "data.entityType.componentVendor.componentVendorName")).isEqualTo(ComponentVendors.ECHO_THREE.toString());
         assertThat(getString(entityTypeBodyUsingId, "data.entityType.entityTypeName")).isEqualTo(EntityTypes.GlAccount.toString());
     }
 

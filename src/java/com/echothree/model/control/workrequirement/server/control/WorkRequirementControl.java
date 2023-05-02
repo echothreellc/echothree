@@ -1130,7 +1130,7 @@ public class WorkRequirementControl
         return workAssignment;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.WorkAssignment */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.WorkAssignment */
     public WorkAssignment getWorkAssignmentByEntityInstance(EntityInstance entityInstance) {
         WorkAssignmentPK pk = new WorkAssignmentPK(entityInstance.getEntityUniqueId());
         WorkAssignment workAssignment = WorkAssignmentFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
@@ -1383,7 +1383,7 @@ public class WorkRequirementControl
         return workTime;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.WorkTime */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.WorkTime */
     public WorkTime getWorkTimeByEntityInstance(EntityInstance entityInstance) {
         WorkTimePK pk = new WorkTimePK(entityInstance.getEntityUniqueId());
         WorkTime workTime = WorkTimeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);

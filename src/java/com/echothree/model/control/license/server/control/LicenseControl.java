@@ -101,7 +101,7 @@ public class LicenseControl
         return licenseType;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.LicenseType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.LicenseType */
     public LicenseType getLicenseTypeByEntityInstance(EntityInstance entityInstance) {
         LicenseTypePK pk = new LicenseTypePK(entityInstance.getEntityUniqueId());
         LicenseType licenseType = LicenseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);

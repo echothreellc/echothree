@@ -186,7 +186,7 @@ public class EmployeeSelectorEvaluator
             log.info(">>> EmployeeSelectorEvaluator.evaluate");
         
         long remainingTime = maximumTime;
-        ComponentVendor componentVendor = coreControl.getComponentVendorByName(ComponentVendors.ECHOTHREE.name());
+        ComponentVendor componentVendor = coreControl.getComponentVendorByName(ComponentVendors.ECHO_THREE.name());
         
         if(componentVendor != null) {
             EntityType entityType = coreControl.getEntityTypeByName(componentVendor, EntityTypes.Party.name());

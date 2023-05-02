@@ -105,7 +105,7 @@ public class UseControl
                 useType);
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Use */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Use */
     public Use getUseByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new UsePK(entityInstance.getEntityUniqueId());
         var use = UseFactory.getInstance().getEntityFromPK(entityPermission, pk);

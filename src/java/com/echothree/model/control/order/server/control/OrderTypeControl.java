@@ -100,7 +100,7 @@ public class OrderTypeControl
         return orderType;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.OrderType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.OrderType */
     public OrderType getOrderTypeByEntityInstance(final EntityInstance entityInstance,
             final EntityPermission entityPermission) {
         var pk = new OrderTypePK(entityInstance.getEntityUniqueId());

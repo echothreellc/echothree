@@ -174,7 +174,7 @@ public class PaymentProcessorTypeCodeTypeLogic
                     }
                 } else {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.PaymentProcessorTypeCodeType.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.PaymentProcessorTypeCodeType.name());
 
                     if(!eea.hasExecutionErrors()) {
                         paymentProcessorTypeCodeType = paymentProcessorTypeCodeTypeControl.getPaymentProcessorTypeCodeTypeByEntityInstance(entityInstance, entityPermission);

@@ -67,7 +67,7 @@ public class GetTextDecorationCommand
         if(parameterCount == 1) {
             if(textDecorationName == null) {
                 var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
-                        ComponentVendors.ECHOTHREE.name(), EntityTypes.TextDecoration.name());
+                        ComponentVendors.ECHO_THREE.name(), EntityTypes.TextDecoration.name());
 
                 if(!hasExecutionErrors()) {
                     textDecoration = coreControl.getTextDecorationByEntityInstance(entityInstance);

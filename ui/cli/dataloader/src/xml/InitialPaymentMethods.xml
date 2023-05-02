@@ -36,7 +36,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Valid Credit Card" />
                 <workflowEntranceStep entranceWorkflowStepName="VALID" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="PartyPaymentMethod" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="PartyPaymentMethod" />
         </workflow>
         <workflow workflowName="CUSTOMER_CHECK_PAYMENT_METHOD" workflowTypeName="SYSTEM" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Customer Check Payment Method" />
@@ -50,7 +50,7 @@
             
             <!-- TODO -->
             
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="PartyPaymentMethod" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="PartyPaymentMethod" />
         </workflow>
         <workflow workflowName="CUSTOMER_CREDIT_CARD_CONTACT_MECHANISM" workflowTypeName="SYSTEM" selectorKindName="POSTAL_ADDRESS"
             selectorTypeName="CUSTOMER_PAYMENT_METHOD" sortOrder="0">
@@ -130,7 +130,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Verified" />
                 <workflowEntranceStep entranceWorkflowStepName="VERIFIED" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="PartyPaymentMethodContactMechanism" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="PartyPaymentMethodContactMechanism" />
         </workflow>
     </workflows>
     <paymentMethodTypes>

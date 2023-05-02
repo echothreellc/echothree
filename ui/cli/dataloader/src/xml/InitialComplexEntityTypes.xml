@@ -16,7 +16,7 @@
 <!--                                                                                  -->
 <initialData>
     <componentVendors>
-        <componentVendor componentVendorName="ECHOTHREE" commandAction="none">
+        <componentVendor componentVendorName="ECHO_THREE" commandAction="none">
             <entityType entityTypeName="ContactMechanism" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Contact Mechanism" />
                 <commentType commentTypeName="CONTACT_MECHANISM" mimeTypeUsageTypeName="TEXT" sortOrder="1">

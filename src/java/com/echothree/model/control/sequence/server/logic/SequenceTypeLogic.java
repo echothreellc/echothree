@@ -115,7 +115,7 @@ public class SequenceTypeLogic
             case 1:
                 if(sequenceTypeName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.SequenceType.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.SequenceType.name());
 
                     if(!eea.hasExecutionErrors()) {
                         sequenceType = sequenceControl.getSequenceTypeByEntityInstance(entityInstance, entityPermission);

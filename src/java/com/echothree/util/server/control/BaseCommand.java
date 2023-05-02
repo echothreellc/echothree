@@ -113,7 +113,7 @@ public abstract class BaseCommand
         String className = c.getName();
         int nameOffset = className.lastIndexOf('.');
         
-        componentVendorName = ComponentVendors.ECHOTHREE.name();
+        componentVendorName = ComponentVendors.ECHO_THREE.name();
         commandName = new String(className.getBytes(Charsets.UTF_8), nameOffset + 1, className.length() - nameOffset - 8, Charsets.UTF_8);
     }
     

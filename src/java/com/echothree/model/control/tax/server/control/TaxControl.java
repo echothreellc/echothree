@@ -148,7 +148,7 @@ public class TaxControl
                 countryGeoCode);
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.TaxClassification */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.TaxClassification */
     public TaxClassification getTaxClassificationByEntityInstance(EntityInstance entityInstance) {
         TaxClassificationPK pk = new TaxClassificationPK(entityInstance.getEntityUniqueId());
         TaxClassification taxClassification = TaxClassificationFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);

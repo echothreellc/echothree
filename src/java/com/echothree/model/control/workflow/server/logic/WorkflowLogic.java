@@ -90,7 +90,7 @@ public class WorkflowLogic
             case 1:
                 if(workflowName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.Workflow.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.Workflow.name());
 
                     if(!eea.hasExecutionErrors()) {
                         workflow = workflowControl.getWorkflowByEntityInstance(entityInstance, entityPermission);

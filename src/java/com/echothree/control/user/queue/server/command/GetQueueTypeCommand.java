@@ -82,7 +82,7 @@ public class GetQueueTypeCommand
             var queueControl = Session.getModelController(QueueControl.class);
 
             if(queueTypeName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHOTHREE.name(),
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
                         EntityTypes.QueueType.name());
 
                 if(!hasExecutionErrors()) {

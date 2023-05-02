@@ -73,7 +73,7 @@ public class GetTimeZoneCommand
             case 1:
                 if(timeZoneName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.TimeZone.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.TimeZone.name());
                     
                     if(!hasExecutionErrors()) {
                         timeZone = partyControl.getTimeZoneByEntityInstance(entityInstance);

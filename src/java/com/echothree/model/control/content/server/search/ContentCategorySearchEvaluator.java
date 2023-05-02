@@ -44,7 +44,7 @@ public class ContentCategorySearchEvaluator
     /** Creates a new instance of ContentCategorySearchEvaluator */
     public ContentCategorySearchEvaluator(UserVisit userVisit, Language language, SearchType searchType, SearchDefaultOperator searchDefaultOperator,
             SearchSortOrder searchSortOrder, SearchSortDirection searchSortDirection, SearchUseType searchUseType) {
-        super(userVisit, searchDefaultOperator, searchType, searchSortOrder, searchSortDirection, searchUseType, ComponentVendors.ECHOTHREE.name(),
+        super(userVisit, searchDefaultOperator, searchType, searchSortOrder, searchSortDirection, searchUseType, ComponentVendors.ECHO_THREE.name(),
                 EntityTypes.ContentCategory.name(), IndexTypes.CONTENT_CATEGORY.name(), language, null);
         
         setField(IndexFields.description.name());

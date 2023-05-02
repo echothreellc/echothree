@@ -199,7 +199,7 @@ public class CampaignControl
         return campaign;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Campaign */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Campaign */
     public Campaign getCampaignByEntityInstance(EntityInstance entityInstance) {
         CampaignPK pk = new CampaignPK(entityInstance.getEntityUniqueId());
         Campaign campaign = CampaignFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
@@ -715,7 +715,7 @@ public class CampaignControl
         return campaignSource;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.CampaignSource */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.CampaignSource */
     public CampaignSource getCampaignSourceByEntityInstance(EntityInstance entityInstance) {
         CampaignSourcePK pk = new CampaignSourcePK(entityInstance.getEntityUniqueId());
         CampaignSource campaignSource = CampaignSourceFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
@@ -1231,7 +1231,7 @@ public class CampaignControl
         return campaignMedium;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.CampaignMedium */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.CampaignMedium */
     public CampaignMedium getCampaignMediumByEntityInstance(EntityInstance entityInstance) {
         CampaignMediumPK pk = new CampaignMediumPK(entityInstance.getEntityUniqueId());
         CampaignMedium campaignMedium = CampaignMediumFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
@@ -1747,7 +1747,7 @@ public class CampaignControl
         return campaignTerm;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.CampaignTerm */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.CampaignTerm */
     public CampaignTerm getCampaignTermByEntityInstance(EntityInstance entityInstance) {
         CampaignTermPK pk = new CampaignTermPK(entityInstance.getEntityUniqueId());
         CampaignTerm campaignTerm = CampaignTermFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
@@ -2263,7 +2263,7 @@ public class CampaignControl
         return campaignContent;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.CampaignContent */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.CampaignContent */
     public CampaignContent getCampaignContentByEntityInstance(EntityInstance entityInstance) {
         CampaignContentPK pk = new CampaignContentPK(entityInstance.getEntityUniqueId());
         CampaignContent campaignContent = CampaignContentFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);

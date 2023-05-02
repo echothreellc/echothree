@@ -71,7 +71,7 @@ public class GetForumMessageCommand
             ForumMessage forumMessage = null;
 
             if(forumMessageName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHOTHREE.name(),
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
                         EntityTypes.ForumMessage.name());
                 
                 if(!hasExecutionErrors()) {

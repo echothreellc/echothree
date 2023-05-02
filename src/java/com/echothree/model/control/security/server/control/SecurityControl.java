@@ -175,7 +175,7 @@ public class SecurityControl
                 "WHERE srg_activedetailid = srgdt_securityrolegroupdetailid");
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.SecurityRoleGroup */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.SecurityRoleGroup */
     public SecurityRoleGroup getSecurityRoleGroupByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new SecurityRoleGroupPK(entityInstance.getEntityUniqueId());
 
@@ -715,7 +715,7 @@ public class SecurityControl
                 "WHERE srol_activedetailid = sroldt_securityroledetailid");
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.SecurityRole */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.SecurityRole */
     public SecurityRole getSecurityRoleByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new SecurityRolePK(entityInstance.getEntityUniqueId());
 

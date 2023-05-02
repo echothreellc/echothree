@@ -94,7 +94,7 @@ public class GetRecoveryQuestionCommand
             if(nameOrEntitySpecsCount == 1) {
                 if(recoveryQuestionName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.RecoveryQuestion.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.RecoveryQuestion.name());
 
                     if(!hasExecutionErrors()) {
                         recoveryQuestion = userControl.getRecoveryQuestionByEntityInstance(entityInstance);

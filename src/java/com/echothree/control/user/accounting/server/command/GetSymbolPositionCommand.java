@@ -73,7 +73,7 @@ public class GetSymbolPositionCommand
             case 1:
                 if(symbolPositionName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.SymbolPosition.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.SymbolPosition.name());
                     
                     if(!hasExecutionErrors()) {
                         symbolPosition = accountingControl.getSymbolPositionByEntityInstance(entityInstance);

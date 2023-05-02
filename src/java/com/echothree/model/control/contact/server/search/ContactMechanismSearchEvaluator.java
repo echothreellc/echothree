@@ -44,7 +44,7 @@ public class ContactMechanismSearchEvaluator
     /** Creates a new instance of ContactMechanismSearchEvaluator */
     public ContactMechanismSearchEvaluator(UserVisit userVisit, Language language, SearchType searchType, SearchDefaultOperator searchDefaultOperator,
             SearchSortOrder searchSortOrder, SearchSortDirection searchSortDirection, SearchUseType searchUseType) {
-        super(userVisit, searchDefaultOperator, searchType, searchSortOrder, searchSortDirection, searchUseType, ComponentVendors.ECHOTHREE.name(),
+        super(userVisit, searchDefaultOperator, searchType, searchSortOrder, searchSortDirection, searchUseType, ComponentVendors.ECHO_THREE.name(),
                 EntityTypes.ContactMechanism.name(), IndexTypes.CONTACT_MECHANISM.name(), language, null);
         
         setField(IndexFields.description.name());

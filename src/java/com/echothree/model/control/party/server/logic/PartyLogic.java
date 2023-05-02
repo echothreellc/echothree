@@ -51,7 +51,7 @@ public class PartyLogic
         return PartyLogicHolder.instance;
     }
     
-    /** Assume that the entityInstance passed to this function is an ECHOTHREE.Party. */
+    /** Assume that the entityInstance passed to this function is an ECHO_THREE.Party. */
     public Party getPartyFromEntityInstance(final EntityInstance entityInstance) {
         PartyPK pk = new PartyPK(entityInstance.getEntityUniqueId());
         
@@ -127,7 +127,7 @@ public class PartyLogic
         Party party = null;
         
         var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
-                ComponentVendors.ECHOTHREE.name(), EntityTypes.Party.name());
+                ComponentVendors.ECHO_THREE.name(), EntityTypes.Party.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
             var partyControl = Session.getModelController(PartyControl.class);
@@ -173,7 +173,7 @@ public class PartyLogic
                 }
             } else if(universalEntitySpec != null) {
                 var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalEntitySpec,
-                        ComponentVendors.ECHOTHREE.name(), EntityTypes.Party.name());
+                        ComponentVendors.ECHO_THREE.name(), EntityTypes.Party.name());
 
                 if(!eea.hasExecutionErrors()) {
                     party = partyControl.getPartyByEntityInstance(entityInstance);

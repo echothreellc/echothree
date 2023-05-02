@@ -190,7 +190,7 @@ public class VendorControl
                 "WHERE vndrty_activedetailid = vndrtydt_vendortypedetailid");
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.VendorType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.VendorType */
     public VendorType getVendorTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new VendorTypePK(entityInstance.getEntityUniqueId());
 
@@ -987,7 +987,7 @@ public class VendorControl
                 returnPolicy);
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.VendorItem */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.VendorItem */
     public VendorItem getVendorItemByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new VendorItemPK(entityInstance.getEntityUniqueId());
 
@@ -1326,7 +1326,7 @@ public class VendorControl
                 unitOfMeasureType, Session.MAX_TIME_LONG);
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.VendorItemCost */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.VendorItemCost */
     public VendorItemCost getVendorItemCostByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new VendorItemCostPK(entityInstance.getEntityUniqueId());
 
@@ -1613,7 +1613,7 @@ public class VendorControl
                 "WHERE iprchc_activedetailid = iprchcdt_itempurchasingcategorydetailid");
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ItemPurchasingCategory */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ItemPurchasingCategory */
     public ItemPurchasingCategory getItemPurchasingCategoryByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ItemPurchasingCategoryPK(entityInstance.getEntityUniqueId());
 

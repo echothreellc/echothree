@@ -82,7 +82,7 @@ public class GetItemCategoryCommand
         if(parameterCount == 1) {
             if(itemCategoryName == null) {
                 var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
-                        ComponentVendors.ECHOTHREE.name(), EntityTypes.ItemCategory.name());
+                        ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemCategory.name());
 
                 if(!hasExecutionErrors()) {
                     itemCategory = itemControl.getItemCategoryByEntityInstance(entityInstance);

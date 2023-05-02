@@ -91,7 +91,7 @@ public class ItemPurchasingCategoryLogic
             case 1:
                 if(itemPurchasingCategoryName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.ItemPurchasingCategory.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemPurchasingCategory.name());
 
                     if(!eea.hasExecutionErrors()) {
                         itemPurchasingCategory = vendorControl.getItemPurchasingCategoryByEntityInstance(entityInstance, entityPermission);

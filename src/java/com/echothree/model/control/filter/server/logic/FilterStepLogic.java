@@ -210,7 +210,7 @@ public class FilterStepLogic
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                    ComponentVendors.ECHOTHREE.name(), EntityTypes.FilterStep.name());
+                    ComponentVendors.ECHO_THREE.name(), EntityTypes.FilterStep.name());
 
             if(!eea.hasExecutionErrors()) {
                 filterStep = filterControl.getFilterStepByEntityInstance(entityInstance, entityPermission);

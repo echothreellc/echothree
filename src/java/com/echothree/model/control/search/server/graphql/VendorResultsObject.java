@@ -42,7 +42,7 @@ public class VendorResultsObject
         extends BaseResultsObject<GetVendorResultsForm> {
 
     public VendorResultsObject(GetVendorResultsForm form) {
-        super(ComponentVendors.ECHOTHREE.name(), EntityTypes.Party.name(), SearchKinds.VENDOR.name(), form);
+        super(ComponentVendors.ECHO_THREE.name(), EntityTypes.Party.name(), SearchKinds.VENDOR.name(), form);
     }
 
     @GraphQLField

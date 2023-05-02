@@ -178,7 +178,7 @@ public class CancellationPolicyLogic
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                    ComponentVendors.ECHOTHREE.name(), EntityTypes.CancellationPolicy.name());
+                    ComponentVendors.ECHO_THREE.name(), EntityTypes.CancellationPolicy.name());
 
             if(!eea.hasExecutionErrors()) {
                 cancellationPolicy = cancellationPolicyControl.getCancellationPolicyByEntityInstance(entityInstance, entityPermission);

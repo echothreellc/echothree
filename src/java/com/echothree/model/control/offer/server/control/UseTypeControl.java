@@ -95,7 +95,7 @@ public class UseTypeControl
                 "WHERE usetyp_activedetailid = usetypdt_usetypedetailid");
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.UseType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.UseType */
     public UseType getUseTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new UseTypePK(entityInstance.getEntityUniqueId());
         var useType = UseTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);

@@ -124,7 +124,7 @@ public class TagControl
                     """, entityType, Session.MAX_TIME);
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.TagScope */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.TagScope */
     public TagScope getTagScopeByEntityInstance(final EntityInstance entityInstance,
             final EntityPermission entityPermission) {
         var pk = new TagScopePK(entityInstance.getEntityUniqueId());
@@ -615,7 +615,7 @@ public class TagControl
                     """, entityType, Session.MAX_TIME);
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.TagScopeEntityType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.TagScopeEntityType */
     public TagScopeEntityType getTagScopeEntityTypeByEntityInstance(final EntityInstance entityInstance,
             final EntityPermission entityPermission) {
         var pk = new TagScopeEntityTypePK(entityInstance.getEntityUniqueId());
@@ -834,7 +834,7 @@ public class TagControl
                 """, tagScope, taggedEntityInstance, Session.MAX_TIME_LONG);
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Tag */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Tag */
     public Tag getTagByEntityInstance(final EntityInstance entityInstance,
             final EntityPermission entityPermission) {
         var pk = new TagPK(entityInstance.getEntityUniqueId());

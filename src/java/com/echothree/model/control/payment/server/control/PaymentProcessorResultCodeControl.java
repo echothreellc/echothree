@@ -81,7 +81,7 @@ public class PaymentProcessorResultCodeControl
         return paymentProcessorResultCode;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.PaymentProcessorResultCode */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PaymentProcessorResultCode */
     public PaymentProcessorResultCode getPaymentProcessorResultCodeByEntityInstance(final EntityInstance entityInstance,
             final EntityPermission entityPermission) {
         var pk = new PaymentProcessorResultCodePK(entityInstance.getEntityUniqueId());

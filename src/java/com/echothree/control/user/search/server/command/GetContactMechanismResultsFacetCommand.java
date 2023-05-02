@@ -35,7 +35,7 @@ public class GetContactMechanismResultsFacetCommand
 
     @Override
     protected BaseResult execute() {
-        return execute(ComponentVendors.ECHOTHREE.name(), EntityTypes.ContactMechanism.name(), SearchKinds.CONTACT_MECHANISM.name(),
+        return execute(ComponentVendors.ECHO_THREE.name(), EntityTypes.ContactMechanism.name(), SearchKinds.CONTACT_MECHANISM.name(),
                 SearchResultFactory.getGetContactMechanismResultsFacetResult());
     }
 

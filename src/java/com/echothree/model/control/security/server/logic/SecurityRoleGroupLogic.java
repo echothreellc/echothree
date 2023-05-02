@@ -122,7 +122,7 @@ public class SecurityRoleGroupLogic
             case 1:
                 if(securityRoleGroupName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.SecurityRoleGroup.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.SecurityRoleGroup.name());
 
                     if(!eea.hasExecutionErrors()) {
                         securityRoleGroup = securityControl.getSecurityRoleGroupByEntityInstance(entityInstance, entityPermission);

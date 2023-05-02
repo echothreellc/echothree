@@ -22,13 +22,13 @@ Feature: Employee tag scope
     Then no error should occur
     When the user begins entering a new tag scope entity type
     And the user sets the tag scope entity type's tag scope name to the last tag scope added
-    And the user sets the tag scope entity type's component vendor name to "ECHOTHREE"
+    And the user sets the tag scope entity type's component vendor name to "ECHO_THREE"
     And the user sets the tag scope entity type's entity type name to "ITEM"
     And the user adds the new tag scope entity type
     Then no error should occur
     When the user begins deleting a tag scope entity type
     And the user sets the tag scope entity type's tag scope name to the last tag scope added
-    And the user sets the tag scope entity type's component vendor name to "ECHOTHREE"
+    And the user sets the tag scope entity type's component vendor name to "ECHO_THREE"
     And the user sets the tag scope entity type's entity type name to "ITEM"
     And the user deletes the tag scope entity type
     Then no error should occur

@@ -111,7 +111,7 @@ public class QueueControl
         return queueType;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.QueueType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.QueueType */
     public QueueType getQueueTypeByEntityInstance(EntityInstance entityInstance) {
         QueueTypePK pk = new QueueTypePK(entityInstance.getEntityUniqueId());
         QueueType queueType = QueueTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);

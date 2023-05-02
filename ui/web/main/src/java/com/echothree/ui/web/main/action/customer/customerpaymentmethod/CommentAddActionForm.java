@@ -80,7 +80,7 @@ public class CommentAddActionForm
                 commandForm.setDefaultMimeTypeChoice(mimeTypeChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
                 if(commentName == null) {
-                    commandForm.setComponentVendorName(ComponentVendors.ECHOTHREE.name());
+                    commandForm.setComponentVendorName(ComponentVendors.ECHO_THREE.name());
                     commandForm.setEntityTypeName(EntityTypes.PaymentProcessor.name());
                     commandForm.setCommentTypeName(CommentConstants.CommentType_PAYMENT_PROCESSOR);
                 } else {

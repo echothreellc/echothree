@@ -86,7 +86,7 @@ public class AppearanceLogic
             case 1:
                 if(appearanceName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.Appearance.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.Appearance.name());
 
                     if(!eea.hasExecutionErrors()) {
                         appearance = coreControl.getAppearanceByEntityInstance(entityInstance, entityPermission);

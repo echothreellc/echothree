@@ -114,7 +114,7 @@ public class ItemDescriptionTypeLogic
             case 1:
                 if(itemDescriptionTypeName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.ItemDescriptionType.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemDescriptionType.name());
 
                     if(!eea.hasExecutionErrors()) {
                         itemDescriptionType = itemControl.getItemDescriptionTypeByEntityInstance(entityInstance, entityPermission);

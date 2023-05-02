@@ -72,7 +72,7 @@ public class GetForumThreadsCommand
             Forum forum = null;
 
             if(forumName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHOTHREE.name(),
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
                         EntityTypes.Forum.name());
                 
                 if(!hasExecutionErrors()) {

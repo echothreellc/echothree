@@ -80,7 +80,7 @@ public class CommentAddActionForm
                 commandForm.setDefaultMimeTypeChoice(mimeTypeChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
                 if(commentName == null) {
-                    commandForm.setComponentVendorName(ComponentVendors.ECHOTHREE.name());
+                    commandForm.setComponentVendorName(ComponentVendors.ECHO_THREE.name());
                     commandForm.setEntityTypeName(EntityTypes.PartyContactList.name());
                     commandForm.setCommentTypeName(CommentConstants.CommentType_PARTY_CONTACT_LIST);
                 } else {

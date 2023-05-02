@@ -146,7 +146,7 @@ public class EntityAttributeLogic
         EntityAttributeType entityAttributeType = null;
         
         var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
-                ComponentVendors.ECHOTHREE.name(), EntityTypes.EntityAttributeType.name());
+                ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityAttributeType.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
             var coreControl = Session.getModelController(CoreControl.class);
@@ -181,7 +181,7 @@ public class EntityAttributeLogic
         EntityAttributeGroup entityAttributeGroup = null;
         
         var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
-                ComponentVendors.ECHOTHREE.name(), EntityTypes.EntityAttributeGroup.name());
+                ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityAttributeGroup.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
             var coreControl = Session.getModelController(CoreControl.class);
@@ -346,7 +346,7 @@ public class EntityAttributeLogic
         EntityAttribute entityAttribute = null;
         
         var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
-                ComponentVendors.ECHOTHREE.name(), EntityTypes.EntityAttribute.name());
+                ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityAttribute.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
             var coreControl = Session.getModelController(CoreControl.class);
@@ -380,7 +380,7 @@ public class EntityAttributeLogic
             case 1 -> {
                 if(universalSpecCount == 1) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.EntityAttribute.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityAttribute.name());
 
                     if(!eea.hasExecutionErrors()) {
                         var coreControl = Session.getModelController(CoreControl.class);
@@ -655,7 +655,7 @@ public class EntityAttributeLogic
         EntityListItem entityListItem = null;
         
         var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
-                ComponentVendors.ECHOTHREE.name(), EntityTypes.EntityListItem.name());
+                ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityListItem.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
             var coreControl = Session.getModelController(CoreControl.class);
@@ -689,7 +689,7 @@ public class EntityAttributeLogic
             case 1 -> {
                 if(universalSpecCount == 1) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.EntityListItem.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityListItem.name());
 
                     if(!eea.hasExecutionErrors()) {
                         var coreControl = Session.getModelController(CoreControl.class);

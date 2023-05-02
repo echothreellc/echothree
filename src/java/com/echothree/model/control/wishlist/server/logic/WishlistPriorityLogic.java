@@ -167,7 +167,7 @@ public class WishlistPriorityLogic
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                    ComponentVendors.ECHOTHREE.name(), EntityTypes.WishlistPriority.name());
+                    ComponentVendors.ECHO_THREE.name(), EntityTypes.WishlistPriority.name());
 
             if(!eea.hasExecutionErrors()) {
                 wishlistPriority = wishlistControl.getWishlistPriorityByEntityInstance(entityInstance, entityPermission);

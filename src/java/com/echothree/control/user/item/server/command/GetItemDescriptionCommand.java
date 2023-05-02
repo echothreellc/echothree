@@ -113,7 +113,7 @@ public class GetItemDescriptionCommand
                 }
             } else if(traditionalParameterCount == 0 && possibleEntitySpecsCount == 1) {
                 var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
-                        ComponentVendors.ECHOTHREE.name(), EntityTypes.ItemDescription.name());
+                        ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemDescription.name());
 
                 if(!hasExecutionErrors()) {
                     itemDescription = itemControl.getItemDescriptionByEntityInstance(entityInstance);

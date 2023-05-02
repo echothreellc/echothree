@@ -79,7 +79,7 @@ public class DeleteItemCategoryCommand
             ItemCategory itemCategory = null;
             
             if(itemCategoryName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHOTHREE.name(),
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
                         EntityTypes.ItemCategory.name());
                 
                 if(!hasExecutionErrors()) {

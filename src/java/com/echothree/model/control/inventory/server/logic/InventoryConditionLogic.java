@@ -111,7 +111,7 @@ public class InventoryConditionLogic
             case 1:
                 if(inventoryConditionName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.InventoryCondition.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.InventoryCondition.name());
 
                     if(!eea.hasExecutionErrors()) {
                         inventoryCondition = inventoryControl.getInventoryConditionByEntityInstance(entityInstance, entityPermission);

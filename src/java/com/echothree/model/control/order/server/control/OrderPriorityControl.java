@@ -90,7 +90,7 @@ public class OrderPriorityControl
         return orderPriority;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.OrderPriority */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.OrderPriority */
     public OrderPriority getOrderPriorityByEntityInstance(final EntityInstance entityInstance,
             final EntityPermission entityPermission) {
         var pk = new OrderPriorityPK(entityInstance.getEntityUniqueId());

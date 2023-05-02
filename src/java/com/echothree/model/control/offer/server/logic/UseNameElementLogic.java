@@ -100,7 +100,7 @@ public class UseNameElementLogic
         if(parameterCount == 1) {
             if(useNameElementName == null) {
                 var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                        ComponentVendors.ECHOTHREE.name(), EntityTypes.UseNameElement.name());
+                        ComponentVendors.ECHO_THREE.name(), EntityTypes.UseNameElement.name());
 
                 if(!eea.hasExecutionErrors()) {
                     useNameElement = useNameElementControl.getUseNameElementByEntityInstance(entityInstance, entityPermission);

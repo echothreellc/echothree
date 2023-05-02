@@ -145,7 +145,7 @@ public class SequenceControl
                         "WHERE sqtyp_activedetailid = sqtypdt_sequencetypedetailid");
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.SequenceType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.SequenceType */
     public SequenceType getSequenceTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new SequenceTypePK(entityInstance.getEntityUniqueId());
         var sequenceType = SequenceTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
@@ -957,7 +957,7 @@ public class SequenceControl
                 sequenceType);
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Sequence */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Sequence */
     public Sequence getSequenceByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new SequencePK(entityInstance.getEntityUniqueId());
         var sequence = SequenceFactory.getInstance().getEntityFromPK(entityPermission, pk);

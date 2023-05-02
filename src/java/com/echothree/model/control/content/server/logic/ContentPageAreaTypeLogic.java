@@ -98,7 +98,7 @@ public class ContentPageAreaTypeLogic
             case 1:
                 if(contentPageAreaTypeName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.ContentPageAreaType.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.ContentPageAreaType.name());
 
                     if(!eea.hasExecutionErrors()) {
                         contentPageAreaType = contentControl.getContentPageAreaTypeByEntityInstance(entityInstance, entityPermission);

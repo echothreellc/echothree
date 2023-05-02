@@ -104,7 +104,7 @@ public class EditItemPurchasingCategoryCommand
 
         if(parameterCount == 1) {
             if(itemPurchasingCategoryName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, spec, ComponentVendors.ECHOTHREE.name(),
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, spec, ComponentVendors.ECHO_THREE.name(),
                         EntityTypes.ItemPurchasingCategory.name());
 
                 if(!hasExecutionErrors()) {

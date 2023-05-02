@@ -361,7 +361,7 @@ public class CancellationPolicyControl
                 "WHERE cnclk_activedetailid = cnclkdt_cancellationkinddetailid");
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.CancellationKind */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.CancellationKind */
     public CancellationKind getCancellationKindByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new CancellationKindPK(entityInstance.getEntityUniqueId());
 
@@ -816,7 +816,7 @@ public class CancellationPolicyControl
                 cancellationKind);
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.CancellationPolicy */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.CancellationPolicy */
     public CancellationPolicy getCancellationPolicyByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new CancellationPolicyPK(entityInstance.getEntityUniqueId());
 

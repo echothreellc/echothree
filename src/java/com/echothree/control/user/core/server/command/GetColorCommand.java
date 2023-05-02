@@ -67,7 +67,7 @@ public class GetColorCommand
         if(parameterCount == 1) {
             if(colorName == null) {
                 var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
-                        ComponentVendors.ECHOTHREE.name(), EntityTypes.Color.name());
+                        ComponentVendors.ECHO_THREE.name(), EntityTypes.Color.name());
 
                 if(!hasExecutionErrors()) {
                     color = coreControl.getColorByEntityInstance(entityInstance);

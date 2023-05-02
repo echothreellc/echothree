@@ -178,7 +178,7 @@ public class ReturnPolicyLogic
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                    ComponentVendors.ECHOTHREE.name(), EntityTypes.ReturnPolicy.name());
+                    ComponentVendors.ECHO_THREE.name(), EntityTypes.ReturnPolicy.name());
 
             if(!eea.hasExecutionErrors()) {
                 returnPolicy = returnPolicyControl.getReturnPolicyByEntityInstance(entityInstance, entityPermission);

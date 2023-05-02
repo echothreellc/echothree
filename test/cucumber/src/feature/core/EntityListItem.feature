@@ -14,7 +14,7 @@ Feature: Employee entity attribute
   Scenario: Existing employee adds an entity list item, edits it, and then deletes it
     Given the employee Test begins using the application
     And the user begins entering a new entity attribute
-    And the user sets the entity attribute's component vendor to ECHOTHREE
+    And the user sets the entity attribute's component vendor to ECHO_THREE
     And the user sets the entity attribute's entity type to Item
     And the user sets the entity attribute's entity attribute type to LISTITEM
     And the user sets the entity attribute to track revisions when modified
@@ -23,7 +23,7 @@ Feature: Employee entity attribute
     And the user adds the new entity attribute
     Then no error should occur
     And the user begins entering a new entity list item
-    And the user sets the entity list item's component vendor to ECHOTHREE
+    And the user sets the entity list item's component vendor to ECHO_THREE
     And the user sets the entity list item's entity type to Item
     And the user sets the entity list item's entity attribute to the last entity attribute added
     And the user sets the entity list item's name to TEST_LIST_ITEM
@@ -33,7 +33,7 @@ Feature: Employee entity attribute
     And the user adds the new entity list item
     Then no error should occur
     And the user begins specifying an entity list item to edit
-    And the user sets the entity list item's component vendor to ECHOTHREE
+    And the user sets the entity list item's component vendor to ECHO_THREE
     And the user sets the entity list item's entity type to Item
     And the user sets the entity list item's entity attribute to the last entity attribute added
     And the user sets the entity list item's name to the last entity list item added
@@ -43,14 +43,14 @@ Feature: Employee entity attribute
     And the user finishes editing the entity list item
     Then no error should occur
     And the user begins deleting an entity list item
-    And the user sets the entity list item's component vendor to ECHOTHREE
+    And the user sets the entity list item's component vendor to ECHO_THREE
     And the user sets the entity list item's entity type to Item
     And the user sets the entity list item's entity attribute to the last entity attribute added
     And the user sets the entity list item's name to the last entity list item added
     And the user deletes the entity list item
     Then no error should occur
     And the user begins deleting an entity attribute
-    And the user sets the entity attribute's component vendor to ECHOTHREE
+    And the user sets the entity attribute's component vendor to ECHO_THREE
     And the user sets the entity attribute's entity type to Item
     And the user sets the entity attribute's name to the last entity attribute added
     And the user deletes the entity attribute

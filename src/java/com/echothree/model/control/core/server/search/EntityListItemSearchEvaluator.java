@@ -44,7 +44,7 @@ public class EntityListItemSearchEvaluator
     /** Creates a new instance of EntityListItemSearchEvaluator */
     public EntityListItemSearchEvaluator(UserVisit userVisit, Language language, SearchType searchType, SearchDefaultOperator searchDefaultOperator,
             SearchSortOrder searchSortOrder, SearchSortDirection searchSortDirection, SearchUseType searchUseType) {
-        super(userVisit, searchDefaultOperator, searchType, searchSortOrder, searchSortDirection, searchUseType, ComponentVendors.ECHOTHREE.name(),
+        super(userVisit, searchDefaultOperator, searchType, searchSortOrder, searchSortDirection, searchUseType, ComponentVendors.ECHO_THREE.name(),
                 EntityTypes.EntityListItem.name(), IndexTypes.ENTITY_LIST_ITEM.name(), language, null);
         
         setField(IndexFields.description.name());

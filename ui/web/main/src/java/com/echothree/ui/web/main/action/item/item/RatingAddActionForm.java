@@ -47,7 +47,7 @@ public class RatingAddActionForm
                 GetRatingTypeListItemChoicesForm commandForm = RatingUtil.getHome().getGetRatingTypeListItemChoicesForm();
                 
                 if(ratingName == null) {
-                    commandForm.setComponentVendorName(ComponentVendors.ECHOTHREE.name());
+                    commandForm.setComponentVendorName(ComponentVendors.ECHO_THREE.name());
                     commandForm.setEntityTypeName(EntityTypes.Item.name());
                     commandForm.setRatingTypeName(ratingTypeName);
                 } else {

@@ -277,7 +277,7 @@ public class AccountingControl
         return currency;
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Currency */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Currency */
     public Currency getCurrencyByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new CurrencyPK(entityInstance.getEntityUniqueId());
 
@@ -570,7 +570,7 @@ public class AccountingControl
                 "WHERE iactgc_activedetailid = iactgcdt_itemaccountingcategorydetailid");
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ItemAccountingCategory */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ItemAccountingCategory */
     public ItemAccountingCategory getItemAccountingCategoryByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ItemAccountingCategoryPK(entityInstance.getEntityUniqueId());
 
@@ -4725,7 +4725,7 @@ public class AccountingControl
                         "AND eni_entityinstanceid = etim_eni_entityinstanceid " +
                         "ORDER BY etim_createdtime DESC");
                 
-                ps.setString(1, ComponentVendors.ECHOTHREE.name());
+                ps.setString(1, ComponentVendors.ECHO_THREE.name());
                 ps.setString(2, EntityTypes.TransactionGroup.name());
                 ps.setLong(3, workflowStep.getPrimaryKey().getEntityId());
                 ps.setLong(4, Session.MAX_TIME);
@@ -5333,7 +5333,7 @@ public class AccountingControl
         return symbolPosition;
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.SymbolPosition */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.SymbolPosition */
     public SymbolPosition getSymbolPositionByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new SymbolPositionPK(entityInstance.getEntityUniqueId());
 

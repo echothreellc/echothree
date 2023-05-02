@@ -158,7 +158,7 @@ public class OfferControl
                 filter);
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Offer */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Offer */
     public Offer getOfferByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new OfferPK(entityInstance.getEntityUniqueId());
         var offer = OfferFactory.getInstance().getEntityFromPK(entityPermission, pk);

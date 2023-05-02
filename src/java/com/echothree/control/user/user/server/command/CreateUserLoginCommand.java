@@ -105,7 +105,7 @@ public class CreateUserLoginCommand
             
             if(partyName == null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHOTHREE.name(),
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
                         EntityTypes.Party.name());
 
                 if(!hasExecutionErrors()) {

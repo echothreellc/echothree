@@ -76,7 +76,7 @@ public class PartyEmployeeLogic
                 }
             } else if(universalEntitySpec != null) {
                 var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalEntitySpec,
-                        ComponentVendors.ECHOTHREE.name(), EntityTypes.Party.name());
+                        ComponentVendors.ECHO_THREE.name(), EntityTypes.Party.name());
 
                 if(!eea.hasExecutionErrors()) {
                     var party = partyControl.getPartyByEntityInstance(entityInstance);

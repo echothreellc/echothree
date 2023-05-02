@@ -179,7 +179,7 @@ public class PaymentMethodTypePartyTypeLogic
                     }
                 } else {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.PaymentMethodTypePartyType.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.PaymentMethodTypePartyType.name());
 
                     if(!eea.hasExecutionErrors()) {
                         paymentMethodTypePartyType = paymentMethodTypePartyTypeControl.getPaymentMethodTypePartyTypeByEntityInstance(entityInstance, entityPermission);

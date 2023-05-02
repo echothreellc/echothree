@@ -212,7 +212,7 @@ public class FilterLogic
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                    ComponentVendors.ECHOTHREE.name(), EntityTypes.Filter.name());
+                    ComponentVendors.ECHO_THREE.name(), EntityTypes.Filter.name());
 
             if(!eea.hasExecutionErrors()) {
                 filter = filterControl.getFilterByEntityInstance(entityInstance, entityPermission);

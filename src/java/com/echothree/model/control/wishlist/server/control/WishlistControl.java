@@ -146,7 +146,7 @@ public class WishlistControl
         return wishlistType;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.WishlistType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.WishlistType */
     public WishlistType getWishlistTypeByEntityInstance(final EntityInstance entityInstance,
             final EntityPermission entityPermission) {
         var pk = new WishlistTypePK(entityInstance.getEntityUniqueId());
@@ -611,7 +611,7 @@ public class WishlistControl
         return wishlistPriority;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.WishlistPriority */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.WishlistPriority */
     public WishlistPriority getWishlistPriorityByEntityInstance(final EntityInstance entityInstance,
             final EntityPermission entityPermission) {
         var pk = new WishlistPriorityPK(entityInstance.getEntityUniqueId());

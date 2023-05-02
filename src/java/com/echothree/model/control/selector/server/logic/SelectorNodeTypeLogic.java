@@ -59,7 +59,7 @@ public class SelectorNodeTypeLogic
         SelectorNodeType selectorNodeType = null;
         
         var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
-                ComponentVendors.ECHOTHREE.name(), EntityTypes.SelectorNodeType.name());
+                ComponentVendors.ECHO_THREE.name(), EntityTypes.SelectorNodeType.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
             var selectorControl = Session.getModelController(SelectorControl.class);

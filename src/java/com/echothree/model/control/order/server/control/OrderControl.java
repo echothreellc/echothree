@@ -103,7 +103,7 @@ public class OrderControl
         return OrderFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, orderPK);
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Order */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Order */
     public Order getOrderByEntityInstance(EntityInstance entityInstance) {
         OrderPK pk = new OrderPK(entityInstance.getEntityUniqueId());
         Order order = OrderFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
@@ -114,7 +114,7 @@ public class OrderControl
     private Order convertEntityInstanceToOrder(final EntityInstance entityInstance, final EntityPermission entityPermission) {
         Order order = null;
 
-        if(getCoreControl().verifyEntityInstance(entityInstance, ComponentVendors.ECHOTHREE.name(), EntityTypes.Order.name())) {
+        if(getCoreControl().verifyEntityInstance(entityInstance, ComponentVendors.ECHO_THREE.name(), EntityTypes.Order.name())) {
             order = OrderFactory.getInstance().getEntityFromPK(entityPermission, new OrderPK(entityInstance.getEntityUniqueId()));
         }
 

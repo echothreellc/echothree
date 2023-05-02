@@ -91,7 +91,7 @@ public class OfferItemControl
                 item, Session.MAX_TIME);
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.OfferItem */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.OfferItem */
     public OfferItem getOfferItemByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new OfferItemPK(entityInstance.getEntityUniqueId());
         var offerItem = OfferItemFactory.getInstance().getEntityFromPK(entityPermission, pk);

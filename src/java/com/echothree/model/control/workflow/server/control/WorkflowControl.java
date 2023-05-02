@@ -214,7 +214,7 @@ public class WorkflowControl
                 "FROM workflowtypes");
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.WorkflowType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.WorkflowType */
     public WorkflowType getWorkflowTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new WorkflowTypePK(entityInstance.getEntityUniqueId());
 
@@ -437,7 +437,7 @@ public class WorkflowControl
                 "FROM workflowsteptypes");
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.WorkflowStepType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.WorkflowStepType */
     public WorkflowStepType getWorkflowStepTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new WorkflowStepTypePK(entityInstance.getEntityUniqueId());
 
@@ -678,7 +678,7 @@ public class WorkflowControl
                 selectorKind, Session.MAX_TIME);
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Workflow */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Workflow */
     public Workflow getWorkflowByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new WorkflowPK(entityInstance.getEntityUniqueId());
 
@@ -1010,7 +1010,7 @@ public class WorkflowControl
                 workflow);
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.WorkflowStep */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.WorkflowStep */
     public WorkflowStep getWorkflowStepByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new WorkflowStepPK(entityInstance.getEntityUniqueId());
 
@@ -1666,7 +1666,7 @@ public class WorkflowControl
                 workflow);
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.WorkflowEntrance */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.WorkflowEntrance */
     public WorkflowEntrance getWorkflowEntranceByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new WorkflowEntrancePK(entityInstance.getEntityUniqueId());
 
@@ -2899,7 +2899,7 @@ public class WorkflowControl
                 workflowStep);
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.WorkflowDestination */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.WorkflowDestination */
     public WorkflowDestination getWorkflowDestinationByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new WorkflowDestinationPK(entityInstance.getEntityUniqueId());
 

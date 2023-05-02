@@ -90,7 +90,7 @@ public class ItemAliasChecksumTypeLogic
             case 1:
                 if(itemAliasChecksumTypeName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.ItemAliasChecksumType.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemAliasChecksumType.name());
 
                     if(!eea.hasExecutionErrors()) {
                         itemAliasChecksumType = itemControl.getItemAliasChecksumTypeByEntityInstance(entityInstance, entityPermission);

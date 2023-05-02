@@ -177,7 +177,7 @@ public class WorkflowEntranceLogic
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                    ComponentVendors.ECHOTHREE.name(), EntityTypes.WorkflowEntrance.name());
+                    ComponentVendors.ECHO_THREE.name(), EntityTypes.WorkflowEntrance.name());
 
             if(!eea.hasExecutionErrors()) {
                 workflowEntrance = workflowControl.getWorkflowEntranceByEntityInstance(entityInstance, entityPermission);

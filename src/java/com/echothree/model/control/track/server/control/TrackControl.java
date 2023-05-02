@@ -134,7 +134,7 @@ public class TrackControl
         return track;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Track */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Track */
     public Track getTrackByEntityInstance(EntityInstance entityInstance) {
         TrackPK pk = new TrackPK(entityInstance.getEntityUniqueId());
         Track track = TrackFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);

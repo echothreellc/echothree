@@ -80,7 +80,7 @@ public class RatingAddAction
             throws NamingException {
         GetRatingTypeForm commandForm = RatingUtil.getHome().getGetRatingTypeForm();
         
-        commandForm.setComponentVendorName(ComponentVendors.ECHOTHREE.name());
+        commandForm.setComponentVendorName(ComponentVendors.ECHO_THREE.name());
         commandForm.setEntityTypeName(EntityTypes.Item.name());
         commandForm.setRatingTypeName(actionForm.getRatingTypeName());
 

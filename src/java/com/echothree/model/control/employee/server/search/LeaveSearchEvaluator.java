@@ -48,7 +48,7 @@ public class LeaveSearchEvaluator
     /** Creates a new instance of LeaveSearchEvaluator */
     public LeaveSearchEvaluator(UserVisit userVisit, SearchType searchType, SearchDefaultOperator searchDefaultOperator, SearchSortOrder searchSortOrder,
             SearchSortDirection searchSortDirection) {
-        super(userVisit, searchDefaultOperator, searchType, searchSortOrder, searchSortDirection, null, ComponentVendors.ECHOTHREE.name(),
+        super(userVisit, searchDefaultOperator, searchType, searchSortOrder, searchSortDirection, null, ComponentVendors.ECHO_THREE.name(),
                 EntityTypes.Leave.name(), null, null, null);
     }
 

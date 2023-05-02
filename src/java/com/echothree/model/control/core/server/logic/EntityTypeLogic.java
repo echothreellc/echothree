@@ -110,7 +110,7 @@ public class EntityTypeLogic
                 break;
             case 1:
                 var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                        ComponentVendors.ECHOTHREE.name(), EntityTypes.EntityType.name());
+                        ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityType.name());
 
                 if(!eea.hasExecutionErrors()) {
                     entityType = coreControl.getEntityTypeByEntityInstance(entityInstance, entityPermission);

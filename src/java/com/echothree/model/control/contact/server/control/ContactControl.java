@@ -1061,7 +1061,7 @@ public class ContactControl
         return contactMechanism;
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ContactMechanism */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContactMechanism */
     public ContactMechanism getContactMechanismByEntityInstance(EntityInstance entityInstance) {
         ContactMechanismPK pk = new ContactMechanismPK(entityInstance.getEntityUniqueId());
         ContactMechanism contactMechanism = ContactMechanismFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);

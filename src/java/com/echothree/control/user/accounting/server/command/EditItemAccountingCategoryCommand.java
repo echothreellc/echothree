@@ -104,7 +104,7 @@ public class EditItemAccountingCategoryCommand
 
         if(parameterCount == 1) {
             if(itemAccountingCategoryName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, spec, ComponentVendors.ECHOTHREE.name(),
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, spec, ComponentVendors.ECHO_THREE.name(),
                         EntityTypes.ItemAccountingCategory.name());
 
                 if(!hasExecutionErrors()) {

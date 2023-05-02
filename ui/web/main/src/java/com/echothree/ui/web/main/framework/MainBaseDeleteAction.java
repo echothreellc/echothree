@@ -39,7 +39,7 @@ public abstract class MainBaseDeleteAction<A extends MainBaseDeleteActionForm>
         extends MainBaseAction<A> {
     
     protected String getComponentVendorName() {
-        return ComponentVendors.ECHOTHREE.name();
+        return ComponentVendors.ECHO_THREE.name();
     }
     
     protected abstract String getEntityTypeName();

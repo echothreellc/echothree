@@ -35,7 +35,7 @@ public class GetUseTypeResultsFacetCommand
 
     @Override
     protected BaseResult execute() {
-        return execute(ComponentVendors.ECHOTHREE.name(), EntityTypes.UseType.name(), SearchKinds.USE_TYPE.name(),
+        return execute(ComponentVendors.ECHO_THREE.name(), EntityTypes.UseType.name(), SearchKinds.USE_TYPE.name(),
                 SearchResultFactory.getGetUseTypeResultsFacetResult());
     }
 

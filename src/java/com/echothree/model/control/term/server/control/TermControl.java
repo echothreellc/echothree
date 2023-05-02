@@ -125,7 +125,7 @@ public class TermControl
                     "FROM termtypes");
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.TermType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.TermType */
     public TermType getTermTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new TermTypePK(entityInstance.getEntityUniqueId());
 
@@ -369,7 +369,7 @@ public class TermControl
                 "WHERE trm_activedetailid = trmtyp_termtypeid");
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Term */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Term */
     public Term getTermByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new TermPK(entityInstance.getEntityUniqueId());
 

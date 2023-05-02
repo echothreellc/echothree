@@ -35,7 +35,7 @@ public class GetItemResultsFacetCommand
 
     @Override
     protected BaseResult execute() {
-        return execute(ComponentVendors.ECHOTHREE.name(), EntityTypes.Item.name(), SearchKinds.ITEM.name(),
+        return execute(ComponentVendors.ECHO_THREE.name(), EntityTypes.Item.name(), SearchKinds.ITEM.name(),
                 SearchResultFactory.getGetItemResultsFacetResult());
     }
 

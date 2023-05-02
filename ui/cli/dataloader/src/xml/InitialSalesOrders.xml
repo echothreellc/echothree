@@ -96,7 +96,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="Entry" />
                 <workflowEntranceStep entranceWorkflowStepName="ENTRY" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Batch" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="Batch" />
         </workflow>
         <workflow workflowName="SALES_ORDER_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="SalesOrderStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Sales Order Status" />
@@ -140,7 +140,7 @@
                 <workflowDestinationDescription languageIsoName="en" description="Batch Audit to Complete" />
                 <workflowDestinationStep destinationWorkflowStepName="ENTRY_COMPLETE" />
             </workflowDestination>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Order" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="Order" />
         </workflow>
     </workflows>
     <batchTypes>

@@ -70,7 +70,7 @@ public class PaymentProcessorTransactionControl
         return paymentProcessorTransaction;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.PaymentProcessorTransaction */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PaymentProcessorTransaction */
     public PaymentProcessorTransaction getPaymentProcessorTransactionByEntityInstance(final EntityInstance entityInstance,
             final EntityPermission entityPermission) {
         var pk = new PaymentProcessorTransactionPK(entityInstance.getEntityUniqueId());
