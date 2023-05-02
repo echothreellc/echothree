@@ -87,12 +87,9 @@ public class TermObject
         TermInterface termInterface = null;
 
         switch(termType) {
-            case DATE_DRIVEN -> {
-                termInterface = new DateDrivenTermObject(termControl.getDateDrivenTerm(term));
-            }
-            case STANDARD -> {
-                termInterface = new StandardTermObject(termControl.getStandardTerm(term));
-            }
+            case DATE_DRIVEN -> termInterface = new DateDrivenTermObject(termControl.getDateDrivenTerm(term));
+            case PREPAID -> {}
+            case STANDARD -> termInterface = new StandardTermObject(termControl.getStandardTerm(term));
         }
 
         return termInterface;
