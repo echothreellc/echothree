@@ -69,7 +69,7 @@ public class LotControl
         return lot;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Lot */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Lot */
     public Lot getLotByEntityInstance(final EntityInstance entityInstance,
             final EntityPermission entityPermission) {
         var pk = new LotPK(entityInstance.getEntityUniqueId());

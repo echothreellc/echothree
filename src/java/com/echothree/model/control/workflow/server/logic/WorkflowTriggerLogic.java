@@ -52,7 +52,7 @@ public class WorkflowTriggerLogic {
     private EntityTypeTrigger locateTrigger(final ExecutionErrorAccumulator eea, final String componentVendorName, final String entityTypeName) {
         EntityTypeTrigger result = null;
         
-        if(componentVendorName.equals(ComponentVendors.ECHOTHREE.name())) {
+        if(componentVendorName.equals(ComponentVendors.ECHO_THREE.name())) {
             if(entityTypeName.equals(EntityTypes.PartyTrainingClass.name())) {
                 result = new PartyTrainingClassTrigger();
             } else if(entityTypeName.equals(EntityTypes.PrinterGroupJob.name())) {

@@ -91,7 +91,7 @@ public class SourceControl
                 offerUse);
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Source */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Source */
     public Source getSourceByEntityInstance(EntityInstance entityInstance) {
         SourcePK pk = new SourcePK(entityInstance.getEntityUniqueId());
         Source source = SourceFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);

@@ -147,7 +147,7 @@ public class IndexControl
         return countIndexTypesByEntityType(entityType) != 0;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.IndexType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.IndexType */
     public IndexType getIndexTypeByEntityInstance(EntityInstance entityInstance) {
         IndexTypePK pk = new IndexTypePK(entityInstance.getEntityUniqueId());
         IndexType indexType = IndexTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
@@ -1052,7 +1052,7 @@ public class IndexControl
         return index;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Index */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Index */
     public Index getIndexByEntityInstance(EntityInstance entityInstance) {
         IndexPK pk = new IndexPK(entityInstance.getEntityUniqueId());
         Index index = IndexFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);

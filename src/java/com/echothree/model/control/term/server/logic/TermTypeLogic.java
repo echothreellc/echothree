@@ -110,7 +110,7 @@ public class TermTypeLogic
             case 1 -> {
                 if(termTypeName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.TermType.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.TermType.name());
 
                     if(!eea.hasExecutionErrors()) {
                         termType = termControl.getTermTypeByEntityInstance(entityInstance, entityPermission);

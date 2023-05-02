@@ -229,7 +229,7 @@ public class EntityNamesUtils {
 
         nameTranslators = Collections.unmodifiableMap(nameTranslators);
 
-        addComponentVendorTranslator(ComponentVendors.ECHOTHREE.name(), new ComponentVendorTranslator(nameTranslators));
+        addComponentVendorTranslator(ComponentVendors.ECHO_THREE.name(), new ComponentVendorTranslator(nameTranslators));
     }
 
     // Entry point from the Identify UC. Permissions have already been checked at this point.

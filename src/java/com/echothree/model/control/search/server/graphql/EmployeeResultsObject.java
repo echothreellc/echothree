@@ -42,7 +42,7 @@ public class EmployeeResultsObject
         extends BaseResultsObject<GetEmployeeResultsForm> {
 
     public EmployeeResultsObject(GetEmployeeResultsForm form) {
-        super(ComponentVendors.ECHOTHREE.name(), EntityTypes.Party.name(), SearchKinds.EMPLOYEE.name(), form);
+        super(ComponentVendors.ECHO_THREE.name(), EntityTypes.Party.name(), SearchKinds.EMPLOYEE.name(), form);
     }
 
     @GraphQLField

@@ -111,7 +111,7 @@ public class ContentPageLayoutLogic
             case 1:
                 if(contentPageLayoutName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.ContentPageLayout.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.ContentPageLayout.name());
 
                     if(!eea.hasExecutionErrors()) {
                         contentPageLayout = contentControl.getContentPageLayoutByEntityInstance(entityInstance, entityPermission);

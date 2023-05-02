@@ -100,7 +100,7 @@ public class OfferNameElementLogic
         if(parameterCount == 1) {
             if(offerNameElementName == null) {
                 var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                        ComponentVendors.ECHOTHREE.name(), EntityTypes.OfferNameElement.name());
+                        ComponentVendors.ECHO_THREE.name(), EntityTypes.OfferNameElement.name());
 
                 if(!eea.hasExecutionErrors()) {
                     offerNameElement = offerNameElementControl.getOfferNameElementByEntityInstance(entityInstance, entityPermission);

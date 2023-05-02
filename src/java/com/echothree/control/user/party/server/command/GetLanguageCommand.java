@@ -73,7 +73,7 @@ public class GetLanguageCommand
             case 1:
                 if(languageIsoName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.Language.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.Language.name());
                     
                     if(!hasExecutionErrors()) {
                         language = partyControl.getLanguageByEntityInstance(entityInstance);

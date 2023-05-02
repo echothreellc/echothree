@@ -111,7 +111,7 @@ public class TagScopeLogic
             case 1:
                 if(tagScopeName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.TagScope.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.TagScope.name());
 
                     if(!eea.hasExecutionErrors()) {
                         tagScope = tagControl.getTagScopeByEntityInstance(entityInstance, entityPermission);

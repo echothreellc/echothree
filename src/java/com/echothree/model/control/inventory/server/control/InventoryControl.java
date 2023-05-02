@@ -940,7 +940,7 @@ public class InventoryControl
         return inventoryCondition;
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.InventoryCondition */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.InventoryCondition */
     public InventoryCondition getInventoryConditionByEntityInstance(final EntityInstance entityInstance,
             final EntityPermission entityPermission) {
         var pk = new InventoryConditionPK(entityInstance.getEntityUniqueId());
@@ -2343,7 +2343,7 @@ public class InventoryControl
         return allocationPriority;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.AllocationPriority */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.AllocationPriority */
     public AllocationPriority getAllocationPriorityByEntityInstance(final EntityInstance entityInstance,
             final EntityPermission entityPermission) {
         var pk = new AllocationPriorityPK(entityInstance.getEntityUniqueId());

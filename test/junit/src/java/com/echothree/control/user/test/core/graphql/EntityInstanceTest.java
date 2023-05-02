@@ -57,9 +57,9 @@ public class EntityInstanceTest
                         }
                     }
                 }
-                """.formatted(ComponentVendors.ECHOTHREE, EntityTypes.GlAccount));
+                """.formatted(ComponentVendors.ECHO_THREE, EntityTypes.GlAccount));
 
-        assertThat(getString(entityTypeBody, "data.entityType.componentVendor.componentVendorName")).isEqualTo(ComponentVendors.ECHOTHREE.toString());
+        assertThat(getString(entityTypeBody, "data.entityType.componentVendor.componentVendorName")).isEqualTo(ComponentVendors.ECHO_THREE.toString());
         assertThat(getString(entityTypeBody, "data.entityType.entityTypeName")).isEqualTo(EntityTypes.GlAccount.toString());
         var entityInstanceCount = getLong(entityTypeBody, "data.entityType.entityInstances.totalCount");
         assertThat(entityInstanceCount).isGreaterThan(0);
@@ -75,7 +75,7 @@ public class EntityInstanceTest
                         ulid
                     }
                 }
-                """.formatted(ComponentVendors.ECHOTHREE, EntityTypes.GlAccount));
+                """.formatted(ComponentVendors.ECHO_THREE, EntityTypes.GlAccount));
 
         assertThat(getList(entityInstancesBody, "data.entityInstances")).size().isEqualTo(0);
     }
@@ -101,7 +101,7 @@ public class EntityInstanceTest
                        ulid
                     }
                 }
-                """.formatted(ComponentVendors.ECHOTHREE, EntityTypes.GlAccount));
+                """.formatted(ComponentVendors.ECHO_THREE, EntityTypes.GlAccount));
 
         assertThat(getList(entityInstancesBody, "data.entityInstances")).size().isGreaterThan(0);
     }
@@ -133,7 +133,7 @@ public class EntityInstanceTest
                         }
                     }
                 }
-                """.formatted(ComponentVendors.ECHOTHREE, EntityTypes.GlAccount));
+                """.formatted(ComponentVendors.ECHO_THREE, EntityTypes.GlAccount));
 
         var entityInstances = getList(entityTypeBody, "data.entityType.entityInstances.edges");
         var entityInstance = getObject(entityInstances, "[0]");
@@ -194,7 +194,7 @@ public class EntityInstanceTest
                         }
                     }
                 }
-                """.formatted(ComponentVendors.ECHOTHREE, EntityTypes.GlAccount));
+                """.formatted(ComponentVendors.ECHO_THREE, EntityTypes.GlAccount));
 
         var entityInstances = getList(entityTypeBody, "data.entityType.entityInstances.edges");
         var entityInstance = getObject(entityInstances, "[0]");
@@ -213,7 +213,7 @@ public class EntityInstanceTest
                 }
                 """.formatted(ulid));
 
-        assertThat(getString(entityInstanceBody, "data.entityInstance.entityType.componentVendor.componentVendorName")).isEqualTo(ComponentVendors.ECHOTHREE.toString());
+        assertThat(getString(entityInstanceBody, "data.entityInstance.entityType.componentVendor.componentVendorName")).isEqualTo(ComponentVendors.ECHO_THREE.toString());
         assertThat(getString(entityInstanceBody, "data.entityInstance.entityType.entityTypeName")).isEqualTo(EntityTypes.GlAccount.toString());
     }
 

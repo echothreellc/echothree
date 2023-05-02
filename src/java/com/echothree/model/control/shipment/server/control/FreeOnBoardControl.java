@@ -81,7 +81,7 @@ public class FreeOnBoardControl
         return freeOnBoard;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.FreeOnBoard */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.FreeOnBoard */
     public FreeOnBoard getFreeOnBoardByEntityInstance(final EntityInstance entityInstance,
             final EntityPermission entityPermission) {
         var pk = new FreeOnBoardPK(entityInstance.getEntityUniqueId());

@@ -65,7 +65,7 @@ public class ChainInstanceStatusLogic {
         if(contactList != null) {
             var coreControl = Session.getModelController(CoreControl.class);
             ChainType chainType = chainInstance.getLastDetail().getChain().getLastDetail().getChainType();
-            EntityType partyEntityType = coreControl.getEntityTypeByName(coreControl.getComponentVendorByName(ComponentVendors.ECHOTHREE.name()), EntityTypes.Party.name());
+            EntityType partyEntityType = coreControl.getEntityTypeByName(coreControl.getComponentVendorByName(ComponentVendors.ECHO_THREE.name()), EntityTypes.Party.name());
             
             for(ChainEntityRoleType chainEntityRoleType: chainControl.getChainEntityRoleTypes(chainType)) {
                 if(chainEntityRoleType.getLastDetail().getEntityType().equals(partyEntityType)) {

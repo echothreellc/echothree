@@ -2323,7 +2323,7 @@ public class DatabaseUtilitiesForJava {
     
     public void writeConstantsInstanceVariables(PrintWriter pw, Table theTable)
     throws Exception {
-        pw.println("    String COMPONENT_VENDOR_NAME = \"ECHOTHREE\";");
+        pw.println("    String COMPONENT_VENDOR_NAME = \"ECHO_THREE\";");
         pw.println("    String ENTITY_TYPE_NAME = \"" + theTable.getNameSingular() + "\";");
         pw.println("    ");
     }

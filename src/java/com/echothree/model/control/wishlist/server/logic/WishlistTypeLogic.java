@@ -111,7 +111,7 @@ public class WishlistTypeLogic
             case 1 -> {
                 if(wishlistTypeName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.WishlistType.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.WishlistType.name());
 
                     if(!eea.hasExecutionErrors()) {
                         wishlistType = wishlistControl.getWishlistTypeByEntityInstance(entityInstance, entityPermission);

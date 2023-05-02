@@ -93,7 +93,7 @@ public class IndexLogic
         String entityTypeName = entityTypeDetail.getEntityTypeName();
         
         if(entityTypeName.equals(EntityTypes.Party.name())
-                && componentVendor.getLastDetail().getComponentVendorName().equals(ComponentVendors.ECHOTHREE.name())) {
+                && componentVendor.getLastDetail().getComponentVendorName().equals(ComponentVendors.ECHO_THREE.name())) {
             // The Party indexes aren't by Language, so we're not worried about de-dupping them.
             PartyType partyType = PartyLogic.getInstance().getPartyTypeByName(eea, indexTypeDetail.getIndexTypeName());
 

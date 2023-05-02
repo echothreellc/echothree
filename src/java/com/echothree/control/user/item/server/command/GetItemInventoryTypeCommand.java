@@ -65,7 +65,7 @@ public class GetItemInventoryTypeCommand
         if(parameterCount == 1) {
             if(itemInventoryTypeName == null) {
                 var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
-                        ComponentVendors.ECHOTHREE.name(), EntityTypes.ItemInventoryType.name());
+                        ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemInventoryType.name());
 
                 if(!hasExecutionErrors()) {
                     itemInventoryType = itemControl.getItemInventoryTypeByEntityInstance(entityInstance);

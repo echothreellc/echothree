@@ -82,7 +82,7 @@ public class GetCampaignCommand
             Campaign campaign = null;
 
             if(campaignName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHOTHREE.name(),
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
                         EntityTypes.Campaign.name());
                 
                 if(!hasExecutionErrors()) {

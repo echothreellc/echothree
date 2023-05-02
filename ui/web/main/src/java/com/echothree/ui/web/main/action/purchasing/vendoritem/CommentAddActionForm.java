@@ -80,7 +80,7 @@ public class CommentAddActionForm
                 commandForm.setDefaultMimeTypeChoice(mimeTypeChoice);
                 commandForm.setAllowNullChoice(Boolean.FALSE.toString());
                 if(commentTypeName != null) {
-                    commandForm.setComponentVendorName(ComponentVendors.ECHOTHREE.name());
+                    commandForm.setComponentVendorName(ComponentVendors.ECHO_THREE.name());
                     commandForm.setEntityTypeName(EntityTypes.VendorItem.name());
                     commandForm.setCommentTypeName(commentTypeName);
                 } else {

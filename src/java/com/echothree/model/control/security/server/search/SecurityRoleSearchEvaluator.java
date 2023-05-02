@@ -44,7 +44,7 @@ public class SecurityRoleSearchEvaluator
     /** Creates a new instance of SecurityRoleSearchEvaluator */
     public SecurityRoleSearchEvaluator(UserVisit userVisit, Language language, SearchType searchType, SearchDefaultOperator searchDefaultOperator,
             SearchSortOrder searchSortOrder, SearchSortDirection searchSortDirection, SearchUseType searchUseType) {
-        super(userVisit, searchDefaultOperator, searchType, searchSortOrder, searchSortDirection, searchUseType, ComponentVendors.ECHOTHREE.name(),
+        super(userVisit, searchDefaultOperator, searchType, searchSortOrder, searchSortDirection, searchUseType, ComponentVendors.ECHO_THREE.name(),
                 EntityTypes.SecurityRole.name(), IndexTypes.SECURITY_ROLE.name(), language, null);
         
         setField(IndexFields.description.name());

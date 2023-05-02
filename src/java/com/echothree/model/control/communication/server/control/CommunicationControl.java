@@ -774,7 +774,7 @@ public class CommunicationControl
         return communicationEvent;
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.CommunicationEvent */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.CommunicationEvent */
     public CommunicationEvent getCommunicationEventByEntityInstance(EntityInstance entityInstance) {
         CommunicationEventPK pk = new CommunicationEventPK(entityInstance.getEntityUniqueId());
         CommunicationEvent communicationEvent = CommunicationEventFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);

@@ -59,7 +59,7 @@ public class ForumMessageSearchEvaluator
     /** Creates a new instance of ForumMessageSearchEvaluator */
     public ForumMessageSearchEvaluator(UserVisit userVisit, Language language, SearchType searchType, SearchDefaultOperator searchDefaultOperator, SearchSortOrder searchSortOrder,
             SearchSortDirection searchSortDirection, SearchUseType searchUseType, Forum forum, ForumMessageType forumMessageType) {
-        super(userVisit, searchDefaultOperator, searchType, searchSortOrder, searchSortDirection, searchUseType, ComponentVendors.ECHOTHREE.name(),
+        super(userVisit, searchDefaultOperator, searchType, searchSortOrder, searchSortDirection, searchUseType, ComponentVendors.ECHO_THREE.name(),
                 EntityTypes.ForumMessage.name(), IndexTypes.FORUM_MESSAGE.name(), language, null);
         
         this.forum = forum;
@@ -88,10 +88,10 @@ public class ForumMessageSearchEvaluator
         
         if(includeFutureForumThreads) {
             entityInstancePKHolder = getEntityInstancePKHolderFromQuery(ps,
-                    Session.MAX_TIME, forum, ComponentVendors.ECHOTHREE.name(), EntityTypes.ForumMessage.name());
+                    Session.MAX_TIME, forum, ComponentVendors.ECHO_THREE.name(), EntityTypes.ForumMessage.name());
         } else {
             entityInstancePKHolder = getEntityInstancePKHolderFromQuery(ps,
-                    Session.MAX_TIME, forum, ComponentVendors.ECHOTHREE.name(), EntityTypes.ForumMessage.name(), session.START_TIME);
+                    Session.MAX_TIME, forum, ComponentVendors.ECHO_THREE.name(), EntityTypes.ForumMessage.name(), session.START_TIME);
         }
 
         return entityInstancePKHolder;
@@ -113,10 +113,10 @@ public class ForumMessageSearchEvaluator
 
         if(includeFutureForumThreads) {
             entityInstancePKHolder = getEntityInstancePKHolderFromQuery(ps,
-                    forumMessageType, ComponentVendors.ECHOTHREE.name(), EntityTypes.ForumMessage.name());
+                    forumMessageType, ComponentVendors.ECHO_THREE.name(), EntityTypes.ForumMessage.name());
         } else {
             entityInstancePKHolder = getEntityInstancePKHolderFromQuery(ps,
-                    forumMessageType, ComponentVendors.ECHOTHREE.name(), EntityTypes.ForumMessage.name(),  session.START_TIME);
+                    forumMessageType, ComponentVendors.ECHO_THREE.name(), EntityTypes.ForumMessage.name(),  session.START_TIME);
         }
 
         return entityInstancePKHolder;

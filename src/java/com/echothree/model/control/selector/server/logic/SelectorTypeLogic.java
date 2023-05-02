@@ -167,7 +167,7 @@ public class SelectorTypeLogic
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                    ComponentVendors.ECHOTHREE.name(), EntityTypes.SelectorType.name());
+                    ComponentVendors.ECHO_THREE.name(), EntityTypes.SelectorType.name());
 
             if(!eea.hasExecutionErrors()) {
                 selectorType = selectorControl.getSelectorTypeByEntityInstance(entityInstance, entityPermission);

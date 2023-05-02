@@ -12,7 +12,7 @@
         </display:column>
         <display:column titleKey="columnTitle.description">
             <c:choose>
-                <c:when test="${entityInstance.entityType.componentVendor.componentVendorName == 'ECHOTHREE'}">
+                <c:when test="${entityInstance.entityType.componentVendor.componentVendorName == 'ECHO_THREE'}">
                     <c:choose>
                         <c:when test="${entityInstance.entityType.entityTypeName == 'PartyTrainingClass'}">
                             <c:set var="partyTrainingClassName" scope="request" value="${entityInstance.entityNames.names.map.PartyTrainingClassName}" />
@@ -56,7 +56,7 @@
         </display:column>
         <display:column>
             <c:choose>
-                <c:when test="${entityInstance.entityType.componentVendor.componentVendorName == 'ECHOTHREE'}">
+                <c:when test="${entityInstance.entityType.componentVendor.componentVendorName == 'ECHO_THREE'}">
                     <c:choose>
                         <c:when test="${entityInstance.entityType.entityTypeName == 'PartyTrainingClass'}">
                             <c:url var="partyTrainingClassUrl" value="/action/HumanResources/PartyTrainingClass/PartyTrainingClass">

@@ -1027,7 +1027,7 @@ public class PrinterControl
         return printerGroupJob;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.PrinterGroupJob */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PrinterGroupJob */
     public PrinterGroupJob getPrinterGroupJobByEntityInstance(EntityInstance entityInstance) {
         PrinterGroupJobPK pk = new PrinterGroupJobPK(entityInstance.getEntityUniqueId());
         PrinterGroupJob printerGroupJob = PrinterGroupJobFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
@@ -1039,7 +1039,7 @@ public class PrinterControl
         var coreControl = Session.getModelController(CoreControl.class);
         PrinterGroupJob printerGroupJob = null;
 
-        if(coreControl.verifyEntityInstance(entityInstance, ComponentVendors.ECHOTHREE.name(), EntityTypes.PrinterGroupJob.name())) {
+        if(coreControl.verifyEntityInstance(entityInstance, ComponentVendors.ECHO_THREE.name(), EntityTypes.PrinterGroupJob.name())) {
             printerGroupJob = PrinterGroupJobFactory.getInstance().getEntityFromPK(entityPermission, new PrinterGroupJobPK(entityInstance.getEntityUniqueId()));
         }
 
@@ -1234,7 +1234,7 @@ public class PrinterControl
 
     private List<PrinterGroupJob> getPrinterGroupJobsByPrinterGroupJobStatus(WorkflowStep workflowStep, EntityPermission entityPermission) {
         return PrinterGroupJobFactory.getInstance().getEntitiesFromQuery(entityPermission, getPrinterGroupJobsByPrinterGroupJobStatusQueries,
-                ComponentVendors.ECHOTHREE.name(), EntityTypes.PrinterGroupJob.name(), workflowStep, Session.MAX_TIME);
+                ComponentVendors.ECHO_THREE.name(), EntityTypes.PrinterGroupJob.name(), workflowStep, Session.MAX_TIME);
     }
 
     public List<PrinterGroupJob> getPrinterGroupJobsByPrinterGroupJobStatus(WorkflowStep workflowStep) {

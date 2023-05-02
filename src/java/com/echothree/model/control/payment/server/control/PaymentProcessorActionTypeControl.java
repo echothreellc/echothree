@@ -81,7 +81,7 @@ public class PaymentProcessorActionTypeControl
         return paymentProcessorActionType;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.PaymentProcessorActionType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PaymentProcessorActionType */
     public PaymentProcessorActionType getPaymentProcessorActionTypeByEntityInstance(final EntityInstance entityInstance,
             final EntityPermission entityPermission) {
         var pk = new PaymentProcessorActionTypePK(entityInstance.getEntityUniqueId());

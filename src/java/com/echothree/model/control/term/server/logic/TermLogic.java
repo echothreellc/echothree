@@ -115,7 +115,7 @@ public class TermLogic
             case 1 -> {
                 if(termName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.Term.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.Term.name());
 
                     if(!eea.hasExecutionErrors()) {
                         term = termControl.getTermByEntityInstance(entityInstance, entityPermission);

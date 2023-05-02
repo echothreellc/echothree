@@ -60,7 +60,7 @@ public class UnitOfMeasureKindLogic
         UnitOfMeasureKind unitOfMeasureKind = null;
         
         var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
-                ComponentVendors.ECHOTHREE.name(), EntityTypes.UnitOfMeasureKind.name());
+                ComponentVendors.ECHO_THREE.name(), EntityTypes.UnitOfMeasureKind.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
             var uomControl = Session.getModelController(UomControl.class);

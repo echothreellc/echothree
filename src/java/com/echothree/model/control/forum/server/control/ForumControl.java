@@ -238,7 +238,7 @@ public class ForumControl
         return forumGroup;
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ForumGroup */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ForumGroup */
     public ForumGroup getForumGroupByEntityInstance(EntityInstance entityInstance) {
         ForumGroupPK pk = new ForumGroupPK(entityInstance.getEntityUniqueId());
         ForumGroup forumGroup = ForumGroupFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
@@ -593,7 +593,7 @@ public class ForumControl
         return forum;
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Forum */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Forum */
     public Forum getForumByEntityInstance(EntityInstance entityInstance) {
         ForumPK pk = new ForumPK(entityInstance.getEntityUniqueId());
         Forum forum = ForumFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
@@ -2620,7 +2620,7 @@ public class ForumControl
         return forumThread;
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ForumThread */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ForumThread */
     public ForumThread getForumThreadByEntityInstance(EntityInstance entityInstance) {
         ForumThreadPK pk = new ForumThreadPK(entityInstance.getEntityUniqueId());
         ForumThread forumThread = ForumThreadFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
@@ -2728,7 +2728,7 @@ public class ForumControl
             
             ps.setLong(1, forum.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
-            ps.setString(3, ComponentVendors.ECHOTHREE.name());
+            ps.setString(3, ComponentVendors.ECHO_THREE.name());
             ps.setString(4, EntityTypes.ForumThread.name());
             if(!includeFutureForumThreads) {
                 ps.setLong(5, session.START_TIME);
@@ -2855,7 +2855,7 @@ public class ForumControl
         return forumMessage;
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ForumMessage */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ForumMessage */
     public ForumMessage getForumMessageByEntityInstance(EntityInstance entityInstance) {
         ForumMessagePK pk = new ForumMessagePK(entityInstance.getEntityUniqueId());
         ForumMessage forumMessage = ForumMessageFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);

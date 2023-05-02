@@ -73,7 +73,7 @@ public class GetCurrencyCommand
             case 1:
                 if(currencyIsoName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.Currency.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.Currency.name());
                     
                     if(!hasExecutionErrors()) {
                         currency = accountingControl.getCurrencyByEntityInstance(entityInstance);

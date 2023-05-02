@@ -71,7 +71,7 @@ public class LanguageLogic
         Language projectLanguage = null;
         
         var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
-                ComponentVendors.ECHOTHREE.name(), EntityTypes.Language.name());
+                ComponentVendors.ECHO_THREE.name(), EntityTypes.Language.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
             var partyControl = Session.getModelController(PartyControl.class);

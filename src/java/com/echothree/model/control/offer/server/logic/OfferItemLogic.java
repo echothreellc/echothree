@@ -167,7 +167,7 @@ public class OfferItemLogic
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                    ComponentVendors.ECHOTHREE.name(), EntityTypes.OfferItem.name());
+                    ComponentVendors.ECHO_THREE.name(), EntityTypes.OfferItem.name());
 
             if(!eea.hasExecutionErrors()) {
                 var offerItemControl = Session.getModelController(OfferItemControl.class);

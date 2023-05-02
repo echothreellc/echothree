@@ -35,7 +35,7 @@ public class GetHarmonizedTariffScheduleCodeResultsFacetCommand
 
     @Override
     protected BaseResult execute() {
-        return execute(ComponentVendors.ECHOTHREE.name(), EntityTypes.HarmonizedTariffScheduleCode.name(), SearchKinds.HARMONIZED_TARIFF_SCHEDULE_CODE.name(),
+        return execute(ComponentVendors.ECHO_THREE.name(), EntityTypes.HarmonizedTariffScheduleCode.name(), SearchKinds.HARMONIZED_TARIFF_SCHEDULE_CODE.name(),
                 SearchResultFactory.getGetHarmonizedTariffScheduleCodeResultsFacetResult());
     }
 

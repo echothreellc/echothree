@@ -111,7 +111,7 @@ public class FilterKindLogic
             case 1:
                 if(filterKindName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.FilterKind.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.FilterKind.name());
 
                     if(!eea.hasExecutionErrors()) {
                         filterKind = filterControl.getFilterKindByEntityInstance(entityInstance, entityPermission);

@@ -35,7 +35,7 @@ public class GetSecurityRoleResultsFacetsCommand
 
     @Override
     protected BaseResult execute() {
-        return execute(ComponentVendors.ECHOTHREE.name(), EntityTypes.SecurityRole.name(), SearchKinds.SECURITY_ROLE.name(),
+        return execute(ComponentVendors.ECHO_THREE.name(), EntityTypes.SecurityRole.name(), SearchKinds.SECURITY_ROLE.name(),
                 SearchResultFactory.getGetSecurityRoleResultsFacetsResult());
     }
 

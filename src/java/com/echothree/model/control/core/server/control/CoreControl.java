@@ -649,7 +649,7 @@ public class CoreControl
         return componentVendor;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ComponentVendor */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ComponentVendor */
     public ComponentVendor getComponentVendorByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ComponentVendorPK(entityInstance.getEntityUniqueId());
 
@@ -809,7 +809,7 @@ public class CoreControl
         return entityType;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.EntityType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.EntityType */
     public EntityType getEntityTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new EntityTypePK(entityInstance.getEntityUniqueId());
 
@@ -2974,7 +2974,7 @@ public class CoreControl
         return entityAttributeType;
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.EntityAttributeType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.EntityAttributeType */
     public EntityAttributeType getEntityAttributeTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new EntityAttributeTypePK(entityInstance.getEntityUniqueId());
 
@@ -3344,7 +3344,7 @@ public class CoreControl
                             "AND eni_entityinstanceid = etim_eni_entityinstanceid " +
                             "ORDER BY etim_createdtime DESC");
 
-                    ps.setString(1, ComponentVendors.ECHOTHREE.name());
+                    ps.setString(1, ComponentVendors.ECHO_THREE.name());
                     ps.setString(2, EntityTypes.EventGroup.name());
                     ps.setLong(3, workflowStep.getPrimaryKey().getEntityId());
                     ps.setLong(4, Session.MAX_TIME);
@@ -4138,7 +4138,7 @@ public class CoreControl
         return entityAttributeGroup;
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.EntityAttributeGroup */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.EntityAttributeGroup */
     public EntityAttributeGroup getEntityAttributeGroupByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new EntityAttributeGroupPK(entityInstance.getEntityUniqueId());
 
@@ -4624,7 +4624,7 @@ public class CoreControl
         return entityAttribute;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.EntityAttribute */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.EntityAttribute */
     public EntityAttribute getEntityAttributeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new EntityAttributePK(entityInstance.getEntityUniqueId());
 
@@ -5978,7 +5978,7 @@ public class CoreControl
         return entityListItem;
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.EntityListItem */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.EntityListItem */
     public EntityListItem getEntityListItemByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new EntityListItemPK(entityInstance.getEntityUniqueId());
 
@@ -6490,7 +6490,7 @@ public class CoreControl
         return entityIntegerRange;
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.EntityIntegerRange */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.EntityIntegerRange */
     public EntityIntegerRange getEntityIntegerRangeByEntityInstance(EntityInstance entityInstance) {
         EntityIntegerRangePK pk = new EntityIntegerRangePK(entityInstance.getEntityUniqueId());
         EntityIntegerRange entityIntegerRange = EntityIntegerRangeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
@@ -6978,7 +6978,7 @@ public class CoreControl
         return entityLongRange;
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.EntityLongRange */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.EntityLongRange */
     public EntityLongRange getEntityLongRangeByEntityInstance(EntityInstance entityInstance) {
         EntityLongRangePK pk = new EntityLongRangePK(entityInstance.getEntityUniqueId());
         EntityLongRange entityLongRange = EntityLongRangeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
@@ -7671,7 +7671,7 @@ public class CoreControl
         return mimeType;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.MimeType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.MimeType */
     public MimeType getMimeTypeByEntityInstance(EntityInstance entityInstance) {
         MimeTypePK pk = new MimeTypePK(entityInstance.getEntityUniqueId());
         MimeType mimeType = MimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
@@ -12419,7 +12419,7 @@ public class CoreControl
                 
                 PreparedStatement ps = BaseEncryptionKeyFactory.getInstance().prepareStatement(query.toString());
                 
-                ps.setString(1, ComponentVendors.ECHOTHREE.name());
+                ps.setString(1, ComponentVendors.ECHO_THREE.name());
                 ps.setString(2, EntityTypes.BaseEncryptionKey.name());
                 ps.setLong(3, workflowStep.getPrimaryKey().getEntityId());
                 ps.setLong(4, Session.MAX_TIME);
@@ -13368,7 +13368,7 @@ public class CoreControl
         return application;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Application */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Application */
     public Application getApplicationByEntityInstance(EntityInstance entityInstance) {
         var pk = new ApplicationPK(entityInstance.getEntityUniqueId());
 
@@ -15298,7 +15298,7 @@ public class CoreControl
         return color;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Color */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Color */
     public Color getColorByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ColorPK(entityInstance.getEntityUniqueId());
 
@@ -15744,7 +15744,7 @@ public class CoreControl
         return fontStyle;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.FontStyle */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.FontStyle */
     public FontStyle getFontStyleByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new FontStylePK(entityInstance.getEntityUniqueId());
 
@@ -16187,7 +16187,7 @@ public class CoreControl
         return fontWeight;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.FontWeight */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.FontWeight */
     public FontWeight getFontWeightByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new FontWeightPK(entityInstance.getEntityUniqueId());
 
@@ -16630,7 +16630,7 @@ public class CoreControl
         return textDecoration;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.TextDecoration */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.TextDecoration */
     public TextDecoration getTextDecorationByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new TextDecorationPK(entityInstance.getEntityUniqueId());
 
@@ -17073,7 +17073,7 @@ public class CoreControl
         return textTransformation;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.TextTransformation */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.TextTransformation */
     public TextTransformation getTextTransformationByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new TextTransformationPK(entityInstance.getEntityUniqueId());
 
@@ -17517,7 +17517,7 @@ public class CoreControl
         return appearance;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Appearance */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Appearance */
     public Appearance getAppearanceByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new AppearancePK(entityInstance.getEntityUniqueId());
         var appearance = AppearanceFactory.getInstance().getEntityFromPK(entityPermission, pk);

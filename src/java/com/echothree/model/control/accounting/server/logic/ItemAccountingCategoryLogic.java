@@ -91,7 +91,7 @@ public class ItemAccountingCategoryLogic
             case 1:
                 if(itemAccountingCategoryName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.ItemAccountingCategory.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemAccountingCategory.name());
 
                     if(!eea.hasExecutionErrors()) {
                         itemAccountingCategory = accountingControl.getItemAccountingCategoryByEntityInstance(entityInstance, entityPermission);

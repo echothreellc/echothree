@@ -64,7 +64,7 @@ public class UnitOfMeasureKindUseLogic
         UnitOfMeasureKindUseType unitOfMeasureKindUseType = null;
         
         var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
-                ComponentVendors.ECHOTHREE.name(), EntityTypes.UnitOfMeasureKindUseType.name());
+                ComponentVendors.ECHO_THREE.name(), EntityTypes.UnitOfMeasureKindUseType.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
             var uomControl = Session.getModelController(UomControl.class);
@@ -113,7 +113,7 @@ public class UnitOfMeasureKindUseLogic
         UnitOfMeasureKindUse unitOfMeasureKindUse = null;
         
         var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
-                ComponentVendors.ECHOTHREE.name(), EntityTypes.UnitOfMeasureKindUse.name());
+                ComponentVendors.ECHO_THREE.name(), EntityTypes.UnitOfMeasureKindUse.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
             var uomControl = Session.getModelController(UomControl.class);

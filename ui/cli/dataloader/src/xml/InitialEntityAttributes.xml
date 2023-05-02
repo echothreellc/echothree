@@ -21,7 +21,7 @@
         </entityAttributeGroup>
     </entityAttributeGroups>
     <componentVendors>
-        <componentVendor componentVendorName="ECHOTHREE" commandAction="none">
+        <componentVendor componentVendorName="ECHO_THREE" commandAction="none">
             <entityType entityTypeName="Item" keepAllHistory="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Item" />
                 <!--
@@ -64,13 +64,13 @@
                                  checkContentWebAddress="false" sortOrder="1">
                     <entityAttributeDescription languageIsoName="en" description="Example Entity" />
                     <entityAttributeEntityAttributeGroup entityAttributeGroupName="DEFAULT" sortOrder="1" />
-                    <entityAttributeEntityType allowedComponentVendorName="ECHOTHREE" allowedEntityTypeName="Forum" />
+                    <entityAttributeEntityType allowedComponentVendorName="ECHO_THREE" allowedEntityTypeName="Forum" />
                 </entityAttribute>
                 <entityAttribute entityAttributeName="EXAMPLE_COLLECTION" entityAttributeTypeName="COLLECTION" trackRevisions="true"
                                  checkContentWebAddress="false" sortOrder="1">
                     <entityAttributeDescription languageIsoName="en" description="Example Collection" />
                     <entityAttributeEntityAttributeGroup entityAttributeGroupName="DEFAULT" sortOrder="1" />
-                    <entityAttributeEntityType allowedComponentVendorName="ECHOTHREE" allowedEntityTypeName="Forum" />
+                    <entityAttributeEntityType allowedComponentVendorName="ECHO_THREE" allowedEntityTypeName="Forum" />
                 </entityAttribute>
                 <entityAttribute entityAttributeName="EXAMPLE_DATE" entityAttributeTypeName="DATE" trackRevisions="true"
                                  checkContentWebAddress="false" sortOrder="1">

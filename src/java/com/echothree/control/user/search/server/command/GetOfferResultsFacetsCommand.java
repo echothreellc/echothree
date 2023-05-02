@@ -35,7 +35,7 @@ public class GetOfferResultsFacetsCommand
 
     @Override
     protected BaseResult execute() {
-        return execute(ComponentVendors.ECHOTHREE.name(), EntityTypes.Offer.name(), SearchKinds.OFFER.name(),
+        return execute(ComponentVendors.ECHO_THREE.name(), EntityTypes.Offer.name(), SearchKinds.OFFER.name(),
                 SearchResultFactory.getGetOfferResultsFacetsResult());
     }
 

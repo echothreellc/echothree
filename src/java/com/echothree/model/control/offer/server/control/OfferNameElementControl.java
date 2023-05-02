@@ -81,7 +81,7 @@ public class OfferNameElementControl
                 "WHERE ofrne_activedetailid = ofrnedt_offernameelementdetailid");
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.OfferNameElement */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.OfferNameElement */
     public OfferNameElement getOfferNameElementByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new OfferNameElementPK(entityInstance.getEntityUniqueId());
         var offerNameElement = OfferNameElementFactory.getInstance().getEntityFromPK(entityPermission, pk);

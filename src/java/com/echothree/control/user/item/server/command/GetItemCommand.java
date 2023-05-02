@@ -68,7 +68,7 @@ public class GetItemCommand
         if(parameterCount == 1) {
             if(itemName == null && itemNameOrAlias == null) {
                 var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
-                        ComponentVendors.ECHOTHREE.name(), EntityTypes.Item.name());
+                        ComponentVendors.ECHO_THREE.name(), EntityTypes.Item.name());
 
                 if(!hasExecutionErrors()) {
                     item = itemControl.getItemByEntityInstance(entityInstance);

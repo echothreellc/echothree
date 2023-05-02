@@ -166,7 +166,7 @@ public class FilterTypeLogic
             }
         } else if(nameParameterCount == 0 && possibleEntitySpecs == 1) {
             var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                    ComponentVendors.ECHOTHREE.name(), EntityTypes.FilterType.name());
+                    ComponentVendors.ECHO_THREE.name(), EntityTypes.FilterType.name());
 
             if(!eea.hasExecutionErrors()) {
                 filterType = filterControl.getFilterTypeByEntityInstance(entityInstance, entityPermission);

@@ -233,7 +233,7 @@ public class SearchControl
         return searchUseType;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.SearchUseType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.SearchUseType */
     public SearchUseType getSearchUseTypeByEntityInstance(EntityInstance entityInstance) {
         SearchUseTypePK pk = new SearchUseTypePK(entityInstance.getEntityUniqueId());
         SearchUseType searchUseType = SearchUseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
@@ -667,7 +667,7 @@ public class SearchControl
         return searchResultActionType;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.SearchResultActionType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.SearchResultActionType */
     public SearchResultActionType getSearchResultActionTypeByEntityInstance(final EntityInstance entityInstance,
             final EntityPermission entityPermission) {
         var pk = new SearchResultActionTypePK(entityInstance.getEntityUniqueId());
@@ -1131,7 +1131,7 @@ public class SearchControl
                 """);
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.SearchCheckSpellingActionType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.SearchCheckSpellingActionType */
     public SearchCheckSpellingActionType getSearchCheckSpellingActionTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new SearchCheckSpellingActionTypePK(entityInstance.getEntityUniqueId());
 
@@ -1574,7 +1574,7 @@ public class SearchControl
         return searchDefaultOperator;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.SearchDefaultOperator */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.SearchDefaultOperator */
     public SearchDefaultOperator getSearchDefaultOperatorByEntityInstance(EntityInstance entityInstance) {
         SearchDefaultOperatorPK pk = new SearchDefaultOperatorPK(entityInstance.getEntityUniqueId());
         SearchDefaultOperator searchDefaultOperator = SearchDefaultOperatorFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
@@ -2009,7 +2009,7 @@ public class SearchControl
         return searchSortDirection;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.SearchSortDirection */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.SearchSortDirection */
     public SearchSortDirection getSearchSortDirectionByEntityInstance(EntityInstance entityInstance) {
         SearchSortDirectionPK pk = new SearchSortDirectionPK(entityInstance.getEntityUniqueId());
         SearchSortDirection searchSortDirection = SearchSortDirectionFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
@@ -4563,7 +4563,7 @@ public class SearchControl
         return partySearchTypePreference;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.PartySearchTypePreference */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PartySearchTypePreference */
     public PartySearchTypePreference getPartySearchTypePreferenceByEntityInstance(EntityInstance entityInstance) {
         PartySearchTypePreferencePK pk = new PartySearchTypePreferencePK(entityInstance.getEntityUniqueId());
         PartySearchTypePreference partySearchTypePreference = PartySearchTypePreferenceFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);

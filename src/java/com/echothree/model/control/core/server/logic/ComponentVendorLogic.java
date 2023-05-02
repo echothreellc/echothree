@@ -76,7 +76,7 @@ public class ComponentVendorLogic
             case 1:
                 if(componentVendorName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.ComponentVendor.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.ComponentVendor.name());
 
                     if(!eea.hasExecutionErrors()) {
                         componentVendor = coreControl.getComponentVendorByEntityInstance(entityInstance, entityPermission);

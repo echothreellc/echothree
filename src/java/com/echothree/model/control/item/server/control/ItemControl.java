@@ -435,7 +435,7 @@ public class ItemControl
                 "FROM itemtypes");
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ItemType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ItemType */
     public ItemType getItemTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ItemTypePK(entityInstance.getEntityUniqueId());
 
@@ -648,7 +648,7 @@ public class ItemControl
                 "FROM itemdeliverytypes");
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ItemDeliveryType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ItemDeliveryType */
     public ItemDeliveryType getItemDeliveryTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ItemDeliveryTypePK(entityInstance.getEntityUniqueId());
 
@@ -861,7 +861,7 @@ public class ItemControl
                 "FROM iteminventorytypes");
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ItemInventoryType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ItemInventoryType */
     public ItemInventoryType getItemInventoryTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ItemInventoryTypePK(entityInstance.getEntityUniqueId());
 
@@ -1074,7 +1074,7 @@ public class ItemControl
                 "FROM itemusetypes");
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ItemUseType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ItemUseType */
     public ItemUseType getItemUseTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ItemUseTypePK(entityInstance.getEntityUniqueId());
 
@@ -1470,7 +1470,7 @@ public class ItemControl
         return getItemCategoryTransfers(userVisit, getItemCategoriesByParentItemCategory(parentItemCategory));
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ItemCategory */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ItemCategory */
     public ItemCategory getItemCategoryByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ItemCategoryPK(entityInstance.getEntityUniqueId());
 
@@ -1911,7 +1911,7 @@ public class ItemControl
                 stylePath);
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Item */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Item */
     public Item getItemByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ItemPK(entityInstance.getEntityUniqueId());
 
@@ -2888,7 +2888,7 @@ public class ItemControl
                 "FROM itemaliaschecksumtypes");
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ItemAliasChecksumType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ItemAliasChecksumType */
     public ItemAliasChecksumType getItemAliasChecksumTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ItemAliasChecksumTypePK(entityInstance.getEntityUniqueId());
 
@@ -3115,7 +3115,7 @@ public class ItemControl
         return itemAliasType;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ItemAliasType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ItemAliasType */
     public ItemAliasType getItemAliasTypeByEntityInstance(final EntityInstance entityInstance,
             final EntityPermission entityPermission) {
         var pk = new ItemAliasTypePK(entityInstance.getEntityUniqueId());
@@ -5876,7 +5876,7 @@ public class ItemControl
                 "FROM itempricetypes");
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ItemPriceType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ItemPriceType */
     public ItemPriceType getItemPriceTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ItemPriceTypePK(entityInstance.getEntityUniqueId());
 
@@ -6722,7 +6722,7 @@ public class ItemControl
         return itemDescriptionType;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ItemDescriptionType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ItemDescriptionType */
     public ItemDescriptionType getItemDescriptionTypeByEntityInstance(final EntityInstance entityInstance,
             final EntityPermission entityPermission) {
         var pk = new ItemDescriptionTypePK(entityInstance.getEntityUniqueId());
@@ -7423,7 +7423,7 @@ public class ItemControl
         return itemDescriptionTypeUseType;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ItemDescriptionTypeUseType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ItemDescriptionTypeUseType */
     public ItemDescriptionTypeUseType getItemDescriptionTypeUseTypeByEntityInstance(final EntityInstance entityInstance,
             final EntityPermission entityPermission) {
         var pk = new ItemDescriptionTypeUseTypePK(entityInstance.getEntityUniqueId());
@@ -8086,7 +8086,7 @@ public class ItemControl
         return itemImageType;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ItemImageType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ItemImageType */
     public ItemImageType getItemImageTypeByEntityInstance(final EntityInstance entityInstance,
             final EntityPermission entityPermission) {
         var pk = new ItemImageTypePK(entityInstance.getEntityUniqueId());
@@ -8519,7 +8519,7 @@ public class ItemControl
         return itemDescription;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ItemDescription */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ItemDescription */
     public ItemDescription getItemDescriptionByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ItemDescriptionPK(entityInstance.getEntityUniqueId());
 
@@ -9639,7 +9639,7 @@ public class ItemControl
         return relatedItemType;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.RelatedItemType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.RelatedItemType */
     public RelatedItemType getRelatedItemTypeByEntityInstance(final EntityInstance entityInstance,
             final EntityPermission entityPermission) {
         var pk = new RelatedItemTypePK(entityInstance.getEntityUniqueId());
@@ -10496,7 +10496,7 @@ public class ItemControl
                 countryGeoCode);
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.HarmonizedTariffScheduleCode */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.HarmonizedTariffScheduleCode */
     public HarmonizedTariffScheduleCode getHarmonizedTariffScheduleCodeByEntityInstance(EntityInstance entityInstance) {
         HarmonizedTariffScheduleCodePK pk = new HarmonizedTariffScheduleCodePK(entityInstance.getEntityUniqueId());
         HarmonizedTariffScheduleCode harmonizedTariffScheduleCode = HarmonizedTariffScheduleCodeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);

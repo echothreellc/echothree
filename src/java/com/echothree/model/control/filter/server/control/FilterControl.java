@@ -221,7 +221,7 @@ public class FilterControl
                 "WHERE fltk_activedetailid = fltkdt_filterkinddetailid");
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.FilterKind */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.FilterKind */
     public FilterKind getFilterKindByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new FilterKindPK(entityInstance.getEntityUniqueId());
 
@@ -652,7 +652,7 @@ public class FilterControl
                 filterKind);
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.FilterType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.FilterType */
     public FilterType getFilterTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new FilterTypePK(entityInstance.getEntityUniqueId());
 
@@ -1372,7 +1372,7 @@ public class FilterControl
         return filterAdjustment;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.FilterAdjustment */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.FilterAdjustment */
     public FilterAdjustment getFilterAdjustmentByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new FilterAdjustmentPK(entityInstance.getEntityUniqueId());
 
@@ -2424,7 +2424,7 @@ public class FilterControl
                 filterAdjustment);
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Filter */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Filter */
     public Filter getFilterByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new FilterPK(entityInstance.getEntityUniqueId());
 
@@ -2898,7 +2898,7 @@ public class FilterControl
                 selector);
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.FilterStep */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.FilterStep */
     public FilterStep getFilterStepByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new FilterStepPK(entityInstance.getEntityUniqueId());
 

@@ -111,7 +111,7 @@ public class AllocationPriorityLogic
             case 1:
                 if(allocationPriorityName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.AllocationPriority.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.AllocationPriority.name());
 
                     if(!eea.hasExecutionErrors()) {
                         allocationPriority = inventoryControl.getAllocationPriorityByEntityInstance(entityInstance, entityPermission);

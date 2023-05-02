@@ -111,7 +111,7 @@ public class PaymentProcessorResultCodeLogic
             case 1:
                 if(paymentProcessorResultCodeName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.PaymentProcessorResultCode.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.PaymentProcessorResultCode.name());
 
                     if(!eea.hasExecutionErrors()) {
                         paymentProcessorResultCode = paymentProcessorResultCodeControl.getPaymentProcessorResultCodeByEntityInstance(entityInstance, entityPermission);

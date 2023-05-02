@@ -367,7 +367,7 @@ public class ReturnPolicyControl
                 "WHERE rtnk_activedetailid = rtnkdt_returnkinddetailid");
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ReturnKind */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ReturnKind */
     public ReturnKind getReturnKindByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ReturnKindPK(entityInstance.getEntityUniqueId());
 
@@ -802,7 +802,7 @@ public class ReturnPolicyControl
                 returnKind);
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ReturnPolicy */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ReturnPolicy */
     public ReturnPolicy getReturnPolicyByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ReturnPolicyPK(entityInstance.getEntityUniqueId());
 

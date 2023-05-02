@@ -117,7 +117,7 @@ public class VendorTypeLogic
             case 1:
                 if(vendorTypeName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.VendorType.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.VendorType.name());
 
                     if(!eea.hasExecutionErrors()) {
                         vendorType = vendorControl.getVendorTypeByEntityInstance(entityInstance, entityPermission);

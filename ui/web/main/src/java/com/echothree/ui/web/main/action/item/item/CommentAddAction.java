@@ -80,7 +80,7 @@ public class CommentAddAction
             throws NamingException {
         GetCommentTypeForm commandForm = CommentUtil.getHome().getGetCommentTypeForm();
         
-        commandForm.setComponentVendorName(ComponentVendors.ECHOTHREE.name());
+        commandForm.setComponentVendorName(ComponentVendors.ECHO_THREE.name());
         commandForm.setEntityTypeName(EntityTypes.Item.name());
         commandForm.setCommentTypeName(actionForm.getCommentTypeName());
 

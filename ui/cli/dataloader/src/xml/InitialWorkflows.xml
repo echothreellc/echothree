@@ -55,7 +55,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Approved Item Customer Comment" />
                 <workflowEntranceStep entranceWorkflowStepName="APPROVED" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Comment" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="Comment" />
         </workflow>
         <workflow workflowName="ITEM_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Item Status" />
@@ -104,7 +104,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Cancel If Not In Stock" />
                 <workflowEntranceStep entranceWorkflowStepName="CANCEL_IF_NOT_IN_STOCK" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Item" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="Item" />
         </workflow>
         <workflow workflowName="EMPLOYEE_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="EmployeeStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Employee Status" />
@@ -134,7 +134,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Employee" />
                 <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Party" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="Party" />
         </workflow>
         <workflow workflowName="EMPLOYEE_AVAILABILITY" workflowTypeName="SYSTEM" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Vendor Availability" />
@@ -235,7 +235,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Vendor" />
                 <workflowEntranceStep entranceWorkflowStepName="AVAILABLE" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Party" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="Party" />
         </workflow>
         <workflow workflowName="CUSTOMER_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="CustomerStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Customer Status" />
@@ -263,7 +263,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Customer" />
                 <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Party" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="Party" />
         </workflow>
         <workflow workflowName="CUSTOMER_CREDIT_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Customer Credit Status" />
@@ -340,7 +340,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="Waiting for Approval" />
                 <workflowEntranceStep entranceWorkflowStepName="WAITING_APPROVAL" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Party" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="Party" />
         </workflow>
         <workflow workflowName="EVENT_GROUP_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Event Group Status" />
@@ -365,7 +365,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Event Group" />
                 <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="EventGroup" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="EventGroup" />
         </workflow>
         <workflow workflowName="USER_VISIT_GROUP_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
             <workflowDescription languageIsoName="en" description="User Visit Group Status" />
@@ -390,7 +390,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New User Visit Group" />
                 <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="UserVisitGroup" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="UserVisitGroup" />
         </workflow>
         <workflow workflowName="TRANSACTION_GROUP_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Transaction Group Status" />
@@ -415,7 +415,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Transaction Group" />
                 <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="TransactionGroup" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="TransactionGroup" />
         </workflow>
         <workflow workflowName="PRINTER_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Printer Status" />
@@ -437,7 +437,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Printer" />
                 <workflowEntranceStep entranceWorkflowStepName="ACCEPTING_JOBS" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Printer" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="Printer" />
         </workflow>
         <workflow workflowName="PRINTER_GROUP_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Printer Group Status" />
@@ -459,7 +459,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Printer Group" />
                 <workflowEntranceStep entranceWorkflowStepName="QUEUEING_JOBS" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="PrinterGroup" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="PrinterGroup" />
         </workflow>
         <workflow workflowName="PRINTER_GROUP_JOB_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Printer Group Job Status" />
@@ -511,7 +511,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Printer Group Job" />
                 <workflowEntranceStep entranceWorkflowStepName="QUEUED" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="PrinterGroupJob" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="PrinterGroupJob" />
         </workflow>
         <workflow workflowName="LOCATION_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Location Status" />
@@ -563,7 +563,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Location (Inventory)" />
                 <workflowEntranceStep entranceWorkflowStepName="INVENTORY" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Location" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="Location" />
         </workflow>
         <workflow workflowName="INVENTORY_LOCATION_GROUP_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Location Status" />
@@ -596,7 +596,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Inventory Location Group" />
                 <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="InventoryLocationGroup" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="InventoryLocationGroup" />
         </workflow>
         <workflow workflowName="POSTAL_ADDRESS_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Postal Address Status" />
@@ -618,7 +618,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Postal Address" />
                 <workflowEntranceStep entranceWorkflowStepName="VALID" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="ContactMechanism" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="ContactMechanism" />
         </workflow>
         <workflow workflowName="EMAIL_ADDRESS_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Email Address Status" />
@@ -640,7 +640,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Email Address" />
                 <workflowEntranceStep entranceWorkflowStepName="VALID" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="ContactMechanism" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="ContactMechanism" />
         </workflow>
         <workflow workflowName="EMAIL_ADDRESS_VERIFICATION" workflowTypeName="SYSTEM" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Email Address Verification" />
@@ -662,7 +662,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Email Address" />
                 <workflowEntranceStep entranceWorkflowStepName="NOT_VERIFIED" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="ContactMechanism" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="ContactMechanism" />
         </workflow>
         <workflow workflowName="TELEPHONE_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Telephone Status" />
@@ -684,7 +684,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Telephone" />
                 <workflowEntranceStep entranceWorkflowStepName="VALID" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="ContactMechanism" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="ContactMechanism" />
         </workflow>
         <workflow workflowName="WEB_ADDRESS_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Web Address Status" />
@@ -706,7 +706,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Web Address" />
                 <workflowEntranceStep entranceWorkflowStepName="VALID" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="ContactMechanism" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="ContactMechanism" />
         </workflow>
         <workflow workflowName="WORK_REQUIREMENT_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Work Requirement Status" />
@@ -739,7 +739,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Assigned" />
                 <workflowEntranceStep entranceWorkflowStepName="ASSIGNED" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="WorkRequirement" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="WorkRequirement" />
         </workflow>
         <workflow workflowName="WORK_ASSIGNMENT_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Work Assignment Status" />
@@ -798,7 +798,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Accepted" />
                 <workflowEntranceStep entranceWorkflowStepName="ACCEPTED" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="WorkAssignment" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="WorkAssignment" />
         </workflow>
         <workflow workflowName="WORK_TIME_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Work Time Status" />
@@ -831,7 +831,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Incomplete" />
                 <workflowEntranceStep entranceWorkflowStepName="COMPLETE" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="WorkTime" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="WorkTime" />
         </workflow>
         <workflow workflowName="INCOMING_CUSTOMER_EMAIL" workflowTypeName="SYSTEM" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Incoming Customer Email" />
@@ -843,7 +843,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Communication Event" />
                 <workflowEntranceStep entranceWorkflowStepName="CLASSIFY" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="CommunicationEvents" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="CommunicationEvents" />
         </workflow>
         <workflow workflowName="OUTGOING_CUSTOMER_EMAIL" workflowTypeName="SYSTEM" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Outgoing Customer Email" />
@@ -862,7 +862,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Communication Event Send" />
                 <workflowEntranceStep entranceWorkflowStepName="SEND" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="CommunicationEvents" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="CommunicationEvents" />
         </workflow>
         <workflow workflowName="PARTY_CONTACT_LIST_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Party Contact List Status" />
@@ -895,7 +895,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="Active" />
                 <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="PartyContactList" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="PartyContactList" />
         </workflow>
         <workflow workflowName="JOB_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="JobStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Job Status" />
@@ -942,7 +942,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Disabled Job" />
                 <workflowEntranceStep entranceWorkflowStepName="DISABLED" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Job" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="Job" />
         </workflow>
         <workflow workflowName="BASE_ENCRYPTION_KEY_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="BaseEncryptionKeyStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Base Encryption Key Status" />
@@ -978,7 +978,7 @@
                     <workflowEntranceSecurityRole securityRoleName="NewActive" />
                 </workflowEntrancePartyType>
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="BaseEncryptionKey" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="BaseEncryptionKey" />
         </workflow>
         <workflow workflowName="PURCHASE_INVOICE_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="PurchaseInvoiceStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Purchase Invoice Status" />
@@ -1045,7 +1045,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Entry" />
                 <workflowEntranceStep entranceWorkflowStepName="ENTRY" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Invoice" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="Invoice" />
         </workflow>
         <workflow workflowName="FISCAL_PERIOD_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="FiscalPeriodStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Fiscal Period Status" />
@@ -1083,7 +1083,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Fiscal Period" />
                 <workflowEntranceStep entranceWorkflowStepName="OPEN" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Period" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="Period" />
         </workflow>
         <workflow workflowName="VENDOR_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="VendorStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Vendor Status" />
@@ -1113,7 +1113,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Vendor" />
                 <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Party" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="Party" />
         </workflow>
         <workflow workflowName="VENDOR_ITEM_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="VendorItemStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Vendor Item Status" />
@@ -1143,7 +1143,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Vendor Item" />
                 <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="VendorItem" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="VendorItem" />
         </workflow>
         <workflow workflowName="PARTY_TRAINING_CLASS_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Party Training Class Status" />
@@ -1190,7 +1190,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Passed" />
                 <workflowEntranceStep entranceWorkflowStepName="PASSED" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="PartyTrainingClass" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="PartyTrainingClass" />
         </workflow>
         <workflow workflowName="PARTY_CANCELLATION_POLICY_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="PartyCancellationPolicyStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Party Cancellation Policy Status" />
@@ -1212,7 +1212,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Party Cancellation Policy" />
                 <workflowEntranceStep entranceWorkflowStepName="NOT_ACCEPTED" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="PartyCancellationPolicy" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="PartyCancellationPolicy" />
         </workflow>
         <workflow workflowName="PARTY_RETURN_POLICY_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="PartyReturnPolicyStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Party Return Policy Status" />
@@ -1234,7 +1234,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Party Return Policy" />
                 <workflowEntranceStep entranceWorkflowStepName="NOT_ACCEPTED" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="PartyReturnPolicy" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="PartyReturnPolicy" />
         </workflow>
         <workflow workflowName="LEAVE_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="LeaveStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Leave Status" />
@@ -1320,7 +1320,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Approved" />
                 <workflowEntranceStep entranceWorkflowStepName="APPROVED" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Leave" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="Leave" />
         </workflow>
         <workflow workflowName="CAMPAIGN_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="CampaignStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Campaign Status" />
@@ -1350,7 +1350,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Campaign" />
                 <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Campaign" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="Campaign" />
         </workflow>
         <workflow workflowName="CAMPAIGN_SOURCE_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="CampaignSourceStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Campaign Source Status" />
@@ -1380,7 +1380,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Campaign Source" />
                 <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="CampaignSource" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="CampaignSource" />
         </workflow>
         <workflow workflowName="CAMPAIGN_MEDIUM_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="CampaignMediumStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Campaign Medium Status" />
@@ -1410,7 +1410,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Campaign Medium" />
                 <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="CampaignMedium" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="CampaignMedium" />
         </workflow>
         <workflow workflowName="CAMPAIGN_TERM_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="CampaignTermStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Campaign Term Status" />
@@ -1440,7 +1440,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Campaign Term" />
                 <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="CampaignTerm" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="CampaignTerm" />
         </workflow>
         <workflow workflowName="CAMPAIGN_CONTENT_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="CampaignContentStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Campaign Content Status" />
@@ -1470,7 +1470,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Campaign Content" />
                 <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="CampaignContent" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="CampaignContent" />
         </workflow>
         <workflow workflowName="TRACK_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="TrackStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Track Status" />
@@ -1500,7 +1500,7 @@
                 <workflowEntranceDescription languageIsoName="en" description="New Track" />
                 <workflowEntranceStep entranceWorkflowStepName="ACTIVE" />
             </workflowEntrance>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Track" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="Track" />
         </workflow>
     </workflows>
 </initialData>

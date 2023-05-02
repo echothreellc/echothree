@@ -122,7 +122,7 @@ public class OfferLogic
             case 1:
                 if(offerName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.Offer.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.Offer.name());
 
                     if(!eea.hasExecutionErrors()) {
                         offer = offerControl.getOfferByEntityInstance(entityInstance, entityPermission);

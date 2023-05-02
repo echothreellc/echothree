@@ -82,7 +82,7 @@ public class GetSearchDefaultOperatorCommand
             SearchDefaultOperator searchDefaultOperator = null;
 
             if(searchDefaultOperatorName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHOTHREE.name(),
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
                         EntityTypes.SearchDefaultOperator.name());
                 
                 if(!hasExecutionErrors()) {

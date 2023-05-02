@@ -65,7 +65,7 @@ public class GetItemPriceTypeCommand
         if(parameterCount == 1) {
             if(itemPriceTypeName == null) {
                 var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
-                        ComponentVendors.ECHOTHREE.name(), EntityTypes.ItemPriceType.name());
+                        ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemPriceType.name());
 
                 if(!hasExecutionErrors()) {
                     itemPriceType = itemControl.getItemPriceTypeByEntityInstance(entityInstance);

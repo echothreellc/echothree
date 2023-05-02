@@ -112,7 +112,7 @@ public class TagLogic
             case 1 -> {
                 if(possibleEntitySpecs == 1) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.Tag.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.Tag.name());
 
                     if(!eea.hasExecutionErrors()) {
                         tag = tagControl.getTagByEntityInstance(entityInstance, entityPermission);

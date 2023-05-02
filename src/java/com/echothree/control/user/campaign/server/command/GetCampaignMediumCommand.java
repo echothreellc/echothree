@@ -82,7 +82,7 @@ public class GetCampaignMediumCommand
             CampaignMedium campaignMedium = null;
 
             if(campaignMediumName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHOTHREE.name(),
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
                         EntityTypes.CampaignMedium.name());
                 
                 if(!hasExecutionErrors()) {

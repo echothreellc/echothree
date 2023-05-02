@@ -78,7 +78,7 @@ public class DeleteItemPurchasingCategoryCommand
             ItemPurchasingCategory itemPurchasingCategory = null;
 
             if(itemPurchasingCategoryName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHOTHREE.name(),
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
                         EntityTypes.ItemPurchasingCategory.name());
 
                 if(!hasExecutionErrors()) {

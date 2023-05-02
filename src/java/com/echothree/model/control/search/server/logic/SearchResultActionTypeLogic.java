@@ -112,7 +112,7 @@ public class SearchResultActionTypeLogic
             case 1:
                 if(searchResultActionTypeName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.SearchResultActionType.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.SearchResultActionType.name());
 
                     if(!eea.hasExecutionErrors()) {
                         searchResultActionType = searchControl.getSearchResultActionTypeByEntityInstance(entityInstance, entityPermission);

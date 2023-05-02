@@ -116,7 +116,7 @@ public class OrderTypeLogic
             case 1 -> {
                 if(orderTypeName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.OrderType.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.OrderType.name());
 
                     if(!eea.hasExecutionErrors()) {
                         orderType = orderTypeControl.getOrderTypeByEntityInstance(entityInstance, entityPermission);

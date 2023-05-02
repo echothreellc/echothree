@@ -67,7 +67,7 @@ public class GetTextTransformationCommand
         if(parameterCount == 1) {
             if(textTransformationName == null) {
                 var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
-                        ComponentVendors.ECHOTHREE.name(), EntityTypes.TextTransformation.name());
+                        ComponentVendors.ECHO_THREE.name(), EntityTypes.TextTransformation.name());
 
                 if(!hasExecutionErrors()) {
                     textTransformation = coreControl.getTextTransformationByEntityInstance(entityInstance);

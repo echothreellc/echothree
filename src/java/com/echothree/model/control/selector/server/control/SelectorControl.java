@@ -245,7 +245,7 @@ public class SelectorControl
                         "WHERE slk_activedetailid = slkdt_selectorkinddetailid");
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.SelectorKind */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.SelectorKind */
     public SelectorKind getSelectorKindByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new SelectorKindPK(entityInstance.getEntityUniqueId());
         var selectorKind = SelectorKindFactory.getInstance().getEntityFromPK(entityPermission, pk);
@@ -676,7 +676,7 @@ public class SelectorControl
                 selectorKind);
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.SelectorType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.SelectorType */
     public SelectorType getSelectorTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new SelectorTypePK(entityInstance.getEntityUniqueId());
         var selectorType = SelectorTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
@@ -1339,7 +1339,7 @@ public class SelectorControl
         return SelectorNodeTypeFactory.getInstance().create(selectorNodeTypeName, sortOrder);
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.SelectorNodeType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.SelectorNodeType */
     public SelectorNodeType getSelectorNodeTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new SelectorNodeTypePK(entityInstance.getEntityUniqueId());
 
@@ -1662,7 +1662,7 @@ public class SelectorControl
                 selectorType);
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Selector */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Selector */
     public Selector getSelectorByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new SelectorPK(entityInstance.getEntityUniqueId());
         var selector = SelectorFactory.getInstance().getEntityFromPK(entityPermission, pk);

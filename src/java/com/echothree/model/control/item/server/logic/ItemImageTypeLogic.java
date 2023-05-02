@@ -112,7 +112,7 @@ public class ItemImageTypeLogic
             case 1:
                 if(itemImageTypeName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.ItemImageType.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemImageType.name());
 
                     if(!eea.hasExecutionErrors()) {
                         itemImageType = itemControl.getItemImageTypeByEntityInstance(entityInstance, entityPermission);

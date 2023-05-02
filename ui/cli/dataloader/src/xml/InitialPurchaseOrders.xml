@@ -60,7 +60,7 @@
                 <workflowDestinationDescription languageIsoName="en" description="Entry to Canceled" />
                 <workflowDestinationStep destinationWorkflowStepName="CANCELED" />
             </workflowDestination>
-            <workflowEntityType componentVendorName="ECHOTHREE" entityTypeName="Order" />
+            <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="Order" />
         </workflow>
     </workflows>
 </initialData>

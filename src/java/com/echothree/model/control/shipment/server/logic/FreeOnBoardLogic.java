@@ -111,7 +111,7 @@ public class FreeOnBoardLogic
             case 1:
                 if(freeOnBoardName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.FreeOnBoard.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.FreeOnBoard.name());
 
                     if(!eea.hasExecutionErrors()) {
                         freeOnBoard = freeOnBoardControl.getFreeOnBoardByEntityInstance(entityInstance, entityPermission);

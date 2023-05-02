@@ -93,7 +93,7 @@ public class PaymentMethodTypeControl
         return paymentMethodType;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.PaymentMethodType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PaymentMethodType */
     public PaymentMethodType getPaymentMethodTypeByEntityInstance(final EntityInstance entityInstance,
             final EntityPermission entityPermission) {
         var pk = new PaymentMethodTypePK(entityInstance.getEntityUniqueId());

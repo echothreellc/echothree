@@ -47,7 +47,7 @@ public class ComponentVendorTest
                         componentVendorName
                     }
                 }
-                """.formatted(ComponentVendors.ECHOTHREE));
+                """.formatted(ComponentVendors.ECHO_THREE));
 
         assertThat(getMap(componentVendorBody, "data.componentVendor")).isNull();
     }
@@ -99,9 +99,9 @@ public class ComponentVendorTest
                         componentVendorName
                     }
                 }
-                """.formatted(ComponentVendors.ECHOTHREE));
+                """.formatted(ComponentVendors.ECHO_THREE));
 
-        assertThat(getString(componentVendorBody, "data.componentVendor.componentVendorName")).isEqualTo(ComponentVendors.ECHOTHREE.toString());
+        assertThat(getString(componentVendorBody, "data.componentVendor.componentVendorName")).isEqualTo(ComponentVendors.ECHO_THREE.toString());
     }
 
     @Test
@@ -137,9 +137,9 @@ public class ComponentVendorTest
                         }
                     }
                 }
-                """.formatted(ComponentVendors.ECHOTHREE));
+                """.formatted(ComponentVendors.ECHO_THREE));
 
-        assertThat(getString(componentVendorBody, "data.componentVendor.componentVendorName")).isEqualTo(ComponentVendors.ECHOTHREE.toString());
+        assertThat(getString(componentVendorBody, "data.componentVendor.componentVendorName")).isEqualTo(ComponentVendors.ECHO_THREE.toString());
         var entityTypeCount = getLong(componentVendorBody, "data.componentVendor.entityTypes.totalCount");
         assertThat(entityTypeCount).isGreaterThan(0);
         assertThat(getList(componentVendorBody, "data.componentVendor.entityTypes.edges")).size().isEqualTo(entityTypeCount);

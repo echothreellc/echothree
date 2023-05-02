@@ -112,7 +112,7 @@ public class ReturnKindLogic
             case 1:
                 if(returnKindName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.ReturnKind.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.ReturnKind.name());
 
                     if(!eea.hasExecutionErrors()) {
                         returnKind = returnControl.getReturnKindByEntityInstance(entityInstance, entityPermission);

@@ -42,7 +42,7 @@ public class ItemResultsObject
         extends BaseResultsObject<GetItemResultsForm> {
 
     public ItemResultsObject(GetItemResultsForm form) {
-        super(ComponentVendors.ECHOTHREE.name(), EntityTypes.Item.name(), SearchKinds.ITEM.name(), form);
+        super(ComponentVendors.ECHO_THREE.name(), EntityTypes.Item.name(), SearchKinds.ITEM.name(), form);
     }
 
     @GraphQLField

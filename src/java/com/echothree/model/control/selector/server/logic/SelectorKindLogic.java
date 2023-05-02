@@ -111,7 +111,7 @@ public class SelectorKindLogic
             case 1:
                 if(selectorKindName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.SelectorKind.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.SelectorKind.name());
 
                     if(!eea.hasExecutionErrors()) {
                         selectorKind = selectorControl.getSelectorKindByEntityInstance(entityInstance, entityPermission);

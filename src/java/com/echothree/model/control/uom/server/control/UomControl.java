@@ -156,7 +156,7 @@ public class UomControl
                 "WHERE uomk_activedetailid = uomkdt_unitofmeasurekinddetailid");
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.UnitOfMeasureKind */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.UnitOfMeasureKind */
     public UnitOfMeasureKind getUnitOfMeasureKindByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new UnitOfMeasureKindPK(entityInstance.getEntityUniqueId());
 
@@ -696,7 +696,7 @@ public class UomControl
                 unitOfMeasureKind);
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.UnitOfMeasureType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.UnitOfMeasureType */
     public UnitOfMeasureType getUnitOfMeasureTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new UnitOfMeasureTypePK(entityInstance.getEntityUniqueId());
 
@@ -1688,7 +1688,7 @@ public class UomControl
         return UnitOfMeasureKindUseTypeFactory.getInstance().create(unitOfMeasureKindUseTypeName, allowMultiple, allowFractionDigits, isDefault, sortOrder);
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.UnitOfMeasureKindUseType */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.UnitOfMeasureKindUseType */
     public UnitOfMeasureKindUseType getUnitOfMeasureKindUseTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new UnitOfMeasureKindUseTypePK(entityInstance.getEntityUniqueId());
 
@@ -1870,7 +1870,7 @@ public class UomControl
                 unitOfMeasureKind, Session.MAX_TIME);
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.UnitOfMeasureKindUse */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.UnitOfMeasureKindUse */
     public UnitOfMeasureKindUse getUnitOfMeasureKindUseByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new UnitOfMeasureKindUsePK(entityInstance.getEntityUniqueId());
 

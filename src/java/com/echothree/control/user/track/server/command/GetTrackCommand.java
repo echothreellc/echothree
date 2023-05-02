@@ -82,7 +82,7 @@ public class GetTrackCommand
             Track track = null;
 
             if(trackName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHOTHREE.name(),
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
                         EntityTypes.Track.name());
                 
                 if(!hasExecutionErrors()) {

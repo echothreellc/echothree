@@ -65,7 +65,7 @@ public class GetItemAliasChecksumTypeCommand
         if(parameterCount == 1) {
             if(itemAliasChecksumTypeName == null) {
                 var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
-                        ComponentVendors.ECHOTHREE.name(), EntityTypes.ItemAliasChecksumType.name());
+                        ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemAliasChecksumType.name());
 
                 if(!hasExecutionErrors()) {
                     itemAliasChecksumType = itemControl.getItemAliasChecksumTypeByEntityInstance(entityInstance);

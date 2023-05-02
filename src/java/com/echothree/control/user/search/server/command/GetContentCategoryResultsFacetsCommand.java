@@ -35,7 +35,7 @@ public class GetContentCategoryResultsFacetsCommand
 
     @Override
     protected BaseResult execute() {
-        return execute(ComponentVendors.ECHOTHREE.name(), EntityTypes.ContentCategory.name(), SearchKinds.CONTENT_CATEGORY.name(),
+        return execute(ComponentVendors.ECHO_THREE.name(), EntityTypes.ContentCategory.name(), SearchKinds.CONTENT_CATEGORY.name(),
                 SearchResultFactory.getGetContentCategoryResultsFacetsResult());
     }
 

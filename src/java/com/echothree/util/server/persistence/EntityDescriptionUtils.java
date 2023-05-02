@@ -110,7 +110,7 @@ public class EntityDescriptionUtils {
             var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
             var componentVendorName = entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName();
 
-            if(componentVendorName.equals(ComponentVendors.ECHOTHREE.name())) {
+            if(componentVendorName.equals(ComponentVendors.ECHO_THREE.name())) {
                 var coreControl = Session.getModelController(CoreControl.class);
                 var entityTypeName = entityTypeDetail.getEntityTypeName();
 

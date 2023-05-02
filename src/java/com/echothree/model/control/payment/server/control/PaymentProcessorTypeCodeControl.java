@@ -83,7 +83,7 @@ public class PaymentProcessorTypeCodeControl
         return paymentProcessorTypeCode;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.PaymentProcessorTypeCode */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PaymentProcessorTypeCode */
     public PaymentProcessorTypeCode getPaymentProcessorTypeCodeByEntityInstance(final EntityInstance entityInstance,
             final EntityPermission entityPermission) {
         var pk = new PaymentProcessorTypeCodePK(entityInstance.getEntityUniqueId());

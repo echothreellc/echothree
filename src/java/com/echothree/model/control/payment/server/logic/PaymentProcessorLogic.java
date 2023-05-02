@@ -113,7 +113,7 @@ public class PaymentProcessorLogic
             case 1:
                 if(paymentProcessorName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.PaymentProcessor.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.PaymentProcessor.name());
 
                     if(!eea.hasExecutionErrors()) {
                         paymentProcessor = paymentProcessorControl.getPaymentProcessorByEntityInstance(entityInstance, entityPermission);

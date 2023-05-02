@@ -303,7 +303,7 @@ public class PartyControl
         return language;
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Language */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Language */
     public Language getLanguageByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new LanguagePK(entityInstance.getEntityUniqueId());
 
@@ -747,7 +747,7 @@ public class PartyControl
         return personalTitle;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.PersonalTitle */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PersonalTitle */
     public PersonalTitle getPersonalTitleByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new PersonalTitlePK(entityInstance.getEntityUniqueId());
 
@@ -1019,7 +1019,7 @@ public class PartyControl
         return nameSuffix;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.NameSuffix */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.NameSuffix */
     public NameSuffix getNameSuffixByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new NameSuffixPK(entityInstance.getEntityUniqueId());
 
@@ -1279,7 +1279,7 @@ public class PartyControl
         return timeZone;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.TimeZone */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.TimeZone */
     public TimeZone getTimeZoneByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new TimeZonePK(entityInstance.getEntityUniqueId());
 
@@ -1608,7 +1608,7 @@ public class PartyControl
         return dateTimeFormat;
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.DateTimeFormat */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.DateTimeFormat */
     public DateTimeFormat getDateTimeFormatByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new DateTimeFormatPK(entityInstance.getEntityUniqueId());
 
@@ -2174,7 +2174,7 @@ public class PartyControl
         return PartyFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, partyPK);
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.Party */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Party */
     public Party getPartyByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new PartyPK(entityInstance.getEntityUniqueId());
 

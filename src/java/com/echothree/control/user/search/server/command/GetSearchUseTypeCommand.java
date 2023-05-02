@@ -82,7 +82,7 @@ public class GetSearchUseTypeCommand
             SearchUseType searchUseType = null;
 
             if(searchUseTypeName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHOTHREE.name(),
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
                         EntityTypes.SearchUseType.name());
                 
                 if(!hasExecutionErrors()) {

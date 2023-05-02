@@ -67,7 +67,7 @@ public class GetFontWeightCommand
         if(parameterCount == 1) {
             if(fontWeightName == null) {
                 var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
-                        ComponentVendors.ECHOTHREE.name(), EntityTypes.FontWeight.name());
+                        ComponentVendors.ECHO_THREE.name(), EntityTypes.FontWeight.name());
 
                 if(!hasExecutionErrors()) {
                     fontWeight = coreControl.getFontWeightByEntityInstance(entityInstance);

@@ -65,7 +65,7 @@ public class GetItemDeliveryTypeCommand
         if(parameterCount == 1) {
             if(itemDeliveryTypeName == null) {
                 var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form,
-                        ComponentVendors.ECHOTHREE.name(), EntityTypes.ItemDeliveryType.name());
+                        ComponentVendors.ECHO_THREE.name(), EntityTypes.ItemDeliveryType.name());
 
                 if(!hasExecutionErrors()) {
                     itemDeliveryType = itemControl.getItemDeliveryTypeByEntityInstance(entityInstance);

@@ -113,7 +113,7 @@ public class EntityAttributeGroupLogic
             case 1:
                 if(entityAttributeGroupName == null) {
                     var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, universalSpec,
-                            ComponentVendors.ECHOTHREE.name(), EntityTypes.EntityAttributeGroup.name());
+                            ComponentVendors.ECHO_THREE.name(), EntityTypes.EntityAttributeGroup.name());
 
                     if(!eea.hasExecutionErrors()) {
                         entityAttributeGroup = coreControl.getEntityAttributeGroupByEntityInstance(entityInstance, entityPermission);

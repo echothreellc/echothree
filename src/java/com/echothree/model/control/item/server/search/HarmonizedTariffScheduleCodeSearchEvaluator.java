@@ -44,7 +44,7 @@ public class HarmonizedTariffScheduleCodeSearchEvaluator
     /** Creates a new instance of HarmonizedTariffScheduleCodeSearchEvaluator */
     public HarmonizedTariffScheduleCodeSearchEvaluator(UserVisit userVisit, Language language, SearchType searchType, SearchDefaultOperator searchDefaultOperator,
             SearchSortOrder searchSortOrder, SearchSortDirection searchSortDirection, SearchUseType searchUseType) {
-        super(userVisit, searchDefaultOperator, searchType, searchSortOrder, searchSortDirection, searchUseType, ComponentVendors.ECHOTHREE.name(),
+        super(userVisit, searchDefaultOperator, searchType, searchSortOrder, searchSortDirection, searchUseType, ComponentVendors.ECHO_THREE.name(),
                 EntityTypes.HarmonizedTariffScheduleCode.name(), IndexTypes.HARMONIZED_TARIFF_SCHEDULE_CODE.name(), language, null);
         
         setField(IndexFields.description.name());

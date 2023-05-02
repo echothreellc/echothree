@@ -426,7 +426,7 @@ public class UserControl
                         "AND eni_entityinstanceid = etim_eni_entityinstanceid " +
                         "ORDER BY etim_createdtime DESC");
 
-                ps.setString(1, ComponentVendors.ECHOTHREE.name());
+                ps.setString(1, ComponentVendors.ECHO_THREE.name());
                 ps.setString(2, EntityTypes.UserVisitGroup.name());
                 ps.setLong(3, workflowStep.getPrimaryKey().getEntityId());
                 ps.setLong(4, Session.MAX_TIME);
@@ -1362,7 +1362,7 @@ public class UserControl
         return getRecoveryQuestionDetailValueForUpdate(getRecoveryQuestionByNameForUpdate(recoveryQuestionName));
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.RecoveryQuestion */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.RecoveryQuestion */
     public RecoveryQuestion getRecoveryQuestionByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new RecoveryQuestionPK(entityInstance.getEntityUniqueId());
 

@@ -101,7 +101,7 @@ public class UnitOfMeasureTypeLogic
         UnitOfMeasureType unitOfMeasureType = null;
         
         var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(eea, (String)null, null, null, ulid,
-                ComponentVendors.ECHOTHREE.name(), EntityTypes.UnitOfMeasureType.name());
+                ComponentVendors.ECHO_THREE.name(), EntityTypes.UnitOfMeasureType.name());
 
         if(eea == null || !eea.hasExecutionErrors()) {
             var uomControl = Session.getModelController(UomControl.class);

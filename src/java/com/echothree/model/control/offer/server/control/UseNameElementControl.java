@@ -84,7 +84,7 @@ public class UseNameElementControl
                 "WHERE usene_activedetailid = usenedt_usenameelementdetailid");
     }
 
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.UseNameElement */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.UseNameElement */
     public UseNameElement getUseNameElementByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new UseNameElementPK(entityInstance.getEntityUniqueId());
         var useNameElement = UseNameElementFactory.getInstance().getEntityFromPK(entityPermission, pk);

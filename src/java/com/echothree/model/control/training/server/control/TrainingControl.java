@@ -229,7 +229,7 @@ public class TrainingControl
         return trainingClass;
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.TrainingClass */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.TrainingClass */
     public TrainingClass getTrainingClassByEntityInstance(EntityInstance entityInstance) {
         TrainingClassPK pk = new TrainingClassPK(entityInstance.getEntityUniqueId());
         TrainingClass trainingClass = TrainingClassFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
@@ -1934,7 +1934,7 @@ public class TrainingControl
         return partyTrainingClass;
     }
     
-    /** Assume that the entityInstance passed to this function is a ECHOTHREE.PartyTrainingClass */
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PartyTrainingClass */
     public PartyTrainingClass getPartyTrainingClassByEntityInstance(EntityInstance entityInstance) {
         PartyTrainingClassPK pk = new PartyTrainingClassPK(entityInstance.getEntityUniqueId());
         PartyTrainingClass partyTrainingClass = PartyTrainingClassFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
@@ -1946,7 +1946,7 @@ public class TrainingControl
         var coreControl = Session.getModelController(CoreControl.class);
         PartyTrainingClass partyTrainingClass = null;
         
-        if(coreControl.verifyEntityInstance(entityInstance, ComponentVendors.ECHOTHREE.name(), EntityTypes.PartyTrainingClass.name())) {
+        if(coreControl.verifyEntityInstance(entityInstance, ComponentVendors.ECHO_THREE.name(), EntityTypes.PartyTrainingClass.name())) {
             partyTrainingClass = PartyTrainingClassFactory.getInstance().getEntityFromPK(entityPermission, new PartyTrainingClassPK(entityInstance.getEntityUniqueId()));
         }
         
@@ -2098,7 +2098,7 @@ public class TrainingControl
     private List<PartyTrainingClass> getPartyTrainingClassesByStatus(Party party, TrainingClass trainingClass, String workflowStepName,
             EntityPermission entityPermission) {
         return PartyTrainingClassFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyTrainingClassesByStatusQueries, party,
-                trainingClass, PartyTrainingClassStatusConstants.Workflow_PARTY_TRAINING_CLASS_STATUS, workflowStepName, ComponentVendors.ECHOTHREE.name(),
+                trainingClass, PartyTrainingClassStatusConstants.Workflow_PARTY_TRAINING_CLASS_STATUS, workflowStepName, ComponentVendors.ECHO_THREE.name(),
                 EntityTypes.PartyTrainingClass.name(), Session.MAX_TIME_LONG);
     }
     
@@ -2142,7 +2142,7 @@ public class TrainingControl
                 "AND entdt_entitytypename = ? " +
                 "AND ent_entitytypeid = eni_ent_entitytypeid AND ptrncls_partytrainingclassid = eni_entityuniqueid " +
                 "AND eni_entityinstanceid = wkfles_eni_entityinstanceid AND wkfles_wkfls_workflowstepid = ? AND wkfles_thrutime = ?",
-                party, trainingClass, ComponentVendors.ECHOTHREE.name(), EntityTypes.PartyTrainingClass.name(), workflowStep,
+                party, trainingClass, ComponentVendors.ECHO_THREE.name(), EntityTypes.PartyTrainingClass.name(), workflowStep,
                 Session.MAX_TIME_LONG);
     }
     
