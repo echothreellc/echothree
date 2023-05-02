@@ -289,6 +289,9 @@ import com.echothree.control.user.vendor.server.command.GetVendorItemsCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorTypeCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorTypesCommand;
 import com.echothree.control.user.vendor.server.command.GetVendorsCommand;
+import com.echothree.control.user.warehouse.common.WarehouseUtil;
+import com.echothree.control.user.warehouse.server.command.GetWarehouseCommand;
+import com.echothree.control.user.warehouse.server.command.GetWarehousesCommand;
 import com.echothree.control.user.wishlist.common.WishlistUtil;
 import com.echothree.control.user.wishlist.server.command.GetWishlistPrioritiesCommand;
 import com.echothree.control.user.wishlist.server.command.GetWishlistPriorityCommand;
@@ -479,6 +482,8 @@ import com.echothree.model.control.vendor.server.graphql.VendorItemCostObject;
 import com.echothree.model.control.vendor.server.graphql.VendorItemObject;
 import com.echothree.model.control.vendor.server.graphql.VendorObject;
 import com.echothree.model.control.vendor.server.graphql.VendorTypeObject;
+import com.echothree.model.control.warehouse.server.control.WarehouseControl;
+import com.echothree.model.control.warehouse.server.graphql.WarehouseObject;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.control.wishlist.server.graphql.WishlistPriorityObject;
 import com.echothree.model.control.wishlist.server.graphql.WishlistTypeObject;
@@ -596,6 +601,7 @@ import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.party.common.DateTimeFormatConstants;
 import com.echothree.model.data.party.common.LanguageConstants;
 import com.echothree.model.data.party.common.NameSuffixConstants;
+import com.echothree.model.data.party.common.PartyCompanyConstants;
 import com.echothree.model.data.party.common.PartyConstants;
 import com.echothree.model.data.party.common.PersonalTitleConstants;
 import com.echothree.model.data.party.common.TimeZoneConstants;
@@ -655,6 +661,8 @@ import com.echothree.model.data.vendor.server.entity.Vendor;
 import com.echothree.model.data.vendor.server.entity.VendorItem;
 import com.echothree.model.data.vendor.server.entity.VendorItemCost;
 import com.echothree.model.data.vendor.server.entity.VendorType;
+import com.echothree.model.data.warehouse.common.WarehouseConstants;
+import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.model.data.wishlist.common.WishlistTypeConstants;
 import com.echothree.model.data.wishlist.server.entity.WishlistPriority;
 import com.echothree.model.data.wishlist.server.entity.WishlistType;
@@ -6052,29 +6060,32 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("companies")
-    public static Collection<CompanyObject> companies(final DataFetchingEnvironment env) {
-        Collection<PartyCompany> partyCompanies;
-        Collection<CompanyObject> companyObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public static CountingPaginatedData<CompanyObject> compompanies(final DataFetchingEnvironment env) {
+        CountingPaginatedData<CompanyObject> data;
 
         try {
-            var commandForm = PartyUtil.getHome().getGetCompaniesForm();
+            var partyControl = Session.getModelController(PartyControl.class);
+            var totalCount = partyControl.countPartyCompanies();
 
-            partyCompanies = new GetCompaniesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            try(var objectLimiter = new ObjectLimiter(env, PartyCompanyConstants.COMPONENT_VENDOR_NAME, PartyCompanyConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = PartyUtil.getHome().getGetCompaniesForm();
+                var entities = new GetCompaniesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var compompanies = entities.stream().map(CompanyObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, compompanies);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(partyCompanies == null) {
-            companyObjects = emptyList();
-        } else {
-            companyObjects = new ArrayList<>(partyCompanies.size());
-
-            partyCompanies.stream()
-                    .map(CompanyObject::new)
-                    .forEachOrdered(companyObjects::add);
-        }
-
-        return companyObjects;
+        return data;
     }
 
     @GraphQLField
@@ -6189,6 +6200,59 @@ public final class GraphQlQueries
         }
 
         return departmentObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("warehouse")
+    public static WarehouseObject warehouse(final DataFetchingEnvironment env,
+            @GraphQLName("warehouseName") final String warehouseName,
+            @GraphQLName("partyName") final String partyName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        Warehouse warehouse;
+
+        try {
+            var commandForm = WarehouseUtil.getHome().getGetWarehouseForm();
+
+            commandForm.setWarehouseName(warehouseName);
+            commandForm.setPartyName(partyName);
+            commandForm.setUlid(id);
+
+            warehouse = new GetWarehouseCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return warehouse == null ? null : new WarehouseObject(warehouse);
+    }
+
+    @GraphQLField
+    @GraphQLName("warehouses")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public static CountingPaginatedData<WarehouseObject> warehouses(final DataFetchingEnvironment env) {
+        CountingPaginatedData<WarehouseObject> data;
+
+        try {
+            var warehouseControl = Session.getModelController(WarehouseControl.class);
+            var totalCount = warehouseControl.countWarehouses();
+
+            try(var objectLimiter = new ObjectLimiter(env, WarehouseConstants.COMPONENT_VENDOR_NAME, WarehouseConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = WarehouseUtil.getHome().getGetWarehousesForm();
+                var entities = new GetWarehousesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var warehouses = entities.stream().map(WarehouseObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, warehouses);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
     }
 
     @GraphQLField
