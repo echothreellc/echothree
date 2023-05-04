@@ -29,20 +29,17 @@ import com.echothree.model.control.order.server.transfer.OrderTimeTypeTransferCa
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.order.common.pk.OrderLinePK;
 import com.echothree.model.data.order.common.pk.OrderPK;
-import com.echothree.model.data.order.common.pk.OrderPriorityPK;
 import com.echothree.model.data.order.common.pk.OrderTimeTypePK;
 import com.echothree.model.data.order.common.pk.OrderTypePK;
 import com.echothree.model.data.order.server.entity.Order;
 import com.echothree.model.data.order.server.entity.OrderLine;
 import com.echothree.model.data.order.server.entity.OrderLineTime;
-import com.echothree.model.data.order.server.entity.OrderPriority;
 import com.echothree.model.data.order.server.entity.OrderTime;
 import com.echothree.model.data.order.server.entity.OrderTimeType;
 import com.echothree.model.data.order.server.entity.OrderTimeTypeDescription;
 import com.echothree.model.data.order.server.entity.OrderTimeTypeDetail;
 import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.order.server.factory.OrderLineTimeFactory;
-import com.echothree.model.data.order.server.factory.OrderPriorityFactory;
 import com.echothree.model.data.order.server.factory.OrderTimeFactory;
 import com.echothree.model.data.order.server.factory.OrderTimeTypeDescriptionFactory;
 import com.echothree.model.data.order.server.factory.OrderTimeTypeDetailFactory;
@@ -248,8 +245,7 @@ public class OrderTimeControl
         return getOrderTransferCaches(userVisit).getOrderTimeTypeTransferCache().getOrderTimeTypeTransfer(orderTimeType);
     }
 
-    public List<OrderTimeTypeTransfer> getOrderTimeTypeTransfers(UserVisit userVisit, OrderType orderType) {
-        List<OrderTimeType> orderTimeTypes = getOrderTimeTypes(orderType);
+    public List<OrderTimeTypeTransfer> getOrderTimeTypeTransfers(UserVisit userVisit, Collection<OrderTimeType> orderTimeTypes) {
         List<OrderTimeTypeTransfer> orderTimeTypeTransfers = new ArrayList<>(orderTimeTypes.size());
         OrderTimeTypeTransferCache orderTimeTypeTransferCache = getOrderTransferCaches(userVisit).getOrderTimeTypeTransferCache();
 
@@ -258,6 +254,10 @@ public class OrderTimeControl
         );
 
         return orderTimeTypeTransfers;
+    }
+
+    public List<OrderTimeTypeTransfer> getOrderTimeTypeTransfers(UserVisit userVisit, OrderType orderType) {
+        return getOrderTimeTypeTransfers(userVisit, getOrderTimeTypes(orderType));
     }
 
     public OrderTimeTypeChoicesBean getOrderTimeTypeChoices(String defaultOrderTimeTypeChoice, Language language, boolean allowNullChoice,
