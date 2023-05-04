@@ -14,23 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.order.common.result;
+package com.echothree.control.user.order.common.spec;
 
-import com.echothree.model.control.order.common.transfer.OrderTimeTypeTransfer;
-import com.echothree.model.control.order.common.transfer.OrderTypeTransfer;
-import com.echothree.util.common.command.BaseResult;
-import java.util.List;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetOrderTimeTypesResult
-        extends BaseResult {
-
-    OrderTypeTransfer getOrderType();
-    void setOrderType(OrderTypeTransfer orderType);
-
-    Long getOrderTimeTypeCount();
-    void setOrderTimeTypeCount(Long orderTimeTypeCount);
-
-    List<OrderTimeTypeTransfer> getOrderTimeTypes();
-    void setOrderTimeTypes(List<OrderTimeTypeTransfer> orderTimeTypes);
+public interface OrderTimeTypeUniversalSpec
+        extends OrderTimeTypeSpec, UniversalEntitySpec {
+    
+    // Nothing additional beyond OrderTimeTypeSpec, UniversalEntitySpec
     
 }

@@ -26,6 +26,7 @@ import com.echothree.model.control.order.server.transfer.OrderLineTimeTransferCa
 import com.echothree.model.control.order.server.transfer.OrderTimeTransferCache;
 import com.echothree.model.control.order.server.transfer.OrderTimeTypeDescriptionTransferCache;
 import com.echothree.model.control.order.server.transfer.OrderTimeTypeTransferCache;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.order.common.pk.OrderLinePK;
 import com.echothree.model.data.order.common.pk.OrderPK;
 import com.echothree.model.data.order.common.pk.OrderTimeTypePK;
@@ -102,6 +103,35 @@ public class OrderTimeControl
         return orderTimeType;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.OrderTimeType */
+    public OrderTimeType getOrderTimeTypeByEntityInstance(final EntityInstance entityInstance,
+            final EntityPermission entityPermission) {
+        var pk = new OrderTimeTypePK(entityInstance.getEntityUniqueId());
+
+        return OrderTimeTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public OrderTimeType getOrderTimeTypeByEntityInstance(final EntityInstance entityInstance) {
+        return getOrderTimeTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public OrderTimeType getOrderTimeTypeByEntityInstanceForUpdate(final EntityInstance entityInstance) {
+        return getOrderTimeTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public OrderTimeType getOrderTimeTypeByPK(OrderTimeTypePK pk) {
+        return OrderTimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+    }
+
+    public long countOrderPriorities(OrderType orderType) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM ordertimetypes, ordertimetypedetails
+                WHERE ordtimtyp_activedetailid = ordtimtypdt_ordertimetypedetailid
+                AND ordtimtypdt_ordtyp_ordertypeid = ?
+                """, orderType);
+    }
+
     private static final Map<EntityPermission, String> getOrderTimeTypeByNameQueries;
 
     static {
@@ -121,7 +151,7 @@ public class OrderTimeControl
         getOrderTimeTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private OrderTimeType getOrderTimeTypeByName(OrderType orderType, String orderTimeTypeName, EntityPermission entityPermission) {
+    public OrderTimeType getOrderTimeTypeByName(OrderType orderType, String orderTimeTypeName, EntityPermission entityPermission) {
         return OrderTimeTypeFactory.getInstance().getEntityFromQuery(entityPermission, getOrderTimeTypeByNameQueries,
                 orderType, orderTimeTypeName);
     }
@@ -161,7 +191,7 @@ public class OrderTimeControl
         getDefaultOrderTimeTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private OrderTimeType getDefaultOrderTimeType(OrderType orderType, EntityPermission entityPermission) {
+    public OrderTimeType getDefaultOrderTimeType(OrderType orderType, EntityPermission entityPermission) {
         return OrderTimeTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultOrderTimeTypeQueries,
                 orderType);
     }
@@ -215,8 +245,7 @@ public class OrderTimeControl
         return getOrderTransferCaches(userVisit).getOrderTimeTypeTransferCache().getOrderTimeTypeTransfer(orderTimeType);
     }
 
-    public List<OrderTimeTypeTransfer> getOrderTimeTypeTransfers(UserVisit userVisit, OrderType orderType) {
-        List<OrderTimeType> orderTimeTypes = getOrderTimeTypes(orderType);
+    public List<OrderTimeTypeTransfer> getOrderTimeTypeTransfers(UserVisit userVisit, Collection<OrderTimeType> orderTimeTypes) {
         List<OrderTimeTypeTransfer> orderTimeTypeTransfers = new ArrayList<>(orderTimeTypes.size());
         OrderTimeTypeTransferCache orderTimeTypeTransferCache = getOrderTransferCaches(userVisit).getOrderTimeTypeTransferCache();
 
@@ -225,6 +254,10 @@ public class OrderTimeControl
         );
 
         return orderTimeTypeTransfers;
+    }
+
+    public List<OrderTimeTypeTransfer> getOrderTimeTypeTransfers(UserVisit userVisit, OrderType orderType) {
+        return getOrderTimeTypeTransfers(userVisit, getOrderTimeTypes(orderType));
     }
 
     public OrderTimeTypeChoicesBean getOrderTimeTypeChoices(String defaultOrderTimeTypeChoice, Language language, boolean allowNullChoice,

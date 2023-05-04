@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.order.common.form;
 
-import com.echothree.control.user.order.common.spec.OrderTimeTypeSpec;
+import com.echothree.control.user.order.common.spec.OrderTimeTypeUniversalSpec;
 
 public interface GetOrderTimeTypeForm
-        extends OrderTimeTypeSpec {
+        extends OrderTimeTypeUniversalSpec {
     
-    // Nothing additional beyond OrderTimeTypeSpec
+    // Nothing additional beyond OrderTimeTypeUniversalSpec
     
 }

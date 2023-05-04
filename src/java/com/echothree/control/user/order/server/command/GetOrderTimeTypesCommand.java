@@ -17,30 +17,32 @@
 package com.echothree.control.user.order.server.command;
 
 import com.echothree.control.user.order.common.form.GetOrderTimeTypesForm;
-import com.echothree.control.user.order.common.result.GetOrderTimeTypesResult;
 import com.echothree.control.user.order.common.result.OrderResultFactory;
 import com.echothree.model.control.order.server.control.OrderTimeControl;
 import com.echothree.model.control.order.server.control.OrderTypeControl;
+import com.echothree.model.control.order.server.logic.OrderTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.order.server.entity.OrderTimeType;
 import com.echothree.model.data.order.server.entity.OrderType;
+import com.echothree.model.data.order.server.factory.OrderTimeTypeFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class GetOrderTimeTypesCommand
-        extends BaseSimpleCommand<GetOrderTimeTypesForm> {
+        extends BaseMultipleEntitiesCommand<OrderTimeType, GetOrderTimeTypesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -63,19 +65,31 @@ public class GetOrderTimeTypesCommand
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
-    @Override
-    protected BaseResult execute() {
-        var orderTypeControl = Session.getModelController(OrderTypeControl.class);
-        GetOrderTimeTypesResult result = OrderResultFactory.getGetOrderTimeTypesResult();
-        var orderTypeName = form.getOrderTypeName();
-        var orderType = orderTypeControl.getOrderTypeByName(orderTypeName);
+    OrderType orderType;
 
-        if(orderType != null) {
+    @Override
+    protected Collection<OrderTimeType> getEntities() {
+        var orderTimeControl = Session.getModelController(OrderTimeControl.class);
+
+        orderType = OrderTypeLogic.getInstance().getOrderTypeByName(this, form.getOrderTypeName());
+
+        return hasExecutionErrors() ? null : orderTimeControl.getOrderTimeTypes(orderType);
+    }
+
+    @Override
+    protected BaseResult getTransfers(Collection<OrderTimeType> entities) {
+        var result = OrderResultFactory.getGetOrderTimeTypesResult();
+
+        if(entities != null) {
+            var orderTypeControl = Session.getModelController(OrderTypeControl.class);
             var orderTimeControl = Session.getModelController(OrderTimeControl.class);
 
-            result.setOrderTimeTypes(orderTimeControl.getOrderTimeTypeTransfers(getUserVisit(), orderType));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownOrderTypeName.name(), orderTypeName);
+            if(session.hasLimit(OrderTimeTypeFactory.class)) {
+                result.setOrderTimeTypeCount(orderTimeControl.countOrderPriorities(orderType));
+            }
+
+            result.setOrderType(orderTypeControl.getOrderTypeTransfer(getUserVisit(), orderType));
+            result.setOrderTimeTypes(orderTimeControl.getOrderTimeTypeTransfers(getUserVisit(), entities));
         }
 
         return result;

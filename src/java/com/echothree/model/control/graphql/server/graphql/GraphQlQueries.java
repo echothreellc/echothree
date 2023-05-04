@@ -175,6 +175,8 @@ import com.echothree.control.user.offer.server.command.GetUsesCommand;
 import com.echothree.control.user.order.common.OrderUtil;
 import com.echothree.control.user.order.server.command.GetOrderPrioritiesCommand;
 import com.echothree.control.user.order.server.command.GetOrderPriorityCommand;
+import com.echothree.control.user.order.server.command.GetOrderTimeTypeCommand;
+import com.echothree.control.user.order.server.command.GetOrderTimeTypesCommand;
 import com.echothree.control.user.order.server.command.GetOrderTypeCommand;
 import com.echothree.control.user.order.server.command.GetOrderTypesCommand;
 import com.echothree.control.user.party.common.PartyUtil;
@@ -418,6 +420,7 @@ import com.echothree.model.control.offer.server.graphql.UseObject;
 import com.echothree.model.control.offer.server.graphql.UseTypeObject;
 import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.control.order.server.graphql.OrderPriorityObject;
+import com.echothree.model.control.order.server.graphql.OrderTimeTypeObject;
 import com.echothree.model.control.order.server.graphql.OrderTypeObject;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.party.server.graphql.CompanyObject;
@@ -597,6 +600,7 @@ import com.echothree.model.data.offer.server.entity.UseNameElement;
 import com.echothree.model.data.offer.server.entity.UseType;
 import com.echothree.model.data.order.common.OrderTypeConstants;
 import com.echothree.model.data.order.server.entity.OrderPriority;
+import com.echothree.model.data.order.server.entity.OrderTimeType;
 import com.echothree.model.data.order.server.entity.OrderType;
 import com.echothree.model.data.party.common.DateTimeFormatConstants;
 import com.echothree.model.data.party.common.LanguageConstants;
@@ -7665,6 +7669,59 @@ public final class GraphQlQueries
         }
 
         return orderPriorityObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("orderTimeType")
+    public static OrderTimeTypeObject orderTimeType(final DataFetchingEnvironment env,
+            @GraphQLName("orderTypeName") final String orderTypeName,
+            @GraphQLName("orderTimeTypeName") final String orderTimeTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        OrderTimeType orderTimeType;
+
+        try {
+            var commandForm = OrderUtil.getHome().getGetOrderTimeTypeForm();
+
+            commandForm.setOrderTypeName(orderTypeName);
+            commandForm.setOrderTimeTypeName(orderTimeTypeName);
+            commandForm.setUlid(id);
+
+            orderTimeType = new GetOrderTimeTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return orderTimeType == null ? null : new OrderTimeTypeObject(orderTimeType);
+    }
+
+    @GraphQLField
+    @GraphQLName("orderTimeTypes")
+    public static Collection<OrderTimeTypeObject> orderTimeTypes(final DataFetchingEnvironment env,
+            @GraphQLName("orderTypeName") @GraphQLNonNull final String orderTypeName) {
+        Collection<OrderTimeType> orderTimeTypes;
+        Collection<OrderTimeTypeObject> orderTimeTypeObjects;
+
+        try {
+            var commandForm = OrderUtil.getHome().getGetOrderTimeTypesForm();
+
+            commandForm.setOrderTypeName(orderTypeName);
+
+            orderTimeTypes = new GetOrderTimeTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(orderTimeTypes == null) {
+            orderTimeTypeObjects = emptyList();
+        } else {
+            orderTimeTypeObjects = new ArrayList<>(orderTimeTypes.size());
+
+            orderTimeTypes.stream()
+                    .map(OrderTimeTypeObject::new)
+                    .forEachOrdered(orderTimeTypeObjects::add);
+        }
+
+        return orderTimeTypeObjects;
     }
 
     @GraphQLField
