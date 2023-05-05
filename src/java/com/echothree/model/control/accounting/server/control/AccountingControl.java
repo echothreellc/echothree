@@ -2728,8 +2728,39 @@ public class AccountingControl
         
         return glAccount;
     }
-    
-    private GlAccount getGlAccountByName(String glAccountName, EntityPermission entityPermission) {
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.GlAccount */
+    public GlAccount getGlAccountByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new GlAccountPK(entityInstance.getEntityUniqueId());
+
+        return GlAccountFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public GlAccount getGlAccountByEntityInstance(EntityInstance entityInstance) {
+        return getGlAccountByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public GlAccount getGlAccountByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getGlAccountByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countGlAccounts() {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM glaccounts, glaccountdetails
+                WHERE gla_activedetailid = gladt_glaccountdetailid
+                """);
+    }
+
+    public long countGlAccountsByGlAccountCategory(GlAccountCategory glAccountCategory) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM glaccounts, glaccountdetails
+                WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glac_glaccountcategoryid = ?
+                """, glAccountCategory);
+    }
+
+    public GlAccount getGlAccountByName(String glAccountName, EntityPermission entityPermission) {
         GlAccount glAccount;
         
         try {
@@ -2799,7 +2830,7 @@ public class AccountingControl
         return glAccount;
     }
     
-    private GlAccount getDefaultGlAccount(GlAccountCategory glAccountCategory, EntityPermission entityPermission) {
+    public GlAccount getDefaultGlAccount(GlAccountCategory glAccountCategory, EntityPermission entityPermission) {
         return getDefaultGlAccount(glAccountCategory.getPrimaryKey(), entityPermission);
     }
     
