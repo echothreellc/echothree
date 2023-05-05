@@ -19,6 +19,7 @@ package com.echothree.control.user.accounting.server.command;
 import com.echothree.control.user.accounting.common.form.CreateItemAccountingCategoryForm;
 import com.echothree.control.user.accounting.common.result.AccountingResultFactory;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
+import com.echothree.model.control.accounting.server.logic.ItemAccountingCategoryLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -68,36 +69,27 @@ public class CreateItemAccountingCategoryCommand
     @Override
     protected BaseResult execute() {
         var result = AccountingResultFactory.getCreateItemAccountingCategoryResult();
+        ItemAccountingCategory itemAccountingCategory = null;
         var accountingControl = Session.getModelController(AccountingControl.class);
-        String itemAccountingCategoryName = form.getItemAccountingCategoryName();
-        ItemAccountingCategory itemAccountingCategory = accountingControl.getItemAccountingCategoryByName(itemAccountingCategoryName);
-        
-        if(itemAccountingCategory == null) {
-            String parentItemAccountingCategoryName = form.getParentItemAccountingCategoryName();
-            ItemAccountingCategory parentItemAccountingCategory = null;
-            
-            if(parentItemAccountingCategoryName != null) {
-                parentItemAccountingCategory = accountingControl.getItemAccountingCategoryByName(parentItemAccountingCategoryName);
-            }
-            
-            if(parentItemAccountingCategoryName == null || parentItemAccountingCategory != null) {
-                var partyPK = getPartyPK();
-                var isDefault = Boolean.valueOf(form.getIsDefault());
-                var sortOrder = Integer.valueOf(form.getSortOrder());
-                var description = form.getDescription();
-                
-                itemAccountingCategory = accountingControl.createItemAccountingCategory(itemAccountingCategoryName,
-                        parentItemAccountingCategory, null, null, null, null, null, isDefault, sortOrder, partyPK);
-                
-                if(description != null) {
-                    accountingControl.createItemAccountingCategoryDescription(itemAccountingCategory, getPreferredLanguage(),
-                            description, partyPK);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownParentItemAccountingCategoryName.name(), parentItemAccountingCategoryName);
-            }
+        var parentItemAccountingCategoryName = form.getParentItemAccountingCategoryName();
+        ItemAccountingCategory parentItemAccountingCategory = null;
+
+        if(parentItemAccountingCategoryName != null) {
+            parentItemAccountingCategory = accountingControl.getItemAccountingCategoryByName(parentItemAccountingCategoryName);
+        }
+
+        if(parentItemAccountingCategoryName == null || parentItemAccountingCategory != null) {
+            var itemAccountingCategoryName = form.getItemAccountingCategoryName();
+            var isDefault = Boolean.valueOf(form.getIsDefault());
+            var sortOrder = Integer.valueOf(form.getSortOrder());
+            var description = form.getDescription();
+            var partyPK = getPartyPK();
+
+            itemAccountingCategory = ItemAccountingCategoryLogic.getInstance().createItemAccountingCategory(this,
+                    itemAccountingCategoryName, parentItemAccountingCategory, null, null, null,
+                    null, null, isDefault, sortOrder, getPreferredLanguage(), description, partyPK);
         } else {
-            addExecutionError(ExecutionErrors.DuplicateItemAccountingCategoryName.name(), itemAccountingCategoryName);
+            addExecutionError(ExecutionErrors.UnknownParentItemAccountingCategoryName.name(), parentItemAccountingCategoryName);
         }
 
         if(itemAccountingCategory != null) {

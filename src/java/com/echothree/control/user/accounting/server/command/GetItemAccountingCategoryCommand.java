@@ -53,7 +53,7 @@ public class GetItemAccountingCategoryCommand
                 )));
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-            new FieldDefinition("ItemAccountingCategoryName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("ItemAccountingCategoryName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
                 new FieldDefinition("Key", FieldType.KEY, false, null, null),
                 new FieldDefinition("Guid", FieldType.GUID, false, null, null),
@@ -68,22 +68,22 @@ public class GetItemAccountingCategoryCommand
 
     @Override
     protected ItemAccountingCategory getEntity() {
-        var returnKind = ItemAccountingCategoryLogic.getInstance().getItemAccountingCategoryByUniversalSpec(this, form, true);
+        var itemAccountingCategory = ItemAccountingCategoryLogic.getInstance().getItemAccountingCategoryByUniversalSpec(this, form, true);
 
-        if(returnKind != null) {
-            sendEvent(returnKind.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
+        if(itemAccountingCategory != null) {
+            sendEvent(itemAccountingCategory.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         }
 
-        return returnKind;
+        return itemAccountingCategory;
     }
 
     @Override
-    protected BaseResult getTransfer(ItemAccountingCategory returnKind) {
+    protected BaseResult getTransfer(ItemAccountingCategory entity) {
         var accountingControl = Session.getModelController(AccountingControl.class);
         var result = AccountingResultFactory.getGetItemAccountingCategoryResult();
 
-        if(returnKind != null) {
-            result.setItemAccountingCategory(accountingControl.getItemAccountingCategoryTransfer(getUserVisit(), returnKind));
+        if(entity != null) {
+            result.setItemAccountingCategory(accountingControl.getItemAccountingCategoryTransfer(getUserVisit(), entity));
         }
 
         return result;

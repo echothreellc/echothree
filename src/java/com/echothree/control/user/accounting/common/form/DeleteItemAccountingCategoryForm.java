@@ -21,6 +21,6 @@ import com.echothree.control.user.accounting.common.spec.ItemAccountingCategoryU
 public interface DeleteItemAccountingCategoryForm
         extends ItemAccountingCategoryUniversalSpec {
     
-    // Nothing additional beyond ItemAccountingCategorySpec
+    // Nothing additional beyond ItemAccountingCategoryUniversalSpec
     
 }
