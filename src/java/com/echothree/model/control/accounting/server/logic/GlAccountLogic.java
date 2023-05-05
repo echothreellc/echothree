@@ -18,8 +18,6 @@ package com.echothree.model.control.accounting.server.logic;
 
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
-import com.echothree.model.data.accounting.server.entity.GlAccountCategory;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
@@ -57,17 +55,16 @@ public class GlAccountLogic
         }
 
         if(glAccount == null) {
-            var accountingControl = Session.getModelController(AccountingControl.class);
-            var glAccountCategory = accountingControl.getGlAccountCategoryByName(glAccountCategoryName);
+            var glAccountCategory = GlAccountCategoryLogic.getInstance().getGlAccountCategoryByName(eea, glAccountCategoryName);
 
-            if(glAccountCategory != null) {
+            if(eea == null || !eea.hasExecutionErrors()) {
+                var accountingControl = Session.getModelController(AccountingControl.class);
+
                 glAccount = accountingControl.getDefaultGlAccount(glAccountCategory);
 
                 if(glAccount == null) {
                     eea.addExecutionError(unknownDefaultGlAccountError);
                 }
-            } else {
-                eea.addExecutionError(ExecutionErrors.UnknownGlAccountCategoryName.name(), glAccountCategoryName);
             }
         }
 
