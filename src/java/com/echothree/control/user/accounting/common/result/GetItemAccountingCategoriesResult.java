@@ -23,7 +23,7 @@ import java.util.List;
 public interface GetItemAccountingCategoriesResult
         extends BaseResult {
 
-    Long getItemAccountingCategory();
+    Long getItemAccountingCategoryCount();
     void setItemAccountingCategoryCount(Long itemAccountingCategoryCount);
 
     List<ItemAccountingCategoryTransfer> getItemAccountingCategories();
