@@ -2268,5 +2268,7 @@ public enum ExecutionErrors {
     UnknownDefaultAllocationPriority,
     UnknownDefaultTermType,
     UnknownDefaultOrderTimeType,
+    UnknownDefaultGlAccountCategory,
+    UnknownDefaultGlAccount,
 
 }

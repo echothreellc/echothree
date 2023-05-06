@@ -563,13 +563,6 @@ public class AccountingControl
         return itemAccountingCategory;
     }
 
-    public long countItemAccountingCategories() {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM itemaccountingcategories, itemaccountingcategorydetails " +
-                "WHERE iactgc_activedetailid = iactgcdt_itemaccountingcategorydetailid");
-    }
-
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.ItemAccountingCategory */
     public ItemAccountingCategory getItemAccountingCategoryByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         var pk = new ItemAccountingCategoryPK(entityInstance.getEntityUniqueId());
@@ -584,7 +577,15 @@ public class AccountingControl
     public ItemAccountingCategory getItemAccountingCategoryByEntityInstanceForUpdate(EntityInstance entityInstance) {
         return getItemAccountingCategoryByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
-    
+
+    public long countItemAccountingCategories() {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM itemaccountingcategories, itemaccountingcategorydetails
+                WHERE iactgc_activedetailid = iactgcdt_itemaccountingcategorydetailid
+                """);
+    }
+
     private static final Map<EntityPermission, String> getItemAccountingCategoryByNameQueries;
 
     static {
@@ -1745,7 +1746,30 @@ public class AccountingControl
         
         return glAccountCategory;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.GlAccountCategory */
+    public GlAccountCategory getGlAccountCategoryByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new GlAccountCategoryPK(entityInstance.getEntityUniqueId());
+
+        return GlAccountCategoryFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public GlAccountCategory getGlAccountCategoryByEntityInstance(EntityInstance entityInstance) {
+        return getGlAccountCategoryByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public GlAccountCategory getGlAccountCategoryByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getGlAccountCategoryByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countGlAccountCategories() {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM glaccountcategories, glaccountcategorydetails
+                WHERE glac_activedetailid = glacdt_glaccountcategorydetailid
+                """);
+    }
+
     private static final Map<EntityPermission, String> getGlAccountCategoryByNameQueries;
 
     static {
@@ -1765,7 +1789,7 @@ public class AccountingControl
         getGlAccountCategoryByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private GlAccountCategory getGlAccountCategoryByName(String glAccountCategoryName, EntityPermission entityPermission) {
+    public GlAccountCategory getGlAccountCategoryByName(String glAccountCategoryName, EntityPermission entityPermission) {
         return GlAccountCategoryFactory.getInstance().getEntityFromQuery(entityPermission, getGlAccountCategoryByNameQueries, glAccountCategoryName);
     }
 
@@ -1804,7 +1828,7 @@ public class AccountingControl
         getDefaultGlAccountCategoryQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private GlAccountCategory getDefaultGlAccountCategory(EntityPermission entityPermission) {
+    public GlAccountCategory getDefaultGlAccountCategory(EntityPermission entityPermission) {
         return GlAccountCategoryFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultGlAccountCategoryQueries);
     }
 
@@ -2704,8 +2728,39 @@ public class AccountingControl
         
         return glAccount;
     }
-    
-    private GlAccount getGlAccountByName(String glAccountName, EntityPermission entityPermission) {
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.GlAccount */
+    public GlAccount getGlAccountByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new GlAccountPK(entityInstance.getEntityUniqueId());
+
+        return GlAccountFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public GlAccount getGlAccountByEntityInstance(EntityInstance entityInstance) {
+        return getGlAccountByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public GlAccount getGlAccountByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getGlAccountByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countGlAccounts() {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM glaccounts, glaccountdetails
+                WHERE gla_activedetailid = gladt_glaccountdetailid
+                """);
+    }
+
+    public long countGlAccountsByGlAccountCategory(GlAccountCategory glAccountCategory) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM glaccounts, glaccountdetails
+                WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glac_glaccountcategoryid = ?
+                """, glAccountCategory);
+    }
+
+    public GlAccount getGlAccountByName(String glAccountName, EntityPermission entityPermission) {
         GlAccount glAccount;
         
         try {
@@ -2775,7 +2830,7 @@ public class AccountingControl
         return glAccount;
     }
     
-    private GlAccount getDefaultGlAccount(GlAccountCategory glAccountCategory, EntityPermission entityPermission) {
+    public GlAccount getDefaultGlAccount(GlAccountCategory glAccountCategory, EntityPermission entityPermission) {
         return getDefaultGlAccount(glAccountCategory.getPrimaryKey(), entityPermission);
     }
     
@@ -2814,7 +2869,8 @@ public class AccountingControl
             query = "SELECT _ALL_ " +
                     "FROM glaccounts, glaccountdetails " +
                     "WHERE gla_activedetailid = gladt_glaccountdetailid " +
-                    "ORDER BY gladt_glaccountname";
+                    "ORDER BY gladt_glaccountname " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM glaccounts, glaccountdetails " +
@@ -2845,7 +2901,8 @@ public class AccountingControl
                 query = "SELECT _ALL_ " +
                         "FROM glaccounts, glaccountdetails " +
                         "WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glacls_glaccountclassid = ? " +
-                        "ORDER BY gladt_glaccountname";
+                        "ORDER BY gladt_glaccountname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM glaccounts, glaccountdetails " +
@@ -2883,7 +2940,8 @@ public class AccountingControl
                 query = "SELECT _ALL_ " +
                         "FROM glaccounts, glaccountdetails " +
                         "WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glac_glaccountcategoryid = ? " +
-                        "ORDER BY gladt_glaccountname";
+                        "ORDER BY gladt_glaccountname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM glaccounts, glaccountdetails " +
@@ -2933,7 +2991,8 @@ public class AccountingControl
                 query = "SELECT _ALL_ " +
                         "FROM glaccounts, glaccountdetails " +
                         "WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glrtyp_glresourcetypeid = ? " +
-                        "ORDER BY gladt_glaccountname";
+                        "ORDER BY gladt_glaccountname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM glaccounts, glaccountdetails " +

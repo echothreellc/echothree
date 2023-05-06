@@ -14,19 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.accounting.common.result;
+package com.echothree.control.user.accounting.common.spec;
 
-import com.echothree.model.control.accounting.common.transfer.ItemAccountingCategoryTransfer;
-import com.echothree.util.common.command.BaseResult;
-import java.util.List;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetItemAccountingCategoriesResult
-        extends BaseResult {
-
-    Long getItemAccountingCategoryCount();
-    void setItemAccountingCategoryCount(Long itemAccountingCategoryCount);
-
-    List<ItemAccountingCategoryTransfer> getItemAccountingCategories();
-    void setItemAccountingCategories(List<ItemAccountingCategoryTransfer> itemAccountingCategories);
+public interface GlAccountUniversalSpec
+        extends GlAccountSpec, UniversalEntitySpec {
+    
+    // Nothing additional beyond GlAccountSpec, UniversalEntitySpec
     
 }

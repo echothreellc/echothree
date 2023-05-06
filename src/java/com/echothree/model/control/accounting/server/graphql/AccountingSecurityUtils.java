@@ -18,6 +18,8 @@ package com.echothree.model.control.accounting.server.graphql;
 
 import com.echothree.control.user.accounting.server.command.GetCurrenciesCommand;
 import com.echothree.control.user.accounting.server.command.GetCurrencyCommand;
+import com.echothree.control.user.accounting.server.command.GetGlAccountCommand;
+import com.echothree.control.user.accounting.server.command.GetGlAccountsCommand;
 import com.echothree.control.user.accounting.server.command.GetItemAccountingCategoriesCommand;
 import com.echothree.control.user.accounting.server.command.GetItemAccountingCategoryCommand;
 import com.echothree.control.user.accounting.server.command.GetSymbolPositionCommand;
@@ -58,6 +60,14 @@ public final class AccountingSecurityUtils
 
     public boolean getHasItemAccountingCategoriesAccess(final DataFetchingEnvironment env) {
         return getGraphQlExecutionContext(env).hasAccess(GetItemAccountingCategoriesCommand.class);
+    }
+
+    public boolean getHasGlAccountAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetGlAccountCommand.class);
+    }
+
+    public boolean getHasGlAccountsAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetGlAccountsCommand.class);
     }
 
 }

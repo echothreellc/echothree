@@ -24,9 +24,6 @@ import com.echothree.control.user.accounting.common.result.EditItemAccountingCat
 import com.echothree.control.user.accounting.common.spec.ItemAccountingCategoryUniversalSpec;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.accounting.server.logic.ItemAccountingCategoryLogic;
-import com.echothree.model.control.core.common.ComponentVendors;
-import com.echothree.model.control.core.common.EntityTypes;
-import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -34,7 +31,6 @@ import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;
 import com.echothree.model.data.accounting.server.entity.ItemAccountingCategoryDescription;
 import com.echothree.model.data.accounting.server.entity.ItemAccountingCategoryDetail;
 import com.echothree.model.data.accounting.server.value.ItemAccountingCategoryDescriptionValue;
-import com.echothree.model.data.accounting.server.value.ItemAccountingCategoryDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -97,31 +93,7 @@ public class EditItemAccountingCategoryCommand
 
     @Override
     public ItemAccountingCategory getEntity(EditItemAccountingCategoryResult result) {
-        var accountingControl = Session.getModelController(AccountingControl.class);
-        ItemAccountingCategory itemAccountingCategory = null;
-        String itemAccountingCategoryName = spec.getItemAccountingCategoryName();
-        var parameterCount = (itemAccountingCategoryName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(spec);
-
-        if(parameterCount == 1) {
-            if(itemAccountingCategoryName == null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, spec, ComponentVendors.ECHO_THREE.name(),
-                        EntityTypes.ItemAccountingCategory.name());
-
-                if(!hasExecutionErrors()) {
-                    itemAccountingCategory = accountingControl.getItemAccountingCategoryByEntityInstance(entityInstance, editModeToEntityPermission(editMode));
-                }
-            } else {
-                itemAccountingCategory = ItemAccountingCategoryLogic.getInstance().getItemAccountingCategoryByName(this, itemAccountingCategoryName, editModeToEntityPermission(editMode));
-            }
-
-            if(itemAccountingCategory != null) {
-                result.setItemAccountingCategory(accountingControl.getItemAccountingCategoryTransfer(getUserVisit(), itemAccountingCategory));
-            }
-        } else {
-            addExecutionError(ExecutionErrors.InvalidParameterCount.name());
-        }
-
-        return itemAccountingCategory;
+        return ItemAccountingCategoryLogic.getInstance().getItemAccountingCategoryByUniversalSpec(this, spec, false, editModeToEntityPermission(editMode));
     }
 
     @Override
@@ -185,16 +157,16 @@ public class EditItemAccountingCategoryCommand
     public void doUpdate(ItemAccountingCategory itemAccountingCategory) {
         var accountingControl = Session.getModelController(AccountingControl.class);
         var partyPK = getPartyPK();
-        ItemAccountingCategoryDetailValue itemAccountingCategoryDetailValue = accountingControl.getItemAccountingCategoryDetailValueForUpdate(itemAccountingCategory);
-        ItemAccountingCategoryDescription itemAccountingCategoryDescription = accountingControl.getItemAccountingCategoryDescriptionForUpdate(itemAccountingCategory, getPreferredLanguage());
-        String description = edit.getDescription();
+        var itemAccountingCategoryDetailValue = accountingControl.getItemAccountingCategoryDetailValueForUpdate(itemAccountingCategory);
+        var itemAccountingCategoryDescription = accountingControl.getItemAccountingCategoryDescriptionForUpdate(itemAccountingCategory, getPreferredLanguage());
+        var description = edit.getDescription();
 
         itemAccountingCategoryDetailValue.setItemAccountingCategoryName(edit.getItemAccountingCategoryName());
         itemAccountingCategoryDetailValue.setParentItemAccountingCategoryPK(parentItemAccountingCategory == null? null: parentItemAccountingCategory.getPrimaryKey());
         itemAccountingCategoryDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         itemAccountingCategoryDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        accountingControl.updateItemAccountingCategoryFromValue(itemAccountingCategoryDetailValue, partyPK);
+        ItemAccountingCategoryLogic.getInstance().updateItemAccountingCategoryFromValue(itemAccountingCategoryDetailValue, partyPK);
 
         if(itemAccountingCategoryDescription == null && description != null) {
             accountingControl.createItemAccountingCategoryDescription(itemAccountingCategory, getPreferredLanguage(), description, partyPK);
