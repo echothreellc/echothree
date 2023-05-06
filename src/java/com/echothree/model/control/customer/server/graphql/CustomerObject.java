@@ -16,10 +16,16 @@
 
 package com.echothree.model.control.customer.server.graphql;
 
+import com.echothree.model.control.accounting.server.graphql.AccountingSecurityUtils;
+import com.echothree.model.control.accounting.server.graphql.GlAccountObject;
+import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationPolicyObject;
+import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationPolicySecurityUtils;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.offer.server.graphql.OfferSecurityUtils;
 import com.echothree.model.control.offer.server.graphql.OfferUseObject;
 import com.echothree.model.control.party.server.graphql.BasePartyObject;
+import com.echothree.model.control.returnpolicy.server.graphql.ReturnPolicyObject;
+import com.echothree.model.control.returnpolicy.server.graphql.ReturnPolicySecurityUtils;
 import com.echothree.model.data.customer.server.entity.Customer;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.server.persistence.Session;
@@ -79,32 +85,32 @@ public class CustomerObject
                 new OfferUseObject(getCustomer().getInitialOfferUse()) : null;
     }
 
-//    @GraphQLField
-//    @GraphQLDescription("cancellation policy")
-//    public CancellationPolicyObject getCancellationPolicy(final DataFetchingEnvironment env) {
-//        var cancellationPolicy = getCustomer().getCancellationPolicy();
-//
-//        return cancellationPolicy == null ? null : CancellationPolicySecurityUtils.getInstance().getHasCancellationPolicyAccess(env) ?
-//                new CancellationPolicyObject(cancellationPolicy) : null;
-//    }
-//
-//    @GraphQLField
-//    @GraphQLDescription("return policy")
-//    public ReturnPolicyObject getReturnPolicy(final DataFetchingEnvironment env) {
-//        var returnPolicy = getCustomer().getReturnPolicy();
-//
-//        return returnPolicy == null ? null : ReturnPolicySecurityUtils.getInstance().getHasReturnPolicyAccess(env) ?
-//                new ReturnPolicyObject(returnPolicy) : null;
-//    }
-//
-//    @GraphQLField
-//    @GraphQLDescription("AR GL account")
-//    public GlAccountObject getArGlAccount(final DataFetchingEnvironment env) {
-//        var arGlAccount = getCustomer().getArGlAccount();
-//
-//        return arGlAccount == null ? null : AccountingSecurityUtils.getInstance().getHasGlAccountAccess(env) ?
-//                new GlAccountObject(getVendor().getArGlAccount()) : null;
-//    }
+    @GraphQLField
+    @GraphQLDescription("cancellation policy")
+    public CancellationPolicyObject getCancellationPolicy(final DataFetchingEnvironment env) {
+        var cancellationPolicy = getCustomer().getCancellationPolicy();
+
+        return cancellationPolicy == null ? null : CancellationPolicySecurityUtils.getInstance().getHasCancellationPolicyAccess(env) ?
+                new CancellationPolicyObject(cancellationPolicy) : null;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("return policy")
+    public ReturnPolicyObject getReturnPolicy(final DataFetchingEnvironment env) {
+        var returnPolicy = getCustomer().getReturnPolicy();
+
+        return returnPolicy == null ? null : ReturnPolicySecurityUtils.getInstance().getHasReturnPolicyAccess(env) ?
+                new ReturnPolicyObject(returnPolicy) : null;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("AR GL account")
+    public GlAccountObject getArGlAccount(final DataFetchingEnvironment env) {
+        var arGlAccount = getCustomer().getArGlAccount();
+
+        return arGlAccount == null ? null : AccountingSecurityUtils.getInstance().getHasGlAccountAccess(env) ?
+                new GlAccountObject(getCustomer().getArGlAccount()) : null;
+    }
 
     @GraphQLField
     @GraphQLDescription("hold until complete")
