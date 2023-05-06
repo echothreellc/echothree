@@ -54,7 +54,7 @@ public class GlAccountLogic
     public static GlAccountLogic getInstance() {
         return GlAccountLogicHolder.instance;
     }
-    
+
     public GlAccount createGlAccount(final ExecutionErrorAccumulator eea, final String glAccountName,
             final GlAccount parentGlAccount, final GlAccountType glAccountType, final GlAccountClass glAccountClass,
             final GlAccountCategory glAccountCategory, final GlResourceType glResourceType, final Currency currency,

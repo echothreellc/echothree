@@ -2869,7 +2869,8 @@ public class AccountingControl
             query = "SELECT _ALL_ " +
                     "FROM glaccounts, glaccountdetails " +
                     "WHERE gla_activedetailid = gladt_glaccountdetailid " +
-                    "ORDER BY gladt_glaccountname";
+                    "ORDER BY gladt_glaccountname " +
+                    "_LIMIT_";
         } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
             query = "SELECT _ALL_ " +
                     "FROM glaccounts, glaccountdetails " +
@@ -2900,7 +2901,8 @@ public class AccountingControl
                 query = "SELECT _ALL_ " +
                         "FROM glaccounts, glaccountdetails " +
                         "WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glacls_glaccountclassid = ? " +
-                        "ORDER BY gladt_glaccountname";
+                        "ORDER BY gladt_glaccountname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM glaccounts, glaccountdetails " +
@@ -2938,7 +2940,8 @@ public class AccountingControl
                 query = "SELECT _ALL_ " +
                         "FROM glaccounts, glaccountdetails " +
                         "WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glac_glaccountcategoryid = ? " +
-                        "ORDER BY gladt_glaccountname";
+                        "ORDER BY gladt_glaccountname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM glaccounts, glaccountdetails " +
@@ -2988,7 +2991,8 @@ public class AccountingControl
                 query = "SELECT _ALL_ " +
                         "FROM glaccounts, glaccountdetails " +
                         "WHERE gla_activedetailid = gladt_glaccountdetailid AND gladt_glrtyp_glresourcetypeid = ? " +
-                        "ORDER BY gladt_glaccountname";
+                        "ORDER BY gladt_glaccountname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM glaccounts, glaccountdetails " +

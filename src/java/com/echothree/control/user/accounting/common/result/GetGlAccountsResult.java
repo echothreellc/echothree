@@ -23,7 +23,10 @@ import java.util.List;
 
 public interface GetGlAccountsResult
         extends BaseResult {
-    
+
+    Long getGlAccountCount();
+    void setGlAccountCount(Long glAccountCount);
+
     GlAccountCategoryTransfer getGlAccountCategory();
     void setGlAccountCategory(GlAccountCategoryTransfer glAccountCategory);
     

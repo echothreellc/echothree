@@ -19,6 +19,8 @@ package com.echothree.model.control.graphql.server.graphql;
 import com.echothree.control.user.accounting.common.AccountingUtil;
 import com.echothree.control.user.accounting.server.command.GetCurrenciesCommand;
 import com.echothree.control.user.accounting.server.command.GetCurrencyCommand;
+import com.echothree.control.user.accounting.server.command.GetGlAccountCommand;
+import com.echothree.control.user.accounting.server.command.GetGlAccountsCommand;
 import com.echothree.control.user.accounting.server.command.GetItemAccountingCategoriesCommand;
 import com.echothree.control.user.accounting.server.command.GetItemAccountingCategoryCommand;
 import com.echothree.control.user.cancellationpolicy.common.CancellationPolicyUtil;
@@ -334,6 +336,7 @@ import com.echothree.control.user.workflow.server.command.GetWorkflowTypesComman
 import com.echothree.control.user.workflow.server.command.GetWorkflowsCommand;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
+import com.echothree.model.control.accounting.server.graphql.GlAccountObject;
 import com.echothree.model.control.accounting.server.graphql.ItemAccountingCategoryObject;
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationKindObject;
@@ -509,6 +512,7 @@ import com.echothree.model.control.workflow.server.graphql.WorkflowTypeObject;
 import com.echothree.model.data.accounting.common.CurrencyConstants;
 import com.echothree.model.data.accounting.common.ItemAccountingCategoryConstants;
 import com.echothree.model.data.accounting.server.entity.Currency;
+import com.echothree.model.data.accounting.server.entity.GlAccount;
 import com.echothree.model.data.accounting.server.entity.ItemAccountingCategory;
 import com.echothree.model.data.cancellationpolicy.common.CancellationKindConstants;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationKind;
@@ -7147,6 +7151,57 @@ public final class GraphQlQueries
         return data;
     }
 
+    @GraphQLField
+    @GraphQLName("glAccount")
+    public static GlAccountObject glAccount(final DataFetchingEnvironment env,
+            @GraphQLName("glAccountName") final String glAccountName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        GlAccount glAccount;
+
+        try {
+            var commandForm = AccountingUtil.getHome().getGetGlAccountForm();
+
+            commandForm.setGlAccountName(glAccountName);
+            commandForm.setUlid(id);
+
+            glAccount = new GetGlAccountCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return glAccount == null ? null : new GlAccountObject(glAccount);
+    }
+
+    @GraphQLField
+    @GraphQLName("glAccounts")
+    public static Collection<GlAccountObject> glAccounts(final DataFetchingEnvironment env,
+            @GraphQLName("glAccountCategoryName") final String glAccountCategoryName) {
+        Collection<GlAccount> glAccounts;
+        Collection<GlAccountObject> glAccountObjects;
+
+        try {
+            var commandForm = AccountingUtil.getHome().getGetGlAccountsForm();
+
+            commandForm.setGlAccountCategoryName(glAccountCategoryName);
+
+            glAccounts = new GetGlAccountsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(glAccounts == null) {
+            glAccountObjects = emptyList();
+        } else {
+            glAccountObjects = new ArrayList<>(glAccounts.size());
+
+            glAccounts.stream()
+                    .map(GlAccountObject::new)
+                    .forEachOrdered(glAccountObjects::add);
+        }
+
+        return glAccountObjects;
+    }
+    
     @GraphQLField
     @GraphQLName("itemPurchasingCategory")
     public static ItemPurchasingCategoryObject itemPurchasingCategory(final DataFetchingEnvironment env,
