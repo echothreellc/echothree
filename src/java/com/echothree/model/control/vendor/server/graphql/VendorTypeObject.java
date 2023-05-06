@@ -16,6 +16,8 @@
 
 package com.echothree.model.control.vendor.server.graphql;
 
+import com.echothree.model.control.accounting.server.graphql.AccountingSecurityUtils;
+import com.echothree.model.control.accounting.server.graphql.GlAccountObject;
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationPolicyObject;
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationPolicySecurityUtils;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
@@ -102,14 +104,14 @@ public class VendorTypeObject
                 new ReturnPolicyObject(defaultReturnPolicy) : null;
     }
 
-//    @GraphQLField
-//    @GraphQLDescription("default AP GL account")
-//    public GlAccountObject getDefaultApGlAccount(final DataFetchingEnvironment env) {
-//        var defaultApGlAccount = getVendorTypeDetail().getDefaultApGlAccount();
-//
-//        return defaultApGlAccount == null ? null : AccountingSecurityUtils.getInstance().getHasGlAccountAccess(env) ?
-//                new GlAccountObject(defaultApGlAccount) : null;
-//    }
+    @GraphQLField
+    @GraphQLDescription("default AP GL account")
+    public GlAccountObject getDefaultApGlAccount(final DataFetchingEnvironment env) {
+        var defaultApGlAccount = getVendorTypeDetail().getDefaultApGlAccount();
+
+        return defaultApGlAccount == null ? null : AccountingSecurityUtils.getInstance().getHasGlAccountAccess(env) ?
+                new GlAccountObject(defaultApGlAccount) : null;
+    }
 
     @GraphQLField
     @GraphQLDescription("default hold until complete")
