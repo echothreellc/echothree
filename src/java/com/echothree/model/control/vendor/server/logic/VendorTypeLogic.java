@@ -27,6 +27,7 @@ import com.echothree.model.control.vendor.common.exception.UnknownVendorTypeName
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
+import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
 import com.echothree.model.data.term.server.entity.Term;
@@ -59,7 +60,7 @@ public class VendorTypeLogic
             final GlAccount defaultApGlAccount, final Boolean defaultHoldUntilComplete, final Boolean defaultAllowBackorders,
             final Boolean defaultAllowSubstitutions, final Boolean defaultAllowCombiningShipments, final Boolean defaultRequireReference,
             final Boolean defaultAllowReferenceDuplicates, final String defaultReferenceValidationPattern, final Boolean isDefault,
-            final Integer sortOrder, final BasePK createdBy) {
+            final Integer sortOrder, final Language language, final String description, final BasePK createdBy) {
         var vendorControl = Session.getModelController(VendorControl.class);
         var vendorType = vendorControl.getVendorTypeByName(vendorTypeName);
 
@@ -69,6 +70,10 @@ public class VendorTypeLogic
                     defaultAllowBackorders, defaultAllowSubstitutions, defaultAllowCombiningShipments,
                     defaultRequireReference, defaultAllowReferenceDuplicates, defaultReferenceValidationPattern,
                     isDefault, sortOrder, createdBy);
+
+            if(description != null) {
+                vendorControl.createVendorTypeDescription(vendorType, language, description, createdBy);
+            }
         } else {
             handleExecutionError(DuplicateVendorTypeNameException.class, eea, ExecutionErrors.DuplicateVendorTypeName.name(), vendorTypeName);
         }
