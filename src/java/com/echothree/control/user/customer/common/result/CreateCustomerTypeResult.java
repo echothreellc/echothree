@@ -14,15 +14,15 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.customer.common.form;
+package com.echothree.control.user.customer.common.result;
 
-import com.echothree.control.user.customer.common.edit.CustomerTypeEdit;
-import com.echothree.control.user.customer.common.spec.CustomerTypeUniversalSpec;
-import com.echothree.util.common.form.BaseEditForm;
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
+import com.echothree.control.user.customer.common.spec.CustomerTypeSpec;
+import com.echothree.util.common.command.BaseResult;
 
-public interface EditCustomerTypeForm
-        extends BaseEditForm<CustomerTypeUniversalSpec, CustomerTypeEdit> {
+public interface CreateCustomerTypeResult
+        extends CustomerTypeSpec, EntityRefSpec, BaseResult {
     
-    // Nothing additional beyond BaseEditForm
+    // Nothing additional beyond CustomerTypeSpec, EntityRefSpec, BaseResult
     
 }
