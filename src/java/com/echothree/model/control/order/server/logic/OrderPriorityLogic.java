@@ -29,6 +29,7 @@ import com.echothree.model.control.order.server.control.OrderPriorityControl;
 import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.data.order.server.entity.OrderPriority;
 import com.echothree.model.data.order.server.entity.OrderType;
+import com.echothree.model.data.order.server.value.OrderPriorityDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
@@ -189,6 +190,13 @@ public class OrderPriorityLogic
     public OrderPriority getOrderPriorityByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea, final OrderPriorityUniversalSpec universalSpec,
             boolean allowDefault) {
         return getOrderPriorityByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
+    }
+
+    public void updateOrderPriorityFromValue(final ExecutionErrorAccumulator eea, OrderPriorityDetailValue orderPriorityDetailValue,
+            BasePK updatedBy) {
+        var orderPriorityControl = Session.getModelController(OrderPriorityControl.class);
+
+        orderPriorityControl.updateOrderPriorityFromValue(orderPriorityDetailValue, updatedBy);
     }
 
     public void deleteOrderPriority(final ExecutionErrorAccumulator eea, final OrderPriority orderPriority,

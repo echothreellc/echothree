@@ -169,7 +169,7 @@ public class EditOrderPriorityCommand
         orderPriorityDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         orderPriorityDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        orderPriorityControl.updateOrderPriorityFromValue(orderPriorityDetailValue, partyPK);
+        OrderPriorityLogic.getInstance().updateOrderPriorityFromValue(this, orderPriorityDetailValue, partyPK);
 
         if(orderPriorityDescription == null && description != null) {
             orderPriorityControl.createOrderPriorityDescription(orderPriority, getPreferredLanguage(), description, partyPK);
