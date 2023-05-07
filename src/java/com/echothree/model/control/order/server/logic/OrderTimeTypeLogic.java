@@ -29,6 +29,7 @@ import com.echothree.model.control.order.server.control.OrderTimeControl;
 import com.echothree.model.control.order.server.control.OrderTypeControl;
 import com.echothree.model.data.order.server.entity.OrderTimeType;
 import com.echothree.model.data.order.server.entity.OrderType;
+import com.echothree.model.data.order.server.value.OrderTimeTypeDetailValue;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
@@ -189,6 +190,13 @@ public class OrderTimeTypeLogic
     public OrderTimeType getOrderTimeTypeByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea, final OrderTimeTypeUniversalSpec universalSpec,
             boolean allowDefault) {
         return getOrderTimeTypeByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
+    }
+
+    public void updateOrderTimeTypeFromValue(final ExecutionErrorAccumulator eea, OrderTimeTypeDetailValue orderTimeTypeDetailValue,
+            BasePK updatedBy) {
+        var orderTimeControl = Session.getModelController(OrderTimeControl.class);
+
+        orderTimeControl.updateOrderTimeTypeFromValue(orderTimeTypeDetailValue, updatedBy);
     }
 
     public void deleteOrderTimeType(final ExecutionErrorAccumulator eea, final OrderTimeType orderTimeType,
