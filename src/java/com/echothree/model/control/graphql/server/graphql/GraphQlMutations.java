@@ -17,7 +17,9 @@
 package com.echothree.model.control.graphql.server.graphql;
 
 import com.echothree.control.user.accounting.common.AccountingUtil;
+import com.echothree.control.user.accounting.common.result.CreateGlAccountResult;
 import com.echothree.control.user.accounting.common.result.CreateItemAccountingCategoryResult;
+import com.echothree.control.user.accounting.common.result.EditGlAccountResult;
 import com.echothree.control.user.accounting.common.result.EditItemAccountingCategoryResult;
 import com.echothree.control.user.authentication.common.AuthenticationUtil;
 import com.echothree.control.user.campaign.common.CampaignUtil;
@@ -168,6 +170,8 @@ import com.echothree.model.control.search.server.graphql.SearchEmployeesResultOb
 import com.echothree.model.control.search.server.graphql.SearchItemsResultObject;
 import com.echothree.model.control.search.server.graphql.SearchVendorsResultObject;
 import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.common.validation.FieldType;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLID;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -6261,6 +6265,135 @@ public class GraphQlMutations
             commandForm.setUlid(id);
 
             mutationResultObject.setCommandResult(ItemUtil.getHome().deleteItemCategory(getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static MutationResultWithIdObject createGlAccount(final DataFetchingEnvironment env,
+            @GraphQLName("glAccountName") @GraphQLNonNull final String glAccountName,
+            @GraphQLName("parentGlAccountName") final String parentGlAccountName,
+            @GraphQLName("glAccountTypeName") @GraphQLNonNull final String glAccountTypeName,
+            @GraphQLName("glAccountClassName") @GraphQLNonNull final String glAccountClassName,
+            @GraphQLName("glAccountCategoryName") final String glAccountCategoryName,
+            @GraphQLName("glResourceTypeName") @GraphQLNonNull final String glResourceTypeName,
+            @GraphQLName("currencyIsoName") @GraphQLNonNull final String currencyIsoName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = AccountingUtil.getHome().getCreateGlAccountForm();
+
+            commandForm.setGlAccountName(glAccountName);
+            commandForm.setParentGlAccountName(parentGlAccountName);
+            commandForm.setGlAccountTypeName(glAccountTypeName);
+            commandForm.setGlAccountClassName(glAccountClassName);
+            commandForm.setGlAccountCategoryName(glAccountCategoryName);
+            commandForm.setGlResourceTypeName(glResourceTypeName);
+            commandForm.setCurrencyIsoName(currencyIsoName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setDescription(description);
+
+            var commandResult = AccountingUtil.getHome().createGlAccount(getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateGlAccountResult)commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static MutationResultWithIdObject editGlAccount(final DataFetchingEnvironment env,
+            @GraphQLName("originalGlAccountName") final String originalGlAccountName,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("glAccountName") final String glAccountName,
+            @GraphQLName("parentGlAccountName") final String parentGlAccountName,
+            @GraphQLName("glAccountTypeName") final String glAccountTypeName,
+            @GraphQLName("glAccountClassName") final String glAccountClassName,
+            @GraphQLName("glAccountCategoryName") final String glAccountCategoryName,
+            @GraphQLName("glResourceTypeName") final String glResourceTypeName,
+            @GraphQLName("currencyIsoName") final String currencyIsoName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var spec = AccountingUtil.getHome().getGlAccountUniversalSpec();
+
+            spec.setGlAccountName(originalGlAccountName);
+            spec.setUlid(id);
+
+            var commandForm = AccountingUtil.getHome().getEditGlAccountForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = AccountingUtil.getHome().editGlAccount(getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditGlAccountResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                mutationResultObject.setEntityInstance(result.getGlAccount().getEntityInstance());
+
+                if(arguments.containsKey("glAccountName"))
+                    edit.setGlAccountName(glAccountName);
+                if(arguments.containsKey("parentGlAccountName"))
+                    edit.setParentGlAccountName(parentGlAccountName);
+                if(arguments.containsKey("glAccountClassName"))
+                    edit.setGlAccountClassName(glAccountClassName);
+                if(arguments.containsKey("glAccountCategoryName"))
+                    edit.setGlAccountCategoryName(glAccountCategoryName);
+                if(arguments.containsKey("glResourceTypeName"))
+                    edit.setGlResourceTypeName(glResourceTypeName);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = AccountingUtil.getHome().editGlAccount(getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static MutationResultObject deleteGlAccount(final DataFetchingEnvironment env,
+            @GraphQLName("glAccountName") final String glAccountName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = AccountingUtil.getHome().getDeleteGlAccountForm();
+
+            commandForm.setGlAccountName(glAccountName);
+            commandForm.setUlid(id);
+
+            mutationResultObject.setCommandResult(AccountingUtil.getHome().deleteGlAccount(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
