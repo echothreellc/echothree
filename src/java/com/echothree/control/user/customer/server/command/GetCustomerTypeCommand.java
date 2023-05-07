@@ -16,23 +16,21 @@
 
 package com.echothree.control.user.customer.server.command;
 
-
 import com.echothree.control.user.customer.common.form.GetCustomerTypeForm;
 import com.echothree.control.user.customer.common.result.CustomerResultFactory;
 import com.echothree.control.user.customer.common.result.GetCustomerTypeResult;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.customer.server.control.CustomerControl;
-import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -74,12 +72,10 @@ public class GetCustomerTypeCommand
         CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
         
         if(customerType != null) {
-            var offerControl = Session.getModelController(OfferControl.class);
             UserVisit userVisit = getUserVisit();
             
             result.setCustomerType(customerControl.getCustomerTypeTransfer(userVisit, customerType));
-            result.setOfferCustomerTypes(offerControl.getOfferCustomerTypeTransfersByCustomerType(userVisit, customerType));
-            
+
             sendEvent(customerType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
         } else {
             addExecutionError(ExecutionErrors.UnknownCustomerTypeName.name(), customerTypeName);
