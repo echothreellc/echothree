@@ -86,6 +86,8 @@ import com.echothree.control.user.core.server.command.GetTextTransformationComma
 import com.echothree.control.user.core.server.command.GetTextTransformationsCommand;
 import com.echothree.control.user.customer.common.CustomerUtil;
 import com.echothree.control.user.customer.server.command.GetCustomerCommand;
+import com.echothree.control.user.customer.server.command.GetCustomerTypeCommand;
+import com.echothree.control.user.customer.server.command.GetCustomerTypesCommand;
 import com.echothree.control.user.customer.server.command.GetCustomersCommand;
 import com.echothree.control.user.employee.common.EmployeeUtil;
 import com.echothree.control.user.employee.server.command.GetEmployeeCommand;
@@ -370,6 +372,7 @@ import com.echothree.model.control.core.server.graphql.TextDecorationObject;
 import com.echothree.model.control.core.server.graphql.TextTransformationObject;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.customer.server.graphql.CustomerObject;
+import com.echothree.model.control.customer.server.graphql.CustomerTypeObject;
 import com.echothree.model.control.employee.server.control.EmployeeControl;
 import com.echothree.model.control.employee.server.graphql.EmployeeObject;
 import com.echothree.model.control.filter.server.graphql.FilterAdjustmentAmountObject;
@@ -545,7 +548,9 @@ import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
 import com.echothree.model.data.core.server.entity.TextDecoration;
 import com.echothree.model.data.core.server.entity.TextTransformation;
 import com.echothree.model.data.customer.common.CustomerConstants;
+import com.echothree.model.data.customer.common.CustomerTypeConstants;
 import com.echothree.model.data.customer.server.entity.Customer;
+import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.employee.common.PartyEmployeeConstants;
 import com.echothree.model.data.employee.server.entity.PartyEmployee;
 import com.echothree.model.data.filter.server.entity.Filter;
@@ -5657,6 +5662,57 @@ public final class GraphQlQueries
                     var timeZones = entities.stream().map(TimeZoneObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, timeZones);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("customerType")
+    public static CustomerTypeObject customerType(final DataFetchingEnvironment env,
+            @GraphQLName("customerTypeName") final String customerTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        CustomerType customerType;
+
+        try {
+            var commandForm = CustomerUtil.getHome().getGetCustomerTypeForm();
+
+            commandForm.setCustomerTypeName(customerTypeName);
+            commandForm.setUlid(id);
+
+            customerType = new GetCustomerTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return customerType == null ? null : new CustomerTypeObject(customerType);
+    }
+
+    @GraphQLField
+    @GraphQLName("customerTypes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public static CountingPaginatedData<CustomerTypeObject> customerTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<CustomerTypeObject> data;
+
+        try {
+            var customerControl = Session.getModelController(CustomerControl.class);
+            var totalCount = customerControl.countCustomerTypes();
+
+            try(var objectLimiter = new ObjectLimiter(env, CustomerTypeConstants.COMPONENT_VENDOR_NAME, CustomerTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = CustomerUtil.getHome().getGetCustomerTypesForm();
+                var entities = new GetCustomerTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var customerTypes = entities.stream().map(CustomerTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, customerTypes);
                 }
             }
         } catch (NamingException ex) {

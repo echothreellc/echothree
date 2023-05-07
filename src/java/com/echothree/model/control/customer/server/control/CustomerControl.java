@@ -339,24 +339,27 @@ public class CustomerControl
     public CustomerTypeTransfer getCustomerTypeTransfer(UserVisit userVisit, CustomerType customerType) {
         return getCustomerTransferCaches(userVisit).getCustomerTypeTransferCache().getCustomerTypeTransfer(customerType);
     }
-    
-    public List<CustomerTypeTransfer> getCustomerTypeTransfers(UserVisit userVisit) {
-        List<CustomerType> customerTypes = getCustomerTypes();
+
+    public List<CustomerTypeTransfer> getCustomerTypeTransfers(UserVisit userVisit, Collection<CustomerType> customerTypes) {
         List<CustomerTypeTransfer> customerTypeTransfers = null;
-        
+
         if(customerTypes != null) {
             CustomerTypeTransferCache customerTypeTransferCache = getCustomerTransferCaches(userVisit).getCustomerTypeTransferCache();
-            
+
             customerTypeTransfers = new ArrayList<>(customerTypes.size());
-            
+
             for(var customerType : customerTypes) {
                 customerTypeTransfers.add(customerTypeTransferCache.getCustomerTypeTransfer(customerType));
             }
         }
-        
+
         return customerTypeTransfers;
     }
-    
+
+    public List<CustomerTypeTransfer> getCustomerTypeTransfers(UserVisit userVisit) {
+        return getCustomerTypeTransfers(userVisit, getCustomerTypes());
+    }
+
     private void updateCustomerTypeFromValue(CustomerTypeDetailValue customerTypeDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(customerTypeDetailValue.hasBeenModified()) {
             var customerType = CustomerTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, customerTypeDetailValue.getCustomerTypePK());

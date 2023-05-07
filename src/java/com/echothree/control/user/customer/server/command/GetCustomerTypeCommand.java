@@ -18,70 +18,73 @@ package com.echothree.control.user.customer.server.command;
 
 import com.echothree.control.user.customer.common.form.GetCustomerTypeForm;
 import com.echothree.control.user.customer.common.result.CustomerResultFactory;
-import com.echothree.control.user.customer.common.result.GetCustomerTypeResult;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.customer.server.control.CustomerControl;
+import com.echothree.model.control.customer.server.logic.CustomerTypeLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.customer.server.entity.CustomerType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class GetCustomerTypeCommand
-        extends BaseSimpleCommand<GetCustomerTypeForm> {
-    
+        extends BaseSingleEntityCommand<CustomerType, GetCustomerTypeForm> {
+
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.CustomerType.name(), SecurityRoles.Review.name())
-                        )))
-                )));
-        
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-            new FieldDefinition("CustomerTypeName", FieldType.ENTITY_NAME, true, null, null)
+                ))
         ));
+
+        FORM_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("CustomerTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
+        );
     }
-    
+
     /** Creates a new instance of GetCustomerTypeCommand */
     public GetCustomerTypeCommand(UserVisitPK userVisitPK, GetCustomerTypeForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
-    @Override
-    protected BaseResult execute() {
-        var customerControl = Session.getModelController(CustomerControl.class);
-        GetCustomerTypeResult result = CustomerResultFactory.getGetCustomerTypeResult();
-        String customerTypeName = form.getCustomerTypeName();
-        CustomerType customerType = customerControl.getCustomerTypeByName(customerTypeName);
-        
-        if(customerType != null) {
-            UserVisit userVisit = getUserVisit();
-            
-            result.setCustomerType(customerControl.getCustomerTypeTransfer(userVisit, customerType));
 
+    @Override
+    protected CustomerType getEntity() {
+        var customerType = CustomerTypeLogic.getInstance().getCustomerTypeByUniversalSpec(this, form, true);
+
+        if(customerType != null) {
             sendEvent(customerType.getPrimaryKey(), EventTypes.READ, null, null, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownCustomerTypeName.name(), customerTypeName);
         }
-        
+
+        return customerType;
+    }
+
+    @Override
+    protected BaseResult getTransfer(CustomerType customerType) {
+        var customerControl = Session.getModelController(CustomerControl.class);
+        var result = CustomerResultFactory.getGetCustomerTypeResult();
+
+        if(customerType != null) {
+            result.setCustomerType(customerControl.getCustomerTypeTransfer(getUserVisit(), customerType));
+        }
+
         return result;
     }
-    
+
 }

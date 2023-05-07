@@ -69,13 +69,13 @@ public class CustomerObject
         return getCustomer().getCustomerName();
     }
 
-//    @GraphQLField
-//    @GraphQLDescription("customer type")
-//    @GraphQLNonNull
-//    public CustomerTypeObject getCustomerType(final DataFetchingEnvironment env) {
-//        return CustomerSecurityUtils.getInstance().getHasCustomerTypeAccess(env) ?
-//                new CustomerTypeObject(getCustomer().getCustomerType()) : null;
-//    }
+    @GraphQLField
+    @GraphQLDescription("customer type")
+    @GraphQLNonNull
+    public CustomerTypeObject getCustomerType(final DataFetchingEnvironment env) {
+        return CustomerSecurityUtils.getInstance().getHasCustomerTypeAccess(env) ?
+                new CustomerTypeObject(getCustomer().getCustomerType()) : null;
+    }
 
     @GraphQLField
     @GraphQLDescription("initial offer use")
