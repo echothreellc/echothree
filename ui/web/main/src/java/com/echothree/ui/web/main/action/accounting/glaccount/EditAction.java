@@ -20,7 +20,6 @@ import com.echothree.control.user.accounting.common.AccountingUtil;
 import com.echothree.control.user.accounting.common.edit.GlAccountEdit;
 import com.echothree.control.user.accounting.common.form.EditGlAccountForm;
 import com.echothree.control.user.accounting.common.result.EditGlAccountResult;
-import com.echothree.control.user.accounting.common.spec.GlAccountSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -58,7 +57,7 @@ public class EditAction
         String forwardKey = null;
         String originalGlAccountName = request.getParameter(ParameterConstants.ORIGINAL_GL_ACCOUNT_NAME);
         EditGlAccountForm commandForm = AccountingUtil.getHome().getEditGlAccountForm();
-        GlAccountSpec spec = AccountingUtil.getHome().getGlAccountSpec();
+        var spec = AccountingUtil.getHome().getGlAccountUniversalSpec();
         
         if(originalGlAccountName == null)
             originalGlAccountName = actionForm.getOriginalGlAccountName();

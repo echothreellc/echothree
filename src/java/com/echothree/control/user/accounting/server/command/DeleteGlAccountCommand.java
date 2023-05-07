@@ -18,6 +18,8 @@ package com.echothree.control.user.accounting.server.command;
 
 import com.echothree.control.user.accounting.common.form.DeleteGlAccountForm;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
+import com.echothree.model.control.accounting.server.logic.GlAccountLogic;
+import com.echothree.model.control.accounting.server.logic.ItemAccountingCategoryLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -43,16 +45,20 @@ public class DeleteGlAccountCommand
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.GlAccount.name(), SecurityRoles.Delete.name())
-                        )))
-                )));
-        
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-            new FieldDefinition("GlAccountName", FieldType.ENTITY_NAME, true, null, null)
+                ))
         ));
+        
+        FORM_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("GlAccountName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
+        );
     }
     
     /** Creates a new instance of DeleteGlAccountCommand */
@@ -62,16 +68,12 @@ public class DeleteGlAccountCommand
     
     @Override
     protected BaseResult execute() {
-        var accountingControl = Session.getModelController(AccountingControl.class);
-        String glAccountName = form.getGlAccountName();
-        GlAccount glAccount = accountingControl.getGlAccountByNameForUpdate(glAccountName);
-        
-        if(glAccount != null) {
-            accountingControl.deleteGlAccount(glAccount, getPartyPK());
-        } else {
-            addExecutionError(ExecutionErrors.UnknownGlAccountName.name(), glAccountName);
+        var glAccount = GlAccountLogic.getInstance().getGlAccountByUniversalSpecForUpdate(this, form, false, null);
+
+        if(!hasExecutionErrors()) {
+            GlAccountLogic.getInstance().deleteGlAccount(this, glAccount, getPartyPK());
         }
-        
+
         return null;
     }
     

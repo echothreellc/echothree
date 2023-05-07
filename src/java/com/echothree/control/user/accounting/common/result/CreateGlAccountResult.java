@@ -14,15 +14,15 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.accounting.common.form;
+package com.echothree.control.user.accounting.common.result;
 
-import com.echothree.control.user.accounting.common.edit.GlAccountEdit;
-import com.echothree.control.user.accounting.common.spec.GlAccountUniversalSpec;
-import com.echothree.util.common.form.BaseEditForm;
+import com.echothree.control.user.accounting.common.spec.GlAccountSpec;
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
+import com.echothree.util.common.command.BaseResult;
 
-public interface EditGlAccountForm
-        extends BaseEditForm<GlAccountUniversalSpec, GlAccountEdit> {
+public interface CreateGlAccountResult
+        extends GlAccountSpec, EntityRefSpec, BaseResult {
     
-    // Nothing additional beyond BaseEditForm
+    // Nothing additional beyond GlAccountSpec, EntityRefSpec, BaseResult
     
 }
