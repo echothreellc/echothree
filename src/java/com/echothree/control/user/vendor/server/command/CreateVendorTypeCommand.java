@@ -29,7 +29,6 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.shipment.server.logic.FreeOnBoardLogic;
 import com.echothree.model.control.term.server.logic.TermLogic;
-import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.control.vendor.server.logic.VendorTypeLogic;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
@@ -144,13 +143,7 @@ public class CreateVendorTypeCommand
                                     defaultCancellationPolicy, defaultReturnPolicy, defaultApGlAccount, defaultHoldUntilComplete,
                                     defaultAllowBackorders, defaultAllowSubstitutions, defaultAllowCombiningShipments,
                                     defaultRequireReference, defaultAllowReferenceDuplicates, defaultReferenceValidationPattern,
-                                    isDefault, sortOrder, partyPK);
-
-                            if(description != null) {
-                                var vendorControl = Session.getModelController(VendorControl.class);
-
-                                vendorControl.createVendorTypeDescription(vendorType, getPreferredLanguage(), description, partyPK);
-                            }
+                                    isDefault, sortOrder, getPreferredLanguage(), description, partyPK);
                         } else {
                             addExecutionError(ExecutionErrors.InvalidGlAccountCategory.name(), glAccountCategoryName);
                         }

@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetCustomerTypesResult
         extends BaseResult {
-    
+
+    Long getCustomerTypeCount();
+    void setCustomerTypeCount(Long customerTypesCount);
+
     List<CustomerTypeTransfer> getCustomerTypes();
     void setCustomerTypes(List<CustomerTypeTransfer> customerTypes);
     

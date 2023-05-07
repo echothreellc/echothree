@@ -27,6 +27,7 @@ import com.echothree.model.control.vendor.common.exception.UnknownVendorTypeName
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
+import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
 import com.echothree.model.data.shipment.server.entity.FreeOnBoard;
 import com.echothree.model.data.term.server.entity.Term;
@@ -54,11 +55,12 @@ public class VendorTypeLogic
         return VendorTypeLogicHolder.instance;
     }
 
-    public VendorType createVendorType(final ExecutionErrorAccumulator eea, String vendorTypeName, Term defaultTerm, FreeOnBoard defaultFreeOnBoard,
-            CancellationPolicy defaultCancellationPolicy, ReturnPolicy defaultReturnPolicy,
-            GlAccount defaultApGlAccount, Boolean defaultHoldUntilComplete, Boolean defaultAllowBackorders, Boolean defaultAllowSubstitutions,
-            Boolean defaultAllowCombiningShipments, Boolean defaultRequireReference, Boolean defaultAllowReferenceDuplicates,
-            String defaultReferenceValidationPattern, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
+    public VendorType createVendorType(final ExecutionErrorAccumulator eea, final String vendorTypeName, final Term defaultTerm,
+            final FreeOnBoard defaultFreeOnBoard, final CancellationPolicy defaultCancellationPolicy, final ReturnPolicy defaultReturnPolicy,
+            final GlAccount defaultApGlAccount, final Boolean defaultHoldUntilComplete, final Boolean defaultAllowBackorders,
+            final Boolean defaultAllowSubstitutions, final Boolean defaultAllowCombiningShipments, final Boolean defaultRequireReference,
+            final Boolean defaultAllowReferenceDuplicates, final String defaultReferenceValidationPattern, final Boolean isDefault,
+            final Integer sortOrder, final Language language, final String description, final BasePK createdBy) {
         var vendorControl = Session.getModelController(VendorControl.class);
         var vendorType = vendorControl.getVendorTypeByName(vendorTypeName);
 
@@ -68,6 +70,10 @@ public class VendorTypeLogic
                     defaultAllowBackorders, defaultAllowSubstitutions, defaultAllowCombiningShipments,
                     defaultRequireReference, defaultAllowReferenceDuplicates, defaultReferenceValidationPattern,
                     isDefault, sortOrder, createdBy);
+
+            if(description != null) {
+                vendorControl.createVendorTypeDescription(vendorType, language, description, createdBy);
+            }
         } else {
             handleExecutionError(DuplicateVendorTypeNameException.class, eea, ExecutionErrors.DuplicateVendorTypeName.name(), vendorTypeName);
         }
@@ -95,8 +101,8 @@ public class VendorTypeLogic
         return getVendorTypeByName(eea, vendorTypeName, EntityPermission.READ_WRITE);
     }
 
-    public VendorType getVendorTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
-            final VendorTypeUniversalSpec universalSpec, boolean allowDefault, final EntityPermission entityPermission) {
+    public VendorType getVendorTypeByUniversalSpec(final ExecutionErrorAccumulator eea, final VendorTypeUniversalSpec universalSpec,
+            final boolean allowDefault, final EntityPermission entityPermission) {
         VendorType vendorType = null;
         var vendorControl = Session.getModelController(VendorControl.class);
         var vendorTypeName = universalSpec.getVendorTypeName();
@@ -135,22 +141,23 @@ public class VendorTypeLogic
     }
 
     public VendorType getVendorTypeByUniversalSpec(final ExecutionErrorAccumulator eea,
-            final VendorTypeUniversalSpec universalSpec, boolean allowDefault) {
+            final VendorTypeUniversalSpec universalSpec, final boolean allowDefault) {
         return getVendorTypeByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_ONLY);
     }
 
     public VendorType getVendorTypeByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea,
-            final VendorTypeUniversalSpec universalSpec, boolean allowDefault) {
+            final VendorTypeUniversalSpec universalSpec, final boolean allowDefault) {
         return getVendorTypeByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
     }
 
-    public void updateVendorTypeFromValue(final ExecutionErrorAccumulator eea, VendorTypeDetailValue vendorTypeDetailValue, BasePK updatedBy) {
+    public void updateVendorTypeFromValue(final ExecutionErrorAccumulator eea, final VendorTypeDetailValue vendorTypeDetailValue,
+            final BasePK updatedBy) {
         var vendorControl = Session.getModelController(VendorControl.class);
 
         vendorControl.updateVendorTypeFromValue(vendorTypeDetailValue, updatedBy);
     }
 
-    public void deleteVendorType(final ExecutionErrorAccumulator eea, VendorType vendorType, BasePK deletedBy) {
+    public void deleteVendorType(final ExecutionErrorAccumulator eea, final VendorType vendorType, final BasePK deletedBy) {
         var vendorControl = Session.getModelController(VendorControl.class);
 
         vendorControl.deleteVendorType(vendorType, deletedBy);

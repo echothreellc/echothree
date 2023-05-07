@@ -27,7 +27,4 @@ public interface GetCustomerTypeResult
     CustomerTypeTransfer getCustomerType();
     void setCustomerType(CustomerTypeTransfer customerType);
     
-    List<OfferCustomerTypeTransfer> getOfferCustomerTypes();
-    void setOfferCustomerTypes(List<OfferCustomerTypeTransfer> offerCustomerTypes);
-    
 }

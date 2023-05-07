@@ -167,6 +167,28 @@ public class CustomerControl
         return customerType;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.CustomerType */
+    public CustomerType getCustomerTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new CustomerTypePK(entityInstance.getEntityUniqueId());
+
+        return CustomerTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public CustomerType getCustomerTypeByEntityInstance(EntityInstance entityInstance) {
+        return getCustomerTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public CustomerType getCustomerTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getCustomerTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countCustomerTypes() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM customertypes, customertypedetails " +
+                        "WHERE cuty_activedetailid = cutydt_customertypedetailid");
+    }
+
     public long countCustomerTypesByDefaultOfferUse(OfferUse defaultOfferUse) {
         return session.queryForLong(
                 "SELECT COUNT(*) " +
@@ -204,7 +226,7 @@ public class CustomerControl
         return getCustomerTypes(EntityPermission.READ_WRITE);
     }
     
-    private CustomerType getDefaultCustomerType(EntityPermission entityPermission) {
+    public CustomerType getDefaultCustomerType(EntityPermission entityPermission) {
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
@@ -235,7 +257,7 @@ public class CustomerControl
         return getDefaultCustomerTypeForUpdate().getLastDetailForUpdate().getCustomerTypeDetailValue().clone();
     }
     
-    private CustomerType getCustomerTypeByName(String customerTypeName, EntityPermission entityPermission) {
+    public CustomerType getCustomerTypeByName(String customerTypeName, EntityPermission entityPermission) {
         CustomerType customerType;
         
         try {
@@ -317,24 +339,27 @@ public class CustomerControl
     public CustomerTypeTransfer getCustomerTypeTransfer(UserVisit userVisit, CustomerType customerType) {
         return getCustomerTransferCaches(userVisit).getCustomerTypeTransferCache().getCustomerTypeTransfer(customerType);
     }
-    
-    public List<CustomerTypeTransfer> getCustomerTypeTransfers(UserVisit userVisit) {
-        List<CustomerType> customerTypes = getCustomerTypes();
+
+    public List<CustomerTypeTransfer> getCustomerTypeTransfers(UserVisit userVisit, Collection<CustomerType> customerTypes) {
         List<CustomerTypeTransfer> customerTypeTransfers = null;
-        
+
         if(customerTypes != null) {
             CustomerTypeTransferCache customerTypeTransferCache = getCustomerTransferCaches(userVisit).getCustomerTypeTransferCache();
-            
+
             customerTypeTransfers = new ArrayList<>(customerTypes.size());
-            
+
             for(var customerType : customerTypes) {
                 customerTypeTransfers.add(customerTypeTransferCache.getCustomerTypeTransfer(customerType));
             }
         }
-        
+
         return customerTypeTransfers;
     }
-    
+
+    public List<CustomerTypeTransfer> getCustomerTypeTransfers(UserVisit userVisit) {
+        return getCustomerTypeTransfers(userVisit, getCustomerTypes());
+    }
+
     private void updateCustomerTypeFromValue(CustomerTypeDetailValue customerTypeDetailValue, boolean checkDefault, BasePK updatedBy) {
         if(customerTypeDetailValue.hasBeenModified()) {
             var customerType = CustomerTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, customerTypeDetailValue.getCustomerTypePK());
