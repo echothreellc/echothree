@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.customer.common.form;
 
-import com.echothree.control.user.customer.common.spec.CustomerTypeSpec;
+import com.echothree.control.user.customer.common.spec.CustomerTypeUniversalSpec;
 
 public interface DeleteCustomerTypeForm
-        extends CustomerTypeSpec {
+        extends CustomerTypeUniversalSpec {
     
-    // Nothing additional beyond CustomerTypeSpec
+    // Nothing additional beyond CustomerTypeUniversalSpec
     
 }

@@ -20,7 +20,7 @@ import com.echothree.control.user.customer.common.edit.CustomerEditFactory;
 import com.echothree.control.user.customer.common.edit.CustomerTypeEdit;
 import com.echothree.control.user.customer.common.form.EditCustomerTypeForm;
 import com.echothree.control.user.customer.common.result.CustomerResultFactory;
-import com.echothree.control.user.customer.common.spec.CustomerTypeSpec;
+import com.echothree.control.user.customer.common.spec.CustomerTypeUniversalSpec;
 import com.echothree.model.control.accounting.common.AccountingConstants;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.cancellationpolicy.common.CancellationKinds;
@@ -28,6 +28,7 @@ import com.echothree.model.control.cancellationpolicy.server.control.Cancellatio
 import com.echothree.model.control.customer.common.workflow.CustomerCreditStatusConstants;
 import com.echothree.model.control.customer.common.workflow.CustomerStatusConstants;
 import com.echothree.model.control.customer.server.control.CustomerControl;
+import com.echothree.model.control.customer.server.logic.CustomerTypeLogic;
 import com.echothree.model.control.inventory.server.logic.AllocationPriorityLogic;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.OfferUseControl;
@@ -59,30 +60,32 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class EditCustomerTypeCommand
-        extends BaseEditCommand<CustomerTypeSpec, CustomerTypeEdit> {
+        extends BaseEditCommand<CustomerTypeUniversalSpec, CustomerTypeEdit> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
-                    new SecurityRoleDefinition(SecurityRoleGroups.CustomerType.name(), SecurityRoles.Edit.name())
-                    )))
-                )));
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.CustomerType.name(), SecurityRoles.Edit.name())
+                ))
+        ));
         
-        SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("CustomerTypeName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+        SPEC_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("CustomerTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
+        );
         
-        EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("CustomerTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("CustomerSequenceName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("DefaultOfferName", FieldType.ENTITY_NAME, false, null, null),
@@ -107,7 +110,7 @@ public class EditCustomerTypeCommand
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
-                ));
+        );
     }
     
     /** Creates a new instance of EditCustomerTypeCommand */
@@ -122,10 +125,9 @@ public class EditCustomerTypeCommand
         var result = CustomerResultFactory.getEditCustomerTypeResult();
         
         if(editMode.equals(EditMode.LOCK)) {
-            var customerTypeName = spec.getCustomerTypeName();
-            var customerType = customerControl.getCustomerTypeByName(customerTypeName);
-            
-            if(customerType != null) {
+            var customerType = CustomerTypeLogic.getInstance().getCustomerTypeByUniversalSpec(this, spec, false);
+
+            if(!hasExecutionErrors()) {
                 result.setCustomerType(customerControl.getCustomerTypeTransfer(getUserVisit(), customerType));
                 
                 if(lockEntity(customerType)) {
@@ -178,15 +180,12 @@ public class EditCustomerTypeCommand
                 }
                 
                 result.setEntityLock(getEntityLockTransfer(customerType));
-            } else {
-                addExecutionError(ExecutionErrors.UnknownCustomerTypeName.name(), customerTypeName);
             }
         } else if(editMode.equals(EditMode.UPDATE)) {
-            var customerTypeName = spec.getCustomerTypeName();
-            var customerType = customerControl.getCustomerTypeByNameForUpdate(customerTypeName);
-            
-            if(customerType != null) {
-                customerTypeName = edit.getCustomerTypeName();
+            var customerType = CustomerTypeLogic.getInstance().getCustomerTypeByUniversalSpecForUpdate(this, spec, false);
+
+            if(!hasExecutionErrors()) {
+                var customerTypeName = edit.getCustomerTypeName();
                 var duplicateCustomerType = customerControl.getCustomerTypeByName(customerTypeName);
                 
                 if(duplicateCustomerType == null || customerType.equals(duplicateCustomerType)) {
@@ -335,7 +334,7 @@ public class EditCustomerTypeCommand
                                                                     customerTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
                                                                     customerTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-                                                                    customerControl.updateCustomerTypeFromValue(customerTypeDetailValue, partyPK);
+                                                                    CustomerTypeLogic.getInstance().updateCustomerTypeFromValue(this, customerTypeDetailValue, partyPK);
 
                                                                     if(customerTypeDescription == null && description != null) {
                                                                         customerControl.createCustomerTypeDescription(customerType, getPreferredLanguage(), description, partyPK);
@@ -380,8 +379,6 @@ public class EditCustomerTypeCommand
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateCustomerTypeName.name(), customerTypeName);
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownCustomerTypeName.name(), customerTypeName);
             }
         }
         
