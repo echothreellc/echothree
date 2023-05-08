@@ -52,6 +52,9 @@ import com.echothree.control.user.core.common.result.EditEntityLongAttributeResu
 import com.echothree.control.user.core.common.result.EditEntityNameAttributeResult;
 import com.echothree.control.user.core.common.result.EditEntityStringAttributeResult;
 import com.echothree.control.user.core.common.result.EditEntityTimeAttributeResult;
+import com.echothree.control.user.customer.common.CustomerUtil;
+import com.echothree.control.user.customer.common.result.CreateCustomerTypeResult;
+import com.echothree.control.user.customer.common.result.EditCustomerTypeResult;
 import com.echothree.control.user.filter.common.FilterUtil;
 import com.echothree.control.user.filter.common.result.CreateFilterAdjustmentResult;
 import com.echothree.control.user.filter.common.result.CreateFilterResult;
@@ -172,6 +175,8 @@ import com.echothree.model.control.search.server.graphql.SearchEmployeesResultOb
 import com.echothree.model.control.search.server.graphql.SearchItemsResultObject;
 import com.echothree.model.control.search.server.graphql.SearchVendorsResultObject;
 import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.common.validation.FieldType;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLID;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -9301,6 +9306,214 @@ public class GraphQlMutations
             commandForm.setRemoteInet4Address(getRemoteInet4Address(env));
 
             mutationResultObject.setCommandResult(AuthenticationUtil.getHome().customerLogin(getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static MutationResultWithIdObject createCustomerType(final DataFetchingEnvironment env,
+            @GraphQLName("customerTypeName") @GraphQLNonNull final String customerTypeName,
+            @GraphQLName("customerSequenceName") final String customerSequenceName,
+            @GraphQLName("defaultOfferName") final String defaultOfferName,
+            @GraphQLName("defaultUseName") final String defaultUseName,
+            @GraphQLName("defaultSourceName") final String defaultSourceName,
+            @GraphQLName("defaultTermName") final String defaultTermName,
+            @GraphQLName("defaultFreeOnBoardName") final String defaultFreeOnBoardName,
+            @GraphQLName("defaultCancellationPolicyName") final String defaultCancellationPolicyName,
+            @GraphQLName("defaultReturnPolicyName") final String defaultReturnPolicyName,
+            @GraphQLName("defaultCustomerStatusChoice") final String defaultCustomerStatusChoice,
+            @GraphQLName("defaultCustomerCreditStatusChoice") final String defaultCustomerCreditStatusChoice,
+            @GraphQLName("defaultArGlAccountName") final String defaultArGlAccountName,
+            @GraphQLName("defaultHoldUntilComplete") @GraphQLNonNull final String defaultHoldUntilComplete,
+            @GraphQLName("defaultAllowBackorders") @GraphQLNonNull final String defaultAllowBackorders,
+            @GraphQLName("defaultAllowSubstitutions") @GraphQLNonNull final String defaultAllowSubstitutions,
+            @GraphQLName("defaultAllowCombiningShipments") @GraphQLNonNull final String defaultAllowCombiningShipments,
+            @GraphQLName("defaultRequireReference") @GraphQLNonNull final String defaultRequireReference,
+            @GraphQLName("defaultAllowReferenceDuplicates") @GraphQLNonNull final String defaultAllowReferenceDuplicates,
+            @GraphQLName("defaultReferenceValidationPattern") final String defaultReferenceValidationPattern,
+            @GraphQLName("defaultTaxable") @GraphQLNonNull final String defaultTaxable,
+            @GraphQLName("allocationPriorityName") final String allocationPriorityName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = CustomerUtil.getHome().getCreateCustomerTypeForm();
+
+            commandForm.setCustomerTypeName(customerTypeName);
+            commandForm.setCustomerSequenceName(customerSequenceName);
+            commandForm.setDefaultOfferName(defaultOfferName);
+            commandForm.setDefaultUseName(defaultUseName);
+            commandForm.setDefaultSourceName(defaultSourceName);
+            commandForm.setDefaultTermName(defaultTermName);
+            commandForm.setDefaultFreeOnBoardName(defaultFreeOnBoardName);
+            commandForm.setDefaultCancellationPolicyName(defaultCancellationPolicyName);
+            commandForm.setDefaultReturnPolicyName(defaultReturnPolicyName);
+            commandForm.setDefaultCustomerStatusChoice(defaultCustomerStatusChoice);
+            commandForm.setDefaultCustomerCreditStatusChoice(defaultCustomerCreditStatusChoice);
+            commandForm.setDefaultArGlAccountName(defaultArGlAccountName);
+            commandForm.setDefaultHoldUntilComplete(defaultHoldUntilComplete);
+            commandForm.setDefaultAllowBackorders(defaultAllowBackorders);
+            commandForm.setDefaultAllowSubstitutions(defaultAllowSubstitutions);
+            commandForm.setDefaultAllowCombiningShipments(defaultAllowCombiningShipments);
+            commandForm.setDefaultRequireReference(defaultRequireReference);
+            commandForm.setDefaultAllowReferenceDuplicates(defaultAllowReferenceDuplicates);
+            commandForm.setDefaultReferenceValidationPattern(defaultReferenceValidationPattern);
+            commandForm.setDefaultTaxable(defaultTaxable);
+            commandForm.setAllocationPriorityName(allocationPriorityName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            var commandResult = CustomerUtil.getHome().createCustomerType(getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateCustomerTypeResult)commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static MutationResultWithIdObject editCustomerType(final DataFetchingEnvironment env,
+            @GraphQLName("originalCustomerTypeName") final String originalCustomerTypeName,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("customerTypeName") final String customerTypeName,
+            @GraphQLName("customerSequenceName") final String customerSequenceName,
+            @GraphQLName("defaultOfferName") final String defaultOfferName,
+            @GraphQLName("defaultUseName") final String defaultUseName,
+            @GraphQLName("defaultSourceName") final String defaultSourceName,
+            @GraphQLName("defaultTermName") final String defaultTermName,
+            @GraphQLName("defaultFreeOnBoardName") final String defaultFreeOnBoardName,
+            @GraphQLName("defaultCancellationPolicyName") final String defaultCancellationPolicyName,
+            @GraphQLName("defaultReturnPolicyName") final String defaultReturnPolicyName,
+            @GraphQLName("defaultCustomerStatusChoice") final String defaultCustomerStatusChoice,
+            @GraphQLName("defaultCustomerCreditStatusChoice") final String defaultCustomerCreditStatusChoice,
+            @GraphQLName("defaultArGlAccountName") final String defaultArGlAccountName,
+            @GraphQLName("defaultHoldUntilComplete") final String defaultHoldUntilComplete,
+            @GraphQLName("defaultAllowBackorders") final String defaultAllowBackorders,
+            @GraphQLName("defaultAllowSubstitutions") final String defaultAllowSubstitutions,
+            @GraphQLName("defaultAllowCombiningShipments") final String defaultAllowCombiningShipments,
+            @GraphQLName("defaultRequireReference") final String defaultRequireReference,
+            @GraphQLName("defaultAllowReferenceDuplicates") final String defaultAllowReferenceDuplicates,
+            @GraphQLName("defaultReferenceValidationPattern") final String defaultReferenceValidationPattern,
+            @GraphQLName("defaultTaxable") final String defaultTaxable,
+            @GraphQLName("allocationPriorityName") final String allocationPriorityName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var spec = CustomerUtil.getHome().getCustomerTypeUniversalSpec();
+
+            spec.setCustomerTypeName(originalCustomerTypeName);
+            spec.setUlid(id);
+
+            var commandForm = CustomerUtil.getHome().getEditCustomerTypeForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = CustomerUtil.getHome().editCustomerType(getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditCustomerTypeResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                mutationResultObject.setEntityInstance(result.getCustomerType().getEntityInstance());
+
+                if(arguments.containsKey("customerTypeName"))
+                    edit.setCustomerTypeName(customerTypeName);
+                if(arguments.containsKey("customerSequenceName"))
+                    edit.setCustomerSequenceName(customerSequenceName);
+                if(arguments.containsKey("defaultOfferName"))
+                    edit.setDefaultOfferName(defaultOfferName);
+                if(arguments.containsKey("defaultUseName"))
+                    edit.setDefaultUseName(defaultUseName);
+                if(arguments.containsKey("defaultSourceName"))
+                    edit.setDefaultSourceName(defaultSourceName);
+                if(arguments.containsKey("defaultTermName"))
+                    edit.setDefaultTermName(defaultTermName);
+                if(arguments.containsKey("defaultFreeOnBoardName"))
+                    edit.setDefaultFreeOnBoardName(defaultFreeOnBoardName);
+                if(arguments.containsKey("defaultCancellationPolicyName"))
+                    edit.setDefaultCancellationPolicyName(defaultCancellationPolicyName);
+                if(arguments.containsKey("defaultReturnPolicyName"))
+                    edit.setDefaultReturnPolicyName(defaultReturnPolicyName);
+                if(arguments.containsKey("defaultCustomerStatusChoice"))
+                    edit.setDefaultCustomerStatusChoice(defaultCustomerStatusChoice);
+                if(arguments.containsKey("defaultCustomerCreditStatusChoice"))
+                    edit.setDefaultCustomerCreditStatusChoice(defaultCustomerCreditStatusChoice);
+                if(arguments.containsKey("defaultArGlAccountName"))
+                    edit.setDefaultArGlAccountName(defaultArGlAccountName);
+                if(arguments.containsKey("defaultHoldUntilComplete"))
+                    edit.setDefaultHoldUntilComplete(defaultHoldUntilComplete);
+                if(arguments.containsKey("defaultAllowBackorders"))
+                    edit.setDefaultAllowBackorders(defaultAllowBackorders);
+                if(arguments.containsKey("defaultAllowSubstitutions"))
+                    edit.setDefaultAllowSubstitutions(defaultAllowSubstitutions);
+                if(arguments.containsKey("defaultAllowCombiningShipments"))
+                    edit.setDefaultAllowCombiningShipments(defaultAllowCombiningShipments);
+                if(arguments.containsKey("defaultRequireReference"))
+                    edit.setDefaultRequireReference(defaultRequireReference);
+                if(arguments.containsKey("defaultAllowReferenceDuplicates"))
+                    edit.setDefaultAllowReferenceDuplicates(defaultAllowReferenceDuplicates);
+                if(arguments.containsKey("defaultReferenceValidationPattern"))
+                    edit.setDefaultReferenceValidationPattern(defaultReferenceValidationPattern);
+                if(arguments.containsKey("defaultTaxable"))
+                    edit.setDefaultTaxable(defaultTaxable);
+                if(arguments.containsKey("allocationPriorityName"))
+                    edit.setAllocationPriorityName(allocationPriorityName);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = CustomerUtil.getHome().editCustomerType(getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static MutationResultObject deleteCustomerType(final DataFetchingEnvironment env,
+            @GraphQLName("customerTypeName") final String customerTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = CustomerUtil.getHome().getDeleteCustomerTypeForm();
+
+            commandForm.setCustomerTypeName(customerTypeName);
+            commandForm.setUlid(id);
+
+            mutationResultObject.setCommandResult(CustomerUtil.getHome().deleteCustomerType(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
