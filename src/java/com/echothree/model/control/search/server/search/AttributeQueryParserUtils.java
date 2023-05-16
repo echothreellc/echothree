@@ -391,6 +391,7 @@ public class AttributeQueryParserUtils
     static {
         var set = new HashSet<String>(5);
 
+        set.add(EntityAttributeTypes.BOOLEAN.name());
         set.add(EntityAttributeTypes.NAME.name());
         set.add(EntityAttributeTypes.MULTIPLELISTITEM.name());
         set.add(EntityAttributeTypes.LISTITEM.name());
