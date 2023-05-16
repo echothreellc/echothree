@@ -177,9 +177,20 @@ public abstract class BaseIndexer<BE extends BaseEntity>
             EntityAttributeDetail entityAttributeDetail = entityAttribute.getLastDetail();
             String fieldName = entityAttributeDetail.getEntityAttributeName();
             String entityAttributeTypeName = entityAttributeDetail.getEntityAttributeType().getEntityAttributeTypeName();
-            if (entityAttributeTypeName.equals(EntityAttributeTypes.NAME.name())) {
+
+            if (entityAttributeTypeName.equals(EntityAttributeTypes.BOOLEAN.name())) {
+                var entityBooleanAttribute = coreControl.getEntityBooleanAttribute(entityAttribute, entityInstance);
+
+                if(entityBooleanAttribute != null) {
+                    var booleanAttribute = entityBooleanAttribute.getBooleanAttribute();
+                    if(IndexerDebugFlags.LogBaseIndexing) {
+                        log.info("--- fieldName =\"" + fieldName + ", \"booleanAttribute = \"" + booleanAttribute + "\"");
+                    }
+                    document.add(new Field(fieldName, booleanAttribute.toString(), FieldTypes.NOT_STORED_NOT_TOKENIZED));
+                }
+            } else if (entityAttributeTypeName.equals(EntityAttributeTypes.NAME.name())) {
                 EntityNameAttribute entityNameAttribute = coreControl.getEntityNameAttribute(entityAttribute, entityInstance);
-                
+
                 if(entityNameAttribute != null) {
                     String nameAttribute = entityNameAttribute.getNameAttribute();
                     if(IndexerDebugFlags.LogBaseIndexing) {
