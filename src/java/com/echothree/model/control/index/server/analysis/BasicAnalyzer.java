@@ -129,7 +129,8 @@ public class BasicAnalyzer
             // EntityAttributeTypes.STRING.name() - uses default Analyzer.
             // EntityAttributeTypes.CLOB.name() - uses default Analyzer.
             // EntityAttributeTypes.GEOPOINT.name() - ignored.
-            if (entityAttributeTypeName.equals(EntityAttributeTypes.NAME.name())
+            if (entityAttributeTypeName.equals(EntityAttributeTypes.BOOLEAN.name())
+                    || entityAttributeTypeName.equals(EntityAttributeTypes.NAME.name())
                     || entityAttributeTypeName.equals(EntityAttributeTypes.MULTIPLELISTITEM.name())
                     || entityAttributeTypeName.equals(EntityAttributeTypes.LISTITEM.name())) {
                 // Use the WhitespaceAnalyzer
