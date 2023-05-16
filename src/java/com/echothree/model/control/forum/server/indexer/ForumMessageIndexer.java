@@ -116,7 +116,7 @@ public class ForumMessageIndexer
                     forumNames.append(' ');
                 }
                 
-                forumNames.append(forumForumThread.getForum().getActiveDetail().getForumName());
+                forumNames.append(forumForumThread.getForum().getLastDetail().getForumName());
             });
             
             document.add(new Field(IndexFields.forumNames.name(), forumNames.toString(), FieldTypes.NOT_STORED_NOT_TOKENIZED));
