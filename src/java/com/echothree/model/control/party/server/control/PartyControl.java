@@ -3758,13 +3758,13 @@ public class PartyControl
     public PartyDivisionValue getPartyDivisionValueByNameForUpdate(Party companyParty, String partyDivisionName) {
         return getPartyDivisionValueForUpdate(getPartyDivisionByNameForUpdate(companyParty, partyDivisionName));
     }
-    
+
     private List<PartyDivision> getDivisionsByCompany(Party companyParty, EntityPermission entityPermission) {
         List<PartyDivision> partyDivisions;
-        
+
         try {
             String query = null;
-            
+
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
                         "FROM partydivisions, partydetails " +
@@ -3779,29 +3779,72 @@ public class PartyControl
                         "AND pdiv_par_partyid = pardt_par_partyid AND pardt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
+
             PreparedStatement ps = PartyDivisionFactory.getInstance().prepareStatement(query);
-            
+
             ps.setLong(1, companyParty.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             ps.setLong(3, Session.MAX_TIME);
-            
+
             partyDivisions = PartyDivisionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
-        
+
         return partyDivisions;
     }
-    
+
     public List<PartyDivision> getDivisionsByCompany(Party companyParty) {
         return getDivisionsByCompany(companyParty, EntityPermission.READ_ONLY);
     }
-    
+
     public List<PartyDivision> getDivisionsByCompanyForUpdate(Party companyParty) {
         return getDivisionsByCompany(companyParty, EntityPermission.READ_WRITE);
     }
-    
+
+    private List<PartyDivision> getDivisionsByName(String partyDivisionName, EntityPermission entityPermission) {
+        List<PartyDivision> partyDivisions;
+
+        try {
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM partydivisions, partydetails " +
+                        "WHERE pdiv_partydivisionname = ? AND pdiv_thrutime = ? " +
+                        "AND pdiv_par_partyid = pardt_par_partyid AND pardt_thrutime = ? " +
+                        "ORDER BY pdiv_sortorder, pdiv_partydivisionname " +
+                        "_LIMIT_";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM partydivisions, partydetails " +
+                        "WHERE pdiv_partydivisionname = ? AND pdiv_thrutime = ? " +
+                        "AND pdiv_par_partyid = pardt_par_partyid AND pardt_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+
+            PreparedStatement ps = PartyDivisionFactory.getInstance().prepareStatement(query);
+
+            ps.setString(1, partyDivisionName);
+            ps.setLong(2, Session.MAX_TIME);
+            ps.setLong(3, Session.MAX_TIME);
+
+            partyDivisions = PartyDivisionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return partyDivisions;
+    }
+
+    public List<PartyDivision> getDivisionsByName(String partyDivisionName) {
+        return getDivisionsByName(partyDivisionName, EntityPermission.READ_ONLY);
+    }
+
+    public List<PartyDivision> getDivisionsByNameForUpdate(String partyDivisionName) {
+        return getDivisionsByName(partyDivisionName, EntityPermission.READ_WRITE);
+    }
+
     public DivisionChoicesBean getDivisionChoices(Party companyParty, String defaultDivisionChoice, boolean allowNullChoice) {
         List<PartyDivision> partyDivisions = getDivisionsByCompany(companyParty);
         var size = partyDivisions.size() + (allowNullChoice ? 1 : 0);
