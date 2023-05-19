@@ -118,7 +118,7 @@ public class IdentifyCommand
             }
         }
     }
-    
+
     private void checkCompanies(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
         if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
                 SecurityRoleGroups.Company.name(), SecurityRoles.Search.name())) {
@@ -131,6 +131,18 @@ public class IdentifyCommand
 
                 entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
             }
+        }
+    }
+
+    private void checkDivisions(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
+                SecurityRoleGroups.Division.name(), SecurityRoles.Search.name())) {
+            var partyControl = Session.getModelController(PartyControl.class);
+            var partyDivisions = partyControl.getDivisionsByName(target);
+
+            partyDivisions.stream().map((partyDivision) -> getCoreControl().getEntityInstanceByBasePK(partyDivision.getParty().getPrimaryKey())).map((entityInstance) -> EntityNamesUtils.getInstance().getEntityNames(entityInstance)).forEach((entityInstanceAndNames) -> {
+                entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
+            });
         }
     }
 
@@ -322,6 +334,7 @@ public class IdentifyCommand
         checkSequenceTypes(party, entityInstances, target);
         checkItems(party, entityInstances, target);
         checkCompanies(party, entityInstances, target);
+        checkDivisions(party, entityInstances, target);
         checkWarehouses(party, entityInstances, target);
         checkVendors(party, entityInstances, target);
         checkVendorItems(party, entityInstances, target);
