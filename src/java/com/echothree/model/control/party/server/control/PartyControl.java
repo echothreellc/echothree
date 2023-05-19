@@ -3810,16 +3810,16 @@ public class PartyControl
 
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
-                        "FROM partydivisions, partydetails " +
+                        "FROM partydivisions, parties, partydetails " +
                         "WHERE pdiv_partydivisionname = ? AND pdiv_thrutime = ? " +
-                        "AND pdiv_par_partyid = pardt_par_partyid AND pardt_thrutime = ? " +
-                        "ORDER BY pdiv_sortorder, pdiv_partydivisionname " +
+                        "AND pdiv_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid " +
+                        "ORDER BY pardt_partyname " +
                         "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
-                        "FROM partydivisions, partydetails " +
+                        "FROM partydivisions, parties, partydetails " +
                         "WHERE pdiv_partydivisionname = ? AND pdiv_thrutime = ? " +
-                        "AND pdiv_par_partyid = pardt_par_partyid AND pardt_thrutime = ? " +
+                        "AND pdiv_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid " +
                         "FOR UPDATE";
             }
 
@@ -3827,7 +3827,6 @@ public class PartyControl
 
             ps.setString(1, partyDivisionName);
             ps.setLong(2, Session.MAX_TIME);
-            ps.setLong(3, Session.MAX_TIME);
 
             partyDivisions = PartyDivisionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
