@@ -4126,6 +4126,7 @@ public class PartyControl
                         "FROM partydepartments, partydetails " +
                         "WHERE pdept_divisionpartyid = ? AND pdept_thrutime = ? " +
                         "AND pdept_par_partyid = pardt_par_partyid AND pardt_thrutime = ? " +
+                        "ORDER BY pdept_partydepartmentname " +
                         "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
