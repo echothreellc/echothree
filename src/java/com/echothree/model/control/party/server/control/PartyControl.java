@@ -4114,13 +4114,13 @@ public class PartyControl
     public PartyDepartmentValue getPartyDepartmentValueByNameForUpdate(Party divisionParty, String partyDepartmentName) {
         return getPartyDepartmentValueForUpdate(getPartyDepartmentByNameForUpdate(divisionParty, partyDepartmentName));
     }
-    
+
     private List<PartyDepartment> getDepartmentsByDivision(Party divisionParty, EntityPermission entityPermission) {
         List<PartyDepartment> partyDepartments;
-        
+
         try {
             String query = null;
-            
+
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
                         "FROM partydepartments, partydetails " +
@@ -4134,29 +4134,71 @@ public class PartyControl
                         "AND pdept_par_partyid = pardt_par_partyid AND pardt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
+
             PreparedStatement ps = PartyDepartmentFactory.getInstance().prepareStatement(query);
-            
+
             ps.setLong(1, divisionParty.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
             ps.setLong(3, Session.MAX_TIME);
-            
+
             partyDepartments = PartyDepartmentFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
-        
+
         return partyDepartments;
     }
-    
+
     public List<PartyDepartment> getDepartmentsByDivision(Party divisionParty) {
         return getDepartmentsByDivision(divisionParty, EntityPermission.READ_ONLY);
     }
-    
+
     public List<PartyDepartment> getDepartmentsByDivisionForUpdate(Party divisionParty) {
         return getDepartmentsByDivision(divisionParty, EntityPermission.READ_WRITE);
     }
-    
+
+    private List<PartyDepartment> getDepartmentsByName(String partyDepartmentName, EntityPermission entityPermission) {
+        List<PartyDepartment> partyDepartments;
+
+        try {
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM partydepartments, parties, partydetails " +
+                        "WHERE pdept_partydepartmentname = ? AND pdept_thrutime = ? " +
+                        "AND pdept_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid " +
+                        "ORDER BY pardt_partyname " +
+                        "_LIMIT_";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM partydepartments, parties, partydetails " +
+                        "WHERE pdept_partydepartmentname = ? AND pdept_thrutime = ? " +
+                        "AND pdept_par_partyid = par_partyid AND par_activedetailid = pardt_partydetailid " +
+                        "FOR UPDATE";
+            }
+
+            PreparedStatement ps = PartyDepartmentFactory.getInstance().prepareStatement(query);
+
+            ps.setString(1, partyDepartmentName);
+            ps.setLong(2, Session.MAX_TIME);
+
+            partyDepartments = PartyDepartmentFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return partyDepartments;
+    }
+
+    public List<PartyDepartment> getDepartmentsByName(String partyDepartmentName) {
+        return getDepartmentsByName(partyDepartmentName, EntityPermission.READ_ONLY);
+    }
+
+    public List<PartyDepartment> getDepartmentsByNameForUpdate(String partyDepartmentName) {
+        return getDepartmentsByName(partyDepartmentName, EntityPermission.READ_WRITE);
+    }
+
     public DepartmentChoicesBean getDepartmentChoices(Party divisionParty, String defaultDepartmentChoice, boolean allowNullChoice) {
         List<PartyDepartment> partyDepartments = getDepartmentsByDivision(divisionParty);
         var size = partyDepartments.size() + (allowNullChoice ? 1 : 0);

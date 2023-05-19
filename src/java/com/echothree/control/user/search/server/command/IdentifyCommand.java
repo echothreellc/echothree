@@ -146,6 +146,18 @@ public class IdentifyCommand
         }
     }
 
+    private void checkDepartments(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
+                SecurityRoleGroups.Department.name(), SecurityRoles.Search.name())) {
+            var partyControl = Session.getModelController(PartyControl.class);
+            var partyDepartments = partyControl.getDepartmentsByName(target);
+
+            partyDepartments.stream().map((partyDepartment) -> getCoreControl().getEntityInstanceByBasePK(partyDepartment.getParty().getPrimaryKey())).map((entityInstance) -> EntityNamesUtils.getInstance().getEntityNames(entityInstance)).forEach((entityInstanceAndNames) -> {
+                entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
+            });
+        }
+    }
+
     private void checkWarehouses(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
         if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
                 SecurityRoleGroups.Warehouse.name(), SecurityRoles.Search.name())) {
@@ -335,6 +347,7 @@ public class IdentifyCommand
         checkItems(party, entityInstances, target);
         checkCompanies(party, entityInstances, target);
         checkDivisions(party, entityInstances, target);
+        checkDepartments(party, entityInstances, target);
         checkWarehouses(party, entityInstances, target);
         checkVendors(party, entityInstances, target);
         checkVendorItems(party, entityInstances, target);
