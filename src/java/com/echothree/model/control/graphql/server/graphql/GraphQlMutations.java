@@ -164,6 +164,9 @@ import com.echothree.control.user.vendor.common.result.EditVendorItemCostResult;
 import com.echothree.control.user.vendor.common.result.EditVendorItemResult;
 import com.echothree.control.user.vendor.common.result.EditVendorResult;
 import com.echothree.control.user.vendor.common.result.EditVendorTypeResult;
+import com.echothree.control.user.warehouse.common.WarehouseUtil;
+import com.echothree.control.user.warehouse.common.result.CreateWarehouseResult;
+import com.echothree.control.user.warehouse.common.result.EditWarehouseResult;
 import com.echothree.control.user.wishlist.common.WishlistUtil;
 import com.echothree.control.user.wishlist.common.result.CreateWishlistPriorityResult;
 import com.echothree.control.user.wishlist.common.result.CreateWishlistTypeResult;
@@ -175,8 +178,6 @@ import com.echothree.model.control.search.server.graphql.SearchEmployeesResultOb
 import com.echothree.model.control.search.server.graphql.SearchItemsResultObject;
 import com.echothree.model.control.search.server.graphql.SearchVendorsResultObject;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.common.validation.FieldType;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLID;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -7280,6 +7281,156 @@ public class GraphQlMutations
         return mutationResultObject;
     }
 
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static MutationResultWithIdObject createWarehouse(final DataFetchingEnvironment env,
+            @GraphQLName("warehouseName") @GraphQLNonNull final String warehouseName,
+            @GraphQLName("name") final String name,
+            @GraphQLName("preferredLanguageIsoName") final String preferredLanguageIsoName,
+            @GraphQLName("preferredCurrencyIsoName") final String preferredCurrencyIsoName,
+            @GraphQLName("preferredJavaTimeZoneName") final String preferredJavaTimeZoneName,
+            @GraphQLName("preferredDateTimeFormatName") final String preferredDateTimeFormatName,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("inventoryMovePrinterGroupName") @GraphQLNonNull final String inventoryMovePrinterGroupName,
+            @GraphQLName("picklistPrinterGroupName") @GraphQLNonNull final String picklistPrinterGroupName,
+            @GraphQLName("packingListPrinterGroupName") @GraphQLNonNull final String packingListPrinterGroupName,
+            @GraphQLName("shippingManifestPrinterGroupName") @GraphQLNonNull final String shippingManifestPrinterGroupName) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = WarehouseUtil.getHome().getCreateWarehouseForm();
+
+            commandForm.setWarehouseName(warehouseName);
+            commandForm.setName(name);
+            commandForm.setPreferredLanguageIsoName(preferredLanguageIsoName);
+            commandForm.setPreferredCurrencyIsoName(preferredCurrencyIsoName);
+            commandForm.setPreferredJavaTimeZoneName(preferredJavaTimeZoneName);
+            commandForm.setPreferredDateTimeFormatName(preferredDateTimeFormatName);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setInventoryMovePrinterGroupName(inventoryMovePrinterGroupName);
+            commandForm.setPicklistPrinterGroupName(picklistPrinterGroupName);
+            commandForm.setPackingListPrinterGroupName(packingListPrinterGroupName);
+            commandForm.setShippingManifestPrinterGroupName(shippingManifestPrinterGroupName);
+
+            var commandResult = WarehouseUtil.getHome().createWarehouse(getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateWarehouseResult)commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static MutationResultWithIdObject editWarehouse(final DataFetchingEnvironment env,
+            @GraphQLName("originalWarehouseName") final String originalWarehouseName,
+            @GraphQLName("partyName") final String partyName,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("warehouseName") final String warehouseName,
+            @GraphQLName("name") final String name,
+            @GraphQLName("preferredLanguageIsoName") final String preferredLanguageIsoName,
+            @GraphQLName("preferredCurrencyIsoName") final String preferredCurrencyIsoName,
+            @GraphQLName("preferredJavaTimeZoneName") final String preferredJavaTimeZoneName,
+            @GraphQLName("preferredDateTimeFormatName") final String preferredDateTimeFormatName,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("inventoryMovePrinterGroupName") final String inventoryMovePrinterGroupName,
+            @GraphQLName("picklistPrinterGroupName") final String picklistPrinterGroupName,
+            @GraphQLName("packingListPrinterGroupName") final String packingListPrinterGroupName,
+            @GraphQLName("shippingManifestPrinterGroupName") final String shippingManifestPrinterGroupName) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var spec = WarehouseUtil.getHome().getWarehouseUniversalSpec();
+
+            spec.setWarehouseName(originalWarehouseName);
+            spec.setPartyName(partyName);
+            spec.setUlid(id);
+
+            var commandForm = WarehouseUtil.getHome().getEditWarehouseForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = WarehouseUtil.getHome().editWarehouse(getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditWarehouseResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                mutationResultObject.setEntityInstance(result.getWarehouse().getEntityInstance());
+
+                if(arguments.containsKey("warehouseName"))
+                    edit.setWarehouseName(warehouseName);
+                if(arguments.containsKey("name"))
+                    edit.setName(name);
+                if(arguments.containsKey("preferredLanguageIsoName"))
+                    edit.setPreferredLanguageIsoName(preferredLanguageIsoName);
+                if(arguments.containsKey("preferredCurrencyIsoName"))
+                    edit.setPreferredCurrencyIsoName(preferredCurrencyIsoName);
+                if(arguments.containsKey("preferredJavaTimeZoneName"))
+                    edit.setPreferredJavaTimeZoneName(preferredJavaTimeZoneName);
+                if(arguments.containsKey("preferredDateTimeFormatName"))
+                    edit.setPreferredDateTimeFormatName(preferredDateTimeFormatName);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("inventoryMovePrinterGroupName"))
+                    edit.setInventoryMovePrinterGroupName(inventoryMovePrinterGroupName);
+                if(arguments.containsKey("picklistPrinterGroupName"))
+                    edit.setPicklistPrinterGroupName(picklistPrinterGroupName);
+                if(arguments.containsKey("packingListPrinterGroupName"))
+                    edit.setPackingListPrinterGroupName(packingListPrinterGroupName);
+                if(arguments.containsKey("shippingManifestPrinterGroupName"))
+                    edit.setShippingManifestPrinterGroupName(shippingManifestPrinterGroupName);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = WarehouseUtil.getHome().editWarehouse(getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static MutationResultObject deleteWarehouse(final DataFetchingEnvironment env,
+            @GraphQLName("warehouseName") final String warehouseName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = WarehouseUtil.getHome().getDeleteWarehouseForm();
+
+            commandForm.setWarehouseName(warehouseName);
+            commandForm.setUlid(id);
+
+            mutationResultObject.setCommandResult(WarehouseUtil.getHome().deleteWarehouse(getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+    
     @GraphQLField
     @GraphQLRelayMutation
     public static MutationResultWithIdObject createItemImageType(final DataFetchingEnvironment env,

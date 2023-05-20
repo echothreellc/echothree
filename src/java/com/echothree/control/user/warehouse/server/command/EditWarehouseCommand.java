@@ -21,12 +21,16 @@ import com.echothree.control.user.warehouse.common.edit.WarehouseEditFactory;
 import com.echothree.control.user.warehouse.common.form.EditWarehouseForm;
 import com.echothree.control.user.warehouse.common.result.EditWarehouseResult;
 import com.echothree.control.user.warehouse.common.result.WarehouseResultFactory;
-import com.echothree.control.user.warehouse.common.spec.WarehouseSpec;
+import com.echothree.control.user.warehouse.common.spec.WarehouseUniversalSpec;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.printer.common.PrinterConstants;
 import com.echothree.model.control.printer.server.control.PrinterControl;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
+import com.echothree.model.control.warehouse.server.logic.WarehouseLogic;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
@@ -40,30 +44,42 @@ import com.echothree.model.data.printer.server.entity.PrinterGroup;
 import com.echothree.model.data.printer.server.entity.PrinterGroupUseType;
 import com.echothree.model.data.printer.server.value.PartyPrinterGroupUseValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.model.data.warehouse.server.value.WarehouseValue;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class EditWarehouseCommand
-        extends BaseAbstractEditCommand<WarehouseSpec, WarehouseEdit, EditWarehouseResult, Party, Party> {
-    
+        extends BaseAbstractEditCommand<WarehouseUniversalSpec, WarehouseEdit, EditWarehouseResult, Party, Party> {
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
     
     static {
-        SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("WarehouseName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.Warehouse.name(), SecurityRoles.Edit.name())
+                ))
+        ));
+
+        SPEC_FIELD_DEFINITIONS = List.of(
+                new FieldDefinition("WarehouseName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
+        );
         
-        EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("WarehouseName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Name", FieldType.STRING, false, 1L, 60L),
                 new FieldDefinition("PreferredLanguageIsoName", FieldType.ENTITY_NAME, false, null, null),
@@ -76,12 +92,12 @@ public class EditWarehouseCommand
                 new FieldDefinition("PicklistPrinterGroupName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PackingListPrinterGroupName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ShippingManifestPrinterGroupName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+        );
     }
     
     /** Creates a new instance of EditWarehouseCommand */
     public EditWarehouseCommand(UserVisitPK userVisitPK, EditWarehouseForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
 
     @Override
@@ -96,23 +112,9 @@ public class EditWarehouseCommand
 
     @Override
     public Party getEntity(EditWarehouseResult result) {
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
-        Warehouse warehouse;
-        var warehouseName = spec.getWarehouseName();
+        var warehouse = WarehouseLogic.getInstance().getWarehouseByUniversalSpec(this, spec, false, editModeToEntityPermission(editMode));
 
-        if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-            warehouse = warehouseControl.getWarehouseByName(warehouseName);
-        } else { // EditMode.UPDATE
-            warehouse = warehouseControl.getWarehouseByNameForUpdate(warehouseName);
-        }
-
-        if(warehouse != null) {
-            result.setWarehouse(warehouseControl.getWarehouseTransfer(getUserVisit(), warehouse));
-        } else {
-            addExecutionError(ExecutionErrors.UnknownWarehouseName.name(), warehouseName);
-        }
-
-        return warehouse.getParty();
+        return warehouse == null ? null : warehouse.getParty();
     }
 
     @Override
@@ -303,7 +305,7 @@ public class EditWarehouseCommand
             }
         }
 
-        warehouseControl.updateWarehouseFromValue(warehouseValue, updatedBy);
+        WarehouseLogic.getInstance().updateWarehouseFromValue(this, warehouseValue, updatedBy);
         partyControl.updatePartyFromValue(partyDetailValue, updatedBy);
     }
 

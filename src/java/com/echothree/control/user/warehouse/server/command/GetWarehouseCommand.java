@@ -67,7 +67,7 @@ public class GetWarehouseCommand
 
     @Override
     protected Warehouse getEntity() {
-        var entity = WarehouseLogic.getInstance().getWarehouseByUniversalSpec(this, form);
+        var entity = WarehouseLogic.getInstance().getWarehouseByUniversalSpec(this, form, true);
 
         if(entity != null) {
             sendEvent(entity.getPartyPK(), EventTypes.READ, null, null, getPartyPK());

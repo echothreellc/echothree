@@ -17,11 +17,11 @@
 package com.echothree.control.user.warehouse.common.form;
 
 import com.echothree.control.user.warehouse.common.edit.WarehouseEdit;
-import com.echothree.control.user.warehouse.common.spec.WarehouseSpec;
+import com.echothree.control.user.warehouse.common.spec.WarehouseUniversalSpec;
 import com.echothree.util.common.form.BaseEditForm;
 
 public interface EditWarehouseForm
-        extends BaseEditForm<WarehouseSpec, WarehouseEdit> {
+        extends BaseEditForm<WarehouseUniversalSpec, WarehouseEdit> {
     
     // Nothing additional beyond BaseEditForm
     

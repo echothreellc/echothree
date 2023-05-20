@@ -2349,6 +2349,15 @@
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="Warehouse" parentSecurityRoleGroupName="WarehouseComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Warehouse" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Warehouse Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Warehouse Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Warehouse Delete" />
+            </securityRole>
             <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Warehouse List" />
             </securityRole>
@@ -2356,7 +2365,7 @@
                 <securityRoleDescription languageIsoName="en" description="Warehouse Review" />
             </securityRole>
             <securityRole securityRoleName="Search" isDefault="true" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Warehosue Search" />
+                <securityRoleDescription languageIsoName="en" description="Warehouse Search" />
             </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="WishlistComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
@@ -8120,6 +8129,9 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="VendorItemCost" securityRoleName="Delete" />
             <partySecurityRoleTemplateRole securityRoleGroupName="VendorItemCost" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="VendorItemCost" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Warehouse" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Warehouse" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Warehouse" securityRoleName="Delete" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Warehouse" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Warehouse" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Warehouse" securityRoleName="Search" />

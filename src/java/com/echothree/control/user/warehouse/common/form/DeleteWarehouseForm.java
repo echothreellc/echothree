@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.warehouse.common.form;
 
-import com.echothree.control.user.warehouse.common.spec.WarehouseSpec;
+import com.echothree.control.user.warehouse.common.spec.WarehouseUniversalSpec;
 
 public interface DeleteWarehouseForm
-        extends WarehouseSpec {
+        extends WarehouseUniversalSpec {
     
-    // Nothing additional beyond WarehouseSpec
+    // Nothing additional beyond WarehouseUniversalSpec
     
 }

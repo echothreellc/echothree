@@ -241,7 +241,7 @@ public class WarehouseControl
         return getWarehouseByName(warehouseName, EntityPermission.READ_WRITE);
     }
     
-    private Warehouse getDefaultWarehouse(EntityPermission entityPermission) {
+    public Warehouse getDefaultWarehouse(EntityPermission entityPermission) {
         Warehouse warehouse;
         
         try {
