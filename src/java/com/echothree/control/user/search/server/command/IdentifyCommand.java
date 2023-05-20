@@ -23,6 +23,7 @@ import com.echothree.model.control.core.common.CoreProperties;
 import com.echothree.model.control.core.common.transfer.ComponentVendorTransfer;
 import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.customer.server.search.CustomerSearchEvaluator;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.search.ItemSearchEvaluator;
@@ -212,6 +213,18 @@ public class IdentifyCommand
         }
     }
 
+    private void checkEntityTypes(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
+                SecurityRoleGroups.EntityType.name(), SecurityRoles.Search.name())) {
+            var coreControl = Session.getModelController(CoreControl.class);
+            var entityTypes = coreControl.getEntityTypesByName(target);
+
+            entityTypes.stream().map((entityType) -> getCoreControl().getEntityInstanceByBasePK(entityType.getPrimaryKey())).map((entityInstance) -> EntityNamesUtils.getInstance().getEntityNames(entityInstance)).forEach((entityInstanceAndNames) -> {
+                entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
+            });
+        }
+    }
+
     private void executeCustomerSearch(final UserVisit userVisit, final Set<EntityInstanceTransfer> entityInstances,
             final SearchLogic searchLogic, final SearchKind searchKind, final SearchType searchType,
             final String firstName, final String middleName, final String lastName, final String q) {
@@ -364,6 +377,7 @@ public class IdentifyCommand
         checkLocations(party, entityInstances, target);
         checkVendors(party, entityInstances, target);
         checkVendorItems(party, entityInstances, target);
+        checkEntityTypes(party, entityInstances, target);
 
         var nameResult = new NameCleaner().getCleansedName(target);
         searchCustomers(party, entityInstances, target, nameResult);

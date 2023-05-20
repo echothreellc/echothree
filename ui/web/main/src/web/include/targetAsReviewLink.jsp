@@ -151,6 +151,12 @@
                 <c:param name="MimeTypeName" value="${entityInstance.entityNames.names.map.MimeTypeName}" />
             </c:url>
         </c:when>
+        <c:when test="${entityInstance.entityNames.target == 'EntityType'}">
+            <c:url var="targetUrl" value="/action/Core/EntityType/Review">
+                <c:param name="ComponentVendorName" value="${entityInstance.entityNames.names.map.ComponentVendorName}" />
+                <c:param name="EntityTypeName" value="${entityInstance.entityNames.names.map.EntityTypeName}" />
+            </c:url>
+        </c:when>
     </c:choose>
 </c:if>
 
