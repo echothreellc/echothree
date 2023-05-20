@@ -194,6 +194,7 @@ public enum SecurityRoleGroups {
     LetterSource,
     LetterContactMechanismPurpose,
     LicenseType,
+    Location,
     Lot,
     LotAliasType,
     LotTimeType,

@@ -31,6 +31,7 @@ public enum Targets {
     ForumThread,
     Item,
     ItemDescription,
+    Location,
     MimeType,
     PartyContactList,
     PartyTrainingClass,

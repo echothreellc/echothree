@@ -28,6 +28,7 @@ public enum Names {
     ItemDescriptionTypeName,
     ItemName,
     LanguageIsoName,
+    LocationName,
     MimeTypeName,
     OrderName,
     PartyName,
@@ -35,5 +36,6 @@ public enum Names {
     SubscriptionName,
     TrainingClassName,
     VendorItemName,
+    WarehouseName,
     
 }

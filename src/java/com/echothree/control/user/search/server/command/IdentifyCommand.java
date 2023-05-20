@@ -173,6 +173,18 @@ public class IdentifyCommand
         }
     }
 
+    private void checkLocations(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
+                SecurityRoleGroups.Location.name(), SecurityRoles.Search.name())) {
+            var warehouseControl = Session.getModelController(WarehouseControl.class);
+            var locations = warehouseControl.getLocationsByName(target);
+
+            locations.stream().map((location) -> getCoreControl().getEntityInstanceByBasePK(location.getPrimaryKey())).map((entityInstance) -> EntityNamesUtils.getInstance().getEntityNames(entityInstance)).forEach((entityInstanceAndNames) -> {
+                entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
+            });
+        }
+    }
+
     private void checkVendors(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
         if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
                 SecurityRoleGroups.Vendor.name(), SecurityRoles.Search.name())) {
@@ -349,6 +361,7 @@ public class IdentifyCommand
         checkDivisions(party, entityInstances, target);
         checkDepartments(party, entityInstances, target);
         checkWarehouses(party, entityInstances, target);
+        checkLocations(party, entityInstances, target);
         checkVendors(party, entityInstances, target);
         checkVendorItems(party, entityInstances, target);
 

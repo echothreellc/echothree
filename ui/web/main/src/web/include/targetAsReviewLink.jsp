@@ -72,6 +72,14 @@
                 </c:url>
             </et:hasSecurityRole>
         </c:when>
+        <c:when test="${entityInstance.entityNames.target == 'Location'}">
+            <et:hasSecurityRole securityRole="Location.Review">
+                <c:url var="targetUrl" value="/action/Warehouse/Location/Review">
+                    <c:param name="WarehouseName" value="${entityInstance.entityNames.names.map.WarehouseName}" />
+                    <c:param name="LocationName" value="${entityInstance.entityNames.names.map.LocationName}" />
+                </c:url>
+            </et:hasSecurityRole>
+        </c:when>
         <c:when test="${entityInstance.entityNames.target == 'CommunicationEvent'}">
             <et:hasSecurityRole securityRole="CommunicationEvent.Review">
                 <c:url var="targetUrl" value="/action/Communication/CommunicationEvent/Review">

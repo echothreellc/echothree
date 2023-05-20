@@ -28,6 +28,7 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.training.server.control.TrainingControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.vendor.server.control.VendorControl;
+import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.communication.server.entity.CommunicationEvent;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.MimeType;
@@ -201,6 +202,11 @@ public class EntityDescriptionUtils {
                     MimeType mimeType = coreControl.getMimeTypeByEntityInstance(entityInstance);
 
                     description = mimeType == null ? null : coreControl.getBestMimeTypeDescription(mimeType, getLanguage(userVisit));
+                } else if(entityTypeName.equals(EntityTypes.Location.name())) {
+                    var warehouseControl = Session.getModelController(WarehouseControl.class);
+                    var location = warehouseControl.getLocationByEntityInstance(entityInstance);
+
+                    description = location == null ? null : warehouseControl.getBestLocationDescription(location, getLanguage(userVisit));
                 }
             }
         }
