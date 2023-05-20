@@ -23,6 +23,7 @@ import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
+import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.communication.common.pk.CommunicationEventPK;
 import com.echothree.model.data.communication.server.factory.CommunicationEventFactory;
 import com.echothree.model.data.contactlist.common.pk.PartyContactListPK;
@@ -51,6 +52,8 @@ import com.echothree.model.data.training.server.factory.PartyTrainingClassFactor
 import com.echothree.model.data.training.server.factory.TrainingClassFactory;
 import com.echothree.model.data.vendor.common.pk.VendorItemPK;
 import com.echothree.model.data.vendor.server.factory.VendorItemFactory;
+import com.echothree.model.data.warehouse.common.pk.LocationPK;
+import com.echothree.model.data.warehouse.server.factory.LocationFactory;
 import com.echothree.util.common.persistence.EntityNames;
 import com.echothree.util.common.persistence.Names;
 import com.echothree.util.common.persistence.Targets;
@@ -221,10 +224,23 @@ public class EntityNamesUtils {
             var mimeType = MimeTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY,
                     new MimeTypePK(entityInstance.getEntityUniqueId()));
             var names = new MapWrapper<String>(1);
-            
+
             names.put(Names.MimeTypeName.name(), mimeType.getLastDetail().getMimeTypeName());
-            
+
             return new EntityNames(Targets.MimeType.name(), names);
+        });
+
+        nameTranslators.put(EntityTypes.Location.name(), (final EntityInstance entityInstance) -> {
+            var warehouseControl = Session.getModelController(WarehouseControl.class);
+            var location = LocationFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY,
+                    new LocationPK(entityInstance.getEntityUniqueId()));
+            var names = new MapWrapper<String>(2);
+            var locationDetail = location.getLastDetail();
+
+            names.put(Names.WarehouseName.name(), warehouseControl.getWarehouse(locationDetail.getWarehouseParty()).getWarehouseName());
+            names.put(Names.LocationName.name(), locationDetail.getLocationName());
+
+            return new EntityNames(Targets.Location.name(), names);
         });
 
         nameTranslators = Collections.unmodifiableMap(nameTranslators);

@@ -30,6 +30,9 @@
         <c:when test="${entityInstance.entityNames.target == 'Warehouse'}">
             <c:set var="targetNames" value="${entityInstance.entityNames.names.map.PartyName}" />
         </c:when>
+        <c:when test="${entityInstance.entityNames.target == 'Location'}">
+            <c:set var="targetNames" value="${entityInstance.entityNames.names.map.WarehouseName}, ${entityInstance.entityNames.names.map.LocationName}" />
+        </c:when>
         <c:when test="${entityInstance.entityNames.target == 'CommunicationEvent'}">
             <c:set var="targetNames" value="${entityInstance.entityNames.names.map.CommunicationEventName}" />
         </c:when>

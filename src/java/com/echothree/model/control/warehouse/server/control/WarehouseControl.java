@@ -1422,7 +1422,30 @@ public class WarehouseControl
         
         return location;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.Location */
+    public Location getLocationByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new LocationPK(entityInstance.getEntityUniqueId());
+
+        return LocationFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public Location getLocationByEntityInstance(EntityInstance entityInstance) {
+        return getLocationByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public Location getLocationByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getLocationByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public long countLocationsByLocationUseType(Party warehouseParty, LocationUseType locationUseType) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM locationdetails " +
+                        "WHERE locdt_warehousepartyid = ? AND locdt_locutyp_locationusetypeid = ? AND locdt_thrutime = ? ",
+                warehouseParty, locationUseType, Session.MAX_TIME);
+    }
+
     private Location getLocationByName(Party warehouseParty, String locationName, EntityPermission entityPermission) {
         Location location;
         
@@ -1471,13 +1494,13 @@ public class WarehouseControl
     public LocationDetailValue getLocationDetailValueByNameForUpdate(Party warehouseParty, String locationName) {
         return getLocationDetailValueForUpdate(getLocationByNameForUpdate(warehouseParty, locationName));
     }
-    
+
     private List<Location> getLocationsByWarehouseParty(Party warehouseParty, EntityPermission entityPermission) {
         List<Location> locations;
-        
+
         try {
             String query = null;
-            
+
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
                         "FROM locations, locationdetails " +
@@ -1489,28 +1512,66 @@ public class WarehouseControl
                         "WHERE loc_locationid = locdt_loc_locationid AND locdt_warehousepartyid = ? AND locdt_thrutime = ? " +
                         "FOR UPDATE";
             }
-            
+
             PreparedStatement ps = LocationFactory.getInstance().prepareStatement(query);
-            
+
             ps.setLong(1, warehouseParty.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
-            
+
             locations = LocationFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
-        
+
         return locations;
     }
-    
+
     public List<Location> getLocationsByWarehouseParty(Party warehouseParty) {
         return getLocationsByWarehouseParty(warehouseParty, EntityPermission.READ_ONLY);
     }
-    
+
     public List<Location> getLocationsByWarehousePartyForUpdate(Party warehouseParty) {
         return getLocationsByWarehouseParty(warehouseParty, EntityPermission.READ_WRITE);
     }
-    
+
+    private List<Location> getLocationsByName(String locationName, EntityPermission entityPermission) {
+        List<Location> locations;
+
+        try {
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM locations, locationdetails " +
+                        "WHERE loc_activedetailid = locdt_locationdetailid AND locdt_locationname = ? " +
+                        "ORDER BY locdt_locationname";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM locations, locationdetails " +
+                        "WHERE loc_activedetailid = locdt_locationdetailid AND locdt_locationname = ? " +
+                        "FOR UPDATE";
+            }
+
+            PreparedStatement ps = LocationFactory.getInstance().prepareStatement(query);
+
+            ps.setString(1, locationName);
+
+            locations = LocationFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return locations;
+    }
+
+    public List<Location> getLocationsByName(String locationName) {
+        return getLocationsByName(locationName, EntityPermission.READ_ONLY);
+    }
+
+    public List<Location> getLocationsByNameForUpdate(String locationName) {
+        return getLocationsByName(locationName, EntityPermission.READ_WRITE);
+    }
+
     private List<Location> getLocationsByLocationType(LocationType locationType, EntityPermission entityPermission) {
         List<Location> locations;
         
@@ -1630,14 +1691,6 @@ public class WarehouseControl
         }
         
         return new LocationChoicesBean(labels, values, defaultValue);
-    }
-    
-    public long countLocationsByLocationUseType(Party warehouseParty, LocationUseType locationUseType) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                    "FROM locationdetails " +
-                    "WHERE locdt_warehousepartyid = ? AND locdt_locutyp_locationusetypeid = ? AND locdt_thrutime = ? ",
-                warehouseParty, locationUseType, Session.MAX_TIME);
     }
     
     public LocationStatusChoicesBean getLocationStatusChoices(String defaultLocationStatusChoice, Language language,

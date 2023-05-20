@@ -2368,6 +2368,36 @@
                 <securityRoleDescription languageIsoName="en" description="Warehouse Search" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="Location" parentSecurityRoleGroupName="WarehouseComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Location" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Location Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Location Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Location Delete" />
+            </securityRole>
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Location List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Location Review" />
+            </securityRole>
+            <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Location Choices" />
+            </securityRole>
+            <securityRole securityRoleName="Search" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Location Search" />
+            </securityRole>
+        </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="LocationStatus" parentSecurityRoleGroupName="WarehouseComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Item Status" />
+            <securityRole securityRoleName="Choices" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Location Status Choices" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="WishlistComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Wishlist Component" />
         </securityRoleGroup>
@@ -8135,6 +8165,14 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="Warehouse" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Warehouse" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Warehouse" securityRoleName="Search" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Location" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Location" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Location" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Location" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Location" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Location" securityRoleName="Choices" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Location" securityRoleName="Search" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="LocationStatus" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WishlistType" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WishlistType" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WishlistType" securityRoleName="Delete" />
