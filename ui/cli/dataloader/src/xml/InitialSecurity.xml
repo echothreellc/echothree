@@ -4962,6 +4962,9 @@
             <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Entity Type Description" />
             </securityRole>
+            <securityRole securityRoleName="Search" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Location Search" />
+            </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="EntityInstance" parentSecurityRoleGroupName="CoreComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Entity Instance" />
@@ -8667,6 +8670,7 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityType" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityType" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityType" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="EntityType" securityRoleName="Search" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityInstance" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityInstance" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityAttribute" securityRoleName="Create" />
