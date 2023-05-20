@@ -161,7 +161,7 @@ public class WarehouseControl
                 """, Session.MAX_TIME);
     }
 
-    private Warehouse getWarehouse(Party party, EntityPermission entityPermission) {
+    public Warehouse getWarehouse(Party party, EntityPermission entityPermission) {
         Warehouse warehouse;
         
         try {
@@ -203,7 +203,7 @@ public class WarehouseControl
         return getWarehouseForUpdate(party).getWarehouseValue().clone();
     }
     
-    private Warehouse getWarehouseByName(String warehouseName, EntityPermission entityPermission) {
+    public Warehouse getWarehouseByName(String warehouseName, EntityPermission entityPermission) {
         Warehouse warehouse;
         
         try {
@@ -241,7 +241,7 @@ public class WarehouseControl
         return getWarehouseByName(warehouseName, EntityPermission.READ_WRITE);
     }
     
-    private Warehouse getDefaultWarehouse(EntityPermission entityPermission) {
+    public Warehouse getDefaultWarehouse(EntityPermission entityPermission) {
         Warehouse warehouse;
         
         try {
@@ -1698,9 +1698,6 @@ public class WarehouseControl
     }
     
     public void deleteLocation(Location location, BasePK deletedBy) {
-        var workflowControl = getWorkflowControl();
-        EntityInstance entityInstance = getCoreControl().getEntityInstanceByBasePK(location.getPrimaryKey());
-        
         deleteLocationVolumeByLocation(location, deletedBy);
         deleteLocationCapacitiesByLocation(location, deletedBy);
         deleteLocationDescriptionsByLocation(location, deletedBy);

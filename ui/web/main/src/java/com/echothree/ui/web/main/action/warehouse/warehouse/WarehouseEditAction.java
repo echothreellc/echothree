@@ -20,12 +20,11 @@ import com.echothree.control.user.warehouse.common.WarehouseUtil;
 import com.echothree.control.user.warehouse.common.edit.WarehouseEdit;
 import com.echothree.control.user.warehouse.common.form.EditWarehouseForm;
 import com.echothree.control.user.warehouse.common.result.EditWarehouseResult;
-import com.echothree.control.user.warehouse.common.spec.WarehouseSpec;
+import com.echothree.control.user.warehouse.common.spec.WarehouseUniversalSpec;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.MainBaseEditAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -46,13 +45,13 @@ import javax.servlet.http.HttpServletRequest;
     }
 )
 public class WarehouseEditAction
-        extends MainBaseEditAction<WarehouseEditActionForm, WarehouseSpec, WarehouseEdit, EditWarehouseForm, EditWarehouseResult> {
+        extends MainBaseEditAction<WarehouseEditActionForm, WarehouseUniversalSpec, WarehouseEdit, EditWarehouseForm, EditWarehouseResult> {
     
     @Override
-    protected WarehouseSpec getSpec(HttpServletRequest request, WarehouseEditActionForm actionForm)
+    protected WarehouseUniversalSpec getSpec(final HttpServletRequest request, final WarehouseEditActionForm actionForm)
             throws NamingException {
-        WarehouseSpec spec = WarehouseUtil.getHome().getWarehouseSpec();
-        String originalWarehouseName = request.getParameter(ParameterConstants.ORIGINAL_WAREHOUSE_NAME);
+        var spec = WarehouseUtil.getHome().getWarehouseUniversalSpec();
+        var originalWarehouseName = request.getParameter(ParameterConstants.ORIGINAL_WAREHOUSE_NAME);
 
         if(originalWarehouseName == null) {
             originalWarehouseName = actionForm.getOriginalWarehouseName();
@@ -64,9 +63,9 @@ public class WarehouseEditAction
     }
     
     @Override
-    protected WarehouseEdit getEdit(HttpServletRequest request, WarehouseEditActionForm actionForm)
+    protected WarehouseEdit getEdit(final HttpServletRequest request, final WarehouseEditActionForm actionForm)
             throws NamingException {
-        WarehouseEdit edit = WarehouseUtil.getHome().getWarehouseEdit();
+        var edit = WarehouseUtil.getHome().getWarehouseEdit();
 
         edit.setWarehouseName(actionForm.getWarehouseName());
         edit.setName(actionForm.getName());
@@ -91,7 +90,8 @@ public class WarehouseEditAction
     }
     
     @Override
-    protected void setupActionForm(HttpServletRequest request, WarehouseEditActionForm actionForm, EditWarehouseResult result, WarehouseSpec spec, WarehouseEdit edit) {
+    protected void setupActionForm(final HttpServletRequest request, final WarehouseEditActionForm actionForm, final EditWarehouseResult result,
+            final WarehouseUniversalSpec spec, final WarehouseEdit edit) {
         actionForm.setOriginalWarehouseName(spec.getWarehouseName());
         actionForm.setWarehouseName(edit.getWarehouseName());
         actionForm.setName(edit.getName());
@@ -108,11 +108,11 @@ public class WarehouseEditAction
     }
     
     @Override
-    protected CommandResult doEdit(HttpServletRequest request, EditWarehouseForm commandForm)
+    protected CommandResult doEdit(final HttpServletRequest request, final EditWarehouseForm commandForm)
             throws Exception {
-        CommandResult commandResult = WarehouseUtil.getHome().editWarehouse(getUserVisitPK(request), commandForm);
-        ExecutionResult executionResult = commandResult.getExecutionResult();
-        EditWarehouseResult result = (EditWarehouseResult)executionResult.getResult();
+        var commandResult = WarehouseUtil.getHome().editWarehouse(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (EditWarehouseResult)executionResult.getResult();
 
         request.setAttribute(AttributeConstants.VENDOR, result.getWarehouse());
         

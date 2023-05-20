@@ -14,15 +14,14 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.warehouse.common.form;
+package com.echothree.control.user.warehouse.common.spec;
 
-import com.echothree.control.user.warehouse.common.edit.WarehouseEdit;
-import com.echothree.control.user.warehouse.common.spec.WarehouseUniversalSpec;
-import com.echothree.util.common.form.BaseEditForm;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
+import com.echothree.control.user.party.common.spec.PartySpec;
 
-public interface EditWarehouseForm
-        extends BaseEditForm<WarehouseUniversalSpec, WarehouseEdit> {
+public interface WarehouseUniversalSpec
+        extends WarehouseSpec, PartySpec, UniversalEntitySpec {
     
-    // Nothing additional beyond BaseEditForm
+    // Nothing additional beyond WarehouseSpec, PartySpec, UniversalEntitySpec
     
 }

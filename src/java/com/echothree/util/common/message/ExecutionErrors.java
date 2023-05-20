@@ -2270,5 +2270,6 @@ public enum ExecutionErrors {
     UnknownDefaultOrderTimeType,
     UnknownDefaultGlAccountCategory,
     UnknownDefaultGlAccount,
+    UnknownDefaultWarehouse,
 
 }

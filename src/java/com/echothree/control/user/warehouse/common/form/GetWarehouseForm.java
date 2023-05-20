@@ -16,13 +16,11 @@
 
 package com.echothree.control.user.warehouse.common.form;
 
-import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
-import com.echothree.control.user.party.common.spec.PartySpec;
-import com.echothree.control.user.warehouse.common.spec.WarehouseSpec;
+import com.echothree.control.user.warehouse.common.spec.WarehouseUniversalSpec;
 
 public interface GetWarehouseForm
-        extends WarehouseSpec, PartySpec, UniversalEntitySpec {
+        extends WarehouseUniversalSpec {
     
-    // Nothing additional beyond WarehouseSpec, PartySpec, UniversalEntitySpec
+    // Nothing additional beyond WarehouseUniversalSpec
     
 }
