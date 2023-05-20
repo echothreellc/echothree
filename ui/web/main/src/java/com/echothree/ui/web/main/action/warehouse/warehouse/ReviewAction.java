@@ -76,6 +76,9 @@ public class ReviewAction
         options.add(CoreOptions.EntityAttributeIncludeValue);
         options.add(CoreOptions.EntityStringAttributeIncludeString);
         options.add(CoreOptions.EntityInstanceIncludeNames);
+        options.add(CoreOptions.EntityInstanceIncludeEntityAppearance);
+        options.add(CoreOptions.AppearanceIncludeTextDecorations);
+        options.add(CoreOptions.AppearanceIncludeTextTransformations);
         commandForm.setOptions(ContactPostalAddressUtils.getInstance().addOptions(options));
 
         CommandResult commandResult = WarehouseUtil.getHome().getWarehouse(getUserVisitPK(request), commandForm);
