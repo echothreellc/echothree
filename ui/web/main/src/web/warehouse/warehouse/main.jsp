@@ -33,20 +33,28 @@
             </h2>
         </div>
         <div id="Content">
-            <et:checkSecurityRoles securityRoles="Event.List" />
+            <et:checkSecurityRoles securityRoles="Warehouse.Review:Event.List" />
+            <et:hasSecurityRole securityRole="Warehouse.Review" var="includeReviewUrl" />
             <p><a href="<c:url value="/action/Warehouse/Warehouse/Add" />">Add Warehouse.</a></p>
             <et:executionErrors id="errorMessage">
                 <p class="executionErrors"><c:out value="${errorMessage}" /></p><br />
             </et:executionErrors>
             <display:table name="warehouses" id="warehouse" class="displaytag">
                 <display:column titleKey="columnTitle.name">
-                    <c:url var="reviewUrl" value="/action/Warehouse/Warehouse/Review">
-                        <c:param name="WarehouseName" value="${warehouse.warehouseName}" />
-                    </c:url>
-                    <a href="${reviewUrl}"><c:out value="${warehouse.warehouseName}" /></a>
+                    <c:choose>
+                        <c:when test="${includeReviewUrl}">
+                            <c:url var="reviewUrl" value="/action/Warehouse/Warehouse/Review">
+                                <c:param name="WarehouseName" value="${warehouse.warehouseName}" />
+                            </c:url>
+                            <a href="${reviewUrl}"><et:appearance appearance="${warehouse.entityInstance.entityAppearance.appearance}"><c:out value="${warehouse.warehouseName}" /></et:appearance></a>
+                        </c:when>
+                        <c:otherwise>
+                            <et:appearance appearance="${warehouse.entityInstance.entityAppearance.appearance}"><c:out value="${warehouse.warehouseName}" /></et:appearance>
+                        </c:otherwise>
+                    </c:choose>
                 </display:column>
                 <display:column titleKey="columnTitle.description">
-                    <c:out value="${warehouse.partyGroup.name}" />
+                    <et:appearance appearance="${warehouse.entityInstance.entityAppearance.appearance}"><c:out value="${warehouse.partyGroup.name}" /></et:appearance>
                 </display:column>
                 <display:column property="sortOrder" titleKey="columnTitle.sortOrder" />
                 <display:column titleKey="columnTitle.default">

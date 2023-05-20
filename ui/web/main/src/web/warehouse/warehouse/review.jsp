@@ -35,16 +35,15 @@
         </div>
         <div id="Content">
             <et:checkSecurityRoles securityRoles="Event.List" />
-            <p><font size="+2"><b>
             <c:choose>
-                <c:when test="${warehouse.partyGroup.name}">
-                    <c:out value="${warehouse.partyGroup.name}" />
+                <c:when test="${warehouse.partyGroup.name != null}">
+                    <p><font size="+2"><b><et:appearance appearance="${warehouse.entityInstance.entityAppearance.appearance}"><c:out value="${warehouse.partyGroup.name}" /></et:appearance></b></font></p>
+                    <p><font size="+1"><et:appearance appearance="${warehouse.entityInstance.entityAppearance.appearance}">${warehouse.warehouseName}</et:appearance></font></p>
                 </c:when>
                 <c:otherwise>
-                    <c:out value="${warehouse.warehouseName}" />
+                    <p><font size="+2"><b><et:appearance appearance="${warehouse.entityInstance.entityAppearance.appearance}"><c:out value="${warehouse.warehouseName}" /></et:appearance></b></font></p>
                 </c:otherwise>
             </c:choose>
-            </b></font></p>
             <br />
             Warehouse Name: ${warehouse.warehouseName}<br />
             <br />
