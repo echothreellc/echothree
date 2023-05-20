@@ -748,7 +748,11 @@
                             <indexColumn name="PartyDivisionName" />
                             <indexColumn name="ThruTime" />
                         </index>
-                        <index type="Multiple" name="Index3">
+                        <index type="Unique" name="Index3">
+                            <indexColumn name="PartyDivisionName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
                             <indexColumn name="CompanyPartyId" />
                             <indexColumn name="IsDefault" />
                             <indexColumn name="ThruTime" />
@@ -779,7 +783,11 @@
                             <indexColumn name="PartyDepartmentName" />
                             <indexColumn name="ThruTime" />
                         </index>
-                        <index type="Multiple" name="Index3">
+                        <index type="Unique" name="Index3">
+                            <indexColumn name="PartyDepartmentName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
+                        <index type="Multiple" name="Index4">
                             <indexColumn name="DivisionPartyId" />
                             <indexColumn name="IsDefault" />
                             <indexColumn name="ThruTime" />

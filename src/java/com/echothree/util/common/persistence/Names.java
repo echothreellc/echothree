@@ -19,7 +19,9 @@ package com.echothree.util.common.persistence;
 public enum Names {
     
     CommunicationEventName,
+    ComponentVendorName,
     ContactListName,
+    EntityTypeName,
     ForumGroupName,
     ForumMessageName,
     ForumName,

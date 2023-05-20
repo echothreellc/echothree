@@ -904,13 +904,13 @@ public class CoreControl
         
         return entityType;
     }
-    
+
     private List<EntityType> getEntityTypesByComponentVendor(ComponentVendor componentVendor, EntityPermission entityPermission) {
         List<EntityType> entityTypes;
-        
+
         try {
             String query = null;
-            
+
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ "
                         + "FROM entitytypes, entitytypedetails "
@@ -925,27 +925,68 @@ public class CoreControl
                         + "AND entdt_cvnd_componentvendorid = ? "
                         + "FOR UPDATE";
             }
-            
+
             PreparedStatement ps = EntityTypeFactory.getInstance().prepareStatement(query);
-            
+
             ps.setLong(1, componentVendor.getPrimaryKey().getEntityId());
-            
+
             entityTypes = EntityTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
-        
+
         return entityTypes;
     }
-    
+
     public List<EntityType> getEntityTypesByComponentVendor(ComponentVendor componentVendor) {
         return getEntityTypesByComponentVendor(componentVendor, EntityPermission.READ_ONLY);
     }
-    
+
     public List<EntityType> getEntityTypesByComponentVendorForUpdate(ComponentVendor componentVendor) {
         return getEntityTypesByComponentVendor(componentVendor, EntityPermission.READ_WRITE);
     }
-    
+
+    private List<EntityType> getEntityTypesByName(String entityTypeName, EntityPermission entityPermission) {
+        List<EntityType> entityTypes;
+
+        try {
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ "
+                        + "FROM entitytypes, entitytypedetails "
+                        + "WHERE ent_activedetailid = entdt_entitytypedetailid "
+                        + "AND entdt_entitytypename = ? "
+                        + "ORDER BY entdt_sortorder, entdt_entitytypename "
+                        + "_LIMIT_";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ "
+                        + "FROM entitytypes, entitytypedetails "
+                        + "WHERE ent_activedetailid = entdt_entitytypedetailid "
+                        + "AND entdt_entitytypename = ? "
+                        + "FOR UPDATE";
+            }
+
+            PreparedStatement ps = EntityTypeFactory.getInstance().prepareStatement(query);
+
+            ps.setString(1, entityTypeName);
+
+            entityTypes = EntityTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return entityTypes;
+    }
+
+    public List<EntityType> getEntityTypesByName(String entityTypeName) {
+        return getEntityTypesByName(entityTypeName, EntityPermission.READ_ONLY);
+    }
+
+    public List<EntityType> getEntityTypesByNameForUpdate(String entityTypeName) {
+        return getEntityTypesByName(entityTypeName, EntityPermission.READ_WRITE);
+    }
+
     public List<EntityType> getEntityTypes() {
         PreparedStatement ps = EntityTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ "

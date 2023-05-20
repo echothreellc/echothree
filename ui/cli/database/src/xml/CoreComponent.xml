@@ -354,6 +354,10 @@
                             <indexColumn name="EntityTypeName" />
                             <indexColumn name="ThruTime" />
                         </index>
+                        <index type="Unique" name="Index3">
+                            <indexColumn name="EntityTypeName" />
+                            <indexColumn name="ThruTime" />
+                        </index>
                     </indexes>
                 </table>
                 <table namePlural="EntityTypeDescriptions" nameSingular="EntityTypeDescription" columnPrefix="entd">
