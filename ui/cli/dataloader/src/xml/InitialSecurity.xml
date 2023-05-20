@@ -2385,6 +2385,9 @@
             <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Location Review" />
             </securityRole>
+            <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Location Choices" />
+            </securityRole>
             <securityRole securityRoleName="Search" isDefault="true" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Location Search" />
             </securityRole>
@@ -8167,6 +8170,7 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="Location" securityRoleName="Delete" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Location" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Location" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Location" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Location" securityRoleName="Search" />
             <partySecurityRoleTemplateRole securityRoleGroupName="LocationStatus" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WishlistType" securityRoleName="Create" />
