@@ -3711,20 +3711,20 @@ public class SearchControl
 
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ "
-                + "FROM searchresults "
-                + "WHERE srch_par_partyid = ? "
+                + "FROM searches "
+                + "WHERE srch_par_partyid = ? AND srch_thrutime = ? "
                 + "_LIMIT_"); // TODO: ORDER BY needed.
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
-                + "FROM searchresults "
-                + "WHERE srch_par_partyid = ? "
+                + "FROM searches "
+                + "WHERE srch_par_partyid = ? AND srch_thrutime = ? "
                 + "FOR UPDATE");
         getSearchesByPartyQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<Search> getSearchesByParty(Party party, EntityPermission entityPermission) {
         return SearchFactory.getInstance().getEntitiesFromQuery(entityPermission, getSearchesByPartyQueries,
-                party);
+                party, Session.MAX_TIME);
     }
 
     public List<Search> getSearchesByParty(Party party) {
@@ -3742,20 +3742,20 @@ public class SearchControl
 
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ "
-                + "FROM searchresults "
-                + "WHERE srch_srchtyp_searchtypeid = ? "
+                + "FROM searches "
+                + "WHERE srch_srchtyp_searchtypeid = ? AND srch_thrutime = ? "
                 + "_LIMIT_"); // TODO: ORDER BY needed.
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
-                + "FROM searchresults "
-                + "WHERE srch_srchtyp_searchtypeid = ? "
+                + "FROM searches "
+                + "WHERE srch_srchtyp_searchtypeid = ? AND srch_thrutime = ? "
                 + "FOR UPDATE");
         getSearchesBySearchTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<Search> getSearchesBySearchType(SearchType searchType, EntityPermission entityPermission) {
         return SearchFactory.getInstance().getEntitiesFromQuery(entityPermission, getSearchesBySearchTypeQueries,
-                searchType);
+                searchType, Session.MAX_TIME);
     }
 
     public List<Search> getSearchesBySearchType(SearchType searchType) {
@@ -3773,20 +3773,20 @@ public class SearchControl
 
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ "
-                + "FROM searchresults "
-                + "WHERE srch_srchutyp_searchusetypeid = ? "
+                + "FROM searches "
+                + "WHERE srch_srchutyp_searchusetypeid = ? AND srch_thrutime = ? "
                 + "_LIMIT_"); // TODO: ORDER BY needed.
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
-                + "FROM searchresults "
-                + "WHERE srch_srchutyp_searchusetypeid = ? "
+                + "FROM searches "
+                + "WHERE srch_srchutyp_searchusetypeid = ? AND srch_thrutime = ? "
                 + "FOR UPDATE");
         getSearchesBySearchUseTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<Search> getSearchesBySearchUseType(SearchUseType searchUseType, EntityPermission entityPermission) {
         return SearchFactory.getInstance().getEntitiesFromQuery(entityPermission, getSearchesBySearchUseTypeQueries,
-                searchUseType);
+                searchUseType, Session.MAX_TIME);
     }
 
     public List<Search> getSearchesBySearchUseType(SearchUseType searchUseType) {
@@ -3804,20 +3804,20 @@ public class SearchControl
 
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ "
-                + "FROM searchresults "
-                + "WHERE srch_csrch_cachedsearchid = ? "
+                + "FROM searches "
+                + "WHERE srch_csrch_cachedsearchid = ? AND srch_thrutime = ? "
                 + "_LIMIT_"); // TODO: ORDER BY needed.
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
-                + "FROM searchresults "
-                + "WHERE srch_csrch_cachedsearchid = ? "
+                + "FROM searches "
+                + "WHERE srch_csrch_cachedsearchid = ? AND srch_thrutime = ? "
                 + "FOR UPDATE");
         getSearchesByCachedSearchQueries = Collections.unmodifiableMap(queryMap);
     }
 
     private List<Search> getSearchesByCachedSearch(CachedSearch cachedSearch, EntityPermission entityPermission) {
         return SearchFactory.getInstance().getEntitiesFromQuery(entityPermission, getSearchesByCachedSearchQueries,
-                cachedSearch);
+                cachedSearch, Session.MAX_TIME);
     }
 
     public List<Search> getSearchesByCachedSearch(CachedSearch cachedSearch) {
@@ -3848,7 +3848,7 @@ public class SearchControl
     }
 
     public void deleteSearchesByParty(Party party, BasePK deletedBy) {
-        deleteSearches(getSearchesByParty(party), deletedBy);
+        deleteSearches(getSearchesByPartyForUpdate(party), deletedBy);
     }
 
     public void deleteSearchesBySearchType(SearchType searchType, BasePK deletedBy) {
