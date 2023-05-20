@@ -2279,7 +2279,7 @@ public class DocumentControl
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +
                 "FROM partydocuments " +
-                "WHERE pardcmnt_par_partyid = ? AND dcmnttyputypdt_documenttypeusagetypename = ? " +
+                "WHERE pardcmnt_par_partyid = ? AND pardcmnt_thrutime = ? " +
                 "FOR UPDATE");
         getPartyDocumentsByPartyQueries = Collections.unmodifiableMap(queryMap);
     }
