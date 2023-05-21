@@ -2580,6 +2580,9 @@
             <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Workflow Review" />
             </securityRole>
+            <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Workflow Choices" />
+            </securityRole>
             <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Workflow Description" />
             </securityRole>
@@ -8193,6 +8196,7 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="Workflow" securityRoleName="Delete" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Workflow" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Workflow" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Workflow" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Workflow" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Workflow" securityRoleName="EntityType" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Workflow" securityRoleName="SelectorKind" />
