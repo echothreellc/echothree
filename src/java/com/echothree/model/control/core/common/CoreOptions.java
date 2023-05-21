@@ -55,6 +55,12 @@ public interface CoreOptions {
 
     String EntityTypeIncludeIndexTypes = "EntityTypeIncludeIndexTypes";
     String EntityTypeIncludeIndexTypesCount = "EntityTypeIncludeIndexTypesCount";
+    String EntityTypeIncludeEntityAttributes = "EntityTypeIncludeEntityAttributes";
+    String EntityTypeIncludeCommentTypes = "EntityTypeIncludeCommentTypes";
+    String EntityTypeIncludeRatingTypes = "EntityTypeIncludeRatingTypes";
+    String EntityTypeIncludeMessageTypes = "EntityTypeIncludeMessageTypes";
+    String EntityTypeIncludeEntityInstancesCount = "EntityTypeIncludeEntityInstancesCount";
+    String EntityTypeIncludeEntityInstances = "EntityTypeIncludeEntityInstances";
 
     String EntityVisitIncludeEntityInstance = "EntityVisitIncludeEntityInstance";
     String EntityVisitIncludeVisitedEntityInstance = "EntityVisitIncludeVisitedEntityInstance";

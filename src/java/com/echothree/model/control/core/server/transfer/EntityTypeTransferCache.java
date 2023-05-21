@@ -16,11 +16,14 @@
 
 package com.echothree.model.control.core.server.transfer;
 
+import com.echothree.model.control.comment.server.control.CommentControl;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.CoreProperties;
 import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.index.server.control.IndexControl;
+import com.echothree.model.control.message.server.control.MessageControl;
+import com.echothree.model.control.rating.server.control.RatingControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.core.server.entity.EntityType;
@@ -35,7 +38,10 @@ public class EntityTypeTransferCache
         extends BaseCoreTransferCache<EntityType, EntityTypeTransfer> {
 
     CoreControl coreControl = Session.getModelController(CoreControl.class);
+    CommentControl commentControl;
     IndexControl indexControl;
+    MessageControl messageControl;
+    RatingControl ratingControl;
     UomControl uomControl = Session.getModelController(UomControl.class);
     UnitOfMeasureKind timeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_TIME);
     UnitOfMeasureUtils unitOfMeasureUtils = UnitOfMeasureUtils.getInstance();
@@ -52,7 +58,13 @@ public class EntityTypeTransferCache
 
     boolean includeIndexTypesCount;
     boolean includeIndexTypes;
-    
+    boolean includeEntityAttributes;
+    boolean includeCommentTypes;
+    boolean includeRatingTypes;
+    boolean includeMessageTypes;
+    boolean includeEntityInstancesCount;
+    boolean includeEntityInstances;
+
     /** Creates a new instance of EntityTypeTransferCache */
     public EntityTypeTransferCache(UserVisit userVisit) {
         super(userVisit);
@@ -77,9 +89,27 @@ public class EntityTypeTransferCache
         if(options != null) {
             includeIndexTypesCount = options.contains(CoreOptions.EntityTypeIncludeIndexTypesCount);
             includeIndexTypes = options.contains(CoreOptions.EntityTypeIncludeIndexTypes);
-            
+            includeEntityAttributes = options.contains(CoreOptions.EntityTypeIncludeEntityAttributes);
+            includeCommentTypes = options.contains(CoreOptions.EntityTypeIncludeCommentTypes);
+            includeRatingTypes = options.contains(CoreOptions.EntityTypeIncludeRatingTypes);
+            includeMessageTypes = options.contains(CoreOptions.EntityTypeIncludeMessageTypes);
+            includeEntityInstancesCount = options.contains(CoreOptions.EntityTypeIncludeEntityInstancesCount);
+            includeEntityInstances = options.contains(CoreOptions.EntityTypeIncludeEntityInstances);
+
+            if(includeCommentTypes) {
+                commentControl = Session.getModelController(CommentControl.class);
+            }
+
             if(includeIndexTypesCount || includeIndexTypes) {
                 indexControl = Session.getModelController(IndexControl.class);
+            }
+
+            if(includeMessageTypes) {
+                messageControl = Session.getModelController(MessageControl.class);
+            }
+
+            if(includeRatingTypes) {
+                ratingControl = Session.getModelController(RatingControl.class);
             }
         }
     }
@@ -131,9 +161,33 @@ public class EntityTypeTransferCache
             if(includeIndexTypesCount) {
                 entityTypeTransfer.setIndexTypesCount(indexControl.countIndexTypesByEntityType(entityType));
             }
-            
+
             if(includeIndexTypes) {
                 entityTypeTransfer.setIndexTypes(new ListWrapper<>(indexControl.getIndexTypeTransfersByEntityType(userVisit, entityType)));
+            }
+
+            if(includeEntityAttributes) {
+                entityTypeTransfer.setEntityAttributes(new ListWrapper<>(coreControl.getEntityAttributeTransfersByEntityType(userVisit, entityType, null)));
+            }
+
+            if(includeCommentTypes) {
+                entityTypeTransfer.setCommentTypes(new ListWrapper<>(commentControl.getCommentTypeTransfers(userVisit, entityType)));
+            }
+
+            if(includeRatingTypes) {
+                entityTypeTransfer.setRatingTypes(new ListWrapper<>(ratingControl.getRatingTypeTransfers(userVisit, entityType)));
+            }
+
+            if(includeMessageTypes) {
+                entityTypeTransfer.setMessageTypes(new ListWrapper<>(messageControl.getMessageTypeTransfers(userVisit, entityType)));
+            }
+
+            if(includeEntityInstancesCount) {
+                entityTypeTransfer.setEntityInstancesCount(coreControl.countEntityInstancesByEntityType(entityType));
+            }
+
+            if(includeEntityInstances) {
+                entityTypeTransfer.setEntityInstances(new ListWrapper<>(coreControl.getEntityInstanceTransfersByEntityType(userVisit, entityType, false, false, false, false, false,false)));
             }
         }
         
