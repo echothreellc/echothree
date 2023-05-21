@@ -18,11 +18,11 @@ package com.echothree.model.control.workflow.common.choice;
 
 import java.util.List;
 
-public class WorkflowStepTypeChoicesBean
+public class WorkflowChoicesBean
         extends BaseWorkflowChoicesBean {
-    
-    /** Creates a new instance of WorkflowStepTypeChoicesBean */
-    public WorkflowStepTypeChoicesBean(List<String> labels, List<String> values, String defaultValue) {
+
+    /** Creates a new instance of WorkflowChoicesBean */
+    public WorkflowChoicesBean(List<String> labels, List<String> values, String defaultValue) {
         super(labels, values, defaultValue);
     }
     

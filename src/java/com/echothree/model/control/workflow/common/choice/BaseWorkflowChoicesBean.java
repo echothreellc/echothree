@@ -17,13 +17,19 @@
 package com.echothree.model.control.workflow.common.choice;
 
 import com.echothree.view.common.BaseChoicesBean;
+import java.util.List;
 
-public class BaseWorkflowChoicesBean
+public abstract class BaseWorkflowChoicesBean
         extends BaseChoicesBean {
     
     /** Creates a new instance of BaseWorkflowChoicesBean */
-    public BaseWorkflowChoicesBean() {
+    protected BaseWorkflowChoicesBean() {
         super();
     }
-    
+
+    /** Creates a new instance of BaseWorkflowChoicesBean */
+    protected BaseWorkflowChoicesBean(List<String> labels, List<String> values, String defaultValue) {
+        super(labels, values, defaultValue);
+    }
+
 }

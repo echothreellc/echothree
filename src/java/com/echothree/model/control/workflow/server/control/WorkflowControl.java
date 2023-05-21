@@ -20,7 +20,9 @@ import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.selector.common.SelectorKinds;
 import com.echothree.model.control.selector.server.evaluator.CachedSelector;
 import com.echothree.model.control.selector.server.evaluator.PostalAddressSelectorEvaluator;
+import com.echothree.model.control.warehouse.common.choice.LocationChoicesBean;
 import com.echothree.model.control.workflow.common.choice.BaseWorkflowChoicesBean;
+import com.echothree.model.control.workflow.common.choice.WorkflowChoicesBean;
 import com.echothree.model.control.workflow.common.choice.WorkflowStepChoicesBean;
 import com.echothree.model.control.workflow.common.choice.WorkflowStepTypeChoicesBean;
 import com.echothree.model.control.workflow.common.choice.WorkflowTypeChoicesBean;
@@ -790,7 +792,40 @@ public class WorkflowControl
     public List<WorkflowTransfer> getWorkflowTransfersBySelectorKind(UserVisit userVisit, SelectorKind selectorKind) {
         return getWorkflowTransfers(userVisit, getWorkflowsBySelectorKind(selectorKind));
     }
-    
+
+    public WorkflowChoicesBean getWorkflowChoices(final String defaultWorkflowChoice, final Language language,
+            final boolean allowNullChoice) {
+        var workflows = getWorkflows();
+        var size = workflows.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
+        String defaultValue = null;
+
+        if(allowNullChoice) {
+            labels.add("");
+            values.add("");
+
+            if(defaultWorkflowChoice == null) {
+                defaultValue = "";
+            }
+        }
+
+        for(var workflow : workflows) {
+            var workflowDetail = workflow.getLastDetail();
+            var label = getBestWorkflowDescription(workflow, language);
+            var value = workflowDetail.getWorkflowName();
+
+            labels.add(label == null? value: label);
+            values.add(value);
+
+            var usingDefaultChoice = defaultWorkflowChoice != null && defaultWorkflowChoice.equals(value);
+            if(usingDefaultChoice || defaultValue == null)
+                defaultValue = value;
+        }
+
+        return new WorkflowChoicesBean(labels, values, defaultValue);
+    }
+
     public void updateWorkflowFromValue(WorkflowDetailValue workflowDetailValue, BasePK updatedBy) {
         if(workflowDetailValue.hasBeenModified()) {
             Workflow workflow = WorkflowFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, workflowDetailValue.getWorkflowPK());
