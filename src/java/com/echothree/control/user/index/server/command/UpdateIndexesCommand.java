@@ -64,6 +64,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class UpdateIndexesCommand
         extends BaseSimpleCommand {
@@ -71,9 +72,9 @@ public class UpdateIndexesCommand
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null)
-                )));
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null))
+        );
     }
     
     /** Creates a new instance of UpdateIndexesCommand */
@@ -96,7 +97,8 @@ public class UpdateIndexesCommand
         Map<EntityInstance, List<QueuedEntity>> queuedEntityMap = new HashMap<>(QUEUED_ENTITY_COUNT);
         List<QueuedEntity> queuedEntities = queueControl.getQueuedEntitiesByQueueType(queueType);
         
-        queuedEntities.stream().map((queuedEntity) -> queuedEntity.getEntityInstance()).filter((entityInstance) -> !queuedEntityMap.containsKey(entityInstance)).forEach((entityInstance) -> {
+        queuedEntities.stream().map(QueuedEntity::getEntityInstance).filter(
+                (entityInstance) -> !queuedEntityMap.containsKey(entityInstance)).forEach((entityInstance) -> {
             List<QueuedEntity> duplicateQueuedEntities = queueControl.getQueuedEntities(queueType, entityInstance);
             
             queuedEntityMap.put(entityInstance, duplicateQueuedEntities);
@@ -109,7 +111,7 @@ public class UpdateIndexesCommand
         List<IndexType> indexTypes = indexControl.getIndexTypesByEntityType(entityType);
         long size = 0;
 
-        size = indexTypes.stream().map((indexType) -> indexControl.countIndexesByIndexType(indexType)).reduce(size, Long::sum);
+        size = indexTypes.stream().map(indexControl::countIndexesByIndexType).reduce(size, Long::sum);
 
         List<BaseIndexer> indexers = new ArrayList<>(toIntExact(size));
 
@@ -152,12 +154,7 @@ public class UpdateIndexesCommand
                     baseIndexer = new WarehouseIndexer(this, index);
                 }
                 return baseIndexer;
-            }).filter((baseIndexer) -> (baseIndexer != null)).map((baseIndexer) -> {
-                baseIndexer.open();
-                return baseIndexer;
-            }).forEach((baseIndexer) -> {
-                indexers.add(baseIndexer);
-            });
+            }).filter(Objects::nonNull).peek(BaseIndexer::open).forEach(indexers::add);
         });
 
         indexersMap.put(entityType, indexers);
@@ -178,23 +175,16 @@ public class UpdateIndexesCommand
         }
 
         if(!hasExecutionErrors()) {
-            queuedEntityEntry.getValue().stream().forEach((queuedEntity) -> {
-                queueControl.removeQueuedEntity(queuedEntity);
-            });
+            queuedEntityEntry.getValue().forEach(queueControl::removeQueuedEntity);
         }
     }
     
     private void closeIndexers(final QueueControl queueControl, final QueueType queueType, final Map<EntityType, List<BaseIndexer>> indexersMap) {
-        indexersMap.entrySet().stream().forEach((indexersEntry) -> {
-            indexersEntry.getValue().stream().map((baseIndexer) -> {
-                if(queueControl.countQueuedEntitiesByEntityType(queueType, baseIndexer.getEntityType()) == 0) {
-                    SearchLogic.getInstance().invalidateCachedSearchesByIndex(baseIndexer.getIndex());
-                }
-                return baseIndexer;
-            }).forEach((baseIndexer) -> {
-                baseIndexer.close();
-            });
-        });
+        indexersMap.forEach((key, value) -> value.stream().peek((baseIndexer) -> {
+            if(queueControl.countQueuedEntitiesByEntityType(queueType, baseIndexer.getEntityType()) == 0) {
+                SearchLogic.getInstance().invalidateCachedSearchesByIndex(baseIndexer.getIndex());
+            }
+        }).forEach(BaseIndexer::close));
     }
     
     private void verifyIndexersAreSetup(final IndexControl indexControl, final Map<EntityType, List<BaseIndexer>> indexersMap,
