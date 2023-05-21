@@ -43,15 +43,27 @@
             </h2>
         </div>
         <div id="Content">
+            <et:checkSecurityRoles securityRoles="EntityAttributeGroup.Review" />
             <c:url var="addUrl" value="/action/Core/EntityAttribute/EntityAttributeGroupAdd">
                 <c:param name="ComponentVendorName" value="${entityAttribute.entityType.componentVendor.componentVendorName}" />
                 <c:param name="EntityTypeName" value="${entityAttribute.entityType.entityTypeName}" />
                 <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
             </c:url>
             <p><a href="${addUrl}">Add Group.</a></p>
+            <et:hasSecurityRole securityRole="EntityAttributeGroup.Review" var="includeReviewUrl" />
             <display:table name="entityAttributeEntityAttributeGroups" id="entityAttributeEntityAttributeGroup" class="displaytag">
                 <display:column titleKey="columnTitle.entityAttributeGroup">
-                    <c:out value="${entityAttributeEntityAttributeGroup.entityAttributeGroup.description}" />
+                    <c:choose>
+                        <c:when test="${includeReviewUrl}">
+                            <c:url var="reviewUrl" value="/action/Core/EntityAttributeGroup/Review">
+                                <c:param name="EntityAttributeGroupName" value="${entityAttributeEntityAttributeGroup.entityAttributeGroup.entityAttributeGroupName}" />
+                            </c:url>
+                            <a href="${reviewUrl}"><c:out value="${entityAttributeEntityAttributeGroup.entityAttributeGroup.description}" /></a>
+                        </c:when>
+                        <c:otherwise>
+                            <c:out value="${entityAttributeEntityAttributeGroup.entityAttributeGroup.description}" />
+                        </c:otherwise>
+                    </c:choose>
                 </display:column>
                 <display:column titleKey="columnTitle.sortOrder">
                     <c:out value="${entityAttributeEntityAttributeGroup.sortOrder}" />
