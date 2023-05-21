@@ -52,22 +52,22 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetEntityTypeForm commandForm = CoreUtil.getHome().getGetEntityTypeForm();
+        var commandForm = CoreUtil.getHome().getGetEntityTypeForm();
 
         commandForm.setComponentVendorName(request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME));
         commandForm.setEntityTypeName(request.getParameter(ParameterConstants.ENTITY_TYPE_NAME));
-        
-        CommandResult commandResult = CoreUtil.getHome().getEntityType(getUserVisitPK(request), commandForm);
+
+        var commandResult = CoreUtil.getHome().getEntityType(getUserVisitPK(request), commandForm);
+
         EntityTypeTransfer entityType = null;
-        
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityTypeResult result = (GetEntityTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEntityTypeResult)executionResult.getResult();
             
             entityType = result.getEntityType();
         }
-        
+
+        String forwardKey;
         if(entityType == null) {
             forwardKey = ForwardConstants.ERROR_404;
         } else {

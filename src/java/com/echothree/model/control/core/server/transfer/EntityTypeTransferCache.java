@@ -24,14 +24,12 @@ import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.core.server.entity.EntityTypeDetail;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.string.UnitOfMeasureUtils;
-import java.util.Set;
 
 public class EntityTypeTransferCache
         extends BaseCoreTransferCache<EntityType, EntityTypeTransfer> {
@@ -87,11 +85,11 @@ public class EntityTypeTransferCache
     }
     
     public EntityTypeTransfer getEntityTypeTransfer(EntityType entityType) {
-        EntityTypeTransfer entityTypeTransfer = get(entityType);
+        var entityTypeTransfer = get(entityType);
         
         if(entityTypeTransfer == null) {
-            EntityTypeDetail entityTypeDetail = entityType.getLastDetail();
-            Long unformattedLockTimeout = entityTypeDetail.getLockTimeout();
+            var entityTypeDetail = entityType.getLastDetail();
+            var unformattedLockTimeout = entityTypeDetail.getLockTimeout();
             
             entityTypeTransfer = new EntityTypeTransfer();
             put(entityType, entityTypeTransfer);
