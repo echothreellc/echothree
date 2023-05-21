@@ -4846,6 +4846,78 @@
                 <securityRoleDescription languageIsoName="en" description="Closed To Final" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="CommentComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Comment Component" />
+        </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="CommentType" parentSecurityRoleGroupName="CommentComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Comment Type" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Comment Type Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Comment Type Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Comment Type Delete" />
+            </securityRole>
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Comment Type List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Comment Type Review" />
+            </securityRole>
+            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Comment Type Description" />
+            </securityRole>
+        </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="RatingComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Rating Component" />
+        </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="RatingType" parentSecurityRoleGroupName="RatingComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Rating Type" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Rating Type Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Rating Type Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Rating Type Delete" />
+            </securityRole>
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Rating Type List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Rating Type Review" />
+            </securityRole>
+            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Rating Type Description" />
+            </securityRole>
+        </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="MessageComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Message Component" />
+        </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="MessageType" parentSecurityRoleGroupName="MessageComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Message Type" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Message Type Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Message Type Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Message Type Delete" />
+            </securityRole>
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Message Type List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Message Type Review" />
+            </securityRole>
+            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Message Type Description" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="TagComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Tag Component" />
         </securityRoleGroup>
@@ -8641,6 +8713,24 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="FiscalPeriodStatus" securityRoleName="OpenToClosed" />
             <partySecurityRoleTemplateRole securityRoleGroupName="FiscalPeriodStatus" securityRoleName="ClosedToOpen" />
             <partySecurityRoleTemplateRole securityRoleGroupName="FiscalPeriodStatus" securityRoleName="ClosedToFinal" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="CommentType" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="CommentType" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="CommentType" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="CommentType" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="CommentType" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="CommentType" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="RatingType" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="RatingType" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="RatingType" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="RatingType" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="RatingType" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="RatingType" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="MessageType" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="MessageType" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="MessageType" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="MessageType" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="MessageType" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="MessageType" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="TagScope" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="TagScope" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="TagScope" securityRoleName="Delete" />
