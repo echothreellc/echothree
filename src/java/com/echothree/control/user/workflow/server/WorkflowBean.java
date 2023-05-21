@@ -121,6 +121,11 @@ public class WorkflowBean
     public CommandResult getWorkflows(UserVisitPK userVisitPK, GetWorkflowsForm form) {
         return new GetWorkflowsCommand(userVisitPK, form).run();
     }
+
+    @Override
+    public CommandResult getWorkflowChoices(UserVisitPK userVisitPK, GetWorkflowChoicesForm form) {
+        return new GetWorkflowChoicesCommand(userVisitPK, form).run();
+    }
     
     @Override
     public CommandResult editWorkflow(UserVisitPK userVisitPK, EditWorkflowForm form) {

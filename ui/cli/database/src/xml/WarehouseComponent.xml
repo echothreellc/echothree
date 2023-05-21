@@ -284,21 +284,26 @@
                         </index>
                         <index type="Multiple" name="Index3">
                             <indexColumn name="WarehousePartyId" />
+                            <indexColumn name="LocationName" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index4">
-                            <indexColumn name="LocationTypeId" />
+                            <indexColumn name="WarehousePartyId" />
                             <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index5">
-                            <indexColumn name="LocationUseTypeId" />
+                            <indexColumn name="LocationTypeId" />
+                            <indexColumn name="ThruTime" />
                         </index>
                         <index type="Multiple" name="Index6">
+                            <indexColumn name="LocationUseTypeId" />
+                        </index>
+                        <index type="Multiple" name="Index7">
                             <indexColumn name="WarehousePartyId" />
                             <indexColumn name="LocationUseTypeId" />
                             <indexColumn name="ThruTime" />
                         </index>
-                        <index type="Multiple" name="Index7">
+                        <index type="Multiple" name="Index8">
                             <indexColumn name="InventoryLocationGroupId" />
                             <indexColumn name="ThruTime" />
                         </index>

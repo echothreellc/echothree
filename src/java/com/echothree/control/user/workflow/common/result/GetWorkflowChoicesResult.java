@@ -14,16 +14,15 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.workflow.common.choice;
+package com.echothree.control.user.workflow.common.result;
 
-import java.util.List;
+import com.echothree.model.control.workflow.common.choice.WorkflowChoicesBean;
+import com.echothree.util.common.command.BaseResult;
 
-public class WorkflowStepTypeChoicesBean
-        extends BaseWorkflowChoicesBean {
+public interface GetWorkflowChoicesResult
+        extends BaseResult {
     
-    /** Creates a new instance of WorkflowStepTypeChoicesBean */
-    public WorkflowStepTypeChoicesBean(List<String> labels, List<String> values, String defaultValue) {
-        super(labels, values, defaultValue);
-    }
+    WorkflowChoicesBean getWorkflowChoices();
+    void setWorkflowChoices(WorkflowChoicesBean sequenceChoices);
     
 }

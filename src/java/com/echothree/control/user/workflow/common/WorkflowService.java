@@ -74,6 +74,8 @@ public interface WorkflowService
     CommandResult getWorkflow(UserVisitPK userVisitPK, GetWorkflowForm form);
     
     CommandResult getWorkflows(UserVisitPK userVisitPK, GetWorkflowsForm form);
+
+    CommandResult getWorkflowChoices(UserVisitPK userVisitPK, GetWorkflowChoicesForm form);
     
     CommandResult editWorkflow(UserVisitPK userVisitPK, EditWorkflowForm form);
     

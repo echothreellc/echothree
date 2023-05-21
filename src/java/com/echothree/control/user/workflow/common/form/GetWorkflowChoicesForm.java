@@ -14,16 +14,17 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.workflow.common.choice;
+package com.echothree.control.user.workflow.common.form;
 
-import java.util.List;
+import com.echothree.util.common.form.BaseForm;
 
-public class WorkflowStepTypeChoicesBean
-        extends BaseWorkflowChoicesBean {
+public interface GetWorkflowChoicesForm
+        extends BaseForm {
     
-    /** Creates a new instance of WorkflowStepTypeChoicesBean */
-    public WorkflowStepTypeChoicesBean(List<String> labels, List<String> values, String defaultValue) {
-        super(labels, values, defaultValue);
-    }
+    String getDefaultWorkflowChoice();
+    void setDefaultWorkflowChoice(String defaultWorkflowChoice);
+    
+    String getAllowNullChoice();
+    void setAllowNullChoice(String allowNullChoice);
     
 }

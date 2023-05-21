@@ -16,11 +16,10 @@
 
 package com.echothree.model.control.workflow.common.choice;
 
-import com.echothree.view.common.BaseChoicesBean;
 import java.util.List;
 
 public class WorkflowTypeChoicesBean
-        extends BaseChoicesBean {
+        extends BaseWorkflowChoicesBean {
     
     /** Creates a new instance of WorkflowTypeChoicesBean */
     public WorkflowTypeChoicesBean(List<String> labels, List<String> values, String defaultValue) {

@@ -748,7 +748,7 @@
                             <indexColumn name="PartyDivisionName" />
                             <indexColumn name="ThruTime" />
                         </index>
-                        <index type="Unique" name="Index3">
+                        <index type="Multiple" name="Index3">
                             <indexColumn name="PartyDivisionName" />
                             <indexColumn name="ThruTime" />
                         </index>
@@ -783,7 +783,7 @@
                             <indexColumn name="PartyDepartmentName" />
                             <indexColumn name="ThruTime" />
                         </index>
-                        <index type="Unique" name="Index3">
+                        <index type="Multiple" name="Index3">
                             <indexColumn name="PartyDepartmentName" />
                             <indexColumn name="ThruTime" />
                         </index>
