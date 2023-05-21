@@ -4941,6 +4941,9 @@
             <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Component Vendor Review" />
             </securityRole>
+            <securityRole securityRoleName="Search" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Component Vendor Search" />
+            </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="EntityType" parentSecurityRoleGroupName="CoreComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Entity Type" />
@@ -4963,7 +4966,7 @@
                 <securityRoleDescription languageIsoName="en" description="Entity Type Description" />
             </securityRole>
             <securityRole securityRoleName="Search" isDefault="true" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Location Search" />
+                <securityRoleDescription languageIsoName="en" description="Entity Type Search" />
             </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="EntityInstance" parentSecurityRoleGroupName="CoreComponent" isDefault="false" sortOrder="1">
@@ -8664,6 +8667,7 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="ComponentVendor" securityRoleName="Delete" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ComponentVendor" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ComponentVendor" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ComponentVendor" securityRoleName="Search" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityType" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityType" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityType" securityRoleName="Delete" />

@@ -213,6 +213,20 @@ public class IdentifyCommand
         }
     }
 
+    private void checkComponentVendors(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
+                SecurityRoleGroups.ComponentVendor.name(), SecurityRoles.Search.name())) {
+            var componentVendor = getCoreControl().getComponentVendorByName(target);
+
+            if(componentVendor != null) {
+                var entityInstance = getCoreControl().getEntityInstanceByBasePK(componentVendor.getPrimaryKey());
+                var entityInstanceAndNames = EntityNamesUtils.getInstance().getEntityNames(entityInstance);
+
+                entityInstances.add(fillInEntityInstance(entityInstanceAndNames));
+            }
+        }
+    }
+
     private void checkEntityTypes(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
         if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
                 SecurityRoleGroups.EntityType.name(), SecurityRoles.Search.name())) {
@@ -377,6 +391,7 @@ public class IdentifyCommand
         checkLocations(party, entityInstances, target);
         checkVendors(party, entityInstances, target);
         checkVendorItems(party, entityInstances, target);
+        checkComponentVendors(party, entityInstances, target);
         checkEntityTypes(party, entityInstances, target);
 
         var nameResult = new NameCleaner().getCleansedName(target);

@@ -157,6 +157,11 @@
                 <c:param name="EntityTypeName" value="${entityInstance.entityNames.names.map.EntityTypeName}" />
             </c:url>
         </c:when>
+        <c:when test="${entityInstance.entityNames.target == 'ComponentVendor'}">
+            <c:url var="targetUrl" value="/action/Core/ComponentVendor/Review">
+                <c:param name="ComponentVendorName" value="${entityInstance.entityNames.names.map.ComponentVendorName}" />
+            </c:url>
+        </c:when>
     </c:choose>
 </c:if>
 

@@ -69,6 +69,9 @@
         <c:when test="${entityInstance.entityNames.target == 'MimeType'}">
             <c:set var="targetNames" value="${entityInstance.entityNames.names.map.MimeTypeName}" />
         </c:when>
+        <c:when test="${entityInstance.entityNames.target == 'ComponentVendor'}">
+            <c:set var="targetNames" value="${entityInstance.entityNames.names.map.ComponentVendorName}" />
+        </c:when>
         <c:when test="${entityInstance.entityNames.target == 'EntityType'}">
             <c:set var="targetNames" value="${entityInstance.entityNames.names.map.ComponentVendorName}, ${entityInstance.entityNames.names.map.EntityTypeName}" />
         </c:when>

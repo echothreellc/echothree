@@ -207,6 +207,10 @@ public class EntityDescriptionUtils {
                     var location = warehouseControl.getLocationByEntityInstance(entityInstance);
 
                     description = location == null ? null : warehouseControl.getBestLocationDescription(location, getLanguage(userVisit));
+                } else if(entityTypeName.equals(EntityTypes.ComponentVendor.name())) {
+                    var componentVendor = coreControl.getComponentVendorByEntityInstance(entityInstance);
+
+                    description = componentVendor == null ? null : componentVendor.getLastDetail().getDescription();
                 } else if(entityTypeName.equals(EntityTypes.EntityType.name())) {
                     var entityType = coreControl.getEntityTypeByEntityInstance(entityInstance);
 
