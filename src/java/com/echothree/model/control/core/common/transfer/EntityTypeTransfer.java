@@ -16,7 +16,10 @@
 
 package com.echothree.model.control.core.common.transfer;
 
+import com.echothree.model.control.comment.common.transfer.CommentTypeTransfer;
 import com.echothree.model.control.index.common.transfer.IndexTypeTransfer;
+import com.echothree.model.control.message.common.transfer.MessageTypeTransfer;
+import com.echothree.model.control.rating.common.transfer.RatingTypeTransfer;
 import com.echothree.util.common.transfer.BaseTransfer;
 import com.echothree.util.common.transfer.ListWrapper;
 import java.util.Objects;
@@ -34,6 +37,12 @@ public final class EntityTypeTransfer
     
     private Long indexTypesCount;
     private ListWrapper<IndexTypeTransfer> indexTypes;
+    private ListWrapper<EntityAttributeTransfer> entityAttributes;
+    private ListWrapper<CommentTypeTransfer> commentTypes;
+    private ListWrapper<RatingTypeTransfer> ratingTypes;
+    private ListWrapper<MessageTypeTransfer> messageTypes;
+    private Long entityInstancesCount;
+    private ListWrapper<EntityInstanceTransfer> entityInstances;
 
     /**
      * Creates a new instance of EntityTypeTransfer */
@@ -163,6 +172,54 @@ public final class EntityTypeTransfer
      */
     public void setIndexTypes(ListWrapper<IndexTypeTransfer> indexTypes) {
         this.indexTypes = indexTypes;
+    }
+
+    public ListWrapper<EntityAttributeTransfer> getEntityAttributes() {
+        return entityAttributes;
+    }
+
+    public void setEntityAttributes(final ListWrapper<EntityAttributeTransfer> entityAttributes) {
+        this.entityAttributes = entityAttributes;
+    }
+
+    public ListWrapper<CommentTypeTransfer> getCommentTypes() {
+        return commentTypes;
+    }
+
+    public void setCommentTypes(final ListWrapper<CommentTypeTransfer> commentTypes) {
+        this.commentTypes = commentTypes;
+    }
+
+    public ListWrapper<RatingTypeTransfer> getRatingTypes() {
+        return ratingTypes;
+    }
+
+    public void setRatingTypes(final ListWrapper<RatingTypeTransfer> ratingTypes) {
+        this.ratingTypes = ratingTypes;
+    }
+
+    public ListWrapper<MessageTypeTransfer> getMessageTypes() {
+        return messageTypes;
+    }
+
+    public void setMessageTypes(final ListWrapper<MessageTypeTransfer> messageTypes) {
+        this.messageTypes = messageTypes;
+    }
+
+    public Long getEntityInstancesCount() {
+        return entityInstancesCount;
+    }
+
+    public void setEntityInstancesCount(final Long entityInstancesCount) {
+        this.entityInstancesCount = entityInstancesCount;
+    }
+
+    public ListWrapper<EntityInstanceTransfer> getEntityInstances() {
+        return entityInstances;
+    }
+
+    public void setEntityInstances(final ListWrapper<EntityInstanceTransfer> entityInstances) {
+        this.entityInstances = entityInstances;
     }
 
     /** componentVendor and entityTypeName must be present.

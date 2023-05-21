@@ -17,19 +17,23 @@
 package com.echothree.ui.web.main.action.core.entitytype;
 
 import com.echothree.control.user.core.common.CoreUtil;
-import com.echothree.control.user.core.common.form.GetEntityTypeForm;
 import com.echothree.control.user.core.common.result.GetEntityTypeResult;
+import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.transfer.EntityTypeTransfer;
+import com.echothree.model.data.core.common.EntityInstanceConstants;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
+import com.echothree.util.common.transfer.Limit;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
@@ -52,22 +56,35 @@ public class ReviewAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey = null;
-        GetEntityTypeForm commandForm = CoreUtil.getHome().getGetEntityTypeForm();
+        var commandForm = CoreUtil.getHome().getGetEntityTypeForm();
 
         commandForm.setComponentVendorName(request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME));
         commandForm.setEntityTypeName(request.getParameter(ParameterConstants.ENTITY_TYPE_NAME));
-        
-        CommandResult commandResult = CoreUtil.getHome().getEntityType(getUserVisitPK(request), commandForm);
+
+        Set<String> options = new HashSet<>();
+        options.add(CoreOptions.EntityTypeIncludeEntityAttributes);
+        options.add(CoreOptions.EntityTypeIncludeCommentTypes);
+        options.add(CoreOptions.EntityTypeIncludeRatingTypes);
+        options.add(CoreOptions.EntityTypeIncludeMessageTypes);
+        options.add(CoreOptions.EntityTypeIncludeEntityInstancesCount);
+        options.add(CoreOptions.EntityTypeIncludeEntityInstances);
+        commandForm.setOptions(options);
+
+        Map<String, Limit> limits = new HashMap<>();
+        limits.put(EntityInstanceConstants.ENTITY_TYPE_NAME, new Limit("10"));
+        commandForm.setLimits(limits);
+
+        var commandResult = CoreUtil.getHome().getEntityType(getUserVisitPK(request), commandForm);
+
         EntityTypeTransfer entityType = null;
-        
         if(!commandResult.hasErrors()) {
-            ExecutionResult executionResult = commandResult.getExecutionResult();
-            GetEntityTypeResult result = (GetEntityTypeResult)executionResult.getResult();
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetEntityTypeResult)executionResult.getResult();
             
             entityType = result.getEntityType();
         }
-        
+
+        String forwardKey;
         if(entityType == null) {
             forwardKey = ForwardConstants.ERROR_404;
         } else {
