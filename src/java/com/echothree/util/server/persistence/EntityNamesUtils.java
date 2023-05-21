@@ -28,9 +28,11 @@ import com.echothree.model.data.communication.common.pk.CommunicationEventPK;
 import com.echothree.model.data.communication.server.factory.CommunicationEventFactory;
 import com.echothree.model.data.contactlist.common.pk.PartyContactListPK;
 import com.echothree.model.data.contactlist.server.factory.PartyContactListFactory;
+import com.echothree.model.data.core.common.pk.ComponentVendorPK;
 import com.echothree.model.data.core.common.pk.EntityTypePK;
 import com.echothree.model.data.core.common.pk.MimeTypePK;
 import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.model.data.core.server.factory.ComponentVendorFactory;
 import com.echothree.model.data.core.server.factory.EntityTypeFactory;
 import com.echothree.model.data.core.server.factory.MimeTypeFactory;
 import com.echothree.model.data.forum.common.pk.ForumGroupPK;
@@ -243,6 +245,16 @@ public class EntityNamesUtils {
             names.put(Names.LocationName.name(), locationDetail.getLocationName());
 
             return new EntityNames(Targets.Location.name(), names);
+        });
+
+        nameTranslators.put(EntityTypes.ComponentVendor.name(), (final EntityInstance entityInstance) -> {
+            var componentVendor = ComponentVendorFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY,
+                    new ComponentVendorPK(entityInstance.getEntityUniqueId()));
+            var names = new MapWrapper<String>(1);
+
+            names.put(Names.ComponentVendorName.name(), componentVendor.getLastDetail().getComponentVendorName());
+
+            return new EntityNames(Targets.ComponentVendor.name(), names);
         });
 
         nameTranslators.put(EntityTypes.EntityType.name(), (final EntityInstance entityInstance) -> {

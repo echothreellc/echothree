@@ -20,6 +20,7 @@ public enum Targets {
     
     Carrier,
     CommunicationEvent,
+    ComponentVendor,
     Company,
     Customer,
     Department,
