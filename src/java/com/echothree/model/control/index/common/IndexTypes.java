@@ -33,5 +33,6 @@ public enum IndexTypes {
     USE,
     USE_TYPE,
     VENDOR,
+    WAREHOUSE,
 
 }
