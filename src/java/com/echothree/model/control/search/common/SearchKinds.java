@@ -36,5 +36,6 @@ public enum SearchKinds {
     USE,
     USE_TYPE,
     VENDOR,
+    WAREHOUSE,
 
 }

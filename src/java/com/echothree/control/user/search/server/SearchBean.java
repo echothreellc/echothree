@@ -1122,7 +1122,31 @@ public class SearchBean
     public CommandResult clearUseTypeResults(UserVisitPK userVisitPK, ClearUseTypeResultsForm form) {
         return new ClearUseTypeResultsCommand(userVisitPK, form).run();
     }
-    
+
+    // -------------------------------------------------------------------------
+    //   Warehouse Search
+    // -------------------------------------------------------------------------
+
+    @Override
+    public CommandResult searchWarehouses(UserVisitPK userVisitPK, SearchWarehousesForm form) {
+        return new SearchWarehousesCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getWarehouseResults(UserVisitPK userVisitPK, GetWarehouseResultsForm form) {
+        return new GetWarehouseResultsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult countWarehouseResults(UserVisitPK userVisitPK, CountWarehouseResultsForm form) {
+        return new CountWarehouseResultsCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult clearWarehouseResults(UserVisitPK userVisitPK, ClearWarehouseResultsForm form) {
+        return new ClearWarehouseResultsCommand(userVisitPK, form).run();
+    }
+
     // -------------------------------------------------------------------------
     //   Identify
     // -------------------------------------------------------------------------

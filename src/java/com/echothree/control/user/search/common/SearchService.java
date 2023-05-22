@@ -544,7 +544,19 @@ public interface SearchService
     CommandResult countUseTypeResults(UserVisitPK userVisitPK, CountUseTypeResultsForm form);
     
     CommandResult clearUseTypeResults(UserVisitPK userVisitPK, ClearUseTypeResultsForm form);
-    
+
+    // -------------------------------------------------------------------------
+    //   Warehouse Search
+    // -------------------------------------------------------------------------
+
+    CommandResult searchWarehouses(UserVisitPK userVisitPK, SearchWarehousesForm form);
+
+    CommandResult getWarehouseResults(UserVisitPK userVisitPK, GetWarehouseResultsForm form);
+
+    CommandResult countWarehouseResults(UserVisitPK userVisitPK, CountWarehouseResultsForm form);
+
+    CommandResult clearWarehouseResults(UserVisitPK userVisitPK, ClearWarehouseResultsForm form);
+
     // -------------------------------------------------------------------------
     //   Identify
     // -------------------------------------------------------------------------

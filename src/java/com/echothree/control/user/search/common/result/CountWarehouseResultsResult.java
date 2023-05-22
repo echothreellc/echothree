@@ -14,13 +14,11 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.index.common;
+package com.echothree.control.user.search.common.result;
 
-public enum Indexes {
-
-    CUSTOMER,
-    EMPLOYEE,
-    VENDOR,
-    WAREHOUSE,
-
+public interface CountWarehouseResultsResult
+        extends BaseCountResultsResult {
+    
+    // Nothing additional beyond BaseCountResultsResult
+    
 }

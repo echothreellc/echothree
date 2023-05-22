@@ -16,27 +16,27 @@
 
 package com.echothree.control.user.search.server.command;
 
-import com.echothree.control.user.search.common.form.SearchVendorsForm;
+import com.echothree.control.user.search.common.form.SearchWarehousesForm;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
-import com.echothree.control.user.search.common.result.SearchVendorsResult;
+import com.echothree.control.user.search.common.result.SearchWarehousesResult;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.search.common.SearchKinds;
 import com.echothree.model.control.search.server.control.SearchControl;
-import com.echothree.model.control.vendor.server.search.VendorSearchEvaluator;
 import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.control.warehouse.server.search.WarehouseSearchEvaluator;
 import com.echothree.model.data.party.server.entity.PartyAliasType;
 import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.search.server.entity.SearchKind;
 import com.echothree.model.data.search.server.entity.SearchType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -47,8 +47,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class SearchVendorsCommand
-        extends BaseSimpleCommand<SearchVendorsForm> {
+public class SearchWarehousesCommand
+        extends BaseSimpleCommand<SearchWarehousesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -57,20 +57,14 @@ public class SearchVendorsCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
-                        new SecurityRoleDefinition(SecurityRoleGroups.Vendor.name(), SecurityRoles.Search.name())
+                        new SecurityRoleDefinition(SecurityRoleGroups.Warehouse.name(), SecurityRoles.Search.name())
                         )))
                 )));
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("SearchTypeName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("FirstName", FieldType.STRING, false, 1L, 20L),
-                new FieldDefinition("FirstNameSoundex", FieldType.BOOLEAN, false, null, null),
-                new FieldDefinition("MiddleName", FieldType.STRING, false, 1L, 20L),
-                new FieldDefinition("MiddleNameSoundex", FieldType.BOOLEAN, false, null, null),
-                new FieldDefinition("LastName", FieldType.STRING, false, 1L, 20L),
-                new FieldDefinition("LastNameSoundex", FieldType.BOOLEAN, false, null, null),
                 new FieldDefinition("Name", FieldType.STRING, false, null, null),
-                new FieldDefinition("VendorName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("WarehouseName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("PartyAliasTypeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("Alias", FieldType.ENTITY_NAME, false, null, null),
@@ -80,16 +74,16 @@ public class SearchVendorsCommand
                 ));
     }
 
-    /** Creates a new instance of SearchVendorsCommand */
-    public SearchVendorsCommand(UserVisitPK userVisitPK, SearchVendorsForm form) {
+    /** Creates a new instance of SearchWarehousesCommand */
+    public SearchWarehousesCommand(UserVisitPK userVisitPK, SearchWarehousesForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
     }
     
     @Override
     protected BaseResult execute() {
-        SearchVendorsResult result = SearchResultFactory.getSearchVendorsResult();
+        SearchWarehousesResult result = SearchResultFactory.getSearchWarehousesResult();
         var searchControl = Session.getModelController(SearchControl.class);
-        SearchKind searchKind = searchControl.getSearchKindByName(SearchKinds.VENDOR.name());
+        SearchKind searchKind = searchControl.getSearchKindByName(SearchKinds.WAREHOUSE.name());
         
         if(searchKind != null) {
             String searchTypeName = form.getSearchTypeName();
@@ -102,53 +96,47 @@ public class SearchVendorsCommand
 
                 if(partyAliasTypeName != null) {
                     var partyControl = Session.getModelController(PartyControl.class);
-                    PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.VENDOR.name());
+                    PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.WAREHOUSE.name());
 
                     if(partyType != null) {
                         partyAliasType = partyControl.getPartyAliasTypeByName(partyType, partyAliasTypeName);
 
                         if(partyAliasType == null) {
-                            addExecutionError(ExecutionErrors.UnknownPartyAliasTypeName.name(), PartyTypes.VENDOR.name(), partyAliasTypeName);
+                            addExecutionError(ExecutionErrors.UnknownPartyAliasTypeName.name(), PartyTypes.WAREHOUSE.name(), partyAliasTypeName);
                         }
                     } else {
-                        addExecutionError(ExecutionErrors.UnknownPartyTypeName.name(), PartyTypes.VENDOR.name());
+                        addExecutionError(ExecutionErrors.UnknownPartyTypeName.name(), PartyTypes.WAREHOUSE.name());
                     }
                 }
 
                 if(!hasExecutionErrors()) {
                     SearchLogic searchLogic = SearchLogic.getInstance();
                     UserVisit userVisit = getUserVisit();
-                    VendorSearchEvaluator vendorSearchEvaluator = new VendorSearchEvaluator(userVisit, searchType,
+                    WarehouseSearchEvaluator warehouseSearchEvaluator = new WarehouseSearchEvaluator(userVisit, searchType,
                             searchLogic.getDefaultSearchDefaultOperator(null), searchLogic.getDefaultSearchSortOrder(null, searchKind),
                             searchLogic.getDefaultSearchSortDirection(null));
                     String createdSince = form.getCreatedSince();
                     String modifiedSince = form.getModifiedSince();
                     String fields = form.getFields();
 
-                    vendorSearchEvaluator.setFirstName(form.getFirstName());
-                    vendorSearchEvaluator.setFirstNameSoundex(Boolean.parseBoolean(form.getFirstNameSoundex()));
-                    vendorSearchEvaluator.setMiddleName(form.getMiddleName());
-                    vendorSearchEvaluator.setMiddleNameSoundex(Boolean.parseBoolean(form.getMiddleNameSoundex()));
-                    vendorSearchEvaluator.setLastName(form.getLastName());
-                    vendorSearchEvaluator.setLastNameSoundex(Boolean.parseBoolean(form.getLastNameSoundex()));
-                    vendorSearchEvaluator.setQ(this, form.getName());
-                    vendorSearchEvaluator.setPartyAliasType(partyAliasType);
-                    vendorSearchEvaluator.setAlias(alias);
-                    vendorSearchEvaluator.setVendorName(form.getVendorName());
-                    vendorSearchEvaluator.setPartyName(form.getPartyName());
-                    vendorSearchEvaluator.setCreatedSince(createdSince == null ? null : Long.valueOf(createdSince));
-                    vendorSearchEvaluator.setModifiedSince(modifiedSince == null ? null : Long.valueOf(modifiedSince));
-                    vendorSearchEvaluator.setFields(fields == null ? null : Splitter.on(':').trimResults().omitEmptyStrings().splitToList(fields).toArray(new String[0]));
+                    warehouseSearchEvaluator.setQ(this, form.getName());
+                    warehouseSearchEvaluator.setPartyAliasType(partyAliasType);
+                    warehouseSearchEvaluator.setAlias(alias);
+                    warehouseSearchEvaluator.setWarehouseName(form.getWarehouseName());
+                    warehouseSearchEvaluator.setPartyName(form.getPartyName());
+                    warehouseSearchEvaluator.setCreatedSince(createdSince == null ? null : Long.valueOf(createdSince));
+                    warehouseSearchEvaluator.setModifiedSince(modifiedSince == null ? null : Long.valueOf(modifiedSince));
+                    warehouseSearchEvaluator.setFields(fields == null ? null : Splitter.on(':').trimResults().omitEmptyStrings().splitToList(fields).toArray(new String[0]));
 
                     if(!hasExecutionErrors()) {
-                        result.setCount(vendorSearchEvaluator.execute(this));
+                        result.setCount(warehouseSearchEvaluator.execute(this));
                     }
                 }
             } else {
-                addExecutionError(ExecutionErrors.UnknownSearchTypeName.name(), SearchKinds.VENDOR.name(), searchTypeName);
+                addExecutionError(ExecutionErrors.UnknownSearchTypeName.name(), SearchKinds.WAREHOUSE.name(), searchTypeName);
             }
         } else {
-            addExecutionError(ExecutionErrors.UnknownSearchKindName.name(), SearchKinds.VENDOR.name());
+            addExecutionError(ExecutionErrors.UnknownSearchKindName.name(), SearchKinds.WAREHOUSE.name());
         }
         
         return result;

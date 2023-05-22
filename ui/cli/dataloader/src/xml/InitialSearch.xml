@@ -105,7 +105,7 @@
             </searchSortOrder>
         </searchKind>
         <searchKind searchKindName="VENDOR" isDefault="false" sortOrder="1">
-            <searchKindDescription languageIsoName="en" description="Customer" />
+            <searchKindDescription languageIsoName="en" description="Vendor" />
             <searchType searchTypeName="VENDOR_REVIEW" isDefault="false" sortOrder="1">
                 <searchTypeDescription languageIsoName="en" description="Vendor Review" />
             </searchType>
@@ -417,6 +417,21 @@
             </searchSortOrder>
             <searchSortOrder searchSortOrderName="MODIFIED_TIME" isDefault="false" sortOrder="5">
                 <searchSortOrderDescription languageIsoName="en" description="Modified Time" />
+            </searchSortOrder>
+        </searchKind>
+        <searchKind searchKindName="WAREHOUSE" isDefault="false" sortOrder="1">
+            <searchKindDescription languageIsoName="en" description="Warehouse" />
+            <searchType searchTypeName="WAREHOUSE_REVIEW" isDefault="false" sortOrder="1">
+                <searchTypeDescription languageIsoName="en" description="Warehouse Review" />
+            </searchType>
+            <searchType searchTypeName="IDENTIFY" isDefault="false" sortOrder="1">
+                <searchTypeDescription languageIsoName="en" description="Identify" />
+            </searchType>
+            <searchSortOrder searchSortOrderName="SCORE" isDefault="true" sortOrder="1">
+                <searchSortOrderDescription languageIsoName="en" description="Score" />
+            </searchSortOrder>
+            <searchSortOrder searchSortOrderName="WAREHOUSE_NAME" isDefault="false" sortOrder="1">
+                <searchSortOrderDescription languageIsoName="en" description="Warehouse Name" />
             </searchSortOrder>
         </searchKind>
     </searchKinds>

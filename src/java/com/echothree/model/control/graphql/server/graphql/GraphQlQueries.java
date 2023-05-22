@@ -233,6 +233,7 @@ import com.echothree.control.user.search.server.command.GetSearchCheckSpellingAc
 import com.echothree.control.user.search.server.command.GetSearchResultActionTypeCommand;
 import com.echothree.control.user.search.server.command.GetSearchResultActionTypesCommand;
 import com.echothree.control.user.search.server.command.GetVendorResultsCommand;
+import com.echothree.control.user.search.server.command.GetWarehouseResultsCommand;
 import com.echothree.control.user.security.common.SecurityUtil;
 import com.echothree.control.user.security.server.command.GetSecurityRoleCommand;
 import com.echothree.control.user.security.server.command.GetSecurityRoleGroupCommand;
@@ -458,6 +459,7 @@ import com.echothree.model.control.search.server.graphql.ItemResultsObject;
 import com.echothree.model.control.search.server.graphql.SearchCheckSpellingActionTypeObject;
 import com.echothree.model.control.search.server.graphql.SearchResultActionTypeObject;
 import com.echothree.model.control.search.server.graphql.VendorResultsObject;
+import com.echothree.model.control.search.server.graphql.WarehouseResultsObject;
 import com.echothree.model.control.security.server.graphql.SecurityRoleGroupObject;
 import com.echothree.model.control.security.server.graphql.SecurityRoleObject;
 import com.echothree.model.control.selector.server.graphql.SelectorKindObject;
@@ -5135,6 +5137,27 @@ public final class GraphQlQueries
         }
 
         return vendorResultsObject;
+    }
+
+    @GraphQLField
+    @GraphQLName("warehouseResults")
+    public static WarehouseResultsObject warehouseResults(final DataFetchingEnvironment env,
+            @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName) {
+        WarehouseResultsObject warehouseResultsObject = null;
+
+        try {
+            var commandForm = SearchUtil.getHome().getGetWarehouseResultsForm();
+
+            commandForm.setSearchTypeName(searchTypeName);
+
+            if(new GetWarehouseResultsCommand(getUserVisitPK(env), commandForm).canQueryByGraphQl()) {
+                warehouseResultsObject = new WarehouseResultsObject(commandForm);
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return warehouseResultsObject;
     }
 
     @GraphQLField

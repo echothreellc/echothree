@@ -14,13 +14,19 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.index.common;
+package com.echothree.control.user.search.common.result;
 
-public enum Indexes {
+import com.echothree.model.control.warehouse.common.transfer.WarehouseResultTransfer;
+import com.echothree.util.common.command.BaseResult;
+import java.util.List;
 
-    CUSTOMER,
-    EMPLOYEE,
-    VENDOR,
-    WAREHOUSE,
+public interface GetWarehouseResultsResult
+        extends BaseResult {
+    
+    Long getWarehouseResultCount();
+    void setWarehouseResultCount(Long warehouseResultCount);
 
+    List<WarehouseResultTransfer> getWarehouseResults();
+    void setWarehouseResults(List<WarehouseResultTransfer> warehouseResults);
+    
 }

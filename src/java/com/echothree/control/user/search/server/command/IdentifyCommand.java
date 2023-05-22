@@ -38,6 +38,7 @@ import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.control.vendor.server.control.VendorControl;
 import com.echothree.model.control.vendor.server.search.VendorSearchEvaluator;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
+import com.echothree.model.control.warehouse.server.search.WarehouseSearchEvaluator;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.search.server.entity.SearchKind;
 import com.echothree.model.data.search.server.entity.SearchType;
@@ -327,6 +328,39 @@ public class IdentifyCommand
         }
     }
 
+    private void executeWarehouseSearch(final UserVisit userVisit, final Set<EntityInstanceTransfer> entityInstances,
+            final SearchLogic searchLogic, final SearchKind searchKind, final SearchType searchType, final String q) {
+        var warehouseSearchEvaluator = new WarehouseSearchEvaluator(userVisit, searchType,
+                searchLogic.getDefaultSearchDefaultOperator(null),
+                searchLogic.getDefaultSearchSortOrder(null, searchKind),
+                searchLogic.getDefaultSearchSortDirection(null));
+
+        warehouseSearchEvaluator.setQ(null, q);
+
+        // Avoid using the real ExecutionErrorAccumulator in order to avoid either throwing an Exception or
+        // accumulating errors for this UC.
+        var dummyExecutionErrorAccumulator = new DummyExecutionErrorAccumulator();
+        warehouseSearchEvaluator.execute(dummyExecutionErrorAccumulator);
+
+        if(!dummyExecutionErrorAccumulator.hasExecutionErrors()) {
+            addSearchResults(userVisit, searchType, entityInstances);
+        }
+    }
+
+    private void searchWarehouses(final Party party, final Set<EntityInstanceTransfer> entityInstances, final String target) {
+        if(SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(null, party,
+                SecurityRoleGroups.Warehouse.name(), SecurityRoles.Search.name())) {
+            var userVisit = getUserVisit();
+            var searchLogic = SearchLogic.getInstance();
+            var searchKind = searchLogic.getSearchKindByName(null, SearchKinds.WAREHOUSE.name());
+            var searchType = searchLogic.getSearchTypeByName(null, searchKind, SearchTypes.IDENTIFY.name());
+
+            // Attempt searching for target using it as a query string.
+            executeWarehouseSearch(userVisit, entityInstances, searchLogic, searchKind, searchType,
+                    target);
+        }
+    }
+
     private void executeItemSearch(final UserVisit userVisit, final Set<EntityInstanceTransfer> entityInstances,
             final SearchLogic searchLogic, final SearchKind searchKind, final SearchType searchType,
             final String q) {
@@ -397,6 +431,7 @@ public class IdentifyCommand
         var nameResult = new NameCleaner().getCleansedName(target);
         searchCustomers(party, entityInstances, target, nameResult);
         searchVendors(party, entityInstances, target, nameResult);
+        searchWarehouses(party, entityInstances, target);
         searchItems(party, entityInstances, target);
 
         result.setEntityInstances(entityInstances);

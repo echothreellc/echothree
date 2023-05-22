@@ -18,6 +18,12 @@ package com.echothree.model.control.warehouse.server.control;
 
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
+import com.echothree.model.control.search.common.SearchOptions;
+import com.echothree.model.control.search.server.control.SearchControl;
+import static com.echothree.model.control.search.server.control.SearchControl.ENI_ENTITYUNIQUEID_COLUMN_INDEX;
+import com.echothree.model.control.vendor.common.transfer.VendorResultTransfer;
+import com.echothree.model.control.vendor.server.control.VendorControl;
+import com.echothree.model.control.vendor.server.graphql.VendorObject;
 import com.echothree.model.control.warehouse.common.choice.LocationChoicesBean;
 import com.echothree.model.control.warehouse.common.choice.LocationStatusChoicesBean;
 import com.echothree.model.control.warehouse.common.choice.LocationTypeChoicesBean;
@@ -32,8 +38,10 @@ import com.echothree.model.control.warehouse.common.transfer.LocationTypeDescrip
 import com.echothree.model.control.warehouse.common.transfer.LocationTypeTransfer;
 import com.echothree.model.control.warehouse.common.transfer.LocationUseTypeTransfer;
 import com.echothree.model.control.warehouse.common.transfer.LocationVolumeTransfer;
+import com.echothree.model.control.warehouse.common.transfer.WarehouseResultTransfer;
 import com.echothree.model.control.warehouse.common.transfer.WarehouseTransfer;
 import com.echothree.model.control.warehouse.common.workflow.LocationStatusConstants;
+import com.echothree.model.control.warehouse.server.graphql.WarehouseObject;
 import com.echothree.model.control.warehouse.server.transfer.LocationCapacityTransferCache;
 import com.echothree.model.control.warehouse.server.transfer.LocationNameElementTransferCache;
 import com.echothree.model.control.warehouse.server.transfer.WarehouseTransferCaches;
@@ -44,6 +52,7 @@ import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyGroup;
+import com.echothree.model.data.search.server.entity.UserVisitSearch;
 import com.echothree.model.data.uom.common.pk.UnitOfMeasureTypePK;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureType;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -99,6 +108,7 @@ import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -2208,5 +2218,52 @@ public class WarehouseControl
                 deleteLocationCapacity(locationCapacity, deletedBy)
         );
     }
-    
+
+    // --------------------------------------------------------------------------------
+    //   Warehouse Searches
+    // --------------------------------------------------------------------------------
+
+    public List<WarehouseResultTransfer> getWarehouseResultTransfers(UserVisit userVisit, UserVisitSearch userVisitSearch) {
+        var searchControl = Session.getModelController(SearchControl.class);
+        var warehouseResultTransfers = new ArrayList<WarehouseResultTransfer>();
+        var includeWarehouse = false;
+
+        var options = session.getOptions();
+        if(options != null) {
+            includeWarehouse = options.contains(SearchOptions.WarehouseResultIncludeWarehouse);
+        }
+
+        try (ResultSet rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
+            var warehouseControl = Session.getModelController(WarehouseControl.class);
+
+            while(rs.next()) {
+                var party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
+
+                warehouseResultTransfers.add(new WarehouseResultTransfer(party.getLastDetail().getPartyName(),
+                        includeWarehouse ? warehouseControl.getWarehouseTransfer(userVisit, party) : null));
+            }
+        } catch(SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return warehouseResultTransfers;
+    }
+
+    public List<WarehouseObject> getWarehouseObjectsFromUserVisitSearch(UserVisitSearch userVisitSearch) {
+        var searchControl = Session.getModelController(SearchControl.class);
+        var warehouseObjects = new ArrayList<WarehouseObject>();
+
+        try (var rs = searchControl.getUserVisitSearchResultSet(userVisitSearch)) {
+            while(rs.next()) {
+                var party = getPartyControl().getPartyByPK(new PartyPK(rs.getLong(ENI_ENTITYUNIQUEID_COLUMN_INDEX)));
+
+                warehouseObjects.add(new WarehouseObject(party));
+            }
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return warehouseObjects;
+    }
+
 }
