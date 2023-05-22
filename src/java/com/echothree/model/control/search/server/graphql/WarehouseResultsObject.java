@@ -42,7 +42,7 @@ public class WarehouseResultsObject
         extends BaseResultsObject<GetWarehouseResultsForm> {
 
     public WarehouseResultsObject(GetWarehouseResultsForm form) {
-        super(ComponentVendors.ECHO_THREE.name(), EntityTypes.Party.name(), SearchKinds.VENDOR.name(), form);
+        super(ComponentVendors.ECHO_THREE.name(), EntityTypes.Party.name(), SearchKinds.WAREHOUSE.name(), form);
     }
 
     @GraphQLField
