@@ -414,8 +414,8 @@ public class SelectorBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult evaluateSelectors(UserVisitPK userVisitPK) {
-        return new EvaluateSelectorsCommand(userVisitPK).run();
+    public CommandResult evaluateSelectors(UserVisitPK userVisitPK, EvaluateSelectorsForm form) {
+        return new EvaluateSelectorsCommand(userVisitPK, form).run();
     }
     
     // -------------------------------------------------------------------------

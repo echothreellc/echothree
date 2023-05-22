@@ -44,8 +44,8 @@ public class DataIndexerJob
     @Override
     public void execute()
             throws NamingException {
-        var commandForm = IndexUtil.getHome().getUpdateIndexesForm();
-        var commandResult = IndexUtil.getHome().updateIndexes(userVisitPK, commandForm);
+        var updateIndexesCommandForm = IndexUtil.getHome().getUpdateIndexesForm();
+        var commandResult = IndexUtil.getHome().updateIndexes(userVisitPK, updateIndexesCommandForm);
         
         if(commandResult.hasErrors()) {
             getLog().error(commandResult.toString());
@@ -54,7 +54,9 @@ public class DataIndexerJob
             var updateIndexesResult = (UpdateIndexesResult)executionResult.getResult();
 
             if(updateIndexesResult.getIndexingComplete()) {
-                SelectorUtil.getHome().evaluateSelectors(userVisitPK);
+                var evaluateSelectorsCommandForm = SelectorUtil.getHome().getEvaluateSelectorsForm();
+
+                SelectorUtil.getHome().evaluateSelectors(userVisitPK, evaluateSelectorsCommandForm);
             }
         }
     }
