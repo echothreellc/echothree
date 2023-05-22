@@ -56,6 +56,7 @@ public class WarehouseTransferCache
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     PrinterControl printerControl = Session.getModelController(PrinterControl.class);
     ScaleControl scaleControl = Session.getModelController(ScaleControl.class);
+
     boolean includePartyContactMechanisms;
     boolean includePartyDocuments;
     boolean includePartyPrinterGroupUses;

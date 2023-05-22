@@ -44,6 +44,7 @@ public class LocationTransferCache
     CoreControl coreControl = Session.getModelController(CoreControl.class);
     InventoryControl inventoryControl = Session.getModelController(InventoryControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+
     boolean includeCapacities;
     boolean includeVolume;
     
@@ -55,6 +56,8 @@ public class LocationTransferCache
         if(options != null) {
             includeCapacities = options.contains(WarehouseOptions.LocationIncludeCapacities);
             includeVolume = options.contains(WarehouseOptions.LocationIncludeVolume);
+            setIncludeEntityAttributeGroups(options.contains(WarehouseOptions.LocationIncludeEntityAttributeGroups));
+            setIncludeTagScopes(options.contains(WarehouseOptions.LocationIncludeTagScopes));
         }
         
         setIncludeEntityInstance(true);

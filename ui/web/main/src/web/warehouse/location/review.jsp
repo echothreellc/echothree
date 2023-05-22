@@ -122,20 +122,16 @@
                 </display:column>
             </display:table>
             <br />
-            Created: <c:out value="${location.entityInstance.entityTime.createdTime}" /><br />
-            <c:if test='${location.entityInstance.entityTime.modifiedTime != null}'>
-                Modified: <c:out value="${location.entityInstance.entityTime.modifiedTime}" /><br />
-            </c:if>
-            <c:if test='${location.entityInstance.entityTime.deletedTime != null}'>
-                Deleted: <c:out value="${location.entityInstance.entityTime.deletedTime}" /><br />
-            </c:if>
-            <et:checkSecurityRoles securityRoles="Event.List" />
-            <et:hasSecurityRole securityRole="Event.List">
-                <c:url var="eventsUrl" value="/action/Core/Event/Main">
-                    <c:param name="EntityRef" value="${location.entityInstance.entityRef}" />
-                </c:url>
-                <a href="${eventsUrl}">Events</a>
-            </et:hasSecurityRole>
+            <c:set var="tagScopes" scope="request" value="${location.tagScopes}" />
+            <c:set var="entityAttributeGroups" scope="request" value="${location.entityAttributeGroups}" />
+            <c:set var="entityInstance" scope="request" value="${location.entityInstance}" />
+            <c:url var="returnUrl" scope="request" value="/../action/Warehouse/Location/Review">
+                <c:param name="WarehouseName" value="${location.warehouse.warehouseName}" />
+                <c:param name="LocationName" value="${location.locationName}" />
+            </c:url>
+            <jsp:include page="../../include/tagScopes.jsp" />
+            <jsp:include page="../../include/entityAttributeGroups.jsp" />
+            <jsp:include page="../../include/entityInstance.jsp" />
         </div>
         <jsp:include page="../../include/userSession.jsp" />
         <jsp:include page="../../include/copyright.jsp" />
