@@ -61,11 +61,38 @@
         <div id="Content">
             <c:choose>
                 <c:when test="${entityInstance != null}">
-                    <et:checkSecurityRoles securityRoles="EntityAppearance.Create:Appearance.Review:EntityAppearance.Edit:EntityAppearance.Delete" />
+                    <et:checkSecurityRoles securityRoles="ComponentVendor.Review:EntityType.Review:EntityAppearance.Create:Appearance.Review:EntityAppearance.Edit:EntityAppearance.Delete" />
+                    <et:hasSecurityRole securityRole="ComponentVendor.Review" var="includeComponentVendorReviewUrl" />
+                    <et:hasSecurityRole securityRole="EntityType.Review" var="includeEntityTypeReviewUrl" />
                     <et:hasSecurityRole securityRole="Appearance.Review" var="includeAppearanceReviewUrl" />
                     Entity: <c:out value="${entityInstance.entityRef}" /><br />
-                    Component Vendor: <c:out value="${entityInstance.entityType.componentVendor.description}" /><br />
-                    Entity Type: <c:out value="${entityInstance.entityType.description}" /><br />
+                    Component Vendor:
+                    <c:choose>
+                        <c:when test="${includeComponentVendorReviewUrl}">
+                            <c:url var="componentVendorUrl" value="/action/Core/ComponentVendor/Review">
+                                <c:param name="ComponentVendorName" value="${entityInstance.entityType.componentVendor.componentVendorName}" />
+                            </c:url>
+                            <a href="${componentVendorUrl}"><c:out value="${entityInstance.entityType.componentVendor.description}" /></a>
+                        </c:when>
+                        <c:otherwise>
+                            <c:out value="${entityInstance.entityType.componentVendor.description}" />
+                        </c:otherwise>
+                    </c:choose>
+                    <br />
+                    Entity Type:
+                    <c:choose>
+                        <c:when test="${includeEntityTypeReviewUrl}">
+                            <c:url var="entityTypeUrl" value="/action/Core/EntityType/Review">
+                                <c:param name="ComponentVendorName" value="${entityInstance.entityType.componentVendor.componentVendorName}" />
+                                <c:param name="EntityTypeName" value="${entityInstance.entityType.entityTypeName}" />
+                            </c:url>
+                            <a href="${entityTypeUrl}"><c:out value="${entityInstance.entityType.description}" /></a>
+                        </c:when>
+                        <c:otherwise>
+                            <c:out value="${entityInstance.entityType.description}" />
+                        </c:otherwise>
+                    </c:choose>
+                    <br />
                     Entity Unique Id: <c:out value="${entityInstance.entityUniqueId}" /><br />
                     Appearance:
                     <c:choose>
