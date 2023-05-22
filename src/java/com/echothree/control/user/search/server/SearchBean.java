@@ -1138,6 +1138,16 @@ public class SearchBean
     }
 
     @Override
+    public CommandResult getWarehouseResultsFacet(UserVisitPK userVisitPK, GetWarehouseResultsFacetForm form) {
+        return new GetWarehouseResultsFacetCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getWarehouseResultsFacets(UserVisitPK userVisitPK, GetWarehouseResultsFacetsForm form) {
+        return new GetWarehouseResultsFacetsCommand(userVisitPK, form).run();
+    }
+
+    @Override
     public CommandResult countWarehouseResults(UserVisitPK userVisitPK, CountWarehouseResultsForm form) {
         return new CountWarehouseResultsCommand(userVisitPK, form).run();
     }
