@@ -21,5 +21,6 @@ public enum Indexes {
     CUSTOMER,
     EMPLOYEE,
     VENDOR,
+    WAREHOUSE,
 
 }
