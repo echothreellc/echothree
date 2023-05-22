@@ -136,6 +136,7 @@ import com.echothree.control.user.search.common.result.SearchCustomersResult;
 import com.echothree.control.user.search.common.result.SearchEmployeesResult;
 import com.echothree.control.user.search.common.result.SearchItemsResult;
 import com.echothree.control.user.search.common.result.SearchVendorsResult;
+import com.echothree.control.user.search.common.result.SearchWarehousesResult;
 import com.echothree.control.user.selector.common.SelectorUtil;
 import com.echothree.control.user.selector.common.result.CreateSelectorResult;
 import com.echothree.control.user.selector.common.result.EditSelectorResult;
@@ -177,6 +178,7 @@ import com.echothree.model.control.search.server.graphql.SearchCustomersResultOb
 import com.echothree.model.control.search.server.graphql.SearchEmployeesResultObject;
 import com.echothree.model.control.search.server.graphql.SearchItemsResultObject;
 import com.echothree.model.control.search.server.graphql.SearchVendorsResultObject;
+import com.echothree.model.control.search.server.graphql.SearchWarehousesResultObject;
 import com.echothree.util.common.command.EditMode;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLID;
@@ -6060,6 +6062,63 @@ public class GraphQlMutations
             commandForm.setSearchTypeName(searchTypeName);
 
             var commandResult = SearchUtil.getHome().clearVendorResults(getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static SearchWarehousesResultObject searchWarehouses(final DataFetchingEnvironment env,
+            @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName,
+            @GraphQLName("name") final String name,
+            @GraphQLName("warehouseName") final String warehouseName,
+            @GraphQLName("partyName") final String partyName,
+            @GraphQLName("partyAliasTypeName") final String partyAliasTypeName,
+            @GraphQLName("alias") final String alias,
+            @GraphQLName("createdSince") final String createdSince,
+            @GraphQLName("modifiedSince") final String modifiedSince,
+            @GraphQLName("fields") final String fields) {
+        var mutationResultObject = new SearchWarehousesResultObject();
+
+        try {
+            var commandForm = SearchUtil.getHome().getSearchWarehousesForm();
+
+            commandForm.setSearchTypeName(searchTypeName);
+            commandForm.setName(name);
+            commandForm.setWarehouseName(warehouseName);
+            commandForm.setPartyName(partyName);
+            commandForm.setPartyAliasTypeName(partyAliasTypeName);
+            commandForm.setAlias(alias);
+            commandForm.setCreatedSince(createdSince);
+            commandForm.setModifiedSince(modifiedSince);
+            commandForm.setFields(fields);
+
+            var commandResult = SearchUtil.getHome().searchWarehouses(getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+            mutationResultObject.setResult(commandResult.hasErrors() ? null : (SearchWarehousesResult)commandResult.getExecutionResult().getResult());
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static MutationResultObject clearWarehouseResults(final DataFetchingEnvironment env,
+            @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = SearchUtil.getHome().getClearWarehouseResultsForm();
+
+            commandForm.setSearchTypeName(searchTypeName);
+
+            var commandResult = SearchUtil.getHome().clearWarehouseResults(getUserVisitPK(env), commandForm);
             mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);

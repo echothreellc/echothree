@@ -67,4 +67,6 @@ public interface SearchOptions {
     
     String UseTypeResultIncludeUseType = "UseTypeResultIncludeUseType";
 
+    String WarehouseResultIncludeWarehouse = "WarehouseResultIncludeWarehouse";
+
 }

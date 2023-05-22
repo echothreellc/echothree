@@ -14,28 +14,19 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.search.common;
+package com.echothree.control.user.search.common.result;
 
-public enum SearchKinds {
+import com.echothree.model.control.warehouse.common.transfer.WarehouseResultTransfer;
+import com.echothree.util.common.command.BaseResult;
+import java.util.List;
 
-    CONTACT_MECHANISM,
-    CONTENT_CATEGORY,
-    CUSTOMER,
-    EMPLOYEE,
-    ENTITY_LIST_ITEM,
-    ENTITY_TYPE,
-    FORUM_MESSAGE,
-    HARMONIZED_TARIFF_SCHEDULE_CODE,
-    ITEM,
-    LEAVE,
-    OFFER,
-    SALES_ORDER,
-    SALES_ORDER_BATCH,
-    SECURITY_ROLE,
-    SECURITY_ROLE_GROUP,
-    USE,
-    USE_TYPE,
-    VENDOR,
-    WAREHOUSE,
+public interface GetWarehouseResultsResult
+        extends BaseResult {
+    
+    Long getWarehouseResultCount();
+    void setWarehouseResultCount(Long warehouseResultCount);
 
+    List<WarehouseResultTransfer> getWarehouseResults();
+    void setWarehouseResults(List<WarehouseResultTransfer> warehouseResults);
+    
 }
