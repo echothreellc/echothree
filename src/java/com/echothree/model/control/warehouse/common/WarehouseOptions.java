@@ -19,8 +19,10 @@ package com.echothree.model.control.warehouse.common;
 public interface WarehouseOptions {
     
     String LocationIncludeCapacities = "LocationIncludeCapacities";
-    String LocationIncludeVolume     = "LocationIncludeVolume";
-    
+    String LocationIncludeVolume = "LocationIncludeVolume";
+    String LocationIncludeEntityAttributeGroups = "LocationIncludeEntityAttributeGroups";
+    String LocationIncludeTagScopes = "LocationIncludeTagScopes";
+
     String WarehouseIncludeKey = "WarehouseIncludeKey";
     String WarehouseIncludeGuid = "WarehouseIncludeGuid";
     String WarehouseIncludeEntityAttributeGroups = "WarehouseIncludeEntityAttributeGroups";
