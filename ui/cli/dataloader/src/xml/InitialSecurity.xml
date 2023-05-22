@@ -543,6 +543,9 @@
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Command Message Create" />
             </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Command Message Edit" />
+            </securityRole>
             <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Command Message Delete" />
             </securityRole>
@@ -7540,6 +7543,7 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="EmployeeType" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EmployeeType" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="CommandMessage" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="CommandMessage" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="CommandMessage" securityRoleName="Delete" />
             <partySecurityRoleTemplateRole securityRoleGroupName="CommandMessage" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="CommandMessage" securityRoleName="Review" />
