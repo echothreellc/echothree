@@ -38,7 +38,7 @@ public class WarehouseSearchEvaluator
     /** Creates a new instance of WarehouseSearchEvaluator */
     public WarehouseSearchEvaluator(UserVisit userVisit, SearchType searchType, SearchDefaultOperator searchDefaultOperator, SearchSortOrder searchSortOrder,
             SearchSortDirection searchSortDirection) {
-        super(userVisit, searchType, searchDefaultOperator, searchSortOrder, searchSortDirection, PartyTypes.VENDOR.name(), Indexes.VENDOR.name());
+        super(userVisit, searchType, searchDefaultOperator, searchSortOrder, searchSortDirection, PartyTypes.WAREHOUSE.name(), Indexes.WAREHOUSE.name());
     }
     
     public String getWarehouseName() {
