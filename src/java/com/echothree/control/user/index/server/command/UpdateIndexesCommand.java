@@ -16,6 +16,7 @@
 
 package com.echothree.control.user.index.server.command;
 
+import com.echothree.control.user.index.common.form.UpdateIndexesForm;
 import com.echothree.control.user.index.common.result.IndexResultFactory;
 import com.echothree.model.control.contact.server.indexer.ContactMechanismIndexer;
 import com.echothree.model.control.content.server.indexer.ContentCategoryIndexer;
@@ -62,7 +63,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class UpdateIndexesCommand
-        extends BaseSimpleCommand {
+        extends BaseSimpleCommand<UpdateIndexesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     
@@ -73,8 +74,8 @@ public class UpdateIndexesCommand
     }
     
     /** Creates a new instance of UpdateIndexesCommand */
-    public UpdateIndexesCommand(UserVisitPK userVisitPK) {
-        super(userVisitPK, COMMAND_SECURITY_DEFINITION, false);
+    public UpdateIndexesCommand(UserVisitPK userVisitPK, UpdateIndexesForm form) {
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, null, false);
     }
     
     private static final int QUEUED_ENTITY_COUNT = 10;
