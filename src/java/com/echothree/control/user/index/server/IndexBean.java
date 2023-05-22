@@ -246,8 +246,8 @@ public class IndexBean
     // -------------------------------------------------------------------------
     
     @Override
-    public CommandResult updateIndexes(UserVisitPK userVisitPK) {
-        return new UpdateIndexesCommand(userVisitPK).run();
+    public CommandResult updateIndexes(UserVisitPK userVisitPK, UpdateIndexesForm form) {
+        return new UpdateIndexesCommand(userVisitPK, form).run();
     }
     
     @Override

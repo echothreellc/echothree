@@ -225,6 +225,6 @@ public interface SelectorService
     //   Utilities
     // -------------------------------------------------------------------------
     
-    CommandResult evaluateSelectors(UserVisitPK userVisitPK);
+    CommandResult evaluateSelectors(UserVisitPK userVisitPK, EvaluateSelectorsForm form);
     
 }

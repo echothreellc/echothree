@@ -16,8 +16,8 @@
 
 package com.echothree.control.user.index.server.command;
 
+import com.echothree.control.user.index.common.form.UpdateIndexesForm;
 import com.echothree.control.user.index.common.result.IndexResultFactory;
-import com.echothree.control.user.index.common.result.UpdateIndexesResult;
 import com.echothree.model.control.contact.server.indexer.ContactMechanismIndexer;
 import com.echothree.model.control.content.server.indexer.ContentCategoryIndexer;
 import com.echothree.model.control.core.server.indexer.EntityListItemIndexer;
@@ -41,10 +41,9 @@ import com.echothree.model.control.search.server.logic.SearchLogic;
 import com.echothree.model.control.security.server.indexer.SecurityRoleGroupIndexer;
 import com.echothree.model.control.security.server.indexer.SecurityRoleIndexer;
 import com.echothree.model.control.vendor.server.indexer.VendorIndexer;
+import com.echothree.model.control.warehouse.server.indexer.WarehouseIndexer;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.index.server.entity.Index;
-import com.echothree.model.data.index.server.entity.IndexType;
 import com.echothree.model.data.queue.common.QueuedEntityConstants;
 import com.echothree.model.data.queue.server.entity.QueueType;
 import com.echothree.model.data.queue.server.entity.QueuedEntity;
@@ -58,33 +57,32 @@ import com.echothree.util.server.persistence.Session;
 import com.echothree.util.server.persistence.ThreadSession;
 import static java.lang.Math.toIntExact;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class UpdateIndexesCommand
-        extends BaseSimpleCommand {
+        extends BaseSimpleCommand<UpdateIndexesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
-                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null)
-                )));
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null))
+        );
     }
     
     /** Creates a new instance of UpdateIndexesCommand */
-    public UpdateIndexesCommand(UserVisitPK userVisitPK) {
-        super(userVisitPK, COMMAND_SECURITY_DEFINITION, false);
+    public UpdateIndexesCommand(UserVisitPK userVisitPK, UpdateIndexesForm form) {
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, null, false);
     }
     
     private static final int QUEUED_ENTITY_COUNT = 10;
     private static final long MAXIMUM_MILLISECONDS = 90 * 1000; // 90 seconds
     
     private void setLimits() {
-        Map<String, Limit> limits = new HashMap<>(1);
+        var limits = new HashMap<String, Limit>(1);
         
         limits.put(QueuedEntityConstants.ENTITY_TYPE_NAME, new Limit(Integer.toString(QUEUED_ENTITY_COUNT), null));
         session.setLimits(limits);
@@ -92,10 +90,11 @@ public class UpdateIndexesCommand
     
     private Map<EntityInstance, List<QueuedEntity>> getQueuedEntities(final QueueType queueType) {
         var queueControl = Session.getModelController(QueueControl.class);
-        Map<EntityInstance, List<QueuedEntity>> queuedEntityMap = new HashMap<>(QUEUED_ENTITY_COUNT);
-        List<QueuedEntity> queuedEntities = queueControl.getQueuedEntitiesByQueueType(queueType);
+        var queuedEntityMap = new HashMap<EntityInstance, List<QueuedEntity>>(QUEUED_ENTITY_COUNT);
+        var queuedEntities = queueControl.getQueuedEntitiesByQueueType(queueType);
         
-        queuedEntities.stream().map((queuedEntity) -> queuedEntity.getEntityInstance()).filter((entityInstance) -> !queuedEntityMap.containsKey(entityInstance)).forEach((entityInstance) -> {
+        queuedEntities.stream().map(QueuedEntity::getEntityInstance).filter(
+                (entityInstance) -> !queuedEntityMap.containsKey(entityInstance)).forEach((entityInstance) -> {
             List<QueuedEntity> duplicateQueuedEntities = queueControl.getQueuedEntities(queueType, entityInstance);
             
             queuedEntityMap.put(entityInstance, duplicateQueuedEntities);
@@ -104,19 +103,21 @@ public class UpdateIndexesCommand
         return queuedEntityMap;
     }
     
-    private void setupIndexers(final IndexControl indexControl, final Map<EntityType, List<BaseIndexer>> indexersMap, final EntityType entityType) {
-        List<IndexType> indexTypes = indexControl.getIndexTypesByEntityType(entityType);
-        long size = 0;
+    private void setupIndexers(final IndexControl indexControl, final Map<EntityType, List<BaseIndexer<?>>> indexersMap, final EntityType entityType) {
+        var indexTypes = indexControl.getIndexTypesByEntityType(entityType);
+        var size = 0L;
 
-        size = indexTypes.stream().map((indexType) -> indexControl.countIndexesByIndexType(indexType)).reduce(size, Long::sum);
+        size = indexTypes.stream().map(indexControl::countIndexesByIndexType).reduce(size, Long::sum);
 
-        List<BaseIndexer> indexers = new ArrayList<>(toIntExact(size));
+        var indexers = new ArrayList<BaseIndexer<?>>(toIntExact(size));
 
         indexTypes.forEach((indexType) -> {
-            List<Index> indexes = indexControl.getIndexesByIndexType(indexType);
-            String indexTypeName = indexType.getLastDetail().getIndexTypeName();
+            var indexes = indexControl.getIndexesByIndexType(indexType);
+            var indexTypeName = indexType.getLastDetail().getIndexTypeName();
+
             indexes.stream().map((index) -> {
-                BaseIndexer baseIndexer = null;
+                BaseIndexer<?> baseIndexer = null;
+
                 if(indexTypeName.equals(IndexTypes.CUSTOMER.name())) {
                     baseIndexer = new CustomerIndexer(this, index);
                 } else if(indexTypeName.equals(IndexTypes.EMPLOYEE.name())) {
@@ -147,24 +148,22 @@ public class UpdateIndexesCommand
                     baseIndexer = new UseIndexer(this, index);
                 } else if(indexTypeName.equals(IndexTypes.USE_TYPE.name())) {
                     baseIndexer = new UseTypeIndexer(this, index);
+                } else if(indexTypeName.equals(IndexTypes.WAREHOUSE.name())) {
+                    baseIndexer = new WarehouseIndexer(this, index);
                 }
+
                 return baseIndexer;
-            }).filter((baseIndexer) -> (baseIndexer != null)).map((baseIndexer) -> {
-                baseIndexer.open();
-                return baseIndexer;
-            }).forEach((baseIndexer) -> {
-                indexers.add(baseIndexer);
-            });
+            }).filter(Objects::nonNull).peek(BaseIndexer::open).forEach(indexers::add);
         });
 
         indexersMap.put(entityType, indexers);
     }
     
-    private void indexQueuedEntity(final QueueControl queueControl, final Map<EntityType, List<BaseIndexer>> indexersMap,
+    private void indexQueuedEntity(final QueueControl queueControl, final Map<EntityType, List<BaseIndexer<?>>> indexersMap,
             final Map.Entry<EntityInstance, List<QueuedEntity>> queuedEntityEntry) {
-        EntityInstance entityInstance = queuedEntityEntry.getKey();
-        EntityType entityType = entityInstance.getEntityType();
-        List<BaseIndexer> baseIndexers = indexersMap.get(entityType);
+        var entityInstance = queuedEntityEntry.getKey();
+        var entityType = entityInstance.getEntityType();
+        var baseIndexers = indexersMap.get(entityType);
         
         for(var baseIndexer : baseIndexers) {
             baseIndexer.updateIndex(entityInstance);
@@ -175,29 +174,22 @@ public class UpdateIndexesCommand
         }
 
         if(!hasExecutionErrors()) {
-            queuedEntityEntry.getValue().stream().forEach((queuedEntity) -> {
-                queueControl.removeQueuedEntity(queuedEntity);
-            });
+            queuedEntityEntry.getValue().forEach(queueControl::removeQueuedEntity);
         }
     }
     
-    private void closeIndexers(final QueueControl queueControl, final QueueType queueType, final Map<EntityType, List<BaseIndexer>> indexersMap) {
-        indexersMap.entrySet().stream().forEach((indexersEntry) -> {
-            indexersEntry.getValue().stream().map((baseIndexer) -> {
-                if(queueControl.countQueuedEntitiesByEntityType(queueType, baseIndexer.getEntityType()) == 0) {
-                    SearchLogic.getInstance().invalidateCachedSearchesByIndex(baseIndexer.getIndex());
-                }
-                return baseIndexer;
-            }).forEach((baseIndexer) -> {
-                baseIndexer.close();
-            });
-        });
+    private void closeIndexers(final QueueControl queueControl, final QueueType queueType, final Map<EntityType, List<BaseIndexer<?>>> indexersMap) {
+        indexersMap.forEach((key, value) -> value.stream().peek((baseIndexer) -> {
+            if(queueControl.countQueuedEntitiesByEntityType(queueType, baseIndexer.getEntityType()) == 0) {
+                SearchLogic.getInstance().invalidateCachedSearchesByIndex(baseIndexer.getIndex());
+            }
+        }).forEach(BaseIndexer::close));
     }
     
-    private void verifyIndexersAreSetup(final IndexControl indexControl, final Map<EntityType, List<BaseIndexer>> indexersMap,
+    private void verifyIndexersAreSetup(final IndexControl indexControl, final Map<EntityType, List<BaseIndexer<?>>> indexersMap,
             final Map<EntityInstance, List<QueuedEntity>> queuedEntityMap) {
         for(Map.Entry<EntityInstance, List<QueuedEntity>> queuedEntityEntry : queuedEntityMap.entrySet()) {
-            EntityType entityType = queuedEntityEntry.getKey().getEntityType();
+            var entityType = queuedEntityEntry.getKey().getEntityType();
             
             if(!indexersMap.containsKey(entityType)) {
                 setupIndexers(indexControl, indexersMap, entityType);
@@ -209,7 +201,7 @@ public class UpdateIndexesCommand
         }
     }
 
-    private void indexQueuedEntities(final QueueControl queueControl, final Map<EntityType, List<BaseIndexer>> indexersMap,
+    private void indexQueuedEntities(final QueueControl queueControl, final Map<EntityType, List<BaseIndexer<?>>> indexersMap,
             final Map<EntityInstance, List<QueuedEntity>> queuedEntityMap) {
         try {
             ThreadSession.pushSessionEntityCache();
@@ -228,9 +220,9 @@ public class UpdateIndexesCommand
     
     @Override
     protected BaseResult execute() {
-        UpdateIndexesResult result = IndexResultFactory.getUpdateIndexesResult();
-        QueueType queueType = QueueTypeLogic.getInstance().getQueueTypeByName(this, QueueTypes.INDEXING.name());
-        boolean indexingComplete = false; // Indexing is only complete when we can absolutely verify it as being complete.
+        var result = IndexResultFactory.getUpdateIndexesResult();
+        var queueType = QueueTypeLogic.getInstance().getQueueTypeByName(this, QueueTypes.INDEXING.name());
+        var indexingComplete = false; // Indexing is only complete when we can absolutely verify it as being complete.
         
         if(!hasExecutionErrors()) {
             var queueControl = Session.getModelController(QueueControl.class);
@@ -240,15 +232,15 @@ public class UpdateIndexesCommand
             // If there isn't anything in the queue, skip over all of this.
             if(!indexingComplete) {
                 var indexControl = Session.getModelController(IndexControl.class);
-                Map<EntityType, List<BaseIndexer>> indexersMap = new HashMap<>(toIntExact(indexControl.countIndexes()));
+                var indexersMap = new HashMap<EntityType, List<BaseIndexer<?>>>(toIntExact(indexControl.countIndexes()));
 
                 try {
-                    long exitTime = session.START_TIME + MAXIMUM_MILLISECONDS;
+                    var exitTime = session.START_TIME + MAXIMUM_MILLISECONDS;
 
                     setLimits();
 
                     while(System.currentTimeMillis() < exitTime) {
-                        Map<EntityInstance, List<QueuedEntity>> queuedEntityMap = getQueuedEntities(queueType);
+                        var queuedEntityMap = getQueuedEntities(queueType);
 
                         // If there are no more to index, break out of here.
                         if(queuedEntityMap.isEmpty()) {

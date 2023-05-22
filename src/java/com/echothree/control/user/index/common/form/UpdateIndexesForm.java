@@ -14,25 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.index.common;
+package com.echothree.control.user.index.common.form;
 
-public enum IndexTypes {
+import com.echothree.util.common.form.BaseForm;
 
-    CONTACT_MECHANISM,
-    CONTENT_CATEGORY,
-    CUSTOMER,
-    FORUM_MESSAGE,
-    EMPLOYEE,
-    ENTITY_LIST_ITEM,
-    ENTITY_TYPE,
-    HARMONIZED_TARIFF_SCHEDULE_CODE,
-    ITEM,
-    OFFER,
-    SECURITY_ROLE,
-    SECURITY_ROLE_GROUP,
-    USE,
-    USE_TYPE,
-    VENDOR,
-    WAREHOUSE,
-
+public interface UpdateIndexesForm
+        extends BaseForm {
+    
+    // Nothing additional beyond BaseForm
+    
 }
