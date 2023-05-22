@@ -113,11 +113,15 @@
         </textTransformation>
     </textTransformations>
     <appearances>
-        <appearance appearanceName="TEST_APPEARANCE" textColor="black" backgroundcolor="white" fontStyle="NORMAL" fontWeight="NORMAL" isDefault="true"
-                sortOrder="1">
+        <appearance appearanceName="YELLOW_HIGHLIGHTER" backgroundColorName="yellow" fontWeightName="BOLD" isDefault="true"
+                    sortOrder="1">
+            <appearanceDescription languageIsoName="en" description="Yellow Highlighter" />
+        </appearance>
+        <appearance appearanceName="TEST_APPEARANCE" textColorName="white" backgroundColorName="black" fontStyleName="NORMAL"
+                    fontWeightName="BOLD" isDefault="false" sortOrder="5">
             <appearanceDescription languageIsoName="en" description="Test Appearance" />
-            <appearanceTextDecoration textDecorationName="line-through" />
-            <appearanceTextTransformation textTransformationName="lowercase" />
+            <appearanceTextDecoration textDecorationName="LINE_THROUGH" />
+            <appearanceTextTransformation textTransformationName="LOWERCASE" />
         </appearance>
     </appearances>
 </initialData>
