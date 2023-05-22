@@ -102,16 +102,16 @@ public class SearchVendorsCommand
 
                 if(partyAliasTypeName != null) {
                     var partyControl = Session.getModelController(PartyControl.class);
-                    PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.CUSTOMER.name());
+                    PartyType partyType = partyControl.getPartyTypeByName(PartyTypes.VENDOR.name());
 
                     if(partyType != null) {
                         partyAliasType = partyControl.getPartyAliasTypeByName(partyType, partyAliasTypeName);
 
                         if(partyAliasType == null) {
-                            addExecutionError(ExecutionErrors.UnknownPartyAliasTypeName.name(), PartyTypes.CUSTOMER.name(), partyAliasTypeName);
+                            addExecutionError(ExecutionErrors.UnknownPartyAliasTypeName.name(), PartyTypes.VENDOR.name(), partyAliasTypeName);
                         }
                     } else {
-                        addExecutionError(ExecutionErrors.UnknownPartyTypeName.name(), PartyTypes.CUSTOMER.name());
+                        addExecutionError(ExecutionErrors.UnknownPartyTypeName.name(), PartyTypes.VENDOR.name());
                     }
                 }
 
