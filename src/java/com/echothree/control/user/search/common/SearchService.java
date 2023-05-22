@@ -553,6 +553,10 @@ public interface SearchService
 
     CommandResult getWarehouseResults(UserVisitPK userVisitPK, GetWarehouseResultsForm form);
 
+    CommandResult getWarehouseResultsFacet(UserVisitPK userVisitPK, GetWarehouseResultsFacetForm form);
+
+    CommandResult getWarehouseResultsFacets(UserVisitPK userVisitPK, GetWarehouseResultsFacetsForm form);
+
     CommandResult countWarehouseResults(UserVisitPK userVisitPK, CountWarehouseResultsForm form);
 
     CommandResult clearWarehouseResults(UserVisitPK userVisitPK, ClearWarehouseResultsForm form);
