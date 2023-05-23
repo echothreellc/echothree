@@ -24,6 +24,7 @@ import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.model.control.party.common.transfer.PartyTypeTransfer;
 import com.echothree.model.control.party.common.transfer.PersonTransfer;
 import com.echothree.model.control.party.common.transfer.TimeZoneTransfer;
+import com.echothree.util.common.transfer.ListWrapper;
 
 public class WarehouseTransfer
         extends PartyTransfer {
@@ -31,7 +32,10 @@ public class WarehouseTransfer
     private String warehouseName;
     private Boolean isDefault;
     private Integer sortOrder;
-    
+
+    private Long locationsCount;
+    private ListWrapper<LocationTransfer> locations;
+
     /** Creates a new instance of WarehouseTransfer */
     public WarehouseTransfer(String partyName, PartyTypeTransfer partyType, LanguageTransfer preferredLanguage, CurrencyTransfer preferredCurrency, TimeZoneTransfer preferredTimeZone,
             DateTimeFormatTransfer preferredDateTimeFormat, PersonTransfer person, PartyGroupTransfer partyGroup, String warehouseName, Boolean isDefault, Integer sortOrder) {
@@ -65,5 +69,21 @@ public class WarehouseTransfer
     public void setSortOrder(Integer sortOrder) {
         this.sortOrder = sortOrder;
     }
-    
+
+    public Long getLocationsCount() {
+        return locationsCount;
+    }
+
+    public void setLocationsCount(final Long locationsCount) {
+        this.locationsCount = locationsCount;
+    }
+
+    public ListWrapper<LocationTransfer> getLocations() {
+        return locations;
+    }
+
+    public void setLocations(final ListWrapper<LocationTransfer> locations) {
+        this.locations = locations;
+    }
+
 }
