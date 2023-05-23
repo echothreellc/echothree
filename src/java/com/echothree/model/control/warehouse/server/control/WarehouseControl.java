@@ -302,7 +302,8 @@ public class WarehouseControl
                 query = "SELECT _ALL_ " +
                         "FROM warehouses " +
                         "WHERE whse_thrutime = ? " +
-                        "ORDER BY whse_sortorder, whse_warehousename";
+                        "ORDER BY whse_sortorder, whse_warehousename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM warehouses " +
@@ -480,7 +481,8 @@ public class WarehouseControl
         PreparedStatement ps = LocationUseTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM locationusetypes " +
-                "ORDER BY locutyp_sortorder, locutyp_locationusetypename");
+                "ORDER BY locutyp_sortorder, locutyp_locationusetypename " +
+                "_LIMIT_");
         
         return LocationUseTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -710,7 +712,8 @@ public class WarehouseControl
                         "FROM locationtypes, locationtypedetails " +
                         "WHERE loctyp_locationtypeid = loctypdt_loctyp_locationtypeid AND loctypdt_warehousepartyid = ? " +
                         "AND loctypdt_thrutime = ? " +
-                        "ORDER BY loctypdt_sortorder, loctypdt_locationtypename";
+                        "ORDER BY loctypdt_sortorder, loctypdt_locationtypename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM locationtypes, locationtypedetails " +
@@ -958,7 +961,8 @@ public class WarehouseControl
                 query = "SELECT _ALL_ " +
                         "FROM locationtypedescriptions, languages " +
                         "WHERE loctypd_loctyp_locationtypeid = ? AND loctypd_thrutime = ? AND loctypd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM locationtypedescriptions " +
@@ -1139,7 +1143,8 @@ public class WarehouseControl
                         "FROM locationnameelements, locationnameelementdetails " +
                         "WHERE locne_locationnameelementid = locnedt_locne_locationnameelementid AND locnedt_loctyp_locationtypeid = ? " +
                         "AND locnedt_thrutime = ? " +
-                        "ORDER BY locnedt_offset";
+                        "ORDER BY locnedt_offset " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM locationnameelements, locationnameelementdetails " +
@@ -1314,7 +1319,8 @@ public class WarehouseControl
                 query = "SELECT _ALL_ " +
                         "FROM locationnameelementdescriptions, languages " +
                         "WHERE locned_locne_locationnameelementid = ? AND locned_thrutime = ? AND locned_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM locationnameelementdescriptions " +
@@ -1523,7 +1529,8 @@ public class WarehouseControl
                 query = "SELECT _ALL_ " +
                         "FROM locations, locationdetails " +
                         "WHERE loc_locationid = locdt_loc_locationid AND locdt_warehousepartyid = ? AND locdt_thrutime = ? " +
-                        "ORDER BY locdt_locationname";
+                        "ORDER BY locdt_locationname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM locations, locationdetails " +
@@ -1562,7 +1569,8 @@ public class WarehouseControl
                 query = "SELECT _ALL_ " +
                         "FROM locations, locationdetails " +
                         "WHERE loc_activedetailid = locdt_locationdetailid AND locdt_locationname = ? " +
-                        "ORDER BY locdt_locationname";
+                        "ORDER BY locdt_locationname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM locations, locationdetails " +
@@ -1600,7 +1608,8 @@ public class WarehouseControl
                 query = "SELECT _ALL_ " +
                         "FROM locations, locationdetails " +
                         "WHERE loc_locationid = locdt_loc_locationid AND locdt_loctyp_locationtypeid = ? AND locdt_thrutime = ? " +
-                        "ORDER BY locdt_locationname";
+                        "ORDER BY locdt_locationname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM locations, locationdetails " +
@@ -1639,7 +1648,8 @@ public class WarehouseControl
                 query = "SELECT _ALL_ " +
                         "FROM locations, locationdetails " +
                         "WHERE loc_locationid = locdt_loc_locationid AND locdt_invlocgrp_inventorylocationgroupid = ? AND locdt_thrutime = ? " +
-                        "ORDER BY locdt_locationname";
+                        "ORDER BY locdt_locationname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM locations, locationdetails " +
@@ -1875,7 +1885,8 @@ public class WarehouseControl
                 query = "SELECT _ALL_ " +
                         "FROM locationdescriptions, languages " +
                         "WHERE locd_loc_locationid = ? AND locd_thrutime = ? AND locd_lang_languageid = lang_languageid " +
-                        "ORDER BY lang_sortorder, lang_languageisoname";
+                        "ORDER BY lang_sortorder, lang_languageisoname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM locationdescriptions " +
@@ -2099,7 +2110,8 @@ public class WarehouseControl
                         "WHERE loccap_loc_locationid = ? AND loccap_thrutime = ? " +
                         "AND loccap_uomt_unitofmeasuretypeid = uomtdt_uomt_unitofmeasuretypeid AND uomtdt_thrutime = ? " +
                         "AND uomtdt_uomk_unitofmeasurekindid = uomkdt_uomk_unitofmeasurekindid AND uomkdt_thrutime = ? " +
-                        "ORDER BY uomtdt_sortorder, uomtdt_unitofmeasuretypename, uomkdt_sortorder, uomkdt_unitofmeasurekindname";
+                        "ORDER BY uomtdt_sortorder, uomtdt_unitofmeasuretypename, uomkdt_sortorder, uomkdt_unitofmeasurekindname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM locationcapacities " +
