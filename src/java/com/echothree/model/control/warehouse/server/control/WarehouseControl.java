@@ -1448,6 +1448,14 @@ public class WarehouseControl
         return getLocationByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
+    public long countLocationsByWarehouseParty(Party warehouseParty) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM locations, locationdetails " +
+                        "WHERE loc_activedetailid = locdt_locationdetailid AND locdt_warehousepartyid = ? ",
+                warehouseParty);
+    }
+
     public long countLocationsByLocationUseType(Party warehouseParty, LocationUseType locationUseType) {
         return session.queryForLong(
                 "SELECT COUNT(*) " +
