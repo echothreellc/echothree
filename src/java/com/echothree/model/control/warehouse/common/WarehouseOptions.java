@@ -23,6 +23,8 @@ public interface WarehouseOptions {
     String LocationIncludeEntityAttributeGroups = "LocationIncludeEntityAttributeGroups";
     String LocationIncludeTagScopes = "LocationIncludeTagScopes";
 
+    String WarehouseIncludeLocationsCount = "WarehouseIncludeLocationsCount";
+    String WarehouseIncludeLocations = "WarehouseIncludeLocations";
     String WarehouseIncludeKey = "WarehouseIncludeKey";
     String WarehouseIncludeGuid = "WarehouseIncludeGuid";
     String WarehouseIncludeEntityAttributeGroups = "WarehouseIncludeEntityAttributeGroups";

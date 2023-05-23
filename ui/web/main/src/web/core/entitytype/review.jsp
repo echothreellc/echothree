@@ -430,7 +430,7 @@
                             </c:url>
                             <a href="${entityInstancesUrl}">More...</a> (<c:out value="${entityType.entityInstancesCount}" /> total)<br />
                         </c:if>
-                    <br />
+                        <br />
                     </c:otherwise>
                 </c:choose>
             </et:hasSecurityRole>

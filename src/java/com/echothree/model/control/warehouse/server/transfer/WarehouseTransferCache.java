@@ -57,6 +57,8 @@ public class WarehouseTransferCache
     PrinterControl printerControl = Session.getModelController(PrinterControl.class);
     ScaleControl scaleControl = Session.getModelController(ScaleControl.class);
 
+    boolean includeLocationsCount;
+    boolean includeLocations;
     boolean includePartyContactMechanisms;
     boolean includePartyDocuments;
     boolean includePartyPrinterGroupUses;
@@ -68,6 +70,8 @@ public class WarehouseTransferCache
         
         var options = session.getOptions();
         if(options != null) {
+            includeLocationsCount = options.contains(WarehouseOptions.WarehouseIncludeLocationsCount);
+            includeLocations = options.contains(WarehouseOptions.WarehouseIncludeLocations);
             setIncludeKey(options.contains(PartyOptions.PartyIncludeKey) || options.contains(WarehouseOptions.WarehouseIncludeKey));
             setIncludeGuid(options.contains(PartyOptions.PartyIncludeGuid) || options.contains(WarehouseOptions.WarehouseIncludeGuid));
             includePartyContactMechanisms = options.contains(PartyOptions.PartyIncludePartyContactMechanisms);
@@ -112,7 +116,15 @@ public class WarehouseTransferCache
             warehouseTransfer = new WarehouseTransfer(partyName, partyTypeTransfer, preferredLanguageTransfer, preferredCurrencyTransfer, preferredTimeZoneTransfer, preferredDateTimeFormatTransfer,
                     personTransfer, partyGroupTransfer, warehouseName, isDefault, sortOrder);
             put(party, warehouseTransfer);
-            
+
+            if(includeLocationsCount) {
+                warehouseTransfer.setLocationsCount(warehouseControl.countLocationsByWarehouseParty(party));
+            }
+
+            if(includeLocations) {
+                warehouseTransfer.setLocations(new ListWrapper<>(warehouseControl.getLocationTransfersByWarehouseParty(userVisit, party)));
+            }
+
             if(includePartyContactMechanisms) {
                 warehouseTransfer.setPartyContactMechanisms(new ListWrapper<>(contactControl.getPartyContactMechanismTransfersByParty(userVisit, party)));
             }
