@@ -40,6 +40,23 @@
                 <p class="executionErrors"><c:out value="${errorMessage}" /></p><br />
             </et:executionErrors>
             <display:table name="warehouses" id="warehouse" class="displaytag">
+                <display:column>
+                    <c:choose>
+                        <c:when test="${warehouse.entityInstance.entityVisit == null}">
+                            New
+                        </c:when>
+                        <c:otherwise>
+                            <c:choose>
+                                <c:when test="${warehouse.entityInstance.entityVisit.unformattedVisitedTime >= warehouse.entityInstance.entityTime.unformattedModifiedTime}">
+                                    Unchanged
+                                </c:when>
+                                <c:otherwise>
+                                    Updated
+                                </c:otherwise>
+                            </c:choose>
+                        </c:otherwise>
+                    </c:choose>
+                </display:column>
                 <display:column titleKey="columnTitle.name">
                     <c:choose>
                         <c:when test="${includeReviewUrl}">
