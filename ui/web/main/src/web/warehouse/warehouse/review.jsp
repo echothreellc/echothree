@@ -74,10 +74,10 @@
                                     <c:param name="WarehouseName" value="${location.warehouse.warehouseName}" />
                                     <c:param name="LocationName" value="${location.locationName}" />
                                 </c:url>
-                                <a href="${reviewUrl}"><c:out value="${location.locationName}" /></a>
+                                <a href="${reviewUrl}"><et:appearance appearance="${location.entityInstance.entityAppearance.appearance}"><c:out value="${location.locationName}" /></et:appearance></a>
                             </display:column>
                             <display:column titleKey="columnTitle.description">
-                                <c:out value="${location.description}" />
+                                <et:appearance appearance="${location.entityInstance.entityAppearance.appearance}"><c:out value="${location.description}" /></et:appearance>
                             </display:column>
                             <display:column titleKey="columnTitle.status">
                                 <c:url var="statusUrl" value="/action/Warehouse/Location/Status">

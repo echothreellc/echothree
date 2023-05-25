@@ -38,7 +38,8 @@
             </h2>
         </div>
         <div id="Content">
-            <p><font size="+2"><b><c:out value="${location.description}" /></b></font></p>
+            <p><font size="+2"><b><et:appearance appearance="${warehouse.entityInstance.entityAppearance.appearance}"><c:out value="${location.description}" /></et:appearance></b></font></p>
+            <p><font size="+1"><et:appearance appearance="${warehouse.entityInstance.entityAppearance.appearance}">${location.locationName}</et:appearance></font></p>
             <br />
             Warehouse: <c:out value="${location.warehouse.partyGroup.name}" /><br />
             Location Name: ${location.locationName}<br />

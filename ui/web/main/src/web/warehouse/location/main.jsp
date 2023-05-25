@@ -45,15 +45,32 @@
                 <display:setProperty name="export.pdf.filename" value="Locations.pdf" />
                 <display:setProperty name="export.rtf.filename" value="Locations.rtf" />
                 <display:setProperty name="export.xml.filename" value="Locations.xml" />
+                <display:column media="html">
+                    <c:choose>
+                        <c:when test="${location.entityInstance.entityVisit == null}">
+                            New
+                        </c:when>
+                        <c:otherwise>
+                            <c:choose>
+                                <c:when test="${location.entityInstance.entityVisit.unformattedVisitedTime >= location.entityInstance.entityTime.unformattedModifiedTime}">
+                                    Unchanged
+                                </c:when>
+                                <c:otherwise>
+                                    Updated
+                                </c:otherwise>
+                            </c:choose>
+                        </c:otherwise>
+                    </c:choose>
+                </display:column>
                 <display:column titleKey="columnTitle.name" media="html" sortable="true" sortProperty="locationName">
                     <c:url var="reviewUrl" value="/action/Warehouse/Location/Review">
                         <c:param name="WarehouseName" value="${location.warehouse.warehouseName}" />
                         <c:param name="LocationName" value="${location.locationName}" />
                     </c:url>
-                    <a href="${reviewUrl}"><c:out value="${location.locationName}" /></a>
+                    <a href="${reviewUrl}"><et:appearance appearance="${location.entityInstance.entityAppearance.appearance}"><c:out value="${location.locationName}" /></et:appearance></a>
                 </display:column>
                 <display:column titleKey="columnTitle.description" media="html" sortable="true" sortProperty="description">
-                    <c:out value="${location.description}" />
+                    <et:appearance appearance="${location.entityInstance.entityAppearance.appearance}"><c:out value="${location.description}" /></et:appearance>
                 </display:column>
                 <display:column titleKey="columnTitle.status" media="html" sortable="true" sortProperty="locationStatus.workflowStep.description">
                     <c:url var="statusUrl" value="/action/Warehouse/Location/Status">
