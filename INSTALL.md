@@ -13,7 +13,7 @@ deploying these applications.
 ## Prerequisites
 
 * Rocky Linux 9
-* Amazon Corretto 17 (17.0.1.12.1)
+* Amazon Corretto 17 (17.0.7.7.1)
 * Apache Ant 1.10 (1.10.9)
 * MySQL 8.0 (8.0.28 GA)
 * WildFly 26 (26.1.3)
