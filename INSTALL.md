@@ -60,17 +60,6 @@ export ANT_HOME
 export ANT_OPTS
 ```
 
-## Java JCE Jurisdiction Policy
-
-In `$JAVA_HOME/jre/lib/security/java.security`, review the `crypto.policy` setting and if possible (and legal),
-change the setting to `unlimited`:
-```
-crypto.policy=unlimited
-```
-
-If this is not available, the source code to the Echo Three application will need to be modified appropriately to
-use algorithms available in your jurisdiction.
-
 ## Git Checkout
 
 As jboss:
