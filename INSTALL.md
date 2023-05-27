@@ -57,11 +57,11 @@ export ANT_HOME
 export ANT_OPTS
 ```
 
-## Git Checkout
+## Git Clone
 
 As jboss:
 ```shell
-$ git checkout git@gitlab.com:echothree/echothree.git EchoThree
+$ git clone https://gitlab.com/echothree/echothree.git EchoThree
 ```
 
 ### MySQL Server Configuration
