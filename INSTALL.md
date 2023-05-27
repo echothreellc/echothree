@@ -47,15 +47,12 @@ The full version numbers in parentheses are the most recent versions used for te
 In `~/.bash_profile` for jboss:
 
 ```
-JAVA_HOME=/usr/java/latest
-
 ANT_HOME=~jboss/Java/apache-ant-latest
 ANT_OPTS="-Xmx3072m"
 
-PATH=$HOME/bin:$JAVA_HOME/bin:$ANT_HOME/bin:$PATH
+PATH=$HOME/bin:$ANT_HOME/bin:$PATH
 
 export PATH
-export JAVA_HOME
 export ANT_HOME
 export ANT_OPTS
 ```
