@@ -15,7 +15,7 @@ deploying these applications.
 * Rocky Linux 9
 * Amazon Corretto 17 (17.0.7.7.1)
 * Apache Ant 1.10 (1.10.9)
-* MySQL 8.0 (8.0.28 GA)
+* MySQL 8.0 (8.0.32 GA)
 * WildFly 26 (26.1.3)
 
 The full version numbers in parentheses are the most recent versions used for testing.
