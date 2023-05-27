@@ -12,10 +12,10 @@ deploying these applications.
 
 ## Prerequisites
 
-* CentOS 6
-* Amazon Corretto 17 (17.0.1.12.1)
+* Rocky Linux 9
+* Amazon Corretto 17 (17.0.7.7.1)
 * Apache Ant 1.10 (1.10.9)
-* MySQL 8.0 (8.0.28 GA)
+* MySQL 8.0 (8.0.32 GA)
 * WildFly 26 (26.1.3)
 
 The full version numbers in parentheses are the most recent versions used for testing.
@@ -46,36 +46,22 @@ The full version numbers in parentheses are the most recent versions used for te
 
 In `~/.bash_profile` for jboss:
 
-```
-JAVA_HOME=/usr/java/latest
-
+```shell
 ANT_HOME=~jboss/Java/apache-ant-latest
 ANT_OPTS="-Xmx3072m"
 
-PATH=$HOME/bin:$JAVA_HOME/bin:$ANT_HOME/bin:$PATH
+PATH=$HOME/bin:$ANT_HOME/bin:$PATH
 
 export PATH
-export JAVA_HOME
 export ANT_HOME
 export ANT_OPTS
 ```
 
-## Java JCE Jurisdiction Policy
-
-In `$JAVA_HOME/jre/lib/security/java.security`, review the `crypto.policy` setting and if possible (and legal),
-change the setting to `unlimited`:
-```
-crypto.policy=unlimited
-```
-
-If this is not available, the source code to the Echo Three application will need to be modified appropriately to
-use algorithms available in your jurisdiction.
-
-## Git Checkout
+## Git Clone
 
 As jboss:
-```
-$ git checkout git@gitlab.com:echothree/echothree.git EchoThree
+```shell
+$ git clone https://gitlab.com/echothree/echothree.git EchoThree
 ```
 
 ### MySQL Server Configuration
@@ -104,7 +90,7 @@ hiding the additional tables and columns used for versioning of data. `echothree
 that's strictly required, `reporting` simplifies ad hoc queries.
 
 Connected to MySQL as root:
-```
+```sql
 CREATE DATABASE echothree
     DEFAULT CHARACTER SET utf8mb4
     DEFAULT COLLATE utf8mb4_0900_ai_ci;
@@ -116,7 +102,7 @@ CREATE DATABASE reporting
 ### Users
 
 Creating the `echothree` user:
-```
+```sql
 CREATE USER 'echothree'@'127.0.0.1' IDENTIFIED BY '$Exampl3Passw0rd#';
 GRANT XA_RECOVER_ADMIN ON *.* TO 'echothree'@'127.0.0.1';
 GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER,INDEX,REFERENCES
@@ -128,7 +114,7 @@ GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,CREATE VIEW,DROP,ALTER,INDEX,REFERENCES
 ```
 
 Optionally create a `backup` user with permission to dump the `echothree` database:
-```
+```sql
 CREATE USER 'backup'@'localhost' IDENTIFIED BY '$Exampl3Passw0rd#';
 GRANT SELECT,LOCK TABLES
     ON echothree.*
@@ -145,11 +131,18 @@ obtaining a certificate.
 ### Connecting Apache to WildFly
 
 As root:
-```
+```shell
 # cp EchoThree/EchoThree/doc/configuration/apache/wildfly.conf /etc/httpd/conf.d
 ```
 
 Customize it as needed, the /main application should be protected from outside access.
+
+If SELinux is enabled, it will be necessary to allow httpd to make outgoing network connections
+to the machine hosting WildFly:
+
+```shell
+# setsebool -P httpd_can_network_connect=1
+```
 
 ## WildFly Configuration
 
@@ -207,7 +200,7 @@ As jboss, edit `/usr/local/jboss/wildfly-latest/standalone/configuration/standal
 there are two subsystems that require additional configuration for the Echo Three applications:
 
 In the datasources subsystem, add the contents of `EchoThree/doc/configuration/wildfly/datasources.txt`:
-```
+```xml
         <subsystem xmlns="urn:jboss:domain:datasources:6.0">
             <datasources>
                 <!-- file contents added here -->
@@ -216,7 +209,7 @@ In the datasources subsystem, add the contents of `EchoThree/doc/configuration/w
 ```
 
 In the infinispan subsystem, add the contents of `EchoThree/doc/configuration/wildfly/infinispan.txt`:
-```
+```xml
         <subsystem xmlns="urn:jboss:domain:infinispan:9.0">
             <!-- file contents added here -->
         </subsystem>
@@ -228,7 +221,7 @@ Echo Three uses Apache Ivy during the build process to retrieve dependencies. Ap
 must be added to a directory that contains additional libraries utilized by Apache Ant.
 
 As jboss:
-```
+```shell
 $ cd EchoThree
 $ ant setup
 ```
@@ -236,7 +229,7 @@ $ ant setup
 ## Compiling Echo Three
 
 As jboss:
-```
+```shell
 $ cd EchoThree
 $ ant compile
 ```
@@ -244,7 +237,7 @@ $ ant compile
 ## Deploying Echo Three
 
 As jboss:
-```
+```shell
 $ cp EchoThree/EchoThree/build/lib/mysql-connector-j.jar wildfly-latest/standalone/deployments/mysql-connector-j.jar
 $ cd EchoThree
 $ ant deploy
@@ -253,7 +246,7 @@ $ ant deploy
 ## Initializing the Database
 
 As jboss:
-```
+```shell
 $ cd EchoThree/EchoThree/ui/cli/database
 $ ant GenerateDatabase
 $ ant RegenerateReporting
@@ -262,19 +255,19 @@ $ ant RegenerateReporting
 ## Starting WildFly
 
 As root:
-```
+```shell
 # service start wildfly
 ```
 
 To monitor WildFly, as jboss:
-```
+```shell
 $ tail -f /usr/local/jboss/wildfly-latest/standalone/log/server.log
 ```
 
 ## Loading the Initial Data
 
 As jboss:
-```
+```shell
 $ cd EchoThree/EchoThree/ui/cli/dataloader
 $ ant Load
 ```
@@ -294,7 +287,7 @@ reloaded from the files. Two of the three keys must be available to unlock the e
 data in the database.
 
 After making two of the three keys available, as jboss:
-```
+```shell
 $ cd EchoThree/EchoThree/ui/cli/dataloader
 $ ant LoadKeys
 ```
@@ -302,7 +295,7 @@ $ ant LoadKeys
 Changing these encryption keys is possible as well when needed.
 
 After making all three keys available, as jboss:
-```
+```shell
 $ cd EchoThree/EchoThree/ui/cli/dataloader
 $ ant ChangeKeys
 ```
