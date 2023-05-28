@@ -20,7 +20,7 @@
             <chainKindDescription languageIsoName="en" description="Club" />
             <chainType chainTypeName="INITIAL" isDefault="true" sortOrder="1">
                 <chainTypeDescription languageIsoName="en" description="Initial" />
-                <chainEntityRoleType chainEntityRoleTypeName="SUBSCRIPTION" componentVendorName="EchoThree" entityTypeName="Subscription" sortOrder="1">
+                <chainEntityRoleType chainEntityRoleTypeName="SUBSCRIPTION" componentVendorName="ECHO_THREE" entityTypeName="Subscription" sortOrder="1">
                     <chainEntityRoleTypeDescription languageIsoName="en" description="Subscription" />
                 </chainEntityRoleType>
                 <chain chainName="TEST_SUBSCRIPTION_INITIAL_1" isDefault="true" sortOrder="1">
@@ -35,7 +35,7 @@
             </chainType>
             <chainType chainTypeName="EXPIRATION_WARNING" isDefault="false" sortOrder="2">
                 <chainTypeDescription languageIsoName="en" description="Expiration Warning" />
-                <chainEntityRoleType chainEntityRoleTypeName="SUBSCRIPTION" componentVendorName="EchoThree" entityTypeName="Subscription" sortOrder="1">
+                <chainEntityRoleType chainEntityRoleTypeName="SUBSCRIPTION" componentVendorName="ECHO_THREE" entityTypeName="Subscription" sortOrder="1">
                     <chainEntityRoleTypeDescription languageIsoName="en" description="Subscription" />
                 </chainEntityRoleType>
                 <chain chainName="TEST_SUBSCRIPTION_EXPIRATION_WARNING" isDefault="true" sortOrder="1">
@@ -44,7 +44,7 @@
             </chainType>
             <chainType chainTypeName="RENEWAL" isDefault="false" sortOrder="3">
                 <chainTypeDescription languageIsoName="en" description="Renewal" />
-                <chainEntityRoleType chainEntityRoleTypeName="SUBSCRIPTION" componentVendorName="EchoThree" entityTypeName="Subscription" sortOrder="1">
+                <chainEntityRoleType chainEntityRoleTypeName="SUBSCRIPTION" componentVendorName="ECHO_THREE" entityTypeName="Subscription" sortOrder="1">
                     <chainEntityRoleTypeDescription languageIsoName="en" description="Subscription" />
                 </chainEntityRoleType>
                 <chain chainName="TEST_SUBSCRIPTION_RENEWAL" isDefault="true" sortOrder="1">
@@ -53,7 +53,7 @@
             </chainType>
             <chainType chainTypeName="EXPIRATION" isDefault="false" sortOrder="4">
                 <chainTypeDescription languageIsoName="en" description="Expiration" />
-                <chainEntityRoleType chainEntityRoleTypeName="SUBSCRIPTION" componentVendorName="EchoThree" entityTypeName="Subscription" sortOrder="1">
+                <chainEntityRoleType chainEntityRoleTypeName="SUBSCRIPTION" componentVendorName="ECHO_THREE" entityTypeName="Subscription" sortOrder="1">
                     <chainEntityRoleTypeDescription languageIsoName="en" description="Subscription" />
                 </chainEntityRoleType>
                 <chain chainName="TEST_SUBSCRIPTION_EXPIRATION" isDefault="true" sortOrder="1">
@@ -68,7 +68,7 @@
             <chainActionTypeUse chainActionTypeName="CHAIN_ACTION_SET" isDefault="false" />
             <chainType chainTypeName="WELCOME" isDefault="true" sortOrder="1">
                 <chainTypeDescription languageIsoName="en" description="Welcome" />
-                <chainEntityRoleType chainEntityRoleTypeName="CUSTOMER" componentVendorName="EchoThree" entityTypeName="Party" sortOrder="1">
+                <chainEntityRoleType chainEntityRoleTypeName="CUSTOMER" componentVendorName="ECHO_THREE" entityTypeName="Party" sortOrder="1">
                     <chainEntityRoleTypeDescription languageIsoName="en" description="Customer" />
                 </chainEntityRoleType>
                 <letter letterName="TEST_CUSTOMER_WELCOME_LETTER_1" letterSourceName="TEST_LETTER_SOURCE" contactListName="TEST_CONTACT_LIST" isDefault="true" sortOrder="1">
@@ -105,7 +105,7 @@
             </chainType>
             <chainType chainTypeName="PASSWORD_RECOVERY" isDefault="false" sortOrder="1">
                 <chainTypeDescription languageIsoName="en" description="Password Recovery" />
-                <chainEntityRoleType chainEntityRoleTypeName="CUSTOMER" componentVendorName="EchoThree" entityTypeName="Party" sortOrder="1">
+                <chainEntityRoleType chainEntityRoleTypeName="CUSTOMER" componentVendorName="ECHO_THREE" entityTypeName="Party" sortOrder="1">
                     <chainEntityRoleTypeDescription languageIsoName="en" description="Customer" />
                 </chainEntityRoleType>
                 <chain chainName="TEST_CUSTOMER_PASSWORD_RECOVERY_1" isDefault="true" sortOrder="1">
@@ -114,19 +114,19 @@
             </chainType>
             <chainType chainTypeName="PARTY_TERM_CHANGED" isDefault="false" sortOrder="1">
                 <chainTypeDescription languageIsoName="en" description="Terms Changed" />
-                <chainEntityRoleType chainEntityRoleTypeName="CUSTOMER" componentVendorName="EchoThree" entityTypeName="Party" sortOrder="1">
+                <chainEntityRoleType chainEntityRoleTypeName="CUSTOMER" componentVendorName="ECHO_THREE" entityTypeName="Party" sortOrder="1">
                     <chainEntityRoleTypeDescription languageIsoName="en" description="Customer" />
                 </chainEntityRoleType>
             </chainType>
             <chainType chainTypeName="PARTY_CREDIT_LIMIT_CHANGED" isDefault="false" sortOrder="1">
                 <chainTypeDescription languageIsoName="en" description="Credit Limit Changed" />
-                <chainEntityRoleType chainEntityRoleTypeName="CUSTOMER" componentVendorName="EchoThree" entityTypeName="Party" sortOrder="1">
+                <chainEntityRoleType chainEntityRoleTypeName="CUSTOMER" componentVendorName="ECHO_THREE" entityTypeName="Party" sortOrder="1">
                     <chainEntityRoleTypeDescription languageIsoName="en" description="Customer" />
                 </chainEntityRoleType>
             </chainType>
             <chainType chainTypeName="PARTY_CREDIT_STATUS_CHANGED" isDefault="false" sortOrder="1">
                 <chainTypeDescription languageIsoName="en" description="Credit Status Changed" />
-                <chainEntityRoleType chainEntityRoleTypeName="CUSTOMER" componentVendorName="EchoThree" entityTypeName="Party" sortOrder="1">
+                <chainEntityRoleType chainEntityRoleTypeName="CUSTOMER" componentVendorName="ECHO_THREE" entityTypeName="Party" sortOrder="1">
                     <chainEntityRoleTypeDescription languageIsoName="en" description="Customer" />
                 </chainEntityRoleType>
             </chainType>
