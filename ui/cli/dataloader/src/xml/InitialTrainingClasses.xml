@@ -16,7 +16,7 @@
 <!--                                                                                  -->
 <initialData>
     <workEffortTypes>
-        <workEffortType workEffortTypeName="TRAINING" componentVendorName="EchoThree" entityTypeName="PartyTrainingClass" sortOrder="1">
+        <workEffortType workEffortTypeName="TRAINING" componentVendorName="ECHO_THREE" entityTypeName="PartyTrainingClass" sortOrder="1">
             <workEffortTypeDescription languageIsoName="en" description="Training" />
             <workRequirementType workRequirementTypeName="TRAINING" allowReassignment="false" sortOrder="1">
                 <workRequirementTypeDescription languageIsoName="en" description="Training" />
