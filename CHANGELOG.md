@@ -1,5 +1,33 @@
 # Changelog
 
+## 2023-05-28-01
+
+* Add Warehouse Mutations [721](https://gitlab.echothree.com/echothree/echothree/-/issues/721)
+* Apache Lucene 9.6.0 Upgrade [724](https://gitlab.echothree.com/echothree/echothree/-/issues/724)
+* Add Support for Indexing and Searching Boolean Attributes [725](https://gitlab.echothree.com/echothree/echothree/-/issues/725)
+* Add Locations to Identify Command [726](https://gitlab.echothree.com/echothree/echothree/-/issues/726)
+* Add Divisions to Identify Command [727](https://gitlab.echothree.com/echothree/echothree/-/issues/727)
+* Add Departments to Identify Command [728](https://gitlab.echothree.com/echothree/echothree/-/issues/728)
+* Add Indexing of Warehouses [731](https://gitlab.echothree.com/echothree/echothree/-/issues/731)
+* Add Searching of Warehouses [732](https://gitlab.echothree.com/echothree/echothree/-/issues/732)
+* Add Tags, Attributes, and Events to Location Review [734](https://gitlab.echothree.com/echothree/echothree/-/issues/734)
+* Add Appearance to Warehouse List and Review Pages [735](https://gitlab.echothree.com/echothree/echothree/-/issues/735)
+* Add GetWorkflowChoices UC [737](https://gitlab.echothree.com/echothree/echothree/-/issues/737)
+* Add Component Vendors to Identify Command [739](https://gitlab.echothree.com/echothree/echothree/-/issues/739)
+* Add Entity Types to Identify Command [740](https://gitlab.echothree.com/echothree/echothree/-/issues/740)
+* Add Additional Information to Entity Type Review Page [741](https://gitlab.echothree.com/echothree/echothree/-/issues/741)
+* Link Component Vendor and Entity Type on Events Page [742](https://gitlab.echothree.com/echothree/echothree/-/issues/742)
+* Add Facet UCs for Warehouses [743](https://gitlab.echothree.com/echothree/echothree/-/issues/743)
+* Security Role CommandMessage.Edit Is Missing [744](https://gitlab.echothree.com/echothree/echothree/-/issues/744)
+* Include Apache License Notice in Page Footer [749](https://gitlab.echothree.com/echothree/echothree/-/issues/749)
+* Include Locations on Warehouse Review Page [750](https://gitlab.echothree.com/echothree/echothree/-/issues/750)
+* Add Yellow Highlighter as a Sample Appearance [751](https://gitlab.echothree.com/echothree/echothree/-/issues/751)
+* Add Entity Visit and Appearance to Location List and Review Pages [756](https://gitlab.echothree.com/echothree/echothree/-/issues/756)
+* Add Entity Visit to Warehouse List Page [757](https://gitlab.echothree.com/echothree/echothree/-/issues/757)
+* Installation Directions Improvements [758](https://gitlab.echothree.com/echothree/echothree/-/issues/758)
+* Remaining Usage of Component Vendor of "EchoThree" [759](https://gitlab.echothree.com/echothree/echothree/-/issues/759)
+* reload4j 1.2.25 Upgrade [760](https://gitlab.echothree.com/echothree/echothree/-/issues/760)
+
 ## 2023-05-14-01
 
 * Add Order Time Type Object and Queries [702](https://gitlab.echothree.com/echothree/echothree/-/issues/702)
