@@ -16,8 +16,8 @@
 
 package com.echothree.control.user.search.server.command;
 
-import com.echothree.control.user.search.common.form.GetCustomerResultsFacetForm;
-import com.echothree.control.user.search.common.result.GetCustomerResultsFacetResult;
+import com.echothree.control.user.search.common.form.GetEmployeeResultsFacetsForm;
+import com.echothree.control.user.search.common.result.GetEmployeeResultsFacetsResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
@@ -32,8 +32,8 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 
-public class GetCustomerResultsFacetCommand
-        extends BaseGetResultsFacetCommand<GetCustomerResultsFacetForm, GetCustomerResultsFacetResult> {
+public class GetEmployeeResultsFacetsCommand
+        extends BaseGetResultsFacetsCommand<GetEmployeeResultsFacetsForm, GetEmployeeResultsFacetsResult> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
 
@@ -41,20 +41,20 @@ public class GetCustomerResultsFacetCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                        new SecurityRoleDefinition(SecurityRoleGroups.Customer.name(), SecurityRoles.Search.name())
+                        new SecurityRoleDefinition(SecurityRoleGroups.Employee.name(), SecurityRoles.Search.name())
                 ))
         ));
     }
 
-    /** Creates a new instance of GetCustomerResultsFacetCommand */
-    public GetCustomerResultsFacetCommand(UserVisitPK userVisitPK, GetCustomerResultsFacetForm form) {
+    /** Creates a new instance of GetEmployeeResultsFacetsCommand */
+    public GetEmployeeResultsFacetsCommand(UserVisitPK userVisitPK, GetEmployeeResultsFacetsForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION);
     }
 
     @Override
     protected BaseResult execute() {
-        return execute(ComponentVendors.ECHO_THREE.name(), EntityTypes.Party.name(), SearchKinds.CUSTOMER.name(),
-                SearchResultFactory.getGetCustomerResultsFacetResult());
+        return execute(ComponentVendors.ECHO_THREE.name(), EntityTypes.Party.name(), SearchKinds.EMPLOYEE.name(),
+                SearchResultFactory.getGetEmployeeResultsFacetsResult());
     }
 
 }

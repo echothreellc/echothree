@@ -353,6 +353,10 @@ public interface SearchService
 
     CommandResult getEmployeeResults(UserVisitPK userVisitPK, GetEmployeeResultsForm form);
 
+    CommandResult getEmployeeResultsFacet(UserVisitPK userVisitPK, GetEmployeeResultsFacetForm form);
+
+    CommandResult getEmployeeResultsFacets(UserVisitPK userVisitPK, GetEmployeeResultsFacetsForm form);
+
     CommandResult countEmployeeResults(UserVisitPK userVisitPK, CountEmployeeResultsForm form);
 
     CommandResult clearEmployeeResults(UserVisitPK userVisitPK, ClearEmployeeResultsForm form);
