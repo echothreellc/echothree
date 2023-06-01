@@ -639,6 +639,7 @@ import com.echothree.model.data.queue.server.entity.QueueType;
 import com.echothree.model.data.returnpolicy.common.ReturnKindConstants;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnKind;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
+import com.echothree.model.data.search.common.SearchCheckSpellingActionTypeConstants;
 import com.echothree.model.data.search.common.SearchResultActionTypeConstants;
 import com.echothree.model.data.search.server.entity.SearchCheckSpellingActionType;
 import com.echothree.model.data.search.server.entity.SearchResultActionType;
@@ -788,29 +789,32 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("searchCheckSpellingActionTypes")
-    public static Collection<SearchCheckSpellingActionTypeObject> searchCheckSpellingActionTypes(final DataFetchingEnvironment env) {
-        Collection<SearchCheckSpellingActionType> searchCheckSpellingActionTypes;
-        Collection<SearchCheckSpellingActionTypeObject> searchCheckSpellingActionTypeObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public static CountingPaginatedData<SearchCheckSpellingActionTypeObject> searchCheckSpellingActionTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<SearchCheckSpellingActionTypeObject> data;
 
         try {
-            var commandForm = SearchUtil.getHome().getGetSearchCheckSpellingActionTypesForm();
+            var searchControl = Session.getModelController(SearchControl.class);
+            var totalCount = searchControl.countSearchCheckSpellingActionTypes();
 
-            searchCheckSpellingActionTypes = new GetSearchCheckSpellingActionTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            try(var objectLimiter = new ObjectLimiter(env, SearchCheckSpellingActionTypeConstants.COMPONENT_VENDOR_NAME, SearchCheckSpellingActionTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = SearchUtil.getHome().getGetSearchCheckSpellingActionTypesForm();
+                var entities = new GetSearchCheckSpellingActionTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var searchCheckSpellingActionTypes = entities.stream().map(SearchCheckSpellingActionTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, searchCheckSpellingActionTypes);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(searchCheckSpellingActionTypes == null) {
-            searchCheckSpellingActionTypeObjects = emptyList();
-        } else {
-            searchCheckSpellingActionTypeObjects = new ArrayList<>(searchCheckSpellingActionTypes.size());
-
-            searchCheckSpellingActionTypes.stream()
-                    .map(SearchCheckSpellingActionTypeObject::new)
-                    .forEachOrdered(searchCheckSpellingActionTypeObjects::add);
-        }
-
-        return searchCheckSpellingActionTypeObjects;
+        return data;
     }
 
     @GraphQLField
