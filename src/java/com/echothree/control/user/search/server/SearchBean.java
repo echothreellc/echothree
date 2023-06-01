@@ -722,6 +722,16 @@ public class SearchBean
     }
 
     @Override
+    public CommandResult getEmployeeResultsFacet(UserVisitPK userVisitPK, GetEmployeeResultsFacetForm form) {
+        return new GetEmployeeResultsFacetCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getEmployeeResultsFacets(UserVisitPK userVisitPK, GetEmployeeResultsFacetsForm form) {
+        return new GetEmployeeResultsFacetsCommand(userVisitPK, form).run();
+    }
+
+    @Override
     public CommandResult countEmployeeResults(UserVisitPK userVisitPK, CountEmployeeResultsForm form) {
         return new CountEmployeeResultsCommand(userVisitPK, form).run();
     }
