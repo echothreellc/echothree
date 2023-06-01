@@ -16,8 +16,8 @@
 
 package com.echothree.control.user.search.server.command;
 
-import com.echothree.control.user.search.common.form.GetWarehouseResultsFacetsForm;
-import com.echothree.control.user.search.common.result.GetWarehouseResultsFacetsResult;
+import com.echothree.control.user.search.common.form.GetCustomerResultsFacetsForm;
+import com.echothree.control.user.search.common.result.GetCustomerResultsFacetsResult;
 import com.echothree.control.user.search.common.result.SearchResultFactory;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
@@ -32,8 +32,8 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.List;
 
-public class GetWarehouseResultsFacetsCommand
-        extends BaseGetResultsFacetsCommand<GetWarehouseResultsFacetsForm, GetWarehouseResultsFacetsResult> {
+public class GetCustomerResultsFacetsCommand
+        extends BaseGetResultsFacetsCommand<GetCustomerResultsFacetsForm, GetCustomerResultsFacetsResult> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
 
@@ -46,15 +46,15 @@ public class GetWarehouseResultsFacetsCommand
         ));
     }
 
-    /** Creates a new instance of GetWarehouseResultsFacetsCommand */
-    public GetWarehouseResultsFacetsCommand(UserVisitPK userVisitPK, GetWarehouseResultsFacetsForm form) {
+    /** Creates a new instance of GetCustomerResultsFacetsCommand */
+    public GetCustomerResultsFacetsCommand(UserVisitPK userVisitPK, GetCustomerResultsFacetsForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION);
     }
 
     @Override
     protected BaseResult execute() {
-        return execute(ComponentVendors.ECHO_THREE.name(), EntityTypes.Party.name(), SearchKinds.WAREHOUSE.name(),
-                SearchResultFactory.getGetWarehouseResultsFacetsResult());
+        return execute(ComponentVendors.ECHO_THREE.name(), EntityTypes.Party.name(), SearchKinds.CUSTOMER.name(),
+                SearchResultFactory.getGetCustomerResultsFacetsResult());
     }
 
 }

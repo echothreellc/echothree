@@ -292,7 +292,11 @@ public interface SearchService
     CommandResult searchCustomers(UserVisitPK userVisitPK, SearchCustomersForm form);
     
     CommandResult getCustomerResults(UserVisitPK userVisitPK, GetCustomerResultsForm form);
-    
+
+    CommandResult getCustomerResultsFacet(UserVisitPK userVisitPK, GetCustomerResultsFacetForm form);
+
+    CommandResult getCustomerResultsFacets(UserVisitPK userVisitPK, GetCustomerResultsFacetsForm form);
+
     CommandResult countCustomerResults(UserVisitPK userVisitPK, CountCustomerResultsForm form);
     
     CommandResult clearCustomerResults(UserVisitPK userVisitPK, ClearCustomerResultsForm form);
