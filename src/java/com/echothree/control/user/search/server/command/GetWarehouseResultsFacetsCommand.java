@@ -53,7 +53,7 @@ public class GetWarehouseResultsFacetsCommand
 
     @Override
     protected BaseResult execute() {
-        return execute(ComponentVendors.ECHO_THREE.name(), EntityTypes.Warehouse.name(), SearchKinds.WAREHOUSE.name(),
+        return execute(ComponentVendors.ECHO_THREE.name(), EntityTypes.Party.name(), SearchKinds.WAREHOUSE.name(),
                 SearchResultFactory.getGetWarehouseResultsFacetsResult());
     }
 
