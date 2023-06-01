@@ -594,7 +594,17 @@ public class SearchBean
     public CommandResult getCustomerResults(UserVisitPK userVisitPK, GetCustomerResultsForm form) {
         return new GetCustomerResultsCommand(userVisitPK, form).run();
     }
-    
+
+    @Override
+    public CommandResult getCustomerResultsFacet(UserVisitPK userVisitPK, GetCustomerResultsFacetForm form) {
+        return new GetCustomerResultsFacetCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getCustomerResultsFacets(UserVisitPK userVisitPK, GetCustomerResultsFacetsForm form) {
+        return new GetCustomerResultsFacetsCommand(userVisitPK, form).run();
+    }
+
     @Override
     public CommandResult countCustomerResults(UserVisitPK userVisitPK, CountCustomerResultsForm form) {
         return new CountCustomerResultsCommand(userVisitPK, form).run();
