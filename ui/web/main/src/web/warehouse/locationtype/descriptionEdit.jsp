@@ -20,7 +20,7 @@
 
 <html:html xhtml="true">
     <head>
-        <title>Location Type Descriptions</title>
+        <title><fmt:message key="pageTitle.locationTypeDescriptions" /></title>
         <html:base/>
         <%@ include file="../../include/environment.jsp" %>
     </head>

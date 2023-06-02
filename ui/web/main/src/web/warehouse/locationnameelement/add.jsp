@@ -20,7 +20,7 @@
 
 <html:html xhtml="true">
     <head>
-        <title>Name Element</title>
+        <title><fmt:message key="pageTitle.locationNameElements" /></title>
         <html:base/>
         <%@ include file="../../include/environment.jsp" %>
     </head>
