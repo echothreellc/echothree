@@ -52,7 +52,7 @@ public class EditLocationNameElementCommand
     static {
         SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
             new FieldDefinition("WarehouseName", FieldType.ENTITY_NAME, true, null, null),
-            new FieldDefinition("LocationType", FieldType.ENTITY_NAME, true, null, null),
+            new FieldDefinition("LocationTypeName", FieldType.ENTITY_NAME, true, null, null),
             new FieldDefinition("LocationNameElementName", FieldType.ENTITY_NAME, true, null, null)
         ));
         
