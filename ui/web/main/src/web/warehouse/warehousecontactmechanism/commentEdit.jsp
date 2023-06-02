@@ -20,7 +20,11 @@
 
 <html:html xhtml="true">
     <head>
-        <title>Warehouse Contact Mechanism (<c:out value="${contactMechanism.contactMechanismName}" />)</title>
+        <title>
+            <fmt:message key="pageTitle.warehouseContactMechanism">
+                <fmt:param value="${contactMechanism.contactMechanismName}" />
+            </fmt:message>
+        </title>
         <html:base/>
         <%@ include file="../../include/environment.jsp" %>
         <%@ include file="commentTinyMce.jsp" %>

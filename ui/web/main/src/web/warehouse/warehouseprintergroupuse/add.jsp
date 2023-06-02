@@ -20,7 +20,11 @@
 
 <html:html xhtml="true">
     <head>
-        <title>Warehouse Printer Group Uses (<c:out value="${warehouse.warehouseName}" />)</title>
+        <title>
+            <fmt:message key="pageTitle.warehousePrinterGroupUses">
+                <fmt:param value="${warehouse.warehouseName}" />
+            </fmt:message>
+        </title>
         <html:base/>
         <%@ include file="../../include/environment.jsp" %>
     </head>

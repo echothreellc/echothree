@@ -20,7 +20,11 @@
 
 <html:html xhtml="true">
     <head>
-        <title>Review (<c:out value="${locationType.locationTypeName}" />)</title>
+        <title>
+            <fmt:message key="pageTitle.locationType">
+                <fmt:param value="${locationType.locationTypeName}" />
+            </fmt:message>
+        </title>
         <html:base/>
         <%@ include file="../../include/environment.jsp" %>
     </head>
