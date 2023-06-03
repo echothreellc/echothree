@@ -37,7 +37,7 @@
                 <c:url var="locationsUrl" value="/action/Warehouse/Location/Main">
                     <c:param name="WarehouseName" value="${location.warehouse.warehouseName}" />
                 </c:url>
-                <a href="${locationsUrl}">Locations</a> &gt;&gt;
+                <a href="${locationsUrl}"><fmt:message key="navigation.locations" /></a> &gt;&gt;
                 Review (<c:out value="${location.locationName}" />)
             </h2>
         </div>
