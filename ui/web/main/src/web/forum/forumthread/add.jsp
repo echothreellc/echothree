@@ -28,7 +28,7 @@
     <body onLoad="pageLoaded()">
         <div id="Header">
             <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
+                <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
                 <a href="<c:url value="/action/Forum/Main" />">Forums</a> &gt;&gt;
                 <a href="<c:url value="/action/Forum/Forum/Main" />">Forums</a> &gt;&gt;
                 <c:url var="forumThreadsUrl" value="/action/Forum/ForumThread/Main">

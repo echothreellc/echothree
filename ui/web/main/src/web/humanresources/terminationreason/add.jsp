@@ -27,7 +27,7 @@
     <body>
         <div id="Header">
             <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
+                <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
                 <a href="<c:url value="/action/HumanResources/Main" />">Human Resources</a> &gt;&gt;
                 <a href="<c:url value="/action/HumanResources/TerminationReason/Main" />">Termination Reasons</a> &gt;&gt;
                 Add

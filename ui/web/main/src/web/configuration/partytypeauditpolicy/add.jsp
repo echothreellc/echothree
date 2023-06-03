@@ -27,7 +27,7 @@
     <body>
         <div id="Header">
             <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
+                <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
                 <a href="<c:url value="/action/Configuration/Main" />">Configuration</a> &gt;&gt;
                 <a href="<c:url value="/action/Configuration/PartyType/Main" />">Party Types</a> &gt;&gt;
                 Audit Policy &gt;&gt;

@@ -27,7 +27,7 @@
     <body>
         <div id="Header">
             <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
+                <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
                 <a href="<c:url value="/action/Accounting/Main" />">Accounting</a> &gt;&gt;
                 <a href="<c:url value="/action/Accounting/Company/Main" />">Companies</a> &gt;&gt;
                 <c:url var="divisionsUrl" value="/action/Accounting/Division/Main">
@@ -48,7 +48,7 @@
                     <c:param name="PartyName" value="${division.partyName}" />
                     <c:param name="ContactMechanismName" value="${contactMechanism.contactMechanismName}" />
                 </c:url>
-                <a href="${reviewUrl}"> Division Contact Mechanism (<c:out value="${contactMechanism.contactMechanismName}" />)</a> &gt;&gt;
+                <a href="${reviewUrl}">Division Contact Mechanism (<c:out value="${contactMechanism.contactMechanismName}" />)</a> &gt;&gt;
                 Delete <c:out value="${partyEntityType.entityType.description}" />
             </h2>
         </div>

@@ -32,7 +32,7 @@
             <et:hasSecurityRole securityRole="Item.Review" var="includeItemUrl" />
             <et:hasSecurityRole securityRole="ItemPrice.List" var="includeItemPricesUrl" />
             <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
+                <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
                 <c:choose>
                     <c:when test="${includeItemsUrl}">
                         <a href="<c:url value="/action/Item/Main" />">Items</a>

@@ -31,10 +31,12 @@
     <body>
         <div id="Header">
             <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
-                <a href="<c:url value="/action/Warehouse/Main" />">Warehouses</a> &gt;&gt;
-                <a href="<c:url value="/action/Warehouse/Warehouse/Main" />">Warehouses</a> &gt;&gt;
-                Review (<c:out value="${warehouse.warehouseName}" />)
+                <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
+                <a href="<c:url value="/action/Warehouse/Main" />"><fmt:message key="navigation.warehouses" /></a> &gt;&gt;
+                <a href="<c:url value="/action/Warehouse/Warehouse/Main" />"><fmt:message key="navigation.warehouses" /></a> &gt;&gt;
+                <fmt:message key="navigation.warehouse">
+                    <fmt:param value="${warehouse.warehouseName}" />
+                </fmt:message>
             </h2>
         </div>
         <div id="Content">
@@ -49,7 +51,7 @@
                 </c:otherwise>
             </c:choose>
             <br />
-            Warehouse Name: ${warehouse.warehouseName}<br />
+            <fmt:message key="label.warehouseName" />: ${warehouse.warehouseName}<br />
             <br />
             <br />
             <br />
@@ -62,7 +64,7 @@
             <jsp:include page="../../include/partyPrinterGroupUses.jsp" />
 
             <et:hasSecurityRole securityRole="Location.List">
-                <h2>Locations</h2>
+                <h2><fmt:message key="label.locations" /></h2>
                 <c:url var="addUrl" value="/action/Warehouse/Location/Add">
                     <c:param name="WarehouseName" value="${warehouse.warehouseName}" />
                 </c:url>

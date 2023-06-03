@@ -27,7 +27,7 @@
     <body>
         <div id="Header">
             <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
+                <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
                 <a href="<c:url value="/action/Purchasing/Main" />">Purchasing</a> &gt;&gt;
                 <a href="<c:url value="/action/Purchasing/Vendor/Main" />">Vendors</a> &gt;&gt;
                 <et:countVendorResults searchTypeName="VENDOR_REVIEW" countVar="vendorResultsCount" commandResultVar="countVendorResultsCommandResult" logErrors="false" />
@@ -46,7 +46,7 @@
                     <c:param name="PartyName" value="${vendor.partyName}" />
                     <c:param name="ContactMechanismName" value="${contactMechanism.contactMechanismName}" />
                 </c:url>
-                <a href="${reviewUrl}"> Vendor Contact Mechanism (<c:out value="${contactMechanism.contactMechanismName}" />)</a> &gt;&gt;
+                <a href="${reviewUrl}">Vendor Contact Mechanism (<c:out value="${contactMechanism.contactMechanismName}" />)</a> &gt;&gt;
                 Delete <c:out value="${partyEntityType.entityType.description}" />
             </h2>
         </div>

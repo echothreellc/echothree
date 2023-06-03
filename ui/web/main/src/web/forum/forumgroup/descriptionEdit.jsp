@@ -27,7 +27,7 @@
     <body>
         <div id="Header">
             <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
+                <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
                 <a href="<c:url value="/action/Forum/Main" />">Forums</a> &gt;&gt;
                 <a href="<c:url value="/action/Forum/ForumGroup/Main" />">Groups</a> &gt;&gt;
                 <c:url var="descriptionsUrl" value="/action/Forum/ForumGroup/Description">

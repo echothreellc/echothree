@@ -27,7 +27,7 @@
     <body>
         <div id="Header">
             <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
+                <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
                 <a href="<c:url value="/action/HumanResources/Main" />">Human Resources</a> &gt;&gt;
                 <a href="<c:url value="/action/HumanResources/EmployeeType/Main" />">Employee Types</a> &gt;&gt;
                 <c:url var="descriptionsUrl" value="/action/HumanResources/EmployeeType/Description">

@@ -28,7 +28,7 @@
     <body onLoad="pageLoaded()">
         <div id="Header">
             <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
+                <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
                 <a href="<c:url value="/action/HumanResources/Main" />">Human Resources</a> &gt;&gt;
                 <a href="<c:url value="/action/HumanResources/Employee/Main" />">Employees</a> &gt;&gt;
                 <et:countEmployeeResults searchTypeName="HUMAN_RESOURCES" countVar="employeeResultsCount" commandResultVar="countEmployeeResultsCommandResult" logErrors="false" />
@@ -47,7 +47,7 @@
                     <c:param name="PartyName" value="${employee.partyName}" />
                     <c:param name="ContactMechanismName" value="${contactMechanism.contactMechanismName}" />
                 </c:url>
-                <a href="${reviewUrl}"> Employee Contact Mechanism (<c:out value="${contactMechanism.contactMechanismName}" />)</a> &gt;&gt;
+                <a href="${reviewUrl}">Employee Contact Mechanism (<c:out value="${contactMechanism.contactMechanismName}" />)</a> &gt;&gt;
                 Add Comment
             </h2>
         </div>

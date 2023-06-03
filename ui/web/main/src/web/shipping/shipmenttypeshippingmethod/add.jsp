@@ -27,7 +27,7 @@
     <body>
         <div id="Header">
             <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
+                <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
                 <a href="<c:url value="/action/Shipping/Main" />">Returns</a> &gt;&gt;
                 <a href="<c:url value="/action/Shipping/ShipmentType/Main" />">Shipment Types</a> &gt;&gt;
                 <c:url var="shipmentTypeShippingMethodsUrl" value="/action/Shipping/ShipmentType/Main">

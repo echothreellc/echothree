@@ -27,13 +27,13 @@
     <body>
         <div id="Header">
             <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
-                <a href="<c:url value="/action/Warehouse/Main" />">Warehouses</a> &gt;&gt;
-                <a href="<c:url value="/action/Warehouse/Warehouse/Main" />">Warehouses</a> &gt;&gt;
+                <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
+                <a href="<c:url value="/action/Warehouse/Main" />"><fmt:message key="navigation.warehouses" /></a> &gt;&gt;
+                <a href="<c:url value="/action/Warehouse/Warehouse/Main" />"><fmt:message key="navigation.warehouses" /></a> &gt;&gt;
                 <c:url var="locationTypesUrl" value="/action/Warehouse/LocationType/Main">
                     <c:param name="WarehouseName" value="${locationType.warehouse.warehouseName}" />
                 </c:url>
-                <a href="${locationTypesUrl}">Location Types</a> &gt;&gt;
+                <a href="${locationTypesUrl}"><fmt:message key="navigation.locationTypes" /></a> &gt;&gt;
                 Descriptions
             </h2>
         </div>

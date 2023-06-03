@@ -27,7 +27,7 @@
     <body onLoad="pageLoaded()">
         <div id="Header">
             <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
+                <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
                 <a href="<c:url value="/action/Customer/Main" />">Customers</a> &gt;&gt;
                 <a href="<c:url value="/action/Customer/Customer/Main" />">Search</a> &gt;&gt;
                 <et:countCustomerResults searchTypeName="ORDER_ENTRY" countVar="customerResultsCount" commandResultVar="countCustomerResultsCommandResult" logErrors="false" />
