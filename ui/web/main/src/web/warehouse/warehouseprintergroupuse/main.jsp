@@ -38,7 +38,7 @@
                     <c:param name="WarehouseName" value="${warehouse.warehouseName}" />
                 </c:url>
                 <a href="${reviewUrl}">Review (<c:out value="${warehouse.warehouseName}" />)</a> &gt;&gt;
-                Printer Group Uses
+                <fmt:message key="navigation.warehousePrinterGroupUses" />
             </h2>
         </div>
         <div id="Content">

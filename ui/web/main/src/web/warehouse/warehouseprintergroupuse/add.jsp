@@ -41,7 +41,7 @@
                 <c:url var="warehousePrinterGroupUsesUrl" value="/action/Warehouse/WarehousePrinterGroupUse/Main">
                     <c:param name="WarehouseName" value="${warehouse.warehouseName}" />
                 </c:url>
-                <a href="${warehousePrinterGroupUsesUrl}">Printer Group Uses</a> &gt;&gt;
+                <a href="${warehousePrinterGroupUsesUrl}"><fmt:message key="navigation.warehousePrinterGroupUses" /></a> &gt;&gt;
                 Add Printer Group Use
             </h2>
         </div>
