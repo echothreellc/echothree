@@ -27,5 +27,6 @@ public enum SearchTypes {
     ORDER_ENTRY ,
     SALES_ORDER_BATCH_MAINTENANCE,
     VENDOR_REVIEW,
+    WAREHOUSE_REVIEW,
 
 }
