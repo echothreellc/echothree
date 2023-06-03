@@ -45,13 +45,13 @@
             <p><font size="+2"><b><et:appearance appearance="${warehouse.entityInstance.entityAppearance.appearance}"><c:out value="${location.description}" /></et:appearance></b></font></p>
             <p><font size="+1"><et:appearance appearance="${warehouse.entityInstance.entityAppearance.appearance}">${location.locationName}</et:appearance></font></p>
             <br />
-            Warehouse: <c:out value="${location.warehouse.partyGroup.name}" /><br />
-            Location Name: ${location.locationName}<br />
-            Location Type: <c:out value="${location.locationType.description}" /><br />
-            Location Use Type: <c:out value="${location.locationUseType.description}" /><br />
-            Velocity: ${location.velocity}<br />
-            Inventory Location Group: <c:out value="${location.inventoryLocationGroup.description}" /><br />
-            Status: <c:out value="${location.locationStatus.workflowStep.description}" />
+            <fmt:message key="label.warehouse" />: <c:out value="${location.warehouse.partyGroup.name}" /><br />
+            <fmt:message key="label.locationName" />: ${location.locationName}<br />
+            <fmt:message key="label.locationType" />: <c:out value="${location.locationType.description}" /><br />
+            <fmt:message key="label.locationUseType" />: <c:out value="${location.locationUseType.description}" /><br />
+            <fmt:message key="label.velocity" />: ${location.velocity}<br />
+            <fmt:message key="label.inventoryLocationGroup" />: <c:out value="${location.inventoryLocationGroup.description}" /><br />
+            <fmt:message key="label.locationStatus" />: <c:out value="${location.locationStatus.workflowStep.description}" />
             <c:url var="editUrl" value="/action/Warehouse/Location/LocationStatus">
                 <c:param name="WarehouseName" value="${location.warehouse.warehouseName}" />
                 <c:param name="LocationName" value="${location.locationName}" />
@@ -60,7 +60,7 @@
             <br />
             <br />
             <br />
-            Location Volume:
+            <fmt:message key="label.locationVolume" />:
             <c:choose>
                 <c:when test="${locationVolume == null}">
                     <i>Not Set.</i>
@@ -74,7 +74,7 @@
             <br />
             <br />
             <br />
-            <h2>Location Capacities</h2>
+            <h2><fmt:message key="label.locationCapacities" /></h2>
             <c:url var="addUrl" value="/action/Warehouse/Location/LocationCapacityAdd">
                 <c:param name="WarehouseName" value="${location.warehouse.warehouseName}" />
                 <c:param name="LocationName" value="${location.locationName}" />
@@ -117,7 +117,7 @@
                     <br />
                 </c:otherwise>
             </c:choose>
-            <h2>Location Name Elements</h2>
+            <h2><fmt:message key="label.locationNameElements" /></h2>
             <display:table name="locationNameElements" id="locationNameElement" class="displaytag">
                 <display:column titleKey="columnTitle.locationNameElement">
                     <c:out value="${locationNameElement.description}" />

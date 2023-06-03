@@ -51,7 +51,7 @@
                 </c:otherwise>
             </c:choose>
             <br />
-            Warehouse Name: ${warehouse.warehouseName}<br />
+            <fmt:message key="label.warehouseName" />: ${warehouse.warehouseName}<br />
             <br />
             <br />
             <br />
@@ -64,7 +64,7 @@
             <jsp:include page="../../include/partyPrinterGroupUses.jsp" />
 
             <et:hasSecurityRole securityRole="Location.List">
-                <h2>Locations</h2>
+                <h2><fmt:message key="label.locations" /></h2>
                 <c:url var="addUrl" value="/action/Warehouse/Location/Add">
                     <c:param name="WarehouseName" value="${warehouse.warehouseName}" />
                 </c:url>
