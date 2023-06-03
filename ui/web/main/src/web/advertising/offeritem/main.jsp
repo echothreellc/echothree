@@ -30,7 +30,7 @@
             <et:hasSecurityRole securityRoles="Offer.List:Use.List:Source.List:UseType.List:OfferNameElement.List:UseNameElement.List" var="includeAdvertisingUrl" />
             <et:hasSecurityRole securityRole="Offer.List" var="includeOffersUrl" />
             <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
+                <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
                 <c:choose>
                     <c:when test="${includeAdvertisingUrl}">
                         <a href="<c:url value="/action/Advertising/Main" />"><fmt:message key="navigation.advertising" /></a>

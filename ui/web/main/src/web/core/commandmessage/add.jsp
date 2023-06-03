@@ -27,7 +27,7 @@
     <body onLoad="pageLoaded()">
         <div id="Header">
             <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
+                <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
                 <a href="<c:url value="/action/Core/Main" />">Core</a> &gt;&gt;
                 <a href="<c:url value="/action/Core/CommandMessageType/Main" />">Command Message Types</a> &gt;&gt;
                 <c:url var="commandMessagesUrl" value="/action/Core/CommandMessage/Main">

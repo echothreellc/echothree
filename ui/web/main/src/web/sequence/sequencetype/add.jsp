@@ -27,7 +27,7 @@
     <body>
         <div id="Header">
             <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
+                <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
                 <a href="<c:url value="/action/Sequence/Main" />">Sequences</a> &gt;&gt;
                 <a href="<c:url value="/action/Sequence/SequenceType/Main" />">Types</a> &gt;&gt;
                 Add

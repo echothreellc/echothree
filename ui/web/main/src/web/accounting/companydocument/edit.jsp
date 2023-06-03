@@ -28,7 +28,7 @@
     <body onLoad="pageLoaded()">
         <div id="Header">
             <h2>
-                <a href="<c:url value="/action/Portal" />">Home</a> &gt;&gt;
+                <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
                 <a href="<c:url value="/action/Accounting/Main" />">Accounting</a> &gt;&gt;
                 <a href="<c:url value="/action/Accounting/Company/Main" />">Companies</a> &gt;&gt;
                 <c:url var="reviewUrl" value="/action/Accounting/Company/Review">
