@@ -47,7 +47,7 @@
                     <c:param name="PartyName" value="${employee.partyName}" />
                     <c:param name="ContactMechanismName" value="${contactMechanism.contactMechanismName}" />
                 </c:url>
-                <a href="${reviewUrl}"> Employee Contact Mechanism (<c:out value="${contactMechanism.contactMechanismName}" />)</a> &gt;&gt;
+                <a href="${reviewUrl}">Employee Contact Mechanism (<c:out value="${contactMechanism.contactMechanismName}" />)</a> &gt;&gt;
                 Add Comment
             </h2>
         </div>

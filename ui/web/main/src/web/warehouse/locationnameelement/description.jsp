@@ -38,7 +38,7 @@
                     <c:param name="WarehouseName" value="${locationNameElement.locationType.warehouse.warehouseName}" />
                     <c:param name="LocationTypeName" value="${locationNameElement.locationType.locationTypeName}" />
                 </c:url>
-                <a href="${locationNameElementsUrl}">Name Elements</a> &gt;&gt;
+                <a href="${locationNameElementsUrl}"><fmt:message key="navigation.locationNameElements" /></a> &gt;&gt;
                 Descriptions
             </h2>
         </div>

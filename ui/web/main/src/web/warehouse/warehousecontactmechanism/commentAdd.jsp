@@ -42,12 +42,12 @@
                 <c:url var="warehouseContactMechanismsUrl" value="/action/Warehouse/WarehouseContactMechanism/Main">
                     <c:param name="WarehouseName" value="${warehouse.warehouseName}" />
                 </c:url>
-                <a href="${warehouseContactMechanismsUrl}">Contact Mechanisms</a> &gt;&gt;
+                <a href="${warehouseContactMechanismsUrl}"><fmt:message key="navigation.warehouseContactMechanisms" /></a> &gt;&gt;
                 <c:url var="reviewUrl" value="/action/Warehouse/WarehouseContactMechanism/Review">
                     <c:param name="PartyName" value="${warehouse.partyName}" />
                     <c:param name="ContactMechanismName" value="${contactMechanism.contactMechanismName}" />
                 </c:url>
-                <a href="${reviewUrl}"> Warehouse Contact Mechanism (<c:out value="${contactMechanism.contactMechanismName}" />)</a> &gt;&gt;
+                <a href="${reviewUrl}">Warehouse Contact Mechanism (<c:out value="${contactMechanism.contactMechanismName}" />)</a> &gt;&gt;
                 Add Comment
             </h2>
         </div>

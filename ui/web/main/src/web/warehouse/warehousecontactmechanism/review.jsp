@@ -41,7 +41,7 @@
                 <c:url var="warehouseContactMechanismsUrl" value="/action/Warehouse/WarehouseContactMechanism/Main">
                     <c:param name="WarehouseName" value="${warehouse.warehouseName}" />
                 </c:url>
-                <a href="${warehouseContactMechanismsUrl}">Contact Mechanisms</a> &gt;&gt;
+                <a href="${warehouseContactMechanismsUrl}"><fmt:message key="navigation.warehouseContactMechanisms" /></a> &gt;&gt;
                 Warehouse Contact Mechanism (<c:out value="${partyContactMechanism.contactMechanism.contactMechanismName}" />)
             </h2>
         </div>

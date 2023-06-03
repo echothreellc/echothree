@@ -46,7 +46,7 @@
                     <c:param name="PartyName" value="${vendor.partyName}" />
                     <c:param name="ContactMechanismName" value="${contactMechanism.contactMechanismName}" />
                 </c:url>
-                <a href="${reviewUrl}"> Vendor Contact Mechanism (<c:out value="${contactMechanism.contactMechanismName}" />)</a> &gt;&gt;
+                <a href="${reviewUrl}">Vendor Contact Mechanism (<c:out value="${contactMechanism.contactMechanismName}" />)</a> &gt;&gt;
                 Delete <c:out value="${partyEntityType.entityType.description}" />
             </h2>
         </div>

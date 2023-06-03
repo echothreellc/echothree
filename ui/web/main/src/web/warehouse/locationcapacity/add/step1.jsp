@@ -38,7 +38,7 @@
                     <c:param name="WarehouseName" value="${location.warehouse.warehouseName}" />
                     <c:param name="LocationName" value="${location.locationName}" />
                 </c:url>
-                <a href="${locationCapacitiesUrl}">Capacities</a> &gt;&gt;
+                <a href="${locationCapacitiesUrl}"><fmt:message key="navigation.locationCapacities" /></a> &gt;&gt;
                 Add
             </h2>
         </div>

@@ -41,7 +41,7 @@
                 <c:url var="warehouseContactMechanismsUrl" value="/action/Warehouse/WarehouseContactMechanism/Main">
                     <c:param name="WarehouseName" value="${warehouse.warehouseName}" />
                 </c:url>
-                <a href="${warehouseContactMechanismsUrl}">Contact Mechanisms</a> &gt;&gt;
+                <a href="${warehouseContactMechanismsUrl}"><fmt:message key="navigation.warehouseContactMechanisms" /></a> &gt;&gt;
                 Add Contact Mechanism Purpose
             </h2>
         </div>
