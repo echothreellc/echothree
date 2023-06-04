@@ -49,6 +49,7 @@
                 </et:validationErrors>
                 <html:submit onclick="onSubmitDisable(this);" value="Search" /><html:hidden property="submitButton" />
             </html:form>
+            <et:clearWarehouseResults searchTypeName="EMPLOYEE" />
             <display:table name="warehouses" id="warehouse" class="displaytag">
                 <display:column>
                     <c:choose>
