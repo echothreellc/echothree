@@ -86,7 +86,7 @@ public class SearchAction
             String q = StringUtils.getInstance().trimToNull(actionForm.getQ());
 
             commandForm.setSearchTypeName(SearchTypes.EMPLOYEE.name());
-            commandForm.setName(q);
+            commandForm.setQ(q);
 
             CommandResult commandResult = SearchUtil.getHome().searchWarehouses(getUserVisitPK(request), commandForm);
 

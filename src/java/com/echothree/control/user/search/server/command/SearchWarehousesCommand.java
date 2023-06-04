@@ -63,7 +63,7 @@ public class SearchWarehousesCommand
         
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("SearchTypeName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("Name", FieldType.STRING, false, null, null),
+                new FieldDefinition("Q", FieldType.STRING, false, null, null),
                 new FieldDefinition("WarehouseName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("PartyAliasTypeName", FieldType.ENTITY_NAME, false, null, null),
@@ -119,7 +119,7 @@ public class SearchWarehousesCommand
                     String modifiedSince = form.getModifiedSince();
                     String fields = form.getFields();
 
-                    warehouseSearchEvaluator.setQ(this, form.getName());
+                    warehouseSearchEvaluator.setQ(this, form.getQ());
                     warehouseSearchEvaluator.setPartyAliasType(partyAliasType);
                     warehouseSearchEvaluator.setAlias(alias);
                     warehouseSearchEvaluator.setWarehouseName(form.getWarehouseName());
