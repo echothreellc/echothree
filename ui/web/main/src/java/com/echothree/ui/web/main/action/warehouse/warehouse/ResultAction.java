@@ -18,6 +18,7 @@ package com.echothree.ui.web.main.action.warehouse.warehouse;
 
 import com.echothree.control.user.search.common.SearchUtil;
 import com.echothree.control.user.search.common.result.GetWarehouseResultsResult;
+import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.search.common.SearchOptions;
 import com.echothree.model.control.search.common.SearchTypes;
 import com.echothree.model.data.search.common.SearchResultConstants;
@@ -34,6 +35,7 @@ import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
 import static java.lang.Math.toIntExact;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
@@ -66,6 +68,10 @@ public class ResultAction
         commandForm.setSearchTypeName(SearchTypes.EMPLOYEE.name());
 
         var options = new HashSet<String>();
+        options.add(CoreOptions.EntityInstanceIncludeEntityAppearance);
+        options.add(CoreOptions.EntityInstanceIncludeEntityVisit);
+        options.add(CoreOptions.AppearanceIncludeTextDecorations);
+        options.add(CoreOptions.AppearanceIncludeTextTransformations);
         options.add(SearchOptions.WarehouseResultIncludeWarehouse);
         commandForm.setOptions(options);
 
