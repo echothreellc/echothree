@@ -33,12 +33,23 @@
             </h2>
         </div>
         <div id="Content">
-            <et:checkSecurityRoles securityRoles="Warehouse.Review:Event.List" />
+            <et:checkSecurityRoles securityRoles="Warehouse.Create:Warehouse.Review:Event.List" />
             <et:hasSecurityRole securityRole="Warehouse.Review" var="includeReviewUrl" />
-            <p><a href="<c:url value="/action/Warehouse/Warehouse/Add" />">Add Warehouse.</a></p>
+            <et:hasSecurityRole securityRole="Warehouse.Create">
+                <p><a href="<c:url value="/action/Warehouse/Warehouse/Add" />">Add Warehouse.</a></p>
+            </et:hasSecurityRole>
+            <br />
             <et:executionErrors id="errorMessage">
                 <p class="executionErrors"><c:out value="${errorMessage}" /></p><br />
             </et:executionErrors>
+            <html:form action="/Warehouse/Warehouse/Search" method="POST" focus="q">
+                <html:text size="60" property="q" />
+                <et:validationErrors id="errorMessage" property="q">
+                    <p><c:out value="${errorMessage}" /></p>
+                </et:validationErrors>
+                <html:submit onclick="onSubmitDisable(this);" value="Search" /><html:hidden property="submitButton" />
+            </html:form>
+            <et:clearWarehouseResults searchTypeName="EMPLOYEE" />
             <display:table name="warehouses" id="warehouse" class="displaytag">
                 <display:column>
                     <c:choose>

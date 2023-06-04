@@ -6074,7 +6074,7 @@ public class GraphQlMutations
     @GraphQLRelayMutation
     public static SearchWarehousesResultObject searchWarehouses(final DataFetchingEnvironment env,
             @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName,
-            @GraphQLName("name") final String name,
+            @GraphQLName("q") final String q,
             @GraphQLName("warehouseName") final String warehouseName,
             @GraphQLName("partyName") final String partyName,
             @GraphQLName("partyAliasTypeName") final String partyAliasTypeName,
@@ -6088,7 +6088,7 @@ public class GraphQlMutations
             var commandForm = SearchUtil.getHome().getSearchWarehousesForm();
 
             commandForm.setSearchTypeName(searchTypeName);
-            commandForm.setName(name);
+            commandForm.setQ(q);
             commandForm.setWarehouseName(warehouseName);
             commandForm.setPartyName(partyName);
             commandForm.setPartyAliasTypeName(partyAliasTypeName);

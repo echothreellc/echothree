@@ -25,8 +25,8 @@ public interface SearchWarehousesForm
     String getSearchTypeName();
     void setSearchTypeName(String searchTypeName);
     
-    String getName();
-    void setName(String name);
+    String getQ();
+    void setQ(String q);
 
     String getPartyAliasTypeName();
     void setPartyAliasTypeName(String partyAliasTypeName);

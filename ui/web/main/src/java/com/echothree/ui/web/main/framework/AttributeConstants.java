@@ -1079,5 +1079,8 @@ public interface AttributeConstants {
     String QUEUE_TYPE_DESCRIPTION = "queueTypeDescription";
     String QUEUE_TYPE_DESCRIPTIONS = "queueTypeDescriptions";
     String CREATED_BY_ENTITY_INSTANCE = "createdByEntityInstance";
-    
+    String WAREHOUSE_RESULT = "warehouseResult";
+    String WAREHOUSE_RESULTS = "warehouseResults";
+    String WAREHOUSE_RESULT_COUNT = "warehouseResultCount";
+
 }
