@@ -16,16 +16,24 @@
 
 package com.echothree.ui.web.main.action.warehouse.warehouse;
 
+import com.echothree.control.user.search.common.result.GetWarehouseResultsResult;
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
 import com.echothree.control.user.warehouse.common.result.GetWarehousesResult;
 import com.echothree.model.control.core.common.CoreOptions;
+import com.echothree.model.data.search.common.SearchResultConstants;
+import com.echothree.model.data.warehouse.common.WarehouseConstants;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
+import com.echothree.ui.web.main.framework.ParameterConstants;
+import com.echothree.util.common.transfer.Limit;
+import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
+import static java.lang.Math.toIntExact;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
@@ -33,6 +41,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
 import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
+import org.displaytag.tags.TableTagParameters;
+import org.displaytag.util.ParamEncoder;
 
 @SproutAction(
     path = "/Warehouse/Warehouse/Main",
@@ -47,10 +57,13 @@ import org.apache.struts.action.ActionMapping;
 public class MainAction
         extends MainBaseAction<ActionForm> {
 
+    final private int pageSize = 20;
+
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         var commandForm = WarehouseUtil.getHome().getGetWarehousesForm();
+        var results = request.getParameter(ParameterConstants.RESULTS);
 
         Set<String> options = new HashSet<>();
         options.add(CoreOptions.EntityInstanceIncludeEntityAppearance);
@@ -59,11 +72,27 @@ public class MainAction
         options.add(CoreOptions.AppearanceIncludeTextTransformations);
         commandForm.setOptions(options);
 
-        var commandResult = WarehouseUtil.getHome().getWarehouses(getUserVisitPK(request), commandForm);
-        var executionResult = commandResult.getExecutionResult();
-        var result = (GetWarehousesResult)executionResult.getResult();
+        if(results == null) {
+            var offsetParameter = request.getParameter(new ParamEncoder(AttributeConstants.WAREHOUSE).encodeParameterName(TableTagParameters.PARAMETER_PAGE));
+            var offset = offsetParameter == null ? null : (Integer.parseInt(offsetParameter) - 1) * pageSize;
 
-        request.setAttribute(AttributeConstants.WAREHOUSES, result.getWarehouses());
+            var limits = new HashMap<String, Limit>();
+            limits.put(WarehouseConstants.ENTITY_TYPE_NAME, new Limit(Integer.toString(pageSize), offset == null ? null : offset.toString()));
+            commandForm.setLimits(limits);
+        }
+
+        var commandResult = WarehouseUtil.getHome().getWarehouses(getUserVisitPK(request), commandForm);
+        if(!commandResult.hasErrors()) {
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWarehousesResult)executionResult.getResult();
+
+            var warehouseCount = result.getWarehouseCount();
+            if(warehouseCount != null) {
+                request.setAttribute(AttributeConstants.WAREHOUSE_COUNT, toIntExact(warehouseCount));
+            }
+
+            request.setAttribute(AttributeConstants.WAREHOUSES, new ListWrapper<>(result.getWarehouses()));
+        }
 
         return mapping.findForward(ForwardConstants.DISPLAY);
     }

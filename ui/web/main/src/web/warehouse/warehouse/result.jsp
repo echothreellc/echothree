@@ -43,6 +43,13 @@
             <et:executionErrors id="errorMessage">
                 <p class="executionErrors"><c:out value="${errorMessage}" /></p><br />
             </et:executionErrors>
+            <html:form action="/Warehouse/Warehouse/Search" method="POST" focus="q">
+                <html:text size="60" property="q" />
+                <et:validationErrors id="errorMessage" property="q">
+                    <p><c:out value="${errorMessage}" /></p>
+                </et:validationErrors>
+                <html:submit onclick="onSubmitDisable(this);" value="New Search" /><html:hidden property="submitButton" />
+            </html:form>
             <et:containsExecutionError key="UnknownUserVisitSearch">
                 <c:set var="unknownUserVisitSearch" value="true" />
             </et:containsExecutionError>
@@ -51,95 +58,205 @@
                     <p>Your search results are no longer available, please perform your search again.</p>
                 </c:when>
                 <c:otherwise>
-                    <display:table name="warehouseResults.list" id="warehouseResult" class="displaytag" partialList="true" pagesize="20" size="warehouseResultCount" requestURI="/action/Warehouse/Warehouse/Result">
-                        <display:column>
-                            <c:choose>
-                                <c:when test="${warehouseResult.warehouse.entityInstance.entityVisit == null}">
-                                    New
-                                </c:when>
-                                <c:otherwise>
+
+                    <c:choose>
+                        <c:when test="${warehouseResultCount == null || warehouseResultCount < 21}">
+                            <display:table name="warehouseResults.list" id="warehouseResult" class="displaytag" export="true" sort="list" requestURI="/action/Warehouse/Warehouse/Result">
+                                <display:setProperty name="export.csv.filename" value="Warehouses.csv" />
+                                <display:setProperty name="export.excel.filename" value="Warehouses.xls" />
+                                <display:setProperty name="export.pdf.filename" value="Warehouses.pdf" />
+                                <display:setProperty name="export.rtf.filename" value="Warehouses.rtf" />
+                                <display:setProperty name="export.xml.filename" value="Warehouses.xml" />
+                                <display:column media="html">
                                     <c:choose>
-                                        <c:when test="${warehouseResult.warehouse.entityInstance.entityVisit.unformattedVisitedTime >= warehouseResult.warehouse.entityInstance.entityTime.unformattedModifiedTime}">
-                                            Unchanged
+                                        <c:when test="${warehouseResult.warehouse.entityInstance.entityVisit == null}">
+                                            New
                                         </c:when>
                                         <c:otherwise>
-                                            Updated
+                                            <c:choose>
+                                                <c:when test="${warehouseResult.warehouse.entityInstance.entityVisit.unformattedVisitedTime >= warehouse.entityInstance.entityTime.unformattedModifiedTime}">
+                                                    Unchanged
+                                                </c:when>
+                                                <c:otherwise>
+                                                    Updated
+                                                </c:otherwise>
+                                            </c:choose>
                                         </c:otherwise>
                                     </c:choose>
-                                </c:otherwise>
-                            </c:choose>
-                        </display:column>
-                        <display:column titleKey="columnTitle.name">
-                            <c:choose>
-                                <c:when test="${includeReviewUrl}">
-                                    <c:url var="reviewUrl" value="/action/Warehouse/Warehouse/Review">
+                                </display:column>
+                                <display:column titleKey="columnTitle.name" media="html" sortable="true" sortProperty="warehouse.warehouseName">
+                                    <c:choose>
+                                        <c:when test="${includeReviewUrl}">
+                                            <c:url var="reviewUrl" value="/action/Warehouse/Warehouse/Review">
+                                                <c:param name="WarehouseName" value="${warehouseResult.warehouse.warehouseName}" />
+                                            </c:url>
+                                            <a href="${reviewUrl}"><et:appearance appearance="${warehouseResult.warehouse.entityInstance.entityAppearance.appearance}"><c:out value="${warehouseResult.warehouse.warehouseName}" /></et:appearance></a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <et:appearance appearance="${warehouseResult.warehouse.entityInstance.entityAppearance.appearance}"><c:out value="${warehouseResult.warehouse.warehouseName}" /></et:appearance>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </display:column>
+                                <display:column titleKey="columnTitle.description" media="html" sortable="true" sortProperty="warehouse.partyGroup.name">
+                                    <et:appearance appearance="${warehouseResult.warehouse.entityInstance.entityAppearance.appearance}"><c:out value="${warehouseResult.warehouse.partyGroup.name}" /></et:appearance>
+                                </display:column>
+                                <display:column property="warehouse.sortOrder" titleKey="columnTitle.sortOrder" media="html" sortable="true" sortProperty="warehouse.sortOrder" />
+                                <display:column titleKey="columnTitle.default" media="html" sortable="true" sortProperty="warehouse.isDefault">
+                                    <c:choose>
+                                        <c:when test="${warehouseResult.warehouse.isDefault}">
+                                            Default
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:url var="setDefaultUrl" value="/action/Warehouse/Warehouse/SetDefault">
+                                                <c:param name="WarehouseName" value="${warehouseResult.warehouse.warehouseName}" />
+                                            </c:url>
+                                            <a href="${setDefaultUrl}">Set Default</a>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </display:column>
+                                <display:column media="html">
+                                    <c:url var="warehousePrinterGroupUsesUrl" value="/action/Warehouse/WarehousePrinterGroupUse/Main">
                                         <c:param name="WarehouseName" value="${warehouseResult.warehouse.warehouseName}" />
                                     </c:url>
-                                    <a href="${reviewUrl}"><et:appearance appearance="${warehouseResult.warehouse.entityInstance.entityAppearance.appearance}"><c:out value="${warehouseResult.warehouse.warehouseName}" /></et:appearance></a>
-                                </c:when>
-                                <c:otherwise>
-                                    <et:appearance appearance="${warehouseResult.warehouse.entityInstance.entityAppearance.appearance}"><c:out value="${warehouseResult.warehouse.warehouseName}" /></et:appearance>
-                                </c:otherwise>
-                            </c:choose>
-                        </display:column>
-                        <display:column titleKey="columnTitle.description">
-                            <et:appearance appearance="${warehouseResult.warehouse.entityInstance.entityAppearance.appearance}"><c:out value="${warehouseResult.warehouse.partyGroup.name}" /></et:appearance>
-                        </display:column>
-                        <display:column titleKey="columnTitle.sortOrder">
-                            <c:out value="${warehouseResult.warehouse.sortOrder}" />
-                        </display:column>
-                        <display:column titleKey="columnTitle.default">
-                            <c:choose>
-                                <c:when test="${warehouseResult.warehouse.isDefault}">
-                                    Default
-                                </c:when>
-                                <c:otherwise>
-                                    <c:url var="setDefaultUrl" value="/action/Warehouse/Warehouse/SetDefault">
+                                    <a href="${warehousePrinterGroupUsesUrl}">Printer Group Uses</a>
+                                    <c:url var="warehouseContactMechanismsUrl" value="/action/Warehouse/WarehouseContactMechanism/Main">
                                         <c:param name="WarehouseName" value="${warehouseResult.warehouse.warehouseName}" />
                                     </c:url>
-                                    <a href="${setDefaultUrl}">Set Default</a>
-                                </c:otherwise>
-                            </c:choose>
-                        </display:column>
-                        <display:column>
-                            <c:url var="warehousePrinterGroupUsesUrl" value="/action/Warehouse/WarehousePrinterGroupUse/Main">
-                                <c:param name="WarehouseName" value="${warehouseResult.warehouse.warehouseName}" />
+                                    <a href="${warehouseContactMechanismsUrl}">Contact Mechanisms</a>
+                                    <c:url var="locationsUrl" value="/action/Warehouse/Location/Main">
+                                        <c:param name="WarehouseName" value="${warehouseResult.warehouse.warehouseName}" />
+                                    </c:url><br />
+                                    <a href="${locationsUrl}">Locations</a>
+                                    <c:url var="locationTypesUrl" value="/action/Warehouse/LocationType/Main">
+                                        <c:param name="WarehouseName" value="${warehouseResult.warehouse.warehouseName}" />
+                                    </c:url>
+                                    <a href="${locationTypesUrl}">Location Types</a>
+                                    <c:url var="inventoryLocationGroupsUrl" value="/action/Inventory/InventoryLocationGroup/Main">
+                                        <c:param name="WarehouseName" value="${warehouseResult.warehouse.warehouseName}" />
+                                    </c:url>
+                                    <a href="${inventoryLocationGroupsUrl}">Inventory Location Groups</a><br />
+                                    <c:url var="editUrl" value="/action/Warehouse/Warehouse/WarehouseEdit">
+                                        <c:param name="OriginalWarehouseName" value="${warehouseResult.warehouse.warehouseName}" />
+                                    </c:url>
+                                    <a href="${editUrl}">Edit</a>
+                                    <c:url var="deleteUrl" value="/action/Warehouse/Warehouse/Delete">
+                                        <c:param name="WarehouseName" value="${warehouseResult.warehouse.warehouseName}" />
+                                    </c:url>
+                                    <a href="${deleteUrl}">Delete</a>
+                                </display:column>
+                                <et:hasSecurityRole securityRole="Event.List">
+                                    <display:column media="html">
+                                        <c:url var="eventsUrl" value="/action/Core/Event/Main">
+                                            <c:param name="EntityRef" value="${warehouseResult.warehouse.entityInstance.entityRef}" />
+                                        </c:url>
+                                        <a href="${eventsUrl}">Events</a>
+                                    </display:column>
+                                </et:hasSecurityRole>
+                                <display:column property="warehouse.warehouseName" titleKey="columnTitle.name" media="csv excel pdf rtf xml" />
+                                <display:column property="warehouse.partyGroup.name" titleKey="columnTitle.description" media="csv excel pdf rtf xml" />
+                                <display:column property="warehouse.sortOrder" titleKey="columnTitle.sortOrder" media="csv excel pdf rtf xml" />
+                                <display:column property="warehouse.isDefault" titleKey="columnTitle.default" media="csv excel pdf rtf xml" />
+                            </display:table>
+                            <c:if test="${warehouses.size > 20}">
+                                <c:url var="resultsUrl" value="/action/Warehouse/Warehouse/Result" />
+                                <a href="${resultsUrl}">Paged Results</a>
+                            </c:if>
+                        </c:when>
+                        <c:otherwise>
+                            <display:table name="warehouseResults.list" id="warehouseResult" class="displaytag" partialList="true" pagesize="20" size="warehouseResultCount" requestURI="/action/Warehouse/Warehouse/Result">
+                                <display:column>
+                                    <c:choose>
+                                        <c:when test="${warehouseResult.warehouse.entityInstance.entityVisit == null}">
+                                            New
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:choose>
+                                                <c:when test="${warehouseResult.warehouse.entityInstance.entityVisit.unformattedVisitedTime >= warehouse.entityInstance.entityTime.unformattedModifiedTime}">
+                                                    Unchanged
+                                                </c:when>
+                                                <c:otherwise>
+                                                    Updated
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </display:column>
+                                <display:column titleKey="columnTitle.name">
+                                    <c:choose>
+                                        <c:when test="${includeReviewUrl}">
+                                            <c:url var="reviewUrl" value="/action/Warehouse/Warehouse/Review">
+                                                <c:param name="WarehouseName" value="${warehouseResult.warehouse.warehouseName}" />
+                                            </c:url>
+                                            <a href="${reviewUrl}"><et:appearance appearance="${warehouseResult.warehouse.entityInstance.entityAppearance.appearance}"><c:out value="${warehouseResult.warehouse.warehouseName}" /></et:appearance></a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <et:appearance appearance="${warehouseResult.warehouse.entityInstance.entityAppearance.appearance}"><c:out value="${warehouseResult.warehouse.warehouseName}" /></et:appearance>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </display:column>
+                                <display:column titleKey="columnTitle.description">
+                                    <et:appearance appearance="${warehouseResult.warehouse.entityInstance.entityAppearance.appearance}"><c:out value="${warehouseResult.warehouse.partyGroup.name}" /></et:appearance>
+                                </display:column>
+                                <display:column property="warehouse.sortOrder" titleKey="columnTitle.sortOrder" />
+                                <display:column titleKey="columnTitle.default">
+                                    <c:choose>
+                                        <c:when test="${warehouseResult.warehouse.isDefault}">
+                                            Default
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:url var="setDefaultUrl" value="/action/Warehouse/Warehouse/SetDefault">
+                                                <c:param name="WarehouseName" value="${warehouseResult.warehouse.warehouseName}" />
+                                            </c:url>
+                                            <a href="${setDefaultUrl}">Set Default</a>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </display:column>
+                                <display:column>
+                                    <c:url var="warehousePrinterGroupUsesUrl" value="/action/Warehouse/WarehousePrinterGroupUse/Main">
+                                        <c:param name="WarehouseName" value="${warehouseResult.warehouse.warehouseName}" />
+                                    </c:url>
+                                    <a href="${warehousePrinterGroupUsesUrl}">Printer Group Uses</a>
+                                    <c:url var="warehouseContactMechanismsUrl" value="/action/Warehouse/WarehouseContactMechanism/Main">
+                                        <c:param name="WarehouseName" value="${warehouseResult.warehouse.warehouseName}" />
+                                    </c:url>
+                                    <a href="${warehouseContactMechanismsUrl}">Contact Mechanisms</a>
+                                    <c:url var="locationsUrl" value="/action/Warehouse/Location/Main">
+                                        <c:param name="WarehouseName" value="${warehouseResult.warehouse.warehouseName}" />
+                                    </c:url><br />
+                                    <a href="${locationsUrl}">Locations</a>
+                                    <c:url var="locationTypesUrl" value="/action/Warehouse/LocationType/Main">
+                                        <c:param name="WarehouseName" value="${warehouseResult.warehouse.warehouseName}" />
+                                    </c:url>
+                                    <a href="${locationTypesUrl}">Location Types</a>
+                                    <c:url var="inventoryLocationGroupsUrl" value="/action/Inventory/InventoryLocationGroup/Main">
+                                        <c:param name="WarehouseName" value="${warehouseResult.warehouse.warehouseName}" />
+                                    </c:url>
+                                    <a href="${inventoryLocationGroupsUrl}">Inventory Location Groups</a><br />
+                                    <c:url var="editUrl" value="/action/Warehouse/Warehouse/WarehouseEdit">
+                                        <c:param name="OriginalWarehouseName" value="${warehouseResult.warehouse.warehouseName}" />
+                                    </c:url>
+                                    <a href="${editUrl}">Edit</a>
+                                    <c:url var="deleteUrl" value="/action/Warehouse/Warehouse/Delete">
+                                        <c:param name="WarehouseName" value="${warehouseResult.warehouse.warehouseName}" />
+                                    </c:url>
+                                    <a href="${deleteUrl}">Delete</a>
+                                </display:column>
+                                <et:hasSecurityRole securityRole="Event.List">
+                                    <display:column>
+                                        <c:url var="eventsUrl" value="/action/Core/Event/Main">
+                                            <c:param name="EntityRef" value="${warehouseResult.warehouse.entityInstance.entityRef}" />
+                                        </c:url>
+                                        <a href="${eventsUrl}">Events</a>
+                                    </display:column>
+                                </et:hasSecurityRole>
+                            </display:table>
+                            <c:url var="resultsUrl" value="/action/Warehouse/Warehouse/Result">
+                                <c:param name="Results" value="Complete" />
                             </c:url>
-                            <a href="${warehousePrinterGroupUsesUrl}">Printer Group Uses</a>
-                            <c:url var="warehouseContactMechanismsUrl" value="/action/Warehouse/WarehouseContactMechanism/Main">
-                                <c:param name="WarehouseName" value="${warehouseResult.warehouse.warehouseName}" />
-                            </c:url>
-                            <a href="${warehouseContactMechanismsUrl}">Contact Mechanisms</a>
-                            <c:url var="locationsUrl" value="/action/Warehouse/Location/Main">
-                                <c:param name="WarehouseName" value="${warehouseResult.warehouse.warehouseName}" />
-                            </c:url><br />
-                            <a href="${locationsUrl}">Locations</a>
-                            <c:url var="locationTypesUrl" value="/action/Warehouse/LocationType/Main">
-                                <c:param name="WarehouseName" value="${warehouseResult.warehouse.warehouseName}" />
-                            </c:url>
-                            <a href="${locationTypesUrl}">Location Types</a>
-                            <c:url var="inventoryLocationGroupsUrl" value="/action/Inventory/InventoryLocationGroup/Main">
-                                <c:param name="WarehouseName" value="${warehouseResult.warehouse.warehouseName}" />
-                            </c:url>
-                            <a href="${inventoryLocationGroupsUrl}">Inventory Location Groups</a><br />
-                            <c:url var="editUrl" value="/action/Warehouse/Warehouse/WarehouseEdit">
-                                <c:param name="OriginalWarehouseName" value="${warehouseResult.warehouse.warehouseName}" />
-                            </c:url>
-                            <a href="${editUrl}">Edit</a>
-                            <c:url var="deleteUrl" value="/action/Warehouse/Warehouse/Delete">
-                                <c:param name="WarehouseName" value="${warehouseResult.warehouse.warehouseName}" />
-                            </c:url>
-                            <a href="${deleteUrl}">Delete</a>
-                        </display:column>
-                        <et:hasSecurityRole securityRole="Event.List">
-                            <display:column>
-                                <c:url var="eventsUrl" value="/action/Core/Event/Main">
-                                    <c:param name="EntityRef" value="${warehouseResult.warehouse.entityInstance.entityRef}" />
-                                </c:url>
-                                <a href="${eventsUrl}">Events</a>
-                            </display:column>
-                        </et:hasSecurityRole>
-                    </display:table>
+                            <a href="${resultsUrl}">All Results</a>
+                        </c:otherwise>
+                    </c:choose>
+
                 </c:otherwise>
             </c:choose>
         </div>

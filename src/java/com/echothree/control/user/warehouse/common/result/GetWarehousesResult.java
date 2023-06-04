@@ -23,7 +23,7 @@ import java.util.List;
 public interface GetWarehousesResult
         extends BaseResult {
 
-    Long geWarehouseCount();
+    Long getWarehouseCount();
     void setWarehouseCount(Long warehouseCount);
 
     List<WarehouseTransfer> getWarehouses();
