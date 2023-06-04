@@ -17,23 +17,23 @@
 package com.echothree.ui.web.main.action.warehouse.warehouse;
 
 import com.echothree.control.user.search.common.SearchUtil;
-import com.echothree.control.user.search.common.form.SearchWarehousesForm;
 import com.echothree.control.user.search.common.result.GetWarehouseResultsResult;
 import com.echothree.control.user.search.common.result.SearchWarehousesResult;
+import com.echothree.model.control.search.common.SearchOptions;
 import com.echothree.model.control.search.common.SearchTypes;
+import com.echothree.model.data.search.common.SearchResultConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.command.CommandResult;
-import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.util.common.string.StringUtils;
+import com.echothree.util.common.transfer.Limit;
 import com.echothree.view.client.web.struts.CustomActionForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -60,14 +60,21 @@ public class SearchAction
             throws NamingException {
         var commandForm = SearchUtil.getHome().getGetWarehouseResultsForm();
         String warehouseName = null;
-        
+
+        var options = new HashSet<String>();
+        options.add(SearchOptions.WarehouseResultIncludeWarehouse);
+        commandForm.setOptions(options);
+
+        var limits = new HashMap<String, Limit>();
+        limits.put(SearchResultConstants.ENTITY_TYPE_NAME, new Limit("1", "0"));
+        commandForm.setLimits(limits);
+
         commandForm.setSearchTypeName(SearchTypes.EMPLOYEE.name());
 
         var commandResult = SearchUtil.getHome().getWarehouseResults(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
         var result = (GetWarehouseResultsResult)executionResult.getResult();
-        var harmonizedTariffScheduleCodeResults = result.getWarehouseResults();
-        var iter = harmonizedTariffScheduleCodeResults.iterator();
+        var iter = result.getWarehouseResults().iterator();
         if(iter.hasNext()) {
             warehouseName = iter.next().getWarehouse().getWarehouseName();
         }
@@ -82,20 +89,20 @@ public class SearchAction
         String warehouseName = null;
 
         if(wasPost(request)) {
-            SearchWarehousesForm commandForm = SearchUtil.getHome().getSearchWarehousesForm();
-            String q = StringUtils.getInstance().trimToNull(actionForm.getQ());
+            var commandForm = SearchUtil.getHome().getSearchWarehousesForm();
+            var q = StringUtils.getInstance().trimToNull(actionForm.getQ());
 
             commandForm.setSearchTypeName(SearchTypes.EMPLOYEE.name());
             commandForm.setQ(q);
 
-            CommandResult commandResult = SearchUtil.getHome().searchWarehouses(getUserVisitPK(request), commandForm);
+            var commandResult = SearchUtil.getHome().searchWarehouses(getUserVisitPK(request), commandForm);
 
             if(commandResult.hasErrors()) {
                 setCommandResultAttribute(request, commandResult);
                 forwardKey = ForwardConstants.DISPLAY;
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                SearchWarehousesResult result = (SearchWarehousesResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (SearchWarehousesResult)executionResult.getResult();
                 var count = result.getCount();
 
                 if(count == 0 || count > 1) {
@@ -108,10 +115,10 @@ public class SearchAction
         } else {
             forwardKey = ForwardConstants.DISPLAY;
         }
-        
-        CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
+
+        var customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.REVIEW)) {
-            Map<String, String> parameters = new HashMap<>(1);
+            var parameters = new HashMap<String, String>(1);
             
             parameters.put(ParameterConstants.WAREHOUSE_NAME, warehouseName);
             customActionForward.setParameters(parameters);
