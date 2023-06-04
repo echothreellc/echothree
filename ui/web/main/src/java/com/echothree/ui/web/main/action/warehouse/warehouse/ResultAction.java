@@ -63,7 +63,7 @@ public class ResultAction
         var commandForm = SearchUtil.getHome().getGetWarehouseResultsForm();
         var results = request.getParameter(ParameterConstants.RESULTS);
 
-        commandForm.setSearchTypeName(SearchTypes.WAREHOUSE_REVIEW.name());
+        commandForm.setSearchTypeName(SearchTypes.EMPLOYEE.name());
 
         var options = new HashSet<String>();
         options.add(SearchOptions.WarehouseResultIncludeWarehouse);

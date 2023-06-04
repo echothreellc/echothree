@@ -48,9 +48,9 @@ import org.apache.struts.action.ActionMapping;
         @SproutProperty(property = "secure", value = "true")
     },
     forwards = {
-        @SproutForward(name = ForwardConstants.DISPLAY, path = "/action/Configuration/Warehouse/Main"),
-        @SproutForward(name = ForwardConstants.RESULT, path = "/action/Configuration/Warehouse/Result", redirect = true),
-        @SproutForward(name = ForwardConstants.REVIEW, path = "/action/Configuration/Warehouse/Review", redirect = true)
+        @SproutForward(name = ForwardConstants.DISPLAY, path = "/action/Warehouse/Warehouse/Main"),
+        @SproutForward(name = ForwardConstants.RESULT, path = "/action/Warehouse/Warehouse/Result", redirect = true),
+        @SproutForward(name = ForwardConstants.REVIEW, path = "/action/Warehouse/Warehouse/Review", redirect = true)
     }
 )
 public class SearchAction
@@ -61,7 +61,7 @@ public class SearchAction
         var commandForm = SearchUtil.getHome().getGetWarehouseResultsForm();
         String warehouseName = null;
         
-        commandForm.setSearchTypeName(SearchTypes.WAREHOUSE_REVIEW.name());
+        commandForm.setSearchTypeName(SearchTypes.EMPLOYEE.name());
 
         var commandResult = SearchUtil.getHome().getWarehouseResults(getUserVisitPK(request), commandForm);
         var executionResult = commandResult.getExecutionResult();
