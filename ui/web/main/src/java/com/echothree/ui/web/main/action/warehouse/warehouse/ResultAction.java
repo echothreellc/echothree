@@ -89,9 +89,9 @@ public class ResultAction
             var executionResult = commandResult.getExecutionResult();
             var result = (GetWarehouseResultsResult)executionResult.getResult();
 
-            var harmonizedTariffScheduleCodeResultCount = result.getWarehouseResultCount();
-            if(harmonizedTariffScheduleCodeResultCount != null) {
-                request.setAttribute(AttributeConstants.WAREHOUSE_RESULT_COUNT, toIntExact(harmonizedTariffScheduleCodeResultCount));
+            var warehouseResultCount = result.getWarehouseResultCount();
+            if(warehouseResultCount != null) {
+                request.setAttribute(AttributeConstants.WAREHOUSE_RESULT_COUNT, toIntExact(warehouseResultCount));
             }
 
             request.setAttribute(AttributeConstants.WAREHOUSE_RESULTS, new ListWrapper<>(result.getWarehouseResults()));

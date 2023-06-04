@@ -1082,5 +1082,6 @@ public interface AttributeConstants {
     String WAREHOUSE_RESULT = "warehouseResult";
     String WAREHOUSE_RESULTS = "warehouseResults";
     String WAREHOUSE_RESULT_COUNT = "warehouseResultCount";
+    String WAREHOUSE_COUNT = "warehouseCount";
 
 }
