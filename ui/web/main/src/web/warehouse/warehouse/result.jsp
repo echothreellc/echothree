@@ -43,6 +43,13 @@
             <et:executionErrors id="errorMessage">
                 <p class="executionErrors"><c:out value="${errorMessage}" /></p><br />
             </et:executionErrors>
+            <html:form action="/Warehouse/Warehouse/Search" method="POST" focus="q">
+                <html:text size="60" property="q" />
+                <et:validationErrors id="errorMessage" property="q">
+                    <p><c:out value="${errorMessage}" /></p>
+                </et:validationErrors>
+                <html:submit onclick="onSubmitDisable(this);" value="New Search" /><html:hidden property="submitButton" />
+            </html:form>
             <et:containsExecutionError key="UnknownUserVisitSearch">
                 <c:set var="unknownUserVisitSearch" value="true" />
             </et:containsExecutionError>
