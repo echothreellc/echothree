@@ -20,7 +20,7 @@
 
 <html:html xhtml="true">
     <head>
-        <title>Employees</title>
+        <title><fmt:message key="pageTitle.employees" /></title>
         <html:base/>
         <%@ include file="../../include/environment.jsp" %>
     </head>
