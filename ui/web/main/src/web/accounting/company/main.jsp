@@ -20,7 +20,7 @@
 
 <html:html xhtml="true">
     <head>
-        <title>Companies</title>
+        <title><fmt:message key="pageTitle.companies" /></title>
         <html:base/>
         <%@ include file="../../include/environment.jsp" %>
     </head>
@@ -28,8 +28,8 @@
         <div id="Header">
             <h2>
                 <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
-                <a href="<c:url value="/action/Accounting/Main" />">Accounting</a> &gt;&gt;
-                Companies
+                <a href="<c:url value="/action/Accounting/Main" />"><fmt:message key="navigation.accounting" /></a> &gt;&gt;
+                <fmt:message key="navigation.companies" />
             </h2>
         </div>
         <div id="Content">
@@ -76,7 +76,7 @@
                     <c:url var="divisionsUrl" value="/action/Accounting/Division/Main">
                         <c:param name="CompanyName" value="${company.companyName}" />
                     </c:url>
-                    <a href="${divisionsUrl}">Divisions</a><br />
+                    <a href="${divisionsUrl}"><fmt:message key="navigation.divisions" /></a><br />
                     <c:url var="editUrl" value="/action/Accounting/Company/Edit">
                         <c:param name="OriginalCompanyName" value="${company.companyName}" />
                     </c:url>

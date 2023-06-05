@@ -20,7 +20,7 @@
 
 <html:html xhtml="true">
     <head>
-        <title>Departments</title>
+        <title><fmt:message key="pageTitle.departments" /></title>
         <html:base/>
         <%@ include file="../../include/environment.jsp" %>
     </head>
@@ -28,17 +28,17 @@
         <div id="Header">
             <h2>
                 <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
-                <a href="<c:url value="/action/Accounting/Main" />">Accounting</a> &gt;&gt;
-                <a href="<c:url value="/action/Accounting/Company/Main" />">Companies</a> &gt;&gt;
+                <a href="<c:url value="/action/Accounting/Main" />"><fmt:message key="navigation.accounting" /></a> &gt;&gt;
+                <a href="<c:url value="/action/Accounting/Company/Main" />"><fmt:message key="navigation.companies" /></a> &gt;&gt;
                 <c:url var="divisionsUrl" value="/action/Accounting/Division/Main">
                     <c:param name="CompanyName" value="${companyName}" />
                 </c:url>
-                <a href="${divisionsUrl}">Divisions</a> &gt;&gt;
+                <a href="${divisionsUrl}"><fmt:message key="navigation.divisions" /></a> &gt;&gt;
                 <c:url var="departmentsUrl" value="/action/Accounting/Department/Main">
                     <c:param name="CompanyName" value="${companyName}" />
                     <c:param name="DivisionName" value="${divisionName}" />
                 </c:url>
-                <a href="${departmentsUrl}">Departments</a> &gt;&gt;
+                <a href="${departmentsUrl}"><fmt:message key="navigation.departments" /></a> &gt;&gt;
                 Edit
             </h2>
         </div>

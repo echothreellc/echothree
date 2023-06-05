@@ -20,7 +20,7 @@
 
 <html:html xhtml="true">
     <head>
-        <title>Divisions</title>
+        <title><fmt:message key="pageTitle.divisions" /></title>
         <html:base/>
         <%@ include file="../../include/environment.jsp" %>
     </head>
@@ -28,9 +28,9 @@
         <div id="Header">
             <h2>
                 <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
-                <a href="<c:url value="/action/Accounting/Main" />">Accounting</a> &gt;&gt;
-                <a href="<c:url value="/action/Accounting/Company/Main" />">Companies</a> &gt;&gt;
-                Divisions
+                <a href="<c:url value="/action/Accounting/Main" />"><fmt:message key="navigation.accounting" /></a> &gt;&gt;
+                <a href="<c:url value="/action/Accounting/Company/Main" />"><fmt:message key="navigation.companies" /></a> &gt;&gt;
+                <fmt:message key="navigation.divisions" />
             </h2>
         </div>
         <div id="Content">
@@ -75,7 +75,7 @@
                         <c:param name="CompanyName" value="${division.company.companyName}" />
                         <c:param name="DivisionName" value="${division.divisionName}" />
                     </c:url>
-                    <a href="${departmentsUrl}">Departments</a><br />
+                    <a href="${departmentsUrl}"><fmt:message key="navigation.departments" /></a><br />
                     <c:url var="editUrl" value="/action/Accounting/Division/Edit">
                         <c:param name="CompanyName" value="${division.company.companyName}" />
                         <c:param name="OriginalDivisionName" value="${division.divisionName}" />

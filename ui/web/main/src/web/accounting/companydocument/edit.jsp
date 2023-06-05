@@ -29,8 +29,8 @@
         <div id="Header">
             <h2>
                 <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
-                <a href="<c:url value="/action/Accounting/Main" />">Accounting</a> &gt;&gt;
-                <a href="<c:url value="/action/Accounting/Company/Main" />">Companies</a> &gt;&gt;
+                <a href="<c:url value="/action/Accounting/Main" />"><fmt:message key="navigation.accounting" /></a> &gt;&gt;
+                <a href="<c:url value="/action/Accounting/Company/Main" />"><fmt:message key="navigation.companies" /></a> &gt;&gt;
                 <c:url var="reviewUrl" value="/action/Accounting/Company/Review">
                     <c:param name="CompanyName" value="${company.companyName}" />
                 </c:url>
