@@ -54,8 +54,8 @@
             <c:out value="${employee.person.middleName}" /> <c:out value="${employee.person.lastName}" />
             <c:out value="${employee.person.nameSuffix.description}" /></b></font></p>
             <br />
-            Employee Name: <c:out value="${employee.employeeName}" /><br />
-            Employee Type:
+            <fmt:message key="label.employeeName" />: <c:out value="${employee.employeeName}" /><br />
+            <fmt:message key="label.employeeType" />:
             <c:url var="employeeTypeUrl" value="/action/HumanResources/EmployeeType/Review">
                 <c:param name="EmployeeTypeName" value="${employee.employeeType.employeeTypeName}" />
             </c:url>
