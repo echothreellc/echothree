@@ -20,7 +20,11 @@
 
 <html:html xhtml="true">
     <head>
-        <title>Review (<c:out value="${employee.employeeName}" />)</title>
+        <title>
+            <fmt:message key="pageTitle.employee">
+                <fmt:param value="${employee.employeeName}" />
+            </fmt:message>
+        </title>
         <html:base/>
         <%@ include file="../../include/environment.jsp" %>
     </head>
@@ -28,8 +32,8 @@
         <div id="Header">
             <h2>
                 <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
-                <a href="<c:url value="/action/HumanResources/Main" />">Human Resources</a> &gt;&gt;
-                <a href="<c:url value="/action/HumanResources/Employee/Main" />">Employees</a> &gt;&gt;
+                <a href="<c:url value="/action/HumanResources/Main" />"><fmt:message key="navigation.humanResources" /></a> &gt;&gt;
+                <a href="<c:url value="/action/HumanResources/Employee/Main" />"><fmt:message key="navigation.employees" /></a> &gt;&gt;
                 <et:countEmployeeResults searchTypeName="HUMAN_RESOURCES" countVar="employeeResultsCount" commandResultVar="countEmployeeResultsCommandResult" logErrors="false" />
                 <c:if test="${employeeResultsCount > 0}">
                     <a href="<c:url value="/action/HumanResources/Employee/Result" />"><fmt:message key="navigation.results" /></a> &gt;&gt;

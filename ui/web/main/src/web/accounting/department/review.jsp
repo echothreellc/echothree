@@ -50,8 +50,15 @@
             <et:checkSecurityRoles securityRoles="Event.List" />
             <p><font size="+2"><b><c:out value="${department.partyGroup.name}" /></b></font></p>
             <br />
-            <fmt:message key="label.companyName" />: ${department.division.company.companyName}<br />
-            <fmt:message key="label.divisionName" />: ${department.division.divisionName}<br />
+            <c:url var="companyUrl" value="/action/Accounting/Company/Review">
+                <c:param name="CompanyName" value="${department.division.company.companyName}" />
+            </c:url>
+            <fmt:message key="label.companyName" />: <a href="${companyUrl}">${department.division.company.companyName}</a><br />
+            <c:url var="divisionUrl" value="/action/Accounting/Division/Review">
+                <c:param name="CompanyName" value="${department.division.company.companyName}" />
+                <c:param name="DivisionName" value="${department.division.divisionName}" />
+            </c:url>
+            <fmt:message key="label.divisionName" />: <a href="${divisionUrl}">${department.division.divisionName}</a><br />
             <fmt:message key="label.departmentName" />: ${department.departmentName}<br />
             <br />
             <br />

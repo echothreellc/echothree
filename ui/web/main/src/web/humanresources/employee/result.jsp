@@ -20,7 +20,7 @@
 
 <html:html xhtml="true">
     <head>
-        <title>Employee Results</title>
+        <title><fmt:message key="pageTitle.employeeResults" /></title>
         <html:base/>
         <%@ include file="../../include/environment.jsp" %>
     </head>
@@ -28,8 +28,8 @@
         <div id="Header">
             <h2>
                 <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
-                <a href="<c:url value="/action/HumanResources/Main" />">Human Resources</a> &gt;&gt;
-                <a href="<c:url value="/action/HumanResources/Employee/Main" />">Employees</a> &gt;&gt;
+                <a href="<c:url value="/action/HumanResources/Main" />"><fmt:message key="navigation.humanResources" /></a> &gt;&gt;
+                <a href="<c:url value="/action/HumanResources/Employee/Main" />"><fmt:message key="navigation.employees" /></a> &gt;&gt;
                 Results
             </h2>
         </div>
