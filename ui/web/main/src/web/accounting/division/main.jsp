@@ -75,7 +75,7 @@
                         <c:param name="CompanyName" value="${division.company.companyName}" />
                         <c:param name="DivisionName" value="${division.divisionName}" />
                     </c:url>
-                    <a href="${departmentsUrl}">Departments</a><br />
+                    <a href="${departmentsUrl}"><fmt:message key="navigation.departments" /></a><br />
                     <c:url var="editUrl" value="/action/Accounting/Division/Edit">
                         <c:param name="CompanyName" value="${division.company.companyName}" />
                         <c:param name="OriginalDivisionName" value="${division.divisionName}" />
