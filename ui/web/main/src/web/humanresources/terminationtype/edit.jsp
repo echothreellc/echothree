@@ -28,7 +28,7 @@
         <div id="Header">
             <h2>
                 <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
-                <a href="<c:url value="/action/HumanResources/Main" />">Human Resources</a> &gt;&gt;
+                <a href="<c:url value="/action/HumanResources/Main" />"><fmt:message key="navigation.humanResources" /></a> &gt;&gt;
                 <a href="<c:url value="/action/HumanResources/TerminationType/Main" />">Termination Types</a> &gt;&gt;
                 Edit
             </h2>

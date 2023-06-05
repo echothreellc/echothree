@@ -28,7 +28,7 @@
         <div id="Header">
             <h2>
                 <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
-                <a href="<c:url value="/action/HumanResources/Main" />">Human Resources</a> &gt;&gt;
+                <a href="<c:url value="/action/HumanResources/Main" />"><fmt:message key="navigation.humanResources" /></a> &gt;&gt;
                 <a href="<c:url value="/action/HumanResources/SkillType/Main" />">Skill Types</a> &gt;&gt;
                 <c:url var="descriptionsUrl" value="/action/HumanResources/SkillType/Description">
                     <c:param name="SkillTypeName" value="${skillTypeName}" />

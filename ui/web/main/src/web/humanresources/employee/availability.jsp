@@ -32,7 +32,7 @@
         <div id="Header">
             <h2>
                 <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
-                <a href="<c:url value="/action/HumanResources/Main" />">Human Resources</a> &gt;&gt;
+                <a href="<c:url value="/action/HumanResources/Main" />"><fmt:message key="navigation.humanResources" /></a> &gt;&gt;
                 <a href="<c:url value="/action/HumanResources/Employee/Main" />">Employees</a> &gt;&gt;
                 <et:countEmployeeResults searchTypeName="HUMAN_RESOURCES" countVar="employeeResultsCount" commandResultVar="countEmployeeResultsCommandResult" logErrors="false" />
                 <c:if test="${employeeResultsCount > 0}">
