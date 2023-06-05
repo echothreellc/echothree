@@ -33,7 +33,7 @@
                 <c:url var="divisionsUrl" value="/action/Accounting/Division/Main">
                     <c:param name="CompanyName" value="${companyName}" />
                 </c:url>
-                <a href="${divisionsUrl}">Divisions</a> &gt;&gt;
+                <a href="${divisionsUrl}"><fmt:message key="navigation.divisions" /></a> &gt;&gt;
                 Edit
             </h2>
         </div>

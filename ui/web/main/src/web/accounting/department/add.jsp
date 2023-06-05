@@ -33,12 +33,12 @@
                 <c:url var="divisionsUrl" value="/action/Accounting/Division/Main">
                     <c:param name="CompanyName" value="${companyName}" />
                 </c:url>
-                <a href="${divisionsUrl}">Divisions</a> &gt;&gt;
+                <a href="${divisionsUrl}"><fmt:message key="navigation.divisions" /></a> &gt;&gt;
                 <c:url var="departmentsUrl" value="/action/Accounting/Department/Main">
                     <c:param name="CompanyName" value="${companyName}" />
                     <c:param name="DivisionName" value="${divisionName}" />
                 </c:url>
-                <a href="${departmentsUrl}">Departments</a> &gt;&gt;
+                <a href="${departmentsUrl}"><fmt:message key="navigation.departments" /></a> &gt;&gt;
                 Add
             </h2>
         </div>

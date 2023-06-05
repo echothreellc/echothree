@@ -37,12 +37,12 @@
                 <c:url var="divisionsUrl" value="/action/Accounting/Division/Main">
                     <c:param name="CompanyName" value="${department.division.company.companyName}" />
                 </c:url>
-                <a href="${divisionsUrl}">Divisions</a> &gt;&gt;
-                <c:url var="divisionsUrl" value="/action/Accounting/Division/Main">
+                <a href="${divisionsUrl}"><fmt:message key="navigation.divisions" /></a> &gt;&gt;
+                <c:url var="departmentsUrl" value="/action/Accounting/Department/Main">
                     <c:param name="CompanyName" value="${department.division.company.companyName}" />
                     <c:param name="DivisionName" value="${department.division.divisionName}" />
                 </c:url>
-                <a href="${divisionsUrl}">Departments</a> &gt;&gt;
+                <a href="${departmentsUrl}"><fmt:message key="navigation.departments" /></a> &gt;&gt;
                 Review (<c:out value="${department.departmentName}" />)
             </h2>
         </div>
