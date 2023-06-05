@@ -41,7 +41,7 @@
             <et:checkSecurityRoles securityRoles="Event.List" />
             <p><font size="+2"><b><c:out value="${company.partyGroup.name}" /></b></font></p>
             <br />
-            Company Name: ${company.companyName}<br />
+            <fmt:message key="label.companyName" />: ${company.companyName}<br />
             <br />
             <h2>Accounts Payable Invoices</h2>
             <c:choose>

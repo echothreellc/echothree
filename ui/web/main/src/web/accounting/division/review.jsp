@@ -45,8 +45,8 @@
             <et:checkSecurityRoles securityRoles="Event.List" />
             <p><font size="+2"><b><c:out value="${division.partyGroup.name}" /></b></font></p>
             <br />
-            Company Name: ${division.company.companyName}<br />
-            Division Name: ${division.divisionName}<br />
+            <fmt:message key="label.companyName" />: ${division.company.companyName}<br />
+            <fmt:message key="label.divisionName" />: ${division.divisionName}<br />
             <br />
             <br />
             <br />
