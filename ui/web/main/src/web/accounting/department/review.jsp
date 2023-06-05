@@ -20,7 +20,11 @@
 
 <html:html xhtml="true">
     <head>
-        <title>Review (<c:out value="${department.departmentName}" />)</title>
+        <title>
+            <fmt:message key="pageTitle.department">
+                <fmt:param value="${department.departmentName}" />
+            </fmt:message>
+        </title>
         <html:base/>
         <%@ include file="../../include/environment.jsp" %>
     </head>
