@@ -34,7 +34,7 @@
                     <c:param name="CountryName" value="${country.geoCodeName}" />
                 </c:url>
                 <a href="${harmonizedTariffScheduleCodeUrl}"><fmt:message key="navigation.harmonizedTariffScheduleCodes" /></a> &gt;&gt;
-                Results
+                <fmt:message key="navigation.results" />
             </h2>
         </div>
         <div id="Content">

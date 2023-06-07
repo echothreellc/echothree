@@ -31,7 +31,7 @@
                 <a href="<c:url value="/action/SalesOrder/Main" />">Sales Orders</a> &gt;&gt;
                 Sales Order Batches &gt;&gt;
                 <a href="<c:url value="/action/SalesOrder/SalesOrderBatch/Main" />">Search</a> &gt;&gt;
-                Results
+                <fmt:message key="navigation.results" />
             </h2>
         </div>
         <div id="Content">
