@@ -30,7 +30,7 @@
                 <a href="<c:url value="/action/Portal" />"><fmt:message key="navigation.portal" /></a> &gt;&gt;
                 <a href="<c:url value="/action/Item/Main" />">Items</a> &gt;&gt;
                 <a href="<c:url value="/action/Item/Item/Main" />">Search</a> &gt;&gt;
-                Results
+                <fmt:message key="navigation.results" />
             </h2>
         </div>
         <div id="Content">
