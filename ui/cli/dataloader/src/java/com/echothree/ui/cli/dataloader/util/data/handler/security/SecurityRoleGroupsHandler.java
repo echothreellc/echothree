@@ -16,21 +16,16 @@
 
 package com.echothree.ui.cli.dataloader.util.data.handler.security;
 
-import com.echothree.control.user.security.common.SecurityUtil;
 import com.echothree.control.user.security.common.SecurityService;
+import com.echothree.control.user.security.common.SecurityUtil;
 import com.echothree.control.user.security.common.edit.SecurityRoleGroupEdit;
-import com.echothree.control.user.security.common.form.CreateSecurityRoleGroupForm;
-import com.echothree.control.user.security.common.form.EditSecurityRoleGroupForm;
 import com.echothree.control.user.security.common.form.SecurityFormFactory;
 import com.echothree.control.user.security.common.result.EditSecurityRoleGroupResult;
-import com.echothree.control.user.security.common.spec.SecurityRoleGroupSpec;
 import com.echothree.control.user.security.common.spec.SecuritySpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import com.echothree.util.common.message.ExecutionErrors;
-import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
+import com.echothree.util.common.message.ExecutionErrors;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -56,19 +51,19 @@ public class SecurityRoleGroupsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("securityRoleGroup")) {
-            SecurityRoleGroupSpec spec = SecuritySpecFactory.getSecurityRoleGroupSpec();
-            EditSecurityRoleGroupForm editForm = SecurityFormFactory.getEditSecurityRoleGroupForm();
+            var spec = SecuritySpecFactory.getSecurityRoleGroupSpec();
+            var editForm = SecurityFormFactory.getEditSecurityRoleGroupForm();
 
             spec.set(getAttrsMap(attrs));
 
             editForm.setSpec(spec);
             editForm.setEditMode(EditMode.LOCK);
-            
-            CommandResult commandResult = securityService.editSecurityRoleGroup(initialDataParser.getUserVisit(), editForm);
+
+            var commandResult = securityService.editSecurityRoleGroup(initialDataParser.getUserVisit(), editForm);
             
             if(commandResult.hasErrors()) {
                 if(commandResult.containsExecutionError(ExecutionErrors.UnknownSecurityRoleGroupName.name())) {
-                    CreateSecurityRoleGroupForm createForm = SecurityFormFactory.getCreateSecurityRoleGroupForm();
+                    var createForm = SecurityFormFactory.getCreateSecurityRoleGroupForm();
 
                     createForm.set(getAttrsMap(attrs));
 
@@ -81,16 +76,16 @@ public class SecurityRoleGroupsHandler
                     getLogger().error(commandResult.toString());
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                EditSecurityRoleGroupResult result = (EditSecurityRoleGroupResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditSecurityRoleGroupResult)executionResult.getResult();
 
                 if(result != null) {
-                    SecurityRoleGroupEdit edit = (SecurityRoleGroupEdit)result.getEdit();
-                    String currentParentSecurityRoleGroupName = edit.getParentSecurityRoleGroupName();
-                    String parentSecurityRoleGroupName = attrs.getValue("parentSecurityRoleGroupName");
-                    String isDefault = attrs.getValue("isDefault");
-                    String sortOrder = attrs.getValue("sortOrder");
-                    boolean changed = false;
+                    var edit = (SecurityRoleGroupEdit)result.getEdit();
+                    var currentParentSecurityRoleGroupName = edit.getParentSecurityRoleGroupName();
+                    var parentSecurityRoleGroupName = attrs.getValue("parentSecurityRoleGroupName");
+                    var isDefault = attrs.getValue("isDefault");
+                    var sortOrder = attrs.getValue("sortOrder");
+                    var changed = false;
                     
                     if(currentParentSecurityRoleGroupName == null && parentSecurityRoleGroupName != null) {
                         edit.setParentSecurityRoleGroupName(parentSecurityRoleGroupName);

@@ -45,9 +45,9 @@ public class PartySecurityRoleTemplatesHandler
     
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
-    throws SAXException {
+            throws SAXException {
         if(localName.equals("partySecurityRoleTemplate")) {
-            CreatePartySecurityRoleTemplateForm commandForm = SecurityFormFactory.getCreatePartySecurityRoleTemplateForm();
+            var commandForm = SecurityFormFactory.getCreatePartySecurityRoleTemplateForm();
 
             commandForm.set(getAttrsMap(attrs));
 
@@ -59,7 +59,7 @@ public class PartySecurityRoleTemplatesHandler
     
     @Override
     public void endElement(String namespaceURI, String localName, String qName)
-    throws SAXException {
+            throws SAXException {
         if(localName.equals("partySecurityRoleTemplates")) {
             initialDataParser.popHandler();
         }
