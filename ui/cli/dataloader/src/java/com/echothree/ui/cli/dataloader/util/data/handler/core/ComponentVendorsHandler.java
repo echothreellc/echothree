@@ -18,9 +18,18 @@ package com.echothree.ui.cli.dataloader.util.data.handler.core;
 
 import com.echothree.control.user.core.common.CoreService;
 import com.echothree.control.user.core.common.CoreUtil;
+import com.echothree.control.user.core.common.edit.ComponentVendorEdit;
 import com.echothree.control.user.core.common.form.CoreFormFactory;
+import com.echothree.control.user.core.common.result.EditComponentVendorResult;
+import com.echothree.control.user.core.common.spec.CoreSpecFactory;
+import com.echothree.control.user.security.common.edit.SecurityRoleGroupEdit;
+import com.echothree.control.user.security.common.form.SecurityFormFactory;
+import com.echothree.control.user.security.common.result.EditSecurityRoleGroupResult;
+import com.echothree.control.user.security.common.spec.SecuritySpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
+import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.message.ExecutionErrors;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -46,16 +55,68 @@ public class ComponentVendorsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("componentVendor")) {
-            var commandForm = CoreFormFactory.getCreateComponentVendorForm();
+            var spec = CoreSpecFactory.getComponentVendorSpec();
+            var editForm = CoreFormFactory.getEditComponentVendorForm();
 
-            commandForm.set(getAttrsMap(attrs));
+            spec.set(getAttrsMap(attrs));
 
-            String commandAction = (String)commandForm.get("CommandAction");
+            String commandAction = (String)spec.get("CommandAction");
+            //getLogger().debug("Found: " + commandAction);
             if(commandAction == null || commandAction.equals("create")) {
-                coreService.createComponentVendor(initialDataParser.getUserVisit(), commandForm);
+                editForm.setSpec(spec);
+                editForm.setEditMode(EditMode.LOCK);
+
+                var commandResult = coreService.editComponentVendor(initialDataParser.getUserVisit(), editForm);
+
+                if(commandResult.hasErrors()) {
+                    if(commandResult.containsExecutionError(ExecutionErrors.UnknownComponentVendorName.name())) {
+                        var createForm = CoreFormFactory.getCreateComponentVendorForm();
+
+                        createForm.set(getAttrsMap(attrs));
+
+                        //getLogger().debug("Creating: " + spec.getComponentVendorName());
+                        commandResult = coreService.createComponentVendor(initialDataParser.getUserVisit(), createForm);
+
+                        if(commandResult.hasErrors()) {
+                            getLogger().error(commandResult.toString());
+                        }
+                    } else {
+                        getLogger().error(commandResult.toString());
+                    }
+                } else {
+                    var executionResult = commandResult.getExecutionResult();
+                    var result = (EditComponentVendorResult)executionResult.getResult();
+
+                    ///getLogger().debug("Checking for edits: " + spec.getComponentVendorName());
+                    if(result != null) {
+                        var edit = (ComponentVendorEdit)result.getEdit();
+                        var description = attrs.getValue("description");
+                        var changed = false;
+
+                        if(!edit.getDescription().equals(description)) {
+                            edit.setDescription(description);
+                            changed = true;
+                        }
+
+                        if(changed) {
+                            //getLogger().debug("Updating: " + spec.getComponentVendorName());
+                            editForm.setEdit(edit);
+                            editForm.setEditMode(EditMode.UPDATE);
+                        } else {
+                            //getLogger().debug("Abandoning: " + spec.getComponentVendorName());
+                            editForm.setEdit(null);
+                            editForm.setEditMode(EditMode.ABANDON);
+                        }
+
+                        commandResult = coreService.editComponentVendor(initialDataParser.getUserVisit(), editForm);
+                        if(commandResult.hasErrors()) {
+                            getLogger().error(commandResult.toString());
+                        }
+                    }
+                }
             }
 
-            initialDataParser.pushHandler(new ComponentVendorHandler(initialDataParser, this, commandForm.getComponentVendorName()));
+            initialDataParser.pushHandler(new ComponentVendorHandler(initialDataParser, this, spec.getComponentVendorName()));
         }
     }
 
