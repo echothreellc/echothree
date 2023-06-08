@@ -16,10 +16,9 @@
 
 package com.echothree.ui.cli.dataloader.util.data.handler.core;
 
-import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.CoreService;
+import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.form.CoreFormFactory;
-import com.echothree.control.user.core.common.form.CreateComponentVendorForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -47,7 +46,7 @@ public class ComponentVendorsHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("componentVendor")) {
-            CreateComponentVendorForm commandForm = CoreFormFactory.getCreateComponentVendorForm();
+            var commandForm = CoreFormFactory.getCreateComponentVendorForm();
 
             commandForm.set(getAttrsMap(attrs));
 
