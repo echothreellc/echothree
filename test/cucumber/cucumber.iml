@@ -12,5 +12,6 @@
     <orderEntry type="library" name="Echo Three Client" level="project" />
     <orderEntry type="library" name="From Ivy" level="project" />
     <orderEntry type="library" name="From Project" level="project" />
+    <orderEntry type="module" module-name="src" />
   </component>
 </module>
