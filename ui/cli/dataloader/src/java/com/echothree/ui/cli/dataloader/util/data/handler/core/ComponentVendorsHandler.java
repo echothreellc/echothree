@@ -22,13 +22,12 @@ import com.echothree.control.user.core.common.edit.ComponentVendorEdit;
 import com.echothree.control.user.core.common.form.CoreFormFactory;
 import com.echothree.control.user.core.common.result.EditComponentVendorResult;
 import com.echothree.control.user.core.common.spec.CoreSpecFactory;
-import com.echothree.control.user.security.common.edit.SecurityRoleGroupEdit;
-import com.echothree.control.user.security.common.form.SecurityFormFactory;
-import com.echothree.control.user.security.common.result.EditSecurityRoleGroupResult;
-import com.echothree.control.user.security.common.spec.SecuritySpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.form.BaseEdit;
+import com.echothree.util.common.form.BaseEditForm;
+import com.echothree.util.common.form.BaseSpec;
 import com.echothree.util.common.message.ExecutionErrors;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
@@ -63,6 +62,8 @@ public class ComponentVendorsHandler
             String commandAction = (String)spec.get("CommandAction");
             //getLogger().debug("Found: " + commandAction);
             if(commandAction == null || commandAction.equals("create")) {
+                var attrsMap = getAttrsMap(attrs);
+
                 editForm.setSpec(spec);
                 editForm.setEditMode(EditMode.LOCK);
 
@@ -72,7 +73,7 @@ public class ComponentVendorsHandler
                     if(commandResult.containsExecutionError(ExecutionErrors.UnknownComponentVendorName.name())) {
                         var createForm = CoreFormFactory.getCreateComponentVendorForm();
 
-                        createForm.set(getAttrsMap(attrs));
+                        createForm.set(attrsMap);
 
                         //getLogger().debug("Creating: " + spec.getComponentVendorName());
                         commandResult = coreService.createComponentVendor(initialDataParser.getUserVisit(), createForm);
@@ -98,15 +99,7 @@ public class ComponentVendorsHandler
                             changed = true;
                         }
 
-                        if(changed) {
-                            //getLogger().debug("Updating: " + spec.getComponentVendorName());
-                            editForm.setEdit(edit);
-                            editForm.setEditMode(EditMode.UPDATE);
-                        } else {
-                            //getLogger().debug("Abandoning: " + spec.getComponentVendorName());
-                            editForm.setEdit(null);
-                            editForm.setEditMode(EditMode.ABANDON);
-                        }
+                        setupEditForm(editForm, edit, changed);
 
                         commandResult = coreService.editComponentVendor(initialDataParser.getUserVisit(), editForm);
                         if(commandResult.hasErrors()) {
@@ -117,6 +110,18 @@ public class ComponentVendorsHandler
             }
 
             initialDataParser.pushHandler(new ComponentVendorHandler(initialDataParser, this, spec.getComponentVendorName()));
+        }
+    }
+
+    protected <S extends BaseSpec, E extends BaseEdit> void setupEditForm(final BaseEditForm<S, E> baseEditForm, final E edit, final boolean changed) {
+        if(changed) {
+            //getLogger().debug("Updating: " + spec.getComponentVendorName());
+            baseEditForm.setEdit(edit);
+            baseEditForm.setEditMode(EditMode.UPDATE);
+        } else {
+            //getLogger().debug("Abandoning: " + spec.getComponentVendorName());
+            baseEditForm.setEdit(null);
+            baseEditForm.setEditMode(EditMode.ABANDON);
         }
     }
 
