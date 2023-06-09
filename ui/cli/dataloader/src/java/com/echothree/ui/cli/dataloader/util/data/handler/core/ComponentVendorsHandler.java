@@ -20,6 +20,7 @@ import com.echothree.control.user.core.common.CoreService;
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.edit.ComponentVendorEdit;
 import com.echothree.control.user.core.common.form.CoreFormFactory;
+import com.echothree.control.user.core.common.form.EditComponentVendorForm;
 import com.echothree.control.user.core.common.result.EditComponentVendorResult;
 import com.echothree.control.user.core.common.spec.CoreSpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
@@ -29,6 +30,7 @@ import com.echothree.util.common.form.BaseEdit;
 import com.echothree.util.common.form.BaseEditForm;
 import com.echothree.util.common.form.BaseSpec;
 import com.echothree.util.common.message.ExecutionErrors;
+import java.util.Map;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -88,18 +90,9 @@ public class ComponentVendorsHandler
                     var executionResult = commandResult.getExecutionResult();
                     var result = (EditComponentVendorResult)executionResult.getResult();
 
-                    ///getLogger().debug("Checking for edits: " + spec.getComponentVendorName());
+                    ///getLogger().debug("Checking for modifications: " + spec.getComponentVendorName());
                     if(result != null) {
-                        var edit = (ComponentVendorEdit)result.getEdit();
-                        var description = attrs.getValue("description");
-                        var changed = false;
-
-                        if(!edit.getDescription().equals(description)) {
-                            edit.setDescription(description);
-                            changed = true;
-                        }
-
-                        setupEditForm(editForm, edit, changed);
+                        updateEditFormValues(editForm, attrsMap, result);
 
                         commandResult = coreService.editComponentVendor(initialDataParser.getUserVisit(), editForm);
                         if(commandResult.hasErrors()) {
@@ -110,18 +103,6 @@ public class ComponentVendorsHandler
             }
 
             initialDataParser.pushHandler(new ComponentVendorHandler(initialDataParser, this, spec.getComponentVendorName()));
-        }
-    }
-
-    protected <S extends BaseSpec, E extends BaseEdit> void setupEditForm(final BaseEditForm<S, E> baseEditForm, final E edit, final boolean changed) {
-        if(changed) {
-            //getLogger().debug("Updating: " + spec.getComponentVendorName());
-            baseEditForm.setEdit(edit);
-            baseEditForm.setEditMode(EditMode.UPDATE);
-        } else {
-            //getLogger().debug("Abandoning: " + spec.getComponentVendorName());
-            baseEditForm.setEdit(null);
-            baseEditForm.setEditMode(EditMode.ABANDON);
         }
     }
 
