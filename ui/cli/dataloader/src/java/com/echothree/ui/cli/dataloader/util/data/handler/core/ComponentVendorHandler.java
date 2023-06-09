@@ -19,8 +19,13 @@ package com.echothree.ui.cli.dataloader.util.data.handler.core;
 import com.echothree.control.user.core.common.CoreService;
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.form.CoreFormFactory;
+import com.echothree.control.user.core.common.result.EditComponentVendorResult;
+import com.echothree.control.user.core.common.result.EditEntityTypeResult;
+import com.echothree.control.user.core.common.spec.CoreSpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
+import com.echothree.util.common.command.EditMode;
+import com.echothree.util.common.message.ExecutionErrors;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -63,17 +68,54 @@ public class ComponentVendorHandler
                 initialDataParser.pushHandler(new ComponentHandler(initialDataParser, this, componentVendorName, commandForm.getComponentName()));
             }
             case "entityType" -> {
-                var commandForm = CoreFormFactory.getCreateEntityTypeForm();
+                var spec = CoreSpecFactory.getEntityTypeSpec();
+                var editForm = CoreFormFactory.getEditEntityTypeForm();
 
-                commandForm.setComponentVendorName(componentVendorName);
-                commandForm.set(getAttrsMap(attrs));
+                spec.setComponentVendorName(componentVendorName);
+                spec.set(getAttrsMap(attrs));
 
-                var commandAction = (String)commandForm.get("CommandAction");
+                var commandAction = (String)spec.get("CommandAction");
+                getLogger().debug("Found: " + commandAction);
                 if(commandAction == null || commandAction.equals("create")) {
-                    coreService.createEntityType(initialDataParser.getUserVisit(), commandForm);
+                    var attrsMap = getAttrsMap(attrs);
+
+                    editForm.setSpec(spec);
+                    editForm.setEditMode(EditMode.LOCK);
+
+                    var commandResult = coreService.editEntityType(initialDataParser.getUserVisit(), editForm);
+
+                    if(commandResult.hasErrors()) {
+                        if(commandResult.containsExecutionError(ExecutionErrors.UnknownEntityTypeName.name())) {
+                            var createForm = CoreFormFactory.getCreateEntityTypeForm();
+
+                            createForm.set(spec.get());
+
+                            getLogger().debug("Creating: " + spec.getEntityTypeName());
+                            commandResult = coreService.createEntityType(initialDataParser.getUserVisit(), createForm);
+
+                            if(commandResult.hasErrors()) {
+                                getLogger().error(commandResult.toString());
+                            }
+                        } else {
+                            getLogger().error(commandResult.toString());
+                        }
+                    } else {
+                        var executionResult = commandResult.getExecutionResult();
+                        var result = (EditEntityTypeResult)executionResult.getResult();
+
+                        getLogger().debug("Checking for modifications: " + spec.getEntityTypeName());
+                        if(result != null) {
+                            updateEditFormValues(editForm, attrsMap, result);
+
+                            commandResult = coreService.editEntityType(initialDataParser.getUserVisit(), editForm);
+                            if(commandResult.hasErrors()) {
+                                getLogger().error(commandResult.toString());
+                            }
+                        }
+                    }
                 }
 
-                initialDataParser.pushHandler(new EntityTypeHandler(initialDataParser, this, componentVendorName, commandForm.getEntityTypeName()));
+                initialDataParser.pushHandler(new EntityTypeHandler(initialDataParser, this, componentVendorName, spec.getEntityTypeName()));
             }
             case "command" -> {
                 var commandForm = CoreFormFactory.getCreateCommandForm();
