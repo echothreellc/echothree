@@ -16,26 +16,19 @@
 
 package com.echothree.ui.cli.dataloader.util.data.handler.security;
 
-import com.echothree.control.user.security.common.SecurityUtil;
 import com.echothree.control.user.security.common.SecurityService;
+import com.echothree.control.user.security.common.SecurityUtil;
 import com.echothree.control.user.security.common.edit.SecurityRoleEdit;
 import com.echothree.control.user.security.common.edit.SecurityRoleGroupDescriptionEdit;
-import com.echothree.control.user.security.common.form.CreateSecurityRoleForm;
-import com.echothree.control.user.security.common.form.CreateSecurityRoleGroupDescriptionForm;
-import com.echothree.control.user.security.common.form.EditSecurityRoleForm;
-import com.echothree.control.user.security.common.form.EditSecurityRoleGroupDescriptionForm;
 import com.echothree.control.user.security.common.form.SecurityFormFactory;
 import com.echothree.control.user.security.common.result.EditSecurityRoleGroupDescriptionResult;
 import com.echothree.control.user.security.common.result.EditSecurityRoleResult;
-import com.echothree.control.user.security.common.spec.SecurityRoleGroupDescriptionSpec;
-import com.echothree.control.user.security.common.spec.SecurityRoleSpec;
 import com.echothree.control.user.security.common.spec.SecuritySpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.EditMode;
-import com.echothree.util.common.command.ExecutionResult;
+import com.echothree.util.common.message.ExecutionErrors;
 import javax.naming.NamingException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -44,6 +37,7 @@ public class SecurityRoleGroupHandler
         extends BaseHandler {
     
     SecurityService securityService;
+
     String securityRoleGroupName;
     
     /** Creates a new instance of SecurityRoleGroupHandler */
@@ -64,8 +58,8 @@ public class SecurityRoleGroupHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("securityRoleGroupDescription")) {
-            SecurityRoleGroupDescriptionSpec spec = SecuritySpecFactory.getSecurityRoleGroupDescriptionSpec();
-            EditSecurityRoleGroupDescriptionForm editForm = SecurityFormFactory.getEditSecurityRoleGroupDescriptionForm();
+            var spec = SecuritySpecFactory.getSecurityRoleGroupDescriptionSpec();
+            var editForm = SecurityFormFactory.getEditSecurityRoleGroupDescriptionForm();
 
             spec.setSecurityRoleGroupName(securityRoleGroupName);
             spec.set(getAttrsMap(attrs));
@@ -77,7 +71,7 @@ public class SecurityRoleGroupHandler
             
             if(commandResult.hasErrors()) {
                 if(commandResult.containsExecutionError(ExecutionErrors.UnknownSecurityRoleGroupDescription.name())) {
-                    CreateSecurityRoleGroupDescriptionForm createForm = SecurityFormFactory.getCreateSecurityRoleGroupDescriptionForm();
+                    var createForm = SecurityFormFactory.getCreateSecurityRoleGroupDescriptionForm();
 
                     createForm.setSecurityRoleGroupName(securityRoleGroupName);
                     createForm.set(getAttrsMap(attrs));
@@ -91,13 +85,13 @@ public class SecurityRoleGroupHandler
                     getLogger().error(commandResult.toString());
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                EditSecurityRoleGroupDescriptionResult result = (EditSecurityRoleGroupDescriptionResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditSecurityRoleGroupDescriptionResult)executionResult.getResult();
 
                 if(result != null) {
-                    SecurityRoleGroupDescriptionEdit edit = (SecurityRoleGroupDescriptionEdit)result.getEdit();
-                    String description = attrs.getValue("description");
-                    boolean changed = false;
+                    var edit = (SecurityRoleGroupDescriptionEdit)result.getEdit();
+                    var description = attrs.getValue("description");
+                    var changed = false;
                     
                     if(!edit.getDescription().equals(description)) {
                         edit.setDescription(description);
@@ -126,8 +120,8 @@ public class SecurityRoleGroupHandler
                 }
             }
         } else if(localName.equals("securityRole")) {
-            SecurityRoleSpec spec = SecuritySpecFactory.getSecurityRoleSpec();
-            EditSecurityRoleForm editForm = SecurityFormFactory.getEditSecurityRoleForm();
+            var spec = SecuritySpecFactory.getSecurityRoleSpec();
+            var editForm = SecurityFormFactory.getEditSecurityRoleForm();
 
             spec.setSecurityRoleGroupName(securityRoleGroupName);
             spec.set(getAttrsMap(attrs));
@@ -139,7 +133,7 @@ public class SecurityRoleGroupHandler
             
             if(commandResult.hasErrors()) {
                 if(commandResult.containsExecutionError(ExecutionErrors.UnknownSecurityRoleName.name())) {
-                    CreateSecurityRoleForm createForm = SecurityFormFactory.getCreateSecurityRoleForm();
+                    var createForm = SecurityFormFactory.getCreateSecurityRoleForm();
 
                     createForm.setSecurityRoleGroupName(securityRoleGroupName);
                     createForm.set(getAttrsMap(attrs));
@@ -153,14 +147,14 @@ public class SecurityRoleGroupHandler
                     getLogger().error(commandResult.toString());
                 }
             } else {
-                ExecutionResult executionResult = commandResult.getExecutionResult();
-                EditSecurityRoleResult result = (EditSecurityRoleResult)executionResult.getResult();
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditSecurityRoleResult)executionResult.getResult();
 
                 if(result != null) {
-                    SecurityRoleEdit edit = (SecurityRoleEdit)result.getEdit();
-                    String isDefault = attrs.getValue("isDefault");
-                    String sortOrder = attrs.getValue("sortOrder");
-                    boolean changed = false;
+                    var edit = (SecurityRoleEdit)result.getEdit();
+                    var isDefault = attrs.getValue("isDefault");
+                    var sortOrder = attrs.getValue("sortOrder");
+                    var changed = false;
                     
                     if(!edit.getIsDefault().equals(isDefault)) {
                         edit.setIsDefault(isDefault);

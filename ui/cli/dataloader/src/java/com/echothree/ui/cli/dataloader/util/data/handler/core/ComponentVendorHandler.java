@@ -16,12 +16,9 @@
 
 package com.echothree.ui.cli.dataloader.util.data.handler.core;
 
-import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.CoreService;
+import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.form.CoreFormFactory;
-import com.echothree.control.user.core.common.form.CreateCommandForm;
-import com.echothree.control.user.core.common.form.CreateComponentForm;
-import com.echothree.control.user.core.common.form.CreateEntityTypeForm;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import javax.naming.NamingException;
@@ -32,6 +29,7 @@ public class ComponentVendorHandler
         extends BaseHandler {
 
     CoreService coreService;
+
     String componentVendorName;
 
     /** Creates a new instance of ComponentVendorHandler */
@@ -50,42 +48,46 @@ public class ComponentVendorHandler
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
-        if(localName.equals("component")) {
-            CreateComponentForm commandForm = CoreFormFactory.getCreateComponentForm();
+        switch(localName) {
+            case "component" -> {
+                var commandForm = CoreFormFactory.getCreateComponentForm();
 
-            commandForm.setComponentVendorName(componentVendorName);
-            commandForm.set(getAttrsMap(attrs));
+                commandForm.setComponentVendorName(componentVendorName);
+                commandForm.set(getAttrsMap(attrs));
 
-            String commandAction = (String)commandForm.get("CommandAction");
-            if(commandAction == null || commandAction.equals("create")) {
-                coreService.createComponent(initialDataParser.getUserVisit(), commandForm);
+                var commandAction = (String)commandForm.get("CommandAction");
+                if(commandAction == null || commandAction.equals("create")) {
+                    coreService.createComponent(initialDataParser.getUserVisit(), commandForm);
+                }
+
+                initialDataParser.pushHandler(new ComponentHandler(initialDataParser, this, componentVendorName, commandForm.getComponentName()));
             }
+            case "entityType" -> {
+                var commandForm = CoreFormFactory.getCreateEntityTypeForm();
 
-            initialDataParser.pushHandler(new ComponentHandler(initialDataParser, this, componentVendorName, commandForm.getComponentName()));
-        } else if(localName.equals("entityType")) {
-            CreateEntityTypeForm commandForm = CoreFormFactory.getCreateEntityTypeForm();
+                commandForm.setComponentVendorName(componentVendorName);
+                commandForm.set(getAttrsMap(attrs));
 
-            commandForm.setComponentVendorName(componentVendorName);
-            commandForm.set(getAttrsMap(attrs));
+                var commandAction = (String)commandForm.get("CommandAction");
+                if(commandAction == null || commandAction.equals("create")) {
+                    coreService.createEntityType(initialDataParser.getUserVisit(), commandForm);
+                }
 
-            String commandAction = (String)commandForm.get("CommandAction");
-            if(commandAction == null || commandAction.equals("create")) {
-                coreService.createEntityType(initialDataParser.getUserVisit(), commandForm);
+                initialDataParser.pushHandler(new EntityTypeHandler(initialDataParser, this, componentVendorName, commandForm.getEntityTypeName()));
             }
+            case "command" -> {
+                var commandForm = CoreFormFactory.getCreateCommandForm();
 
-            initialDataParser.pushHandler(new EntityTypeHandler(initialDataParser, this, componentVendorName, commandForm.getEntityTypeName()));
-        } else if(localName.equals("command")) {
-            CreateCommandForm commandForm = CoreFormFactory.getCreateCommandForm();
+                commandForm.setComponentVendorName(componentVendorName);
+                commandForm.set(getAttrsMap(attrs));
 
-            commandForm.setComponentVendorName(componentVendorName);
-            commandForm.set(getAttrsMap(attrs));
+                var commandAction = (String)commandForm.get("CommandAction");
+                if(commandAction == null || commandAction.equals("create")) {
+                    coreService.createCommand(initialDataParser.getUserVisit(), commandForm);
+                }
 
-            String commandAction = (String)commandForm.get("CommandAction");
-            if(commandAction == null || commandAction.equals("create")) {
-                coreService.createCommand(initialDataParser.getUserVisit(), commandForm);
+                initialDataParser.pushHandler(new CommandHandler(initialDataParser, this, componentVendorName, commandForm.getCommandName()));
             }
-
-            initialDataParser.pushHandler(new CommandHandler(initialDataParser, this, componentVendorName, commandForm.getCommandName()));
         }
     }
 
