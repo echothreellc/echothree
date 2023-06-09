@@ -32,10 +32,14 @@ public class WorkflowsHandler
     
     /** Creates a new instance of WorkflowsHandler */
     public WorkflowsHandler(InitialDataParser initialDataParser, BaseHandler parentHandler)
-            throws SAXException, NamingException {
+            throws SAXException {
         super(initialDataParser, parentHandler);
-        
-        workflowService = WorkflowUtil.getHome();
+
+        try {
+            workflowService = WorkflowUtil.getHome();
+        } catch (NamingException ne) {
+            throw new SAXException(ne);
+        }
     }
     
     @Override

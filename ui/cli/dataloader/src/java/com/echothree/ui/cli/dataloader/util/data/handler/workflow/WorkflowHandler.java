@@ -16,13 +16,8 @@
 
 package com.echothree.ui.cli.dataloader.util.data.handler.workflow;
 
-import com.echothree.control.user.workflow.common.WorkflowUtil;
 import com.echothree.control.user.workflow.common.WorkflowService;
-import com.echothree.control.user.workflow.common.form.CreateWorkflowDescriptionForm;
-import com.echothree.control.user.workflow.common.form.CreateWorkflowDestinationForm;
-import com.echothree.control.user.workflow.common.form.CreateWorkflowEntityTypeForm;
-import com.echothree.control.user.workflow.common.form.CreateWorkflowEntranceForm;
-import com.echothree.control.user.workflow.common.form.CreateWorkflowStepForm;
+import com.echothree.control.user.workflow.common.WorkflowUtil;
 import com.echothree.control.user.workflow.common.form.WorkflowFormFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
@@ -32,7 +27,9 @@ import org.xml.sax.SAXException;
 
 public class WorkflowHandler
         extends BaseHandler {
+
     WorkflowService workflowService;
+
     String workflowName;
     
     /** Creates a new instance of WorkflowHandler */
@@ -53,14 +50,14 @@ public class WorkflowHandler
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
         if(localName.equals("workflowDescription")) {
-            CreateWorkflowDescriptionForm commandForm = WorkflowFormFactory.getCreateWorkflowDescriptionForm();
+            var commandForm = WorkflowFormFactory.getCreateWorkflowDescriptionForm();
             
             commandForm.setWorkflowName(workflowName);
             commandForm.set(getAttrsMap(attrs));
             
             workflowService.createWorkflowDescription(initialDataParser.getUserVisit(), commandForm);
         } else if(localName.equals("workflowStep")) {
-            CreateWorkflowStepForm commandForm = WorkflowFormFactory.getCreateWorkflowStepForm();
+            var commandForm = WorkflowFormFactory.getCreateWorkflowStepForm();
             
             commandForm.setWorkflowName(workflowName);
             commandForm.set(getAttrsMap(attrs));
@@ -70,7 +67,7 @@ public class WorkflowHandler
             initialDataParser.pushHandler(new WorkflowStepHandler(initialDataParser, this, workflowName,
                     commandForm.getWorkflowStepName()));
         } else if(localName.equals("workflowDestination")) {
-            CreateWorkflowDestinationForm commandForm = WorkflowFormFactory.getCreateWorkflowDestinationForm();
+            var commandForm = WorkflowFormFactory.getCreateWorkflowDestinationForm();
             
             commandForm.setWorkflowName(workflowName);
             commandForm.set(getAttrsMap(attrs));
@@ -80,7 +77,7 @@ public class WorkflowHandler
             initialDataParser.pushHandler(new WorkflowDestinationHandler(initialDataParser, this, workflowName, 
                     commandForm.getWorkflowStepName(), commandForm.getWorkflowDestinationName()));
         } else if(localName.equals("workflowEntrance")) {
-            CreateWorkflowEntranceForm commandForm = WorkflowFormFactory.getCreateWorkflowEntranceForm();
+            var commandForm = WorkflowFormFactory.getCreateWorkflowEntranceForm();
             
             commandForm.setWorkflowName(workflowName);
             commandForm.set(getAttrsMap(attrs));
@@ -90,7 +87,7 @@ public class WorkflowHandler
             initialDataParser.pushHandler(new WorkflowEntranceHandler(initialDataParser, this, workflowName,
                     commandForm.getWorkflowEntranceName()));
         } else if(localName.equals("workflowEntityType")) {
-            CreateWorkflowEntityTypeForm commandForm = WorkflowFormFactory.getCreateWorkflowEntityTypeForm();
+            var commandForm = WorkflowFormFactory.getCreateWorkflowEntityTypeForm();
             
             commandForm.setWorkflowName(workflowName);
             commandForm.set(getAttrsMap(attrs));
