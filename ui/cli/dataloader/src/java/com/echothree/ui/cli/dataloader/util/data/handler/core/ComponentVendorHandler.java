@@ -74,7 +74,7 @@ public class ComponentVendorHandler
                 spec.setComponentVendorName(componentVendorName);
                 spec.set(getAttrsMap(attrs));
 
-                String commandAction = (String)spec.get("CommandAction");
+                var commandAction = (String)spec.get("CommandAction");
                 getLogger().debug("Found: " + commandAction);
                 if(commandAction == null || commandAction.equals("create")) {
                     var attrsMap = getAttrsMap(attrs);
@@ -103,7 +103,7 @@ public class ComponentVendorHandler
                         var executionResult = commandResult.getExecutionResult();
                         var result = (EditEntityTypeResult)executionResult.getResult();
 
-                        /getLogger().debug("Checking for modifications: " + spec.getEntityTypeName());
+                        getLogger().debug("Checking for modifications: " + spec.getEntityTypeName());
                         if(result != null) {
                             updateEditFormValues(editForm, attrsMap, result);
 
