@@ -90,7 +90,7 @@ public class ComponentVendorHandler
 
                             createForm.set(spec.get());
 
-                            //getLogger().debug("Creating: " + spec.getEntityTypeName());
+                            getLogger().debug("Creating: " + spec.getEntityTypeName());
                             commandResult = coreService.createEntityType(initialDataParser.getUserVisit(), createForm);
 
                             if(commandResult.hasErrors()) {

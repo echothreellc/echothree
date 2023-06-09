@@ -102,7 +102,7 @@ public class EntityTypeHandler
 
                             createForm.set(spec.get());
 
-                            //getLogger().debug("Creating: " + spec.getEntityTypeName());
+                            getLogger().debug("Creating: " + spec.getEntityTypeName());
                             commandResult = coreService.createEntityTypeDescription(initialDataParser.getUserVisit(), createForm);
 
                             if(commandResult.hasErrors()) {
