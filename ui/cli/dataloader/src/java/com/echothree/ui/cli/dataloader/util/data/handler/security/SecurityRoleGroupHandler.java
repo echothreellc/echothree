@@ -73,8 +73,7 @@ public class SecurityRoleGroupHandler
                 if(commandResult.containsExecutionError(ExecutionErrors.UnknownSecurityRoleGroupDescription.name())) {
                     var createForm = SecurityFormFactory.getCreateSecurityRoleGroupDescriptionForm();
 
-                    createForm.setSecurityRoleGroupName(securityRoleGroupName);
-                    createForm.set(getAttrsMap(attrs));
+                    createForm.set(spec.get());
 
                     commandResult = securityService.createSecurityRoleGroupDescription(initialDataParser.getUserVisit(), createForm);
                     

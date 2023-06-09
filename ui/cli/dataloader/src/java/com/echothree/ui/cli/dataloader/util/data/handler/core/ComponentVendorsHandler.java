@@ -69,7 +69,7 @@ public class ComponentVendorsHandler
                     if(commandResult.containsExecutionError(ExecutionErrors.UnknownComponentVendorName.name())) {
                         var createForm = CoreFormFactory.getCreateComponentVendorForm();
 
-                        createForm.set(attrsMap);
+                        createForm.set(spec.get());
 
                         //getLogger().debug("Creating: " + spec.getComponentVendorName());
                         commandResult = coreService.createComponentVendor(initialDataParser.getUserVisit(), createForm);

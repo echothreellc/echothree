@@ -97,10 +97,10 @@ public class EntityTypeHandler
                     var commandResult = coreService.editEntityTypeDescription(initialDataParser.getUserVisit(), editForm);
 
                     if(commandResult.hasErrors()) {
-                        if(commandResult.containsExecutionError(ExecutionErrors.UnknownEntityTypeName.name())) {
+                        if(commandResult.containsExecutionError(ExecutionErrors.UnknownEntityTypeDescription.name())) {
                             var createForm = CoreFormFactory.getCreateEntityTypeDescriptionForm();
 
-                            createForm.set(attrsMap);
+                            createForm.set(spec.get());
 
                             //getLogger().debug("Creating: " + spec.getEntityTypeName());
                             commandResult = coreService.createEntityTypeDescription(initialDataParser.getUserVisit(), createForm);

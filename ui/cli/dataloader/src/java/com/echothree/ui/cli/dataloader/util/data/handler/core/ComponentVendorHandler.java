@@ -88,7 +88,7 @@ public class ComponentVendorHandler
                         if(commandResult.containsExecutionError(ExecutionErrors.UnknownEntityTypeName.name())) {
                             var createForm = CoreFormFactory.getCreateEntityTypeForm();
 
-                            createForm.set(attrsMap);
+                            createForm.set(spec.get());
 
                             //getLogger().debug("Creating: " + spec.getEntityTypeName());
                             commandResult = coreService.createEntityType(initialDataParser.getUserVisit(), createForm);
