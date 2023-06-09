@@ -92,7 +92,7 @@ public abstract class BaseHandler {
                 var xmlValue = attrsMap.get(key);
 
                 if(!currentValue.equals(xmlValue)) {
-                    //getLogger().debug("Updating key: \"" + key + "\" to value \"" + xmlValue + "\"");
+                    getLogger().debug("Updating key: \"" + key + "\" from value \"" + currentValue + "\"" + "\" to value \"" + xmlValue + "\"");
                     edit.set(key, xmlValue);
                     changed = true;
                 }
@@ -100,11 +100,11 @@ public abstract class BaseHandler {
         }
 
         if(changed) {
-            //getLogger().debug("Updating: " + spec.getComponentVendorName());
+            getLogger().debug("Updating.");
             baseEditForm.setEdit(edit);
             baseEditForm.setEditMode(EditMode.UPDATE);
         } else {
-            //getLogger().debug("Abandoning: " + spec.getComponentVendorName());
+            getLogger().debug("Abandoning.");
             baseEditForm.setEdit(null);
             baseEditForm.setEditMode(EditMode.ABANDON);
         }
