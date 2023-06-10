@@ -34,12 +34,12 @@ import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 
-public class BaseOrderObject
+public abstract class BaseOrderObject
         extends BaseEntityInstanceObject {
 
     private final Order order; // Always Present
 
-    public BaseOrderObject(final Order order) {
+    protected BaseOrderObject(final Order order) {
         super(order.getPrimaryKey());
 
         this.order = order;

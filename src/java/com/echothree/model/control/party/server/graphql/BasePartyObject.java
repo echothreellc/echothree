@@ -35,12 +35,12 @@ import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 
-public class BasePartyObject
+public abstract class BasePartyObject
         extends BaseEntityInstanceObject {
 
     protected final Party party; // Always Present
 
-    public BasePartyObject(Party party) {
+    protected BasePartyObject(Party party) {
         super(party.getPrimaryKey());
         
         this.party = party;
