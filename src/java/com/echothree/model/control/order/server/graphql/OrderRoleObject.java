@@ -17,39 +17,42 @@
 package com.echothree.model.control.order.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseObject;
-import com.echothree.model.control.graphql.server.graphql.TimeObject;
-import com.echothree.model.data.order.server.entity.OrderTime;
+import com.echothree.model.control.party.server.graphql.PartyObject;
+import com.echothree.model.control.party.server.graphql.PartySecurityUtils;
+import com.echothree.model.data.order.server.entity.OrderRole;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 
-@GraphQLDescription("order time object")
-@GraphQLName("OrderTime")
-public class OrderTimeObject
+@GraphQLDescription("order role type object")
+@GraphQLName("OrderRole")
+public class OrderRoleObject
         extends BaseObject {
     
-    private final OrderTime orderTime; // Always Present
+    private final OrderRole orderRole; // Always Present
 
-    public OrderTimeObject(final OrderTime orderTime) {
-        super(orderTime.getPrimaryKey());
+    public OrderRoleObject(final OrderRole orderRole) {
+        super(orderRole.getPrimaryKey());
 
-        this.orderTime = orderTime;
+        this.orderRole = orderRole;
     }
 
     @GraphQLField
-    @GraphQLDescription("order time type")
-    @GraphQLNonNull
-    public OrderTimeTypeObject getOrderTimeType(final DataFetchingEnvironment env) {
-        return OrderSecurityUtils.getInstance().getHasOrderTimeTypeAccess(env) ? new OrderTimeTypeObject(orderTime.getOrderTimeType()) : null;
+    @GraphQLDescription("party")
+    public PartyObject getParty(final DataFetchingEnvironment env) {
+        var party = orderRole.getParty();
+
+        return PartySecurityUtils.getInstance().getHasPartyAccess(env, party) ? new PartyObject(party) : null;
     }
 
     @GraphQLField
-    @GraphQLDescription("time")
+    @GraphQLDescription("order role type")
     @GraphQLNonNull
-    public TimeObject getTime(final DataFetchingEnvironment env) {
-        return new TimeObject(orderTime.getTime());
+    public OrderRoleTypeObject getOrderRoleType(final DataFetchingEnvironment env) {
+        return OrderSecurityUtils.getInstance().getHasOrderRoleTypeAccess(env) ? new OrderRoleTypeObject(orderRole.getOrderRoleType()) : null;
     }
+
 
 }

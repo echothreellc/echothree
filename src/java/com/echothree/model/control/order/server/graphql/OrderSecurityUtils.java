@@ -60,4 +60,28 @@ public final class OrderSecurityUtils
         return getGraphQlExecutionContext(env).hasAccess(GetOrderTimeTypesCommand.class);
     }
 
+    public boolean getHasOrderTimeAccess(final DataFetchingEnvironment env) {
+        return true;
+    }
+
+    public boolean getHasOrderTimesAccess(final DataFetchingEnvironment env) {
+        return true;
+    }
+
+    public boolean getHasOrderRoleTypeAccess(final DataFetchingEnvironment env) {
+        return true;
+    }
+
+    public boolean getHasOrderRoleTypesAccess(final DataFetchingEnvironment env) {
+        return true;
+    }
+
+    public boolean getHasOrderRoleAccess(final DataFetchingEnvironment env) {
+        return true;
+    }
+
+    public boolean getHasOrderRolesAccess(final DataFetchingEnvironment env) {
+        return true;
+    }
+
 }
