@@ -1,5 +1,30 @@
 # Changelog
 
+## 2023-06-11-01
+
+* Add Support for Updating Component Vendors When Loading From XML [745](https://gitlab.echothree.com/echothree/echothree/-/issues/745)
+* Add Support for Updating Entity Types When Loading From XML [746](https://gitlab.echothree.com/echothree/echothree/-/issues/746)
+* Add Support for Updating Workflows When Loading From XML [752](https://gitlab.echothree.com/echothree/echothree/-/issues/752)
+* Add Facet UCs for Employees [761](https://gitlab.echothree.com/echothree/echothree/-/issues/761)
+* Add Facet UCs for Customers [762](https://gitlab.echothree.com/echothree/echothree/-/issues/762)
+* Add Order Object [763](https://gitlab.echothree.com/echothree/echothree/-/issues/763)
+* Add Order Line Object [764](https://gitlab.echothree.com/echothree/echothree/-/issues/764)
+* Add Order Time Object [765](https://gitlab.echothree.com/echothree/echothree/-/issues/765)
+* Add Order Line Time Object [767](https://gitlab.echothree.com/echothree/echothree/-/issues/767)
+* MySQL Connector/J 8.0.33 Upgrade [775](https://gitlab.echothree.com/echothree/echothree/-/issues/775)
+* Convert Warehouse and Location Page Titles to Use Message Resources [776](https://gitlab.echothree.com/echothree/echothree/-/issues/776)
+* Convert Warehouse and Location Breadcrumbs to Use Message Resources [777](https://gitlab.echothree.com/echothree/echothree/-/issues/777)
+* Simple Warehouse Search [778](https://gitlab.echothree.com/echothree/echothree/-/issues/778)
+* Change Formatting of Multiple List Item Attribute Values to One per Line [779](https://gitlab.echothree.com/echothree/echothree/-/issues/779)
+* Apache POI 3.2-FINAL Downgrade [780](https://gitlab.echothree.com/echothree/echothree/-/issues/780)
+* Warehouse List and Search Results Export [781](https://gitlab.echothree.com/echothree/echothree/-/issues/781)
+* Convert Company/Division/Department Page Titles to Use Message Resources [782](https://gitlab.echothree.com/echothree/echothree/-/issues/782)
+* Convert Employee Page Titles to Use Message Resources [783](https://gitlab.echothree.com/echothree/echothree/-/issues/783)
+* Add Module Dependencies Linking Appropriate Modules Back to src [791](https://gitlab.echothree.com/echothree/echothree/-/issues/791)
+* Add Order Role Type Object [792](https://gitlab.echothree.com/echothree/echothree/-/issues/792)
+* Add Order Role Object [793](https://gitlab.echothree.com/echothree/echothree/-/issues/793)
+* cucumber-java8/cucumber-junit 7.12.1 Upgrade [794](https://gitlab.echothree.com/echothree/echothree/-/issues/794)
+
 ## 2023-05-28-01
 
 * Add Warehouse Mutations [721](https://gitlab.echothree.com/echothree/echothree/-/issues/721)
