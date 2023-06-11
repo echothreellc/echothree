@@ -34,8 +34,8 @@
         <dependency org="de.odysseus.juel" name="juel-api" rev="2.2.7" conf="sources->sources" />
         <dependency org="de.odysseus.juel" name="juel-impl" rev="2.2.7" conf="sources->sources" />
         <dependency org="fish.payara.cloud.connectors.kafka" name="kafka-jca-api" rev="0.8.0" conf="sources->sources" />
-        <dependency org="io.cucumber" name="cucumber-java8" rev="7.11.2" conf="sources->sources" />
-        <dependency org="io.cucumber" name="cucumber-junit" rev="7.11.2" conf="sources->sources" />
+        <dependency org="io.cucumber" name="cucumber-java8" rev="7.12.1" conf="sources->sources" />
+        <dependency org="io.cucumber" name="cucumber-junit" rev="7.12.1" conf="sources->sources" />
         <dependency org="io.github.classgraph" name="classgraph" rev="4.8.157" conf="sources->sources" />
         <dependency org="io.github.graphql-java" name="graphql-java-annotations" rev="9.1" conf="sources->sources" />
         <dependency org="io.r2dbc" name="r2dbc-spi" rev="1.0.0.RELEASE" conf="sources->sources" />
@@ -119,8 +119,8 @@
         <dependency org="de.odysseus.juel" name="juel-api" rev="2.2.7" conf="javadoc->javadoc" />
         <dependency org="de.odysseus.juel" name="juel-impl" rev="2.2.7" conf="javadoc->javadoc" />
         <dependency org="fish.payara.cloud.connectors.kafka" name="kafka-jca-api" rev="0.8.0" conf="javadoc->javadoc" />
-        <dependency org="io.cucumber" name="cucumber-java8" rev="7.11.2" conf="javadoc->javadoc" />
-        <dependency org="io.cucumber" name="cucumber-junit" rev="7.11.2" conf="javadoc->javadoc" />
+        <dependency org="io.cucumber" name="cucumber-java8" rev="7.12.1" conf="javadoc->javadoc" />
+        <dependency org="io.cucumber" name="cucumber-junit" rev="7.12.1" conf="javadoc->javadoc" />
         <dependency org="io.github.classgraph" name="classgraph" rev="4.8.157" conf="javadoc->javadoc" />
         <dependency org="io.github.graphql-java" name="graphql-java-annotations" rev="9.1" conf="javadoc->javadoc" />
         <dependency org="io.r2dbc" name="r2dbc-spi" rev="1.0.0.RELEASE" conf="javadoc->javadoc" />
@@ -205,8 +205,8 @@
         <dependency org="de.odysseus.juel" name="juel-api" rev="2.2.7" conf="binaries->default" />
         <dependency org="de.odysseus.juel" name="juel-impl" rev="2.2.7" conf="binaries->default" />
         <dependency org="fish.payara.cloud.connectors.kafka" name="kafka-jca-api" rev="0.8.0" conf="binaries->default" />
-        <dependency org="io.cucumber" name="cucumber-java8" rev="7.11.2" conf="binaries->default" />
-        <dependency org="io.cucumber" name="cucumber-junit" rev="7.11.2" conf="binaries->default" />
+        <dependency org="io.cucumber" name="cucumber-java8" rev="7.12.1" conf="binaries->default" />
+        <dependency org="io.cucumber" name="cucumber-junit" rev="7.12.1" conf="binaries->default" />
         <dependency org="io.github.classgraph" name="classgraph" rev="4.8.157" conf="binaries->default" />
         <dependency org="io.github.graphql-java" name="graphql-java-annotations" rev="9.1" conf="binaries->default" />
         <dependency org="io.r2dbc" name="r2dbc-spi" rev="1.0.0.RELEASE" conf="binaries->default" />
