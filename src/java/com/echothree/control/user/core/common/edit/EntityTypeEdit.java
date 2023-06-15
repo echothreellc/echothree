@@ -31,6 +31,9 @@ public interface EntityTypeEdit
     String getLockTimeoutUnitOfMeasureTypeName();
     void setLockTimeoutUnitOfMeasureTypeName(String lockTimeoutUnitOfMeasureTypeName);
 
+    String getIsExtensible();
+    void setIsExtensible(String isExtensible);
+
     String getSortOrder();
     void setSortOrder(String sortOrder);
     

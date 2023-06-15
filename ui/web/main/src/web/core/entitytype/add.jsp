@@ -77,6 +77,15 @@
                         </td>
                     </tr>
                     <tr>
+                        <td align=right><fmt:message key="label.isExtensible" />:</td>
+                        <td>
+                            <html:checkbox property="isExtensible" /> (*)
+                            <et:validationErrors id="errorMessage" property="isExtensible">
+                                <p><c:out value="${errorMessage}" /></p>
+                            </et:validationErrors>
+                        </td>
+                    </tr>
+                    <tr>
                         <td align=right><fmt:message key="label.sortOrder" />:</td>
                         <td>
                             <html:text property="sortOrder" size="12" maxlength="12" /> (*)

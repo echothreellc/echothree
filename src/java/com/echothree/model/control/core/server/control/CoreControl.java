@@ -792,11 +792,12 @@ public class CoreControl
     //   Entity Types
     // --------------------------------------------------------------------------------
     
-    public EntityType createEntityType(ComponentVendor componentVendor, String entityTypeName, Boolean keepAllHistory, Long lockTimeout, Integer sortOrder,
-            BasePK createdBy) {
+    public EntityType createEntityType(ComponentVendor componentVendor, String entityTypeName, Boolean keepAllHistory,
+            Long lockTimeout, Boolean isExtensible, Integer sortOrder, BasePK createdBy) {
         EntityType entityType = EntityTypeFactory.getInstance().create();
-        EntityTypeDetail entityTypeDetail = EntityTypeDetailFactory.getInstance().create(entityType, componentVendor, entityTypeName, keepAllHistory,
-                lockTimeout, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+        EntityTypeDetail entityTypeDetail = EntityTypeDetailFactory.getInstance().create(entityType, componentVendor,
+                entityTypeName, keepAllHistory, lockTimeout, isExtensible, sortOrder, session.START_TIME_LONG,
+                Session.MAX_TIME_LONG);
         
         // Convert to R/W
         entityType = EntityTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE, entityType.getPrimaryKey());
@@ -1035,10 +1036,11 @@ public class CoreControl
             String entityTypeName = entityTypeDetailValue.getEntityTypeName();
             Boolean keepAllHistory = entityTypeDetailValue.getKeepAllHistory();
             Long lockTimeout = entityTypeDetailValue.getLockTimeout();
+            Boolean isExtensible = entityTypeDetailValue.getIsExtensible();
             Integer sortOrder = entityTypeDetailValue.getSortOrder();
             
-            entityTypeDetail = EntityTypeDetailFactory.getInstance().create(entityTypePK, componentVendorPK, entityTypeName, keepAllHistory, lockTimeout,
-                    sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+            entityTypeDetail = EntityTypeDetailFactory.getInstance().create(entityTypePK, componentVendorPK, entityTypeName,
+                    keepAllHistory, lockTimeout, isExtensible, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
             entityType.setActiveDetail(entityTypeDetail);
             entityType.setLastDetail(entityTypeDetail);

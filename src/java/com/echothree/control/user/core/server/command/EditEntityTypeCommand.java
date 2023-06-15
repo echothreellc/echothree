@@ -71,6 +71,7 @@ public class EditEntityTypeCommand
                 new FieldDefinition("KeepAllHistory", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("LockTimeout", FieldType.UNSIGNED_LONG, false, null, null),
                 new FieldDefinition("LockTimeoutUnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("IsExtensible", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 ));
@@ -145,6 +146,7 @@ public class EditEntityTypeCommand
         edit.setLockTimeoutUnitOfMeasureTypeName(stringUnitOfMeasure.getUnitOfMeasureTypeName());
         edit.setLockTimeout(stringUnitOfMeasure.getValue());
         edit.setKeepAllHistory(entityTypeDetail.getKeepAllHistory().toString());
+        edit.setIsExtensible(entityTypeDetail.getIsExtensible().toString());
         edit.setSortOrder(entityTypeDetail.getSortOrder().toString());
 
         if(entityTypeDescription != null) {
@@ -184,6 +186,7 @@ public class EditEntityTypeCommand
         entityTypeDetailValue.setEntityTypeName(edit.getEntityTypeName());
         entityTypeDetailValue.setKeepAllHistory(Boolean.valueOf(edit.getKeepAllHistory()));
         entityTypeDetailValue.setLockTimeout(lockTimeout);
+        entityTypeDetailValue.setIsExtensible(Boolean.valueOf(edit.getIsExtensible()));
         entityTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
         coreControl.updateEntityTypeFromValue(entityTypeDetailValue, partyPK);

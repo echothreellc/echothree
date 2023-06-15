@@ -41,6 +41,7 @@ public interface CoreProperties {
     String ENTITY_TYPE_NAME = "entityTypeName";
     String ENTITY_UNIQUE_ID = "entityUniqueId";
     String IS_DEFAULT = "isDefault";
+    String IS_EXTENSIBLE = "isExtensible";
     String KEEP_ALL_HISTORY = "keepAllHistory";
     String LOCK_TIMEOUT = "lockTimeout";
     String MAXIMUM_INTEGER_VALUE = "maximumIntegerValue";

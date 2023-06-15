@@ -32,6 +32,7 @@ public final class EntityTypeTransfer
     private Boolean keepAllHistory;
     private Long unformattedLockTimeout;
     private String lockTimeout;
+    private Boolean isExtensible;
     private Integer sortOrder;
     private String description;
     
@@ -47,17 +48,18 @@ public final class EntityTypeTransfer
     /**
      * Creates a new instance of EntityTypeTransfer */
     public EntityTypeTransfer() {
-        this(null, null, null, null, null, null, null);
+        this(null, null, null, null, null, null, null, null);
     }
     
     /** Creates a new instance of EntityTypeTransfer */
     public EntityTypeTransfer(ComponentVendorTransfer componentVendor, String entityTypeName, Boolean keepAllHistory, Long unformattedLockTimeout,
-            String lockTimeout, Integer sortOrder, String description) {
+            String lockTimeout, Boolean isExtensible, Integer sortOrder, String description) {
         this.componentVendor = componentVendor;
         this.entityTypeName = entityTypeName;
         this.keepAllHistory = keepAllHistory;
         this.unformattedLockTimeout = unformattedLockTimeout;
         this.lockTimeout = lockTimeout;
+        this.isExtensible = isExtensible;
         this.sortOrder = sortOrder;
         this.description = description;
     }
@@ -129,11 +131,19 @@ public final class EntityTypeTransfer
     public Integer getSortOrder() {
         return sortOrder;
     }
-    
+
     public void setSortOrder(Integer sortOrder) {
         this.sortOrder = sortOrder;
     }
-    
+
+    public Boolean getIsExtensible() {
+        return isExtensible;
+    }
+
+    public void setIsExtensible(Boolean isExtensible) {
+        this.isExtensible = isExtensible;
+    }
+
     public String getDescription() {
         return description;
     }

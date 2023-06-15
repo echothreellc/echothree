@@ -83,6 +83,7 @@ public class AddAction
         commandForm.setKeepAllHistory(actionForm.getKeepAllHistory().toString());
         commandForm.setLockTimeout(actionForm.getLockTimeout());
         commandForm.setLockTimeoutUnitOfMeasureTypeName(actionForm.getLockTimeoutUnitOfMeasureTypeChoice());
+        commandForm.setIsExtensible(actionForm.getIsExtensible().toString());
         commandForm.setSortOrder(actionForm.getSortOrder());
         commandForm.setDescription(actionForm.getDescription());
 

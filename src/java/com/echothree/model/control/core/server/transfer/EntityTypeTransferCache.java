@@ -52,6 +52,7 @@ public class EntityTypeTransferCache
     boolean filterKeepAllHistory;
     boolean filterUnformattedLockTimeout;
     boolean filterLockTimeout;
+    boolean filterIsExtensible;
     boolean filterSortOrder;
     boolean filterDescription;
     boolean filterEntityInstance;
@@ -79,6 +80,7 @@ public class EntityTypeTransferCache
                 filterKeepAllHistory = !properties.contains(CoreProperties.KEEP_ALL_HISTORY);
                 filterUnformattedLockTimeout = !properties.contains(CoreProperties.UNFORMATTED_LOCK_TIMEOUT);
                 filterLockTimeout = !properties.contains(CoreProperties.LOCK_TIMEOUT);
+                filterIsExtensible = !properties.contains(CoreProperties.IS_EXTENSIBLE);
                 filterSortOrder = !properties.contains(CoreProperties.SORT_ORDER);
                 filterDescription = !properties.contains(CoreProperties.DESCRIPTION);
                 filterEntityInstance = !properties.contains(CoreProperties.ENTITY_INSTANCE);
@@ -143,11 +145,15 @@ public class EntityTypeTransferCache
             if(!filterLockTimeout) {
                 entityTypeTransfer.setLockTimeout(unitOfMeasureUtils.formatUnitOfMeasure(userVisit, timeUnitOfMeasureKind, unformattedLockTimeout));
             }
-            
+
             if(!filterSortOrder) {
                 entityTypeTransfer.setSortOrder(entityTypeDetail.getSortOrder());
             }
-            
+
+            if(!filterIsExtensible) {
+                entityTypeTransfer.setIsExtensible(entityTypeDetail.getIsExtensible());
+            }
+
             if(!filterDescription) {
                 entityTypeTransfer.setDescription(coreControl.getBestEntityTypeDescription(entityType, getLanguage()));
             }
