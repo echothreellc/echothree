@@ -58,10 +58,12 @@ public class EntityAttributeTransfer
     private EntityTimeAttributeTransfer entityTimeAttribute;
     private EntityListItemAttributeTransfer entityListItemAttribute;
     private ListWrapper<EntityMultipleListItemAttributeTransfer> entityMultipleListItemAttributes;
-    
+
+    private Long entityListItemsCount;
     private ListWrapper<EntityListItemTransfer> entityListItems;
+    private Long entityAttributeEntityTypesCount;
     private ListWrapper<EntityAttributeEntityTypeTransfer> entityAttributeEntityTypes;
-    
+
     /** Creates a new instance of EntityAttributeTransfer */
     public EntityAttributeTransfer(EntityTypeTransfer entityType, EntityAttributeTypeTransfer entityAttributeType,
             String entityAttributeName, boolean trackRevisions, Integer sortOrder, String description) {
@@ -585,6 +587,14 @@ public class EntityAttributeTransfer
         this.entityMultipleListItemAttributes = entityMultipleListItemAttributes;
     }
 
+    public Long getEntityListItemsCount() {
+        return entityListItemsCount;
+    }
+
+    public void setEntityListItemsCount(final Long entityListItemsCount) {
+        this.entityListItemsCount = entityListItemsCount;
+    }
+
     /**
      * Returns the entityListItems.
      * @return the entityListItems
@@ -599,6 +609,14 @@ public class EntityAttributeTransfer
      */
     public void setEntityListItems(ListWrapper<EntityListItemTransfer> entityListItems) {
         this.entityListItems = entityListItems;
+    }
+
+    public Long getEntityAttributeEntityTypesCount() {
+        return entityAttributeEntityTypesCount;
+    }
+
+    public void setEntityAttributeEntityTypesCount(final Long entityAttributeEntityTypesCount) {
+        this.entityAttributeEntityTypesCount = entityAttributeEntityTypesCount;
     }
 
     /**

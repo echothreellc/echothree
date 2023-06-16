@@ -29,7 +29,9 @@ public interface CoreOptions {
     String EntityAttributeGroupIncludeEntityAttributes = "EntityAttributeGroupIncludeEntityAttributes";
     
     String EntityAttributeIncludeEntityListItems = "EntityAttributeIncludeEntityListItems";
+    String EntityAttributeIncludeEntityListItemsCount = "EntityAttributeIncludeEntityListItemsCount";
     String EntityAttributeIncludeEntityAttributeEntityTypes = "EntityAttributeIncludeEntityAttributeEntityTypes";
+    String EntityAttributeIncludeEntityAttributeEntityTypesCount = "EntityAttributeIncludeEntityAttributeEntityTypesCount";
     String EntityAttributeIncludeValue = "EntityAttributeIncludeValue";
 
     String EntityInstanceIncludeEntityAppearance = "EntityInstanceIncludeEntityAppearance";

@@ -62,8 +62,10 @@ public class EntityAttributeTransferCache
     
     boolean includeValue;
     boolean includeEntityListItems;
+    boolean includeEntityListItemsCount;
     boolean includeEntityAttributeEntityTypes;
-    
+    boolean includeEntityAttributeEntityTypesCount;
+
     TransferProperties transferProperties;
     boolean filterEntityType;
     boolean filterEntityAttributeName;
@@ -85,7 +87,9 @@ public class EntityAttributeTransferCache
         if(options != null) {
             includeValue = options.contains(CoreOptions.EntityAttributeIncludeValue);
             includeEntityListItems = options.contains(CoreOptions.EntityAttributeIncludeEntityListItems);
+            includeEntityListItemsCount = options.contains(CoreOptions.EntityAttributeIncludeEntityListItemsCount);
             includeEntityAttributeEntityTypes = options.contains(CoreOptions.EntityAttributeIncludeEntityAttributeEntityTypes);
+            includeEntityAttributeEntityTypesCount = options.contains(CoreOptions.EntityAttributeIncludeEntityAttributeEntityTypesCount);
         }
         
         transferProperties = session.getTransferProperties();
@@ -259,11 +263,19 @@ public class EntityAttributeTransferCache
                     getLog().error("entityInstance is null");
                 }
             }
-            
+
+            if(includeEntityListItemsCount) {
+                entityAttributeTransfer.setEntityListItemsCount(coreControl.countEntityListItems(entityAttribute));
+            }
+
             if(includeEntityListItems) {
                 entityAttributeTransfer.setEntityListItems(new ListWrapper<>(coreControl.getEntityListItemTransfersByEntityAttribute(userVisit, entityAttribute, entityInstance)));
             }
-            
+
+            if(includeEntityAttributeEntityTypesCount) {
+                entityAttributeTransfer.setEntityAttributeEntityTypesCount(coreControl.countEntityAttributeEntityTypesByEntityAttribute(entityAttribute));
+            }
+
             if(includeEntityAttributeEntityTypes) {
                 entityAttributeTransfer.setEntityAttributeEntityTypes(new ListWrapper<>(coreControl.getEntityAttributeEntityTypeTransfersByEntityAttribute(userVisit, entityAttribute, entityInstance)));
             }
