@@ -34,9 +34,18 @@
             </h2>
         </div>
         <div id="Content">
-            <p><font size="+2"><b><c:out value="${componentVendor.description}" /></b></font></p>
+            <c:choose>
+                <c:when test="${componentVendor.description != null}">
+                    <p><font size="+2"><b><et:appearance appearance="${componentVendor.entityInstance.entityAppearance.appearance}"><c:out value="${componentVendor.description}" /></et:appearance></b></font></p>
+                    <p><font size="+1"><et:appearance appearance="${componentVendor.entityInstance.entityAppearance.appearance}">${componentVendor.componentVendorName}</et:appearance></font></p>
+                </c:when>
+                <c:otherwise>
+                    <p><font size="+2"><b><et:appearance appearance="${componentVendor.entityInstance.entityAppearance.appearance}"><c:out value="${componentVendor.componentVendorName}" /></et:appearance></b></font></p>
+                </c:otherwise>
+            </c:choose>
             <br />
-            Component Vendor Name: ${componentVendor.componentVendorName}<br />
+            <fmt:message key="label.componentVendor" />: ${componentVendor.componentVendorName}<br />
+            <fmt:message key="label.description" />: ${componentVendor.description}<br />
             <br />
             <br />
             <br />

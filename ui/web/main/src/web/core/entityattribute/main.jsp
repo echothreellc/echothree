@@ -59,15 +59,15 @@
                                 <c:param name="EntityTypeName" value="${entityAttribute.entityType.entityTypeName}" />
                                 <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
                             </c:url>
-                            <a href="${reviewUrl}"><c:out value="${entityAttribute.entityAttributeName}" /></a>
+                            <a href="${reviewUrl}"><et:appearance appearance="${entityAttribute.entityInstance.entityAppearance.appearance}"><c:out value="${entityAttribute.entityAttributeName}" /></et:appearance></a>
                         </c:when>
                         <c:otherwise>
-                            <c:out value="${entityAttribute.entityAttributeName}" />
+                            <et:appearance appearance="${entityAttribute.entityInstance.entityAppearance.appearance}"><c:out value="${entityAttribute.entityAttributeName}" /></et:appearance>
                         </c:otherwise>
                     </c:choose>
                 </display:column>
                 <display:column titleKey="columnTitle.description">
-                    <c:out value="${entityAttribute.description}" />
+                    <et:appearance appearance="${entityAttribute.entityInstance.entityAppearance.appearance}"><c:out value="${entityAttribute.description}" /></et:appearance>
                 </display:column>
                 <display:column titleKey="columnTitle.type">
                     <c:out value="${entityAttribute.entityAttributeType.description}" />

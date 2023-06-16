@@ -49,7 +49,7 @@
                 </c:otherwise>
             </c:choose>
             <br />
-            <fmt:message key="label.componentVendorName" />:
+            <fmt:message key="label.componentVendor" />:
             <et:hasSecurityRole securityRoles="ComponentVendor.Review">
                 <c:set var="showComponentVendorAsLink" value="true" />
             </et:hasSecurityRole>
@@ -58,10 +58,10 @@
                     <c:url var="componentVendorUrl" value="/action/Core/ComponentVendor/Review">
                         <c:param name="ComponentVendorName" value="${entityType.componentVendor.componentVendorName}" />
                     </c:url>
-                    <a href="${componentVendorUrl}">${entityType.componentVendor.componentVendorName}</a>
+                    <a href="${componentVendorUrl}"><et:appearance appearance="${entityType.componentVendor.entityInstance.entityAppearance.appearance}"><c:out value="${entityType.componentVendor.description}" /></et:appearance></a>
                 </c:when>
                 <c:otherwise>
-                    ${entityType.componentVendor.componentVendorName}
+                    <et:appearance appearance="${entityType.componentVendor.entityInstance.entityAppearance.appearance}"><c:out value="${entityType.componentVendor.description}" /></et:appearance>
                 </c:otherwise>
             </c:choose>
             <br />

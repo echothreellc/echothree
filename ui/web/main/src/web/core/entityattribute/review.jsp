@@ -54,7 +54,7 @@
                 </c:otherwise>
             </c:choose>
             <br />
-            <fmt:message key="label.componentVendorName" />:
+            <fmt:message key="label.componentVendor" />:
             <et:hasSecurityRole securityRoles="ComponentVendor.Review">
                 <c:set var="showComponentVendorAsLink" value="true" />
             </et:hasSecurityRole>
@@ -63,14 +63,14 @@
                     <c:url var="componentVendorUrl" value="/action/Core/ComponentVendor/Review">
                         <c:param name="ComponentVendorName" value="${entityAttribute.entityType.componentVendor.componentVendorName}" />
                     </c:url>
-                    <a href="${componentVendorUrl}">${entityAttribute.entityType.componentVendor.componentVendorName}</a>
+                    <a href="${componentVendorUrl}"><et:appearance appearance="${entityAttribute.entityType.componentVendor.entityInstance.entityAppearance.appearance}"><c:out value="${entityAttribute.entityType.componentVendor.description}" /></et:appearance></a>
                 </c:when>
                 <c:otherwise>
-                    ${entityAttribute.entityType.componentVendor.componentVendorName}
+                    <et:appearance appearance="${entityAttribute.entityType.componentVendor.entityInstance.entityAppearance.appearance}"><c:out value="${entityAttribute.entityType.componentVendor.description}" /></et:appearance>
                 </c:otherwise>
             </c:choose>
             <br />
-            <fmt:message key="label.entityTypeName" />:
+            <fmt:message key="label.entityType" />:
             <et:hasSecurityRole securityRoles="EntityType.Review">
                 <c:set var="showEntityTypeAsLink" value="true" />
             </et:hasSecurityRole>
@@ -80,10 +80,10 @@
                         <c:param name="ComponentVendorName" value="${entityAttribute.entityType.componentVendor.componentVendorName}" />
                         <c:param name="EntityTypeName" value="${entityAttribute.entityType.entityTypeName}" />
                     </c:url>
-                    <a href="${componentVendorUrl}">${entityAttribute.entityType.entityTypeName}</a>
+                    <a href="${componentVendorUrl}"><et:appearance appearance="${entityAttribute.entityType.entityInstance.entityAppearance.appearance}"><c:out value="${entityAttribute.entityType.description}" /></et:appearance></a>
                 </c:when>
                 <c:otherwise>
-                    ${entityAttribute.entityType.entityTypeName}
+                    <et:appearance appearance="${entityAttribute.entityType.entityInstance.entityAppearance.appearance}"><c:out value="${entityAttribute.entityType.description}" /></et:appearance>
                 </c:otherwise>
             </c:choose>
             <br />

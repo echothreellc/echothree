@@ -60,7 +60,7 @@
                 </c:otherwise>
             </c:choose>
             <br />
-            <fmt:message key="label.componentVendorName" />:
+            <fmt:message key="label.componentVendor" />:
             <et:hasSecurityRole securityRoles="ComponentVendor.Review">
                 <c:set var="showComponentVendorAsLink" value="true" />
             </et:hasSecurityRole>
@@ -69,14 +69,14 @@
                     <c:url var="componentVendorUrl" value="/action/Core/ComponentVendor/Review">
                         <c:param name="ComponentVendorName" value="${entityListItem.entityAttribute.entityType.componentVendor.componentVendorName}" />
                     </c:url>
-                    <a href="${componentVendorUrl}">${entityListItem.entityAttribute.entityType.componentVendor.componentVendorName}</a>
+                    <a href="${componentVendorUrl}"><et:appearance appearance="${entityListItem.entityAttribute.entityType.componentVendor.entityInstance.entityAppearance.appearance}"><c:out value="${entityListItem.entityAttribute.entityType.componentVendor.description}" /></et:appearance></a>
                 </c:when>
                 <c:otherwise>
-                    ${entityListItem.entityAttribute.entityType.componentVendor.componentVendorName}
+                    <et:appearance appearance="${entityListItem.entityAttribute.entityType.componentVendor.entityInstance.entityAppearance.appearance}"><c:out value="${entityListItem.entityAttribute.entityType.componentVendor.description}" /></et:appearance>
                 </c:otherwise>
             </c:choose>
             <br />
-            <fmt:message key="label.entityTypeName" />:
+            <fmt:message key="label.entityType" />:
             <et:hasSecurityRole securityRoles="EntityType.Review">
                 <c:set var="showEntityTypeAsLink" value="true" />
             </et:hasSecurityRole>
@@ -86,14 +86,14 @@
                         <c:param name="ComponentVendorName" value="${entityListItem.entityAttribute.entityType.componentVendor.componentVendorName}" />
                         <c:param name="EntityTypeName" value="${entityListItem.entityAttribute.entityType.entityTypeName}" />
                     </c:url>
-                    <a href="${componentVendorUrl}">${entityListItem.entityAttribute.entityType.entityTypeName}</a>
+                    <a href="${componentVendorUrl}"><et:appearance appearance="${entityListItem.entityAttribute.entityType.entityInstance.entityAppearance.appearance}"><c:out value="${entityListItem.entityAttribute.entityType.description}" /></et:appearance></a>
                 </c:when>
                 <c:otherwise>
-                    ${entityListItem.entityAttribute.entityType.entityTypeName}
+                    <et:appearance appearance="${entityListItem.entityAttribute.entityType.entityInstance.entityAppearance.appearance}"><c:out value="${entityListItem.entityAttribute.entityType.description}" /></et:appearance>
                 </c:otherwise>
             </c:choose>
             <br />
-            <fmt:message key="label.entityAttributeName" />:
+            <fmt:message key="label.entityAttribute" />:
             <et:hasSecurityRole securityRoles="EntityAttribute.Review">
                 <c:set var="showEntityAttributeAsLink" value="true" />
             </et:hasSecurityRole>
@@ -104,10 +104,10 @@
                         <c:param name="EntityTypeName" value="${entityListItem.entityAttribute.entityType.entityTypeName}" />
                         <c:param name="EntityAttributeName" value="${entityListItem.entityAttribute.entityAttributeName}" />
                     </c:url>
-                    <a href="${entityAttributeUrl}">${entityListItem.entityAttribute.entityAttributeName}</a>
+                    <a href="${entityAttributeUrl}"><et:appearance appearance="${entityListItem.entityAttribute.entityInstance.entityAppearance.appearance}"><c:out value="${entityListItem.entityAttribute.description}" /></et:appearance></a>
                 </c:when>
                 <c:otherwise>
-                    ${entityListItem.entityAttribute.entityAttributeName}
+                    <et:appearance appearance="${entityListItem.entityAttribute.entityInstance.entityAppearance.appearance}"><c:out value="${entityListItem.entityAttribute.description}" /></et:appearance>
                 </c:otherwise>
             </c:choose>
             <br />

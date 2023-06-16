@@ -51,15 +51,15 @@
                             <c:url var="reviewUrl" value="/action/Core/ComponentVendor/Review">
                                 <c:param name="ComponentVendorName" value="${componentVendor.componentVendorName}" />
                             </c:url>
-                            <a href="${reviewUrl}"><c:out value="${componentVendor.componentVendorName}" /></a>
+                            <a href="${reviewUrl}"><et:appearance appearance="${componentVendor.entityInstance.entityAppearance.appearance}"><c:out value="${componentVendor.componentVendorName}" /></et:appearance></a>
                         </c:when>
                         <c:otherwise>
-                            <c:out value="${componentVendor.componentVendorName}" />
+                            <et:appearance appearance="${componentVendor.entityInstance.entityAppearance.appearance}"><c:out value="${componentVendor.componentVendorName}" /></et:appearance>
                         </c:otherwise>
                     </c:choose>
                 </display:column>
                 <display:column titleKey="columnTitle.description">
-                    <c:out value="${componentVendor.description}" />
+                    <et:appearance appearance="${componentVendor.entityInstance.entityAppearance.appearance}"><c:out value="${componentVendor.description}" /></et:appearance>
                 </display:column>
                 <c:if test="${linksInFirstRow || linksInSecondRow}">
                     <display:column>
