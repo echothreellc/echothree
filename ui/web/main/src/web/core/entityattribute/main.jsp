@@ -72,6 +72,19 @@
                 <display:column titleKey="columnTitle.type">
                     <c:out value="${entityAttribute.entityAttributeType.description}" />
                 </display:column>
+                <display:column titleKey="columnTitle.trackRevisions">
+                    <c:choose>
+                        <c:when test="${entityAttribute.trackRevisions}">
+                            Yes
+                        </c:when>
+                        <c:otherwise>
+                            No
+                        </c:otherwise>
+                    </c:choose>
+                </display:column>
+                <display:column titleKey="columnTitle.sortOrder">
+                    <c:out value="${entityAttribute.sortOrder}" />
+                </display:column>
                 <display:column>
                     <et:hasSecurityRole securityRole="EntityAttribute.EntityAttributeEntityAttributeGroup">
                         <c:url var="entityAttributeGroupsUrl" value="/action/Core/EntityAttribute/EntityAttributeGroup">
