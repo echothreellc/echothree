@@ -11901,7 +11901,8 @@ public class CoreControl
                 + "WHERE enaent_ena_entityattributeid = ? AND enaent_thrutime = ? "
                 + "AND enaent_allowedentitytypeid = ent_entitytypeid AND ent_lastdetailid = entdt_entitytypedetailid "
                 + "AND entdt_cvnd_componentvendorid = cvnd_componentvendorid AND cvnd_lastdetailid = cvndd_componentvendordetailid "
-                + "ORDER BY entdt_sortorder, entdt_entitytypename, cvndd_componentvendorname");
+                + "ORDER BY entdt_sortorder, entdt_entitytypename, cvndd_componentvendorname "
+                + "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ "
                 + "FROM entityattributeentitytypes "

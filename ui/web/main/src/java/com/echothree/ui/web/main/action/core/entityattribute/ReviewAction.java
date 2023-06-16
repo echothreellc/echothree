@@ -19,17 +19,26 @@ package com.echothree.ui.web.main.action.core.entityattribute;
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.form.GetEntityAttributeForm;
 import com.echothree.control.user.core.common.result.GetEntityAttributeResult;
+import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.transfer.EntityAttributeTransfer;
+import com.echothree.model.data.core.common.EntityAttributeEntityTypeConstants;
+import com.echothree.model.data.core.common.EntityInstanceConstants;
+import com.echothree.model.data.core.common.EntityListItemConstants;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.ExecutionResult;
+import com.echothree.util.common.transfer.Limit;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
@@ -58,7 +67,20 @@ public class ReviewAction
         commandForm.setComponentVendorName(request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME));
         commandForm.setEntityTypeName(request.getParameter(ParameterConstants.ENTITY_TYPE_NAME));
         commandForm.setEntityAttributeName(request.getParameter(ParameterConstants.ENTITY_ATTRIBUTE_NAME));
-        
+
+        Set<String> options = new HashSet<>();
+        options.add(CoreOptions.EntityAttributeIncludeEntityListItemsCount);
+        options.add(CoreOptions.EntityAttributeIncludeEntityListItems);
+        options.add(CoreOptions.EntityInstanceIncludeEntityAppearance);
+        options.add(CoreOptions.AppearanceIncludeTextDecorations);
+        options.add(CoreOptions.AppearanceIncludeTextTransformations);
+        commandForm.setOptions(options);
+
+        Map<String, Limit> limits = new HashMap<>();
+        limits.put(EntityListItemConstants.ENTITY_TYPE_NAME, new Limit("10"));
+        limits.put(EntityAttributeEntityTypeConstants.ENTITY_TYPE_NAME, new Limit("10"));
+        commandForm.setLimits(limits);
+
         CommandResult commandResult = CoreUtil.getHome().getEntityAttribute(getUserVisitPK(request), commandForm);
         EntityAttributeTransfer entityAttribute = null;
         

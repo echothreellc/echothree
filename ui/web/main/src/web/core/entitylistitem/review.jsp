@@ -49,19 +49,43 @@
             </h2>
         </div>
         <div id="Content">
-            <p><font size="+2"><b><c:out value="${entityListItem.description}" /></b></font></p>
+            <c:choose>
+                <c:when test="${entityListItem.description != null}">
+                    <p><font size="+2"><b><et:appearance appearance="${entityListItem.entityInstance.entityAppearance.appearance}"><c:out value="${entityListItem.description}" /></et:appearance></b></font></p>
+                    <p><font size="+1"><et:appearance appearance="${entityListItem.entityInstance.entityAppearance.appearance}">${entityListItem.entityListItemName}</et:appearance></font></p>
+                </c:when>
+                <c:otherwise>
+                    <p><font size="+2"><b><et:appearance appearance="${entityListItem.entityInstance.entityAppearance.appearance}"><c:out value="${entityListItem.entityListItemName}" /></et:appearance></b></font></p>
+                </c:otherwise>
+            </c:choose>
             <br />
-            Entity List Item Name: ${entityListItem.entityListItemName}<br />
+            <fmt:message key="label.entityListItemName" />: ${entityListItem.entityListItemName}<br />
+            <fmt:message key="label.isDefault" />:
+            <c:choose>
+                <c:when test="${entityListItem.isDefault}">
+                    Yes
+                </c:when>
+                <c:otherwise>
+                    No
+                </c:otherwise>
+            </c:choose>
+            <br />
+            <fmt:message key="label.sortOrder" />: ${entityListItem.sortOrder}<br />
+            <fmt:message key="label.description" />: ${entityListItem.description}<br />
             <br />
             <br />
             <br />
+            <c:set var="tagScopes" scope="request" value="${entityListItem.tagScopes}" />
+            <c:set var="entityAttributeGroups" scope="request" value="${entityListItem.entityAttributeGroups}" />
             <c:set var="entityInstance" scope="request" value="${entityListItem.entityInstance}" />
             <c:url var="returnUrl" scope="request" value="/../action/Core/EntityListItem/Review">
-                    <c:param name="ComponentVendorName" value="${entityListItem.entityAttribute.entityType.componentVendor.componentVendorName}" />
-                    <c:param name="EntityTypeName" value="${entityListItem.entityAttribute.entityType.entityTypeName}" />
-                    <c:param name="EntityAttributeName" value="${entityListItem.entityAttribute.entityAttributeName}" />
-                    <c:param name="EntityListItemName" value="${entityListItem.entityListItemName}" />
+                <c:param name="ComponentVendorName" value="${entityListItem.entityAttribute.entityType.componentVendor.componentVendorName}" />
+                <c:param name="EntityTypeName" value="${entityListItem.entityAttribute.entityType.entityTypeName}" />
+                <c:param name="EntityAttributeName" value="${entityListItem.entityAttribute.entityAttributeName}" />
+                <c:param name="EntityListItemName" value="${entityListItem.entityListItemName}" />
             </c:url>
+            <jsp:include page="../../include/tagScopes.jsp" />
+            <jsp:include page="../../include/entityAttributeGroups.jsp" />
             <jsp:include page="../../include/entityInstance.jsp" />
         </div>
         <jsp:include page="../../include/userSession.jsp" />
