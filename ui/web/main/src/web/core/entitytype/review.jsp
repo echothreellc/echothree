@@ -71,6 +71,7 @@
             </c:choose>
             <br />
             <fmt:message key="label.sortOrder" />: ${entityType.sortOrder}<br />
+            <fmt:message key="label.description" />: ${entityType.description}<br />
             <br />
             <et:hasSecurityRole securityRole="EntityAttribute.List">
                 <h2>Entity Attributes</h2>

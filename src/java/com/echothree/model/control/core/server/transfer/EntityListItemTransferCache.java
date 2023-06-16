@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.core.server.transfer;
 
+import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.CoreProperties;
 import com.echothree.model.control.core.common.transfer.EntityAttributeTransfer;
 import com.echothree.model.control.core.common.transfer.EntityListItemTransfer;
@@ -26,7 +27,6 @@ import com.echothree.model.data.core.server.entity.EntityListItemDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class EntityListItemTransferCache
         extends BaseCoreTransferCache<EntityListItem, EntityListItemTransfer> {
@@ -44,7 +44,13 @@ public class EntityListItemTransferCache
     /** Creates a new instance of EntityListItemTransferCache */
     public EntityListItemTransferCache(UserVisit userVisit) {
         super(userVisit);
-        
+
+        var options = session.getOptions();
+        if(options != null) {
+            setIncludeEntityAttributeGroups(options.contains(CoreOptions.EntityListItemIncludeEntityAttributeGroups));
+            setIncludeTagScopes(options.contains(CoreOptions.EntityListItemIncludeTagScopes));
+        }
+
         transferProperties = session.getTransferProperties();
         if(transferProperties != null) {
             var properties = transferProperties.getProperties(EntityListItemTransfer.class);

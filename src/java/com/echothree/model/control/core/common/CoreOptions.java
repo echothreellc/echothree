@@ -38,7 +38,10 @@ public interface CoreOptions {
     String EntityInstanceIncludeKeyIfAvailable = "EntityInstanceIncludeKeyIfAvailable";
     String EntityInstanceIncludeGuidIfAvailable = "EntityInstanceIncludeGuidIfAvailable";
     String EntityInstanceIncludeUlidIfAvailable = "EntityInstanceIncludeUlidIfAvailable";
-    
+
+    String EntityListItemIncludeEntityAttributeGroups = "EntityListItemIncludeEntityAttributeGroups";
+    String EntityListItemIncludeTagScopes = "EntityListItemIncludeTagScopes";
+
     String CommandMessageIncludeTranslations = "CommandMessageIncludeTranslations";
 
     String CacheEntryIncludeClob = "CacheEntryIncludeClob";
