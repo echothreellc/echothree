@@ -44,7 +44,9 @@ public class EntityTypeAnalyzer
         
         fieldAnalyzers.put(IndexFields.componentVendorName.name(), new WhitespaceLowerCaseAnalyzer());
         fieldAnalyzers.put(IndexFields.entityTypeName.name(), new WhitespaceLowerCaseAnalyzer());
-        
+        fieldAnalyzers.put(IndexFields.keepAllHistory.name(), new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.isExtensible.name(), new WhitespaceLowerCaseAnalyzer());
+
         return fieldAnalyzers;
     }
     
