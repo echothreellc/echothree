@@ -68,6 +68,9 @@ public class ReviewAction
         options.add(CoreOptions.EntityTypeIncludeMessageTypes);
         options.add(CoreOptions.EntityTypeIncludeEntityInstancesCount);
         options.add(CoreOptions.EntityTypeIncludeEntityInstances);
+        options.add(CoreOptions.EntityInstanceIncludeEntityAppearance);
+        options.add(CoreOptions.AppearanceIncludeTextDecorations);
+        options.add(CoreOptions.AppearanceIncludeTextTransformations);
         commandForm.setOptions(options);
 
         Map<String, Limit> limits = new HashMap<>();

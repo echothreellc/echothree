@@ -53,15 +53,38 @@
                                 <c:param name="ComponentVendorName" value="${entityType.componentVendor.componentVendorName}" />
                                 <c:param name="EntityTypeName" value="${entityType.entityTypeName}" />
                             </c:url>
-                            <a href="${reviewUrl}"><c:out value="${entityType.entityTypeName}" /></a>
+                            <a href="${reviewUrl}"><et:appearance appearance="${entityType.entityInstance.entityAppearance.appearance}"><c:out value="${entityType.entityTypeName}" /></et:appearance></a>
                         </c:when>
                         <c:otherwise>
-                            <c:out value="${entityType.entityTypeName}" />
+                            <et:appearance appearance="${entityType.entityInstance.entityAppearance.appearance}"><c:out value="${entityType.entityTypeName}" /></et:appearance>
                         </c:otherwise>
                     </c:choose>
                 </display:column>
                 <display:column titleKey="columnTitle.description">
-                    <c:out value="${entityType.description}" />
+                    <et:appearance appearance="${entityType.entityInstance.entityAppearance.appearance}"><c:out value="${entityType.description}" /></et:appearance>
+                </display:column>
+                <display:column titleKey="columnTitle.keepAllHistory">
+                    <c:choose>
+                        <c:when test="${entityType.keepAllHistory}">
+                            Yes
+                        </c:when>
+                        <c:otherwise>
+                            No
+                        </c:otherwise>
+                    </c:choose>
+                </display:column>
+                <display:column titleKey="columnTitle.lockTimeout">
+                    <c:choose>
+                        <c:when test="${entityType.lockTimeout == null}">
+                            <i>Default</i>
+                        </c:when>
+                        <c:otherwise>
+                            <c:out value="${entityType.lockTimeout}" />
+                        </c:otherwise>
+                    </c:choose>
+                </display:column>
+                <display:column titleKey="columnTitle.sortOrder">
+                    <c:out value="${entityType.sortOrder}" />
                 </display:column>
                 <display:column>
                     <c:if test="${entityType.isExtensible}">
