@@ -19,6 +19,7 @@ package com.echothree.ui.web.main.action.core.componentvendor;
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.form.GetComponentVendorForm;
 import com.echothree.control.user.core.common.result.GetComponentVendorResult;
+import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.core.common.transfer.ComponentVendorTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -30,6 +31,7 @@ import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
+import java.util.HashSet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
@@ -57,6 +59,12 @@ public class ReviewAction
         String componentVendorName = request.getParameter(ParameterConstants.COMPONENT_VENDOR_NAME);
 
         commandForm.setComponentVendorName(componentVendorName);
+
+        var options = new HashSet<String>();
+        options.add(CoreOptions.EntityInstanceIncludeEntityAppearance);
+        options.add(CoreOptions.AppearanceIncludeTextDecorations);
+        options.add(CoreOptions.AppearanceIncludeTextTransformations);
+        commandForm.setOptions(options);
 
         CommandResult commandResult = CoreUtil.getHome().getComponentVendor(getUserVisitPK(request), commandForm);
         ExecutionResult executionResult = commandResult.getExecutionResult();

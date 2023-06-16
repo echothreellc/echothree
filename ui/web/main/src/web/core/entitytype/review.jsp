@@ -38,7 +38,7 @@
             </h2>
         </div>
         <div id="Content">
-            <et:checkSecurityRoles securityRoles="EntityAttribute.List:CommentType.List:RatingType.List:MessageType.List:EntityInstance.List:Event.List" />
+            <et:checkSecurityRoles securityRoles="ComponentVendor.Review:EntityAttribute.List:CommentType.List:RatingType.List:MessageType.List:EntityInstance.List:Event.List" />
             <c:choose>
                 <c:when test="${entityType.description != null}">
                     <p><font size="+2"><b><et:appearance appearance="${entityType.entityInstance.entityAppearance.appearance}"><c:out value="${entityType.description}" /></et:appearance></b></font></p>
@@ -46,6 +46,22 @@
                 </c:when>
                 <c:otherwise>
                     <p><font size="+2"><b><et:appearance appearance="${entityType.entityInstance.entityAppearance.appearance}"><c:out value="${entityType.entityTypeName}" /></et:appearance></b></font></p>
+                </c:otherwise>
+            </c:choose>
+            <br />
+            <fmt:message key="label.componentVendor" />:
+            <et:hasSecurityRole securityRoles="ComponentVendor.Review">
+                <c:set var="showComponentVendorAsLink" value="true" />
+            </et:hasSecurityRole>
+            <c:choose>
+                <c:when test="${showComponentVendorAsLink}">
+                    <c:url var="componentVendorUrl" value="/action/Core/ComponentVendor/Review">
+                        <c:param name="ComponentVendorName" value="${entityType.componentVendor.componentVendorName}" />
+                    </c:url>
+                    <a href="${componentVendorUrl}"><et:appearance appearance="${entityType.componentVendor.entityInstance.entityAppearance.appearance}"><c:out value="${entityType.componentVendor.description}" /></et:appearance></a>
+                </c:when>
+                <c:otherwise>
+                    <et:appearance appearance="${entityType.componentVendor.entityInstance.entityAppearance.appearance}"><c:out value="${entityType.componentVendor.description}" /></et:appearance>
                 </c:otherwise>
             </c:choose>
             <br />
@@ -113,6 +129,19 @@
                             </display:column>
                             <display:column titleKey="columnTitle.type">
                                 <c:out value="${entityAttribute.entityAttributeType.description}" />
+                            </display:column>
+                            <display:column titleKey="columnTitle.trackRevisions">
+                                <c:choose>
+                                    <c:when test="${entityAttribute.trackRevisions}">
+                                        Yes
+                                    </c:when>
+                                    <c:otherwise>
+                                        No
+                                    </c:otherwise>
+                                </c:choose>
+                            </display:column>
+                            <display:column titleKey="columnTitle.sortOrder">
+                                <c:out value="${entityAttribute.sortOrder}" />
                             </display:column>
                             <display:column>
                                 <et:hasSecurityRole securityRole="EntityAttribute.EntityAttributeEntityAttributeGroup">
