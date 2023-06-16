@@ -39,9 +39,38 @@
         </div>
         <div id="Content">
             <et:checkSecurityRoles securityRoles="EntityAttribute.List:CommentType.List:RatingType.List:MessageType.List:EntityInstance.List:Event.List" />
-            <p><font size="+2"><b><c:out value="${entityType.description}" /></b></font></p>
+            <c:choose>
+                <c:when test="${entityType.description != null}">
+                    <p><font size="+2"><b><et:appearance appearance="${entityType.entityInstance.entityAppearance.appearance}"><c:out value="${entityType.description}" /></et:appearance></b></font></p>
+                    <p><font size="+1"><et:appearance appearance="${entityType.entityInstance.entityAppearance.appearance}">${entityType.entityTypeName}</et:appearance></font></p>
+                </c:when>
+                <c:otherwise>
+                    <p><font size="+2"><b><et:appearance appearance="${entityType.entityInstance.entityAppearance.appearance}"><c:out value="${entityType.entityTypeName}" /></et:appearance></b></font></p>
+                </c:otherwise>
+            </c:choose>
             <br />
-            Entity Type Name: ${entityType.entityTypeName}<br />
+            <fmt:message key="label.entityTypeName" />: ${entityType.entityTypeName}<br />
+            <fmt:message key="label.keepAllHistory" />:
+            <c:choose>
+                <c:when test="${entityType.keepAllHistory}">
+                    Yes
+                </c:when>
+                <c:otherwise>
+                    No
+                </c:otherwise>
+            </c:choose>
+            <br />
+            <fmt:message key="label.lockTimeout" />:
+            <c:choose>
+                <c:when test="${entityType.lockTimeout == null}">
+                    <i>Default</i>
+                </c:when>
+                <c:otherwise>
+                    <c:out value="${entityType.lockTimeout}" />
+                </c:otherwise>
+            </c:choose>
+            <br />
+            <fmt:message key="label.sortOrder" />: ${entityType.sortOrder}<br />
             <br />
             <et:hasSecurityRole securityRole="EntityAttribute.List">
                 <h2>Entity Attributes</h2>

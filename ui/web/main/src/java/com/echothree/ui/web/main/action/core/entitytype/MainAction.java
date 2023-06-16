@@ -68,6 +68,9 @@ public class MainAction
 
         Set<String> options = new HashSet<>();
         options.add(CoreOptions.EntityTypeIncludeIndexTypesCount);
+        options.add(CoreOptions.EntityInstanceIncludeEntityAppearance);
+        options.add(CoreOptions.AppearanceIncludeTextDecorations);
+        options.add(CoreOptions.AppearanceIncludeTextTransformations);
         commandForm.setOptions(options);
 
         String offsetParameter = request.getParameter(new ParamEncoder("entityType").encodeParameterName(TableTagParameters.PARAMETER_PAGE));
