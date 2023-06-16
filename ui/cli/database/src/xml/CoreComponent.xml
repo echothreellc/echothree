@@ -337,6 +337,7 @@
                         <column name="EntityTypeName" type="EntityTypeName" nullAllowed="false" />
                         <column name="KeepAllHistory" type="Boolean" nullAllowed="false" />
                         <column name="LockTimeout" type="Time" nullAllowed="true" />
+                        <column name="IsExtensible" type="Boolean" nullAllowed="false" />
                         <column name="SortOrder" type="Integer" nullAllowed="false" />
                         <column name="FromTime" type="Time" nullAllowed="false" />
                         <column name="ThruTime" type="Time" nullAllowed="false" />

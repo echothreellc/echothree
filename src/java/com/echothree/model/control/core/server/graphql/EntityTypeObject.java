@@ -91,7 +91,14 @@ public class EntityTypeObject
     public Long getLockTimeout() {
         return getEntityTypeDetail().getLockTimeout();
     }
-    
+
+    @GraphQLField
+    @GraphQLDescription("is extensible")
+    @GraphQLNonNull
+    public boolean getIsExtensible() {
+        return getEntityTypeDetail().getIsExtensible();
+    }
+
     @GraphQLField
     @GraphQLDescription("sort order")
     @GraphQLNonNull

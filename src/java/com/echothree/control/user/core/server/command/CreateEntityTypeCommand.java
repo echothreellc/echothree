@@ -57,6 +57,7 @@ public class CreateEntityTypeCommand
                 new FieldDefinition("KeepAllHistory", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("LockTimeout", FieldType.UNSIGNED_LONG, false, null, null),
                 new FieldDefinition("LockTimeoutUnitOfMeasureTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("IsExtensible", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
                 ));
@@ -86,11 +87,13 @@ public class CreateEntityTypeCommand
 
                 if(!hasExecutionErrors()) {
                     var partyPK = getPartyPK();
-                    Boolean keepAllHistory = Boolean.valueOf(form.getKeepAllHistory());
+                    var keepAllHistory = Boolean.valueOf(form.getKeepAllHistory());
+                    var isExtensible = Boolean.valueOf(form.getIsExtensible());
                     var sortOrder = Integer.valueOf(form.getSortOrder());
                     var description = form.getDescription();
 
-                    entityType = coreControl.createEntityType(componentVendor, entityTypeName, keepAllHistory, lockTimeout, sortOrder, partyPK);
+                    entityType = coreControl.createEntityType(componentVendor, entityTypeName, keepAllHistory, lockTimeout,
+                            isExtensible, sortOrder, partyPK);
 
                     if(description != null) {
                         coreControl.createEntityTypeDescription(entityType, getPreferredLanguage(), description, partyPK);

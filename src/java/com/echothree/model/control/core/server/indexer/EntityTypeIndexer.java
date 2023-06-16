@@ -68,6 +68,8 @@ public class EntityTypeIndexer
                 entityTypeDetail.getEntityTypeName(), FieldTypes.NOT_STORED_TOKENIZED));
         document.add(new SortedDocValuesField(IndexFields.entityTypeName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
                 new BytesRef(entityTypeDetail.getEntityTypeName())));
+        document.add(new Field(IndexFields.keepAllHistory.name(), entityTypeDetail.getKeepAllHistory().toString(), FieldTypes.NOT_STORED_NOT_TOKENIZED));
+        document.add(new Field(IndexFields.isExtensible.name(), entityTypeDetail.getIsExtensible().toString(), FieldTypes.NOT_STORED_NOT_TOKENIZED));
 
         if(description != null) {
             document.add(new Field(IndexFields.description.name(), description, FieldTypes.NOT_STORED_TOKENIZED));

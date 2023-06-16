@@ -64,26 +64,28 @@
                     <c:out value="${entityType.description}" />
                 </display:column>
                 <display:column>
-                    <c:url var="entityAttributesUrl" value="/action/Core/EntityAttribute/Main">
-                        <c:param name="ComponentVendorName" value="${entityType.componentVendor.componentVendorName}" />
-                        <c:param name="EntityTypeName" value="${entityType.entityTypeName}" />
-                    </c:url>
-                    <a href="${entityAttributesUrl}">Entity Attributes</a>
-                    <c:url var="commentTypesUrl" value="/action/Core/CommentType/Main">
-                        <c:param name="ComponentVendorName" value="${entityType.componentVendor.componentVendorName}" />
-                        <c:param name="EntityTypeName" value="${entityType.entityTypeName}" />
-                    </c:url>
-                    <a href="${commentTypesUrl}">Comment Types</a>
-                    <c:url var="ratingTypesUrl" value="/action/Core/RatingType/Main">
-                        <c:param name="ComponentVendorName" value="${entityType.componentVendor.componentVendorName}" />
-                        <c:param name="EntityTypeName" value="${entityType.entityTypeName}" />
-                    </c:url>
-                    <a href="${ratingTypesUrl}">Rating Types</a>
-                    <c:url var="messageTypesUrl" value="/action/Core/MessageType/Main">
-                        <c:param name="ComponentVendorName" value="${entityType.componentVendor.componentVendorName}" />
-                        <c:param name="EntityTypeName" value="${entityType.entityTypeName}" />
-                    </c:url>
-                    <a href="${messageTypesUrl}">Message Types</a>
+                    <c:if test="${entityType.isExtensible}">
+                        <c:url var="entityAttributesUrl" value="/action/Core/EntityAttribute/Main">
+                            <c:param name="ComponentVendorName" value="${entityType.componentVendor.componentVendorName}" />
+                            <c:param name="EntityTypeName" value="${entityType.entityTypeName}" />
+                        </c:url>
+                        <a href="${entityAttributesUrl}">Entity Attributes</a>
+                        <c:url var="commentTypesUrl" value="/action/Core/CommentType/Main">
+                            <c:param name="ComponentVendorName" value="${entityType.componentVendor.componentVendorName}" />
+                            <c:param name="EntityTypeName" value="${entityType.entityTypeName}" />
+                        </c:url>
+                        <a href="${commentTypesUrl}">Comment Types</a>
+                        <c:url var="ratingTypesUrl" value="/action/Core/RatingType/Main">
+                            <c:param name="ComponentVendorName" value="${entityType.componentVendor.componentVendorName}" />
+                            <c:param name="EntityTypeName" value="${entityType.entityTypeName}" />
+                        </c:url>
+                        <a href="${ratingTypesUrl}">Rating Types</a>
+                        <c:url var="messageTypesUrl" value="/action/Core/MessageType/Main">
+                            <c:param name="ComponentVendorName" value="${entityType.componentVendor.componentVendorName}" />
+                            <c:param name="EntityTypeName" value="${entityType.entityTypeName}" />
+                        </c:url>
+                        <a href="${messageTypesUrl}">Message Types</a>
+                    </c:if>
                     <c:url var="entityInstancesUrl" value="/action/Core/EntityInstance/Main">
                         <c:param name="ComponentVendorName" value="${entityType.componentVendor.componentVendorName}" />
                         <c:param name="EntityTypeName" value="${entityType.entityTypeName}" />

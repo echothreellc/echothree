@@ -22,7 +22,7 @@
     </entityAttributeGroups>
     <componentVendors>
         <componentVendor componentVendorName="ECHO_THREE" commandAction="none">
-            <entityType entityTypeName="Item" keepAllHistory="false" sortOrder="1">
+            <entityType entityTypeName="Item" keepAllHistory="false" isExtensible="true" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Item" />
                 <!--
                 <entityAttribute entityAttributeName="EXAMPLE_NAME" entityAttributeTypeName="NAME" trackRevisions="true"

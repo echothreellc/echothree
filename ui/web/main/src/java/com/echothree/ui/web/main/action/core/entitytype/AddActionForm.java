@@ -42,6 +42,7 @@ public class AddActionForm
     private Boolean keepAllHistory;
     private String lockTimeout;
     private String lockTimeoutUnitOfMeasureTypeChoice;
+    private Boolean isExtensible;
     private String sortOrder;
     private String description;
     
@@ -119,6 +120,14 @@ public class AddActionForm
         this.lockTimeoutUnitOfMeasureTypeChoice = lockTimeoutUnitOfMeasureTypeChoice;
     }
 
+    public Boolean getIsExtensible() {
+        return isExtensible;
+    }
+
+    public void setIsExtensible(Boolean isExtensible) {
+        this.isExtensible = isExtensible;
+    }
+
     public String getSortOrder() {
         return sortOrder;
     }
@@ -138,8 +147,9 @@ public class AddActionForm
     @Override
     public void reset(ActionMapping mapping, HttpServletRequest request) {
         super.reset(mapping, request);
-        
+
         keepAllHistory = Boolean.FALSE;
+        isExtensible = Boolean.FALSE;
     }
 
 }
