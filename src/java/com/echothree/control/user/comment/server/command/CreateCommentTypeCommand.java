@@ -70,7 +70,6 @@ public class CreateCommentTypeCommand
         CommentType commentType = null;
 
         if(parameterCount == 0 || parameterCount == 2) {
-            var coreControl = getCoreControl();
             var componentVendorName = form.getComponentVendorName();
             var entityTypeName = form.getEntityTypeName();
             var entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, componentVendorName, entityTypeName);
@@ -118,6 +117,7 @@ public class CreateCommentTypeCommand
                             }
 
                             if(!hasExecutionErrors()) {
+                                var coreControl = getCoreControl();
                                 var mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
                                 var mimeTypeUsageType = mimeTypeUsageTypeName == null ? null : coreControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
 
