@@ -99,369 +99,367 @@
             <fmt:message key="label.sortOrder" />: ${entityType.sortOrder}<br />
             <fmt:message key="label.description" />: ${entityType.description}<br />
             <br />
-            <et:hasSecurityRole securityRole="EntityAttribute.List">
-                <h2>Entity Attributes</h2>
-                <et:checkSecurityRoles securityRoles="EntityAttribute.Create:EntityAttribute.Edit:EntityAttribute.Delete:EntityAttribute.Review:EntityAttribute.Description:EntityAttribute.EntityAttributeEntityAttributeGroup:EntityAttributeEntityType.List:EntityListItem.List:EntityIntegerRange.List:EntityLongRange.List" />
-                <et:hasSecurityRole securityRoles="EntityAttribute.Edit:EntityAttribute.Description:EntityAttribute.Delete">
-                    <c:set var="linksInSecondRow" value="true" />
+            <c:if test="${entityType.isExtensible}">
+                <et:hasSecurityRole securityRole="EntityAttribute.List">
+                    <h2>Entity Attributes</h2>
+                    <et:checkSecurityRoles securityRoles="EntityAttribute.Create:EntityAttribute.Edit:EntityAttribute.Delete:EntityAttribute.Review:EntityAttribute.Description:EntityAttribute.EntityAttributeEntityAttributeGroup:EntityAttributeEntityType.List:EntityListItem.List:EntityIntegerRange.List:EntityLongRange.List" />
+                    <et:hasSecurityRole securityRoles="EntityAttribute.Edit:EntityAttribute.Description:EntityAttribute.Delete">
+                        <c:set var="linksInSecondRow" value="true" />
+                    </et:hasSecurityRole>
+                    <et:hasSecurityRole securityRole="EntityAttribute.Create">
+                        <c:url var="addUrl" value="/action/Core/EntityAttribute/Add">
+                            <c:param name="ComponentVendorName" value="${entityType.componentVendor.componentVendorName}" />
+                            <c:param name="EntityTypeName" value="${entityType.entityTypeName}" />
+                        </c:url>
+                        <p><a href="${addUrl}">Add Entity Attribute.</a></p>
+                    </et:hasSecurityRole>
+                    <c:choose>
+                        <c:when test='${entityType.entityAttributes.size == 0}'>
+                            <br />
+                        </c:when>
+                        <c:otherwise>
+                            <et:hasSecurityRole securityRole="EntityAttribute.Review" var="includeReviewUrl" />
+                            <display:table name="entityType.entityAttributes.list" id="entityAttribute" class="displaytag">
+                                <display:column titleKey="columnTitle.name">
+                                    <c:choose>
+                                        <c:when test="${includeReviewUrl}">
+                                            <c:url var="reviewUrl" value="/action/Core/EntityAttribute/Review">
+                                                <c:param name="ComponentVendorName" value="${entityAttribute.entityType.componentVendor.componentVendorName}" />
+                                                <c:param name="EntityTypeName" value="${entityAttribute.entityType.entityTypeName}" />
+                                                <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
+                                            </c:url>
+                                            <a href="${reviewUrl}"><c:out value="${entityAttribute.entityAttributeName}" /></a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <c:out value="${entityAttribute.entityAttributeName}" />
+                                        </c:otherwise>
+                                    </c:choose>
+                                </display:column>
+                                <display:column titleKey="columnTitle.description">
+                                    <c:out value="${entityAttribute.description}" />
+                                </display:column>
+                                <display:column titleKey="columnTitle.type">
+                                    <c:out value="${entityAttribute.entityAttributeType.description}" />
+                                </display:column>
+                                <display:column titleKey="columnTitle.trackRevisions">
+                                    <c:choose>
+                                        <c:when test="${entityAttribute.trackRevisions}">
+                                            <fmt:message key="phrase.yes" />
+                                        </c:when>
+                                        <c:otherwise>
+                                            <fmt:message key="phrase.no" />
+                                        </c:otherwise>
+                                    </c:choose>
+                                </display:column>
+                                <display:column titleKey="columnTitle.sortOrder">
+                                    <c:out value="${entityAttribute.sortOrder}" />
+                                </display:column>
+                                <display:column>
+                                    <et:hasSecurityRole securityRole="EntityAttribute.EntityAttributeEntityAttributeGroup">
+                                        <c:url var="entityAttributeGroupsUrl" value="/action/Core/EntityAttribute/EntityAttributeGroup">
+                                            <c:param name="ComponentVendorName" value="${entityAttribute.entityType.componentVendor.componentVendorName}" />
+                                            <c:param name="EntityTypeName" value="${entityAttribute.entityType.entityTypeName}" />
+                                            <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
+                                        </c:url>
+                                        <a href="${entityAttributeGroupsUrl}">Groups</a>
+                                        <c:set var="hasLinksInFirstRow" value="true" />
+                                    </et:hasSecurityRole>
+                                    <c:set value="${entityAttribute.entityAttributeType.entityAttributeTypeName}" var="entityAttributeTypeName" />
+                                    <et:hasSecurityRole securityRole="EntityAttributeEntityType.List">
+                                        <c:if test="${entityAttributeTypeName == 'ENTITY' || entityAttributeTypeName == 'COLLECTION'}">
+                                            <c:url var="entityListItemsUrl" value="/action/Core/EntityAttributeEntityType/Main">
+                                                <c:param name="ComponentVendorName" value="${entityAttribute.entityType.componentVendor.componentVendorName}" />
+                                                <c:param name="EntityTypeName" value="${entityAttribute.entityType.entityTypeName}" />
+                                                <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
+                                            </c:url>
+                                            <a href="${entityListItemsUrl}">Entity Types</a>
+                                            <c:set var="hasLinksInFirstRow" value="true" />
+                                        </c:if>
+                                    </et:hasSecurityRole>
+                                    <et:hasSecurityRole securityRole="EntityListItem.List">
+                                        <c:if test="${entityAttributeTypeName == 'LISTITEM' || entityAttributeTypeName == 'MULTIPLELISTITEM'}">
+                                            <c:url var="entityListItemsUrl" value="/action/Core/EntityListItem/Main">
+                                                <c:param name="ComponentVendorName" value="${entityAttribute.entityType.componentVendor.componentVendorName}" />
+                                                <c:param name="EntityTypeName" value="${entityAttribute.entityType.entityTypeName}" />
+                                                <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
+                                            </c:url>
+                                            <a href="${entityListItemsUrl}">List Items</a>
+                                            <c:set var="hasLinksInFirstRow" value="true" />
+                                        </c:if>
+                                    </et:hasSecurityRole>
+                                    <et:hasSecurityRole securityRole="EntityIntegerRange.List">
+                                        <c:if test="${entityAttributeTypeName == 'INTEGER'}">
+                                            <c:url var="entityIntegerRangesUrl" value="/action/Core/EntityIntegerRange/Main">
+                                                <c:param name="ComponentVendorName" value="${entityAttribute.entityType.componentVendor.componentVendorName}" />
+                                                <c:param name="EntityTypeName" value="${entityAttribute.entityType.entityTypeName}" />
+                                                <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
+                                            </c:url>
+                                            <a href="${entityIntegerRangesUrl}">Ranges</a>
+                                            <c:set var="hasLinksInFirstRow" value="true" />
+                                        </c:if>
+                                    </et:hasSecurityRole>
+                                    <et:hasSecurityRole securityRole="EntityLongRange.List">
+                                        <c:if test="${entityAttributeTypeName == 'LONG'}">
+                                            <c:url var="entityLongRangesUrl" value="/action/Core/EntityLongRange/Main">
+                                                <c:param name="ComponentVendorName" value="${entityAttribute.entityType.componentVendor.componentVendorName}" />
+                                                <c:param name="EntityTypeName" value="${entityAttribute.entityType.entityTypeName}" />
+                                                <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
+                                            </c:url>
+                                            <a href="${entityLongRangesUrl}">Ranges</a>
+                                            <c:set var="hasLinksInFirstRow" value="true" />
+                                        </c:if>
+                                    </et:hasSecurityRole>
+                                    <c:if test="${hasLinksInFirstRow && linksInSecondRow}">
+                                        <br />
+                                    </c:if>
+                                    <et:hasSecurityRole securityRole="EntityAttribute.Edit">
+                                        <c:url var="editUrl" value="/action/Core/EntityAttribute/Edit">
+                                            <c:param name="ComponentVendorName" value="${entityAttribute.entityType.componentVendor.componentVendorName}" />
+                                            <c:param name="EntityTypeName" value="${entityAttribute.entityType.entityTypeName}" />
+                                            <c:param name="OriginalEntityAttributeName" value="${entityAttribute.entityAttributeName}" />
+                                        </c:url>
+                                        <a href="${editUrl}">Edit</a>
+                                    </et:hasSecurityRole>
+                                    <et:hasSecurityRole securityRole="EntityAttribute.Description">
+                                        <c:url var="descriptionsUrl" value="/action/Core/EntityAttribute/Description">
+                                            <c:param name="ComponentVendorName" value="${entityAttribute.entityType.componentVendor.componentVendorName}" />
+                                            <c:param name="EntityTypeName" value="${entityAttribute.entityType.entityTypeName}" />
+                                            <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
+                                        </c:url>
+                                        <a href="${descriptionsUrl}">Descriptions</a>
+                                    </et:hasSecurityRole>
+                                    <et:hasSecurityRole securityRole="EntityAttribute.Delete">
+                                        <c:url var="deleteUrl" value="/action/Core/EntityAttribute/Delete">
+                                            <c:param name="ComponentVendorName" value="${entityAttribute.entityType.componentVendor.componentVendorName}" />
+                                            <c:param name="EntityTypeName" value="${entityAttribute.entityType.entityTypeName}" />
+                                            <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
+                                        </c:url>
+                                        <a href="${deleteUrl}">Delete</a>
+                                    </et:hasSecurityRole>
+                                </display:column>
+                                <et:hasSecurityRole securityRole="Event.List">
+                                    <display:column>
+                                        <c:url var="eventsUrl" value="/action/Core/Event/Main">
+                                            <c:param name="EntityRef" value="${entityAttribute.entityInstance.entityRef}" />
+                                        </c:url>
+                                        <a href="${eventsUrl}">Events</a>
+                                    </display:column>
+                                </et:hasSecurityRole>
+                            </display:table>
+                        </c:otherwise>
+                    </c:choose>
+                    <br />
                 </et:hasSecurityRole>
-                <et:hasSecurityRole securityRole="EntityAttribute.Create">
-                    <c:url var="addUrl" value="/action/Core/EntityAttribute/Add">
+                <et:hasSecurityRole securityRole="CommentType.List">
+                    <h2>Comment Types</h2>
+                    <c:url var="addUrl" value="/action/Core/CommentType/Add">
                         <c:param name="ComponentVendorName" value="${entityType.componentVendor.componentVendorName}" />
                         <c:param name="EntityTypeName" value="${entityType.entityTypeName}" />
                     </c:url>
-                    <p><a href="${addUrl}">Add Entity Attribute.</a></p>
-                </et:hasSecurityRole>
-                <c:choose>
-                    <c:when test='${entityType.entityAttributes.size == 0}'>
-                        <br />
-                    </c:when>
-                    <c:otherwise>
-                        <et:hasSecurityRole securityRole="EntityAttribute.Review" var="includeReviewUrl" />
-                        <display:table name="entityType.entityAttributes.list" id="entityAttribute" class="displaytag">
-                            <display:column titleKey="columnTitle.name">
-                                <c:choose>
-                                    <c:when test="${includeReviewUrl}">
-                                        <c:url var="reviewUrl" value="/action/Core/EntityAttribute/Review">
-                                            <c:param name="ComponentVendorName" value="${entityAttribute.entityType.componentVendor.componentVendorName}" />
-                                            <c:param name="EntityTypeName" value="${entityAttribute.entityType.entityTypeName}" />
-                                            <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
-                                        </c:url>
-                                        <a href="${reviewUrl}"><c:out value="${entityAttribute.entityAttributeName}" /></a>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <c:out value="${entityAttribute.entityAttributeName}" />
-                                    </c:otherwise>
-                                </c:choose>
-                            </display:column>
-                            <display:column titleKey="columnTitle.description">
-                                <c:out value="${entityAttribute.description}" />
-                            </display:column>
-                            <display:column titleKey="columnTitle.type">
-                                <c:out value="${entityAttribute.entityAttributeType.description}" />
-                            </display:column>
-                            <display:column titleKey="columnTitle.trackRevisions">
-                                <c:choose>
-                                    <c:when test="${entityAttribute.trackRevisions}">
-                                        <fmt:message key="phrase.yes" />
-                                    </c:when>
-                                    <c:otherwise>
-                                        <fmt:message key="phrase.no" />
-                                    </c:otherwise>
-                                </c:choose>
-                            </display:column>
-                            <display:column titleKey="columnTitle.sortOrder">
-                                <c:out value="${entityAttribute.sortOrder}" />
-                            </display:column>
-                            <display:column>
-                                <et:hasSecurityRole securityRole="EntityAttribute.EntityAttributeEntityAttributeGroup">
-                                    <c:url var="entityAttributeGroupsUrl" value="/action/Core/EntityAttribute/EntityAttributeGroup">
-                                        <c:param name="ComponentVendorName" value="${entityAttribute.entityType.componentVendor.componentVendorName}" />
-                                        <c:param name="EntityTypeName" value="${entityAttribute.entityType.entityTypeName}" />
-                                        <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
+                    <p><a href="${addUrl}">Add Comment Type.</a></p>
+                    <c:choose>
+                        <c:when test='${entityType.commentTypes.size == 0}'>
+                            <br />
+                        </c:when>
+                        <c:otherwise>
+                            <display:table name="entityType.commentTypes.list" id="commentType" class="displaytag">
+                                <display:column titleKey="columnTitle.name">
+                                    <c:url var="reviewUrl" value="/action/Core/CommentType/Review">
+                                        <c:param name="ComponentVendorName" value="${commentType.entityType.componentVendor.componentVendorName}" />
+                                        <c:param name="EntityTypeName" value="${commentType.entityType.entityTypeName}" />
+                                        <c:param name="CommentTypeName" value="${commentType.commentTypeName}" />
                                     </c:url>
-                                    <a href="${entityAttributeGroupsUrl}">Groups</a>
-                                    <c:set var="hasLinksInFirstRow" value="true" />
-                                </et:hasSecurityRole>
-                                <c:set value="${entityAttribute.entityAttributeType.entityAttributeTypeName}" var="entityAttributeTypeName" />
-                                <et:hasSecurityRole securityRole="EntityAttributeEntityType.List">
-                                    <c:if test="${entityAttributeTypeName == 'ENTITY' || entityAttributeTypeName == 'COLLECTION'}">
-                                        <c:url var="entityListItemsUrl" value="/action/Core/EntityAttributeEntityType/Main">
-                                            <c:param name="ComponentVendorName" value="${entityAttribute.entityType.componentVendor.componentVendorName}" />
-                                            <c:param name="EntityTypeName" value="${entityAttribute.entityType.entityTypeName}" />
-                                            <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
+                                    <a href="${reviewUrl}"><c:out value="${commentType.commentTypeName}" /></a>
+                                </display:column>
+                                <display:column titleKey="columnTitle.description">
+                                    <c:out value="${commentType.description}" />
+                                </display:column>
+                                <display:column titleKey="columnTitle.commentSequence">
+                                    <c:out value="${commentType.commentSequence.description}" />
+                                </display:column>
+                                <display:column titleKey="columnTitle.workflowEntrance">
+                                    <c:if test='${commentType.workflowEntrance != null}'>
+                                        <c:url var="workflowUrl" value="/action/Configuration/Workflow/Review">
+                                            <c:param name="WorkflowName" value="${commentType.workflowEntrance.workflow.workflowName}" />
                                         </c:url>
-                                        <a href="${entityListItemsUrl}">Entity Types</a>
-                                        <c:set var="hasLinksInFirstRow" value="true" />
-                                    </c:if>
-                                </et:hasSecurityRole>
-                                <et:hasSecurityRole securityRole="EntityListItem.List">
-                                    <c:if test="${entityAttributeTypeName == 'LISTITEM' || entityAttributeTypeName == 'MULTIPLELISTITEM'}">
-                                        <c:url var="entityListItemsUrl" value="/action/Core/EntityListItem/Main">
-                                            <c:param name="ComponentVendorName" value="${entityAttribute.entityType.componentVendor.componentVendorName}" />
-                                            <c:param name="EntityTypeName" value="${entityAttribute.entityType.entityTypeName}" />
-                                            <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
+                                        <c:url var="workflowEntranceUrl" value="/action/Configuration/WorkflowEntrance/Review">
+                                            <c:param name="WorkflowName" value="${commentType.workflowEntrance.workflow.workflowName}" />
+                                            <c:param name="WorkflowEntranceName" value="${commentType.workflowEntrance.workflowEntranceName}" />
                                         </c:url>
-                                        <a href="${entityListItemsUrl}">List Items</a>
-                                        <c:set var="hasLinksInFirstRow" value="true" />
+                                        <a href="${workflowUrl}"><c:out value="${commentType.workflowEntrance.workflow.description}" /></a>,
+                                        <a href="${workflowEntranceUrl}"><c:out value="${commentType.workflowEntrance.description}" /></a>
                                     </c:if>
-                                </et:hasSecurityRole>
-                                <et:hasSecurityRole securityRole="EntityIntegerRange.List">
-                                    <c:if test="${entityAttributeTypeName == 'INTEGER'}">
-                                        <c:url var="entityIntegerRangesUrl" value="/action/Core/EntityIntegerRange/Main">
-                                            <c:param name="ComponentVendorName" value="${entityAttribute.entityType.componentVendor.componentVendorName}" />
-                                            <c:param name="EntityTypeName" value="${entityAttribute.entityType.entityTypeName}" />
-                                            <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
-                                        </c:url>
-                                        <a href="${entityIntegerRangesUrl}">Ranges</a>
-                                        <c:set var="hasLinksInFirstRow" value="true" />
-                                    </c:if>
-                                </et:hasSecurityRole>
-                                <et:hasSecurityRole securityRole="EntityLongRange.List">
-                                    <c:if test="${entityAttributeTypeName == 'LONG'}">
-                                        <c:url var="entityLongRangesUrl" value="/action/Core/EntityLongRange/Main">
-                                            <c:param name="ComponentVendorName" value="${entityAttribute.entityType.componentVendor.componentVendorName}" />
-                                            <c:param name="EntityTypeName" value="${entityAttribute.entityType.entityTypeName}" />
-                                            <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
-                                        </c:url>
-                                        <a href="${entityLongRangesUrl}">Ranges</a>
-                                        <c:set var="hasLinksInFirstRow" value="true" />
-                                    </c:if>
-                                </et:hasSecurityRole>
-                                <c:if test="${hasLinksInFirstRow && linksInSecondRow}">
-                                    <br />
-                                </c:if>
-                                <et:hasSecurityRole securityRole="EntityAttribute.Edit">
-                                    <c:url var="editUrl" value="/action/Core/EntityAttribute/Edit">
-                                        <c:param name="ComponentVendorName" value="${entityAttribute.entityType.componentVendor.componentVendorName}" />
-                                        <c:param name="EntityTypeName" value="${entityAttribute.entityType.entityTypeName}" />
-                                        <c:param name="OriginalEntityAttributeName" value="${entityAttribute.entityAttributeName}" />
+                                </display:column>
+                                <display:column titleKey="columnTitle.mimeTypeUsageType">
+                                    <c:out value="${commentType.mimeTypeUsageType.description}" />
+                                </display:column>
+                                <display:column titleKey="columnTitle.sortOrder">
+                                    <c:out value="${commentType.sortOrder}" />
+                                </display:column>
+                                <display:column>
+                                    <c:url var="commentUsageTypesUrl" value="/action/Core/CommentUsageType/Main">
+                                        <c:param name="ComponentVendorName" value="${commentType.entityType.componentVendor.componentVendorName}" />
+                                        <c:param name="EntityTypeName" value="${commentType.entityType.entityTypeName}" />
+                                        <c:param name="CommentTypeName" value="${commentType.commentTypeName}" />
+                                    </c:url>
+                                    <a href="${commentUsageTypesUrl}">Comment Usage Types</a><br />
+                                    <c:url var="editUrl" value="/action/Core/CommentType/Edit">
+                                        <c:param name="ComponentVendorName" value="${commentType.entityType.componentVendor.componentVendorName}" />
+                                        <c:param name="EntityTypeName" value="${commentType.entityType.entityTypeName}" />
+                                        <c:param name="OriginalCommentTypeName" value="${commentType.commentTypeName}" />
                                     </c:url>
                                     <a href="${editUrl}">Edit</a>
-                                </et:hasSecurityRole>
-                                <et:hasSecurityRole securityRole="EntityAttribute.Description">
-                                    <c:url var="descriptionsUrl" value="/action/Core/EntityAttribute/Description">
-                                        <c:param name="ComponentVendorName" value="${entityAttribute.entityType.componentVendor.componentVendorName}" />
-                                        <c:param name="EntityTypeName" value="${entityAttribute.entityType.entityTypeName}" />
-                                        <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
+                                    <c:url var="descriptionsUrl" value="/action/Core/CommentType/Description">
+                                        <c:param name="ComponentVendorName" value="${commentType.entityType.componentVendor.componentVendorName}" />
+                                        <c:param name="EntityTypeName" value="${commentType.entityType.entityTypeName}" />
+                                        <c:param name="CommentTypeName" value="${commentType.commentTypeName}" />
                                     </c:url>
                                     <a href="${descriptionsUrl}">Descriptions</a>
-                                </et:hasSecurityRole>
-                                <et:hasSecurityRole securityRole="EntityAttribute.Delete">
-                                    <c:url var="deleteUrl" value="/action/Core/EntityAttribute/Delete">
-                                        <c:param name="ComponentVendorName" value="${entityAttribute.entityType.componentVendor.componentVendorName}" />
-                                        <c:param name="EntityTypeName" value="${entityAttribute.entityType.entityTypeName}" />
-                                        <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
+                                    <c:url var="deleteUrl" value="/action/Core/CommentType/Delete">
+                                        <c:param name="ComponentVendorName" value="${commentType.entityType.componentVendor.componentVendorName}" />
+                                        <c:param name="EntityTypeName" value="${commentType.entityType.entityTypeName}" />
+                                        <c:param name="CommentTypeName" value="${commentType.commentTypeName}" />
                                     </c:url>
                                     <a href="${deleteUrl}">Delete</a>
+                                </display:column>
+                                <et:hasSecurityRole securityRole="Event.List">
+                                    <display:column>
+                                        <c:url var="eventsUrl" value="/action/Core/Event/Main">
+                                            <c:param name="EntityRef" value="${commentType.entityInstance.entityRef}" />
+                                        </c:url>
+                                        <a href="${eventsUrl}">Events</a>
+                                    </display:column>
                                 </et:hasSecurityRole>
-                            </display:column>
-                            <et:hasSecurityRole securityRole="Event.List">
-                                <display:column>
-                                    <c:url var="eventsUrl" value="/action/Core/Event/Main">
-                                        <c:param name="EntityRef" value="${entityAttribute.entityInstance.entityRef}" />
-                                    </c:url>
-                                    <a href="${eventsUrl}">Events</a>
+                            </display:table>
+                        </c:otherwise>
+                    </c:choose>
+                    <br />
+                </et:hasSecurityRole>
+                <et:hasSecurityRole securityRole="RatingType.List">
+                    <h2>Rating Types</h2>
+                    <c:url var="addUrl" value="/action/Core/RatingType/Add">
+                        <c:param name="ComponentVendorName" value="${entityType.componentVendor.componentVendorName}" />
+                        <c:param name="EntityTypeName" value="${entityType.entityTypeName}" />
+                    </c:url>
+                    <p><a href="${addUrl}">Add Rating Type.</a></p>
+                    <c:choose>
+                        <c:when test='${entityType.ratingTypes.size == 0}'>
+                            <br />
+                        </c:when>
+                        <c:otherwise>
+                            <display:table name="entityType.ratingTypes.list" id="ratingType" class="displaytag">
+                                <display:column property="ratingTypeName" titleKey="columnTitle.name" />
+                                <display:column titleKey="columnTitle.description">
+                                    <c:out value="${ratingType.description}" />
                                 </display:column>
-                            </et:hasSecurityRole>
-                        </display:table>
-                    </c:otherwise>
-                </c:choose>
-                <br />
-            </et:hasSecurityRole>
-
-            <et:hasSecurityRole securityRole="CommentType.List">
-                <h2>Comment Types</h2>
-                <c:url var="addUrl" value="/action/Core/CommentType/Add">
-                    <c:param name="ComponentVendorName" value="${entityType.componentVendor.componentVendorName}" />
-                    <c:param name="EntityTypeName" value="${entityType.entityTypeName}" />
-                </c:url>
-                <p><a href="${addUrl}">Add Comment Type.</a></p>
-                <c:choose>
-                    <c:when test='${entityType.commentTypes.size == 0}'>
-                        <br />
-                    </c:when>
-                    <c:otherwise>
-                        <display:table name="entityType.commentTypes.list" id="commentType" class="displaytag">
-                            <display:column titleKey="columnTitle.name">
-                                <c:url var="reviewUrl" value="/action/Core/CommentType/Review">
-                                    <c:param name="ComponentVendorName" value="${commentType.entityType.componentVendor.componentVendorName}" />
-                                    <c:param name="EntityTypeName" value="${commentType.entityType.entityTypeName}" />
-                                    <c:param name="CommentTypeName" value="${commentType.commentTypeName}" />
-                                </c:url>
-                                <a href="${reviewUrl}"><c:out value="${commentType.commentTypeName}" /></a>
-                            </display:column>
-                            <display:column titleKey="columnTitle.description">
-                                <c:out value="${commentType.description}" />
-                            </display:column>
-                            <display:column titleKey="columnTitle.commentSequence">
-                                <c:out value="${commentType.commentSequence.description}" />
-                            </display:column>
-                            <display:column titleKey="columnTitle.workflowEntrance">
-                                <c:if test='${commentType.workflowEntrance != null}'>
-                                    <c:url var="workflowUrl" value="/action/Configuration/Workflow/Review">
-                                        <c:param name="WorkflowName" value="${commentType.workflowEntrance.workflow.workflowName}" />
-                                    </c:url>
-                                    <c:url var="workflowEntranceUrl" value="/action/Configuration/WorkflowEntrance/Review">
-                                        <c:param name="WorkflowName" value="${commentType.workflowEntrance.workflow.workflowName}" />
-                                        <c:param name="WorkflowEntranceName" value="${commentType.workflowEntrance.workflowEntranceName}" />
-                                    </c:url>
-                                    <a href="${workflowUrl}"><c:out value="${commentType.workflowEntrance.workflow.description}" /></a>,
-                                    <a href="${workflowEntranceUrl}"><c:out value="${commentType.workflowEntrance.description}" /></a>
-                                </c:if>
-                            </display:column>
-                            <display:column titleKey="columnTitle.mimeTypeUsageType">
-                                <c:out value="${commentType.mimeTypeUsageType.description}" />
-                            </display:column>
-                            <display:column titleKey="columnTitle.sortOrder">
-                                <c:out value="${commentType.sortOrder}" />
-                            </display:column>
-                            <display:column>
-                                <c:url var="commentUsageTypesUrl" value="/action/Core/CommentUsageType/Main">
-                                    <c:param name="ComponentVendorName" value="${commentType.entityType.componentVendor.componentVendorName}" />
-                                    <c:param name="EntityTypeName" value="${commentType.entityType.entityTypeName}" />
-                                    <c:param name="CommentTypeName" value="${commentType.commentTypeName}" />
-                                </c:url>
-                                <a href="${commentUsageTypesUrl}">Comment Usage Types</a><br />
-                                <c:url var="editUrl" value="/action/Core/CommentType/Edit">
-                                    <c:param name="ComponentVendorName" value="${commentType.entityType.componentVendor.componentVendorName}" />
-                                    <c:param name="EntityTypeName" value="${commentType.entityType.entityTypeName}" />
-                                    <c:param name="OriginalCommentTypeName" value="${commentType.commentTypeName}" />
-                                </c:url>
-                                <a href="${editUrl}">Edit</a>
-                                <c:url var="descriptionsUrl" value="/action/Core/CommentType/Description">
-                                    <c:param name="ComponentVendorName" value="${commentType.entityType.componentVendor.componentVendorName}" />
-                                    <c:param name="EntityTypeName" value="${commentType.entityType.entityTypeName}" />
-                                    <c:param name="CommentTypeName" value="${commentType.commentTypeName}" />
-                                </c:url>
-                                <a href="${descriptionsUrl}">Descriptions</a>
-                                <c:url var="deleteUrl" value="/action/Core/CommentType/Delete">
-                                    <c:param name="ComponentVendorName" value="${commentType.entityType.componentVendor.componentVendorName}" />
-                                    <c:param name="EntityTypeName" value="${commentType.entityType.entityTypeName}" />
-                                    <c:param name="CommentTypeName" value="${commentType.commentTypeName}" />
-                                </c:url>
-                                <a href="${deleteUrl}">Delete</a>
-                            </display:column>
-                            <et:hasSecurityRole securityRole="Event.List">
-                                <display:column>
-                                    <c:url var="eventsUrl" value="/action/Core/Event/Main">
-                                        <c:param name="EntityRef" value="${commentType.entityInstance.entityRef}" />
-                                    </c:url>
-                                    <a href="${eventsUrl}">Events</a>
+                                <display:column titleKey="columnTitle.ratingSequence">
+                                    <c:out value="${ratingType.ratingSequence.description}" />
                                 </display:column>
-                            </et:hasSecurityRole>
-                        </display:table>
-                    </c:otherwise>
-                </c:choose>
-                <br />
-            </et:hasSecurityRole>
-
-            <et:hasSecurityRole securityRole="RatingType.List">
-                <h2>Rating Types</h2>
-                <c:url var="addUrl" value="/action/Core/RatingType/Add">
-                    <c:param name="ComponentVendorName" value="${entityType.componentVendor.componentVendorName}" />
-                    <c:param name="EntityTypeName" value="${entityType.entityTypeName}" />
-                </c:url>
-                <p><a href="${addUrl}">Add Rating Type.</a></p>
-                <c:choose>
-                    <c:when test='${entityType.ratingTypes.size == 0}'>
-                        <br />
-                    </c:when>
-                    <c:otherwise>
-                        <display:table name="entityType.ratingTypes.list" id="ratingType" class="displaytag">
-                            <display:column property="ratingTypeName" titleKey="columnTitle.name" />
-                            <display:column titleKey="columnTitle.description">
-                                <c:out value="${ratingType.description}" />
-                            </display:column>
-                            <display:column titleKey="columnTitle.ratingSequence">
-                                <c:out value="${ratingType.ratingSequence.description}" />
-                            </display:column>
-                            <display:column titleKey="columnTitle.sortOrder">
-                                <c:out value="${ratingType.sortOrder}" />
-                            </display:column>
-                            <display:column>
-                                <c:url var="ratingTypeListItemsUrl" value="/action/Core/RatingTypeListItem/Main">
-                                    <c:param name="ComponentVendorName" value="${ratingType.entityType.componentVendor.componentVendorName}" />
-                                    <c:param name="EntityTypeName" value="${ratingType.entityType.entityTypeName}" />
-                                    <c:param name="RatingTypeName" value="${ratingType.ratingTypeName}" />
-                                </c:url>
-                                <a href="${ratingTypeListItemsUrl}">List Items</a><br />
-                                <c:url var="editUrl" value="/action/Core/RatingType/Edit">
-                                    <c:param name="ComponentVendorName" value="${ratingType.entityType.componentVendor.componentVendorName}" />
-                                    <c:param name="EntityTypeName" value="${ratingType.entityType.entityTypeName}" />
-                                    <c:param name="OriginalRatingTypeName" value="${ratingType.ratingTypeName}" />
-                                </c:url>
-                                <a href="${editUrl}">Edit</a>
-                                <c:url var="descriptionsUrl" value="/action/Core/RatingType/Description">
-                                    <c:param name="ComponentVendorName" value="${ratingType.entityType.componentVendor.componentVendorName}" />
-                                    <c:param name="EntityTypeName" value="${ratingType.entityType.entityTypeName}" />
-                                    <c:param name="RatingTypeName" value="${ratingType.ratingTypeName}" />
-                                </c:url>
-                                <a href="${descriptionsUrl}">Descriptions</a>
-                                <c:url var="deleteUrl" value="/action/Core/RatingType/Delete">
-                                    <c:param name="ComponentVendorName" value="${ratingType.entityType.componentVendor.componentVendorName}" />
-                                    <c:param name="EntityTypeName" value="${ratingType.entityType.entityTypeName}" />
-                                    <c:param name="RatingTypeName" value="${ratingType.ratingTypeName}" />
-                                </c:url>
-                                <a href="${deleteUrl}">Delete</a>
-                            </display:column>
-                            <et:hasSecurityRole securityRole="Event.List">
-                                <display:column>
-                                    <c:url var="eventsUrl" value="/action/Core/Event/Main">
-                                        <c:param name="EntityRef" value="${ratingType.entityInstance.entityRef}" />
-                                    </c:url>
-                                    <a href="${eventsUrl}">Events</a>
+                                <display:column titleKey="columnTitle.sortOrder">
+                                    <c:out value="${ratingType.sortOrder}" />
                                 </display:column>
-                            </et:hasSecurityRole>
-                        </display:table>
-                    </c:otherwise>
-                </c:choose>
-                <br />
-            </et:hasSecurityRole>
-
-            <et:hasSecurityRole securityRole="MessageType.List">
-                <h2>Message Types</h2>
-                <c:url var="addUrl" value="/action/Core/MessageType/Add">
-                    <c:param name="ComponentVendorName" value="${entityType.componentVendor.componentVendorName}" />
-                    <c:param name="EntityTypeName" value="${entityType.entityTypeName}" />
-                </c:url>
-                <p><a href="${addUrl}">Add Message Type.</a></p>
-                <c:choose>
-                    <c:when test='${entityType.messageTypes.size == 0}'>
-                        <br />
-                    </c:when>
-                    <c:otherwise>
-                        <display:table name="entityType.messageTypes.list" id="messageType" class="displaytag">
-                            <display:column property="messageTypeName" titleKey="columnTitle.name" />
-                            <display:column titleKey="columnTitle.description">
-                                <c:out value="${messageType.description}" />
-                            </display:column>
-                            <display:column titleKey="columnTitle.mimeTypeUsageType">
-                                <c:out value="${messageType.mimeTypeUsageType.description}" />
-                            </display:column>
-                            <display:column titleKey="columnTitle.sortOrder">
-                                <c:out value="${messageType.sortOrder}" />
-                            </display:column>
-                            <display:column>
-                                <c:url var="messagesUrl" value="/action/Core/Message/Main">
-                                    <c:param name="ComponentVendorName" value="${messageType.entityType.componentVendor.componentVendorName}" />
-                                    <c:param name="EntityTypeName" value="${messageType.entityType.entityTypeName}" />
-                                    <c:param name="MessageTypeName" value="${messageType.messageTypeName}" />
-                                </c:url>
-                                <a href="${messagesUrl}">Messages</a><br />
-                                <c:url var="editUrl" value="/action/Core/MessageType/Edit">
-                                    <c:param name="ComponentVendorName" value="${messageType.entityType.componentVendor.componentVendorName}" />
-                                    <c:param name="EntityTypeName" value="${messageType.entityType.entityTypeName}" />
-                                    <c:param name="OriginalMessageTypeName" value="${messageType.messageTypeName}" />
-                                </c:url>
-                                <a href="${editUrl}">Edit</a>
-                                <c:url var="descriptionsUrl" value="/action/Core/MessageType/Description">
-                                    <c:param name="ComponentVendorName" value="${messageType.entityType.componentVendor.componentVendorName}" />
-                                    <c:param name="EntityTypeName" value="${messageType.entityType.entityTypeName}" />
-                                    <c:param name="MessageTypeName" value="${messageType.messageTypeName}" />
-                                </c:url>
-                                <a href="${descriptionsUrl}">Descriptions</a>
-                                <c:url var="deleteUrl" value="/action/Core/MessageType/Delete">
-                                    <c:param name="ComponentVendorName" value="${messageType.entityType.componentVendor.componentVendorName}" />
-                                    <c:param name="EntityTypeName" value="${messageType.entityType.entityTypeName}" />
-                                    <c:param name="MessageTypeName" value="${messageType.messageTypeName}" />
-                                </c:url>
-                                <a href="${deleteUrl}">Delete</a>
-                            </display:column>
-                            <et:hasSecurityRole securityRole="Event.List">
                                 <display:column>
-                                    <c:url var="eventsUrl" value="/action/Core/Event/Main">
-                                        <c:param name="EntityRef" value="${messageType.entityInstance.entityRef}" />
+                                    <c:url var="ratingTypeListItemsUrl" value="/action/Core/RatingTypeListItem/Main">
+                                        <c:param name="ComponentVendorName" value="${ratingType.entityType.componentVendor.componentVendorName}" />
+                                        <c:param name="EntityTypeName" value="${ratingType.entityType.entityTypeName}" />
+                                        <c:param name="RatingTypeName" value="${ratingType.ratingTypeName}" />
                                     </c:url>
-                                    <a href="${eventsUrl}">Events</a>
+                                    <a href="${ratingTypeListItemsUrl}">List Items</a><br />
+                                    <c:url var="editUrl" value="/action/Core/RatingType/Edit">
+                                        <c:param name="ComponentVendorName" value="${ratingType.entityType.componentVendor.componentVendorName}" />
+                                        <c:param name="EntityTypeName" value="${ratingType.entityType.entityTypeName}" />
+                                        <c:param name="OriginalRatingTypeName" value="${ratingType.ratingTypeName}" />
+                                    </c:url>
+                                    <a href="${editUrl}">Edit</a>
+                                    <c:url var="descriptionsUrl" value="/action/Core/RatingType/Description">
+                                        <c:param name="ComponentVendorName" value="${ratingType.entityType.componentVendor.componentVendorName}" />
+                                        <c:param name="EntityTypeName" value="${ratingType.entityType.entityTypeName}" />
+                                        <c:param name="RatingTypeName" value="${ratingType.ratingTypeName}" />
+                                    </c:url>
+                                    <a href="${descriptionsUrl}">Descriptions</a>
+                                    <c:url var="deleteUrl" value="/action/Core/RatingType/Delete">
+                                        <c:param name="ComponentVendorName" value="${ratingType.entityType.componentVendor.componentVendorName}" />
+                                        <c:param name="EntityTypeName" value="${ratingType.entityType.entityTypeName}" />
+                                        <c:param name="RatingTypeName" value="${ratingType.ratingTypeName}" />
+                                    </c:url>
+                                    <a href="${deleteUrl}">Delete</a>
                                 </display:column>
-                            </et:hasSecurityRole>
-                        </display:table>
-                    </c:otherwise>
-                </c:choose>
-                <br />
-            </et:hasSecurityRole>
-
+                                <et:hasSecurityRole securityRole="Event.List">
+                                    <display:column>
+                                        <c:url var="eventsUrl" value="/action/Core/Event/Main">
+                                            <c:param name="EntityRef" value="${ratingType.entityInstance.entityRef}" />
+                                        </c:url>
+                                        <a href="${eventsUrl}">Events</a>
+                                    </display:column>
+                                </et:hasSecurityRole>
+                            </display:table>
+                        </c:otherwise>
+                    </c:choose>
+                    <br />
+                </et:hasSecurityRole>
+                <et:hasSecurityRole securityRole="MessageType.List">
+                    <h2>Message Types</h2>
+                    <c:url var="addUrl" value="/action/Core/MessageType/Add">
+                        <c:param name="ComponentVendorName" value="${entityType.componentVendor.componentVendorName}" />
+                        <c:param name="EntityTypeName" value="${entityType.entityTypeName}" />
+                    </c:url>
+                    <p><a href="${addUrl}">Add Message Type.</a></p>
+                    <c:choose>
+                        <c:when test='${entityType.messageTypes.size == 0}'>
+                            <br />
+                        </c:when>
+                        <c:otherwise>
+                            <display:table name="entityType.messageTypes.list" id="messageType" class="displaytag">
+                                <display:column property="messageTypeName" titleKey="columnTitle.name" />
+                                <display:column titleKey="columnTitle.description">
+                                    <c:out value="${messageType.description}" />
+                                </display:column>
+                                <display:column titleKey="columnTitle.mimeTypeUsageType">
+                                    <c:out value="${messageType.mimeTypeUsageType.description}" />
+                                </display:column>
+                                <display:column titleKey="columnTitle.sortOrder">
+                                    <c:out value="${messageType.sortOrder}" />
+                                </display:column>
+                                <display:column>
+                                    <c:url var="messagesUrl" value="/action/Core/Message/Main">
+                                        <c:param name="ComponentVendorName" value="${messageType.entityType.componentVendor.componentVendorName}" />
+                                        <c:param name="EntityTypeName" value="${messageType.entityType.entityTypeName}" />
+                                        <c:param name="MessageTypeName" value="${messageType.messageTypeName}" />
+                                    </c:url>
+                                    <a href="${messagesUrl}">Messages</a><br />
+                                    <c:url var="editUrl" value="/action/Core/MessageType/Edit">
+                                        <c:param name="ComponentVendorName" value="${messageType.entityType.componentVendor.componentVendorName}" />
+                                        <c:param name="EntityTypeName" value="${messageType.entityType.entityTypeName}" />
+                                        <c:param name="OriginalMessageTypeName" value="${messageType.messageTypeName}" />
+                                    </c:url>
+                                    <a href="${editUrl}">Edit</a>
+                                    <c:url var="descriptionsUrl" value="/action/Core/MessageType/Description">
+                                        <c:param name="ComponentVendorName" value="${messageType.entityType.componentVendor.componentVendorName}" />
+                                        <c:param name="EntityTypeName" value="${messageType.entityType.entityTypeName}" />
+                                        <c:param name="MessageTypeName" value="${messageType.messageTypeName}" />
+                                    </c:url>
+                                    <a href="${descriptionsUrl}">Descriptions</a>
+                                    <c:url var="deleteUrl" value="/action/Core/MessageType/Delete">
+                                        <c:param name="ComponentVendorName" value="${messageType.entityType.componentVendor.componentVendorName}" />
+                                        <c:param name="EntityTypeName" value="${messageType.entityType.entityTypeName}" />
+                                        <c:param name="MessageTypeName" value="${messageType.messageTypeName}" />
+                                    </c:url>
+                                    <a href="${deleteUrl}">Delete</a>
+                                </display:column>
+                                <et:hasSecurityRole securityRole="Event.List">
+                                    <display:column>
+                                        <c:url var="eventsUrl" value="/action/Core/Event/Main">
+                                            <c:param name="EntityRef" value="${messageType.entityInstance.entityRef}" />
+                                        </c:url>
+                                        <a href="${eventsUrl}">Events</a>
+                                    </display:column>
+                                </et:hasSecurityRole>
+                            </display:table>
+                        </c:otherwise>
+                    </c:choose>
+                    <br />
+                </et:hasSecurityRole>
+            </c:if>
             <et:hasSecurityRole securityRole="EntityInstance.List">
                 <h2>Entity Instances</h2>
                 <c:choose>
