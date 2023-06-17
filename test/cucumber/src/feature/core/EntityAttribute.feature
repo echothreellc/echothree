@@ -303,3 +303,15 @@ Feature: Employee entity attribute
     And the user sets the entity attribute's name to the last entity attribute added
     And the user deletes the entity attribute
     Then no error should occur
+
+  Scenario: Existing employee adds an entity attribute and then deletes it
+    Given the employee Test begins using the application
+    And the user begins entering a new entity attribute
+    And the user sets the entity attribute's component vendor to ECHO_THREE
+    And the user sets the entity attribute's entity type to ItemAlias
+    And the user sets the entity attribute's entity attribute type to INTEGER
+    And the user sets the entity attribute to track revisions when modified
+    And the user sets the entity attribute's sort order to "1"
+    And the user sets the entity attribute's description to "Test Integer Attribute"
+    And the user adds the new entity attribute
+    Then the execution error EntityTypeIsNotExtensible should occur
