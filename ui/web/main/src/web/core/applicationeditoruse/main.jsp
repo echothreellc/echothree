@@ -83,7 +83,7 @@
                             <c:out value="${applicationEditorUse.defaultHeight}" />
                         </c:when>
                         <c:otherwise>
-                            <i>Not Set.</i>
+                            <i><fmt:message key="phrase.notSet" /></i>
                         </c:otherwise>
                     </c:choose>
                             x
@@ -92,7 +92,7 @@
                             <c:out value="${applicationEditorUse.defaultWidth}" />
                         </c:when>
                         <c:otherwise>
-                            <i>Not Set.</i>
+                            <i><fmt:message key="phrase.notSet" /></i>
                         </c:otherwise>
                     </c:choose>
                 </display:column>

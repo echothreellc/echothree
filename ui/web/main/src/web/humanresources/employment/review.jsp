@@ -80,7 +80,7 @@
                     <c:out value="${employment.endTime}" />
                 </c:when>
                 <c:otherwise>
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:otherwise>
             </c:choose>
             <br />
@@ -95,7 +95,7 @@
                     <a href="${terminationTypeUrl}"><c:out value="${employment.terminationType.description}" /></a>
                 </c:when>
                 <c:otherwise>
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:otherwise>
             </c:choose>
             <br />
@@ -108,7 +108,7 @@
                     <a href="${terminationReasonUrl}"><c:out value="${employment.terminationReason.description}" /></a>
                 </c:when>
                 <c:otherwise>
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:otherwise>
             </c:choose>
             <br />

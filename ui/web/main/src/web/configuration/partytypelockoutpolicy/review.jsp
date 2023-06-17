@@ -39,7 +39,7 @@
             Lockout failure count:
             <c:choose>
                 <c:when test='${partyTypeLockoutPolicy.lockoutFailureCount == null}'>
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${partyTypeLockoutPolicy.lockoutFailureCount}" />
@@ -49,7 +49,7 @@
             Reset Failure Count Time:
             <c:choose>
                 <c:when test='${partyTypeLockoutPolicy.resetFailureCountTime == null}'>
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${partyTypeLockoutPolicy.resetFailureCountTime}" />
@@ -70,7 +70,7 @@
             Lockout Inactive Time:
             <c:choose>
                 <c:when test='${partyTypeLockoutPolicy.lockoutInactiveTime == null}'>
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${partyTypeLockoutPolicy.lockoutInactiveTime}" />

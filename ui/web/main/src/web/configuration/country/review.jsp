@@ -41,7 +41,7 @@
             Telephone Code:
             <c:choose>
                 <c:when test="${country.telephoneCode == null}">
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${country.telephoneCode}" />
@@ -51,7 +51,7 @@
             Area Code Pattern:
             <c:choose>
                 <c:when test="${country.areaCodePattern == null}">
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${country.areaCodePattern}" />
@@ -71,7 +71,7 @@
             Area Code Example:
             <c:choose>
                 <c:when test="${country.areaCodeExample == null}">
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${country.areaCodeExample}" />
@@ -81,7 +81,7 @@
             Telephone Number Pattern:
             <c:choose>
                 <c:when test="${country.telephoneNumberPattern == null}">
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${country.telephoneNumberPattern}" />
@@ -91,7 +91,7 @@
             Telephone Number Example:
             <c:choose>
                 <c:when test="${country.telephoneNumberExample == null}">
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${country.telephoneNumberExample}" />
@@ -149,7 +149,7 @@
             Postal Code Pattern:
             <c:choose>
                 <c:when test="${country.postalCodePattern == null}">
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${country.postalCodePattern}" />
@@ -179,7 +179,7 @@
             Postal Code Length:
             <c:choose>
                 <c:when test="${country.postalCodeLength == null}">
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${country.postalCodeLength}" />
@@ -189,7 +189,7 @@
             Postal Code Geo Code Length:
             <c:choose>
                 <c:when test="${country.postalCodeGeoCodeLength == null}">
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${country.postalCodeGeoCodeLength}" />
@@ -199,7 +199,7 @@
             Postal Code Example:
             <c:choose>
                 <c:when test="${country.postalCodeExample == null}">
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${country.postalCodeExample}" />

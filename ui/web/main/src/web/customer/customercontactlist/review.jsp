@@ -76,7 +76,7 @@
                     </c:choose>
                 </c:when>
                 <c:otherwise>
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:otherwise>
             </c:choose>
             <br />

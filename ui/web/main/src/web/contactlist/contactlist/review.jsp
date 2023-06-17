@@ -86,7 +86,7 @@
             <fmt:message key="label.contactListFrequency" />:
             <c:choose>
                 <c:when test='${contactList.contactListFrequency == null}'>
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:choose>

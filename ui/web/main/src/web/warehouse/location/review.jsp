@@ -67,7 +67,7 @@
             <fmt:message key="label.locationVolume" />:
             <c:choose>
                 <c:when test="${locationVolume == null}">
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     Height: <c:out value="${locationVolume.height}" />,

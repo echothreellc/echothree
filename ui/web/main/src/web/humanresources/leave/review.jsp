@@ -100,7 +100,7 @@
                     <a href="${leaveTypeUrl}"><c:out value="${leave.leaveType.description}" /></a>
                 </c:when>
                 <c:otherwise>
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:otherwise>
             </c:choose>
             <br />
@@ -113,7 +113,7 @@
                     <a href="${leaveReasonUrl}"><c:out value="${leave.leaveReason.description}" /></a>
                 </c:when>
                 <c:otherwise>
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:otherwise>
             </c:choose>
             <br />
@@ -126,7 +126,7 @@
                     <c:out value="${leave.endTime}" />
                 </c:when>
                 <c:otherwise>
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:otherwise>
             </c:choose>
             <br />
@@ -136,7 +136,7 @@
                     <c:out value="${leave.totalTime}" />
                 </c:when>
                 <c:otherwise>
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:otherwise>
             </c:choose>
             <br />

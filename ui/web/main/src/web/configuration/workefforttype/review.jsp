@@ -68,7 +68,7 @@
             Scheduled Time:
             <c:choose>
                 <c:when test="${workEffortType.scheduledTime == null}">
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${workEffortType.scheduledTime}" />
@@ -79,7 +79,7 @@
             Estimated Time Allowed:
             <c:choose>
                 <c:when test="${workEffortType.estimatedTimeAllowed == null}">
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${workEffortType.estimatedTimeAllowed}" />
@@ -89,7 +89,7 @@
             Maximum Time Allowed:
             <c:choose>
                 <c:when test="${workEffortType.maximumTimeAllowed == null}">
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${workEffortType.maximumTimeAllowed}" />

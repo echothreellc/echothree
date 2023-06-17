@@ -88,7 +88,7 @@
             Work Assignment Selector:
             <c:choose>
                 <c:when test="${workRequirementScope.workAssignmentSelector == null}">
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:url var="workAssignmentSelectorUrl" value="/action/Sequence/Sequence/Review">
@@ -107,7 +107,7 @@
                 <c:when test="${workRequirementScope.estimatedTimeAllowed == null}">
                     <c:choose>
                         <c:when test="${workRequirementScope.workRequirementType.estimatedTimeAllowed == null}">
-                            <i>Not Set.</i>
+                            <i><fmt:message key="phrase.notSet" /></i>
                         </c:when>
                         <c:otherwise>
                             Using Default (<c:out value="${workRequirementScope.workRequirementType.estimatedTimeAllowed}" />)
@@ -124,7 +124,7 @@
                 <c:when test="${workRequirementScope.maximumTimeAllowed == null}">
                     <c:choose>
                         <c:when test="${workRequirementScope.workRequirementType.maximumTimeAllowed == null}">
-                            <i>Not Set.</i>
+                            <i><fmt:message key="phrase.notSet" /></i>
                         </c:when>
                         <c:otherwise>
                             Using Default (<c:out value="${workRequirementScope.workRequirementType.maximumTimeAllowed}" />)

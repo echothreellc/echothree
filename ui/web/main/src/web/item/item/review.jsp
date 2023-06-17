@@ -197,7 +197,7 @@
                     <c:out value="${item.salesOrderEndTime}" />
                 </c:when>
                 <c:otherwise>
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:otherwise>
             </c:choose>
             <br />
@@ -207,7 +207,7 @@
                     <c:out value="${item.purchaseOrderStartTime}" />
                 </c:when>
                 <c:otherwise>
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:otherwise>
             </c:choose>
             <br />
@@ -217,7 +217,7 @@
                     <c:out value="${item.purchaseOrderEndTime}" />
                 </c:when>
                 <c:otherwise>
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:otherwise>
             </c:choose>
             <br />
@@ -227,7 +227,7 @@
                     <c:out value="${item.shippingStartTime}" />
                 </c:when>
                 <c:otherwise>
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:otherwise>
             </c:choose>
             <br />
@@ -237,7 +237,7 @@
                     <c:out value="${item.shippingEndTime}" />
                 </c:when>
                 <c:otherwise>
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:otherwise>
             </c:choose>
             <br />
@@ -290,7 +290,7 @@
                     </c:choose>
                 </c:when>
                 <c:otherwise>
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:otherwise>
             </c:choose>
             <br />
@@ -311,7 +311,7 @@
                     </c:choose>
                 </c:when>
                 <c:otherwise>
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:otherwise>
             </c:choose>
             <br />

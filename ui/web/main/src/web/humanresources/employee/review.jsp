@@ -118,7 +118,7 @@
             Last Login Time:
             <c:choose>
                 <c:when test='${employee.userLogin.lastLoginTime == null}'>
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${employee.userLogin.lastLoginTime}" />
@@ -129,7 +129,7 @@
             First Failure Time:
             <c:choose>
                 <c:when test='${employee.userLogin.firstFailureTime == null}'>
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${employee.userLogin.firstFailureTime}" />
@@ -139,7 +139,7 @@
             Last Failure Time:
             <c:choose>
                 <c:when test='${employee.userLogin.lastFailureTime == null}'>
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${employee.userLogin.lastFailureTime}" />

@@ -72,7 +72,7 @@
                                 <c:out value="${editor.minimumHeight}" />
                             </c:when>
                             <c:otherwise>
-                                <i>Not Set.</i>
+                                <i><fmt:message key="phrase.notSet" /></i>
                             </c:otherwise>
                         </c:choose>
                                 x
@@ -81,7 +81,7 @@
                                 <c:out value="${editor.minimumWidth}" />
                             </c:when>
                             <c:otherwise>
-                                <i>Not Set.</i>
+                                <i><fmt:message key="phrase.notSet" /></i>
                             </c:otherwise>
                         </c:choose>
                     </c:if>
@@ -93,7 +93,7 @@
                                 <c:out value="${editor.maximumHeight}" />
                             </c:when>
                             <c:otherwise>
-                                <i>Not Set.</i>
+                                <i><fmt:message key="phrase.notSet" /></i>
                             </c:otherwise>
                         </c:choose>
                                 x
@@ -102,7 +102,7 @@
                                 <c:out value="${editor.maximumWidth}" />
                             </c:when>
                             <c:otherwise>
-                                <i>Not Set.</i>
+                                <i><fmt:message key="phrase.notSet" /></i>
                             </c:otherwise>
                         </c:choose>
                     </c:if>
@@ -114,7 +114,7 @@
                                 <c:out value="${editor.defaultHeight}" />
                             </c:when>
                             <c:otherwise>
-                                <i>Not Set.</i>
+                                <i><fmt:message key="phrase.notSet" /></i>
                             </c:otherwise>
                         </c:choose>
                                 x
@@ -123,7 +123,7 @@
                                 <c:out value="${editor.defaultWidth}" />
                             </c:when>
                             <c:otherwise>
-                                <i>Not Set.</i>
+                                <i><fmt:message key="phrase.notSet" /></i>
                             </c:otherwise>
                         </c:choose>
                     </c:if>
