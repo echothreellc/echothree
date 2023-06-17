@@ -54,17 +54,15 @@
                         <%@ include file="../include/field/submit-b.jsp" %>
                         <html:hidden property="returnUrl" />
                     </html:form>
-                    <script type="text/javascript" language="JavaScript">
-                        <!--
-                        var form = document.forms["EmployeeLogin"];
-                        var focusControl = form.elements["username"];
+                    <script type="text/javascript">
+                        const form = document.forms["EmployeeLogin"];
+                        let focusControl = form.elements["username"];
 
                         if(focusControl.value.length > 0) {
                             focusControl = form.elements["password"];
                         }
 
                         focusControl.focus();
-                        // -->
                     </script>
                 </div>
             </div>
