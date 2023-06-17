@@ -86,6 +86,16 @@
                 </c:otherwise>
             </c:choose>
             <br />
+            <fmt:message key="label.isExtensible" />:
+            <c:choose>
+                <c:when test="${entityType.isExtensible}">
+                    <fmt:message key="phrase.yes" />
+                </c:when>
+                <c:otherwise>
+                    <fmt:message key="phrase.no" />
+                </c:otherwise>
+            </c:choose>
+            <br />
             <fmt:message key="label.sortOrder" />: ${entityType.sortOrder}<br />
             <fmt:message key="label.description" />: ${entityType.description}<br />
             <br />
