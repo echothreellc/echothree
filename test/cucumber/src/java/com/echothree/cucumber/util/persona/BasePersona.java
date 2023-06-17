@@ -58,21 +58,25 @@ import com.echothree.control.user.core.common.edit.EntityAttributeEdit;
 import com.echothree.control.user.core.common.edit.EntityAttributeEntityAttributeGroupEdit;
 import com.echothree.control.user.core.common.edit.EntityAttributeGroupEdit;
 import com.echothree.control.user.core.common.edit.EntityListItemEdit;
+import com.echothree.control.user.core.common.edit.EntityTypeEdit;
 import com.echothree.control.user.core.common.form.CreateComponentVendorForm;
 import com.echothree.control.user.core.common.form.CreateEntityAttributeEntityAttributeGroupForm;
 import com.echothree.control.user.core.common.form.CreateEntityAttributeForm;
 import com.echothree.control.user.core.common.form.CreateEntityAttributeGroupForm;
 import com.echothree.control.user.core.common.form.CreateEntityListItemForm;
+import com.echothree.control.user.core.common.form.CreateEntityTypeForm;
 import com.echothree.control.user.core.common.form.DeleteComponentVendorForm;
 import com.echothree.control.user.core.common.form.DeleteEntityAttributeEntityAttributeGroupForm;
 import com.echothree.control.user.core.common.form.DeleteEntityAttributeForm;
 import com.echothree.control.user.core.common.form.DeleteEntityAttributeGroupForm;
 import com.echothree.control.user.core.common.form.DeleteEntityListItemForm;
+import com.echothree.control.user.core.common.form.DeleteEntityTypeForm;
 import com.echothree.control.user.core.common.spec.ComponentVendorSpec;
 import com.echothree.control.user.core.common.spec.EntityAttributeEntityAttributeGroupSpec;
 import com.echothree.control.user.core.common.spec.EntityAttributeGroupSpec;
 import com.echothree.control.user.core.common.spec.EntityAttributeUniversalSpec;
 import com.echothree.control.user.core.common.spec.EntityListItemUniversalSpec;
+import com.echothree.control.user.core.common.spec.EntityTypeSpec;
 import com.echothree.control.user.filter.common.edit.FilterEdit;
 import com.echothree.control.user.filter.common.edit.FilterKindEdit;
 import com.echothree.control.user.filter.common.edit.FilterStepEdit;
@@ -264,6 +268,11 @@ public class BasePersona {
     public DeleteComponentVendorForm deleteComponentVendorForm;
     public ComponentVendorSpec componentVendorSpec;
     public ComponentVendorEdit componentVendorEdit;
+
+    public CreateEntityTypeForm createEntityTypeForm;
+    public DeleteEntityTypeForm deleteEntityTypeForm;
+    public EntityTypeSpec entityTypeSpec;
+    public EntityTypeEdit entityTypeEdit;
 
     public CreateEntityAttributeGroupForm createEntityAttributeGroupForm;
     public DeleteEntityAttributeGroupForm deleteEntityAttributeGroupForm;
