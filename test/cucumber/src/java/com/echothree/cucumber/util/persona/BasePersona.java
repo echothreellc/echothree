@@ -53,18 +53,22 @@ import com.echothree.control.user.content.common.spec.ContentCategorySpec;
 import com.echothree.control.user.content.common.spec.ContentCollectionSpec;
 import com.echothree.control.user.content.common.spec.ContentPageSpec;
 import com.echothree.control.user.content.common.spec.ContentSectionSpec;
+import com.echothree.control.user.core.common.edit.ComponentVendorEdit;
 import com.echothree.control.user.core.common.edit.EntityAttributeEdit;
 import com.echothree.control.user.core.common.edit.EntityAttributeEntityAttributeGroupEdit;
 import com.echothree.control.user.core.common.edit.EntityAttributeGroupEdit;
 import com.echothree.control.user.core.common.edit.EntityListItemEdit;
+import com.echothree.control.user.core.common.form.CreateComponentVendorForm;
 import com.echothree.control.user.core.common.form.CreateEntityAttributeEntityAttributeGroupForm;
 import com.echothree.control.user.core.common.form.CreateEntityAttributeForm;
 import com.echothree.control.user.core.common.form.CreateEntityAttributeGroupForm;
 import com.echothree.control.user.core.common.form.CreateEntityListItemForm;
+import com.echothree.control.user.core.common.form.DeleteComponentVendorForm;
 import com.echothree.control.user.core.common.form.DeleteEntityAttributeEntityAttributeGroupForm;
 import com.echothree.control.user.core.common.form.DeleteEntityAttributeForm;
 import com.echothree.control.user.core.common.form.DeleteEntityAttributeGroupForm;
 import com.echothree.control.user.core.common.form.DeleteEntityListItemForm;
+import com.echothree.control.user.core.common.spec.ComponentVendorSpec;
 import com.echothree.control.user.core.common.spec.EntityAttributeEntityAttributeGroupSpec;
 import com.echothree.control.user.core.common.spec.EntityAttributeGroupSpec;
 import com.echothree.control.user.core.common.spec.EntityAttributeUniversalSpec;
@@ -256,6 +260,11 @@ public class BasePersona {
     public ContentCategoryItemEdit contentCategoryItemEdit;
 
     // Core
+    public CreateComponentVendorForm createComponentVendorForm;
+    public DeleteComponentVendorForm deleteComponentVendorForm;
+    public ComponentVendorSpec componentVendorSpec;
+    public ComponentVendorEdit componentVendorEdit;
+
     public CreateEntityAttributeGroupForm createEntityAttributeGroupForm;
     public DeleteEntityAttributeGroupForm deleteEntityAttributeGroupForm;
     public EntityAttributeGroupSpec entityAttributeGroupSpec;
