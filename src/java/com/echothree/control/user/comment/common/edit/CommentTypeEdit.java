@@ -16,10 +16,8 @@
 
 package com.echothree.control.user.comment.common.edit;
 
-import com.echothree.control.user.workflow.common.spec.WorkflowEntranceSpec;
-
 public interface CommentTypeEdit
-        extends WorkflowEntranceSpec, CommentTypeDescriptionEdit {
+        extends CommentTypeDescriptionEdit {
     
     String getCommentTypeName();
     void setCommentTypeName(String commentTypeName);
