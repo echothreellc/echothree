@@ -20,6 +20,10 @@ import com.echothree.control.user.authentication.common.form.CustomerLoginForm;
 import com.echothree.control.user.authentication.common.form.EmployeeLoginForm;
 import com.echothree.control.user.authentication.common.form.VendorLoginForm;
 import com.echothree.control.user.campaign.common.form.CreateUserVisitCampaignForm;
+import com.echothree.control.user.comment.common.edit.CommentTypeEdit;
+import com.echothree.control.user.comment.common.form.CreateCommentTypeForm;
+import com.echothree.control.user.comment.common.form.DeleteCommentTypeForm;
+import com.echothree.control.user.comment.common.spec.CommentTypeSpec;
 import com.echothree.control.user.contact.common.edit.ContactEmailAddressEdit;
 import com.echothree.control.user.contact.common.edit.ContactPostalAddressEdit;
 import com.echothree.control.user.contact.common.edit.ContactTelephoneEdit;
@@ -300,6 +304,15 @@ public class BasePersona {
     public String lastEntityAttributeName;
     public String lastEntityListItemName;
     public String lastEntityRef;
+
+    // Comment
+
+    public CreateCommentTypeForm createCommentTypeForm;
+    public DeleteCommentTypeForm deleteCommentTypeForm;
+    public CommentTypeSpec commentTypeSpec;
+    public CommentTypeEdit commentTypeEdit;
+
+    public String lastCommentTypeName;
 
     // Customer
     public CreateCustomerWithLoginForm createCustomerWithLoginForm;

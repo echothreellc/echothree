@@ -14,18 +14,15 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.comment.common.edit;
+package com.echothree.control.user.comment.common.result;
 
-public interface CommentTypeEdit
-        extends CommentTypeDescriptionEdit {
-    
-    String getCommentTypeName();
-    void setCommentTypeName(String commentTypeName);
-    
-    String getCommentSequenceName();
-    void setCommentSequenceName(String commentequenceName);
-    
-    String getSortOrder();
-    void setSortOrder(String sortOrder);
-    
+import com.echothree.control.user.comment.common.spec.CommentTypeSpec;
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
+import com.echothree.util.common.command.BaseResult;
+
+public interface CreateCommentTypeResult
+        extends EntityRefSpec, CommentTypeSpec, BaseResult {
+
+    // Nothing additional beyond EntityRefSpec, CommentTypeSpec, BaseResult
+
 }

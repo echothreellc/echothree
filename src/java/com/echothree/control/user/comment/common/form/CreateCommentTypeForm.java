@@ -19,10 +19,11 @@ package com.echothree.control.user.comment.common.form;
 import com.echothree.control.user.comment.common.edit.CommentTypeEdit;
 import com.echothree.control.user.core.common.spec.EntityTypeSpec;
 import com.echothree.control.user.core.common.spec.MimeTypeUsageTypeSpec;
+import com.echothree.control.user.workflow.common.spec.WorkflowEntranceSpec;
 
 public interface CreateCommentTypeForm
-        extends EntityTypeSpec, CommentTypeEdit, MimeTypeUsageTypeSpec {
+        extends EntityTypeSpec, CommentTypeEdit, WorkflowEntranceSpec, MimeTypeUsageTypeSpec {
     
-    // Nothing additional beyond EntityTypeSpec, CommentTypeEdit, MimeTypeUsageTypeSpec
+    // Nothing additional beyond EntityTypeSpec, CommentTypeEdit, WorkflowEntranceSpec, MimeTypeUsageTypeSpec
     
 }

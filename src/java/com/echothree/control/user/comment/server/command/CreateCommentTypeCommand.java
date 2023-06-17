@@ -17,23 +17,20 @@
 package com.echothree.control.user.comment.server.command;
 
 import com.echothree.control.user.comment.common.form.CreateCommentTypeForm;
+import com.echothree.control.user.comment.common.result.CommentResultFactory;
 import com.echothree.model.control.comment.server.control.CommentControl;
+import com.echothree.model.control.core.server.logic.EntityTypeLogic;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.comment.server.entity.CommentType;
-import com.echothree.model.data.core.server.entity.ComponentVendor;
-import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
 import com.echothree.model.data.sequence.server.entity.Sequence;
-import com.echothree.model.data.sequence.server.entity.SequenceType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -66,49 +63,52 @@ public class CreateCommentTypeCommand
     
     @Override
     protected BaseResult execute() {
-        String workflowName = form.getWorkflowName();
-        String workflowEntranceName = form.getWorkflowEntranceName();
+        var result = CommentResultFactory.getCreateCommentTypeResult();
+        var workflowName = form.getWorkflowName();
+        var workflowEntranceName = form.getWorkflowEntranceName();
         var parameterCount = (workflowName == null ? 0 : 1) + (workflowEntranceName == null ? 0 : 1);
-        
+        CommentType commentType = null;
+
         if(parameterCount == 0 || parameterCount == 2) {
             var coreControl = getCoreControl();
-            String componentVendorName = form.getComponentVendorName();
-            ComponentVendor componentVendor = coreControl.getComponentVendorByName(componentVendorName);
-            
-            if(componentVendor != null) {
-                String entityTypeName = form.getEntityTypeName();
-                EntityType entityType = coreControl.getEntityTypeByName(componentVendor, entityTypeName);
+            var componentVendorName = form.getComponentVendorName();
+            var entityTypeName = form.getEntityTypeName();
+            var entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, componentVendorName, entityTypeName);
                 
-                if(entityType != null) {
+            if(!hasExecutionErrors()) {
+                var entityTypeDetail = entityType.getLastDetail();
+
+                if(entityTypeDetail.getIsExtensible()) {
                     var commentControl = Session.getModelController(CommentControl.class);
-                    String commentTypeName = form.getCommentTypeName();
-                    CommentType commentType = commentControl.getCommentTypeByName(entityType, commentTypeName);
-                    
+                    var commentTypeName = form.getCommentTypeName();
+
+                    commentType = commentControl.getCommentTypeByName(entityType, commentTypeName);
+
                     if(commentType == null) {
-                        String commentSequenceName = form.getCommentSequenceName();
+                        var commentSequenceName = form.getCommentSequenceName();
                         Sequence commentSequence = null;
-                        
+
                         if(commentSequenceName != null) {
                             var sequenceControl = Session.getModelController(SequenceControl.class);
-                            SequenceType sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.COMMENT.name());
-                            
+                            var sequenceType = sequenceControl.getSequenceTypeByName(SequenceTypes.COMMENT.name());
+
                             if(sequenceType != null) {
                                 commentSequence = sequenceControl.getSequenceByName(sequenceType, commentSequenceName);
                             } else {
                                 addExecutionError(ExecutionErrors.UnknownSequenceTypeName.name(), SequenceTypes.COMMENT.name());
                             }
                         }
-                        
+
                         if(commentSequenceName == null || commentSequence != null) {
                             WorkflowEntrance workflowEntrance = null;
-                            
+
                             if(parameterCount != 0) {
                                 var workflowControl = Session.getModelController(WorkflowControl.class);
                                 var workflow = workflowControl.getWorkflowByName(workflowName);
-                                
+
                                 if(workflow != null) {
                                     workflowEntrance = workflowControl.getWorkflowEntranceByName(workflow, workflowEntranceName);
-                                    
+
                                     if(workflowEntrance == null) {
                                         addExecutionError(ExecutionErrors.UnknownWorkflowEntranceName.name(), workflowEntranceName);
                                     }
@@ -116,19 +116,19 @@ public class CreateCommentTypeCommand
                                     addExecutionError(ExecutionErrors.UnknownWorkflowName.name(), workflowName);
                                 }
                             }
-                            
+
                             if(!hasExecutionErrors()) {
-                                String mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
-                                MimeTypeUsageType mimeTypeUsageType = mimeTypeUsageTypeName == null? null: coreControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
-                                
+                                var mimeTypeUsageTypeName = form.getMimeTypeUsageTypeName();
+                                var mimeTypeUsageType = mimeTypeUsageTypeName == null ? null : coreControl.getMimeTypeUsageTypeByName(mimeTypeUsageTypeName);
+
                                 if(mimeTypeUsageTypeName == null || (mimeTypeUsageTypeName != null && mimeTypeUsageType != null)) {
                                     var partyPK = getPartyPK();
                                     var sortOrder = Integer.valueOf(form.getSortOrder());
                                     var description = form.getDescription();
-                                    
+
                                     commentType = commentControl.createCommentType(entityType, commentTypeName, commentSequence,
                                             workflowEntrance, mimeTypeUsageType, sortOrder, partyPK);
-                                    
+
                                     if(description != null) {
                                         commentControl.createCommentTypeDescription(commentType, getPreferredLanguage(), description,
                                                 partyPK);
@@ -144,16 +144,27 @@ public class CreateCommentTypeCommand
                         addExecutionError(ExecutionErrors.DuplicateCommentTypeName.name(), commentTypeName);
                     }
                 } else {
-                    addExecutionError(ExecutionErrors.UnknownEntityTypeName.name(), entityTypeName);
+                    addExecutionError(ExecutionErrors.EntityTypeIsNotExtensible.name(),
+                            entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
+                            entityTypeDetail.getEntityTypeName());
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownComponentVendorName.name(), componentVendorName);
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
-        
-        return null;
+
+        if(commentType != null) {
+            var basePK = commentType.getPrimaryKey();
+            var commentTypeDetail = commentType.getLastDetail();
+            var entityTypeDetail = commentTypeDetail.getEntityType().getLastDetail();
+
+            result.setComponentVendorName(entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName());
+            result.setEntityTypeName(entityTypeDetail.getEntityTypeName());
+            result.setCommentTypeName(commentTypeDetail.getCommentTypeName());
+            result.setEntityRef(basePK.getEntityRef());
+        }
+
+        return result;
     }
     
 }
