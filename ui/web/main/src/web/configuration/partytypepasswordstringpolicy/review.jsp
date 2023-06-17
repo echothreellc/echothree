@@ -39,30 +39,30 @@
             Force Change After Create:
             <c:choose>
                 <c:when test="${partyTypePasswordStringPolicy.forceChangeAfterCreate}">
-                    Yes
+                    <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>
-                    No
+                    <fmt:message key="phrase.no" />
                 </c:otherwise>
             </c:choose>
             <br />
             Force Change After Reset:
             <c:choose>
                 <c:when test="${partyTypePasswordStringPolicy.forceChangeAfterReset}">
-                    Yes
+                    <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>
-                    No
+                    <fmt:message key="phrase.no" />
                 </c:otherwise>
             </c:choose>
             <br />
             Allow Change:
             <c:choose>
                 <c:when test="${partyTypePasswordStringPolicy.allowChange}">
-                    Yes
+                    <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>
-                    No
+                    <fmt:message key="phrase.no" />
                 </c:otherwise>
             </c:choose>
             <br />

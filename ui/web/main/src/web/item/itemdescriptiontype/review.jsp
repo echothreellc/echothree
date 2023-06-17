@@ -55,10 +55,10 @@
             Use Parent If Missing:
             <c:choose>
                 <c:when test="${itemDescriptionType.useParentIfMissing}">
-                    Yes
+                    <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>
-                    No
+                    <fmt:message key="phrase.no" />
                 </c:otherwise>
             </c:choose>
             <br />
@@ -68,30 +68,30 @@
             Check Content Web Address:
             <c:choose>
                 <c:when test="${itemDescriptionType.checkContentWebAddress}">
-                    Yes
+                    <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>
-                    No
+                    <fmt:message key="phrase.no" />
                 </c:otherwise>
             </c:choose>
             <br />
             Include In Index:
             <c:choose>
                 <c:when test="${itemDescriptionType.includeInIndex}">
-                    Yes
+                    <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>
-                    No
+                    <fmt:message key="phrase.no" />
                 </c:otherwise>
             </c:choose>
             <br />
             Index Default:
             <c:choose>
                 <c:when test="${itemDescriptionType.indexDefault}">
-                    Yes
+                    <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>
-                    No
+                    <fmt:message key="phrase.no" />
                 </c:otherwise>
             </c:choose>
             <br />
@@ -184,10 +184,10 @@
                     Scale from Parent:
                     <c:choose>
                         <c:when test="${itemDescriptionType.scaleFromParent}">
-                            Yes
+                            <fmt:message key="phrase.yes" />
                         </c:when>
                         <c:otherwise>
-                            No
+                            <fmt:message key="phrase.no" />
                         </c:otherwise>
                     </c:choose>
                     <br />

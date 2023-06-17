@@ -182,10 +182,10 @@
             Shipping Charge Exempt:
             <c:choose>
                 <c:when test="${item.shippingChargeExempt}">
-                    Yes
+                    <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>
-                    No
+                    <fmt:message key="phrase.no" />
                 </c:otherwise>
             </c:choose>
             <br />
@@ -245,30 +245,30 @@
             Allow Club Discounts:
             <c:choose>
                 <c:when test="${item.allowClubDiscounts}">
-                    Yes
+                    <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>
-                    No
+                    <fmt:message key="phrase.no" />
                 </c:otherwise>
             </c:choose>
             <br />
             Allow Coupon Discounts:
             <c:choose>
                 <c:when test="${item.allowCouponDiscounts}">
-                    Yes
+                    <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>
-                    No
+                    <fmt:message key="phrase.no" />
                 </c:otherwise>
             </c:choose>
             <br />
             Allow Associate Payments:
             <c:choose>
                 <c:when test="${item.allowAssociatePayments}">
-                    Yes
+                    <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>
-                    No
+                    <fmt:message key="phrase.no" />
                 </c:otherwise>
             </c:choose>
             <br />

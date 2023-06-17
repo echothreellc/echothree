@@ -47,20 +47,20 @@
             Suppress Symbol Separator:
             <c:choose>
                 <c:when test="${unitOfMeasureType.suppressSymbolSeparator}">
-                    Yes
+                    <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>
-                    No
+                    <fmt:message key="phrase.no" />
                 </c:otherwise>
             </c:choose>
             <br />
             Is Default:
             <c:choose>
                 <c:when test="${unitOfMeasureType.isDefault}">
-                    Yes
+                    <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>
-                    No
+                    <fmt:message key="phrase.no" />
                 </c:otherwise>
             </c:choose>
             <br />

@@ -58,10 +58,10 @@
                 <display:column titleKey="columnTitle.hasDimensions">
                     <c:choose>
                         <c:when test="${editor.hasDimensions}">
-                            Yes
+                            <fmt:message key="phrase.yes" />
                         </c:when>
                         <c:otherwise>
-                            No
+                            <fmt:message key="phrase.no" />
                         </c:otherwise>
                     </c:choose>
                 </display:column>

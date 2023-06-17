@@ -66,10 +66,10 @@
                 <display:column titleKey="columnTitle.selectedByDefault">
                     <c:choose>
                         <c:when test="${commentUsageType.selectedByDefault}">
-                            Yes
+                            <fmt:message key="phrase.yes" />
                         </c:when>
                         <c:otherwise>
-                            No
+                            <fmt:message key="phrase.no" />
                         </c:otherwise>
                     </c:choose>
                 </display:column>

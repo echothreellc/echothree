@@ -150,10 +150,10 @@
             Force Change:
             <c:choose>
                 <c:when test="${employee.userLogin.forceChange}">
-                    Yes
+                    <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>
-                    No
+                    <fmt:message key="phrase.no" />
                 </c:otherwise>
             </c:choose>
             <br />

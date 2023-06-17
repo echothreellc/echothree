@@ -44,40 +44,40 @@
                 Symbol On List Start:
                 <c:choose>
                     <c:when test="${currency.symbolOnListStart}">
-                        Yes
+                        <fmt:message key="phrase.yes" />
                     </c:when>
                     <c:otherwise>
-                        No
+                        <fmt:message key="phrase.no" />
                     </c:otherwise>
                 </c:choose>
                 <br />
                 Symbol On List Member:
                 <c:choose>
                     <c:when test="${currency.symbolOnListMember}">
-                        Yes
+                        <fmt:message key="phrase.yes" />
                     </c:when>
                     <c:otherwise>
-                        No
+                        <fmt:message key="phrase.no" />
                     </c:otherwise>
                 </c:choose>
                 <br />
                 Symbol On Subtotal:
                 <c:choose>
                     <c:when test="${currency.symbolOnSubtotal}">
-                        Yes
+                        <fmt:message key="phrase.yes" />
                     </c:when>
                     <c:otherwise>
-                        No
+                        <fmt:message key="phrase.no" />
                     </c:otherwise>
                 </c:choose>
                 <br />
                 Symbol On Total:
                 <c:choose>
                     <c:when test="${currency.symbolOnTotal}">
-                        Yes
+                        <fmt:message key="phrase.yes" />
                     </c:when>
                     <c:otherwise>
-                        No
+                        <fmt:message key="phrase.no" />
                     </c:otherwise>
                 </c:choose>
                 <br />

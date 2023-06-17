@@ -58,10 +58,10 @@
                 <display:column titleKey="columnTitle.includeByDefault">
                     <c:choose>
                         <c:when test="${message.includeByDefault}">
-                            Yes
+                            <fmt:message key="phrase.yes" />
                         </c:when>
                         <c:otherwise>
-                            No
+                            <fmt:message key="phrase.no" />
                         </c:otherwise>
                     </c:choose>
                 </display:column>

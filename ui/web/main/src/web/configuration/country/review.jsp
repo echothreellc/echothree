@@ -61,10 +61,10 @@
             Area Code Required:
             <c:choose>
                 <c:when test="${country.areaCodeRequired}">
-                    Yes
+                    <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>
-                    No
+                    <fmt:message key="phrase.no" />
                 </c:otherwise>
             </c:choose>
             <br />
@@ -107,20 +107,20 @@
             City Required:
             <c:choose>
                 <c:when test="${country.cityRequired}">
-                    Yes
+                    <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>
-                    No
+                    <fmt:message key="phrase.no" />
                 </c:otherwise>
             </c:choose>
             <br />
             City Geo Code Required:
             <c:choose>
                 <c:when test="${country.cityGeoCodeRequired}">
-                    Yes
+                    <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>
-                    No
+                    <fmt:message key="phrase.no" />
                 </c:otherwise>
             </c:choose>
             <br />
@@ -128,20 +128,20 @@
             State Required:
             <c:choose>
                 <c:when test="${country.stateRequired}">
-                    Yes
+                    <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>
-                    No
+                    <fmt:message key="phrase.no" />
                 </c:otherwise>
             </c:choose>
             <br />
             State Geo Code Required:
             <c:choose>
                 <c:when test="${country.stateGeoCodeRequired}">
-                    Yes
+                    <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>
-                    No
+                    <fmt:message key="phrase.no" />
                 </c:otherwise>
             </c:choose>
             <br />
@@ -159,20 +159,20 @@
             Postal Code Required:
             <c:choose>
                 <c:when test="${country.postalCodeRequired}">
-                    Yes
+                    <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>
-                    No
+                    <fmt:message key="phrase.no" />
                 </c:otherwise>
             </c:choose>
             <br />
             Postal Code Geo Code Required:
             <c:choose>
                 <c:when test="${country.postalCodeGeoCodeRequired}">
-                    Yes
+                    <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>
-                    No
+                    <fmt:message key="phrase.no" />
                 </c:otherwise>
             </c:choose>
             <br />
