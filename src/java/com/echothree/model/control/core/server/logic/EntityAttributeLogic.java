@@ -232,15 +232,14 @@ public class EntityAttributeLogic
                 }
 
                 switch(EntityAttributeTypes.valueOf(entityAttributeType.getEntityAttributeTypeName())) {
-                    case BLOB:
-                        coreControl.createEntityAttributeBlob(entityAttribute, checkContentWebAddress, createdByPK);
-                        break;
-                    case STRING:
+                    case BLOB ->
+                            coreControl.createEntityAttributeBlob(entityAttribute, checkContentWebAddress, createdByPK);
+                    case STRING -> {
                         if(validationPattern != null) {
                             coreControl.createEntityAttributeString(entityAttribute, validationPattern, createdByPK);
                         }
-                        break;
-                    case INTEGER:
+                    }
+                    case INTEGER -> {
                         if(upperRangeIntegerValue != null || upperLimitIntegerValue != null || lowerLimitIntegerValue != null || lowerRangeIntegerValue != null) {
                             coreControl.createEntityAttributeInteger(entityAttribute, upperRangeIntegerValue, upperLimitIntegerValue,
                                     lowerLimitIntegerValue, lowerRangeIntegerValue, createdByPK);
@@ -248,8 +247,8 @@ public class EntityAttributeLogic
                         if(unitOfMeasureType != null) {
                             coreControl.createEntityAttributeNumeric(entityAttribute, unitOfMeasureType, createdByPK);
                         }
-                        break;
-                    case LONG:
+                    }
+                    case LONG -> {
                         if(upperRangeLongValue != null || upperLimitLongValue != null || lowerLimitLongValue != null || lowerRangeLongValue != null) {
                             coreControl.createEntityAttributeLong(entityAttribute, upperRangeLongValue, upperLimitLongValue,
                                     lowerLimitLongValue, lowerRangeLongValue, createdByPK);
@@ -257,15 +256,15 @@ public class EntityAttributeLogic
                         if(unitOfMeasureType != null) {
                             coreControl.createEntityAttributeNumeric(entityAttribute, unitOfMeasureType, createdByPK);
                         }
-                        break;
-                    case LISTITEM:
-                    case MULTIPLELISTITEM:
+                    }
+                    case LISTITEM, MULTIPLELISTITEM -> {
                         if(entityListItemSequence != null) {
                             coreControl.createEntityAttributeListItem(entityAttribute, entityListItemSequence, createdByPK);
                         }
-                        break;
-                    default:
-                        break;
+                    }
+                    default -> {
+                        // Nothing required for other EntityAttributeTypes
+                    }
                 }
             } else {
                 handleExecutionError(DuplicateEntityAttributeNameException.class, eea, ExecutionErrors.DuplicateEntityAttributeName.name(),
