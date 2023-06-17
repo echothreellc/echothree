@@ -45,7 +45,7 @@
             Return Sequence:
             <c:choose>
                 <c:when test="${returnType.returnSequence == null}">
-                    <i>Not Set, Using Default.</i>.
+                    <i><fmt:message key="phrase.notSetUsingDefault" /></i>.
                 </c:when>
                 <c:otherwise>
                     <c:url var="returnSequenceUrl" value="/action/Sequence/Sequence/Review">

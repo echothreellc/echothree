@@ -45,7 +45,7 @@
             Cancellation Sequence:
             <c:choose>
                 <c:when test="${cancellationType.cancellationSequence == null}">
-                    <i>Not Set, Using Default.</i>.
+                    <i><fmt:message key="phrase.notSetUsingDefault" /></i>.
                 </c:when>
                 <c:otherwise>
                     <c:url var="cancellationSequenceUrl" value="/action/Sequence/Sequence/Review">

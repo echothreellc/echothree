@@ -58,7 +58,7 @@
             Chain Instance Sequence:
             <c:choose>
                 <c:when test="${chain.chainInstanceSequence == null}">
-                    <i>Not Set, Using Default.</i>.
+                    <i><fmt:message key="phrase.notSetUsingDefault" /></i>.
                 </c:when>
                 <c:otherwise>
                     <c:choose>

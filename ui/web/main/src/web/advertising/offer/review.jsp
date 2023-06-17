@@ -60,7 +60,7 @@
             Selector:
             <c:choose>
                 <c:when test="${offer.salesOrderSequence == null}">
-                    <i>Not Set, Manually Maintained.</i>
+                    <i><fmt:message key="phrase.notSetManuallyMaintained" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:url var="reviewUrl" value="/action/Selector/Selector/Review">
@@ -75,7 +75,7 @@
             Price Filter:
             <c:choose>
                 <c:when test="${offer.salesOrderSequence == null}">
-                    <i>Not Set, Using Item Default.</i>
+                    <i><fmt:message key="phrase.notSetUsingItemDefault" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:url var="reviewUrl" value="/action/Filter/Filter/Review">
