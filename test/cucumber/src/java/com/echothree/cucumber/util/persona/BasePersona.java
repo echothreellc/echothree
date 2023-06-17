@@ -116,6 +116,10 @@ import com.echothree.control.user.item.common.spec.ItemImageTypeUniversalSpec;
 import com.echothree.control.user.item.common.spec.ItemPriceSpec;
 import com.echothree.control.user.item.common.spec.ItemSpec;
 import com.echothree.control.user.item.common.spec.ItemUnitOfMeasureTypeSpec;
+import com.echothree.control.user.message.common.edit.MessageTypeEdit;
+import com.echothree.control.user.message.common.form.CreateMessageTypeForm;
+import com.echothree.control.user.message.common.form.DeleteMessageTypeForm;
+import com.echothree.control.user.message.common.spec.MessageTypeSpec;
 import com.echothree.control.user.offer.common.edit.OfferEdit;
 import com.echothree.control.user.offer.common.edit.OfferItemPriceEdit;
 import com.echothree.control.user.offer.common.edit.OfferUseEdit;
@@ -310,7 +314,6 @@ public class BasePersona {
     public String lastEntityRef;
 
     // Comment
-
     public CreateCommentTypeForm createCommentTypeForm;
     public DeleteCommentTypeForm deleteCommentTypeForm;
     public CommentTypeSpec commentTypeSpec;
@@ -381,6 +384,14 @@ public class BasePersona {
     public String lastItemImageTypeName;
     public String lastItemDescriptionTypeUseTypeName;
 
+    // Message
+    public CreateMessageTypeForm createMessageTypeForm;
+    public DeleteMessageTypeForm deleteMessageTypeForm;
+    public MessageTypeSpec messageTypeSpec;
+    public MessageTypeEdit messageTypeEdit;
+
+    public String lastMessageTypeName;
+
     // Offer
     public CreateOfferForm createOfferForm;
     public DeleteOfferForm deleteOfferForm;
@@ -437,7 +448,6 @@ public class BasePersona {
     public String lastPurchaseOrderName;
 
     // Rating
-
     public CreateRatingTypeForm createRatingTypeForm;
     public DeleteRatingTypeForm deleteRatingTypeForm;
     public RatingTypeSpec ratingTypeSpec;
