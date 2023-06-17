@@ -149,6 +149,10 @@ import com.echothree.control.user.purchase.common.edit.PurchaseOrderEdit;
 import com.echothree.control.user.purchase.common.form.CreatePurchaseOrderForm;
 import com.echothree.control.user.purchase.common.form.SetPurchaseOrderStatusForm;
 import com.echothree.control.user.purchase.common.spec.PurchaseOrderSpec;
+import com.echothree.control.user.rating.common.edit.RatingTypeEdit;
+import com.echothree.control.user.rating.common.form.CreateRatingTypeForm;
+import com.echothree.control.user.rating.common.form.DeleteRatingTypeForm;
+import com.echothree.control.user.rating.common.spec.RatingTypeSpec;
 import com.echothree.control.user.search.common.form.CheckItemSpellingForm;
 import com.echothree.control.user.search.common.form.ClearItemResultsForm;
 import com.echothree.control.user.search.common.form.CreateItemSearchResultActionForm;
@@ -431,6 +435,15 @@ public class BasePersona {
     public PurchaseOrderEdit purchaseOrderEdit;
 
     public String lastPurchaseOrderName;
+
+    // Rating
+
+    public CreateRatingTypeForm createRatingTypeForm;
+    public DeleteRatingTypeForm deleteRatingTypeForm;
+    public RatingTypeSpec ratingTypeSpec;
+    public RatingTypeEdit ratingTypeEdit;
+
+    public String lastRatingTypeName;
 
     // Sales
     public String lastSalesOrderBatchName;
