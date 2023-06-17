@@ -304,7 +304,7 @@ Feature: Employee entity attribute
     And the user deletes the entity attribute
     Then no error should occur
 
-  Scenario: Existing employee adds an entity attribute and then deletes it
+  Scenario: Existing employee adds an entity attribute to an entity type that is not extensible and receives an error
     Given the employee Test begins using the application
     And the user begins entering a new entity attribute
     And the user sets the entity attribute's component vendor to ECHO_THREE
