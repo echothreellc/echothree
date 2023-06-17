@@ -2271,5 +2271,6 @@ public enum ExecutionErrors {
     UnknownDefaultGlAccountCategory,
     UnknownDefaultGlAccount,
     UnknownDefaultWarehouse,
+    EntityTypeIsNotExtensible,
 
 }

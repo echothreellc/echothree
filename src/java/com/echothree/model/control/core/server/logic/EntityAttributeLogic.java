@@ -37,6 +37,7 @@ import com.echothree.model.control.core.common.exception.DuplicateEntityMultiple
 import com.echothree.model.control.core.common.exception.DuplicateEntityNameAttributeException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityStringAttributeException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityTimeAttributeException;
+import com.echothree.model.control.core.common.exception.EntityTypeIsNotExtensibleException;
 import com.echothree.model.control.core.common.exception.InvalidEntityAttributeTypeException;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.common.exception.InvalidStringAttributeException;
@@ -207,66 +208,72 @@ public class EntityAttributeLogic
             final Long upperRangeLongValue, final Long upperLimitLongValue, final Long lowerLimitLongValue,
             final Long lowerRangeLongValue, final Sequence entityListItemSequence, final UnitOfMeasureType unitOfMeasureType,
             final Integer sortOrder, final PartyPK createdByPK, final Language language, final String description) {
-        var coreControl = Session.getModelController(CoreControl.class);
-        
-        if(entityAttributeName == null) {
-            var sequenceControl = Session.getModelController(SequenceControl.class);
-            Sequence sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.ENTITY_ATTRIBUTE.name());
+        EntityAttribute entityAttribute = null;
+        var entityTypeDetail = entityType.getLastDetail();
 
-            entityAttributeName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
-        }
+        if(entityTypeDetail.getIsExtensible()) {
+            var coreControl = Session.getModelController(CoreControl.class);
 
-        EntityAttribute entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
+            if(entityAttributeName == null) {
+                var sequenceControl = Session.getModelController(SequenceControl.class);
+                var sequence = sequenceControl.getDefaultSequenceUsingNames(SequenceTypes.ENTITY_ATTRIBUTE.name());
 
-        if(entityAttribute == null) {
-            entityAttribute = coreControl.createEntityAttribute(entityType, entityAttributeName, entityAttributeType,
-                    trackRevisions, sortOrder, createdByPK);
-
-            if(description != null) {
-                coreControl.createEntityAttributeDescription(entityAttribute, language, description, createdByPK);
+                entityAttributeName = SequenceGeneratorLogic.getInstance().getNextSequenceValue(sequence);
             }
-            
-            switch(EntityAttributeTypes.valueOf(entityAttributeType.getEntityAttributeTypeName())) {
-                case BLOB:
-                    coreControl.createEntityAttributeBlob(entityAttribute, checkContentWebAddress, createdByPK);
-                    break;
-                case STRING:
-                    if(validationPattern != null) {
-                        coreControl.createEntityAttributeString(entityAttribute, validationPattern, createdByPK);
-                    }
-                    break;
-                case INTEGER:
-                    if(upperRangeIntegerValue != null || upperLimitIntegerValue != null || lowerLimitIntegerValue != null || lowerRangeIntegerValue != null) {
-                        coreControl.createEntityAttributeInteger(entityAttribute, upperRangeIntegerValue, upperLimitIntegerValue,
-                                lowerLimitIntegerValue, lowerRangeIntegerValue, createdByPK);
-                    }
-                    if(unitOfMeasureType != null) {
-                        coreControl.createEntityAttributeNumeric(entityAttribute, unitOfMeasureType, createdByPK);
-                    }
-                    break;
-                case LONG:
-                    if(upperRangeLongValue != null || upperLimitLongValue != null || lowerLimitLongValue != null || lowerRangeLongValue != null) {
-                        coreControl.createEntityAttributeLong(entityAttribute, upperRangeLongValue, upperLimitLongValue,
-                                lowerLimitLongValue, lowerRangeLongValue, createdByPK);
-                    }
-                    if(unitOfMeasureType != null) {
-                        coreControl.createEntityAttributeNumeric(entityAttribute, unitOfMeasureType, createdByPK);
-                    }
-                    break;
-                case LISTITEM:
-                case MULTIPLELISTITEM:
-                    if(entityListItemSequence != null) {
-                        coreControl.createEntityAttributeListItem(entityAttribute, entityListItemSequence, createdByPK);
-                    }
-                    break;
-                default:
-                    break;
+
+            entityAttribute = coreControl.getEntityAttributeByName(entityType, entityAttributeName);
+
+            if(entityAttribute == null) {
+                entityAttribute = coreControl.createEntityAttribute(entityType, entityAttributeName, entityAttributeType,
+                        trackRevisions, sortOrder, createdByPK);
+
+                if(description != null) {
+                    coreControl.createEntityAttributeDescription(entityAttribute, language, description, createdByPK);
+                }
+
+                switch(EntityAttributeTypes.valueOf(entityAttributeType.getEntityAttributeTypeName())) {
+                    case BLOB:
+                        coreControl.createEntityAttributeBlob(entityAttribute, checkContentWebAddress, createdByPK);
+                        break;
+                    case STRING:
+                        if(validationPattern != null) {
+                            coreControl.createEntityAttributeString(entityAttribute, validationPattern, createdByPK);
+                        }
+                        break;
+                    case INTEGER:
+                        if(upperRangeIntegerValue != null || upperLimitIntegerValue != null || lowerLimitIntegerValue != null || lowerRangeIntegerValue != null) {
+                            coreControl.createEntityAttributeInteger(entityAttribute, upperRangeIntegerValue, upperLimitIntegerValue,
+                                    lowerLimitIntegerValue, lowerRangeIntegerValue, createdByPK);
+                        }
+                        if(unitOfMeasureType != null) {
+                            coreControl.createEntityAttributeNumeric(entityAttribute, unitOfMeasureType, createdByPK);
+                        }
+                        break;
+                    case LONG:
+                        if(upperRangeLongValue != null || upperLimitLongValue != null || lowerLimitLongValue != null || lowerRangeLongValue != null) {
+                            coreControl.createEntityAttributeLong(entityAttribute, upperRangeLongValue, upperLimitLongValue,
+                                    lowerLimitLongValue, lowerRangeLongValue, createdByPK);
+                        }
+                        if(unitOfMeasureType != null) {
+                            coreControl.createEntityAttributeNumeric(entityAttribute, unitOfMeasureType, createdByPK);
+                        }
+                        break;
+                    case LISTITEM:
+                    case MULTIPLELISTITEM:
+                        if(entityListItemSequence != null) {
+                            coreControl.createEntityAttributeListItem(entityAttribute, entityListItemSequence, createdByPK);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            } else {
+                handleExecutionError(DuplicateEntityAttributeNameException.class, eea, ExecutionErrors.DuplicateEntityAttributeName.name(),
+                        entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(), entityTypeDetail.getEntityTypeName(), entityAttributeName);
             }
         } else {
-            EntityTypeDetail entityTypeDetail = entityType.getLastDetail();
-            
-            handleExecutionError(DuplicateEntityAttributeNameException.class, eea, ExecutionErrors.DuplicateEntityAttributeName.name(),
-                    entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(), entityTypeDetail.getEntityTypeName(), entityAttributeName);
+            handleExecutionError(EntityTypeIsNotExtensibleException.class, eea, ExecutionErrors.EntityTypeIsNotExtensible.name(),
+                    entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(), entityTypeDetail.getEntityTypeName());
         }
         
         return entityAttribute;
