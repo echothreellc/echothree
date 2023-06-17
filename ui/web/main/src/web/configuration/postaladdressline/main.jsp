@@ -44,10 +44,10 @@
                 <display:column titleKey="columnTitle.alwaysIncludePrefix">
                     <c:choose>
                         <c:when test="${postalAddressLine.alwaysIncludePrefix}">
-                            Yes
+                            <fmt:message key="phrase.yes" />
                         </c:when>
                         <c:otherwise>
-                            No
+                            <fmt:message key="phrase.no" />
                         </c:otherwise>
                     </c:choose>
                 </display:column>
@@ -55,20 +55,20 @@
                 <display:column titleKey="columnTitle.alwaysIncludeSuffix">
                     <c:choose>
                         <c:when test="${postalAddressLine.alwaysIncludeSuffix}">
-                            Yes
+                            <fmt:message key="phrase.yes" />
                         </c:when>
                         <c:otherwise>
-                            No
+                            <fmt:message key="phrase.no" />
                         </c:otherwise>
                     </c:choose>
                 </display:column>
                 <display:column titleKey="columnTitle.collapseIfEmpty">
                     <c:choose>
                         <c:when test="${postalAddressLine.collapseIfEmpty}">
-                            Yes
+                            <fmt:message key="phrase.yes" />
                         </c:when>
                         <c:otherwise>
-                            No
+                            <fmt:message key="phrase.no" />
                         </c:otherwise>
                     </c:choose>
                 </display:column>

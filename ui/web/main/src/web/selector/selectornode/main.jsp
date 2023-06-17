@@ -84,10 +84,10 @@
                 <display:column titleKey="columnTitle.negate">
                     <c:choose>
                         <c:when test="${selectorNode.negate}">
-                            Yes
+                            <fmt:message key="phrase.yes" />
                         </c:when>
                         <c:otherwise>
-                            No
+                            <fmt:message key="phrase.no" />
                         </c:otherwise>
                     </c:choose>
                 </display:column>

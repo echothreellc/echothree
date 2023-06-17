@@ -39,10 +39,10 @@
             Audit Commands:
             <c:choose>
                 <c:when test="${partyTypeAuditPolicy.auditCommands}">
-                    Yes
+                    <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>
-                    No
+                    <fmt:message key="phrase.no" />
                 </c:otherwise>
             </c:choose>
             <br />
@@ -50,7 +50,7 @@
             Retain User Visits Time:
             <c:choose>
                 <c:when test='${partyTypeAuditPolicy.retainUserVisitsTime == null}'>
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${partyTypeAuditPolicy.retainUserVisitsTime}" />

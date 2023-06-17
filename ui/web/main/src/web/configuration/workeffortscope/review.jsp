@@ -66,7 +66,7 @@
                 <c:when test="${workEffortScope.scheduledTime == null}">
                     <c:choose>
                         <c:when test="${workEffortScope.workEffortType.scheduledTime == null}">
-                            <i>Not Set.</i>
+                            <i><fmt:message key="phrase.notSet" /></i>
                         </c:when>
                         <c:otherwise>
                             Using Default (<c:out value="${workEffortScope.workEffortType.scheduledTime}" />)
@@ -84,7 +84,7 @@
                 <c:when test="${workEffortScope.estimatedTimeAllowed == null}">
                     <c:choose>
                         <c:when test="${workEffortScope.workEffortType.estimatedTimeAllowed == null}">
-                            <i>Not Set.</i>
+                            <i><fmt:message key="phrase.notSet" /></i>
                         </c:when>
                         <c:otherwise>
                             Using Default (<c:out value="${workEffortScope.workEffortType.estimatedTimeAllowed}" />)
@@ -101,7 +101,7 @@
                 <c:when test="${workEffortScope.maximumTimeAllowed == null}">
                     <c:choose>
                         <c:when test="${workEffortScope.workEffortType.maximumTimeAllowed == null}">
-                            <i>Not Set.</i>
+                            <i><fmt:message key="phrase.notSet" /></i>
                         </c:when>
                         <c:otherwise>
                             Using Default (<c:out value="${workEffortScope.workEffortType.maximumTimeAllowed}" />)

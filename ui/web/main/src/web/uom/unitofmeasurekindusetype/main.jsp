@@ -41,30 +41,30 @@
                 <display:column titleKey="columnTitle.allowMultiple">
                     <c:choose>
                         <c:when test="${unitOfMeasureKindUseType.allowMultiple}">
-                            Yes
+                            <fmt:message key="phrase.yes" />
                         </c:when>
                         <c:otherwise>
-                            No
+                            <fmt:message key="phrase.no" />
                         </c:otherwise>
                     </c:choose>
                 </display:column>
                 <display:column titleKey="columnTitle.allowFractionDigits">
                     <c:choose>
                         <c:when test="${unitOfMeasureKindUseType.allowFractionDigits}">
-                            Yes
+                            <fmt:message key="phrase.yes" />
                         </c:when>
                         <c:otherwise>
-                            No
+                            <fmt:message key="phrase.no" />
                         </c:otherwise>
                     </c:choose>
                 </display:column>
                 <display:column titleKey="columnTitle.default">
                     <c:choose>
                         <c:when test="${unitOfMeasureKindUseType.isDefault}">
-                            Yes
+                            <fmt:message key="phrase.yes" />
                         </c:when>
                         <c:otherwise>
-                            No
+                            <fmt:message key="phrase.no" />
                         </c:otherwise>
                     </c:choose>
                 </display:column>

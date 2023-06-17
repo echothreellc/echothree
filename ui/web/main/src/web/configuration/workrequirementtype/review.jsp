@@ -64,7 +64,7 @@
             Workflow Step:
             <c:choose>
                 <c:when test="${workRequirementType.workflowStep == null}">
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:url var="workflowStepUrl" value="/action/Configuration/WorkflowStep/Review">
@@ -81,7 +81,7 @@
                 <c:when test="${workRequirementType.estimatedTimeAllowed == null}">
                     <c:choose>
                         <c:when test="${workRequirementType.workEffortType.estimatedTimeAllowed == null}">
-                            <i>Not Set.</i>
+                            <i><fmt:message key="phrase.notSet" /></i>
                         </c:when>
                         <c:otherwise>
                             Using Default (<c:out value="${workRequirementType.workEffortType.estimatedTimeAllowed}" />)
@@ -98,7 +98,7 @@
                 <c:when test="${workRequirementType.maximumTimeAllowed == null}">
                     <c:choose>
                         <c:when test="${workRequirementType.workEffortType.maximumTimeAllowed == null}">
-                            <i>Not Set.</i>
+                            <i><fmt:message key="phrase.notSet" /></i>
                         </c:when>
                         <c:otherwise>
                             Using Default (<c:out value="${workRequirementType.workEffortType.maximumTimeAllowed}" />)
@@ -114,10 +114,10 @@
             Allow Reassignment:
             <c:choose>
                 <c:when test="${workRequirementType.allowReassignment}">
-                    Yes
+                    <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>
-                    No
+                    <fmt:message key="phrase.no" />
                 </c:otherwise>
             </c:choose>
             <br />

@@ -85,10 +85,10 @@
             <fmt:message key="label.askingRequired" />:
             <c:choose>
                 <c:when test="${trainingClassQuestion.askingRequired}">
-                    Yes
+                    <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>
-                    No
+                    <fmt:message key="phrase.no" />
                 </c:otherwise>
             </c:choose>
             <br />
@@ -97,10 +97,10 @@
             <fmt:message key="label.passingRequired" />:
             <c:choose>
                 <c:when test="${trainingClassQuestion.passingRequired}">
-                    Yes
+                    <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>
-                    No
+                    <fmt:message key="phrase.no" />
                 </c:otherwise>
             </c:choose>
             <br />

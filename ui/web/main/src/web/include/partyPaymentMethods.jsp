@@ -27,10 +27,10 @@
             <display:column titleKey="columnTitle.deleteWhenUnused">
                 <c:choose>
                     <c:when test="${partyPaymentMethod.deleteWhenUnused}">
-                        Yes
+                        <fmt:message key="phrase.yes" />
                     </c:when>
                     <c:otherwise>
-                        No
+                        <fmt:message key="phrase.no" />
                     </c:otherwise>
                 </c:choose>
             </display:column>

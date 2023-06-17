@@ -66,10 +66,10 @@
                 <display:column titleKey="columnTitle.keepAllHistory">
                     <c:choose>
                         <c:when test="${entityType.keepAllHistory}">
-                            Yes
+                            <fmt:message key="phrase.yes" />
                         </c:when>
                         <c:otherwise>
-                            No
+                            <fmt:message key="phrase.no" />
                         </c:otherwise>
                     </c:choose>
                 </display:column>

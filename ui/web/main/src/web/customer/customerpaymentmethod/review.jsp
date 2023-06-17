@@ -152,10 +152,10 @@
                                 Commercial:
                                 <c:choose>
                                     <c:when test="${partyPaymentMethodContactMechanism.partyContactMechanismPurpose.partyContactMechanism.contactMechanism.contactPostalAddress.isCommercial}">
-                                        Yes
+                                        <fmt:message key="phrase.yes" />
                                     </c:when>
                                     <c:otherwise>
-                                        No
+                                        <fmt:message key="phrase.no" />
                                     </c:otherwise>
                                 </c:choose>
                             </c:when>

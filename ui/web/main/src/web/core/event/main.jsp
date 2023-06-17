@@ -97,7 +97,7 @@
                     Appearance:
                     <c:choose>
                         <c:when test="${entityInstance.entityAppearance == null}">
-                            <i>Not Set.</i>
+                            <i><fmt:message key="phrase.notSet" /></i>
                             <et:hasSecurityRole securityRole="EntityAppearance.Create">
                                 <c:url var="addUrl" value="/action/Core/Event/EntityAppearanceAdd">
                                     <c:param name="EntityRef" value="${entityInstance.entityRef}" />
@@ -135,7 +135,7 @@
                     Key:
                     <c:choose>
                         <c:when test="${entityInstance.key == null}">
-                            <i>Not Set.</i>
+                            <i><fmt:message key="phrase.notSet" /></i>
                             <c:url var="generateUrl" value="/action/Core/Event/GenerateKey">
                                 <c:param name="EntityRef" value="${entityInstance.entityRef}" />
                             </c:url>
@@ -154,7 +154,7 @@
                     Guid:
                     <c:choose>
                         <c:when test="${entityInstance.guid == null}">
-                            <i>Not Set.</i>
+                            <i><fmt:message key="phrase.notSet" /></i>
                             <c:url var="generateUrl" value="/action/Core/Event/GenerateGuid">
                                 <c:param name="EntityRef" value="${entityInstance.entityRef}" />
                             </c:url>
@@ -173,7 +173,7 @@
                     Ulid:
                     <c:choose>
                         <c:when test="${entityInstance.ulid == null}">
-                            <i>Not Set.</i>
+                            <i><fmt:message key="phrase.notSet" /></i>
                             <c:url var="generateUrl" value="/action/Core/Event/GenerateUlid">
                                 <c:param name="EntityRef" value="${entityInstance.entityRef}" />
                             </c:url>

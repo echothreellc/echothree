@@ -49,7 +49,7 @@
                             <c:when test="${entityAttributeTypeName == 'BOOLEAN'}">
                                 <c:choose>
                                     <c:when test="${entityAttribute.entityBooleanAttribute == null}">
-                                        <i>Not Set.</i>
+                                        <i><fmt:message key="phrase.notSet" /></i>
                                         <c:url var="addUrl" value="/action/Core/EntityBooleanAttribute/Add">
                                             <c:param name="EntityRef" value="${entityInstance.entityRef}" />
                                             <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
@@ -84,7 +84,7 @@
                             <c:when test="${entityAttributeTypeName == 'LISTITEM'}">
                                 <c:choose>
                                     <c:when test="${entityAttribute.entityListItemAttribute == null}">
-                                        <i>Not Set.</i>
+                                        <i><fmt:message key="phrase.notSet" /></i>
                                         <c:url var="addUrl" value="/action/Core/EntityListItemAttribute/Add">
                                             <c:param name="EntityRef" value="${entityInstance.entityRef}" />
                                             <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
@@ -131,7 +131,7 @@
                                     </c:url>
                                     <c:choose>
                                         <c:when test="${entityAttribute.entityMultipleListItemAttributes == null}">
-                                            <i>Not Set.</i>
+                                            <i><fmt:message key="phrase.notSet" /></i>
                                         </c:when>
                                         <c:otherwise>
                                             <c:choose>
@@ -166,7 +166,7 @@
                                                     <tr><td>[<a href="${addUrl}">Add</a>]</td></tr>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <tr><td><i>Not Set.</i> [<a href="${addUrl}">Add</a>]</td></tr>
+                                                    <tr><td><i><fmt:message key="phrase.notSet" /></i> [<a href="${addUrl}">Add</a>]</td></tr>
                                                 </c:otherwise>
                                             </c:choose>
                                         </c:otherwise>
@@ -176,7 +176,7 @@
                             <c:when test="${entityAttributeTypeName == 'INTEGER'}">
                                 <c:choose>
                                     <c:when test="${entityAttribute.entityIntegerAttribute == null}">
-                                        <i>Not Set.</i>
+                                        <i><fmt:message key="phrase.notSet" /></i>
                                         <c:url var="addUrl" value="/action/Core/EntityIntegerAttribute/Add">
                                             <c:param name="EntityRef" value="${entityInstance.entityRef}" />
                                             <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
@@ -204,7 +204,7 @@
                             <c:when test="${entityAttributeTypeName == 'LONG'}">
                                 <c:choose>
                                     <c:when test="${entityAttribute.entityLongAttribute == null}">
-                                        <i>Not Set.</i>
+                                        <i><fmt:message key="phrase.notSet" /></i>
                                         <c:url var="addUrl" value="/action/Core/EntityLongAttribute/Add">
                                             <c:param name="EntityRef" value="${entityInstance.entityRef}" />
                                             <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
@@ -232,7 +232,7 @@
                             <c:when test="${entityAttributeTypeName == 'NAME'}">
                                 <c:choose>
                                     <c:when test="${entityAttribute.entityNameAttribute == null}">
-                                        <i>Not Set.</i>
+                                        <i><fmt:message key="phrase.notSet" /></i>
                                         <c:url var="addUrl" value="/action/Core/EntityNameAttribute/Add">
                                             <c:param name="EntityRef" value="${entityInstance.entityRef}" />
                                             <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
@@ -260,7 +260,7 @@
                             <c:when test="${entityAttributeTypeName == 'STRING'}">
                                 <c:choose>
                                     <c:when test="${entityAttribute.entityStringAttribute == null}">
-                                        <i>Not Set.</i>
+                                        <i><fmt:message key="phrase.notSet" /></i>
                                         <c:url var="addUrl" value="/action/Core/EntityStringAttribute/Add">
                                             <c:param name="EntityRef" value="${entityInstance.entityRef}" />
                                             <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
@@ -290,7 +290,7 @@
                             <c:when test="${entityAttributeTypeName == 'GEOPOINT'}">
                                 <c:choose>
                                     <c:when test="${entityAttribute.entityGeoPointAttribute == null}">
-                                        <i>Not Set.</i>
+                                        <i><fmt:message key="phrase.notSet" /></i>
                                         <c:url var="addUrl" value="/action/Core/EntityGeoPointAttribute/Add">
                                             <c:param name="EntityRef" value="${entityInstance.entityRef}" />
                                             <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
@@ -339,7 +339,7 @@
                             <c:when test="${entityAttributeTypeName == 'DATE'}">
                                 <c:choose>
                                     <c:when test="${entityAttribute.entityDateAttribute == null}">
-                                        <i>Not Set.</i>
+                                        <i><fmt:message key="phrase.notSet" /></i>
                                         <c:url var="addUrl" value="/action/Core/EntityDateAttribute/Add">
                                             <c:param name="EntityRef" value="${entityInstance.entityRef}" />
                                             <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
@@ -367,7 +367,7 @@
                             <c:when test="${entityAttributeTypeName == 'TIME'}">
                                 <c:choose>
                                     <c:when test="${entityAttribute.entityTimeAttribute == null}">
-                                        <i>Not Set.</i>
+                                        <i><fmt:message key="phrase.notSet" /></i>
                                         <c:url var="addUrl" value="/action/Core/EntityTimeAttribute/Add">
                                             <c:param name="EntityRef" value="${entityInstance.entityRef}" />
                                             <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
@@ -395,7 +395,7 @@
                             <c:when test="${entityAttributeTypeName == 'BLOB'}">
                                 <c:choose>
                                     <c:when test="${entityAttribute.entityBlobAttribute == null}">
-                                        <i>Not Set.</i>
+                                        <i><fmt:message key="phrase.notSet" /></i>
                                         <c:url var="addUrl" value="/action/Core/EntityBlobAttribute/Add">
                                             <c:param name="EntityRef" value="${entityInstance.entityRef}" />
                                             <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
@@ -431,7 +431,7 @@
                             <c:when test="${entityAttributeTypeName == 'CLOB'}">
                                 <c:choose>
                                     <c:when test="${entityAttribute.entityClobAttribute == null}">
-                                        <i>Not Set.</i>
+                                        <i><fmt:message key="phrase.notSet" /></i>
                                         <c:url var="addUrl" value="/action/Core/EntityClobAttribute/Add">
                                             <c:param name="EntityRef" value="${entityInstance.entityRef}" />
                                             <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
@@ -467,7 +467,7 @@
                             <c:when test="${entityAttributeTypeName == 'ENTITY'}">
                                 <c:choose>
                                     <c:when test="${entityAttribute.entityEntityAttribute == null}">
-                                        <i>Not Set.</i>
+                                        <i><fmt:message key="phrase.notSet" /></i>
                                         <c:url var="addUrl" value="/action/Core/EntityEntityAttribute/Add">
                                             <c:param name="EntityRef" value="${entityInstance.entityRef}" />
                                             <c:param name="EntityAttributeName" value="${entityAttribute.entityAttributeName}" />
@@ -498,7 +498,7 @@
                             <c:when test="${entityAttributeTypeName == 'COLLECTION'}">
                                 <c:choose>
                                     <c:when test="${entityAttribute.entityCollectionAttributes == null}">
-                                        <i>Not Set.</i>
+                                        <i><fmt:message key="phrase.notSet" /></i>
                                     </c:when>
                                     <c:otherwise>
                                         <c:choose>
@@ -518,7 +518,7 @@
                                                 </c:forEach>
                                             </c:when>
                                             <c:otherwise>
-                                                <i>Not Set.</i>
+                                                <i><fmt:message key="phrase.notSet" /></i>
                                             </c:otherwise>
                                         </c:choose>
                                         <c:url var="addUrl" value="/action/Core/EntityCollectionAttribute/Add">

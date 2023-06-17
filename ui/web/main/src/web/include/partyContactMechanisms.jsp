@@ -43,10 +43,10 @@ Add <a href="${addContactWebAddressUrl}">Web</a>,
                 <c:if test='${partyContactMechanism.contactMechanism.contactMechanismType.contactMechanismTypeName != "WEB_ADDRESS" && partyContactMechanism.contactMechanism.contactMechanismType.contactMechanismTypeName != "INET_4"}'>
                     <c:choose>
                         <c:when test="${partyContactMechanism.contactMechanism.allowSolicitation}">
-                            Yes
+                            <fmt:message key="phrase.yes" />
                         </c:when>
                         <c:otherwise>
-                            No
+                            <fmt:message key="phrase.no" />
                         </c:otherwise>
                     </c:choose>
                 </c:if>

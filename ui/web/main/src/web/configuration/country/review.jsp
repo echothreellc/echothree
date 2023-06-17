@@ -41,7 +41,7 @@
             Telephone Code:
             <c:choose>
                 <c:when test="${country.telephoneCode == null}">
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${country.telephoneCode}" />
@@ -51,7 +51,7 @@
             Area Code Pattern:
             <c:choose>
                 <c:when test="${country.areaCodePattern == null}">
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${country.areaCodePattern}" />
@@ -61,17 +61,17 @@
             Area Code Required:
             <c:choose>
                 <c:when test="${country.areaCodeRequired}">
-                    Yes
+                    <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>
-                    No
+                    <fmt:message key="phrase.no" />
                 </c:otherwise>
             </c:choose>
             <br />
             Area Code Example:
             <c:choose>
                 <c:when test="${country.areaCodeExample == null}">
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${country.areaCodeExample}" />
@@ -81,7 +81,7 @@
             Telephone Number Pattern:
             <c:choose>
                 <c:when test="${country.telephoneNumberPattern == null}">
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${country.telephoneNumberPattern}" />
@@ -91,7 +91,7 @@
             Telephone Number Example:
             <c:choose>
                 <c:when test="${country.telephoneNumberExample == null}">
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${country.telephoneNumberExample}" />
@@ -107,20 +107,20 @@
             City Required:
             <c:choose>
                 <c:when test="${country.cityRequired}">
-                    Yes
+                    <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>
-                    No
+                    <fmt:message key="phrase.no" />
                 </c:otherwise>
             </c:choose>
             <br />
             City Geo Code Required:
             <c:choose>
                 <c:when test="${country.cityGeoCodeRequired}">
-                    Yes
+                    <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>
-                    No
+                    <fmt:message key="phrase.no" />
                 </c:otherwise>
             </c:choose>
             <br />
@@ -128,20 +128,20 @@
             State Required:
             <c:choose>
                 <c:when test="${country.stateRequired}">
-                    Yes
+                    <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>
-                    No
+                    <fmt:message key="phrase.no" />
                 </c:otherwise>
             </c:choose>
             <br />
             State Geo Code Required:
             <c:choose>
                 <c:when test="${country.stateGeoCodeRequired}">
-                    Yes
+                    <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>
-                    No
+                    <fmt:message key="phrase.no" />
                 </c:otherwise>
             </c:choose>
             <br />
@@ -149,7 +149,7 @@
             Postal Code Pattern:
             <c:choose>
                 <c:when test="${country.postalCodePattern == null}">
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${country.postalCodePattern}" />
@@ -159,27 +159,27 @@
             Postal Code Required:
             <c:choose>
                 <c:when test="${country.postalCodeRequired}">
-                    Yes
+                    <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>
-                    No
+                    <fmt:message key="phrase.no" />
                 </c:otherwise>
             </c:choose>
             <br />
             Postal Code Geo Code Required:
             <c:choose>
                 <c:when test="${country.postalCodeGeoCodeRequired}">
-                    Yes
+                    <fmt:message key="phrase.yes" />
                 </c:when>
                 <c:otherwise>
-                    No
+                    <fmt:message key="phrase.no" />
                 </c:otherwise>
             </c:choose>
             <br />
             Postal Code Length:
             <c:choose>
                 <c:when test="${country.postalCodeLength == null}">
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${country.postalCodeLength}" />
@@ -189,7 +189,7 @@
             Postal Code Geo Code Length:
             <c:choose>
                 <c:when test="${country.postalCodeGeoCodeLength == null}">
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${country.postalCodeGeoCodeLength}" />
@@ -199,7 +199,7 @@
             Postal Code Example:
             <c:choose>
                 <c:when test="${country.postalCodeExample == null}">
-                    <i>Not Set.</i>
+                    <i><fmt:message key="phrase.notSet" /></i>
                 </c:when>
                 <c:otherwise>
                     <c:out value="${country.postalCodeExample}" />
