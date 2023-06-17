@@ -146,7 +146,7 @@ public class EditRatingTypeCommand
                                         String description = edit.getDescription();
                                         
                                         ratingTypeDetailValue.setRatingTypeName(edit.getRatingTypeName());
-                                        ratingTypeDetailValue.setRatingSequencePK(ratingSequence.getPrimaryKey());
+                                        ratingTypeDetailValue.setRatingSequencePK(ratingSequence == null ? null : ratingSequence.getPrimaryKey());
                                         ratingTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
                                         
                                         ratingControl.updateRatingTypeFromValue(ratingTypeDetailValue, partyPK);
