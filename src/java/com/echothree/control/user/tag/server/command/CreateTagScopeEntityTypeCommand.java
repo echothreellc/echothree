@@ -73,12 +73,20 @@ public class CreateTagScopeEntityTypeCommand
         var entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, componentVendorName, entityTypeName);
 
         if(!hasExecutionErrors()) {
-            var tagScopeEntityType = tagControl.getTagScopeEntityType(tagScope, entityType);
+            if(entityType.getLastDetail().getIsExtensible()) {
+                var tagScopeEntityType = tagControl.getTagScopeEntityType(tagScope, entityType);
 
-            if(tagScopeEntityType == null) {
-                tagControl.createTagScopeEntityType(tagScope, entityType, getPartyPK());
+                if(tagScopeEntityType == null) {
+                    tagControl.createTagScopeEntityType(tagScope, entityType, getPartyPK());
+                } else {
+                    addExecutionError(ExecutionErrors.DuplicateTagScopeEntityType.name(), tagScopeName, componentVendorName, entityTypeName);
+                }
             } else {
-                addExecutionError(ExecutionErrors.DuplicateTagScopeEntityType.name(), tagScopeName, componentVendorName, entityTypeName);
+                var entityTypeDetail = entityType.getLastDetail();
+
+                addExecutionError(ExecutionErrors.EntityTypeIsNotExtensible.name(),
+                        entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
+                        entityTypeDetail.getEntityTypeName());
             }
         }
         
