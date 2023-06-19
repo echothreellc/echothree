@@ -70,7 +70,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -696,44 +695,48 @@ public class RatingControl
         return new RatingTypeListItemChoicesBean(labels, values, defaultValue);
     }
     
-    public void deleteRatingTypeListItem(RatingTypeListItem ratingTypeListItem, BasePK deletedBy) {
+    private void deleteRatingTypeListItem(RatingTypeListItem ratingTypeListItem, boolean checkDefault, BasePK deletedBy) {
         deleteRatingTypeListItemDescriptionsByRatingTypeListItem(ratingTypeListItem, deletedBy);
         deleteRatingsByRatingTypeListItem(ratingTypeListItem, deletedBy);
         
-        RatingTypeListItemDetail ratingTypeListItemDetail = ratingTypeListItem.getLastDetailForUpdate();
+        var ratingTypeListItemDetail = ratingTypeListItem.getLastDetailForUpdate();
         ratingTypeListItemDetail.setThruTime(session.START_TIME_LONG);
         ratingTypeListItem.setActiveDetail(null);
         ratingTypeListItem.store();
-        
-        // Check for default, and pick one if necessary
-        RatingType ratingType = ratingTypeListItemDetail.getRatingType();
-        RatingTypeListItem defaultRatingTypeListItem = getDefaultRatingTypeListItem(ratingType);
-        if(defaultRatingTypeListItem == null) {
-            List<RatingTypeListItem> ratingTypePriorities = getRatingTypeListItemsForUpdate(ratingType);
-            
-            if(!ratingTypePriorities.isEmpty()) {
-                Iterator<RatingTypeListItem> iter = ratingTypePriorities.iterator();
-                if(iter.hasNext()) {
-                    defaultRatingTypeListItem = iter.next();
+
+        if(checkDefault) {
+            // Check for default, and pick one if necessary
+            var ratingType = ratingTypeListItemDetail.getRatingType();
+            var defaultRatingTypeListItem = getDefaultRatingTypeListItem(ratingType);
+            if(defaultRatingTypeListItem == null) {
+                var ratingTypePriorities = getRatingTypeListItemsForUpdate(ratingType);
+
+                if(!ratingTypePriorities.isEmpty()) {
+                    var iter = ratingTypePriorities.iterator();
+                    if(iter.hasNext()) {
+                        defaultRatingTypeListItem = iter.next();
+                    }
+                    var ratingTypeListItemDetailValue = Objects.requireNonNull(defaultRatingTypeListItem).getLastDetailForUpdate().getRatingTypeListItemDetailValue().clone();
+
+                    ratingTypeListItemDetailValue.setIsDefault(Boolean.TRUE);
+                    updateRatingTypeListItemFromValue(ratingTypeListItemDetailValue, false, deletedBy);
                 }
-                RatingTypeListItemDetailValue ratingTypeListItemDetailValue = Objects.requireNonNull(defaultRatingTypeListItem).getLastDetailForUpdate().getRatingTypeListItemDetailValue().clone();
-                
-                ratingTypeListItemDetailValue.setIsDefault(Boolean.TRUE);
-                updateRatingTypeListItemFromValue(ratingTypeListItemDetailValue, false, deletedBy);
             }
         }
-        
+
         sendEvent(ratingTypeListItem.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
-    
-    public void deleteRatingTypeListItems(List<RatingTypeListItem> ratingTypeListItems, BasePK deletedBy) {
-        ratingTypeListItems.forEach((ratingTypeListItem) -> 
-                deleteRatingTypeListItem(ratingTypeListItem, deletedBy)
-        );
+
+    public void deleteRatingTypeListItem(RatingTypeListItem ratingTypeListItem, BasePK deletedBy) {
+        deleteRatingTypeListItem(ratingTypeListItem, true, deletedBy);
     }
-    
+
     public void deleteRatingTypeListItemsByRatingType(RatingType ratingType, BasePK deletedBy) {
-        deleteRatingTypeListItems(getRatingTypeListItemsForUpdate(ratingType), deletedBy);
+        var ratingTypeListItems = getRatingTypeListItemsForUpdate(ratingType);
+
+        ratingTypeListItems.forEach((ratingTypeListItem) ->
+                deleteRatingTypeListItem(ratingTypeListItem, false, deletedBy)
+        );
     }
     
     // --------------------------------------------------------------------------------
