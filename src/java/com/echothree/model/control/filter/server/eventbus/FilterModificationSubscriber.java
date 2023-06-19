@@ -24,14 +24,12 @@ import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.data.filter.common.FilterStepConstants;
 import com.echothree.util.server.persistence.PersistenceUtils;
 import com.echothree.util.server.persistence.Session;
-import com.google.common.eventbus.AllowConcurrentEvents;
 import com.google.common.eventbus.Subscribe;
 
 @SentEventSubscriber
 public class FilterModificationSubscriber {
 
     @Subscribe
-    @AllowConcurrentEvents
     public void recordSentEvent(SentEvent se) {
         var event = se.getEvent();
         var entityInstance = event.getEntityInstance();
