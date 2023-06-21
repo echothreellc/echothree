@@ -42,6 +42,19 @@
             <c:choose>
                 <c:when test="${contentCatalogItemCount == null || contentCatalogItemCount < 21}">
                     <display:table name="contentCatalogItems.list" id="contentCatalogItem" class="displaytag" sort="list" requestURI="/action/Content/ContentCatalogItem/Main">
+                        <et:hasSecurityRole securityRole="ContentCatalogItem.Review">
+                            <display:column>
+                                <c:url var="reviewUrl" value="/action/Content/ContentCatalogItem/Review">
+                                    <c:param name="ContentCollectionName" value="${contentCatalogItem.contentCatalog.contentCollection.contentCollectionName}" />
+                                    <c:param name="ContentCatalogName" value="${contentCatalogItem.contentCatalog.contentCatalogName}" />
+                                    <c:param name="ItemName" value="${contentCatalogItem.item.itemName}" />
+                                    <c:param name="InventoryConditionName" value="${contentCatalogItem.inventoryCondition.inventoryConditionName}" />
+                                    <c:param name="UnitOfMeasureTypeName" value="${contentCatalogItem.unitOfMeasureType.unitOfMeasureTypeName}" />
+                                    <c:param name="CurrencyIsoName" value="${contentCatalogItem.currency.currencyIsoName}" />
+                                </c:url>
+                                <a href="${reviewUrl}">Review</a>
+                            </display:column>
+                        </et:hasSecurityRole>
                         <display:column titleKey="columnTitle.item" sortable="true" sortProperty="item.itemName">
                             <c:url var="itemUrl" value="/action/Item/Item/Review">
                                 <c:param name="ItemName" value="${contentCatalogItem.item.itemName}" />
