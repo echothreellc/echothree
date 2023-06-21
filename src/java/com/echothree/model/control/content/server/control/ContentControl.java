@@ -1007,6 +1007,21 @@ public class ContentControl
         return contentCollection;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContentCollection */
+    public ContentCollection getContentCollectionByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ContentCollectionPK(entityInstance.getEntityUniqueId());
+
+        return ContentCollectionFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ContentCollection getContentCollectionByEntityInstance(EntityInstance entityInstance) {
+        return getContentCollectionByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ContentCollection getContentCollectionByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getContentCollectionByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     public long countContentCollectionsByDefaultOfferUse(OfferUse defaultOfferUse) {
         return session.queryForLong(
                 "SELECT COUNT(*) " +
@@ -2724,7 +2739,22 @@ public class ContentControl
         
         return contentCatalog;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContentCatalog */
+    public ContentCatalog getContentCatalogByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ContentCatalogPK(entityInstance.getEntityUniqueId());
+
+        return ContentCatalogFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ContentCatalog getContentCatalogByEntityInstance(EntityInstance entityInstance) {
+        return getContentCatalogByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ContentCatalog getContentCatalogByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getContentCatalogByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     public long countContentCatalogsByContentCollection(ContentCollection contentCollection) {
         return session.queryForLong(
                 "SELECT COUNT(*) " +
@@ -3174,7 +3204,22 @@ public class ContentControl
         
         return contentCatalogItem;
     }
-    
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContentCatalogItem */
+    public ContentCatalogItem getContentCatalogItemByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ContentCatalogItemPK(entityInstance.getEntityUniqueId());
+
+        return ContentCatalogItemFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public ContentCatalogItem getContentCatalogItemByEntityInstance(EntityInstance entityInstance) {
+        return getContentCatalogItemByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ContentCatalogItem getContentCatalogItemByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getContentCatalogItemByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     public long countContentCatalogItemsByContentCatalog(ContentCatalog contentCatalog) {
         return session.queryForLong(
                 "SELECT COUNT(*) " +
@@ -3751,13 +3796,20 @@ public class ContentControl
     }
 
     /** Assume that the entityInstance passed to this function is a ECHO_THREE.ContentCategory */
-    public ContentCategory getContentCategoryByEntityInstance(EntityInstance entityInstance) {
-        ContentCategoryPK pk = new ContentCategoryPK(entityInstance.getEntityUniqueId());
-        ContentCategory contentCategory = ContentCategoryFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
-        
-        return contentCategory;
+    public ContentCategory getContentCategoryByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ContentCategoryPK(entityInstance.getEntityUniqueId());
+
+        return ContentCategoryFactory.getInstance().getEntityFromPK(entityPermission, pk);
     }
-    
+
+    public ContentCategory getContentCategoryByEntityInstance(EntityInstance entityInstance) {
+        return getContentCategoryByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ContentCategory getContentCategoryByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getContentCategoryByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     public long countContentCategories() {
         return session.queryForLong(
                 "SELECT COUNT(*) " +

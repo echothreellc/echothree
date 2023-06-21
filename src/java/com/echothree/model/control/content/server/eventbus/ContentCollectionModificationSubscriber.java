@@ -14,42 +14,45 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.filter.server.eventbus;
+package com.echothree.model.control.content.server.eventbus;
 
+import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.eventbus.BaseEventSubscriber;
 import com.echothree.model.control.core.server.eventbus.Function4Arity;
 import com.echothree.model.control.core.server.eventbus.SentEvent;
 import com.echothree.model.control.core.server.eventbus.SentEventSubscriber;
-import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.data.content.common.ContentCollectionConstants;
 import com.echothree.model.data.core.server.entity.Event;
-import com.echothree.model.data.filter.common.FilterStepConstants;
 import com.echothree.util.server.persistence.PersistenceUtils;
 import com.echothree.util.server.persistence.Session;
 import com.google.common.eventbus.Subscribe;
 
 @SentEventSubscriber
-public class FilterModificationSubscriber
+public class ContentCollectionModificationSubscriber
         extends BaseEventSubscriber {
 
     @Subscribe
     public void receiveSentEvent(SentEvent se) {
-        decodeEventAndApply(se, touchFilterIfFilterStep);
+        decodeEventAndApply(se, touchContentCatalogsIfContentCollection);
     }
 
     private static final Function4Arity<Event, EventTypes, String, String>
-            touchFilterIfFilterStep = (event, eventType, componentVendorName, entityTypeName) -> {
-        if(FilterStepConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
-                && FilterStepConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
+            touchContentCatalogsIfContentCollection = (event, eventType, componentVendorName, entityTypeName) -> {
+        if(ContentCollectionConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
+                && ContentCollectionConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
                 && (eventType == EventTypes.MODIFY || eventType == EventTypes.TOUCH)) {
             var coreControl = Session.getModelController(CoreControl.class);
-            var filterControl = Session.getModelController(FilterControl.class);
-            var filterStep = filterControl.getFilterStepByEntityInstance(event.getEntityInstance());
+            var contentControl = Session.getModelController(ContentControl.class);
+            var contentCollection = contentControl.getContentCollectionByEntityInstance(event.getEntityInstance());
+            var contentCatalogs = contentControl.getContentCatalogs(contentCollection);
 
-            coreControl.sendEvent(filterStep.getLastDetail().getFilter().getPrimaryKey(), EventTypes.TOUCH,
-                    filterStep.getPrimaryKey(), eventType,
-                    PersistenceUtils.getInstance().getBasePKFromEntityInstance(event.getCreatedBy()));
+            for(var contentCatalog : contentCatalogs) {
+                coreControl.sendEvent(contentCatalog.getPrimaryKey(), EventTypes.TOUCH,
+                        contentCollection.getPrimaryKey(), eventType,
+                        PersistenceUtils.getInstance().getBasePKFromEntityInstance(event.getCreatedBy()));
+            }
         }
     };
 
