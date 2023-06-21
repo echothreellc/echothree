@@ -18,37 +18,39 @@ package com.echothree.model.control.filter.server.eventbus;
 
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.eventbus.BaseEventSubscriber;
+import com.echothree.model.control.core.server.eventbus.Function4Arity;
 import com.echothree.model.control.core.server.eventbus.SentEvent;
 import com.echothree.model.control.core.server.eventbus.SentEventSubscriber;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.data.core.server.entity.Event;
 import com.echothree.model.data.filter.common.FilterStepConstants;
 import com.echothree.util.server.persistence.PersistenceUtils;
 import com.echothree.util.server.persistence.Session;
 import com.google.common.eventbus.Subscribe;
 
 @SentEventSubscriber
-public class FilterModificationSubscriber {
+public class FilterModificationSubscriber
+        extends BaseEventSubscriber {
 
     @Subscribe
-    public void recordSentEvent(SentEvent se) {
-        var event = se.getEvent();
-        var entityInstance = event.getEntityInstance();
-        var entityType = entityInstance.getEntityType();
-        var lastEntityTypeDetail = entityType.getLastDetail();
-        var entityTypeName = lastEntityTypeDetail.getEntityTypeName();
-        var componentVendor = lastEntityTypeDetail.getComponentVendor();
-        var componentVendorName = componentVendor.getLastDetail().getComponentVendorName();
+    public void receiveSentEvent(SentEvent se) {
+        decodeEventAndApply(se, touchFilterIfFilterStep);
+    }
 
+    private static final Function4Arity<Event, EventTypes, String, String>
+            touchFilterIfFilterStep = (event, eventType, componentVendorName, entityTypeName) -> {
         if(FilterStepConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
-                && FilterStepConstants.ENTITY_TYPE_NAME.equals(entityTypeName)) {
+                && FilterStepConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
+                && (eventType == EventTypes.MODIFY || eventType == EventTypes.TOUCH)) {
             var coreControl = Session.getModelController(CoreControl.class);
             var filterControl = Session.getModelController(FilterControl.class);
             var filterStep = filterControl.getFilterStepByEntityInstance(event.getEntityInstance());
 
-            coreControl.sendEvent(filterStep.getLastDetail().getFilter().getPrimaryKey(),
-                    EventTypes.TOUCH, filterStep.getPrimaryKey(), EventTypes.valueOf(event.getEventType().getEventTypeName()),
+            coreControl.sendEvent(filterStep.getLastDetail().getFilter().getPrimaryKey(), EventTypes.TOUCH,
+                    filterStep.getPrimaryKey(), eventType,
                     PersistenceUtils.getInstance().getBasePKFromEntityInstance(event.getCreatedBy()));
         }
-    }
+    };
 
 }
