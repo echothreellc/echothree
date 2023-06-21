@@ -661,7 +661,7 @@
             <entityType entityTypeName="ContentCatalogDescription" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Content Catalog Description" />
             </entityType>
-            <entityType entityTypeName="ContentCatalogItem" keepAllHistory="false" isExtensible="false" sortOrder="1">
+            <entityType entityTypeName="ContentCatalogItem" keepAllHistory="false" isExtensible="true" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Content Catalog Item" />
             </entityType>
             <entityType entityTypeName="ContentCatalogItemFixedPrice" keepAllHistory="false" isExtensible="false" sortOrder="1">
