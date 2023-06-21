@@ -32,7 +32,10 @@ public interface ContentOptions {
     String ContentCatalogIncludeGuid = "ContentCatalogIncludeGuid";
     String ContentCatalogIncludeEntityAttributeGroups = "ContentCatalogIncludeEntityAttributeGroups";
     String ContentCatalogIncludeTagScopes = "ContentCatalogIncludeTagScopes";
-    
+
+    String ContentCatalogItemIncludeEntityAttributeGroups = "ContentCatalogItemIncludeEntityAttributeGroups";
+    String ContentCatalogItemIncludeTagScopes = "ContentCatalogItemIncludeTagScopes";
+
     String ContentCategoryIncludeContentCategoryItems = "ContentCategoryIncludeContentCategoryItems";
     String ContentCategoryIncludeKey = "ContentCategoryIncludeKey";
     String ContentCategoryIncludeGuid = "ContentCategoryIncludeGuid";

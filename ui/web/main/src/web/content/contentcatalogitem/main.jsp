@@ -38,9 +38,23 @@
             </h2>
         </div>
         <div id="Content">
+            <et:checkSecurityRoles securityRoles="Event.List:ContentCatalogItem.Review" />
             <c:choose>
                 <c:when test="${contentCatalogItemCount == null || contentCatalogItemCount < 21}">
                     <display:table name="contentCatalogItems.list" id="contentCatalogItem" class="displaytag" sort="list" requestURI="/action/Content/ContentCatalogItem/Main">
+                        <et:hasSecurityRole securityRole="ContentCatalogItem.Review">
+                            <display:column>
+                                <c:url var="reviewUrl" value="/action/Content/ContentCatalogItem/Review">
+                                    <c:param name="ContentCollectionName" value="${contentCatalogItem.contentCatalog.contentCollection.contentCollectionName}" />
+                                    <c:param name="ContentCatalogName" value="${contentCatalogItem.contentCatalog.contentCatalogName}" />
+                                    <c:param name="ItemName" value="${contentCatalogItem.item.itemName}" />
+                                    <c:param name="InventoryConditionName" value="${contentCatalogItem.inventoryCondition.inventoryConditionName}" />
+                                    <c:param name="UnitOfMeasureTypeName" value="${contentCatalogItem.unitOfMeasureType.unitOfMeasureTypeName}" />
+                                    <c:param name="CurrencyIsoName" value="${contentCatalogItem.currency.currencyIsoName}" />
+                                </c:url>
+                                <a href="${reviewUrl}">Review</a>
+                            </display:column>
+                        </et:hasSecurityRole>
                         <display:column titleKey="columnTitle.item" sortable="true" sortProperty="item.itemName">
                             <c:url var="itemUrl" value="/action/Item/Item/Review">
                                 <c:param name="ItemName" value="${contentCatalogItem.item.itemName}" />
@@ -81,13 +95,21 @@
                                 </c:when>
                             </c:choose>
                         </display:column>
+                        <et:hasSecurityRole securityRole="Event.List">
+                            <display:column>
+                                <c:url var="eventsUrl" value="/action/Core/Event/Main">
+                                    <c:param name="EntityRef" value="${contentCatalogItem.entityInstance.entityRef}" />
+                                </c:url>
+                                <a href="${eventsUrl}">Events</a>
+                            </display:column>
+                        </et:hasSecurityRole>
                     </display:table>
                     <c:if test="${contentCatalogItems.size > 20}">
                         <c:url var="resultsUrl" value="/action/Content/ContentCatalogItem/Main">
                             <c:param name="ContentCollectionName" value="${contentCatalog.contentCollection.contentCollectionName}" />
                             <c:param name="ContentCatalogName" value="${contentCatalog.contentCatalogName}" />
                         </c:url>
-                        <a href="${resultsUrl}">Paged Results</a>
+                        <a href="${resultsUrl}">Paged Listing</a>
                     </c:if>
                 </c:when>
                 <c:otherwise>
@@ -132,13 +154,21 @@
                                 </c:when>
                             </c:choose>
                         </display:column>
+                        <et:hasSecurityRole securityRole="Event.List">
+                            <display:column>
+                                <c:url var="eventsUrl" value="/action/Core/Event/Main">
+                                    <c:param name="EntityRef" value="${contentCatalogItem.entityInstance.entityRef}" />
+                                </c:url>
+                                <a href="${eventsUrl}">Events</a>
+                            </display:column>
+                        </et:hasSecurityRole>
                     </display:table>
                     <c:url var="resultsUrl" value="/action/Content/ContentCatalogItem/Main">
                         <c:param name="ContentCollectionName" value="${contentCatalog.contentCollection.contentCollectionName}" />
                         <c:param name="ContentCatalogName" value="${contentCatalog.contentCatalogName}" />
                         <c:param name="Results" value="Complete" />
                     </c:url>
-                    <a href="${resultsUrl}">All Results</a>
+                    <a href="${resultsUrl}">All Content Catalog Items</a>
                 </c:otherwise>
             </c:choose>
         </div>

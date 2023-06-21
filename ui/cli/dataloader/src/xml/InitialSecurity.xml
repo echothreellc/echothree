@@ -4500,6 +4500,9 @@
             <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Content Catalog Item List" />
             </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Content Catalog Item Review" />
+            </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="ContentCategory" parentSecurityRoleGroupName="ContentComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Content Category" />
@@ -8622,6 +8625,7 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="ContentCatalog" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ContentCatalog" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ContentCatalogItem" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="ContentCatalogItem" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ContentCategory" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ContentCategory" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="ContentCategory" securityRoleName="Delete" />

@@ -3170,7 +3170,7 @@ public class ContentControl
         ContentCatalogItem contentCatalogItem = ContentCatalogItemFactory.getInstance().create(contentCatalog, item,
                 inventoryCondition, unitOfMeasureType, currency, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEvent(contentCatalog.getPrimaryKey(), EventTypes.MODIFY, contentCatalogItem.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(contentCatalogItem.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return contentCatalogItem;
     }
@@ -3503,7 +3503,7 @@ public class ContentControl
         contentCatalogItem.setThruTime(session.START_TIME_LONG);
         contentCatalogItem.store();
         
-        sendEvent(contentCatalogItem.getContentCatalogPK(), EventTypes.MODIFY, contentCatalogItem.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(contentCatalogItem.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteContentCatalogItems(List<ContentCatalogItem> contentCatalogItems, BasePK deletedBy) {
@@ -3537,7 +3537,7 @@ public class ContentControl
         ContentCatalogItemFixedPrice contentCatalogItemFixedPrice = ContentCatalogItemFixedPriceFactory.getInstance().create(session,
                 contentCatalogItem, unitPrice, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEvent(contentCatalogItem.getContentCatalogPK(), EventTypes.MODIFY, contentCatalogItemFixedPrice.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(contentCatalogItem.getPrimaryKey(), EventTypes.MODIFY, contentCatalogItemFixedPrice.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return contentCatalogItemFixedPrice;
     }
@@ -3607,7 +3607,7 @@ public class ContentControl
             contentCatalogItemFixedPrice = ContentCatalogItemFixedPriceFactory.getInstance().create(contentCatalogItemPK,
                     unitPrice, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEvent(contentCatalogItemFixedPrice.getContentCatalogItem().getContentCatalogPK(), EventTypes.MODIFY, contentCatalogItemFixedPrice.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(contentCatalogItemFixedPrice.getContentCatalogItemPK(), EventTypes.MODIFY, contentCatalogItemFixedPrice.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
@@ -3615,7 +3615,7 @@ public class ContentControl
         contentCatalogItemFixedPrice.setThruTime(session.START_TIME_LONG);
         contentCatalogItemFixedPrice.store();
 
-        sendEvent(contentCatalogItemFixedPrice.getContentCatalogItem().getContentCatalogPK(), EventTypes.MODIFY, contentCatalogItemFixedPrice.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(contentCatalogItemFixedPrice.getContentCatalogItemPK(), EventTypes.MODIFY, contentCatalogItemFixedPrice.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     // --------------------------------------------------------------------------------
@@ -3627,7 +3627,7 @@ public class ContentControl
         ContentCatalogItemVariablePrice contentCatalogItemVariablePrice = ContentCatalogItemVariablePriceFactory.getInstance().create(session,
                 contentCatalogItem, minimumUnitPrice, maximumUnitPrice, unitPriceIncrement, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-        sendEvent(contentCatalogItem.getContentCatalogPK(), EventTypes.MODIFY, contentCatalogItemVariablePrice.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(contentCatalogItem.getPrimaryKey(), EventTypes.MODIFY, contentCatalogItemVariablePrice.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return contentCatalogItemVariablePrice;
     }
@@ -3699,7 +3699,7 @@ public class ContentControl
             contentCatalogItemVariablePrice = ContentCatalogItemVariablePriceFactory.getInstance().create(contentCatalogItemPK, maximumUnitPrice,
                     minimumUnitPrice, unitPriceIncrement, session.START_TIME_LONG, Session.MAX_TIME_LONG);
 
-            sendEvent(contentCatalogItemVariablePrice.getContentCatalogItem().getContentCatalogPK(), EventTypes.MODIFY, contentCatalogItemVariablePrice.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+            sendEvent(contentCatalogItemVariablePrice.getContentCatalogItemPK(), EventTypes.MODIFY, contentCatalogItemVariablePrice.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
         }
     }
 
@@ -3707,7 +3707,7 @@ public class ContentControl
         contentCatalogItemVariablePrice.setThruTime(session.START_TIME_LONG);
         contentCatalogItemVariablePrice.store();
 
-        sendEvent(contentCatalogItemVariablePrice.getContentCatalogItem().getContentCatalogPK(), EventTypes.MODIFY, contentCatalogItemVariablePrice.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(contentCatalogItemVariablePrice.getContentCatalogItemPK(), EventTypes.MODIFY, contentCatalogItemVariablePrice.getPrimaryKey(), EventTypes.DELETE, deletedBy);
     }
 
     // --------------------------------------------------------------------------------
