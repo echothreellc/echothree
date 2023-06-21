@@ -17,6 +17,7 @@
 package com.echothree.model.control.content.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.BaseObject;
 import com.echothree.model.data.content.server.entity.ContentCategoryItem;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -27,7 +28,7 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("content category item object")
 @GraphQLName("ContentCategoryItem")
 public class ContentCategoryItemObject
-        extends BaseEntityInstanceObject {
+        extends BaseObject {
     
     private final ContentCategoryItem contentCategoryItem; // Always Present
     
