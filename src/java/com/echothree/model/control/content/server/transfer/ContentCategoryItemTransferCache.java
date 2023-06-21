@@ -34,8 +34,7 @@ public class ContentCategoryItemTransferCache
     boolean filterContentCatalogItem;
     boolean filterIsDefault;
     boolean filterSortOrder;
-    boolean filterEntityInstance;
-    
+
     /** Creates a new instance of ContentCategoryItemTransferCache */
     public ContentCategoryItemTransferCache(UserVisit userVisit, ContentControl contentControl) {
         super(userVisit, contentControl);
@@ -49,11 +48,8 @@ public class ContentCategoryItemTransferCache
                 filterContentCatalogItem = !properties.contains(ContentProperties.CONTENT_CATALOG_ITEM);
                 filterIsDefault = !properties.contains(ContentProperties.IS_DEFAULT);
                 filterSortOrder = !properties.contains(ContentProperties.SORT_ORDER);
-                filterEntityInstance = !properties.contains(ContentProperties.ENTITY_INSTANCE);
             }
         }
-        
-        setIncludeEntityInstance(!filterEntityInstance);
     }
     
     public ContentCategoryItemTransfer getContentCategoryItemTransfer(ContentCategoryItem contentCategoryItem) {
