@@ -3170,7 +3170,7 @@ public class ContentControl
         ContentCatalogItem contentCatalogItem = ContentCatalogItemFactory.getInstance().create(contentCatalog, item,
                 inventoryCondition, unitOfMeasureType, currency, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
-        sendEvent(contentCatalog.getPrimaryKey(), EventTypes.MODIFY, contentCatalogItem.getPrimaryKey(), EventTypes.CREATE, createdBy);
+        sendEvent(contentCatalogItem.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
         
         return contentCatalogItem;
     }
@@ -3503,7 +3503,7 @@ public class ContentControl
         contentCatalogItem.setThruTime(session.START_TIME_LONG);
         contentCatalogItem.store();
         
-        sendEvent(contentCatalogItem.getContentCatalogPK(), EventTypes.MODIFY, contentCatalogItem.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+        sendEvent(contentCatalogItem.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
     }
     
     public void deleteContentCatalogItems(List<ContentCatalogItem> contentCatalogItems, BasePK deletedBy) {
