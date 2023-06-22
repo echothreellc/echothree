@@ -20,10 +20,11 @@ import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.eventbus.BaseEventSubscriber;
-import com.echothree.model.control.core.server.eventbus.Function4Arity;
+import com.echothree.model.control.core.server.eventbus.Function5Arity;
 import com.echothree.model.control.core.server.eventbus.SentEvent;
 import com.echothree.model.control.core.server.eventbus.SentEventSubscriber;
 import com.echothree.model.data.content.common.ContentCatalogConstants;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.Event;
 import com.echothree.util.server.persistence.PersistenceUtils;
 import com.echothree.util.server.persistence.Session;
@@ -38,14 +39,14 @@ public class ContentCatalogModificationSubscriber
         decodeEventAndApply(se, touchContentCategoriesIfContentCatalog);
     }
 
-    private static final Function4Arity<Event, EventTypes, String, String>
-            touchContentCategoriesIfContentCatalog = (event, eventType, componentVendorName, entityTypeName) -> {
+    private static final Function5Arity<Event, EntityInstance, EventTypes, String, String>
+            touchContentCategoriesIfContentCatalog = (event, entityInstance, eventType, componentVendorName, entityTypeName) -> {
         if(ContentCatalogConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
                 && ContentCatalogConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
                 && (eventType == EventTypes.MODIFY || eventType == EventTypes.TOUCH)) {
             var coreControl = Session.getModelController(CoreControl.class);
             var contentControl = Session.getModelController(ContentControl.class);
-            var contentCatalog = contentControl.getContentCatalogByEntityInstance(event.getEntityInstance());
+            var contentCatalog = contentControl.getContentCatalogByEntityInstance(entityInstance);
             var contentCategories = contentControl.getContentCategories(contentCatalog);
 
             for(var contentCategory : contentCategories) {

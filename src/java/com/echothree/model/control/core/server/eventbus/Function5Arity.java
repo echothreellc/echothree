@@ -17,6 +17,6 @@
 package com.echothree.model.control.core.server.eventbus;
 
 @FunctionalInterface
-public interface Function4Arity<A, B, C, D> {
-    void apply(A a, B b, C c, D d);
+public interface Function5Arity<A, B, C, D, E> {
+    void apply(A a, B b, C c, D d, E e);
 }

@@ -17,11 +17,12 @@
 package com.echothree.model.control.core.server.eventbus;
 
 import com.echothree.model.control.core.common.EventTypes;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.Event;
 
 public abstract class BaseEventSubscriber {
 
-    protected void decodeEventAndApply(SentEvent se, Function4Arity<Event, EventTypes, String, String> f4) {
+    protected void decodeEventAndApply(SentEvent se, Function5Arity<Event, EntityInstance, EventTypes, String, String> f5) {
         var event = se.getEvent();
         var entityInstance = event.getEntityInstance();
         var entityType = entityInstance.getEntityType();
@@ -31,7 +32,7 @@ public abstract class BaseEventSubscriber {
         var componentVendorName = componentVendor.getLastDetail().getComponentVendorName();
         var eventType = EventTypes.valueOf(event.getEventType().getEventTypeName());
 
-        f4.apply(event, eventType, componentVendorName, entityTypeName);
+        f5.apply(event, entityInstance, eventType, componentVendorName, entityTypeName);
     }
 
 }

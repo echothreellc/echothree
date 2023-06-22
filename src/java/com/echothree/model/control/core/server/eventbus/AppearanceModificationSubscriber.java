@@ -19,28 +19,26 @@ package com.echothree.model.control.core.server.eventbus;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.common.AppearanceConstants;
+import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.model.data.core.server.entity.Event;
 import com.echothree.util.server.persistence.PersistenceUtils;
 import com.echothree.util.server.persistence.Session;
 import com.google.common.eventbus.Subscribe;
 
 @SentEventSubscriber
-public class AppearanceModificationSubscriber {
+public class AppearanceModificationSubscriber
+        extends BaseEventSubscriber {
 
     @Subscribe
-    public void recordSentEvent(SentEvent se) {
-        var event = se.getEvent();
-        var entityInstance = event.getEntityInstance();
-        var entityType = entityInstance.getEntityType();
-        var lastEntityTypeDetail = entityType.getLastDetail();
-        var entityTypeName = lastEntityTypeDetail.getEntityTypeName();
-        var componentVendor = lastEntityTypeDetail.getComponentVendor();
-        var componentVendorName = componentVendor.getLastDetail().getComponentVendorName();
-        var eventType = event.getEventType();
-        var eventTypeName = eventType.getEventTypeName();
+    public void receiveSentEvent(SentEvent se) {
+        decodeEventAndApply(se, touchEntityInstanceIfAppearance);
+    }
 
+    private static final Function5Arity<Event, EntityInstance, EventTypes, String, String>
+            touchEntityInstanceIfAppearance = (event, entityInstance, eventType, componentVendorName, entityTypeName) -> {
         if(AppearanceConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
                 && AppearanceConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
-                && EventTypes.MODIFY.name().equals(eventTypeName)) {
+                && (eventType == EventTypes.MODIFY || eventType == EventTypes.TOUCH)) {
             var coreControl = Session.getModelController(CoreControl.class);
             var appearance = coreControl.getAppearanceByEntityInstance(entityInstance);
             var entityAppearances = coreControl.getEntityAppearancesByAppearance(appearance);
@@ -48,9 +46,10 @@ public class AppearanceModificationSubscriber {
 
             for(var entityAppearance : entityAppearances) {
                 coreControl.sendEvent(entityAppearance.getEntityInstance(), EventTypes.TOUCH,
-                        entityInstance, EventTypes.MODIFY, createdBy);
+                        entityInstance, eventType,
+                        createdBy);
             }
         }
-    }
+    };
 
 }
