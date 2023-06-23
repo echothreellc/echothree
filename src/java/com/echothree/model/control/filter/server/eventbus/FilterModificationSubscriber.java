@@ -19,10 +19,11 @@ package com.echothree.model.control.filter.server.eventbus;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.eventbus.BaseEventSubscriber;
-import com.echothree.model.control.core.server.eventbus.Function4Arity;
+import com.echothree.model.control.core.server.eventbus.Function5Arity;
 import com.echothree.model.control.core.server.eventbus.SentEvent;
 import com.echothree.model.control.core.server.eventbus.SentEventSubscriber;
 import com.echothree.model.control.filter.server.control.FilterControl;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.Event;
 import com.echothree.model.data.filter.common.FilterStepConstants;
 import com.echothree.util.server.persistence.PersistenceUtils;
@@ -38,14 +39,14 @@ public class FilterModificationSubscriber
         decodeEventAndApply(se, touchFilterIfFilterStep);
     }
 
-    private static final Function4Arity<Event, EventTypes, String, String>
-            touchFilterIfFilterStep = (event, eventType, componentVendorName, entityTypeName) -> {
+    private static final Function5Arity<Event, EntityInstance, EventTypes, String, String>
+            touchFilterIfFilterStep = (event, entityInstance, eventType, componentVendorName, entityTypeName) -> {
         if(FilterStepConstants.COMPONENT_VENDOR_NAME.equals(componentVendorName)
                 && FilterStepConstants.ENTITY_TYPE_NAME.equals(entityTypeName)
                 && (eventType == EventTypes.MODIFY || eventType == EventTypes.TOUCH)) {
             var coreControl = Session.getModelController(CoreControl.class);
             var filterControl = Session.getModelController(FilterControl.class);
-            var filterStep = filterControl.getFilterStepByEntityInstance(event.getEntityInstance());
+            var filterStep = filterControl.getFilterStepByEntityInstance(entityInstance);
 
             coreControl.sendEvent(filterStep.getLastDetail().getFilter().getPrimaryKey(), EventTypes.TOUCH,
                     filterStep.getPrimaryKey(), eventType,
