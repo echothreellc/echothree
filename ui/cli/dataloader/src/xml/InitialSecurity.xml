@@ -5644,6 +5644,24 @@
                 <securityRoleDescription languageIsoName="en" description="Customer Alias Review" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="WarehouseAlias" parentSecurityRoleGroupName="PartyComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Warehouse Alias" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Warehouse Alias Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Warehouse Alias Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Warehouse Alias Delete" />
+            </securityRole>
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Warehouse Alias List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Warehouse Alias Review" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="SalesOrderAlias" parentSecurityRoleGroupName="OrderComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Sales Order Alias" />
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
@@ -8946,6 +8964,11 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="CustomerAlias" securityRoleName="Delete" />
             <partySecurityRoleTemplateRole securityRoleGroupName="CustomerAlias" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="CustomerAlias" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="WarehouseAlias" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="WarehouseAlias" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="WarehouseAlias" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="WarehouseAlias" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="WarehouseAlias" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="CustomerShipmentAlias" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="CustomerShipmentAlias" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="CustomerShipmentAlias" securityRoleName="Delete" />
