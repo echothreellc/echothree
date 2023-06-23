@@ -5644,6 +5644,42 @@
                 <securityRoleDescription languageIsoName="en" description="Customer Alias Review" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="EmployeeAlias" parentSecurityRoleGroupName="PartyComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Employee Alias" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Employee Alias Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Employee Alias Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Employee Alias Delete" />
+            </securityRole>
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Employee Alias List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Employee Alias Review" />
+            </securityRole>
+        </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="VendorAlias" parentSecurityRoleGroupName="PartyComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Vendor Alias" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Vendor Alias Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Vendor Alias Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Vendor Alias Delete" />
+            </securityRole>
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Vendor Alias List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Vendor Alias Review" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="WarehouseAlias" parentSecurityRoleGroupName="PartyComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Warehouse Alias" />
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
@@ -8964,6 +9000,16 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="CustomerAlias" securityRoleName="Delete" />
             <partySecurityRoleTemplateRole securityRoleGroupName="CustomerAlias" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="CustomerAlias" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="EmployeeAlias" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="EmployeeAlias" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="EmployeeAlias" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="EmployeeAlias" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="EmployeeAlias" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="VendorAlias" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="VendorAlias" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="VendorAlias" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="VendorAlias" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="VendorAlias" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WarehouseAlias" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WarehouseAlias" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WarehouseAlias" securityRoleName="Delete" />
