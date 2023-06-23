@@ -60,7 +60,7 @@
         allowUserLogins="true" allowPartyAliases="false" isDefault="false" sortOrder="1">
             <partyTypeDescription languageIsoName="en" description="Vendor" />
         </partyType>
-        <partyType partyTypeName="WAREHOUSE" parentPartyTypeName="FACILITY" allowUserLogins="false" allowPartyAliases="false" isDefault="false" sortOrder="1">
+        <partyType partyTypeName="WAREHOUSE" parentPartyTypeName="FACILITY" allowUserLogins="false" allowPartyAliases="true" isDefault="false" sortOrder="1">
             <partyTypeDescription languageIsoName="en" description="Warehouse" />
         </partyType>
     </partyTypes>

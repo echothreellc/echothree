@@ -44,6 +44,9 @@ public class PartyAliasUtil {
     static {
         securityRoleGroupNameByPartyTypeName = new HashMap<>();
         securityRoleGroupNameByPartyTypeName.put(PartyTypes.CUSTOMER.name(), SecurityRoleGroups.CustomerAlias.name());
+        securityRoleGroupNameByPartyTypeName.put(PartyTypes.EMPLOYEE.name(), SecurityRoleGroups.EmployeeAlias.name());
+        securityRoleGroupNameByPartyTypeName.put(PartyTypes.VENDOR.name(), SecurityRoleGroups.VendorAlias.name());
+        securityRoleGroupNameByPartyTypeName.put(PartyTypes.WAREHOUSE.name(), SecurityRoleGroups.WarehouseAlias.name());
     }
 
     public String getSecurityRoleGroupNameByPartyTypeName(String partyTypeName) {

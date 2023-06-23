@@ -173,6 +173,11 @@
                 </c:choose>
             </et:hasSecurityRole>
 
+            <c:set var="commonUrl" scope="request" value="Warehouse/WarehouseAlias" />
+            <c:set var="partyAliases" scope="request" value="${warehouse.partyAliases}" />
+            <c:set var="securityRoleGroupNamePrefix" scope="request" value="Warehouse" />
+            <jsp:include page="../../include/partyAliases.jsp" />
+
             <c:set var="tagScopes" scope="request" value="${warehouse.tagScopes}" />
             <c:set var="entityAttributeGroups" scope="request" value="${warehouse.entityAttributeGroups}" />
             <c:set var="entityInstance" scope="request" value="${warehouse.entityInstance}" />
