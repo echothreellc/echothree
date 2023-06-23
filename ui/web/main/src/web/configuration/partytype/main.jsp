@@ -41,6 +41,9 @@
                     </c:url>
                     <a href="${reviewUrl}"><c:out value="${partyType.partyTypeName}" /></a>
                 </display:column>
+                <display:column titleKey="columnTitle.parent">
+                    <c:out value="${partyType.parentPartyType.description}" />
+                </display:column>
                 <display:column titleKey="columnTitle.description">
                     <c:out value="${partyType.description}" />
                 </display:column>
