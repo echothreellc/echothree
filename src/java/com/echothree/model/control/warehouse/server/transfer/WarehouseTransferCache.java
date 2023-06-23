@@ -59,6 +59,7 @@ public class WarehouseTransferCache
 
     boolean includeLocationsCount;
     boolean includeLocations;
+    boolean includePartyAliases;
     boolean includePartyContactMechanisms;
     boolean includePartyDocuments;
     boolean includePartyPrinterGroupUses;
@@ -74,6 +75,7 @@ public class WarehouseTransferCache
             includeLocations = options.contains(WarehouseOptions.WarehouseIncludeLocations);
             setIncludeKey(options.contains(PartyOptions.PartyIncludeKey) || options.contains(WarehouseOptions.WarehouseIncludeKey));
             setIncludeGuid(options.contains(PartyOptions.PartyIncludeGuid) || options.contains(WarehouseOptions.WarehouseIncludeGuid));
+            includePartyAliases = options.contains(PartyOptions.PartyIncludePartyAliases);
             includePartyContactMechanisms = options.contains(PartyOptions.PartyIncludePartyContactMechanisms);
             includePartyDocuments = options.contains(PartyOptions.PartyIncludePartyDocuments);
             includePartyPrinterGroupUses = options.contains(PartyOptions.PartyIncludePartyPrinterGroupUses);
@@ -123,6 +125,10 @@ public class WarehouseTransferCache
 
             if(includeLocations) {
                 warehouseTransfer.setLocations(new ListWrapper<>(warehouseControl.getLocationTransfersByWarehouseParty(userVisit, party)));
+            }
+
+            if(includePartyAliases) {
+                warehouseTransfer.setPartyAliases(new ListWrapper<>(partyControl.getPartyAliasTransfersByParty(userVisit, party)));
             }
 
             if(includePartyContactMechanisms) {
