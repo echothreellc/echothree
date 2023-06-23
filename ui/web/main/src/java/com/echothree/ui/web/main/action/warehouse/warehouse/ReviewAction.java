@@ -70,6 +70,7 @@ public class ReviewAction
         commandForm.setPartyName(request.getParameter(ParameterConstants.PARTY_NAME));
 
         Set<String> options = new HashSet<>();
+        options.add(PartyOptions.PartyIncludePartyAliases);
         options.add(PartyOptions.PartyIncludePartyContactMechanisms);
         options.add(PartyOptions.PartyIncludePartyPrinterGroupUses);
         options.add(ContactOptions.PartyContactMechanismIncludePartyContactMechanismPurposes);
