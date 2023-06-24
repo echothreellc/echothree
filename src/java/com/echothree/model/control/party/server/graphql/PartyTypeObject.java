@@ -17,17 +17,26 @@
 package com.echothree.model.control.party.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.sequence.server.graphql.SequenceSecurityUtils;
 import com.echothree.model.control.sequence.server.graphql.SequenceTypeObject;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.party.common.PartyAliasTypeConstants;
 import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @GraphQLDescription("party type object")
 @GraphQLName("PartyType")
@@ -97,4 +106,24 @@ public class PartyTypeObject
         return partyControl.getBestPartyTypeDescription(partyType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
 
+    @GraphQLField
+    @GraphQLDescription("party alias types")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<PartyAliasTypeObject> getPartyAliasTypes(final DataFetchingEnvironment env) {
+        if(PartySecurityUtils.getInstance().getHasPartyAliasTypesAccess(env)) {
+            var partyControl = Session.getModelController(PartyControl.class);
+            var totalCount = partyControl.countPartyAliasTypesByPartyType(partyType);
+
+            try(var objectLimiter = new ObjectLimiter(env, PartyAliasTypeConstants.COMPONENT_VENDOR_NAME, PartyAliasTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entitys = partyControl.getPartyAliasTypes(partyType);
+                var partyAliasTypes = entitys.stream().map(PartyAliasTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entitys.size())));
+
+                return new CountedObjects<>(objectLimiter, partyAliasTypes);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+    
 }

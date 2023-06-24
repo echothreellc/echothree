@@ -20,7 +20,6 @@ import com.echothree.control.user.customer.common.CustomerUtil;
 import com.echothree.control.user.customer.server.command.GetCustomerCommand;
 import com.echothree.control.user.employee.common.EmployeeUtil;
 import com.echothree.control.user.employee.server.command.GetEmployeeCommand;
-import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.server.command.GetCompanyCommand;
 import com.echothree.control.user.party.server.command.GetDateTimeFormatCommand;
 import com.echothree.control.user.party.server.command.GetDepartmentCommand;
@@ -28,7 +27,8 @@ import com.echothree.control.user.party.server.command.GetDepartmentsCommand;
 import com.echothree.control.user.party.server.command.GetDivisionCommand;
 import com.echothree.control.user.party.server.command.GetDivisionsCommand;
 import com.echothree.control.user.party.server.command.GetLanguageCommand;
-import com.echothree.control.user.party.server.command.GetPartyCommand;
+import com.echothree.control.user.party.server.command.GetPartyAliasTypeCommand;
+import com.echothree.control.user.party.server.command.GetPartyAliasTypesCommand;
 import com.echothree.control.user.party.server.command.GetPartyRelationshipCommand;
 import com.echothree.control.user.party.server.command.GetPartyRelationshipsCommand;
 import com.echothree.control.user.party.server.command.GetPartyTypeCommand;
@@ -61,6 +61,14 @@ public final class PartySecurityUtils
 
     public boolean getHasPartyTypesAccess(final DataFetchingEnvironment env) {
         return getGraphQlExecutionContext(env).hasAccess(GetPartyTypesCommand.class);
+    }
+
+    public boolean getHasPartyAliasTypeAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetPartyAliasTypeCommand.class);
+    }
+
+    public boolean getHasPartyAliasTypesAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetPartyAliasTypesCommand.class);
     }
 
     public boolean getHasPartyRelationshipAccess(final DataFetchingEnvironment env) {

@@ -196,6 +196,8 @@ import com.echothree.control.user.party.server.command.GetLanguageCommand;
 import com.echothree.control.user.party.server.command.GetLanguagesCommand;
 import com.echothree.control.user.party.server.command.GetNameSuffixesCommand;
 import com.echothree.control.user.party.server.command.GetPartiesCommand;
+import com.echothree.control.user.party.server.command.GetPartyAliasTypeCommand;
+import com.echothree.control.user.party.server.command.GetPartyAliasTypesCommand;
 import com.echothree.control.user.party.server.command.GetPartyCommand;
 import com.echothree.control.user.party.server.command.GetPartyTypeCommand;
 import com.echothree.control.user.party.server.command.GetPartyTypesCommand;
@@ -438,6 +440,7 @@ import com.echothree.model.control.party.server.graphql.DepartmentObject;
 import com.echothree.model.control.party.server.graphql.DivisionObject;
 import com.echothree.model.control.party.server.graphql.LanguageObject;
 import com.echothree.model.control.party.server.graphql.NameSuffixObject;
+import com.echothree.model.control.party.server.graphql.PartyAliasTypeObject;
 import com.echothree.model.control.party.server.graphql.PartyObject;
 import com.echothree.model.control.party.server.graphql.PartyTypeObject;
 import com.echothree.model.control.party.server.graphql.PersonalTitleObject;
@@ -627,6 +630,7 @@ import com.echothree.model.data.party.common.TimeZoneConstants;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.model.data.party.server.entity.PartyAliasType;
 import com.echothree.model.data.party.server.entity.PartyCompany;
 import com.echothree.model.data.party.server.entity.PartyDepartment;
 import com.echothree.model.data.party.server.entity.PartyDivision;
@@ -6129,6 +6133,59 @@ public final class GraphQlQueries
         }
 
         return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("partyAliasType")
+    public static PartyAliasTypeObject partyAliasType(final DataFetchingEnvironment env,
+            @GraphQLName("partyTypeName") final String partyTypeName,
+            @GraphQLName("partyAliasTypeName") final String partyAliasTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        PartyAliasType partyAliasType;
+
+        try {
+            var commandForm = PartyUtil.getHome().getGetPartyAliasTypeForm();
+
+            commandForm.setPartyTypeName(partyTypeName);
+            commandForm.setPartyAliasTypeName(partyAliasTypeName);
+            commandForm.setUlid(id);
+
+            partyAliasType = new GetPartyAliasTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return partyAliasType == null ? null : new PartyAliasTypeObject(partyAliasType);
+    }
+
+    @GraphQLField
+    @GraphQLName("partyAliasTypes")
+    public static Collection<PartyAliasTypeObject> partyAliasTypes(final DataFetchingEnvironment env,
+            @GraphQLName("partyTypeName") @GraphQLNonNull final String partyTypeName) {
+        Collection<PartyAliasType> partyAliasTypes;
+        Collection<PartyAliasTypeObject> partyAliasTypeObjects;
+
+        try {
+            var commandForm = PartyUtil.getHome().getGetPartyAliasTypesForm();
+
+            commandForm.setPartyTypeName(partyTypeName);
+
+            partyAliasTypes = new GetPartyAliasTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(partyAliasTypes == null) {
+            partyAliasTypeObjects = emptyList();
+        } else {
+            partyAliasTypeObjects = new ArrayList<>(partyAliasTypes.size());
+
+            partyAliasTypes.stream()
+                    .map(PartyAliasTypeObject::new)
+                    .forEachOrdered(partyAliasTypeObjects::add);
+        }
+
+        return partyAliasTypeObjects;
     }
 
     @GraphQLField
