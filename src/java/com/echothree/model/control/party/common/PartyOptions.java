@@ -46,6 +46,11 @@ public interface PartyOptions {
     String PartyIncludePartyResponsibilities = "PartyIncludePartyResponsibilities";
     String PartyIncludePartyTrainingClasses = "PartyIncludePartyTrainingClasses";
     String PartyIncludePartySkills = "PartyIncludePartySkills";
+
+    String PartyAliasTypeIncludeEntityAttributeGroups = "PartyAliasTypeIncludeEntityAttributeGroups";
+    String PartyAliasTypeIncludeTagScopes = "PartyAliasTypeIncludeTagScopes";
+    String PartyAliasTypeIncludeKey = "PartyAliasTypeIncludeKey";
+    String PartyAliasTypeIncludeGuid = "PartyAliasTypeIncludeGuid";
     
     String CompanyIncludeEntityAttributeGroups = "CompanyIncludeEntityAttributeGroups";
     String CompanyIncludeTagScopes = "CompanyIncludeTagScopes";

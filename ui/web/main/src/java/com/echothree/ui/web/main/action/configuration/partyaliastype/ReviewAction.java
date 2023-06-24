@@ -19,6 +19,8 @@ package com.echothree.ui.web.main.action.configuration.partyaliastype;
 import com.echothree.control.user.party.common.PartyUtil;
 import com.echothree.control.user.party.common.form.GetPartyAliasTypeForm;
 import com.echothree.control.user.party.common.result.GetPartyAliasTypeResult;
+import com.echothree.model.control.core.common.CoreOptions;
+import com.echothree.model.control.party.common.PartyOptions;
 import com.echothree.model.control.party.common.transfer.PartyAliasTypeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
@@ -30,6 +32,8 @@ import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
+import java.util.HashSet;
+import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
@@ -57,7 +61,19 @@ public class ReviewAction
 
         commandForm.setPartyTypeName(request.getParameter(ParameterConstants.PARTY_TYPE_NAME));
         commandForm.setPartyAliasTypeName(request.getParameter(ParameterConstants.PARTY_ALIAS_TYPE_NAME));
-        
+
+        Set<String> options = new HashSet<>();
+        options.add(PartyOptions.PartyAliasTypeIncludeEntityAttributeGroups);
+        options.add(PartyOptions.PartyAliasTypeIncludeTagScopes);
+        options.add(CoreOptions.EntityAttributeGroupIncludeEntityAttributes);
+        options.add(CoreOptions.EntityAttributeIncludeValue);
+        options.add(CoreOptions.EntityStringAttributeIncludeString);
+        options.add(CoreOptions.EntityInstanceIncludeNames);
+        options.add(CoreOptions.EntityInstanceIncludeEntityAppearance);
+        options.add(CoreOptions.AppearanceIncludeTextDecorations);
+        options.add(CoreOptions.AppearanceIncludeTextTransformations);
+        commandForm.setOptions(options);
+
         CommandResult commandResult = PartyUtil.getHome().getPartyAliasType(getUserVisitPK(request), commandForm);
         PartyAliasTypeTransfer partyAliasType = null;
         
