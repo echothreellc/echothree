@@ -80,7 +80,15 @@
             <br />
             <br />
             <br />
+            <c:set var="tagScopes" scope="request" value="${partyAliasType.tagScopes}" />
+            <c:set var="entityAttributeGroups" scope="request" value="${partyAliasType.entityAttributeGroups}" />
             <c:set var="entityInstance" scope="request" value="${partyAliasType.entityInstance}" />
+            <c:url var="returnUrl" scope="request" value="/../action/Configuration/PartyAliasType/Review">
+                <c:param name="PartyTypeName" value="${partyAliasType.partyType.partyTypeName}" />
+                <c:param name="PartyAliasTypeName" value="${partyAliasType.partyAliasTypeName}" />
+            </c:url>
+            <jsp:include page="../../include/tagScopes.jsp" />
+            <jsp:include page="../../include/entityAttributeGroups.jsp" />
             <jsp:include page="../../include/entityInstance.jsp" />
         </div>
         <jsp:include page="../../include/userSession.jsp" />
