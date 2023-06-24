@@ -22,6 +22,7 @@ import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
+import com.echothree.model.control.party.server.graphql.PartySecurityUtils;
 import com.echothree.model.control.party.server.graphql.PartyTypeObject;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.workflow.common.WorkflowDestinationSecurityRoleConstants;
@@ -58,8 +59,8 @@ public class WorkflowDestinationPartyTypeObject
     @GraphQLField
     @GraphQLDescription("party type")
     @GraphQLNonNull
-    public PartyTypeObject getPartyType() {
-        return new PartyTypeObject(workflowDestinationPartyType.getPartyType());
+    public PartyTypeObject getPartyType(final DataFetchingEnvironment env) {
+        return PartySecurityUtils.getInstance().getHasPartyTypeAccess(env) ? new PartyTypeObject(workflowDestinationPartyType.getPartyType()) : null;
     }
 
     @GraphQLField

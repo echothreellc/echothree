@@ -31,6 +31,8 @@ import com.echothree.control.user.party.server.command.GetLanguageCommand;
 import com.echothree.control.user.party.server.command.GetPartyCommand;
 import com.echothree.control.user.party.server.command.GetPartyRelationshipCommand;
 import com.echothree.control.user.party.server.command.GetPartyRelationshipsCommand;
+import com.echothree.control.user.party.server.command.GetPartyTypeCommand;
+import com.echothree.control.user.party.server.command.GetPartyTypesCommand;
 import com.echothree.control.user.party.server.command.GetTimeZoneCommand;
 import com.echothree.control.user.vendor.common.VendorUtil;
 import com.echothree.control.user.vendor.server.command.GetVendorCommand;
@@ -51,6 +53,14 @@ public final class PartySecurityUtils
     
     public static PartySecurityUtils getInstance() {
         return PartySecurityUtilsHolder.instance;
+    }
+
+    public boolean getHasPartyTypeAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetPartyTypeCommand.class);
+    }
+
+    public boolean getHasPartyTypesAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetPartyTypesCommand.class);
     }
 
     public boolean getHasPartyRelationshipAccess(final DataFetchingEnvironment env) {

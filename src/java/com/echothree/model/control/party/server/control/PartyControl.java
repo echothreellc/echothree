@@ -506,6 +506,12 @@ public class PartyControl
         return getPartyTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
+    public long countPartyTypes() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM partytypes");
+    }
+
     private static final Map<EntityPermission, String> getPartyTypeByNameQueries;
 
     static {

@@ -197,6 +197,8 @@ import com.echothree.control.user.party.server.command.GetLanguagesCommand;
 import com.echothree.control.user.party.server.command.GetNameSuffixesCommand;
 import com.echothree.control.user.party.server.command.GetPartiesCommand;
 import com.echothree.control.user.party.server.command.GetPartyCommand;
+import com.echothree.control.user.party.server.command.GetPartyTypeCommand;
+import com.echothree.control.user.party.server.command.GetPartyTypesCommand;
 import com.echothree.control.user.party.server.command.GetPersonalTitlesCommand;
 import com.echothree.control.user.party.server.command.GetTimeZoneCommand;
 import com.echothree.control.user.party.server.command.GetTimeZonesCommand;
@@ -437,6 +439,7 @@ import com.echothree.model.control.party.server.graphql.DivisionObject;
 import com.echothree.model.control.party.server.graphql.LanguageObject;
 import com.echothree.model.control.party.server.graphql.NameSuffixObject;
 import com.echothree.model.control.party.server.graphql.PartyObject;
+import com.echothree.model.control.party.server.graphql.PartyTypeObject;
 import com.echothree.model.control.party.server.graphql.PersonalTitleObject;
 import com.echothree.model.control.party.server.graphql.TimeZoneObject;
 import com.echothree.model.control.payment.server.graphql.PaymentMethodTypeObject;
@@ -618,6 +621,7 @@ import com.echothree.model.data.party.common.LanguageConstants;
 import com.echothree.model.data.party.common.NameSuffixConstants;
 import com.echothree.model.data.party.common.PartyCompanyConstants;
 import com.echothree.model.data.party.common.PartyConstants;
+import com.echothree.model.data.party.common.PartyTypeConstants;
 import com.echothree.model.data.party.common.PersonalTitleConstants;
 import com.echothree.model.data.party.common.TimeZoneConstants;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
@@ -626,6 +630,7 @@ import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyCompany;
 import com.echothree.model.data.party.server.entity.PartyDepartment;
 import com.echothree.model.data.party.server.entity.PartyDivision;
+import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.model.data.payment.server.entity.PaymentMethodType;
 import com.echothree.model.data.payment.server.entity.PaymentProcessor;
@@ -6073,6 +6078,57 @@ public final class GraphQlQueries
         }
 
         return vendorItemCostObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("partyType")
+    public static PartyTypeObject partyType(final DataFetchingEnvironment env,
+            @GraphQLName("partyTypeName") final String partyTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        PartyType partyType;
+
+        try {
+            var commandForm = PartyUtil.getHome().getGetPartyTypeForm();
+
+            commandForm.setPartyTypeName(partyTypeName);
+            commandForm.setUlid(id);
+
+            partyType = new GetPartyTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return partyType == null ? null : new PartyTypeObject(partyType);
+    }
+
+    @GraphQLField
+    @GraphQLName("partyTypes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public static CountingPaginatedData<PartyTypeObject> partyTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<PartyTypeObject> data;
+
+        try {
+            var partyControl = Session.getModelController(PartyControl.class);
+            var totalCount = partyControl.countPartyTypes();
+
+            try(var objectLimiter = new ObjectLimiter(env, PartyTypeConstants.COMPONENT_VENDOR_NAME, PartyTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = PartyUtil.getHome().getGetPartyTypesForm();
+                var entities = new GetPartyTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var partyTypes = entities.stream().map(PartyTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, partyTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
     }
 
     @GraphQLField
