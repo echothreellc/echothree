@@ -16,7 +16,7 @@
 
 package com.echothree.model.control.party.server.graphql;
 
-import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.sequence.server.graphql.SequenceSecurityUtils;
 import com.echothree.model.control.sequence.server.graphql.SequenceTypeObject;
@@ -32,11 +32,13 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("party type object")
 @GraphQLName("PartyType")
 public class PartyTypeObject
-        extends BaseGraphQl {
+        extends BaseEntityInstanceObject {
 
     private final PartyType partyType; // Always Present
     
     public PartyTypeObject(PartyType partyType) {
+        super(partyType.getPrimaryKey());
+
         this.partyType = partyType;
     }
     
