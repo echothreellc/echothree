@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.party.common.form;
 
-import com.echothree.control.user.party.common.spec.PartyAliasTypeSpec;
+import com.echothree.control.user.party.common.spec.PartyAliasTypeUniversalSpec;
 
 public interface GetPartyAliasTypeForm
-        extends PartyAliasTypeSpec {
+        extends PartyAliasTypeUniversalSpec {
     
-    // Nothing additional beyond PartyAliasTypeSpec
+    // Nothing additional beyond PartyAliasTypeUniversalSpec
     
 }

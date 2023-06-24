@@ -109,6 +109,7 @@ import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.customer.server.entity.Customer;
+import com.echothree.model.data.filter.server.entity.FilterKind;
 import com.echothree.model.data.icon.common.pk.IconPK;
 import com.echothree.model.data.icon.server.entity.Icon;
 import com.echothree.model.data.party.common.pk.BirthdayFormatPK;
@@ -2826,6 +2827,14 @@ public class PartyControl
         return getPartyAliasTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
+    public long countPartyAliasTypesByPartyType(PartyType partyType) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM partyaliastypes, partyaliastypedetails " +
+                "WHERE pat_activedetailid = patdt_partyaliastypedetailid AND patdt_ptyp_partytypeid = ?",
+                partyType);
+    }
+
     private static final Map<EntityPermission, String> getPartyAliasTypeByNameQueries;
 
     static {
@@ -2937,8 +2946,7 @@ public class PartyControl
         return getPartyTransferCaches(userVisit).getPartyAliasTypeTransferCache().getPartyAliasTypeTransfer(partyAliasType);
     }
 
-    public List<PartyAliasTypeTransfer> getPartyAliasTypeTransfers(UserVisit userVisit, PartyType partyType) {
-        List<PartyAliasType> partyAliasTypes = getPartyAliasTypes(partyType);
+    public List<PartyAliasTypeTransfer> getPartyAliasTypeTransfers(UserVisit userVisit, Collection<PartyAliasType> partyAliasTypes) {
         List<PartyAliasTypeTransfer> partyAliasTypeTransfers = new ArrayList<>(partyAliasTypes.size());
         PartyAliasTypeTransferCache partyAliasTypeTransferCache = getPartyTransferCaches(userVisit).getPartyAliasTypeTransferCache();
 
@@ -2947,6 +2955,10 @@ public class PartyControl
         );
 
         return partyAliasTypeTransfers;
+    }
+
+    public List<PartyAliasTypeTransfer> getPartyAliasTypeTransfers(UserVisit userVisit, PartyType partyType) {
+        return getPartyAliasTypeTransfers(userVisit, getPartyAliasTypes(partyType));
     }
 
     public PartyAliasTypeChoicesBean getPartyAliasTypeChoices(String defaultPartyAliasTypeChoice, Language language,
