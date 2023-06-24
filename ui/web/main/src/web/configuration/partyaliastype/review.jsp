@@ -51,9 +51,32 @@
                 </c:otherwise>
             </c:choose>
             <br />
-            Party Alias Type Name: ${partyAliasType.partyAliasTypeName}<br />
+            <fmt:message key="label.partyTypeName" />: ${partyAliasType.partyType.partyTypeName}<br />
+            <fmt:message key="label.partyType" />: ${partyAliasType.partyType.description}<br />
+            <fmt:message key="label.partyAliasTypeName" />: ${partyAliasType.partyAliasTypeName}<br />
+            <fmt:message key="label.partyAliasType" />: ${partyAliasType.description}<br />
             <br />
-            Validation Pattern: <c:out value="${partyAliasType.validationPattern}" /><br />
+            <fmt:message key="label.validationPattern" />:
+            <c:choose>
+                <c:when test="${partyAliasType.validationPattern != null}">
+                    <c:out value="${partyAliasType.validationPattern}" />
+                </c:when>
+                <c:otherwise>
+                    <i><fmt:message key="phrase.notSet" /></i>
+                </c:otherwise>
+            </c:choose>
+            <br />
+            <fmt:message key="label.isDefault" />:
+            <c:choose>
+                <c:when test="${partyAliasType.isDefault}">
+                    <fmt:message key="phrase.yes" />
+                </c:when>
+                <c:otherwise>
+                    <fmt:message key="phrase.no" />
+                </c:otherwise>
+            </c:choose>
+            <br />
+            <fmt:message key="label.sortOrder" />: <c:out value="${partyAliasType.sortOrder}" /><br />
             <br />
             <br />
             <br />
