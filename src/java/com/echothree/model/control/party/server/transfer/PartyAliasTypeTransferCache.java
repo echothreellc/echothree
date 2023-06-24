@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.party.server.transfer;
 
+import com.echothree.model.control.party.common.PartyOptions;
 import com.echothree.model.control.party.common.transfer.PartyAliasTypeTransfer;
 import com.echothree.model.control.party.common.transfer.PartyTypeTransfer;
 import com.echothree.model.control.party.server.control.PartyControl;
@@ -29,7 +30,15 @@ public class PartyAliasTypeTransferCache
     /** Creates a new instance of PartyAliasTypeTransferCache */
     public PartyAliasTypeTransferCache(UserVisit userVisit, PartyControl partyControl) {
         super(userVisit, partyControl);
-        
+
+        var options = session.getOptions();
+        if(options != null) {
+            setIncludeKey(options.contains(PartyOptions.PartyAliasTypeIncludeKey));
+            setIncludeGuid(options.contains(PartyOptions.PartyAliasTypeIncludeGuid));
+            setIncludeEntityAttributeGroups(options.contains(PartyOptions.PartyAliasTypeIncludeEntityAttributeGroups));
+            setIncludeTagScopes(options.contains(PartyOptions.PartyAliasTypeIncludeTagScopes));
+        }
+
         setIncludeEntityInstance(true);
     }
     
