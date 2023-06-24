@@ -25,7 +25,6 @@ import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.party.server.graphql.PartySecurityUtils;
 import com.echothree.model.control.party.server.graphql.PartyTypeObject;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.workflow.common.WorkflowEntrancePartyTypeConstants;
 import com.echothree.model.data.workflow.common.WorkflowEntranceSecurityRoleConstants;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntrancePartyType;
 import com.echothree.util.server.persistence.Session;
@@ -60,8 +59,8 @@ public class WorkflowEntrancePartyTypeObject
     @GraphQLField
     @GraphQLDescription("party type")
     @GraphQLNonNull
-    public PartyTypeObject getPartyType() {
-        return new PartyTypeObject(workflowEntrancePartyType.getPartyType());
+    public PartyTypeObject getPartyType(final DataFetchingEnvironment env) {
+        return PartySecurityUtils.getInstance().getHasPartyTypeAccess(env) ? new PartyTypeObject(workflowEntrancePartyType.getPartyType()) : null;
     }
 
     @GraphQLField

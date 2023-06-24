@@ -22,7 +22,10 @@ import java.util.List;
 
 public interface GetPartyTypesResult
         extends BaseResult {
-    
+
+    Long getPartyTypeCount();
+    void setPartyTypeCount(Long partyTypeCount);
+
     List<PartyTypeTransfer> getPartyTypes();
     void setPartyTypes(List<PartyTypeTransfer> partyTypes);
     

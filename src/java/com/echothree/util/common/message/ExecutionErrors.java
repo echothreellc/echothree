@@ -2272,5 +2272,7 @@ public enum ExecutionErrors {
     UnknownDefaultGlAccount,
     UnknownDefaultWarehouse,
     EntityTypeIsNotExtensible,
+    UnknownDefaultPartyType,
+    UnknownDefaultPartyAliasType,
 
 }
