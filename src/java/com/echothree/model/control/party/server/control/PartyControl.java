@@ -246,6 +246,7 @@ import com.echothree.model.data.party.server.value.PartyGroupValue;
 import com.echothree.model.data.party.server.value.PartyTypeAuditPolicyDetailValue;
 import com.echothree.model.data.party.server.value.PartyTypeLockoutPolicyDetailValue;
 import com.echothree.model.data.party.server.value.PartyTypePasswordStringPolicyDetailValue;
+import com.echothree.model.data.party.server.value.PartyTypeValue;
 import com.echothree.model.data.party.server.value.PersonValue;
 import com.echothree.model.data.party.server.value.PersonalTitleDetailValue;
 import com.echothree.model.data.party.server.value.ProfileValue;
@@ -486,39 +487,127 @@ public class PartyControl
     
     public PartyType createPartyType(String partyTypeName, PartyType parentPartyType, SequenceType billingAccountSequenceType, Boolean allowUserLogins,
             Boolean allowPartyAliases, Boolean isDefault, Integer sortOrder) {
-        return PartyTypeFactory.getInstance().create(partyTypeName, parentPartyType, billingAccountSequenceType, allowUserLogins, allowUserLogins, isDefault,
+        return PartyTypeFactory.getInstance().create(partyTypeName, parentPartyType, billingAccountSequenceType, allowUserLogins, allowPartyAliases, isDefault,
                 sortOrder);
     }
-    
-    public List<PartyType> getPartyTypes() {
-        PreparedStatement ps = PartyTypeFactory.getInstance().prepareStatement(
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PartyType */
+    public PartyType getPartyTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new PartyTypePK(entityInstance.getEntityUniqueId());
+
+        return PartyTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public PartyType getPartyTypeByEntityInstance(EntityInstance entityInstance) {
+        return getPartyTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public PartyType getPartyTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getPartyTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    private static final Map<EntityPermission, String> getPartyTypeByNameQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ " +
-                "FROM partytypes " +
-                "ORDER BY ptyp_sortorder, ptyp_partytypename " +
-                "_LIMIT_");
-        
-        return PartyTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
+                        "FROM partytypes " +
+                        "WHERE ptyp_partytypename = ?");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                        "FROM partytypes " +
+                        "WHERE ptyp_partytypename = ? " +
+                        "FOR UPDATE");
+        getPartyTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
-    
+
+    public PartyType getPartyTypeByName(String partyTypeName, EntityPermission entityPermission) {
+        return PartyTypeFactory.getInstance().getEntityFromQuery(entityPermission, getPartyTypeByNameQueries,
+                partyTypeName);
+    }
+
     public PartyType getPartyTypeByName(String partyTypeName) {
-        PartyType partyType;
-        
-        try {
-            PreparedStatement ps = PartyTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM partytypes " +
-                    "WHERE ptyp_partytypename = ?");
-            
-            ps.setString(1, partyTypeName);
-            
-            partyType = PartyTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return partyType;
+        return getPartyTypeByName(partyTypeName, EntityPermission.READ_ONLY);
     }
-    
+
+    public PartyType getPartyTypeByNameForUpdate(String partyTypeName) {
+        return getPartyTypeByName(partyTypeName, EntityPermission.READ_WRITE);
+    }
+
+    public PartyTypeValue getPartyTypeValueForUpdate(PartyType partyType) {
+        return partyType == null? null: partyType.getPartyTypeValue().clone();
+    }
+
+    public PartyTypeValue getPartyTypeValueByNameForUpdate(String partyTypeName) {
+        return getPartyTypeValueForUpdate(getPartyTypeByNameForUpdate(partyTypeName));
+    }
+
+    private static final Map<EntityPermission, String> getDefaultPartyTypeQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                        "FROM partyaliastypes, partyaliastypedetails " +
+                        "WHERE pat_activedetailid = patdt_partyaliastypedetailid AND patdt_ptyp_partytypeid = ? " +
+                        "AND patdt_isdefault = 1");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                        "FROM partyaliastypes, partyaliastypedetails " +
+                        "WHERE pat_activedetailid = patdt_partyaliastypedetailid AND patdt_ptyp_partytypeid = ? " +
+                        "AND patdt_isdefault = 1 " +
+                        "FOR UPDATE");
+        getDefaultPartyTypeQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    public PartyType getDefaultPartyType(EntityPermission entityPermission) {
+        return PartyTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultPartyTypeQueries);
+    }
+
+    public PartyType getDefaultPartyType() {
+        return getDefaultPartyType(EntityPermission.READ_ONLY);
+    }
+
+    public PartyType getDefaultPartyTypeForUpdate() {
+        return getDefaultPartyType(EntityPermission.READ_WRITE);
+    }
+
+    public PartyTypeValue getDefaultPartyTypeValueForUpdate() {
+        return getDefaultPartyTypeForUpdate().getPartyTypeValue().clone();
+    }
+
+    private static final Map<EntityPermission, String> getPartyTypesQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                        "FROM partytypes " +
+                        "ORDER BY ptyp_sortorder, ptyp_partytypename " +
+                        "_LIMIT_");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                        "FROM partytypes " +
+                        "FOR UPDATE");
+        getPartyTypesQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    private List<PartyType> getPartyTypes(EntityPermission entityPermission) {
+        return PartyTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getPartyTypesQueries);
+    }
+
+    public List<PartyType> getPartyTypes() {
+        return getPartyTypes(EntityPermission.READ_ONLY);
+    }
+
+    public List<PartyType> getPartyTypesForUpdate() {
+        return getPartyTypes(EntityPermission.READ_WRITE);
+    }
+
     public PartyTypeChoicesBean getPartyTypeChoices(String defaultPartyTypeChoice, Language language, boolean allowNullChoice) {
         List<PartyType> partyTypes = getPartyTypes();
         var size = partyTypes.size();
@@ -2716,6 +2805,21 @@ public class PartyControl
         return partyAliasType;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.PartyAliasType */
+    public PartyAliasType getPartyAliasTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new PartyAliasTypePK(entityInstance.getEntityUniqueId());
+
+        return PartyAliasTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public PartyAliasType getPartyAliasTypeByEntityInstance(EntityInstance entityInstance) {
+        return getPartyAliasTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public PartyAliasType getPartyAliasTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getPartyAliasTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     private static final Map<EntityPermission, String> getPartyAliasTypeByNameQueries;
 
     static {
@@ -2735,7 +2839,7 @@ public class PartyControl
         getPartyAliasTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private PartyAliasType getPartyAliasTypeByName(PartyType partyType, String partyAliasTypeName, EntityPermission entityPermission) {
+    public PartyAliasType getPartyAliasTypeByName(PartyType partyType, String partyAliasTypeName, EntityPermission entityPermission) {
         return PartyAliasTypeFactory.getInstance().getEntityFromQuery(entityPermission, getPartyAliasTypeByNameQueries,
                 partyType, partyAliasTypeName);
     }
@@ -2776,7 +2880,7 @@ public class PartyControl
         getDefaultPartyAliasTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private PartyAliasType getDefaultPartyAliasType(PartyType partyType, EntityPermission entityPermission) {
+    public PartyAliasType getDefaultPartyAliasType(PartyType partyType, EntityPermission entityPermission) {
         return PartyAliasTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultPartyAliasTypeQueries, partyType);
     }
 
