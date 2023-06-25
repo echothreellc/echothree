@@ -19,9 +19,15 @@ package com.echothree.model.control.party.server.graphql;
 import com.echothree.model.control.accounting.server.graphql.AccountingSecurityUtils;
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
+import com.echothree.model.data.party.common.PartyAliasConstants;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
@@ -33,7 +39,10 @@ import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public abstract class BasePartyObject
         extends BaseEntityInstanceObject {
@@ -129,5 +138,25 @@ public abstract class BasePartyObject
 
         return partyControl.getBestPartyDescription(party, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
     }
-    
+
+    @GraphQLField
+    @GraphQLDescription("party aliases")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<PartyAliasObject> getPartyAliases(final DataFetchingEnvironment env) {
+        if(PartySecurityUtils.getInstance().getHasPartyAliasesAccess(env, party)) {
+            var partyControl = Session.getModelController(PartyControl.class);
+            var totalCount = partyControl.countPartyAliasesByParty(party);
+
+            try(var objectLimiter = new ObjectLimiter(env, PartyAliasConstants.COMPONENT_VENDOR_NAME, PartyAliasConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = partyControl.getPartyAliasesByParty(party);
+                var partyAliases = entities.stream().map(PartyAliasObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                return new CountedObjects<>(objectLimiter, partyAliases);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
+    }
+
 }
