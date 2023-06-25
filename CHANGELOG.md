@@ -1,5 +1,33 @@
 # Changelog
 
+## 2023-06-25-01
+
+* Add "Is Extensible" Column to Entity Types [784](https://gitlab.echothree.com/echothree/echothree/-/issues/784)
+* Enforce "Is Extensible" for Tag Scope Entity Types [785](https://gitlab.echothree.com/echothree/echothree/-/issues/785)
+* Enforce "Is Extensible" for Entity Type Attributes [786](https://gitlab.echothree.com/echothree/echothree/-/issues/786)
+* Enforce "Is Extensible" for Comment Types [787](https://gitlab.echothree.com/echothree/echothree/-/issues/787)
+* Enforce "Is Extensible" for Rating Types [788](https://gitlab.echothree.com/echothree/echothree/-/issues/788)
+* Enforce "Is Extensible" for Message Types [789](https://gitlab.echothree.com/echothree/echothree/-/issues/789)
+* Add Additional Columns and Appearances to Entity Types Listing and Review Pages [795](https://gitlab.echothree.com/echothree/echothree/-/issues/795)
+* Add Entity Attributes and Appearances to Entity List Items [796](https://gitlab.echothree.com/echothree/echothree/-/issues/796)
+* Include Track Revisions and Sort Order on Entity Attributes List [800](https://gitlab.echothree.com/echothree/echothree/-/issues/800)
+* Replace Yes, No, and Not Set with Message Resources [801](https://gitlab.echothree.com/echothree/echothree/-/issues/801)
+* Deleting Rating Type With Multiple List Items Results in Database Error [802](https://gitlab.echothree.com/echothree/echothree/-/issues/802)
+* GetContentCatalogItems UC Returns No Content Catalog Items [803](https://gitlab.echothree.com/echothree/echothree/-/issues/803)
+* Do Not Expose Entity Instance Information for Content Category Items [804](https://gitlab.echothree.com/echothree/echothree/-/issues/804)
+* Expose Entity Instance Information for Content Catalog Items [805](https://gitlab.echothree.com/echothree/echothree/-/issues/805)
+* Add Party Aliases to Warehouses [809](https://gitlab.echothree.com/echothree/echothree/-/issues/809)
+* Add Parent Party Type to Party Type Listing [810](https://gitlab.echothree.com/echothree/echothree/-/issues/810)
+* Touch Dependent Content Catalogs When Content Collection Is Modified [811](https://gitlab.echothree.com/echothree/echothree/-/issues/811)
+* Touch Dependent Content Categories When Content Catalog Is Modified [812](https://gitlab.echothree.com/echothree/echothree/-/issues/812)
+* Touch Dependent Content Catalog Items When Content Category Is Modified [813](https://gitlab.echothree.com/echothree/echothree/-/issues/813)
+* Convert AppearanceModificationSubscriber to Use BaseEventSubscriber [814](https://gitlab.echothree.com/echothree/echothree/-/issues/814)
+* Add Party Alias Type Object and Queries [817](https://gitlab.echothree.com/echothree/echothree/-/issues/817)
+* Add Party Alias Object and Queries [820](https://gitlab.echothree.com/echothree/echothree/-/issues/820)
+* Correct Link to Party Alias Type Review Page [821](https://gitlab.echothree.com/echothree/echothree/-/issues/821)
+* jOOQ 3.18.5 Upgrade [822](https://gitlab.echothree.com/echothree/echothree/-/issues/822)
+* Add Tags and Attributes to Party Alias Types [823](https://gitlab.echothree.com/echothree/echothree/-/issues/823)
+
 ## 2023-06-11-01
 
 * Add Support for Updating Component Vendors When Loading From XML [745](https://gitlab.echothree.com/echothree/echothree/-/issues/745)
