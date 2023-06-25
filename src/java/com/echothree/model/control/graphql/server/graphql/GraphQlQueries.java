@@ -196,8 +196,10 @@ import com.echothree.control.user.party.server.command.GetLanguageCommand;
 import com.echothree.control.user.party.server.command.GetLanguagesCommand;
 import com.echothree.control.user.party.server.command.GetNameSuffixesCommand;
 import com.echothree.control.user.party.server.command.GetPartiesCommand;
+import com.echothree.control.user.party.server.command.GetPartyAliasCommand;
 import com.echothree.control.user.party.server.command.GetPartyAliasTypeCommand;
 import com.echothree.control.user.party.server.command.GetPartyAliasTypesCommand;
+import com.echothree.control.user.party.server.command.GetPartyAliasesCommand;
 import com.echothree.control.user.party.server.command.GetPartyCommand;
 import com.echothree.control.user.party.server.command.GetPartyTypeCommand;
 import com.echothree.control.user.party.server.command.GetPartyTypesCommand;
@@ -440,6 +442,7 @@ import com.echothree.model.control.party.server.graphql.DepartmentObject;
 import com.echothree.model.control.party.server.graphql.DivisionObject;
 import com.echothree.model.control.party.server.graphql.LanguageObject;
 import com.echothree.model.control.party.server.graphql.NameSuffixObject;
+import com.echothree.model.control.party.server.graphql.PartyAliasObject;
 import com.echothree.model.control.party.server.graphql.PartyAliasTypeObject;
 import com.echothree.model.control.party.server.graphql.PartyObject;
 import com.echothree.model.control.party.server.graphql.PartyTypeObject;
@@ -630,6 +633,7 @@ import com.echothree.model.data.party.common.TimeZoneConstants;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
+import com.echothree.model.data.party.server.entity.PartyAlias;
 import com.echothree.model.data.party.server.entity.PartyAliasType;
 import com.echothree.model.data.party.server.entity.PartyCompany;
 import com.echothree.model.data.party.server.entity.PartyDepartment;
@@ -6186,6 +6190,57 @@ public final class GraphQlQueries
         }
 
         return partyAliasTypeObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("partyAlias")
+    public static PartyAliasObject partyAlias(final DataFetchingEnvironment env,
+            @GraphQLName("partyName") @GraphQLNonNull final String partyName,
+            @GraphQLName("partyAliasName") @GraphQLNonNull final String partyAliasName) {
+        PartyAlias partyAlias;
+
+        try {
+            var commandForm = PartyUtil.getHome().getGetPartyAliasForm();
+
+            commandForm.setPartyName(partyName);
+            commandForm.setPartyAliasTypeName(partyAliasName);
+
+            partyAlias = new GetPartyAliasCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return partyAlias == null ? null : new PartyAliasObject(partyAlias);
+    }
+
+    @GraphQLField
+    @GraphQLName("partyAliases")
+    public static Collection<PartyAliasObject> partyAliases(final DataFetchingEnvironment env,
+            @GraphQLName("partyName") @GraphQLNonNull final String partyName) {
+        Collection<PartyAlias> partyAliases;
+        Collection<PartyAliasObject> partyAliasObjects;
+
+        try {
+            var commandForm = PartyUtil.getHome().getGetPartyAliasesForm();
+
+            commandForm.setPartyName(partyName);
+
+            partyAliases = new GetPartyAliasesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(partyAliases == null) {
+            partyAliasObjects = emptyList();
+        } else {
+            partyAliasObjects = new ArrayList<>(partyAliases.size());
+
+            partyAliases.stream()
+                    .map(PartyAliasObject::new)
+                    .forEachOrdered(partyAliasObjects::add);
+        }
+
+        return partyAliasObjects;
     }
 
     @GraphQLField

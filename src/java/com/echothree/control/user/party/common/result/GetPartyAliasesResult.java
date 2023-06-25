@@ -27,6 +27,9 @@ public interface GetPartyAliasesResult
     PartyTransfer getParty();
     void setParty(PartyTransfer party);
 
+    Long getPartyAliasCount();
+    void setPartyAliasCount(Long partyAliasCount);
+
     List<PartyAliasTransfer> getPartyAliases();
     void setPartyAliases(List<PartyAliasTransfer> partyAliases);
     

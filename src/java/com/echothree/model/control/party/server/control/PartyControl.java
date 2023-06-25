@@ -2515,6 +2515,22 @@ public class PartyControl
         return partyAlias;
     }
 
+    public long countPartyAliasesByParty(Party party) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM partyaliases " +
+                "WHERE pal_par_partyid = ? AND pal_thrutime = ?",
+                party, Session.MAX_TIME_LONG);
+    }
+
+    public long countPartyAliasesByPartyAliasType(PartyAliasType partyAliasType) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM partyaliases " +
+                "WHERE pal_pat_partyaliastypeid = ? AND pal_thrutime = ?",
+                partyAliasType, Session.MAX_TIME_LONG);
+    }
+
     private static final Map<EntityPermission, String> getPartyAliasQueries;
 
     static {
@@ -2652,8 +2668,7 @@ public class PartyControl
         return getPartyTransferCaches(userVisit).getPartyAliasTransferCache().getPartyAliasTransfer(partyAlias);
     }
 
-    public List<PartyAliasTransfer> getPartyAliasTransfersByParty(UserVisit userVisit, Party party) {
-        List<PartyAlias> partyaliases = getPartyAliasesByParty(party);
+    public List<PartyAliasTransfer> getPartyAliasTransfers(UserVisit userVisit, Collection<PartyAlias> partyaliases) {
         List<PartyAliasTransfer> partyAliasTransfers = new ArrayList<>(partyaliases.size());
         PartyAliasTransferCache partyAliasTransferCache = getPartyTransferCaches(userVisit).getPartyAliasTransferCache();
 
@@ -2662,6 +2677,10 @@ public class PartyControl
         );
 
         return partyAliasTransfers;
+    }
+
+    public List<PartyAliasTransfer> getPartyAliasTransfersByParty(UserVisit userVisit, Party party) {
+        return getPartyAliasTransfers(userVisit, getPartyAliasesByParty(party));
     }
 
     public void updatePartyAliasFromValue(PartyAliasValue partyAliasValue, BasePK updatedBy) {

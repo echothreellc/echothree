@@ -17,80 +17,83 @@
 package com.echothree.control.user.party.server.command;
 
 import com.echothree.control.user.party.common.form.GetPartyAliasForm;
-import com.echothree.control.user.party.common.result.GetPartyAliasResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.control.user.party.server.command.util.PartyAliasUtil;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.PartyAliasTypeLogic;
+import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyAlias;
-import com.echothree.model.data.party.server.entity.PartyAliasType;
-import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 public class GetPartyAliasCommand
-        extends BaseSimpleCommand<GetPartyAliasForm> {
+        extends BaseSingleEntityCommand<PartyAlias, GetPartyAliasForm> {
     
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("PartyAliasTypeName", FieldType.ENTITY_NAME, true, null, null)
-                ));
+        );
     }
     
     /** Creates a new instance of GetPartyAliasCommand */
     public GetPartyAliasCommand(UserVisitPK userVisitPK, GetPartyAliasForm form) {
-        super(userVisitPK, form, new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        super(userVisitPK, form, new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(PartyAliasUtil.getInstance().getSecurityRoleGroupNameByPartySpec(form), SecurityRoles.Review.name())
-                        )))
-                ))), FORM_FIELD_DEFINITIONS, false);
+                ))
+        )), FORM_FIELD_DEFINITIONS, false);
     }
-    
+
     @Override
-    protected BaseResult execute() {
+    protected PartyAlias getEntity() {
         var partyControl = Session.getModelController(PartyControl.class);
-        GetPartyAliasResult result = PartyResultFactory.getGetPartyAliasResult();
-        String partyName = form.getPartyName();
-        Party party = partyControl.getPartyByName(partyName);
+        var partyName = form.getPartyName();
+        var party = PartyLogic.getInstance().getPartyByName(this, partyName);
+        PartyAlias partyAlias = null;
 
         if(party != null) {
-            PartyType partyType = party.getLastDetail().getPartyType();
-            String partyAliasTypeName = form.getPartyAliasTypeName();
-            PartyAliasType partyAliasType = partyControl.getPartyAliasTypeByName(partyType, partyAliasTypeName);
+            var partyType = party.getLastDetail().getPartyType();
+            var partyAliasTypeName = form.getPartyAliasTypeName();
+            var partyAliasType = PartyAliasTypeLogic.getInstance().getPartyAliasTypeByName(this, partyType, partyAliasTypeName);
 
             if(partyAliasType != null) {
-                PartyAlias partyAlias = partyControl.getPartyAlias(party, partyAliasType);
+                partyAlias = partyControl.getPartyAlias(party, partyAliasType);
 
-                if(partyAlias != null) {
-                    result.setPartyAlias(partyControl.getPartyAliasTransfer(getUserVisit(), partyAlias));
-                } else {
+                if(partyAlias == null) {
                     addExecutionError(ExecutionErrors.UnknownPartyAlias.name(), partyName, partyAliasTypeName);
                 }
-            } else {
-                addExecutionError(ExecutionErrors.UnknownPartyAliasTypeName.name(), partyType.getPartyTypeName(), partyAliasTypeName);
             }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
+        }
+
+        return partyAlias;
+    }
+
+    @Override
+    protected BaseResult getTransfer(PartyAlias partyAlias) {
+        var result = PartyResultFactory.getGetPartyAliasResult();
+
+        if(partyAlias != null) {
+            var partyControl = Session.getModelController(PartyControl.class);
+
+            result.setPartyAlias(partyControl.getPartyAliasTransfer(getUserVisit(), partyAlias));
         }
 
         return result;
     }
-    
+
 }

@@ -20,7 +20,6 @@ import com.echothree.control.user.party.common.spec.PartySpec;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
-import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.server.persistence.Session;
 import java.util.HashMap;
 import java.util.Map;
@@ -65,7 +64,7 @@ public class PartyAliasUtil {
 
         if(partyName != null) {
             var partyControl = Session.getModelController(PartyControl.class);
-            Party party = partyControl.getPartyByName(partyName);
+            var party = partyControl.getPartyByName(partyName);
 
             if(party != null) {
                 securityRoleGroupName = getSecurityRoleGroupNameByPartyTypeName(party.getLastDetail().getPartyType().getPartyTypeName());
@@ -79,11 +78,11 @@ public class PartyAliasUtil {
         String securityRoleGroupName = null;
 
         if(spec != null) {
-            String partyName = spec.getPartyName();
+            var partyName = spec.getPartyName();
             
             if(partyName != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                Party party = partyControl.getPartyByName(partyName);
+                var party = partyControl.getPartyByName(partyName);
 
                 if(party != null) {
                     securityRoleGroupName = getSecurityRoleGroupNameByPartyTypeName(party.getLastDetail().getPartyType().getPartyTypeName());

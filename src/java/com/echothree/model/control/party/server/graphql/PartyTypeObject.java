@@ -116,8 +116,8 @@ public class PartyTypeObject
             var totalCount = partyControl.countPartyAliasTypesByPartyType(partyType);
 
             try(var objectLimiter = new ObjectLimiter(env, PartyAliasTypeConstants.COMPONENT_VENDOR_NAME, PartyAliasTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var entitys = partyControl.getPartyAliasTypes(partyType);
-                var partyAliasTypes = entitys.stream().map(PartyAliasTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entitys.size())));
+                var entities = partyControl.getPartyAliasTypes(partyType);
+                var partyAliasTypes = entities.stream().map(PartyAliasTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                 return new CountedObjects<>(objectLimiter, partyAliasTypes);
             }
