@@ -19,22 +19,17 @@ package com.echothree.control.user.party.server.command;
 import com.echothree.control.user.party.common.form.CreatePartyAliasTypeForm;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.PartyAliasTypeLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.data.party.common.pk.PartyPK;
-import com.echothree.model.data.party.server.entity.PartyAliasType;
-import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -71,38 +66,15 @@ public class CreatePartyAliasTypeCommand
     @Override
     protected BaseResult execute() {
         var result = PartyResultFactory.getCreatePartyAliasTypeResult();
-        var partyControl = Session.getModelController(PartyControl.class);
-        String partyTypeName = form.getPartyTypeName();
-        PartyType partyType = partyControl.getPartyTypeByName(partyTypeName);
-        PartyAliasType partyAliasType = null;
-
-        if(partyType != null) {
-            if(partyType.getAllowPartyAliases()) {
-                String partyAliasTypeName = form.getPartyAliasTypeName();
-
-                partyAliasType = partyControl.getPartyAliasTypeByName(partyType, partyAliasTypeName);
-
-                if(partyAliasType == null) {
-                    PartyPK createdBy = getPartyPK();
-                    String validationPattern = form.getValidationPattern();
-                    var isDefault = Boolean.valueOf(form.getIsDefault());
-                    var sortOrder = Integer.valueOf(form.getSortOrder());
-                    var description = form.getDescription();
-
-                    partyAliasType = partyControl.createPartyAliasType(partyType, partyAliasTypeName, validationPattern, isDefault, sortOrder, createdBy);
-
-                    if(description != null) {
-                        partyControl.createPartyAliasTypeDescription(partyAliasType, getPreferredLanguage(), description, createdBy);
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.DuplicatePartyAliasTypeName.name(), partyTypeName, partyAliasTypeName);
-                }
-            } else {
-                addExecutionError(ExecutionErrors.InvalidPartyType.name(), partyTypeName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownPartyTypeName.name(), partyTypeName);
-        }
+        var partyTypeName = form.getPartyTypeName();
+        var partyAliasTypeName = form.getPartyAliasTypeName();
+        var validationPattern = form.getValidationPattern();
+        var isDefault = Boolean.valueOf(form.getIsDefault());
+        var sortOrder = Integer.valueOf(form.getSortOrder());
+        var description = form.getDescription();
+        var createdBy = getPartyPK();
+        var partyAliasType = PartyAliasTypeLogic.getInstance().createPartyAliasType(this, partyTypeName,
+                partyAliasTypeName, validationPattern, isDefault, sortOrder, getPreferredLanguage(), description, createdBy);
 
         if(partyAliasType != null) {
             var partyAliasTypeDetail = partyAliasType.getLastDetail();

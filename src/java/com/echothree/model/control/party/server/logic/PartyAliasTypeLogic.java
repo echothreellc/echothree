@@ -29,6 +29,7 @@ import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.PartyAliasType;
 import com.echothree.model.data.party.server.entity.PartyType;
+import com.echothree.model.data.party.server.value.PartyAliasTypeDetailValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
@@ -189,6 +190,13 @@ public class PartyAliasTypeLogic
     public PartyAliasType getPartyAliasTypeByUniversalSpecForUpdate(final ExecutionErrorAccumulator eea, final PartyAliasTypeUniversalSpec universalSpec,
             boolean allowDefault) {
         return getPartyAliasTypeByUniversalSpec(eea, universalSpec, allowDefault, EntityPermission.READ_WRITE);
+    }
+
+    public void updatePartyAliasTypeFromValue(final ExecutionErrorAccumulator eea, final PartyAliasTypeDetailValue partyAliasTypeDetailValue,
+            final BasePK updatedBy) {
+        var partyControl = Session.getModelController(PartyControl.class);
+
+        partyControl.updatePartyAliasTypeFromValue(partyAliasTypeDetailValue, updatedBy);
     }
 
     public void deletePartyAliasType(final ExecutionErrorAccumulator eea, final PartyAliasType partyAliasType,
