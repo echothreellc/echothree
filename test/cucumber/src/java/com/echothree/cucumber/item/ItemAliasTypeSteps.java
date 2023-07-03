@@ -54,7 +54,6 @@ public class ItemAliasTypeSteps implements En {
 
                     assertThat(persona).isNotNull();
                     assertThat(commandResult).isNotNull();
-System.err.println(result);
                     assertThat(result).isNotNull();
 
                     persona.lastItemAliasTypeName = commandResult.getHasErrors() ? null : result.getItemAliasTypeName();
