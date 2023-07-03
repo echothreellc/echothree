@@ -119,6 +119,7 @@ import com.echothree.control.user.party.common.result.CreateCustomerResult;
 import com.echothree.control.user.party.common.result.CreateCustomerWithLoginResult;
 import com.echothree.control.user.party.common.result.CreatePartyAliasTypeResult;
 import com.echothree.control.user.party.common.result.CreateVendorResult;
+import com.echothree.control.user.party.common.result.EditPartyAliasResult;
 import com.echothree.control.user.party.common.result.EditPartyAliasTypeResult;
 import com.echothree.control.user.payment.common.PaymentUtil;
 import com.echothree.control.user.payment.common.result.CreatePaymentMethodTypeResult;
@@ -6807,6 +6808,94 @@ public class GraphQlMutations
             commandForm.setUlid(id);
 
             mutationResultObject.setCommandResult(PartyUtil.getHome().deletePartyAliasType(getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static MutationResultObject createPartyAlias(final DataFetchingEnvironment env,
+            @GraphQLName("partyName") @GraphQLNonNull final String partyName,
+            @GraphQLName("partyAliasTypeName") @GraphQLNonNull final String partyAliasTypeName,
+            @GraphQLName("alias") @GraphQLNonNull final String alias) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = PartyUtil.getHome().getCreatePartyAliasForm();
+
+            commandForm.setPartyName(partyName);
+            commandForm.setPartyAliasTypeName(partyAliasTypeName);
+            commandForm.setAlias(alias);
+
+            mutationResultObject.setCommandResult(PartyUtil.getHome().createPartyAlias(getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static MutationResultObject editPartyAlias(final DataFetchingEnvironment env,
+            @GraphQLName("partyName") @GraphQLNonNull final String partyName,
+            @GraphQLName("partyAliasTypeName") @GraphQLNonNull final String partyAliasTypeName,
+            @GraphQLName("alias") @GraphQLNonNull final String alias) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var spec = PartyUtil.getHome().getPartyAliasSpec();
+
+            spec.setPartyName(partyName);
+            spec.setPartyAliasTypeName(partyAliasTypeName);
+
+            var commandForm = PartyUtil.getHome().getEditPartyAliasForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = PartyUtil.getHome().editPartyAlias(getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditPartyAliasResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                if(arguments.containsKey("alias"))
+                    edit.setAlias(alias);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = PartyUtil.getHome().editPartyAlias(getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    public static MutationResultObject deletePartyAlias(final DataFetchingEnvironment env,
+            @GraphQLName("partyName") @GraphQLNonNull final String partyName,
+            @GraphQLName("partyAliasTypeName") @GraphQLNonNull final String partyAliasTypeName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = PartyUtil.getHome().getDeletePartyAliasForm();
+
+            commandForm.setPartyName(partyName);
+            commandForm.setPartyAliasTypeName(partyAliasTypeName);
+
+            mutationResultObject.setCommandResult(PartyUtil.getHome().deletePartyAlias(getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
