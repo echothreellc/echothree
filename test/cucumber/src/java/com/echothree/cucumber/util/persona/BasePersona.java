@@ -150,8 +150,12 @@ import com.echothree.control.user.offer.common.spec.OfferUseSpec;
 import com.echothree.control.user.offer.common.spec.SourceSpec;
 import com.echothree.control.user.offer.common.spec.UseSpec;
 import com.echothree.control.user.offer.common.spec.UseTypeUniversalSpec;
+import com.echothree.control.user.party.common.edit.PartyAliasTypeEdit;
 import com.echothree.control.user.party.common.form.CreateCustomerWithLoginForm;
+import com.echothree.control.user.party.common.form.CreatePartyAliasTypeForm;
 import com.echothree.control.user.party.common.form.CreateVendorForm;
+import com.echothree.control.user.party.common.form.DeletePartyAliasTypeForm;
+import com.echothree.control.user.party.common.spec.PartyAliasTypeUniversalSpec;
 import com.echothree.control.user.payment.common.form.CreatePartyPaymentMethodForm;
 import com.echothree.control.user.purchase.common.edit.PurchaseOrderEdit;
 import com.echothree.control.user.purchase.common.form.CreatePurchaseOrderForm;
@@ -442,7 +446,13 @@ public class BasePersona {
     public String lastSourceName;
 
     // Party
+    public CreatePartyAliasTypeForm createPartyAliasTypeForm;
+    public DeletePartyAliasTypeForm deletePartyAliasTypeForm;
+    public PartyAliasTypeUniversalSpec partyAliasTypeSpec;
+    public PartyAliasTypeEdit partyAliasTypeEdit;
+
     public String lastPartyName;
+    public String lastPartyAliasTypeName;
 
     // Payment
     public CreatePartyPaymentMethodForm createPartyPaymentMethodForm;
