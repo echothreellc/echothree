@@ -150,11 +150,15 @@ import com.echothree.control.user.offer.common.spec.OfferUseSpec;
 import com.echothree.control.user.offer.common.spec.SourceSpec;
 import com.echothree.control.user.offer.common.spec.UseSpec;
 import com.echothree.control.user.offer.common.spec.UseTypeUniversalSpec;
+import com.echothree.control.user.party.common.edit.PartyAliasEdit;
 import com.echothree.control.user.party.common.edit.PartyAliasTypeEdit;
 import com.echothree.control.user.party.common.form.CreateCustomerWithLoginForm;
+import com.echothree.control.user.party.common.form.CreatePartyAliasForm;
 import com.echothree.control.user.party.common.form.CreatePartyAliasTypeForm;
 import com.echothree.control.user.party.common.form.CreateVendorForm;
+import com.echothree.control.user.party.common.form.DeletePartyAliasForm;
 import com.echothree.control.user.party.common.form.DeletePartyAliasTypeForm;
+import com.echothree.control.user.party.common.spec.PartyAliasSpec;
 import com.echothree.control.user.party.common.spec.PartyAliasTypeUniversalSpec;
 import com.echothree.control.user.payment.common.form.CreatePartyPaymentMethodForm;
 import com.echothree.control.user.purchase.common.edit.PurchaseOrderEdit;
@@ -450,6 +454,11 @@ public class BasePersona {
     public DeletePartyAliasTypeForm deletePartyAliasTypeForm;
     public PartyAliasTypeUniversalSpec partyAliasTypeSpec;
     public PartyAliasTypeEdit partyAliasTypeEdit;
+
+    public CreatePartyAliasForm createPartyAliasForm;
+    public DeletePartyAliasForm deletePartyAliasForm;
+    public PartyAliasSpec partyAliasSpec;
+    public PartyAliasEdit partyAliasEdit;
 
     public String lastPartyName;
     public String lastPartyAliasTypeName;
