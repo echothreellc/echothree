@@ -17,11 +17,11 @@
 package com.echothree.control.user.party.common.form;
 
 import com.echothree.control.user.party.common.edit.PartyAliasTypeEdit;
-import com.echothree.control.user.party.common.spec.PartyAliasTypeSpec;
+import com.echothree.control.user.party.common.spec.PartyAliasTypeUniversalSpec;
 import com.echothree.util.common.form.BaseEditForm;
 
 public interface EditPartyAliasTypeForm
-        extends BaseEditForm<PartyAliasTypeSpec, PartyAliasTypeEdit> {
+        extends BaseEditForm<PartyAliasTypeUniversalSpec, PartyAliasTypeEdit> {
     
     // Nothing additional beyond BaseEditForm
     

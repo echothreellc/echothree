@@ -21,22 +21,21 @@ import com.echothree.control.user.party.common.edit.PartyEditFactory;
 import com.echothree.control.user.party.common.form.EditPartyAliasTypeForm;
 import com.echothree.control.user.party.common.result.EditPartyAliasTypeResult;
 import com.echothree.control.user.party.common.result.PartyResultFactory;
-import com.echothree.control.user.party.common.spec.PartyAliasTypeSpec;
+import com.echothree.control.user.party.common.spec.PartyAliasTypeUniversalSpec;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.PartyAliasTypeLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.party.server.entity.PartyAliasType;
 import com.echothree.model.data.party.server.entity.PartyAliasTypeDescription;
 import com.echothree.model.data.party.server.entity.PartyAliasTypeDetail;
-import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.party.server.value.PartyAliasTypeDescriptionValue;
 import com.echothree.model.data.party.server.value.PartyAliasTypeDetailValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseAbstractEditCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -47,7 +46,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class EditPartyAliasTypeCommand
-        extends BaseAbstractEditCommand<PartyAliasTypeSpec, PartyAliasTypeEdit, EditPartyAliasTypeResult, PartyAliasType, PartyAliasType> {
+        extends BaseAbstractEditCommand<PartyAliasTypeUniversalSpec, PartyAliasTypeEdit, EditPartyAliasTypeResult, PartyAliasType, PartyAliasType> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
@@ -62,8 +61,12 @@ public class EditPartyAliasTypeCommand
                 )));
         
         SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                new FieldDefinition("PartyTypeName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("PartyAliasTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("PartyTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("PartyAliasTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
                 ));
         
         EDIT_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
@@ -90,35 +93,10 @@ public class EditPartyAliasTypeCommand
         return PartyEditFactory.getPartyAliasTypeEdit();
     }
 
-    PartyType partyType;
-
     @Override
     public PartyAliasType getEntity(EditPartyAliasTypeResult result) {
-        var partyControl = Session.getModelController(PartyControl.class);
-        PartyAliasType partyAliasType = null;
-        String partyTypeName = spec.getPartyTypeName();
-
-        partyType = partyControl.getPartyTypeByName(partyTypeName);
-
-        if(partyType != null) {
-            String partyAliasTypeName = spec.getPartyAliasTypeName();
-
-            if(editMode.equals(EditMode.LOCK) || editMode.equals(EditMode.ABANDON)) {
-                partyAliasType = partyControl.getPartyAliasTypeByName(partyType, partyAliasTypeName);
-            } else { // EditMode.UPDATE
-                partyAliasType = partyControl.getPartyAliasTypeByNameForUpdate(partyType, partyAliasTypeName);
-            }
-
-            if(partyAliasType != null) {
-                result.setPartyAliasType(partyControl.getPartyAliasTypeTransfer(getUserVisit(), partyAliasType));
-            } else {
-                addExecutionError(ExecutionErrors.UnknownPartyAliasTypeName.name(), partyTypeName, partyAliasTypeName);
-            }
-        } else {
-            addExecutionError(ExecutionErrors.UnknownPartyTypeName.name(), partyTypeName);
-        }
-
-        return partyAliasType;
+        return PartyAliasTypeLogic.getInstance().getPartyAliasTypeByUniversalSpec(this, spec, false,
+                editModeToEntityPermission(editMode));
     }
     
     @Override
@@ -152,8 +130,8 @@ public class EditPartyAliasTypeCommand
     @Override
     public void canUpdate(PartyAliasType partyAliasType) {
         var partyControl = Session.getModelController(PartyControl.class);
-        String partyAliasTypeName = edit.getPartyAliasTypeName();
-        PartyAliasType duplicatePartyAliasType = partyControl.getPartyAliasTypeByName(partyType, partyAliasTypeName);
+        var partyAliasTypeName = edit.getPartyAliasTypeName();
+        var duplicatePartyAliasType = partyControl.getPartyAliasTypeByName(partyAliasType.getActiveDetail().getPartyType(), partyAliasTypeName);
 
         if(duplicatePartyAliasType != null && !partyAliasType.equals(duplicatePartyAliasType)) {
             addExecutionError(ExecutionErrors.DuplicatePartyAliasTypeName.name(), spec.getPartyTypeName(), partyAliasTypeName);
@@ -173,7 +151,7 @@ public class EditPartyAliasTypeCommand
         partyAliasTypeDetailValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         partyAliasTypeDetailValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 
-        partyControl.updatePartyAliasTypeFromValue(partyAliasTypeDetailValue, partyPK);
+        PartyAliasTypeLogic.getInstance().updatePartyAliasTypeFromValue(this, partyAliasTypeDetailValue, partyPK);
 
         if(partyAliasTypeDescription == null && description != null) {
             partyControl.createPartyAliasTypeDescription(partyAliasType, getPreferredLanguage(), description, partyPK);

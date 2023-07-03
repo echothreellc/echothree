@@ -14,13 +14,15 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.party.common.form;
+package com.echothree.control.user.party.common.result;
 
-import com.echothree.control.user.party.common.spec.PartyAliasTypeUniversalSpec;
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
+import com.echothree.control.user.party.common.spec.PartyAliasTypeSpec;
+import com.echothree.util.common.command.BaseResult;
 
-public interface DeletePartyAliasTypeForm
-        extends PartyAliasTypeUniversalSpec {
+public interface CreatePartyAliasTypeResult
+        extends PartyAliasTypeSpec, EntityRefSpec, BaseResult {
     
-    // Nothing additional beyond PartyAliasTypeUniversalSpec
+    // Nothing additional beyond PartyAliasTypeSpec, EntityRefSpec, BaseResult
     
 }
