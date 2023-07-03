@@ -97,20 +97,24 @@ import com.echothree.control.user.filter.common.spec.FilterKindSpec;
 import com.echothree.control.user.filter.common.spec.FilterSpec;
 import com.echothree.control.user.filter.common.spec.FilterStepSpec;
 import com.echothree.control.user.filter.common.spec.FilterTypeSpec;
+import com.echothree.control.user.item.common.edit.ItemAliasTypeEdit;
 import com.echothree.control.user.item.common.edit.ItemDescriptionTypeUseTypeEdit;
 import com.echothree.control.user.item.common.edit.ItemEdit;
 import com.echothree.control.user.item.common.edit.ItemImageTypeEdit;
 import com.echothree.control.user.item.common.edit.ItemPriceEdit;
 import com.echothree.control.user.item.common.edit.ItemUnitOfMeasureTypeEdit;
+import com.echothree.control.user.item.common.form.CreateItemAliasTypeForm;
 import com.echothree.control.user.item.common.form.CreateItemDescriptionTypeUseTypeForm;
 import com.echothree.control.user.item.common.form.CreateItemForm;
 import com.echothree.control.user.item.common.form.CreateItemImageTypeForm;
 import com.echothree.control.user.item.common.form.CreateItemPriceForm;
 import com.echothree.control.user.item.common.form.CreateItemUnitOfMeasureTypeForm;
+import com.echothree.control.user.item.common.form.DeleteItemAliasTypeForm;
 import com.echothree.control.user.item.common.form.DeleteItemDescriptionTypeUseTypeForm;
 import com.echothree.control.user.item.common.form.DeleteItemImageTypeForm;
 import com.echothree.control.user.item.common.form.DeleteItemPriceForm;
 import com.echothree.control.user.item.common.form.DeleteItemUnitOfMeasureTypeForm;
+import com.echothree.control.user.item.common.spec.ItemAliasTypeUniversalSpec;
 import com.echothree.control.user.item.common.spec.ItemDescriptionTypeUseTypeUniversalSpec;
 import com.echothree.control.user.item.common.spec.ItemImageTypeUniversalSpec;
 import com.echothree.control.user.item.common.spec.ItemPriceSpec;
@@ -380,9 +384,15 @@ public class BasePersona {
     public ItemDescriptionTypeUseTypeUniversalSpec itemDescriptionTypeUseTypeSpec;
     public ItemDescriptionTypeUseTypeEdit itemDescriptionTypeUseTypeEdit;
 
+    public CreateItemAliasTypeForm createItemAliasTypeForm;
+    public DeleteItemAliasTypeForm deleteItemAliasTypeForm;
+    public ItemAliasTypeUniversalSpec itemAliasTypeSpec;
+    public ItemAliasTypeEdit itemAliasTypeEdit;
+
     public String lastItemName;
     public String lastItemImageTypeName;
     public String lastItemDescriptionTypeUseTypeName;
+    public String lastItemAliasTypeName;
 
     // Message
     public CreateMessageTypeForm createMessageTypeForm;
