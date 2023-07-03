@@ -59,7 +59,6 @@ public class ContactMechanismIndexer
     
     ContactControl contactControl = Session.getModelController(ContactControl.class);
     GeoControl geoControl = Session.getModelController(GeoControl.class);
-    PartyControl partyControl = Session.getModelController(PartyControl.class);
 
     /** Creates a new instance of ContactMechanismIndexer */
     public ContactMechanismIndexer(final ExecutionErrorAccumulator eea, final Index index) {
@@ -152,97 +151,109 @@ public class ContactMechanismIndexer
     
     private void addContactEmailAddressToDocument(final Document document, final ContactMechanism contactMechanism) {
         ContactEmailAddress contactEmailAddress = contactControl.getContactEmailAddress(contactMechanism);
-        
-        document.add(new Field(IndexFields.emailAddress.name(), contactEmailAddress.getEmailAddress(), FieldTypes.NOT_STORED_TOKENIZED));
+
+        if(contactEmailAddress != null) {
+            document.add(new Field(IndexFields.emailAddress.name(), contactEmailAddress.getEmailAddress(), FieldTypes.NOT_STORED_TOKENIZED));
+        }
     }
 
     private void addContactInet4AddressToDocument(final Document document, final ContactMechanism contactMechanism) {
         ContactInet4Address contactInet4Address = contactControl.getContactInet4Address(contactMechanism);
-        
-        document.add(new Field(IndexFields.inet4Address.name(), Inet4AddressUtils.getInstance().formatInet4Address(contactInet4Address.getInet4Address()), FieldTypes.NOT_STORED_TOKENIZED));
+
+        if(contactInet4Address != null) {
+            document.add(new Field(IndexFields.inet4Address.name(), Inet4AddressUtils.getInstance().formatInet4Address(contactInet4Address.getInet4Address()), FieldTypes.NOT_STORED_TOKENIZED));
+        }
     }
 
     private void addContactPostalAddressToDocument(final Document document, final ContactMechanism contactMechanism, final Language language) {
         ContactPostalAddress contactPostalAddress = contactControl.getContactPostalAddress(contactMechanism);
-        PersonalTitle personalTitle = contactPostalAddress.getPersonalTitle();
-        String firstName = contactPostalAddress.getFirstName();
-        String middleName = contactPostalAddress.getMiddleName();
-        String lastName = contactPostalAddress.getLastName();
-        NameSuffix nameSuffix = contactPostalAddress.getNameSuffix();
-        String companyName = contactPostalAddress.getCompanyName();
-        String attention = contactPostalAddress.getAttention();
-        String address2 = contactPostalAddress.getAddress2();
-        String address3 = contactPostalAddress.getAddress3();
-        
-        if(personalTitle != null) {
-            document.add(new Field(IndexFields.personalTitle.name(), personalTitle.getLastDetail().getDescription(), FieldTypes.NOT_STORED_TOKENIZED));
+
+        if(contactPostalAddress != null) {
+            PersonalTitle personalTitle = contactPostalAddress.getPersonalTitle();
+            String firstName = contactPostalAddress.getFirstName();
+            String middleName = contactPostalAddress.getMiddleName();
+            String lastName = contactPostalAddress.getLastName();
+            NameSuffix nameSuffix = contactPostalAddress.getNameSuffix();
+            String companyName = contactPostalAddress.getCompanyName();
+            String attention = contactPostalAddress.getAttention();
+            String address2 = contactPostalAddress.getAddress2();
+            String address3 = contactPostalAddress.getAddress3();
+
+            if(personalTitle != null) {
+                document.add(new Field(IndexFields.personalTitle.name(), personalTitle.getLastDetail().getDescription(), FieldTypes.NOT_STORED_TOKENIZED));
+            }
+
+            if(firstName != null) {
+                document.add(new Field(IndexFields.firstName.name(), firstName, FieldTypes.NOT_STORED_TOKENIZED));
+            }
+
+            if(middleName != null) {
+                document.add(new Field(IndexFields.middleName.name(), middleName, FieldTypes.NOT_STORED_TOKENIZED));
+            }
+
+            if(lastName != null) {
+                document.add(new Field(IndexFields.lastName.name(), lastName, FieldTypes.NOT_STORED_TOKENIZED));
+            }
+
+            if(nameSuffix != null) {
+                document.add(new Field(IndexFields.nameSuffix.name(), nameSuffix.getLastDetail().getDescription(), FieldTypes.NOT_STORED_TOKENIZED));
+            }
+
+            if(companyName != null) {
+                document.add(new Field(IndexFields.companyName.name(), companyName, FieldTypes.NOT_STORED_TOKENIZED));
+            }
+
+            if(attention != null) {
+                document.add(new Field(IndexFields.attention.name(), attention, FieldTypes.NOT_STORED_TOKENIZED));
+            }
+
+            document.add(new Field(IndexFields.address1.name(), contactPostalAddress.getAddress1(), FieldTypes.NOT_STORED_TOKENIZED));
+
+            if(address2 != null) {
+                document.add(new Field(IndexFields.address2.name(), address2, FieldTypes.NOT_STORED_TOKENIZED));
+            }
+
+            if(address3 != null) {
+                document.add(new Field(IndexFields.address3.name(), address3, FieldTypes.NOT_STORED_TOKENIZED));
+            }
+
+            addGeoCodeToDocument(document, language, contactPostalAddress.getCityGeoCode(), contactPostalAddress.getCity(), IndexFields.cityGeoCodeName.name(), IndexFields.city.name());
+            addGeoCodeToDocument(document, language, contactPostalAddress.getCountyGeoCode(), null, IndexFields.countyGeoCodeName.name(), IndexFields.county.name());
+            addGeoCodeToDocument(document, language, contactPostalAddress.getStateGeoCode(), contactPostalAddress.getState(), IndexFields.stateGeoCodeName.name(), IndexFields.state.name());
+            addGeoCodeToDocument(document, language, contactPostalAddress.getPostalCodeGeoCode(), contactPostalAddress.getPostalCode(), IndexFields.postalCodeGeoCodeName.name(), IndexFields.postalCode.name());
+            addGeoCodeToDocument(document, language, contactPostalAddress.getCountryGeoCode(), null, IndexFields.countryGeoCodeName.name(), IndexFields.country.name());
+
+            document.add(new Field(IndexFields.isCommercial.name(), contactPostalAddress.getIsCommercial().toString(), FieldTypes.NOT_STORED_TOKENIZED));
         }
-        
-        if(firstName != null) {
-            document.add(new Field(IndexFields.firstName.name(), firstName, FieldTypes.NOT_STORED_TOKENIZED));
-        }
-        
-        if(middleName != null) {
-            document.add(new Field(IndexFields.middleName.name(), middleName, FieldTypes.NOT_STORED_TOKENIZED));
-        }
-        
-        if(lastName != null) {
-            document.add(new Field(IndexFields.lastName.name(), lastName, FieldTypes.NOT_STORED_TOKENIZED));
-        }
-        
-        if(nameSuffix != null) {
-            document.add(new Field(IndexFields.nameSuffix.name(), nameSuffix.getLastDetail().getDescription(), FieldTypes.NOT_STORED_TOKENIZED));
-        }
-        
-        if(companyName != null) {
-            document.add(new Field(IndexFields.companyName.name(), companyName, FieldTypes.NOT_STORED_TOKENIZED));
-        }
-        
-        if(attention != null) {
-            document.add(new Field(IndexFields.attention.name(), attention, FieldTypes.NOT_STORED_TOKENIZED));
-        }
-        
-        document.add(new Field(IndexFields.address1.name(), contactPostalAddress.getAddress1(), FieldTypes.NOT_STORED_TOKENIZED));
-        
-        if(address2 != null) {
-            document.add(new Field(IndexFields.address2.name(), address2, FieldTypes.NOT_STORED_TOKENIZED));
-        }
-        
-        if(address3 != null) {
-            document.add(new Field(IndexFields.address3.name(), address3, FieldTypes.NOT_STORED_TOKENIZED));
-        }
-        
-        addGeoCodeToDocument(document, language, contactPostalAddress.getCityGeoCode(), contactPostalAddress.getCity(), IndexFields.cityGeoCodeName.name(), IndexFields.city.name());
-        addGeoCodeToDocument(document, language, contactPostalAddress.getCountyGeoCode(), null, IndexFields.countyGeoCodeName.name(), IndexFields.county.name());
-        addGeoCodeToDocument(document, language, contactPostalAddress.getStateGeoCode(), contactPostalAddress.getState(), IndexFields.stateGeoCodeName.name(), IndexFields.state.name());
-        addGeoCodeToDocument(document, language, contactPostalAddress.getPostalCodeGeoCode(), contactPostalAddress.getPostalCode(), IndexFields.postalCodeGeoCodeName.name(), IndexFields.postalCode.name());
-        addGeoCodeToDocument(document, language, contactPostalAddress.getCountryGeoCode(), null, IndexFields.countryGeoCodeName.name(), IndexFields.country.name());
-        
-        document.add(new Field(IndexFields.isCommercial.name(), contactPostalAddress.getIsCommercial().toString(), FieldTypes.NOT_STORED_TOKENIZED));
     }
 
     private void addContactTelephoneToDocument(final Document document, final ContactMechanism contactMechanism) {
         ContactTelephone contactTelephone = contactControl.getContactTelephone(contactMechanism);
-        String areaCode = contactTelephone.getAreaCode();
-        String telephoneExtension = contactTelephone.getTelephoneExtension();
-        
-        document.add(new Field(IndexFields.countryGeoCodeName.name(), contactTelephone.getCountryGeoCode().getLastDetail().getGeoCodeName(), FieldTypes.NOT_STORED_TOKENIZED));
-        
-        if(areaCode != null) {
-            document.add(new Field(IndexFields.areaCode.name(), areaCode, FieldTypes.NOT_STORED_TOKENIZED));
-        }
-        
-        document.add(new Field(IndexFields.telephoneNumber.name(), contactTelephone.getTelephoneNumber(), FieldTypes.NOT_STORED_TOKENIZED));
-        
-        if(telephoneExtension != null) {
-            document.add(new Field(IndexFields.telephoneExtension.name(), telephoneExtension, FieldTypes.NOT_STORED_TOKENIZED));
+
+        if(contactTelephone != null) {
+            String areaCode = contactTelephone.getAreaCode();
+            String telephoneExtension = contactTelephone.getTelephoneExtension();
+
+            document.add(new Field(IndexFields.countryGeoCodeName.name(), contactTelephone.getCountryGeoCode().getLastDetail().getGeoCodeName(), FieldTypes.NOT_STORED_TOKENIZED));
+
+            if(areaCode != null) {
+                document.add(new Field(IndexFields.areaCode.name(), areaCode, FieldTypes.NOT_STORED_TOKENIZED));
+            }
+
+            document.add(new Field(IndexFields.telephoneNumber.name(), contactTelephone.getTelephoneNumber(), FieldTypes.NOT_STORED_TOKENIZED));
+
+            if(telephoneExtension != null) {
+                document.add(new Field(IndexFields.telephoneExtension.name(), telephoneExtension, FieldTypes.NOT_STORED_TOKENIZED));
+            }
         }
     }
 
     private void addContactWebAddressToDocument(final Document document, final ContactMechanism contactMechanism) {
         ContactWebAddress contactWebAddress = contactControl.getContactWebAddress(contactMechanism);
-        
-        document.add(new Field(IndexFields.url.name(), contactWebAddress.getUrl(), FieldTypes.NOT_STORED_TOKENIZED));
+
+        if(contactWebAddress != null) {
+            document.add(new Field(IndexFields.url.name(), contactWebAddress.getUrl(), FieldTypes.NOT_STORED_TOKENIZED));
+        }
     }
     
     private void addContactMechanismToDocument(final Document document, final ContactMechanism contactMechanism, final Language language) {
