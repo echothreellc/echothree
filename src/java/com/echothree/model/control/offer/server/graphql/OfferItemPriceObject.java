@@ -43,8 +43,6 @@ public class OfferItemPriceObject
     private final OfferItemPrice offerItemPrice; // Always Present
     
     public OfferItemPriceObject(OfferItemPrice offerItemPrice) {
-        super(offerItemPrice.getPrimaryKey());
-        
         this.offerItemPrice = offerItemPrice;
     }
 

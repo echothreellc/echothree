@@ -33,8 +33,6 @@ public class WorkflowEntranceSecurityRoleObject
     private final WorkflowEntranceSecurityRole workflowEntranceSecurityRole; // Always Present
     
     public WorkflowEntranceSecurityRoleObject(WorkflowEntranceSecurityRole workflowEntranceSecurityRole) {
-        super(workflowEntranceSecurityRole.getPrimaryKey());
-        
         this.workflowEntranceSecurityRole = workflowEntranceSecurityRole;
     }
 

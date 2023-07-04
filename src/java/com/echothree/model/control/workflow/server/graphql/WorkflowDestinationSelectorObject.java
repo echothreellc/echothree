@@ -34,8 +34,6 @@ public class WorkflowDestinationSelectorObject
     private final WorkflowDestinationSelector workflowDestinationSelector; // Always Present
     
     public WorkflowDestinationSelectorObject(WorkflowDestinationSelector workflowDestinationSelector) {
-        super(workflowDestinationSelector.getPrimaryKey());
-        
         this.workflowDestinationSelector = workflowDestinationSelector;
     }
 

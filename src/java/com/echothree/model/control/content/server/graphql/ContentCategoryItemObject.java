@@ -33,8 +33,6 @@ public class ContentCategoryItemObject
     private final ContentCategoryItem contentCategoryItem; // Always Present
     
     public ContentCategoryItemObject(ContentCategoryItem contentCategoryItem) {
-        super(contentCategoryItem.getPrimaryKey());
-        
         this.contentCategoryItem = contentCategoryItem;
     }
 

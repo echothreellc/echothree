@@ -45,8 +45,6 @@ public class WorkflowEntrancePartyTypeObject
     private final WorkflowEntrancePartyType workflowEntrancePartyType; // Always Present
     
     public WorkflowEntrancePartyTypeObject(WorkflowEntrancePartyType workflowEntrancePartyType) {
-        super(workflowEntrancePartyType.getPrimaryKey());
-        
         this.workflowEntrancePartyType = workflowEntrancePartyType;
     }
 

@@ -34,8 +34,6 @@ public class TagScopeEntityTypeObject
     private final TagScopeEntityType tagScopeEntityType; // Always Present
 
     public TagScopeEntityTypeObject(TagScopeEntityType tagScopeEntityType) {
-        super(tagScopeEntityType.getPrimaryKey());
-        
         this.tagScopeEntityType = tagScopeEntityType;
     }
 

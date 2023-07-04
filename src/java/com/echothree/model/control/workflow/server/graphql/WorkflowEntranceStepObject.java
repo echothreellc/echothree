@@ -31,8 +31,6 @@ public class WorkflowEntranceStepObject
     private final WorkflowEntranceStep workflowEntranceStep; // Always Present
     
     public WorkflowEntranceStepObject(WorkflowEntranceStep workflowEntranceStep) {
-        super(workflowEntranceStep.getPrimaryKey());
-        
         this.workflowEntranceStep = workflowEntranceStep;
     }
 

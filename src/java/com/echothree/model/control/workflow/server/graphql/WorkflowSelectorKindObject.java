@@ -33,8 +33,6 @@ public class WorkflowSelectorKindObject
     private final WorkflowSelectorKind workflowSelectorKind; // Always Present
     
     public WorkflowSelectorKindObject(WorkflowSelectorKind workflowSelectorKind) {
-        super(workflowSelectorKind.getPrimaryKey());
-        
         this.workflowSelectorKind = workflowSelectorKind;
     }
 

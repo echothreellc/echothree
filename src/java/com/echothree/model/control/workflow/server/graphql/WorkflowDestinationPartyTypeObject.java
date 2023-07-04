@@ -45,8 +45,6 @@ public class WorkflowDestinationPartyTypeObject
     private final WorkflowDestinationPartyType workflowDestinationPartyType; // Always Present
     
     public WorkflowDestinationPartyTypeObject(WorkflowDestinationPartyType workflowDestinationPartyType) {
-        super(workflowDestinationPartyType.getPrimaryKey());
-        
         this.workflowDestinationPartyType = workflowDestinationPartyType;
     }
 

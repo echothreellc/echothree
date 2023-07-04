@@ -43,8 +43,6 @@ public class ItemPriceObject
     private final ItemPrice itemPrice; // Always Present
     
     public ItemPriceObject(ItemPrice itemPrice) {
-        super(itemPrice.getPrimaryKey());
-        
         this.itemPrice = itemPrice;
     }
 

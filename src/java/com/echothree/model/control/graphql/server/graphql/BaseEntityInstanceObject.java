@@ -17,7 +17,6 @@
 package com.echothree.model.control.graphql.server.graphql;
 
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.core.server.graphql.CoreSecurityUtils;
 import com.echothree.model.control.core.server.graphql.EntityAttributeGroupObject;
 import com.echothree.model.control.core.server.graphql.EntityInstanceObject;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
@@ -25,16 +24,15 @@ import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
-import com.echothree.model.control.offer.server.control.OfferItemControl;
-import com.echothree.model.control.offer.server.graphql.OfferItemObject;
-import com.echothree.model.control.offer.server.graphql.OfferSecurityUtils;
 import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.control.tag.server.graphql.TagScopeObject;
 import com.echothree.model.control.tag.server.graphql.TagSecurityUtils;
+import com.echothree.model.control.workflow.server.control.WorkflowControl;
+import com.echothree.model.control.workflow.server.graphql.WorkflowEntityStatusObject;
+import com.echothree.model.control.workflow.server.graphql.WorkflowSecurityUtils;
+import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.offer.common.OfferItemConstants;
 import com.echothree.model.data.tag.common.TagScopeConstants;
-import com.echothree.model.data.tag.server.entity.TagScope;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.persistence.PersistenceUtils;
 import com.echothree.util.server.persistence.Session;
@@ -46,21 +44,24 @@ import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public abstract class BaseEntityInstanceObject
         extends BaseObject {
 
     protected BaseEntityInstanceObject(BasePK basePrimaryKey) {
-        super(basePrimaryKey);
+        init(basePrimaryKey, null);
     }
 
     protected BaseEntityInstanceObject(EntityInstance entityInstance) {
-        super(PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance));
+        init(null, entityInstance);
+    }
 
+    private void init(final BasePK basePrimaryKey, final EntityInstance entityInstance) {
+        this.basePrimaryKey = basePrimaryKey == null ? PersistenceUtils.getInstance().getBasePKFromEntityInstance(entityInstance) : basePrimaryKey;
         this.entityInstance = entityInstance;
     }
 
+    protected BasePK basePrimaryKey; // Always Present
     private EntityInstance entityInstance; // Optional, use getEntityInstanceByBasePK()
     
     protected EntityInstance getEntityInstanceByBasePK() {
@@ -71,6 +72,23 @@ public abstract class BaseEntityInstanceObject
         }
         
         return entityInstance;
+    }
+
+    protected WorkflowEntityStatusObject getWorkflowEntityStatusObject(final DataFetchingEnvironment env,
+            final String workflowName) {
+        WorkflowEntityStatusObject result = null;
+
+        if(WorkflowSecurityUtils.getInstance().getHasWorkflowEntityStatusesAccess(env)) {
+            var coreControl = Session.getModelController(CoreControl.class);
+            var workflowControl = Session.getModelController(WorkflowControl.class);
+            var entityInstance = coreControl.getEntityInstanceByBasePK(basePrimaryKey);
+            var workflow = WorkflowLogic.getInstance().getWorkflowByName(null, workflowName);
+            var workflowEntityStatus = workflowControl.getWorkflowEntityStatusByEntityInstance(workflow, entityInstance);
+
+            result = workflowEntityStatus == null ? null : new WorkflowEntityStatusObject(workflowEntityStatus);
+        }
+
+        return result;
     }
 
     @GraphQLField

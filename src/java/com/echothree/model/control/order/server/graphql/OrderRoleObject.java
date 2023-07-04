@@ -34,8 +34,6 @@ public class OrderRoleObject
     private final OrderRole orderRole; // Always Present
 
     public OrderRoleObject(final OrderRole orderRole) {
-        super(orderRole.getPrimaryKey());
-
         this.orderRole = orderRole;
     }
 

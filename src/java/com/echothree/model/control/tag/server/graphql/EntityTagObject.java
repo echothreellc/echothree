@@ -34,8 +34,6 @@ public class EntityTagObject
     private final EntityTag entityTag; // Always Present
 
     public EntityTagObject(EntityTag entityTag) {
-        super(entityTag.getPrimaryKey());
-        
         this.entityTag = entityTag;
     }
 
