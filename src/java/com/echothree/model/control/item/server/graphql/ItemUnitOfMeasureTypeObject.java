@@ -34,8 +34,6 @@ public class ItemUnitOfMeasureTypeObject
     private final ItemUnitOfMeasureType itemUnitOfMeasureType; // Always Present
     
     public ItemUnitOfMeasureTypeObject(ItemUnitOfMeasureType itemUnitOfMeasureType) {
-        super(itemUnitOfMeasureType.getPrimaryKey());
-        
         this.itemUnitOfMeasureType = itemUnitOfMeasureType;
     }
 

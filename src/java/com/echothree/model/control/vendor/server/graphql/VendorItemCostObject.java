@@ -38,8 +38,6 @@ public class VendorItemCostObject
     private final VendorItemCost vendorItemCost; // Always Present
     
     public VendorItemCostObject(VendorItemCost vendorItemCost) {
-        super(vendorItemCost.getPrimaryKey());
-        
         this.vendorItemCost = vendorItemCost;
     }
 

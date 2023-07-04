@@ -31,8 +31,6 @@ public class WorkflowDestinationStepObject
     private final WorkflowDestinationStep workflowDestinationStep; // Always Present
     
     public WorkflowDestinationStepObject(WorkflowDestinationStep workflowDestinationStep) {
-        super(workflowDestinationStep.getPrimaryKey());
-        
         this.workflowDestinationStep = workflowDestinationStep;
     }
 

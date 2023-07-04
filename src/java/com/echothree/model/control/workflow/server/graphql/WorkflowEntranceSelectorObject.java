@@ -34,8 +34,6 @@ public class WorkflowEntranceSelectorObject
     private final WorkflowEntranceSelector workflowEntranceSelector; // Always Present
     
     public WorkflowEntranceSelectorObject(WorkflowEntranceSelector workflowEntranceSelector) {
-        super(workflowEntranceSelector.getPrimaryKey());
-        
         this.workflowEntranceSelector = workflowEntranceSelector;
     }
 

@@ -33,8 +33,6 @@ public class WorkflowEntityTypeObject
     private final WorkflowEntityType workflowEntityType; // Always Present
     
     public WorkflowEntityTypeObject(WorkflowEntityType workflowEntityType) {
-        super(workflowEntityType.getPrimaryKey());
-        
         this.workflowEntityType = workflowEntityType;
     }
 

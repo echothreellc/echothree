@@ -34,8 +34,6 @@ public class ItemAliasObject
     private final ItemAlias itemAlias; // Always Present
     
     public ItemAliasObject(ItemAlias itemAlias) {
-        super(itemAlias.getPrimaryKey());
-        
         this.itemAlias = itemAlias;
     }
 

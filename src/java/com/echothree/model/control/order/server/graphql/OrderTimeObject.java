@@ -33,8 +33,6 @@ public class OrderTimeObject
     private final OrderTime orderTime; // Always Present
 
     public OrderTimeObject(final OrderTime orderTime) {
-        super(orderTime.getPrimaryKey());
-
         this.orderTime = orderTime;
     }
 
