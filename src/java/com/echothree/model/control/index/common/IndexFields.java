@@ -26,6 +26,7 @@ public enum IndexFields {
     allowClubDiscounts,
     allowCouponDiscounts,
     allowSolicitation,
+    appearanceName,
     areaCode,
     attention,
     city,

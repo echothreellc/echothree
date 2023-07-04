@@ -286,16 +286,10 @@ public class ContactMechanismIndexer
     protected Document convertToDocument(final EntityInstance entityInstance, final ContactMechanism contactMechanism) {
         Document document = new Document();
 
-        document.add(new Field(IndexFields.entityRef.name(), contactMechanism.getPrimaryKey().getEntityRef(), FieldTypes.STORED_NOT_TOKENIZED));
-        document.add(new Field(IndexFields.entityInstanceId.name(), entityInstance.getPrimaryKey().getEntityId().toString(), FieldTypes.STORED_NOT_TOKENIZED));
-        
         addPartiesToDocument(document, contactMechanism);
         addContactMechanismToDocument(document, contactMechanism, language);
-        
-        indexWorkflowEntityStatuses(document, entityInstance);
-        indexEntityTimes(document, entityInstance);
-        indexEntityAttributes(document, entityInstance);
-        indexEntityTags(document, entityInstance);
+
+        indexEntityInstanceFields(document, contactMechanism.getPrimaryKey(), entityInstance);
 
         return document;
     }

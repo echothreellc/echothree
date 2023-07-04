@@ -61,9 +61,6 @@ public class SecurityRoleIndexer
         String description = securityControl.getBestSecurityRoleDescription(securityRole, language);
         Document document = new Document();
 
-        document.add(new Field(IndexFields.entityRef.name(), securityRole.getPrimaryKey().getEntityRef(), FieldTypes.STORED_NOT_TOKENIZED));
-        document.add(new Field(IndexFields.entityInstanceId.name(), entityInstance.getPrimaryKey().getEntityId().toString(), FieldTypes.STORED_NOT_TOKENIZED));
-
         document.add(new Field(IndexFields.securityRoleGroupName.name(), securityRoleDetail.getSecurityRoleGroup().getLastDetail().getSecurityRoleGroupName(),
                 FieldTypes.NOT_STORED_TOKENIZED));
         document.add(new SortedDocValuesField(IndexFields.securityRoleGroupName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
@@ -77,11 +74,8 @@ public class SecurityRoleIndexer
             document.add(new SortedDocValuesField(IndexFields.description.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
                     new BytesRef(description)));
         }
-        
-        indexWorkflowEntityStatuses(document, entityInstance);
-        indexEntityTimes(document, entityInstance);
-        indexEntityAttributes(document, entityInstance);
-        indexEntityTags(document, entityInstance);
+
+        indexEntityInstanceFields(document, securityRole.getPrimaryKey(), entityInstance);
 
         return document;
     }

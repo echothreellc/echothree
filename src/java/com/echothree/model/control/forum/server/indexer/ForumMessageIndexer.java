@@ -72,16 +72,11 @@ public class ForumMessageIndexer
         List<ForumMessageTypePartType> forumMessageTypePartTypes = forumControl.getForumMessageTypePartTypesByForumMessageTypeAndIncludeInIndex(forumMessageDetail.getForumMessageType());
         Document document = new Document();
 
-        document.add(new Field(IndexFields.entityRef.name(), forumMessage.getPrimaryKey().getEntityRef(), FieldTypes.STORED_NOT_TOKENIZED));
-        document.add(new Field(IndexFields.entityInstanceId.name(), entityInstance.getPrimaryKey().getEntityId().toString(), FieldTypes.STORED_NOT_TOKENIZED));
-        
         document.add(new Field(IndexFields.forumMessageName.name(), forumMessageDetail.getForumMessageName(), FieldTypes.NOT_STORED_TOKENIZED));
         document.add(new Field(IndexFields.forumThreadName.name(), forumThread.getLastDetail().getForumThreadName(), FieldTypes.NOT_STORED_TOKENIZED));
         document.add(new LongPoint(IndexFields.postedTime.name(), forumMessageDetail.getPostedTime()));
 
-        indexEntityTimes(document, entityInstance);
-        indexEntityAttributes(document, entityInstance);
-        indexEntityTags(document, entityInstance);
+        indexEntityInstanceFields(document, forumMessage.getPrimaryKey(), entityInstance);
 
         forumMessageTypePartTypes.stream().map((forumMessageTypePartType) -> forumMessageTypePartType.getForumMessagePartType()).forEach((forumMessagePartType) -> {
             ForumMessagePart forumMessagePart = forumControl.getBestForumMessagePart(forumMessage, forumMessagePartType, language);

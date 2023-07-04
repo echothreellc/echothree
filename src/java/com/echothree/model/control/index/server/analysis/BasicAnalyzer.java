@@ -18,6 +18,7 @@ package com.echothree.model.control.index.server.analysis;
 
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.server.indexer.IndexerDebugFlags;
 import com.echothree.model.control.party.common.Languages;
 import com.echothree.model.control.tag.server.control.TagControl;
@@ -168,7 +169,13 @@ public class BasicAnalyzer
         
         return fieldAnalyzers;
     }
-    
+
+    private Map<String, Analyzer> getAppearanceFieldAnalyzers(final Map<String, Analyzer> fieldAnalyzers) {
+        fieldAnalyzers.put(IndexFields.appearanceName.name(), new WhitespaceLowerCaseAnalyzer());
+
+        return fieldAnalyzers;
+    }
+
     protected Map<String, Analyzer> getEntityTypeAnalyzers(final Map<String, Analyzer> fieldAnalyzers) {
         // No additional Analyzers by default.
         
@@ -177,7 +184,7 @@ public class BasicAnalyzer
 
     private Map<String, Analyzer> getFieldAnalyzers(final ExecutionErrorAccumulator eea, final EntityType entityType,
             final List<EntityAttribute> entityAttributes, final List<TagScope> tagScopes) {
-        return getEntityTypeAnalyzers(getWorkflowFieldAnalyzers(entityType, getTagScopeFieldAnalyzers(tagScopes, getEntityAttributeFieldAnalyzers(entityAttributes, new HashMap<>()))));
+        return getEntityTypeAnalyzers(getAppearanceFieldAnalyzers(getWorkflowFieldAnalyzers(entityType, getTagScopeFieldAnalyzers(tagScopes, getEntityAttributeFieldAnalyzers(entityAttributes, new HashMap<>())))));
     }
     
 }

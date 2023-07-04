@@ -49,6 +49,7 @@ import com.echothree.model.data.tag.server.entity.EntityTag;
 import com.echothree.model.data.tag.server.entity.TagScope;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
 import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.BaseEntity;
@@ -133,7 +134,7 @@ public abstract class BaseIndexer<BE extends BaseEntity>
     }
 
     /** Index an EntityInstance in all of its Workflows. */
-    protected void indexWorkflowEntityStatuses(final Document document, final EntityInstance entityInstance) {
+    private void indexWorkflowEntityStatuses(final Document document, final EntityInstance entityInstance) {
         workflowControl.getWorkflowsByEntityType(entityInstance.getEntityType()).stream().forEach((workflow) -> {
             List<WorkflowEntityStatus> workflowEntityStatuses = workflowControl.getWorkflowEntityStatusesByEntityInstance(workflow, entityInstance);
             if (!workflowEntityStatuses.isEmpty()) {
@@ -150,7 +151,7 @@ public abstract class BaseIndexer<BE extends BaseEntity>
         });
     }
 
-    protected void indexEntityTimes(final Document document, final EntityInstance entityInstance) {
+    private void indexEntityTimes(final Document document, final EntityInstance entityInstance) {
         EntityTime entityTime = coreControl.getEntityTime(entityInstance);
 
         if(entityTime != null) {
@@ -172,7 +173,7 @@ public abstract class BaseIndexer<BE extends BaseEntity>
         }
     }
 
-    protected void indexEntityAttributes(final Document document, final EntityInstance entityInstance) {
+    private void indexEntityAttributes(final Document document, final EntityInstance entityInstance) {
         entityAttributes.forEach((entityAttribute) -> {
             EntityAttributeDetail entityAttributeDetail = entityAttribute.getLastDetail();
             String fieldName = entityAttributeDetail.getEntityAttributeName();
@@ -313,8 +314,8 @@ public abstract class BaseIndexer<BE extends BaseEntity>
             }
         });
     }
-    
-    public void indexEntityTags(final Document document, final EntityInstance entityInstance) {
+
+    private void indexEntityTags(final Document document, final EntityInstance entityInstance) {
         List<EntityTag> entityTags = tagControl.getEntityTagsByTaggedEntityInstance(entityInstance);
 
         entityTags.stream().map((entityTag) -> entityTag.getTag().getLastDetail()).forEach((tagDetail) -> {
@@ -323,6 +324,27 @@ public abstract class BaseIndexer<BE extends BaseEntity>
 
             document.add(new Field(tagScopeName, tagName, FieldTypes.NOT_STORED_TOKENIZED));
         });
+    }
+
+    private void indexEntityAppearance(final Document document, final EntityInstance entityInstance) {
+        var entityAppearance = coreControl.getEntityAppearance(entityInstance);
+
+        if(entityAppearance != null) {
+            var entityAppearanceName = entityAppearance.getAppearance().getLastDetail().getAppearanceName();
+
+            document.add(new Field(IndexFields.appearanceName.name(), entityAppearanceName, FieldTypes.NOT_STORED_TOKENIZED));
+        }
+    }
+
+    protected void indexEntityInstanceFields(final Document document, final BasePK basePK, final EntityInstance entityInstance) {
+        document.add(new Field(IndexFields.entityRef.name(), basePK.getEntityRef(), FieldTypes.STORED_NOT_TOKENIZED));
+        document.add(new Field(IndexFields.entityInstanceId.name(), entityInstance.getPrimaryKey().getEntityId().toString(), FieldTypes.STORED_NOT_TOKENIZED));
+
+        indexWorkflowEntityStatuses(document, entityInstance);
+        indexEntityTimes(document, entityInstance);
+        indexEntityAttributes(document, entityInstance);
+        indexEntityTags(document, entityInstance);
+        indexEntityAppearance(document, entityInstance);
     }
 
     /**
