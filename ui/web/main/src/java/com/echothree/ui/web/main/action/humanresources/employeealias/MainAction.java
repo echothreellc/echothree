@@ -14,24 +14,20 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.ui.web.main.action.humanresources.employee;
+package com.echothree.ui.web.main.action.humanresources.employeealias;
 
 import com.echothree.control.user.employee.common.EmployeeUtil;
 import com.echothree.control.user.employee.common.form.GetEmployeeForm;
 import com.echothree.control.user.employee.common.result.GetEmployeeResult;
-import com.echothree.model.control.comment.common.CommentOptions;
-import com.echothree.model.control.contact.common.ContactOptions;
-import com.echothree.model.control.core.common.CoreOptions;
-import com.echothree.model.control.employee.common.EmployeeOptions;
-import com.echothree.model.control.employee.common.transfer.EmployeeTransfer;
 import com.echothree.model.control.party.common.PartyOptions;
+import com.echothree.model.control.employee.common.transfer.EmployeeTransfer;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
-import com.echothree.util.common.string.ContactPostalAddressUtils;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.ExecutionResult;
+import com.echothree.util.common.string.ContactPostalAddressUtils;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
@@ -45,47 +41,31 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 @SproutAction(
-    path = "/HumanResources/Employee/Review",
+    path = "/HumanResources/EmployeeAlias/Main",
     mappingClass = SecureActionMapping.class,
     properties = {
         @SproutProperty(property = "secure", value = "true")
     },
     forwards = {
-        @SproutForward(name = "Display", path = "/humanresources/employee/review.jsp")
+        @SproutForward(name = "Display", path = "/humanresources/employeealias/main.jsp")
     }
 )
-public class ReviewAction
+public class MainAction
         extends MainBaseAction<ActionForm> {
     
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String forwardKey;
+        String forwardKey = null;
         GetEmployeeForm commandForm = EmployeeUtil.getHome().getGetEmployeeForm();
+        String employeeName = request.getParameter(ParameterConstants.EMPLOYEE_NAME);
+        String partyName = request.getParameter(ParameterConstants.PARTY_NAME);
         
-        commandForm.setEmployeeName(request.getParameter(ParameterConstants.EMPLOYEE_NAME));
-        commandForm.setPartyName(request.getParameter(ParameterConstants.PARTY_NAME));
+        commandForm.setEmployeeName(employeeName);
+        commandForm.setPartyName(partyName);
         
         Set<String> options = new HashSet<>();
         options.add(PartyOptions.PartyIncludePartyAliases);
-        options.add(PartyOptions.PartyIncludePartyDocuments);
-        options.add(PartyOptions.PartyIncludePartyContactLists);
-        options.add(PartyOptions.PartyIncludePartyContactMechanisms);
-        options.add(PartyOptions.PartyIncludePartyPrinterGroupUses);
-        options.add(PartyOptions.PartyIncludePartyScaleUses);
-        options.add(PartyOptions.PartyIncludeUserLogin);
-        options.add(ContactOptions.PartyContactMechanismIncludePartyContactMechanismPurposes);
-        options.add(ContactOptions.PartyContactMechanismIncludePartyContactMechanismRelationshipsByFromPartyContactMechanism);
-        options.add(EmployeeOptions.EmployeeIncludePartyResponsibilities);
-        options.add(EmployeeOptions.EmployeeIncludePartyTrainingClasses);
-        options.add(EmployeeOptions.EmployeeIncludePartySkills);
-        options.add(EmployeeOptions.EmployeeIncludeEntityAttributeGroups);
-        options.add(EmployeeOptions.EmployeeIncludeTagScopes);
-        options.add(CoreOptions.EntityAttributeGroupIncludeEntityAttributes);
-        options.add(CoreOptions.EntityAttributeIncludeValue);
-        options.add(CoreOptions.EntityStringAttributeIncludeString);
-        options.add(CoreOptions.EntityInstanceIncludeNames);
-        options.add(CommentOptions.CommentIncludeClob);
         commandForm.setOptions(ContactPostalAddressUtils.getInstance().addOptions(options));
         
         CommandResult commandResult = EmployeeUtil.getHome().getEmployee(getUserVisitPK(request), commandForm);
