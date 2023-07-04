@@ -43,23 +43,17 @@ import org.xml.sax.SAXException;
 public class EmployeeHandler
         extends BaseHandler {
 
-    EmployeeService employeeService;
-    PartyService partyService;
+    EmployeeService employeeService = EmployeeUtil.getHome();
+    PartyService partyService = PartyUtil.getHome();
     String partyName;
     String employeeName;
     String entityRef;
     
     /** Creates a new instance of EmployeeHandler */
     public EmployeeHandler(InitialDataParser initialDataParser, BaseHandler parentHandler, String partyName, String employeeName,
-            String entityRef) {
+            String entityRef)
+            throws NamingException {
         super(initialDataParser, parentHandler);
-        
-        try {
-            employeeService = EmployeeUtil.getHome();
-            partyService = PartyUtil.getHome();
-        } catch (NamingException ne) {
-            // TODO: Handle Exception
-        }
         
         this.partyName = partyName;
         this.employeeName = employeeName;
@@ -69,7 +63,14 @@ public class EmployeeHandler
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
             throws SAXException {
-        if(localName.equals("employeeCompany")) {
+        if(localName.equals("partyAlias")) {
+            var commandForm = PartyFormFactory.getCreatePartyAliasForm();
+
+            commandForm.setPartyName(partyName);
+            commandForm.set(getAttrsMap(attrs));
+
+            partyService.createPartyAlias(initialDataParser.getUserVisit(), commandForm);
+        } else if(localName.equals("employeeCompany")) {
             AddEmployeeToCompanyForm commandForm = PartyFormFactory.getAddEmployeeToCompanyForm();
             
             commandForm.setEmployeeName(employeeName);
