@@ -332,7 +332,7 @@ public abstract class BaseIndexer<BE extends BaseEntity>
         if(entityAppearance != null) {
             var entityAppearanceName = entityAppearance.getAppearance().getLastDetail().getAppearanceName();
 
-            document.add(new Field(IndexFields.appearanceName.name(), entityAppearanceName, FieldTypes.NOT_STORED_TOKENIZED));
+            document.add(new Field(IndexFields.appearance.name(), entityAppearanceName, FieldTypes.NOT_STORED_TOKENIZED));
         }
     }
 

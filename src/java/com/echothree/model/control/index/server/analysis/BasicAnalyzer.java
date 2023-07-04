@@ -171,7 +171,7 @@ public class BasicAnalyzer
     }
 
     private Map<String, Analyzer> getAppearanceFieldAnalyzers(final Map<String, Analyzer> fieldAnalyzers) {
-        fieldAnalyzers.put(IndexFields.appearanceName.name(), new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(IndexFields.appearance.name(), new WhitespaceLowerCaseAnalyzer());
 
         return fieldAnalyzers;
     }
