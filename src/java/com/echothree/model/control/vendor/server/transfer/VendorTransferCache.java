@@ -104,6 +104,7 @@ public class VendorTransferCache
     boolean includeUserLogin;
     boolean includeRecoveryAnswer;
     boolean includePartyContactMechanisms;
+    boolean includePartyAliases;
     boolean includePartyContactLists;
     boolean includePartyDocuments;
     boolean includePartyPrinterGroupUses;
@@ -134,6 +135,7 @@ public class VendorTransferCache
             setIncludeGuid(options.contains(PartyOptions.PartyIncludeGuid) || options.contains(VendorOptions.VendorIncludeGuid));
             includeUserLogin = options.contains(PartyOptions.PartyIncludeUserLogin);
             includeRecoveryAnswer = options.contains(PartyOptions.PartyIncludeRecoveryAnswer);
+            includePartyAliases = options.contains(PartyOptions.PartyIncludePartyAliases);
             includePartyContactMechanisms = options.contains(PartyOptions.PartyIncludePartyContactMechanisms);
             includePartyContactLists = options.contains(PartyOptions.PartyIncludePartyContactLists);
             includePartyDocuments = options.contains(PartyOptions.PartyIncludePartyDocuments);
@@ -230,6 +232,10 @@ public class VendorTransferCache
 
             if(includeRecoveryAnswer) {
                 vendorTransfer.setRecoveryAnswer(userControl.getRecoveryAnswerTransfer(userVisit, party));
+            }
+
+            if(includePartyAliases) {
+                vendorTransfer.setPartyAliases(new ListWrapper<>(partyControl.getPartyAliasTransfersByParty(userVisit, party)));
             }
 
             if(includePartyContactMechanisms) {
