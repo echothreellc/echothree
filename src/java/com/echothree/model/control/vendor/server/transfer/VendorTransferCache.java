@@ -103,8 +103,8 @@ public class VendorTransferCache
     
     boolean includeUserLogin;
     boolean includeRecoveryAnswer;
-    boolean includePartyContactMechanisms;
     boolean includePartyAliases;
+    boolean includePartyContactMechanisms;
     boolean includePartyContactLists;
     boolean includePartyDocuments;
     boolean includePartyPrinterGroupUses;

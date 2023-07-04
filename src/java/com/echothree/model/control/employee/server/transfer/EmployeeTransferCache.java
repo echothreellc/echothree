@@ -73,8 +73,10 @@ public class EmployeeTransferCache
     TrainingControl trainingControl = Session.getModelController(TrainingControl.class);
     UserControl userControl = Session.getModelController(UserControl.class);
     WorkflowControl workflowControl = Session.getModelController(WorkflowControl.class);
+    
     boolean includeUserLogin;
     boolean includeRecoveryAnswer;
+    boolean includePartyAliases;
     boolean includePartyContactMechanisms;
     boolean includePartyContactLists;
     boolean includePartyDocuments;
@@ -101,6 +103,7 @@ public class EmployeeTransferCache
             setIncludeGuid(options.contains(PartyOptions.PartyIncludeGuid) || options.contains(EmployeeOptions.EmployeeIncludeGuid));
             includeUserLogin = options.contains(PartyOptions.PartyIncludeUserLogin);
             includeRecoveryAnswer = options.contains(PartyOptions.PartyIncludeRecoveryAnswer);
+            includePartyAliases = options.contains(PartyOptions.PartyIncludePartyAliases);
             includePartyContactMechanisms = options.contains(PartyOptions.PartyIncludePartyContactMechanisms);
             includePartyContactLists = options.contains(PartyOptions.PartyIncludePartyContactLists);
             includePartyDocuments = options.contains(PartyOptions.PartyIncludePartyDocuments);
@@ -167,6 +170,10 @@ public class EmployeeTransferCache
 
             if(includeRecoveryAnswer) {
                 employeeTransfer.setRecoveryAnswer(userControl.getRecoveryAnswerTransfer(userVisit, party));
+            }
+
+            if(includePartyAliases) {
+                employeeTransfer.setPartyAliases(new ListWrapper<>(partyControl.getPartyAliasTransfersByParty(userVisit, party)));
             }
 
             if(includePartyContactMechanisms) {
