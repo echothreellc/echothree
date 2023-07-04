@@ -341,6 +341,11 @@
             <c:set var="partyContactLists" scope="request" value="${employee.partyContactLists}" />
             <jsp:include page="../../include/partyContactLists.jsp" />
 
+            <c:set var="commonUrl" scope="request" value="HumanResources/EmployeeAlias" />
+            <c:set var="partyAliases" scope="request" value="${employee.partyAliases}" />
+            <c:set var="securityRoleGroupNamePrefix" scope="request" value="Employee" />
+            <jsp:include page="../../include/partyAliases.jsp" />
+
             <c:set var="tagScopes" scope="request" value="${employee.tagScopes}" />
             <c:set var="entityAttributeGroups" scope="request" value="${employee.entityAttributeGroups}" />
             <c:set var="entityInstance" scope="request" value="${employee.entityInstance}" />
