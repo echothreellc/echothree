@@ -283,12 +283,10 @@ public class ContactMechanismIndexer
     
     @Override
     protected Document convertToDocument(final EntityInstance entityInstance, final ContactMechanism contactMechanism) {
-        Document document = new Document();
+        var document = newDocumentWithEntityInstanceFields(entityInstance, contactMechanism.getPrimaryKey());
 
         addPartiesToDocument(document, contactMechanism);
         addContactMechanismToDocument(document, contactMechanism, language);
-
-        indexEntityInstanceFields(document, entityInstance, contactMechanism.getPrimaryKey());
 
         return document;
     }

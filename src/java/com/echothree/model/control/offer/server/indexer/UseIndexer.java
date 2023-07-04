@@ -59,7 +59,8 @@ public class UseIndexer
     protected Document convertToDocument(final EntityInstance entityInstance, final Use use) {
         UseDetail useDetail = use.getLastDetail();
         String description = useControl.getBestUseDescription(use, language);
-        Document document = new Document();
+
+        var document = newDocumentWithEntityInstanceFields(entityInstance, use.getPrimaryKey());
 
         document.add(new Field(IndexFields.useName.name(), useDetail.getUseName(), FieldTypes.NOT_STORED_TOKENIZED));
         document.add(new SortedDocValuesField(IndexFields.useName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
@@ -70,8 +71,6 @@ public class UseIndexer
             document.add(new SortedDocValuesField(IndexFields.description.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
                     new BytesRef(description)));
         }
-
-        indexEntityInstanceFields(document, entityInstance, use.getPrimaryKey());
 
         return document;
     }

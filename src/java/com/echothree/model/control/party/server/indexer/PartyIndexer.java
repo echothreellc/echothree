@@ -67,7 +67,7 @@ public abstract class PartyIndexer
             String name = partyGroup == null ? null : partyGroup.getName();
             String entityName = getEntityNameFromParty(party);
 
-            document = new Document();
+            document = newDocumentWithEntityInstanceFields(entityInstance, party.getPrimaryKey());
             
             document.add(new Field(IndexFields.partyName.name(), partyDetail.getPartyName(), FieldTypes.NOT_STORED_NOT_TOKENIZED));
 
@@ -94,8 +94,6 @@ public abstract class PartyIndexer
                     document.add(new Field(IndexFields.lastName.name(), lastName, FieldTypes.NOT_STORED_TOKENIZED));
                 }
             }
-
-            indexEntityInstanceFields(document, entityInstance, party.getPrimaryKey());
         }
 
         return document;

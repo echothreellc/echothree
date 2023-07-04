@@ -60,7 +60,8 @@ public class SecurityRoleGroupIndexer
         SecurityRoleGroupDetail securityRoleGroupDetail = securityRoleGroup.getLastDetail();
         SecurityRoleGroup parentSecurityRoleGroup = securityRoleGroupDetail.getParentSecurityRoleGroup();
         String description = securityControl.getBestSecurityRoleGroupDescription(securityRoleGroup, language);
-        Document document = new Document();
+
+        var document = newDocumentWithEntityInstanceFields(document, entityInstance, securityRoleGroup.getPrimaryKey());
 
         document.add(new Field(IndexFields.securityRoleGroupName.name(), securityRoleGroupDetail.getSecurityRoleGroupName(), FieldTypes.NOT_STORED_TOKENIZED));
         document.add(new SortedDocValuesField(IndexFields.securityRoleGroupName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
@@ -75,8 +76,6 @@ public class SecurityRoleGroupIndexer
             document.add(new SortedDocValuesField(IndexFields.description.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
                     new BytesRef(description)));
         }
-
-        indexEntityInstanceFields(document, entityInstance, securityRoleGroup.getPrimaryKey());
 
         return document;
     }

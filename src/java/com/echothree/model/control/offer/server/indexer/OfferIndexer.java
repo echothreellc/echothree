@@ -59,7 +59,8 @@ public class OfferIndexer
     protected Document convertToDocument(final EntityInstance entityInstance, final Offer offer) {
         OfferDetail offerDetail = offer.getLastDetail();
         String description = offerControl.getBestOfferDescription(offer, language);
-        Document document = new Document();
+
+        var document = newDocumentWithEntityInstanceFields(entityInstance, offer.getPrimaryKey());
 
         document.add(new Field(IndexFields.offerName.name(), offerDetail.getOfferName(), FieldTypes.NOT_STORED_TOKENIZED));
         document.add(new SortedDocValuesField(IndexFields.offerName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
@@ -70,8 +71,6 @@ public class OfferIndexer
             document.add(new SortedDocValuesField(IndexFields.description.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
                     new BytesRef(description)));
         }
-
-        indexEntityInstanceFields(document, entityInstance, offer.getPrimaryKey());
 
         return document;
     }

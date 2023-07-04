@@ -91,7 +91,8 @@ public class ItemIndexer
         Long salesOrderEndTime = itemDetail.getSalesOrderEndTime();
         Long purchaseOrderStartTime = itemDetail.getPurchaseOrderStartTime();
         Long purchaseOrderEndTime = itemDetail.getPurchaseOrderEndTime();
-        Document document = new Document();
+
+        var document = newDocumentWithEntityInstanceFields(entityInstance, item.getPrimaryKey());
 
         document.add(new Field(IndexFields.itemName.name(), itemDetail.getItemName(), FieldTypes.NOT_STORED_TOKENIZED));
         document.add(new SortedDocValuesField(IndexFields.itemName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
@@ -151,8 +152,6 @@ public class ItemIndexer
         document.add(new Field(IndexFields.allowClubDiscounts.name(), itemDetail.getAllowClubDiscounts().toString(), FieldTypes.NOT_STORED_TOKENIZED));
         document.add(new Field(IndexFields.allowCouponDiscounts.name(), itemDetail.getAllowCouponDiscounts().toString(), FieldTypes.NOT_STORED_TOKENIZED));
         document.add(new Field(IndexFields.allowAssociatePayments.name(), itemDetail.getAllowAssociatePayments().toString(), FieldTypes.NOT_STORED_TOKENIZED));
-
-        indexEntityInstanceFields(document, entityInstance, item.getPrimaryKey());
 
         itemDescriptionTypes.forEach((itemDescriptionType) -> {
             ItemDescription itemDescription = itemControl.getBestItemDescription(itemDescriptionType, item, language);

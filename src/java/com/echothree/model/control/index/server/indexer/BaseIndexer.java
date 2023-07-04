@@ -336,7 +336,9 @@ public abstract class BaseIndexer<BE extends BaseEntity>
         }
     }
 
-    protected void indexEntityInstanceFields(final Document document, final EntityInstance entityInstance, final BasePK basePK) {
+    protected Document newDocumentWithEntityInstanceFields(final EntityInstance entityInstance, final BasePK basePK) {
+        var document = new Document();
+
         document.add(new Field(IndexFields.entityRef.name(), basePK.getEntityRef(), FieldTypes.STORED_NOT_TOKENIZED));
         document.add(new Field(IndexFields.entityInstanceId.name(), entityInstance.getPrimaryKey().getEntityId().toString(), FieldTypes.STORED_NOT_TOKENIZED));
 
@@ -345,6 +347,8 @@ public abstract class BaseIndexer<BE extends BaseEntity>
         indexEntityAttributes(document, entityInstance);
         indexEntityTags(document, entityInstance);
         indexEntityAppearance(document, entityInstance);
+
+        return document;
     }
 
     /**

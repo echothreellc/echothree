@@ -59,7 +59,8 @@ public class SecurityRoleIndexer
     protected Document convertToDocument(final EntityInstance entityInstance, final SecurityRole securityRole) {
         SecurityRoleDetail securityRoleDetail = securityRole.getLastDetail();
         String description = securityControl.getBestSecurityRoleDescription(securityRole, language);
-        Document document = new Document();
+
+        var document = newDocumentWithEntityInstanceFields(entityInstance, securityRole.getPrimaryKey());
 
         document.add(new Field(IndexFields.securityRoleGroupName.name(), securityRoleDetail.getSecurityRoleGroup().getLastDetail().getSecurityRoleGroupName(),
                 FieldTypes.NOT_STORED_TOKENIZED));
@@ -74,8 +75,6 @@ public class SecurityRoleIndexer
             document.add(new SortedDocValuesField(IndexFields.description.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
                     new BytesRef(description)));
         }
-
-        indexEntityInstanceFields(document, entityInstance, securityRole.getPrimaryKey());
 
         return document;
     }
