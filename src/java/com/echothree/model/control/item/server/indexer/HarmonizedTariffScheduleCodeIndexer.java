@@ -85,7 +85,7 @@ public class HarmonizedTariffScheduleCodeIndexer
             }
         }
 
-        indexEntityInstanceFields(document, harmonizedTariffScheduleCode.getPrimaryKey(), entityInstance);
+        indexEntityInstanceFields(document, entityInstance, harmonizedTariffScheduleCode.getPrimaryKey());
 
         return document;
     }

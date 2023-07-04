@@ -25,7 +25,6 @@ import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.server.analysis.ContactMechanismAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
 import com.echothree.model.control.index.server.indexer.FieldTypes;
-import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.contact.server.entity.ContactEmailAddress;
 import com.echothree.model.data.contact.server.entity.ContactInet4Address;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;
@@ -289,7 +288,7 @@ public class ContactMechanismIndexer
         addPartiesToDocument(document, contactMechanism);
         addContactMechanismToDocument(document, contactMechanism, language);
 
-        indexEntityInstanceFields(document, contactMechanism.getPrimaryKey(), entityInstance);
+        indexEntityInstanceFields(document, entityInstance, contactMechanism.getPrimaryKey());
 
         return document;
     }

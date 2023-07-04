@@ -71,7 +71,7 @@ public class OfferIndexer
                     new BytesRef(description)));
         }
 
-        indexEntityInstanceFields(document, offer.getPrimaryKey(), entityInstance);
+        indexEntityInstanceFields(document, entityInstance, offer.getPrimaryKey());
 
         return document;
     }

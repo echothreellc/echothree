@@ -84,7 +84,7 @@ public class EntityListItemIndexer
                     new BytesRef(description)));
         }
 
-        indexEntityInstanceFields(document, entityListItem.getPrimaryKey(), entityInstance);
+        indexEntityInstanceFields(document, entityInstance, entityListItem.getPrimaryKey());
 
         return document;
     }

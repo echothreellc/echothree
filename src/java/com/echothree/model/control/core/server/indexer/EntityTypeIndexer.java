@@ -74,7 +74,7 @@ public class EntityTypeIndexer
                     new BytesRef(description)));
         }
 
-        indexEntityInstanceFields(document, entityType.getPrimaryKey(), entityInstance);
+        indexEntityInstanceFields(document, entityInstance, entityType.getPrimaryKey());
 
         return document;
     }

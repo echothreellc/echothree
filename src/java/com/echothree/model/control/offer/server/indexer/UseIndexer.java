@@ -71,7 +71,7 @@ public class UseIndexer
                     new BytesRef(description)));
         }
 
-        indexEntityInstanceFields(document, use.getPrimaryKey(), entityInstance);
+        indexEntityInstanceFields(document, entityInstance, use.getPrimaryKey());
 
         return document;
     }

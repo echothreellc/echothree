@@ -76,7 +76,7 @@ public class SecurityRoleGroupIndexer
                     new BytesRef(description)));
         }
 
-        indexEntityInstanceFields(document, securityRoleGroup.getPrimaryKey(), entityInstance);
+        indexEntityInstanceFields(document, entityInstance, securityRoleGroup.getPrimaryKey());
 
         return document;
     }

@@ -95,7 +95,7 @@ public abstract class PartyIndexer
                 }
             }
 
-            indexEntityInstanceFields(document, party.getPrimaryKey(), entityInstance);
+            indexEntityInstanceFields(document, entityInstance, party.getPrimaryKey());
         }
 
         return document;

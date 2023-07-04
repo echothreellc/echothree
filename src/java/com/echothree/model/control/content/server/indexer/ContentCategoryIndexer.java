@@ -85,7 +85,7 @@ public class ContentCategoryIndexer
                     new BytesRef(description)));
         }
 
-        indexEntityInstanceFields(document, contentCategory.getPrimaryKey(), entityInstance);
+        indexEntityInstanceFields(document, entityInstance, contentCategory.getPrimaryKey());
 
         return document;
     }

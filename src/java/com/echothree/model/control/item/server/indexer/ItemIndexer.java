@@ -152,7 +152,7 @@ public class ItemIndexer
         document.add(new Field(IndexFields.allowCouponDiscounts.name(), itemDetail.getAllowCouponDiscounts().toString(), FieldTypes.NOT_STORED_TOKENIZED));
         document.add(new Field(IndexFields.allowAssociatePayments.name(), itemDetail.getAllowAssociatePayments().toString(), FieldTypes.NOT_STORED_TOKENIZED));
 
-        indexEntityInstanceFields(document, item.getPrimaryKey(), entityInstance);
+        indexEntityInstanceFields(document, entityInstance, item.getPrimaryKey());
 
         itemDescriptionTypes.forEach((itemDescriptionType) -> {
             ItemDescription itemDescription = itemControl.getBestItemDescription(itemDescriptionType, item, language);

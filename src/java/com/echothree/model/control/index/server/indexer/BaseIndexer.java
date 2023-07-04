@@ -336,7 +336,7 @@ public abstract class BaseIndexer<BE extends BaseEntity>
         }
     }
 
-    protected void indexEntityInstanceFields(final Document document, final BasePK basePK, final EntityInstance entityInstance) {
+    protected void indexEntityInstanceFields(final Document document, final EntityInstance entityInstance, final BasePK basePK) {
         document.add(new Field(IndexFields.entityRef.name(), basePK.getEntityRef(), FieldTypes.STORED_NOT_TOKENIZED));
         document.add(new Field(IndexFields.entityInstanceId.name(), entityInstance.getPrimaryKey().getEntityId().toString(), FieldTypes.STORED_NOT_TOKENIZED));
 
