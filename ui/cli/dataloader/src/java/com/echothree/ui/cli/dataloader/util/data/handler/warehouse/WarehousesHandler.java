@@ -48,7 +48,7 @@ public class WarehousesHandler
 
     @Override
     public void startElement(String namespaceURI, String localName, String qName, Attributes attrs)
-            throws SAXException {
+            throws SAXException, NamingException {
         if(localName.equals("warehouse")) {
             CreateWarehouseForm commandForm = WarehouseFormFactory.getCreateWarehouseForm();
 
