@@ -393,6 +393,11 @@
             <c:set var="partyCarrierAccounts" scope="request" value="${vendor.partyCarrierAccounts}" />
             <jsp:include page="../../include/partyCarrierAccounts.jsp" />
 
+            <c:set var="commonUrl" scope="request" value="Purchasing/VendorAlias" />
+            <c:set var="partyAliases" scope="request" value="${vendor.partyAliases}" />
+            <c:set var="securityRoleGroupNamePrefix" scope="request" value="Vendor" />
+            <jsp:include page="../../include/partyAliases.jsp" />
+            
             <c:set var="tagScopes" scope="request" value="${vendor.tagScopes}" />
             <c:set var="entityAttributeGroups" scope="request" value="${vendor.entityAttributeGroups}" />
             <c:set var="entityInstance" scope="request" value="${vendor.entityInstance}" />
