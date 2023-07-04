@@ -59,10 +59,8 @@ public class UseTypeIndexer
     protected Document convertToDocument(final EntityInstance entityInstance, final UseType useType) {
         UseTypeDetail useTypeDetail = useType.getLastDetail();
         String description = useTypeControl.getBestUseTypeDescription(useType, language);
-        Document document = new Document();
 
-        document.add(new Field(IndexFields.entityRef.name(), useType.getPrimaryKey().getEntityRef(), FieldTypes.STORED_NOT_TOKENIZED));
-        document.add(new Field(IndexFields.entityInstanceId.name(), entityInstance.getPrimaryKey().getEntityId().toString(), FieldTypes.STORED_NOT_TOKENIZED));
+        var document = newDocumentWithEntityInstanceFields(entityInstance, useType.getPrimaryKey());
 
         document.add(new Field(IndexFields.useTypeName.name(), useTypeDetail.getUseTypeName(), FieldTypes.NOT_STORED_TOKENIZED));
         document.add(new SortedDocValuesField(IndexFields.useTypeName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
@@ -73,11 +71,6 @@ public class UseTypeIndexer
             document.add(new SortedDocValuesField(IndexFields.description.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
                     new BytesRef(description)));
         }
-        
-        indexWorkflowEntityStatuses(document, entityInstance);
-        indexEntityTimes(document, entityInstance);
-        indexEntityAttributes(document, entityInstance);
-        indexEntityTags(document, entityInstance);
 
         return document;
     }

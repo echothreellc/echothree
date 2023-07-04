@@ -67,10 +67,7 @@ public abstract class PartyIndexer
             String name = partyGroup == null ? null : partyGroup.getName();
             String entityName = getEntityNameFromParty(party);
 
-            document = new Document();
-            
-            document.add(new Field(IndexFields.entityRef.name(), party.getPrimaryKey().getEntityRef(), FieldTypes.STORED_NOT_TOKENIZED));
-        document.add(new Field(IndexFields.entityInstanceId.name(), entityInstance.getPrimaryKey().getEntityId().toString(), FieldTypes.STORED_NOT_TOKENIZED));
+            document = newDocumentWithEntityInstanceFields(entityInstance, party.getPrimaryKey());
             
             document.add(new Field(IndexFields.partyName.name(), partyDetail.getPartyName(), FieldTypes.NOT_STORED_NOT_TOKENIZED));
 
@@ -97,11 +94,6 @@ public abstract class PartyIndexer
                     document.add(new Field(IndexFields.lastName.name(), lastName, FieldTypes.NOT_STORED_TOKENIZED));
                 }
             }
-
-            indexWorkflowEntityStatuses(document, entityInstance);
-            indexEntityTimes(document, entityInstance);
-            indexEntityAttributes(document, entityInstance);
-            indexEntityTags(document, entityInstance);
         }
 
         return document;

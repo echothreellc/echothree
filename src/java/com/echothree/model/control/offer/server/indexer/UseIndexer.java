@@ -59,10 +59,8 @@ public class UseIndexer
     protected Document convertToDocument(final EntityInstance entityInstance, final Use use) {
         UseDetail useDetail = use.getLastDetail();
         String description = useControl.getBestUseDescription(use, language);
-        Document document = new Document();
 
-        document.add(new Field(IndexFields.entityRef.name(), use.getPrimaryKey().getEntityRef(), FieldTypes.STORED_NOT_TOKENIZED));
-        document.add(new Field(IndexFields.entityInstanceId.name(), entityInstance.getPrimaryKey().getEntityId().toString(), FieldTypes.STORED_NOT_TOKENIZED));
+        var document = newDocumentWithEntityInstanceFields(entityInstance, use.getPrimaryKey());
 
         document.add(new Field(IndexFields.useName.name(), useDetail.getUseName(), FieldTypes.NOT_STORED_TOKENIZED));
         document.add(new SortedDocValuesField(IndexFields.useName.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
@@ -73,11 +71,6 @@ public class UseIndexer
             document.add(new SortedDocValuesField(IndexFields.description.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
                     new BytesRef(description)));
         }
-        
-        indexWorkflowEntityStatuses(document, entityInstance);
-        indexEntityTimes(document, entityInstance);
-        indexEntityAttributes(document, entityInstance);
-        indexEntityTags(document, entityInstance);
 
         return document;
     }

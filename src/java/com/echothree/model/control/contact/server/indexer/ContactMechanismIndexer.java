@@ -25,7 +25,6 @@ import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.server.analysis.ContactMechanismAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
 import com.echothree.model.control.index.server.indexer.FieldTypes;
-import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.contact.server.entity.ContactEmailAddress;
 import com.echothree.model.data.contact.server.entity.ContactInet4Address;
 import com.echothree.model.data.contact.server.entity.ContactMechanism;
@@ -284,18 +283,10 @@ public class ContactMechanismIndexer
     
     @Override
     protected Document convertToDocument(final EntityInstance entityInstance, final ContactMechanism contactMechanism) {
-        Document document = new Document();
+        var document = newDocumentWithEntityInstanceFields(entityInstance, contactMechanism.getPrimaryKey());
 
-        document.add(new Field(IndexFields.entityRef.name(), contactMechanism.getPrimaryKey().getEntityRef(), FieldTypes.STORED_NOT_TOKENIZED));
-        document.add(new Field(IndexFields.entityInstanceId.name(), entityInstance.getPrimaryKey().getEntityId().toString(), FieldTypes.STORED_NOT_TOKENIZED));
-        
         addPartiesToDocument(document, contactMechanism);
         addContactMechanismToDocument(document, contactMechanism, language);
-        
-        indexWorkflowEntityStatuses(document, entityInstance);
-        indexEntityTimes(document, entityInstance);
-        indexEntityAttributes(document, entityInstance);
-        indexEntityTags(document, entityInstance);
 
         return document;
     }

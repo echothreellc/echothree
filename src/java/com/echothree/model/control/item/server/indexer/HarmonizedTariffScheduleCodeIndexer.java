@@ -61,10 +61,8 @@ public class HarmonizedTariffScheduleCodeIndexer
     protected Document convertToDocument(final EntityInstance entityInstance, final HarmonizedTariffScheduleCode harmonizedTariffScheduleCode) {
         HarmonizedTariffScheduleCodeDetail harmonizedTariffScheduleCodeDetail = harmonizedTariffScheduleCode.getLastDetail();
         HarmonizedTariffScheduleCodeTranslation harmonizedTariffScheduleCodeTranslation = itemControl.getBestHarmonizedTariffScheduleCodeTranslation(harmonizedTariffScheduleCode, language);
-        Document document = new Document();
 
-        document.add(new Field(IndexFields.entityRef.name(), harmonizedTariffScheduleCode.getPrimaryKey().getEntityRef(), FieldTypes.STORED_NOT_TOKENIZED));
-        document.add(new Field(IndexFields.entityInstanceId.name(), entityInstance.getPrimaryKey().getEntityId().toString(), FieldTypes.STORED_NOT_TOKENIZED));
+        var document = newDocumentWithEntityInstanceFields(entityInstance, harmonizedTariffScheduleCode.getPrimaryKey());
 
         document.add(new Field(IndexFields.countryGeoCodeName.name(), harmonizedTariffScheduleCodeDetail.getCountryGeoCode().getLastDetail().getGeoCodeName(), FieldTypes.NOT_STORED_TOKENIZED));
         
@@ -87,11 +85,6 @@ public class HarmonizedTariffScheduleCodeIndexer
                 }
             }
         }
-        
-        indexWorkflowEntityStatuses(document, entityInstance);
-        indexEntityTimes(document, entityInstance);
-        indexEntityAttributes(document, entityInstance);
-        indexEntityTags(document, entityInstance);
 
         return document;
     }

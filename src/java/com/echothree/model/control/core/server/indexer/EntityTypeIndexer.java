@@ -55,10 +55,8 @@ public class EntityTypeIndexer
     protected Document convertToDocument(final EntityInstance entityInstance, final EntityType entityType) {
         EntityTypeDetail entityTypeDetail = entityType.getLastDetail();
         String description = coreControl.getBestEntityTypeDescription(entityType, language);
-        Document document = new Document();
 
-        document.add(new Field(IndexFields.entityRef.name(), entityType.getPrimaryKey().getEntityRef(), FieldTypes.STORED_NOT_TOKENIZED));
-        document.add(new Field(IndexFields.entityInstanceId.name(), entityInstance.getPrimaryKey().getEntityId().toString(), FieldTypes.STORED_NOT_TOKENIZED));
+        var document = newDocumentWithEntityInstanceFields(entityInstance, entityType.getPrimaryKey());
 
         document.add(new Field(IndexFields.componentVendorName.name(),
                 entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(), FieldTypes.NOT_STORED_TOKENIZED));
@@ -76,11 +74,6 @@ public class EntityTypeIndexer
             document.add(new SortedDocValuesField(IndexFields.description.name() + IndexConstants.INDEX_FIELD_VARIATION_SEPARATOR + IndexFieldVariations.sortable.name(),
                     new BytesRef(description)));
         }
-        
-        indexWorkflowEntityStatuses(document, entityInstance);
-        indexEntityTimes(document, entityInstance);
-        indexEntityAttributes(document, entityInstance);
-        indexEntityTags(document, entityInstance);
 
         return document;
     }
