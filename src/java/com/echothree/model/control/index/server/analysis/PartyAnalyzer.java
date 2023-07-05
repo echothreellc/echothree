@@ -38,7 +38,7 @@ public class PartyAnalyzer
         extends BasicAnalyzer {
 
     private PartyType partyType;
-    String entityNameIndexField;
+    private String entityNameIndexField;
 
     private void init(final PartyType partyType, final String entityNameIndexField) {
         this.partyType = partyType;
