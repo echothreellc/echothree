@@ -77,10 +77,10 @@ public abstract class PartyIndexer
 
             document = newDocumentWithEntityInstanceFields(entityInstance, party.getPrimaryKey());
             
-            document.add(new Field(IndexFields.partyName.name(), partyDetail.getPartyName(), FieldTypes.NOT_STORED_NOT_TOKENIZED));
+            document.add(new Field(IndexFields.partyName.name(), partyDetail.getPartyName(), FieldTypes.NOT_STORED_TOKENIZED));
 
             if(entityName != null) {
-                document.add(new Field(entityNameIndexField, entityName, FieldTypes.NOT_STORED_NOT_TOKENIZED));
+                document.add(new Field(entityNameIndexField, entityName, FieldTypes.NOT_STORED_TOKENIZED));
             }
 
             if(name != null) {
