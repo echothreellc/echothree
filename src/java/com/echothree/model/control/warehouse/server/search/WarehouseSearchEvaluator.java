@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.warehouse.server.search;
 
+import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.common.Indexes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.search.PartySearchEvaluator;
@@ -36,9 +37,10 @@ public class WarehouseSearchEvaluator
     private String warehouseName;
     
     /** Creates a new instance of WarehouseSearchEvaluator */
-    public WarehouseSearchEvaluator(UserVisit userVisit, SearchType searchType, SearchDefaultOperator searchDefaultOperator, SearchSortOrder searchSortOrder,
-            SearchSortDirection searchSortDirection) {
-        super(userVisit, searchType, searchDefaultOperator, searchSortOrder, searchSortDirection, PartyTypes.WAREHOUSE.name(), Indexes.WAREHOUSE.name());
+    public WarehouseSearchEvaluator(UserVisit userVisit, SearchType searchType, SearchDefaultOperator searchDefaultOperator,
+            SearchSortOrder searchSortOrder, SearchSortDirection searchSortDirection) {
+        super(userVisit, searchType, searchDefaultOperator, searchSortOrder, searchSortDirection, PartyTypes.WAREHOUSE.name(),
+                IndexFields.warehouseName.name(), Indexes.WAREHOUSE.name());
     }
     
     public String getWarehouseName() {

@@ -19,12 +19,15 @@ package com.echothree.model.control.party.server.search;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.index.common.IndexFields;
+import com.echothree.model.control.index.server.analysis.ItemAnalyzer;
+import com.echothree.model.control.index.server.analysis.PartyAnalyzer;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.search.server.search.BaseSearchEvaluator;
 import com.echothree.model.control.search.server.search.EntityInstancePKHolder;
 import com.echothree.model.data.core.server.factory.EntityInstanceFactory;
 import com.echothree.model.data.geo.server.entity.GeoCode;
+import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyAliasType;
 import com.echothree.model.data.party.server.entity.PartyType;
@@ -35,11 +38,13 @@ import com.echothree.model.data.search.server.entity.SearchType;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import org.apache.lucene.analysis.Analyzer;
 
 public class PartySearchEvaluator
         extends BaseSearchEvaluator {
     
     protected PartyType partyType;
+    protected String entityNameIndexField;
     private String firstName;
     private Boolean firstNameSoundex;
     private String middleName;
@@ -56,11 +61,12 @@ public class PartySearchEvaluator
     private String alias;
     
     protected PartySearchEvaluator(UserVisit userVisit, SearchType searchType, SearchDefaultOperator searchDefaultOperator, SearchSortOrder searchSortOrder,
-            SearchSortDirection searchSortDirection, String partyTypeName, String indexName) {
+            SearchSortDirection searchSortDirection, String partyTypeName, final String entityNameIndexField, String indexName) {
         super(userVisit, searchDefaultOperator, searchType, searchSortOrder, searchSortDirection, null, ComponentVendors.ECHO_THREE.name(),
                 EntityTypes.Party.name(), null, null, indexName);
         
         this.partyType = PartyLogic.getInstance().getPartyTypeByName(null, partyTypeName);
+        this.entityNameIndexField = entityNameIndexField;
         
         setField(IndexFields.name.name());
     }
@@ -321,6 +327,11 @@ public class PartySearchEvaluator
 
     public void setAlias(String alias) {
         this.alias = alias;
+    }
+
+    @Override
+    public Analyzer getAnalyzer(final ExecutionErrorAccumulator eea, final Language language) {
+        return new PartyAnalyzer(eea, language, entityType, partyType, entityNameIndexField);
     }
 
     /** Subclasses should override and always call their super's executeSearch() */
