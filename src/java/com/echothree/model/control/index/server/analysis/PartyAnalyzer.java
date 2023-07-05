@@ -1,0 +1,83 @@
+// --------------------------------------------------------------------------------
+// Copyright 2002-2023 Echo Three, LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+// --------------------------------------------------------------------------------
+
+package com.echothree.model.control.index.server.analysis;
+
+import com.echothree.model.control.core.common.MimeTypeUsageTypes;
+import com.echothree.model.control.index.common.IndexConstants;
+import com.echothree.model.control.index.common.IndexFieldVariations;
+import com.echothree.model.control.index.common.IndexFields;
+import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.data.core.server.entity.EntityAttribute;
+import com.echothree.model.data.core.server.entity.EntityType;
+import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
+import com.echothree.model.data.party.server.entity.Language;
+import com.echothree.model.data.party.server.entity.PartyType;
+import com.echothree.model.data.tag.server.entity.TagScope;
+import com.echothree.util.server.message.ExecutionErrorAccumulator;
+import com.echothree.util.server.persistence.Session;
+import java.util.List;
+import java.util.Map;
+import org.apache.lucene.analysis.Analyzer;
+
+public class PartyAnalyzer
+        extends BasicAnalyzer {
+
+    private PartyType partyType;
+    String entityNameIndexField;
+
+    private void init(final PartyType partyType, final String entityNameIndexField) {
+        this.partyType = partyType;
+        this.entityNameIndexField = entityNameIndexField;
+    }
+
+    public PartyAnalyzer(final ExecutionErrorAccumulator eea, final Language language, final EntityType entityType,
+            final List<EntityAttribute> entityAttributes, final List<TagScope> tagScopes, final PartyType partyType,
+            final String entityNameIndexField) {
+        super(eea, language, entityType, entityAttributes, tagScopes);
+
+        init(partyType, entityNameIndexField);
+    }
+
+    public PartyAnalyzer(final ExecutionErrorAccumulator eea, final Language language, final EntityType entityType,
+            final PartyType partyType, final String entityNameIndexField) {
+        super(eea, language, entityType);
+
+        init(partyType, entityNameIndexField);
+    }
+    
+    protected Map<String, Analyzer> getPartyAliasTypeAnalyzers(final Map<String, Analyzer> fieldAnalyzers) {
+        var partyControl = Session.getModelController(PartyControl.class);
+
+        partyControl.getPartyAliasTypes(partyType).stream().forEach((partyAliasType)->
+                fieldAnalyzers.put(partyAliasType.getLastDetail().getPartyAliasTypeName(),
+                        new WhitespaceLowerCaseAnalyzer()));
+        
+        return fieldAnalyzers;
+    }
+    
+    @Override
+    protected Map<String, Analyzer> getEntityTypeAnalyzers(final Map<String, Analyzer> fieldAnalyzers) {
+        super.getEntityTypeAnalyzers(fieldAnalyzers);
+        
+        fieldAnalyzers.put(IndexFields.partyName.name(), new WhitespaceLowerCaseAnalyzer());
+        fieldAnalyzers.put(entityNameIndexField, new WhitespaceLowerCaseAnalyzer());
+
+        return getPartyAliasTypeAnalyzers(fieldAnalyzers);
+    }
+    
+}

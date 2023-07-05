@@ -17,6 +17,7 @@
 package com.echothree.model.control.party.server.indexer;
 
 import com.echothree.model.control.index.common.IndexFields;
+import com.echothree.model.control.index.server.analysis.PartyAnalyzer;
 import com.echothree.model.control.index.server.indexer.BaseIndexer;
 import com.echothree.model.control.index.server.indexer.FieldTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
@@ -30,6 +31,7 @@ import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.party.server.entity.Person;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 
@@ -53,7 +55,12 @@ public abstract class PartyIndexer
         return partyControl.getPartyByEntityInstance(entityInstance);
 
     }
-    
+
+    @Override
+    protected Analyzer getAnalyzer() {
+        return new PartyAnalyzer(eea, language, entityType, entityAttributes, tagScopes, partyType, entityNameIndexField);
+    }
+
     protected abstract String getEntityNameFromParty(final Party party);
     
     @Override
