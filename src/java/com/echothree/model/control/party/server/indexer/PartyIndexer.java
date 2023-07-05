@@ -73,6 +73,7 @@ public abstract class PartyIndexer
             Person person = partyControl.getPerson(party);
             String name = partyGroup == null ? null : partyGroup.getName();
             String entityName = getEntityNameFromParty(party);
+            var partyAliases = partyControl.getPartyAliasesByParty(party);
 
             document = newDocumentWithEntityInstanceFields(entityInstance, party.getPrimaryKey());
             
@@ -100,6 +101,10 @@ public abstract class PartyIndexer
                 if(lastName != null) {
                     document.add(new Field(IndexFields.lastName.name(), lastName, FieldTypes.NOT_STORED_TOKENIZED));
                 }
+            }
+
+            for(var partyAlias : partyAliases) {
+                document.add(new Field(partyAlias.getPartyAliasType().getLastDetail().getPartyAliasTypeName(), partyAlias.getAlias(), FieldTypes.NOT_STORED_TOKENIZED));
             }
         }
 
