@@ -48,14 +48,38 @@ public class BasicAnalyzer
         extends AnalyzerWrapper {
     
     protected Log log = LogFactory.getLog(this.getClass());
-    
+
+    private ExecutionErrorAccumulator eea;
+    private EntityType entityType;
+    private List<EntityAttribute> entityAttributes;
+    private List<TagScope> tagScopes;
+
     private Analyzer defaultAnalyzer;
-    private Map<String, Analyzer> fieldAnalyzers;
+    private Map<String, Analyzer> cachedFieldAnalyzers = null;
 
     private void init(final ExecutionErrorAccumulator eea, final Language language, final EntityType entityType, final List<EntityAttribute> entityAttributes,
             final List<TagScope> tagScopes) {
+        this.eea = eea;
+        this.entityType = entityType;
+        this.entityAttributes = entityAttributes;
+        this.tagScopes = tagScopes;
+
         defaultAnalyzer = getDefaultAnalyzer(eea, language);
-        fieldAnalyzers = getFieldAnalyzers(eea, entityType, entityAttributes, tagScopes);
+    }
+
+    @Override
+    public void close() {
+        super.close();
+        
+        defaultAnalyzer.close();
+        defaultAnalyzer = null;
+
+        if(cachedFieldAnalyzers != null) {
+            for(var cachedFieldAnalyzer : cachedFieldAnalyzers.values()) {
+                cachedFieldAnalyzer.close();
+            }
+            cachedFieldAnalyzers = null;
+        }
     }
     
     public BasicAnalyzer(final ExecutionErrorAccumulator eea, final Language language, final EntityType entityType, final List<EntityAttribute> entityAttributes,
@@ -76,7 +100,12 @@ public class BasicAnalyzer
 
     @Override
     protected Analyzer getWrappedAnalyzer(String fieldName) {
-        Analyzer analyzer = fieldAnalyzers.get(fieldName);
+        // Hold a cache of Analyzers.
+        if(cachedFieldAnalyzers == null) {
+            cachedFieldAnalyzers = getFieldAnalyzers(eea, entityType, entityAttributes, tagScopes);
+        }
+
+        var analyzer = cachedFieldAnalyzers.get(fieldName);
         
         return (analyzer != null) ? analyzer : defaultAnalyzer;
     }
@@ -88,7 +117,7 @@ public class BasicAnalyzer
 
     @Override
     public String toString() {
-        return "PerFieldAnalyzerWrapper(" + fieldAnalyzers + ", default=" + defaultAnalyzer + ")";
+        return "BasicAnalyzer(" + cachedFieldAnalyzers + ", default=" + defaultAnalyzer + ")";
     }
 
     private Analyzer getDefaultAnalyzer(final ExecutionErrorAccumulator eea, final Language language) {
