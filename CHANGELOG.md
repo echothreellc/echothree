@@ -1,5 +1,18 @@
 # Changelog
 
+## 2023-07-09-01
+
+* NullPointerException Attempting to Index ContactMechanism [457](https://gitlab.echothree.com/echothree/echothree/-/issues/457)
+* Add Indexing and Searching of Party Aliases [806](https://gitlab.echothree.com/echothree/echothree/-/issues/806)
+* Add Party Aliases to Vendors [815](https://gitlab.echothree.com/echothree/echothree/-/issues/815)
+* Add Party Aliases to Employees [816](https://gitlab.echothree.com/echothree/echothree/-/issues/816)
+* Add Party Alias Type Mutations [818](https://gitlab.echothree.com/echothree/echothree/-/issues/818)
+* Add Party Alias Mutations [819](https://gitlab.echothree.com/echothree/echothree/-/issues/819)
+* Add Entity Appearance Field to Indexes [826](https://gitlab.echothree.com/echothree/echothree/-/issues/826)
+* Guava 32.1.1-jre Upgrade [827](https://gitlab.echothree.com/echothree/echothree/-/issues/827)
+* Simplify BaseObject [828](https://gitlab.echothree.com/echothree/echothree/-/issues/828)
+* Apache Lucene 9.7.0 Upgrade [829](https://gitlab.echothree.com/echothree/echothree/-/issues/829)
+
 ## 2023-06-25-01
 
 * Add "Is Extensible" Column to Entity Types [784](https://gitlab.echothree.com/echothree/echothree/-/issues/784)
