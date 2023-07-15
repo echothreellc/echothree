@@ -1637,6 +1637,7 @@ public enum ExecutionErrors {
     UnknownPartyAliasTypeDescription,
     DuplicatePartyAlias,
     UnknownPartyAlias,
+    UnknownPartyAliasByAlias,
     DuplicateBatchAlias,
     UnknownBatchAlias,
     DuplicateEntityTimeAttribute,

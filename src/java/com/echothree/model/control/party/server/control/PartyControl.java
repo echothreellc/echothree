@@ -2638,10 +2638,10 @@ public class PartyControl
 
         queryMap.put(EntityPermission.READ_ONLY,
                 "SELECT _ALL_ " +
-                "FROM partyaliases, partyes, partydetails " +
+                "FROM partyaliases, parties, partydetails " +
                 "WHERE pal_pat_partyaliastypeid = ? AND pal_thrutime = ? " +
-                "AND pal_par_partyid = par_partyid AND p_lastdetailid = pdt_partydetailid " +
-                "ORDER BY lang_sortorder, lang_languageisoname " +
+                "AND pal_par_partyid = par_partyid AND par_lastdetailid = pardt_partydetailid " +
+                "ORDER BY pardt_par_partyid " +
                 "_LIMIT_");
         queryMap.put(EntityPermission.READ_WRITE,
                 "SELECT _ALL_ " +

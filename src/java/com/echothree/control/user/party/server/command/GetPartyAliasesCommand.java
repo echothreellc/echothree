@@ -21,13 +21,16 @@ import com.echothree.control.user.party.common.result.PartyResultFactory;
 import com.echothree.control.user.party.server.command.util.PartyAliasUtil;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.party.server.logic.PartyAliasTypeLogic;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyAlias;
+import com.echothree.model.data.party.server.entity.PartyAliasType;
 import com.echothree.model.data.party.server.factory.PartyAliasFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
@@ -45,7 +48,9 @@ public class GetPartyAliasesCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("PartyTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("PartyAliasTypeName", FieldType.ENTITY_NAME, false, null, null)
         );
     }
     
@@ -54,20 +59,46 @@ public class GetPartyAliasesCommand
         super(userVisitPK, form, new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                        new SecurityRoleDefinition(PartyAliasUtil.getInstance().getSecurityRoleGroupNameByPartySpec(form), SecurityRoles.List.name())
+                        new SecurityRoleDefinition(PartyAliasUtil.getInstance().getSecurityRoleGroupNameBySpecs(form, form), SecurityRoles.List.name())
                 ))
         )), FORM_FIELD_DEFINITIONS, false);
     }
 
     Party party;
+    PartyAliasType partyAliasType;
 
     @Override
     protected Collection<PartyAlias> getEntities() {
-        var partyControl = Session.getModelController(PartyControl.class);
+        var partyName = form.getPartyName();
+        var partyTypeName = form.getPartyTypeName();
+        var partyAliasTypeName = form.getPartyAliasTypeName();
+        // Must specify either PartyName or PartyTypeName + PartyAliasTypeName
+        var parameterOption1 = (partyName != null) && (partyTypeName == null) && (partyAliasTypeName == null );
+        var parameterOption2 = (partyName == null) && (partyTypeName != null) && (partyAliasTypeName != null );
+        var parameterCount = (parameterOption1 ? 1 : 0) + (parameterOption2 ? 1 : 0);
+        Collection<PartyAlias> partyAliases = null;
 
-        party = PartyLogic.getInstance().getPartyByName(this, form.getPartyName());
+        if(parameterCount == 1) {
+            var partyControl = Session.getModelController(PartyControl.class);
 
-        return hasExecutionErrors() ? null : partyControl.getPartyAliasesByParty(party);
+            if(parameterOption1) {
+                party = PartyLogic.getInstance().getPartyByName(this, form.getPartyName());
+
+                if(!hasExecutionErrors()) {
+                    partyAliases = partyControl.getPartyAliasesByParty(party);
+                }
+            } else {
+                partyAliasType = PartyAliasTypeLogic.getInstance().getPartyAliasTypeByName(this, partyTypeName, partyAliasTypeName);
+
+                if(!hasExecutionErrors()) {
+                    partyAliases = partyControl.getPartyAliasesByPartyAliasType(partyAliasType);
+                }
+            }
+        } else {
+            addExecutionError(ExecutionErrors.InvalidParameterCount.name());
+        }
+
+        return partyAliases;
     }
 
     @Override
@@ -78,10 +109,21 @@ public class GetPartyAliasesCommand
             var partyControl = Session.getModelController(PartyControl.class);
 
             if(session.hasLimit(PartyAliasFactory.class)) {
-                result.setPartyAliasCount(partyControl.countPartyAliasesByParty(party));
+                if(party != null) {
+                    result.setPartyAliasCount(partyControl.countPartyAliasesByParty(party));
+                } else {
+                    result.setPartyAliasCount(partyControl.countPartyAliasesByPartyAliasType(partyAliasType));
+                }
             }
 
-            result.setParty(partyControl.getPartyTransfer(getUserVisit(), party));
+            if(party != null) {
+                result.setParty(partyControl.getPartyTransfer(getUserVisit(), party));
+            }
+
+            if(partyAliasType != null) {
+                result.setPartyAliasType(partyControl.getPartyAliasTypeTransfer(getUserVisit(), partyAliasType));
+            }
+
             result.setPartyAliases(partyControl.getPartyAliasTransfers(getUserVisit(), entities));
         }
 

@@ -20,7 +20,8 @@ import com.echothree.control.user.party.common.spec.PartyAliasSpec;
 
 public interface GetPartyAliasForm
         extends PartyAliasSpec {
-    
-    // Nothing additional beyond PartyAliasSpec
+
+    String getAlias();
+    void setAlias(String alias);
     
 }

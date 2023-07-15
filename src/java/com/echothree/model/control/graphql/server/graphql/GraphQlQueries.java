@@ -6195,15 +6195,19 @@ public final class GraphQlQueries
     @GraphQLField
     @GraphQLName("partyAlias")
     public static PartyAliasObject partyAlias(final DataFetchingEnvironment env,
-            @GraphQLName("partyName") @GraphQLNonNull final String partyName,
-            @GraphQLName("partyAliasName") @GraphQLNonNull final String partyAliasName) {
+            @GraphQLName("partyName") final String partyName,
+            @GraphQLName("partyTypeName") final String partyTypeName,
+            @GraphQLName("partyAliasTypeName") final String partyAliasTypeName,
+            @GraphQLName("alias") final String alias) {
         PartyAlias partyAlias;
 
         try {
             var commandForm = PartyUtil.getHome().getGetPartyAliasForm();
 
             commandForm.setPartyName(partyName);
-            commandForm.setPartyAliasTypeName(partyAliasName);
+            commandForm.setPartyTypeName(partyTypeName);
+            commandForm.setPartyAliasTypeName(partyAliasTypeName);
+            commandForm.setAlias(alias);
 
             partyAlias = new GetPartyAliasCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
@@ -6216,7 +6220,9 @@ public final class GraphQlQueries
     @GraphQLField
     @GraphQLName("partyAliases")
     public static Collection<PartyAliasObject> partyAliases(final DataFetchingEnvironment env,
-            @GraphQLName("partyName") @GraphQLNonNull final String partyName) {
+            @GraphQLName("partyName") final String partyName,
+            @GraphQLName("partyTypeName") final String partyTypeName,
+            @GraphQLName("partyAliasTypeName") final String partyAliasTypeName) {
         Collection<PartyAlias> partyAliases;
         Collection<PartyAliasObject> partyAliasObjects;
 
@@ -6224,6 +6230,8 @@ public final class GraphQlQueries
             var commandForm = PartyUtil.getHome().getGetPartyAliasesForm();
 
             commandForm.setPartyName(partyName);
+            commandForm.setPartyTypeName(partyTypeName);
+            commandForm.setPartyAliasTypeName(partyAliasTypeName);
 
             partyAliases = new GetPartyAliasesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {

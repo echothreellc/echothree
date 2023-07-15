@@ -17,6 +17,7 @@
 package com.echothree.control.user.party.server.command.util;
 
 import com.echothree.control.user.party.common.spec.PartySpec;
+import com.echothree.control.user.party.common.spec.PartyTypeSpec;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
@@ -79,7 +80,7 @@ public class PartyAliasUtil {
 
         if(spec != null) {
             var partyName = spec.getPartyName();
-            
+
             if(partyName != null) {
                 var partyControl = Session.getModelController(PartyControl.class);
                 var party = partyControl.getPartyByName(partyName);
@@ -91,6 +92,34 @@ public class PartyAliasUtil {
         }
 
         return securityRoleGroupName;
+    }
+
+    public String getSecurityRoleGroupNameByPartyTypeSpec(PartyTypeSpec spec) {
+        String securityRoleGroupName = null;
+
+        if(spec != null) {
+            var partyTypeName = spec.getPartyTypeName();
+
+            if(partyTypeName != null) {
+                var partyControl = Session.getModelController(PartyControl.class);
+                var partyType = partyControl.getPartyTypeByName(partyTypeName);
+
+                if(partyType != null) {
+                    securityRoleGroupName = getSecurityRoleGroupNameByPartyTypeName(partyType.getPartyTypeName());
+                }
+            }
+        }
+
+        return securityRoleGroupName;
+    }
+
+    public String getSecurityRoleGroupNameBySpecs(PartySpec partySpec, PartyTypeSpec partyTypeSpec) {
+        var securityRoleGroupName1 = getSecurityRoleGroupNameByPartySpec(partySpec);
+        var securityRoleGroupName2 = getSecurityRoleGroupNameByPartyTypeSpec(partyTypeSpec);
+        var securityRoleGroupNameCount = (securityRoleGroupName1 == null ? 0 : 1) + (securityRoleGroupName2 == null ? 0 : 1);
+
+        // You may only specify either the PartyName or the PartyTypeName = never both.
+        return securityRoleGroupNameCount == 1 ? (securityRoleGroupName1 == null ? securityRoleGroupName2 : securityRoleGroupName1) : null;
     }
 
 }
