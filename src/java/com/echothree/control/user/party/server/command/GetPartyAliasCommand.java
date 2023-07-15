@@ -44,8 +44,10 @@ public class GetPartyAliasCommand
     
     static {
         FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("PartyAliasTypeName", FieldType.ENTITY_NAME, true, null, null)
+                new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("PartyTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("PartyAliasTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("Alias", FieldType.ENTITY_NAME, false, null, null)
         );
     }
     
@@ -54,30 +56,57 @@ public class GetPartyAliasCommand
         super(userVisitPK, form, new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                        new SecurityRoleDefinition(PartyAliasUtil.getInstance().getSecurityRoleGroupNameByPartySpec(form), SecurityRoles.Review.name())
+                        new SecurityRoleDefinition(PartyAliasUtil.getInstance().getSecurityRoleGroupNameBySpecs(form, form), SecurityRoles.Review.name())
                 ))
         )), FORM_FIELD_DEFINITIONS, false);
     }
 
     @Override
     protected PartyAlias getEntity() {
-        var partyControl = Session.getModelController(PartyControl.class);
         var partyName = form.getPartyName();
-        var party = PartyLogic.getInstance().getPartyByName(this, partyName);
+        var partyTypeName = form.getPartyTypeName();
+        var partyAliasTypeName = form.getPartyAliasTypeName();
+        var alias = form.getAlias();
+        // Must specify either PartyName + PartyAliasTypeName or PartyTypeName + PartyAliasTypeName + Alias
+        var parameterOption1 = (partyName != null) && (partyTypeName == null) && (partyAliasTypeName != null ) && (alias == null);
+        var parameterOption2 = (partyName == null) && (partyTypeName != null) && (partyAliasTypeName != null ) && (alias != null);
+        var parameterCount = (parameterOption1 ? 1 : 0) + (parameterOption2 ? 1 : 0);
         PartyAlias partyAlias = null;
 
-        if(party != null) {
-            var partyType = party.getLastDetail().getPartyType();
-            var partyAliasTypeName = form.getPartyAliasTypeName();
-            var partyAliasType = PartyAliasTypeLogic.getInstance().getPartyAliasTypeByName(this, partyType, partyAliasTypeName);
+        if(parameterCount == 1) {
+            var partyControl = Session.getModelController(PartyControl.class);
 
-            if(partyAliasType != null) {
-                partyAlias = partyControl.getPartyAlias(party, partyAliasType);
+            if(parameterOption1) {
+                var party = PartyLogic.getInstance().getPartyByName(this, partyName);
 
-                if(partyAlias == null) {
-                    addExecutionError(ExecutionErrors.UnknownPartyAlias.name(), partyName, partyAliasTypeName);
+                if(!hasExecutionErrors()) {
+                    var partyType = party.getLastDetail().getPartyType();
+                    var partyAliasType = PartyAliasTypeLogic.getInstance().getPartyAliasTypeByName(this, partyType, partyAliasTypeName);
+
+                    if(!hasExecutionErrors()) {
+                        partyAlias = partyControl.getPartyAlias(party, partyAliasType);
+
+                        if(partyAlias == null) {
+                            addExecutionError(ExecutionErrors.UnknownPartyAlias.name(), party.getLastDetail().getPartyName(),
+                                    partyAliasType.getLastDetail().getPartyAliasTypeName());
+                        }
+                    }
+                }
+            } else {
+                var partyAliasType = PartyAliasTypeLogic.getInstance().getPartyAliasTypeByName(this, partyTypeName, partyAliasTypeName);
+
+                if(!hasExecutionErrors()) {
+                    partyAlias = partyControl.getPartyAliasByAlias(partyAliasType, alias);
+
+                    if(partyAlias == null) {
+                        var partyAliasTypeDetail = partyAliasType.getLastDetail();
+                        addExecutionError(ExecutionErrors.UnknownPartyAliasByAlias.name(), partyAliasTypeDetail.getPartyType().getPartyTypeName(),
+                                partyAliasTypeDetail.getPartyAliasTypeName(), partyAliasType.getLastDetail().getPartyAliasTypeName(), alias);
+                    }
                 }
             }
+        } else {
+            addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
 
         return partyAlias;

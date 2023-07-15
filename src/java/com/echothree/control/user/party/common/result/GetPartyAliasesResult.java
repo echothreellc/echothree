@@ -17,6 +17,7 @@
 package com.echothree.control.user.party.common.result;
 
 import com.echothree.model.control.party.common.transfer.PartyAliasTransfer;
+import com.echothree.model.control.party.common.transfer.PartyAliasTypeTransfer;
 import com.echothree.model.control.party.common.transfer.PartyTransfer;
 import com.echothree.util.common.command.BaseResult;
 import java.util.List;
@@ -26,6 +27,9 @@ public interface GetPartyAliasesResult
 
     PartyTransfer getParty();
     void setParty(PartyTransfer party);
+
+    PartyAliasTypeTransfer getPartyAliasType();
+    void setPartyAliasType(PartyAliasTypeTransfer partyAliasType);
 
     Long getPartyAliasCount();
     void setPartyAliasCount(Long partyAliasCount);
