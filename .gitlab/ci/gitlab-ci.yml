@@ -13,9 +13,6 @@ stages:
 build:
   stage: build
   script:
-    - pushd ..
-    - ln -s $WILDFLY_HOME wildfly-latest
-    - popd
     - ant setup-ivy
     - ant complete
   artifacts:
