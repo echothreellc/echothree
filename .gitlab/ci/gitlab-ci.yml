@@ -1,4 +1,4 @@
-image: echothree/build:latest
+image: echothree/ant:latest
 
 cache:
   paths:
