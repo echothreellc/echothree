@@ -35,37 +35,37 @@
             </jsp:include>
         <%@ include file="../include/breadcrumb/breadcrumbs-end.jsp" %>
         <et:hasSecurityRole securityRole="Company.List">
-            <a href="<c:url value="/action/Accounting/Company/Main" />">Companies</a><br />
+            <a href="<c:url value="/action/Accounting/Company/Main" />"><fmt:message key="navigation.companies" /></a><br />
         </et:hasSecurityRole>
         <et:hasSecurityRole securityRole="GlAccount.List">
-            <a href="<c:url value="/action/Accounting/GlAccount/Main" />">Gl Accounts</a><br />
+            <a href="<c:url value="/action/Accounting/GlAccount/Main" />"><fmt:message key="navigation.glAccounts" /></a><br />
         </et:hasSecurityRole>
         <et:hasSecurityRole securityRole="GlAccountCategory.List">
-            <a href="<c:url value="/action/Accounting/GlAccountCategory/Main" />">Gl Account Categories</a><br />
+            <a href="<c:url value="/action/Accounting/GlAccountCategory/Main" />"><fmt:message key="navigation.glAccountCategories" /></a><br />
         </et:hasSecurityRole>
         <et:hasSecurityRole securityRole="GlAccountClass.List">
-            <a href="<c:url value="/action/Accounting/GlAccountClass/Main" />">Gl Account Classes</a><br />
+            <a href="<c:url value="/action/Accounting/GlAccountClass/Main" />"><fmt:message key="navigation.glAccountClasses" /></a><br />
         </et:hasSecurityRole>
         <et:hasSecurityRole securityRole="GlResourceType.List">
-            <a href="<c:url value="/action/Accounting/GlResourceType/Main" />">Gl Resource Types</a><br />
+            <a href="<c:url value="/action/Accounting/GlResourceType/Main" />"><fmt:message key="navigation.glResourceTypes" /></a><br />
         </et:hasSecurityRole>
         <et:hasSecurityRole securityRole="Tax.List">
-            <a href="<c:url value="/action/Accounting/Tax/Main" />">Taxes</a><br />
+            <a href="<c:url value="/action/Accounting/Tax/Main" />"><fmt:message key="navigation.taxes" /></a><br />
         </et:hasSecurityRole>
         <et:hasSecurityRole securityRole="Term.List">
-            <a href="<c:url value="/action/Accounting/Term/Main" />">Terms</a><br />
+            <a href="<c:url value="/action/Accounting/Term/Main" />"><fmt:message key="navigation.terms" /></a><br />
         </et:hasSecurityRole>
         <et:hasSecurityRole securityRole="ItemAccountingCategory.List">
-            <a href="<c:url value="/action/Accounting/ItemAccountingCategory/Main" />">Item Accounting Categories</a><br />
+            <a href="<c:url value="/action/Accounting/ItemAccountingCategory/Main" />"><fmt:message key="navigation.itemAccountingCategories" /></a><br />
         </et:hasSecurityRole>
         <et:hasSecurityRole securityRole="TransactionType.List">
-            <a href="<c:url value="/action/Accounting/TransactionType/Main" />">Transaction Types</a><br />
+            <a href="<c:url value="/action/Accounting/TransactionType/Main" />"><fmt:message key="navigation.transactionTypes" /></a><br />
         </et:hasSecurityRole>
         <et:hasSecurityRole securityRole="TransactionGroup.List">
-            <a href="<c:url value="/action/Accounting/TransactionGroup/Main" />">Transaction Groups</a><br />
+            <a href="<c:url value="/action/Accounting/TransactionGroup/Main" />"><fmt:message key="navigation.transactionGroups" /></a><br />
         </et:hasSecurityRole>
         <et:hasSecurityRole securityRole="Currency.List">
-            <a href="<c:url value="/action/Accounting/Currency/Main" />">Currencies</a><br />
+            <a href="<c:url value="/action/Accounting/Currency/Main" />"><fmt:message key="navigation.currencies" /></a><br />
         </et:hasSecurityRole>
     <%@ include file="../include/body-end-b.jsp" %>
 </html>
