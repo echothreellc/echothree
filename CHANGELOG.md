@@ -1,5 +1,12 @@
 # Changelog
 
+## 2023-07-23-01
+
+* Update Wiki and Issues Links [830](https://gitlab.echothree.com/echothree/echothree/-/issues/830)
+* Allow GetPartyAlias and GetPartyAliases UCs to Also Get Aliases by Party Alias Types [831](https://gitlab.echothree.com/echothree/echothree/-/issues/831)
+* Switch to echothree/ant for Builds [832](https://gitlab.echothree.com/echothree/echothree/-/issues/832)
+* Use Message Resources on Accounting Home Page [833](https://gitlab.echothree.com/echothree/echothree/-/issues/833)
+
 ## 2023-07-09-01
 
 * NullPointerException Attempting to Index ContactMechanism [457](https://gitlab.echothree.com/echothree/echothree/-/issues/457)
