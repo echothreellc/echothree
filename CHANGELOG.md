@@ -1,5 +1,12 @@
 # Changelog
 
+## 2023-08-06-01
+
+* commons-fileupload 1.5 Upgrade [834](https://gitlab.echothree.com/echothree/echothree/-/issues/834)
+* commons-io 2.13.0 Upgrade [835](https://gitlab.echothree.com/echothree/echothree/-/issues/835)
+* Issue ICU4J 73.2 Upgrade [836](https://gitlab.echothree.com/echothree/echothree/-/issues/836)
+* commons-codec 1.16.0 Upgrade [837](https://gitlab.echothree.com/echothree/echothree/-/issues/837)
+
 ## 2023-07-23-01
 
 * Update Wiki and Issues Links [830](https://gitlab.echothree.com/echothree/echothree/-/issues/830)
