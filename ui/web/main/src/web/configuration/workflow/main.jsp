@@ -45,9 +45,6 @@
                 <display:column titleKey="columnTitle.description">
                     <c:out value="${workflow.description}" />
                 </display:column>
-                <display:column titleKey="columnTitle.type">
-                    <c:out value="${workflow.workflowType.description}" />
-                </display:column>
                 <display:column property="sortOrder" titleKey="columnTitle.sortOrder" />
                 <display:column>
                     <c:url var="workflowEntityStatusesUrl" value="/action/Configuration/WorkflowEntityStatus/Main">

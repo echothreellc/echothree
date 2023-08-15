@@ -202,7 +202,6 @@ import com.echothree.ui.cli.dataloader.util.data.handler.warehouse.WarehousesHan
 import com.echothree.ui.cli.dataloader.util.data.handler.wishlist.WishlistTypesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.workeffort.WorkEffortTypesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.workflow.WorkflowStepTypesHandler;
-import com.echothree.ui.cli.dataloader.util.data.handler.workflow.WorkflowTypesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.workflow.WorkflowsHandler;
 import java.io.IOException;
 import javax.naming.NamingException;
@@ -301,8 +300,6 @@ public class InitialDataHandler
             initialDataParser.pushHandler(new SelectorNodeTypesHandler(initialDataParser, this));
         } else if(localName.equals("selectorTextSearchTypes")) {
             initialDataParser.pushHandler(new SelectorTextSearchTypesHandler(initialDataParser, this));
-        } else if(localName.equals("workflowTypes")) {
-            initialDataParser.pushHandler(new WorkflowTypesHandler(initialDataParser, this));
         } else if(localName.equals("workflowStepTypes")) {
             initialDataParser.pushHandler(new WorkflowStepTypesHandler(initialDataParser, this));
         } else if(localName.equals("workflows")) {

@@ -40,7 +40,6 @@ public class WorkflowTransferCaches
     protected WorkflowStepTransferCache workflowStepTransferCache;
     protected WorkflowStepTypeTransferCache workflowStepTypeTransferCache;
     protected WorkflowTransferCache workflowTransferCache;
-    protected WorkflowTypeTransferCache workflowTypeTransferCache;
     protected WorkflowSelectorKindTransferCache workflowSelectorKindTransferCache;
     protected WorkflowDestinationPartyTypeTransferCache workflowDestinationPartyTypeTransferCache;
     protected WorkflowDestinationSecurityRoleTransferCache workflowDestinationSecurityRoleTransferCache;
@@ -157,13 +156,6 @@ public class WorkflowTransferCaches
             workflowTransferCache = new WorkflowTransferCache(userVisit, workflowControl);
         
         return workflowTransferCache;
-    }
-    
-    public WorkflowTypeTransferCache getWorkflowTypeTransferCache() {
-        if(workflowTypeTransferCache == null)
-            workflowTypeTransferCache = new WorkflowTypeTransferCache(userVisit, workflowControl);
-        
-        return workflowTypeTransferCache;
     }
     
     public WorkflowSelectorKindTransferCache getWorkflowSelectorKindTransferCache() {

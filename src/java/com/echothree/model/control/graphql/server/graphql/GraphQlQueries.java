@@ -340,8 +340,6 @@ import com.echothree.control.user.workflow.server.command.GetWorkflowStepCommand
 import com.echothree.control.user.workflow.server.command.GetWorkflowStepTypeCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowStepTypesCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowStepsCommand;
-import com.echothree.control.user.workflow.server.command.GetWorkflowTypeCommand;
-import com.echothree.control.user.workflow.server.command.GetWorkflowTypesCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowsCommand;
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
@@ -522,7 +520,6 @@ import com.echothree.model.control.workflow.server.graphql.WorkflowObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowSelectorKindObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowStepObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowStepTypeObject;
-import com.echothree.model.control.workflow.server.graphql.WorkflowTypeObject;
 import com.echothree.model.data.accounting.common.CurrencyConstants;
 import com.echothree.model.data.accounting.common.ItemAccountingCategoryConstants;
 import com.echothree.model.data.accounting.server.entity.Currency;
@@ -710,7 +707,6 @@ import com.echothree.model.data.workflow.server.entity.WorkflowEntranceStep;
 import com.echothree.model.data.workflow.server.entity.WorkflowSelectorKind;
 import com.echothree.model.data.workflow.server.entity.WorkflowStep;
 import com.echothree.model.data.workflow.server.entity.WorkflowStepType;
-import com.echothree.model.data.workflow.server.entity.WorkflowType;
 import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLID;
@@ -1620,54 +1616,6 @@ public final class GraphQlQueries
         }
 
         return workflowEntranceSelectorObjects;
-    }
-
-    @GraphQLField
-    @GraphQLName("workflowType")
-    public static WorkflowTypeObject workflowType(final DataFetchingEnvironment env,
-            @GraphQLName("workflowTypeName") final String workflowTypeName,
-            @GraphQLName("id") @GraphQLID final String id) {
-        WorkflowType workflowType;
-
-        try {
-            var commandForm = WorkflowUtil.getHome().getGetWorkflowTypeForm();
-
-            commandForm.setWorkflowTypeName(workflowTypeName);
-            commandForm.setUlid(id);
-
-            workflowType = new GetWorkflowTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
-        } catch (NamingException ex) {
-            throw new RuntimeException(ex);
-        }
-
-        return workflowType == null ? null : new WorkflowTypeObject(workflowType);
-    }
-
-    @GraphQLField
-    @GraphQLName("workflowTypes")
-    public static Collection<WorkflowTypeObject> workflowTypes(final DataFetchingEnvironment env) {
-        Collection<WorkflowType> workflowTypes;
-        Collection<WorkflowTypeObject> workflowTypeObjects;
-
-        try {
-            var commandForm = WorkflowUtil.getHome().getGetWorkflowTypesForm();
-
-            workflowTypes = new GetWorkflowTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
-        } catch (NamingException ex) {
-            throw new RuntimeException(ex);
-        }
-
-        if(workflowTypes == null) {
-            workflowTypeObjects = emptyList();
-        } else {
-            workflowTypeObjects = new ArrayList<>(workflowTypes.size());
-
-            workflowTypes.stream()
-                    .map(WorkflowTypeObject::new)
-                    .forEachOrdered(workflowTypeObjects::add);
-        }
-
-        return workflowTypeObjects;
     }
 
     @GraphQLField

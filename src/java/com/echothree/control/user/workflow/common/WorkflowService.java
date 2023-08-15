@@ -30,24 +30,6 @@ public interface WorkflowService
     String ping();
     
     // --------------------------------------------------------------------------------
-    //   Workflow Types
-    // --------------------------------------------------------------------------------
-    
-    CommandResult createWorkflowType(UserVisitPK userVisitPK, CreateWorkflowTypeForm form);
-
-    CommandResult getWorkflowType(UserVisitPK userVisitPK, GetWorkflowTypeForm form);
-
-    CommandResult getWorkflowTypes(UserVisitPK userVisitPK, GetWorkflowTypesForm form);
-
-    CommandResult getWorkflowTypeChoices(UserVisitPK userVisitPK, GetWorkflowTypeChoicesForm form);
-    
-    // --------------------------------------------------------------------------------
-    //   Workflow Type Descriptions
-    // --------------------------------------------------------------------------------
-    
-    CommandResult createWorkflowTypeDescription(UserVisitPK userVisitPK, CreateWorkflowTypeDescriptionForm form);
-    
-    // --------------------------------------------------------------------------------
     //   Workflow Step Types
     // --------------------------------------------------------------------------------
     

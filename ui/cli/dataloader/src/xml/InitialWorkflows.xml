@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <initialData>
-    <workflowTypes>
-        <workflowType workflowTypeName="SYSTEM" isDefault="false" sortOrder="1">
-            <workflowTypeDescription languageIsoName="en" description="System Defined" />
-        </workflowType>
-        <workflowType workflowTypeName="USER" isDefault="true" sortOrder="1">
-            <workflowTypeDescription languageIsoName="en" description="User Defined" />
-        </workflowType>
-    </workflowTypes>
     <workflowStepTypes>
         <workflowStepType workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
             <workflowStepTypeDescription languageIsoName="en" description="Manual Transition" />
@@ -20,7 +12,7 @@
         </workflowStepType>
     </workflowStepTypes>
     <workflows>
-        <workflow workflowName="ITEM_CUSTOMER_COMMENT_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
+        <workflow workflowName="ITEM_CUSTOMER_COMMENT_STATUS" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Item Customer Comment" />
             <workflowStep workflowStepName="REVIEW" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
                 <workflowStepDescription languageIsoName="en" description="Review" />
@@ -57,7 +49,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="Comment" />
         </workflow>
-        <workflow workflowName="ITEM_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
+        <workflow workflowName="ITEM_STATUS" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Item Status" />
             <workflowStep workflowStepName="ACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
                 <workflowStepDescription languageIsoName="en" description="Active" />
@@ -106,7 +98,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="Item" />
         </workflow>
-        <workflow workflowName="EMPLOYEE_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="EmployeeStatus" sortOrder="0">
+        <workflow workflowName="EMPLOYEE_STATUS" securityRoleGroupName="EmployeeStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Employee Status" />
             <workflowStep workflowStepName="ACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
                 <workflowStepDescription languageIsoName="en" description="Active" />
@@ -136,7 +128,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="Party" />
         </workflow>
-        <workflow workflowName="EMPLOYEE_AVAILABILITY" workflowTypeName="SYSTEM" sortOrder="0">
+        <workflow workflowName="EMPLOYEE_AVAILABILITY" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Vendor Availability" />
             <workflowStep workflowStepName="AVAILABLE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
                 <workflowStepDescription languageIsoName="en" description="Available" />
@@ -237,7 +229,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="Party" />
         </workflow>
-        <workflow workflowName="CUSTOMER_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="CustomerStatus" sortOrder="0">
+        <workflow workflowName="CUSTOMER_STATUS" securityRoleGroupName="CustomerStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Customer Status" />
             <workflowStep workflowStepName="ACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
                 <workflowStepDescription languageIsoName="en" description="Active" />
@@ -265,7 +257,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="Party" />
         </workflow>
-        <workflow workflowName="CUSTOMER_CREDIT_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
+        <workflow workflowName="CUSTOMER_CREDIT_STATUS" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Customer Credit Status" />
             <workflowStep workflowStepName="APPROVED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
                 <workflowStepDescription languageIsoName="en" description="Credit Approved" />
@@ -342,7 +334,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="Party" />
         </workflow>
-        <workflow workflowName="EVENT_GROUP_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
+        <workflow workflowName="EVENT_GROUP_STATUS" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Event Group Status" />
             <workflowStep workflowStepName="ACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
                 <workflowStepDescription languageIsoName="en" description="Active" />
@@ -367,7 +359,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="EventGroup" />
         </workflow>
-        <workflow workflowName="USER_VISIT_GROUP_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
+        <workflow workflowName="USER_VISIT_GROUP_STATUS" sortOrder="0">
             <workflowDescription languageIsoName="en" description="User Visit Group Status" />
             <workflowStep workflowStepName="ACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
                 <workflowStepDescription languageIsoName="en" description="Active" />
@@ -392,7 +384,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="UserVisitGroup" />
         </workflow>
-        <workflow workflowName="TRANSACTION_GROUP_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
+        <workflow workflowName="TRANSACTION_GROUP_STATUS" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Transaction Group Status" />
             <workflowStep workflowStepName="ACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
                 <workflowStepDescription languageIsoName="en" description="Active" />
@@ -417,7 +409,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="TransactionGroup" />
         </workflow>
-        <workflow workflowName="PRINTER_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
+        <workflow workflowName="PRINTER_STATUS" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Printer Status" />
             <workflowStep workflowStepName="ACCEPTING_JOBS" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
                 <workflowStepDescription languageIsoName="en" description="Accepting Jobs" />
@@ -439,7 +431,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="Printer" />
         </workflow>
-        <workflow workflowName="PRINTER_GROUP_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
+        <workflow workflowName="PRINTER_GROUP_STATUS" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Printer Group Status" />
             <workflowStep workflowStepName="QUEUEING_JOBS" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
                 <workflowStepDescription languageIsoName="en" description="Queueing Jobs" />
@@ -461,7 +453,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="PrinterGroup" />
         </workflow>
-        <workflow workflowName="PRINTER_GROUP_JOB_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
+        <workflow workflowName="PRINTER_GROUP_JOB_STATUS" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Printer Group Job Status" />
             <workflowStep workflowStepName="QUEUED" workflowStepTypeName="AUTOMATIC_TRANSITION" isDefault="true" sortOrder="0">
                 <workflowStepDescription languageIsoName="en" description="Queued" />
@@ -513,7 +505,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="PrinterGroupJob" />
         </workflow>
-        <workflow workflowName="LOCATION_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
+        <workflow workflowName="LOCATION_STATUS" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Location Status" />
             <workflowStep workflowStepName="ACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
                 <workflowStepDescription languageIsoName="en" description="Active" />
@@ -565,7 +557,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="Location" />
         </workflow>
-        <workflow workflowName="INVENTORY_LOCATION_GROUP_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
+        <workflow workflowName="INVENTORY_LOCATION_GROUP_STATUS" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Location Status" />
             <workflowStep workflowStepName="ACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
                 <workflowStepDescription languageIsoName="en" description="Active" />
@@ -598,7 +590,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="InventoryLocationGroup" />
         </workflow>
-        <workflow workflowName="POSTAL_ADDRESS_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
+        <workflow workflowName="POSTAL_ADDRESS_STATUS" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Postal Address Status" />
             <workflowStep workflowStepName="VALID" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
                 <workflowStepDescription languageIsoName="en" description="Valid" />
@@ -620,7 +612,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="ContactMechanism" />
         </workflow>
-        <workflow workflowName="EMAIL_ADDRESS_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
+        <workflow workflowName="EMAIL_ADDRESS_STATUS" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Email Address Status" />
             <workflowStep workflowStepName="VALID" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
                 <workflowStepDescription languageIsoName="en" description="Valid" />
@@ -642,7 +634,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="ContactMechanism" />
         </workflow>
-        <workflow workflowName="EMAIL_ADDRESS_VERIFICATION" workflowTypeName="SYSTEM" sortOrder="0">
+        <workflow workflowName="EMAIL_ADDRESS_VERIFICATION" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Email Address Verification" />
             <workflowStep workflowStepName="NOT_VERIFIED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
                 <workflowStepDescription languageIsoName="en" description="Not Verified" />
@@ -664,7 +656,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="ContactMechanism" />
         </workflow>
-        <workflow workflowName="TELEPHONE_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
+        <workflow workflowName="TELEPHONE_STATUS" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Telephone Status" />
             <workflowStep workflowStepName="VALID" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
                 <workflowStepDescription languageIsoName="en" description="Valid" />
@@ -686,7 +678,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="ContactMechanism" />
         </workflow>
-        <workflow workflowName="WEB_ADDRESS_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
+        <workflow workflowName="WEB_ADDRESS_STATUS" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Web Address Status" />
             <workflowStep workflowStepName="VALID" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
                 <workflowStepDescription languageIsoName="en" description="Valid" />
@@ -708,7 +700,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="ContactMechanism" />
         </workflow>
-        <workflow workflowName="WORK_REQUIREMENT_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
+        <workflow workflowName="WORK_REQUIREMENT_STATUS" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Work Requirement Status" />
             <workflowStep workflowStepName="UNASSIGNED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="false" sortOrder="2">
                 <workflowStepDescription languageIsoName="en" description="Unassigned" />
@@ -741,7 +733,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="WorkRequirement" />
         </workflow>
-        <workflow workflowName="WORK_ASSIGNMENT_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
+        <workflow workflowName="WORK_ASSIGNMENT_STATUS" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Work Assignment Status" />
             <workflowStep workflowStepName="ASSIGNED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
                 <workflowStepDescription languageIsoName="en" description="Assigned" />
@@ -800,7 +792,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="WorkAssignment" />
         </workflow>
-        <workflow workflowName="WORK_TIME_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
+        <workflow workflowName="WORK_TIME_STATUS" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Work Time Status" />
             <workflowStep workflowStepName="IN_PROGRESS" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
                 <workflowStepDescription languageIsoName="en" description="In Progress" />
@@ -833,7 +825,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="WorkTime" />
         </workflow>
-        <workflow workflowName="INCOMING_CUSTOMER_EMAIL" workflowTypeName="SYSTEM" sortOrder="0">
+        <workflow workflowName="INCOMING_CUSTOMER_EMAIL" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Incoming Customer Email" />
             <workflowStep workflowStepName="CLASSIFY" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
                 <workflowStepDescription languageIsoName="en" description="Classify" />
@@ -845,7 +837,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="CommunicationEvents" />
         </workflow>
-        <workflow workflowName="OUTGOING_CUSTOMER_EMAIL" workflowTypeName="SYSTEM" sortOrder="0">
+        <workflow workflowName="OUTGOING_CUSTOMER_EMAIL" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Outgoing Customer Email" />
             <workflowStep workflowStepName="REVIEW" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
                 <workflowStepDescription languageIsoName="en" description="Review" />
@@ -864,7 +856,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="CommunicationEvents" />
         </workflow>
-        <workflow workflowName="PARTY_CONTACT_LIST_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
+        <workflow workflowName="PARTY_CONTACT_LIST_STATUS" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Party Contact List Status" />
             <workflowStep workflowStepName="AWAITING_VERIFICATION" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
                 <workflowStepDescription languageIsoName="en" description="Awaiting Verification" />
@@ -897,7 +889,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="PartyContactList" />
         </workflow>
-        <workflow workflowName="JOB_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="JobStatus" sortOrder="0">
+        <workflow workflowName="JOB_STATUS" securityRoleGroupName="JobStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Job Status" />
             <workflowStep workflowStepName="ENABLED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
                 <workflowStepDescription languageIsoName="en" description="Enabled" />
@@ -944,7 +936,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="Job" />
         </workflow>
-        <workflow workflowName="BASE_ENCRYPTION_KEY_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="BaseEncryptionKeyStatus" sortOrder="0">
+        <workflow workflowName="BASE_ENCRYPTION_KEY_STATUS" securityRoleGroupName="BaseEncryptionKeyStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Base Encryption Key Status" />
             <workflowStep workflowStepName="ACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
                 <workflowStepDescription languageIsoName="en" description="Active" />
@@ -980,7 +972,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="BaseEncryptionKey" />
         </workflow>
-        <workflow workflowName="PURCHASE_INVOICE_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="PurchaseInvoiceStatus" sortOrder="0">
+        <workflow workflowName="PURCHASE_INVOICE_STATUS" securityRoleGroupName="PurchaseInvoiceStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Purchase Invoice Status" />
             <workflowStep workflowStepName="ENTRY" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
                 <workflowStepDescription languageIsoName="en" description="Entry" />
@@ -1047,7 +1039,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="Invoice" />
         </workflow>
-        <workflow workflowName="FISCAL_PERIOD_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="FiscalPeriodStatus" sortOrder="0">
+        <workflow workflowName="FISCAL_PERIOD_STATUS" securityRoleGroupName="FiscalPeriodStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Fiscal Period Status" />
             <workflowStep workflowStepName="OPEN" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
                 <workflowStepDescription languageIsoName="en" description="Open" />
@@ -1085,7 +1077,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="Period" />
         </workflow>
-        <workflow workflowName="VENDOR_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="VendorStatus" sortOrder="0">
+        <workflow workflowName="VENDOR_STATUS" securityRoleGroupName="VendorStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Vendor Status" />
             <workflowStep workflowStepName="ACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
                 <workflowStepDescription languageIsoName="en" description="Active" />
@@ -1115,7 +1107,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="Party" />
         </workflow>
-        <workflow workflowName="VENDOR_ITEM_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="VendorItemStatus" sortOrder="0">
+        <workflow workflowName="VENDOR_ITEM_STATUS" securityRoleGroupName="VendorItemStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Vendor Item Status" />
             <workflowStep workflowStepName="ACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
                 <workflowStepDescription languageIsoName="en" description="Active" />
@@ -1145,7 +1137,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="VendorItem" />
         </workflow>
-        <workflow workflowName="PARTY_TRAINING_CLASS_STATUS" workflowTypeName="SYSTEM" sortOrder="0">
+        <workflow workflowName="PARTY_TRAINING_CLASS_STATUS" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Party Training Class Status" />
             <workflowStep workflowStepName="ASSIGNED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
                 <workflowStepDescription languageIsoName="en" description="Assigned" />
@@ -1192,7 +1184,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="PartyTrainingClass" />
         </workflow>
-        <workflow workflowName="PARTY_CANCELLATION_POLICY_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="PartyCancellationPolicyStatus" sortOrder="0">
+        <workflow workflowName="PARTY_CANCELLATION_POLICY_STATUS" securityRoleGroupName="PartyCancellationPolicyStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Party Cancellation Policy Status" />
             <workflowStep workflowStepName="NOT_ACCEPTED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
                 <workflowStepDescription languageIsoName="en" description="Not Accepted" />
@@ -1214,7 +1206,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="PartyCancellationPolicy" />
         </workflow>
-        <workflow workflowName="PARTY_RETURN_POLICY_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="PartyReturnPolicyStatus" sortOrder="0">
+        <workflow workflowName="PARTY_RETURN_POLICY_STATUS" securityRoleGroupName="PartyReturnPolicyStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Party Return Policy Status" />
             <workflowStep workflowStepName="NOT_ACCEPTED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
                 <workflowStepDescription languageIsoName="en" description="Not Accepted" />
@@ -1236,7 +1228,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="PartyReturnPolicy" />
         </workflow>
-        <workflow workflowName="LEAVE_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="LeaveStatus" sortOrder="0">
+        <workflow workflowName="LEAVE_STATUS" securityRoleGroupName="LeaveStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Leave Status" />
             <workflowStep workflowStepName="SUBMITTED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
                 <workflowStepDescription languageIsoName="en" description="Submitted" />
@@ -1322,7 +1314,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="Leave" />
         </workflow>
-        <workflow workflowName="CAMPAIGN_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="CampaignStatus" sortOrder="0">
+        <workflow workflowName="CAMPAIGN_STATUS" securityRoleGroupName="CampaignStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Campaign Status" />
             <workflowStep workflowStepName="ACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
                 <workflowStepDescription languageIsoName="en" description="Active" />
@@ -1352,7 +1344,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="Campaign" />
         </workflow>
-        <workflow workflowName="CAMPAIGN_SOURCE_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="CampaignSourceStatus" sortOrder="0">
+        <workflow workflowName="CAMPAIGN_SOURCE_STATUS" securityRoleGroupName="CampaignSourceStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Campaign Source Status" />
             <workflowStep workflowStepName="ACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
                 <workflowStepDescription languageIsoName="en" description="Active" />
@@ -1382,7 +1374,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="CampaignSource" />
         </workflow>
-        <workflow workflowName="CAMPAIGN_MEDIUM_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="CampaignMediumStatus" sortOrder="0">
+        <workflow workflowName="CAMPAIGN_MEDIUM_STATUS" securityRoleGroupName="CampaignMediumStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Campaign Medium Status" />
             <workflowStep workflowStepName="ACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
                 <workflowStepDescription languageIsoName="en" description="Active" />
@@ -1412,7 +1404,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="CampaignMedium" />
         </workflow>
-        <workflow workflowName="CAMPAIGN_TERM_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="CampaignTermStatus" sortOrder="0">
+        <workflow workflowName="CAMPAIGN_TERM_STATUS" securityRoleGroupName="CampaignTermStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Campaign Term Status" />
             <workflowStep workflowStepName="ACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
                 <workflowStepDescription languageIsoName="en" description="Active" />
@@ -1442,7 +1434,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="CampaignTerm" />
         </workflow>
-        <workflow workflowName="CAMPAIGN_CONTENT_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="CampaignContentStatus" sortOrder="0">
+        <workflow workflowName="CAMPAIGN_CONTENT_STATUS" securityRoleGroupName="CampaignContentStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Campaign Content Status" />
             <workflowStep workflowStepName="ACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
                 <workflowStepDescription languageIsoName="en" description="Active" />
@@ -1472,7 +1464,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="CampaignContent" />
         </workflow>
-        <workflow workflowName="TRACK_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="TrackStatus" sortOrder="0">
+        <workflow workflowName="TRACK_STATUS" securityRoleGroupName="TrackStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Track Status" />
             <workflowStep workflowStepName="ACTIVE" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="0">
                 <workflowStepDescription languageIsoName="en" description="Active" />
