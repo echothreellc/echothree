@@ -32,5 +32,4 @@ public interface WorkflowProperties {
     String WORKFLOW_STEP = "workflowStep";
     String WORKFLOW_STEP_NAME = "workflowStepName";
     String WORKFLOW_STEP_TYPE = "workflowStepType";
-    String WORKFLOW_TYPE = "workflowType";
 }

@@ -36,40 +36,7 @@ public class WorkflowBean
     public String ping() {
         return "WorkflowBean is alive!";
     }
-    
-    // --------------------------------------------------------------------------------
-    //   Workflow Types
-    // --------------------------------------------------------------------------------
-    
-    @Override
-    public CommandResult createWorkflowType(UserVisitPK userVisitPK, CreateWorkflowTypeForm form) {
-        return new CreateWorkflowTypeCommand(userVisitPK, form).run();
-    }
 
-    @Override
-    public CommandResult getWorkflowType(UserVisitPK userVisitPK, GetWorkflowTypeForm form) {
-        return new GetWorkflowTypeCommand(userVisitPK, form).run();
-    }
-
-    @Override
-    public CommandResult getWorkflowTypes(UserVisitPK userVisitPK, GetWorkflowTypesForm form) {
-        return new GetWorkflowTypesCommand(userVisitPK, form).run();
-    }
-
-    @Override
-    public CommandResult getWorkflowTypeChoices(UserVisitPK userVisitPK, GetWorkflowTypeChoicesForm form) {
-        return new GetWorkflowTypeChoicesCommand(userVisitPK, form).run();
-    }
-    
-    // --------------------------------------------------------------------------------
-    //   Workflow Type Descriptions
-    // --------------------------------------------------------------------------------
-    
-    @Override
-    public CommandResult createWorkflowTypeDescription(UserVisitPK userVisitPK, CreateWorkflowTypeDescriptionForm form) {
-        return new CreateWorkflowTypeDescriptionCommand(userVisitPK, form).run();
-    }
-    
     // --------------------------------------------------------------------------------
     //   Workflow Step Types
     // --------------------------------------------------------------------------------

@@ -75,12 +75,6 @@ public class WorkflowObject
     }
 
     @GraphQLField
-    @GraphQLDescription("workflow type")
-    public WorkflowTypeObject getWorkflowType(final DataFetchingEnvironment env) {
-        return WorkflowSecurityUtils.getInstance().getHasWorkflowTypeAccess(env) ? new WorkflowTypeObject(getWorkflowDetail().getWorkflowType()) : null;
-    }
-
-    @GraphQLField
     @GraphQLDescription("selector type")
     public SelectorTypeObject getSelectorType(final DataFetchingEnvironment env) {
         if(SelectorSecurityUtils.getInstance().getHasSelectorTypeAccess(env)) {

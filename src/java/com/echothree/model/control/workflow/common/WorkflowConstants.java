@@ -18,9 +18,6 @@ package com.echothree.model.control.workflow.common;
 
 public interface WorkflowConstants {
     
-    String WorkflowType_SYSTEM = "SYSTEM";
-    String WorkflowType_USER   = "USER";
-    
     String WorkflowStepType_AUTOMATIC_TRANSITION = "AUTOMATIC_TRANSITION";
     String WorkflowStepType_MANUAL_TRANSITION    = "MANUAL_TRANSITION";
     String WorkflowStepType_COMPLETE             = "COMPLETE";

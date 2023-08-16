@@ -2554,18 +2554,6 @@
         <securityRoleGroup securityRoleGroupName="WorkflowComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Workflow Component" />
         </securityRoleGroup>
-        <securityRoleGroup securityRoleGroupName="WorkflowType" parentSecurityRoleGroupName="WorkflowComponent" isDefault="false" sortOrder="1">
-            <securityRoleGroupDescription languageIsoName="en" description="Workflow Type" />
-            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Workflow Type List" />
-            </securityRole>
-            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Workflow Type Review" />
-            </securityRole>
-            <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
-                <securityRoleDescription languageIsoName="en" description="Workflow Type Choices" />
-            </securityRole>
-        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="Workflow" parentSecurityRoleGroupName="WorkflowComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Workflow" />
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
@@ -8324,9 +8312,6 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="WishlistType" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Wishlist" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Wishlist" securityRoleName="Search" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowType" securityRoleName="List" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowType" securityRoleName="Review" />
-            <partySecurityRoleTemplateRole securityRoleGroupName="WorkflowType" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Workflow" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Workflow" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Workflow" securityRoleName="Delete" />

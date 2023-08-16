@@ -57,7 +57,7 @@
         </orderType>
     </orderTypes>
     <workflows>
-        <workflow workflowName="SALES_ORDER_BATCH_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="SalesOrderBatchStatus" sortOrder="0">
+        <workflow workflowName="SALES_ORDER_BATCH_STATUS" securityRoleGroupName="SalesOrderBatchStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Sales Order Batch Status" />
             <workflowStep workflowStepName="ENTRY" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
                 <workflowStepDescription languageIsoName="en" description="Entry" />
@@ -98,7 +98,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="Batch" />
         </workflow>
-        <workflow workflowName="SALES_ORDER_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="SalesOrderStatus" sortOrder="0">
+        <workflow workflowName="SALES_ORDER_STATUS" securityRoleGroupName="SalesOrderStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Sales Order Status" />
             <workflowStep workflowStepName="ENTRY_ALLOCATED" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
                 <workflowStepDescription languageIsoName="en" description="Entry (Inventory Allocated)" />

@@ -1699,12 +1699,6 @@
             <entityType entityTypeName="WishlistPriorityDescription" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Wishlist Type Priority Description" />
             </entityType>
-            <entityType entityTypeName="WorkflowType" keepAllHistory="false" isExtensible="true" sortOrder="1">
-                <entityTypeDescription languageIsoName="en" description="WorkflowType" />
-            </entityType>
-            <entityType entityTypeName="WorkflowTypeDescription" keepAllHistory="false" isExtensible="false" sortOrder="1">
-                <entityTypeDescription languageIsoName="en" description="Workflow Type Destination" />
-            </entityType>
             <entityType entityTypeName="Workflow" keepAllHistory="false" isExtensible="true" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Workflow" />
             </entityType>

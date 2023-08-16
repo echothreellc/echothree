@@ -19,10 +19,9 @@ package com.echothree.control.user.workflow.common.edit;
 import com.echothree.control.user.security.common.spec.SecurityRoleGroupSpec;
 import com.echothree.control.user.selector.common.spec.SelectorTypeSpec;
 import com.echothree.control.user.workflow.common.spec.WorkflowSpec;
-import com.echothree.control.user.workflow.common.spec.WorkflowTypeSpec;
 
 public interface WorkflowEdit
-        extends WorkflowSpec, WorkflowTypeSpec, SelectorTypeSpec, SecurityRoleGroupSpec, WorkflowDescriptionEdit {
+        extends WorkflowSpec, SelectorTypeSpec, SecurityRoleGroupSpec, WorkflowDescriptionEdit {
     
     String getSortOrder();
     void setSortOrder(String sortOrder);
