@@ -25,7 +25,6 @@ import com.echothree.model.control.workflow.common.choice.BaseWorkflowChoicesBea
 import com.echothree.model.control.workflow.common.choice.WorkflowChoicesBean;
 import com.echothree.model.control.workflow.common.choice.WorkflowStepChoicesBean;
 import com.echothree.model.control.workflow.common.choice.WorkflowStepTypeChoicesBean;
-import com.echothree.model.control.workflow.common.choice.WorkflowTypeChoicesBean;
 import com.echothree.model.control.workflow.common.transfer.WorkflowDescriptionTransfer;
 import com.echothree.model.control.workflow.common.transfer.WorkflowDestinationDescriptionTransfer;
 import com.echothree.model.control.workflow.common.transfer.WorkflowDestinationPartyTypeTransfer;
@@ -46,7 +45,6 @@ import com.echothree.model.control.workflow.common.transfer.WorkflowStepDescript
 import com.echothree.model.control.workflow.common.transfer.WorkflowStepTransfer;
 import com.echothree.model.control.workflow.common.transfer.WorkflowStepTypeTransfer;
 import com.echothree.model.control.workflow.common.transfer.WorkflowTransfer;
-import com.echothree.model.control.workflow.common.transfer.WorkflowTypeTransfer;
 import com.echothree.model.control.workflow.server.logic.WorkflowSecurityLogic;
 import com.echothree.model.control.workflow.server.transfer.WorkflowDescriptionTransferCache;
 import com.echothree.model.control.workflow.server.transfer.WorkflowDestinationDescriptionTransferCache;
@@ -68,7 +66,6 @@ import com.echothree.model.control.workflow.server.transfer.WorkflowStepTransfer
 import com.echothree.model.control.workflow.server.transfer.WorkflowStepTypeTransferCache;
 import com.echothree.model.control.workflow.server.transfer.WorkflowTransferCache;
 import com.echothree.model.control.workflow.server.transfer.WorkflowTransferCaches;
-import com.echothree.model.control.workflow.server.transfer.WorkflowTypeTransferCache;
 import com.echothree.model.control.workrequirement.server.control.WorkRequirementControl;
 import com.echothree.model.control.workrequirement.server.logic.WorkRequirementLogic;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -91,7 +88,6 @@ import com.echothree.model.data.workflow.common.pk.WorkflowEntrancePK;
 import com.echothree.model.data.workflow.common.pk.WorkflowPK;
 import com.echothree.model.data.workflow.common.pk.WorkflowStepPK;
 import com.echothree.model.data.workflow.common.pk.WorkflowStepTypePK;
-import com.echothree.model.data.workflow.common.pk.WorkflowTypePK;
 import com.echothree.model.data.workflow.server.entity.Workflow;
 import com.echothree.model.data.workflow.server.entity.WorkflowDescription;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
@@ -118,8 +114,6 @@ import com.echothree.model.data.workflow.server.entity.WorkflowStepDetail;
 import com.echothree.model.data.workflow.server.entity.WorkflowStepType;
 import com.echothree.model.data.workflow.server.entity.WorkflowStepTypeDescription;
 import com.echothree.model.data.workflow.server.entity.WorkflowTrigger;
-import com.echothree.model.data.workflow.server.entity.WorkflowType;
-import com.echothree.model.data.workflow.server.entity.WorkflowTypeDescription;
 import com.echothree.model.data.workflow.server.factory.WorkflowDescriptionFactory;
 import com.echothree.model.data.workflow.server.factory.WorkflowDestinationDescriptionFactory;
 import com.echothree.model.data.workflow.server.factory.WorkflowDestinationDetailFactory;
@@ -146,8 +140,6 @@ import com.echothree.model.data.workflow.server.factory.WorkflowStepFactory;
 import com.echothree.model.data.workflow.server.factory.WorkflowStepTypeDescriptionFactory;
 import com.echothree.model.data.workflow.server.factory.WorkflowStepTypeFactory;
 import com.echothree.model.data.workflow.server.factory.WorkflowTriggerFactory;
-import com.echothree.model.data.workflow.server.factory.WorkflowTypeDescriptionFactory;
-import com.echothree.model.data.workflow.server.factory.WorkflowTypeFactory;
 import com.echothree.model.data.workflow.server.value.WorkflowDescriptionValue;
 import com.echothree.model.data.workflow.server.value.WorkflowDestinationDescriptionValue;
 import com.echothree.model.data.workflow.server.value.WorkflowDestinationDetailValue;
@@ -196,228 +188,6 @@ public class WorkflowControl
         }
         
         return workflowTransferCaches;
-    }
-    
-    // --------------------------------------------------------------------------------
-    //   Workflow Types
-    // --------------------------------------------------------------------------------
-    
-    public WorkflowType createWorkflowType(String workflowTypeName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        var workflowType = WorkflowTypeFactory.getInstance().create(workflowTypeName, isDefault, sortOrder);
-
-        sendEvent(workflowType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
-
-        return workflowType;
-    }
-    
-    public long countWorkflowTypes() {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                "FROM workflowtypes");
-    }
-
-    /** Assume that the entityInstance passed to this function is a ECHO_THREE.WorkflowType */
-    public WorkflowType getWorkflowTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
-        var pk = new WorkflowTypePK(entityInstance.getEntityUniqueId());
-
-        return WorkflowTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
-    }
-
-    public WorkflowType getWorkflowTypeByEntityInstance(EntityInstance entityInstance) {
-        return getWorkflowTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
-    }
-
-    public WorkflowType getWorkflowTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
-        return getWorkflowTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
-    }
-
-    private static final Map<EntityPermission, String> getWorkflowTypeByNameQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                        "FROM workflowtypes " +
-                        "WHERE wkflt_workflowtypename = ?");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                        "FROM workflowtypes " +
-                        "WHERE wkflt_workflowtypename = ? " +
-                        "FOR UPDATE");
-        getWorkflowTypeByNameQueries = Collections.unmodifiableMap(queryMap);
-    }
-
-    public WorkflowType getWorkflowTypeByName(String workflowTypeName, EntityPermission entityPermission) {
-        return WorkflowTypeFactory.getInstance().getEntityFromQuery(entityPermission, getWorkflowTypeByNameQueries, workflowTypeName);
-    }
-
-    public WorkflowType getWorkflowTypeByName(String workflowTypeName) {
-        return getWorkflowTypeByName(workflowTypeName, EntityPermission.READ_ONLY);
-    }
-
-    public WorkflowType getWorkflowTypeByNameForUpdate(String workflowTypeName) {
-        return getWorkflowTypeByName(workflowTypeName, EntityPermission.READ_WRITE);
-    }
-
-    private static final Map<EntityPermission, String> getDefaultWorkflowTypeQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM workflowtypes " +
-                "WHERE wkflt_isdefault = 1");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM workflowtypes " +
-                "WHERE wkflt_isdefault = 1 " +
-                "FOR UPDATE");
-        getDefaultWorkflowTypeQueries = Collections.unmodifiableMap(queryMap);
-    }
-
-    public WorkflowType getDefaultWorkflowType(EntityPermission entityPermission) {
-        return WorkflowTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultWorkflowTypeQueries);
-    }
-
-    public WorkflowType getDefaultWorkflowType() {
-        return getDefaultWorkflowType(EntityPermission.READ_ONLY);
-    }
-
-    public WorkflowType getDefaultWorkflowTypeForUpdate() {
-        return getDefaultWorkflowType(EntityPermission.READ_WRITE);
-    }
-
-    private static final Map<EntityPermission, String> getWorkflowTypesQueries;
-
-    static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(2);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ " +
-                "FROM workflowtypes " +
-                "ORDER BY wkflt_sortorder, wkflt_workflowtypename " +
-                "_LIMIT_");
-        queryMap.put(EntityPermission.READ_WRITE,
-                "SELECT _ALL_ " +
-                "FROM workflowtypes " +
-                "FOR UPDATE");
-        getWorkflowTypesQueries = Collections.unmodifiableMap(queryMap);
-    }
-    
-    private List<WorkflowType> getWorkflowTypes(EntityPermission entityPermission) {
-        return WorkflowTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getWorkflowTypesQueries);
-    }
-    
-    public List<WorkflowType> getWorkflowTypes() {
-        return getWorkflowTypes(EntityPermission.READ_ONLY);
-    }
-    
-    public List<WorkflowType> getWorkflowTypesForUpdate() {
-        return getWorkflowTypes(EntityPermission.READ_WRITE);
-    }
-    
-    public WorkflowTypeTransfer getWorkflowTypeTransfer(UserVisit userVisit, WorkflowType workflowType) {
-        return getWorkflowTransferCaches(userVisit).getWorkflowTypeTransferCache().getWorkflowTypeTransfer(workflowType);
-    }
-    
-    public List<WorkflowTypeTransfer> getWorkflowTypeTransfers(UserVisit userVisit, Collection<WorkflowType> workflowTypes) {
-        List<WorkflowTypeTransfer> workflowTypeTransfers = new ArrayList<>(workflowTypes.size());
-        WorkflowTypeTransferCache workflowTypeTransferCache = getWorkflowTransferCaches(userVisit).getWorkflowTypeTransferCache();
-        
-        workflowTypes.forEach((workflowType) ->
-                workflowTypeTransfers.add(workflowTypeTransferCache.getWorkflowTypeTransfer(workflowType))
-        );
-        
-        return workflowTypeTransfers;
-    }
-    
-    public List<WorkflowTypeTransfer> getWorkflowTypeTransfers(UserVisit userVisit) {
-        return getWorkflowTypeTransfers(userVisit, getWorkflowTypes());
-    }
-
-    public WorkflowTypeChoicesBean getWorkflowTypeChoices(String defaultWorkflowTypeChoice,
-            Language language, boolean allowNullChoice) {
-        List<WorkflowType> workflowTypes = getWorkflowTypes();
-        var size = workflowTypes.size();
-        var labels = new ArrayList<String>(size);
-        var values = new ArrayList<String>(size);
-        String defaultValue = null;
-        
-        if(allowNullChoice) {
-            labels.add("");
-            values.add("");
-            
-            if(defaultWorkflowTypeChoice == null) {
-                defaultValue = "";
-            }
-        }
-        
-        for(var workflowType : workflowTypes) {
-            var label = getBestWorkflowTypeDescription(workflowType, language);
-            var value = workflowType.getWorkflowTypeName();
-            
-            labels.add(label == null? value: label);
-            values.add(value);
-            
-            var usingDefaultChoice = defaultWorkflowTypeChoice != null && defaultWorkflowTypeChoice.equals(value);
-            if(usingDefaultChoice || (defaultValue == null && workflowType.getIsDefault())) {
-                defaultValue = value;
-            }
-        }
-        
-        return new WorkflowTypeChoicesBean(labels, values, defaultValue);
-    }
-    
-    // --------------------------------------------------------------------------------
-    //   Workflow Type Descriptions
-    // --------------------------------------------------------------------------------
-    
-    public WorkflowTypeDescription createWorkflowTypeDescription(WorkflowType workflowType, Language language,
-            String description, BasePK createdBy) {
-        var workflowTypeDescription = WorkflowTypeDescriptionFactory.getInstance().create(workflowType, language, description);
-
-        sendEvent(workflowType.getPrimaryKey(), EventTypes.MODIFY, workflowTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
-
-        return workflowTypeDescription;
-    }
-    
-    public WorkflowTypeDescription getWorkflowTypeDescription(WorkflowType workflowType, Language language) {
-        WorkflowTypeDescription workflowTypeDescription;
-        
-        try {
-            PreparedStatement ps = WorkflowTypeDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM workflowtypedescriptions " +
-                    "WHERE wkfltd_wkflt_workflowtypeid = ? AND wkfltd_lang_languageid = ?");
-            
-            ps.setLong(1, workflowType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            
-            workflowTypeDescription = WorkflowTypeDescriptionFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return workflowTypeDescription;
-    }
-    
-    public String getBestWorkflowTypeDescription(WorkflowType workflowType, Language language) {
-        String description;
-        WorkflowTypeDescription workflowTypeDescription = getWorkflowTypeDescription(workflowType, language);
-        
-        if(workflowTypeDescription == null && !language.getIsDefault()) {
-            workflowTypeDescription = getWorkflowTypeDescription(workflowType, getPartyControl().getDefaultLanguage());
-        }
-        
-        if(workflowTypeDescription == null) {
-            description = workflowType.getWorkflowTypeName();
-        } else {
-            description = workflowTypeDescription.getDescription();
-        }
-        
-        return description;
     }
     
     // --------------------------------------------------------------------------------
@@ -647,10 +417,10 @@ public class WorkflowControl
     //   Workflows
     // --------------------------------------------------------------------------------
     
-    public Workflow createWorkflow(String workflowName, WorkflowType workflowType, SelectorType selectorType,
+    public Workflow createWorkflow(String workflowName, SelectorType selectorType,
             SecurityRoleGroup securityRoleGroup, Integer sortOrder, BasePK createdBy) {
         Workflow workflow = WorkflowFactory.getInstance().create();
-        WorkflowDetail workflowDetail = WorkflowDetailFactory.getInstance().create(workflow, workflowName, workflowType,
+        WorkflowDetail workflowDetail = WorkflowDetailFactory.getInstance().create(workflow, workflowName,
                 selectorType, securityRoleGroup, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         // Convert to R/W
@@ -836,12 +606,11 @@ public class WorkflowControl
             
             WorkflowPK workflowPK = workflowDetail.getWorkflowPK();
             String workflowName = workflowDetailValue.getWorkflowName();
-            WorkflowTypePK workflowTypePK = workflowDetailValue.getWorkflowTypePK();
             SelectorTypePK selectorTypePK = workflowDetailValue.getSelectorTypePK();
             SecurityRoleGroupPK securityRoleGroupPK = workflowDetailValue.getSecurityRoleGroupPK();
             Integer sortOrder = workflowDetailValue.getSortOrder();
             
-            workflowDetail = WorkflowDetailFactory.getInstance().create(workflowPK, workflowName, workflowTypePK, selectorTypePK, securityRoleGroupPK,
+            workflowDetail = WorkflowDetailFactory.getInstance().create(workflowPK, workflowName, selectorTypePK, securityRoleGroupPK,
                     sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
             workflow.setActiveDetail(workflowDetail);

@@ -16,7 +16,7 @@
 <!--                                                                                  -->
 <initialData>
     <workflows>
-        <workflow workflowName="CUSTOMER_CREDIT_CARD_PAYMENT_METHOD" workflowTypeName="SYSTEM" sortOrder="0">
+        <workflow workflowName="CUSTOMER_CREDIT_CARD_PAYMENT_METHOD" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Customer Credit Card Payment Method" />
             <workflowStep workflowStepName="VALID" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
                 <workflowStepDescription languageIsoName="en" description="Valid" />
@@ -38,7 +38,7 @@
             </workflowEntrance>
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="PartyPaymentMethod" />
         </workflow>
-        <workflow workflowName="CUSTOMER_CHECK_PAYMENT_METHOD" workflowTypeName="SYSTEM" sortOrder="0">
+        <workflow workflowName="CUSTOMER_CHECK_PAYMENT_METHOD" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Customer Check Payment Method" />
             <workflowStep workflowStepName="TEST_1" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
                 <workflowStepDescription languageIsoName="en" description="Test 1" />
@@ -52,7 +52,7 @@
             
             <workflowEntityType componentVendorName="ECHO_THREE" entityTypeName="PartyPaymentMethod" />
         </workflow>
-        <workflow workflowName="CUSTOMER_CREDIT_CARD_CONTACT_MECHANISM" workflowTypeName="SYSTEM" selectorKindName="POSTAL_ADDRESS"
+        <workflow workflowName="CUSTOMER_CREDIT_CARD_CONTACT_MECHANISM" selectorKindName="POSTAL_ADDRESS"
             selectorTypeName="CUSTOMER_PAYMENT_METHOD" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Customer Credit Card Contact Mechanism" />
             <workflowStep workflowStepName="AVS_SECURITY_CODE_TEST" workflowStepTypeName="AUTOMATIC_TRANSITION" isDefault="true" sortOrder="1">

@@ -21,7 +21,7 @@
         </orderType>
 =    </orderTypes>
     <workflows>
-        <workflow workflowName="PURCHASE_ORDER_STATUS" workflowTypeName="SYSTEM" securityRoleGroupName="PurchaseOrderStatus" sortOrder="0">
+        <workflow workflowName="PURCHASE_ORDER_STATUS" securityRoleGroupName="PurchaseOrderStatus" sortOrder="0">
             <workflowDescription languageIsoName="en" description="Purchase Order Status" />
             <workflowStep workflowStepName="ENTRY" workflowStepTypeName="MANUAL_TRANSITION" isDefault="true" sortOrder="1">
                 <workflowStepDescription languageIsoName="en" description="Entry" />

@@ -365,7 +365,6 @@ public enum SecurityRoleGroups {
     WorkflowEntrance,
     WorkflowStep,
     WorkflowStepType,
-    WorkflowType,
     WorkRequirementType,
     WorkRequirementScope,
     ZipCode,

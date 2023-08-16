@@ -46,8 +46,6 @@ import com.echothree.control.user.workflow.server.command.GetWorkflowStepCommand
 import com.echothree.control.user.workflow.server.command.GetWorkflowStepTypeCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowStepTypesCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowStepsCommand;
-import com.echothree.control.user.workflow.server.command.GetWorkflowTypeCommand;
-import com.echothree.control.user.workflow.server.command.GetWorkflowTypesCommand;
 import com.echothree.control.user.workflow.server.command.GetWorkflowsCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
@@ -69,14 +67,6 @@ public final class WorkflowSecurityUtils
 
     public boolean getHasWorkflowAccess(final DataFetchingEnvironment env) {
         return getGraphQlExecutionContext(env).hasAccess(GetWorkflowCommand.class);
-    }
-
-    public boolean getHasWorkflowTypesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWorkflowTypesCommand.class);
-    }
-
-    public boolean getHasWorkflowTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWorkflowTypeCommand.class);
     }
 
     public boolean getHasWorkflowStepsAccess(final DataFetchingEnvironment env) {
