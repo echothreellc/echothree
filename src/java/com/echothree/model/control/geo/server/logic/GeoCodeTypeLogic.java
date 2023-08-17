@@ -42,12 +42,12 @@ public class GeoCodeTypeLogic
         super();
     }
 
-    private static class GeoLogicTypeHolder {
+    private static class GeoCodeTypeLogicTypeHolder {
         static GeoCodeTypeLogic instance = new GeoCodeTypeLogic();
     }
 
     public static GeoCodeTypeLogic getInstance() {
-        return GeoLogicTypeHolder.instance;
+        return GeoCodeTypeLogicTypeHolder.instance;
     }
 
     public GeoCodeType createGeoCodeType(final ExecutionErrorAccumulator eea, final String geoCodeTypeName,

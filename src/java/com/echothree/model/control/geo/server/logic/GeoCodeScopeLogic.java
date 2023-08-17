@@ -42,12 +42,12 @@ public class GeoCodeScopeLogic
         super();
     }
 
-    private static class GeoLogicTypeHolder {
+    private static class GeoCodeScopeLogicTypeHolder {
         static GeoCodeScopeLogic instance = new GeoCodeScopeLogic();
     }
 
     public static GeoCodeScopeLogic getInstance() {
-        return GeoLogicTypeHolder.instance;
+        return GeoCodeScopeLogicTypeHolder.instance;
     }
 
     public GeoCodeScope createGeoCodeScope(final ExecutionErrorAccumulator eea, final String geoCodeScopeName,
