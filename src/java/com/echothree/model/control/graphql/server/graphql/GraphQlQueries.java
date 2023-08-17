@@ -113,6 +113,9 @@ import com.echothree.control.user.filter.server.command.GetFilterStepsCommand;
 import com.echothree.control.user.filter.server.command.GetFilterTypeCommand;
 import com.echothree.control.user.filter.server.command.GetFilterTypesCommand;
 import com.echothree.control.user.filter.server.command.GetFiltersCommand;
+import com.echothree.control.user.geo.common.GeoUtil;
+import com.echothree.control.user.geo.server.command.GetGeoCodeTypeCommand;
+import com.echothree.control.user.geo.server.command.GetGeoCodeTypesCommand;
 import com.echothree.control.user.inventory.common.InventoryUtil;
 import com.echothree.control.user.inventory.server.command.GetAllocationPrioritiesCommand;
 import com.echothree.control.user.inventory.server.command.GetAllocationPriorityCommand;
@@ -390,6 +393,8 @@ import com.echothree.model.control.filter.server.graphql.FilterKindObject;
 import com.echothree.model.control.filter.server.graphql.FilterObject;
 import com.echothree.model.control.filter.server.graphql.FilterStepObject;
 import com.echothree.model.control.filter.server.graphql.FilterTypeObject;
+import com.echothree.model.control.geo.server.control.GeoControl;
+import com.echothree.model.control.geo.server.graphql.GeoCodeTypeObject;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
@@ -571,6 +576,8 @@ import com.echothree.model.data.filter.server.entity.FilterAdjustmentType;
 import com.echothree.model.data.filter.server.entity.FilterKind;
 import com.echothree.model.data.filter.server.entity.FilterStep;
 import com.echothree.model.data.filter.server.entity.FilterType;
+import com.echothree.model.data.geo.common.GeoCodeTypeConstants;
+import com.echothree.model.data.geo.server.entity.GeoCodeType;
 import com.echothree.model.data.inventory.common.AllocationPriorityConstants;
 import com.echothree.model.data.inventory.common.InventoryConditionConstants;
 import com.echothree.model.data.inventory.common.LotConstants;
@@ -8574,6 +8581,57 @@ public final class GraphQlQueries
         }
 
         return entityTagObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("geoCodeType")
+    public static GeoCodeTypeObject geoCodeType(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeTypeName") final String geoCodeTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        GeoCodeType geoCodeType;
+
+        try {
+            var commandForm = GeoUtil.getHome().getGetGeoCodeTypeForm();
+
+            commandForm.setGeoCodeTypeName(geoCodeTypeName);
+            commandForm.setUlid(id);
+
+            geoCodeType = new GetGeoCodeTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return geoCodeType == null ? null : new GeoCodeTypeObject(geoCodeType);
+    }
+
+    @GraphQLField
+    @GraphQLName("geoCodeTypes")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public static CountingPaginatedData<GeoCodeTypeObject> geoCodeTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<GeoCodeTypeObject> data;
+
+        try {
+            var geoControl = Session.getModelController(GeoControl.class);
+            var totalCount = geoControl.countGeoCodeTypes();
+
+            try(var objectLimiter = new ObjectLimiter(env, GeoCodeTypeConstants.COMPONENT_VENDOR_NAME, GeoCodeTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = GeoUtil.getHome().getGetGeoCodeTypesForm();
+                var entities = new GetGeoCodeTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var geoCodeTypes = entities.stream().map(GeoCodeTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, geoCodeTypes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
     }
 
 }
