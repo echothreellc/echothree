@@ -49,7 +49,6 @@ public class GetGeoCodeTypesCommand
                 ))
         ));
 
-
         FORM_FIELD_DEFINITIONS = List.of();
     }
     

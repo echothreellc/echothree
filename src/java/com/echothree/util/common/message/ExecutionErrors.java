@@ -2273,5 +2273,7 @@ public enum ExecutionErrors {
     UnknownDefaultPartyAliasType,
     UnknownDefaultGeoCodeType,
     CannotDeleteGeoCodeTypeInUse,
+    UnknownDefaultGeoCodeScope,
+    CannotDeleteGeoCodeScopeInUse,
 
 }
