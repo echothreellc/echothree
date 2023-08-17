@@ -2271,5 +2271,7 @@ public enum ExecutionErrors {
     EntityTypeIsNotExtensible,
     UnknownDefaultPartyType,
     UnknownDefaultPartyAliasType,
+    UnknownDefaultGeoCodeType,
+    CannotDeleteGeoCodeTypeInUse,
 
 }

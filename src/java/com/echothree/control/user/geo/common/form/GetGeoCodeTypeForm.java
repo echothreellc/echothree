@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.geo.common.form;
 
-import com.echothree.control.user.geo.common.spec.GeoCodeTypeSpec;
+import com.echothree.control.user.geo.common.spec.GeoCodeTypeUniversalSpec;
 
 public interface GetGeoCodeTypeForm
-        extends GeoCodeTypeSpec {
+        extends GeoCodeTypeUniversalSpec {
     
-    // Nothing additional beyond GeoCodeTypeSpec
+    // Nothing additional beyond GeoCodeTypeUniversalSpec
     
 }
