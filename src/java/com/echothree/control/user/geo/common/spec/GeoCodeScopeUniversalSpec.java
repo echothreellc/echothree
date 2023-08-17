@@ -14,19 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.geo.common.result;
+package com.echothree.control.user.geo.common.spec;
 
-import com.echothree.model.control.geo.common.transfer.GeoCodeScopeTransfer;
-import com.echothree.util.common.command.BaseResult;
-import java.util.List;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetGeoCodeScopesResult
-        extends BaseResult {
-
-    Long getGeoCodeScopeCount();
-    void setGeoCodeScopeCount(Long geoCodeScopeCount);
-
-    List<GeoCodeScopeTransfer> getGeoCodeScopes();
-    void setGeoCodeScopes(List<GeoCodeScopeTransfer> geoCodeScopes);
+public interface GeoCodeScopeUniversalSpec
+        extends GeoCodeScopeSpec, UniversalEntitySpec {
+    
+    // Nothing additional beyond GeoCodeScopeSpec, UniversalEntitySpec
     
 }

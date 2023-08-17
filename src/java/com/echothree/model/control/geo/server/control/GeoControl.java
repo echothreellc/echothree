@@ -957,8 +957,27 @@ public class GeoControl
         
         return geoCodeScope;
     }
-    
-    private GeoCodeScope getGeoCodeScopeByName(String geoCodeScopeName, EntityPermission entityPermission) {
+
+    public long countGeoCodeScopes() {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM geocodescopes, geocodescopedetails
+                WHERE geos_activedetailid = geosdt_geocodescopedetailid
+                """);
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.GeoCodeScope */
+    public GeoCodeScope getGeoCodeScopeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new GeoCodeScopePK(entityInstance.getEntityUniqueId());
+
+        return GeoCodeScopeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public GeoCodeScope getGeoCodeScopeByEntityInstance(EntityInstance entityInstance) {
+        return getGeoCodeScopeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public GeoCodeScope getGeoCodeScopeByName(String geoCodeScopeName, EntityPermission entityPermission) {
         GeoCodeScope geoCodeScope;
         
         try {
@@ -1003,7 +1022,7 @@ public class GeoControl
         return getGeoCodeScopeDetailValueForUpdate(getGeoCodeScopeByNameForUpdate(geoCodeScopeName));
     }
     
-    private GeoCodeScope getDefaultGeoCodeScope(EntityPermission entityPermission) {
+    public GeoCodeScope getDefaultGeoCodeScope(EntityPermission entityPermission) {
         String query = null;
         
         if(entityPermission.equals(EntityPermission.READ_ONLY)) {
@@ -1065,19 +1084,22 @@ public class GeoControl
     public GeoCodeScopeTransfer getGeoCodeScopeTransfer(UserVisit userVisit, GeoCodeScope geoCodeScope) {
         return getGeoTransferCaches(userVisit).getGeoCodeScopeTransferCache().getGeoCodeScopeTransfer(geoCodeScope);
     }
-    
-    public List<GeoCodeScopeTransfer> getGeoCodeScopeTransfers(UserVisit userVisit) {
-        List<GeoCodeScope> geoCodeScopes = getGeoCodeScopes();
+
+    public List<GeoCodeScopeTransfer> getGeoCodeScopeTransfers(UserVisit userVisit, Collection<GeoCodeScope> geoCodeScopes) {
         List<GeoCodeScopeTransfer> geoCodeScopeTransfers = new ArrayList<>(geoCodeScopes.size());
         GeoCodeScopeTransferCache geoCodeScopeTransferCache = getGeoTransferCaches(userVisit).getGeoCodeScopeTransferCache();
-        
+
         geoCodeScopes.forEach((geoCodeScope) ->
                 geoCodeScopeTransfers.add(geoCodeScopeTransferCache.getGeoCodeScopeTransfer(geoCodeScope))
         );
-        
+
         return geoCodeScopeTransfers;
     }
-    
+
+    public List<GeoCodeScopeTransfer> getGeoCodeScopeTransfers(UserVisit userVisit) {
+        return getGeoCodeScopeTransfers(userVisit, getGeoCodeScopes());
+    }
+
     public GeoCodeScopeChoicesBean getGeoCodeScopeChoices(String defaultGeoCodeScopeChoice, Language language,
             boolean allowNullChoice) {
         List<GeoCodeScope> geoCodeScopes = getGeoCodeScopes();
@@ -1897,6 +1919,15 @@ public class GeoControl
                 WHERE geo_activedetailid = geodt_geocodedetailid
                 AND geodt_geot_geocodetypeid = ?
                 """, geoCodeType);
+    }
+
+    public long countGeoCodesByGeoCodeScope(GeoCodeScope geoCodeScope) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM geocodes, geocodedetails
+                WHERE geo_activedetailid = geodt_geocodedetailid
+                AND geodt_geos_geocodescopeid = ?
+                """, geoCodeScope);
     }
 
     public GeoCodeDetailValue getGeoCodeDetailValueForUpdate(GeoCode geoCode) {
