@@ -18,53 +18,67 @@ package com.echothree.control.user.geo.server.command;
 
 import com.echothree.control.user.geo.common.form.GetGeoCodeTypesForm;
 import com.echothree.control.user.geo.common.result.GeoResultFactory;
-import com.echothree.control.user.geo.common.result.GetGeoCodeTypesResult;
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
+import com.echothree.model.data.geo.server.entity.GeoCodeType;
+import com.echothree.model.data.geo.server.factory.GeoCodeTypeFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.List;
 
 public class GetGeoCodeTypesCommand
-        extends BaseSimpleCommand<GetGeoCodeTypesForm> {
+        extends BaseMultipleEntitiesCommand<GeoCodeType, GetGeoCodeTypesForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.GeoCodeType.name(), SecurityRoles.List.name())
-                        )))
-                )));
-        
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
-                ));
+                ))
+        ));
+
+
+        FORM_FIELD_DEFINITIONS = List.of();
     }
     
     /** Creates a new instance of GetGeoCodeTypesCommand */
     public GetGeoCodeTypesCommand(UserVisitPK userVisitPK, GetGeoCodeTypesForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
+    protected Collection<GeoCodeType> getEntities() {
         var geoControl = Session.getModelController(GeoControl.class);
-        GetGeoCodeTypesResult result = GeoResultFactory.getGetGeoCodeTypesResult();
-        
-        result.setGeoCodeTypes(geoControl.getGeoCodeTypeTransfers(getUserVisit()));
-        
+
+        return geoControl.getGeoCodeTypes();
+    }
+
+    @Override
+    protected BaseResult getTransfers(Collection<GeoCodeType> entities) {
+        var result = GeoResultFactory.getGetGeoCodeTypesResult();
+
+        if(entities != null) {
+            var geoControl = Session.getModelController(GeoControl.class);
+
+            if(session.hasLimit(GeoCodeTypeFactory.class)) {
+                result.setGeoCodeTypeCount(geoControl.countGeoCodeTypes());
+            }
+
+            result.setGeoCodeTypes(geoControl.getGeoCodeTypeTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
     

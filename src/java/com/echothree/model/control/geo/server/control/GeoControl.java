@@ -56,6 +56,7 @@ import com.echothree.model.data.accounting.common.pk.CurrencyPK;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.contact.common.pk.PostalAddressFormatPK;
 import com.echothree.model.data.contact.server.entity.PostalAddressFormat;
+import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.geo.common.pk.GeoCodeAliasTypePK;
 import com.echothree.model.data.geo.common.pk.GeoCodePK;
 import com.echothree.model.data.geo.common.pk.GeoCodeScopePK;
@@ -420,7 +421,35 @@ public class GeoControl
         
         return geoCodeType;
     }
-    
+
+    public long countGeoCodeTypes() {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM geocodetypes, geocodetypedetails
+                WHERE geot_activedetailid = geotdt_geocodetypedetailid
+                """);
+    }
+
+    public long countGeoCodeTypesByParentGeoCodeType(GeoCodeType parentGeoCodeType) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM geocodetypes, geocodetypedetails
+                WHERE geot_activedetailid = geotdt_geocodetypedetailid
+                AND geotdt_parentgeocodetypeid = ?
+                """, parentGeoCodeType);
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.GeoCodeType */
+    public GeoCodeType getGeoCodeTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new GeoCodeTypePK(entityInstance.getEntityUniqueId());
+
+        return GeoCodeTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public GeoCodeType getGeoCodeTypeByEntityInstance(EntityInstance entityInstance) {
+        return getGeoCodeTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
     private static final Map<EntityPermission, String> getGeoCodeTypeByNameQueries;
 
     static {
@@ -440,7 +469,7 @@ public class GeoControl
         getGeoCodeTypeByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private GeoCodeType getGeoCodeTypeByName(String geoCodeTypeName, EntityPermission entityPermission) {
+    public GeoCodeType getGeoCodeTypeByName(String geoCodeTypeName, EntityPermission entityPermission) {
         return GeoCodeTypeFactory.getInstance().getEntityFromQuery(entityPermission, getGeoCodeTypeByNameQueries, geoCodeTypeName);
     }
 
@@ -479,7 +508,7 @@ public class GeoControl
         getDefaultGeoCodeTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private GeoCodeType getDefaultGeoCodeType(EntityPermission entityPermission) {
+    public GeoCodeType getDefaultGeoCodeType(EntityPermission entityPermission) {
         return GeoCodeTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultGeoCodeTypeQueries);
     }
 
@@ -562,19 +591,22 @@ public class GeoControl
     public GeoCodeTypeTransfer getGeoCodeTypeTransfer(UserVisit userVisit, GeoCodeType geoCodeType) {
         return getGeoTransferCaches(userVisit).getGeoCodeTypeTransferCache().getGeoCodeTypeTransfer(geoCodeType);
     }
-    
-    public List<GeoCodeTypeTransfer> getGeoCodeTypeTransfers(UserVisit userVisit) {
-        List<GeoCodeType> geoCodeTypes = getGeoCodeTypes();
+
+    public List<GeoCodeTypeTransfer> getGeoCodeTypeTransfers(UserVisit userVisit, Collection<GeoCodeType> geoCodeTypes) {
         List<GeoCodeTypeTransfer> geoCodeTypeTransfers = new ArrayList<>(geoCodeTypes.size());
         GeoCodeTypeTransferCache geoCodeTypeTransferCache = getGeoTransferCaches(userVisit).getGeoCodeTypeTransferCache();
-        
+
         geoCodeTypes.forEach((geoCodeType) ->
                 geoCodeTypeTransfers.add(geoCodeTypeTransferCache.getGeoCodeTypeTransfer(geoCodeType))
         );
-        
+
         return geoCodeTypeTransfers;
     }
-    
+
+    public List<GeoCodeTypeTransfer> getGeoCodeTypeTransfers(UserVisit userVisit) {
+        return getGeoCodeTypeTransfers(userVisit, getGeoCodeTypes());
+    }
+
     public GeoCodeTypeChoicesBean getGeoCodeTypeChoices(String defaultGeoCodeTypeChoice, Language language,
             boolean allowNullChoice) {
         List<GeoCodeType> geoCodeTypes = getGeoCodeTypes();
@@ -1849,7 +1881,24 @@ public class GeoControl
         
         return geoCode;
     }
-    
+
+    public long countGeoCodes() {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM geocodes, geocodedetails
+                WHERE geo_activedetailid = geodt_geocodedetailid
+                """);
+    }
+
+    public long countGeoCodesByGeoCodeType(GeoCodeType geoCodeType) {
+        return session.queryForLong("""
+                SELECT COUNT(*)
+                FROM geocodes, geocodedetails
+                WHERE geo_activedetailid = geodt_geocodedetailid
+                AND geodt_geot_geocodetypeid = ?
+                """, geoCodeType);
+    }
+
     public GeoCodeDetailValue getGeoCodeDetailValueForUpdate(GeoCode geoCode) {
         return geoCode == null? null: geoCode.getLastDetailForUpdate().getGeoCodeDetailValue().clone();
     }

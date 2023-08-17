@@ -22,8 +22,11 @@ import java.util.List;
 
 public interface GetGeoCodeTypesResult
         extends BaseResult {
-    
+
+    Long getGeoCodeTypeCount();
+    void setGeoCodeTypeCount(Long geoCodeTypeCount);
+
     List<GeoCodeTypeTransfer> getGeoCodeTypes();
-    void setGeoCodeTypes(List<GeoCodeTypeTransfer> geoCodeTypees);
+    void setGeoCodeTypes(List<GeoCodeTypeTransfer> geoCodeTypes);
     
 }
