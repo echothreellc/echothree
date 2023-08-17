@@ -25,10 +25,8 @@ import com.echothree.model.control.selector.server.control.SelectorControl;
 import com.echothree.model.control.tax.server.control.TaxControl;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.geo.server.entity.GeoCodeAlias;
-import com.echothree.model.data.geo.server.entity.GeoCodeAliasType;
 import com.echothree.model.data.geo.server.entity.GeoCodeScope;
 import com.echothree.model.data.geo.server.entity.GeoCodeType;
-import com.echothree.model.data.geo.server.value.GeoCodeAliasValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
@@ -61,20 +59,6 @@ public class GeoCodeLogic
 
         return geoCode;
     }
-    
-    public GeoCodeAlias getGeoCodeAliasUsingNames(final ExecutionErrorAccumulator eea, final GeoCode geoCode,
-            final String geoCodeAliasTypeName) {
-        var geoControl = Session.getModelController(GeoControl.class);
-
-        return geoControl.getGeoCodeAlias(geoCode, getGeoCodeAliasTypeByName(eea, geoCode.getLastDetail().getGeoCodeType(), geoCodeAliasTypeName));
-    }
-
-    public GeoCodeAliasValue getGeoCodeAliasValueUsingNames(final ExecutionErrorAccumulator ema, final GeoCode geoCode,
-            final String geoCodeAliasTypeName) {
-        var geoControl = Session.getModelController(GeoControl.class);
-
-        return geoControl.getGeoCodeAliasValueForUpdate(geoCode, getGeoCodeAliasTypeByName(ema, geoCode.getLastDetail().getGeoCodeType(), geoCodeAliasTypeName));
-    }
 
     public GeoCode getGeoCodeByAlias(final ExecutionErrorAccumulator eea, final GeoCodeType geoCodeType, final GeoCodeScope geoCodeScope,
             final String geoCodeAliasTypeName, final String alias) {
@@ -90,19 +74,6 @@ public class GeoCodeLogic
         }
 
         return geoCodeAlias == null ? null : geoCodeAlias.getGeoCode();
-    }
-
-    public GeoCodeAliasType getGeoCodeAliasTypeByName(final ExecutionErrorAccumulator eea, final GeoCodeType geoCodeType,
-            final String geoCodeAliasTypeName) {
-        var geoControl = Session.getModelController(GeoControl.class);
-        var geoCodeAliasType = geoControl.getGeoCodeAliasTypeByName(geoCodeType, geoCodeAliasTypeName);
-
-        if(geoCodeAliasType == null) {
-            handleExecutionError(UnknownGeoCodeAliasTypeNameException.class, eea, ExecutionErrors.UnknownGeoCodeAliasTypeName.name(),
-                    geoCodeType.getLastDetail().getGeoCodeTypeName(), geoCodeAliasTypeName);
-        }
-
-        return geoCodeAliasType;
     }
 
     public void deleteGeoCode(final ExecutionErrorAccumulator eea, final GeoCode geoCode, final BasePK deletedBy) {
