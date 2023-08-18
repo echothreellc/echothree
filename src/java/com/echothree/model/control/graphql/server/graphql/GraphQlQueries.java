@@ -114,6 +114,7 @@ import com.echothree.control.user.filter.server.command.GetFilterTypeCommand;
 import com.echothree.control.user.filter.server.command.GetFilterTypesCommand;
 import com.echothree.control.user.filter.server.command.GetFiltersCommand;
 import com.echothree.control.user.geo.common.GeoUtil;
+import com.echothree.control.user.geo.server.command.GetGeoCodeCommand;
 import com.echothree.control.user.geo.server.command.GetGeoCodeScopeCommand;
 import com.echothree.control.user.geo.server.command.GetGeoCodeScopesCommand;
 import com.echothree.control.user.geo.server.command.GetGeoCodeTypeCommand;
@@ -396,6 +397,7 @@ import com.echothree.model.control.filter.server.graphql.FilterObject;
 import com.echothree.model.control.filter.server.graphql.FilterStepObject;
 import com.echothree.model.control.filter.server.graphql.FilterTypeObject;
 import com.echothree.model.control.geo.server.control.GeoControl;
+import com.echothree.model.control.geo.server.graphql.GeoCodeObject;
 import com.echothree.model.control.geo.server.graphql.GeoCodeScopeObject;
 import com.echothree.model.control.geo.server.graphql.GeoCodeTypeObject;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
@@ -581,6 +583,7 @@ import com.echothree.model.data.filter.server.entity.FilterStep;
 import com.echothree.model.data.filter.server.entity.FilterType;
 import com.echothree.model.data.geo.common.GeoCodeScopeConstants;
 import com.echothree.model.data.geo.common.GeoCodeTypeConstants;
+import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.geo.server.entity.GeoCodeScope;
 import com.echothree.model.data.geo.server.entity.GeoCodeType;
 import com.echothree.model.data.inventory.common.AllocationPriorityConstants;
@@ -8688,6 +8691,27 @@ public final class GraphQlQueries
         }
 
         return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("geoCode")
+    public static GeoCodeObject geoCode(final DataFetchingEnvironment env,
+            @GraphQLName("geoCodeName") final String geoCodeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        GeoCode geoCode;
+
+        try {
+            var commandForm = GeoUtil.getHome().getGetGeoCodeForm();
+
+            commandForm.setGeoCodeName(geoCodeName);
+            commandForm.setUlid(id);
+
+            geoCode = new GetGeoCodeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return geoCode == null ? null : new GeoCodeObject(geoCode);
     }
 
 }

@@ -14,13 +14,13 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.geo.common.form;
+package com.echothree.control.user.geo.common.spec;
 
-import com.echothree.control.user.geo.common.spec.GeoCodeUniversalSpec;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface GetGeoCodeForm
-        extends GeoCodeUniversalSpec {
+public interface GeoCodeUniversalSpec
+        extends GeoCodeSpec, UniversalEntitySpec {
     
-    // Nothing additional beyond GeoCodeUniversalSpec
+    // Nothing additional beyond GeoCodeSpec, UniversalEntitySpec
     
 }
