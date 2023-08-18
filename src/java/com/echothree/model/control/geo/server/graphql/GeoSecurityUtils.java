@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.geo.server.graphql;
 
+import com.echothree.control.user.geo.server.command.GetGeoCodeCommand;
 import com.echothree.control.user.geo.server.command.GetGeoCodeScopeCommand;
 import com.echothree.control.user.geo.server.command.GetGeoCodeScopesCommand;
 import com.echothree.control.user.geo.server.command.GetGeoCodeTypeCommand;
@@ -48,6 +49,10 @@ public final class GeoSecurityUtils
 
     public boolean getHasGeoCodeScopesAccess(final DataFetchingEnvironment env) {
         return getGraphQlExecutionContext(env).hasAccess(GetGeoCodeScopesCommand.class);
+    }
+
+    public boolean getHasGeoCodeAccess(final DataFetchingEnvironment env) {
+        return getGraphQlExecutionContext(env).hasAccess(GetGeoCodeCommand.class);
     }
 
 }

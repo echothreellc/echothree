@@ -1904,6 +1904,17 @@ public class GeoControl
         return geoCode;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.GeoCode */
+    public GeoCode getGeoCodeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new GeoCodePK(entityInstance.getEntityUniqueId());
+
+        return GeoCodeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public GeoCode getGeoCodeByEntityInstance(EntityInstance entityInstance) {
+        return getGeoCodeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
     public long countGeoCodes() {
         return session.queryForLong("""
                 SELECT COUNT(*)
@@ -1975,7 +1986,7 @@ public class GeoControl
         return getGeoCodeDetailValueForUpdate(getDefaultGeoCodeForUpdate(geoCodeScope));
     }
     
-    private GeoCode getGeoCodeByName(String geoCodeName, EntityPermission entityPermission) {
+    public GeoCode getGeoCodeByName(String geoCodeName, EntityPermission entityPermission) {
         GeoCode geoCode;
         
         try {
