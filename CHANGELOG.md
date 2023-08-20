@@ -1,5 +1,14 @@
 # Changelog
 
+## 2023-08-20-01
+
+* Issue jOOQ 3.18.6 Upgrade [838](https://gitlab.echothree.com/echothree/echothree/-/issues/838)
+* Add Geo Code Type Object and Queries [839](https://gitlab.echothree.com/echothree/echothree/-/issues/839)
+* Add Geo Code Scope Object and Queries [840](https://gitlab.echothree.com/echothree/echothree/-/issues/840)
+* Add Geo Code Object and Queries [841](https://gitlab.echothree.com/echothree/echothree/-/issues/841)
+* Remove Workflow Types [842](https://gitlab.echothree.com/echothree/echothree/-/issues/842)
+* Convert WorkflowStepTypes to an Enum [843](https://gitlab.echothree.com/echothree/echothree/-/issues/843)
+
 ## 2023-08-06-01
 
 * commons-fileupload 1.5 Upgrade [834](https://gitlab.echothree.com/echothree/echothree/-/issues/834)
