@@ -18,11 +18,11 @@ package com.echothree.model.control.accounting.server.graphql;
 
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.graphql.ItemObject;
 import com.echothree.model.control.item.server.graphql.ItemSecurityUtils;
@@ -73,17 +73,55 @@ public class ItemAccountingCategoryObject
     @GraphQLField
     @GraphQLDescription("parent item accounting category")
     public ItemAccountingCategoryObject getParentItemAccountingCategory() {
-        ItemAccountingCategory parentItemAccountingCategory = getItemAccountingCategoryDetail().getParentItemAccountingCategory();
+        var parentItemAccountingCategory = getItemAccountingCategoryDetail().getParentItemAccountingCategory();
         
         return parentItemAccountingCategory == null ? null : new ItemAccountingCategoryObject(parentItemAccountingCategory);
     }
 
-    // TODO:
-    //     InventoryGlAccount
-    //     SalesGlAccount
-    //     ReturnsGlAccount
-    //     CogsGlAccount
-    //     ReturnsCogsGlAccount
+    @GraphQLField
+    @GraphQLDescription("inventory GL account")
+    public GlAccountObject getInventoryGlAccount(final DataFetchingEnvironment env) {
+        var inventoryGlAccount = getItemAccountingCategoryDetail().getInventoryGlAccount();
+
+        return inventoryGlAccount == null ? null : AccountingSecurityUtils.getInstance().getHasGlAccountAccess(env) ?
+                new GlAccountObject(inventoryGlAccount) : null;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("sales GL account")
+    public GlAccountObject getSalesGlAccount(final DataFetchingEnvironment env) {
+        var salesGlAccount = getItemAccountingCategoryDetail().getSalesGlAccount();
+
+        return salesGlAccount == null ? null : AccountingSecurityUtils.getInstance().getHasGlAccountAccess(env) ?
+                new GlAccountObject(salesGlAccount) : null;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("returns GL account")
+    public GlAccountObject getReturnsGlAccount(final DataFetchingEnvironment env) {
+        var returnsGlAccount = getItemAccountingCategoryDetail().getReturnsGlAccount();
+
+        return returnsGlAccount == null ? null : AccountingSecurityUtils.getInstance().getHasGlAccountAccess(env) ?
+                new GlAccountObject(returnsGlAccount) : null;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("COGS GL account")
+    public GlAccountObject getCogsGlAccount(final DataFetchingEnvironment env) {
+        var cogsGlAccount = getItemAccountingCategoryDetail().getCogsGlAccount();
+
+        return cogsGlAccount == null ? null : AccountingSecurityUtils.getInstance().getHasGlAccountAccess(env) ?
+                new GlAccountObject(cogsGlAccount) : null;
+    }
+
+    @GraphQLField
+    @GraphQLDescription("returns COGS GL account")
+    public GlAccountObject getReturnsCogsGlAccount(final DataFetchingEnvironment env) {
+        var returnsCogsGlAccount = getItemAccountingCategoryDetail().getReturnsCogsGlAccount();
+
+        return returnsCogsGlAccount == null ? null : AccountingSecurityUtils.getInstance().getHasGlAccountAccess(env) ?
+                new GlAccountObject(returnsCogsGlAccount) : null;
+    }
 
     @GraphQLField
     @GraphQLDescription("is default")
