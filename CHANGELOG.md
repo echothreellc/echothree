@@ -1,5 +1,9 @@
 # Changelog
 
+## 2023-09-03-01
+
+* Add GL Accounts to Item Accounting Category Object [846](https://gitlab.echothree.com/echothree/echothree/-/issues/846)
+
 ## 2023-08-20-01
 
 * Issue jOOQ 3.18.6 Upgrade [838](https://gitlab.echothree.com/echothree/echothree/-/issues/838)
