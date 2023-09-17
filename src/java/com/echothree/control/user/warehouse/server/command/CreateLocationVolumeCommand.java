@@ -53,7 +53,7 @@ public class CreateLocationVolumeCommand
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                        new SecurityRoleDefinition(SecurityRoleGroups.Location.name(), SecurityRoles.LocationVolume.name())
+                        new SecurityRoleDefinition(SecurityRoleGroups.LocationVolume.name(), SecurityRoles.Create.name())
                 ))
         ));
 

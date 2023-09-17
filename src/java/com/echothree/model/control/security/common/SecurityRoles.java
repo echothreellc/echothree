@@ -43,8 +43,6 @@ public enum SecurityRoles {
     History,
     List,
     Load,
-    LocationCapacity,
-    LocationVolume,
     PartyRelationship,
     PartyType,
     PartyTypeContactList,

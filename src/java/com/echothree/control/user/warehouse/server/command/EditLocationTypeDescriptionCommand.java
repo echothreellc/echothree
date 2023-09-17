@@ -22,7 +22,10 @@ import com.echothree.control.user.warehouse.common.form.EditLocationTypeDescript
 import com.echothree.control.user.warehouse.common.result.EditLocationTypeDescriptionResult;
 import com.echothree.control.user.warehouse.common.result.WarehouseResultFactory;
 import com.echothree.control.user.warehouse.common.spec.LocationTypeDescriptionSpec;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.Party;
@@ -37,6 +40,9 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,11 +50,19 @@ import java.util.List;
 
 public class EditLocationTypeDescriptionCommand
         extends BaseEditCommand<LocationTypeDescriptionSpec, LocationTypeDescriptionEdit> {
-    
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
     
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.LocationType.name(), SecurityRoles.Description.name())
+                ))
+        ));
+
         List<FieldDefinition> temp = new ArrayList<>(3);
         temp.add(new FieldDefinition("WarehouseName", FieldType.ENTITY_NAME, true, null, null));
         temp.add(new FieldDefinition("LocationTypeName", FieldType.ENTITY_NAME, true, null, null));
@@ -62,7 +76,7 @@ public class EditLocationTypeDescriptionCommand
     
     /** Creates a new instance of EditLocationTypeDescriptionCommand */
     public EditLocationTypeDescriptionCommand(UserVisitPK userVisitPK, EditLocationTypeDescriptionForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override

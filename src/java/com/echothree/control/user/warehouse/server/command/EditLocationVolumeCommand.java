@@ -22,6 +22,9 @@ import com.echothree.control.user.warehouse.common.form.EditLocationVolumeForm;
 import com.echothree.control.user.warehouse.common.result.EditLocationVolumeResult;
 import com.echothree.control.user.warehouse.common.result.WarehouseResultFactory;
 import com.echothree.control.user.warehouse.common.spec.LocationSpec;
+import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.uom.common.UomConstants;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.uom.server.util.Conversion;
@@ -39,6 +42,9 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.command.EditMode;
 import com.echothree.util.server.control.BaseEditCommand;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
@@ -46,11 +52,19 @@ import java.util.List;
 
 public class EditLocationVolumeCommand
         extends BaseEditCommand<LocationSpec, LocationVolumeEdit> {
-    
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> SPEC_FIELD_DEFINITIONS;
     private final static List<FieldDefinition> EDIT_FIELD_DEFINITIONS;
     
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.LocationVolume.name(), SecurityRoles.Delete.name())
+                ))
+        ));
+
         SPEC_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("WarehouseName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("LocationName", FieldType.ENTITY_NAME, true, null, null)
@@ -68,7 +82,7 @@ public class EditLocationVolumeCommand
     
     /** Creates a new instance of EditLocationVolumeCommand */
     public EditLocationVolumeCommand(UserVisitPK userVisitPK, EditLocationVolumeForm form) {
-        super(userVisitPK, form, null, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, SPEC_FIELD_DEFINITIONS, EDIT_FIELD_DEFINITIONS);
     }
     
     @Override
