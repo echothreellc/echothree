@@ -32,7 +32,8 @@ import java.util.List;
 
 public class GetLocationUseTypeChoicesCommand
         extends BaseSimpleCommand<GetLocationUseTypeChoicesForm> {
-    
+
+    // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {

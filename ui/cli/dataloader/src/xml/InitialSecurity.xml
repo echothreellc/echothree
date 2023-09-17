@@ -2367,6 +2367,9 @@
             <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Warehouse Review" />
             </securityRole>
+            <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Warehouse Choices" />
+            </securityRole>
             <securityRole securityRoleName="Search" isDefault="true" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Warehouse Search" />
             </securityRole>
@@ -8372,6 +8375,7 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="Warehouse" securityRoleName="Delete" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Warehouse" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Warehouse" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Warehouse" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Warehouse" securityRoleName="Search" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Location" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Location" securityRoleName="Edit" />
