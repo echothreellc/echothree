@@ -2391,8 +2391,62 @@
             <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Location Choices" />
             </securityRole>
+            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Location Description" />
+            </securityRole>
             <securityRole securityRoleName="Search" isDefault="true" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Location Search" />
+            </securityRole>
+            <securityRole securityRoleName="LocationCapacity" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Location Capacity" />
+            </securityRole>
+            <securityRole securityRoleName="LocationVolume" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Location Volume" />
+            </securityRole>
+        </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="LocationType" parentSecurityRoleGroupName="WarehouseComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Location Type" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Location Type Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Location Type Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Location Type Delete" />
+            </securityRole>
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Location Type List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Location Type Review" />
+            </securityRole>
+            <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Location Type Choices" />
+            </securityRole>
+            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Location Type Description" />
+            </securityRole>
+        </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="LocationNameElement" parentSecurityRoleGroupName="WarehouseComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Location Name Element" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Location Name Element Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Location Name Element Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Location Name Element Delete" />
+            </securityRole>
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Location Name Element List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Location Name Element Review" />
+            </securityRole>
+            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Location Name Element Description" />
             </securityRole>
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="LocationStatus" parentSecurityRoleGroupName="WarehouseComponent" isDefault="false" sortOrder="1">
@@ -8301,7 +8355,23 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="Location" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Location" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Location" securityRoleName="Choices" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Location" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Location" securityRoleName="Search" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Location" securityRoleName="LocationCapacity" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Location" securityRoleName="LocationVolume" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="LocationType" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="LocationType" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="LocationType" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="LocationType" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="LocationType" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="LocationType" securityRoleName="Choices" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="LocationType" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="LocationNameElement" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="LocationNameElement" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="LocationNameElement" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="LocationNameElement" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="LocationNameElement" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="LocationNameElement" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="LocationStatus" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WishlistType" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="WishlistType" securityRoleName="Edit" />
