@@ -2412,6 +2412,9 @@
             <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Location Capacity Delete" />
             </securityRole>
+            <securityRole securityRoleName="List" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Location Capacity List" />
+            </securityRole>
             <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Location Capacity Review" />
             </securityRole>
@@ -8388,6 +8391,7 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="LocationCapacity" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="LocationCapacity" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="LocationCapacity" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="LocationCapacity" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="LocationCapacity" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="LocationVolume" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="LocationVolume" securityRoleName="Edit" />
