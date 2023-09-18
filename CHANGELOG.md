@@ -1,5 +1,9 @@
 # Changelog
 
+## 2023-09-17-01
+
+* Permissions on Warehouse Component UCs [844](https://gitlab.echothree.com/echothree/echothree/-/issues/844)
+
 ## 2023-09-03-01
 
 * Add GL Accounts to Item Accounting Category Object [846](https://gitlab.echothree.com/echothree/echothree/-/issues/846)
