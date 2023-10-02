@@ -1,5 +1,10 @@
 # Changelog
 
+## 2023-10-01-01
+
+* Guava 32.1.2-jre Upgrade [847](https://gitlab.echothree.com/echothree/echothree/-/issues/847)
+* Move Database Migration Scripts to Database Utility [848](https://gitlab.echothree.com/echothree/echothree/-/issues/848)
+
 ## 2023-09-17-01
 
 * Permissions on Warehouse Component UCs [844](https://gitlab.echothree.com/echothree/echothree/-/issues/844)
