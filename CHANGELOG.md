@@ -15,7 +15,7 @@
 
 ## 2023-08-20-01
 
-* Issue jOOQ 3.18.6 Upgrade [838](https://gitlab.echothree.com/echothree/echothree/-/issues/838)
+* jOOQ 3.18.6 Upgrade [838](https://gitlab.echothree.com/echothree/echothree/-/issues/838)
 * Add Geo Code Type Object and Queries [839](https://gitlab.echothree.com/echothree/echothree/-/issues/839)
 * Add Geo Code Scope Object and Queries [840](https://gitlab.echothree.com/echothree/echothree/-/issues/840)
 * Add Geo Code Object and Queries [841](https://gitlab.echothree.com/echothree/echothree/-/issues/841)
@@ -26,7 +26,7 @@
 
 * commons-fileupload 1.5 Upgrade [834](https://gitlab.echothree.com/echothree/echothree/-/issues/834)
 * commons-io 2.13.0 Upgrade [835](https://gitlab.echothree.com/echothree/echothree/-/issues/835)
-* Issue ICU4J 73.2 Upgrade [836](https://gitlab.echothree.com/echothree/echothree/-/issues/836)
+* ICU4J 73.2 Upgrade [836](https://gitlab.echothree.com/echothree/echothree/-/issues/836)
 * commons-codec 1.16.0 Upgrade [837](https://gitlab.echothree.com/echothree/echothree/-/issues/837)
 
 ## 2023-07-23-01
