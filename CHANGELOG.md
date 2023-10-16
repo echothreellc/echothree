@@ -1,5 +1,10 @@
 # Changelog
 
+## 2023-10-15-01
+
+* jOOQ 3.18.7 Upgrade [849](https://gitlab.echothree.com/echothree/echothree/-/issues/849)
+* Apache Lucene 9.8.0 Upgrade [850](https://gitlab.echothree.com/echothree/echothree/-/issues/850)
+
 ## 2023-10-01-01
 
 * Guava 32.1.2-jre Upgrade [847](https://gitlab.echothree.com/echothree/echothree/-/issues/847)
