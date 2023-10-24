@@ -96,6 +96,10 @@
                 <include name="guava.jar"/>
                 <include name="failureaccess.jar" />
             </lib>
+            <!-- GraphQL -->
+            <lib dir="${build.lib.dir}">
+                <include name="graphql-java.jar" />
+            </lib>
         </war>
     </target>
 
