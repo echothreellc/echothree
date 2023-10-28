@@ -32,8 +32,7 @@ import java.util.List;
 @GraphQLDescription("entity multiple list item attributes object")
 @GraphQLName("EntityCollectionAttributes")
 public class EntityCollectionAttributesObject
-        extends BaseGraphQl
-        implements AttributeInterface {
+        implements BaseGraphQl, AttributeInterface {
 
     private final EntityAttribute entityAttribute; // Always Present
     private final EntityInstance entityInstance; // Always Present
@@ -46,13 +45,13 @@ public class EntityCollectionAttributesObject
     @GraphQLField
     @GraphQLDescription("entity attribute")
     public EntityAttributeObject getEntityAttribute(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityAttribute, entityInstance) : null;
+        return CoreSecurityUtils.getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityAttribute, entityInstance) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("entity instance")
     public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityInstance) : null;
+        return CoreSecurityUtils.getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityInstance) : null;
     }
 
     @GraphQLField
@@ -60,7 +59,7 @@ public class EntityCollectionAttributesObject
     public Collection<EntityInstanceObject> getEntityInstanceAttributes(final DataFetchingEnvironment env) {
         List<EntityInstanceObject> entityCollectionAttributeObjects = null;
 
-        if(CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env)) {
+        if(CoreSecurityUtils.getHasEntityInstanceAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
             var entityCollectionAttributes = coreControl.getEntityCollectionAttributes(entityAttribute, entityInstance);
             entityCollectionAttributeObjects = new ArrayList<>(entityCollectionAttributes.size());

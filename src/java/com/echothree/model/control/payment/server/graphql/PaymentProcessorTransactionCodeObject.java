@@ -44,7 +44,7 @@ public class PaymentProcessorTransactionCodeObject
     @GraphQLField
     @GraphQLDescription("payment processor transaction")
     public PaymentProcessorTransactionObject getPaymentProcessorTransaction(final DataFetchingEnvironment env) {
-        return PaymentSecurityUtils.getInstance().getHasPaymentProcessorTransactionAccess(env) ? new PaymentProcessorTransactionObject(paymentProcessorTransactionCode.getPaymentProcessorTransaction()) : null;
+        return PaymentSecurityUtils.getHasPaymentProcessorTransactionAccess(env) ? new PaymentProcessorTransactionObject(paymentProcessorTransactionCode.getPaymentProcessorTransaction()) : null;
     }
 
     @GraphQLField
@@ -53,7 +53,7 @@ public class PaymentProcessorTransactionCodeObject
     public List<PaymentProcessorTransactionCodeObject> getPaymentProcessorTransactionCodes(final DataFetchingEnvironment env) {
         List<PaymentProcessorTransactionCodeObject> paymentProcessorTransactionCodes = null;
 
-        if(PaymentSecurityUtils.getInstance().getHasPaymentProcessorTransactionCodesAccess(env)) {
+        if(PaymentSecurityUtils.getHasPaymentProcessorTransactionCodesAccess(env)) {
             var paymentProcessorTransactionCodeControl = Session.getModelController(PaymentProcessorTransactionCodeControl.class);
             var entities = paymentProcessorTransactionCodeControl.getPaymentProcessorTransactionCodesByPaymentProcessorTransaction(paymentProcessorTransactionCode.getPaymentProcessorTransaction());
             var objects = new ArrayList<PaymentProcessorTransactionCodeObject>(entities.size());

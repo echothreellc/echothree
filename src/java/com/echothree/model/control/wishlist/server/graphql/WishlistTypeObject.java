@@ -17,6 +17,7 @@
 package com.echothree.model.control.wishlist.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
@@ -88,7 +89,7 @@ public class WishlistTypeObject
         var wishlistControl = Session.getModelController(WishlistControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return wishlistControl.getBestWishlistTypeDescription(wishlistType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return wishlistControl.getBestWishlistTypeDescription(wishlistType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
     @GraphQLField
@@ -96,7 +97,7 @@ public class WishlistTypeObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<WishlistPriorityObject> getWishlistPriorities(final DataFetchingEnvironment env) {
-        if(WishlistSecurityUtils.getInstance().getHasWishlistPrioritiesAccess(env)) {
+        if(WishlistSecurityUtils.getHasWishlistPrioritiesAccess(env)) {
             var wishlistControl = Session.getModelController(WishlistControl.class);
             var totalCount = wishlistControl.countWishlistPrioritiesByWishlistType(wishlistType);
 

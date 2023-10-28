@@ -87,25 +87,25 @@ public class OfferItemPriceObject
     @GraphQLField
     @GraphQLDescription("offer item")
     public OfferItemObject getOfferItem(final DataFetchingEnvironment env) {
-        return OfferSecurityUtils.getInstance().getHasOfferItemAccess(env) ? new OfferItemObject(offerItemPrice.getOfferItem()) : null;
+        return OfferSecurityUtils.getHasOfferItemAccess(env) ? new OfferItemObject(offerItemPrice.getOfferItem()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("inventory condition")
     public InventoryConditionObject getInventoryCondition(final DataFetchingEnvironment env) {
-        return InventorySecurityUtils.getInstance().getHasInventoryConditionAccess(env) ? new InventoryConditionObject(offerItemPrice.getInventoryCondition()) : null;
+        return InventorySecurityUtils.getHasInventoryConditionAccess(env) ? new InventoryConditionObject(offerItemPrice.getInventoryCondition()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("unit of measure type")
     public UnitOfMeasureTypeObject getUnitOfMeasureType(final DataFetchingEnvironment env) {
-        return UomSecurityUtils.getInstance().getHasUnitOfMeasureTypeAccess(env) ? new UnitOfMeasureTypeObject(offerItemPrice.getUnitOfMeasureType()) : null;
+        return UomSecurityUtils.getHasUnitOfMeasureTypeAccess(env) ? new UnitOfMeasureTypeObject(offerItemPrice.getUnitOfMeasureType()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("currency")
     public CurrencyObject getCurrency(final DataFetchingEnvironment env) {
-        return AccountingSecurityUtils.getInstance().getHasCurrencyAccess(env) ? new CurrencyObject(offerItemPrice.getCurrency()) : null;
+        return AccountingSecurityUtils.getHasCurrencyAccess(env) ? new CurrencyObject(offerItemPrice.getCurrency()) : null;
     }
 
     @GraphQLField

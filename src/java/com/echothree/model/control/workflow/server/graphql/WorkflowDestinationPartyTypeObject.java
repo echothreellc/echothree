@@ -51,14 +51,14 @@ public class WorkflowDestinationPartyTypeObject
     @GraphQLField
     @GraphQLDescription("workflow destination")
     public WorkflowDestinationObject getWorkflowDestination(final DataFetchingEnvironment env) {
-        return WorkflowSecurityUtils.getInstance().getHasWorkflowDestinationAccess(env) ? new WorkflowDestinationObject(workflowDestinationPartyType.getWorkflowDestination()) : null;
+        return WorkflowSecurityUtils.getHasWorkflowDestinationAccess(env) ? new WorkflowDestinationObject(workflowDestinationPartyType.getWorkflowDestination()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("party type")
     @GraphQLNonNull
     public PartyTypeObject getPartyType(final DataFetchingEnvironment env) {
-        return PartySecurityUtils.getInstance().getHasPartyTypeAccess(env) ? new PartyTypeObject(workflowDestinationPartyType.getPartyType()) : null;
+        return PartySecurityUtils.getHasPartyTypeAccess(env) ? new PartyTypeObject(workflowDestinationPartyType.getPartyType()) : null;
     }
 
     @GraphQLField
@@ -66,7 +66,7 @@ public class WorkflowDestinationPartyTypeObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<WorkflowDestinationSecurityRoleObject> getWorkflowDestinationSecurityRoles(final DataFetchingEnvironment env) {
-        if(WorkflowSecurityUtils.getInstance().getHasWorkflowDestinationSecurityRolesAccess(env)) {
+        if(WorkflowSecurityUtils.getHasWorkflowDestinationSecurityRolesAccess(env)) {
             var workflowControl = Session.getModelController(WorkflowControl.class);
             var totalCount = workflowControl.countWorkflowDestinationSecurityRolesByWorkflowDestinationPartyType(workflowDestinationPartyType);
 

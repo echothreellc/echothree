@@ -37,13 +37,13 @@ public class WorkflowDestinationStepObject
     @GraphQLField
     @GraphQLDescription("workflowDestination")
     public WorkflowDestinationObject getWorkflowDestination(final DataFetchingEnvironment env) {
-        return WorkflowSecurityUtils.getInstance().getHasWorkflowDestinationAccess(env) ? new WorkflowDestinationObject(workflowDestinationStep.getWorkflowDestination()) : null;
+        return WorkflowSecurityUtils.getHasWorkflowDestinationAccess(env) ? new WorkflowDestinationObject(workflowDestinationStep.getWorkflowDestination()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("workflowStep")
     public WorkflowStepObject getWorkflowStep(final DataFetchingEnvironment env) {
-        return WorkflowSecurityUtils.getInstance().getHasWorkflowStepAccess(env) ? new WorkflowStepObject(workflowDestinationStep.getWorkflowStep()) : null;
+        return WorkflowSecurityUtils.getHasWorkflowStepAccess(env) ? new WorkflowStepObject(workflowDestinationStep.getWorkflowStep()) : null;
     }
 
 }

@@ -18,6 +18,7 @@ package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.core.server.entity.MimeType;
 import com.echothree.model.data.core.server.entity.MimeTypeDetail;
@@ -66,7 +67,7 @@ public class MimeTypeObject
     @GraphQLDescription("entity attribute type")
     @GraphQLNonNull
     public EntityAttributeTypeObject getEntityAttributeType(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityAttributeTypeAccess(env) ? new EntityAttributeTypeObject(getMimeTypeDetail().getEntityAttributeType()) : null;
+        return CoreSecurityUtils.getHasEntityAttributeTypeAccess(env) ? new EntityAttributeTypeObject(getMimeTypeDetail().getEntityAttributeType()) : null;
     }
 
     @GraphQLField
@@ -90,7 +91,7 @@ public class MimeTypeObject
         var coreControl = Session.getModelController(CoreControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return coreControl.getBestMimeTypeDescription(mimeType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return coreControl.getBestMimeTypeDescription(mimeType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
     
     @GraphQLField
@@ -99,7 +100,7 @@ public class MimeTypeObject
     public List<MimeTypeUsageObject> getMimeTypeUsages(final DataFetchingEnvironment env) {
         List<MimeTypeUsageObject> mimeTypeUsages = null;
         
-        if(CoreSecurityUtils.getInstance().getHasMimeTypeUsagesAccess(env)) {
+        if(CoreSecurityUtils.getHasMimeTypeUsagesAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
             List<MimeTypeUsage> entities = coreControl.getMimeTypeUsagesByMimeType(mimeType);
             List<MimeTypeUsageObject> objects = new ArrayList<>(entities.size());
@@ -120,7 +121,7 @@ public class MimeTypeObject
     public List<MimeTypeFileExtensionObject> getMimeTypeFileExtensions(final DataFetchingEnvironment env) {
         List<MimeTypeFileExtensionObject> mimeTypeFileExtensions = null;
         
-        if(CoreSecurityUtils.getInstance().getHasMimeTypeFileExtensionsAccess(env)) {
+        if(CoreSecurityUtils.getHasMimeTypeFileExtensionsAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
             List<MimeTypeFileExtension> entities = coreControl.getMimeTypeFileExtensionsByMimeType(mimeType);
             List<MimeTypeFileExtensionObject> objects = new ArrayList<>(entities.size());

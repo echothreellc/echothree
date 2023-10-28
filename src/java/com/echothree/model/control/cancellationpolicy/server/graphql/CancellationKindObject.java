@@ -18,6 +18,7 @@ package com.echothree.model.control.cancellationpolicy.server.graphql;
 
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
@@ -72,7 +73,7 @@ public class CancellationKindObject
     @GraphQLField
     @GraphQLDescription("cancellation sequence type")
     public SequenceTypeObject getCancellationSequenceType(final DataFetchingEnvironment env) {
-        return SequenceSecurityUtils.getInstance().getHasSequenceTypeAccess(env) ? new SequenceTypeObject(getCancellationKindDetail().getCancellationSequenceType()) : null;
+        return SequenceSecurityUtils.getHasSequenceTypeAccess(env) ? new SequenceTypeObject(getCancellationKindDetail().getCancellationSequenceType()) : null;
     }
 
     @GraphQLField
@@ -96,7 +97,7 @@ public class CancellationKindObject
         var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return cancellationPolicyControl.getBestCancellationKindDescription(cancellationKind, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return cancellationPolicyControl.getBestCancellationKindDescription(cancellationKind, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
     @GraphQLField
@@ -104,7 +105,7 @@ public class CancellationKindObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<CancellationPolicyObject> getCancellationPolicies(final DataFetchingEnvironment env) {
-        if(CancellationPolicySecurityUtils.getInstance().getHasCancellationPoliciesAccess(env)) {
+        if(CancellationPolicySecurityUtils.getHasCancellationPoliciesAccess(env)) {
             var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
             var totalCount = cancellationPolicyControl.countCancellationPoliciesByCancellationKind(cancellationKind);
 

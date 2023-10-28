@@ -18,6 +18,7 @@ package com.echothree.model.control.geo.server.graphql;
 
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.geo.server.entity.GeoCode;
 import com.echothree.model.data.geo.server.entity.GeoCodeDetail;
@@ -61,13 +62,13 @@ public class GeoCodeObject
     @GraphQLField
     @GraphQLDescription("geo code type")
     public GeoCodeTypeObject getGeoCodeType(final DataFetchingEnvironment env) {
-        return GeoSecurityUtils.getInstance().getHasGeoCodeTypeAccess(env) ? new GeoCodeTypeObject(getGeoCodeDetail().getGeoCodeType()) : null;
+        return GeoSecurityUtils.getHasGeoCodeTypeAccess(env) ? new GeoCodeTypeObject(getGeoCodeDetail().getGeoCodeType()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("geo code scope")
     public GeoCodeScopeObject getGeoCodeScope(final DataFetchingEnvironment env) {
-        return GeoSecurityUtils.getInstance().getHasGeoCodeScopeAccess(env) ? new GeoCodeScopeObject(getGeoCodeDetail().getGeoCodeScope()) : null;
+        return GeoSecurityUtils.getHasGeoCodeScopeAccess(env) ? new GeoCodeScopeObject(getGeoCodeDetail().getGeoCodeScope()) : null;
     }
 
     @GraphQLField
@@ -91,7 +92,7 @@ public class GeoCodeObject
         var geoControl = Session.getModelController(GeoControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return geoControl.getBestGeoCodeDescription(geoCode, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return geoControl.getBestGeoCodeDescription(geoCode, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
 }

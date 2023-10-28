@@ -26,8 +26,7 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("entity entity attribute object")
 @GraphQLName("EntityEntityAttribute")
 public class EntityEntityAttributeObject
-        extends BaseGraphQl
-        implements AttributeInterface {
+        implements BaseGraphQl, AttributeInterface {
     
     private final EntityEntityAttribute entityEntityAttribute; // Always Present
     
@@ -38,19 +37,19 @@ public class EntityEntityAttributeObject
     @GraphQLField
     @GraphQLDescription("entity attribute")
     public EntityAttributeObject getEntityAttribute(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityEntityAttribute.getEntityAttribute(), entityEntityAttribute.getEntityInstance()) : null;
+        return CoreSecurityUtils.getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityEntityAttribute.getEntityAttribute(), entityEntityAttribute.getEntityInstance()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("entity instance")
     public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityEntityAttribute.getEntityInstance()) : null;
+        return CoreSecurityUtils.getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityEntityAttribute.getEntityInstance()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("entity instance attribute")
     public EntityInstanceObject getEntityInstanceAttribute(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityEntityAttribute.getEntityInstanceAttribute()) : null;
+        return CoreSecurityUtils.getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityEntityAttribute.getEntityInstanceAttribute()) : null;
     }
 
 }

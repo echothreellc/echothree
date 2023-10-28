@@ -55,7 +55,7 @@ public class EventTypeObject
         var coreControl = Session.getModelController(CoreControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return coreControl.getBestEventTypeDescription(eventType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return coreControl.getBestEventTypeDescription(eventType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
     
 }

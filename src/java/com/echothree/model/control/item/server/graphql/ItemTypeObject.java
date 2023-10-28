@@ -17,6 +17,7 @@
 package com.echothree.model.control.item.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.item.server.entity.ItemType;
@@ -68,7 +69,7 @@ public class ItemTypeObject
         var itemControl = Session.getModelController(ItemControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return itemControl.getBestItemTypeDescription(itemType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return itemControl.getBestItemTypeDescription(itemType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
     
 }

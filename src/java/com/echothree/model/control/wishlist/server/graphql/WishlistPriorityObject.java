@@ -17,6 +17,7 @@
 package com.echothree.model.control.wishlist.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.data.wishlist.server.entity.WishlistPriority;
@@ -62,7 +63,7 @@ public class WishlistPriorityObject
     @GraphQLDescription("wishlist type")
     @GraphQLNonNull
     public WishlistTypeObject getWishlistType(final DataFetchingEnvironment env) {
-        return WishlistSecurityUtils.getInstance().getHasWishlistTypeAccess(env) ? new WishlistTypeObject(getWishlistPriorityDetail().getWishlistType()) : null;
+        return WishlistSecurityUtils.getHasWishlistTypeAccess(env) ? new WishlistTypeObject(getWishlistPriorityDetail().getWishlistType()) : null;
     }
 
     @GraphQLField
@@ -86,7 +87,7 @@ public class WishlistPriorityObject
         var wishlistControl = Session.getModelController(WishlistControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return wishlistControl.getBestWishlistPriorityDescription(wishlistPriority, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return wishlistControl.getBestWishlistPriorityDescription(wishlistPriority, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
 }

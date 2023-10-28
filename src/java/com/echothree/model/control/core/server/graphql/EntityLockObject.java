@@ -40,7 +40,7 @@ public class EntityLockObject {
     public EntityInstanceObject getLockTargetEntityInstance(final DataFetchingEnvironment env) {
         EntityInstanceObject result = null;
 
-        if(CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env)) {
+        if(CoreSecurityUtils.getHasEntityInstanceAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
             var entityInstance = coreControl.getEntityInstanceByEntityRef(entityLockTransfer.getLockTargetEntityInstance().getEntityRef());
 
@@ -55,7 +55,7 @@ public class EntityLockObject {
     public EntityInstanceObject getLockedByEntityInstance(final DataFetchingEnvironment env) {
         EntityInstanceObject result = null;
 
-        if(CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env)) {
+        if(CoreSecurityUtils.getHasEntityInstanceAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
             var entityInstance = coreControl.getEntityInstanceByEntityRef(entityLockTransfer.getLockedByEntityInstance().getEntityRef());
 

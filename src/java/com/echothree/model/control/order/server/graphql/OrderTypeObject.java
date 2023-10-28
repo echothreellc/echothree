@@ -21,6 +21,7 @@ import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.order.server.control.OrderPriorityControl;
 import com.echothree.model.control.order.server.control.OrderTypeControl;
@@ -78,7 +79,7 @@ public class OrderTypeObject
     public OrderTypeObject getParentOrderType(final DataFetchingEnvironment env) {
         var parentOrderType = getOrderTypeDetail().getParentOrderType();
 
-        return parentOrderType == null ? null : (OrderSecurityUtils.getInstance().getHasOrderTypeAccess(env) ? new OrderTypeObject(parentOrderType) : null);
+        return parentOrderType == null ? null : (OrderSecurityUtils.getHasOrderTypeAccess(env) ? new OrderTypeObject(parentOrderType) : null);
     }
 
     @GraphQLField
@@ -86,7 +87,7 @@ public class OrderTypeObject
     public SequenceTypeObject getOrderSequenceType(final DataFetchingEnvironment env) {
         var orderSequenceType = getOrderTypeDetail().getOrderSequenceType();
 
-        return orderSequenceType == null ? null : (SequenceSecurityUtils.getInstance().getHasSequenceTypeAccess(env) ? new SequenceTypeObject(orderSequenceType) : null);
+        return orderSequenceType == null ? null : (SequenceSecurityUtils.getHasSequenceTypeAccess(env) ? new SequenceTypeObject(orderSequenceType) : null);
     }
 
     @GraphQLField
@@ -94,7 +95,7 @@ public class OrderTypeObject
     public WorkflowObject getOrderWorkflow(final DataFetchingEnvironment env) {
         var orderWorkflow = getOrderTypeDetail().getOrderWorkflow();
 
-        return orderWorkflow == null ? null : (WorkflowSecurityUtils.getInstance().getHasWorkflowAccess(env) ? new WorkflowObject(orderWorkflow) : null);
+        return orderWorkflow == null ? null : (WorkflowSecurityUtils.getHasWorkflowAccess(env) ? new WorkflowObject(orderWorkflow) : null);
     }
 
     @GraphQLField
@@ -102,7 +103,7 @@ public class OrderTypeObject
     public WorkflowEntranceObject getOrderWorkflowEntrance(final DataFetchingEnvironment env) {
         var orderWorkflowEntrance = getOrderTypeDetail().getOrderWorkflowEntrance();
 
-        return orderWorkflowEntrance == null ? null : (WorkflowSecurityUtils.getInstance().getHasWorkflowEntranceAccess(env) ? new WorkflowEntranceObject(orderWorkflowEntrance) : null);
+        return orderWorkflowEntrance == null ? null : (WorkflowSecurityUtils.getHasWorkflowEntranceAccess(env) ? new WorkflowEntranceObject(orderWorkflowEntrance) : null);
     }
 
     @GraphQLField
@@ -126,7 +127,7 @@ public class OrderTypeObject
         var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return orderTypeControl.getBestOrderTypeDescription(orderType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return orderTypeControl.getBestOrderTypeDescription(orderType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
     @GraphQLField
@@ -134,7 +135,7 @@ public class OrderTypeObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<OrderPriorityObject> getOrderPriorities(final DataFetchingEnvironment env) {
-        if(OrderSecurityUtils.getInstance().getHasOrderPrioritiesAccess(env)) {
+        if(OrderSecurityUtils.getHasOrderPrioritiesAccess(env)) {
             var orderTypeControl = Session.getModelController(OrderPriorityControl.class);
             var totalCount = orderTypeControl.countOrderPriorities(orderType);
 

@@ -27,47 +27,38 @@ import com.echothree.control.user.uom.server.command.GetUnitOfMeasureTypesComman
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class UomSecurityUtils
-        extends BaseGraphQl {
+public interface UomSecurityUtils {
 
-    private static class UomSecurityUtilsHolder {
-        static UomSecurityUtils instance = new UomSecurityUtils();
-    }
-    
-    public static UomSecurityUtils getInstance() {
-        return UomSecurityUtilsHolder.instance;
+    static boolean getHasUnitOfMeasureKindUseTypeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetUnitOfMeasureKindUseTypeCommand.class);
     }
 
-    public boolean getHasUnitOfMeasureKindUseTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetUnitOfMeasureKindUseTypeCommand.class);
+    static boolean getHasUnitOfMeasureKindUseTypesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetUnitOfMeasureKindUseTypesCommand.class);
     }
 
-    public boolean getHasUnitOfMeasureKindUseTypesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetUnitOfMeasureKindUseTypesCommand.class);
+    static boolean getHasUnitOfMeasureKindAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetUnitOfMeasureKindCommand.class);
     }
 
-    public boolean getHasUnitOfMeasureKindAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetUnitOfMeasureKindCommand.class);
+    static boolean getHasUnitOfMeasureKindsAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetUnitOfMeasureKindsCommand.class);
     }
 
-    public boolean getHasUnitOfMeasureKindsAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetUnitOfMeasureKindsCommand.class);
+    static boolean getHasUnitOfMeasureKindUseAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetUnitOfMeasureKindUseCommand.class);
     }
 
-    public boolean getHasUnitOfMeasureKindUseAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetUnitOfMeasureKindUseCommand.class);
+    static boolean getHasUnitOfMeasureKindUsesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetUnitOfMeasureKindUsesCommand.class);
     }
 
-    public boolean getHasUnitOfMeasureKindUsesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetUnitOfMeasureKindUsesCommand.class);
+    static boolean getHasUnitOfMeasureTypeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetUnitOfMeasureTypeCommand.class);
     }
 
-    public boolean getHasUnitOfMeasureTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetUnitOfMeasureTypeCommand.class);
-    }
-
-    public boolean getHasUnitOfMeasureTypesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetUnitOfMeasureTypesCommand.class);
+    static boolean getHasUnitOfMeasureTypesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetUnitOfMeasureTypesCommand.class);
     }
 
 }

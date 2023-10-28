@@ -17,6 +17,7 @@
 package com.echothree.model.control.offer.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.offer.server.control.UseNameElementControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.offer.server.entity.UseNameElement;
@@ -85,7 +86,7 @@ public class UseNameElementObject
         var useNameElementControl = Session.getModelController(UseNameElementControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return useNameElementControl.getBestUseNameElementDescription(useNameElement, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return useNameElementControl.getBestUseNameElementDescription(useNameElement, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
     
 }

@@ -47,7 +47,7 @@ public class UserVisitSearchFacetIntegerObject {
     @GraphQLDescription("entity integer range")
     @GraphQLNonNull
     public EntityIntegerRangeObject getEntityIntegerRange(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityIntegerRangeAccess(env) ? new EntityIntegerRangeObject(entityIntegerRange) : null;
+        return CoreSecurityUtils.getHasEntityIntegerRangeAccess(env) ? new EntityIntegerRangeObject(entityIntegerRange) : null;
     }
 
     public void setCount(Long count) {

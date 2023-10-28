@@ -23,6 +23,7 @@ import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.graphql.ItemAliasObject;
@@ -75,7 +76,7 @@ public class UnitOfMeasureTypeObject
             var uomControl = Session.getModelController(UomControl.class);
             var userControl = Session.getModelController(UserControl.class);
 
-            unitOfMeasureTypeDescription = uomControl.getBestUnitOfMeasureTypeDescription(unitOfMeasureType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+            unitOfMeasureTypeDescription = uomControl.getBestUnitOfMeasureTypeDescription(unitOfMeasureType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
         }
         
         return unitOfMeasureTypeDescription;
@@ -84,7 +85,7 @@ public class UnitOfMeasureTypeObject
     @GraphQLField
     @GraphQLDescription("unit of measure kind")
     public UnitOfMeasureKindObject getUnitOfMeasureKind(final DataFetchingEnvironment env) {
-        return UomSecurityUtils.getInstance().getHasUnitOfMeasureKindAccess(env) ? new UnitOfMeasureKindObject(getUnitOfMeasureTypeDetail().getUnitOfMeasureKind()) : null;
+        return UomSecurityUtils.getHasUnitOfMeasureKindAccess(env) ? new UnitOfMeasureKindObject(getUnitOfMeasureTypeDetail().getUnitOfMeasureKind()) : null;
     }
     
     @GraphQLField
@@ -97,7 +98,7 @@ public class UnitOfMeasureTypeObject
     @GraphQLField
     @GraphQLDescription("symbol position")
     public SymbolPositionObject getSymbolPosition(final DataFetchingEnvironment env) {
-        return AccountingSecurityUtils.getInstance().getHasSymbolPositionAccess(env) ? new SymbolPositionObject(getUnitOfMeasureTypeDetail().getSymbolPosition()) : null;
+        return AccountingSecurityUtils.getHasSymbolPositionAccess(env) ? new SymbolPositionObject(getUnitOfMeasureTypeDetail().getSymbolPosition()) : null;
     }
     
     @GraphQLField
@@ -153,7 +154,7 @@ public class UnitOfMeasureTypeObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<ItemUnitOfMeasureTypeObject> getItemUnitOfMeasureTypes(final DataFetchingEnvironment env) {
-        if(ItemSecurityUtils.getInstance().getHasItemUnitOfMeasureTypesAccess(env)) {
+        if(ItemSecurityUtils.getHasItemUnitOfMeasureTypesAccess(env)) {
             var itemControl = Session.getModelController(ItemControl.class);
             var totalCount = itemControl.countItemUnitOfMeasureTypesByUnitOfMeasureType(unitOfMeasureType);
 
@@ -173,7 +174,7 @@ public class UnitOfMeasureTypeObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<ItemAliasObject> getItemAliases(final DataFetchingEnvironment env) {
-        if(ItemSecurityUtils.getInstance().getHasItemAliasesAccess(env)) {
+        if(ItemSecurityUtils.getHasItemAliasesAccess(env)) {
             var itemControl = Session.getModelController(ItemControl.class);
             var totalCount = itemControl.countItemAliasesByUnitOfMeasureType(unitOfMeasureType);
 

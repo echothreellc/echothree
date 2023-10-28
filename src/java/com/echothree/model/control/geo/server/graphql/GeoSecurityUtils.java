@@ -24,35 +24,26 @@ import com.echothree.control.user.geo.server.command.GetGeoCodeTypesCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class GeoSecurityUtils
-        extends BaseGraphQl {
+public interface GeoSecurityUtils {
 
-    private static class AccountingSecurityUtilsHolder {
-        static GeoSecurityUtils instance = new GeoSecurityUtils();
-    }
-    
-    public static GeoSecurityUtils getInstance() {
-        return AccountingSecurityUtilsHolder.instance;
+    static boolean getHasGeoCodeTypeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetGeoCodeTypeCommand.class);
     }
 
-    public boolean getHasGeoCodeTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetGeoCodeTypeCommand.class);
+    static boolean getHasGeoCodeTypesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetGeoCodeTypesCommand.class);
     }
 
-    public boolean getHasGeoCodeTypesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetGeoCodeTypesCommand.class);
+    static boolean getHasGeoCodeScopeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetGeoCodeScopeCommand.class);
     }
 
-    public boolean getHasGeoCodeScopeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetGeoCodeScopeCommand.class);
+    static boolean getHasGeoCodeScopesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetGeoCodeScopesCommand.class);
     }
 
-    public boolean getHasGeoCodeScopesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetGeoCodeScopesCommand.class);
-    }
-
-    public boolean getHasGeoCodeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetGeoCodeCommand.class);
+    static boolean getHasGeoCodeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetGeoCodeCommand.class);
     }
 
 }

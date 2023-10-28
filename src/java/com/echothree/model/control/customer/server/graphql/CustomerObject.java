@@ -73,7 +73,7 @@ public class CustomerObject
     @GraphQLDescription("customer type")
     @GraphQLNonNull
     public CustomerTypeObject getCustomerType(final DataFetchingEnvironment env) {
-        return CustomerSecurityUtils.getInstance().getHasCustomerTypeAccess(env) ?
+        return CustomerSecurityUtils.getHasCustomerTypeAccess(env) ?
                 new CustomerTypeObject(getCustomer().getCustomerType()) : null;
     }
 
@@ -81,7 +81,7 @@ public class CustomerObject
     @GraphQLDescription("initial offer use")
     @GraphQLNonNull
     public OfferUseObject getInitialOfferUse(final DataFetchingEnvironment env) {
-        return OfferSecurityUtils.getInstance().getHasOfferUseAccess(env) ?
+        return OfferSecurityUtils.getHasOfferUseAccess(env) ?
                 new OfferUseObject(getCustomer().getInitialOfferUse()) : null;
     }
 
@@ -90,7 +90,7 @@ public class CustomerObject
     public CancellationPolicyObject getCancellationPolicy(final DataFetchingEnvironment env) {
         var cancellationPolicy = getCustomer().getCancellationPolicy();
 
-        return cancellationPolicy == null ? null : CancellationPolicySecurityUtils.getInstance().getHasCancellationPolicyAccess(env) ?
+        return cancellationPolicy == null ? null : CancellationPolicySecurityUtils.getHasCancellationPolicyAccess(env) ?
                 new CancellationPolicyObject(cancellationPolicy) : null;
     }
 
@@ -99,7 +99,7 @@ public class CustomerObject
     public ReturnPolicyObject getReturnPolicy(final DataFetchingEnvironment env) {
         var returnPolicy = getCustomer().getReturnPolicy();
 
-        return returnPolicy == null ? null : ReturnPolicySecurityUtils.getInstance().getHasReturnPolicyAccess(env) ?
+        return returnPolicy == null ? null : ReturnPolicySecurityUtils.getHasReturnPolicyAccess(env) ?
                 new ReturnPolicyObject(returnPolicy) : null;
     }
 
@@ -108,7 +108,7 @@ public class CustomerObject
     public GlAccountObject getArGlAccount(final DataFetchingEnvironment env) {
         var arGlAccount = getCustomer().getArGlAccount();
 
-        return arGlAccount == null ? null : AccountingSecurityUtils.getInstance().getHasGlAccountAccess(env) ?
+        return arGlAccount == null ? null : AccountingSecurityUtils.getHasGlAccountAccess(env) ?
                 new GlAccountObject(getCustomer().getArGlAccount()) : null;
     }
 

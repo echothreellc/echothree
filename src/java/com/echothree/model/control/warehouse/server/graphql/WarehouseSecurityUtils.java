@@ -21,23 +21,14 @@ import com.echothree.control.user.warehouse.server.command.GetWarehousesCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class WarehouseSecurityUtils
-        extends BaseGraphQl {
+public interface WarehouseSecurityUtils {
 
-    private static class PartySecurityUtilsHolder {
-        static WarehouseSecurityUtils instance = new WarehouseSecurityUtils();
-    }
-    
-    public static WarehouseSecurityUtils getInstance() {
-        return PartySecurityUtilsHolder.instance;
+    static boolean getHasWarehouseAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWarehouseCommand.class);
     }
 
-    public boolean getHasWarehouseAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWarehouseCommand.class);
-    }
-
-    public boolean getHasWarehousesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWarehousesCommand.class);
+    static boolean getHasWarehousesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWarehousesCommand.class);
     }
 
 }

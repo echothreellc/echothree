@@ -18,6 +18,7 @@ package com.echothree.model.control.filter.server.graphql;
 
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.filter.server.entity.FilterAdjustment;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentDetail;
@@ -56,7 +57,7 @@ public class FilterAdjustmentObject
     @GraphQLField
     @GraphQLDescription("filter kind")
     public FilterKindObject getFilterKind(final DataFetchingEnvironment env) {
-        return FilterSecurityUtils.getInstance().getHasFilterKindAccess(env) ? new FilterKindObject(getFilterAdjustmentDetail().getFilterKind()) : null;
+        return FilterSecurityUtils.getHasFilterKindAccess(env) ? new FilterKindObject(getFilterAdjustmentDetail().getFilterKind()) : null;
     }
 
     @GraphQLField
@@ -69,7 +70,7 @@ public class FilterAdjustmentObject
     @GraphQLField
     @GraphQLDescription("filter adjustment source")
     public FilterAdjustmentSourceObject getFilterAdjustmentSource(final DataFetchingEnvironment env) {
-        return FilterSecurityUtils.getInstance().getHasFilterAdjustmentSourceAccess(env) ? new FilterAdjustmentSourceObject(getFilterAdjustmentDetail().getFilterAdjustmentSource()) : null;
+        return FilterSecurityUtils.getHasFilterAdjustmentSourceAccess(env) ? new FilterAdjustmentSourceObject(getFilterAdjustmentDetail().getFilterAdjustmentSource()) : null;
     }
 
     @GraphQLField
@@ -77,7 +78,7 @@ public class FilterAdjustmentObject
     public FilterAdjustmentTypeObject getFilterAdjustmentType(final DataFetchingEnvironment env) {
         var filterAdjustmentType = getFilterAdjustmentDetail().getFilterAdjustmentType();
 
-        return filterAdjustmentType == null ? null : FilterSecurityUtils.getInstance().getHasFilterAdjustmentTypeAccess(env) ? new FilterAdjustmentTypeObject(filterAdjustmentType) : null;
+        return filterAdjustmentType == null ? null : FilterSecurityUtils.getHasFilterAdjustmentTypeAccess(env) ? new FilterAdjustmentTypeObject(filterAdjustmentType) : null;
     }
 
     @GraphQLField
@@ -101,7 +102,7 @@ public class FilterAdjustmentObject
         var filterControl = Session.getModelController(FilterControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return filterControl.getBestFilterAdjustmentDescription(filterAdjustment, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return filterControl.getBestFilterAdjustmentDescription(filterAdjustment, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
     @GraphQLField
@@ -109,7 +110,7 @@ public class FilterAdjustmentObject
     public Collection<FilterAdjustmentAmountObject> getFilterAdjustmentAmounts(final DataFetchingEnvironment env) {
         Collection<FilterAdjustmentAmountObject> filterAdjustmentAmountObjects = null;
 
-        if(FilterSecurityUtils.getInstance().getHasFilterAdjustmentAmountsAccess(env)) {
+        if(FilterSecurityUtils.getHasFilterAdjustmentAmountsAccess(env)) {
             var filterControl = Session.getModelController(FilterControl.class);
             var filterAdjustmentAmounts = filterControl.getFilterAdjustmentAmounts(filterAdjustment);
 
@@ -128,7 +129,7 @@ public class FilterAdjustmentObject
     public Collection<FilterAdjustmentFixedAmountObject> getFilterAdjustmentFixedAmounts(final DataFetchingEnvironment env) {
         Collection<FilterAdjustmentFixedAmountObject> filterAdjustmentFixedAmountObjects = null;
 
-        if(FilterSecurityUtils.getInstance().getHasFilterAdjustmentFixedAmountsAccess(env)) {
+        if(FilterSecurityUtils.getHasFilterAdjustmentFixedAmountsAccess(env)) {
             var filterControl = Session.getModelController(FilterControl.class);
             var filterAdjustmentFixedAmounts = filterControl.getFilterAdjustmentFixedAmounts(filterAdjustment);
 
@@ -147,7 +148,7 @@ public class FilterAdjustmentObject
     public Collection<FilterAdjustmentPercentObject> getFilterAdjustmentPercents(final DataFetchingEnvironment env) {
         Collection<FilterAdjustmentPercentObject> filterAdjustmentPercentObjects = null;
 
-        if(FilterSecurityUtils.getInstance().getHasFilterAdjustmentPercentsAccess(env)) {
+        if(FilterSecurityUtils.getHasFilterAdjustmentPercentsAccess(env)) {
             var filterControl = Session.getModelController(FilterControl.class);
             var filterAdjustmentPercents = filterControl.getFilterAdjustmentPercents(filterAdjustment);
 

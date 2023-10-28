@@ -17,6 +17,7 @@
 package com.echothree.model.control.workflow.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.workflow.server.entity.WorkflowStepType;
@@ -68,7 +69,7 @@ public class WorkflowStepTypeObject
         var workflowControl = Session.getModelController(WorkflowControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return workflowControl.getBestWorkflowStepTypeDescription(workflowStepType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return workflowControl.getBestWorkflowStepTypeDescription(workflowStepType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
 }

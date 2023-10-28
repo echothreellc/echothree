@@ -17,6 +17,7 @@
 package com.echothree.model.control.sequence.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.sequence.server.entity.SequenceType;
@@ -72,13 +73,13 @@ public class SequenceTypeObject
     @GraphQLField
     @GraphQLDescription("sequence encoder type")
     public SequenceEncoderTypeObject getSequenceEncoderType(final DataFetchingEnvironment env) {
-        return SequenceSecurityUtils.getInstance().getHasSequenceEncoderTypeAccess(env) ? new SequenceEncoderTypeObject(getSequenceTypeDetail().getSequenceEncoderType()) : null;
+        return SequenceSecurityUtils.getHasSequenceEncoderTypeAccess(env) ? new SequenceEncoderTypeObject(getSequenceTypeDetail().getSequenceEncoderType()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("sequence checksum type")
     public SequenceChecksumTypeObject getSequenceChecksumType(final DataFetchingEnvironment env) {
-        return SequenceSecurityUtils.getInstance().getHasSequenceChecksumTypeAccess(env) ? new SequenceChecksumTypeObject(getSequenceTypeDetail().getSequenceChecksumType()) : null;
+        return SequenceSecurityUtils.getHasSequenceChecksumTypeAccess(env) ? new SequenceChecksumTypeObject(getSequenceTypeDetail().getSequenceChecksumType()) : null;
     }
 
     @GraphQLField
@@ -109,7 +110,7 @@ public class SequenceTypeObject
         var sequenceControl = Session.getModelController(SequenceControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return sequenceControl.getBestSequenceTypeDescription(sequenceType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return sequenceControl.getBestSequenceTypeDescription(sequenceType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
 }

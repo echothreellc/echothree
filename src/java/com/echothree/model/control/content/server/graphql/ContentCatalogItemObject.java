@@ -91,31 +91,31 @@ public class ContentCatalogItemObject
     @GraphQLField
     @GraphQLDescription("content catalog")
     public ContentCatalogObject getContentCatalog(final DataFetchingEnvironment env) {
-        return ContentSecurityUtils.getInstance().getHasContentCatalogAccess(env) ? new ContentCatalogObject(contentCatalogItem.getContentCatalog()) : null;
+        return ContentSecurityUtils.getHasContentCatalogAccess(env) ? new ContentCatalogObject(contentCatalogItem.getContentCatalog()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("item")
     public ItemObject getItem(final DataFetchingEnvironment env) {
-        return ItemSecurityUtils.getInstance().getHasItemAccess(env) ? new ItemObject(contentCatalogItem.getItem()) : null;
+        return ItemSecurityUtils.getHasItemAccess(env) ? new ItemObject(contentCatalogItem.getItem()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("inventory condition")
     public InventoryConditionObject getInventoryCondition(final DataFetchingEnvironment env) {
-        return InventorySecurityUtils.getInstance().getHasInventoryConditionAccess(env) ? new InventoryConditionObject(contentCatalogItem.getInventoryCondition()) : null;
+        return InventorySecurityUtils.getHasInventoryConditionAccess(env) ? new InventoryConditionObject(contentCatalogItem.getInventoryCondition()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("unit of measure type")
     public UnitOfMeasureTypeObject getUnitOfMeasureType(final DataFetchingEnvironment env) {
-        return UomSecurityUtils.getInstance().getHasUnitOfMeasureTypeAccess(env) ? new UnitOfMeasureTypeObject(contentCatalogItem.getUnitOfMeasureType()) : null;
+        return UomSecurityUtils.getHasUnitOfMeasureTypeAccess(env) ? new UnitOfMeasureTypeObject(contentCatalogItem.getUnitOfMeasureType()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("currency")
     public CurrencyObject getCurrency(final DataFetchingEnvironment env) {
-        return AccountingSecurityUtils.getInstance().getHasCurrencyAccess(env) ? new CurrencyObject(contentCatalogItem.getCurrency()) : null;
+        return AccountingSecurityUtils.getHasCurrencyAccess(env) ? new CurrencyObject(contentCatalogItem.getCurrency()) : null;
     }
 
     @GraphQLField

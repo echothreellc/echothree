@@ -17,6 +17,7 @@
 package com.echothree.model.control.item.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
@@ -91,7 +92,7 @@ public class RelatedItemTypeObject
         var itemControl = Session.getModelController(ItemControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return itemControl.getBestRelatedItemTypeDescription(relatedItemType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return itemControl.getBestRelatedItemTypeDescription(relatedItemType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
     @GraphQLField
@@ -99,7 +100,7 @@ public class RelatedItemTypeObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<RelatedItemObject> getRelatedItems(final DataFetchingEnvironment env) {
-        if(ItemSecurityUtils.getInstance().getHasRelatedItemsAccess(env)) {
+        if(ItemSecurityUtils.getHasRelatedItemsAccess(env)) {
             var itemControl = Session.getModelController(ItemControl.class);
             var totalCount = itemControl.countRelatedItemsByRelatedItemType(relatedItemType);
 
@@ -119,7 +120,7 @@ public class RelatedItemTypeObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<RelatedItemObject> getFromItems(final DataFetchingEnvironment env) {
-        if(fromItem != null && ItemSecurityUtils.getInstance().getHasRelatedItemsAccess(env)) {
+        if(fromItem != null && ItemSecurityUtils.getHasRelatedItemsAccess(env)) {
             var itemControl = Session.getModelController(ItemControl.class);
             var totalCount = itemControl.countRelatedItemsByRelatedItemTypeAndFromItem(relatedItemType, fromItem);
 

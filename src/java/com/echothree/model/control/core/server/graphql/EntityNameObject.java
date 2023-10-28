@@ -25,7 +25,7 @@ import graphql.annotations.annotationTypes.GraphQLNonNull;
 @GraphQLDescription("entity name object")
 @GraphQLName("EntityName")
 public class EntityNameObject
-        extends BaseGraphQl {
+        implements BaseGraphQl {
 
     private final String name;
     private final String value;

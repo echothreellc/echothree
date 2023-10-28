@@ -18,6 +18,7 @@ package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroupDetail;
@@ -85,7 +86,7 @@ public class EntityAttributeGroupObject
         var coreControl = Session.getModelController(CoreControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return coreControl.getBestEntityAttributeGroupDescription(entityAttributeGroup, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return coreControl.getBestEntityAttributeGroupDescription(entityAttributeGroup, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
     @GraphQLField
@@ -110,7 +111,7 @@ public class EntityAttributeGroupObject
     public Collection<EntityAttributeEntityAttributeGroupObject> getEntityAttributeEntityAttributeGroups(final DataFetchingEnvironment env) {
         Collection<EntityAttributeEntityAttributeGroupObject> entityAttributeEntityAttributeGroupObjects = null;
 
-        if(CoreSecurityUtils.getInstance().getHasEntityAttributeEntityAttributeGroupsAccess(env)) {
+        if(CoreSecurityUtils.getHasEntityAttributeEntityAttributeGroupsAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
             var entityAttributeEntityAttributeGroups = coreControl.getEntityAttributeEntityAttributeGroupsByEntityAttributeGroup(entityAttributeGroup);
 

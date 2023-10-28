@@ -57,167 +57,158 @@ import com.echothree.control.user.item.server.command.GetRelatedItemsCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class ItemSecurityUtils
-        extends BaseGraphQl {
+public interface ItemSecurityUtils {
 
-    private static class ItemSecurityUtilsHolder {
-        static ItemSecurityUtils instance = new ItemSecurityUtils();
-    }
-    
-    public static ItemSecurityUtils getInstance() {
-        return ItemSecurityUtilsHolder.instance;
+    static boolean getHasItemAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetItemCommand.class);
     }
 
-    public boolean getHasItemAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetItemCommand.class);
+    static boolean getHasItemsAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetItemsCommand.class);
     }
 
-    public boolean getHasItemsAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetItemsCommand.class);
+    static boolean getHasItemUnitOfMeasureTypeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetItemUnitOfMeasureTypeCommand.class);
     }
 
-    public boolean getHasItemUnitOfMeasureTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetItemUnitOfMeasureTypeCommand.class);
+    static boolean getHasItemUnitOfMeasureTypesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetItemUnitOfMeasureTypesCommand.class);
     }
 
-    public boolean getHasItemUnitOfMeasureTypesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetItemUnitOfMeasureTypesCommand.class);
+    static boolean getHasItemDescriptionAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetItemDescriptionCommand.class);
     }
 
-    public boolean getHasItemDescriptionAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetItemDescriptionCommand.class);
+    static boolean getHasItemDescriptionsAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetItemDescriptionsCommand.class);
     }
 
-    public boolean getHasItemDescriptionsAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetItemDescriptionsCommand.class);
+    static boolean getHasItemPriceAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetItemPriceCommand.class);
     }
 
-    public boolean getHasItemPriceAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetItemPriceCommand.class);
+    static boolean getHasItemPricesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetItemPricesCommand.class);
     }
 
-    public boolean getHasItemPricesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetItemPricesCommand.class);
+    static boolean getHasItemTypeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetItemTypeCommand.class);
     }
 
-    public boolean getHasItemTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetItemTypeCommand.class);
+    static boolean getHasItemTypesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetItemTypesCommand.class);
     }
 
-    public boolean getHasItemTypesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetItemTypesCommand.class);
+    static boolean getHasItemAliasChecksumTypeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetItemAliasChecksumTypeCommand.class);
     }
 
-    public boolean getHasItemAliasChecksumTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetItemAliasChecksumTypeCommand.class);
+    static boolean getHasItemAliasChecksumTypesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetItemAliasChecksumTypesCommand.class);
     }
 
-    public boolean getHasItemAliasChecksumTypesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetItemAliasChecksumTypesCommand.class);
+    static boolean getHasItemAliasTypeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetItemAliasTypeCommand.class);
     }
 
-    public boolean getHasItemAliasTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetItemAliasTypeCommand.class);
+    static boolean getHasItemAliasTypesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetItemAliasTypesCommand.class);
     }
 
-    public boolean getHasItemAliasTypesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetItemAliasTypesCommand.class);
+    static boolean getHasItemAliasAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetItemAliasCommand.class);
     }
 
-    public boolean getHasItemAliasAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetItemAliasCommand.class);
+    static boolean getHasItemAliasesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetItemAliasesCommand.class);
     }
 
-    public boolean getHasItemAliasesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetItemAliasesCommand.class);
+    static boolean getHasItemPriceTypeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetItemPriceTypeCommand.class);
     }
 
-    public boolean getHasItemPriceTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetItemPriceTypeCommand.class);
+    static boolean getHasItemPriceTypesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetItemPriceTypesCommand.class);
     }
 
-    public boolean getHasItemPriceTypesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetItemPriceTypesCommand.class);
+    static boolean getHasItemDeliveryTypeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetItemDeliveryTypeCommand.class);
     }
 
-    public boolean getHasItemDeliveryTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetItemDeliveryTypeCommand.class);
+    static boolean getHasItemDeliveryTypesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetItemDeliveryTypesCommand.class);
     }
 
-    public boolean getHasItemDeliveryTypesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetItemDeliveryTypesCommand.class);
+    static boolean getHasItemUseTypeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetItemUseTypeCommand.class);
     }
 
-    public boolean getHasItemUseTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetItemUseTypeCommand.class);
+    static boolean getHasItemUseTypesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetItemUseTypesCommand.class);
     }
 
-    public boolean getHasItemUseTypesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetItemUseTypesCommand.class);
+    static boolean getHasItemInventoryTypeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetItemInventoryTypeCommand.class);
     }
 
-    public boolean getHasItemInventoryTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetItemInventoryTypeCommand.class);
+    static boolean getHasItemInventoryTypesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetItemInventoryTypesCommand.class);
     }
 
-    public boolean getHasItemInventoryTypesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetItemInventoryTypesCommand.class);
+    static boolean getHasItemCategoryAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetItemCategoryCommand.class);
     }
 
-    public boolean getHasItemCategoryAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetItemCategoryCommand.class);
+    static boolean getHasItemCategoriesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetItemCategoriesCommand.class);
     }
 
-    public boolean getHasItemCategoriesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetItemCategoriesCommand.class);
+    static boolean getHasItemDescriptionTypeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetItemDescriptionTypeCommand.class);
     }
 
-    public boolean getHasItemDescriptionTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetItemDescriptionTypeCommand.class);
+    static boolean getHasItemDescriptionTypesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetItemDescriptionTypesCommand.class);
     }
 
-    public boolean getHasItemDescriptionTypesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetItemDescriptionTypesCommand.class);
+    static boolean getHasItemImageTypeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetItemImageTypeCommand.class);
     }
 
-    public boolean getHasItemImageTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetItemImageTypeCommand.class);
+    static boolean getHasItemImageTypesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetItemImageTypesCommand.class);
     }
 
-    public boolean getHasItemImageTypesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetItemImageTypesCommand.class);
+    static boolean getHasItemDescriptionTypeUseTypeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetItemDescriptionTypeUseTypeCommand.class);
     }
 
-    public boolean getHasItemDescriptionTypeUseTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetItemDescriptionTypeUseTypeCommand.class);
+    static boolean getHasItemDescriptionTypeUseTypesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetItemDescriptionTypeUseTypesCommand.class);
     }
 
-    public boolean getHasItemDescriptionTypeUseTypesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetItemDescriptionTypeUseTypesCommand.class);
+    static boolean getHasItemDescriptionTypeUseAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetItemDescriptionTypeUseCommand.class);
     }
 
-    public boolean getHasItemDescriptionTypeUseAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetItemDescriptionTypeUseCommand.class);
+    static boolean getHasItemDescriptionTypeUsesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetItemDescriptionTypeUsesCommand.class);
     }
 
-    public boolean getHasItemDescriptionTypeUsesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetItemDescriptionTypeUsesCommand.class);
+    static boolean getHasRelatedItemTypeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetRelatedItemTypeCommand.class);
     }
 
-    public boolean getHasRelatedItemTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetRelatedItemTypeCommand.class);
+    static boolean getHasRelatedItemTypesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetRelatedItemTypesCommand.class);
     }
 
-    public boolean getHasRelatedItemTypesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetRelatedItemTypesCommand.class);
+    static boolean getHasRelatedItemAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetRelatedItemCommand.class);
     }
 
-    public boolean getHasRelatedItemAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetRelatedItemCommand.class);
-    }
-
-    public boolean getHasRelatedItemsAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetRelatedItemsCommand.class);
+    static boolean getHasRelatedItemsAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetRelatedItemsCommand.class);
     }
 
 }

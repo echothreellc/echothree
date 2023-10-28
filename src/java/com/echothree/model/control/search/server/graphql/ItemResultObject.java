@@ -39,7 +39,7 @@ public class ItemResultObject {
     @GraphQLDescription("item")
     @GraphQLNonNull
     public ItemObject getItem(final DataFetchingEnvironment env) {
-        return ItemSecurityUtils.getInstance().getHasItemAccess(env) ? new ItemObject(item) : null;
+        return ItemSecurityUtils.getHasItemAccess(env) ? new ItemObject(item) : null;
     }
     
 }

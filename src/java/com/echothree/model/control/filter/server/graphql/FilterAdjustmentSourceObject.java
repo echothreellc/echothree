@@ -30,7 +30,7 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("filter adjustment source object")
 @GraphQLName("FilterAdjustmentSource")
 public class FilterAdjustmentSourceObject
-        extends BaseGraphQl {
+        implements BaseGraphQl {
     
     private final FilterAdjustmentSource filterAdjustmentSource; // Always Present
     
@@ -73,7 +73,7 @@ public class FilterAdjustmentSourceObject
         var filterControl = Session.getModelController(FilterControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return filterControl.getBestFilterAdjustmentSourceDescription(filterAdjustmentSource, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return filterControl.getBestFilterAdjustmentSourceDescription(filterAdjustmentSource, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
     
 }

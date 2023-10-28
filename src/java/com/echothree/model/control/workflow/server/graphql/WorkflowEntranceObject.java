@@ -17,6 +17,7 @@
 package com.echothree.model.control.workflow.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
@@ -65,7 +66,7 @@ public class WorkflowEntranceObject
     @GraphQLField
     @GraphQLDescription("workflow")
     public WorkflowObject getWorkflow(final DataFetchingEnvironment env) {
-        return WorkflowSecurityUtils.getInstance().getHasWorkflowAccess(env) ? new WorkflowObject(getWorkflowEntranceDetail().getWorkflow()) : null;
+        return WorkflowSecurityUtils.getHasWorkflowAccess(env) ? new WorkflowObject(getWorkflowEntranceDetail().getWorkflow()) : null;
     }
 
     @GraphQLField
@@ -96,7 +97,7 @@ public class WorkflowEntranceObject
         var workflowControl = Session.getModelController(WorkflowControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return workflowControl.getBestWorkflowEntranceDescription(workflowEntrance, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return workflowControl.getBestWorkflowEntranceDescription(workflowEntrance, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
     @GraphQLField
@@ -104,7 +105,7 @@ public class WorkflowEntranceObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<WorkflowEntranceStepObject> getWorkflowEntranceSteps(final DataFetchingEnvironment env) {
-        if(WorkflowSecurityUtils.getInstance().getHasWorkflowEntranceStepsAccess(env)) {
+        if(WorkflowSecurityUtils.getHasWorkflowEntranceStepsAccess(env)) {
             var workflowControl = Session.getModelController(WorkflowControl.class);
             var totalCount = workflowControl.countWorkflowEntranceStepsByWorkflowEntrance(workflowEntrance);
 
@@ -124,7 +125,7 @@ public class WorkflowEntranceObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<WorkflowEntrancePartyTypeObject> getWorkflowEntrancePartyTypes(final DataFetchingEnvironment env) {
-        if(WorkflowSecurityUtils.getInstance().getHasWorkflowEntrancePartyTypesAccess(env)) {
+        if(WorkflowSecurityUtils.getHasWorkflowEntrancePartyTypesAccess(env)) {
             var workflowControl = Session.getModelController(WorkflowControl.class);
             var totalCount = workflowControl.countWorkflowEntrancePartyTypesByWorkflowEntrance(workflowEntrance);
 
@@ -144,7 +145,7 @@ public class WorkflowEntranceObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<WorkflowEntranceSelectorObject> getWorkflowEntranceSelectors(final DataFetchingEnvironment env) {
-        if(WorkflowSecurityUtils.getInstance().getHasWorkflowEntranceSelectorsAccess(env)) {
+        if(WorkflowSecurityUtils.getHasWorkflowEntranceSelectorsAccess(env)) {
             var workflowControl = Session.getModelController(WorkflowControl.class);
             var totalCount = workflowControl.countWorkflowEntranceSelectorsByWorkflowEntrance(workflowEntrance);
 

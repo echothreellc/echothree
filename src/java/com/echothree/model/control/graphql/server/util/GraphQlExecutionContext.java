@@ -64,7 +64,7 @@ public class GraphQlExecutionContext {
         var hasAccess = canCache ? securityCache.get(command) : null; // Bypass if it cannot be cached.
 
         if(hasAccess == null) {
-            hasAccess = GraphQlSecurityUtils.getInstance().hasAccess(this, command, form);
+            hasAccess = GraphQlSecurityUtils.hasAccess(this, command, form);
 
             if(canCache) {
                 securityCache.put(command, hasAccess);

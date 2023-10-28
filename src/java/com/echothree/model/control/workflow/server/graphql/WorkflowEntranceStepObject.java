@@ -37,13 +37,13 @@ public class WorkflowEntranceStepObject
     @GraphQLField
     @GraphQLDescription("workflowEntrance")
     public WorkflowEntranceObject getWorkflowEntrance(final DataFetchingEnvironment env) {
-        return WorkflowSecurityUtils.getInstance().getHasWorkflowEntranceAccess(env) ? new WorkflowEntranceObject(workflowEntranceStep.getWorkflowEntrance()) : null;
+        return WorkflowSecurityUtils.getHasWorkflowEntranceAccess(env) ? new WorkflowEntranceObject(workflowEntranceStep.getWorkflowEntrance()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("workflowStep")
     public WorkflowStepObject getWorkflowStep(final DataFetchingEnvironment env) {
-        return WorkflowSecurityUtils.getInstance().getHasWorkflowStepAccess(env) ? new WorkflowStepObject(workflowEntranceStep.getWorkflowStep()) : null;
+        return WorkflowSecurityUtils.getHasWorkflowStepAccess(env) ? new WorkflowStepObject(workflowEntranceStep.getWorkflowStep()) : null;
     }
 
 }

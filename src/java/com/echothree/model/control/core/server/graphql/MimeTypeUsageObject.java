@@ -30,7 +30,7 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("mime type usage object")
 @GraphQLName("MimeTypeUsage")
 public class MimeTypeUsageObject
-        extends BaseGraphQl {
+        implements BaseGraphQl {
     
     private final MimeTypeUsage mimeTypeUsage; // Always Present
     
@@ -42,14 +42,14 @@ public class MimeTypeUsageObject
     @GraphQLDescription("mime type")
     @GraphQLNonNull
     public MimeTypeObject getMimeType(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasMimeTypeAccess(env) ? new MimeTypeObject(mimeTypeUsage.getMimeType()) : null;
+        return CoreSecurityUtils.getHasMimeTypeAccess(env) ? new MimeTypeObject(mimeTypeUsage.getMimeType()) : null;
     }
     
     @GraphQLField
     @GraphQLDescription("mime type usage type")
     @GraphQLNonNull
     public MimeTypeUsageTypeObject getMimeTypeUsageType(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasMimeTypeUsageTypeAccess(env) ? new MimeTypeUsageTypeObject(mimeTypeUsage.getMimeTypeUsageType()) : null;
+        return CoreSecurityUtils.getHasMimeTypeUsageTypeAccess(env) ? new MimeTypeUsageTypeObject(mimeTypeUsage.getMimeTypeUsageType()) : null;
     }
     
 }

@@ -39,13 +39,13 @@ public class WorkflowSelectorKindObject
     @GraphQLField
     @GraphQLDescription("workflow")
     public WorkflowObject getWorkflow(final DataFetchingEnvironment env) {
-        return WorkflowSecurityUtils.getInstance().getHasWorkflowAccess(env) ? new WorkflowObject(workflowSelectorKind.getWorkflow()) : null;
+        return WorkflowSecurityUtils.getHasWorkflowAccess(env) ? new WorkflowObject(workflowSelectorKind.getWorkflow()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("selector kind")
     public SelectorKindObject getSelectorKind(final DataFetchingEnvironment env) {
-        return SelectorSecurityUtils.getInstance().getHasSelectorKindAccess(env) ? new SelectorKindObject(workflowSelectorKind.getSelectorKind()) : null;
+        return SelectorSecurityUtils.getHasSelectorKindAccess(env) ? new SelectorKindObject(workflowSelectorKind.getSelectorKind()) : null;
     }
 
 }

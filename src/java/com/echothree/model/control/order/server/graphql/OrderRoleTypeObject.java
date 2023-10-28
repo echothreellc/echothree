@@ -17,6 +17,7 @@
 package com.echothree.model.control.order.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.order.server.control.OrderRoleControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.order.server.entity.OrderRoleType;
@@ -61,7 +62,7 @@ public class OrderRoleTypeObject
         var orderRoleControl = Session.getModelController(OrderRoleControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return orderRoleControl.getBestOrderRoleTypeDescription(orderRoleType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return orderRoleControl.getBestOrderRoleTypeDescription(orderRoleType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
 }

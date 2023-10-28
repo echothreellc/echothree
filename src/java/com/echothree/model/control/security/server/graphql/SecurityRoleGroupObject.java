@@ -17,6 +17,7 @@
 package com.echothree.model.control.security.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
@@ -96,7 +97,7 @@ public class SecurityRoleGroupObject
         var securityControl = Session.getModelController(SecurityControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return securityControl.getBestSecurityRoleGroupDescription(securityRoleGroup, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return securityControl.getBestSecurityRoleGroupDescription(securityRoleGroup, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
     @GraphQLField
@@ -104,7 +105,7 @@ public class SecurityRoleGroupObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<SecurityRoleObject> getSecurityRoles(final DataFetchingEnvironment env) {
-        if(SecuritySecurityUtils.getInstance().getHasSecurityRolesAccess(env)) {
+        if(SecuritySecurityUtils.getHasSecurityRolesAccess(env)) {
             var securityControl = Session.getModelController(SecurityControl.class);
             var totalCount = securityControl.countSecurityRolesBySecurityRoleGroup(securityRoleGroup);
 

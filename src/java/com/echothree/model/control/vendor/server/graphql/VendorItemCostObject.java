@@ -44,19 +44,19 @@ public class VendorItemCostObject
     @GraphQLField
     @GraphQLDescription("vendor item")
     public VendorItemObject getVendorItem(final DataFetchingEnvironment env) {
-        return VendorSecurityUtils.getInstance().getHasVendorItemAccess(env) ? new VendorItemObject(vendorItemCost.getVendorItem()) : null;
+        return VendorSecurityUtils.getHasVendorItemAccess(env) ? new VendorItemObject(vendorItemCost.getVendorItem()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("inventory condition")
     public InventoryConditionObject getInventoryCondition(final DataFetchingEnvironment env) {
-        return InventorySecurityUtils.getInstance().getHasInventoryConditionAccess(env) ? new InventoryConditionObject(vendorItemCost.getInventoryCondition()) : null;
+        return InventorySecurityUtils.getHasInventoryConditionAccess(env) ? new InventoryConditionObject(vendorItemCost.getInventoryCondition()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("unit of measure type")
     public UnitOfMeasureTypeObject getUnitOfMeasureType(final DataFetchingEnvironment env) {
-        return UomSecurityUtils.getInstance().getHasUnitOfMeasureTypeAccess(env) ? new UnitOfMeasureTypeObject(vendorItemCost.getUnitOfMeasureType()) : null;
+        return UomSecurityUtils.getHasUnitOfMeasureTypeAccess(env) ? new UnitOfMeasureTypeObject(vendorItemCost.getUnitOfMeasureType()) : null;
     }
 
     @GraphQLField

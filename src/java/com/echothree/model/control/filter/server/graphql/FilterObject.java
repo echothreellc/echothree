@@ -18,6 +18,7 @@ package com.echothree.model.control.filter.server.graphql;
 
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.filter.server.entity.Filter;
 import com.echothree.model.data.filter.server.entity.FilterDetail;
@@ -56,7 +57,7 @@ public class FilterObject
     @GraphQLField
     @GraphQLDescription("filter type")
     public FilterTypeObject getFilterType(final DataFetchingEnvironment env) {
-        return FilterSecurityUtils.getInstance().getHasFilterTypeAccess(env) ? new FilterTypeObject(getFilterDetail().getFilterType()) : null;
+        return FilterSecurityUtils.getHasFilterTypeAccess(env) ? new FilterTypeObject(getFilterDetail().getFilterType()) : null;
     }
 
     @GraphQLField
@@ -69,7 +70,7 @@ public class FilterObject
     @GraphQLField
     @GraphQLDescription("initial filter adjustment")
     public FilterAdjustmentObject getInitialFilterAdjustment(final DataFetchingEnvironment env) {
-        return FilterSecurityUtils.getInstance().getHasFilterAdjustmentAccess(env) ? new FilterAdjustmentObject(getFilterDetail().getInitialFilterAdjustment()) : null;
+        return FilterSecurityUtils.getHasFilterAdjustmentAccess(env) ? new FilterAdjustmentObject(getFilterDetail().getInitialFilterAdjustment()) : null;
     }
 
 //    @GraphQLField
@@ -77,7 +78,7 @@ public class FilterObject
 //    public SelectorObject getFilterItemSelector(final DataFetchingEnvironment env) {
 //        SelectorObject result;
 //
-//        if(SelectorSecurityUtils.getInstance().getHasSelectorAccess(env)) {
+//        if(SelectorSecurityUtils.getHasSelectorAccess(env)) {
 //            var selector = getFilterDetail().getFilterItemSelector();
 //
 //            result = selector == null ? null : new SelectorObject(selector);
@@ -109,7 +110,7 @@ public class FilterObject
         var filterControl = Session.getModelController(FilterControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return filterControl.getBestFilterDescription(filter, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return filterControl.getBestFilterDescription(filter, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
     @GraphQLField
@@ -117,7 +118,7 @@ public class FilterObject
     public Collection<FilterStepObject> getFilterSteps(final DataFetchingEnvironment env) {
         Collection<FilterStepObject> filterStepObjects = null;
 
-        if(FilterSecurityUtils.getInstance().getHasFilterStepsAccess(env)) {
+        if(FilterSecurityUtils.getHasFilterStepsAccess(env)) {
             var filterControl = Session.getModelController(FilterControl.class);
             var filterSteps = filterControl.getFilterStepsByFilter(filter);
 

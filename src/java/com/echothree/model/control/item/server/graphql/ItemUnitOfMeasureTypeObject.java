@@ -40,13 +40,13 @@ public class ItemUnitOfMeasureTypeObject
     @GraphQLField
     @GraphQLDescription("item")
     public ItemObject getItem(final DataFetchingEnvironment env) {
-        return ItemSecurityUtils.getInstance().getHasItemAccess(env) ? new ItemObject(itemUnitOfMeasureType.getItem()) : null;
+        return ItemSecurityUtils.getHasItemAccess(env) ? new ItemObject(itemUnitOfMeasureType.getItem()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("unit of measure type")
     public UnitOfMeasureTypeObject getUnitOfMeasureType(final DataFetchingEnvironment env) {
-        return UomSecurityUtils.getInstance().getHasUnitOfMeasureTypeAccess(env) ? new UnitOfMeasureTypeObject(itemUnitOfMeasureType.getUnitOfMeasureType()) : null;
+        return UomSecurityUtils.getHasUnitOfMeasureTypeAccess(env) ? new UnitOfMeasureTypeObject(itemUnitOfMeasureType.getUnitOfMeasureType()) : null;
     }
 
     @GraphQLField

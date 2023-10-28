@@ -17,6 +17,7 @@
 package com.echothree.model.control.order.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.order.server.control.OrderPriorityControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.order.server.entity.OrderPriority;
@@ -62,7 +63,7 @@ public class OrderPriorityObject
     @GraphQLDescription("order type")
     @GraphQLNonNull
     public OrderTypeObject getOrderType(final DataFetchingEnvironment env) {
-        return OrderSecurityUtils.getInstance().getHasOrderTypeAccess(env) ? new OrderTypeObject(getOrderPriorityDetail().getOrderType()) : null;
+        return OrderSecurityUtils.getHasOrderTypeAccess(env) ? new OrderTypeObject(getOrderPriorityDetail().getOrderType()) : null;
     }
 
     @GraphQLField
@@ -93,7 +94,7 @@ public class OrderPriorityObject
         var orderPriorityControl = Session.getModelController(OrderPriorityControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return orderPriorityControl.getBestOrderPriorityDescription(orderPriority, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return orderPriorityControl.getBestOrderPriorityDescription(orderPriority, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
 }

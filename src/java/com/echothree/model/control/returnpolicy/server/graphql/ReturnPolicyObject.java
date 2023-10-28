@@ -19,6 +19,7 @@ package com.echothree.model.control.returnpolicy.server.graphql;
 import com.echothree.model.control.core.server.graphql.CoreSecurityUtils;
 import com.echothree.model.control.core.server.graphql.MimeTypeObject;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.returnpolicy.server.control.ReturnPolicyControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.returnpolicy.server.entity.ReturnPolicy;
@@ -61,7 +62,7 @@ public class ReturnPolicyObject
             var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
             var userControl = Session.getModelController(UserControl.class);
 
-            returnPolicyTranslation = returnPolicyControl.getBestReturnPolicyTranslation(returnPolicy, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+            returnPolicyTranslation = returnPolicyControl.getBestReturnPolicyTranslation(returnPolicy, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
         }
 
         return returnPolicyTranslation;
@@ -77,7 +78,7 @@ public class ReturnPolicyObject
     @GraphQLField
     @GraphQLDescription("return kind")
     public ReturnKindObject getReturnKind(final DataFetchingEnvironment env) {
-        return ReturnPolicySecurityUtils.getInstance().getHasReturnKindAccess(env) ? new ReturnKindObject(getReturnPolicyDetail().getReturnKind()) : null;
+        return ReturnPolicySecurityUtils.getHasReturnKindAccess(env) ? new ReturnKindObject(getReturnPolicyDetail().getReturnKind()) : null;
     }
 
     @GraphQLField
@@ -109,7 +110,7 @@ public class ReturnPolicyObject
         var returnPolicyTranslation = getReturnPolicyTranslation(env);
         var policyMimeType = returnPolicyTranslation == null ? null : returnPolicyTranslation.getPolicyMimeType();
 
-        return policyMimeType == null ? null : (CoreSecurityUtils.getInstance().getHasMimeTypeAccess(env) ? new MimeTypeObject(policyMimeType) : null);
+        return policyMimeType == null ? null : (CoreSecurityUtils.getHasMimeTypeAccess(env) ? new MimeTypeObject(policyMimeType) : null);
     }
 
     @GraphQLField

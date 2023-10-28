@@ -19,6 +19,7 @@ package com.echothree.model.control.core.server.graphql;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.sequence.server.graphql.SequenceObject;
 import com.echothree.model.control.sequence.server.graphql.SequenceSecurityUtils;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureTypeObject;
@@ -150,7 +151,7 @@ public class EntityAttributeObject
     @GraphQLField
     @GraphQLDescription("entity type")
     public EntityTypeObject getEntityType(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityTypeAccess(env) ? new EntityTypeObject(getEntityAttributeDetail().getEntityType()) : null;
+        return CoreSecurityUtils.getHasEntityTypeAccess(env) ? new EntityTypeObject(getEntityAttributeDetail().getEntityType()) : null;
     }
     
     @GraphQLField
@@ -163,7 +164,7 @@ public class EntityAttributeObject
     @GraphQLField
     @GraphQLDescription("entity attribute type")
     public EntityAttributeTypeObject getEntityAttributeType(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityAttributeTypeAccess(env) ? new EntityAttributeTypeObject(getEntityAttributeDetail().getEntityAttributeType()) : null;
+        return CoreSecurityUtils.getHasEntityAttributeTypeAccess(env) ? new EntityAttributeTypeObject(getEntityAttributeDetail().getEntityAttributeType()) : null;
     }
     
     protected boolean isEntityAttributeTypeName(String entityAttributeTypeName) {
@@ -326,7 +327,7 @@ public class EntityAttributeObject
         var entityAttributeNumeric = getEntityAttributeNumeric();
         var unitOfMeasureType = entityAttributeNumeric == null ? null : entityAttributeNumeric.getUnitOfMeasureType();
 
-        return unitOfMeasureType != null && UomSecurityUtils.getInstance().getHasUnitOfMeasureTypeAccess(env) ? new UnitOfMeasureTypeObject(unitOfMeasureType) : null;
+        return unitOfMeasureType != null && UomSecurityUtils.getHasUnitOfMeasureTypeAccess(env) ? new UnitOfMeasureTypeObject(unitOfMeasureType) : null;
     }
 
     @GraphQLField
@@ -335,7 +336,7 @@ public class EntityAttributeObject
         var entityAttributeListItem = getEntityAttributeListItem();
         var entityListItemSequence = entityAttributeListItem == null ? null : entityAttributeListItem.getEntityListItemSequence();
 
-        return entityListItemSequence != null && SequenceSecurityUtils.getInstance().getHasSequenceAccess(env) ? new SequenceObject(entityListItemSequence) : null;
+        return entityListItemSequence != null && SequenceSecurityUtils.getHasSequenceAccess(env) ? new SequenceObject(entityListItemSequence) : null;
     }
 
     @GraphQLField
@@ -352,7 +353,7 @@ public class EntityAttributeObject
         var coreControl = Session.getModelController(CoreControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return coreControl.getBestEntityAttributeDescription(entityAttribute, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return coreControl.getBestEntityAttributeDescription(entityAttribute, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
     
     @GraphQLField
@@ -373,7 +374,7 @@ public class EntityAttributeObject
                 }
                 case CLOB -> {
                     var userControl = Session.getModelController(UserControl.class);
-                    var entityClobAttribute = coreControl.getBestEntityClobAttribute(entityAttribute, entityInstance, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+                    var entityClobAttribute = coreControl.getBestEntityClobAttribute(entityAttribute, entityInstance, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
 
                     attributeInterface = entityClobAttribute == null ? null : new EntityClobAttributeObject(entityClobAttribute);
                 }
@@ -420,7 +421,7 @@ public class EntityAttributeObject
                 }
                 case STRING -> {
                     var userControl = Session.getModelController(UserControl.class);
-                    var entityStringAttribute = coreControl.getBestEntityStringAttribute(entityAttribute, entityInstance, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+                    var entityStringAttribute = coreControl.getBestEntityStringAttribute(entityAttribute, entityInstance, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
 
                     attributeInterface = entityStringAttribute == null ? null : new EntityStringAttributeObject(entityStringAttribute);
                 }
@@ -443,7 +444,7 @@ public class EntityAttributeObject
 
         if((isEntityAttributeTypeName(EntityAttributeTypes.LISTITEM.name())
                 || isEntityAttributeTypeName(EntityAttributeTypes.MULTIPLELISTITEM.name()))
-                && CoreSecurityUtils.getInstance().getHasEntityListItemsAccess(env)) {
+                && CoreSecurityUtils.getHasEntityListItemsAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
             var entityListItems = coreControl.getEntityListItems(entityAttribute);
 
@@ -463,7 +464,7 @@ public class EntityAttributeObject
         Collection<EntityLongRangeObject> entityLongRangeObjects = null;
 
         if(isEntityAttributeTypeName(EntityAttributeTypes.LONG.name())
-                && CoreSecurityUtils.getInstance().getHasEntityLongRangesAccess(env)) {
+                && CoreSecurityUtils.getHasEntityLongRangesAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
             var entityLongRanges = coreControl.getEntityLongRanges(entityAttribute);
 
@@ -483,7 +484,7 @@ public class EntityAttributeObject
         Collection<EntityIntegerRangeObject> entityIntegerRangeObjects = null;
 
         if(isEntityAttributeTypeName(EntityAttributeTypes.INTEGER.name())
-                && CoreSecurityUtils.getInstance().getHasEntityIntegerRangesAccess(env)) {
+                && CoreSecurityUtils.getHasEntityIntegerRangesAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
             var entityIntegerRanges = coreControl.getEntityIntegerRanges(entityAttribute);
 
@@ -502,7 +503,7 @@ public class EntityAttributeObject
     public Collection<EntityAttributeEntityAttributeGroupObject> getEntityAttributeEntityAttributeGroups(final DataFetchingEnvironment env) {
         Collection<EntityAttributeEntityAttributeGroupObject> entityAttributeEntityAttributeGroupObjects = null;
 
-        if(CoreSecurityUtils.getInstance().getHasEntityAttributeEntityAttributeGroupsAccess(env)) {
+        if(CoreSecurityUtils.getHasEntityAttributeEntityAttributeGroupsAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
             var entityAttributeEntityAttributeGroups = coreControl.getEntityAttributeEntityAttributeGroupsByEntityAttribute(entityAttribute);
 

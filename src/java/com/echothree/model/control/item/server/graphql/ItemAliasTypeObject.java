@@ -17,6 +17,7 @@
 package com.echothree.model.control.item.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
@@ -77,7 +78,7 @@ public class ItemAliasTypeObject
     @GraphQLDescription("item alias checksum type")
     @GraphQLNonNull
     public ItemAliasChecksumTypeObject getItemAliasChecksumType(final DataFetchingEnvironment env) {
-        return ItemSecurityUtils.getInstance().getHasItemAliasChecksumTypeAccess(env) ? new ItemAliasChecksumTypeObject(getItemAliasTypeDetail().getItemAliasChecksumType()) : null;
+        return ItemSecurityUtils.getHasItemAliasChecksumTypeAccess(env) ? new ItemAliasChecksumTypeObject(getItemAliasTypeDetail().getItemAliasChecksumType()) : null;
     }
 
     @GraphQLField
@@ -108,7 +109,7 @@ public class ItemAliasTypeObject
         var itemControl = Session.getModelController(ItemControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return itemControl.getBestItemAliasTypeDescription(itemAliasType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return itemControl.getBestItemAliasTypeDescription(itemAliasType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
     @GraphQLField
@@ -116,7 +117,7 @@ public class ItemAliasTypeObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<ItemAliasObject> getItemAliases(final DataFetchingEnvironment env) {
-        if(ItemSecurityUtils.getInstance().getHasItemAliasesAccess(env)) {
+        if(ItemSecurityUtils.getHasItemAliasesAccess(env)) {
             var itemControl = Session.getModelController(ItemControl.class);
             var totalCount = itemControl.countItemAliasesByItemAliasType(itemAliasType);
 

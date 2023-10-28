@@ -28,8 +28,7 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("date driven term object")
 @GraphQLName("DateDrivenTerm")
 public class DateDrivenTermObject
-        extends BaseGraphQl
-        implements TermInterface {
+        implements BaseGraphQl, TermInterface {
 
     private final DateDrivenTerm dateDrivenTerm; // Always Present
 

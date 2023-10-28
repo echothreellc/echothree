@@ -59,7 +59,7 @@ public abstract class BaseOrderObject
     @GraphQLDescription("order type")
     @GraphQLNonNull
     public OrderTypeObject getOrderType(final DataFetchingEnvironment env) {
-        return OrderSecurityUtils.getInstance().getHasOrderTypeAccess(env) ? new OrderTypeObject(getOrderDetail().getOrderType()) : null;
+        return OrderSecurityUtils.getHasOrderTypeAccess(env) ? new OrderTypeObject(getOrderDetail().getOrderType()) : null;
     }
 
     @GraphQLField
@@ -74,7 +74,7 @@ public abstract class BaseOrderObject
     public OrderPriorityObject getOrderPriority(final DataFetchingEnvironment env) {
         var orderPriority = getOrderDetail().getOrderPriority();
 
-        return orderPriority == null ? null : OrderSecurityUtils.getInstance().getHasOrderPriorityAccess(env) ?
+        return orderPriority == null ? null : OrderSecurityUtils.getHasOrderPriorityAccess(env) ?
                 new OrderPriorityObject(orderPriority) : null;
     }
 
@@ -82,7 +82,7 @@ public abstract class BaseOrderObject
     @GraphQLDescription("currency")
     @GraphQLNonNull
     public CurrencyObject getCurrency(final DataFetchingEnvironment env) {
-        return AccountingSecurityUtils.getInstance().getHasCurrencyAccess(env) ?
+        return AccountingSecurityUtils.getHasCurrencyAccess(env) ?
                 new CurrencyObject(getOrderDetail().getCurrency()) : null;
     }
 
@@ -115,7 +115,7 @@ public abstract class BaseOrderObject
     public TermObject getTerm(final DataFetchingEnvironment env) {
         var term = getOrderDetail().getTerm();
 
-        return term == null ? null : (TermSecurityUtils.getInstance().getHasTermAccess(env) ?
+        return term == null ? null : (TermSecurityUtils.getHasTermAccess(env) ?
                 new TermObject(getOrderDetail().getTerm()) : null);
     }
 
@@ -124,7 +124,7 @@ public abstract class BaseOrderObject
     public FreeOnBoardObject getFreeOnBoard(final DataFetchingEnvironment env) {
         var freeOnBoard = getOrderDetail().getFreeOnBoard();
 
-        return freeOnBoard == null ? null : ShipmentSecurityUtils.getInstance().getHasFreeOnBoardAccess(env) ?
+        return freeOnBoard == null ? null : ShipmentSecurityUtils.getHasFreeOnBoardAccess(env) ?
                 new FreeOnBoardObject(getOrderDetail().getFreeOnBoard()) : null;
     }
 
@@ -145,7 +145,7 @@ public abstract class BaseOrderObject
     public CancellationPolicyObject getCancellationPolicy(final DataFetchingEnvironment env) {
         var cancellationPolicy = getOrderDetail().getCancellationPolicy();
 
-        return cancellationPolicy == null ? null : CancellationPolicySecurityUtils.getInstance().getHasCancellationPolicyAccess(env) ?
+        return cancellationPolicy == null ? null : CancellationPolicySecurityUtils.getHasCancellationPolicyAccess(env) ?
                 new CancellationPolicyObject(cancellationPolicy) : null;
     }
 
@@ -154,7 +154,7 @@ public abstract class BaseOrderObject
     public ReturnPolicyObject getReturnPolicy(final DataFetchingEnvironment env) {
         var returnPolicy = getOrderDetail().getReturnPolicy();
 
-        return returnPolicy == null ? null : ReturnPolicySecurityUtils.getInstance().getHasReturnPolicyAccess(env) ?
+        return returnPolicy == null ? null : ReturnPolicySecurityUtils.getHasReturnPolicyAccess(env) ?
                 new ReturnPolicyObject(returnPolicy) : null;
     }
 

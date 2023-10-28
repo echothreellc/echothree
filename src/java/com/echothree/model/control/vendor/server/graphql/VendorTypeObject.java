@@ -21,6 +21,7 @@ import com.echothree.model.control.accounting.server.graphql.GlAccountObject;
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationPolicyObject;
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationPolicySecurityUtils;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.returnpolicy.server.graphql.ReturnPolicyObject;
 import com.echothree.model.control.returnpolicy.server.graphql.ReturnPolicySecurityUtils;
 import com.echothree.model.control.shipment.server.graphql.FreeOnBoardObject;
@@ -73,7 +74,7 @@ public class VendorTypeObject
     public TermObject getDefaultTerm(final DataFetchingEnvironment env) {
         var defaultTerm = getVendorTypeDetail().getDefaultTerm();
 
-        return defaultTerm == null ? null : TermSecurityUtils.getInstance().getHasTermAccess(env) ?
+        return defaultTerm == null ? null : TermSecurityUtils.getHasTermAccess(env) ?
                 new TermObject(defaultTerm) : null;
     }
 
@@ -82,7 +83,7 @@ public class VendorTypeObject
     public FreeOnBoardObject getDefaultFreeOnBoard(final DataFetchingEnvironment env) {
         var defaultFreeOnBoard = getVendorTypeDetail().getDefaultFreeOnBoard();
 
-        return defaultFreeOnBoard == null ? null : ShipmentSecurityUtils.getInstance().getHasFreeOnBoardAccess(env) ?
+        return defaultFreeOnBoard == null ? null : ShipmentSecurityUtils.getHasFreeOnBoardAccess(env) ?
                 new FreeOnBoardObject(defaultFreeOnBoard) : null;
     }
 
@@ -91,7 +92,7 @@ public class VendorTypeObject
     public CancellationPolicyObject getDefaultCancellationPolicy(final DataFetchingEnvironment env) {
         var defaultCancellationPolicy = getVendorTypeDetail().getDefaultCancellationPolicy();
 
-        return defaultCancellationPolicy == null ? null : CancellationPolicySecurityUtils.getInstance().getHasCancellationPolicyAccess(env) ?
+        return defaultCancellationPolicy == null ? null : CancellationPolicySecurityUtils.getHasCancellationPolicyAccess(env) ?
                 new CancellationPolicyObject(defaultCancellationPolicy) : null;
     }
 
@@ -100,7 +101,7 @@ public class VendorTypeObject
     public ReturnPolicyObject getDefaultReturnPolicy(final DataFetchingEnvironment env) {
         var defaultReturnPolicy = getVendorTypeDetail().getDefaultReturnPolicy();
 
-        return defaultReturnPolicy == null ? null : ReturnPolicySecurityUtils.getInstance().getHasReturnPolicyAccess(env) ?
+        return defaultReturnPolicy == null ? null : ReturnPolicySecurityUtils.getHasReturnPolicyAccess(env) ?
                 new ReturnPolicyObject(defaultReturnPolicy) : null;
     }
 
@@ -109,7 +110,7 @@ public class VendorTypeObject
     public GlAccountObject getDefaultApGlAccount(final DataFetchingEnvironment env) {
         var defaultApGlAccount = getVendorTypeDetail().getDefaultApGlAccount();
 
-        return defaultApGlAccount == null ? null : AccountingSecurityUtils.getInstance().getHasGlAccountAccess(env) ?
+        return defaultApGlAccount == null ? null : AccountingSecurityUtils.getHasGlAccountAccess(env) ?
                 new GlAccountObject(defaultApGlAccount) : null;
     }
 
@@ -182,7 +183,7 @@ public class VendorTypeObject
         var vendorControl = Session.getModelController(VendorControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return vendorControl.getBestVendorTypeDescription(vendorType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return vendorControl.getBestVendorTypeDescription(vendorType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
 }

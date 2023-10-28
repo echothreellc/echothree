@@ -27,7 +27,7 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("entity attribute entity attribute group object")
 @GraphQLName("EntityAttributeEntityAttributeGroup")
 public class EntityAttributeEntityAttributeGroupObject
-        extends BaseGraphQl {
+        implements BaseGraphQl {
     
     private final EntityAttributeEntityAttributeGroup entityAttributeEntityAttributeGroup; // Always Present
     
@@ -38,13 +38,13 @@ public class EntityAttributeEntityAttributeGroupObject
     @GraphQLField
     @GraphQLDescription("entity instance")
     public EntityAttributeObject getEntityAttribute(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityAttributeEntityAttributeGroup.getEntityAttribute(), null) : null;
+        return CoreSecurityUtils.getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityAttributeEntityAttributeGroup.getEntityAttribute(), null) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("entity instance")
     public EntityAttributeGroupObject getEntityAttributeGroup(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityAttributeGroupAccess(env) ? new EntityAttributeGroupObject(entityAttributeEntityAttributeGroup.getEntityAttributeGroup(), null) : null;
+        return CoreSecurityUtils.getHasEntityAttributeGroupAccess(env) ? new EntityAttributeGroupObject(entityAttributeEntityAttributeGroup.getEntityAttributeGroup(), null) : null;
     }
 
     @GraphQLField

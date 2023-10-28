@@ -32,8 +32,7 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("entity geo point attribute object")
 @GraphQLName("EntityGeoPointAttribute")
 public class EntityGeoPointAttributeObject
-        extends BaseGraphQl
-        implements AttributeInterface {
+        implements BaseGraphQl, AttributeInterface {
     
     private final EntityGeoPointAttribute entityGeoPointAttribute; // Always Present
     
@@ -44,13 +43,13 @@ public class EntityGeoPointAttributeObject
     @GraphQLField
     @GraphQLDescription("entity attribute")
     public EntityAttributeObject getEntityAttribute(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityGeoPointAttribute.getEntityAttribute(), entityGeoPointAttribute.getEntityInstance()) : null;
+        return CoreSecurityUtils.getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityGeoPointAttribute.getEntityAttribute(), entityGeoPointAttribute.getEntityInstance()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("entity instance")
     public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityGeoPointAttribute.getEntityInstance()) : null;
+        return CoreSecurityUtils.getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityGeoPointAttribute.getEntityInstance()) : null;
     }
 
     @GraphQLField
@@ -97,7 +96,7 @@ public class EntityGeoPointAttributeObject
             var uomControl = Session.getModelController(UomControl.class);
             var elevationUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_ELEVATION);
 
-            formattedElevation = UnitOfMeasureUtils.getInstance().formatUnitOfMeasure(getUserVisit(env), elevationUnitOfMeasureKind, elevation);
+            formattedElevation = UnitOfMeasureUtils.getInstance().formatUnitOfMeasure(BaseGraphQl.getUserVisit(env), elevationUnitOfMeasureKind, elevation);
         }
 
         return formattedElevation;
@@ -119,7 +118,7 @@ public class EntityGeoPointAttributeObject
             var uomControl = Session.getModelController(UomControl.class);
             var altitudeUnitOfMeasureKind = uomControl.getUnitOfMeasureKindByUnitOfMeasureKindUseTypeUsingNames(UomConstants.UnitOfMeasureKindUseType_ALTITUDE);
 
-            formattedAltitude = UnitOfMeasureUtils.getInstance().formatUnitOfMeasure(getUserVisit(env), altitudeUnitOfMeasureKind, altitude);
+            formattedAltitude = UnitOfMeasureUtils.getInstance().formatUnitOfMeasure(BaseGraphQl.getUserVisit(env), altitudeUnitOfMeasureKind, altitude);
         }
 
         return formattedAltitude;

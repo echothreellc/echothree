@@ -69,7 +69,7 @@ public class DepartmentObject
     public DivisionObject getDivision(final DataFetchingEnvironment env) {
         var divisionParty = getPartyDepartment().getDivisionParty();
 
-        return PartySecurityUtils.getInstance().getHasPartyAccess(env, divisionParty) ? new DivisionObject(divisionParty) : null;
+        return PartySecurityUtils.getHasPartyAccess(env, divisionParty) ? new DivisionObject(divisionParty) : null;
     }
 
     @GraphQLField
@@ -98,7 +98,7 @@ public class DepartmentObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<OfferObject> getOffers(final DataFetchingEnvironment env) {
-        if(OfferSecurityUtils.getInstance().getHasOffersAccess(env)) {
+        if(OfferSecurityUtils.getHasOffersAccess(env)) {
             var offerControl = Session.getModelController(OfferControl.class);
             var totalCount = offerControl.countOffersByDepartmentParty(party);
 

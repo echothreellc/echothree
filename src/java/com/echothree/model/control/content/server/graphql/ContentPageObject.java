@@ -18,6 +18,7 @@ package com.echothree.model.control.content.server.graphql;
 
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.content.server.entity.ContentPage;
 import com.echothree.model.data.content.server.entity.ContentPageArea;
@@ -59,7 +60,7 @@ public class ContentPageObject
     @GraphQLField
     @GraphQLDescription("content section")
     public ContentSectionObject getContentSection(final DataFetchingEnvironment env) {
-        return ContentSecurityUtils.getInstance().getHasContentSectionAccess(env) ? new ContentSectionObject(getContentPageDetail().getContentSection()) : null;
+        return ContentSecurityUtils.getHasContentSectionAccess(env) ? new ContentSectionObject(getContentPageDetail().getContentSection()) : null;
     }
 
     @GraphQLField
@@ -72,7 +73,7 @@ public class ContentPageObject
     @GraphQLField
     @GraphQLDescription("content page layout")
     public ContentPageLayoutObject getContentPageLayout(final DataFetchingEnvironment env) {
-        return ContentSecurityUtils.getInstance().getHasContentPageLayoutAccess(env) ? new ContentPageLayoutObject(getContentPageDetail().getContentPageLayout()) : null;
+        return ContentSecurityUtils.getHasContentPageLayoutAccess(env) ? new ContentPageLayoutObject(getContentPageDetail().getContentPageLayout()) : null;
     }
 
     @GraphQLField
@@ -96,7 +97,7 @@ public class ContentPageObject
         var contentControl = Session.getModelController(ContentControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return contentControl.getBestContentPageDescription(contentPage, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return contentControl.getBestContentPageDescription(contentPage, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
     
     @GraphQLField
@@ -105,7 +106,7 @@ public class ContentPageObject
     public List<ContentPageAreaObject> getContentPageAreas(final DataFetchingEnvironment env) {
         var contentControl = Session.getModelController(ContentControl.class);
         var userControl = Session.getModelController(UserControl.class);
-        Language preferredLanguage = userControl.getPreferredLanguageFromUserVisit(getUserVisit(env));
+        Language preferredLanguage = userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env));
         List<ContentPageLayoutArea> entities = contentControl.getContentPageLayoutAreasByContentPageLayout(getContentPageDetail().getContentPageLayout());
         List<ContentPageAreaObject> contentPageAreas = new ArrayList<>(entities.size());
         

@@ -40,14 +40,14 @@ public class WorkflowDestinationSelectorObject
     @GraphQLField
     @GraphQLDescription("workflow destination")
     public WorkflowDestinationObject getWorkflowDestination(final DataFetchingEnvironment env) {
-        return WorkflowSecurityUtils.getInstance().getHasWorkflowDestinationAccess(env) ? new WorkflowDestinationObject(workflowDestinationSelector.getWorkflowDestination()) : null;
+        return WorkflowSecurityUtils.getHasWorkflowDestinationAccess(env) ? new WorkflowDestinationObject(workflowDestinationSelector.getWorkflowDestination()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("selector")
     @GraphQLNonNull
     public SelectorObject getSelector(final DataFetchingEnvironment env) {
-        return SelectorSecurityUtils.getInstance().getHasSelectorAccess(env) ? new SelectorObject(workflowDestinationSelector.getSelector()) : null;
+        return SelectorSecurityUtils.getHasSelectorAccess(env) ? new SelectorObject(workflowDestinationSelector.getSelector()) : null;
     }
 
 }

@@ -17,6 +17,7 @@
 package com.echothree.model.control.security.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.security.server.control.SecurityControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.security.server.entity.SecurityRole;
@@ -61,7 +62,7 @@ public class SecurityRoleObject
     @GraphQLField
     @GraphQLDescription("security role group")
     public SecurityRoleGroupObject getSecurityRoleGroup(final DataFetchingEnvironment env) {
-        return SecuritySecurityUtils.getInstance().getHasSecurityRoleGroupAccess(env) ? new SecurityRoleGroupObject(getSecurityRoleDetail().getSecurityRoleGroup()) : null;
+        return SecuritySecurityUtils.getHasSecurityRoleGroupAccess(env) ? new SecurityRoleGroupObject(getSecurityRoleDetail().getSecurityRoleGroup()) : null;
     }
 
     @GraphQLField
@@ -85,7 +86,7 @@ public class SecurityRoleObject
         var securityControl = Session.getModelController(SecurityControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return securityControl.getBestSecurityRoleDescription(securityRole, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return securityControl.getBestSecurityRoleDescription(securityRole, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
 }

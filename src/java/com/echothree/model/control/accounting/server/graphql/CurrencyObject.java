@@ -18,6 +18,7 @@ package com.echothree.model.control.accounting.server.graphql;
 
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.util.server.persistence.Session;
@@ -56,7 +57,7 @@ public class CurrencyObject
     @GraphQLField
     @GraphQLDescription("symbol position")
     public SymbolPositionObject getSymbolPosition(final DataFetchingEnvironment env) {
-        return AccountingSecurityUtils.getInstance().getHasSymbolPositionAccess(env) ? new SymbolPositionObject(currency.getSymbolPosition()) : null;
+        return AccountingSecurityUtils.getHasSymbolPositionAccess(env) ? new SymbolPositionObject(currency.getSymbolPosition()) : null;
     }
     
     @GraphQLField
@@ -161,7 +162,7 @@ public class CurrencyObject
         var accountingControl = Session.getModelController(AccountingControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return accountingControl.getBestCurrencyDescription(currency, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return accountingControl.getBestCurrencyDescription(currency, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
 }

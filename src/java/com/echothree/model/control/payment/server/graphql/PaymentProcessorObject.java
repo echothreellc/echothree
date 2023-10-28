@@ -17,6 +17,7 @@
 package com.echothree.model.control.payment.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.payment.server.control.PaymentProcessorControl;
 import com.echothree.model.control.payment.server.control.PaymentProcessorTransactionControl;
 import com.echothree.model.control.user.server.control.UserControl;
@@ -64,7 +65,7 @@ public class PaymentProcessorObject
     @GraphQLField
     @GraphQLDescription("payment processor type")
     public PaymentProcessorTypeObject getPaymentProcessorType(final DataFetchingEnvironment env) {
-        return PaymentSecurityUtils.getInstance().getHasPaymentProcessorTypeAccess(env) ? new PaymentProcessorTypeObject(getPaymentProcessorDetail().getPaymentProcessorType()) : null;
+        return PaymentSecurityUtils.getHasPaymentProcessorTypeAccess(env) ? new PaymentProcessorTypeObject(getPaymentProcessorDetail().getPaymentProcessorType()) : null;
     }
     
     @GraphQLField
@@ -88,7 +89,7 @@ public class PaymentProcessorObject
         var paymentProcessorControl = Session.getModelController(PaymentProcessorControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return paymentProcessorControl.getBestPaymentProcessorDescription(paymentProcessor, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return paymentProcessorControl.getBestPaymentProcessorDescription(paymentProcessor, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
     @GraphQLField
@@ -97,7 +98,7 @@ public class PaymentProcessorObject
     public List<PaymentProcessorTransactionObject> getPaymentProcessorTransactions(final DataFetchingEnvironment env) {
         List<PaymentProcessorTransactionObject> paymentProcessorTransactions = null;
 
-        if(PaymentSecurityUtils.getInstance().getHasPaymentProcessorTransactionsAccess(env)) {
+        if(PaymentSecurityUtils.getHasPaymentProcessorTransactionsAccess(env)) {
             var paymentProcessorTransactionControl = Session.getModelController(PaymentProcessorTransactionControl.class);
             var entities = paymentProcessorTransactionControl.getPaymentProcessorTransactionsByPaymentProcessor(paymentProcessor);
             var objects = new ArrayList<PaymentProcessorTransactionObject>(entities.size());

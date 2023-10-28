@@ -17,6 +17,7 @@
 package com.echothree.model.control.sequence.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.sequence.server.control.SequenceControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.sequence.server.entity.Sequence;
@@ -54,7 +55,7 @@ public class SequenceObject
     @GraphQLField
     @GraphQLDescription("sequence type")
     public SequenceTypeObject getSequenceType(final DataFetchingEnvironment env) {
-        return SequenceSecurityUtils.getInstance().getHasSequenceTypeAccess(env) ? new SequenceTypeObject(getSequenceDetail().getSequenceType()) : null;
+        return SequenceSecurityUtils.getHasSequenceTypeAccess(env) ? new SequenceTypeObject(getSequenceDetail().getSequenceType()) : null;
     }
 
     @GraphQLField
@@ -105,7 +106,7 @@ public class SequenceObject
         var sequenceControl = Session.getModelController(SequenceControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return sequenceControl.getBestSequenceDescription(sequence, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return sequenceControl.getBestSequenceDescription(sequence, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
 }

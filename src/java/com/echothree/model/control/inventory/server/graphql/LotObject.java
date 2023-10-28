@@ -69,25 +69,25 @@ public class LotObject
     public PartyObject getOwnerParty(final DataFetchingEnvironment env) {
         var ownerParty = getLotDetail().getOwnerParty();
 
-        return PartySecurityUtils.getInstance().getHasPartyAccess(env, ownerParty) ? new PartyObject(ownerParty) : null;
+        return PartySecurityUtils.getHasPartyAccess(env, ownerParty) ? new PartyObject(ownerParty) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("item")
     public ItemObject getItem(final DataFetchingEnvironment env) {
-        return ItemSecurityUtils.getInstance().getHasItemAccess(env) ? new ItemObject(getLotDetail().getItem()) : null;
+        return ItemSecurityUtils.getHasItemAccess(env) ? new ItemObject(getLotDetail().getItem()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("inventory condition")
     public InventoryConditionObject getInventoryCondition(final DataFetchingEnvironment env) {
-        return InventorySecurityUtils.getInstance().getHasInventoryConditionAccess(env) ? new InventoryConditionObject(getLotDetail().getInventoryCondition()) : null;
+        return InventorySecurityUtils.getHasInventoryConditionAccess(env) ? new InventoryConditionObject(getLotDetail().getInventoryCondition()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("unit of measure type")
     public UnitOfMeasureTypeObject getUnitOfMeasureType(final DataFetchingEnvironment env) {
-        return UomSecurityUtils.getInstance().getHasUnitOfMeasureTypeAccess(env) ? new UnitOfMeasureTypeObject(getLotDetail().getUnitOfMeasureType()) : null;
+        return UomSecurityUtils.getHasUnitOfMeasureTypeAccess(env) ? new UnitOfMeasureTypeObject(getLotDetail().getUnitOfMeasureType()) : null;
     }
 
     @GraphQLField
@@ -99,7 +99,7 @@ public class LotObject
     @GraphQLField
     @GraphQLDescription("currency")
     public CurrencyObject getCurrency(final DataFetchingEnvironment env) {
-        return AccountingSecurityUtils.getInstance().getHasCurrencyAccess(env) ? new CurrencyObject(getLotDetail().getCurrency()) : null;
+        return AccountingSecurityUtils.getHasCurrencyAccess(env) ? new CurrencyObject(getLotDetail().getCurrency()) : null;
     }
 
     @GraphQLField

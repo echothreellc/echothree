@@ -18,6 +18,7 @@ package com.echothree.model.control.filter.server.graphql;
 
 import com.echothree.model.control.filter.server.control.FilterControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.filter.server.entity.FilterKind;
 import com.echothree.model.data.filter.server.entity.FilterKindDetail;
@@ -81,7 +82,7 @@ public class FilterKindObject
         var filterControl = Session.getModelController(FilterControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return filterControl.getBestFilterKindDescription(filterKind, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return filterControl.getBestFilterKindDescription(filterKind, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
     @GraphQLField
@@ -89,7 +90,7 @@ public class FilterKindObject
     public Collection<FilterTypeObject> getFilterTypes(final DataFetchingEnvironment env) {
         Collection<FilterTypeObject> filterTypeObjects = null;
 
-        if(FilterSecurityUtils.getInstance().getHasFilterTypesAccess(env)) {
+        if(FilterSecurityUtils.getHasFilterTypesAccess(env)) {
             var filterControl = Session.getModelController(FilterControl.class);
             var filterTypes = filterControl.getFilterTypes(filterKind);
 
@@ -108,7 +109,7 @@ public class FilterKindObject
     public Collection<FilterAdjustmentObject> getFilterAdjustments(final DataFetchingEnvironment env) {
         Collection<FilterAdjustmentObject> filterAdjustmentObjects = null;
 
-        if(FilterSecurityUtils.getInstance().getHasFilterAdjustmentsAccess(env)) {
+        if(FilterSecurityUtils.getHasFilterAdjustmentsAccess(env)) {
             var filterControl = Session.getModelController(FilterControl.class);
             var filterAdjustments = filterControl.getFilterAdjustmentsByFilterKind(filterKind);
 

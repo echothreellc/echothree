@@ -17,6 +17,7 @@
 package com.echothree.model.control.tag.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
@@ -92,7 +93,7 @@ public class TagScopeObject
         var tagControl = Session.getModelController(TagControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return tagControl.getBestTagScopeDescription(tagScope, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return tagControl.getBestTagScopeDescription(tagScope, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
     @GraphQLField
@@ -100,7 +101,7 @@ public class TagScopeObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<TagScopeEntityTypeObject> getTagScopeEntityTypes(final DataFetchingEnvironment env) {
-        if(TagSecurityUtils.getInstance().getHasTagScopeEntityTypesAccess(env)) {
+        if(TagSecurityUtils.getHasTagScopeEntityTypesAccess(env)) {
             var tagControl = Session.getModelController(TagControl.class);
             var totalCount = tagControl.countTagScopeEntityTypesByTagScope(tagScope);
 
@@ -120,7 +121,7 @@ public class TagScopeObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<TagObject> getTags(final DataFetchingEnvironment env) {
-        if(TagSecurityUtils.getInstance().getHasTagsAccess(env)) {
+        if(TagSecurityUtils.getHasTagsAccess(env)) {
             var tagControl = Session.getModelController(TagControl.class);
 
             if(entityInstance == null) {

@@ -18,6 +18,7 @@ package com.echothree.model.control.content.server.graphql;
 
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.offer.server.graphql.OfferSecurityUtils;
 import com.echothree.model.control.offer.server.graphql.OfferUseObject;
 import com.echothree.model.control.user.server.control.UserControl;
@@ -68,7 +69,7 @@ public class ContentCollectionObject
     @GraphQLDescription("default offer use")
     @GraphQLNonNull
     public OfferUseObject getDefaultOfferUse(final DataFetchingEnvironment env) {
-        return OfferSecurityUtils.getInstance().getHasOfferUseAccess(env) ?
+        return OfferSecurityUtils.getHasOfferUseAccess(env) ?
                 new OfferUseObject(getContentCollectionDetail().getDefaultOfferUse()) : null;
     }
 
@@ -79,7 +80,7 @@ public class ContentCollectionObject
         var contentControl = Session.getModelController(ContentControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return contentControl.getBestContentCollectionDescription(contentCollection, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return contentControl.getBestContentCollectionDescription(contentCollection, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
     
     @GraphQLField
@@ -87,14 +88,14 @@ public class ContentCollectionObject
     public Long getContentCatalogsCount(final DataFetchingEnvironment env) {
         var contentControl = Session.getModelController(ContentControl.class);
         
-        return ContentSecurityUtils.getInstance().getHasContentCatalogsAccess(env) ? contentControl.countContentCatalogsByContentCollection(contentCollection) : null;
+        return ContentSecurityUtils.getHasContentCatalogsAccess(env) ? contentControl.countContentCatalogsByContentCollection(contentCollection) : null;
     }
     
     @GraphQLField
     @GraphQLDescription("content catalogs")
     public List<ContentCatalogObject> getContentCatalogs(final DataFetchingEnvironment env) {
         var contentControl = Session.getModelController(ContentControl.class);
-        List<ContentCatalog> entities = ContentSecurityUtils.getInstance().getHasContentCatalogsAccess(env) ? contentControl.getContentCatalogs(contentCollection) : null;
+        List<ContentCatalog> entities = ContentSecurityUtils.getHasContentCatalogsAccess(env) ? contentControl.getContentCatalogs(contentCollection) : null;
         List<ContentCatalogObject> contentCatalogs = entities == null ? null : new ArrayList<>(entities.size());
         
         if(entities != null) {
@@ -111,14 +112,14 @@ public class ContentCollectionObject
     public Long getContentSectionsCount(final DataFetchingEnvironment env) {
         var contentControl = Session.getModelController(ContentControl.class);
         
-        return ContentSecurityUtils.getInstance().getHasContentSectionsAccess(env) ? contentControl.countContentSectionsByContentCollection(contentCollection) : null;
+        return ContentSecurityUtils.getHasContentSectionsAccess(env) ? contentControl.countContentSectionsByContentCollection(contentCollection) : null;
     }
     
     @GraphQLField
     @GraphQLDescription("content sections")
     public List<ContentSectionObject> getContentSections(final DataFetchingEnvironment env) {
         var contentControl = Session.getModelController(ContentControl.class);
-        List<ContentSection> entities = ContentSecurityUtils.getInstance().getHasContentSectionsAccess(env) ? contentControl.getContentSections(contentCollection) : null;
+        List<ContentSection> entities = ContentSecurityUtils.getHasContentSectionsAccess(env) ? contentControl.getContentSections(contentCollection) : null;
         List<ContentSectionObject> contentSections = entities == null ? null : new ArrayList<>(entities.size());
         
         if(entities != null) {

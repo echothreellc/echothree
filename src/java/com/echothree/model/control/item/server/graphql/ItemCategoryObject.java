@@ -17,6 +17,7 @@
 package com.echothree.model.control.item.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
@@ -80,7 +81,7 @@ public class ItemCategoryObject
     @GraphQLField
     @GraphQLDescription("item sequence")
     public SequenceObject getItemSequence(final DataFetchingEnvironment env) {
-        if(SequenceSecurityUtils.getInstance().getHasSequenceAccess(env)) {
+        if(SequenceSecurityUtils.getHasSequenceAccess(env)) {
             var itemSequence = getItemCategoryDetail().getItemSequence();
 
             return itemSequence == null ? null : new SequenceObject(itemSequence);
@@ -110,7 +111,7 @@ public class ItemCategoryObject
         var itemControl = Session.getModelController(ItemControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return itemControl.getBestItemCategoryDescription(itemCategory, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return itemControl.getBestItemCategoryDescription(itemCategory, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
     @GraphQLField
@@ -118,7 +119,7 @@ public class ItemCategoryObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<ItemObject> getItems(final DataFetchingEnvironment env) {
-        if(ItemSecurityUtils.getInstance().getHasItemsAccess(env)) {
+        if(ItemSecurityUtils.getHasItemsAccess(env)) {
             var itemControl = Session.getModelController(ItemControl.class);
             var totalCount = itemControl.countItemsByItemCategory(itemCategory);
 

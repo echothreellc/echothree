@@ -23,31 +23,22 @@ import com.echothree.control.user.wishlist.server.command.GetWishlistTypesComman
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class WishlistSecurityUtils
-        extends BaseGraphQl {
+public interface WishlistSecurityUtils {
 
-    private static class ItemSecurityUtilsHolder {
-        static WishlistSecurityUtils instance = new WishlistSecurityUtils();
-    }
-    
-    public static WishlistSecurityUtils getInstance() {
-        return ItemSecurityUtilsHolder.instance;
+    static boolean getHasWishlistTypeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWishlistTypeCommand.class);
     }
 
-    public boolean getHasWishlistTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWishlistTypeCommand.class);
+    static boolean getHasWishlistTypesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWishlistTypesCommand.class);
     }
 
-    public boolean getHasWishlistTypesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWishlistTypesCommand.class);
+    static boolean getHasWishlistPriorityAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWishlistPriorityCommand.class);
     }
 
-    public boolean getHasWishlistPriorityAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWishlistPriorityCommand.class);
-    }
-
-    public boolean getHasWishlistPrioritiesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWishlistPrioritiesCommand.class);
+    static boolean getHasWishlistPrioritiesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWishlistPrioritiesCommand.class);
     }
 
 }

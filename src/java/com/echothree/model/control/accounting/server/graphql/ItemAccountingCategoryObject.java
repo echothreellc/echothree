@@ -18,6 +18,7 @@ package com.echothree.model.control.accounting.server.graphql;
 
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
@@ -83,7 +84,7 @@ public class ItemAccountingCategoryObject
     public GlAccountObject getInventoryGlAccount(final DataFetchingEnvironment env) {
         var inventoryGlAccount = getItemAccountingCategoryDetail().getInventoryGlAccount();
 
-        return inventoryGlAccount == null ? null : AccountingSecurityUtils.getInstance().getHasGlAccountAccess(env) ?
+        return inventoryGlAccount == null ? null : AccountingSecurityUtils.getHasGlAccountAccess(env) ?
                 new GlAccountObject(inventoryGlAccount) : null;
     }
 
@@ -92,7 +93,7 @@ public class ItemAccountingCategoryObject
     public GlAccountObject getSalesGlAccount(final DataFetchingEnvironment env) {
         var salesGlAccount = getItemAccountingCategoryDetail().getSalesGlAccount();
 
-        return salesGlAccount == null ? null : AccountingSecurityUtils.getInstance().getHasGlAccountAccess(env) ?
+        return salesGlAccount == null ? null : AccountingSecurityUtils.getHasGlAccountAccess(env) ?
                 new GlAccountObject(salesGlAccount) : null;
     }
 
@@ -101,7 +102,7 @@ public class ItemAccountingCategoryObject
     public GlAccountObject getReturnsGlAccount(final DataFetchingEnvironment env) {
         var returnsGlAccount = getItemAccountingCategoryDetail().getReturnsGlAccount();
 
-        return returnsGlAccount == null ? null : AccountingSecurityUtils.getInstance().getHasGlAccountAccess(env) ?
+        return returnsGlAccount == null ? null : AccountingSecurityUtils.getHasGlAccountAccess(env) ?
                 new GlAccountObject(returnsGlAccount) : null;
     }
 
@@ -110,7 +111,7 @@ public class ItemAccountingCategoryObject
     public GlAccountObject getCogsGlAccount(final DataFetchingEnvironment env) {
         var cogsGlAccount = getItemAccountingCategoryDetail().getCogsGlAccount();
 
-        return cogsGlAccount == null ? null : AccountingSecurityUtils.getInstance().getHasGlAccountAccess(env) ?
+        return cogsGlAccount == null ? null : AccountingSecurityUtils.getHasGlAccountAccess(env) ?
                 new GlAccountObject(cogsGlAccount) : null;
     }
 
@@ -119,7 +120,7 @@ public class ItemAccountingCategoryObject
     public GlAccountObject getReturnsCogsGlAccount(final DataFetchingEnvironment env) {
         var returnsCogsGlAccount = getItemAccountingCategoryDetail().getReturnsCogsGlAccount();
 
-        return returnsCogsGlAccount == null ? null : AccountingSecurityUtils.getInstance().getHasGlAccountAccess(env) ?
+        return returnsCogsGlAccount == null ? null : AccountingSecurityUtils.getHasGlAccountAccess(env) ?
                 new GlAccountObject(returnsCogsGlAccount) : null;
     }
 
@@ -144,7 +145,7 @@ public class ItemAccountingCategoryObject
         var accountingControl = Session.getModelController(AccountingControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return accountingControl.getBestItemAccountingCategoryDescription(itemAccountingCategory, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return accountingControl.getBestItemAccountingCategoryDescription(itemAccountingCategory, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
     @GraphQLField
@@ -152,7 +153,7 @@ public class ItemAccountingCategoryObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<ItemObject> getItems(final DataFetchingEnvironment env) {
-        if(ItemSecurityUtils.getInstance().getHasItemsAccess(env)) {
+        if(ItemSecurityUtils.getHasItemsAccess(env)) {
             var itemControl = Session.getModelController(ItemControl.class);
             var totalCount = itemControl.countItemsByItemAccountingCategory(itemAccountingCategory);
 

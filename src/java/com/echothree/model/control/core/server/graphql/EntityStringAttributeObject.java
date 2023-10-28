@@ -29,8 +29,7 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("entity string attribute object")
 @GraphQLName("EntityStringAttribute")
 public class EntityStringAttributeObject
-        extends BaseGraphQl
-        implements AttributeInterface {
+        implements BaseGraphQl, AttributeInterface {
     
     private final EntityStringAttribute entityStringAttribute; // Always Present
     
@@ -41,19 +40,19 @@ public class EntityStringAttributeObject
     @GraphQLField
     @GraphQLDescription("entity attribute")
     public EntityAttributeObject getEntityAttribute(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityStringAttribute.getEntityAttribute(), entityStringAttribute.getEntityInstance()) : null;
+        return CoreSecurityUtils.getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityStringAttribute.getEntityAttribute(), entityStringAttribute.getEntityInstance()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("entity instance")
     public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityStringAttribute.getEntityInstance()) : null;
+        return CoreSecurityUtils.getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityStringAttribute.getEntityInstance()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("language")
     public LanguageObject getLanguage(final DataFetchingEnvironment env) {
-        return PartySecurityUtils.getInstance().getHasLanguageAccess(env) ? new LanguageObject(entityStringAttribute.getLanguage()) : null;
+        return PartySecurityUtils.getHasLanguageAccess(env) ? new LanguageObject(entityStringAttribute.getLanguage()) : null;
     }
 
     @GraphQLField

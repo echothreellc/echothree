@@ -42,14 +42,14 @@ public class OrderRoleObject
     public PartyObject getParty(final DataFetchingEnvironment env) {
         var party = orderRole.getParty();
 
-        return PartySecurityUtils.getInstance().getHasPartyAccess(env, party) ? new PartyObject(party) : null;
+        return PartySecurityUtils.getHasPartyAccess(env, party) ? new PartyObject(party) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("order role type")
     @GraphQLNonNull
     public OrderRoleTypeObject getOrderRoleType(final DataFetchingEnvironment env) {
-        return OrderSecurityUtils.getInstance().getHasOrderRoleTypeAccess(env) ? new OrderRoleTypeObject(orderRole.getOrderRoleType()) : null;
+        return OrderSecurityUtils.getHasOrderRoleTypeAccess(env) ? new OrderRoleTypeObject(orderRole.getOrderRoleType()) : null;
     }
 
 

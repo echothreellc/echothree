@@ -18,6 +18,7 @@ package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
@@ -113,7 +114,7 @@ public class EntityTypeObject
         var coreControl = Session.getModelController(CoreControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return coreControl.getBestEntityTypeDescription(entityType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return coreControl.getBestEntityTypeDescription(entityType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
     @GraphQLField
@@ -121,7 +122,7 @@ public class EntityTypeObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<EntityInstanceObject> getEntityInstances(final DataFetchingEnvironment env) {
-        if(CoreSecurityUtils.getInstance().getHasEntityInstancesAccess(env)) {
+        if(CoreSecurityUtils.getHasEntityInstancesAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
             var totalCount = coreControl.countEntityInstancesByEntityType(entityType);
 
@@ -141,7 +142,7 @@ public class EntityTypeObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<EntityAttributeObject> getEntityAttributes(final DataFetchingEnvironment env) {
-        if(CoreSecurityUtils.getInstance().getHasEntityAttributesAccess(env)) {
+        if(CoreSecurityUtils.getHasEntityAttributesAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
             var totalCount = coreControl.countEntityAttributesByEntityType(entityType);
 
@@ -165,7 +166,7 @@ public class EntityTypeObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<TagScopeEntityTypeObject> getTagScopeEntityTypes(final DataFetchingEnvironment env) {
-        if(TagSecurityUtils.getInstance().getHasTagScopeEntityTypesAccess(env)) {
+        if(TagSecurityUtils.getHasTagScopeEntityTypesAccess(env)) {
             var tagControl = Session.getModelController(TagControl.class);
             var totalCount = tagControl.countTagScopeEntityTypesByEntityType(entityType);
 

@@ -31,7 +31,7 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("user session object")
 @GraphQLName("UserSession")
 public class UserSessionObject
-        extends BaseGraphQl {
+        implements BaseGraphQl {
     
     private final UserSession userSession; // Always Present
     
@@ -56,7 +56,7 @@ public class UserSessionObject
     @GraphQLField
     @GraphQLDescription("party relationship")
     public PartyRelationshipObject getPartyRelationship(final DataFetchingEnvironment env) {
-        return PartySecurityUtils.getInstance().getHasPartyRelationshipAccess(env) ? new PartyRelationshipObject(userSession.getPartyRelationship()) : null;
+        return PartySecurityUtils.getHasPartyRelationshipAccess(env) ? new PartyRelationshipObject(userSession.getPartyRelationship()) : null;
     }
 
     @GraphQLField

@@ -30,7 +30,7 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("party relationship type object")
 @GraphQLName("PartyRelationshipType")
 public class PartyRelationshipTypeObject
-        extends BaseGraphQl {
+        implements BaseGraphQl {
 
     private final PartyRelationshipType partyRelationshipType; // Always Present
     
@@ -52,7 +52,7 @@ public class PartyRelationshipTypeObject
         var partyControl = Session.getModelController(PartyControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return partyControl.getBestPartyRelationshipTypeDescription(partyRelationshipType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return partyControl.getBestPartyRelationshipTypeDescription(partyRelationshipType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
 }

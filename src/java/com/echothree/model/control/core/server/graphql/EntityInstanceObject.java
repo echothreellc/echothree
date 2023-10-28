@@ -116,7 +116,7 @@ public class EntityInstanceObject
     @GraphQLDescription("entity visit")
     public EntityVisitObject getEntityVisit(final DataFetchingEnvironment env) {
         var coreControl = Session.getModelController(CoreControl.class);
-        var userSession = getUserSession(env);
+        var userSession = BaseGraphQl.getUserSession(env);
         var visitingEntityInstance = userSession == null ? null : coreControl.getEntityInstanceByBasePK(userSession.getPartyPK());
         var entityVisit = visitingEntityInstance == null ? null : coreControl.getEntityVisit(visitingEntityInstance, entityInstance);
         
@@ -136,7 +136,7 @@ public class EntityInstanceObject
     @GraphQLDescription("entity lock")
     public EntityLockObject getEntityLock(final DataFetchingEnvironment env) {
         var entityLockControl = Session.getModelController(EntityLockControl.class);
-        var userVisit = getUserVisit(env);
+        var userVisit = BaseGraphQl.getUserVisit(env);
         var entityLockTransfer = entityLockControl.getEntityLockTransferByEntityInstance(userVisit, entityInstance);
 
         return entityLockTransfer == null ? null : new EntityLockObject(entityLockTransfer);
@@ -153,7 +153,7 @@ public class EntityInstanceObject
     @GraphQLField
     @GraphQLDescription("description")
     public String getDescription(final DataFetchingEnvironment env) {
-        var userVisit = getUserVisit(env);
+        var userVisit = BaseGraphQl.getUserVisit(env);
 
         return EntityDescriptionUtils.getInstance().getDescription(userVisit, entityInstance);
     }

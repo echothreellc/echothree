@@ -39,13 +39,13 @@ public class ContentCategoryItemObject
     @GraphQLField
     @GraphQLDescription("content category")
     public ContentCategoryObject getContentCategory(final DataFetchingEnvironment env) {
-        return ContentSecurityUtils.getInstance().getHasContentCategoryAccess(env) ? new ContentCategoryObject(contentCategoryItem.getContentCategory()) : null;
+        return ContentSecurityUtils.getHasContentCategoryAccess(env) ? new ContentCategoryObject(contentCategoryItem.getContentCategory()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("content catalog item")
     public ContentCatalogItemObject getContentCatalogItem(final DataFetchingEnvironment env) {
-        return ContentSecurityUtils.getInstance().getHasContentCatalogItemAccess(env) ? new ContentCatalogItemObject(contentCategoryItem.getContentCatalogItem()) : null;
+        return ContentSecurityUtils.getHasContentCatalogItemAccess(env) ? new ContentCatalogItemObject(contentCategoryItem.getContentCatalogItem()) : null;
     }
 
     @GraphQLField

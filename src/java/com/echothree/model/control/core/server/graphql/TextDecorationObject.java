@@ -18,6 +18,7 @@ package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.core.server.entity.TextDecoration;
 import com.echothree.model.data.core.server.entity.TextDecorationDetail;
@@ -79,7 +80,7 @@ public class TextDecorationObject
         var coreControl = Session.getModelController(CoreControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return coreControl.getBestTextDecorationDescription(textDecoration, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return coreControl.getBestTextDecorationDescription(textDecoration, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
     
 }

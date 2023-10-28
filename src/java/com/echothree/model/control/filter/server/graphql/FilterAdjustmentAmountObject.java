@@ -41,19 +41,19 @@ public class FilterAdjustmentAmountObject {
     @GraphQLField
     @GraphQLDescription("filter adjustment")
     public FilterAdjustmentObject getFilterAdjustment(final DataFetchingEnvironment env) {
-        return FilterSecurityUtils.getInstance().getHasFilterAdjustmentAccess(env) ? new FilterAdjustmentObject(filterAdjustmentAmount.getFilterAdjustment()) : null;
+        return FilterSecurityUtils.getHasFilterAdjustmentAccess(env) ? new FilterAdjustmentObject(filterAdjustmentAmount.getFilterAdjustment()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("currency")
     public CurrencyObject getCurrency(final DataFetchingEnvironment env) {
-        return AccountingSecurityUtils.getInstance().getHasCurrencyAccess(env) ? new CurrencyObject(filterAdjustmentAmount.getCurrency()) : null;
+        return AccountingSecurityUtils.getHasCurrencyAccess(env) ? new CurrencyObject(filterAdjustmentAmount.getCurrency()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("unit of measure type")
     public UnitOfMeasureTypeObject getUnitOfMeasureType(final DataFetchingEnvironment env) {
-        return UomSecurityUtils.getInstance().getHasUnitOfMeasureTypeAccess(env) ? new UnitOfMeasureTypeObject(filterAdjustmentAmount.getUnitOfMeasureType()) : null;
+        return UomSecurityUtils.getHasUnitOfMeasureTypeAccess(env) ? new UnitOfMeasureTypeObject(filterAdjustmentAmount.getUnitOfMeasureType()) : null;
     }
 
     @GraphQLField

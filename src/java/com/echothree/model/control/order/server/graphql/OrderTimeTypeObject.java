@@ -17,6 +17,7 @@
 package com.echothree.model.control.order.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.order.server.control.OrderTimeControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.order.server.entity.OrderTimeType;
@@ -62,7 +63,7 @@ public class OrderTimeTypeObject
     @GraphQLDescription("order type")
     @GraphQLNonNull
     public OrderTypeObject getOrderType(final DataFetchingEnvironment env) {
-        return OrderSecurityUtils.getInstance().getHasOrderTypeAccess(env) ? new OrderTypeObject(getOrderTimeTypeDetail().getOrderType()) : null;
+        return OrderSecurityUtils.getHasOrderTypeAccess(env) ? new OrderTypeObject(getOrderTimeTypeDetail().getOrderType()) : null;
     }
 
     @GraphQLField
@@ -86,7 +87,7 @@ public class OrderTimeTypeObject
         var orderTimeControl = Session.getModelController(OrderTimeControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return orderTimeControl.getBestOrderTimeTypeDescription(orderTimeType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return orderTimeControl.getBestOrderTimeTypeDescription(orderTimeType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
 }

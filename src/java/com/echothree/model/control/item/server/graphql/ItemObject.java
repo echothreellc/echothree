@@ -26,6 +26,7 @@ import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.item.common.ItemConstants;
 import com.echothree.model.control.item.common.workflow.ItemStatusConstants;
@@ -99,32 +100,32 @@ public class ItemObject
     @GraphQLDescription("item type")
     @GraphQLNonNull
     public ItemTypeObject getItemType(final DataFetchingEnvironment env) {
-        return ItemSecurityUtils.getInstance().getHasItemTypeAccess(env) ? new ItemTypeObject(getItemDetail().getItemType()) : null;
+        return ItemSecurityUtils.getHasItemTypeAccess(env) ? new ItemTypeObject(getItemDetail().getItemType()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("item use type")
     @GraphQLNonNull
     public ItemUseTypeObject getItemUseType(final DataFetchingEnvironment env) {
-        return ItemSecurityUtils.getInstance().getHasItemUseTypeAccess(env) ? new ItemUseTypeObject(getItemDetail().getItemUseType()) : null;
+        return ItemSecurityUtils.getHasItemUseTypeAccess(env) ? new ItemUseTypeObject(getItemDetail().getItemUseType()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("item category")
     public ItemCategoryObject getItemCategory(final DataFetchingEnvironment env) {
-        return ItemSecurityUtils.getInstance().getHasItemCategoryAccess(env) ? new ItemCategoryObject(getItemDetail().getItemCategory()) : null;
+        return ItemSecurityUtils.getHasItemCategoryAccess(env) ? new ItemCategoryObject(getItemDetail().getItemCategory()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("item accounting category")
     public ItemAccountingCategoryObject getItemAccountingCategory(final DataFetchingEnvironment env) {
-        return AccountingSecurityUtils.getInstance().getHasItemAccountingCategoryAccess(env) ? new ItemAccountingCategoryObject(getItemDetail().getItemAccountingCategory()) : null;
+        return AccountingSecurityUtils.getHasItemAccountingCategoryAccess(env) ? new ItemAccountingCategoryObject(getItemDetail().getItemAccountingCategory()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("item purchasing category")
     public ItemPurchasingCategoryObject getItemPurchasingCategory(final DataFetchingEnvironment env) {
-        return VendorSecurityUtils.getInstance().getHasItemPurchasingCategoryAccess(env) ? new ItemPurchasingCategoryObject(getItemDetail().getItemPurchasingCategory()) : null;
+        return VendorSecurityUtils.getHasItemPurchasingCategoryAccess(env) ? new ItemPurchasingCategoryObject(getItemDetail().getItemPurchasingCategory()) : null;
     }
 
     @GraphQLField
@@ -133,21 +134,21 @@ public class ItemObject
     public CompanyObject getCompany(final DataFetchingEnvironment env) {
         var companyParty = getItemDetail().getCompanyParty();
 
-        return PartySecurityUtils.getInstance().getHasPartyAccess(env, companyParty) ? new CompanyObject(companyParty) : null;
+        return PartySecurityUtils.getHasPartyAccess(env, companyParty) ? new CompanyObject(companyParty) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("item delivery type")
     @GraphQLNonNull
     public ItemDeliveryTypeObject getItemDeliveryType(final DataFetchingEnvironment env) {
-        return ItemSecurityUtils.getInstance().getHasItemDeliveryTypeAccess(env) ? new ItemDeliveryTypeObject(getItemDetail().getItemDeliveryType()) : null;
+        return ItemSecurityUtils.getHasItemDeliveryTypeAccess(env) ? new ItemDeliveryTypeObject(getItemDetail().getItemDeliveryType()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("item inventory type")
     @GraphQLNonNull
     public ItemInventoryTypeObject getItemInventoryType(final DataFetchingEnvironment env) {
-        return ItemSecurityUtils.getInstance().getHasItemInventoryTypeAccess(env) ? new ItemInventoryTypeObject(getItemDetail().getItemInventoryType()) : null;
+        return ItemSecurityUtils.getHasItemInventoryTypeAccess(env) ? new ItemInventoryTypeObject(getItemDetail().getItemInventoryType()) : null;
     }
 
     @GraphQLField
@@ -161,7 +162,7 @@ public class ItemObject
     public SequenceObject getSalesOrderSequence(final DataFetchingEnvironment env) {
         var salesOrderSequence = getItemDetail().getSerialNumberSequence();
 
-        return salesOrderSequence == null ? null : (SequenceSecurityUtils.getInstance().getHasSequenceAccess(env) ? new SequenceObject(salesOrderSequence) : null);
+        return salesOrderSequence == null ? null : (SequenceSecurityUtils.getHasSequenceAccess(env) ? new SequenceObject(salesOrderSequence) : null);
     }
 
     @GraphQLField
@@ -241,13 +242,13 @@ public class ItemObject
     @GraphQLField
     @GraphQLDescription("unit of measure kind")
     public UnitOfMeasureKindObject getUnitOfMeasureKind(final DataFetchingEnvironment env) {
-        return UomSecurityUtils.getInstance().getHasUnitOfMeasureKindAccess(env) ? new UnitOfMeasureKindObject(getItemDetail().getUnitOfMeasureKind()) : null;
+        return UomSecurityUtils.getHasUnitOfMeasureKindAccess(env) ? new UnitOfMeasureKindObject(getItemDetail().getUnitOfMeasureKind()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("item price type")
     public ItemPriceTypeObject getItemPriceType(final DataFetchingEnvironment env) {
-        return ItemSecurityUtils.getInstance().getHasItemPriceTypeAccess(env) ? new ItemPriceTypeObject(getItemDetail().getItemPriceType()) : null;
+        return ItemSecurityUtils.getHasItemPriceTypeAccess(env) ? new ItemPriceTypeObject(getItemDetail().getItemPriceType()) : null;
     }
 
     @GraphQLField
@@ -255,7 +256,7 @@ public class ItemObject
     public CancellationPolicyObject getCancellationPolicy(final DataFetchingEnvironment env) {
         var cancellationPolicy = getItemDetail().getCancellationPolicy();
 
-        return cancellationPolicy == null ? null : (CancellationPolicySecurityUtils.getInstance().getHasCancellationPolicyAccess(env) ? new CancellationPolicyObject(cancellationPolicy) : null);
+        return cancellationPolicy == null ? null : (CancellationPolicySecurityUtils.getHasCancellationPolicyAccess(env) ? new CancellationPolicyObject(cancellationPolicy) : null);
     }
 
     @GraphQLField
@@ -263,7 +264,7 @@ public class ItemObject
     public ReturnPolicyObject getReturnPolicy(final DataFetchingEnvironment env) {
         var returnPolicy = getItemDetail().getReturnPolicy();
 
-        return returnPolicy == null ? null : (ReturnPolicySecurityUtils.getInstance().getHasReturnPolicyAccess(env) ? new ReturnPolicyObject(returnPolicy) : null);
+        return returnPolicy == null ? null : (ReturnPolicySecurityUtils.getHasReturnPolicyAccess(env) ? new ReturnPolicyObject(returnPolicy) : null);
     }
 
     //| itm_stylpth_stylepathid             | bigint      | YES  |     | NULL    |       |
@@ -273,7 +274,7 @@ public class ItemObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<ItemPriceObject> getItemPrices(final DataFetchingEnvironment env) {
-        if(ItemSecurityUtils.getInstance().getHasItemPricesAccess(env)) {
+        if(ItemSecurityUtils.getHasItemPricesAccess(env)) {
             var itemControl = Session.getModelController(ItemControl.class);
             var totalCount = itemControl.countItemPricesByItem(item);
 
@@ -293,7 +294,7 @@ public class ItemObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<ItemUnitOfMeasureTypeObject> getItemUnitOfMeasureTypes(final DataFetchingEnvironment env) {
-        if(ItemSecurityUtils.getInstance().getHasItemUnitOfMeasureTypesAccess(env)) {
+        if(ItemSecurityUtils.getHasItemUnitOfMeasureTypesAccess(env)) {
             var itemControl = Session.getModelController(ItemControl.class);
             var totalCount = itemControl.countItemUnitOfMeasureTypesByItem(item);
 
@@ -313,7 +314,7 @@ public class ItemObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<ItemAliasObject> getItemAliases(final DataFetchingEnvironment env) {
-        if(ItemSecurityUtils.getInstance().getHasItemAliasesAccess(env)) {
+        if(ItemSecurityUtils.getHasItemAliasesAccess(env)) {
             var itemControl = Session.getModelController(ItemControl.class);
             var totalCount = itemControl.countItemAliasesByItem(item);
 
@@ -334,7 +335,7 @@ public class ItemObject
         var itemControl = Session.getModelController(ItemControl.class);
         var itemDescriptionType = itemControl.getItemDescriptionTypeByName(ItemConstants.ItemDescriptionType_DEFAULT_DESCRIPTION);
 
-        return itemDescriptionType == null ? null : itemControl.getBestItemStringDescription(itemDescriptionType, item, getLanguageEntity(env));
+        return itemDescriptionType == null ? null : itemControl.getBestItemStringDescription(itemDescriptionType, item, BaseGraphQl.getLanguageEntity(env));
     }
 
     @GraphQLField
@@ -348,7 +349,7 @@ public class ItemObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<OfferItemObject> getOfferItems(final DataFetchingEnvironment env) {
-        if(OfferSecurityUtils.getInstance().getHasOfferItemsAccess(env)) {
+        if(OfferSecurityUtils.getHasOfferItemsAccess(env)) {
             var offerItemControl = Session.getModelController(OfferItemControl.class);
             var totalCount = offerItemControl.countOfferItemsByItem(item);
 
@@ -368,7 +369,7 @@ public class ItemObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<RelatedItemTypeObject> getRelatedItemTypes(final DataFetchingEnvironment env) {
-        if(ItemSecurityUtils.getInstance().getHasRelatedItemTypesAccess(env)) {
+        if(ItemSecurityUtils.getHasRelatedItemTypesAccess(env)) {
             var itemControl = Session.getModelController(ItemControl.class);
             var totalCount = itemControl.countRelatedItemTypes();
 
@@ -391,7 +392,7 @@ public class ItemObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<VendorItemObject> getVendorItems(final DataFetchingEnvironment env) {
-        if(VendorSecurityUtils.getInstance().getHasVendorItemsAccess(env)) {
+        if(VendorSecurityUtils.getHasVendorItemsAccess(env)) {
             var itemControl = Session.getModelController(VendorControl.class);
             var totalCount = itemControl.countVendorItemsByItem(item);
 

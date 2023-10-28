@@ -88,7 +88,7 @@ public class VendorObject
     @GraphQLDescription("vendor type")
     @GraphQLNonNull
     public VendorTypeObject getVendorType(final DataFetchingEnvironment env) {
-        return VendorSecurityUtils.getInstance().getHasVendorTypeAccess(env) ?
+        return VendorSecurityUtils.getHasVendorTypeAccess(env) ?
                 new VendorTypeObject(getVendor().getVendorType()) : null;
     }
 
@@ -128,7 +128,7 @@ public class VendorObject
     public ItemAliasTypeObject getDefaultItemAliasType(final DataFetchingEnvironment env) {
         var defaultItemAliasType = getVendor().getDefaultItemAliasType();
 
-        return defaultItemAliasType == null ? null : ItemSecurityUtils.getInstance().getHasItemAliasAccess(env) ?
+        return defaultItemAliasType == null ? null : ItemSecurityUtils.getHasItemAliasAccess(env) ?
                 new ItemAliasTypeObject(defaultItemAliasType) : null;
     }
 
@@ -137,7 +137,7 @@ public class VendorObject
     public CancellationPolicyObject getCancellationPolicy(final DataFetchingEnvironment env) {
         var cancellationPolicy = getVendor().getCancellationPolicy();
 
-        return cancellationPolicy == null ? null : CancellationPolicySecurityUtils.getInstance().getHasCancellationPolicyAccess(env) ?
+        return cancellationPolicy == null ? null : CancellationPolicySecurityUtils.getHasCancellationPolicyAccess(env) ?
                 new CancellationPolicyObject(cancellationPolicy) : null;
     }
 
@@ -146,7 +146,7 @@ public class VendorObject
     public ReturnPolicyObject getReturnPolicy(final DataFetchingEnvironment env) {
         var returnPolicy = getVendor().getReturnPolicy();
 
-        return returnPolicy == null ? null : ReturnPolicySecurityUtils.getInstance().getHasReturnPolicyAccess(env) ?
+        return returnPolicy == null ? null : ReturnPolicySecurityUtils.getHasReturnPolicyAccess(env) ?
                 new ReturnPolicyObject(returnPolicy) : null;
     }
 
@@ -155,7 +155,7 @@ public class VendorObject
     public GlAccountObject getApGlAccount(final DataFetchingEnvironment env) {
         var apGlAccount = getVendor().getApGlAccount();
 
-        return apGlAccount == null ? null : AccountingSecurityUtils.getInstance().getHasGlAccountAccess(env) ?
+        return apGlAccount == null ? null : AccountingSecurityUtils.getHasGlAccountAccess(env) ?
                 new GlAccountObject(apGlAccount) : null;
     }
 
@@ -212,7 +212,7 @@ public class VendorObject
     public SelectorObject getVendorItemSelector(final DataFetchingEnvironment env) {
         var vendorItemSelector = getVendor().getVendorItemSelector();
 
-        return vendorItemSelector == null ? null : SelectorSecurityUtils.getInstance().getHasSelectorAccess(env) ?
+        return vendorItemSelector == null ? null : SelectorSecurityUtils.getHasSelectorAccess(env) ?
                 new SelectorObject(vendorItemSelector) : null;
     }
 
@@ -221,7 +221,7 @@ public class VendorObject
     public FilterObject getVendorItemCostFilter(final DataFetchingEnvironment env) {
         var vendorItemCostFilter = getVendor().getVendorItemCostFilter();
 
-        return vendorItemCostFilter == null ? null : FilterSecurityUtils.getInstance().getHasFilterAccess(env) ?
+        return vendorItemCostFilter == null ? null : FilterSecurityUtils.getHasFilterAccess(env) ?
                 new FilterObject(vendorItemCostFilter) : null;
     }
 
@@ -236,7 +236,7 @@ public class VendorObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<VendorItemObject> getVendorItems(final DataFetchingEnvironment env) {
-        if(VendorSecurityUtils.getInstance().getHasVendorItemsAccess(env)) {
+        if(VendorSecurityUtils.getHasVendorItemsAccess(env)) {
             var itemControl = Session.getModelController(VendorControl.class);
             var totalCount = itemControl.countVendorItemsByVendorParty(party);
 
