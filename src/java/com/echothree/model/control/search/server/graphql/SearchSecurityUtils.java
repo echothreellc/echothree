@@ -21,21 +21,13 @@ import com.echothree.control.user.search.server.command.GetSearchCheckSpellingAc
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class SearchSecurityUtils {
+public interface SearchSecurityUtils {
 
-    private static class SearchSecurityUtilsHolder {
-        static SearchSecurityUtils instance = new SearchSecurityUtils();
-    }
-    
-    public static SearchSecurityUtils getInstance() {
-        return SearchSecurityUtilsHolder.instance;
-    }
-
-    public boolean getHasSearchCheckSpellingActionTypesAccess(final DataFetchingEnvironment env) {
+    static boolean getHasSearchCheckSpellingActionTypesAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetSearchCheckSpellingActionTypesCommand.class);
     }
 
-    public boolean getHasSearchCheckSpellingActionTypeAccess(final DataFetchingEnvironment env) {
+    static boolean getHasSearchCheckSpellingActionTypeAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetSearchCheckSpellingActionTypeCommand.class);
     }
 

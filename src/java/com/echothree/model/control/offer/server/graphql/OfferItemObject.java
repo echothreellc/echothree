@@ -53,13 +53,13 @@ public class OfferItemObject
     @GraphQLField
     @GraphQLDescription("offer")
     public OfferObject getOffer(final DataFetchingEnvironment env) {
-        return OfferSecurityUtils.getInstance().getHasOfferAccess(env) ? new OfferObject(offerItem.getOffer()) : null;
+        return OfferSecurityUtils.getHasOfferAccess(env) ? new OfferObject(offerItem.getOffer()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("item")
     public ItemObject getItem(final DataFetchingEnvironment env) {
-        return ItemSecurityUtils.getInstance().getHasItemAccess(env) ? new ItemObject(offerItem.getItem()) : null;
+        return ItemSecurityUtils.getHasItemAccess(env) ? new ItemObject(offerItem.getItem()) : null;
     }
 
     @GraphQLField
@@ -67,7 +67,7 @@ public class OfferItemObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<OfferItemPriceObject> getOfferItemPrices(final DataFetchingEnvironment env) {
-        if(OfferSecurityUtils.getInstance().getHasOfferItemPricesAccess(env)) {
+        if(OfferSecurityUtils.getHasOfferItemPricesAccess(env)) {
             var offerItemControl = Session.getModelController(OfferItemControl.class);
             var totalCount = offerItemControl.countOfferItemPricesByOfferItem(offerItem);
 

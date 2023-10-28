@@ -78,7 +78,7 @@ public class OfferObject
     @GraphQLField
     @GraphQLDescription("sales order sequence")
     public SequenceObject getSalesOrderSequence(final DataFetchingEnvironment env) {
-        if(SequenceSecurityUtils.getInstance().getHasSequenceAccess(env)) {
+        if(SequenceSecurityUtils.getHasSequenceAccess(env)) {
             var salesOrderSequence = getOfferDetail().getSalesOrderSequence();
 
             return salesOrderSequence == null ? null : new SequenceObject(salesOrderSequence);
@@ -92,7 +92,7 @@ public class OfferObject
     public DepartmentObject getDepartment(final DataFetchingEnvironment env) {
         var departmentParty = getOfferDetail().getDepartmentParty();
 
-        return PartySecurityUtils.getInstance().getHasPartyAccess(env, departmentParty) ? new DepartmentObject(departmentParty) : null;
+        return PartySecurityUtils.getHasPartyAccess(env, departmentParty) ? new DepartmentObject(departmentParty) : null;
     }
 
     // TODO: OfferItemSelector
@@ -100,7 +100,7 @@ public class OfferObject
     @GraphQLField
     @GraphQLDescription("offer item price filter")
     public FilterObject getOfferItemPriceFilter(final DataFetchingEnvironment env) {
-        if(FilterSecurityUtils.getInstance().getHasFilterAccess(env)) {
+        if(FilterSecurityUtils.getHasFilterAccess(env)) {
             var offerItemPriceFilter = getOfferDetail().getOfferItemPriceFilter();
 
             return offerItemPriceFilter == null ? null : new FilterObject(offerItemPriceFilter);
@@ -138,7 +138,7 @@ public class OfferObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<OfferItemObject> getOfferItems(final DataFetchingEnvironment env) {
-        if(OfferSecurityUtils.getInstance().getHasOfferItemsAccess(env)) {
+        if(OfferSecurityUtils.getHasOfferItemsAccess(env)) {
             var offerItemControl = Session.getModelController(OfferItemControl.class);
             var totalCount = offerItemControl.countOfferItemsByOffer(offer);
 

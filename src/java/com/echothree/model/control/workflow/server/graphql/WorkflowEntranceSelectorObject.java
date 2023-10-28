@@ -40,14 +40,14 @@ public class WorkflowEntranceSelectorObject
     @GraphQLField
     @GraphQLDescription("workflow entrance")
     public WorkflowEntranceObject getWorkflowEntrance(final DataFetchingEnvironment env) {
-        return WorkflowSecurityUtils.getInstance().getHasWorkflowEntranceAccess(env) ? new WorkflowEntranceObject(workflowEntranceSelector.getWorkflowEntrance()) : null;
+        return WorkflowSecurityUtils.getHasWorkflowEntranceAccess(env) ? new WorkflowEntranceObject(workflowEntranceSelector.getWorkflowEntrance()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("selector")
     @GraphQLNonNull
     public SelectorObject getSelector(final DataFetchingEnvironment env) {
-        return SelectorSecurityUtils.getInstance().getHasSelectorAccess(env) ? new SelectorObject(workflowEntranceSelector.getSelector()) : null;
+        return SelectorSecurityUtils.getHasSelectorAccess(env) ? new SelectorObject(workflowEntranceSelector.getSelector()) : null;
     }
 
 }

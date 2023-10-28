@@ -68,7 +68,7 @@ public class EmployeeObject
 //    @GraphQLDescription("employee type")
 //    @GraphQLNonNull
 //    public EmployeeTypeObject getEmployeeType(final DataFetchingEnvironment env) {
-//        return EmployeeSecurityUtils.getInstance().getHasEmployeeTypeAccess(env) ?
+//        return EmployeeSecurityUtils.getHasEmployeeTypeAccess(env) ?
 //                new EmployeeTypeObject(getEmployee().getEmployeeType()) : null;
 //    }
 

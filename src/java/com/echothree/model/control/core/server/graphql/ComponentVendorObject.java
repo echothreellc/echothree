@@ -78,7 +78,7 @@ public class ComponentVendorObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<EntityTypeObject> getEntityTypes(final DataFetchingEnvironment env) {
-        if(CoreSecurityUtils.getInstance().getHasEntityTypesAccess(env)) {
+        if(CoreSecurityUtils.getHasEntityTypesAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
             var totalCount = coreControl.countEntityTypesByComponentVendor(componentVendor);
 

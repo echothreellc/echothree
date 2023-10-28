@@ -87,7 +87,7 @@ public class OrderTypeObject
     public SequenceTypeObject getOrderSequenceType(final DataFetchingEnvironment env) {
         var orderSequenceType = getOrderTypeDetail().getOrderSequenceType();
 
-        return orderSequenceType == null ? null : (SequenceSecurityUtils.getInstance().getHasSequenceTypeAccess(env) ? new SequenceTypeObject(orderSequenceType) : null);
+        return orderSequenceType == null ? null : (SequenceSecurityUtils.getHasSequenceTypeAccess(env) ? new SequenceTypeObject(orderSequenceType) : null);
     }
 
     @GraphQLField
@@ -95,7 +95,7 @@ public class OrderTypeObject
     public WorkflowObject getOrderWorkflow(final DataFetchingEnvironment env) {
         var orderWorkflow = getOrderTypeDetail().getOrderWorkflow();
 
-        return orderWorkflow == null ? null : (WorkflowSecurityUtils.getInstance().getHasWorkflowAccess(env) ? new WorkflowObject(orderWorkflow) : null);
+        return orderWorkflow == null ? null : (WorkflowSecurityUtils.getHasWorkflowAccess(env) ? new WorkflowObject(orderWorkflow) : null);
     }
 
     @GraphQLField
@@ -103,7 +103,7 @@ public class OrderTypeObject
     public WorkflowEntranceObject getOrderWorkflowEntrance(final DataFetchingEnvironment env) {
         var orderWorkflowEntrance = getOrderTypeDetail().getOrderWorkflowEntrance();
 
-        return orderWorkflowEntrance == null ? null : (WorkflowSecurityUtils.getInstance().getHasWorkflowEntranceAccess(env) ? new WorkflowEntranceObject(orderWorkflowEntrance) : null);
+        return orderWorkflowEntrance == null ? null : (WorkflowSecurityUtils.getHasWorkflowEntranceAccess(env) ? new WorkflowEntranceObject(orderWorkflowEntrance) : null);
     }
 
     @GraphQLField

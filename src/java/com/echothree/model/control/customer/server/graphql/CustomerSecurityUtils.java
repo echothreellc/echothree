@@ -27,25 +27,17 @@ import com.echothree.util.common.form.BaseForm;
 import graphql.schema.DataFetchingEnvironment;
 import javax.naming.NamingException;
 
-public final class CustomerSecurityUtils {
+public interface CustomerSecurityUtils {
 
-    private static class AccountingSecurityUtilsHolder {
-        static CustomerSecurityUtils instance = new CustomerSecurityUtils();
-    }
-    
-    public static CustomerSecurityUtils getInstance() {
-        return AccountingSecurityUtilsHolder.instance;
-    }
-
-    public boolean getHasCustomerTypeAccess(final DataFetchingEnvironment env) {
+    static boolean getHasCustomerTypeAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetCustomerTypeCommand.class);
     }
 
-    public boolean getHasCustomerTypesAccess(final DataFetchingEnvironment env) {
+    static boolean getHasCustomerTypesAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetCustomerTypesCommand.class);
     }
 
-    public boolean getHasCustomerAccess(final DataFetchingEnvironment env, final Party party) {
+    static boolean getHasCustomerAccess(final DataFetchingEnvironment env, final Party party) {
         var partyDetail = party.getLastDetail();
         BaseForm baseForm;
 
@@ -62,7 +54,7 @@ public final class CustomerSecurityUtils {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetCustomerCommand.class, baseForm);
     }
 
-    public boolean getHasCustomersAccess(final DataFetchingEnvironment env) {
+    static boolean getHasCustomersAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetCustomersCommand.class);
     }
 

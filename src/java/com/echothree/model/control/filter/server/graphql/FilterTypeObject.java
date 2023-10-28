@@ -57,7 +57,7 @@ public class FilterTypeObject
     @GraphQLField
     @GraphQLDescription("filter kind")
     public FilterKindObject getFilterKind(final DataFetchingEnvironment env) {
-        return FilterSecurityUtils.getInstance().getHasFilterKindAccess(env) ? new FilterKindObject(getFilterTypeDetail().getFilterKind()) : null;
+        return FilterSecurityUtils.getHasFilterKindAccess(env) ? new FilterKindObject(getFilterTypeDetail().getFilterKind()) : null;
     }
 
     @GraphQLField
@@ -96,7 +96,7 @@ public class FilterTypeObject
     public Collection<FilterObject> getFilters(final DataFetchingEnvironment env) {
         Collection<FilterObject> filterObjects = null;
 
-        if(FilterSecurityUtils.getInstance().getHasFiltersAccess(env)) {
+        if(FilterSecurityUtils.getHasFiltersAccess(env)) {
             var filterControl = Session.getModelController(FilterControl.class);
             var filters = filterControl.getFilters(filterType);
 

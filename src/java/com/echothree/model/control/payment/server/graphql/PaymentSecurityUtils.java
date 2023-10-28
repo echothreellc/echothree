@@ -27,45 +27,37 @@ import com.echothree.control.user.payment.server.command.GetPaymentProcessorType
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class PaymentSecurityUtils {
+public interface PaymentSecurityUtils {
 
-    private static class PaymentSecurityUtilsHolder {
-        static PaymentSecurityUtils instance = new PaymentSecurityUtils();
-    }
-    
-    public static PaymentSecurityUtils getInstance() {
-        return PaymentSecurityUtilsHolder.instance;
-    }
-
-    public boolean getHasPaymentProcessorTypeAccess(final DataFetchingEnvironment env) {
+    static boolean getHasPaymentProcessorTypeAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPaymentProcessorTypeCommand.class);
     }
 
-    public boolean getHasPaymentProcessorTransactionsAccess(final DataFetchingEnvironment env) {
+    static boolean getHasPaymentProcessorTransactionsAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPaymentProcessorTransactionsCommand.class);
     }
 
-    public boolean getHasPaymentProcessorTransactionAccess(final DataFetchingEnvironment env) {
+    static boolean getHasPaymentProcessorTransactionAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPaymentProcessorTransactionCommand.class);
     }
 
-    public boolean getHasPaymentProcessorTransactionCodesAccess(final DataFetchingEnvironment env) {
+    static boolean getHasPaymentProcessorTransactionCodesAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPaymentProcessorTransactionCodesCommand.class);
     }
 
-    public boolean getHasPaymentProcessorAccess(final DataFetchingEnvironment env) {
+    static boolean getHasPaymentProcessorAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPaymentProcessorCommand.class);
     }
 
-    public boolean getHasPaymentProcessorActionTypeAccess(final DataFetchingEnvironment env) {
+    static boolean getHasPaymentProcessorActionTypeAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPaymentProcessorActionTypeCommand.class);
     }
 
-    public boolean getHasPaymentProcessorResultCodeAccess(final DataFetchingEnvironment env) {
+    static boolean getHasPaymentProcessorResultCodeAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPaymentProcessorResultCodeCommand.class);
     }
 
-    public boolean getHasPaymentProcessorTypeCodeTypeAccess(final DataFetchingEnvironment env) {
+    static boolean getHasPaymentProcessorTypeCodeTypeAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPaymentProcessorTypeCodeTypeCommand.class);
     }
 

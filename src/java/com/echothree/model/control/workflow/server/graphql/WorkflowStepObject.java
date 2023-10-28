@@ -65,7 +65,7 @@ public class WorkflowStepObject
     @GraphQLField
     @GraphQLDescription("workflow")
     public WorkflowObject getWorkflow(final DataFetchingEnvironment env) {
-        return WorkflowSecurityUtils.getInstance().getHasWorkflowAccess(env) ? new WorkflowObject(getWorkflowStepDetail().getWorkflow()) : null;
+        return WorkflowSecurityUtils.getHasWorkflowAccess(env) ? new WorkflowObject(getWorkflowStepDetail().getWorkflow()) : null;
     }
 
     @GraphQLField
@@ -78,7 +78,7 @@ public class WorkflowStepObject
     @GraphQLField
     @GraphQLDescription("workflow step type")
     public WorkflowStepTypeObject getWorkflowStepType(final DataFetchingEnvironment env) {
-        return WorkflowSecurityUtils.getInstance().getHasWorkflowStepTypeAccess(env) ? new WorkflowStepTypeObject(getWorkflowStepDetail().getWorkflowStepType()) : null;
+        return WorkflowSecurityUtils.getHasWorkflowStepTypeAccess(env) ? new WorkflowStepTypeObject(getWorkflowStepDetail().getWorkflowStepType()) : null;
     }
 
     @GraphQLField
@@ -110,7 +110,7 @@ public class WorkflowStepObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<WorkflowDestinationObject> getWorkflowDestinations(final DataFetchingEnvironment env) {
-        if(WorkflowSecurityUtils.getInstance().getHasWorkflowDestinationsAccess(env)) {
+        if(WorkflowSecurityUtils.getHasWorkflowDestinationsAccess(env)) {
             var workflowControl = Session.getModelController(WorkflowControl.class);
             var totalCount = workflowControl.countWorkflowDestinationsByWorkflowStep(workflowStep);
 
@@ -130,7 +130,7 @@ public class WorkflowStepObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<WorkflowEntranceStepObject> getWorkflowEntranceSteps(final DataFetchingEnvironment env) {
-        if(WorkflowSecurityUtils.getInstance().getHasWorkflowEntranceStepsAccess(env)) {
+        if(WorkflowSecurityUtils.getHasWorkflowEntranceStepsAccess(env)) {
             var workflowControl = Session.getModelController(WorkflowControl.class);
             var totalCount = workflowControl.countWorkflowEntranceStepsByWorkflowStep(workflowStep);
 

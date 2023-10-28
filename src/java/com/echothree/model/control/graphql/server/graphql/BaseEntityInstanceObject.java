@@ -78,7 +78,7 @@ public abstract class BaseEntityInstanceObject
             final String workflowName) {
         WorkflowEntityStatusObject result = null;
 
-        if(WorkflowSecurityUtils.getInstance().getHasWorkflowEntityStatusesAccess(env)) {
+        if(WorkflowSecurityUtils.getHasWorkflowEntityStatusesAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
             var workflowControl = Session.getModelController(WorkflowControl.class);
             var entityInstance = coreControl.getEntityInstanceByBasePK(basePrimaryKey);
@@ -137,7 +137,7 @@ public abstract class BaseEntityInstanceObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<TagScopeObject> getTagScopes(final DataFetchingEnvironment env) {
-        if(TagSecurityUtils.getInstance().getHasTagScopesAccess(env)) {
+        if(TagSecurityUtils.getHasTagScopesAccess(env)) {
             var tagControl = Session.getModelController(TagControl.class);
             var totalCount = tagControl.countTagScopesByEntityType(getEntityInstanceByBasePK().getEntityType());
 

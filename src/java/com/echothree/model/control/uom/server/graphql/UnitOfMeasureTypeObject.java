@@ -85,7 +85,7 @@ public class UnitOfMeasureTypeObject
     @GraphQLField
     @GraphQLDescription("unit of measure kind")
     public UnitOfMeasureKindObject getUnitOfMeasureKind(final DataFetchingEnvironment env) {
-        return UomSecurityUtils.getInstance().getHasUnitOfMeasureKindAccess(env) ? new UnitOfMeasureKindObject(getUnitOfMeasureTypeDetail().getUnitOfMeasureKind()) : null;
+        return UomSecurityUtils.getHasUnitOfMeasureKindAccess(env) ? new UnitOfMeasureKindObject(getUnitOfMeasureTypeDetail().getUnitOfMeasureKind()) : null;
     }
     
     @GraphQLField
@@ -98,7 +98,7 @@ public class UnitOfMeasureTypeObject
     @GraphQLField
     @GraphQLDescription("symbol position")
     public SymbolPositionObject getSymbolPosition(final DataFetchingEnvironment env) {
-        return AccountingSecurityUtils.getInstance().getHasSymbolPositionAccess(env) ? new SymbolPositionObject(getUnitOfMeasureTypeDetail().getSymbolPosition()) : null;
+        return AccountingSecurityUtils.getHasSymbolPositionAccess(env) ? new SymbolPositionObject(getUnitOfMeasureTypeDetail().getSymbolPosition()) : null;
     }
     
     @GraphQLField
@@ -154,7 +154,7 @@ public class UnitOfMeasureTypeObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<ItemUnitOfMeasureTypeObject> getItemUnitOfMeasureTypes(final DataFetchingEnvironment env) {
-        if(ItemSecurityUtils.getInstance().getHasItemUnitOfMeasureTypesAccess(env)) {
+        if(ItemSecurityUtils.getHasItemUnitOfMeasureTypesAccess(env)) {
             var itemControl = Session.getModelController(ItemControl.class);
             var totalCount = itemControl.countItemUnitOfMeasureTypesByUnitOfMeasureType(unitOfMeasureType);
 
@@ -174,7 +174,7 @@ public class UnitOfMeasureTypeObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<ItemAliasObject> getItemAliases(final DataFetchingEnvironment env) {
-        if(ItemSecurityUtils.getInstance().getHasItemAliasesAccess(env)) {
+        if(ItemSecurityUtils.getHasItemAliasesAccess(env)) {
             var itemControl = Session.getModelController(ItemControl.class);
             var totalCount = itemControl.countItemAliasesByUnitOfMeasureType(unitOfMeasureType);
 

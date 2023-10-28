@@ -69,7 +69,7 @@ public class UserVisitObject
     public LanguageObject getPreferredLanguage(final DataFetchingEnvironment env) {
         Language preferredLanguage = userVisit.getPreferredLanguage();
 
-        return preferredLanguage != null && PartySecurityUtils.getInstance().getHasLanguageAccess(env) ? new LanguageObject(preferredLanguage) : null;
+        return preferredLanguage != null && PartySecurityUtils.getHasLanguageAccess(env) ? new LanguageObject(preferredLanguage) : null;
     }
 
     @GraphQLField
@@ -77,7 +77,7 @@ public class UserVisitObject
     public CurrencyObject getPreferredCurrency(final DataFetchingEnvironment env) {
         Currency preferredCurrency = userVisit.getPreferredCurrency();
 
-        return preferredCurrency != null && AccountingSecurityUtils.getInstance().getHasCurrencyAccess(env) ? new CurrencyObject(preferredCurrency) : null;
+        return preferredCurrency != null && AccountingSecurityUtils.getHasCurrencyAccess(env) ? new CurrencyObject(preferredCurrency) : null;
     }
 
     @GraphQLField
@@ -85,7 +85,7 @@ public class UserVisitObject
     public TimeZoneObject getPreferredTimeZone(final DataFetchingEnvironment env) {
         TimeZone preferredTimeZone = userVisit.getPreferredTimeZone();
 
-        return preferredTimeZone != null && PartySecurityUtils.getInstance().getHasTimeZoneAccess(env) ? new TimeZoneObject(preferredTimeZone) : null;
+        return preferredTimeZone != null && PartySecurityUtils.getHasTimeZoneAccess(env) ? new TimeZoneObject(preferredTimeZone) : null;
     }
 
     @GraphQLField
@@ -93,7 +93,7 @@ public class UserVisitObject
     public DateTimeFormatObject getPreferredDateTimeFormat(final DataFetchingEnvironment env) {
         DateTimeFormat preferredDateTimeFormat = userVisit.getPreferredDateTimeFormat();
 
-        return preferredDateTimeFormat != null && PartySecurityUtils.getInstance().getHasDateTimeFormatAccess(env) ? new DateTimeFormatObject(preferredDateTimeFormat) : null;
+        return preferredDateTimeFormat != null && PartySecurityUtils.getHasDateTimeFormatAccess(env) ? new DateTimeFormatObject(preferredDateTimeFormat) : null;
     }
 
     @GraphQLField
@@ -108,7 +108,7 @@ public class UserVisitObject
     public OfferUseObject getOfferUse(final DataFetchingEnvironment env) {
         var offeruse = userVisit.getOfferUse();
 
-        return offeruse != null && OfferSecurityUtils.getInstance().getHasOfferUseAccess(env) ? new OfferUseObject(userVisit.getOfferUse()) : null;
+        return offeruse != null && OfferSecurityUtils.getHasOfferUseAccess(env) ? new OfferUseObject(userVisit.getOfferUse()) : null;
     }
 
 //    @GraphQLField
@@ -116,7 +116,7 @@ public class UserVisitObject
 //    public AssociateReferralObject getAssociateReferral() {
 //        var associateReferral = userVisit.getAssociateReferral();
 //
-//        return associateReferral != null && AssociateSecurityUtils.getInstance().getHasAssociateReferralAccess(env) ? new AssociateReferralObject(associateReferral) : null;
+//        return associateReferral != null && AssociateSecurityUtils.getHasAssociateReferralAccess(env) ? new AssociateReferralObject(associateReferral) : null;
 //    }
 
     @GraphQLField

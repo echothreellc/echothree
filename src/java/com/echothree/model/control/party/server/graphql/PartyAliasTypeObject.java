@@ -55,7 +55,7 @@ public class PartyAliasTypeObject
     @GraphQLField
     @GraphQLDescription("party type")
     public PartyTypeObject getPartyType(final DataFetchingEnvironment env) {
-        return PartySecurityUtils.getInstance().getHasPartyTypeAccess(env) ? new PartyTypeObject(getPartyAliasTypeDetail().getPartyType()) : null;
+        return PartySecurityUtils.getHasPartyTypeAccess(env) ? new PartyTypeObject(getPartyAliasTypeDetail().getPartyType()) : null;
     }
 
     @GraphQLField

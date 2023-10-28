@@ -60,7 +60,7 @@ public class ContentCategoryObject
     @GraphQLField
     @GraphQLDescription("content catalog")
     public ContentCatalogObject getContentCatalog(final DataFetchingEnvironment env) {
-        return ContentSecurityUtils.getInstance().getHasContentCatalogAccess(env) ? new ContentCatalogObject(getContentCategoryDetail().getContentCatalog()) : null;
+        return ContentSecurityUtils.getHasContentCatalogAccess(env) ? new ContentCatalogObject(getContentCategoryDetail().getContentCatalog()) : null;
     }
 
     @GraphQLField
@@ -73,20 +73,20 @@ public class ContentCategoryObject
     @GraphQLField
     @GraphQLDescription("parent content category")
     public ContentCategoryObject getParentContentCategory(final DataFetchingEnvironment env) {
-        return ContentSecurityUtils.getInstance().getHasContentCategoryAccess(env) ? new ContentCategoryObject(getContentCategoryDetail().getParentContentCategory()) : null;
+        return ContentSecurityUtils.getHasContentCategoryAccess(env) ? new ContentCategoryObject(getContentCategoryDetail().getParentContentCategory()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("default offer use")
     public OfferUseObject getDefaultOfferUse(final DataFetchingEnvironment env) {
-        return OfferSecurityUtils.getInstance().getHasOfferUseAccess(env) ?
+        return OfferSecurityUtils.getHasOfferUseAccess(env) ?
                 new OfferUseObject(getContentCategoryDetail().getDefaultOfferUse()) : null;
     }
 
 //    @GraphQLField
 //    @GraphQLDescription("content category item selector")
 //    public SelectorObject getContentCategoryItemSelector(final DataFetchingEnvironment env) {
-//        return SelectorSecurityUtils.getInstance().getHasSelectorAccess(env) ? new SelectorObject(getContentCategoryDetail().getContentCategoryItemSelector()) : null;
+//        return SelectorSecurityUtils.getHasSelectorAccess(env) ? new SelectorObject(getContentCategoryDetail().getContentCategoryItemSelector()) : null;
 //    }
 
     @GraphQLField
@@ -118,14 +118,14 @@ public class ContentCategoryObject
     public Long getContentCategoryItemsCount(final DataFetchingEnvironment env) {
         var contentControl = Session.getModelController(ContentControl.class);
         
-        return ContentSecurityUtils.getInstance().getHasContentCategoryItemsAccess(env) ? contentControl.countContentCategoryItemsByContentCategory(contentCategory) : null;
+        return ContentSecurityUtils.getHasContentCategoryItemsAccess(env) ? contentControl.countContentCategoryItemsByContentCategory(contentCategory) : null;
     }
     
     @GraphQLField
     @GraphQLDescription("content category items")
     public List<ContentCategoryItemObject> getContentCategoryItems(final DataFetchingEnvironment env) {
         var contentControl = Session.getModelController(ContentControl.class);
-        List<ContentCategoryItem> entities = ContentSecurityUtils.getInstance().getHasContentCategoryItemsAccess(env) ? contentControl.getContentCategoryItemsByContentCategory(contentCategory) : null;
+        List<ContentCategoryItem> entities = ContentSecurityUtils.getHasContentCategoryItemsAccess(env) ? contentControl.getContentCategoryItemsByContentCategory(contentCategory) : null;
         List<ContentCategoryItemObject> contentCategoryItems = entities == null ? null : new ArrayList<>(entities.size());
                 
         if(entities != null) {

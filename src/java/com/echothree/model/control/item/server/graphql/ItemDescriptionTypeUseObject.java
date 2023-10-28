@@ -37,13 +37,13 @@ public class ItemDescriptionTypeUseObject
     @GraphQLField
     @GraphQLDescription("item description type")
     public ItemDescriptionTypeObject getItemDescriptionType(final DataFetchingEnvironment env) {
-        return ItemSecurityUtils.getInstance().getHasItemDescriptionTypeAccess(env) ? new ItemDescriptionTypeObject(itemDescriptionTypeUse.getItemDescriptionType()) : null;
+        return ItemSecurityUtils.getHasItemDescriptionTypeAccess(env) ? new ItemDescriptionTypeObject(itemDescriptionTypeUse.getItemDescriptionType()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("item description type use type")
     public ItemDescriptionTypeUseTypeObject getItemDescriptionTypeUseType(final DataFetchingEnvironment env) {
-        return ItemSecurityUtils.getInstance().getHasItemDescriptionTypeUseTypeAccess(env) ? new ItemDescriptionTypeUseTypeObject(itemDescriptionTypeUse.getItemDescriptionTypeUseType()) : null;
+        return ItemSecurityUtils.getHasItemDescriptionTypeUseTypeAccess(env) ? new ItemDescriptionTypeUseTypeObject(itemDescriptionTypeUse.getItemDescriptionTypeUseType()) : null;
     }
 
 }

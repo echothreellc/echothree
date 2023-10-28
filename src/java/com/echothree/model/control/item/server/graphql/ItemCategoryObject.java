@@ -81,7 +81,7 @@ public class ItemCategoryObject
     @GraphQLField
     @GraphQLDescription("item sequence")
     public SequenceObject getItemSequence(final DataFetchingEnvironment env) {
-        if(SequenceSecurityUtils.getInstance().getHasSequenceAccess(env)) {
+        if(SequenceSecurityUtils.getHasSequenceAccess(env)) {
             var itemSequence = getItemCategoryDetail().getItemSequence();
 
             return itemSequence == null ? null : new SequenceObject(itemSequence);
@@ -119,7 +119,7 @@ public class ItemCategoryObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<ItemObject> getItems(final DataFetchingEnvironment env) {
-        if(ItemSecurityUtils.getInstance().getHasItemsAccess(env)) {
+        if(ItemSecurityUtils.getHasItemsAccess(env)) {
             var itemControl = Session.getModelController(ItemControl.class);
             var totalCount = itemControl.countItemsByItemCategory(itemCategory);
 

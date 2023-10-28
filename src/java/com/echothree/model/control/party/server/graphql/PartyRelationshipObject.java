@@ -47,7 +47,7 @@ public class PartyRelationshipObject
     public PartyObject getFromParty(final DataFetchingEnvironment env) {
         var fromParty = partyRelationship.getFromParty();
 
-        return PartySecurityUtils.getInstance().getHasPartyAccess(env, fromParty) ? new PartyObject(fromParty) : null;
+        return PartySecurityUtils.getHasPartyAccess(env, fromParty) ? new PartyObject(fromParty) : null;
     }
 
     @GraphQLField
@@ -62,7 +62,7 @@ public class PartyRelationshipObject
     public PartyObject getToParty(final DataFetchingEnvironment env) {
         var toParty = partyRelationship.getToParty();
 
-        return PartySecurityUtils.getInstance().getHasPartyAccess(env, toParty) ? new PartyObject(toParty) : null;
+        return PartySecurityUtils.getHasPartyAccess(env, toParty) ? new PartyObject(toParty) : null;
     }
 
     @GraphQLField

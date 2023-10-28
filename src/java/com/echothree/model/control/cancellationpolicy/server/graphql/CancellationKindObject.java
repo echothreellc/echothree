@@ -73,7 +73,7 @@ public class CancellationKindObject
     @GraphQLField
     @GraphQLDescription("cancellation sequence type")
     public SequenceTypeObject getCancellationSequenceType(final DataFetchingEnvironment env) {
-        return SequenceSecurityUtils.getInstance().getHasSequenceTypeAccess(env) ? new SequenceTypeObject(getCancellationKindDetail().getCancellationSequenceType()) : null;
+        return SequenceSecurityUtils.getHasSequenceTypeAccess(env) ? new SequenceTypeObject(getCancellationKindDetail().getCancellationSequenceType()) : null;
     }
 
     @GraphQLField
@@ -105,7 +105,7 @@ public class CancellationKindObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<CancellationPolicyObject> getCancellationPolicies(final DataFetchingEnvironment env) {
-        if(CancellationPolicySecurityUtils.getInstance().getHasCancellationPoliciesAccess(env)) {
+        if(CancellationPolicySecurityUtils.getHasCancellationPoliciesAccess(env)) {
             var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
             var totalCount = cancellationPolicyControl.countCancellationPoliciesByCancellationKind(cancellationKind);
 

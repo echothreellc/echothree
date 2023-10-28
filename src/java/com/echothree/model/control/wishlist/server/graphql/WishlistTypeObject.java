@@ -97,7 +97,7 @@ public class WishlistTypeObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<WishlistPriorityObject> getWishlistPriorities(final DataFetchingEnvironment env) {
-        if(WishlistSecurityUtils.getInstance().getHasWishlistPrioritiesAccess(env)) {
+        if(WishlistSecurityUtils.getHasWishlistPrioritiesAccess(env)) {
             var wishlistControl = Session.getModelController(WishlistControl.class);
             var totalCount = wishlistControl.countWishlistPrioritiesByWishlistType(wishlistType);
 

@@ -18,39 +18,36 @@ package com.echothree.model.control.selector.server.graphql;
 
 import com.echothree.control.user.selector.server.command.GetSelectorCommand;
 import com.echothree.control.user.selector.server.command.GetSelectorKindCommand;
+import com.echothree.control.user.selector.server.command.GetSelectorKindsCommand;
 import com.echothree.control.user.selector.server.command.GetSelectorTypeCommand;
 import com.echothree.control.user.selector.server.command.GetSelectorTypesCommand;
 import com.echothree.control.user.selector.server.command.GetSelectorsCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class SelectorSecurityUtils {
+public interface SelectorSecurityUtils {
 
-    private static class SelectorSecurityUtilsHolder {
-        static SelectorSecurityUtils instance = new SelectorSecurityUtils();
-    }
-    
-    public static SelectorSecurityUtils getInstance() {
-        return SelectorSecurityUtilsHolder.instance;
-    }
-
-    public boolean getHasSelectorKindAccess(final DataFetchingEnvironment env) {
+    static boolean getHasSelectorKindAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetSelectorKindCommand.class);
     }
 
-    public boolean getHasSelectorTypeAccess(final DataFetchingEnvironment env) {
+    static boolean getHasSelectorKindsAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetSelectorKindsCommand.class);
+    }
+
+    static boolean getHasSelectorTypeAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetSelectorTypeCommand.class);
     }
 
-    public boolean getHasSelectorTypesAccess(final DataFetchingEnvironment env) {
+    static boolean getHasSelectorTypesAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetSelectorTypesCommand.class);
     }
 
-    public boolean getHasSelectorAccess(final DataFetchingEnvironment env) {
+    static boolean getHasSelectorAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetSelectorCommand.class);
     }
 
-    public boolean getHasSelectorsAccess(final DataFetchingEnvironment env) {
+    static boolean getHasSelectorsAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetSelectorsCommand.class);
     }
 

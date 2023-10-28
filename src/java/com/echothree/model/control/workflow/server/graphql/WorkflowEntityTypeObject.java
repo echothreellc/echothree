@@ -39,13 +39,13 @@ public class WorkflowEntityTypeObject
     @GraphQLField
     @GraphQLDescription("workflow")
     public WorkflowObject getWorkflow(final DataFetchingEnvironment env) {
-        return WorkflowSecurityUtils.getInstance().getHasWorkflowAccess(env) ? new WorkflowObject(workflowEntityType.getWorkflow()) : null;
+        return WorkflowSecurityUtils.getHasWorkflowAccess(env) ? new WorkflowObject(workflowEntityType.getWorkflow()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("entity type")
     public EntityTypeObject getEntityType(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityTypeAccess(env) ? new EntityTypeObject(workflowEntityType.getEntityType()) : null;
+        return CoreSecurityUtils.getHasEntityTypeAccess(env) ? new EntityTypeObject(workflowEntityType.getEntityType()) : null;
     }
 
 }

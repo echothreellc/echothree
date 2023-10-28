@@ -61,7 +61,7 @@ public class ContentCatalogObject
     @GraphQLField
     @GraphQLDescription("content collection")
     public ContentCollectionObject getContentCollection(final DataFetchingEnvironment env) {
-        return ContentSecurityUtils.getInstance().getHasContentCollectionAccess(env) ? new ContentCollectionObject(getContentCatalogDetail().getContentCollection()) : null;
+        return ContentSecurityUtils.getHasContentCollectionAccess(env) ? new ContentCollectionObject(getContentCatalogDetail().getContentCollection()) : null;
     }
 
     @GraphQLField
@@ -75,7 +75,7 @@ public class ContentCatalogObject
     @GraphQLDescription("default offer use")
     @GraphQLNonNull
     public OfferUseObject getDefaultOfferUse(final DataFetchingEnvironment env) {
-        return OfferSecurityUtils.getInstance().getHasOfferUseAccess(env) ?
+        return OfferSecurityUtils.getHasOfferUseAccess(env) ?
                 new OfferUseObject(getContentCatalogDetail().getDefaultOfferUse()) : null;
     }
 
@@ -108,14 +108,14 @@ public class ContentCatalogObject
     public Long getContentCategoriesCount(final DataFetchingEnvironment env) {
         var contentControl = Session.getModelController(ContentControl.class);
         
-        return ContentSecurityUtils.getInstance().getHasContentCategoriesAccess(env) ? contentControl.countContentCategoriesByContentCatalog(contentCatalog) : null;
+        return ContentSecurityUtils.getHasContentCategoriesAccess(env) ? contentControl.countContentCategoriesByContentCatalog(contentCatalog) : null;
     }
     
     @GraphQLField
     @GraphQLDescription("content categories")
     public List<ContentCategoryObject> getContentCategories(final DataFetchingEnvironment env) {
         var contentControl = Session.getModelController(ContentControl.class);
-        List<ContentCategory> entities = ContentSecurityUtils.getInstance().getHasContentCategoriesAccess(env) ? contentControl.getContentCategories(contentCatalog) : null;
+        List<ContentCategory> entities = ContentSecurityUtils.getHasContentCategoriesAccess(env) ? contentControl.getContentCategories(contentCatalog) : null;
         List<ContentCategoryObject> contentCategories = entities == null ? null : new ArrayList<>(entities.size());
         
         if(entities != null) {
@@ -132,14 +132,14 @@ public class ContentCatalogObject
     public Long getContentCatalogItemsCount(final DataFetchingEnvironment env) {
         var contentControl = Session.getModelController(ContentControl.class);
         
-        return ContentSecurityUtils.getInstance().getHasContentCatalogItemsAccess(env) ? contentControl.countContentCatalogItemsByContentCatalog(contentCatalog) : null;
+        return ContentSecurityUtils.getHasContentCatalogItemsAccess(env) ? contentControl.countContentCatalogItemsByContentCatalog(contentCatalog) : null;
     }
     
     @GraphQLField
     @GraphQLDescription("content catalog items")
     public List<ContentCatalogItemObject> getContentCatalogItems(final DataFetchingEnvironment env) {
         var contentControl = Session.getModelController(ContentControl.class);
-        List<ContentCatalogItem> entities = ContentSecurityUtils.getInstance().getHasContentCatalogItemsAccess(env) ? contentControl.getContentCatalogItemsByContentCatalog(contentCatalog) : null;
+        List<ContentCatalogItem> entities = ContentSecurityUtils.getHasContentCatalogItemsAccess(env) ? contentControl.getContentCatalogItemsByContentCatalog(contentCatalog) : null;
         List<ContentCatalogItemObject> contentCatalogItems = entities == null ? null : new ArrayList<>(entities.size());
         
         if(entities != null) {

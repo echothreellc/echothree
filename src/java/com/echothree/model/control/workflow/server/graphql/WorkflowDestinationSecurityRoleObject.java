@@ -39,13 +39,13 @@ public class WorkflowDestinationSecurityRoleObject
     @GraphQLField
     @GraphQLDescription("workflow destination party type")
     public WorkflowDestinationPartyTypeObject getWorkflowDestinationPartyType(final DataFetchingEnvironment env) {
-        return WorkflowSecurityUtils.getInstance().getHasWorkflowDestinationAccess(env) ? new WorkflowDestinationPartyTypeObject(workflowDestinationSecurityRole.getWorkflowDestinationPartyType()) : null;
+        return WorkflowSecurityUtils.getHasWorkflowDestinationAccess(env) ? new WorkflowDestinationPartyTypeObject(workflowDestinationSecurityRole.getWorkflowDestinationPartyType()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("security role")
     public SecurityRoleObject getSecurityRole(final DataFetchingEnvironment env) {
-        return SecuritySecurityUtils.getInstance().getHasSecurityRoleAccess(env) ? new SecurityRoleObject(workflowDestinationSecurityRole.getSecurityRole()) : null;
+        return SecuritySecurityUtils.getHasSecurityRoleAccess(env) ? new SecurityRoleObject(workflowDestinationSecurityRole.getSecurityRole()) : null;
     }
 
 }

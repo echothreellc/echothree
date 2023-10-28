@@ -78,7 +78,7 @@ public class ItemAliasTypeObject
     @GraphQLDescription("item alias checksum type")
     @GraphQLNonNull
     public ItemAliasChecksumTypeObject getItemAliasChecksumType(final DataFetchingEnvironment env) {
-        return ItemSecurityUtils.getInstance().getHasItemAliasChecksumTypeAccess(env) ? new ItemAliasChecksumTypeObject(getItemAliasTypeDetail().getItemAliasChecksumType()) : null;
+        return ItemSecurityUtils.getHasItemAliasChecksumTypeAccess(env) ? new ItemAliasChecksumTypeObject(getItemAliasTypeDetail().getItemAliasChecksumType()) : null;
     }
 
     @GraphQLField
@@ -117,7 +117,7 @@ public class ItemAliasTypeObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<ItemAliasObject> getItemAliases(final DataFetchingEnvironment env) {
-        if(ItemSecurityUtils.getInstance().getHasItemAliasesAccess(env)) {
+        if(ItemSecurityUtils.getHasItemAliasesAccess(env)) {
             var itemControl = Session.getModelController(ItemControl.class);
             var totalCount = itemControl.countItemAliasesByItemAliasType(itemAliasType);
 

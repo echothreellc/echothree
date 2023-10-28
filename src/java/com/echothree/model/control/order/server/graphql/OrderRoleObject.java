@@ -42,7 +42,7 @@ public class OrderRoleObject
     public PartyObject getParty(final DataFetchingEnvironment env) {
         var party = orderRole.getParty();
 
-        return PartySecurityUtils.getInstance().getHasPartyAccess(env, party) ? new PartyObject(party) : null;
+        return PartySecurityUtils.getHasPartyAccess(env, party) ? new PartyObject(party) : null;
     }
 
     @GraphQLField

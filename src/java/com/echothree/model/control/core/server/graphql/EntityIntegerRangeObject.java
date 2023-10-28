@@ -55,7 +55,7 @@ public class EntityIntegerRangeObject
     @GraphQLField
     @GraphQLDescription("entity attribute")
     public EntityAttributeObject getEntityAttribute(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityAttributeAccess(env) ? new EntityAttributeObject(getEntityIntegerRangeDetail().getEntityAttribute(), null) : null;
+        return CoreSecurityUtils.getHasEntityAttributeAccess(env) ? new EntityAttributeObject(getEntityIntegerRangeDetail().getEntityAttribute(), null) : null;
     }
 
     @GraphQLField

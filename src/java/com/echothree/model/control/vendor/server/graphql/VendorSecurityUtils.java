@@ -33,33 +33,25 @@ import com.echothree.util.common.form.BaseForm;
 import graphql.schema.DataFetchingEnvironment;
 import javax.naming.NamingException;
 
-public final class VendorSecurityUtils {
-
-    private static class AccountingSecurityUtilsHolder {
-        static VendorSecurityUtils instance = new VendorSecurityUtils();
-    }
+public interface VendorSecurityUtils {
     
-    public static VendorSecurityUtils getInstance() {
-        return AccountingSecurityUtilsHolder.instance;
-    }
-
-    public boolean getHasItemPurchasingCategoryAccess(final DataFetchingEnvironment env) {
+    static boolean getHasItemPurchasingCategoryAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetItemPurchasingCategoryCommand.class);
     }
 
-    public boolean getHasItemPurchasingCategoriesAccess(final DataFetchingEnvironment env) {
+    static boolean getHasItemPurchasingCategoriesAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetItemPurchasingCategoriesCommand.class);
     }
 
-    public boolean getHasVendorTypeAccess(final DataFetchingEnvironment env) {
+    static boolean getHasVendorTypeAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetVendorTypeCommand.class);
     }
 
-    public boolean getHasVendorTypesAccess(final DataFetchingEnvironment env) {
+    static boolean getHasVendorTypesAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetVendorTypesCommand.class);
     }
 
-    public boolean getHasVendorAccess(final DataFetchingEnvironment env, final Party party) {
+    static boolean getHasVendorAccess(final DataFetchingEnvironment env, final Party party) {
         var partyDetail = party.getLastDetail();
         BaseForm baseForm;
 
@@ -76,23 +68,23 @@ public final class VendorSecurityUtils {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetVendorCommand.class, baseForm);
     }
 
-    public boolean getHasVendorsAccess(final DataFetchingEnvironment env) {
+    static boolean getHasVendorsAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetVendorsCommand.class);
     }
 
-    public boolean getHasVendorItemAccess(final DataFetchingEnvironment env) {
+    static boolean getHasVendorItemAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetVendorItemCommand.class);
     }
 
-    public boolean getHasVendorItemsAccess(final DataFetchingEnvironment env) {
+    static boolean getHasVendorItemsAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetVendorItemsCommand.class);
     }
 
-    public boolean getHasVendorItemCostAccess(final DataFetchingEnvironment env) {
+    static boolean getHasVendorItemCostAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetVendorItemCostCommand.class);
     }
 
-    public boolean getHasVendorItemCostsAccess(final DataFetchingEnvironment env) {
+    static boolean getHasVendorItemCostsAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetVendorItemCostsCommand.class);
     }
 

@@ -66,7 +66,7 @@ public class PartyTypeObject
     @GraphQLField
     @GraphQLDescription("billing account sequence type")
     public SequenceTypeObject getBillingAccountSequenceType(final DataFetchingEnvironment env) {
-        return SequenceSecurityUtils.getInstance().getHasSequenceTypeAccess(env) ? new SequenceTypeObject(partyType.getBillingAccountSequenceType()) : null;
+        return SequenceSecurityUtils.getHasSequenceTypeAccess(env) ? new SequenceTypeObject(partyType.getBillingAccountSequenceType()) : null;
     }
 
     @GraphQLField
@@ -112,7 +112,7 @@ public class PartyTypeObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<PartyAliasTypeObject> getPartyAliasTypes(final DataFetchingEnvironment env) {
-        if(PartySecurityUtils.getInstance().getHasPartyAliasTypesAccess(env)) {
+        if(PartySecurityUtils.getHasPartyAliasTypesAccess(env)) {
             var partyControl = Session.getModelController(PartyControl.class);
             var totalCount = partyControl.countPartyAliasTypesByPartyType(partyType);
 

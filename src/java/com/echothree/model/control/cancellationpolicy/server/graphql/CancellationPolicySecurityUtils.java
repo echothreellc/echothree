@@ -23,29 +23,21 @@ import com.echothree.control.user.cancellationpolicy.server.command.GetCancellat
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class CancellationPolicySecurityUtils {
+public interface CancellationPolicySecurityUtils {
 
-    private static class CancellationPolicySecurityUtilsHolder {
-        static CancellationPolicySecurityUtils instance = new CancellationPolicySecurityUtils();
-    }
-    
-    public static CancellationPolicySecurityUtils getInstance() {
-        return CancellationPolicySecurityUtilsHolder.instance;
-    }
-    
-    public boolean getHasCancellationKindAccess(final DataFetchingEnvironment env) {
+    static boolean getHasCancellationKindAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetCancellationKindCommand.class);
     }
 
-    public boolean getHasCancellationKindsAccess(final DataFetchingEnvironment env) {
+    static boolean getHasCancellationKindsAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetCancellationKindsCommand.class);
     }
 
-    public boolean getHasCancellationPolicyAccess(final DataFetchingEnvironment env) {
+    static boolean getHasCancellationPolicyAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetCancellationPolicyCommand.class);
     }
 
-    public boolean getHasCancellationPoliciesAccess(final DataFetchingEnvironment env) {
+    static boolean getHasCancellationPoliciesAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetCancellationPoliciesCommand.class);
     }
 

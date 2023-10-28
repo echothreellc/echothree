@@ -73,13 +73,13 @@ public class SequenceTypeObject
     @GraphQLField
     @GraphQLDescription("sequence encoder type")
     public SequenceEncoderTypeObject getSequenceEncoderType(final DataFetchingEnvironment env) {
-        return SequenceSecurityUtils.getInstance().getHasSequenceEncoderTypeAccess(env) ? new SequenceEncoderTypeObject(getSequenceTypeDetail().getSequenceEncoderType()) : null;
+        return SequenceSecurityUtils.getHasSequenceEncoderTypeAccess(env) ? new SequenceEncoderTypeObject(getSequenceTypeDetail().getSequenceEncoderType()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("sequence checksum type")
     public SequenceChecksumTypeObject getSequenceChecksumType(final DataFetchingEnvironment env) {
-        return SequenceSecurityUtils.getInstance().getHasSequenceChecksumTypeAccess(env) ? new SequenceChecksumTypeObject(getSequenceTypeDetail().getSequenceChecksumType()) : null;
+        return SequenceSecurityUtils.getHasSequenceChecksumTypeAccess(env) ? new SequenceChecksumTypeObject(getSequenceTypeDetail().getSequenceChecksumType()) : null;
     }
 
     @GraphQLField

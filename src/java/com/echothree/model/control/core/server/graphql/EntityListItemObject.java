@@ -55,7 +55,7 @@ public class EntityListItemObject
     @GraphQLField
     @GraphQLDescription("entity attribute")
     public EntityAttributeObject getEntityAttribute(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityAttributeAccess(env) ? new EntityAttributeObject(getEntityListItemDetail().getEntityAttribute(), null) : null;
+        return CoreSecurityUtils.getHasEntityAttributeAccess(env) ? new EntityAttributeObject(getEntityListItemDetail().getEntityAttribute(), null) : null;
     }
 
     @GraphQLField

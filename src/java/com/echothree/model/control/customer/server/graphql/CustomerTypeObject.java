@@ -82,7 +82,7 @@ public class CustomerTypeObject
     public SequenceObject getCustomerSequence(final DataFetchingEnvironment env) {
         var customerSequence = getCustomerTypeDetail().getCustomerSequence();
 
-        return customerSequence == null ? null : (SequenceSecurityUtils.getInstance().getHasSequenceAccess(env) ? new SequenceObject(customerSequence) : null);
+        return customerSequence == null ? null : (SequenceSecurityUtils.getHasSequenceAccess(env) ? new SequenceObject(customerSequence) : null);
     }
 
     @GraphQLField
@@ -90,7 +90,7 @@ public class CustomerTypeObject
     public OfferUseObject getDefaultOfferUse(final DataFetchingEnvironment env) {
         var defaultOfferUse = getCustomerTypeDetail().getDefaultOfferUse();
 
-        return defaultOfferUse == null ? null : (OfferSecurityUtils.getInstance().getHasOfferUseAccess(env) ? new OfferUseObject(defaultOfferUse) : null);
+        return defaultOfferUse == null ? null : (OfferSecurityUtils.getHasOfferUseAccess(env) ? new OfferUseObject(defaultOfferUse) : null);
     }
 
     @GraphQLField
@@ -98,7 +98,7 @@ public class CustomerTypeObject
     public TermObject getDefaultTerm(final DataFetchingEnvironment env) {
         var defaultTerm = getCustomerTypeDetail().getDefaultTerm();
 
-        return defaultTerm == null ? null : TermSecurityUtils.getInstance().getHasTermAccess(env) ?
+        return defaultTerm == null ? null : TermSecurityUtils.getHasTermAccess(env) ?
                 new TermObject(defaultTerm) : null;
     }
 
@@ -107,7 +107,7 @@ public class CustomerTypeObject
     public FreeOnBoardObject getDefaultFreeOnBoard(final DataFetchingEnvironment env) {
         var defaultFreeOnBoard = getCustomerTypeDetail().getDefaultFreeOnBoard();
 
-        return defaultFreeOnBoard == null ? null : ShipmentSecurityUtils.getInstance().getHasFreeOnBoardAccess(env) ?
+        return defaultFreeOnBoard == null ? null : ShipmentSecurityUtils.getHasFreeOnBoardAccess(env) ?
                 new FreeOnBoardObject(defaultFreeOnBoard) : null;
     }
 
@@ -116,7 +116,7 @@ public class CustomerTypeObject
     public CancellationPolicyObject getDefaultCancellationPolicy(final DataFetchingEnvironment env) {
         var defaultCancellationPolicy = getCustomerTypeDetail().getDefaultCancellationPolicy();
 
-        return defaultCancellationPolicy == null ? null : CancellationPolicySecurityUtils.getInstance().getHasCancellationPolicyAccess(env) ?
+        return defaultCancellationPolicy == null ? null : CancellationPolicySecurityUtils.getHasCancellationPolicyAccess(env) ?
                 new CancellationPolicyObject(defaultCancellationPolicy) : null;
     }
 
@@ -125,7 +125,7 @@ public class CustomerTypeObject
     public ReturnPolicyObject getDefaultReturnPolicy(final DataFetchingEnvironment env) {
         var defaultReturnPolicy = getCustomerTypeDetail().getDefaultReturnPolicy();
 
-        return defaultReturnPolicy == null ? null : ReturnPolicySecurityUtils.getInstance().getHasReturnPolicyAccess(env) ?
+        return defaultReturnPolicy == null ? null : ReturnPolicySecurityUtils.getHasReturnPolicyAccess(env) ?
                 new ReturnPolicyObject(defaultReturnPolicy) : null;
     }
 
@@ -134,7 +134,7 @@ public class CustomerTypeObject
     public WorkflowEntranceObject getDefaultCustomerStatus(final DataFetchingEnvironment env) {
         var defaultCustomerStatus = getCustomerTypeDetail().getDefaultCustomerStatus();
 
-        return defaultCustomerStatus == null ? null : (WorkflowSecurityUtils.getInstance().getHasWorkflowEntranceAccess(env) ? new WorkflowEntranceObject(defaultCustomerStatus) : null);
+        return defaultCustomerStatus == null ? null : (WorkflowSecurityUtils.getHasWorkflowEntranceAccess(env) ? new WorkflowEntranceObject(defaultCustomerStatus) : null);
     }
 
     @GraphQLField
@@ -142,7 +142,7 @@ public class CustomerTypeObject
     public WorkflowEntranceObject getDefaultCustomerCreditStatus(final DataFetchingEnvironment env) {
         var defaultCustomerCreditStatus = getCustomerTypeDetail().getDefaultCustomerCreditStatus();
 
-        return defaultCustomerCreditStatus == null ? null : (WorkflowSecurityUtils.getInstance().getHasWorkflowEntranceAccess(env) ? new WorkflowEntranceObject(defaultCustomerCreditStatus) : null);
+        return defaultCustomerCreditStatus == null ? null : (WorkflowSecurityUtils.getHasWorkflowEntranceAccess(env) ? new WorkflowEntranceObject(defaultCustomerCreditStatus) : null);
     }
 
     @GraphQLField
@@ -150,7 +150,7 @@ public class CustomerTypeObject
     public GlAccountObject getDefaultArGlAccount(final DataFetchingEnvironment env) {
         var defaultApGlAccount = getCustomerTypeDetail().getDefaultArGlAccount();
 
-        return defaultApGlAccount == null ? null : AccountingSecurityUtils.getInstance().getHasGlAccountAccess(env) ?
+        return defaultApGlAccount == null ? null : AccountingSecurityUtils.getHasGlAccountAccess(env) ?
                 new GlAccountObject(defaultApGlAccount) : null;
     }
 
@@ -214,7 +214,7 @@ public class CustomerTypeObject
     public AllocationPriorityObject getAllocationPriority(final DataFetchingEnvironment env) {
         var allocationPriority = getCustomerTypeDetail().getAllocationPriority();
 
-        return allocationPriority == null ? null : InventorySecurityUtils.getInstance().getHasAllocationPriorityAccess(env) ?
+        return allocationPriority == null ? null : InventorySecurityUtils.getHasAllocationPriorityAccess(env) ?
                 new AllocationPriorityObject(allocationPriority) : null;
     }
 

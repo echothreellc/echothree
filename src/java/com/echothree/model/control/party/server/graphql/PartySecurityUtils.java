@@ -48,33 +48,25 @@ import com.echothree.util.server.control.GraphQlSecurityCommand;
 import graphql.schema.DataFetchingEnvironment;
 import javax.naming.NamingException;
 
-public final class PartySecurityUtils {
+public interface PartySecurityUtils {
 
-    private static class PartySecurityUtilsHolder {
-        static PartySecurityUtils instance = new PartySecurityUtils();
-    }
-    
-    public static PartySecurityUtils getInstance() {
-        return PartySecurityUtilsHolder.instance;
-    }
-
-    public boolean getHasPartyTypeAccess(final DataFetchingEnvironment env) {
+    static boolean getHasPartyTypeAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPartyTypeCommand.class);
     }
 
-    public boolean getHasPartyTypesAccess(final DataFetchingEnvironment env) {
+    static boolean getHasPartyTypesAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPartyTypesCommand.class);
     }
 
-    public boolean getHasPartyAliasTypeAccess(final DataFetchingEnvironment env) {
+    static boolean getHasPartyAliasTypeAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPartyAliasTypeCommand.class);
     }
 
-    public boolean getHasPartyAliasTypesAccess(final DataFetchingEnvironment env) {
+    static boolean getHasPartyAliasTypesAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPartyAliasTypesCommand.class);
     }
 
-    public boolean getHasPartyAliasAccess(final DataFetchingEnvironment env, final Party targetParty) {
+    static boolean getHasPartyAliasAccess(final DataFetchingEnvironment env, final Party targetParty) {
         try {
             var commandForm = PartyUtil.getHome().getGetPartyAliasForm();
 
@@ -86,7 +78,7 @@ public final class PartySecurityUtils {
         }
     }
 
-    public boolean getHasPartyAliasesAccess(final DataFetchingEnvironment env, final Party targetParty) {
+    static boolean getHasPartyAliasesAccess(final DataFetchingEnvironment env, final Party targetParty) {
         try {
             var commandForm = PartyUtil.getHome().getGetPartyAliasesForm();
 
@@ -98,35 +90,35 @@ public final class PartySecurityUtils {
         }
     }
 
-    public boolean getHasPartyRelationshipAccess(final DataFetchingEnvironment env) {
+    static boolean getHasPartyRelationshipAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPartyRelationshipCommand.class);
     }
 
-    public boolean getHasPartyRelationshipsAccess(final DataFetchingEnvironment env) {
+    static boolean getHasPartyRelationshipsAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetPartyRelationshipsCommand.class);
     }
 
-    public boolean getHasLanguageAccess(final DataFetchingEnvironment env) {
+    static boolean getHasLanguageAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetLanguageCommand.class);
     }
 
-    public boolean getHasTimeZoneAccess(final DataFetchingEnvironment env) {
+    static boolean getHasTimeZoneAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetTimeZoneCommand.class);
     }
 
-    public boolean getHasDateTimeFormatAccess(final DataFetchingEnvironment env) {
+    static boolean getHasDateTimeFormatAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetDateTimeFormatCommand.class);
     }
 
-    public boolean getHasDivisionsAccess(final DataFetchingEnvironment env) {
+    static boolean getHasDivisionsAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetDivisionsCommand.class);
     }
 
-    public boolean getHasDepartmentsAccess(final DataFetchingEnvironment env) {
+    static boolean getHasDepartmentsAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetDepartmentsCommand.class);
     }
 
-    public boolean getHasPartyAccess(final DataFetchingEnvironment env, final Party targetParty) {
+    static boolean getHasPartyAccess(final DataFetchingEnvironment env, final Party targetParty) {
         var partyDetail = targetParty.getLastDetail();
         var partyTypeEnum = PartyTypes.valueOf(partyDetail.getPartyType().getPartyTypeName());
         Class<? extends GraphQlSecurityCommand> command;

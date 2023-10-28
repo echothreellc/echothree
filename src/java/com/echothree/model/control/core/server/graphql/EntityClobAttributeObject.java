@@ -40,19 +40,19 @@ public class EntityClobAttributeObject
     @GraphQLField
     @GraphQLDescription("entity attribute")
     public EntityAttributeObject getEntityAttribute(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityClobAttribute.getEntityAttribute(), entityClobAttribute.getEntityInstance()) : null;
+        return CoreSecurityUtils.getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityClobAttribute.getEntityAttribute(), entityClobAttribute.getEntityInstance()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("entity instance")
     public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityClobAttribute.getEntityInstance()) : null;
+        return CoreSecurityUtils.getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityClobAttribute.getEntityInstance()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("language")
     public LanguageObject getLanguage(final DataFetchingEnvironment env) {
-        return PartySecurityUtils.getInstance().getHasLanguageAccess(env) ? new LanguageObject(entityClobAttribute.getLanguage()) : null;
+        return PartySecurityUtils.getHasLanguageAccess(env) ? new LanguageObject(entityClobAttribute.getLanguage()) : null;
     }
 
     @GraphQLField
@@ -65,7 +65,7 @@ public class EntityClobAttributeObject
     @GraphQLField
     @GraphQLDescription("mime type")
     public MimeTypeObject getMimeType(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasMimeTypeAccess(env) ? new MimeTypeObject(entityClobAttribute.getMimeType()) : null;
+        return CoreSecurityUtils.getHasMimeTypeAccess(env) ? new MimeTypeObject(entityClobAttribute.getMimeType()) : null;
     }
 
 }

@@ -55,7 +55,7 @@ public class SequenceObject
     @GraphQLField
     @GraphQLDescription("sequence type")
     public SequenceTypeObject getSequenceType(final DataFetchingEnvironment env) {
-        return SequenceSecurityUtils.getInstance().getHasSequenceTypeAccess(env) ? new SequenceTypeObject(getSequenceDetail().getSequenceType()) : null;
+        return SequenceSecurityUtils.getHasSequenceTypeAccess(env) ? new SequenceTypeObject(getSequenceDetail().getSequenceType()) : null;
     }
 
     @GraphQLField

@@ -23,29 +23,21 @@ import com.echothree.control.user.term.server.command.GetTermsCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class TermSecurityUtils {
+public interface TermSecurityUtils {
 
-    private static class WorkflowSecurityUtilsHolder {
-        static TermSecurityUtils instance = new TermSecurityUtils();
-    }
-    
-    public static TermSecurityUtils getInstance() {
-        return WorkflowSecurityUtilsHolder.instance;
-    }
-
-    public boolean getHasTermTypesAccess(final DataFetchingEnvironment env) {
+    static boolean getHasTermTypesAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetTermTypesCommand.class);
     }
 
-    public boolean getHasTermTypeAccess(final DataFetchingEnvironment env) {
+    static boolean getHasTermTypeAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetTermTypeCommand.class);
     }
 
-    public boolean getHasTermsAccess(final DataFetchingEnvironment env) {
+    static boolean getHasTermsAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetTermsCommand.class);
     }
 
-    public boolean getHasTermAccess(final DataFetchingEnvironment env) {
+    static boolean getHasTermAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetTermCommand.class);
     }
 

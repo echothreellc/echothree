@@ -97,7 +97,7 @@ public class ItemDescriptionTypeUseTypeObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<ItemDescriptionTypeUseObject> getItemDescriptionTypeUses(final DataFetchingEnvironment env) {
-        if(ItemSecurityUtils.getInstance().getHasItemDescriptionTypeUsesAccess(env)) {
+        if(ItemSecurityUtils.getHasItemDescriptionTypeUsesAccess(env)) {
             var itemControl = Session.getModelController(ItemControl.class);
             var totalCount = itemControl.countItemDescriptionTypeUsesByItemDescriptionTypeUseType(itemDescriptionTypeUseType);
 

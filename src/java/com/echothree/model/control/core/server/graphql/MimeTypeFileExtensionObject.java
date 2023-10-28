@@ -39,7 +39,7 @@ public class MimeTypeFileExtensionObject
     @GraphQLDescription("mime type")
     @GraphQLNonNull
     public MimeTypeObject getMimeType(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasMimeTypeAccess(env) ? new MimeTypeObject(mimeTypeFileExtension.getMimeType()) : null;
+        return CoreSecurityUtils.getHasMimeTypeAccess(env) ? new MimeTypeObject(mimeTypeFileExtension.getMimeType()) : null;
     }
 
     @GraphQLField

@@ -55,7 +55,7 @@ public class PaymentProcessorTypeCodeObject
     @GraphQLField
     @GraphQLDescription("payment processor type code type")
     public PaymentProcessorTypeCodeTypeObject getPaymentProcessorTypeCodeType(final DataFetchingEnvironment env) {
-        return PaymentSecurityUtils.getInstance().getHasPaymentProcessorTypeCodeTypeAccess(env) ? new PaymentProcessorTypeCodeTypeObject(getPaymentProcessorTypeCodeDetail().getPaymentProcessorTypeCodeType()) : null;
+        return PaymentSecurityUtils.getHasPaymentProcessorTypeCodeTypeAccess(env) ? new PaymentProcessorTypeCodeTypeObject(getPaymentProcessorTypeCodeDetail().getPaymentProcessorTypeCodeType()) : null;
     }
 
     @GraphQLField

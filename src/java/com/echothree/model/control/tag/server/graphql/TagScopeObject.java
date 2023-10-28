@@ -101,7 +101,7 @@ public class TagScopeObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<TagScopeEntityTypeObject> getTagScopeEntityTypes(final DataFetchingEnvironment env) {
-        if(TagSecurityUtils.getInstance().getHasTagScopeEntityTypesAccess(env)) {
+        if(TagSecurityUtils.getHasTagScopeEntityTypesAccess(env)) {
             var tagControl = Session.getModelController(TagControl.class);
             var totalCount = tagControl.countTagScopeEntityTypesByTagScope(tagScope);
 
@@ -121,7 +121,7 @@ public class TagScopeObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<TagObject> getTags(final DataFetchingEnvironment env) {
-        if(TagSecurityUtils.getInstance().getHasTagsAccess(env)) {
+        if(TagSecurityUtils.getHasTagsAccess(env)) {
             var tagControl = Session.getModelController(TagControl.class);
 
             if(entityInstance == null) {

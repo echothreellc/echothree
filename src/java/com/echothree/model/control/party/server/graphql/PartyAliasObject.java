@@ -40,13 +40,13 @@ public class PartyAliasObject
     public PartyObject getParty(final DataFetchingEnvironment env) {
         var party = partyAlias.getParty();
 
-        return PartySecurityUtils.getInstance().getHasPartyAccess(env, party) ? new PartyObject(party) : null;
+        return PartySecurityUtils.getHasPartyAccess(env, party) ? new PartyObject(party) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("party alias type")
     public PartyAliasTypeObject getPartyAliasType(final DataFetchingEnvironment env) {
-        return PartySecurityUtils.getInstance().getHasPartyAliasTypeAccess(env) ? new PartyAliasTypeObject(partyAlias.getPartyAliasType()) : null;
+        return PartySecurityUtils.getHasPartyAliasTypeAccess(env) ? new PartyAliasTypeObject(partyAlias.getPartyAliasType()) : null;
     }
 
     @GraphQLField

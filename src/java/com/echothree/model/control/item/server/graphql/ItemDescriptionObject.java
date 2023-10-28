@@ -99,7 +99,7 @@ public class ItemDescriptionObject
     public ItemDescriptionTypeObject getItemDescriptionType(final DataFetchingEnvironment env) {
         var itemDescriptionType = getItemDescriptionDetail().getItemDescriptionType();
 
-        return itemDescriptionType == null ? null : (ItemSecurityUtils.getInstance().getHasItemDescriptionTypeAccess(env) ? new ItemDescriptionTypeObject(itemDescriptionType) : null);
+        return itemDescriptionType == null ? null : (ItemSecurityUtils.getHasItemDescriptionTypeAccess(env) ? new ItemDescriptionTypeObject(itemDescriptionType) : null);
     }
 
     @GraphQLField
@@ -108,7 +108,7 @@ public class ItemDescriptionObject
     public ItemObject getItem(final DataFetchingEnvironment env) {
         var item = getItemDescriptionDetail().getItem();
 
-        return item == null ? null : (ItemSecurityUtils.getInstance().getHasItemAccess(env) ? new ItemObject(item) : null);
+        return item == null ? null : (ItemSecurityUtils.getHasItemAccess(env) ? new ItemObject(item) : null);
     }
 
     @GraphQLField
@@ -117,7 +117,7 @@ public class ItemDescriptionObject
     public LanguageObject getLanguage(final DataFetchingEnvironment env) {
         var mimeType = getItemDescriptionDetail().getLanguage();
 
-        return mimeType == null ? null : (PartySecurityUtils.getInstance().getHasLanguageAccess(env) ? new LanguageObject(mimeType) : null);
+        return mimeType == null ? null : (PartySecurityUtils.getHasLanguageAccess(env) ? new LanguageObject(mimeType) : null);
     }
 
     @GraphQLField
@@ -125,7 +125,7 @@ public class ItemDescriptionObject
     public MimeTypeObject getMimeType(final DataFetchingEnvironment env) {
         var mimeType = getItemDescriptionDetail().getMimeType();
 
-        return mimeType == null ? null : (CoreSecurityUtils.getInstance().getHasMimeTypeAccess(env) ? new MimeTypeObject(mimeType) : null);
+        return mimeType == null ? null : (CoreSecurityUtils.getHasMimeTypeAccess(env) ? new MimeTypeObject(mimeType) : null);
     }
 
     @GraphQLField
@@ -150,7 +150,7 @@ public class ItemDescriptionObject
         var itemImageDescription = getItemImageDescription();
         var itemImageType = itemImageDescription == null ? null : getItemImageDescription().getItemImageType();
 
-        return itemImageType == null ? null : (ItemSecurityUtils.getInstance().getHasItemImageTypeAccess(env) ? new ItemImageTypeObject(itemImageType) : null);
+        return itemImageType == null ? null : (ItemSecurityUtils.getHasItemImageTypeAccess(env) ? new ItemImageTypeObject(itemImageType) : null);
     }
 
     @GraphQLField

@@ -50,7 +50,7 @@ public class CheckSpellingWordObject {
     public SearchCheckSpellingActionTypeObject getSearchCheckSpellingActionType(final DataFetchingEnvironment env) {
         SearchCheckSpellingActionTypeObject object;
 
-        if(SearchSecurityUtils.getInstance().getHasSearchCheckSpellingActionTypeAccess(env)) {
+        if(SearchSecurityUtils.getHasSearchCheckSpellingActionTypeAccess(env)) {
             var searchControl = Session.getModelController(SearchControl.class);
             var entity = searchControl.getSearchCheckSpellingActionTypeByName(
                     checkSpellingWord.getSearchCheckSpellingActionType().getSearchCheckSpellingActionTypeName());

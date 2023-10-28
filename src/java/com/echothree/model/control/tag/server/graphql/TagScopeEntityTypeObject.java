@@ -41,14 +41,14 @@ public class TagScopeEntityTypeObject
     @GraphQLDescription("tag scope")
     @GraphQLNonNull
     public TagScopeObject getTagScope(final DataFetchingEnvironment env) {
-        return TagSecurityUtils.getInstance().getHasTagScopeAccess(env) ? new TagScopeObject(tagScopeEntityType.getTagScope(), null): null;
+        return TagSecurityUtils.getHasTagScopeAccess(env) ? new TagScopeObject(tagScopeEntityType.getTagScope(), null): null;
     }
 
     @GraphQLField
     @GraphQLDescription("entity type")
     @GraphQLNonNull
     public EntityTypeObject getEntityType(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityTypeAccess(env) ? new EntityTypeObject(tagScopeEntityType.getEntityType()): null;
+        return CoreSecurityUtils.getHasEntityTypeAccess(env) ? new EntityTypeObject(tagScopeEntityType.getEntityType()): null;
     }
 
 }

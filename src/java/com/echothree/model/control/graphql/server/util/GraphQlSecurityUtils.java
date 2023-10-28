@@ -22,17 +22,9 @@ import com.echothree.util.server.control.GraphQlSecurityCommand;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-public final class GraphQlSecurityUtils {
+public interface GraphQlSecurityUtils {
 
-    private static class GraphQlSecurityUtilsHolder {
-        static GraphQlSecurityUtils instance = new GraphQlSecurityUtils();
-    }
-    
-    public static GraphQlSecurityUtils getInstance() {
-        return GraphQlSecurityUtilsHolder.instance;
-    }
-    
-    private Constructor<?> findConstructor(final Class<? extends GraphQlSecurityCommand> command) {
+    private static Constructor<?> findConstructor(final Class<? extends GraphQlSecurityCommand> command) {
         Constructor<?> foundCtor = null;
         var allConstructors = command.getDeclaredConstructors();
 
@@ -56,7 +48,7 @@ public final class GraphQlSecurityUtils {
         return foundCtor;
     }
 
-    public boolean hasAccess(final GraphQlExecutionContext context, final Class<? extends GraphQlSecurityCommand> command, final BaseForm form) {
+    static boolean hasAccess(final GraphQlExecutionContext context, final Class<? extends GraphQlSecurityCommand> command, final BaseForm form) {
         boolean hasAccess;
 
         try {

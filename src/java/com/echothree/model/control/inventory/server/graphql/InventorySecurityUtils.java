@@ -23,29 +23,21 @@ import com.echothree.control.user.inventory.server.command.GetInventoryCondition
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class InventorySecurityUtils {
+public interface InventorySecurityUtils {
 
-    private static class InventorySecurityUtilsHolder {
-        static InventorySecurityUtils instance = new InventorySecurityUtils();
-    }
-    
-    public static InventorySecurityUtils getInstance() {
-        return InventorySecurityUtilsHolder.instance;
-    }
-
-    public boolean getHasInventoryConditionAccess(final DataFetchingEnvironment env) {
+    static boolean getHasInventoryConditionAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetInventoryConditionCommand.class);
     }
 
-    public boolean getHasInventoryConditionsAccess(final DataFetchingEnvironment env) {
+    static boolean getHasInventoryConditionsAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetInventoryConditionsCommand.class);
     }
 
-    public boolean getHasAllocationPriorityAccess(final DataFetchingEnvironment env) {
+    static boolean getHasAllocationPriorityAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetAllocationPriorityCommand.class);
     }
 
-    public boolean getHasAllocationPrioritiesAccess(final DataFetchingEnvironment env) {
+    static boolean getHasAllocationPrioritiesAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetAllocationPrioritiesCommand.class);
     }
 

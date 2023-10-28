@@ -46,7 +46,7 @@ public class UserVisitSearchFacetLongObject {
     @GraphQLDescription("entity long range")
     @GraphQLNonNull
     public EntityLongRangeObject getEntityLongRange(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityLongRangeAccess(env) ? new EntityLongRangeObject(entityLongRange) : null;
+        return CoreSecurityUtils.getHasEntityLongRangeAccess(env) ? new EntityLongRangeObject(entityLongRange) : null;
     }
 
     public void setCount(Long count) {

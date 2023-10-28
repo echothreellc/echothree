@@ -41,14 +41,14 @@ public class EntityTagObject
     @GraphQLDescription("tagged entity instance")
     @GraphQLNonNull
     public EntityInstanceObject getTaggedEntityInstance(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityTag.getTaggedEntityInstance()): null;
+        return CoreSecurityUtils.getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityTag.getTaggedEntityInstance()): null;
     }
 
     @GraphQLField
     @GraphQLDescription("tag")
     @GraphQLNonNull
     public TagObject getTag(final DataFetchingEnvironment env) {
-        return TagSecurityUtils.getInstance().getHasTagAccess(env) ? new TagObject(entityTag.getTag()): null;
+        return TagSecurityUtils.getHasTagAccess(env) ? new TagObject(entityTag.getTag()): null;
     }
 
 }

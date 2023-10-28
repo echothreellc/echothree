@@ -78,7 +78,7 @@ public class ReturnPolicyObject
     @GraphQLField
     @GraphQLDescription("return kind")
     public ReturnKindObject getReturnKind(final DataFetchingEnvironment env) {
-        return ReturnPolicySecurityUtils.getInstance().getHasReturnKindAccess(env) ? new ReturnKindObject(getReturnPolicyDetail().getReturnKind()) : null;
+        return ReturnPolicySecurityUtils.getHasReturnKindAccess(env) ? new ReturnKindObject(getReturnPolicyDetail().getReturnKind()) : null;
     }
 
     @GraphQLField
@@ -110,7 +110,7 @@ public class ReturnPolicyObject
         var returnPolicyTranslation = getReturnPolicyTranslation(env);
         var policyMimeType = returnPolicyTranslation == null ? null : returnPolicyTranslation.getPolicyMimeType();
 
-        return policyMimeType == null ? null : (CoreSecurityUtils.getInstance().getHasMimeTypeAccess(env) ? new MimeTypeObject(policyMimeType) : null);
+        return policyMimeType == null ? null : (CoreSecurityUtils.getHasMimeTypeAccess(env) ? new MimeTypeObject(policyMimeType) : null);
     }
 
     @GraphQLField

@@ -66,7 +66,7 @@ public class ItemImageTypeObject
     public MimeTypeObject getPreferredMimeType(final DataFetchingEnvironment env) {
         var preferredMimeType = getItemImageTypeDetail().getPreferredMimeType();
 
-        return preferredMimeType == null ? null : (CoreSecurityUtils.getInstance().getHasMimeTypeAccess(env) ? new MimeTypeObject(preferredMimeType) : null);
+        return preferredMimeType == null ? null : (CoreSecurityUtils.getHasMimeTypeAccess(env) ? new MimeTypeObject(preferredMimeType) : null);
     }
 
     @GraphQLField

@@ -62,7 +62,7 @@ public class SecurityRoleObject
     @GraphQLField
     @GraphQLDescription("security role group")
     public SecurityRoleGroupObject getSecurityRoleGroup(final DataFetchingEnvironment env) {
-        return SecuritySecurityUtils.getInstance().getHasSecurityRoleGroupAccess(env) ? new SecurityRoleGroupObject(getSecurityRoleDetail().getSecurityRoleGroup()) : null;
+        return SecuritySecurityUtils.getHasSecurityRoleGroupAccess(env) ? new SecurityRoleGroupObject(getSecurityRoleDetail().getSecurityRoleGroup()) : null;
     }
 
     @GraphQLField

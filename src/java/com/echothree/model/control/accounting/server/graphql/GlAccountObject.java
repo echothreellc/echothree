@@ -76,7 +76,7 @@ public class GlAccountObject
     @GraphQLField
     @GraphQLDescription("currency")
     public CurrencyObject getCurrency(final DataFetchingEnvironment env) {
-        return AccountingSecurityUtils.getInstance().getHasCurrencyAccess(env) ? new CurrencyObject(getGlAccountDetail().getCurrency()) : null;
+        return AccountingSecurityUtils.getHasCurrencyAccess(env) ? new CurrencyObject(getGlAccountDetail().getCurrency()) : null;
     }
 
     @GraphQLField

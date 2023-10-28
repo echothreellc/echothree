@@ -105,7 +105,7 @@ public class ItemDescriptionTypeObject
     public MimeTypeUsageTypeObject getMimeTypeUsageType(final DataFetchingEnvironment env) {
         var mimeTypeUsageType = getItemDescriptionTypeDetail().getMimeTypeUsageType();
 
-        return mimeTypeUsageType == null ? null : (CoreSecurityUtils.getInstance().getHasMimeTypeUsageTypeAccess(env) ? new MimeTypeUsageTypeObject(mimeTypeUsageType) : null);
+        return mimeTypeUsageType == null ? null : (CoreSecurityUtils.getHasMimeTypeUsageTypeAccess(env) ? new MimeTypeUsageTypeObject(mimeTypeUsageType) : null);
     }
 
     @GraphQLField
@@ -207,7 +207,7 @@ public class ItemDescriptionTypeObject
         var itemImageDescriptionType = getItemImageDescriptionType();
         MimeTypeObject mimeTypeObject = null;
 
-        if(itemImageDescriptionType != null && CoreSecurityUtils.getInstance().getHasMimeTypeAccess(env)) {
+        if(itemImageDescriptionType != null && CoreSecurityUtils.getHasMimeTypeAccess(env)) {
             var preferredMimeType = itemImageDescriptionType.getPreferredMimeType();
 
             mimeTypeObject = preferredMimeType == null ? null : new MimeTypeObject(preferredMimeType);
@@ -237,7 +237,7 @@ public class ItemDescriptionTypeObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<ItemDescriptionTypeUseObject> getItemDescriptionTypeUses(final DataFetchingEnvironment env) {
-        if(ItemSecurityUtils.getInstance().getHasItemDescriptionTypeUsesAccess(env)) {
+        if(ItemSecurityUtils.getHasItemDescriptionTypeUsesAccess(env)) {
             var itemControl = Session.getModelController(ItemControl.class);
             var totalCount = itemControl.countItemDescriptionTypeUsesByItemDescriptionType(itemDescriptionType);
 

@@ -63,7 +63,7 @@ public class WishlistPriorityObject
     @GraphQLDescription("wishlist type")
     @GraphQLNonNull
     public WishlistTypeObject getWishlistType(final DataFetchingEnvironment env) {
-        return WishlistSecurityUtils.getInstance().getHasWishlistTypeAccess(env) ? new WishlistTypeObject(getWishlistPriorityDetail().getWishlistType()) : null;
+        return WishlistSecurityUtils.getHasWishlistTypeAccess(env) ? new WishlistTypeObject(getWishlistPriorityDetail().getWishlistType()) : null;
     }
 
     @GraphQLField

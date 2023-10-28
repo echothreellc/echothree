@@ -90,7 +90,7 @@ public class FilterKindObject
     public Collection<FilterTypeObject> getFilterTypes(final DataFetchingEnvironment env) {
         Collection<FilterTypeObject> filterTypeObjects = null;
 
-        if(FilterSecurityUtils.getInstance().getHasFilterTypesAccess(env)) {
+        if(FilterSecurityUtils.getHasFilterTypesAccess(env)) {
             var filterControl = Session.getModelController(FilterControl.class);
             var filterTypes = filterControl.getFilterTypes(filterKind);
 
@@ -109,7 +109,7 @@ public class FilterKindObject
     public Collection<FilterAdjustmentObject> getFilterAdjustments(final DataFetchingEnvironment env) {
         Collection<FilterAdjustmentObject> filterAdjustmentObjects = null;
 
-        if(FilterSecurityUtils.getInstance().getHasFilterAdjustmentsAccess(env)) {
+        if(FilterSecurityUtils.getHasFilterAdjustmentsAccess(env)) {
             var filterControl = Session.getModelController(FilterControl.class);
             var filterAdjustments = filterControl.getFilterAdjustmentsByFilterKind(filterKind);
 

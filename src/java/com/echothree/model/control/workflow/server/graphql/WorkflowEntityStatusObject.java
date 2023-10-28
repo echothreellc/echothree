@@ -41,7 +41,7 @@ public class WorkflowEntityStatusObject
     @GraphQLField
     @GraphQLDescription("entity instance")
     public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
-        if(CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env)) {
+        if(CoreSecurityUtils.getHasEntityInstanceAccess(env)) {
             return new EntityInstanceObject(workflowEntityStatus.getEntityInstance());
         } else {
             return null;
@@ -51,7 +51,7 @@ public class WorkflowEntityStatusObject
     @GraphQLField
     @GraphQLDescription("workflow step")
     public WorkflowStepObject getWorkflowStep(final DataFetchingEnvironment env) {
-        if(WorkflowSecurityUtils.getInstance().getHasWorkflowStepAccess(env)) {
+        if(WorkflowSecurityUtils.getHasWorkflowStepAccess(env)) {
             return new WorkflowStepObject(workflowEntityStatus.getWorkflowStep());
         } else {
             return null;

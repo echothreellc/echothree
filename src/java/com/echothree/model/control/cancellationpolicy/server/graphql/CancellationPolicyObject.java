@@ -78,7 +78,7 @@ public class CancellationPolicyObject
     @GraphQLField
     @GraphQLDescription("cancellation kind")
     public CancellationKindObject getCancellationKind(final DataFetchingEnvironment env) {
-        return CancellationPolicySecurityUtils.getInstance().getHasCancellationKindAccess(env) ? new CancellationKindObject(getCancellationPolicyDetail().getCancellationKind()) : null;
+        return CancellationPolicySecurityUtils.getHasCancellationKindAccess(env) ? new CancellationKindObject(getCancellationPolicyDetail().getCancellationKind()) : null;
     }
 
     @GraphQLField
@@ -110,7 +110,7 @@ public class CancellationPolicyObject
         var cancellationPolicyTranslation = getCancellationPolicyTranslation(env);
         var policyMimeType = cancellationPolicyTranslation == null ? null : cancellationPolicyTranslation.getPolicyMimeType();
 
-        return policyMimeType == null ? null : (CoreSecurityUtils.getInstance().getHasMimeTypeAccess(env) ? new MimeTypeObject(policyMimeType) : null);
+        return policyMimeType == null ? null : (CoreSecurityUtils.getHasMimeTypeAccess(env) ? new MimeTypeObject(policyMimeType) : null);
     }
 
     @GraphQLField

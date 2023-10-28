@@ -62,7 +62,7 @@ public class UseObject
     @GraphQLField
     @GraphQLDescription("use type")
     public UseTypeObject getUseType(final DataFetchingEnvironment env) {
-        return OfferSecurityUtils.getInstance().getHasUseTypeAccess(env) ? new UseTypeObject(getUseDetail().getUseType()) : null;
+        return OfferSecurityUtils.getHasUseTypeAccess(env) ? new UseTypeObject(getUseDetail().getUseType()) : null;
     }
 
     @GraphQLField

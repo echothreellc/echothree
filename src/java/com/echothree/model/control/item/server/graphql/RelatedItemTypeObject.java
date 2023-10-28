@@ -100,7 +100,7 @@ public class RelatedItemTypeObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<RelatedItemObject> getRelatedItems(final DataFetchingEnvironment env) {
-        if(ItemSecurityUtils.getInstance().getHasRelatedItemsAccess(env)) {
+        if(ItemSecurityUtils.getHasRelatedItemsAccess(env)) {
             var itemControl = Session.getModelController(ItemControl.class);
             var totalCount = itemControl.countRelatedItemsByRelatedItemType(relatedItemType);
 
@@ -120,7 +120,7 @@ public class RelatedItemTypeObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<RelatedItemObject> getFromItems(final DataFetchingEnvironment env) {
-        if(fromItem != null && ItemSecurityUtils.getInstance().getHasRelatedItemsAccess(env)) {
+        if(fromItem != null && ItemSecurityUtils.getHasRelatedItemsAccess(env)) {
             var itemControl = Session.getModelController(ItemControl.class);
             var totalCount = itemControl.countRelatedItemsByRelatedItemTypeAndFromItem(relatedItemType, fromItem);
 

@@ -90,7 +90,7 @@ public class SelectorKindObject
     public Collection<SelectorTypeObject> getSelectorTypes(final DataFetchingEnvironment env) {
         Collection<SelectorTypeObject> selectorTypeObjects = null;
 
-        if(SelectorSecurityUtils.getInstance().getHasSelectorTypesAccess(env)) {
+        if(SelectorSecurityUtils.getHasSelectorTypesAccess(env)) {
             var selectorControl = Session.getModelController(SelectorControl.class);
             var selectorTypes = selectorControl.getSelectorTypes(selectorKind);
 

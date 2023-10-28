@@ -108,7 +108,7 @@ public class ItemPurchasingCategoryObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<ItemObject> getItems(final DataFetchingEnvironment env) {
-        if(ItemSecurityUtils.getInstance().getHasItemsAccess(env)) {
+        if(ItemSecurityUtils.getHasItemsAccess(env)) {
             var itemControl = Session.getModelController(ItemControl.class);
             var totalCount = itemControl.countItemsByItemPurchasingCategory(itemPurchasingCategory);
 

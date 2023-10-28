@@ -55,7 +55,7 @@ public class SelectorObject
     @GraphQLField
     @GraphQLDescription("selector kind")
     public SelectorTypeObject getSelectorType(final DataFetchingEnvironment env) {
-        return SelectorSecurityUtils.getInstance().getHasSelectorTypeAccess(env) ? new SelectorTypeObject(getSelectorDetail().getSelectorType()) : null;
+        return SelectorSecurityUtils.getHasSelectorTypeAccess(env) ? new SelectorTypeObject(getSelectorDetail().getSelectorType()) : null;
     }
 
     @GraphQLField

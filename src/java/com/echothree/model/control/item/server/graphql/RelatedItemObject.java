@@ -52,19 +52,19 @@ public class RelatedItemObject
     @GraphQLDescription("related item type")
     @GraphQLNonNull
     public RelatedItemTypeObject getRelatedItemType(final DataFetchingEnvironment env) {
-        return ItemSecurityUtils.getInstance().getHasItemAliasTypeAccess(env) ? new RelatedItemTypeObject(getRelatedItemDetail().getRelatedItemType(), null) : null;
+        return ItemSecurityUtils.getHasItemAliasTypeAccess(env) ? new RelatedItemTypeObject(getRelatedItemDetail().getRelatedItemType(), null) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("from item")
     public ItemObject getFromItem(final DataFetchingEnvironment env) {
-        return ItemSecurityUtils.getInstance().getHasItemAccess(env) ? new ItemObject(getRelatedItemDetail().getFromItem()) : null;
+        return ItemSecurityUtils.getHasItemAccess(env) ? new ItemObject(getRelatedItemDetail().getFromItem()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("toitem")
     public ItemObject getToItem(final DataFetchingEnvironment env) {
-        return ItemSecurityUtils.getInstance().getHasItemAccess(env) ? new ItemObject(getRelatedItemDetail().getToItem()) : null;
+        return ItemSecurityUtils.getHasItemAccess(env) ? new ItemObject(getRelatedItemDetail().getToItem()) : null;
     }
 
     @GraphQLField

@@ -70,7 +70,7 @@ public class VendorItemObject
     @GraphQLField
     @GraphQLDescription("item")
     public ItemObject getItem(final DataFetchingEnvironment env) {
-        return ItemSecurityUtils.getInstance().getHasItemAccess(env) ? new ItemObject(getVendorItemDetail().getItem()) : null;
+        return ItemSecurityUtils.getHasItemAccess(env) ? new ItemObject(getVendorItemDetail().getItem()) : null;
     }
 
     @GraphQLField
@@ -78,7 +78,7 @@ public class VendorItemObject
     public VendorObject getVendor(final DataFetchingEnvironment env) {
         var party = getVendorItemDetail().getVendorParty();
 
-        return VendorSecurityUtils.getInstance().getHasVendorAccess(env, party) ? new VendorObject(party) : null;
+        return VendorSecurityUtils.getHasVendorAccess(env, party) ? new VendorObject(party) : null;
     }
 
     @GraphQLField
@@ -106,7 +106,7 @@ public class VendorItemObject
     public CancellationPolicyObject getCancellationPolicy(final DataFetchingEnvironment env) {
         var defaultCancellationPolicy = getVendorItemDetail().getCancellationPolicy();
 
-        return defaultCancellationPolicy == null ? null : CancellationPolicySecurityUtils.getInstance().getHasCancellationPolicyAccess(env) ?
+        return defaultCancellationPolicy == null ? null : CancellationPolicySecurityUtils.getHasCancellationPolicyAccess(env) ?
                 new CancellationPolicyObject(defaultCancellationPolicy) : null;
     }
 
@@ -115,7 +115,7 @@ public class VendorItemObject
     public ReturnPolicyObject getReturnPolicy(final DataFetchingEnvironment env) {
         var defaultReturnPolicy = getVendorItemDetail().getReturnPolicy();
 
-        return defaultReturnPolicy == null ? null : ReturnPolicySecurityUtils.getInstance().getHasReturnPolicyAccess(env) ?
+        return defaultReturnPolicy == null ? null : ReturnPolicySecurityUtils.getHasReturnPolicyAccess(env) ?
                 new ReturnPolicyObject(defaultReturnPolicy) : null;
     }
 
@@ -130,7 +130,7 @@ public class VendorItemObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<VendorItemCostObject> getVendorItemCosts(final DataFetchingEnvironment env) {
-        if(VendorSecurityUtils.getInstance().getHasVendorItemCostsAccess(env)) {
+        if(VendorSecurityUtils.getHasVendorItemCostsAccess(env)) {
             var vendorControl = Session.getModelController(VendorControl.class);
             var totalCount = vendorControl.countVendorItemCostsByVendorItem(vendorItem);
 

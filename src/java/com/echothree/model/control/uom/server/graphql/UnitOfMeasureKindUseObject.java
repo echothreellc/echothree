@@ -37,13 +37,13 @@ public class UnitOfMeasureKindUseObject
     @GraphQLField
     @GraphQLDescription("unit of measure kind use type")
     public UnitOfMeasureKindUseTypeObject getUnitOfMeasureKindUseType(final DataFetchingEnvironment env) {
-        return UomSecurityUtils.getInstance().getHasUnitOfMeasureKindUseTypeAccess(env) ? new UnitOfMeasureKindUseTypeObject(unitOfMeasureKindUse.getUnitOfMeasureKindUseType()) : null;
+        return UomSecurityUtils.getHasUnitOfMeasureKindUseTypeAccess(env) ? new UnitOfMeasureKindUseTypeObject(unitOfMeasureKindUse.getUnitOfMeasureKindUseType()) : null;
     }
     
     @GraphQLField
     @GraphQLDescription("unit of measure kind")
     public UnitOfMeasureKindObject getUnitOfMeasureKind(final DataFetchingEnvironment env) {
-        return UomSecurityUtils.getInstance().getHasUnitOfMeasureKindAccess(env) ? new UnitOfMeasureKindObject(unitOfMeasureKindUse.getUnitOfMeasureKind()) : null;
+        return UomSecurityUtils.getHasUnitOfMeasureKindAccess(env) ? new UnitOfMeasureKindObject(unitOfMeasureKindUse.getUnitOfMeasureKind()) : null;
     }
 
 }

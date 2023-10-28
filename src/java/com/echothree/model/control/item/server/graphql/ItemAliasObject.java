@@ -40,19 +40,19 @@ public class ItemAliasObject
     @GraphQLField
     @GraphQLDescription("item")
     public ItemObject getItem(final DataFetchingEnvironment env) {
-        return ItemSecurityUtils.getInstance().getHasItemAccess(env) ? new ItemObject(itemAlias.getItem()) : null;
+        return ItemSecurityUtils.getHasItemAccess(env) ? new ItemObject(itemAlias.getItem()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("unit of measure type")
     public UnitOfMeasureTypeObject getUnitOfMeasureType(final DataFetchingEnvironment env) {
-        return UomSecurityUtils.getInstance().getHasUnitOfMeasureTypeAccess(env) ? new UnitOfMeasureTypeObject(itemAlias.getUnitOfMeasureType()) : null;
+        return UomSecurityUtils.getHasUnitOfMeasureTypeAccess(env) ? new UnitOfMeasureTypeObject(itemAlias.getUnitOfMeasureType()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("item alias type")
     public ItemAliasTypeObject getItemAliasType(final DataFetchingEnvironment env) {
-        return ItemSecurityUtils.getInstance().getHasItemAliasTypeAccess(env) ? new ItemAliasTypeObject(itemAlias.getItemAliasType()) : null;
+        return ItemSecurityUtils.getHasItemAliasTypeAccess(env) ? new ItemAliasTypeObject(itemAlias.getItemAliasType()) : null;
     }
 
     @GraphQLField

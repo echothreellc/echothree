@@ -24,33 +24,25 @@ import com.echothree.control.user.geo.server.command.GetGeoCodeTypesCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class GeoSecurityUtils {
+public interface GeoSecurityUtils {
 
-    private static class AccountingSecurityUtilsHolder {
-        static GeoSecurityUtils instance = new GeoSecurityUtils();
-    }
-    
-    public static GeoSecurityUtils getInstance() {
-        return AccountingSecurityUtilsHolder.instance;
-    }
-
-    public boolean getHasGeoCodeTypeAccess(final DataFetchingEnvironment env) {
+    static boolean getHasGeoCodeTypeAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetGeoCodeTypeCommand.class);
     }
 
-    public boolean getHasGeoCodeTypesAccess(final DataFetchingEnvironment env) {
+    static boolean getHasGeoCodeTypesAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetGeoCodeTypesCommand.class);
     }
 
-    public boolean getHasGeoCodeScopeAccess(final DataFetchingEnvironment env) {
+    static boolean getHasGeoCodeScopeAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetGeoCodeScopeCommand.class);
     }
 
-    public boolean getHasGeoCodeScopesAccess(final DataFetchingEnvironment env) {
+    static boolean getHasGeoCodeScopesAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetGeoCodeScopesCommand.class);
     }
 
-    public boolean getHasGeoCodeAccess(final DataFetchingEnvironment env) {
+    static boolean getHasGeoCodeAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetGeoCodeCommand.class);
     }
 

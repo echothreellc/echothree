@@ -91,7 +91,7 @@ public class CompanyObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<DivisionObject> getDivisions(final DataFetchingEnvironment env) {
-        if(PartySecurityUtils.getInstance().getHasDivisionsAccess(env)) {
+        if(PartySecurityUtils.getHasDivisionsAccess(env)) {
             var partyControl = Session.getModelController(PartyControl.class);
             var totalCount = partyControl.countPartyDivisions(party);
 
@@ -111,7 +111,7 @@ public class CompanyObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<ItemObject> getItems(final DataFetchingEnvironment env) {
-        if(ItemSecurityUtils.getInstance().getHasItemsAccess(env)) {
+        if(ItemSecurityUtils.getHasItemsAccess(env)) {
             var itemControl = Session.getModelController(ItemControl.class);
             var totalCount = itemControl.countItemsByCompanyParty(party);
 

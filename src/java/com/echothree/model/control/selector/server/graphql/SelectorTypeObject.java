@@ -57,7 +57,7 @@ public class SelectorTypeObject
     @GraphQLField
     @GraphQLDescription("selector kind")
     public SelectorKindObject getSelectorKind(final DataFetchingEnvironment env) {
-        return SelectorSecurityUtils.getInstance().getHasSelectorKindAccess(env) ? new SelectorKindObject(getSelectorTypeDetail().getSelectorKind()) : null;
+        return SelectorSecurityUtils.getHasSelectorKindAccess(env) ? new SelectorKindObject(getSelectorTypeDetail().getSelectorKind()) : null;
     }
 
     @GraphQLField
@@ -96,7 +96,7 @@ public class SelectorTypeObject
     public Collection<SelectorObject> getSelectors(final DataFetchingEnvironment env) {
         Collection<SelectorObject> selectorObjects = null;
 
-        if(SelectorSecurityUtils.getInstance().getHasSelectorsAccess(env)) {
+        if(SelectorSecurityUtils.getHasSelectorsAccess(env)) {
             var selectorControl = Session.getModelController(SelectorControl.class);
             var selectors = selectorControl.getSelectorsBySelectorType(selectorType);
 

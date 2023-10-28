@@ -66,7 +66,7 @@ public class WorkflowDestinationObject
     @GraphQLField
     @GraphQLDescription("workflow step")
     public WorkflowStepObject getWorkflowStep(final DataFetchingEnvironment env) {
-        return WorkflowSecurityUtils.getInstance().getHasWorkflowStepAccess(env) ? new WorkflowStepObject(getWorkflowDestinationDetail().getWorkflowStep()) : null;
+        return WorkflowSecurityUtils.getHasWorkflowStepAccess(env) ? new WorkflowStepObject(getWorkflowDestinationDetail().getWorkflowStep()) : null;
     }
 
     @GraphQLField
@@ -105,7 +105,7 @@ public class WorkflowDestinationObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<WorkflowDestinationStepObject> getWorkflowDestinationSteps(final DataFetchingEnvironment env) {
-        if(WorkflowSecurityUtils.getInstance().getHasWorkflowDestinationStepsAccess(env)) {
+        if(WorkflowSecurityUtils.getHasWorkflowDestinationStepsAccess(env)) {
             var workflowControl = Session.getModelController(WorkflowControl.class);
             var totalCount = workflowControl.countWorkflowDestinationStepsByWorkflowDestination(workflowDestination);
 
@@ -125,7 +125,7 @@ public class WorkflowDestinationObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<WorkflowDestinationPartyTypeObject> getWorkflowDestinationPartyTypes(final DataFetchingEnvironment env) {
-        if(WorkflowSecurityUtils.getInstance().getHasWorkflowDestinationPartyTypesAccess(env)) {
+        if(WorkflowSecurityUtils.getHasWorkflowDestinationPartyTypesAccess(env)) {
             var workflowControl = Session.getModelController(WorkflowControl.class);
             var totalCount = workflowControl.countWorkflowDestinationPartyTypesByWorkflowDestination(workflowDestination);
 
@@ -145,7 +145,7 @@ public class WorkflowDestinationObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<WorkflowDestinationSelectorObject> getWorkflowDestinationSelectors(final DataFetchingEnvironment env) {
-        if(WorkflowSecurityUtils.getInstance().getHasWorkflowDestinationSelectorsAccess(env)) {
+        if(WorkflowSecurityUtils.getHasWorkflowDestinationSelectorsAccess(env)) {
             var workflowControl = Session.getModelController(WorkflowControl.class);
             var totalCount = workflowControl.countWorkflowDestinationSelectorsByWorkflowDestination(workflowDestination);
 

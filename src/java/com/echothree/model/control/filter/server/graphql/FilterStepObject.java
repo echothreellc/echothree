@@ -55,7 +55,7 @@ public class FilterStepObject
     @GraphQLField
     @GraphQLDescription("filterStep type")
     public FilterObject getFilter(final DataFetchingEnvironment env) {
-        return FilterSecurityUtils.getInstance().getHasFilterAccess(env) ? new FilterObject(getFilterStepDetail().getFilter()) : null;
+        return FilterSecurityUtils.getHasFilterAccess(env) ? new FilterObject(getFilterStepDetail().getFilter()) : null;
     }
 
     @GraphQLField
@@ -70,7 +70,7 @@ public class FilterStepObject
 //    public SelectorObject getFilterItemSelector(final DataFetchingEnvironment env) {
 //        SelectorObject result;
 //
-//        if(SelectorSecurityUtils.getInstance().getHasSelectorAccess(env)) {
+//        if(SelectorSecurityUtils.getHasSelectorAccess(env)) {
 //            var selector = getFilterStepDetail().getFilterItemSelector();
 //
 //            result = selector == null ? null : new SelectorObject(selector);

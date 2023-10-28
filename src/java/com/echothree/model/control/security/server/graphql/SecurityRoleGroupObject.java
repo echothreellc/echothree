@@ -105,7 +105,7 @@ public class SecurityRoleGroupObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<SecurityRoleObject> getSecurityRoles(final DataFetchingEnvironment env) {
-        if(SecuritySecurityUtils.getInstance().getHasSecurityRolesAccess(env)) {
+        if(SecuritySecurityUtils.getHasSecurityRolesAccess(env)) {
             var securityControl = Session.getModelController(SecurityControl.class);
             var totalCount = securityControl.countSecurityRolesBySecurityRoleGroup(securityRoleGroup);
 

@@ -63,7 +63,7 @@ public class TermObject
     @GraphQLField
     @GraphQLDescription("term type")
     public TermTypeObject getTermType(final DataFetchingEnvironment env) {
-        return TermSecurityUtils.getInstance().getHasTermTypeAccess(env) ? new TermTypeObject(getTermDetail().getTermType()) : null;
+        return TermSecurityUtils.getHasTermTypeAccess(env) ? new TermTypeObject(getTermDetail().getTermType()) : null;
     }
 
     @GraphQLField

@@ -111,7 +111,7 @@ public class EntityAttributeGroupObject
     public Collection<EntityAttributeEntityAttributeGroupObject> getEntityAttributeEntityAttributeGroups(final DataFetchingEnvironment env) {
         Collection<EntityAttributeEntityAttributeGroupObject> entityAttributeEntityAttributeGroupObjects = null;
 
-        if(CoreSecurityUtils.getInstance().getHasEntityAttributeEntityAttributeGroupsAccess(env)) {
+        if(CoreSecurityUtils.getHasEntityAttributeEntityAttributeGroupsAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
             var entityAttributeEntityAttributeGroups = coreControl.getEntityAttributeEntityAttributeGroupsByEntityAttributeGroup(entityAttributeGroup);
 

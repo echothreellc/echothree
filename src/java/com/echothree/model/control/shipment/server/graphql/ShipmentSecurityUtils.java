@@ -21,21 +21,13 @@ import com.echothree.control.user.shipment.server.command.GetFreeOnBoardsCommand
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class ShipmentSecurityUtils {
+public interface ShipmentSecurityUtils {
 
-    private static class AccountingSecurityUtilsHolder {
-        static ShipmentSecurityUtils instance = new ShipmentSecurityUtils();
-    }
-    
-    public static ShipmentSecurityUtils getInstance() {
-        return AccountingSecurityUtilsHolder.instance;
-    }
-
-    public boolean getHasFreeOnBoardAccess(final DataFetchingEnvironment env) {
+    static boolean getHasFreeOnBoardAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetFreeOnBoardCommand.class);
     }
 
-    public boolean getHasFreeOnBoardsAccess(final DataFetchingEnvironment env) {
+    static boolean getHasFreeOnBoardsAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetFreeOnBoardsCommand.class);
     }
 

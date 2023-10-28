@@ -62,13 +62,13 @@ public class GeoCodeObject
     @GraphQLField
     @GraphQLDescription("geo code type")
     public GeoCodeTypeObject getGeoCodeType(final DataFetchingEnvironment env) {
-        return GeoSecurityUtils.getInstance().getHasGeoCodeTypeAccess(env) ? new GeoCodeTypeObject(getGeoCodeDetail().getGeoCodeType()) : null;
+        return GeoSecurityUtils.getHasGeoCodeTypeAccess(env) ? new GeoCodeTypeObject(getGeoCodeDetail().getGeoCodeType()) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("geo code scope")
     public GeoCodeScopeObject getGeoCodeScope(final DataFetchingEnvironment env) {
-        return GeoSecurityUtils.getInstance().getHasGeoCodeScopeAccess(env) ? new GeoCodeScopeObject(getGeoCodeDetail().getGeoCodeScope()) : null;
+        return GeoSecurityUtils.getHasGeoCodeScopeAccess(env) ? new GeoCodeScopeObject(getGeoCodeDetail().getGeoCodeScope()) : null;
     }
 
     @GraphQLField

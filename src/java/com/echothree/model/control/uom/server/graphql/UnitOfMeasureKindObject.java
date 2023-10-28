@@ -109,7 +109,7 @@ public class UnitOfMeasureKindObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<UnitOfMeasureTypeObject> getUnitOfMeasureTypes(final DataFetchingEnvironment env) {
-        if(UomSecurityUtils.getInstance().getHasUnitOfMeasureTypesAccess(env)) {
+        if(UomSecurityUtils.getHasUnitOfMeasureTypesAccess(env)) {
             var uomControl = Session.getModelController(UomControl.class);
             var totalCount = uomControl.countUnitOfMeasureTypesByUnitOfMeasureKind(unitOfMeasureKind);
 
@@ -129,7 +129,7 @@ public class UnitOfMeasureKindObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<UnitOfMeasureKindUseObject> getUnitOfMeasureKindUses(final DataFetchingEnvironment env) {
-        if(UomSecurityUtils.getInstance().getHasUnitOfMeasureKindUsesAccess(env)) {
+        if(UomSecurityUtils.getHasUnitOfMeasureKindUsesAccess(env)) {
             var uomControl = Session.getModelController(UomControl.class);
             var totalCount = uomControl.countUnitOfMeasureKindUsesByUnitOfMeasureKind(unitOfMeasureKind);
 
@@ -149,7 +149,7 @@ public class UnitOfMeasureKindObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<ItemObject> getItems(final DataFetchingEnvironment env) {
-        if(ItemSecurityUtils.getInstance().getHasItemsAccess(env)) {
+        if(ItemSecurityUtils.getHasItemsAccess(env)) {
             var itemControl = Session.getModelController(ItemControl.class);
             var totalCount = itemControl.countItemsByUnitOfMeasureKind(unitOfMeasureKind);
 

@@ -45,13 +45,13 @@ public class EntityMultipleListItemAttributesObject
     @GraphQLField
     @GraphQLDescription("entity attribute")
     public EntityAttributeObject getEntityAttribute(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityAttribute, entityInstance) : null;
+        return CoreSecurityUtils.getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityAttribute, entityInstance) : null;
     }
 
     @GraphQLField
     @GraphQLDescription("entity instance")
     public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getInstance().getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityInstance) : null;
+        return CoreSecurityUtils.getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityInstance) : null;
     }
 
     @GraphQLField
@@ -59,7 +59,7 @@ public class EntityMultipleListItemAttributesObject
     public Collection<EntityListItemObject> getEntityListItems(final DataFetchingEnvironment env) {
         List<EntityListItemObject> entityListItemObjects = null;
 
-        if(CoreSecurityUtils.getInstance().getHasEntityListItemAccess(env)) {
+        if(CoreSecurityUtils.getHasEntityListItemAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
             var entityMultipleListItemAttributes = coreControl.getEntityMultipleListItemAttributes(entityAttribute, entityInstance);
             entityListItemObjects = new ArrayList<EntityListItemObject>(entityMultipleListItemAttributes.size());

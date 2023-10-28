@@ -73,7 +73,7 @@ public class ReturnKindObject
     @GraphQLField
     @GraphQLDescription("return sequence type")
     public SequenceTypeObject getReturnSequenceType(final DataFetchingEnvironment env) {
-        return SequenceSecurityUtils.getInstance().getHasSequenceTypeAccess(env) ? new SequenceTypeObject(getReturnKindDetail().getReturnSequenceType()) : null;
+        return SequenceSecurityUtils.getHasSequenceTypeAccess(env) ? new SequenceTypeObject(getReturnKindDetail().getReturnSequenceType()) : null;
     }
 
     @GraphQLField
@@ -105,7 +105,7 @@ public class ReturnKindObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<ReturnPolicyObject> getReturnPolicies(final DataFetchingEnvironment env) {
-        if(ReturnPolicySecurityUtils.getInstance().getHasReturnPoliciesAccess(env)) {
+        if(ReturnPolicySecurityUtils.getHasReturnPoliciesAccess(env)) {
             var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
             var totalCount = returnPolicyControl.countReturnPoliciesByReturnKind(returnKind);
     

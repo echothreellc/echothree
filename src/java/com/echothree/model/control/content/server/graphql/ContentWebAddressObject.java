@@ -62,7 +62,7 @@ public class ContentWebAddressObject
     @GraphQLField
     @GraphQLDescription("content collection")
     public ContentCollectionObject getContentCollection(final DataFetchingEnvironment env) {
-        return ContentSecurityUtils.getInstance().getHasContentCollectionAccess(env) ? new ContentCollectionObject(getContentWebAddressDetail().getContentCollection()) : null;
+        return ContentSecurityUtils.getHasContentCollectionAccess(env) ? new ContentCollectionObject(getContentWebAddressDetail().getContentCollection()) : null;
     }
 
     @GraphQLField

@@ -45,7 +45,7 @@ public class ContentPageLayoutAreaObject
     @GraphQLDescription("content page layout")
     @GraphQLNonNull
     public ContentPageLayoutObject getContentPageLayout(final DataFetchingEnvironment env) {
-        return ContentSecurityUtils.getInstance().getHasContentPageLayoutAccess(env) ? new ContentPageLayoutObject(contentPageLayoutArea.getContentPageLayout()) : null;
+        return ContentSecurityUtils.getHasContentPageLayoutAccess(env) ? new ContentPageLayoutObject(contentPageLayoutArea.getContentPageLayout()) : null;
     }
 
     @GraphQLField

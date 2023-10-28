@@ -58,7 +58,7 @@ public class ContentSectionObject
     @GraphQLField
     @GraphQLDescription("content collection")
     public ContentCollectionObject getContentCollection(final DataFetchingEnvironment env) {
-        return ContentSecurityUtils.getInstance().getHasContentCollectionAccess(env) ? new ContentCollectionObject(getContentSectionDetail().getContentCollection()) : null;
+        return ContentSecurityUtils.getHasContentCollectionAccess(env) ? new ContentCollectionObject(getContentSectionDetail().getContentCollection()) : null;
     }
 
     @GraphQLField
@@ -71,7 +71,7 @@ public class ContentSectionObject
     @GraphQLField
     @GraphQLDescription("parent content section")
     public ContentSectionObject getParentContentSection(final DataFetchingEnvironment env) {
-        return ContentSecurityUtils.getInstance().getHasContentSectionAccess(env) ? new ContentSectionObject(getContentSectionDetail().getParentContentSection()) : null;
+        return ContentSecurityUtils.getHasContentSectionAccess(env) ? new ContentSectionObject(getContentSectionDetail().getParentContentSection()) : null;
     }
 
     @GraphQLField
@@ -103,14 +103,14 @@ public class ContentSectionObject
     public Long getContentPagesCount(final DataFetchingEnvironment env) {
         var contentControl = Session.getModelController(ContentControl.class);
         
-        return ContentSecurityUtils.getInstance().getHasContentPagesAccess(env) ? contentControl.countContentPagesByContentSection(contentSection) : null;
+        return ContentSecurityUtils.getHasContentPagesAccess(env) ? contentControl.countContentPagesByContentSection(contentSection) : null;
     }
     
     @GraphQLField
     @GraphQLDescription("content pages")
     public List<ContentPageObject> getContentPages(final DataFetchingEnvironment env) {
         var contentControl = Session.getModelController(ContentControl.class);
-        List<ContentPage> entities = ContentSecurityUtils.getInstance().getHasContentPagesAccess(env) ? contentControl.getContentPagesByContentSection(contentSection) : null;
+        List<ContentPage> entities = ContentSecurityUtils.getHasContentPagesAccess(env) ? contentControl.getContentPagesByContentSection(contentSection) : null;
         List<ContentPageObject> contentPages = entities == null ? null : new ArrayList<>(entities.size());
         
         if(entities != null) {

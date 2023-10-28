@@ -60,7 +60,7 @@ public class ContentPageObject
     @GraphQLField
     @GraphQLDescription("content section")
     public ContentSectionObject getContentSection(final DataFetchingEnvironment env) {
-        return ContentSecurityUtils.getInstance().getHasContentSectionAccess(env) ? new ContentSectionObject(getContentPageDetail().getContentSection()) : null;
+        return ContentSecurityUtils.getHasContentSectionAccess(env) ? new ContentSectionObject(getContentPageDetail().getContentSection()) : null;
     }
 
     @GraphQLField
@@ -73,7 +73,7 @@ public class ContentPageObject
     @GraphQLField
     @GraphQLDescription("content page layout")
     public ContentPageLayoutObject getContentPageLayout(final DataFetchingEnvironment env) {
-        return ContentSecurityUtils.getInstance().getHasContentPageLayoutAccess(env) ? new ContentPageLayoutObject(getContentPageDetail().getContentPageLayout()) : null;
+        return ContentSecurityUtils.getHasContentPageLayoutAccess(env) ? new ContentPageLayoutObject(getContentPageDetail().getContentPageLayout()) : null;
     }
 
     @GraphQLField

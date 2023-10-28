@@ -77,7 +77,7 @@ public abstract class BasePartyObject
     @GraphQLDescription("party type")
     @GraphQLNonNull
     public PartyTypeObject getPartyType(final DataFetchingEnvironment env) {
-        return PartySecurityUtils.getInstance().getHasPartyTypeAccess(env) ? new PartyTypeObject(getPartyDetail().getPartyType()) : null;
+        return PartySecurityUtils.getHasPartyTypeAccess(env) ? new PartyTypeObject(getPartyDetail().getPartyType()) : null;
     }
 
     @GraphQLField
@@ -85,7 +85,7 @@ public abstract class BasePartyObject
     public LanguageObject getPreferredLanguage(final DataFetchingEnvironment env) {
         Language preferredLanguage = getPartyDetail().getPreferredLanguage();
         
-        return preferredLanguage != null && PartySecurityUtils.getInstance().getHasLanguageAccess(env) ? new LanguageObject(preferredLanguage) : null;
+        return preferredLanguage != null && PartySecurityUtils.getHasLanguageAccess(env) ? new LanguageObject(preferredLanguage) : null;
     }
 
     @GraphQLField
@@ -93,7 +93,7 @@ public abstract class BasePartyObject
     public CurrencyObject getPreferredCurrency(final DataFetchingEnvironment env) {
         Currency preferredCurrency = getPartyDetail().getPreferredCurrency();
         
-        return preferredCurrency != null && AccountingSecurityUtils.getInstance().getHasCurrencyAccess(env) ? new CurrencyObject(preferredCurrency) : null;
+        return preferredCurrency != null && AccountingSecurityUtils.getHasCurrencyAccess(env) ? new CurrencyObject(preferredCurrency) : null;
     }
 
     @GraphQLField
@@ -101,7 +101,7 @@ public abstract class BasePartyObject
     public TimeZoneObject getPreferredTimeZone(final DataFetchingEnvironment env) {
         TimeZone preferredTimeZone = getPartyDetail().getPreferredTimeZone();
         
-        return preferredTimeZone != null && PartySecurityUtils.getInstance().getHasTimeZoneAccess(env) ? new TimeZoneObject(preferredTimeZone) : null;
+        return preferredTimeZone != null && PartySecurityUtils.getHasTimeZoneAccess(env) ? new TimeZoneObject(preferredTimeZone) : null;
     }
 
     @GraphQLField
@@ -109,7 +109,7 @@ public abstract class BasePartyObject
     public DateTimeFormatObject getPreferredDateTimeFormat(final DataFetchingEnvironment env) {
         DateTimeFormat preferredDateTimeFormat = getPartyDetail().getPreferredDateTimeFormat();
         
-        return preferredDateTimeFormat != null && PartySecurityUtils.getInstance().getHasDateTimeFormatAccess(env) ? new DateTimeFormatObject(preferredDateTimeFormat) : null;
+        return preferredDateTimeFormat != null && PartySecurityUtils.getHasDateTimeFormatAccess(env) ? new DateTimeFormatObject(preferredDateTimeFormat) : null;
     }
     
     @GraphQLField
@@ -145,7 +145,7 @@ public abstract class BasePartyObject
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
     public CountingPaginatedData<PartyAliasObject> getPartyAliases(final DataFetchingEnvironment env) {
-        if(PartySecurityUtils.getInstance().getHasPartyAliasesAccess(env, party)) {
+        if(PartySecurityUtils.getHasPartyAliasesAccess(env, party)) {
             var partyControl = Session.getModelController(PartyControl.class);
             var totalCount = partyControl.countPartyAliasesByParty(party);
 

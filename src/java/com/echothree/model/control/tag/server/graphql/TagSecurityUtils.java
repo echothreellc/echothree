@@ -25,37 +25,29 @@ import com.echothree.control.user.tag.server.command.GetTagsCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class TagSecurityUtils {
+public interface TagSecurityUtils {
 
-    private static class InventorySecurityUtilsHolder {
-        static TagSecurityUtils instance = new TagSecurityUtils();
-    }
-    
-    public static TagSecurityUtils getInstance() {
-        return InventorySecurityUtilsHolder.instance;
-    }
-
-    public boolean getHasTagScopeAccess(final DataFetchingEnvironment env) {
+    static boolean getHasTagScopeAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetTagScopeCommand.class);
     }
 
-    public boolean getHasTagScopesAccess(final DataFetchingEnvironment env) {
+    static boolean getHasTagScopesAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetTagScopesCommand.class);
     }
 
-    public boolean getHasTagScopeEntityTypeAccess(final DataFetchingEnvironment env) {
+    static boolean getHasTagScopeEntityTypeAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetTagScopeEntityTypeCommand.class);
     }
 
-    public boolean getHasTagScopeEntityTypesAccess(final DataFetchingEnvironment env) {
+    static boolean getHasTagScopeEntityTypesAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetTagScopeEntityTypesCommand.class);
     }
 
-    public boolean getHasTagAccess(final DataFetchingEnvironment env) {
+    static boolean getHasTagAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetTagCommand.class);
     }
 
-    public boolean getHasTagsAccess(final DataFetchingEnvironment env) {
+    static boolean getHasTagsAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetTagsCommand.class);
     }
 
