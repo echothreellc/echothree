@@ -24,8 +24,7 @@ import com.echothree.control.user.selector.server.command.GetSelectorsCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class SelectorSecurityUtils
-        implements BaseGraphQl {
+public final class SelectorSecurityUtils {
 
     private static class SelectorSecurityUtilsHolder {
         static SelectorSecurityUtils instance = new SelectorSecurityUtils();

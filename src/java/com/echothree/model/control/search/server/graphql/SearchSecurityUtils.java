@@ -21,8 +21,7 @@ import com.echothree.control.user.search.server.command.GetSearchCheckSpellingAc
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class SearchSecurityUtils
-        implements BaseGraphQl {
+public final class SearchSecurityUtils {
 
     private static class SearchSecurityUtilsHolder {
         static SearchSecurityUtils instance = new SearchSecurityUtils();

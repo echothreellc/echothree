@@ -25,8 +25,7 @@ import com.echothree.control.user.tag.server.command.GetTagsCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class TagSecurityUtils
-        implements BaseGraphQl {
+public final class TagSecurityUtils {
 
     private static class InventorySecurityUtilsHolder {
         static TagSecurityUtils instance = new TagSecurityUtils();

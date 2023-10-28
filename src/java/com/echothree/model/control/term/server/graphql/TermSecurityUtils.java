@@ -23,8 +23,7 @@ import com.echothree.control.user.term.server.command.GetTermsCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class TermSecurityUtils
-        implements BaseGraphQl {
+public final class TermSecurityUtils {
 
     private static class WorkflowSecurityUtilsHolder {
         static TermSecurityUtils instance = new TermSecurityUtils();

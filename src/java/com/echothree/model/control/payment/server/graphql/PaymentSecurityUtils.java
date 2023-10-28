@@ -27,8 +27,7 @@ import com.echothree.control.user.payment.server.command.GetPaymentProcessorType
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class PaymentSecurityUtils
-        implements BaseGraphQl {
+public final class PaymentSecurityUtils {
 
     private static class PaymentSecurityUtilsHolder {
         static PaymentSecurityUtils instance = new PaymentSecurityUtils();

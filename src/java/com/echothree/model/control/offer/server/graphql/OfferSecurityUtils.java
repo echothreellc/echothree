@@ -33,8 +33,7 @@ import com.echothree.control.user.offer.server.command.GetUseTypeCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class OfferSecurityUtils
-        implements BaseGraphQl {
+public final class OfferSecurityUtils {
 
     private static class OfferSecurityUtilsHolder {
         static OfferSecurityUtils instance = new OfferSecurityUtils();

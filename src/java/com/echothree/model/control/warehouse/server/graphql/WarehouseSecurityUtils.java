@@ -21,8 +21,7 @@ import com.echothree.control.user.warehouse.server.command.GetWarehousesCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class WarehouseSecurityUtils
-        implements BaseGraphQl {
+public final class WarehouseSecurityUtils {
 
     private static class PartySecurityUtilsHolder {
         static WarehouseSecurityUtils instance = new WarehouseSecurityUtils();

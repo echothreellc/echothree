@@ -48,8 +48,7 @@ import com.echothree.util.server.control.GraphQlSecurityCommand;
 import graphql.schema.DataFetchingEnvironment;
 import javax.naming.NamingException;
 
-public final class PartySecurityUtils
-        implements BaseGraphQl {
+public final class PartySecurityUtils {
 
     private static class PartySecurityUtilsHolder {
         static PartySecurityUtils instance = new PartySecurityUtils();

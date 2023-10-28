@@ -27,8 +27,7 @@ import com.echothree.util.common.form.BaseForm;
 import graphql.schema.DataFetchingEnvironment;
 import javax.naming.NamingException;
 
-public final class CustomerSecurityUtils
-        implements BaseGraphQl {
+public final class CustomerSecurityUtils {
 
     private static class AccountingSecurityUtilsHolder {
         static CustomerSecurityUtils instance = new CustomerSecurityUtils();

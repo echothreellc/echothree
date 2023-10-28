@@ -23,8 +23,7 @@ import com.echothree.control.user.sequence.server.command.GetSequenceTypeCommand
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class SequenceSecurityUtils
-        implements BaseGraphQl {
+public final class SequenceSecurityUtils {
 
     private static class SequenceSecurityUtilsHolder {
         static SequenceSecurityUtils instance = new SequenceSecurityUtils();

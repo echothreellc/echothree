@@ -50,8 +50,7 @@ import com.echothree.control.user.workflow.server.command.GetWorkflowsCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class WorkflowSecurityUtils
-        implements BaseGraphQl {
+public final class WorkflowSecurityUtils {
 
     private static class WorkflowSecurityUtilsHolder {
         static WorkflowSecurityUtils instance = new WorkflowSecurityUtils();

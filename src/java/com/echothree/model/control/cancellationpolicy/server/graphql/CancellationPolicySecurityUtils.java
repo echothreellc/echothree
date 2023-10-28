@@ -23,8 +23,7 @@ import com.echothree.control.user.cancellationpolicy.server.command.GetCancellat
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class CancellationPolicySecurityUtils
-        implements BaseGraphQl {
+public final class CancellationPolicySecurityUtils {
 
     private static class CancellationPolicySecurityUtilsHolder {
         static CancellationPolicySecurityUtils instance = new CancellationPolicySecurityUtils();

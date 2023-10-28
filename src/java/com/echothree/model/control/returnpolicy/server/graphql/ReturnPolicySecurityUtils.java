@@ -23,8 +23,7 @@ import com.echothree.control.user.returnpolicy.server.command.GetReturnPolicyCom
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class ReturnPolicySecurityUtils
-        implements BaseGraphQl {
+public final class ReturnPolicySecurityUtils {
 
     private static class ReturnPolicySecurityUtilsHolder {
         static ReturnPolicySecurityUtils instance = new ReturnPolicySecurityUtils();

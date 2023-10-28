@@ -33,8 +33,7 @@ import com.echothree.control.user.content.server.command.GetContentSectionsComma
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class ContentSecurityUtils
-        implements BaseGraphQl {
+public final class ContentSecurityUtils {
 
     private static class ContentSecurityUtilsHolder {
         static ContentSecurityUtils instance = new ContentSecurityUtils();

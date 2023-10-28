@@ -27,8 +27,7 @@ import com.echothree.control.user.uom.server.command.GetUnitOfMeasureTypesComman
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class UomSecurityUtils
-        implements BaseGraphQl {
+public final class UomSecurityUtils {
 
     private static class UomSecurityUtilsHolder {
         static UomSecurityUtils instance = new UomSecurityUtils();

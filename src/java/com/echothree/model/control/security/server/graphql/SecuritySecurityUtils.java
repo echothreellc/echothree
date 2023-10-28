@@ -23,8 +23,7 @@ import com.echothree.control.user.security.server.command.GetSecurityRolesComman
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class SecuritySecurityUtils
-        implements BaseGraphQl {
+public final class SecuritySecurityUtils {
 
     private static class FilterSecurityUtilsHolder {
         static SecuritySecurityUtils instance = new SecuritySecurityUtils();

@@ -46,8 +46,7 @@ import com.echothree.control.user.core.server.command.GetMimeTypesCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class CoreSecurityUtils
-        implements BaseGraphQl {
+public final class CoreSecurityUtils {
 
     private static class CoreSecurityUtilsHolder {
         static CoreSecurityUtils instance = new CoreSecurityUtils();

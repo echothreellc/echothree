@@ -36,8 +36,7 @@ import com.echothree.control.user.filter.server.command.GetFiltersCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class FilterSecurityUtils
-        implements BaseGraphQl {
+public final class FilterSecurityUtils {
 
     private static class FilterSecurityUtilsHolder {
         static FilterSecurityUtils instance = new FilterSecurityUtils();

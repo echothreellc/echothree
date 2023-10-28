@@ -23,8 +23,7 @@ import com.echothree.control.user.wishlist.server.command.GetWishlistTypesComman
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class WishlistSecurityUtils
-        implements BaseGraphQl {
+public final class WishlistSecurityUtils {
 
     private static class ItemSecurityUtilsHolder {
         static WishlistSecurityUtils instance = new WishlistSecurityUtils();

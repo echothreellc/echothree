@@ -57,8 +57,7 @@ import com.echothree.control.user.item.server.command.GetRelatedItemsCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class ItemSecurityUtils
-        implements BaseGraphQl {
+public final class ItemSecurityUtils {
 
     private static class ItemSecurityUtilsHolder {
         static ItemSecurityUtils instance = new ItemSecurityUtils();

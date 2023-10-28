@@ -24,8 +24,7 @@ import com.echothree.control.user.geo.server.command.GetGeoCodeTypesCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class GeoSecurityUtils
-        implements BaseGraphQl {
+public final class GeoSecurityUtils {
 
     private static class AccountingSecurityUtilsHolder {
         static GeoSecurityUtils instance = new GeoSecurityUtils();

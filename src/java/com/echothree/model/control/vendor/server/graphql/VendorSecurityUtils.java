@@ -33,8 +33,7 @@ import com.echothree.util.common.form.BaseForm;
 import graphql.schema.DataFetchingEnvironment;
 import javax.naming.NamingException;
 
-public final class VendorSecurityUtils
-        implements BaseGraphQl {
+public final class VendorSecurityUtils {
 
     private static class AccountingSecurityUtilsHolder {
         static VendorSecurityUtils instance = new VendorSecurityUtils();

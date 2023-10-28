@@ -27,8 +27,7 @@ import com.echothree.control.user.accounting.server.command.GetSymbolPositionsCo
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class AccountingSecurityUtils
-        implements BaseGraphQl {
+public final class AccountingSecurityUtils {
 
     private static class AccountingSecurityUtilsHolder {
         static AccountingSecurityUtils instance = new AccountingSecurityUtils();

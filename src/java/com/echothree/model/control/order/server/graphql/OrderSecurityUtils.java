@@ -25,8 +25,7 @@ import com.echothree.control.user.order.server.command.GetOrderTypesCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public interface OrderSecurityUtils
-        extends BaseGraphQl {
+public interface OrderSecurityUtils {
 
     static boolean getHasOrderTypeAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetOrderTypeCommand.class);

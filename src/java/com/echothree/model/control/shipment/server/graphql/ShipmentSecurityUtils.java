@@ -21,8 +21,7 @@ import com.echothree.control.user.shipment.server.command.GetFreeOnBoardsCommand
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class ShipmentSecurityUtils
-        implements BaseGraphQl {
+public final class ShipmentSecurityUtils {
 
     private static class AccountingSecurityUtilsHolder {
         static ShipmentSecurityUtils instance = new ShipmentSecurityUtils();
