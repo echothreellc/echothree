@@ -28,7 +28,7 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("entity visit object")
 @GraphQLName("EntityVisit")
 public class EntityVisitObject
-        extends BaseGraphQl {
+        implements BaseGraphQl {
     
     private final EntityVisit entityVisit; // Always Present
     

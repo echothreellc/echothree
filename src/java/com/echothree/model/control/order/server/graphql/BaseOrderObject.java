@@ -59,7 +59,7 @@ public abstract class BaseOrderObject
     @GraphQLDescription("order type")
     @GraphQLNonNull
     public OrderTypeObject getOrderType(final DataFetchingEnvironment env) {
-        return OrderSecurityUtils.getInstance().getHasOrderTypeAccess(env) ? new OrderTypeObject(getOrderDetail().getOrderType()) : null;
+        return OrderSecurityUtils.getHasOrderTypeAccess(env) ? new OrderTypeObject(getOrderDetail().getOrderType()) : null;
     }
 
     @GraphQLField
@@ -74,7 +74,7 @@ public abstract class BaseOrderObject
     public OrderPriorityObject getOrderPriority(final DataFetchingEnvironment env) {
         var orderPriority = getOrderDetail().getOrderPriority();
 
-        return orderPriority == null ? null : OrderSecurityUtils.getInstance().getHasOrderPriorityAccess(env) ?
+        return orderPriority == null ? null : OrderSecurityUtils.getHasOrderPriorityAccess(env) ?
                 new OrderPriorityObject(orderPriority) : null;
     }
 

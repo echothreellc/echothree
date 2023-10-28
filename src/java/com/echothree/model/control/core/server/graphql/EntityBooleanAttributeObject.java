@@ -27,8 +27,7 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("entity boolean attribute object")
 @GraphQLName("EntityBooleanAttribute")
 public class EntityBooleanAttributeObject
-        extends BaseGraphQl
-        implements AttributeInterface {
+        implements BaseGraphQl, AttributeInterface {
     
     private final EntityBooleanAttribute entityBooleanAttribute; // Always Present
     

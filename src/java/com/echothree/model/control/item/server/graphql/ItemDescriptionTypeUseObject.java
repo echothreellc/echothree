@@ -26,7 +26,7 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("item description type use object")
 @GraphQLName("ItemDescriptionTypeUse")
 public class ItemDescriptionTypeUseObject
-        extends BaseGraphQl {
+        implements BaseGraphQl {
     
     private final ItemDescriptionTypeUse itemDescriptionTypeUse; // Always Present
     

@@ -28,7 +28,7 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("date object")
 @GraphQLName("Date")
 public class DateObject
-        extends BaseGraphQl {
+        implements BaseGraphQl {
 
     private Integer unformattedDate; // Always Present
 
@@ -47,35 +47,35 @@ public class DateObject
     @GraphQLDescription("short date")
     @GraphQLNonNull
     public String getShortDate(final DataFetchingEnvironment env) {
-        return DateUtils.getInstance().getDateFormatter(getUserVisit(env), DateTimeFormatType.SHORT_DATE).format(unformattedDate);
+        return DateUtils.getInstance().getDateFormatter(BaseGraphQl.getUserVisit(env), DateTimeFormatType.SHORT_DATE).format(unformattedDate);
     }
 
     @GraphQLField
     @GraphQLDescription("abbrev date")
     @GraphQLNonNull
     public String getAbbrevDate(final DataFetchingEnvironment env) {
-        return DateUtils.getInstance().getDateFormatter(getUserVisit(env), DateTimeFormatType.ABBREV_DATE).format(unformattedDate);
+        return DateUtils.getInstance().getDateFormatter(BaseGraphQl.getUserVisit(env), DateTimeFormatType.ABBREV_DATE).format(unformattedDate);
     }
 
     @GraphQLField
     @GraphQLDescription("abbrev date with weekday")
     @GraphQLNonNull
     public String getAbbrevDateWithWeekday(final DataFetchingEnvironment env) {
-        return DateUtils.getInstance().getDateFormatter(getUserVisit(env), DateTimeFormatType.ABBREV_DATE_WITH_WEEKDAY).format(unformattedDate);
+        return DateUtils.getInstance().getDateFormatter(BaseGraphQl.getUserVisit(env), DateTimeFormatType.ABBREV_DATE_WITH_WEEKDAY).format(unformattedDate);
     }
 
     @GraphQLField
     @GraphQLDescription("long date")
     @GraphQLNonNull
     public String getLongDate(final DataFetchingEnvironment env) {
-        return DateUtils.getInstance().getDateFormatter(getUserVisit(env), DateTimeFormatType.LONG_DATE).format(unformattedDate);
+        return DateUtils.getInstance().getDateFormatter(BaseGraphQl.getUserVisit(env), DateTimeFormatType.LONG_DATE).format(unformattedDate);
     }
 
     @GraphQLField
     @GraphQLDescription("long date with weekday")
     @GraphQLNonNull
     public String getLongDateWithWeekday(final DataFetchingEnvironment env) {
-        return DateUtils.getInstance().getDateFormatter(getUserVisit(env), DateTimeFormatType.LONG_DATE_WITH_WEEKDAY).format(unformattedDate);
+        return DateUtils.getInstance().getDateFormatter(BaseGraphQl.getUserVisit(env), DateTimeFormatType.LONG_DATE_WITH_WEEKDAY).format(unformattedDate);
     }
 
 

@@ -22,6 +22,7 @@ import com.echothree.model.control.cancellationpolicy.server.graphql.Cancellatio
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationPolicySecurityUtils;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.inventory.server.graphql.AllocationPriorityObject;
 import com.echothree.model.control.inventory.server.graphql.InventorySecurityUtils;
 import com.echothree.model.control.offer.server.graphql.OfferSecurityUtils;
@@ -238,7 +239,7 @@ public class CustomerTypeObject
         var customerControl = Session.getModelController(CustomerControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return customerControl.getBestCustomerTypeDescription(customerType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return customerControl.getBestCustomerTypeDescription(customerType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
 }

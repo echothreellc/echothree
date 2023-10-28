@@ -17,6 +17,7 @@
 package com.echothree.model.control.payment.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.payment.server.control.PaymentMethodTypeControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.payment.server.entity.PaymentMethodType;
@@ -79,7 +80,7 @@ public class PaymentMethodTypeObject
         var paymentMethodTypeControl = Session.getModelController(PaymentMethodTypeControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return paymentMethodTypeControl.getBestPaymentMethodTypeDescription(paymentMethodType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return paymentMethodTypeControl.getBestPaymentMethodTypeDescription(paymentMethodType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
     
 }

@@ -27,7 +27,7 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("party alias object")
 @GraphQLName("PartyAlias")
 public class PartyAliasObject
-        extends BaseGraphQl {
+        implements BaseGraphQl {
     
     private final PartyAlias partyAlias; // Always Present
     

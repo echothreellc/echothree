@@ -17,6 +17,7 @@
 package com.echothree.model.control.term.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.term.common.TermTypes;
 import com.echothree.model.control.term.server.control.TermControl;
 import com.echothree.model.control.user.server.control.UserControl;
@@ -102,7 +103,7 @@ public class TermObject
         var termControl = Session.getModelController(TermControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return termControl.getBestTermDescription(term, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return termControl.getBestTermDescription(term, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
 }

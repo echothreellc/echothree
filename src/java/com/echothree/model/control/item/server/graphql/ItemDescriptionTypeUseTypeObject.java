@@ -17,6 +17,7 @@
 package com.echothree.model.control.item.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
@@ -88,7 +89,7 @@ public class ItemDescriptionTypeUseTypeObject
         var itemControl = Session.getModelController(ItemControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return itemControl.getBestItemDescriptionTypeUseTypeDescription(itemDescriptionTypeUseType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return itemControl.getBestItemDescriptionTypeUseTypeDescription(itemDescriptionTypeUseType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
     @GraphQLField

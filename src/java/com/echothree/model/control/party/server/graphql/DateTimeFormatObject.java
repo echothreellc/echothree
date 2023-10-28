@@ -17,6 +17,7 @@
 package com.echothree.model.control.party.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
@@ -191,7 +192,7 @@ public class DateTimeFormatObject
         var partyControl = Session.getModelController(PartyControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return partyControl.getBestDateTimeFormatDescription(dateTimeFormat, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return partyControl.getBestDateTimeFormatDescription(dateTimeFormat, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
     
 }

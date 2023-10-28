@@ -19,6 +19,7 @@ package com.echothree.model.control.item.server.graphql;
 import com.echothree.model.control.core.server.graphql.CoreSecurityUtils;
 import com.echothree.model.control.core.server.graphql.MimeTypeObject;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.item.server.entity.ItemImageType;
@@ -95,7 +96,7 @@ public class ItemImageTypeObject
         var itemControl = Session.getModelController(ItemControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return itemControl.getBestItemImageTypeDescription(itemImageType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return itemControl.getBestItemImageTypeDescription(itemImageType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
 }

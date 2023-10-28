@@ -20,6 +20,7 @@ import com.echothree.model.control.cancellationpolicy.server.control.Cancellatio
 import com.echothree.model.control.core.server.graphql.CoreSecurityUtils;
 import com.echothree.model.control.core.server.graphql.MimeTypeObject;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicy;
 import com.echothree.model.data.cancellationpolicy.server.entity.CancellationPolicyDetail;
@@ -61,7 +62,7 @@ public class CancellationPolicyObject
             var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
             var userControl = Session.getModelController(UserControl.class);
 
-            cancellationPolicyTranslation = cancellationPolicyControl.getBestCancellationPolicyTranslation(cancellationPolicy, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+            cancellationPolicyTranslation = cancellationPolicyControl.getBestCancellationPolicyTranslation(cancellationPolicy, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
         }
 
         return cancellationPolicyTranslation;

@@ -17,6 +17,7 @@
 package com.echothree.model.control.party.server.graphql;
 
 import com.echothree.model.control.accounting.server.graphql.AccountingSecurityUtils;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
@@ -136,7 +137,7 @@ public abstract class BasePartyObject
         var partyControl = Session.getModelController(PartyControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return partyControl.getBestPartyDescription(party, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return partyControl.getBestPartyDescription(party, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
     @GraphQLField

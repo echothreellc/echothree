@@ -31,7 +31,7 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("user session object")
 @GraphQLName("UserSession")
 public class UserSessionObject
-        extends BaseGraphQl {
+        implements BaseGraphQl {
     
     private final UserSession userSession; // Always Present
     

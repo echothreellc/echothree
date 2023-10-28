@@ -40,7 +40,7 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("user visit object")
 @GraphQLName("UserVisit")
 public class UserVisitObject
-        extends BaseGraphQl {
+        implements BaseGraphQl {
 
     private final UserVisit userVisit; // Always Present
 

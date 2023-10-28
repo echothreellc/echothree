@@ -28,7 +28,7 @@ import java.util.List;
 @GraphQLDescription("entity names object")
 @GraphQLName("EntityNames")
 public class EntityNamesObject
-        extends BaseGraphQl {
+        implements BaseGraphQl {
 
     private final EntityNames entityNames; // Always Present
 

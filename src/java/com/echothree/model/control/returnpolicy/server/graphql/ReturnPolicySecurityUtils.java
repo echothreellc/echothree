@@ -24,7 +24,7 @@ import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
 public final class ReturnPolicySecurityUtils
-        extends BaseGraphQl {
+        implements BaseGraphQl {
 
     private static class ReturnPolicySecurityUtilsHolder {
         static ReturnPolicySecurityUtils instance = new ReturnPolicySecurityUtils();
@@ -35,19 +35,19 @@ public final class ReturnPolicySecurityUtils
     }
 
     public boolean getHasReturnKindAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetReturnKindCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetReturnKindCommand.class);
     }
 
     public boolean getHasReturnKindsAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetReturnKindsCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetReturnKindsCommand.class);
     }
 
     public boolean getHasReturnPolicyAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetReturnPolicyCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetReturnPolicyCommand.class);
     }
 
     public boolean getHasReturnPoliciesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetReturnPoliciesCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetReturnPoliciesCommand.class);
     }
 
 }

@@ -26,7 +26,7 @@ import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
 public final class TagSecurityUtils
-        extends BaseGraphQl {
+        implements BaseGraphQl {
 
     private static class InventorySecurityUtilsHolder {
         static TagSecurityUtils instance = new TagSecurityUtils();
@@ -37,27 +37,27 @@ public final class TagSecurityUtils
     }
 
     public boolean getHasTagScopeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetTagScopeCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetTagScopeCommand.class);
     }
 
     public boolean getHasTagScopesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetTagScopesCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetTagScopesCommand.class);
     }
 
     public boolean getHasTagScopeEntityTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetTagScopeEntityTypeCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetTagScopeEntityTypeCommand.class);
     }
 
     public boolean getHasTagScopeEntityTypesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetTagScopeEntityTypesCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetTagScopeEntityTypesCommand.class);
     }
 
     public boolean getHasTagAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetTagCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetTagCommand.class);
     }
 
     public boolean getHasTagsAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetTagsCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetTagsCommand.class);
     }
 
 }

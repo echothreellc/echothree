@@ -30,7 +30,7 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("role type object")
 @GraphQLName("RoleType")
 public class RoleTypeObject
-        extends BaseGraphQl {
+        implements BaseGraphQl {
 
     private final RoleType roleType; // Always Present
     
@@ -56,7 +56,7 @@ public class RoleTypeObject
         var partyControl = Session.getModelController(PartyControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return partyControl.getBestRoleTypeDescription(roleType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return partyControl.getBestRoleTypeDescription(roleType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
 }

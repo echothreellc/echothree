@@ -27,7 +27,7 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("entity appearance object")
 @GraphQLName("EntityAppearance")
 public class EntityAppearanceObject
-        extends BaseGraphQl {
+        implements BaseGraphQl {
     
     private final EntityAppearance entityAppearance; // Always Present
     

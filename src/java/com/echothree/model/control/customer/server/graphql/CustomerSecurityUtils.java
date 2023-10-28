@@ -28,7 +28,7 @@ import graphql.schema.DataFetchingEnvironment;
 import javax.naming.NamingException;
 
 public final class CustomerSecurityUtils
-        extends BaseGraphQl {
+        implements BaseGraphQl {
 
     private static class AccountingSecurityUtilsHolder {
         static CustomerSecurityUtils instance = new CustomerSecurityUtils();
@@ -39,11 +39,11 @@ public final class CustomerSecurityUtils
     }
 
     public boolean getHasCustomerTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetCustomerTypeCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetCustomerTypeCommand.class);
     }
 
     public boolean getHasCustomerTypesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetCustomerTypesCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetCustomerTypesCommand.class);
     }
 
     public boolean getHasCustomerAccess(final DataFetchingEnvironment env, final Party party) {
@@ -60,11 +60,11 @@ public final class CustomerSecurityUtils
             throw new RuntimeException(ex);
         }
 
-        return getGraphQlExecutionContext(env).hasAccess(GetCustomerCommand.class, baseForm);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetCustomerCommand.class, baseForm);
     }
 
     public boolean getHasCustomersAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetCustomersCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetCustomersCommand.class);
     }
 
 }

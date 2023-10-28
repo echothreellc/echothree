@@ -18,6 +18,7 @@ package com.echothree.model.control.content.server.graphql;
 
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.content.server.entity.ContentPage;
 import com.echothree.model.data.content.server.entity.ContentSection;
@@ -94,7 +95,7 @@ public class ContentSectionObject
         var contentControl = Session.getModelController(ContentControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return contentControl.getBestContentSectionDescription(contentSection, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return contentControl.getBestContentSectionDescription(contentSection, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
     
     @GraphQLField

@@ -51,7 +51,7 @@ import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
 public final class WorkflowSecurityUtils
-        extends BaseGraphQl {
+        implements BaseGraphQl {
 
     private static class WorkflowSecurityUtilsHolder {
         static WorkflowSecurityUtils instance = new WorkflowSecurityUtils();
@@ -62,127 +62,127 @@ public final class WorkflowSecurityUtils
     }
 
     public boolean getHasWorkflowsAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWorkflowsCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWorkflowsCommand.class);
     }
 
     public boolean getHasWorkflowAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWorkflowCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWorkflowCommand.class);
     }
 
     public boolean getHasWorkflowStepsAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWorkflowStepsCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWorkflowStepsCommand.class);
     }
 
     public boolean getHasWorkflowStepAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWorkflowStepCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWorkflowStepCommand.class);
     }
 
     public boolean getHasWorkflowStepTypesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWorkflowStepTypesCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWorkflowStepTypesCommand.class);
     }
 
     public boolean getHasWorkflowStepTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWorkflowStepTypeCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWorkflowStepTypeCommand.class);
     }
 
     public boolean getHasWorkflowEntityStatusesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWorkflowEntityStatusesCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWorkflowEntityStatusesCommand.class);
     }
 
     public boolean getHasWorkflowEntrancesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWorkflowEntrancesCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWorkflowEntrancesCommand.class);
     }
 
     public boolean getHasWorkflowEntranceAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWorkflowEntranceCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWorkflowEntranceCommand.class);
     }
 
     public boolean getHasWorkflowEntranceStepsAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWorkflowEntranceStepsCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWorkflowEntranceStepsCommand.class);
     }
 
     public boolean getHasWorkflowEntranceStepAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWorkflowEntranceStepCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWorkflowEntranceStepCommand.class);
     }
 
     public boolean getHasWorkflowEntrancePartyTypesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWorkflowEntrancePartyTypesCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWorkflowEntrancePartyTypesCommand.class);
     }
 
     public boolean getHasWorkflowEntrancePartyTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWorkflowEntrancePartyTypeCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWorkflowEntrancePartyTypeCommand.class);
     }
 
     public boolean getHasWorkflowEntranceSecurityRolesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWorkflowEntranceSecurityRolesCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWorkflowEntranceSecurityRolesCommand.class);
     }
 
     public boolean getHasWorkflowEntranceSecurityRoleAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWorkflowEntranceSecurityRoleCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWorkflowEntranceSecurityRoleCommand.class);
     }
 
     public boolean getHasWorkflowEntranceSelectorsAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWorkflowEntranceSelectorsCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWorkflowEntranceSelectorsCommand.class);
     }
 
     public boolean getHasWorkflowEntranceSelectorAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWorkflowEntranceSelectorCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWorkflowEntranceSelectorCommand.class);
     }
 
     public boolean getHasWorkflowDestinationsAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWorkflowDestinationsCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWorkflowDestinationsCommand.class);
     }
 
     public boolean getHasWorkflowDestinationAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWorkflowDestinationCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWorkflowDestinationCommand.class);
     }
 
     public boolean getHasWorkflowDestinationStepsAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWorkflowDestinationStepsCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWorkflowDestinationStepsCommand.class);
     }
 
     public boolean getHasWorkflowDestinationStepAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWorkflowDestinationStepCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWorkflowDestinationStepCommand.class);
     }
 
     public boolean getHasWorkflowDestinationPartyTypesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWorkflowDestinationPartyTypesCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWorkflowDestinationPartyTypesCommand.class);
     }
 
     public boolean getHasWorkflowDestinationPartyTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWorkflowDestinationPartyTypeCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWorkflowDestinationPartyTypeCommand.class);
     }
 
     public boolean getHasWorkflowDestinationSecurityRolesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWorkflowDestinationSecurityRolesCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWorkflowDestinationSecurityRolesCommand.class);
     }
 
     public boolean getHasWorkflowDestinationSecurityRoleAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWorkflowDestinationSecurityRoleCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWorkflowDestinationSecurityRoleCommand.class);
     }
 
     public boolean getHasWorkflowDestinationSelectorsAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWorkflowDestinationSelectorsCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWorkflowDestinationSelectorsCommand.class);
     }
 
     public boolean getHasWorkflowDestinationSelectorAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWorkflowDestinationSelectorCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWorkflowDestinationSelectorCommand.class);
     }
 
     public boolean getHasWorkflowEntityTypesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWorkflowEntityTypesCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWorkflowEntityTypesCommand.class);
     }
 
     public boolean getHasWorkflowEntityTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWorkflowEntityTypeCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWorkflowEntityTypeCommand.class);
     }
 
     public boolean getHasWorkflowSelectorKindsAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWorkflowSelectorKindsCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWorkflowSelectorKindsCommand.class);
     }
 
     public boolean getHasWorkflowSelectorKindAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWorkflowSelectorKindCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWorkflowSelectorKindCommand.class);
     }
 
 }

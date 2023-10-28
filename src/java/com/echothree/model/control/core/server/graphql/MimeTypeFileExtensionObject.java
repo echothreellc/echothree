@@ -27,7 +27,7 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("mime type file extension object")
 @GraphQLName("MimeTypeFileExtension")
 public class MimeTypeFileExtensionObject
-        extends BaseGraphQl {
+        implements BaseGraphQl {
     
     private final MimeTypeFileExtension mimeTypeFileExtension; // Always Present
     

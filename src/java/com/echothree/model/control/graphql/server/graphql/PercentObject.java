@@ -27,7 +27,7 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("percent object")
 @GraphQLName("Percent")
 public class PercentObject
-        extends BaseGraphQl {
+        implements BaseGraphQl {
 
     private Integer unformattedPercent; // Always Present
 

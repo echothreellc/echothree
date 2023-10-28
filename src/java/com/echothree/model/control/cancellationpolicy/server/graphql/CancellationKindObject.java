@@ -18,6 +18,7 @@ package com.echothree.model.control.cancellationpolicy.server.graphql;
 
 import com.echothree.model.control.cancellationpolicy.server.control.CancellationPolicyControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
@@ -96,7 +97,7 @@ public class CancellationKindObject
         var cancellationPolicyControl = Session.getModelController(CancellationPolicyControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return cancellationPolicyControl.getBestCancellationKindDescription(cancellationKind, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return cancellationPolicyControl.getBestCancellationKindDescription(cancellationKind, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
     @GraphQLField

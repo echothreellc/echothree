@@ -24,7 +24,7 @@ import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
 public final class CancellationPolicySecurityUtils
-        extends BaseGraphQl {
+        implements BaseGraphQl {
 
     private static class CancellationPolicySecurityUtilsHolder {
         static CancellationPolicySecurityUtils instance = new CancellationPolicySecurityUtils();
@@ -35,19 +35,19 @@ public final class CancellationPolicySecurityUtils
     }
     
     public boolean getHasCancellationKindAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetCancellationKindCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetCancellationKindCommand.class);
     }
 
     public boolean getHasCancellationKindsAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetCancellationKindsCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetCancellationKindsCommand.class);
     }
 
     public boolean getHasCancellationPolicyAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetCancellationPolicyCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetCancellationPolicyCommand.class);
     }
 
     public boolean getHasCancellationPoliciesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetCancellationPoliciesCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetCancellationPoliciesCommand.class);
     }
 
 }

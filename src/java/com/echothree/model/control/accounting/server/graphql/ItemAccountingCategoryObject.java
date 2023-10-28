@@ -18,6 +18,7 @@ package com.echothree.model.control.accounting.server.graphql;
 
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
@@ -144,7 +145,7 @@ public class ItemAccountingCategoryObject
         var accountingControl = Session.getModelController(AccountingControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return accountingControl.getBestItemAccountingCategoryDescription(itemAccountingCategory, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return accountingControl.getBestItemAccountingCategoryDescription(itemAccountingCategory, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
     @GraphQLField

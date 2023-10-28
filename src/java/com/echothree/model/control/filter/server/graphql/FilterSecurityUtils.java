@@ -37,7 +37,7 @@ import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
 public final class FilterSecurityUtils
-        extends BaseGraphQl {
+        implements BaseGraphQl {
 
     private static class FilterSecurityUtilsHolder {
         static FilterSecurityUtils instance = new FilterSecurityUtils();
@@ -48,71 +48,71 @@ public final class FilterSecurityUtils
     }
 
     public boolean getHasFilterKindAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetFilterKindCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetFilterKindCommand.class);
     }
 
     public boolean getHasFilterTypesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetFilterTypesCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetFilterTypesCommand.class);
     }
 
     public boolean getHasFilterTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetFilterTypeCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetFilterTypeCommand.class);
     }
 
     public boolean getHasFilterAdjustmentSourceAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetFilterAdjustmentSourceCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetFilterAdjustmentSourceCommand.class);
     }
 
     public boolean getHasFilterAdjustmentTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetFilterAdjustmentTypeCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetFilterAdjustmentTypeCommand.class);
     }
 
     public boolean getHasFilterAdjustmentsAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetFilterAdjustmentsCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetFilterAdjustmentsCommand.class);
     }
 
     public boolean getHasFilterAdjustmentAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetFilterAdjustmentCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetFilterAdjustmentCommand.class);
     }
 
     public boolean getHasFilterAdjustmentAmountsAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetFilterAdjustmentAmountsCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetFilterAdjustmentAmountsCommand.class);
     }
 
     public boolean getHasFilterAdjustmentAmountAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetFilterAdjustmentAmountCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetFilterAdjustmentAmountCommand.class);
     }
 
     public boolean getHasFilterAdjustmentFixedAmountsAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetFilterAdjustmentFixedAmountsCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetFilterAdjustmentFixedAmountsCommand.class);
     }
 
     public boolean getHasFilterAdjustmentFixedAmountAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetFilterAdjustmentFixedAmountCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetFilterAdjustmentFixedAmountCommand.class);
     }
 
     public boolean getHasFilterAdjustmentPercentsAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetFilterAdjustmentPercentsCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetFilterAdjustmentPercentsCommand.class);
     }
 
     public boolean getHasFilterAdjustmentPercentAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetFilterAdjustmentPercentCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetFilterAdjustmentPercentCommand.class);
     }
 
     public boolean getHasFiltersAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetFiltersCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetFiltersCommand.class);
     }
 
     public boolean getHasFilterAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetFilterCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetFilterCommand.class);
     }
 
     public boolean getHasFilterStepsAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetFilterStepsCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetFilterStepsCommand.class);
     }
 
     public boolean getHasFilterStepAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetFilterStepCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetFilterStepCommand.class);
     }
 
 }

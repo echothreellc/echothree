@@ -30,7 +30,7 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("workflow entity status object")
 @GraphQLName("WorkflowEntityStatus")
 public class WorkflowEntityStatusObject
-        extends BaseGraphQl {
+        implements BaseGraphQl {
 
     private final WorkflowEntityStatus workflowEntityStatus; // Always Present
 

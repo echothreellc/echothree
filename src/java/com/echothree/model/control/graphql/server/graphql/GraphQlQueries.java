@@ -405,6 +405,7 @@ import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import static com.echothree.model.control.graphql.server.util.BaseGraphQl.getUserVisitPK;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.inventory.server.control.LotControl;
@@ -736,12 +737,11 @@ import java.util.stream.Collectors;
 import javax.naming.NamingException;
 
 @GraphQLName("query")
-public final class GraphQlQueries
-        extends BaseGraphQl {
+public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("searchResultActionType")
-    public static SearchResultActionTypeObject searchResultActionType(final DataFetchingEnvironment env,
+    static SearchResultActionTypeObject searchResultActionType(final DataFetchingEnvironment env,
             @GraphQLName("searchResultActionTypeName") final String searchResultActionTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
         SearchResultActionType searchResultActionType;
@@ -764,7 +764,7 @@ public final class GraphQlQueries
     @GraphQLName("searchResultActionTypes")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<SearchResultActionTypeObject> searchResultActionTypes(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<SearchResultActionTypeObject> searchResultActionTypes(final DataFetchingEnvironment env) {
         CountingPaginatedData<SearchResultActionTypeObject> data;
 
         try {
@@ -792,7 +792,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("searchCheckSpellingActionType")
-    public static SearchCheckSpellingActionTypeObject searchCheckSpellingActionType(final DataFetchingEnvironment env,
+    static SearchCheckSpellingActionTypeObject searchCheckSpellingActionType(final DataFetchingEnvironment env,
             @GraphQLName("searchCheckSpellingActionTypeName") final String searchCheckSpellingActionTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
         SearchCheckSpellingActionType searchCheckSpellingActionType;
@@ -815,7 +815,7 @@ public final class GraphQlQueries
     @GraphQLName("searchCheckSpellingActionTypes")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<SearchCheckSpellingActionTypeObject> searchCheckSpellingActionTypes(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<SearchCheckSpellingActionTypeObject> searchCheckSpellingActionTypes(final DataFetchingEnvironment env) {
         CountingPaginatedData<SearchCheckSpellingActionTypeObject> data;
 
         try {
@@ -843,7 +843,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("workflow")
-    public static WorkflowObject workflow(final DataFetchingEnvironment env,
+    static WorkflowObject workflow(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") final String workflowName,
             @GraphQLName("id") @GraphQLID final String id) {
         Workflow workflow;
@@ -864,7 +864,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("workflows")
-    public static Collection<WorkflowObject> workflows(final DataFetchingEnvironment env,
+    static Collection<WorkflowObject> workflows(final DataFetchingEnvironment env,
             @GraphQLName("selectorKindName") final String selectorKindName) {
         Collection<Workflow> workflows;
         Collection<WorkflowObject> workflowObjects;
@@ -894,7 +894,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("workflowEntityType")
-    public static WorkflowEntityTypeObject workflowEntityType(final DataFetchingEnvironment env,
+    static WorkflowEntityTypeObject workflowEntityType(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
             @GraphQLName("componentVendorName") @GraphQLNonNull final String componentVendorName,
             @GraphQLName("entityTypeName") @GraphQLNonNull final String entityTypeName) {
@@ -917,7 +917,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("workflowEntityTypes")
-    public static Collection<WorkflowEntityTypeObject> workflowEntityTypes(final DataFetchingEnvironment env,
+    static Collection<WorkflowEntityTypeObject> workflowEntityTypes(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") final String workflowName,
             @GraphQLName("componentVendorName") final String componentVendorName,
             @GraphQLName("entityTypeName") final String entityTypeName) {
@@ -951,7 +951,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("workflowSelectorKind")
-    public static WorkflowSelectorKindObject workflowSelectorKind(final DataFetchingEnvironment env,
+    static WorkflowSelectorKindObject workflowSelectorKind(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
             @GraphQLName("selectorKindName") @GraphQLNonNull final String selectorKindName) {
         WorkflowSelectorKind workflowSelectorKind;
@@ -972,7 +972,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("workflowSelectorKinds")
-    public static Collection<WorkflowSelectorKindObject> workflowSelectorKinds(final DataFetchingEnvironment env,
+    static Collection<WorkflowSelectorKindObject> workflowSelectorKinds(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") final String workflowName,
             @GraphQLName("selectorKindName") final String selectorKindName) {
         Collection<WorkflowSelectorKind> workflowSelectorKinds;
@@ -1004,7 +1004,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("workflowStep")
-    public static WorkflowStepObject workflowStep(final DataFetchingEnvironment env,
+    static WorkflowStepObject workflowStep(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") final String workflowName,
             @GraphQLName("workflowStepName") final String workflowStepName,
             @GraphQLName("id") @GraphQLID final String id) {
@@ -1027,7 +1027,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("workflowSteps")
-    public static Collection<WorkflowStepObject> workflowSteps(final DataFetchingEnvironment env,
+    static Collection<WorkflowStepObject> workflowSteps(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") @GraphQLNonNull final String workflowName) {
         Collection<WorkflowStep> workflowSteps;
         Collection<WorkflowStepObject> workflowStepObjects;
@@ -1057,7 +1057,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("workflowDestination")
-    public static WorkflowDestinationObject workflowDestination(final DataFetchingEnvironment env,
+    static WorkflowDestinationObject workflowDestination(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") final String workflowName,
             @GraphQLName("workflowStepName") final String workflowStepName,
             @GraphQLName("workflowDestinationName") final String workflowDestinationName,
@@ -1082,7 +1082,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("workflowDestinations")
-    public static Collection<WorkflowDestinationObject> workflowDestinations(final DataFetchingEnvironment env,
+    static Collection<WorkflowDestinationObject> workflowDestinations(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
             @GraphQLName("workflowStepName") @GraphQLNonNull final String workflowStepName) {
         Collection<WorkflowDestination> workflowDestinations;
@@ -1114,7 +1114,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("workflowDestinationStep")
-    public static WorkflowDestinationStepObject workflowDestinationStep(final DataFetchingEnvironment env,
+    static WorkflowDestinationStepObject workflowDestinationStep(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
             @GraphQLName("workflowStepName") @GraphQLNonNull final String workflowStepName,
             @GraphQLName("workflowDestinationName") @GraphQLNonNull final String workflowDestinationName,
@@ -1141,7 +1141,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("workflowDestinationSteps")
-    public static Collection<WorkflowDestinationStepObject> workflowDestinationSteps(final DataFetchingEnvironment env,
+    static Collection<WorkflowDestinationStepObject> workflowDestinationSteps(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
             @GraphQLName("workflowStepName") @GraphQLNonNull final String workflowStepName,
             @GraphQLName("workflowDestinationName") @GraphQLNonNull final String workflowDestinationName) {
@@ -1175,7 +1175,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("workflowDestinationPartyType")
-    public static WorkflowDestinationPartyTypeObject workflowDestinationPartyType(final DataFetchingEnvironment env,
+    static WorkflowDestinationPartyTypeObject workflowDestinationPartyType(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
             @GraphQLName("workflowStepName") @GraphQLNonNull final String workflowStepName,
             @GraphQLName("workflowDestinationName") @GraphQLNonNull final String workflowDestinationName,
@@ -1200,7 +1200,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("workflowDestinationPartyTypes")
-    public static Collection<WorkflowDestinationPartyTypeObject> workflowDestinationPartyTypes(final DataFetchingEnvironment env,
+    static Collection<WorkflowDestinationPartyTypeObject> workflowDestinationPartyTypes(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
             @GraphQLName("workflowStepName") @GraphQLNonNull final String workflowStepName,
             @GraphQLName("workflowDestinationName") @GraphQLNonNull final String workflowDestinationName) {
@@ -1234,7 +1234,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("workflowDestinationSecurityRole")
-    public static WorkflowDestinationSecurityRoleObject workflowDestinationSecurityRole(final DataFetchingEnvironment env,
+    static WorkflowDestinationSecurityRoleObject workflowDestinationSecurityRole(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
             @GraphQLName("workflowStepName") @GraphQLNonNull final String workflowStepName,
             @GraphQLName("workflowDestinationName") @GraphQLNonNull final String workflowDestinationName,
@@ -1261,7 +1261,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("workflowDestinationSecurityRoles")
-    public static Collection<WorkflowDestinationSecurityRoleObject> workflowDestinationSecurityRoles(final DataFetchingEnvironment env,
+    static Collection<WorkflowDestinationSecurityRoleObject> workflowDestinationSecurityRoles(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
             @GraphQLName("workflowStepName") @GraphQLNonNull final String workflowStepName,
             @GraphQLName("workflowDestinationName") @GraphQLNonNull final String workflowDestinationName,
@@ -1297,7 +1297,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("workflowDestinationSelector")
-    public static WorkflowDestinationSelectorObject workflowDestinationSelector(final DataFetchingEnvironment env,
+    static WorkflowDestinationSelectorObject workflowDestinationSelector(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
             @GraphQLName("workflowStepName") @GraphQLNonNull final String workflowStepName,
             @GraphQLName("workflowDestinationName") @GraphQLNonNull final String workflowDestinationName,
@@ -1322,7 +1322,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("workflowDestinationSelectors")
-    public static Collection<WorkflowDestinationSelectorObject> workflowDestinationSelectors(final DataFetchingEnvironment env,
+    static Collection<WorkflowDestinationSelectorObject> workflowDestinationSelectors(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
             @GraphQLName("workflowStepName") @GraphQLNonNull final String workflowStepName,
             @GraphQLName("workflowDestinationName") @GraphQLNonNull final String workflowDestinationName) {
@@ -1356,7 +1356,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("workflowEntrance")
-    public static WorkflowEntranceObject workflowEntrance(final DataFetchingEnvironment env,
+    static WorkflowEntranceObject workflowEntrance(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") final String workflowName,
             @GraphQLName("workflowEntranceName") final String workflowEntranceName,
             @GraphQLName("id") @GraphQLID final String id) {
@@ -1379,7 +1379,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("workflowEntrances")
-    public static Collection<WorkflowEntranceObject> workflowEntrances(final DataFetchingEnvironment env,
+    static Collection<WorkflowEntranceObject> workflowEntrances(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") @GraphQLNonNull final String workflowName) {
         Collection<WorkflowEntrance> workflowEntrances;
         Collection<WorkflowEntranceObject> workflowEntranceObjects;
@@ -1409,7 +1409,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("workflowEntranceStep")
-    public static WorkflowEntranceStepObject workflowEntranceStep(final DataFetchingEnvironment env,
+    static WorkflowEntranceStepObject workflowEntranceStep(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
             @GraphQLName("workflowEntranceName") @GraphQLNonNull final String workflowEntranceName,
             @GraphQLName("entranceWorkflowName") @GraphQLNonNull final String entranceWorkflowName,
@@ -1434,7 +1434,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("workflowEntranceSteps")
-    public static Collection<WorkflowEntranceStepObject> workflowEntranceSteps(final DataFetchingEnvironment env,
+    static Collection<WorkflowEntranceStepObject> workflowEntranceSteps(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
             @GraphQLName("workflowEntranceName") @GraphQLNonNull final String workflowEntranceName) {
         Collection<WorkflowEntranceStep> workflowEntranceSteps;
@@ -1466,7 +1466,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("workflowEntrancePartyType")
-    public static WorkflowEntrancePartyTypeObject workflowEntrancePartyType(final DataFetchingEnvironment env,
+    static WorkflowEntrancePartyTypeObject workflowEntrancePartyType(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
             @GraphQLName("workflowEntranceName") @GraphQLNonNull final String workflowEntranceName,
             @GraphQLName("partyTypeName") @GraphQLNonNull final String partyTypeName) {
@@ -1489,7 +1489,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("workflowEntrancePartyTypes")
-    public static Collection<WorkflowEntrancePartyTypeObject> workflowEntrancePartyTypes(final DataFetchingEnvironment env,
+    static Collection<WorkflowEntrancePartyTypeObject> workflowEntrancePartyTypes(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
             @GraphQLName("workflowEntranceName") @GraphQLNonNull final String workflowEntranceName) {
         Collection<WorkflowEntrancePartyType> workflowEntrancePartyTypes;
@@ -1521,7 +1521,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("workflowEntranceSecurityRole")
-    public static WorkflowEntranceSecurityRoleObject workflowEntranceSecurityRole(final DataFetchingEnvironment env,
+    static WorkflowEntranceSecurityRoleObject workflowEntranceSecurityRole(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
             @GraphQLName("workflowEntranceName") @GraphQLNonNull final String workflowEntranceName,
             @GraphQLName("partyTypeName") @GraphQLNonNull final String partyTypeName,
@@ -1546,7 +1546,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("workflowEntranceSecurityRoles")
-    public static Collection<WorkflowEntranceSecurityRoleObject> workflowEntranceSecurityRoles(final DataFetchingEnvironment env,
+    static Collection<WorkflowEntranceSecurityRoleObject> workflowEntranceSecurityRoles(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
             @GraphQLName("workflowEntranceName") @GraphQLNonNull final String workflowEntranceName,
             @GraphQLName("partyTypeName") @GraphQLNonNull final String partyTypeName) {
@@ -1580,7 +1580,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("workflowEntranceSelector")
-    public static WorkflowEntranceSelectorObject workflowEntranceSelector(final DataFetchingEnvironment env,
+    static WorkflowEntranceSelectorObject workflowEntranceSelector(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
             @GraphQLName("workflowEntranceName") @GraphQLNonNull final String workflowEntranceName,
             @GraphQLName("selectorName") @GraphQLNonNull final String selectorName) {
@@ -1603,7 +1603,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("workflowEntranceSelectors")
-    public static Collection<WorkflowEntranceSelectorObject> workflowEntranceSelectors(final DataFetchingEnvironment env,
+    static Collection<WorkflowEntranceSelectorObject> workflowEntranceSelectors(final DataFetchingEnvironment env,
             @GraphQLName("workflowName") @GraphQLNonNull final String workflowName,
             @GraphQLName("workflowEntranceName") @GraphQLNonNull final String workflowEntranceName) {
         Collection<WorkflowEntranceSelector> workflowEntranceSelectors;
@@ -1635,7 +1635,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("workflowStepType")
-    public static WorkflowStepTypeObject workflowStepType(final DataFetchingEnvironment env,
+    static WorkflowStepTypeObject workflowStepType(final DataFetchingEnvironment env,
             @GraphQLName("workflowStepTypeName") final String workflowStepTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
         WorkflowStepType workflowStepType;
@@ -1656,7 +1656,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("workflowStepTypes")
-    public static Collection<WorkflowStepTypeObject> workflowStepTypes(final DataFetchingEnvironment env) {
+    static Collection<WorkflowStepTypeObject> workflowStepTypes(final DataFetchingEnvironment env) {
         Collection<WorkflowStepType> workflowStepTypes;
         Collection<WorkflowStepTypeObject> workflowStepTypeObjects;
 
@@ -1683,7 +1683,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("sequence")
-    public static SequenceObject sequence(final DataFetchingEnvironment env,
+    static SequenceObject sequence(final DataFetchingEnvironment env,
             @GraphQLName("sequenceTypeName") final String sequenceTypeName,
             @GraphQLName("sequenceName") final String sequenceName,
             @GraphQLName("id") @GraphQLID final String id) {
@@ -1706,7 +1706,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("sequences")
-    public static Collection<SequenceObject> sequences(final DataFetchingEnvironment env,
+    static Collection<SequenceObject> sequences(final DataFetchingEnvironment env,
             @GraphQLName("sequenceTypeName") @GraphQLNonNull final String sequenceTypeName) {
         Collection<Sequence> sequences;
         Collection<SequenceObject> sequenceObjects;
@@ -1736,7 +1736,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("sequenceType")
-    public static SequenceTypeObject sequenceType(final DataFetchingEnvironment env,
+    static SequenceTypeObject sequenceType(final DataFetchingEnvironment env,
             @GraphQLName("sequenceTypeName") final String sequenceTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
         SequenceType sequenceType;
@@ -1757,7 +1757,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("sequenceTypes")
-    public static Collection<SequenceTypeObject> sequenceTypes(final DataFetchingEnvironment env) {
+    static Collection<SequenceTypeObject> sequenceTypes(final DataFetchingEnvironment env) {
         Collection<SequenceType> sequenceTypes;
         Collection<SequenceTypeObject> sequenceTypeObjects;
 
@@ -1784,7 +1784,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("sequenceChecksumType")
-    public static SequenceChecksumTypeObject sequenceChecksumType(final DataFetchingEnvironment env,
+    static SequenceChecksumTypeObject sequenceChecksumType(final DataFetchingEnvironment env,
             @GraphQLName("sequenceChecksumTypeName") @GraphQLNonNull final String sequenceChecksumTypeName) {
         SequenceChecksumType sequenceChecksumType;
 
@@ -1803,7 +1803,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("sequenceChecksumTypes")
-    public static Collection<SequenceChecksumTypeObject> sequenceChecksumTypes(final DataFetchingEnvironment env) {
+    static Collection<SequenceChecksumTypeObject> sequenceChecksumTypes(final DataFetchingEnvironment env) {
         Collection<SequenceChecksumType> sequenceChecksumTypes;
         Collection<SequenceChecksumTypeObject> sequenceChecksumTypeObjects;
 
@@ -1830,7 +1830,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("sequenceEncoderType")
-    public static SequenceEncoderTypeObject sequenceEncoderType(final DataFetchingEnvironment env,
+    static SequenceEncoderTypeObject sequenceEncoderType(final DataFetchingEnvironment env,
             @GraphQLName("sequenceEncoderTypeName") @GraphQLNonNull final String sequenceEncoderTypeName) {
         SequenceEncoderType sequenceEncoderType;
 
@@ -1849,7 +1849,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("sequenceEncoderTypes")
-    public static Collection<SequenceEncoderTypeObject> sequenceEncoderTypes(final DataFetchingEnvironment env) {
+    static Collection<SequenceEncoderTypeObject> sequenceEncoderTypes(final DataFetchingEnvironment env) {
         Collection<SequenceEncoderType> sequenceEncoderTypes;
         Collection<SequenceEncoderTypeObject> sequenceEncoderTypeObjects;
 
@@ -1876,7 +1876,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("selectorKind")
-    public static SelectorKindObject selectorKind(final DataFetchingEnvironment env,
+    static SelectorKindObject selectorKind(final DataFetchingEnvironment env,
             @GraphQLName("selectorKindName") final String selectorKindName,
             @GraphQLName("id") @GraphQLID final String id) {
         SelectorKind selectorKind;
@@ -1897,7 +1897,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("selectorKinds")
-    public static Collection<SelectorKindObject> selectorKinds(final DataFetchingEnvironment env) {
+    static Collection<SelectorKindObject> selectorKinds(final DataFetchingEnvironment env) {
         Collection<SelectorKind> selectorKinds;
         Collection<SelectorKindObject> selectorKindObjects;
 
@@ -1924,7 +1924,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("selectorType")
-    public static SelectorTypeObject selectorType(final DataFetchingEnvironment env,
+    static SelectorTypeObject selectorType(final DataFetchingEnvironment env,
             @GraphQLName("selectorKindName") final String selectorKindName,
             @GraphQLName("selectorTypeName") final String selectorTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
@@ -1947,7 +1947,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("selectorTypes")
-    public static Collection<SelectorTypeObject> selectorTypes(final DataFetchingEnvironment env,
+    static Collection<SelectorTypeObject> selectorTypes(final DataFetchingEnvironment env,
             @GraphQLName("selectorKindName") @GraphQLNonNull final String selectorKindName) {
         Collection<SelectorType> selectorTypes;
         Collection<SelectorTypeObject> selectorTypeObjects;
@@ -1977,7 +1977,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("selector")
-    public static SelectorObject selector(final DataFetchingEnvironment env,
+    static SelectorObject selector(final DataFetchingEnvironment env,
             @GraphQLName("selectorKindName") final String selectorKindName,
             @GraphQLName("selectorTypeName") final String selectorTypeName,
             @GraphQLName("selectorName") final String selectorName,
@@ -2002,7 +2002,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("selectors")
-    public static Collection<SelectorObject> selectors(final DataFetchingEnvironment env,
+    static Collection<SelectorObject> selectors(final DataFetchingEnvironment env,
             @GraphQLName("selectorKindName") @GraphQLNonNull final String selectorKindName,
             @GraphQLName("selectorTypeName") @GraphQLNonNull final String selectorTypeName) {
         Collection<Selector> selectors;
@@ -2034,7 +2034,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("filterKind")
-    public static FilterKindObject filterKind(final DataFetchingEnvironment env,
+    static FilterKindObject filterKind(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") final String filterKindName,
             @GraphQLName("id") @GraphQLID final String id) {
         FilterKind filterKind;
@@ -2055,7 +2055,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("filterKinds")
-    public static Collection<FilterKindObject> filterKinds(final DataFetchingEnvironment env) {
+    static Collection<FilterKindObject> filterKinds(final DataFetchingEnvironment env) {
         Collection<FilterKind> filterKinds;
         Collection<FilterKindObject> filterKindObjects;
 
@@ -2082,7 +2082,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("filterType")
-    public static FilterTypeObject filterType(final DataFetchingEnvironment env,
+    static FilterTypeObject filterType(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") final String filterKindName,
             @GraphQLName("filterTypeName") final String filterTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
@@ -2105,7 +2105,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("filterTypes")
-    public static Collection<FilterTypeObject> filterTypes(final DataFetchingEnvironment env,
+    static Collection<FilterTypeObject> filterTypes(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName) {
         Collection<FilterType> filterTypes;
         Collection<FilterTypeObject> filterTypeObjects;
@@ -2135,7 +2135,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("filter")
-    public static FilterObject filter(final DataFetchingEnvironment env,
+    static FilterObject filter(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") final String filterKindName,
             @GraphQLName("filterTypeName") final String filterTypeName,
             @GraphQLName("filterName") final String filterName,
@@ -2160,7 +2160,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("filters")
-    public static Collection<FilterObject> filters(final DataFetchingEnvironment env,
+    static Collection<FilterObject> filters(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
             @GraphQLName("filterTypeName") @GraphQLNonNull final String filterTypeName) {
         Collection<Filter> filters;
@@ -2192,7 +2192,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("filterStep")
-    public static FilterStepObject filterStep(final DataFetchingEnvironment env,
+    static FilterStepObject filterStep(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") final String filterKindName,
             @GraphQLName("filterTypeName") final String filterTypeName,
             @GraphQLName("filterName") final String filterName,
@@ -2219,7 +2219,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("filterSteps")
-    public static Collection<FilterStepObject> filterSteps(final DataFetchingEnvironment env,
+    static Collection<FilterStepObject> filterSteps(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
             @GraphQLName("filterTypeName") @GraphQLNonNull final String filterTypeName,
             @GraphQLName("filterName") @GraphQLNonNull final String filterName) {
@@ -2253,7 +2253,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("filterAdjustmentSource")
-    public static FilterAdjustmentSourceObject filterAdjustmentSource(final DataFetchingEnvironment env,
+    static FilterAdjustmentSourceObject filterAdjustmentSource(final DataFetchingEnvironment env,
             @GraphQLName("filterAdjustmentSourceName") @GraphQLNonNull final String filterAdjustmentSourceName) {
         FilterAdjustmentSource filterAdjustmentSource;
 
@@ -2272,7 +2272,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("filterAdjustmentSources")
-    public static Collection<FilterAdjustmentSourceObject> filterAdjustmentSources(final DataFetchingEnvironment env) {
+    static Collection<FilterAdjustmentSourceObject> filterAdjustmentSources(final DataFetchingEnvironment env) {
         Collection<FilterAdjustmentSource> filterAdjustmentSources;
         Collection<FilterAdjustmentSourceObject> filterAdjustmentSourceObjects;
 
@@ -2299,7 +2299,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("filterAdjustmentType")
-    public static FilterAdjustmentTypeObject filterAdjustmentType(final DataFetchingEnvironment env,
+    static FilterAdjustmentTypeObject filterAdjustmentType(final DataFetchingEnvironment env,
             @GraphQLName("filterAdjustmentTypeName") @GraphQLNonNull final String filterAdjustmentTypeName) {
         FilterAdjustmentType filterAdjustmentType;
 
@@ -2318,7 +2318,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("filterAdjustmentTypes")
-    public static Collection<FilterAdjustmentTypeObject> filterAdjustmentTypes(final DataFetchingEnvironment env) {
+    static Collection<FilterAdjustmentTypeObject> filterAdjustmentTypes(final DataFetchingEnvironment env) {
         Collection<FilterAdjustmentType> filterAdjustmentTypes;
         Collection<FilterAdjustmentTypeObject> filterAdjustmentTypeObjects;
 
@@ -2345,7 +2345,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("filterAdjustment")
-    public static FilterAdjustmentObject filterAdjustment(final DataFetchingEnvironment env,
+    static FilterAdjustmentObject filterAdjustment(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") final String filterKindName,
             @GraphQLName("filterAdjustmentName") final String filterAdjustmentName,
             @GraphQLName("id") @GraphQLID final String id) {
@@ -2368,7 +2368,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("filterAdjustments")
-    public static Collection<FilterAdjustmentObject> filterAdjustments(final DataFetchingEnvironment env,
+    static Collection<FilterAdjustmentObject> filterAdjustments(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName) {
         Collection<FilterAdjustment> filterAdjustments;
         Collection<FilterAdjustmentObject> filterAdjustmentObjects;
@@ -2398,7 +2398,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("filterAdjustmentAmount")
-    public static FilterAdjustmentAmountObject filterAdjustmentAmount(final DataFetchingEnvironment env,
+    static FilterAdjustmentAmountObject filterAdjustmentAmount(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
             @GraphQLName("filterAdjustmentName") @GraphQLNonNull final String filterAdjustmentName,
             @GraphQLName("unitOfMeasureName") final String unitOfMeasureName,
@@ -2427,7 +2427,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("filterAdjustmentAmounts")
-    public static Collection<FilterAdjustmentAmountObject> filterAdjustmentAmounts(final DataFetchingEnvironment env,
+    static Collection<FilterAdjustmentAmountObject> filterAdjustmentAmounts(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
             @GraphQLName("filterAdjustmentName") @GraphQLNonNull final String filterAdjustmentName) {
         Collection<FilterAdjustmentAmount> filterAdjustmentAmounts;
@@ -2459,7 +2459,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("filterAdjustmentFixedAmount")
-    public static FilterAdjustmentFixedAmountObject filterAdjustmentFixedAmount(final DataFetchingEnvironment env,
+    static FilterAdjustmentFixedAmountObject filterAdjustmentFixedAmount(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
             @GraphQLName("filterAdjustmentName") @GraphQLNonNull final String filterAdjustmentName,
             @GraphQLName("unitOfMeasureName") final String unitOfMeasureName,
@@ -2488,7 +2488,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("filterAdjustmentFixedAmounts")
-    public static Collection<FilterAdjustmentFixedAmountObject> filterAdjustmentFixedAmounts(final DataFetchingEnvironment env,
+    static Collection<FilterAdjustmentFixedAmountObject> filterAdjustmentFixedAmounts(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
             @GraphQLName("filterAdjustmentName") @GraphQLNonNull final String filterAdjustmentName) {
         Collection<FilterAdjustmentFixedAmount> filterAdjustmentFixedAmounts;
@@ -2520,7 +2520,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("filterAdjustmentPercent")
-    public static FilterAdjustmentPercentObject filterAdjustmentPercent(final DataFetchingEnvironment env,
+    static FilterAdjustmentPercentObject filterAdjustmentPercent(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
             @GraphQLName("filterAdjustmentName") @GraphQLNonNull final String filterAdjustmentName,
             @GraphQLName("unitOfMeasureName") final String unitOfMeasureName,
@@ -2549,7 +2549,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("filterAdjustmentPercents")
-    public static Collection<FilterAdjustmentPercentObject> filterAdjustmentPercents(final DataFetchingEnvironment env,
+    static Collection<FilterAdjustmentPercentObject> filterAdjustmentPercents(final DataFetchingEnvironment env,
             @GraphQLName("filterKindName") @GraphQLNonNull final String filterKindName,
             @GraphQLName("filterAdjustmentName") @GraphQLNonNull final String filterAdjustmentName) {
         Collection<FilterAdjustmentPercent> filterAdjustmentPercents;
@@ -2581,7 +2581,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("offerUse")
-    public static OfferUseObject offerUse(final DataFetchingEnvironment env,
+    static OfferUseObject offerUse(final DataFetchingEnvironment env,
             @GraphQLName("offerName") @GraphQLNonNull final String offerName,
             @GraphQLName("useName") @GraphQLNonNull final String useName) {
         OfferUse offerUse;
@@ -2602,7 +2602,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("offerUses")
-    public static Collection<OfferUseObject> offerUses(final DataFetchingEnvironment env,
+    static Collection<OfferUseObject> offerUses(final DataFetchingEnvironment env,
             @GraphQLName("offerName") final String offerName,
             @GraphQLName("useName") final String useName) {
         Collection<OfferUse> offerUses;
@@ -2634,7 +2634,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("offer")
-    public static OfferObject offer(final DataFetchingEnvironment env,
+    static OfferObject offer(final DataFetchingEnvironment env,
             @GraphQLName("offerName") final String offerName,
             @GraphQLName("id") @GraphQLID final String id) {
         Offer offer;
@@ -2655,7 +2655,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("offers")
-    public static Collection<OfferObject> offers(final DataFetchingEnvironment env) {
+    static Collection<OfferObject> offers(final DataFetchingEnvironment env) {
         Collection<Offer> offers;
         Collection<OfferObject> offerObjects;
 
@@ -2682,7 +2682,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("offerItem")
-    public static OfferItemObject offerItem(final DataFetchingEnvironment env,
+    static OfferItemObject offerItem(final DataFetchingEnvironment env,
             @GraphQLName("offerName") final String offerName,
             @GraphQLName("itemName") final String itemName,
             @GraphQLName("id") @GraphQLID final String id) {
@@ -2705,7 +2705,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("offerItems")
-    public static Collection<OfferItemObject> offerItems(final DataFetchingEnvironment env,
+    static Collection<OfferItemObject> offerItems(final DataFetchingEnvironment env,
             @GraphQLName("offerName") @GraphQLNonNull final String offerName) {
         Collection<OfferItem> offerItem;
         Collection<OfferItemObject> offerItemObjects;
@@ -2735,7 +2735,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("offerItemPrice")
-    public static OfferItemPriceObject offerItemPrice(final DataFetchingEnvironment env,
+    static OfferItemPriceObject offerItemPrice(final DataFetchingEnvironment env,
             @GraphQLName("offerName") @GraphQLNonNull final String offerName,
             @GraphQLName("itemName") @GraphQLNonNull final String itemName,
             @GraphQLName("inventoryConditionName") @GraphQLNonNull final String inventoryConditionName,
@@ -2762,7 +2762,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("offerItemPrices")
-    public static Collection<OfferItemPriceObject> offerItemPrices(final DataFetchingEnvironment env,
+    static Collection<OfferItemPriceObject> offerItemPrices(final DataFetchingEnvironment env,
             @GraphQLName("offerName") @GraphQLNonNull final String offerName,
             @GraphQLName("itemName") @GraphQLNonNull final String itemName) {
         Collection<OfferItemPrice> offerItemPrice;
@@ -2794,7 +2794,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("use")
-    public static UseObject use(final DataFetchingEnvironment env,
+    static UseObject use(final DataFetchingEnvironment env,
             @GraphQLName("useName") final String useName,
             @GraphQLName("id") @GraphQLID final String id) {
         Use use;
@@ -2815,7 +2815,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("uses")
-    public static Collection<UseObject> uses(final DataFetchingEnvironment env) {
+    static Collection<UseObject> uses(final DataFetchingEnvironment env) {
         Collection<Use> uses;
         Collection<UseObject> useObjects;
 
@@ -2842,7 +2842,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("offerNameElement")
-    public static OfferNameElementObject offerNameElement(final DataFetchingEnvironment env,
+    static OfferNameElementObject offerNameElement(final DataFetchingEnvironment env,
             @GraphQLName("offerNameElementName") final String offerNameElementName,
             @GraphQLName("id") @GraphQLID final String id) {
         OfferNameElement offerNameElement;
@@ -2863,7 +2863,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("offerNameElements")
-    public static Collection<OfferNameElementObject> offerNameElements(final DataFetchingEnvironment env) {
+    static Collection<OfferNameElementObject> offerNameElements(final DataFetchingEnvironment env) {
         Collection<OfferNameElement> offerNameElements;
         Collection<OfferNameElementObject> offerNameElementObjects;
 
@@ -2890,7 +2890,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("useNameElement")
-    public static UseNameElementObject useNameElement(final DataFetchingEnvironment env,
+    static UseNameElementObject useNameElement(final DataFetchingEnvironment env,
             @GraphQLName("useNameElementName") final String useNameElementName,
             @GraphQLName("id") @GraphQLID final String id) {
         UseNameElement useNameElement;
@@ -2911,7 +2911,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("useNameElements")
-    public static Collection<UseNameElementObject> useNameElements(final DataFetchingEnvironment env) {
+    static Collection<UseNameElementObject> useNameElements(final DataFetchingEnvironment env) {
         Collection<UseNameElement> useNameElements;
         Collection<UseNameElementObject> useNameElementObjects;
 
@@ -2938,7 +2938,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("useType")
-    public static UseTypeObject useType(final DataFetchingEnvironment env,
+    static UseTypeObject useType(final DataFetchingEnvironment env,
             @GraphQLName("useTypeName") final String useTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
         UseType useType;
@@ -2959,7 +2959,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("useTypes")
-    public static Collection<UseTypeObject> useTypes(final DataFetchingEnvironment env) {
+    static Collection<UseTypeObject> useTypes(final DataFetchingEnvironment env) {
         Collection<UseType> useTypes;
         Collection<UseTypeObject> useTypeObjects;
 
@@ -2986,7 +2986,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("freeOnBoard")
-    public static FreeOnBoardObject freeOnBoard(final DataFetchingEnvironment env,
+    static FreeOnBoardObject freeOnBoard(final DataFetchingEnvironment env,
             @GraphQLName("freeOnBoardName") final String freeOnBoardName,
             @GraphQLName("id") @GraphQLID final String id) {
         FreeOnBoard freeOnBoard;
@@ -3007,7 +3007,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("freeOnBoards")
-    public static Collection<FreeOnBoardObject> freeOnBoards(final DataFetchingEnvironment env) {
+    static Collection<FreeOnBoardObject> freeOnBoards(final DataFetchingEnvironment env) {
         Collection<FreeOnBoard> freeOnBoards;
         Collection<FreeOnBoardObject> freeOnBoardObjects;
 
@@ -3034,7 +3034,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("paymentProcessorTypeCodeType")
-    public static PaymentProcessorTypeCodeTypeObject paymentProcessorTypeCodeType(final DataFetchingEnvironment env,
+    static PaymentProcessorTypeCodeTypeObject paymentProcessorTypeCodeType(final DataFetchingEnvironment env,
             @GraphQLName("paymentProcessorTypeName") final String paymentProcessorTypeName,
             @GraphQLName("paymentProcessorTypeCodeTypeName") final String paymentProcessorTypeCodeTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
@@ -3057,7 +3057,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("paymentProcessorTypeCode")
-    public static PaymentProcessorTypeCodeObject paymentProcessorTypeCode(final DataFetchingEnvironment env,
+    static PaymentProcessorTypeCodeObject paymentProcessorTypeCode(final DataFetchingEnvironment env,
             @GraphQLName("paymentProcessorTypeName") final String paymentProcessorTypeName,
             @GraphQLName("paymentProcessorTypeCodeTypeName") final String paymentProcessorTypeCodeTypeName,
             @GraphQLName("paymentProcessorTypeCodeName") final String paymentProcessorTypeCodeName,
@@ -3082,7 +3082,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("paymentProcessorTransaction")
-    public static PaymentProcessorTransactionObject paymentProcessorTransaction(final DataFetchingEnvironment env,
+    static PaymentProcessorTransactionObject paymentProcessorTransaction(final DataFetchingEnvironment env,
             @GraphQLName("paymentProcessorTransactionName") final String paymentProcessorTransactionName,
             @GraphQLName("id") @GraphQLID final String id) {
         PaymentProcessorTransaction paymentProcessorTransaction;
@@ -3103,7 +3103,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("paymentProcessorTransactions")
-    public static Collection<PaymentProcessorTransactionObject> paymentProcessorTransactions(final DataFetchingEnvironment env) {
+    static Collection<PaymentProcessorTransactionObject> paymentProcessorTransactions(final DataFetchingEnvironment env) {
         Collection<PaymentProcessorTransaction> paymentProcessorTransactions;
         Collection<PaymentProcessorTransactionObject> paymentProcessorTransactionObjects;
 
@@ -3130,7 +3130,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("paymentProcessor")
-    public static PaymentProcessorObject paymentProcessor(final DataFetchingEnvironment env,
+    static PaymentProcessorObject paymentProcessor(final DataFetchingEnvironment env,
             @GraphQLName("paymentProcessorName") final String paymentProcessorName,
             @GraphQLName("id") @GraphQLID final String id) {
         PaymentProcessor paymentProcessor;
@@ -3151,7 +3151,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("paymentProcessors")
-    public static Collection<PaymentProcessorObject> paymentProcessors(final DataFetchingEnvironment env) {
+    static Collection<PaymentProcessorObject> paymentProcessors(final DataFetchingEnvironment env) {
         Collection<PaymentProcessor> paymentProcessors;
         Collection<PaymentProcessorObject> paymentProcessorObjects;
 
@@ -3178,7 +3178,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("paymentProcessorType")
-    public static PaymentProcessorTypeObject paymentProcessorType(final DataFetchingEnvironment env,
+    static PaymentProcessorTypeObject paymentProcessorType(final DataFetchingEnvironment env,
             @GraphQLName("paymentProcessorTypeName") final String paymentProcessorTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
         PaymentProcessorType paymentProcessorType;
@@ -3199,7 +3199,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("paymentProcessorTypes")
-    public static Collection<PaymentProcessorTypeObject> paymentProcessorTypes(final DataFetchingEnvironment env) {
+    static Collection<PaymentProcessorTypeObject> paymentProcessorTypes(final DataFetchingEnvironment env) {
         Collection<PaymentProcessorType> paymentProcessorTypes;
         Collection<PaymentProcessorTypeObject> paymentProcessorTypeObjects;
 
@@ -3226,7 +3226,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("paymentMethodType")
-    public static PaymentMethodTypeObject paymentMethodType(final DataFetchingEnvironment env,
+    static PaymentMethodTypeObject paymentMethodType(final DataFetchingEnvironment env,
             @GraphQLName("paymentMethodTypeName") final String paymentMethodTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
         PaymentMethodType paymentMethodType;
@@ -3247,7 +3247,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("paymentMethodTypes")
-    public static Collection<PaymentMethodTypeObject> paymentMethodTypes(final DataFetchingEnvironment env) {
+    static Collection<PaymentMethodTypeObject> paymentMethodTypes(final DataFetchingEnvironment env) {
         Collection<PaymentMethodType> paymentMethodTypes;
         Collection<PaymentMethodTypeObject> paymentMethodTypeObjects;
 
@@ -3274,7 +3274,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("paymentProcessorResultCode")
-    public static PaymentProcessorResultCodeObject paymentProcessorResultCode(final DataFetchingEnvironment env,
+    static PaymentProcessorResultCodeObject paymentProcessorResultCode(final DataFetchingEnvironment env,
             @GraphQLName("paymentProcessorResultCodeName") final String paymentProcessorResultCodeName,
             @GraphQLName("id") @GraphQLID final String id) {
         PaymentProcessorResultCode paymentProcessorResultCode;
@@ -3295,7 +3295,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("paymentProcessorResultCodes")
-    public static Collection<PaymentProcessorResultCodeObject> paymentProcessorResultCodes(final DataFetchingEnvironment env) {
+    static Collection<PaymentProcessorResultCodeObject> paymentProcessorResultCodes(final DataFetchingEnvironment env) {
         Collection<PaymentProcessorResultCode> paymentProcessorResultCodes;
         Collection<PaymentProcessorResultCodeObject> paymentProcessorResultCodeObjects;
 
@@ -3322,7 +3322,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("paymentProcessorActionType")
-    public static PaymentProcessorActionTypeObject paymentProcessorActionType(final DataFetchingEnvironment env,
+    static PaymentProcessorActionTypeObject paymentProcessorActionType(final DataFetchingEnvironment env,
             @GraphQLName("paymentProcessorActionTypeName") final String paymentProcessorActionTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
         PaymentProcessorActionType paymentProcessorActionType;
@@ -3343,7 +3343,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("paymentProcessorActionTypes")
-    public static Collection<PaymentProcessorActionTypeObject> paymentProcessorActionTypes(final DataFetchingEnvironment env) {
+    static Collection<PaymentProcessorActionTypeObject> paymentProcessorActionTypes(final DataFetchingEnvironment env) {
         Collection<PaymentProcessorActionType> paymentProcessorActionTypes;
         Collection<PaymentProcessorActionTypeObject> paymentProcessorActionTypeObjects;
 
@@ -3370,7 +3370,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("appearance")
-    public static AppearanceObject appearance(final DataFetchingEnvironment env,
+    static AppearanceObject appearance(final DataFetchingEnvironment env,
             @GraphQLName("appearanceName") final String appearanceName,
             @GraphQLName("id") @GraphQLID final String id) {
         Appearance appearance;
@@ -3391,7 +3391,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("appearances")
-    public static Collection<AppearanceObject> appearances(final DataFetchingEnvironment env) {
+    static Collection<AppearanceObject> appearances(final DataFetchingEnvironment env) {
         Collection<Appearance> appearances;
         Collection<AppearanceObject> appearanceObjects;
 
@@ -3416,7 +3416,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("entityAttributeGroup")
-    public static EntityAttributeGroupObject entityAttributeGroup(final DataFetchingEnvironment env,
+    static EntityAttributeGroupObject entityAttributeGroup(final DataFetchingEnvironment env,
             @GraphQLName("entityAttributeGroupName") final String entityAttributeGroupName,
             @GraphQLName("id") @GraphQLID final String id) {
         EntityAttributeGroup entityAttributeGroup;
@@ -3437,7 +3437,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("entityAttributeGroups")
-    public static Collection<EntityAttributeGroupObject> entityAttributeGroups(final DataFetchingEnvironment env) {
+    static Collection<EntityAttributeGroupObject> entityAttributeGroups(final DataFetchingEnvironment env) {
         Collection<EntityAttributeGroup> entityAttributeGroups;
         Collection<EntityAttributeGroupObject> entityAttributeGroupObjects;
 
@@ -3462,7 +3462,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("entityAttribute")
-    public static EntityAttributeObject entityAttribute(final DataFetchingEnvironment env,
+    static EntityAttributeObject entityAttribute(final DataFetchingEnvironment env,
             @GraphQLName("componentVendorName") final String componentVendorName,
             @GraphQLName("entityTypeName") final String entityTypeName,
             @GraphQLName("entityAttributeName") final String entityAttributeName,
@@ -3487,7 +3487,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("entityAttributes")
-    public static Collection<EntityAttributeObject> entityAttributes(final DataFetchingEnvironment env,
+    static Collection<EntityAttributeObject> entityAttributes(final DataFetchingEnvironment env,
             @GraphQLName("componentVendorName") final String componentVendorName,
             @GraphQLName("entityTypeName") final String entityTypeName,
             @GraphQLName("entityAttributeTypeNames") final String entityAttributeTypeNames,
@@ -3521,7 +3521,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("entityInstance")
-    public static EntityInstanceObject entityInstance(final DataFetchingEnvironment env,
+    static EntityInstanceObject entityInstance(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("entityRef") final String entityRef,
             @GraphQLName("key") final String key,
@@ -3546,7 +3546,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("entityInstances")
-    public static Collection<EntityInstanceObject> entityInstances(final DataFetchingEnvironment env,
+    static Collection<EntityInstanceObject> entityInstances(final DataFetchingEnvironment env,
             @GraphQLName("componentVendorName") @GraphQLNonNull final String componentVendorName,
             @GraphQLName("entityTypeName") @GraphQLNonNull final String entityTypeName) {
         Collection<EntityInstance> entityInstances;
@@ -3576,7 +3576,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("entityType")
-    public static EntityTypeObject entityType(final DataFetchingEnvironment env,
+    static EntityTypeObject entityType(final DataFetchingEnvironment env,
             @GraphQLName("componentVendorName") final String componentVendorName,
             @GraphQLName("entityTypeName") final String entityTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
@@ -3599,7 +3599,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("entityTypes")
-    public static Collection<EntityTypeObject> entityTypes(final DataFetchingEnvironment env,
+    static Collection<EntityTypeObject> entityTypes(final DataFetchingEnvironment env,
             @GraphQLName("componentVendorName") final String componentVendorName) {
         Collection<EntityType> entityTypes;
         Collection<EntityTypeObject> entityTypeObjects;
@@ -3627,7 +3627,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("componentVendor")
-    public static ComponentVendorObject componentVendor(final DataFetchingEnvironment env,
+    static ComponentVendorObject componentVendor(final DataFetchingEnvironment env,
             @GraphQLName("componentVendorName") final String componentVendorName,
             @GraphQLName("id") @GraphQLID final String id) {
         ComponentVendor componentVendor;
@@ -3648,7 +3648,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("componentVendors")
-    public static Collection<ComponentVendorObject> componentVendors(final DataFetchingEnvironment env) {
+    static Collection<ComponentVendorObject> componentVendors(final DataFetchingEnvironment env) {
         Collection<ComponentVendor> componentVendors;
         Collection<ComponentVendorObject> componentVendorObjects;
 
@@ -3673,7 +3673,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("inventoryCondition")
-    public static InventoryConditionObject inventoryCondition(final DataFetchingEnvironment env,
+    static InventoryConditionObject inventoryCondition(final DataFetchingEnvironment env,
             @GraphQLName("inventoryConditionName") final String inventoryConditionName,
             @GraphQLName("id") @GraphQLID final String id) {
         InventoryCondition inventoryCondition;
@@ -3696,7 +3696,7 @@ public final class GraphQlQueries
     @GraphQLName("inventoryConditions")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<InventoryConditionObject> inventoryConditions(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<InventoryConditionObject> inventoryConditions(final DataFetchingEnvironment env) {
         CountingPaginatedData<InventoryConditionObject> data;
 
         try {
@@ -3705,14 +3705,14 @@ public final class GraphQlQueries
 
             try(var objectLimiter = new ObjectLimiter(env, InventoryConditionConstants.COMPONENT_VENDOR_NAME, InventoryConditionConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = InventoryUtil.getHome().getGetInventoryConditionsForm();
-                var entitys = new GetInventoryConditionsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetInventoryConditionsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
 
-                if(entitys == null) {
+                if(entities == null) {
                     data = Connections.emptyConnection();
                 } else {
-                    var inventoryConditions = entitys.stream()
+                    var inventoryConditions = entities.stream()
                             .map(InventoryConditionObject::new)
-                            .collect(Collectors.toCollection(() -> new ArrayList<>(entitys.size())));
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, inventoryConditions);
                 }
@@ -3726,7 +3726,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("allocationPriority")
-    public static AllocationPriorityObject allocationPriority(final DataFetchingEnvironment env,
+    static AllocationPriorityObject allocationPriority(final DataFetchingEnvironment env,
             @GraphQLName("allocationPriorityName") final String allocationPriorityName,
             @GraphQLName("id") @GraphQLID final String id) {
         AllocationPriority allocationPriority;
@@ -3749,7 +3749,7 @@ public final class GraphQlQueries
     @GraphQLName("allocationPriorities")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<AllocationPriorityObject> allocationPriorities(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<AllocationPriorityObject> allocationPriorities(final DataFetchingEnvironment env) {
         CountingPaginatedData<AllocationPriorityObject> data;
 
         try {
@@ -3776,10 +3776,10 @@ public final class GraphQlQueries
 
         return data;
     }
-    
+
     @GraphQLField
     @GraphQLName("lot")
-    public static LotObject lot(final DataFetchingEnvironment env,
+    static LotObject lot(final DataFetchingEnvironment env,
             @GraphQLName("lotName") final String lotName,
             @GraphQLName("id") @GraphQLID final String id) {
         Lot lot;
@@ -3802,7 +3802,7 @@ public final class GraphQlQueries
     @GraphQLName("lots")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<LotObject> lots(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<LotObject> lots(final DataFetchingEnvironment env) {
         CountingPaginatedData<LotObject> data;
 
         try {
@@ -3811,14 +3811,14 @@ public final class GraphQlQueries
 
             try(var objectLimiter = new ObjectLimiter(env, LotConstants.COMPONENT_VENDOR_NAME, LotConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = InventoryUtil.getHome().getGetLotsForm();
-                var entitys = new GetLotsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetLotsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
 
-                if(entitys == null) {
+                if(entities == null) {
                     data = Connections.emptyConnection();
                 } else {
-                    var lots = entitys.stream()
+                    var lots = entities.stream()
                             .map(LotObject::new)
-                            .collect(Collectors.toCollection(() -> new ArrayList<>(entitys.size())));
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, lots);
                 }
@@ -3832,7 +3832,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("contentPageLayout")
-    public static ContentPageLayoutObject contentPageLayout(final DataFetchingEnvironment env,
+    static ContentPageLayoutObject contentPageLayout(final DataFetchingEnvironment env,
             @GraphQLName("contentPageLayoutName") final String contentPageLayoutName,
             @GraphQLName("id") @GraphQLID final String id) {
         ContentPageLayout contentPageLayout;
@@ -3842,29 +3842,29 @@ public final class GraphQlQueries
 
             commandForm.setContentPageLayoutName(contentPageLayoutName);
             commandForm.setUlid(id);
-        
+
             contentPageLayout = new GetContentPageLayoutCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         return contentPageLayout == null ? null : new ContentPageLayoutObject(contentPageLayout);
     }
 
     @GraphQLField
     @GraphQLName("contentPageLayouts")
-    public static Collection<ContentPageLayoutObject> contentPageLayouts(final DataFetchingEnvironment env) {
+    static Collection<ContentPageLayoutObject> contentPageLayouts(final DataFetchingEnvironment env) {
         Collection<ContentPageLayout> contentPageLayouts;
         Collection<ContentPageLayoutObject> contentPageLayoutObjects;
-        
+
         try {
             var commandForm = ContentUtil.getHome().getGetContentPageLayoutsForm();
-        
+
             contentPageLayouts = new GetContentPageLayoutsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         if(contentPageLayouts == null) {
             contentPageLayoutObjects = emptyList();
         } else {
@@ -3874,13 +3874,13 @@ public final class GraphQlQueries
                     .map(ContentPageLayoutObject::new)
                     .forEachOrdered(contentPageLayoutObjects::add);
         }
-        
+
         return contentPageLayoutObjects;
     }
 
     @GraphQLField
     @GraphQLName("contentPageLayoutArea")
-    public static ContentPageLayoutAreaObject contentPageLayoutArea(final DataFetchingEnvironment env,
+    static ContentPageLayoutAreaObject contentPageLayoutArea(final DataFetchingEnvironment env,
             @GraphQLName("contentCollectionName") @GraphQLNonNull final String contentCollectionName,
             @GraphQLName("contentSectionName") @GraphQLNonNull final String contentSectionName,
             @GraphQLName("contentPageName") @GraphQLNonNull final String contentPageName,
@@ -3894,36 +3894,36 @@ public final class GraphQlQueries
             commandForm.setContentSectionName(contentSectionName);
             commandForm.setContentPageName(contentPageName);
             commandForm.setSortOrder(sortOrder);
-        
+
             contentPageLayoutArea = new GetContentPageLayoutAreaCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         return contentPageLayoutArea == null ? null : new ContentPageLayoutAreaObject(contentPageLayoutArea);
     }
 
     @GraphQLField
     @GraphQLName("contentPageLayoutAreas")
-    public static Collection<ContentPageLayoutAreaObject> contentPageLayoutAreas(final DataFetchingEnvironment env,
+    static Collection<ContentPageLayoutAreaObject> contentPageLayoutAreas(final DataFetchingEnvironment env,
             @GraphQLName("contentCollectionName") @GraphQLNonNull final String contentCollectionName,
             @GraphQLName("contentSectionName") @GraphQLNonNull final String contentSectionName,
             @GraphQLName("contentPageName") @GraphQLNonNull final String contentPageName) {
         Collection<ContentPageLayoutArea> contentPageLayoutAreas;
         Collection<ContentPageLayoutAreaObject> contentPageLayoutAreaObjects;
-        
+
         try {
             var commandForm = ContentUtil.getHome().getGetContentPageLayoutAreasForm();
 
             commandForm.setContentCollectionName(contentCollectionName);
             commandForm.setContentSectionName(contentSectionName);
             commandForm.setContentPageName(contentPageName);
-            
+
             contentPageLayoutAreas = new GetContentPageLayoutAreasCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         if(contentPageLayoutAreas == null) {
             contentPageLayoutAreaObjects = emptyList();
         } else {
@@ -3933,13 +3933,13 @@ public final class GraphQlQueries
                     .map(ContentPageLayoutAreaObject::new)
                     .forEachOrdered(contentPageLayoutAreaObjects::add);
         }
-        
+
         return contentPageLayoutAreaObjects;
     }
 
     @GraphQLField
     @GraphQLName("contentPageAreaType")
-    public static ContentPageAreaTypeObject contentPageAreaType(final DataFetchingEnvironment env,
+    static ContentPageAreaTypeObject contentPageAreaType(final DataFetchingEnvironment env,
             @GraphQLName("contentPageAreaTypeName") final String contentPageAreaTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
         ContentPageAreaType contentPageAreaType;
@@ -3949,29 +3949,29 @@ public final class GraphQlQueries
 
             commandForm.setContentPageAreaTypeName(contentPageAreaTypeName);
             commandForm.setUlid(id);
-        
+
             contentPageAreaType = new GetContentPageAreaTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         return contentPageAreaType == null ? null : new ContentPageAreaTypeObject(contentPageAreaType);
     }
 
     @GraphQLField
     @GraphQLName("contentPageAreaTypes")
-    public static Collection<ContentPageAreaTypeObject> contentPageAreaTypes(final DataFetchingEnvironment env) {
+    static Collection<ContentPageAreaTypeObject> contentPageAreaTypes(final DataFetchingEnvironment env) {
         Collection<ContentPageAreaType> contentPageAreaTypes;
         Collection<ContentPageAreaTypeObject> contentPageAreaTypeObjects;
-        
+
         try {
             var commandForm = ContentUtil.getHome().getGetContentPageAreaTypesForm();
-        
+
             contentPageAreaTypes = new GetContentPageAreaTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         if(contentPageAreaTypes == null) {
             contentPageAreaTypeObjects = emptyList();
         } else {
@@ -3981,13 +3981,13 @@ public final class GraphQlQueries
                     .map(ContentPageAreaTypeObject::new)
                     .forEachOrdered(contentPageAreaTypeObjects::add);
         }
-        
+
         return contentPageAreaTypeObjects;
     }
 
     @GraphQLField
     @GraphQLName("contentWebAddress")
-    public static ContentWebAddressObject contentWebAddress(final DataFetchingEnvironment env,
+    static ContentWebAddressObject contentWebAddress(final DataFetchingEnvironment env,
             @GraphQLName("contentWebAddressName") @GraphQLNonNull final String contentWebAddressName) {
         ContentWebAddress contentWebAddress;
 
@@ -3995,29 +3995,29 @@ public final class GraphQlQueries
             var commandForm = ContentUtil.getHome().getGetContentWebAddressForm();
 
             commandForm.setContentWebAddressName(contentWebAddressName);
-        
+
             contentWebAddress = new GetContentWebAddressCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         return contentWebAddress == null ? null : new ContentWebAddressObject(contentWebAddress);
     }
 
     @GraphQLField
     @GraphQLName("contentWebAddresses")
-    public static Collection<ContentWebAddressObject> contentWebAddresses(final DataFetchingEnvironment env) {
+    static Collection<ContentWebAddressObject> contentWebAddresses(final DataFetchingEnvironment env) {
         Collection<ContentWebAddress> contentWebAddresses;
         Collection<ContentWebAddressObject> contentWebAddressObjects;
-        
+
         try {
             var commandForm = ContentUtil.getHome().getGetContentWebAddressesForm();
-        
+
             contentWebAddresses = new GetContentWebAddressesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         if(contentWebAddresses == null) {
             contentWebAddressObjects = emptyList();
         } else {
@@ -4027,13 +4027,13 @@ public final class GraphQlQueries
                     .map(ContentWebAddressObject::new)
                     .forEachOrdered(contentWebAddressObjects::add);
         }
-        
+
         return contentWebAddressObjects;
     }
 
     @GraphQLField
     @GraphQLName("contentCollection")
-    public static ContentCollectionObject contentCollection(final DataFetchingEnvironment env,
+    static ContentCollectionObject contentCollection(final DataFetchingEnvironment env,
             @GraphQLName("contentCollectionName") final String contentCollectionName) {
         ContentCollection contentCollection;
 
@@ -4046,24 +4046,24 @@ public final class GraphQlQueries
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         return contentCollection == null ? null : new ContentCollectionObject(contentCollection);
     }
 
     @GraphQLField
     @GraphQLName("contentCollections")
-    public static Collection<ContentCollectionObject> contentCollections(final DataFetchingEnvironment env) {
+    static Collection<ContentCollectionObject> contentCollections(final DataFetchingEnvironment env) {
         Collection<ContentCollection> contentCollections;
         Collection<ContentCollectionObject> contentCollectionObjects;
-        
+
         try {
             var commandForm = ContentUtil.getHome().getGetContentCollectionsForm();
-        
+
             contentCollections = new GetContentCollectionsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         if(contentCollections == null) {
             contentCollectionObjects = emptyList();
         } else {
@@ -4073,13 +4073,13 @@ public final class GraphQlQueries
                     .map(ContentCollectionObject::new)
                     .forEachOrdered(contentCollectionObjects::add);
         }
-        
+
         return contentCollectionObjects;
     }
 
     @GraphQLField
     @GraphQLName("contentSection")
-    public static ContentSectionObject contentSection(final DataFetchingEnvironment env,
+    static ContentSectionObject contentSection(final DataFetchingEnvironment env,
             @GraphQLName("contentWebAddressName") final String contentWebAddressName,
             @GraphQLName("contentCollectionName") final String contentCollectionName,
             @GraphQLName("contentSectionName") final String contentSectionName,
@@ -4102,13 +4102,13 @@ public final class GraphQlQueries
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         return contentSection == null ? null : new ContentSectionObject(contentSection);
     }
 
     @GraphQLField
     @GraphQLName("contentSections")
-    public static Collection<ContentSectionObject> contentSections(final DataFetchingEnvironment env,
+    static Collection<ContentSectionObject> contentSections(final DataFetchingEnvironment env,
             @GraphQLName("contentWebAddressName") final String contentWebAddressName,
             @GraphQLName("contentCollectionName") final String contentCollectionName,
             @GraphQLName("parentContentSectionName") final String parentContentSectionName,
@@ -4117,10 +4117,10 @@ public final class GraphQlQueries
             @GraphQLName("associatePartyContactMechanismName") final String associatePartyContactMechanismName) {
         Collection<ContentSection> contentSections;
         Collection<ContentSectionObject> contentSectionObjects;
-        
+
         try {
             var commandForm = ContentUtil.getHome().getGetContentSectionsForm();
-        
+
             commandForm.setContentWebAddressName(contentWebAddressName);
             commandForm.setContentCollectionName(contentCollectionName);
             commandForm.setParentContentSectionName(parentContentSectionName);
@@ -4132,7 +4132,7 @@ public final class GraphQlQueries
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         if(contentSections == null) {
             contentSectionObjects = emptyList();
         } else {
@@ -4142,13 +4142,13 @@ public final class GraphQlQueries
                     .map(ContentSectionObject::new)
                     .forEachOrdered(contentSectionObjects::add);
         }
-        
+
         return contentSectionObjects;
     }
 
     @GraphQLField
     @GraphQLName("contentPage")
-    public static ContentPageObject contentPage(final DataFetchingEnvironment env,
+    static ContentPageObject contentPage(final DataFetchingEnvironment env,
             @GraphQLName("contentWebAddressName") final String contentWebAddressName,
             @GraphQLName("contentCollectionName") final String contentCollectionName,
             @GraphQLName("contentSectionName") final String contentSectionName,
@@ -4173,13 +4173,13 @@ public final class GraphQlQueries
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         return contentPage == null ? null : new ContentPageObject(contentPage);
     }
 
     @GraphQLField
     @GraphQLName("contentPages")
-    public static Collection<ContentPageObject> contentPages(final DataFetchingEnvironment env,
+    static Collection<ContentPageObject> contentPages(final DataFetchingEnvironment env,
             @GraphQLName("contentWebAddressName") final String contentWebAddressName,
             @GraphQLName("contentCollectionName") final String contentCollectionName,
             @GraphQLName("contentSectionName") final String contentSectionName,
@@ -4188,10 +4188,10 @@ public final class GraphQlQueries
             @GraphQLName("associatePartyContactMechanismName") final String associatePartyContactMechanismName) {
         Collection<ContentPage> contentPages;
         Collection<ContentPageObject> contentPageObjects;
-        
+
         try {
             var commandForm = ContentUtil.getHome().getGetContentPagesForm();
-        
+
             commandForm.setContentWebAddressName(contentWebAddressName);
             commandForm.setContentCollectionName(contentCollectionName);
             commandForm.setContentSectionName(contentSectionName);
@@ -4203,7 +4203,7 @@ public final class GraphQlQueries
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         if(contentPages == null) {
             contentPageObjects = emptyList();
         } else {
@@ -4213,13 +4213,13 @@ public final class GraphQlQueries
                     .map(ContentPageObject::new)
                     .forEachOrdered(contentPageObjects::add);
         }
-        
+
         return contentPageObjects;
     }
 
     @GraphQLField
     @GraphQLName("contentPageArea")
-    public static ContentPageAreaObject contentPageArea(final DataFetchingEnvironment env,
+    static ContentPageAreaObject contentPageArea(final DataFetchingEnvironment env,
             @GraphQLName("contentCollectionName") @GraphQLNonNull final String contentCollectionName,
             @GraphQLName("contentSectionName") @GraphQLNonNull final String contentSectionName,
             @GraphQLName("contentPageName") @GraphQLNonNull final String contentPageName,
@@ -4240,22 +4240,22 @@ public final class GraphQlQueries
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         return contentPageArea == null ? null : new ContentPageAreaObject(contentPageArea);
     }
 
     @GraphQLField
     @GraphQLName("contentPageAreas")
-    public static Collection<ContentPageAreaObject> contentPageAreas(final DataFetchingEnvironment env,
+    static Collection<ContentPageAreaObject> contentPageAreas(final DataFetchingEnvironment env,
             @GraphQLName("contentCollectionName") @GraphQLNonNull final String contentCollectionName,
             @GraphQLName("contentSectionName") @GraphQLNonNull final String contentSectionName,
             @GraphQLName("contentPageName") @GraphQLNonNull final String contentPageName) {
         Collection<ContentPageArea> contentPageAreas;
         Collection<ContentPageAreaObject> contentPageAreaObjects;
-        
+
         try {
             var commandForm = ContentUtil.getHome().getGetContentPageAreasForm();
-        
+
             commandForm.setContentCollectionName(contentCollectionName);
             commandForm.setContentSectionName(contentSectionName);
             commandForm.setContentPageName(contentPageName);
@@ -4264,7 +4264,7 @@ public final class GraphQlQueries
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         if(contentPageAreas == null) {
             contentPageAreaObjects = emptyList();
         } else {
@@ -4274,13 +4274,13 @@ public final class GraphQlQueries
                     .map(ContentPageAreaObject::new)
                     .forEachOrdered(contentPageAreaObjects::add);
         }
-        
+
         return contentPageAreaObjects;
     }
 
     @GraphQLField
     @GraphQLName("contentCatalog")
-    public static ContentCatalogObject contentCatalog(final DataFetchingEnvironment env,
+    static ContentCatalogObject contentCatalog(final DataFetchingEnvironment env,
             @GraphQLName("contentWebAddressName") final String contentWebAddressName,
             @GraphQLName("contentCollectionName") final String contentCollectionName,
             @GraphQLName("contentCatalogName") final String contentCatalogName,
@@ -4303,13 +4303,13 @@ public final class GraphQlQueries
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         return contentCatalog == null ? null : new ContentCatalogObject(contentCatalog);
     }
 
     @GraphQLField
     @GraphQLName("contentCatalogs")
-    public static Collection<ContentCatalogObject> contentCatalogs(final DataFetchingEnvironment env,
+    static Collection<ContentCatalogObject> contentCatalogs(final DataFetchingEnvironment env,
             @GraphQLName("contentWebAddressName") final String contentWebAddressName,
             @GraphQLName("contentCollectionName") final String contentCollectionName,
             @GraphQLName("associateProgramName") final String associateProgramName,
@@ -4317,10 +4317,10 @@ public final class GraphQlQueries
             @GraphQLName("associatePartyContactMechanismName") final String associatePartyContactMechanismName) {
         Collection<ContentCatalog> contentCatalogs;
         Collection<ContentCatalogObject> contentCatalogObjects;
-        
+
         try {
             var commandForm = ContentUtil.getHome().getGetContentCatalogsForm();
-        
+
             commandForm.setContentWebAddressName(contentWebAddressName);
             commandForm.setContentCollectionName(contentCollectionName);
             commandForm.setAssociateProgramName(associateProgramName);
@@ -4331,7 +4331,7 @@ public final class GraphQlQueries
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         if(contentCatalogs == null) {
             contentCatalogObjects = emptyList();
         } else {
@@ -4341,13 +4341,13 @@ public final class GraphQlQueries
                     .map(ContentCatalogObject::new)
                     .forEachOrdered(contentCatalogObjects::add);
         }
-        
+
         return contentCatalogObjects;
     }
 
     @GraphQLField
     @GraphQLName("contentCatalogItem")
-    public static ContentCatalogItemObject contentCatalogItem(final DataFetchingEnvironment env,
+    static ContentCatalogItemObject contentCatalogItem(final DataFetchingEnvironment env,
             @GraphQLName("contentWebAddressName") final String contentWebAddressName,
             @GraphQLName("contentCollectionName") final String contentCollectionName,
             @GraphQLName("contentCatalogName") final String contentCatalogName,
@@ -4378,13 +4378,13 @@ public final class GraphQlQueries
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         return contentCatalogItem == null ? null : new ContentCatalogItemObject(contentCatalogItem);
     }
 
     @GraphQLField
     @GraphQLName("contentCatalogItems")
-    public static Collection<ContentCatalogItemObject> contentCatalogItems(final DataFetchingEnvironment env,
+    static Collection<ContentCatalogItemObject> contentCatalogItems(final DataFetchingEnvironment env,
             @GraphQLName("contentWebAddressName") final String contentWebAddressName,
             @GraphQLName("contentCollectionName") final String contentCollectionName,
             @GraphQLName("contentCatalogName") final String contentCatalogName,
@@ -4393,10 +4393,10 @@ public final class GraphQlQueries
             @GraphQLName("associatePartyContactMechanismName") final String associatePartyContactMechanismName) {
         Collection<ContentCatalogItem> contentCatalogItems;
         Collection<ContentCatalogItemObject> contentCatalogItemObjects;
-        
+
         try {
             var commandForm = ContentUtil.getHome().getGetContentCatalogItemsForm();
-        
+
             commandForm.setContentWebAddressName(contentWebAddressName);
             commandForm.setContentCollectionName(contentCollectionName);
             commandForm.setContentCatalogName(contentCatalogName);
@@ -4408,7 +4408,7 @@ public final class GraphQlQueries
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         if(contentCatalogItems == null) {
             contentCatalogItemObjects = emptyList();
         } else {
@@ -4418,13 +4418,13 @@ public final class GraphQlQueries
                     .map(ContentCatalogItemObject::new)
                     .forEachOrdered(contentCatalogItemObjects::add);
         }
-        
+
         return contentCatalogItemObjects;
     }
 
     @GraphQLField
     @GraphQLName("contentCategory")
-    public static ContentCategoryObject contentCategory(final DataFetchingEnvironment env,
+    static ContentCategoryObject contentCategory(final DataFetchingEnvironment env,
             @GraphQLName("contentWebAddressName") final String contentWebAddressName,
             @GraphQLName("contentCollectionName") final String contentCollectionName,
             @GraphQLName("contentCatalogName") final String contentCatalogName,
@@ -4449,13 +4449,13 @@ public final class GraphQlQueries
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         return contentCategory == null ? null : new ContentCategoryObject(contentCategory);
     }
 
     @GraphQLField
     @GraphQLName("contentCategories")
-    public static Collection<ContentCategoryObject> contentCategories(final DataFetchingEnvironment env,
+    static Collection<ContentCategoryObject> contentCategories(final DataFetchingEnvironment env,
             @GraphQLName("contentWebAddressName") final String contentWebAddressName,
             @GraphQLName("contentCollectionName") final String contentCollectionName,
             @GraphQLName("contentCatalogName") final String contentCatalogName,
@@ -4465,10 +4465,10 @@ public final class GraphQlQueries
             @GraphQLName("associatePartyContactMechanismName") final String associatePartyContactMechanismName) {
         Collection<ContentCategory> contentCategories;
         Collection<ContentCategoryObject> contentCategoryObjects;
-        
+
         try {
             var commandForm = ContentUtil.getHome().getGetContentCategoriesForm();
-        
+
             commandForm.setContentWebAddressName(contentWebAddressName);
             commandForm.setContentCollectionName(contentCollectionName);
             commandForm.setContentCatalogName(contentCatalogName);
@@ -4481,7 +4481,7 @@ public final class GraphQlQueries
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         if(contentCategories == null) {
             contentCategoryObjects = emptyList();
         } else {
@@ -4491,13 +4491,13 @@ public final class GraphQlQueries
                     .map(ContentCategoryObject::new)
                     .forEachOrdered(contentCategoryObjects::add);
         }
-        
+
         return contentCategoryObjects;
     }
 
     @GraphQLField
     @GraphQLName("contentCategoryItem")
-    public static ContentCategoryItemObject contentCategoryItem(final DataFetchingEnvironment env,
+    static ContentCategoryItemObject contentCategoryItem(final DataFetchingEnvironment env,
             @GraphQLName("contentWebAddressName") final String contentWebAddressName,
             @GraphQLName("contentCollectionName") final String contentCollectionName,
             @GraphQLName("contentCatalogName") final String contentCatalogName,
@@ -4530,13 +4530,13 @@ public final class GraphQlQueries
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         return contentCategoryItem == null ? null : new ContentCategoryItemObject(contentCategoryItem);
     }
 
     @GraphQLField
     @GraphQLName("contentCategoryItems")
-    public static Collection<ContentCategoryItemObject> contentCategoryItems(final DataFetchingEnvironment env,
+    static Collection<ContentCategoryItemObject> contentCategoryItems(final DataFetchingEnvironment env,
             @GraphQLName("contentWebAddressName") final String contentWebAddressName,
             @GraphQLName("contentCollectionName") final String contentCollectionName,
             @GraphQLName("contentCatalogName") final String contentCatalogName,
@@ -4546,10 +4546,10 @@ public final class GraphQlQueries
             @GraphQLName("associatePartyContactMechanismName") final String associatePartyContactMechanismName) {
         Collection<ContentCategoryItem> contentCategoryItems;
         Collection<ContentCategoryItemObject> contentCategoryItemObjects;
-        
+
         try {
             var commandForm = ContentUtil.getHome().getGetContentCategoryItemsForm();
-        
+
             commandForm.setContentWebAddressName(contentWebAddressName);
             commandForm.setContentCollectionName(contentCollectionName);
             commandForm.setContentCatalogName(contentCatalogName);
@@ -4562,7 +4562,7 @@ public final class GraphQlQueries
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         if(contentCategoryItems == null) {
             contentCategoryItemObjects = emptyList();
         } else {
@@ -4572,13 +4572,13 @@ public final class GraphQlQueries
                     .map(ContentCategoryItemObject::new)
                     .forEachOrdered(contentCategoryItemObjects::add);
         }
-        
+
         return contentCategoryItemObjects;
     }
 
     @GraphQLField
     @GraphQLName("mimeTypeFileExtension")
-    public static MimeTypeFileExtensionObject mimeTypeFileExtension(final DataFetchingEnvironment env,
+    static MimeTypeFileExtensionObject mimeTypeFileExtension(final DataFetchingEnvironment env,
             @GraphQLName("fileExtension") @GraphQLNonNull final String fileExtension) {
         MimeTypeFileExtension mimeTypeFileExtension;
 
@@ -4597,7 +4597,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("mimeTypeFileExtensions")
-    public static Collection<MimeTypeFileExtensionObject> mimeTypeFileExtensions(final DataFetchingEnvironment env) {
+    static Collection<MimeTypeFileExtensionObject> mimeTypeFileExtensions(final DataFetchingEnvironment env) {
         Collection<MimeTypeFileExtension> mimeTypeFileExtensions;
         Collection<MimeTypeFileExtensionObject> mimeTypeFileExtensionObjects;
 
@@ -4624,7 +4624,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("mimeTypeUsageType")
-    public static MimeTypeUsageTypeObject mimeTypeUsageType(final DataFetchingEnvironment env,
+    static MimeTypeUsageTypeObject mimeTypeUsageType(final DataFetchingEnvironment env,
             @GraphQLName("mimeTypeUsageTypeName") @GraphQLNonNull final String mimeTypeUsageTypeName) {
         MimeTypeUsageType mimeTypeUsageType;
 
@@ -4643,7 +4643,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("mimeTypeUsageTypes")
-    public static Collection<MimeTypeUsageTypeObject> mimeTypeUsageTypes(final DataFetchingEnvironment env) {
+    static Collection<MimeTypeUsageTypeObject> mimeTypeUsageTypes(final DataFetchingEnvironment env) {
         Collection<MimeTypeUsageType> mimeTypeUsageTypes;
         Collection<MimeTypeUsageTypeObject> mimeTypeUsageTypeObjects;
 
@@ -4670,7 +4670,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("mimeType")
-    public static MimeTypeObject mimeType(final DataFetchingEnvironment env,
+    static MimeTypeObject mimeType(final DataFetchingEnvironment env,
             @GraphQLName("mimeTypeName") @GraphQLNonNull final String mimeTypeName) {
         MimeType mimeType;
 
@@ -4689,7 +4689,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("mimeTypes")
-    public static Collection<MimeTypeObject> mimeTypes(final DataFetchingEnvironment env,
+    static Collection<MimeTypeObject> mimeTypes(final DataFetchingEnvironment env,
            @GraphQLName("mimeTypeUsageTypeName") final String mimeTypeUsageTypeName) {
         Collection<MimeType> mimeTypes;
         Collection<MimeTypeObject> mimeTypeObjects;
@@ -4719,7 +4719,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("queueType")
-    public static QueueTypeObject queueType(final DataFetchingEnvironment env,
+    static QueueTypeObject queueType(final DataFetchingEnvironment env,
             @GraphQLName("queueTypeName") @GraphQLNonNull final String queueTypeName) {
         QueueType queueType;
 
@@ -4738,7 +4738,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("queueTypes")
-    public static Collection<QueueTypeObject> queueTypes(final DataFetchingEnvironment env) {
+    static Collection<QueueTypeObject> queueTypes(final DataFetchingEnvironment env) {
         Collection<QueueType> queueTypes;
         Collection<QueueTypeObject> queueTypeObjects;
 
@@ -4765,7 +4765,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("unitOfMeasureKindUse")
-    public static UnitOfMeasureKindUseObject unitOfMeasureKindUse(final DataFetchingEnvironment env,
+    static UnitOfMeasureKindUseObject unitOfMeasureKindUse(final DataFetchingEnvironment env,
             @GraphQLName("unitOfMeasureKindUseTypeName") @GraphQLNonNull final String unitOfMeasureKindUseTypeName,
             @GraphQLName("unitOfMeasureKindName") @GraphQLNonNull final String unitOfMeasureKindName) {
         UnitOfMeasureKindUse unitOfMeasureKindUse;
@@ -4786,7 +4786,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("unitOfMeasureKindUses")
-    public static Collection<UnitOfMeasureKindUseObject> unitOfMeasureKindUses(final DataFetchingEnvironment env,
+    static Collection<UnitOfMeasureKindUseObject> unitOfMeasureKindUses(final DataFetchingEnvironment env,
             @GraphQLName("unitOfMeasureKindUseTypeName") final String unitOfMeasureKindUseTypeName,
             @GraphQLName("unitOfMeasureKindName") final String unitOfMeasureKindName) {
         Collection<UnitOfMeasureKindUse> unitOfMeasureKindUses;
@@ -4818,7 +4818,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("unitOfMeasureType")
-    public static UnitOfMeasureTypeObject unitOfMeasureType(final DataFetchingEnvironment env,
+    static UnitOfMeasureTypeObject unitOfMeasureType(final DataFetchingEnvironment env,
             @GraphQLName("unitOfMeasureKindName") @GraphQLNonNull final String unitOfMeasureKindName,
             @GraphQLName("unitOfMeasureTypeName") @GraphQLNonNull final String unitOfMeasureTypeName) {
         UnitOfMeasureType unitOfMeasureType;
@@ -4828,32 +4828,32 @@ public final class GraphQlQueries
 
             commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
             commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
-        
+
             unitOfMeasureType = new GetUnitOfMeasureTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         return unitOfMeasureType == null ? null : new UnitOfMeasureTypeObject(unitOfMeasureType);
     }
 
     @GraphQLField
     @GraphQLName("unitOfMeasureTypes")
-    public static Collection<UnitOfMeasureTypeObject> unitOfMeasureTypes(final DataFetchingEnvironment env,
+    static Collection<UnitOfMeasureTypeObject> unitOfMeasureTypes(final DataFetchingEnvironment env,
             @GraphQLName("unitOfMeasureKindName") @GraphQLNonNull final String unitOfMeasureKindName) {
         Collection<UnitOfMeasureType> unitOfMeasureTypes;
         Collection<UnitOfMeasureTypeObject> unitOfMeasureTypeObjects;
-        
+
         try {
             var commandForm = UomUtil.getHome().getGetUnitOfMeasureTypesForm();
-        
+
             commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
-            
+
             unitOfMeasureTypes = new GetUnitOfMeasureTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         if(unitOfMeasureTypes == null) {
             unitOfMeasureTypeObjects = emptyList();
         } else {
@@ -4863,13 +4863,13 @@ public final class GraphQlQueries
                     .map(UnitOfMeasureTypeObject::new)
                     .forEachOrdered(unitOfMeasureTypeObjects::add);
         }
-        
+
         return unitOfMeasureTypeObjects;
     }
-    
+
     @GraphQLField
     @GraphQLName("unitOfMeasureKind")
-    public static UnitOfMeasureKindObject unitOfMeasureKind(final DataFetchingEnvironment env,
+    static UnitOfMeasureKindObject unitOfMeasureKind(final DataFetchingEnvironment env,
             @GraphQLName("unitOfMeasureKindName") @GraphQLNonNull final String unitOfMeasureKindName) {
         UnitOfMeasureKind unitOfMeasureKind;
 
@@ -4877,12 +4877,12 @@ public final class GraphQlQueries
             var commandForm = UomUtil.getHome().getGetUnitOfMeasureKindForm();
 
             commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
-        
+
             unitOfMeasureKind = new GetUnitOfMeasureKindCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         return unitOfMeasureKind == null ? null : new UnitOfMeasureKindObject(unitOfMeasureKind);
     }
 
@@ -4890,7 +4890,7 @@ public final class GraphQlQueries
     @GraphQLName("unitOfMeasureKinds")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<UnitOfMeasureKindObject> unitOfMeasureKinds(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<UnitOfMeasureKindObject> unitOfMeasureKinds(final DataFetchingEnvironment env) {
         CountingPaginatedData<UnitOfMeasureKindObject> data;
 
         try {
@@ -4918,7 +4918,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("unitOfMeasureKindUseType")
-    public static UnitOfMeasureKindUseTypeObject unitOfMeasureKindUseType(final DataFetchingEnvironment env,
+    static UnitOfMeasureKindUseTypeObject unitOfMeasureKindUseType(final DataFetchingEnvironment env,
             @GraphQLName("unitOfMeasureKindUseTypeName") @GraphQLNonNull final String unitOfMeasureKindUseTypeName) {
         UnitOfMeasureKindUseType unitOfMeasureKindUseType;
 
@@ -4926,29 +4926,29 @@ public final class GraphQlQueries
             var commandForm = UomUtil.getHome().getGetUnitOfMeasureKindUseTypeForm();
 
             commandForm.setUnitOfMeasureKindUseTypeName(unitOfMeasureKindUseTypeName);
-        
+
             unitOfMeasureKindUseType = new GetUnitOfMeasureKindUseTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         return unitOfMeasureKindUseType == null ? null : new UnitOfMeasureKindUseTypeObject(unitOfMeasureKindUseType);
     }
 
     @GraphQLField
     @GraphQLName("unitOfMeasureKindUseTypes")
-    public static Collection<UnitOfMeasureKindUseTypeObject> unitOfMeasureKindUseTypes(final DataFetchingEnvironment env) {
+    static Collection<UnitOfMeasureKindUseTypeObject> unitOfMeasureKindUseTypes(final DataFetchingEnvironment env) {
         Collection<UnitOfMeasureKindUseType> unitOfMeasureKindUseTypes;
         Collection<UnitOfMeasureKindUseTypeObject> unitOfMeasureKindUseTypeObjects;
-        
+
         try {
             var commandForm = UomUtil.getHome().getGetUnitOfMeasureKindUseTypesForm();
-        
+
             unitOfMeasureKindUseTypes = new GetUnitOfMeasureKindUseTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         if(unitOfMeasureKindUseTypes == null) {
             unitOfMeasureKindUseTypeObjects = emptyList();
         } else {
@@ -4958,13 +4958,13 @@ public final class GraphQlQueries
                     .map(UnitOfMeasureKindUseTypeObject::new)
                     .forEachOrdered(unitOfMeasureKindUseTypeObjects::add);
         }
-        
+
         return unitOfMeasureKindUseTypeObjects;
     }
-    
+
     @GraphQLField
     @GraphQLName("entityAttributeType")
-    public static EntityAttributeTypeObject entityAttributeType(final DataFetchingEnvironment env,
+    static EntityAttributeTypeObject entityAttributeType(final DataFetchingEnvironment env,
             @GraphQLName("entityAttributeTypeName") @GraphQLNonNull final String entityAttributeTypeName) {
         EntityAttributeType entityAttributeType;
 
@@ -4972,29 +4972,29 @@ public final class GraphQlQueries
             var commandForm = CoreUtil.getHome().getGetEntityAttributeTypeForm();
 
             commandForm.setEntityAttributeTypeName(entityAttributeTypeName);
-        
+
             entityAttributeType = new GetEntityAttributeTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         return entityAttributeType == null ? null : new EntityAttributeTypeObject(entityAttributeType);
     }
 
     @GraphQLField
     @GraphQLName("entityAttributeTypes")
-    public static Collection<EntityAttributeTypeObject> entityAttributeTypes(final DataFetchingEnvironment env) {
+    static Collection<EntityAttributeTypeObject> entityAttributeTypes(final DataFetchingEnvironment env) {
         Collection<EntityAttributeType> entityAttributeTypes;
         Collection<EntityAttributeTypeObject> entityAttributeTypeObjects;
-        
+
         try {
             var commandForm = CoreUtil.getHome().getGetEntityAttributeTypesForm();
-        
+
             entityAttributeTypes = new GetEntityAttributeTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         if(entityAttributeTypes == null) {
             entityAttributeTypeObjects = emptyList();
         } else {
@@ -5004,13 +5004,13 @@ public final class GraphQlQueries
                     .map(EntityAttributeTypeObject::new)
                     .forEachOrdered(entityAttributeTypeObjects::add);
         }
-        
+
         return entityAttributeTypeObjects;
     }
 
     @GraphQLField
     @GraphQLName("customerResults")
-    public static CustomerResultsObject customerResults(final DataFetchingEnvironment env,
+    static CustomerResultsObject customerResults(final DataFetchingEnvironment env,
             @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName) {
         CustomerResultsObject customerResultsObject = null;
 
@@ -5031,7 +5031,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("employeeResults")
-    public static EmployeeResultsObject employeeResults(final DataFetchingEnvironment env,
+    static EmployeeResultsObject employeeResults(final DataFetchingEnvironment env,
             @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName) {
         EmployeeResultsObject employeeResultsObject = null;
 
@@ -5052,7 +5052,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("itemResults")
-    public static ItemResultsObject itemResults(final DataFetchingEnvironment env,
+    static ItemResultsObject itemResults(final DataFetchingEnvironment env,
             @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName) {
         ItemResultsObject itemResultsObject = null;
 
@@ -5073,7 +5073,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("checkItemSpelling")
-    public static CheckItemSpellingObject checkItemSpelling(final DataFetchingEnvironment env,
+    static CheckItemSpellingObject checkItemSpelling(final DataFetchingEnvironment env,
             @GraphQLName("languageIsoName") final String languageIsoName,
             @GraphQLName("searchDefaultOperatorName") final String searchDefaultOperatorName,
             @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName,
@@ -5100,7 +5100,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("vendorResults")
-    public static VendorResultsObject vendorResults(final DataFetchingEnvironment env,
+    static VendorResultsObject vendorResults(final DataFetchingEnvironment env,
             @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName) {
         VendorResultsObject vendorResultsObject = null;
 
@@ -5121,7 +5121,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("warehouseResults")
-    public static WarehouseResultsObject warehouseResults(final DataFetchingEnvironment env,
+    static WarehouseResultsObject warehouseResults(final DataFetchingEnvironment env,
             @GraphQLName("searchTypeName") @GraphQLNonNull final String searchTypeName) {
         WarehouseResultsObject warehouseResultsObject = null;
 
@@ -5142,7 +5142,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("color")
-    public static ColorObject color(final DataFetchingEnvironment env,
+    static ColorObject color(final DataFetchingEnvironment env,
             @GraphQLName("colorName") final String colorName,
             @GraphQLName("id") @GraphQLID final String id) {
         Color color;
@@ -5152,29 +5152,29 @@ public final class GraphQlQueries
 
             commandForm.setColorName(colorName);
             commandForm.setUlid(id);
-        
+
             color = new GetColorCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         return color == null ? null : new ColorObject(color);
     }
 
     @GraphQLField
     @GraphQLName("colors")
-    public static Collection<ColorObject> colors(final DataFetchingEnvironment env) {
+    static Collection<ColorObject> colors(final DataFetchingEnvironment env) {
         Collection<Color> colors;
         Collection<ColorObject> colorObjects;
-        
+
         try {
             var commandForm = CoreUtil.getHome().getGetColorsForm();
-        
+
             colors = new GetColorsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         if(colors == null) {
             colorObjects = emptyList();
         } else {
@@ -5184,13 +5184,13 @@ public final class GraphQlQueries
                     .map(ColorObject::new)
                     .forEachOrdered(colorObjects::add);
         }
-        
+
         return colorObjects;
     }
 
     @GraphQLField
     @GraphQLName("fontStyle")
-    public static FontStyleObject fontStyle(final DataFetchingEnvironment env,
+    static FontStyleObject fontStyle(final DataFetchingEnvironment env,
             @GraphQLName("fontStyleName") final String fontStyleName,
             @GraphQLName("id") @GraphQLID final String id) {
         FontStyle fontStyle;
@@ -5200,29 +5200,29 @@ public final class GraphQlQueries
 
             commandForm.setFontStyleName(fontStyleName);
             commandForm.setUlid(id);
-        
+
             fontStyle = new GetFontStyleCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         return fontStyle == null ? null : new FontStyleObject(fontStyle);
     }
 
     @GraphQLField
     @GraphQLName("fontStyles")
-    public static Collection<FontStyleObject> fontStyles(final DataFetchingEnvironment env) {
+    static Collection<FontStyleObject> fontStyles(final DataFetchingEnvironment env) {
         Collection<FontStyle> fontStyles;
         Collection<FontStyleObject> fontStyleObjects;
-        
+
         try {
             var commandForm = CoreUtil.getHome().getGetFontStylesForm();
-        
+
             fontStyles = new GetFontStylesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         if(fontStyles == null) {
             fontStyleObjects = emptyList();
         } else {
@@ -5232,13 +5232,13 @@ public final class GraphQlQueries
                     .map(FontStyleObject::new)
                     .forEachOrdered(fontStyleObjects::add);
         }
-        
+
         return fontStyleObjects;
     }
 
     @GraphQLField
     @GraphQLName("fontWeight")
-    public static FontWeightObject fontWeight(final DataFetchingEnvironment env,
+    static FontWeightObject fontWeight(final DataFetchingEnvironment env,
             @GraphQLName("fontWeightName") final String fontWeightName,
             @GraphQLName("id") @GraphQLID final String id) {
         FontWeight fontWeight;
@@ -5248,29 +5248,29 @@ public final class GraphQlQueries
 
             commandForm.setFontWeightName(fontWeightName);
             commandForm.setUlid(id);
-        
+
             fontWeight = new GetFontWeightCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         return fontWeight == null ? null : new FontWeightObject(fontWeight);
     }
 
     @GraphQLField
     @GraphQLName("fontWeights")
-    public static Collection<FontWeightObject> fontWeights(final DataFetchingEnvironment env) {
+    static Collection<FontWeightObject> fontWeights(final DataFetchingEnvironment env) {
         Collection<FontWeight> fontWeights;
         Collection<FontWeightObject> fontWeightObjects;
-        
+
         try {
             var commandForm = CoreUtil.getHome().getGetFontWeightsForm();
-        
+
             fontWeights = new GetFontWeightsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         if(fontWeights == null) {
             fontWeightObjects = emptyList();
         } else {
@@ -5280,13 +5280,13 @@ public final class GraphQlQueries
                     .map(FontWeightObject::new)
                     .forEachOrdered(fontWeightObjects::add);
         }
-        
+
         return fontWeightObjects;
     }
 
     @GraphQLField
     @GraphQLName("textDecoration")
-    public static TextDecorationObject textDecoration(final DataFetchingEnvironment env,
+    static TextDecorationObject textDecoration(final DataFetchingEnvironment env,
             @GraphQLName("textDecorationName") final String textDecorationName,
             @GraphQLName("id") @GraphQLID final String id) {
         TextDecoration textDecoration;
@@ -5296,29 +5296,29 @@ public final class GraphQlQueries
 
             commandForm.setTextDecorationName(textDecorationName);
             commandForm.setUlid(id);
-        
+
             textDecoration = new GetTextDecorationCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         return textDecoration == null ? null : new TextDecorationObject(textDecoration);
     }
 
     @GraphQLField
     @GraphQLName("textDecorations")
-    public static Collection<TextDecorationObject> textDecorations(final DataFetchingEnvironment env) {
+    static Collection<TextDecorationObject> textDecorations(final DataFetchingEnvironment env) {
         Collection<TextDecoration> textDecorations;
         Collection<TextDecorationObject> textDecorationObjects;
-        
+
         try {
             var commandForm = CoreUtil.getHome().getGetTextDecorationsForm();
-        
+
             textDecorations = new GetTextDecorationsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         if(textDecorations == null) {
             textDecorationObjects = emptyList();
         } else {
@@ -5328,13 +5328,13 @@ public final class GraphQlQueries
                     .map(TextDecorationObject::new)
                     .forEachOrdered(textDecorationObjects::add);
         }
-        
+
         return textDecorationObjects;
     }
 
     @GraphQLField
     @GraphQLName("textTransformation")
-    public static TextTransformationObject textTransformation(final DataFetchingEnvironment env,
+    static TextTransformationObject textTransformation(final DataFetchingEnvironment env,
             @GraphQLName("textTransformationName") final String textTransformationName,
             @GraphQLName("id") @GraphQLID final String id) {
         TextTransformation textTransformation;
@@ -5344,29 +5344,29 @@ public final class GraphQlQueries
 
             commandForm.setTextTransformationName(textTransformationName);
             commandForm.setUlid(id);
-        
+
             textTransformation = new GetTextTransformationCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         return textTransformation == null ? null : new TextTransformationObject(textTransformation);
     }
 
     @GraphQLField
     @GraphQLName("textTransformations")
-    public static Collection<TextTransformationObject> textTransformations(final DataFetchingEnvironment env) {
+    static Collection<TextTransformationObject> textTransformations(final DataFetchingEnvironment env) {
         Collection<TextTransformation> textTransformations;
         Collection<TextTransformationObject> textTransformationObjects;
-        
+
         try {
             var commandForm = CoreUtil.getHome().getGetTextTransformationsForm();
-        
+
             textTransformations = new GetTextTransformationsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         if(textTransformations == null) {
             textTransformationObjects = emptyList();
         } else {
@@ -5376,13 +5376,13 @@ public final class GraphQlQueries
                     .map(TextTransformationObject::new)
                     .forEachOrdered(textTransformationObjects::add);
         }
-        
+
         return textTransformationObjects;
     }
 
     @GraphQLField
     @GraphQLName("userLogin")
-    public static UserLoginObject userLogin(final DataFetchingEnvironment env,
+    static UserLoginObject userLogin(final DataFetchingEnvironment env,
             @GraphQLName("username") final String username,
             @GraphQLName("id") @GraphQLID final String id) {
         UserLogin userLogin;
@@ -5393,20 +5393,20 @@ public final class GraphQlQueries
 
             commandForm.setUsername(username);
             commandForm.setUlid(id);
-        
+
             GetUserLoginCommand getUserLoginCommand = new GetUserLoginCommand(getUserVisitPK(env), commandForm);
             userLogin = getUserLoginCommand.runForGraphQl();
             foundByUsernameUserLogin = getUserLoginCommand.foundByUsernameUserLogin;
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         return userLogin == null && foundByUsernameUserLogin == null? null : new UserLoginObject(userLogin, foundByUsernameUserLogin);
     }
-    
+
     @GraphQLField
     @GraphQLName("recoveryQuestion")
-    public static RecoveryQuestionObject recoveryQuestion(final DataFetchingEnvironment env,
+    static RecoveryQuestionObject recoveryQuestion(final DataFetchingEnvironment env,
             @GraphQLName("recoveryQuestionName") final String recoveryQuestionName,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("username") final String username) {
@@ -5418,29 +5418,29 @@ public final class GraphQlQueries
             commandForm.setRecoveryQuestionName(recoveryQuestionName);
             commandForm.setUlid(id);
             commandForm.setUsername(username);
-        
+
             recoveryQuestion = new GetRecoveryQuestionCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         return recoveryQuestion == null ? null : new RecoveryQuestionObject(recoveryQuestion);
     }
 
     @GraphQLField
     @GraphQLName("recoveryQuestions")
-    public static Collection<RecoveryQuestionObject> recoveryQuestions(final DataFetchingEnvironment env) {
+    static Collection<RecoveryQuestionObject> recoveryQuestions(final DataFetchingEnvironment env) {
         Collection<RecoveryQuestion> recoveryQuestions;
         Collection<RecoveryQuestionObject> recoveryQuestionObjects;
-        
+
         try {
             var commandForm = UserUtil.getHome().getGetRecoveryQuestionsForm();
-        
+
             recoveryQuestions = new GetRecoveryQuestionsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         if(recoveryQuestions == null) {
             recoveryQuestionObjects = emptyList();
         } else {
@@ -5450,29 +5450,29 @@ public final class GraphQlQueries
                     .map(RecoveryQuestionObject::new)
                     .forEachOrdered(recoveryQuestionObjects::add);
         }
-        
+
         return recoveryQuestionObjects;
     }
 
     @GraphQLField
     @GraphQLName("userSession")
-    public static UserSessionObject userSession(final DataFetchingEnvironment env) {
-        var userSession = getUserSession(env);
-        
+    static UserSessionObject userSession(final DataFetchingEnvironment env) {
+        var userSession = BaseGraphQl.getUserSession(env);
+
         return userSession == null ? null : new UserSessionObject(userSession);
     }
-    
+
     @GraphQLField
     @GraphQLName("userVisit")
-    public static UserVisitObject userVisit(final DataFetchingEnvironment env) {
-        var userVisit = getUserVisit(env);
+    static UserVisitObject userVisit(final DataFetchingEnvironment env) {
+        var userVisit = BaseGraphQl.getUserVisit(env);
 
         return userVisit == null ? null : new UserVisitObject(userVisit);
     }
-    
+
     @GraphQLField
     @GraphQLName("currency")
-    public static CurrencyObject currency(final DataFetchingEnvironment env,
+    static CurrencyObject currency(final DataFetchingEnvironment env,
             @GraphQLName("currencyIsoName") final String currencyIsoName,
             @GraphQLName("id") @GraphQLID final String id) {
         Currency currency;
@@ -5482,12 +5482,12 @@ public final class GraphQlQueries
 
             commandForm.setCurrencyIsoName(currencyIsoName);
             commandForm.setUlid(id);
-        
+
             currency = new GetCurrencyCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         return currency == null ? null : new CurrencyObject(currency);
     }
 
@@ -5495,7 +5495,7 @@ public final class GraphQlQueries
     @GraphQLName("currencies")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<CurrencyObject> currencies(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<CurrencyObject> currencies(final DataFetchingEnvironment env) {
         CountingPaginatedData<CurrencyObject> data;
 
         try {
@@ -5523,7 +5523,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("language")
-    public static LanguageObject language(final DataFetchingEnvironment env,
+    static LanguageObject language(final DataFetchingEnvironment env,
             @GraphQLName("languageIsoName") final String languageIsoName,
             @GraphQLName("id") @GraphQLID final String id) {
         Language language;
@@ -5533,12 +5533,12 @@ public final class GraphQlQueries
 
             commandForm.setLanguageIsoName(languageIsoName);
             commandForm.setUlid(id);
-        
+
             language = new GetLanguageCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         return language == null ? null : new LanguageObject(language);
     }
 
@@ -5546,7 +5546,7 @@ public final class GraphQlQueries
     @GraphQLName("languages")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<LanguageObject> languages(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<LanguageObject> languages(final DataFetchingEnvironment env) {
         CountingPaginatedData<LanguageObject> data;
 
         try {
@@ -5571,10 +5571,10 @@ public final class GraphQlQueries
 
         return data;
     }
-    
+
     @GraphQLField
     @GraphQLName("dateTimeFormat")
-    public static DateTimeFormatObject dateTimeFormat(final DataFetchingEnvironment env,
+    static DateTimeFormatObject dateTimeFormat(final DataFetchingEnvironment env,
             @GraphQLName("dateTimeFormatName") final String dateTimeFormatName,
             @GraphQLName("id") @GraphQLID final String id) {
         DateTimeFormat dateTimeFormat;
@@ -5584,12 +5584,12 @@ public final class GraphQlQueries
 
             commandForm.setDateTimeFormatName(dateTimeFormatName);
             commandForm.setUlid(id);
-        
+
             dateTimeFormat = new GetDateTimeFormatCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         return dateTimeFormat == null ? null : new DateTimeFormatObject(dateTimeFormat);
     }
 
@@ -5597,7 +5597,7 @@ public final class GraphQlQueries
     @GraphQLName("dateTimeFormats")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<DateTimeFormatObject> dateTimeFormats(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<DateTimeFormatObject> dateTimeFormats(final DataFetchingEnvironment env) {
         CountingPaginatedData<DateTimeFormatObject> data;
 
         try {
@@ -5622,10 +5622,10 @@ public final class GraphQlQueries
 
         return data;
     }
-    
+
     @GraphQLField
     @GraphQLName("timeZone")
-    public static TimeZoneObject timeZone(final DataFetchingEnvironment env,
+    static TimeZoneObject timeZone(final DataFetchingEnvironment env,
             @GraphQLName("javaTimeZoneName") final String javaTimeZoneName,
             @GraphQLName("id") @GraphQLID final String id) {
         TimeZone timeZone;
@@ -5635,12 +5635,12 @@ public final class GraphQlQueries
 
             commandForm.setJavaTimeZoneName(javaTimeZoneName);
             commandForm.setUlid(id);
-        
+
             timeZone = new GetTimeZoneCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         return timeZone == null ? null : new TimeZoneObject(timeZone);
     }
 
@@ -5648,7 +5648,7 @@ public final class GraphQlQueries
     @GraphQLName("timeZones")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<TimeZoneObject> timeZones(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<TimeZoneObject> timeZones(final DataFetchingEnvironment env) {
         CountingPaginatedData<TimeZoneObject> data;
 
         try {
@@ -5676,7 +5676,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("customerType")
-    public static CustomerTypeObject customerType(final DataFetchingEnvironment env,
+    static CustomerTypeObject customerType(final DataFetchingEnvironment env,
             @GraphQLName("customerTypeName") final String customerTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
         CustomerType customerType;
@@ -5699,7 +5699,7 @@ public final class GraphQlQueries
     @GraphQLName("customerTypes")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<CustomerTypeObject> customerTypes(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<CustomerTypeObject> customerTypes(final DataFetchingEnvironment env) {
         CountingPaginatedData<CustomerTypeObject> data;
 
         try {
@@ -5727,7 +5727,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("customer")
-    public static CustomerObject customer(final DataFetchingEnvironment env,
+    static CustomerObject customer(final DataFetchingEnvironment env,
             @GraphQLName("customerName") final String customerName,
             @GraphQLName("partyName") final String partyName,
             @GraphQLName("id") @GraphQLID final String id) {
@@ -5752,7 +5752,7 @@ public final class GraphQlQueries
     @GraphQLName("customers")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<CustomerObject> customers(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<CustomerObject> customers(final DataFetchingEnvironment env) {
         CountingPaginatedData<CustomerObject> data;
 
         try {
@@ -5777,10 +5777,10 @@ public final class GraphQlQueries
 
         return data;
     }
-    
+
     @GraphQLField
     @GraphQLName("employee")
-    public static EmployeeObject employee(final DataFetchingEnvironment env,
+    static EmployeeObject employee(final DataFetchingEnvironment env,
             @GraphQLName("employeeName") final String employeeName,
             @GraphQLName("partyName") final String partyName,
             @GraphQLName("id") @GraphQLID final String id) {
@@ -5805,7 +5805,7 @@ public final class GraphQlQueries
     @GraphQLName("employees")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<EmployeeObject> employees(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<EmployeeObject> employees(final DataFetchingEnvironment env) {
         CountingPaginatedData<EmployeeObject> data;
 
         try {
@@ -5833,7 +5833,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("vendorType")
-    public static VendorTypeObject vendorType(final DataFetchingEnvironment env,
+    static VendorTypeObject vendorType(final DataFetchingEnvironment env,
             @GraphQLName("vendorTypeName") final String vendorTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
         VendorType vendorType;
@@ -5856,7 +5856,7 @@ public final class GraphQlQueries
     @GraphQLName("vendorTypes")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<VendorTypeObject> vendorTypes(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<VendorTypeObject> vendorTypes(final DataFetchingEnvironment env) {
         CountingPaginatedData<VendorTypeObject> data;
 
         try {
@@ -5884,7 +5884,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("vendor")
-    public static VendorObject vendor(final DataFetchingEnvironment env,
+    static VendorObject vendor(final DataFetchingEnvironment env,
             @GraphQLName("vendorName") final String vendorName,
             @GraphQLName("partyName") final String partyName,
             @GraphQLName("id") @GraphQLID final String id) {
@@ -5909,7 +5909,7 @@ public final class GraphQlQueries
     @GraphQLName("vendors")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<VendorObject> vendors(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<VendorObject> vendors(final DataFetchingEnvironment env) {
         CountingPaginatedData<VendorObject> data;
 
         try {
@@ -5937,7 +5937,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("vendorItem")
-    public static VendorItemObject vendorItem(final DataFetchingEnvironment env,
+    static VendorItemObject vendorItem(final DataFetchingEnvironment env,
             @GraphQLName("vendorName") final String vendorName,
             @GraphQLName("partyName") final String partyName,
             @GraphQLName("vendorItemName") final String vendorItemName,
@@ -5962,7 +5962,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("vendorItems")
-    public static Collection<VendorItemObject> vendorItems(final DataFetchingEnvironment env,
+    static Collection<VendorItemObject> vendorItems(final DataFetchingEnvironment env,
             @GraphQLName("vendorName") final String vendorName,
             @GraphQLName("itemName") final String itemName) {
         Collection<VendorItem> vendorItems;
@@ -5994,7 +5994,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("vendorItemCost")
-    public static VendorItemCostObject vendorItemCost(final DataFetchingEnvironment env,
+    static VendorItemCostObject vendorItemCost(final DataFetchingEnvironment env,
             @GraphQLName("vendorName") final String vendorName,
             @GraphQLName("partyName") final String partyName,
             @GraphQLName("vendorItemName") @GraphQLNonNull final String vendorItemName,
@@ -6021,7 +6021,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("vendorItemCosts")
-    public static Collection<VendorItemCostObject> vendorItemCosts(final DataFetchingEnvironment env,
+    static Collection<VendorItemCostObject> vendorItemCosts(final DataFetchingEnvironment env,
             @GraphQLName("vendorName") @GraphQLNonNull final String vendorName,
             @GraphQLName("vendorItemName") @GraphQLNonNull final String vendorItemName) {
         Collection<VendorItemCost> vendorItemCosts;
@@ -6053,7 +6053,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("partyType")
-    public static PartyTypeObject partyType(final DataFetchingEnvironment env,
+    static PartyTypeObject partyType(final DataFetchingEnvironment env,
             @GraphQLName("partyTypeName") final String partyTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
         PartyType partyType;
@@ -6076,7 +6076,7 @@ public final class GraphQlQueries
     @GraphQLName("partyTypes")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<PartyTypeObject> partyTypes(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<PartyTypeObject> partyTypes(final DataFetchingEnvironment env) {
         CountingPaginatedData<PartyTypeObject> data;
 
         try {
@@ -6104,7 +6104,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("partyAliasType")
-    public static PartyAliasTypeObject partyAliasType(final DataFetchingEnvironment env,
+    static PartyAliasTypeObject partyAliasType(final DataFetchingEnvironment env,
             @GraphQLName("partyTypeName") final String partyTypeName,
             @GraphQLName("partyAliasTypeName") final String partyAliasTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
@@ -6127,7 +6127,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("partyAliasTypes")
-    public static Collection<PartyAliasTypeObject> partyAliasTypes(final DataFetchingEnvironment env,
+    static Collection<PartyAliasTypeObject> partyAliasTypes(final DataFetchingEnvironment env,
             @GraphQLName("partyTypeName") @GraphQLNonNull final String partyTypeName) {
         Collection<PartyAliasType> partyAliasTypes;
         Collection<PartyAliasTypeObject> partyAliasTypeObjects;
@@ -6157,7 +6157,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("partyAlias")
-    public static PartyAliasObject partyAlias(final DataFetchingEnvironment env,
+    static PartyAliasObject partyAlias(final DataFetchingEnvironment env,
             @GraphQLName("partyName") final String partyName,
             @GraphQLName("partyTypeName") final String partyTypeName,
             @GraphQLName("partyAliasTypeName") final String partyAliasTypeName,
@@ -6182,7 +6182,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("partyAliases")
-    public static Collection<PartyAliasObject> partyAliases(final DataFetchingEnvironment env,
+    static Collection<PartyAliasObject> partyAliases(final DataFetchingEnvironment env,
             @GraphQLName("partyName") final String partyName,
             @GraphQLName("partyTypeName") final String partyTypeName,
             @GraphQLName("partyAliasTypeName") final String partyAliasTypeName) {
@@ -6216,7 +6216,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("party")
-    public static PartyObject party(final DataFetchingEnvironment env,
+    static PartyObject party(final DataFetchingEnvironment env,
             @GraphQLName("partyName") final String partyName,
             @GraphQLName("id") @GraphQLID final String id) {
         Party party;
@@ -6239,7 +6239,7 @@ public final class GraphQlQueries
     @GraphQLName("parties")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<PartyObject> parties(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<PartyObject> parties(final DataFetchingEnvironment env) {
         CountingPaginatedData<PartyObject> data;
 
         try {
@@ -6264,10 +6264,10 @@ public final class GraphQlQueries
 
         return data;
     }
-    
+
     @GraphQLField
     @GraphQLName("company")
-    public static CompanyObject company(final DataFetchingEnvironment env,
+    static CompanyObject company(final DataFetchingEnvironment env,
             @GraphQLName("companyName") final String companyName,
             @GraphQLName("partyName") final String partyName,
             @GraphQLName("id") @GraphQLID final String id) {
@@ -6292,7 +6292,7 @@ public final class GraphQlQueries
     @GraphQLName("companies")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<CompanyObject> compompanies(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<CompanyObject> companies(final DataFetchingEnvironment env) {
         CountingPaginatedData<CompanyObject> data;
 
         try {
@@ -6306,9 +6306,9 @@ public final class GraphQlQueries
                 if(entities == null) {
                     data = Connections.emptyConnection();
                 } else {
-                    var compompanies = entities.stream().map(CompanyObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+                    var companies = entities.stream().map(CompanyObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-                    data = new CountedObjects<>(objectLimiter, compompanies);
+                    data = new CountedObjects<>(objectLimiter, companies);
                 }
             }
         } catch (NamingException ex) {
@@ -6320,7 +6320,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("division")
-    public static DivisionObject division(final DataFetchingEnvironment env,
+    static DivisionObject division(final DataFetchingEnvironment env,
             @GraphQLName("companyName") final String companyName,
             @GraphQLName("divisionName") final String divisionName,
             @GraphQLName("partyName") final String partyName,
@@ -6345,7 +6345,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("divisions")
-    public static Collection<DivisionObject> divisions(final DataFetchingEnvironment env,
+    static Collection<DivisionObject> divisions(final DataFetchingEnvironment env,
             @GraphQLName("companyName") @GraphQLNonNull final String companyName) {
         Collection<PartyDivision> partyDivisions;
         Collection<DivisionObject> divisionObjects;
@@ -6375,7 +6375,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("department")
-    public static DepartmentObject department(final DataFetchingEnvironment env,
+    static DepartmentObject department(final DataFetchingEnvironment env,
             @GraphQLName("companyName") final String companyName,
             @GraphQLName("divisionName") final String divisionName,
             @GraphQLName("departmentName") final String departmentName,
@@ -6402,7 +6402,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("departments")
-    public static Collection<DepartmentObject> departments(final DataFetchingEnvironment env,
+    static Collection<DepartmentObject> departments(final DataFetchingEnvironment env,
             @GraphQLName("companyName") @GraphQLNonNull final String companyName,
             @GraphQLName("divisionName") final String divisionName) {
         Collection<PartyDepartment> partyDepartments;
@@ -6434,7 +6434,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("warehouse")
-    public static WarehouseObject warehouse(final DataFetchingEnvironment env,
+    static WarehouseObject warehouse(final DataFetchingEnvironment env,
             @GraphQLName("warehouseName") final String warehouseName,
             @GraphQLName("partyName") final String partyName,
             @GraphQLName("id") @GraphQLID final String id) {
@@ -6459,7 +6459,7 @@ public final class GraphQlQueries
     @GraphQLName("warehouses")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<WarehouseObject> warehouses(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<WarehouseObject> warehouses(final DataFetchingEnvironment env) {
         CountingPaginatedData<WarehouseObject> data;
 
         try {
@@ -6487,7 +6487,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("cancellationKind")
-    public static CancellationKindObject cancellationKind(final DataFetchingEnvironment env,
+    static CancellationKindObject cancellationKind(final DataFetchingEnvironment env,
             @GraphQLName("cancellationKindName") final String cancellationKindName,
             @GraphQLName("id") @GraphQLID final String id) {
         CancellationKind cancellationKind;
@@ -6510,7 +6510,7 @@ public final class GraphQlQueries
     @GraphQLName("cancellationKinds")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<CancellationKindObject> cancellationKinds(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<CancellationKindObject> cancellationKinds(final DataFetchingEnvironment env) {
         CountingPaginatedData<CancellationKindObject> data;
 
         try {
@@ -6538,7 +6538,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("cancellationPolicy")
-    public static CancellationPolicyObject cancellationPolicy(final DataFetchingEnvironment env,
+    static CancellationPolicyObject cancellationPolicy(final DataFetchingEnvironment env,
             @GraphQLName("cancellationKindName") final String cancellationKindName,
             @GraphQLName("cancellationPolicyName") final String cancellationPolicyName,
             @GraphQLName("id") @GraphQLID final String id) {
@@ -6561,7 +6561,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("cancellationPolicies")
-    public static Collection<CancellationPolicyObject> cancellationPolicies(final DataFetchingEnvironment env,
+    static Collection<CancellationPolicyObject> cancellationPolicies(final DataFetchingEnvironment env,
             @GraphQLName("cancellationKindName") @GraphQLNonNull final String cancellationKindName) {
         Collection<CancellationPolicy> cancellationPolicies;
         Collection<CancellationPolicyObject> cancellationPolicyObjects;
@@ -6591,7 +6591,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("returnKind")
-    public static ReturnKindObject returnKind(final DataFetchingEnvironment env,
+    static ReturnKindObject returnKind(final DataFetchingEnvironment env,
             @GraphQLName("returnKindName") final String returnKindName,
             @GraphQLName("id") @GraphQLID final String id) {
         ReturnKind returnKind;
@@ -6614,7 +6614,7 @@ public final class GraphQlQueries
     @GraphQLName("returnKinds")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<ReturnKindObject> returnKinds(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<ReturnKindObject> returnKinds(final DataFetchingEnvironment env) {
         CountingPaginatedData<ReturnKindObject> data;
 
         try {
@@ -6642,7 +6642,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("returnPolicy")
-    public static ReturnPolicyObject returnPolicy(final DataFetchingEnvironment env,
+    static ReturnPolicyObject returnPolicy(final DataFetchingEnvironment env,
             @GraphQLName("returnKindName") final String returnKindName,
             @GraphQLName("returnPolicyName") final String returnPolicyName,
             @GraphQLName("id") @GraphQLID final String id) {
@@ -6665,7 +6665,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("returnPolicies")
-    public static Collection<ReturnPolicyObject> returnPolicies(final DataFetchingEnvironment env,
+    static Collection<ReturnPolicyObject> returnPolicies(final DataFetchingEnvironment env,
             @GraphQLName("returnKindName") @GraphQLNonNull final String returnKindName) {
         Collection<ReturnPolicy> returnPolicies;
         Collection<ReturnPolicyObject> returnPolicyObjects;
@@ -6695,7 +6695,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("item")
-    public static ItemObject item(final DataFetchingEnvironment env,
+    static ItemObject item(final DataFetchingEnvironment env,
             @GraphQLName("itemName") final String itemName,
             @GraphQLName("itemNameOrAlias") final String itemNameOrAlias,
             @GraphQLName("id") @GraphQLID final String id) {
@@ -6720,7 +6720,7 @@ public final class GraphQlQueries
     @GraphQLName("items")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<ItemObject> items(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<ItemObject> items(final DataFetchingEnvironment env) {
         CountingPaginatedData<ItemObject> data;
 
         try {
@@ -6748,7 +6748,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("itemUnitOfMeasureType")
-    public static ItemUnitOfMeasureTypeObject itemUnitOfMeasureType(final DataFetchingEnvironment env,
+    static ItemUnitOfMeasureTypeObject itemUnitOfMeasureType(final DataFetchingEnvironment env,
             @GraphQLName("itemName") @GraphQLNonNull final String itemName,
             @GraphQLName("unitOfMeasureTypeName") @GraphQLNonNull final String unitOfMeasureTypeName) {
         ItemUnitOfMeasureType itemUnitOfMeasureType;
@@ -6769,7 +6769,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("itemUnitOfMeasureTypes")
-    public static Collection<ItemUnitOfMeasureTypeObject> itemUnitOfMeasureTypes(final DataFetchingEnvironment env,
+    static Collection<ItemUnitOfMeasureTypeObject> itemUnitOfMeasureTypes(final DataFetchingEnvironment env,
             @GraphQLName("itemName") @GraphQLNonNull final String itemName,
             @GraphQLName("unitOfMeasureTypeName") final String unitOfMeasureTypeName) {
         Collection<ItemUnitOfMeasureType> itemUnitOfMeasureType;
@@ -6802,7 +6802,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("itemDescription")
-    public static ItemDescriptionObject itemDescription(final DataFetchingEnvironment env,
+    static ItemDescriptionObject itemDescription(final DataFetchingEnvironment env,
             @GraphQLName("itemDescriptionTypeName") final String itemDescriptionTypeName,
             @GraphQLName("itemName") final String itemName,
             @GraphQLName("languageIsoName") final String languageIsoName,
@@ -6829,7 +6829,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("itemDescriptions")
-    public static Collection<ItemDescriptionObject> itemDescriptions(final DataFetchingEnvironment env,
+    static Collection<ItemDescriptionObject> itemDescriptions(final DataFetchingEnvironment env,
             @GraphQLName("itemName") @GraphQLNonNull final String itemName,
             @GraphQLName("itemDescriptionTypeUseTypeName") final String itemDescriptionTypeUseTypeName,
             @GraphQLName("languageIsoName") final String languageIsoName) {
@@ -6863,7 +6863,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("itemType")
-    public static ItemTypeObject itemType(final DataFetchingEnvironment env,
+    static ItemTypeObject itemType(final DataFetchingEnvironment env,
             @GraphQLName("itemTypeName") final String itemTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
         ItemType itemType;
@@ -6886,7 +6886,7 @@ public final class GraphQlQueries
     @GraphQLName("itemTypes")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<ItemTypeObject> itemTypes(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<ItemTypeObject> itemTypes(final DataFetchingEnvironment env) {
         CountingPaginatedData<ItemTypeObject> data;
 
         try {
@@ -6914,7 +6914,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("itemUseType")
-    public static ItemUseTypeObject itemUseType(final DataFetchingEnvironment env,
+    static ItemUseTypeObject itemUseType(final DataFetchingEnvironment env,
             @GraphQLName("itemUseTypeName") final String itemUseTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
         ItemUseType itemUseType;
@@ -6937,7 +6937,7 @@ public final class GraphQlQueries
     @GraphQLName("itemUseTypes")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<ItemUseTypeObject> itemUseTypes(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<ItemUseTypeObject> itemUseTypes(final DataFetchingEnvironment env) {
         CountingPaginatedData<ItemUseTypeObject> data;
 
         try {
@@ -6965,7 +6965,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("itemPriceType")
-    public static ItemPriceTypeObject itemPriceType(final DataFetchingEnvironment env,
+    static ItemPriceTypeObject itemPriceType(final DataFetchingEnvironment env,
             @GraphQLName("itemPriceTypeName") final String itemPriceTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
         ItemPriceType itemPriceType;
@@ -6988,7 +6988,7 @@ public final class GraphQlQueries
     @GraphQLName("itemPriceTypes")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<ItemPriceTypeObject> itemPriceTypes(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<ItemPriceTypeObject> itemPriceTypes(final DataFetchingEnvironment env) {
         CountingPaginatedData<ItemPriceTypeObject> data;
 
         try {
@@ -7016,7 +7016,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("itemDeliveryType")
-    public static ItemDeliveryTypeObject itemDeliveryType(final DataFetchingEnvironment env,
+    static ItemDeliveryTypeObject itemDeliveryType(final DataFetchingEnvironment env,
             @GraphQLName("itemDeliveryTypeName") final String itemDeliveryTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
         ItemDeliveryType itemDeliveryType;
@@ -7039,7 +7039,7 @@ public final class GraphQlQueries
     @GraphQLName("itemDeliveryTypes")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<ItemDeliveryTypeObject> itemDeliveryTypes(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<ItemDeliveryTypeObject> itemDeliveryTypes(final DataFetchingEnvironment env) {
         CountingPaginatedData<ItemDeliveryTypeObject> data;
 
         try {
@@ -7067,7 +7067,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("itemInventoryType")
-    public static ItemInventoryTypeObject itemInventoryType(final DataFetchingEnvironment env,
+    static ItemInventoryTypeObject itemInventoryType(final DataFetchingEnvironment env,
             @GraphQLName("itemInventoryTypeName") final String itemInventoryTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
         ItemInventoryType itemInventoryType;
@@ -7090,7 +7090,7 @@ public final class GraphQlQueries
     @GraphQLName("itemInventoryTypes")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<ItemInventoryTypeObject> itemInventoryTypes(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<ItemInventoryTypeObject> itemInventoryTypes(final DataFetchingEnvironment env) {
         CountingPaginatedData<ItemInventoryTypeObject> data;
 
         try {
@@ -7118,7 +7118,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("itemPrice")
-    public static ItemPriceObject itemPrice(final DataFetchingEnvironment env,
+    static ItemPriceObject itemPrice(final DataFetchingEnvironment env,
             @GraphQLName("itemName") @GraphQLNonNull final String itemName,
             @GraphQLName("inventoryConditionName") @GraphQLNonNull final String inventoryConditionName,
             @GraphQLName("unitOfMeasureTypeName") @GraphQLNonNull final String unitOfMeasureTypeName,
@@ -7143,7 +7143,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("itemPrices")
-    public static Collection<ItemPriceObject> itemPrices(final DataFetchingEnvironment env,
+    static Collection<ItemPriceObject> itemPrices(final DataFetchingEnvironment env,
             @GraphQLName("itemName") @GraphQLNonNull final String itemName) {
         Collection<ItemPrice> itemPrice;
         Collection<ItemPriceObject> itemPriceObjects;
@@ -7173,7 +7173,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("itemAliasChecksumType")
-    public static ItemAliasChecksumTypeObject itemAliasChecksumType(final DataFetchingEnvironment env,
+    static ItemAliasChecksumTypeObject itemAliasChecksumType(final DataFetchingEnvironment env,
             @GraphQLName("itemAliasChecksumTypeName") final String itemAliasChecksumTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
         ItemAliasChecksumType itemAliasChecksumType;
@@ -7196,7 +7196,7 @@ public final class GraphQlQueries
     @GraphQLName("itemAliasChecksumTypes")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<ItemAliasChecksumTypeObject> itemAliasChecksumTypes(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<ItemAliasChecksumTypeObject> itemAliasChecksumTypes(final DataFetchingEnvironment env) {
         CountingPaginatedData<ItemAliasChecksumTypeObject> data;
 
         try {
@@ -7224,7 +7224,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("itemAlias")
-    public static ItemAliasObject itemAlias(final DataFetchingEnvironment env,
+    static ItemAliasObject itemAlias(final DataFetchingEnvironment env,
             @GraphQLName("alias") @GraphQLNonNull final String alias) {
         ItemAlias itemAlias;
 
@@ -7243,7 +7243,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("itemAliases")
-    public static Collection<ItemAliasObject> itemAliases(final DataFetchingEnvironment env,
+    static Collection<ItemAliasObject> itemAliases(final DataFetchingEnvironment env,
             @GraphQLName("itemName") @GraphQLNonNull final String itemName) {
         Collection<ItemAlias> itemAlias;
         Collection<ItemAliasObject> itemAliasObjects;
@@ -7273,7 +7273,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("itemCategory")
-    public static ItemCategoryObject itemCategory(final DataFetchingEnvironment env,
+    static ItemCategoryObject itemCategory(final DataFetchingEnvironment env,
             @GraphQLName("itemCategoryName") final String itemCategoryName,
             @GraphQLName("id") @GraphQLID final String id) {
         ItemCategory itemCategory;
@@ -7294,7 +7294,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("itemCategories")
-    public static Collection<ItemCategoryObject> itemCategories(final DataFetchingEnvironment env,
+    static Collection<ItemCategoryObject> itemCategories(final DataFetchingEnvironment env,
             @GraphQLName("parentItemCategoryName") final String parentItemCategoryName) {
         Collection<ItemCategory> itemCategories;
         Collection<ItemCategoryObject> itemCategoryObjects;
@@ -7324,7 +7324,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("itemAccountingCategory")
-    public static ItemAccountingCategoryObject itemAccountingCategory(final DataFetchingEnvironment env,
+    static ItemAccountingCategoryObject itemAccountingCategory(final DataFetchingEnvironment env,
             @GraphQLName("itemAccountingCategoryName") final String itemAccountingCategoryName,
             @GraphQLName("id") @GraphQLID final String id) {
         ItemAccountingCategory itemAccountingCategory;
@@ -7347,7 +7347,7 @@ public final class GraphQlQueries
     @GraphQLName("itemAccountingCategories")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<ItemAccountingCategoryObject> itemAccountingCategories(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<ItemAccountingCategoryObject> itemAccountingCategories(final DataFetchingEnvironment env) {
         CountingPaginatedData<ItemAccountingCategoryObject> data;
 
         try {
@@ -7375,7 +7375,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("glAccount")
-    public static GlAccountObject glAccount(final DataFetchingEnvironment env,
+    static GlAccountObject glAccount(final DataFetchingEnvironment env,
             @GraphQLName("glAccountName") final String glAccountName,
             @GraphQLName("id") @GraphQLID final String id) {
         GlAccount glAccount;
@@ -7396,7 +7396,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("glAccounts")
-    public static Collection<GlAccountObject> glAccounts(final DataFetchingEnvironment env,
+    static Collection<GlAccountObject> glAccounts(final DataFetchingEnvironment env,
             @GraphQLName("glAccountCategoryName") final String glAccountCategoryName) {
         Collection<GlAccount> glAccounts;
         Collection<GlAccountObject> glAccountObjects;
@@ -7423,10 +7423,10 @@ public final class GraphQlQueries
 
         return glAccountObjects;
     }
-    
+
     @GraphQLField
     @GraphQLName("itemPurchasingCategory")
-    public static ItemPurchasingCategoryObject itemPurchasingCategory(final DataFetchingEnvironment env,
+    static ItemPurchasingCategoryObject itemPurchasingCategory(final DataFetchingEnvironment env,
             @GraphQLName("itemPurchasingCategoryName") final String itemPurchasingCategoryName,
             @GraphQLName("id") @GraphQLID final String id) {
         ItemPurchasingCategory itemPurchasingCategory;
@@ -7449,7 +7449,7 @@ public final class GraphQlQueries
     @GraphQLName("itemPurchasingCategories")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<ItemPurchasingCategoryObject> itemPurchasingCategories(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<ItemPurchasingCategoryObject> itemPurchasingCategories(final DataFetchingEnvironment env) {
         CountingPaginatedData<ItemPurchasingCategoryObject> data;
 
         try {
@@ -7477,7 +7477,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("itemDescriptionType")
-    public static ItemDescriptionTypeObject itemDescriptionType(final DataFetchingEnvironment env,
+    static ItemDescriptionTypeObject itemDescriptionType(final DataFetchingEnvironment env,
             @GraphQLName("itemDescriptionTypeName") final String itemDescriptionTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
         ItemDescriptionType itemDescriptionType;
@@ -7498,7 +7498,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("itemDescriptionTypes")
-    public static Collection<ItemDescriptionTypeObject> itemDescriptionTypes(final DataFetchingEnvironment env,
+    static Collection<ItemDescriptionTypeObject> itemDescriptionTypes(final DataFetchingEnvironment env,
             @GraphQLName("parentItemDescriptionTypeName") final String parentItemDescriptionTypeName) {
         Collection<ItemDescriptionType> itemDescriptionTypes;
         Collection<ItemDescriptionTypeObject> itemDescriptionTypeObjects;
@@ -7528,7 +7528,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("itemImageType")
-    public static ItemImageTypeObject itemImageType(final DataFetchingEnvironment env,
+    static ItemImageTypeObject itemImageType(final DataFetchingEnvironment env,
             @GraphQLName("itemImageTypeName") final String itemImageTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
         ItemImageType itemImageType;
@@ -7551,7 +7551,7 @@ public final class GraphQlQueries
     @GraphQLName("itemImageTypes")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<ItemImageTypeObject> itemImageTypes(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<ItemImageTypeObject> itemImageTypes(final DataFetchingEnvironment env) {
         CountingPaginatedData<ItemImageTypeObject> data;
 
         try {
@@ -7579,7 +7579,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("itemDescriptionTypeUseType")
-    public static ItemDescriptionTypeUseTypeObject itemDescriptionTypeUseType(final DataFetchingEnvironment env,
+    static ItemDescriptionTypeUseTypeObject itemDescriptionTypeUseType(final DataFetchingEnvironment env,
             @GraphQLName("itemDescriptionTypeUseTypeName") final String itemDescriptionTypeUseTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
         ItemDescriptionTypeUseType itemDescriptionTypeUseType;
@@ -7602,7 +7602,7 @@ public final class GraphQlQueries
     @GraphQLName("itemDescriptionTypeUseTypes")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<ItemDescriptionTypeUseTypeObject> itemDescriptionTypeUseTypes(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<ItemDescriptionTypeUseTypeObject> itemDescriptionTypeUseTypes(final DataFetchingEnvironment env) {
         CountingPaginatedData<ItemDescriptionTypeUseTypeObject> data;
 
         try {
@@ -7630,7 +7630,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("itemDescriptionTypeUse")
-    public static ItemDescriptionTypeUseObject itemDescriptionTypeUse(final DataFetchingEnvironment env,
+    static ItemDescriptionTypeUseObject itemDescriptionTypeUse(final DataFetchingEnvironment env,
             @GraphQLName("itemDescriptionTypeUseTypeName") @GraphQLNonNull final String itemDescriptionTypeUseTypeName,
             @GraphQLName("itemDescriptionTypeName") @GraphQLNonNull final String itemDescriptionTypeName) {
         ItemDescriptionTypeUse itemDescriptionTypeUse;
@@ -7651,7 +7651,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("itemDescriptionTypeUses")
-    public static Collection<ItemDescriptionTypeUseObject> itemDescriptionTypeUses(final DataFetchingEnvironment env,
+    static Collection<ItemDescriptionTypeUseObject> itemDescriptionTypeUses(final DataFetchingEnvironment env,
             @GraphQLName("itemDescriptionTypeUseTypeName") final String itemDescriptionTypeUseTypeName,
             @GraphQLName("itemDescriptionTypeName") final String itemDescriptionTypeName) {
         Collection<ItemDescriptionTypeUse> itemDescriptionTypeUse;
@@ -7683,7 +7683,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("itemAliasType")
-    public static ItemAliasTypeObject itemAliasType(final DataFetchingEnvironment env,
+    static ItemAliasTypeObject itemAliasType(final DataFetchingEnvironment env,
             @GraphQLName("itemAliasTypeName") final String itemAliasTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
         ItemAliasType itemAliasType;
@@ -7706,7 +7706,7 @@ public final class GraphQlQueries
     @GraphQLName("itemAliasTypes")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<ItemAliasTypeObject> itemAliasTypes(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<ItemAliasTypeObject> itemAliasTypes(final DataFetchingEnvironment env) {
         CountingPaginatedData<ItemAliasTypeObject> data;
 
         try {
@@ -7734,7 +7734,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("relatedItemType")
-    public static RelatedItemTypeObject relatedItemType(final DataFetchingEnvironment env,
+    static RelatedItemTypeObject relatedItemType(final DataFetchingEnvironment env,
             @GraphQLName("relatedItemTypeName") final String relatedItemTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
         RelatedItemType relatedItemType;
@@ -7757,7 +7757,7 @@ public final class GraphQlQueries
     @GraphQLName("relatedItemTypes")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<RelatedItemTypeObject> relatedItemTypes(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<RelatedItemTypeObject> relatedItemTypes(final DataFetchingEnvironment env) {
         CountingPaginatedData<RelatedItemTypeObject> data;
 
         try {
@@ -7787,7 +7787,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("relatedItem")
-    public static RelatedItemObject relatedItem(final DataFetchingEnvironment env,
+    static RelatedItemObject relatedItem(final DataFetchingEnvironment env,
             @GraphQLName("relatedItemTypeName") @GraphQLNonNull final String relatedItemTypeName,
             @GraphQLName("fromItemName") @GraphQLNonNull final String fromItemName,
             @GraphQLName("toItemName") @GraphQLNonNull final String toItemName) {
@@ -7810,7 +7810,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("relatedItems")
-    public static Collection<RelatedItemObject> relatedItems(final DataFetchingEnvironment env,
+    static Collection<RelatedItemObject> relatedItems(final DataFetchingEnvironment env,
             @GraphQLName("relatedItemTypeName") final String relatedItemTypeName,
             @GraphQLName("fromItemName") final String fromItemName,
             @GraphQLName("toItemName") final String toItemName) {
@@ -7844,7 +7844,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("orderType")
-    public static OrderTypeObject orderType(final DataFetchingEnvironment env,
+    static OrderTypeObject orderType(final DataFetchingEnvironment env,
             @GraphQLName("orderTypeName") final String orderTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
         OrderType orderType;
@@ -7867,7 +7867,7 @@ public final class GraphQlQueries
     @GraphQLName("orderTypes")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<OrderTypeObject> orderTypes(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<OrderTypeObject> orderTypes(final DataFetchingEnvironment env) {
         CountingPaginatedData<OrderTypeObject> data;
 
         try {
@@ -7897,7 +7897,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("orderPriority")
-    public static OrderPriorityObject orderPriority(final DataFetchingEnvironment env,
+    static OrderPriorityObject orderPriority(final DataFetchingEnvironment env,
             @GraphQLName("orderTypeName") final String orderTypeName,
             @GraphQLName("orderPriorityName") final String orderPriorityName,
             @GraphQLName("id") @GraphQLID final String id) {
@@ -7920,7 +7920,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("orderPriorities")
-    public static Collection<OrderPriorityObject> orderPriorities(final DataFetchingEnvironment env,
+    static Collection<OrderPriorityObject> orderPriorities(final DataFetchingEnvironment env,
             @GraphQLName("orderTypeName") @GraphQLNonNull final String orderTypeName) {
         Collection<OrderPriority> orderPriorities;
         Collection<OrderPriorityObject> orderPriorityObjects;
@@ -7950,7 +7950,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("orderTimeType")
-    public static OrderTimeTypeObject orderTimeType(final DataFetchingEnvironment env,
+    static OrderTimeTypeObject orderTimeType(final DataFetchingEnvironment env,
             @GraphQLName("orderTypeName") final String orderTypeName,
             @GraphQLName("orderTimeTypeName") final String orderTimeTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
@@ -7973,7 +7973,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("orderTimeTypes")
-    public static Collection<OrderTimeTypeObject> orderTimeTypes(final DataFetchingEnvironment env,
+    static Collection<OrderTimeTypeObject> orderTimeTypes(final DataFetchingEnvironment env,
             @GraphQLName("orderTypeName") @GraphQLNonNull final String orderTypeName) {
         Collection<OrderTimeType> orderTimeTypes;
         Collection<OrderTimeTypeObject> orderTimeTypeObjects;
@@ -8003,7 +8003,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("wishlistType")
-    public static WishlistTypeObject wishlistType(final DataFetchingEnvironment env,
+    static WishlistTypeObject wishlistType(final DataFetchingEnvironment env,
             @GraphQLName("wishlistTypeName") final String wishlistTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
         WishlistType wishlistType;
@@ -8026,7 +8026,7 @@ public final class GraphQlQueries
     @GraphQLName("wishlistTypes")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<WishlistTypeObject> wishlistTypes(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<WishlistTypeObject> wishlistTypes(final DataFetchingEnvironment env) {
         CountingPaginatedData<WishlistTypeObject> data;
 
         try {
@@ -8056,7 +8056,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("wishlistPriority")
-    public static WishlistPriorityObject wishlistPriority(final DataFetchingEnvironment env,
+    static WishlistPriorityObject wishlistPriority(final DataFetchingEnvironment env,
             @GraphQLName("wishlistTypeName") final String wishlistTypeName,
             @GraphQLName("wishlistPriorityName") final String wishlistPriorityName,
             @GraphQLName("id") @GraphQLID final String id) {
@@ -8079,7 +8079,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("wishlistPriorities")
-    public static Collection<WishlistPriorityObject> wishlistPriorities(final DataFetchingEnvironment env,
+    static Collection<WishlistPriorityObject> wishlistPriorities(final DataFetchingEnvironment env,
             @GraphQLName("wishlistTypeName") @GraphQLNonNull final String wishlistTypeName) {
         Collection<WishlistPriority> wishlistPriorities;
         Collection<WishlistPriorityObject> wishlistPriorityObjects;
@@ -8109,7 +8109,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("termType")
-    public static TermTypeObject termType(final DataFetchingEnvironment env,
+    static TermTypeObject termType(final DataFetchingEnvironment env,
             @GraphQLName("termTypeName") final String termTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
         TermType termType;
@@ -8132,7 +8132,7 @@ public final class GraphQlQueries
     @GraphQLName("termTypes")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<TermTypeObject> termTypes(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<TermTypeObject> termTypes(final DataFetchingEnvironment env) {
         CountingPaginatedData<TermTypeObject> data;
 
         try {
@@ -8160,7 +8160,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("term")
-    public static TermObject term(final DataFetchingEnvironment env,
+    static TermObject term(final DataFetchingEnvironment env,
             @GraphQLName("termName") final String termName,
             @GraphQLName("id") @GraphQLID final String id) {
         Term term;
@@ -8183,7 +8183,7 @@ public final class GraphQlQueries
     @GraphQLName("terms")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<TermObject> terms(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<TermObject> terms(final DataFetchingEnvironment env) {
         CountingPaginatedData<TermObject> data;
 
         try {
@@ -8211,7 +8211,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("securityRoleGroup")
-    public static SecurityRoleGroupObject securityRoleGroup(final DataFetchingEnvironment env,
+    static SecurityRoleGroupObject securityRoleGroup(final DataFetchingEnvironment env,
             @GraphQLName("securityRoleGroupName") final String securityRoleGroupName,
             @GraphQLName("id") @GraphQLID final String id) {
         SecurityRoleGroup securityRoleGroup;
@@ -8232,7 +8232,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("securityRoleGroups")
-    public static Collection<SecurityRoleGroupObject> securityRoleGroups(final DataFetchingEnvironment env,
+    static Collection<SecurityRoleGroupObject> securityRoleGroups(final DataFetchingEnvironment env,
             @GraphQLName("parentSecurityRoleGroupName") final String parentSecurityRoleGroupName) {
         Collection<SecurityRoleGroup> securityRoleGroups;
         Collection<SecurityRoleGroupObject> securityRoleGroupObjects;
@@ -8262,7 +8262,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("securityRole")
-    public static SecurityRoleObject securityRole(final DataFetchingEnvironment env,
+    static SecurityRoleObject securityRole(final DataFetchingEnvironment env,
             @GraphQLName("securityRoleGroupName") final String securityRoleGroupName,
             @GraphQLName("securityRoleName") final String securityRoleName,
             @GraphQLName("id") @GraphQLID final String id) {
@@ -8285,7 +8285,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("securityRoles")
-    public static Collection<SecurityRoleObject> securityRoles(final DataFetchingEnvironment env,
+    static Collection<SecurityRoleObject> securityRoles(final DataFetchingEnvironment env,
             @GraphQLName("securityRoleGroupName") @GraphQLNonNull final String securityRoleGroupName) {
         Collection<SecurityRole> securityRoles;
         Collection<SecurityRoleObject> securityRoleObjects;
@@ -8317,7 +8317,7 @@ public final class GraphQlQueries
     @GraphQLName("personalTitles")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<PersonalTitleObject> personalTitles(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<PersonalTitleObject> personalTitles(final DataFetchingEnvironment env) {
         CountingPaginatedData<PersonalTitleObject> data;
 
         try {
@@ -8347,7 +8347,7 @@ public final class GraphQlQueries
     @GraphQLName("nameSuffixes")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<NameSuffixObject> nameSuffixes(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<NameSuffixObject> nameSuffixes(final DataFetchingEnvironment env) {
         CountingPaginatedData<NameSuffixObject> data;
 
         try {
@@ -8375,7 +8375,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("tagScope")
-    public static TagScopeObject tagScope(final DataFetchingEnvironment env,
+    static TagScopeObject tagScope(final DataFetchingEnvironment env,
             @GraphQLName("tagScopeName") final String tagScopeName,
             @GraphQLName("id") @GraphQLID final String id) {
         TagScope tagScope;
@@ -8398,7 +8398,7 @@ public final class GraphQlQueries
     @GraphQLName("tagScopes")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<TagScopeObject> tagScopes(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<TagScopeObject> tagScopes(final DataFetchingEnvironment env) {
         CountingPaginatedData<TagScopeObject> data;
 
         try {
@@ -8432,7 +8432,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("tagScopeEntityType")
-    public static TagScopeEntityTypeObject tagScopeEntityType(final DataFetchingEnvironment env,
+    static TagScopeEntityTypeObject tagScopeEntityType(final DataFetchingEnvironment env,
             @GraphQLName("tagScopeName") @GraphQLNonNull final String tagScopeName,
             @GraphQLName("componentVendorName") @GraphQLNonNull final String componentVendorName,
             @GraphQLName("entityTypeName") @GraphQLNonNull final String entityTypeName) {
@@ -8455,7 +8455,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("tagScopeEntityTypes")
-    public static Collection<TagScopeEntityTypeObject> tagScopeEntityTypes(final DataFetchingEnvironment env,
+    static Collection<TagScopeEntityTypeObject> tagScopeEntityTypes(final DataFetchingEnvironment env,
             @GraphQLName("tagScopeName") final String tagScopeName,
             @GraphQLName("componentVendorName") final String componentVendorName,
             @GraphQLName("entityTypeName") final String entityTypeName) {
@@ -8487,7 +8487,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("tag")
-    public static TagObject tag(final DataFetchingEnvironment env,
+    static TagObject tag(final DataFetchingEnvironment env,
             @GraphQLName("tagScopeName") final String tagScopeName,
             @GraphQLName("tagName") final String tagName,
             @GraphQLName("id") @GraphQLID final String id) {
@@ -8510,7 +8510,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("tags")
-    public static Collection<TagObject> tags(final DataFetchingEnvironment env,
+    static Collection<TagObject> tags(final DataFetchingEnvironment env,
             @GraphQLName("tagScopeName") @GraphQLNonNull final String tagScopeName) {
         Collection<Tag> tags;
         Collection<TagObject> tagObjects;
@@ -8538,7 +8538,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("entityTag")
-    public static EntityTagObject entityTag(final DataFetchingEnvironment env,
+    static EntityTagObject entityTag(final DataFetchingEnvironment env,
             @GraphQLName("id") @GraphQLNonNull final String id,
             @GraphQLName("tagScopeName") @GraphQLNonNull final String tagScopeName,
             @GraphQLName("tagName") @GraphQLNonNull final String tagName) {
@@ -8561,7 +8561,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("entityTags")
-    public static Collection<EntityTagObject> entityTags(final DataFetchingEnvironment env,
+    static Collection<EntityTagObject> entityTags(final DataFetchingEnvironment env,
             @GraphQLName("id") final String id,
             @GraphQLName("tagScopeName") final String tagScopeName,
             @GraphQLName("tagName") final String tagName) {
@@ -8593,7 +8593,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("geoCodeType")
-    public static GeoCodeTypeObject geoCodeType(final DataFetchingEnvironment env,
+    static GeoCodeTypeObject geoCodeType(final DataFetchingEnvironment env,
             @GraphQLName("geoCodeTypeName") final String geoCodeTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
         GeoCodeType geoCodeType;
@@ -8616,7 +8616,7 @@ public final class GraphQlQueries
     @GraphQLName("geoCodeTypes")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<GeoCodeTypeObject> geoCodeTypes(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<GeoCodeTypeObject> geoCodeTypes(final DataFetchingEnvironment env) {
         CountingPaginatedData<GeoCodeTypeObject> data;
 
         try {
@@ -8644,7 +8644,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("geoCodeScope")
-    public static GeoCodeScopeObject geoCodeScope(final DataFetchingEnvironment env,
+    static GeoCodeScopeObject geoCodeScope(final DataFetchingEnvironment env,
             @GraphQLName("geoCodeScopeName") final String geoCodeScopeName,
             @GraphQLName("id") @GraphQLID final String id) {
         GeoCodeScope geoCodeScope;
@@ -8667,7 +8667,7 @@ public final class GraphQlQueries
     @GraphQLName("geoCodeScopes")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public static CountingPaginatedData<GeoCodeScopeObject> geoCodeScopes(final DataFetchingEnvironment env) {
+    static CountingPaginatedData<GeoCodeScopeObject> geoCodeScopes(final DataFetchingEnvironment env) {
         CountingPaginatedData<GeoCodeScopeObject> data;
 
         try {
@@ -8695,7 +8695,7 @@ public final class GraphQlQueries
 
     @GraphQLField
     @GraphQLName("geoCode")
-    public static GeoCodeObject geoCode(final DataFetchingEnvironment env,
+    static GeoCodeObject geoCode(final DataFetchingEnvironment env,
             @GraphQLName("geoCodeName") final String geoCodeName,
             @GraphQLName("id") @GraphQLID final String id) {
         GeoCode geoCode;

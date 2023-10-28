@@ -17,6 +17,7 @@
 package com.echothree.model.control.returnpolicy.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
@@ -96,7 +97,7 @@ public class ReturnKindObject
         var returnPolicyControl = Session.getModelController(ReturnPolicyControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return returnPolicyControl.getBestReturnKindDescription(returnKind, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return returnPolicyControl.getBestReturnKindDescription(returnKind, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
     @GraphQLField

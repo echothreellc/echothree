@@ -17,6 +17,7 @@
 package com.echothree.model.control.inventory.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.inventory.server.entity.AllocationPriority;
@@ -86,7 +87,7 @@ public class AllocationPriorityObject
         var inventoryControl = Session.getModelController(InventoryControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return inventoryControl.getBestAllocationPriorityDescription(allocationPriority, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return inventoryControl.getBestAllocationPriorityDescription(allocationPriority, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
     
 }

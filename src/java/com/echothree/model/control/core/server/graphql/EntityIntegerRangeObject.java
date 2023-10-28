@@ -18,6 +18,7 @@ package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.core.server.entity.EntityIntegerRange;
 import com.echothree.model.data.core.server.entity.EntityIntegerRangeDetail;
@@ -97,7 +98,7 @@ public class EntityIntegerRangeObject
         var coreControl = Session.getModelController(CoreControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return coreControl.getBestEntityIntegerRangeDescription(entityIntegerRange, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return coreControl.getBestEntityIntegerRangeDescription(entityIntegerRange, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
     
 }

@@ -17,6 +17,7 @@
 package com.echothree.model.control.workflow.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
@@ -101,7 +102,7 @@ public class WorkflowStepObject
         var workflowControl = Session.getModelController(WorkflowControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return workflowControl.getBestWorkflowStepDescription(workflowStep, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return workflowControl.getBestWorkflowStepDescription(workflowStep, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
     @GraphQLField

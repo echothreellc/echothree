@@ -17,6 +17,7 @@
 package com.echothree.model.control.uom.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKindUse;
@@ -85,7 +86,7 @@ public class UnitOfMeasureKindUseTypeObject
         var uomControl = Session.getModelController(UomControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return uomControl.getBestUnitOfMeasureKindUseTypeDescription(unitOfMeasureKindUseType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return uomControl.getBestUnitOfMeasureKindUseTypeDescription(unitOfMeasureKindUseType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
     
     @GraphQLField

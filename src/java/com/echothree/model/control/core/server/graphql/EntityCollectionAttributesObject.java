@@ -32,8 +32,7 @@ import java.util.List;
 @GraphQLDescription("entity multiple list item attributes object")
 @GraphQLName("EntityCollectionAttributes")
 public class EntityCollectionAttributesObject
-        extends BaseGraphQl
-        implements AttributeInterface {
+        implements BaseGraphQl, AttributeInterface {
 
     private final EntityAttribute entityAttribute; // Always Present
     private final EntityInstance entityInstance; // Always Present

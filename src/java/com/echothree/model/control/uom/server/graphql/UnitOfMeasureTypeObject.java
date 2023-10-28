@@ -23,6 +23,7 @@ import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.graphql.ItemAliasObject;
@@ -75,7 +76,7 @@ public class UnitOfMeasureTypeObject
             var uomControl = Session.getModelController(UomControl.class);
             var userControl = Session.getModelController(UserControl.class);
 
-            unitOfMeasureTypeDescription = uomControl.getBestUnitOfMeasureTypeDescription(unitOfMeasureType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+            unitOfMeasureTypeDescription = uomControl.getBestUnitOfMeasureTypeDescription(unitOfMeasureType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
         }
         
         return unitOfMeasureTypeDescription;

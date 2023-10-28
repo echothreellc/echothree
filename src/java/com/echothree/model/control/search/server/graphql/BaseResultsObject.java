@@ -36,7 +36,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 public abstract class BaseResultsObject<F extends BaseGetResultsForm>
-        extends BaseGraphQl {
+        implements BaseGraphQl {
 
     final private String componentVendorName;
     final private String entityTypeName;
@@ -55,7 +55,7 @@ public abstract class BaseResultsObject<F extends BaseGetResultsForm>
     protected UserVisitSearch getUserVisitSearch(final DataFetchingEnvironment env) {
         if(form != null && userVisitSearch == null) {
             try {
-                var userVisit = getUserVisit(env);
+                var userVisit = BaseGraphQl.getUserVisit(env);
                 
                 userVisitSearch = SearchLogic.getInstance().getUserVisitSearchByName(null, userVisit,
                         searchKindName, form.getSearchTypeName());

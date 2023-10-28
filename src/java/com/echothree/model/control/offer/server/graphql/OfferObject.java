@@ -19,11 +19,12 @@ package com.echothree.model.control.offer.server.graphql;
 import com.echothree.model.control.filter.server.graphql.FilterObject;
 import com.echothree.model.control.filter.server.graphql.FilterSecurityUtils;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.offer.server.control.OfferControl;
 import com.echothree.model.control.offer.server.control.OfferItemControl;
 import com.echothree.model.control.party.server.graphql.DepartmentObject;
@@ -129,7 +130,7 @@ public class OfferObject
         var offerControl = Session.getModelController(OfferControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return offerControl.getBestOfferDescription(offer, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return offerControl.getBestOfferDescription(offer, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
     @GraphQLField

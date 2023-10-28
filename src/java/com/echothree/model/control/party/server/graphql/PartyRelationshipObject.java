@@ -27,7 +27,7 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("party relationship object")
 @GraphQLName("PartyRelationship")
 public class PartyRelationshipObject
-        extends BaseGraphQl {
+        implements BaseGraphQl {
 
     private final PartyRelationship partyRelationship; // Always Present
     

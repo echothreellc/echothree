@@ -17,6 +17,7 @@
 package com.echothree.model.control.search.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.search.server.control.SearchControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.search.server.entity.SearchCheckSpellingActionType;
@@ -79,7 +80,7 @@ public class SearchCheckSpellingActionTypeObject
         var searchControl = Session.getModelController(SearchControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return searchControl.getBestSearchCheckSpellingActionTypeDescription(searchCheckSpellingActionType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return searchControl.getBestSearchCheckSpellingActionTypeDescription(searchCheckSpellingActionType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
     
 }

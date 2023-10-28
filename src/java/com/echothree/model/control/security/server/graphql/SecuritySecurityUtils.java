@@ -24,7 +24,7 @@ import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
 public final class SecuritySecurityUtils
-        extends BaseGraphQl {
+        implements BaseGraphQl {
 
     private static class FilterSecurityUtilsHolder {
         static SecuritySecurityUtils instance = new SecuritySecurityUtils();
@@ -35,19 +35,19 @@ public final class SecuritySecurityUtils
     }
 
     public boolean getHasSecurityRoleGroupsAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetSecurityRoleGroupsCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetSecurityRoleGroupsCommand.class);
     }
 
     public boolean getHasSecurityRoleGroupAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetSecurityRoleGroupCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetSecurityRoleGroupCommand.class);
     }
 
     public boolean getHasSecurityRolesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetSecurityRolesCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetSecurityRolesCommand.class);
     }
 
     public boolean getHasSecurityRoleAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetSecurityRoleCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetSecurityRoleCommand.class);
     }
 
 }

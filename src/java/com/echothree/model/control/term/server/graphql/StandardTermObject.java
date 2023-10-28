@@ -28,8 +28,7 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("standard term object")
 @GraphQLName("StandardTerm")
 public class StandardTermObject
-        extends BaseGraphQl
-        implements TermInterface {
+        implements BaseGraphQl, TermInterface {
 
     private final StandardTerm standardTerm; // Always Present
 

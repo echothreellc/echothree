@@ -28,7 +28,7 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("entity time object")
 @GraphQLName("EntityTime")
 public class EntityTimeObject
-        extends BaseGraphQl {
+        implements BaseGraphQl {
     
     private final EntityTime entityTime; // Always Present
     

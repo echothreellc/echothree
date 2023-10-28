@@ -28,7 +28,7 @@ import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
 public final class AccountingSecurityUtils
-        extends BaseGraphQl {
+        implements BaseGraphQl {
 
     private static class AccountingSecurityUtilsHolder {
         static AccountingSecurityUtils instance = new AccountingSecurityUtils();
@@ -39,35 +39,35 @@ public final class AccountingSecurityUtils
     }
 
     public boolean getHasSymbolPositionAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetSymbolPositionCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetSymbolPositionCommand.class);
     }
 
     public boolean getHasSymbolPositionsAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetSymbolPositionsCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetSymbolPositionsCommand.class);
     }
 
     public boolean getHasCurrencyAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetCurrencyCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetCurrencyCommand.class);
     }
 
     public boolean getHasCurrenciesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetCurrenciesCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetCurrenciesCommand.class);
     }
 
     public boolean getHasItemAccountingCategoryAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetItemAccountingCategoryCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetItemAccountingCategoryCommand.class);
     }
 
     public boolean getHasItemAccountingCategoriesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetItemAccountingCategoriesCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetItemAccountingCategoriesCommand.class);
     }
 
     public boolean getHasGlAccountAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetGlAccountCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetGlAccountCommand.class);
     }
 
     public boolean getHasGlAccountsAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetGlAccountsCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetGlAccountsCommand.class);
     }
 
 }

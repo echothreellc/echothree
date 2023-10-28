@@ -24,7 +24,7 @@ import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
 public final class WishlistSecurityUtils
-        extends BaseGraphQl {
+        implements BaseGraphQl {
 
     private static class ItemSecurityUtilsHolder {
         static WishlistSecurityUtils instance = new WishlistSecurityUtils();
@@ -35,19 +35,19 @@ public final class WishlistSecurityUtils
     }
 
     public boolean getHasWishlistTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWishlistTypeCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWishlistTypeCommand.class);
     }
 
     public boolean getHasWishlistTypesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWishlistTypesCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWishlistTypesCommand.class);
     }
 
     public boolean getHasWishlistPriorityAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWishlistPriorityCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWishlistPriorityCommand.class);
     }
 
     public boolean getHasWishlistPrioritiesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetWishlistPrioritiesCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetWishlistPrioritiesCommand.class);
     }
 
 }

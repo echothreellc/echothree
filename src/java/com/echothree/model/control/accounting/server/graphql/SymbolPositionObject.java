@@ -18,6 +18,7 @@ package com.echothree.model.control.accounting.server.graphql;
 
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.accounting.server.entity.SymbolPosition;
 import com.echothree.model.data.accounting.server.entity.SymbolPositionDetail;
@@ -79,7 +80,7 @@ public class SymbolPositionObject
         var accountingControl = Session.getModelController(AccountingControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return accountingControl.getBestSymbolPositionDescription(symbolPosition, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return accountingControl.getBestSymbolPositionDescription(symbolPosition, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
     
 }

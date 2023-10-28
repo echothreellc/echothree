@@ -29,8 +29,7 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("entity clob attribute object")
 @GraphQLName("EntityClobAttribute")
 public class EntityClobAttributeObject
-        extends BaseGraphQl
-        implements AttributeInterface {
+        implements BaseGraphQl, AttributeInterface {
     
     private final EntityClobAttribute entityClobAttribute; // Always Present
     

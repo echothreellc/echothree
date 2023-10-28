@@ -49,7 +49,7 @@ public class OrderRoleObject
     @GraphQLDescription("order role type")
     @GraphQLNonNull
     public OrderRoleTypeObject getOrderRoleType(final DataFetchingEnvironment env) {
-        return OrderSecurityUtils.getInstance().getHasOrderRoleTypeAccess(env) ? new OrderRoleTypeObject(orderRole.getOrderRoleType()) : null;
+        return OrderSecurityUtils.getHasOrderRoleTypeAccess(env) ? new OrderRoleTypeObject(orderRole.getOrderRoleType()) : null;
     }
 
 

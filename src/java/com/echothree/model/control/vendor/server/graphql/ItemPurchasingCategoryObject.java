@@ -17,6 +17,7 @@
 package com.echothree.model.control.vendor.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
@@ -99,7 +100,7 @@ public class ItemPurchasingCategoryObject
         var vendorControl = Session.getModelController(VendorControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return vendorControl.getBestItemPurchasingCategoryDescription(itemPurchasingCategory, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return vendorControl.getBestItemPurchasingCategoryDescription(itemPurchasingCategory, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
     @GraphQLField

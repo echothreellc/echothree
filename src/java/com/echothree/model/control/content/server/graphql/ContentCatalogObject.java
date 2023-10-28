@@ -18,6 +18,7 @@ package com.echothree.model.control.content.server.graphql;
 
 import com.echothree.model.control.content.server.control.ContentControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.offer.server.graphql.OfferSecurityUtils;
 import com.echothree.model.control.offer.server.graphql.OfferUseObject;
 import com.echothree.model.control.user.server.control.UserControl;
@@ -99,7 +100,7 @@ public class ContentCatalogObject
         var contentControl = Session.getModelController(ContentControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return contentControl.getBestContentCatalogDescription(contentCatalog, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return contentControl.getBestContentCatalogDescription(contentCatalog, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
     
     @GraphQLField

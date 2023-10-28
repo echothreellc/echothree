@@ -30,7 +30,7 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("mime type usage object")
 @GraphQLName("MimeTypeUsage")
 public class MimeTypeUsageObject
-        extends BaseGraphQl {
+        implements BaseGraphQl {
     
     private final MimeTypeUsage mimeTypeUsage; // Always Present
     

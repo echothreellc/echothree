@@ -21,13 +21,13 @@ import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.workflow.common.WorkflowDestinationPartyTypeConstants;
 import com.echothree.model.data.workflow.common.WorkflowDestinationSelectorConstants;
 import com.echothree.model.data.workflow.common.WorkflowDestinationStepConstants;
-import com.echothree.model.data.workflow.common.WorkflowEntrancePartyTypeConstants;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestinationDetail;
 import com.echothree.util.server.persistence.Session;
@@ -97,7 +97,7 @@ public class WorkflowDestinationObject
         var workflowControl = Session.getModelController(WorkflowControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return workflowControl.getBestWorkflowDestinationDescription(workflowDestination, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return workflowControl.getBestWorkflowDestinationDescription(workflowDestination, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
     @GraphQLField

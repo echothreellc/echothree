@@ -27,8 +27,7 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("entity name attribute object")
 @GraphQLName("EntityNameAttribute")
 public class EntityNameAttributeObject
-        extends BaseGraphQl
-        implements AttributeInterface {
+        implements BaseGraphQl, AttributeInterface {
     
     private final EntityNameAttribute entityNameAttribute; // Always Present
     

@@ -28,8 +28,7 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("entity date attribute object")
 @GraphQLName("EntityDateAttribute")
 public class EntityDateAttributeObject
-        extends BaseGraphQl
-        implements AttributeInterface {
+        implements BaseGraphQl, AttributeInterface {
     
     private final EntityDateAttribute entityDateAttribute; // Always Present
     

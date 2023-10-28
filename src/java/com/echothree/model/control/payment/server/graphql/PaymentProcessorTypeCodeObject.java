@@ -17,6 +17,7 @@
 package com.echothree.model.control.payment.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.payment.server.control.PaymentProcessorTypeCodeControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.payment.server.entity.PaymentProcessorTypeCode;
@@ -85,7 +86,7 @@ public class PaymentProcessorTypeCodeObject
         var paymentProcessorTypeCodeControl = Session.getModelController(PaymentProcessorTypeCodeControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return paymentProcessorTypeCodeControl.getBestPaymentProcessorTypeCodeDescription(paymentProcessorTypeCode, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return paymentProcessorTypeCodeControl.getBestPaymentProcessorTypeCodeDescription(paymentProcessorTypeCode, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
     
 }

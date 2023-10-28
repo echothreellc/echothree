@@ -17,6 +17,7 @@
 package com.echothree.model.control.queue.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.graphql.server.graphql.TimeObject;
 import com.echothree.model.control.queue.server.control.QueueControl;
 import com.echothree.model.control.user.server.control.UserControl;
@@ -80,7 +81,7 @@ public class QueueTypeObject
         var queueControl = Session.getModelController(QueueControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return queueControl.getBestQueueTypeDescription(queueType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return queueControl.getBestQueueTypeDescription(queueType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
     @GraphQLField

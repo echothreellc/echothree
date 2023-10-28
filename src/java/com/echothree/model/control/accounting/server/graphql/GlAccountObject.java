@@ -18,6 +18,7 @@ package com.echothree.model.control.accounting.server.graphql;
 
 import com.echothree.model.control.accounting.server.control.AccountingControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.accounting.server.entity.GlAccount;
 import com.echothree.model.data.accounting.server.entity.GlAccountDetail;
@@ -91,7 +92,7 @@ public class GlAccountObject
         var accountingControl = Session.getModelController(AccountingControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return accountingControl.getBestGlAccountDescription(glAccount, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return accountingControl.getBestGlAccountDescription(glAccount, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
 }

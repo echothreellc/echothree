@@ -18,6 +18,7 @@ package com.echothree.model.control.geo.server.graphql;
 
 import com.echothree.model.control.geo.server.control.GeoControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.geo.server.entity.GeoCodeType;
 import com.echothree.model.data.geo.server.entity.GeoCodeTypeDetail;
@@ -87,7 +88,7 @@ public class GeoCodeTypeObject
         var geoControl = Session.getModelController(GeoControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return geoControl.getBestGeoCodeTypeDescription(geoCodeType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return geoControl.getBestGeoCodeTypeDescription(geoCodeType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
 }

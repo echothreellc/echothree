@@ -26,7 +26,7 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("unit of measure kind use object")
 @GraphQLName("UnitOfMeasureKindUse")
 public class UnitOfMeasureKindUseObject
-        extends BaseGraphQl {
+        implements BaseGraphQl {
     
     private final UnitOfMeasureKindUse unitOfMeasureKindUse; // Always Present
     

@@ -19,6 +19,7 @@ package com.echothree.model.control.core.server.graphql;
 import com.echothree.model.control.core.common.EntityAttributeTypes;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.sequence.server.graphql.SequenceObject;
 import com.echothree.model.control.sequence.server.graphql.SequenceSecurityUtils;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureTypeObject;
@@ -352,7 +353,7 @@ public class EntityAttributeObject
         var coreControl = Session.getModelController(CoreControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return coreControl.getBestEntityAttributeDescription(entityAttribute, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return coreControl.getBestEntityAttributeDescription(entityAttribute, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
     
     @GraphQLField
@@ -373,7 +374,7 @@ public class EntityAttributeObject
                 }
                 case CLOB -> {
                     var userControl = Session.getModelController(UserControl.class);
-                    var entityClobAttribute = coreControl.getBestEntityClobAttribute(entityAttribute, entityInstance, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+                    var entityClobAttribute = coreControl.getBestEntityClobAttribute(entityAttribute, entityInstance, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
 
                     attributeInterface = entityClobAttribute == null ? null : new EntityClobAttributeObject(entityClobAttribute);
                 }
@@ -420,7 +421,7 @@ public class EntityAttributeObject
                 }
                 case STRING -> {
                     var userControl = Session.getModelController(UserControl.class);
-                    var entityStringAttribute = coreControl.getBestEntityStringAttribute(entityAttribute, entityInstance, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+                    var entityStringAttribute = coreControl.getBestEntityStringAttribute(entityAttribute, entityInstance, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
 
                     attributeInterface = entityStringAttribute == null ? null : new EntityStringAttributeObject(entityStringAttribute);
                 }

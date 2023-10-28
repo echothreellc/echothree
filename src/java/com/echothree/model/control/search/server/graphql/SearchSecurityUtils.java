@@ -22,7 +22,7 @@ import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
 public final class SearchSecurityUtils
-        extends BaseGraphQl {
+        implements BaseGraphQl {
 
     private static class SearchSecurityUtilsHolder {
         static SearchSecurityUtils instance = new SearchSecurityUtils();
@@ -33,11 +33,11 @@ public final class SearchSecurityUtils
     }
 
     public boolean getHasSearchCheckSpellingActionTypesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetSearchCheckSpellingActionTypesCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetSearchCheckSpellingActionTypesCommand.class);
     }
 
     public boolean getHasSearchCheckSpellingActionTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetSearchCheckSpellingActionTypeCommand.class);
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetSearchCheckSpellingActionTypeCommand.class);
     }
 
 }

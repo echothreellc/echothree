@@ -21,6 +21,7 @@ import com.echothree.model.control.accounting.server.graphql.GlAccountObject;
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationPolicyObject;
 import com.echothree.model.control.cancellationpolicy.server.graphql.CancellationPolicySecurityUtils;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import com.echothree.model.control.returnpolicy.server.graphql.ReturnPolicyObject;
 import com.echothree.model.control.returnpolicy.server.graphql.ReturnPolicySecurityUtils;
 import com.echothree.model.control.shipment.server.graphql.FreeOnBoardObject;
@@ -182,7 +183,7 @@ public class VendorTypeObject
         var vendorControl = Session.getModelController(VendorControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return vendorControl.getBestVendorTypeDescription(vendorType, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return vendorControl.getBestVendorTypeDescription(vendorType, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
 }

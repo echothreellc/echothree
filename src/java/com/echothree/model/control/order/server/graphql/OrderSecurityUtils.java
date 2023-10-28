@@ -25,62 +25,54 @@ import com.echothree.control.user.order.server.command.GetOrderTypesCommand;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
-public final class OrderSecurityUtils
+public interface OrderSecurityUtils
         extends BaseGraphQl {
 
-    private static class ItemSecurityUtilsHolder {
-        static OrderSecurityUtils instance = new OrderSecurityUtils();
-    }
-    
-    public static OrderSecurityUtils getInstance() {
-        return ItemSecurityUtilsHolder.instance;
+    static boolean getHasOrderTypeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetOrderTypeCommand.class);
     }
 
-    public boolean getHasOrderTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetOrderTypeCommand.class);
+    static boolean getHasOrderTypesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetOrderTypesCommand.class);
     }
 
-    public boolean getHasOrderTypesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetOrderTypesCommand.class);
+    static boolean getHasOrderPriorityAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetOrderPriorityCommand.class);
     }
 
-    public boolean getHasOrderPriorityAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetOrderPriorityCommand.class);
+    static boolean getHasOrderPrioritiesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetOrderPrioritiesCommand.class);
     }
 
-    public boolean getHasOrderPrioritiesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetOrderPrioritiesCommand.class);
+    static boolean getHasOrderTimeTypeAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetOrderTimeTypeCommand.class);
     }
 
-    public boolean getHasOrderTimeTypeAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetOrderTimeTypeCommand.class);
+    static boolean getHasOrderTimeTypesAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetOrderTimeTypesCommand.class);
     }
 
-    public boolean getHasOrderTimeTypesAccess(final DataFetchingEnvironment env) {
-        return getGraphQlExecutionContext(env).hasAccess(GetOrderTimeTypesCommand.class);
-    }
-
-    public boolean getHasOrderTimeAccess(final DataFetchingEnvironment env) {
+    static boolean getHasOrderTimeAccess(final DataFetchingEnvironment env) {
         return true;
     }
 
-    public boolean getHasOrderTimesAccess(final DataFetchingEnvironment env) {
+    static boolean getHasOrderTimesAccess(final DataFetchingEnvironment env) {
         return true;
     }
 
-    public boolean getHasOrderRoleTypeAccess(final DataFetchingEnvironment env) {
+    static boolean getHasOrderRoleTypeAccess(final DataFetchingEnvironment env) {
         return true;
     }
 
-    public boolean getHasOrderRoleTypesAccess(final DataFetchingEnvironment env) {
+    static boolean getHasOrderRoleTypesAccess(final DataFetchingEnvironment env) {
         return true;
     }
 
-    public boolean getHasOrderRoleAccess(final DataFetchingEnvironment env) {
+    static boolean getHasOrderRoleAccess(final DataFetchingEnvironment env) {
         return true;
     }
 
-    public boolean getHasOrderRolesAccess(final DataFetchingEnvironment env) {
+    static boolean getHasOrderRolesAccess(final DataFetchingEnvironment env) {
         return true;
     }
 

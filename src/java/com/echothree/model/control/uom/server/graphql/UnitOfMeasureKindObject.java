@@ -17,19 +17,18 @@
 package com.echothree.model.control.uom.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
-import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.item.server.graphql.ItemObject;
 import com.echothree.model.control.item.server.graphql.ItemSecurityUtils;
-import com.echothree.model.control.item.server.graphql.ItemUnitOfMeasureTypeObject;
 import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.item.common.ItemConstants;
-import com.echothree.model.data.item.common.ItemUnitOfMeasureTypeConstants;
 import com.echothree.model.data.uom.common.UnitOfMeasureKindUseConstants;
 import com.echothree.model.data.uom.common.UnitOfMeasureTypeConstants;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
@@ -102,7 +101,7 @@ public class UnitOfMeasureKindObject
         var uomControl = Session.getModelController(UomControl.class);
         var userControl = Session.getModelController(UserControl.class);
 
-        return uomControl.getBestUnitOfMeasureKindDescription(unitOfMeasureKind, userControl.getPreferredLanguageFromUserVisit(getUserVisit(env)));
+        return uomControl.getBestUnitOfMeasureKindDescription(unitOfMeasureKind, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
     @GraphQLField

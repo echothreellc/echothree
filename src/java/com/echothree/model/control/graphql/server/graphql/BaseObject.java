@@ -16,11 +16,8 @@
 
 package com.echothree.model.control.graphql.server.graphql;
 
-import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+public abstract class BaseObject {
 
-public abstract class BaseObject
-        extends BaseGraphQl {
-
-    // Nothing additional beyond BaseGraphQl
+    // Nothing additional
 
 }
