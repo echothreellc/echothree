@@ -1,5 +1,11 @@
 # Changelog
 
+## 2023-10-29-01
+
+* graphql-java-annotations 21.1, graphql-java 21.2 and graphql-java-extended-scalars 21.0 Upgrade [851](https://gitlab.echothree.com/echothree/echothree/-/issues/851)
+* graphql-java 21.3 Upgrade [852](https://gitlab.echothree.com/echothree/echothree/-/issues/852)
+* Convert Query and Mutation Classes to Interfaces [853](https://gitlab.echothree.com/echothree/echothree/-/issues/853)
+
 ## 2023-10-15-01
 
 * jOOQ 3.18.7 Upgrade [849](https://gitlab.echothree.com/echothree/echothree/-/issues/849)
