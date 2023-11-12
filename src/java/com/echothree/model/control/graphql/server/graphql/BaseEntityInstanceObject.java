@@ -16,9 +16,12 @@
 
 package com.echothree.model.control.graphql.server.graphql;
 
+import com.echothree.control.user.core.common.form.CoreFormFactory;
+import com.echothree.model.control.core.common.exception.UnknownEntityAttributeGroupNameException;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.graphql.EntityAttributeGroupObject;
 import com.echothree.model.control.core.server.graphql.EntityInstanceObject;
+import com.echothree.model.control.core.server.logic.EntityAttributeGroupLogic;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
@@ -31,6 +34,7 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workflow.server.graphql.WorkflowEntityStatusObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowSecurityUtils;
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
+import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.tag.common.TagScopeConstants;
 import com.echothree.util.common.persistence.BasePK;
@@ -39,6 +43,7 @@ import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLID;
+import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
@@ -127,6 +132,29 @@ public abstract class BaseEntityInstanceObject
             entities.forEach((entity) -> entityAttributeGroups.add(new EntityAttributeGroupObject(entity, entityInstance)));
 
             return entityAttributeGroups;
+        } else {
+            return null;
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("entity attribute group")
+    public EntityAttributeGroupObject getEntityAttributeGroup(
+            @GraphQLName("entityAttributeGroupName") @GraphQLNonNull final String entityAttributeGroupName) {
+        var entityInstance = getEntityInstanceByBasePK();
+
+        EntityAttributeGroup entityAttributeGroup;
+        try {
+            var form = CoreFormFactory.getGetEntityAttributeGroupForm();
+
+            form.setEntityAttributeGroupName(entityAttributeGroupName);
+            entityAttributeGroup = EntityAttributeGroupLogic.getInstance().getEntityAttributeGroupByUniversalSpec(null, form);
+        } catch (UnknownEntityAttributeGroupNameException ueagne) {
+            entityAttributeGroup = null;
+        }
+
+        if(entityInstance != null && entityAttributeGroup != null) {
+            return new EntityAttributeGroupObject(entityAttributeGroup, entityInstance);
         } else {
             return null;
         }
