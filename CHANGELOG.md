@@ -1,5 +1,9 @@
 # Changelog
 
+## 2023-11-12-01
+
+* Add Specific Entity Attribute Group as a Field to Base Entity Instance Object [825](https://gitlab.echothree.com/echothree/echothree/-/issues/825)
+
 ## 2023-10-29-01
 
 * graphql-java-annotations 21.1, graphql-java 21.2 and graphql-java-extended-scalars 21.0 Upgrade [851](https://gitlab.echothree.com/echothree/echothree/-/issues/851)
