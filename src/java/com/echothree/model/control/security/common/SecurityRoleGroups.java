@@ -200,6 +200,7 @@ public enum SecurityRoleGroups {
     LocationNameElement,
     LocationStatus,
     LocationType,
+    LocationUseType,
     LocationVolume,
     Lot,
     LotAliasType,

@@ -17,13 +17,17 @@
 package com.echothree.model.control.warehouse.server.transfer;
 
 import com.echothree.model.control.warehouse.common.transfer.LocationUseTypeTransfer;
+import com.echothree.model.control.warehouse.server.control.LocationUseTypeControl;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.warehouse.server.entity.LocationUseType;
+import com.echothree.util.server.persistence.Session;
 
 public class LocationUseTypeTransferCache
         extends BaseWarehouseTransferCache<LocationUseType, LocationUseTypeTransfer> {
-    
+
+    LocationUseTypeControl locationUseTypeControl = Session.getModelController(LocationUseTypeControl.class);
+
     /** Creates a new instance of LocationUseTypeTransferCache */
     public LocationUseTypeTransferCache(UserVisit userVisit, WarehouseControl warehouseControl) {
         super(userVisit, warehouseControl);
@@ -37,7 +41,7 @@ public class LocationUseTypeTransferCache
             Boolean allowMultiple = locationUseType.getAllowMultiple();
             Boolean isDefault = locationUseType.getIsDefault();
             Integer sortOrder = locationUseType.getSortOrder();
-            String description = warehouseControl.getBestLocationUseTypeDescription(locationUseType, getLanguage());
+            String description = locationUseTypeControl.getBestLocationUseTypeDescription(locationUseType, getLanguage());
             
             locationUseTypeTransfer = new LocationUseTypeTransfer(locationUseTypeName, allowMultiple, isDefault, sortOrder,
             description);

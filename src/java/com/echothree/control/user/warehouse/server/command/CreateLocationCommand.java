@@ -26,6 +26,7 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.warehouse.common.workflow.LocationStatusConstants;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
+import com.echothree.model.control.warehouse.server.logic.LocationUseTypeLogic;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.inventory.server.entity.InventoryLocationGroup;
@@ -134,10 +135,10 @@ public class CreateLocationCommand
                         validLocationName = false;
                     
                     if(validLocationName) {
-                        String locationUseTypeName = form.getLocationUseTypeName();
-                        LocationUseType locationUseType = warehouseControl.getLocationUseTypeByName(locationUseTypeName);
+                        var locationUseTypeName = form.getLocationUseTypeName();
+                        var locationUseType = LocationUseTypeLogic.getInstance().getLocationUseTypeByName(this, locationUseTypeName, null, false);
                         
-                        if(locationUseType != null) {
+                        if(!hasExecutionErrors()) {
                             boolean multipleUseError = false;
                             
                             if(!locationUseType.getAllowMultiple()) {
@@ -184,8 +185,6 @@ public class CreateLocationCommand
                             } else {
                                 addExecutionError(ExecutionErrors.MultipleLocationUseTypesNotAllowed.name());
                             }
-                        } else {
-                            addExecutionError(ExecutionErrors.UnknownLocationUseTypeName.name(), locationUseTypeName);
                         }
                     } else {
                         addExecutionError(ExecutionErrors.InvalidLocationName.name(), locationName);

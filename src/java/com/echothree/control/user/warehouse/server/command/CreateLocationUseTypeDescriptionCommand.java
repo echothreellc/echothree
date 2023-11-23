@@ -19,6 +19,7 @@ package com.echothree.control.user.warehouse.server.command;
 import com.echothree.control.user.warehouse.common.form.CreateLocationUseTypeDescriptionForm;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.warehouse.server.control.LocationUseTypeControl;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -61,9 +62,9 @@ public class CreateLocationUseTypeDescriptionCommand
     
     @Override
     protected BaseResult execute() {
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
+        var locationUseTypeControl = Session.getModelController(LocationUseTypeControl.class);
         String locationUseTypeName = form.getLocationUseTypeName();
-        LocationUseType locationUseType = warehouseControl.getLocationUseTypeByName(locationUseTypeName);
+        LocationUseType locationUseType = locationUseTypeControl.getLocationUseTypeByName(locationUseTypeName);
         
         if(locationUseType != null) {
             var partyControl = Session.getModelController(PartyControl.class);
@@ -71,12 +72,12 @@ public class CreateLocationUseTypeDescriptionCommand
             Language language = partyControl.getLanguageByIsoName(languageIsoName);
             
             if(language != null) {
-                LocationUseTypeDescription locationUseTypeDescription = warehouseControl.getLocationUseTypeDescription(locationUseType, language);
+                LocationUseTypeDescription locationUseTypeDescription = locationUseTypeControl.getLocationUseTypeDescription(locationUseType, language);
                 
                 if(locationUseTypeDescription == null) {
                     var description = form.getDescription();
-                    
-                    warehouseControl.createLocationUseTypeDescription(locationUseType, language, description);
+
+                    locationUseTypeControl.createLocationUseTypeDescription(locationUseType, language, description, getPartyPK());
                 } else {
                     addExecutionError(ExecutionErrors.DuplicateLocationUseTypeDescription.name());
                 }

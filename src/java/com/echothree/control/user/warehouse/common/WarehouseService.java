@@ -34,7 +34,11 @@ public interface WarehouseService
     // -------------------------------------------------------------------------
     
     CommandResult createLocationUseType(UserVisitPK userVisitPK, CreateLocationUseTypeForm form);
-    
+
+    CommandResult getLocationUseTypes(UserVisitPK userVisitPK, GetLocationUseTypesForm form);
+
+    CommandResult getLocationUseType(UserVisitPK userVisitPK, GetLocationUseTypeForm form);
+
     CommandResult getLocationUseTypeChoices(UserVisitPK userVisitPK, GetLocationUseTypeChoicesForm form);
     
     // -------------------------------------------------------------------------

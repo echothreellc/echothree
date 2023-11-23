@@ -21,13 +21,9 @@ import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.search.common.SearchOptions;
 import com.echothree.model.control.search.server.control.SearchControl;
 import static com.echothree.model.control.search.server.control.SearchControl.ENI_ENTITYUNIQUEID_COLUMN_INDEX;
-import com.echothree.model.control.vendor.common.transfer.VendorResultTransfer;
-import com.echothree.model.control.vendor.server.control.VendorControl;
-import com.echothree.model.control.vendor.server.graphql.VendorObject;
 import com.echothree.model.control.warehouse.common.choice.LocationChoicesBean;
 import com.echothree.model.control.warehouse.common.choice.LocationStatusChoicesBean;
 import com.echothree.model.control.warehouse.common.choice.LocationTypeChoicesBean;
-import com.echothree.model.control.warehouse.common.choice.LocationUseTypeChoicesBean;
 import com.echothree.model.control.warehouse.common.choice.WarehouseChoicesBean;
 import com.echothree.model.control.warehouse.common.transfer.LocationCapacityTransfer;
 import com.echothree.model.control.warehouse.common.transfer.LocationDescriptionTransfer;
@@ -36,7 +32,6 @@ import com.echothree.model.control.warehouse.common.transfer.LocationNameElement
 import com.echothree.model.control.warehouse.common.transfer.LocationTransfer;
 import com.echothree.model.control.warehouse.common.transfer.LocationTypeDescriptionTransfer;
 import com.echothree.model.control.warehouse.common.transfer.LocationTypeTransfer;
-import com.echothree.model.control.warehouse.common.transfer.LocationUseTypeTransfer;
 import com.echothree.model.control.warehouse.common.transfer.LocationVolumeTransfer;
 import com.echothree.model.control.warehouse.common.transfer.WarehouseResultTransfer;
 import com.echothree.model.control.warehouse.common.transfer.WarehouseTransfer;
@@ -44,7 +39,6 @@ import com.echothree.model.control.warehouse.common.workflow.LocationStatusConst
 import com.echothree.model.control.warehouse.server.graphql.WarehouseObject;
 import com.echothree.model.control.warehouse.server.transfer.LocationCapacityTransferCache;
 import com.echothree.model.control.warehouse.server.transfer.LocationNameElementTransferCache;
-import com.echothree.model.control.warehouse.server.transfer.WarehouseTransferCaches;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.inventory.common.pk.InventoryLocationGroupPK;
 import com.echothree.model.data.inventory.server.entity.InventoryLocationGroup;
@@ -71,7 +65,6 @@ import com.echothree.model.data.warehouse.server.entity.LocationType;
 import com.echothree.model.data.warehouse.server.entity.LocationTypeDescription;
 import com.echothree.model.data.warehouse.server.entity.LocationTypeDetail;
 import com.echothree.model.data.warehouse.server.entity.LocationUseType;
-import com.echothree.model.data.warehouse.server.entity.LocationUseTypeDescription;
 import com.echothree.model.data.warehouse.server.entity.LocationVolume;
 import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.model.data.warehouse.server.factory.LocationCapacityFactory;
@@ -84,8 +77,6 @@ import com.echothree.model.data.warehouse.server.factory.LocationNameElementFact
 import com.echothree.model.data.warehouse.server.factory.LocationTypeDescriptionFactory;
 import com.echothree.model.data.warehouse.server.factory.LocationTypeDetailFactory;
 import com.echothree.model.data.warehouse.server.factory.LocationTypeFactory;
-import com.echothree.model.data.warehouse.server.factory.LocationUseTypeDescriptionFactory;
-import com.echothree.model.data.warehouse.server.factory.LocationUseTypeFactory;
 import com.echothree.model.data.warehouse.server.factory.LocationVolumeFactory;
 import com.echothree.model.data.warehouse.server.factory.WarehouseFactory;
 import com.echothree.model.data.warehouse.server.value.LocationCapacityValue;
@@ -103,7 +94,6 @@ import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
 import com.echothree.util.common.exception.PersistenceDatabaseException;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
-import com.echothree.util.server.control.BaseModelControl;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
@@ -117,25 +107,11 @@ import java.util.List;
 import java.util.Objects;
 
 public class WarehouseControl
-        extends BaseModelControl {
+        extends BaseWarehouseControl {
     
     /** Creates a new instance of WarehouseControl */
     public WarehouseControl() {
         super();
-    }
-    
-    // --------------------------------------------------------------------------------
-    //   Warehouse Transfer Caches
-    // --------------------------------------------------------------------------------
-    
-    private WarehouseTransferCaches warehouseTransferCaches;
-    
-    public WarehouseTransferCaches getWarehouseTransferCaches(UserVisit userVisit) {
-        if(warehouseTransferCaches == null) {
-            warehouseTransferCaches = new WarehouseTransferCaches(userVisit, this);
-        }
-        
-        return warehouseTransferCaches;
     }
     
     // --------------------------------------------------------------------------------
@@ -467,124 +443,6 @@ public class WarehouseControl
         }
         
         sendEvent(warehouse.getPartyPK(), EventTypes.MODIFY, warehouse.getPrimaryKey(), null, deletedBy);
-    }
-    
-    // --------------------------------------------------------------------------------
-    //   Location Use Types
-    // --------------------------------------------------------------------------------
-    
-    public LocationUseType createLocationUseType(String locationUseTypeName, Boolean allowMultiple, Boolean isDefault, Integer sortOrder) {
-        return LocationUseTypeFactory.getInstance().create(locationUseTypeName, allowMultiple, isDefault, sortOrder);
-    }
-    
-    public List<LocationUseType> getLocationUseTypes() {
-        PreparedStatement ps = LocationUseTypeFactory.getInstance().prepareStatement(
-                "SELECT _ALL_ " +
-                "FROM locationusetypes " +
-                "ORDER BY locutyp_sortorder, locutyp_locationusetypename " +
-                "_LIMIT_");
-        
-        return LocationUseTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
-    }
-    
-    public LocationUseType getLocationUseTypeByName(String locationUseTypeName) {
-        LocationUseType locationUseType;
-        
-        try {
-            PreparedStatement ps = LocationUseTypeFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM locationusetypes " +
-                    "WHERE locutyp_locationusetypename = ?");
-            
-            ps.setString(1, locationUseTypeName);
-            
-            locationUseType = LocationUseTypeFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return locationUseType;
-    }
-    
-    public LocationUseTypeTransfer getLocationUseTypeTransfer(UserVisit userVisit, LocationUseType locationUseType) {
-        return getWarehouseTransferCaches(userVisit).getLocationUseTypeTransferCache().getLocationUseTypeTransfer(locationUseType);
-    }
-    
-    public LocationUseTypeChoicesBean getLocationUseTypeChoices(String defaultLocationUseTypeChoice, Language language,
-            boolean allowNullChoice) {
-        List<LocationUseType> locationUseTypes = getLocationUseTypes();
-        var size = locationUseTypes.size();
-        var labels = new ArrayList<String>(size);
-        var values = new ArrayList<String>(size);
-        String defaultValue = null;
-
-        if(allowNullChoice) {
-            labels.add("");
-            values.add("");
-            
-            if(defaultLocationUseTypeChoice == null) {
-                defaultValue = "";
-            }
-        }
-        
-        for(var locationUseType : locationUseTypes) {
-            var label = getBestLocationUseTypeDescription(locationUseType, language);
-            var value = locationUseType.getLocationUseTypeName();
-            
-            labels.add(label == null? value: label);
-            values.add(value);
-            
-            var usingDefaultChoice = defaultLocationUseTypeChoice != null && defaultLocationUseTypeChoice.equals(value);
-            if(usingDefaultChoice || (defaultValue == null && locationUseType.getIsDefault()))
-                defaultValue = value;
-        }
-        
-        return new LocationUseTypeChoicesBean(labels, values, defaultValue);
-    }
-    
-    // --------------------------------------------------------------------------------
-    //   Location Use Type Descriptions
-    // --------------------------------------------------------------------------------
-    
-    public LocationUseTypeDescription createLocationUseTypeDescription(LocationUseType locationUseType, Language language, String description) {
-        return LocationUseTypeDescriptionFactory.getInstance().create(locationUseType, language, description);
-    }
-    
-    public LocationUseTypeDescription getLocationUseTypeDescription(LocationUseType locationUseType, Language language) {
-        LocationUseTypeDescription locationUseTypeDescription;
-        
-        try {
-            PreparedStatement ps = LocationUseTypeDescriptionFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                    "FROM locationusetypedescriptions " +
-                    "WHERE locutypd_locutyp_locationusetypeid = ? AND locutypd_lang_languageid = ?");
-            
-            ps.setLong(1, locationUseType.getPrimaryKey().getEntityId());
-            ps.setLong(2, language.getPrimaryKey().getEntityId());
-            
-            locationUseTypeDescription = LocationUseTypeDescriptionFactory.getInstance().getEntityFromQuery(EntityPermission.READ_ONLY, ps);
-        } catch (SQLException se) {
-            throw new PersistenceDatabaseException(se);
-        }
-        
-        return locationUseTypeDescription;
-    }
-    
-    public String getBestLocationUseTypeDescription(LocationUseType locationUseType, Language language) {
-        String description;
-        LocationUseTypeDescription locationUseTypeDescription = getLocationUseTypeDescription(locationUseType, language);
-        
-        if(locationUseTypeDescription == null && !language.getIsDefault()) {
-            locationUseTypeDescription = getLocationUseTypeDescription(locationUseType, getPartyControl().getDefaultLanguage());
-        }
-        
-        if(locationUseTypeDescription == null) {
-            description = locationUseType.getLocationUseTypeName();
-        } else {
-            description = locationUseTypeDescription.getDescription();
-        }
-        
-        return description;
     }
     
     // --------------------------------------------------------------------------------

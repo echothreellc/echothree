@@ -16,60 +16,69 @@
 
 package com.echothree.control.user.warehouse.server.command;
 
-import com.echothree.control.user.warehouse.common.form.GetLocationUseTypeChoicesForm;
-import com.echothree.control.user.warehouse.common.result.GetLocationUseTypeChoicesResult;
+import com.echothree.control.user.warehouse.common.form.GetLocationUseTypesForm;
 import com.echothree.control.user.warehouse.common.result.WarehouseResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.warehouse.server.control.LocationUseTypeControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.warehouse.server.entity.LocationUseType;
+import com.echothree.model.data.warehouse.server.factory.LocationUseTypeFactory;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
+import java.util.Collection;
 import java.util.List;
 
-public class GetLocationUseTypeChoicesCommand
-        extends BaseSimpleCommand<GetLocationUseTypeChoicesForm> {
+public class GetLocationUseTypesCommand
+        extends BaseMultipleEntitiesCommand<LocationUseType, GetLocationUseTypesForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
-    
+
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
                 new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
-                        new SecurityRoleDefinition(SecurityRoleGroups.LocationUseType.name(), SecurityRoles.Choices.name())
+                        new SecurityRoleDefinition(SecurityRoleGroups.LocationUseType.name(), SecurityRoles.List.name())
                 ))
         ));
 
-        FORM_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("DefaultLocationUseTypeChoice", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("AllowNullChoice", FieldType.BOOLEAN, true, null, null)
-        );
+        FORM_FIELD_DEFINITIONS = List.of();
     }
-    
-    /** Creates a new instance of GetLocationUseTypeChoicesCommand */
-    public GetLocationUseTypeChoicesCommand(UserVisitPK userVisitPK, GetLocationUseTypeChoicesForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+
+    /** Creates a new instance of GetLocationUseTypesCommand */
+    public GetLocationUseTypesCommand(UserVisitPK userVisitPK, GetLocationUseTypesForm form) {
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
     @Override
-    protected BaseResult execute() {
+    protected Collection<LocationUseType> getEntities() {
         var locationUseTypeControl = Session.getModelController(LocationUseTypeControl.class);
-        GetLocationUseTypeChoicesResult result = WarehouseResultFactory.getGetLocationUseTypeChoicesResult();
-        String defaultLocationUseTypeChoice = form.getDefaultLocationUseTypeChoice();
-        boolean allowNullChoice = Boolean.parseBoolean(form.getAllowNullChoice());
-        
-        result.setLocationUseTypeChoices(locationUseTypeControl.getLocationUseTypeChoices(defaultLocationUseTypeChoice,
-                getPreferredLanguage(), allowNullChoice));
-        
+
+        return locationUseTypeControl.getLocationUseTypes();
+    }
+
+    @Override
+    protected BaseResult getTransfers(Collection<LocationUseType> entities) {
+        var result = WarehouseResultFactory.getGetLocationUseTypesResult();
+
+        if(entities != null) {
+            var locationUseTypeControl = Session.getModelController(LocationUseTypeControl.class);
+
+            if(session.hasLimit(LocationUseTypeFactory.class)) {
+                result.setLocationUseTypeCount(locationUseTypeControl.countLocationUseTypes());
+            }
+
+            result.setLocationUseTypes(locationUseTypeControl.getLocationUseTypeTransfers(getUserVisit(), entities));
+        }
+
         return result;
     }
-    
+
 }
