@@ -41,15 +41,15 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 @SproutAction(
-    path = "/Warehouse/InventoryLocationGroup/VolumeEdit",
+    path = "/Inventory/InventoryLocationGroup/VolumeEdit",
     mappingClass = SecureActionMapping.class,
     name = "InventoryLocationGroupVolumeEdit",
     properties = {
         @SproutProperty(property = "secure", value = "true")
     },
     forwards = {
-        @SproutForward(name = "Display", path = "/action/Warehouse/InventoryLocationGroup/Main", redirect = true),
-        @SproutForward(name = "Form", path = "/warehouse/inventorylocationgroup/volumeEdit.jsp")
+        @SproutForward(name = "Display", path = "/action/Inventory/InventoryLocationGroup/Main", redirect = true),
+        @SproutForward(name = "Form", path = "/inventory/inventorylocationgroup/volumeEdit.jsp")
     }
 )
 public class VolumeEditAction
