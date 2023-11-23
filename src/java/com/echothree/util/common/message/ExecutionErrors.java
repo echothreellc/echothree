@@ -2275,5 +2275,6 @@ public enum ExecutionErrors {
     CannotDeleteGeoCodeTypeInUse,
     UnknownDefaultGeoCodeScope,
     CannotDeleteGeoCodeScopeInUse,
+    UnknownDefaultLocationUseType,
 
 }

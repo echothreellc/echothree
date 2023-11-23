@@ -45,7 +45,17 @@ public class WarehouseBean
     public CommandResult createLocationUseType(UserVisitPK userVisitPK, CreateLocationUseTypeForm form) {
         return new CreateLocationUseTypeCommand(userVisitPK, form).run();
     }
-    
+
+    @Override
+    public CommandResult getLocationUseTypes(UserVisitPK userVisitPK, GetLocationUseTypesForm form) {
+        return new GetLocationUseTypesCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult getLocationUseType(UserVisitPK userVisitPK, GetLocationUseTypeForm form) {
+        return new GetLocationUseTypeCommand(userVisitPK, form).run();
+    }
+
     @Override
     public CommandResult getLocationUseTypeChoices(UserVisitPK userVisitPK, GetLocationUseTypeChoicesForm form) {
         return new GetLocationUseTypeChoicesCommand(userVisitPK, form).run();

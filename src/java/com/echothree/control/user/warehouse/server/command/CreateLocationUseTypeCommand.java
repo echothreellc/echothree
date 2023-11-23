@@ -18,17 +18,14 @@ package com.echothree.control.user.warehouse.server.command;
 
 import com.echothree.control.user.warehouse.common.form.CreateLocationUseTypeForm;
 import com.echothree.model.control.party.common.PartyTypes;
-import com.echothree.model.control.warehouse.server.control.WarehouseControl;
+import com.echothree.model.control.warehouse.server.logic.LocationUseTypeLogic;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.warehouse.server.entity.LocationUseType;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
-import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -59,20 +56,14 @@ public class CreateLocationUseTypeCommand
     
     @Override
     protected BaseResult execute() {
-        var warehouseControl = Session.getModelController(WarehouseControl.class);
-        String locationUseTypeName = form.getLocationUseTypeName();
-        LocationUseType locationUseType = warehouseControl.getLocationUseTypeByName(locationUseTypeName);
-        
-        if(locationUseType == null) {
-            Boolean allowMultiple = Boolean.valueOf(form.getAllowMultiple());
-            var isDefault = Boolean.valueOf(form.getIsDefault());
-            var sortOrder = Integer.valueOf(form.getSortOrder());
-            
-            warehouseControl.createLocationUseType(locationUseTypeName, allowMultiple, isDefault, sortOrder);
-        } else {
-            addExecutionError(ExecutionErrors.DuplicateLocationUseTypeName.name(), locationUseTypeName);
-        }
-        
+        var locationUseTypeName = form.getLocationUseTypeName();
+        var allowMultiple = Boolean.valueOf(form.getAllowMultiple());
+        var isDefault = Boolean.valueOf(form.getIsDefault());
+        var sortOrder = Integer.valueOf(form.getSortOrder());
+
+        LocationUseTypeLogic.getInstance().createLocationUseType(this, locationUseTypeName, allowMultiple, isDefault,
+                sortOrder, getPartyPK());
+
         return null;
     }
     

@@ -27,6 +27,7 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
+import com.echothree.model.control.warehouse.server.logic.LocationUseTypeLogic;
 import com.echothree.model.data.inventory.server.entity.InventoryLocationGroup;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -176,10 +177,10 @@ public class EditLocationCommand
                                 validLocationName = false;
                             
                             if(validLocationName) {
-                                String locationUseTypeName = edit.getLocationUseTypeName();
-                                LocationUseType locationUseType = warehouseControl.getLocationUseTypeByName(locationUseTypeName);
+                                var locationUseTypeName = edit.getLocationUseTypeName();
+                                var locationUseType = LocationUseTypeLogic.getInstance().getLocationUseTypeByName(this, locationUseTypeName, null, false);
                                 
-                                if(locationUseType != null) {
+                                if(!hasExecutionErrors()) {
                                     boolean multipleUseError = false;
                                     
                                     if(!locationUseType.getAllowMultiple()) {
@@ -230,8 +231,6 @@ public class EditLocationCommand
                                     } else {
                                         addExecutionError(ExecutionErrors.MultipleLocationUseTypesNotAllowed.name());
                                     }
-                                } else {
-                                    addExecutionError(ExecutionErrors.UnknownLocationUseTypeName.name(), locationUseTypeName);
                                 }
                             } else {
                                 addExecutionError(ExecutionErrors.InvalidLocationName.name(), locationName);

@@ -2434,6 +2434,18 @@
                 <securityRoleDescription languageIsoName="en" description="Location Volume Review" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="LocationUseType" parentSecurityRoleGroupName="WarehouseComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Location Type" />
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Location Use Type List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Location Use Type Review" />
+            </securityRole>
+            <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Location Use Type Choices" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="LocationType" parentSecurityRoleGroupName="WarehouseComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Location Type" />
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
@@ -8404,6 +8416,9 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="LocationType" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="LocationType" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="LocationType" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="LocationUseType" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="LocationUseType" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="LocationUseType" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="LocationNameElement" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="LocationNameElement" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="LocationNameElement" securityRoleName="Delete" />
