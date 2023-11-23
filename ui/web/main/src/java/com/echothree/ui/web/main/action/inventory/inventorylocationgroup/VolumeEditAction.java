@@ -60,7 +60,7 @@ public class VolumeEditAction
             throws Exception {
         String forwardKey;
         String warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
-        String inventoryLocationGroupName = request.getParameter(ParameterConstants.LOCATION_NAME);
+        String inventoryLocationGroupName = request.getParameter(ParameterConstants.INVENTORY_LOCATION_GROUP_NAME);
         EditInventoryLocationGroupVolumeForm commandForm = InventoryUtil.getHome().getEditInventoryLocationGroupVolumeForm();
         InventoryLocationGroupSpec spec = InventoryUtil.getHome().getInventoryLocationGroupSpec();
         
@@ -135,12 +135,11 @@ public class VolumeEditAction
         CustomActionForward customActionForward = new CustomActionForward(mapping.findForward(forwardKey));
         if(forwardKey.equals(ForwardConstants.FORM)) {
             request.setAttribute(AttributeConstants.WAREHOUSE_NAME, warehouseName);
-            request.setAttribute(AttributeConstants.LOCATION_NAME, inventoryLocationGroupName);
+            request.setAttribute(AttributeConstants.INVENTORY_LOCATION_GROUP_NAME, inventoryLocationGroupName);
         } else if(forwardKey.equals(ForwardConstants.DISPLAY)) {
             Map<String, String> parameters = new HashMap<>(2);
             
             parameters.put(ParameterConstants.WAREHOUSE_NAME, warehouseName);
-            parameters.put(ParameterConstants.LOCATION_NAME, inventoryLocationGroupName);
             customActionForward.setParameters(parameters);
         }
         
