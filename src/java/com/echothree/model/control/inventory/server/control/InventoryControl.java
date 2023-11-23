@@ -701,8 +701,8 @@ public class InventoryControl
         return getInventoryLocationGroupVolume(inventoryLocationGroup, EntityPermission.READ_WRITE);
     }
     
-    public InventoryLocationGroupVolumeValue getInventoryLocationGroupVolumeValueForUpdate(InventoryLocationGroup inventoryInventoryLocationGroupGroup) {
-        InventoryLocationGroupVolume inventoryInventoryLocationGroupGroupVolume = getInventoryLocationGroupVolumeForUpdate(inventoryInventoryLocationGroupGroup);
+    public InventoryLocationGroupVolumeValue getInventoryLocationGroupVolumeValueForUpdate(InventoryLocationGroup inventoryInventoryLocationGroup) {
+        InventoryLocationGroupVolume inventoryInventoryLocationGroupGroupVolume = getInventoryLocationGroupVolumeForUpdate(inventoryInventoryLocationGroup);
         
         return inventoryInventoryLocationGroupGroupVolume == null? null: inventoryInventoryLocationGroupGroupVolume.getInventoryLocationGroupVolumeValue().clone();
     }
