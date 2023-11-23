@@ -120,9 +120,9 @@ public class EditInventoryLocationGroupVolumeCommand
                             addExecutionError(ExecutionErrors.UnknownInventoryLocationGroupVolume.name());
                         }
                     } else if(editMode.equals(EditMode.UPDATE)) {
-                        InventoryLocationGroupVolumeValue inventoryLocationGroupVolumeValue = inventoryControl.getInventoryLocationGroupVolumeValueForUpdate(inventoryLocationGroup);
+                        InventoryLocationGroupVolume inventoryLocationGroupVolume = inventoryControl.getInventoryLocationGroupVolumeForUpdate(inventoryLocationGroup);
                         
-                        if(inventoryLocationGroupVolumeValue != null) {
+                        if(inventoryLocationGroupVolume != null) {
                             String heightUnitOfMeasureTypeName = edit.getHeightUnitOfMeasureTypeName();
                             UnitOfMeasureType heightUnitOfMeasureType = uomControl.getUnitOfMeasureTypeByName(volumeUnitOfMeasureKind,
                                     heightUnitOfMeasureTypeName);
@@ -149,6 +149,7 @@ public class EditInventoryLocationGroupVolumeCommand
                                                 if(depth > 0) {
                                                     if(lockEntityForUpdate(inventoryLocationGroup)) {
                                                         try {
+                                                            var inventoryLocationGroupVolumeValue = inventoryControl.getInventoryLocationGroupVolumeValueForUpdate(inventoryLocationGroupVolume);
                                                             Conversion heightConversion = new Conversion(uomControl, heightUnitOfMeasureType, height).convertToLowestUnitOfMeasureType();
                                                             Conversion widthConversion = new Conversion(uomControl, widthUnitOfMeasureType, width).convertToLowestUnitOfMeasureType();
                                                             Conversion depthConversion = new Conversion(uomControl, depthUnitOfMeasureType, depth).convertToLowestUnitOfMeasureType();
@@ -184,6 +185,11 @@ public class EditInventoryLocationGroupVolumeCommand
                             }
                         } else {
                             addExecutionError(ExecutionErrors.UnknownUnitOfMeasureTypeVolume.name());
+                        }
+
+                        if(hasExecutionErrors()) {
+                            result.setInventoryLocationGroupVolume(inventoryControl.getInventoryLocationGroupVolumeTransfer(getUserVisit(), inventoryLocationGroupVolume));
+                            result.setEntityLock(getEntityLockTransfer(inventoryLocationGroup));
                         }
                     }
                 } else {

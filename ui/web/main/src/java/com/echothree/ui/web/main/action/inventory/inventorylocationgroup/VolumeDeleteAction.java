@@ -35,13 +35,13 @@ import org.apache.struts.action.ActionForward;
 import org.apache.struts.action.ActionMapping;
 
 @SproutAction(
-    path = "/Warehouse/InventoryLocationGroup/VolumeDelete",
+    path = "/Inventory/InventoryLocationGroup/VolumeDelete",
     mappingClass = SecureActionMapping.class,
     properties = {
         @SproutProperty(property = "secure", value = "true")
     },
     forwards = {
-        @SproutForward(name = "Display", path = "/action/Warehouse/InventoryLocationGroup/Main", redirect = true)
+        @SproutForward(name = "Display", path = "/action/Inventory/InventoryLocationGroup/Main", redirect = true)
     }
 )
 public class VolumeDeleteAction
