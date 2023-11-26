@@ -1,5 +1,13 @@
 # Changelog
 
+## 2023-11-26-01
+
+* MySQL Connector/J 8.2.0 Upgrade [854](https://gitlab.echothree.com/echothree/echothree/-/issues/854)
+* Add Location Use Type Object and Queries [855](https://gitlab.echothree.com/echothree/echothree/-/issues/855)
+* Incorrect Paths for Inventory Location Group Volumes [867](https://gitlab.echothree.com/echothree/echothree/-/issues/867)
+* cucumber-java8/cucumber-junit 7.14.0 Upgrade [1052](https://gitlab.echothree.com/echothree/echothree/-/issues/1052)
+* ClassGraph 4.8.165 Upgrade [1053](https://gitlab.echothree.com/echothree/echothree/-/issues/1053)
+
 ## 2023-11-12-01
 
 * Add Specific Entity Attribute Group as a Field to Base Entity Instance Object [825](https://gitlab.echothree.com/echothree/echothree/-/issues/825)
