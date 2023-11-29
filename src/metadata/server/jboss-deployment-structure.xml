@@ -1,7 +1,7 @@
 <jboss-deployment-structure xmlns="urn:jboss:deployment-structure:1.0">
     <deployment>
         <dependencies>
-            <module name="deployment.kafka-rar-0.8.0.rar" export="true"/>
+            <module name="deployment.kafka-rar-1.0.0.rar" export="true"/>
         </dependencies>
     </deployment>
 </jboss-deployment-structure>
