@@ -2,7 +2,7 @@
             <resource-adapters>
                 <resource-adapter id="kafka">
                     <archive>
-                        kafka-rar-0.8.0-SNAPSHOT.rar
+                        kafka-rar-1.0.0.rar
                     </archive>
                     <transaction-support>XATransaction</transaction-support>
                     <connection-definitions>
