@@ -33,6 +33,7 @@
         <dependency org="commons-validator" name="commons-validator" rev="1.7" conf="sources->sources" />
         <dependency org="de.odysseus.juel" name="juel-api" rev="2.2.7" conf="sources->sources" />
         <dependency org="de.odysseus.juel" name="juel-impl" rev="2.2.7" conf="sources->sources" />
+        <!-- keeping kafka-jca-api at 0.8.0 until truly forked -->
         <dependency org="fish.payara.cloud.connectors.kafka" name="kafka-jca-api" rev="0.8.0" conf="sources->sources" />
         <dependency org="io.cucumber" name="cucumber-java8" rev="7.14.0" conf="sources->sources" />
         <dependency org="io.cucumber" name="cucumber-junit" rev="7.14.0" conf="sources->sources" />
@@ -118,6 +119,7 @@
         <dependency org="commons-validator" name="commons-validator" rev="1.7" conf="javadoc->javadoc" />
         <dependency org="de.odysseus.juel" name="juel-api" rev="2.2.7" conf="javadoc->javadoc" />
         <dependency org="de.odysseus.juel" name="juel-impl" rev="2.2.7" conf="javadoc->javadoc" />
+        <!-- keeping kafka-jca-api at 0.8.0 until truly forked -->
         <dependency org="fish.payara.cloud.connectors.kafka" name="kafka-jca-api" rev="0.8.0" conf="javadoc->javadoc" />
         <dependency org="io.cucumber" name="cucumber-java8" rev="7.14.0" conf="javadoc->javadoc" />
         <dependency org="io.cucumber" name="cucumber-junit" rev="7.14.0" conf="javadoc->javadoc" />
@@ -204,6 +206,7 @@
         <dependency org="commons-validator" name="commons-validator" rev="1.7" conf="binaries->default" />
         <dependency org="de.odysseus.juel" name="juel-api" rev="2.2.7" conf="binaries->default" />
         <dependency org="de.odysseus.juel" name="juel-impl" rev="2.2.7" conf="binaries->default" />
+        <!-- keeping kafka-jca-api at 0.8.0 until truly forked -->
         <dependency org="fish.payara.cloud.connectors.kafka" name="kafka-jca-api" rev="0.8.0" conf="binaries->default" />
         <dependency org="io.cucumber" name="cucumber-java8" rev="7.14.0" conf="binaries->default" />
         <dependency org="io.cucumber" name="cucumber-junit" rev="7.14.0" conf="binaries->default" />
