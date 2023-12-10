@@ -1,5 +1,11 @@
 # Changelog
 
+## 2023-12-10-01
+
+* Upgrade to Custom kafka-rar 1.0.0 [1054](https://gitlab.echothree.com/echothree/echothree/-/issues/1054)
+* kafka-clients 3.6.0 Upgrade [1055](https://gitlab.echothree.com/echothree/echothree/-/issues/1055)
+* Document Support for Kafka Transactions [1056](https://gitlab.echothree.com/echothree/echothree/-/issues/1056)
+
 ## 2023-11-26-01
 
 * MySQL Connector/J 8.2.0 Upgrade [854](https://gitlab.echothree.com/echothree/echothree/-/issues/854)
