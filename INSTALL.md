@@ -215,6 +215,16 @@ In the infinispan subsystem, add the contents of `EchoThree/doc/configuration/wi
         </subsystem>
 ```
 
+If you will be utilizing the Kafka integration, it is necessary to add the contents of `EchoThree/doc/configuration/wildfly/kafka.txt`
+to the resource adapters:
+```xml
+        <subsystem xmlns="urn:jboss:domain:resource-adapters:6.1">
+            <!-- file contents added here -->
+        </subsystem>
+```
+
+The Kafka Connector for Wildfly that supports transactions is located at: [Kafka Connector](https://gitlab.echothree.com/echothree/kafka-connector).
+
 ## Setting Up Ant
 
 Echo Three uses Apache Ivy during the build process to retrieve dependencies. Apache Ivy
