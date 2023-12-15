@@ -17,6 +17,7 @@
 package com.echothree.model.control.vendor.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.BaseObject;
+import com.echothree.model.control.graphql.server.graphql.UnitCostObject;
 import com.echothree.model.control.inventory.server.graphql.InventoryConditionObject;
 import com.echothree.model.control.inventory.server.graphql.InventorySecurityUtils;
 import com.echothree.model.control.party.server.control.PartyControl;
@@ -24,7 +25,6 @@ import com.echothree.model.control.uom.server.graphql.UnitOfMeasureTypeObject;
 import com.echothree.model.control.uom.server.graphql.UomSecurityUtils;
 import com.echothree.model.data.vendor.server.entity.VendorItemCost;
 import com.echothree.util.server.persistence.Session;
-import com.echothree.util.server.string.AmountUtils;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -60,18 +60,12 @@ public class VendorItemCostObject
     }
 
     @GraphQLField
-    @GraphQLDescription("unformattedUnitCost")
-    public Long getUnformattedUnitCost() {
-        return vendorItemCost.getUnitCost();
-    }
-
-    @GraphQLField
-    @GraphQLDescription("unitCost")
-    public String getUnitCost() {
+    @GraphQLDescription("unit cost")
+    public UnitCostObject getUnitCost() {
         var partyControl = Session.getModelController(PartyControl.class);
 
-        return AmountUtils.getInstance().formatCostUnit(partyControl.getPreferredCurrency(vendorItemCost.getVendorItem().getLastDetail().getVendorParty()),
-                getUnformattedUnitCost());
+        return new UnitCostObject(partyControl.getPreferredCurrency(vendorItemCost.getVendorItem().getLastDetail().getVendorParty()),
+                vendorItemCost.getUnitCost());
     }
 
 }
