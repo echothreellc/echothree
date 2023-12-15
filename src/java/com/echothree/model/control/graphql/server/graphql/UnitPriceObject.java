@@ -26,7 +26,8 @@ import graphql.annotations.annotationTypes.GraphQLNonNull;
 @GraphQLDescription("unit price object")
 @GraphQLName("UnitPrice")
 public class UnitPriceObject
-        extends BaseCurrencyObject {
+        extends BaseCurrencyObject
+        implements UnitAmountInterface {
 
     private final Long unformattedUnitPrice; // Optional
 
