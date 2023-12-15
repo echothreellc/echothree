@@ -19,10 +19,12 @@ package com.echothree.model.control.filter.server.graphql;
 import com.echothree.model.control.accounting.server.graphql.AccountingSecurityUtils;
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
 import com.echothree.model.control.filter.common.FilterKinds;
+import com.echothree.model.control.graphql.server.graphql.UnitAmountInterface;
+import com.echothree.model.control.graphql.server.graphql.UnitCostObject;
+import com.echothree.model.control.graphql.server.graphql.UnitPriceObject;
 import com.echothree.model.control.uom.server.graphql.UnitOfMeasureTypeObject;
 import com.echothree.model.control.uom.server.graphql.UomSecurityUtils;
 import com.echothree.model.data.filter.server.entity.FilterAdjustmentFixedAmount;
-import com.echothree.util.server.string.AmountUtils;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -57,23 +59,17 @@ public class FilterAdjustmentFixedAmountObject {
     }
 
     @GraphQLField
-    @GraphQLDescription("unformatted unit amount")
-    public Long getUnformattedUnitAmount() {
-        return filterAdjustmentFixedAmount.getUnitAmount();
-    }
-
-    @GraphQLField
     @GraphQLDescription("unit amount")
-    public String getUnitAmount() {
+    public UnitAmountInterface getUnitAmount() {
         var filterKindName = filterAdjustmentFixedAmount.getFilterAdjustment().getLastDetail().getFilterKind().getLastDetail().getFilterKindName();
         var currency = filterAdjustmentFixedAmount.getCurrency();
         var unformattedFixedAmount = filterAdjustmentFixedAmount.getUnitAmount();
-        String unitAmount = null;
+        UnitAmountInterface unitAmount = null;
 
         if(FilterKinds.COST.name().equals(filterKindName)) {
-            unitAmount = AmountUtils.getInstance().formatCostUnit(currency, unformattedFixedAmount);
+            unitAmount = new UnitCostObject(currency, unformattedFixedAmount);
         } else if(FilterKinds.PRICE.name().equals(filterKindName)) {
-            unitAmount = AmountUtils.getInstance().formatPriceUnit(currency, unformattedFixedAmount);
+            unitAmount = new UnitPriceObject(currency, unformattedFixedAmount);
         }
 
         return unitAmount;
