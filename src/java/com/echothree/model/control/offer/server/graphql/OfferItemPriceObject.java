@@ -19,6 +19,7 @@ package com.echothree.model.control.offer.server.graphql;
 import com.echothree.model.control.accounting.server.graphql.AccountingSecurityUtils;
 import com.echothree.model.control.accounting.server.graphql.CurrencyObject;
 import com.echothree.model.control.graphql.server.graphql.BaseObject;
+import com.echothree.model.control.graphql.server.graphql.UnitPriceObject;
 import com.echothree.model.control.inventory.server.graphql.InventoryConditionObject;
 import com.echothree.model.control.inventory.server.graphql.InventorySecurityUtils;
 import com.echothree.model.control.item.common.ItemPriceTypes;
@@ -29,7 +30,6 @@ import com.echothree.model.data.offer.server.entity.OfferItemFixedPrice;
 import com.echothree.model.data.offer.server.entity.OfferItemPrice;
 import com.echothree.model.data.offer.server.entity.OfferItemVariablePrice;
 import com.echothree.util.server.persistence.Session;
-import com.echothree.util.server.string.AmountUtils;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
@@ -109,71 +109,35 @@ public class OfferItemPriceObject
     }
 
     @GraphQLField
-    @GraphQLDescription("unformattedUnitPrice")
-    public Long getUnformattedUnitPrice() {
+    @GraphQLDescription("unit price")
+    public UnitPriceObject getUnitPrice() {
         var itemFixedPrice = getOfferItemFixedPrice();
 
-        return itemFixedPrice == null ? null : itemFixedPrice.getUnitPrice();
+        return itemFixedPrice == null ? null : new UnitPriceObject(offerItemPrice.getCurrency(), itemFixedPrice.getUnitPrice());
     }
 
     @GraphQLField
-    @GraphQLDescription("unitPrice")
-    public String getUnitPrice() {
-        var itemFixedPrice = getOfferItemFixedPrice();
-
-        return itemFixedPrice == null ? null :
-                AmountUtils.getInstance().formatPriceUnit(offerItemPrice.getCurrency(), itemFixedPrice.getUnitPrice());
-    }
-
-    @GraphQLField
-    @GraphQLDescription("unformattedMinimumUnitPrice")
-    public Long getUnformattedMinimumUnitPrice() {
+    @GraphQLDescription("minimum unit price")
+    public UnitPriceObject getMinimumUnitPrice() {
         var itemVariablePrice = getOfferItemVariablePrice();
 
-        return itemVariablePrice == null ? null : itemVariablePrice.getMinimumUnitPrice();
+        return itemVariablePrice == null ? null : new UnitPriceObject(offerItemPrice.getCurrency(), itemVariablePrice.getMinimumUnitPrice());
     }
 
     @GraphQLField
-    @GraphQLDescription("minimumUnitPrice")
-    public String getMinimumUnitPrice() {
+    @GraphQLDescription("maximum unit price")
+    public UnitPriceObject getMaximumUnitPrice() {
         var itemVariablePrice = getOfferItemVariablePrice();
 
-        return itemVariablePrice == null ? null :
-                AmountUtils.getInstance().formatPriceUnit(offerItemPrice.getCurrency(), itemVariablePrice.getMinimumUnitPrice());
+        return itemVariablePrice == null ? null : new UnitPriceObject(offerItemPrice.getCurrency(), itemVariablePrice.getMaximumUnitPrice());
     }
 
     @GraphQLField
-    @GraphQLDescription("unformattedMaximumUnitPrice")
-    public Long getUnformattedMaximumUnitPrice() {
+    @GraphQLDescription("unit price increment")
+    public UnitPriceObject getUnitPriceIncrement() {
         var itemVariablePrice = getOfferItemVariablePrice();
 
-        return itemVariablePrice == null ? null : itemVariablePrice.getMaximumUnitPrice();
-    }
-
-    @GraphQLField
-    @GraphQLDescription("maximumUnitPrice")
-    public String getMaximumUnitPrice() {
-        var itemVariablePrice = getOfferItemVariablePrice();
-
-        return itemVariablePrice == null ? null :
-                AmountUtils.getInstance().formatPriceUnit(offerItemPrice.getCurrency(), itemVariablePrice.getMaximumUnitPrice());
-    }
-
-    @GraphQLField
-    @GraphQLDescription("unformattedUnitPriceIncrement")
-    public Long getUnformattedUnitPriceIncrement() {
-        var itemVariablePrice = getOfferItemVariablePrice();
-
-        return itemVariablePrice == null ? null : itemVariablePrice.getUnitPriceIncrement();
-    }
-
-    @GraphQLField
-    @GraphQLDescription("unitPriceIncrement")
-    public String getUnitPriceIncrement() {
-        var itemVariablePrice = getOfferItemVariablePrice();
-
-        return itemVariablePrice == null ? null :
-                AmountUtils.getInstance().formatPriceUnit(offerItemPrice.getCurrency(), itemVariablePrice.getUnitPriceIncrement());
+        return itemVariablePrice == null ? null : new UnitPriceObject(offerItemPrice.getCurrency(), itemVariablePrice.getUnitPriceIncrement());
     }
 
 }
