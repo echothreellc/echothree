@@ -26,7 +26,8 @@ import graphql.annotations.annotationTypes.GraphQLNonNull;
 @GraphQLDescription("line cost object")
 @GraphQLName("LineCost")
 public class LineCostObject
-        extends BaseCurrencyObject {
+        extends BaseCurrencyObject
+        implements LineAmountInterface {
 
     private final Long unformattedLineCost; // Optional
 
