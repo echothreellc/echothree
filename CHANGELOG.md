@@ -1,5 +1,12 @@
 # Changelog
 
+## 2023-12-24-01
+
+* Encapsulate Amounts/Prices/Costs in Objects for GraphQL [1058](https://gitlab.echothree.com/echothree/echothree/-/issues/1058)
+* Encapsulate Percent Field in Percent Object for FilterAdjustmentPercent [1059](https://gitlab.echothree.com/echothree/echothree/-/issues/1059)
+* Apache Lucene 9.9.1 Upgrade [1060](https://gitlab.echothree.com/echothree/echothree/-/issues/1060)
+* jOOQ 3.19.1 Upgrade [1061](https://gitlab.echothree.com/echothree/echothree/-/issues/1061)
+
 ## 2023-12-10-01
 
 * Upgrade to Custom kafka-rar 1.0.0 [1054](https://gitlab.echothree.com/echothree/echothree/-/issues/1054)
