@@ -213,6 +213,10 @@ import com.echothree.control.user.vendor.common.form.SetVendorItemStatusForm;
 import com.echothree.control.user.vendor.common.spec.VendorItemCostSpec;
 import com.echothree.control.user.vendor.common.spec.VendorItemUniversalSpec;
 import com.echothree.control.user.vendor.common.spec.VendorUniversalSpec;
+import com.echothree.control.user.warehouse.common.edit.WarehouseEdit;
+import com.echothree.control.user.warehouse.common.form.CreateWarehouseForm;
+import com.echothree.control.user.warehouse.common.form.DeleteWarehouseForm;
+import com.echothree.control.user.warehouse.common.spec.WarehouseUniversalSpec;
 import com.echothree.cucumber.authentication.UserVisits;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import javax.naming.NamingException;
@@ -564,7 +568,11 @@ public class BasePersona {
     public String lastVendorName;
 
     // Warehouse
+    public CreateWarehouseForm createWarehouseForm;
+    public DeleteWarehouseForm deleteWarehouseForm;
+    public WarehouseUniversalSpec warehouseUniversalSpec;
+    public WarehouseEdit warehouseEdit;
+
     public String lastWarehouseName;
-    public String lastLocationName;
 
 }
