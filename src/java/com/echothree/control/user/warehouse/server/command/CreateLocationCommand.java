@@ -17,7 +17,6 @@
 package com.echothree.control.user.warehouse.server.command;
 
 import com.echothree.control.user.warehouse.common.form.CreateLocationForm;
-import com.echothree.control.user.warehouse.common.result.CreateLocationResult;
 import com.echothree.control.user.warehouse.common.result.WarehouseResultFactory;
 import com.echothree.model.control.inventory.common.workflow.InventoryLocationGroupStatusConstants;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
@@ -36,7 +35,6 @@ import com.echothree.model.data.warehouse.server.entity.Location;
 import com.echothree.model.data.warehouse.server.entity.LocationNameElement;
 import com.echothree.model.data.warehouse.server.entity.LocationNameElementDetail;
 import com.echothree.model.data.warehouse.server.entity.LocationType;
-import com.echothree.model.data.warehouse.server.entity.LocationUseType;
 import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
 import com.echothree.util.common.command.BaseResult;
@@ -89,8 +87,8 @@ public class CreateLocationCommand
     
     @Override
     protected BaseResult execute() {
+        var result = WarehouseResultFactory.getCreateLocationResult();
         var warehouseControl = Session.getModelController(WarehouseControl.class);
-        CreateLocationResult result = WarehouseResultFactory.getCreateLocationResult();
         String warehouseName = form.getWarehouseName();
         Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
         
