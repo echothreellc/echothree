@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--                                                                                  -->
-<!-- Copyright 2002-2023 Echo Three, LLC                                              -->
+<!-- Copyright 2002-2024 Echo Three, LLC                                              -->
 <!--                                                                                  -->
 <!-- Licensed under the Apache License, Version 2.0 (the "License");                  -->
 <!-- you may not use this file except in compliance with the License.                 -->
@@ -83,7 +83,7 @@
                     <partyPaymentMethods>
                         <partyPaymentMethod description="Test Card" paymentMethodName="VISA" deleteWhenUnused="false"
                                 isDefault="true" sortOrder="1" number="4000300020001000" securityCode="123" expirationMonth="12"
-                                expirationYear="2008" personalTitle="Mr." firstName="Test" lastName="Customer" />
+                                expirationYear="2024" personalTitle="Mr." firstName="Test" lastName="Customer" />
                     </partyPaymentMethods>
                 </contactPostalAddress>
                 <contactPostalAddress personalTitle="Mr." firstName="Test" lastName="Canadian" address1="Address 1"
@@ -92,7 +92,7 @@
                     <partyPaymentMethods>
                         <partyPaymentMethod description="Test Canadian Card" paymentMethodName="VISA" deleteWhenUnused="false"
                                 isDefault="true" sortOrder="1" number="4444333322221111" securityCode="123" expirationMonth="12"
-                                expirationYear="2008" personalTitle="Mr." firstName="Test" lastName="Canadian" />
+                                expirationYear="2024" personalTitle="Mr." firstName="Test" lastName="Canadian" />
                     </partyPaymentMethods>
                 </contactPostalAddress>
                 <contactTelephone countryName="UNITED_STATES" areaCode="515" telephoneNumber="555-1212" allowSolicitation="true">

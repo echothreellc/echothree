@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------
-// Copyright 2002-2023 Echo Three, LLC
+// Copyright 2002-2024 Echo Three, LLC
 // Copyright 1999-2005 The Apache Software Foundation.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
