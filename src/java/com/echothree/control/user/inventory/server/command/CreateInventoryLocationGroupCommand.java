@@ -17,20 +17,21 @@
 package com.echothree.control.user.inventory.server.command;
 
 import com.echothree.control.user.inventory.common.form.CreateInventoryLocationGroupForm;
+import com.echothree.control.user.inventory.common.result.InventoryResultFactory;
+import com.echothree.model.control.inventory.common.workflow.InventoryLocationGroupStatusConstants;
 import com.echothree.model.control.inventory.server.control.InventoryControl;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
-import com.echothree.model.control.inventory.common.workflow.InventoryLocationGroupStatusConstants;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.inventory.server.entity.InventoryLocationGroup;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.warehouse.server.entity.Warehouse;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
@@ -59,6 +60,7 @@ public class CreateInventoryLocationGroupCommand
     
     @Override
     protected BaseResult execute() {
+        var result = InventoryResultFactory.getCreateInventoryLocationGroupResult();
         var warehouseControl = Session.getModelController(WarehouseControl.class);
         String warehouseName = form.getWarehouseName();
         Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
@@ -92,11 +94,16 @@ public class CreateInventoryLocationGroupCommand
             } else {
                 addExecutionError(ExecutionErrors.DuplicateInventoryLocationGroupName.name(), inventoryLocationGroupName);
             }
+
+            if(inventoryLocationGroup != null) {
+                result.setEntityRef(inventoryLocationGroup.getPrimaryKey().getEntityRef());
+                result.setInventoryLocationGroupName(inventoryLocationGroup.getLastDetail().getInventoryLocationGroupName());
+            }
         } else {
             addExecutionError(ExecutionErrors.UnknownWarehouseName.name(), warehouseName);
         }
         
-        return null;
+        return result;
     }
     
 }
