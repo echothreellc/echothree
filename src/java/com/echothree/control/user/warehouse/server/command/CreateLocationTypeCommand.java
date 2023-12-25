@@ -17,6 +17,7 @@
 package com.echothree.control.user.warehouse.server.command;
 
 import com.echothree.control.user.warehouse.common.form.CreateLocationTypeForm;
+import com.echothree.control.user.warehouse.common.result.WarehouseResultFactory;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -69,6 +70,7 @@ public class CreateLocationTypeCommand
     
     @Override
     protected BaseResult execute() {
+        var result = WarehouseResultFactory.getCreateLocationTypeResult();
         var warehouseControl = Session.getModelController(WarehouseControl.class);
         String warehouseName = form.getWarehouseName();
         Warehouse warehouse = warehouseControl.getWarehouseByName(warehouseName);
@@ -92,11 +94,16 @@ public class CreateLocationTypeCommand
             } else {
                 addExecutionError(ExecutionErrors.DuplicateLocationTypeName.name(), locationTypeName);
             }
+
+            if(locationType != null) {
+                result.setEntityRef(locationType.getPrimaryKey().getEntityRef());
+                result.setLocationTypeName(locationType.getLastDetail().getLocationTypeName());
+            }
         } else {
             addExecutionError(ExecutionErrors.UnknownWarehouseName.name(), warehouseName);
         }
         
-        return null;
+        return result;
     }
     
 }
