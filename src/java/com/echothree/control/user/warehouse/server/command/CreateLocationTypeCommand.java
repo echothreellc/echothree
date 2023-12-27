@@ -97,6 +97,7 @@ public class CreateLocationTypeCommand
 
             if(locationType != null) {
                 result.setEntityRef(locationType.getPrimaryKey().getEntityRef());
+                result.setWarehouseName(warehouse.getWarehouseName());
                 result.setLocationTypeName(locationType.getLastDetail().getLocationTypeName());
             }
         } else {

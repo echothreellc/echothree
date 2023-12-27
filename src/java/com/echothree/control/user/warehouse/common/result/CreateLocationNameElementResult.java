@@ -16,15 +16,13 @@
 
 package com.echothree.control.user.warehouse.common.result;
 
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
+import com.echothree.control.user.warehouse.common.spec.LocationNameElementSpec;
 import com.echothree.util.common.command.BaseResult;
 
 public interface CreateLocationNameElementResult
-        extends BaseResult {
-    
-    String getEntityRef();
-    void setEntityRef(String entityRef);
-    
-    String getLocationNameElementName();
-    void setLocationNameElementName(String locationNameElementName);
-    
+        extends LocationNameElementSpec, EntityRefSpec, BaseResult {
+
+    // Nothing additional beyond LocationNameElementSpec, EntityRefSpec, BaseResult
+
 }

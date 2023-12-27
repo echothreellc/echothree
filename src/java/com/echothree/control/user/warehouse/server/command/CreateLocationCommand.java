@@ -38,7 +38,6 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
-import com.google.common.collect.Sets;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -124,8 +123,6 @@ public class CreateLocationCommand
                         }
                     }
 
-                    var x = Sets.newConcurrentHashSet();
-
                     // Ensure the location name is of the appropriate length based on the final LocationNameElement.
                     if(locationName.length() > endIndex)
                         validLocationName = false;
@@ -195,6 +192,7 @@ public class CreateLocationCommand
             
             if(location != null) {
                 result.setEntityRef(location.getPrimaryKey().getEntityRef());
+                result.setWarehouseName(warehouse.getWarehouseName());
                 result.setLocationName(location.getLastDetail().getLocationName());
             }
         } else {

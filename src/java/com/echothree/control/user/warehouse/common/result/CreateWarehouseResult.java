@@ -16,18 +16,14 @@
 
 package com.echothree.control.user.warehouse.common.result;
 
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
+import com.echothree.control.user.party.common.spec.PartySpec;
+import com.echothree.control.user.warehouse.common.spec.WarehouseSpec;
 import com.echothree.util.common.command.BaseResult;
 
 public interface CreateWarehouseResult
-        extends BaseResult {
-    
-    String getEntityRef();
-    void setEntityRef(String entityRef);
-    
-    String getWarehouseName();
-    void setWarehouseName(String warehouseName);
-    
-    String getPartyName();
-    void setPartyName(String partyName);
-    
+        extends WarehouseSpec, PartySpec, EntityRefSpec, BaseResult {
+
+    // Nothing additional beyond WarehouseSpec, PartySpec, EntityRefSpec, BaseResult
+
 }

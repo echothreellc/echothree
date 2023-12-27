@@ -16,15 +16,13 @@
 
 package com.echothree.control.user.inventory.common.result;
 
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
+import com.echothree.control.user.inventory.common.spec.InventoryLocationGroupSpec;
 import com.echothree.util.common.command.BaseResult;
 
 public interface CreateInventoryLocationGroupResult
-        extends BaseResult {
+        extends InventoryLocationGroupSpec, EntityRefSpec, BaseResult {
 
-    String getEntityRef();
-    void setEntityRef(String entityRef);
+    // Nothing additional beyond InventoryLocationGroupSpec, EntityRefSpec, BaseResult
 
-    String getInventoryLocationGroupName();
-    void setInventoryLocationGroupName(String inventoryLocationGroupName);
-    
 }

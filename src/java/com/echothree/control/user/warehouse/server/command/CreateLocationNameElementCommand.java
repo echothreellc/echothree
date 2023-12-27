@@ -108,6 +108,8 @@ public class CreateLocationNameElementCommand
 
                 if(locationNameElement != null) {
                     result.setEntityRef(locationNameElement.getPrimaryKey().getEntityRef());
+                    result.setWarehouseName(warehouse.getWarehouseName());
+                    result.setLocationTypeName(locationType.getLastDetail().getLocationTypeName());
                     result.setLocationNameElementName(locationNameElement.getLastDetail().getLocationNameElementName());
                 }
             } else {
