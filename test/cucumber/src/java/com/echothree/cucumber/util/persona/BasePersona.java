@@ -230,6 +230,7 @@ import com.echothree.control.user.warehouse.common.form.DeleteLocationForm;
 import com.echothree.control.user.warehouse.common.form.DeleteLocationNameElementForm;
 import com.echothree.control.user.warehouse.common.form.DeleteLocationTypeForm;
 import com.echothree.control.user.warehouse.common.form.DeleteWarehouseForm;
+import com.echothree.control.user.warehouse.common.form.SetLocationStatusForm;
 import com.echothree.control.user.warehouse.common.spec.LocationNameElementSpec;
 import com.echothree.control.user.warehouse.common.spec.LocationSpec;
 import com.echothree.control.user.warehouse.common.spec.LocationTypeSpec;
@@ -609,8 +610,15 @@ public class BasePersona {
     public LocationNameElementSpec locationNameElementSpec;
     public LocationNameElementEdit locationNameElementEdit;
 
+    public CreateLocationForm createLocationForm;
+    public SetLocationStatusForm setLocationStatusForm;
+    public DeleteLocationForm deleteLocationForm;
+    public LocationSpec locationSpec;
+    public LocationEdit locationEdit;
+
     public String lastWarehouseName;
     public String lastLocationTypeName;
     public String lastLocationNameElementName;
+    public String lastLocationName;
 
 }
