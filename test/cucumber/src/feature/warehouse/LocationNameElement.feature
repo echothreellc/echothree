@@ -36,7 +36,7 @@ Feature: Employee location type
     And the user sets the location name element's warehouse name to the last warehouse added
     And the user sets the location name element's location type name to the last location type added
     And the user sets the location name element's location name element name to "CucumberLocationNameElement"
-    And the user sets the location name element's offset to "10"
+    And the user sets the location name element's offset to "0"
     And the user sets the location name element's length to "2"
     And the user sets the location name element's validation pattern to " ^[A-Z][A-Z]$"
     And the user sets the location name element's description to "Cucumber Location Name Element"
