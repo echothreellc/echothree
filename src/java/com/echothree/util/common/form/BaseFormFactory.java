@@ -19,7 +19,6 @@ package com.echothree.util.common.form;
 import com.echothree.util.common.command.ProxyInvocationHandler;
 import com.google.common.base.Charsets;
 import java.io.Serializable;
-import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 
 public class BaseFormFactory {
