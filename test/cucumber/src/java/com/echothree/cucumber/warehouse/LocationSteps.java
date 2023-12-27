@@ -40,7 +40,7 @@ public class LocationSteps implements En {
                     persona.createLocationForm = WarehouseUtil.getHome().getCreateLocationForm();
                 });
 
-        When("^the user adds the new location",
+        And("^the user adds the new location",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createLocationForm = persona.createLocationForm;
@@ -72,7 +72,7 @@ public class LocationSteps implements En {
                     persona.setLocationStatusForm = WarehouseUtil.getHome().getSetLocationStatusForm();
                 });
 
-        When("^the user sets the status of the location",
+        And("^the user sets the status of the location",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var setLocationStatusForm = persona.setLocationStatusForm;
@@ -96,7 +96,7 @@ public class LocationSteps implements En {
                     persona.deleteLocationForm = WarehouseUtil.getHome().getDeleteLocationForm();
                 });
 
-        When("^the user deletes the location",
+        And("^the user deletes the location",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteLocationForm = persona.deleteLocationForm;
@@ -120,7 +120,7 @@ public class LocationSteps implements En {
                     persona.locationSpec = WarehouseUtil.getHome().getLocationSpec();
                 });
 
-        When("^the user begins editing the location",
+        And("^the user begins editing the location",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.locationSpec;
@@ -143,7 +143,7 @@ public class LocationSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the location",
+        And("^the user finishes editing the location",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.locationSpec;
@@ -165,7 +165,7 @@ public class LocationSteps implements En {
                     persona.locationEdit = null;
                 });
 
-        When("^the user sets the location's warehouse name to \"([a-zA-Z0-9-_]*)\"$",
+        And("^the user sets the location's warehouse name to \"([a-zA-Z0-9-_]*)\"$",
                 (String warehouseName) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationForm = persona.createLocationForm;
@@ -187,7 +187,7 @@ public class LocationSteps implements En {
                     }
                 });
 
-        When("^the user sets the location's warehouse name to the last warehouse added$",
+        And("^the user sets the location's warehouse name to the last warehouse added$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createLocationForm = persona.createLocationForm;
@@ -209,7 +209,7 @@ public class LocationSteps implements En {
                     }
                 });
 
-        When("^the user sets the location's location name to \"([a-zA-Z0-9-_]*)\"$",
+        And("^the user sets the location's location name to \"([a-zA-Z0-9-_]*)\"$",
                 (String locationName) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationForm = persona.createLocationForm;
@@ -231,7 +231,7 @@ public class LocationSteps implements En {
                     }
                 });
 
-        When("^the user sets the location's location name to the last location added$",
+        And("^the user sets the location's location name to the last location added$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createLocationForm = persona.createLocationForm;
@@ -253,7 +253,7 @@ public class LocationSteps implements En {
                     }
                 });
 
-        When("^the user sets the location's new location name to \"([a-zA-Z0-9-_]*)\"$",
+        And("^the user sets the location's new location name to \"([a-zA-Z0-9-_]*)\"$",
                 (String locationName) -> {
                     var persona = CurrentPersona.persona;
                     var locationEdit = persona.locationEdit;
@@ -263,7 +263,7 @@ public class LocationSteps implements En {
                     locationEdit.setLocationName(locationName);
                 });
 
-        When("^the user sets the location's status to \"([a-zA-Z0-9-_]*)\"$",
+        And("^the user sets the location's status to \"([a-zA-Z0-9-_]*)\"$",
                 (String locationStatusChoice) -> {
                     var persona = CurrentPersona.persona;
                     var setLocationStatusForm = persona.setLocationStatusForm;
@@ -273,7 +273,7 @@ public class LocationSteps implements En {
                     setLocationStatusForm.setLocationStatusChoice(locationStatusChoice);
                 });
 
-        When("^the user sets the location's location type name to \"([^\"]*)\"$",
+        And("^the user sets the location's location type name to \"([^\"]*)\"$",
                 (String locationType) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationForm = persona.createLocationForm;
@@ -288,7 +288,7 @@ public class LocationSteps implements En {
                     }
                 });
 
-        When("^the user sets the location's location use type name to \"([^\"]*)\"$",
+        And("^the user sets the location's location use type name to \"([^\"]*)\"$",
                 (String locationUseType) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationForm = persona.createLocationForm;
@@ -303,7 +303,7 @@ public class LocationSteps implements En {
                     }
                 });
 
-        When("^the user sets the location's velocity to \"([^\"]*)\"$",
+        And("^the user sets the location's velocity to \"([^\"]*)\"$",
                 (String velocity) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationForm = persona.createLocationForm;
@@ -318,7 +318,7 @@ public class LocationSteps implements En {
                     }
                 });
 
-        When("^the user sets the location's inventory location group name to \"([^\"]*)\"$",
+        And("^the user sets the location's inventory location group name to \"([^\"]*)\"$",
                 (String velocity) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationForm = persona.createLocationForm;
@@ -333,7 +333,7 @@ public class LocationSteps implements En {
                     }
                 });
 
-        When("^the user sets the location's description to \"([^\"]*)\"$",
+        And("^the user sets the location's description to \"([^\"]*)\"$",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationForm = persona.createLocationForm;

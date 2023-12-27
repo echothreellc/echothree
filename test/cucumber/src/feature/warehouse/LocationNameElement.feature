@@ -13,7 +13,7 @@ Feature: Employee location type
 
   Scenario: Existing employee adds a location name element, edits it, and then deletes it
     Given the employee Test begins using the application
-    And the user begins entering a new warehouse
+    When the user begins entering a new warehouse
     And the user sets the warehouse's warehouse name to "CucumberWarehouse"
     And the user sets the warehouse's name to "Cucumber Warehouse"
     And the user sets the warehouse to not be the default
@@ -24,7 +24,7 @@ Feature: Employee location type
     And the user sets the warehouse's shipping manifest printer group name to "DEFAULT"
     And the user adds the new warehouse
     Then no error should occur
-    And the user begins entering a new location type
+    When the user begins entering a new location type
     And the user sets the location type's warehouse name to the last warehouse added
     And the user sets the location type's location type name to "CucumberLocationType"
     And the user sets the location type to be the default
@@ -32,7 +32,7 @@ Feature: Employee location type
     And the user sets the location type's description to "Cucumber Location Type"
     And the user adds the new location type
     Then no error should occur
-    And the user begins entering a new location name element
+    When the user begins entering a new location name element
     And the user sets the location name element's warehouse name to the last warehouse added
     And the user sets the location name element's location type name to the last location type added
     And the user sets the location name element's location name element name to "CucumberLocationNameElement"
@@ -42,7 +42,7 @@ Feature: Employee location type
     And the user sets the location name element's description to "Cucumber Location Name Element"
     And the user adds the new location name element
     Then no error should occur
-    And the user begins specifying a location name element to edit
+    When the user begins specifying a location name element to edit
     And the user sets the location name element's warehouse name to the last warehouse added
     And the user sets the location name element's location type name to the last location type added
     And the user sets the location name element's location name element name to the last location name element added
@@ -51,18 +51,18 @@ Feature: Employee location type
     And the user sets the location name element's description to "Edited Cucumber Location Name Element"
     And the user finishes editing the location name element
     Then no error should occur
-    And the user begins deleting a location name element
+    When the user begins deleting a location name element
     And the user sets the location name element's warehouse name to the last warehouse added
     And the user sets the location name element's location type name to the last location type added
     And the user sets the location name element's location name element name to the last location name element added
     And the user deletes the location name element
     Then no error should occur
-    And the user begins deleting a location type
+    When the user begins deleting a location type
     And the user sets the location type's warehouse name to the last warehouse added
     And the user sets the location type's location type name to the last location type added
     And the user deletes the location type
     Then no error should occur
-    And the user begins deleting a warehouse
+    When the user begins deleting a warehouse
     And the user sets the warehouse's warehouse name to the last warehouse added
     And the user deletes the warehouse
     Then no error should occur

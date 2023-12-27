@@ -40,7 +40,7 @@ public class WarehouseSteps
                     persona.createWarehouseForm = WarehouseUtil.getHome().getCreateWarehouseForm();
                 });
 
-        When("^the user adds the new warehouse$",
+        And("^the user adds the new warehouse$",
                 () -> {
                     var persona = CurrentPersona.persona;
 
@@ -76,7 +76,7 @@ public class WarehouseSteps
                     persona.deleteWarehouseForm = WarehouseUtil.getHome().getDeleteWarehouseForm();
                 });
 
-        When("^the user deletes the warehouse$",
+        And("^the user deletes the warehouse$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteWarehouseForm = persona.deleteWarehouseForm;
@@ -99,7 +99,7 @@ public class WarehouseSteps
                     persona.warehouseUniversalSpec = WarehouseUtil.getHome().getWarehouseUniversalSpec();
                 });
 
-        When("^the user begins editing the warehouse$",
+        And("^the user begins editing the warehouse$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.warehouseUniversalSpec;
@@ -122,7 +122,7 @@ public class WarehouseSteps
                     }
                 });
 
-        When("^the user finishes editing the warehouse$",
+        And("^the user finishes editing the warehouse$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.warehouseUniversalSpec;
@@ -143,7 +143,7 @@ public class WarehouseSteps
                     persona.warehouseEdit = null;
                 });
 
-        When("^the user sets the warehouse's warehouse name to \"([a-zA-Z0-9-_]*)\"$",
+        And("^the user sets the warehouse's warehouse name to \"([a-zA-Z0-9-_]*)\"$",
                 (String warehouseName) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseForm = persona.createWarehouseForm;
@@ -161,7 +161,7 @@ public class WarehouseSteps
                     }
                 });
 
-        When("^the user sets the warehouse's warehouse name to the last warehouse added$",
+        And("^the user sets the warehouse's warehouse name to the last warehouse added$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseForm = persona.createWarehouseForm;
@@ -179,7 +179,7 @@ public class WarehouseSteps
                     }
                 });
 
-        When("^the user sets the warehouse's new warehouse name to \"([a-zA-Z0-9-_]*)\"$",
+        And("^the user sets the warehouse's new warehouse name to \"([a-zA-Z0-9-_]*)\"$",
                 (String warehouseName) -> {
                     var persona = CurrentPersona.persona;
                     var warehouseEdit = persona.warehouseEdit;
@@ -189,7 +189,7 @@ public class WarehouseSteps
                     warehouseEdit.setWarehouseName(warehouseName);
                 });
 
-        When("^the user sets the warehouse to (be|not be) the default$",
+        And("^the user sets the warehouse to (be|not be) the default$",
                 (String isDefault) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseForm = persona.createWarehouseForm;
@@ -205,7 +205,7 @@ public class WarehouseSteps
                     }
                 });
 
-        When("^the user sets the warehouse's sort order to \"([^\"]*)\"$",
+        And("^the user sets the warehouse's sort order to \"([^\"]*)\"$",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseForm = persona.createWarehouseForm;
@@ -220,7 +220,7 @@ public class WarehouseSteps
                     }
                 });
 
-        When("^the user sets the warehouse's inventory move printer group name to \"([a-zA-Z0-9-_]*)\"$",
+        And("^the user sets the warehouse's inventory move printer group name to \"([a-zA-Z0-9-_]*)\"$",
                 (String inventoryMovePrinterGroupName) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseForm = persona.createWarehouseForm;
@@ -235,7 +235,7 @@ public class WarehouseSteps
                     }
                 });
 
-        When("^the user sets the warehouse's picklist printer group mame to \"([a-zA-Z0-9-_]*)\"$",
+        And("^the user sets the warehouse's picklist printer group mame to \"([a-zA-Z0-9-_]*)\"$",
                 (String picklistPrinterGroupName) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseForm = persona.createWarehouseForm;
@@ -250,7 +250,7 @@ public class WarehouseSteps
                     }
                 });
 
-        When("^the user sets the warehouse's packing list printer group name to \"([a-zA-Z0-9-_]*)\"$",
+        And("^the user sets the warehouse's packing list printer group name to \"([a-zA-Z0-9-_]*)\"$",
                 (String packingListPrinterGroupName) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseForm = persona.createWarehouseForm;
@@ -265,7 +265,7 @@ public class WarehouseSteps
                     }
                 });
 
-        When("^the user sets the warehouse's shipping manifest printer group name to \"([a-zA-Z0-9-_]*)\"$",
+        And("^the user sets the warehouse's shipping manifest printer group name to \"([a-zA-Z0-9-_]*)\"$",
                 (String shippingManifestPrinterGroupName) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseForm = persona.createWarehouseForm;
@@ -280,7 +280,7 @@ public class WarehouseSteps
                     }
                 });
 
-        When("^the user sets the warehouse's name to \"([^\"]*)\"$",
+        And("^the user sets the warehouse's name to \"([^\"]*)\"$",
                 (String name) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseForm = persona.createWarehouseForm;
@@ -295,7 +295,7 @@ public class WarehouseSteps
                     }
                 });
 
-        When("^the user sets the warehouse's preferred language to \"([^\"]*)\"$",
+        And("^the user sets the warehouse's preferred language to \"([^\"]*)\"$",
                 (String preferredLanguageIsoName) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseForm = persona.createWarehouseForm;
@@ -310,7 +310,7 @@ public class WarehouseSteps
                     }
                 });
 
-        When("^the user sets the warehouse's preferred currency to \"([^\"]*)\"$",
+        And("^the user sets the warehouse's preferred currency to \"([^\"]*)\"$",
                 (String preferredCurrencyIsoName) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseForm = persona.createWarehouseForm;
@@ -325,7 +325,7 @@ public class WarehouseSteps
                     }
                 });
 
-        When("^the user sets the warehouse's preferred time zone to \"([^\"]*)\"$",
+        And("^the user sets the warehouse's preferred time zone to \"([^\"]*)\"$",
                 (String preferredJavaTimeZoneName) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseForm = persona.createWarehouseForm;
@@ -340,7 +340,7 @@ public class WarehouseSteps
                     }
                 });
 
-        When("^the user sets the warehouse's preferred date time format to \"([^\"]*)\"$",
+        And("^the user sets the warehouse's preferred date time format to \"([^\"]*)\"$",
                 (String preferredDateTimeFormatName) -> {
                     var persona = CurrentPersona.persona;
                     var createWarehouseForm = persona.createWarehouseForm;

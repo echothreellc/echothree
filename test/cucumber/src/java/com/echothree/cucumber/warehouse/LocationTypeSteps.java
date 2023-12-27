@@ -39,7 +39,7 @@ public class LocationTypeSteps implements En {
                     persona.createLocationTypeForm = WarehouseUtil.getHome().getCreateLocationTypeForm();
                 });
 
-        When("^the user adds the new location type$",
+        And("^the user adds the new location type$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createLocationTypeForm = persona.createLocationTypeForm;
@@ -70,7 +70,7 @@ public class LocationTypeSteps implements En {
                     persona.deleteLocationTypeForm = WarehouseUtil.getHome().getDeleteLocationTypeForm();
                 });
 
-        When("^the user deletes the location type$",
+        And("^the user deletes the location type$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var deleteLocationTypeForm = persona.deleteLocationTypeForm;
@@ -93,7 +93,7 @@ public class LocationTypeSteps implements En {
                     persona.locationTypeSpec = WarehouseUtil.getHome().getLocationTypeSpec();
                 });
 
-        When("^the user begins editing the location type$",
+        And("^the user begins editing the location type$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.locationTypeSpec;
@@ -116,7 +116,7 @@ public class LocationTypeSteps implements En {
                     }
                 });
 
-        When("^the user finishes editing the location type$",
+        And("^the user finishes editing the location type$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var spec = persona.locationTypeSpec;
@@ -138,7 +138,7 @@ public class LocationTypeSteps implements En {
                     persona.locationTypeEdit = null;
                 });
 
-        When("^the user sets the location type's warehouse name to \"([a-zA-Z0-9-_]*)\"$",
+        And("^the user sets the location type's warehouse name to \"([a-zA-Z0-9-_]*)\"$",
                 (String warehouseName) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationTypeForm = persona.createLocationTypeForm;
@@ -157,7 +157,7 @@ public class LocationTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the location type's warehouse name to the last warehouse added$",
+        And("^the user sets the location type's warehouse name to the last warehouse added$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createLocationTypeForm = persona.createLocationTypeForm;
@@ -176,7 +176,7 @@ public class LocationTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the location type's location type name to \"([a-zA-Z0-9-_]*)\"$",
+        And("^the user sets the location type's location type name to \"([a-zA-Z0-9-_]*)\"$",
                 (String locationTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationTypeForm = persona.createLocationTypeForm;
@@ -195,7 +195,7 @@ public class LocationTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the location type's location type name to the last location type added$",
+        And("^the user sets the location type's location type name to the last location type added$",
                 () -> {
                     var persona = CurrentPersona.persona;
                     var createLocationTypeForm = persona.createLocationTypeForm;
@@ -214,7 +214,7 @@ public class LocationTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the location type's new location type name to \"([a-zA-Z0-9-_]*)\"$",
+        And("^the user sets the location type's new location type name to \"([a-zA-Z0-9-_]*)\"$",
                 (String locationTypeName) -> {
                     var persona = CurrentPersona.persona;
                     var locationTypeEdit = persona.locationTypeEdit;
@@ -224,7 +224,7 @@ public class LocationTypeSteps implements En {
                     locationTypeEdit.setLocationTypeName(locationTypeName);
                 });
 
-        When("^the user sets the location type to (be|not be) the default$",
+        And("^the user sets the location type to (be|not be) the default$",
                 (String isDefault) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationTypeForm = persona.createLocationTypeForm;
@@ -240,7 +240,7 @@ public class LocationTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the location type's sort order to \"([^\"]*)\"$",
+        And("^the user sets the location type's sort order to \"([^\"]*)\"$",
                 (String sortOrder) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationTypeForm = persona.createLocationTypeForm;
@@ -255,7 +255,7 @@ public class LocationTypeSteps implements En {
                     }
                 });
 
-        When("^the user sets the location type's description to \"([^\"]*)\"$",
+        And("^the user sets the location type's description to \"([^\"]*)\"$",
                 (String description) -> {
                     var persona = CurrentPersona.persona;
                     var createLocationTypeForm = persona.createLocationTypeForm;
