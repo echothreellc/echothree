@@ -96,13 +96,19 @@ public class CreateLocationCommand
                         var locationNameElement = (LocationNameElement)iter.next();
                         var locationNameElementDetail = locationNameElement.getLastDetail();
                         var validationPattern = locationNameElementDetail.getValidationPattern();
-                        
+
+                        var beginIndex = locationNameElementDetail.getOffset();
+
+                        // LocationNameElements are sorted by their starting index, the last one will always
+                        // be able to give the ending index (the required length) for the location name.
+                        endIndex = beginIndex + locationNameElementDetail.getLength();
+
+                        // If there is a validation pattern for the LocationNameElement, test that substring
+                        // to ensure that it matches.
                         if(validationPattern != null) {
                             try {
                                 var pattern = Pattern.compile(validationPattern);
-                                var beginIndex = locationNameElementDetail.getOffset();
-                                
-                                endIndex = beginIndex + locationNameElementDetail.getLength();
+
                                 var substr = locationName.substring(beginIndex, endIndex);
                                 var m = pattern.matcher(substr);
                                 
@@ -114,7 +120,8 @@ public class CreateLocationCommand
                             }
                         }
                     }
-                    
+
+                    // Ensure the location name is of the appropriate length based on the final LocationNameElement.
                     if(locationName.length() > endIndex)
                         validLocationName = false;
                     
