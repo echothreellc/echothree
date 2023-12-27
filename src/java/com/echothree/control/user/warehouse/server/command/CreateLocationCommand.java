@@ -38,6 +38,7 @@ import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
+import com.google.common.collect.Sets;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -105,21 +106,25 @@ public class CreateLocationCommand
 
                         // If there is a validation pattern for the LocationNameElement, test that substring
                         // to ensure that it matches.
-                        if(validationPattern != null) {
-                            try {
-                                var pattern = Pattern.compile(validationPattern);
+                        try {
+                            // Get the substring first, this will throw an exception if the string is too short
+                            // and cause the validation to fail.
+                            var substr = locationName.substring(beginIndex, endIndex);
 
-                                var substr = locationName.substring(beginIndex, endIndex);
+                            if(validationPattern != null) {
+                                var pattern = Pattern.compile(validationPattern);
                                 var m = pattern.matcher(substr);
                                 
                                 if(!m.matches()) {
                                     validLocationName = false;
                                 }
-                            } catch (IndexOutOfBoundsException ioobe) {
-                                validLocationName = false;
                             }
+                        } catch (IndexOutOfBoundsException ioobe) {
+                            validLocationName = false;
                         }
                     }
+
+                    var x = Sets.newConcurrentHashSet();
 
                     // Ensure the location name is of the appropriate length based on the final LocationNameElement.
                     if(locationName.length() > endIndex)
