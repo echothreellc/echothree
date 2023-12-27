@@ -24,13 +24,13 @@ import java.lang.reflect.Proxy;
 
 public class BaseFormFactory {
     
-    static public BaseForm createForm(Class form) {
-        InvocationHandler pih = new ProxyInvocationHandler();
-        BaseForm baseForm = (BaseForm)Proxy.newProxyInstance(form.getClassLoader(), new Class[]{form, Serializable.class}, pih);
-        
-        String className = form.getName();
-        int nameOffset = className.lastIndexOf('.');
-        String formName = new String(className.getBytes(Charsets.UTF_8), nameOffset + 1, className.length() - nameOffset - 1, Charsets.UTF_8);
+    static public <F extends BaseForm> F createForm(Class<F> form) {
+        var pih = new ProxyInvocationHandler();
+        var baseForm = (F)Proxy.newProxyInstance(form.getClassLoader(), new Class[]{form, Serializable.class}, pih);
+        var className = form.getName();
+        var nameOffset = className.lastIndexOf('.');
+        var formName = new String(className.getBytes(Charsets.UTF_8), nameOffset + 1, className.length() - nameOffset - 1, Charsets.UTF_8);
+
         baseForm.setFormName(formName);
         
         return baseForm;

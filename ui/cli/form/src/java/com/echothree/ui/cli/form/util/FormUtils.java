@@ -321,7 +321,7 @@ public class FormUtils {
                 pw.println("    static public " + interfaceName + " get" + interfaceName + "() {");
                 return interfaceName;
             }).map((interfaceName) -> {
-                pw.println("        return (" + interfaceName + ")createForm(" + interfaceName + ".class);");
+                pw.println("        return createForm(" + interfaceName + ".class);");
                 return interfaceName;
             }).map((_item) -> {
                 pw.println("    }");
@@ -359,7 +359,7 @@ public class FormUtils {
                 pw.println("    static public " + interfaceName + " get" + interfaceName + "() {");
                 return interfaceName;
             }).map((interfaceName) -> {
-                pw.println("        return (" + interfaceName + ")createForm(" + interfaceName + ".class);");
+                pw.println("        return createForm(" + interfaceName + ".class);");
                 return interfaceName;
             }).map((_item) -> {
                 pw.println("    }");
@@ -397,7 +397,7 @@ public class FormUtils {
                 pw.println("    static public " + interfaceName + " get" + interfaceName + "() {");
                 return interfaceName;
             }).map((interfaceName) -> {
-                pw.println("        return (" + interfaceName + ")createForm(" + interfaceName + ".class);");
+                pw.println("        return createForm(" + interfaceName + ".class);");
                 return interfaceName;
             }).map((_item) -> {
                 pw.println("    }");
@@ -435,7 +435,7 @@ public class FormUtils {
                 pw.println("    static public " + interfaceName + " get" + interfaceName + "() {");
                 return interfaceName;
             }).map((interfaceName) -> {
-                pw.println("        return (" + interfaceName + ")createResult(" + interfaceName + ".class);");
+                pw.println("        return createResult(" + interfaceName + ".class);");
                 return interfaceName;
             }).map((_item) -> {
                 pw.println("    }");

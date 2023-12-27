@@ -17,15 +17,14 @@
 package com.echothree.util.common.command;
 
 import java.io.Serializable;
-import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 
 public class BaseResultFactory {
     
-    static public BaseResult createResult(Class result) {
-        InvocationHandler pih = new ProxyInvocationHandler();
+    static public <F extends BaseResult> F createResult(Class<F> result) {
+        var pih = new ProxyInvocationHandler();
 
-        return (BaseResult)Proxy.newProxyInstance(result.getClassLoader(), new Class[]{result, Serializable.class}, pih);
+        return (F)Proxy.newProxyInstance(result.getClassLoader(), new Class[]{result, Serializable.class}, pih);
     }
     
 }
