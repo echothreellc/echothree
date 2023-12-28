@@ -14,15 +14,15 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.warehouse.common.result;
+package com.echothree.control.user.inventory.common.result;
 
 import com.echothree.control.user.core.common.spec.EntityRefSpec;
-import com.echothree.control.user.warehouse.common.spec.LocationSpec;
+import com.echothree.control.user.inventory.common.spec.InventoryLocationGroupSpec;
 import com.echothree.util.common.command.BaseResult;
 
-public interface CreateLocationResult
-        extends LocationSpec, EntityRefSpec, BaseResult {
-    
-    // Nothing additional beyond LocationSpec, EntityRefSpec, BaseResult
+public interface CreateInventoryLocationGroupResult
+        extends InventoryLocationGroupSpec, EntityRefSpec, BaseResult {
+
+    // Nothing additional beyond InventoryLocationGroupSpec, EntityRefSpec, BaseResult
 
 }

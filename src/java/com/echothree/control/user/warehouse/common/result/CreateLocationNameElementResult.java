@@ -17,12 +17,12 @@
 package com.echothree.control.user.warehouse.common.result;
 
 import com.echothree.control.user.core.common.spec.EntityRefSpec;
-import com.echothree.control.user.warehouse.common.spec.LocationSpec;
+import com.echothree.control.user.warehouse.common.spec.LocationNameElementSpec;
 import com.echothree.util.common.command.BaseResult;
 
-public interface CreateLocationResult
-        extends LocationSpec, EntityRefSpec, BaseResult {
-    
-    // Nothing additional beyond LocationSpec, EntityRefSpec, BaseResult
+public interface CreateLocationNameElementResult
+        extends LocationNameElementSpec, EntityRefSpec, BaseResult {
+
+    // Nothing additional beyond LocationNameElementSpec, EntityRefSpec, BaseResult
 
 }

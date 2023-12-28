@@ -97,6 +97,11 @@ import com.echothree.control.user.filter.common.spec.FilterKindSpec;
 import com.echothree.control.user.filter.common.spec.FilterSpec;
 import com.echothree.control.user.filter.common.spec.FilterStepSpec;
 import com.echothree.control.user.filter.common.spec.FilterTypeSpec;
+import com.echothree.control.user.inventory.common.edit.InventoryLocationGroupEdit;
+import com.echothree.control.user.inventory.common.form.CreateInventoryLocationGroupForm;
+import com.echothree.control.user.inventory.common.form.DeleteInventoryLocationGroupForm;
+import com.echothree.control.user.inventory.common.form.SetInventoryLocationGroupStatusForm;
+import com.echothree.control.user.inventory.common.spec.InventoryLocationGroupSpec;
 import com.echothree.control.user.item.common.edit.ItemAliasTypeEdit;
 import com.echothree.control.user.item.common.edit.ItemDescriptionTypeUseTypeEdit;
 import com.echothree.control.user.item.common.edit.ItemEdit;
@@ -213,6 +218,23 @@ import com.echothree.control.user.vendor.common.form.SetVendorItemStatusForm;
 import com.echothree.control.user.vendor.common.spec.VendorItemCostSpec;
 import com.echothree.control.user.vendor.common.spec.VendorItemUniversalSpec;
 import com.echothree.control.user.vendor.common.spec.VendorUniversalSpec;
+import com.echothree.control.user.warehouse.common.edit.LocationEdit;
+import com.echothree.control.user.warehouse.common.edit.LocationNameElementEdit;
+import com.echothree.control.user.warehouse.common.edit.LocationTypeEdit;
+import com.echothree.control.user.warehouse.common.edit.WarehouseEdit;
+import com.echothree.control.user.warehouse.common.form.CreateLocationForm;
+import com.echothree.control.user.warehouse.common.form.CreateLocationNameElementForm;
+import com.echothree.control.user.warehouse.common.form.CreateLocationTypeForm;
+import com.echothree.control.user.warehouse.common.form.CreateWarehouseForm;
+import com.echothree.control.user.warehouse.common.form.DeleteLocationForm;
+import com.echothree.control.user.warehouse.common.form.DeleteLocationNameElementForm;
+import com.echothree.control.user.warehouse.common.form.DeleteLocationTypeForm;
+import com.echothree.control.user.warehouse.common.form.DeleteWarehouseForm;
+import com.echothree.control.user.warehouse.common.form.SetLocationStatusForm;
+import com.echothree.control.user.warehouse.common.spec.LocationNameElementSpec;
+import com.echothree.control.user.warehouse.common.spec.LocationSpec;
+import com.echothree.control.user.warehouse.common.spec.LocationTypeSpec;
+import com.echothree.control.user.warehouse.common.spec.WarehouseUniversalSpec;
 import com.echothree.cucumber.authentication.UserVisits;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import javax.naming.NamingException;
@@ -366,6 +388,15 @@ public class BasePersona {
     public String lastFilterTypeName;
     public String lastFilterName;
     public String lastFilterStepName;
+
+    // Inventory
+    public CreateInventoryLocationGroupForm createInventoryLocationGroupForm;
+    public SetInventoryLocationGroupStatusForm setInventoryLocationGroupStatusForm;
+    public DeleteInventoryLocationGroupForm deleteInventoryLocationGroupForm;
+    public InventoryLocationGroupSpec inventoryLocationGroupSpec;
+    public InventoryLocationGroupEdit inventoryLocationGroupEdit;
+
+    public String lastInventoryLocationGroupName;
 
     // Item
     public CreateItemForm createItemForm;
@@ -564,7 +595,30 @@ public class BasePersona {
     public String lastVendorName;
 
     // Warehouse
+    public CreateWarehouseForm createWarehouseForm;
+    public DeleteWarehouseForm deleteWarehouseForm;
+    public WarehouseUniversalSpec warehouseUniversalSpec;
+    public WarehouseEdit warehouseEdit;
+
+    public CreateLocationTypeForm createLocationTypeForm;
+    public DeleteLocationTypeForm deleteLocationTypeForm;
+    public LocationTypeSpec locationTypeSpec;
+    public LocationTypeEdit locationTypeEdit;
+
+    public CreateLocationNameElementForm createLocationNameElementForm;
+    public DeleteLocationNameElementForm deleteLocationNameElementForm;
+    public LocationNameElementSpec locationNameElementSpec;
+    public LocationNameElementEdit locationNameElementEdit;
+
+    public CreateLocationForm createLocationForm;
+    public SetLocationStatusForm setLocationStatusForm;
+    public DeleteLocationForm deleteLocationForm;
+    public LocationSpec locationSpec;
+    public LocationEdit locationEdit;
+
     public String lastWarehouseName;
+    public String lastLocationTypeName;
+    public String lastLocationNameElementName;
     public String lastLocationName;
 
 }
