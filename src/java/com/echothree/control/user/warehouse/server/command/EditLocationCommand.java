@@ -27,6 +27,7 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
+import com.echothree.model.control.warehouse.server.logic.LocationLogic;
 import com.echothree.model.control.warehouse.server.logic.LocationUseTypeLogic;
 import com.echothree.model.data.inventory.server.entity.InventoryLocationGroup;
 import com.echothree.model.data.party.server.entity.Party;
@@ -34,10 +35,7 @@ import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.warehouse.server.entity.Location;
 import com.echothree.model.data.warehouse.server.entity.LocationDescription;
 import com.echothree.model.data.warehouse.server.entity.LocationDetail;
-import com.echothree.model.data.warehouse.server.entity.LocationNameElement;
-import com.echothree.model.data.warehouse.server.entity.LocationNameElementDetail;
 import com.echothree.model.data.warehouse.server.entity.LocationType;
-import com.echothree.model.data.warehouse.server.entity.LocationUseType;
 import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.model.data.warehouse.server.value.LocationDescriptionValue;
 import com.echothree.model.data.warehouse.server.value.LocationDetailValue;
@@ -52,12 +50,8 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class EditLocationCommand
         extends BaseEditCommand<LocationSpec, LocationEdit> {
@@ -146,37 +140,9 @@ public class EditLocationCommand
                         LocationType locationType = warehouseControl.getLocationTypeByName(warehouseParty, locationTypeName);
                         
                         if(locationType != null) {
-                            Collection locationNameElements = warehouseControl.getLocationNameElementsByLocationType(locationType);
-                            int endIndex = 0;
-                            boolean validLocationName = true;
-                            
-                            for(Iterator iter = locationNameElements.iterator(); iter.hasNext() && validLocationName;) {
-                                LocationNameElement locationNameElement = (LocationNameElement)iter.next();
-                                LocationNameElementDetail locationNameElementDetail = locationNameElement.getLastDetail();
-                                String validationPattern = locationNameElementDetail.getValidationPattern();
-                                
-                                if(validationPattern != null) {
-                                    try {
-                                        Pattern pattern = Pattern.compile(validationPattern);
-                                        int beginIndex = locationNameElementDetail.getOffset();
-                                        
-                                        endIndex = beginIndex + locationNameElementDetail.getLength();
-                                        String substr = locationName.substring(beginIndex, endIndex);
-                                        Matcher m = pattern.matcher(substr);
-                                        
-                                        if(!m.matches()) {
-                                            validLocationName = false;
-                                        }
-                                    } catch (IndexOutOfBoundsException ioobe) {
-                                        validLocationName = false;
-                                    }
-                                }
-                            }
-                            
-                            if(locationName.length() > endIndex)
-                                validLocationName = false;
-                            
-                            if(validLocationName) {
+                            LocationLogic.getInstance().validateLocationName(this, locationType, locationName);
+
+                            if(!hasExecutionErrors()) {
                                 var locationUseTypeName = edit.getLocationUseTypeName();
                                 var locationUseType = LocationUseTypeLogic.getInstance().getLocationUseTypeByName(this, locationUseTypeName, null, false);
                                 
@@ -232,8 +198,6 @@ public class EditLocationCommand
                                         addExecutionError(ExecutionErrors.MultipleLocationUseTypesNotAllowed.name());
                                     }
                                 }
-                            } else {
-                                addExecutionError(ExecutionErrors.InvalidLocationName.name(), locationName);
                             }
                         } else {
                             addExecutionError(ExecutionErrors.UnknownLocationTypeName.name(), locationTypeName);

@@ -25,10 +25,10 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.warehouse.common.workflow.LocationStatusConstants;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
+import com.echothree.model.control.warehouse.server.logic.LocationLogic;
 import com.echothree.model.control.warehouse.server.logic.LocationUseTypeLogic;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.warehouse.server.entity.LocationNameElement;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -39,7 +39,6 @@ import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class CreateLocationCommand
         extends BaseSimpleCommand<CreateLocationForm> {
@@ -88,46 +87,9 @@ public class CreateLocationCommand
                 var locationType = warehouseControl.getLocationTypeByName(warehouseParty, locationTypeName);
                 
                 if(locationType != null) {
-                    var locationNameElements = warehouseControl.getLocationNameElementsByLocationType(locationType);
-                    var endIndex = 0;
-                    var validLocationName = true;
-                    
-                    for(var iter = locationNameElements.iterator(); iter.hasNext() && validLocationName;) {
-                        var locationNameElement = (LocationNameElement)iter.next();
-                        var locationNameElementDetail = locationNameElement.getLastDetail();
-                        var validationPattern = locationNameElementDetail.getValidationPattern();
+                    LocationLogic.getInstance().validateLocationName(this, locationType, locationName);
 
-                        var beginIndex = locationNameElementDetail.getOffset();
-
-                        // LocationNameElements are sorted by their starting index, the last one will always
-                        // be able to give the ending index (the required length) for the location name.
-                        endIndex = beginIndex + locationNameElementDetail.getLength();
-
-                        // If there is a validation pattern for the LocationNameElement, test that substring
-                        // to ensure that it matches.
-                        try {
-                            // Get the substring first, this will throw an exception if the string is too short
-                            // and cause the validation to fail.
-                            var substr = locationName.substring(beginIndex, endIndex);
-
-                            if(validationPattern != null) {
-                                var pattern = Pattern.compile(validationPattern);
-                                var m = pattern.matcher(substr);
-                                
-                                if(!m.matches()) {
-                                    validLocationName = false;
-                                }
-                            }
-                        } catch (IndexOutOfBoundsException ioobe) {
-                            validLocationName = false;
-                        }
-                    }
-
-                    // Ensure the location name is of the appropriate length based on the final LocationNameElement.
-                    if(locationName.length() > endIndex)
-                        validLocationName = false;
-                    
-                    if(validLocationName) {
+                    if(!hasExecutionErrors()) {
                         var locationUseTypeName = form.getLocationUseTypeName();
                         var locationUseType = LocationUseTypeLogic.getInstance().getLocationUseTypeByName(this, locationUseTypeName, null, false);
                         
@@ -180,8 +142,6 @@ public class CreateLocationCommand
                                 addExecutionError(ExecutionErrors.MultipleLocationUseTypesNotAllowed.name());
                             }
                         }
-                    } else {
-                        addExecutionError(ExecutionErrors.InvalidLocationName.name(), locationName);
                     }
                 } else {
                     addExecutionError(ExecutionErrors.UnknownLocationTypeName.name(), locationTypeName);
@@ -201,5 +161,5 @@ public class CreateLocationCommand
         
         return result;
     }
-    
+
 }
