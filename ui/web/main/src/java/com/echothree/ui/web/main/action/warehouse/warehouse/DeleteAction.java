@@ -17,53 +17,66 @@
 package com.echothree.ui.web.main.action.warehouse.warehouse;
 
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
-import com.echothree.control.user.warehouse.common.form.DeleteWarehouseForm;
-import com.echothree.ui.web.main.framework.ForwardConstants;
-import com.echothree.ui.web.main.framework.MainBaseAction;
+import com.echothree.control.user.warehouse.common.result.GetWarehouseResult;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.ui.web.main.framework.AttributeConstants;
+import com.echothree.ui.web.main.framework.MainBaseDeleteAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
+import com.echothree.util.common.command.CommandResult;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutForward;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
 import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import org.apache.struts.action.ActionForm;
-import org.apache.struts.action.ActionForward;
-import org.apache.struts.action.ActionMapping;
 
 @SproutAction(
     path = "/Warehouse/Warehouse/Delete",
     mappingClass = SecureActionMapping.class,
+    name = "WarehouseDelete",
     properties = {
         @SproutProperty(property = "secure", value = "true")
     },
     forwards = {
-        @SproutForward(name = "Display", path = "/action/Warehouse/Warehouse/Main", redirect = true)
+        @SproutForward(name = "Display", path = "/action/Warehouse/Warehouse/Main", redirect = true),
+        @SproutForward(name = "Form", path = "/warehouse/warehouse/delete.jsp")
     }
 )
 public class DeleteAction
-        extends MainBaseAction<ActionForm> {
-    
+        extends MainBaseDeleteAction<DeleteActionForm> {
+
     @Override
-    public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
-    throws Exception {
-        String forwardKey;
-        
-        try {
-            DeleteWarehouseForm commandForm = WarehouseUtil.getHome().getDeleteWarehouseForm();
-            String warehouseName = request.getParameter(ParameterConstants.WAREHOUSE_NAME);
-            
-            commandForm.setWarehouseName(warehouseName);
-            
-            WarehouseUtil.getHome().deleteWarehouse(getUserVisitPK(request), commandForm);
-            
-            forwardKey = ForwardConstants.DISPLAY;
-        } catch (NamingException ne) {
-            forwardKey = ForwardConstants.ERROR_500;
-        }
-        
-        return mapping.findForward(forwardKey);
+    public String getEntityTypeName() {
+        return EntityTypes.Warehouse.name();
+    }
+
+    @Override
+    public void setupParameters(final DeleteActionForm actionForm, final HttpServletRequest request) {
+        actionForm.setWarehouseName(findParameter(request, ParameterConstants.WAREHOUSE_NAME, actionForm.getWarehouseName()));
+    }
+
+    @Override
+    public void setupTransfer(final DeleteActionForm actionForm, final HttpServletRequest request)
+            throws NamingException {
+        var commandForm = WarehouseUtil.getHome().getGetWarehouseForm();
+
+        commandForm.setWarehouseName(actionForm.getWarehouseName());
+
+        var commandResult = WarehouseUtil.getHome().getWarehouse(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetWarehouseResult)executionResult.getResult();
+
+        request.setAttribute(AttributeConstants.WAREHOUSE, result.getWarehouse());
+    }
+
+    @Override
+    public CommandResult doDelete(final DeleteActionForm actionForm, final HttpServletRequest request)
+            throws NamingException {
+        var commandForm = WarehouseUtil.getHome().getDeleteWarehouseForm();
+
+        commandForm.setWarehouseName(actionForm.getWarehouseName());
+
+        return WarehouseUtil.getHome().deleteWarehouse(getUserVisitPK(request), commandForm);
     }
     
 }
