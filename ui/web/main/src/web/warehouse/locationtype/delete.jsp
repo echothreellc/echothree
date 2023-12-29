@@ -21,9 +21,7 @@
 <html:html xhtml="true">
     <head>
         <title>
-            <fmt:message key="pageTitle.locationType">
-                <fmt:param value="${locationType.locationTypeName}" />
-            </fmt:message>
+            <title><fmt:message key="pageTitle.locationTypes" /></title>
         </title>
         <html:base/>
         <%@ include file="../../include/environment.jsp" %>

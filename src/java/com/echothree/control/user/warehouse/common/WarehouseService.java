@@ -102,7 +102,9 @@ public interface WarehouseService
     CommandResult createLocationNameElement(UserVisitPK userVisitPK, CreateLocationNameElementForm form);
     
     CommandResult getLocationNameElements(UserVisitPK userVisitPK, GetLocationNameElementsForm form);
-    
+
+    CommandResult getLocationNameElement(UserVisitPK userVisitPK, GetLocationNameElementForm form);
+
     CommandResult editLocationNameElement(UserVisitPK userVisitPK, EditLocationNameElementForm form);
     
     CommandResult deleteLocationNameElement(UserVisitPK userVisitPK, DeleteLocationNameElementForm form);

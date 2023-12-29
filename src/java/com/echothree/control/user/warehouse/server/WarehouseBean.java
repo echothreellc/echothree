@@ -185,7 +185,12 @@ public class WarehouseBean
     public CommandResult getLocationNameElements(UserVisitPK userVisitPK, GetLocationNameElementsForm form) {
         return new GetLocationNameElementsCommand(userVisitPK, form).run();
     }
-    
+
+    @Override
+    public CommandResult getLocationNameElement(UserVisitPK userVisitPK, GetLocationNameElementForm form) {
+        return new GetLocationNameElementCommand(userVisitPK, form).run();
+    }
+
     @Override
     public CommandResult editLocationNameElement(UserVisitPK userVisitPK, EditLocationNameElementForm form) {
         return new EditLocationNameElementCommand(userVisitPK, form).run();

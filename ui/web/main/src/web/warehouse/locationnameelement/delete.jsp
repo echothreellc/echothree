@@ -20,7 +20,11 @@
 
 <html:html xhtml="true">
     <head>
-        <title>Inventory Location Groups</title>
+        <title>
+            <fmt:message key="pageTitle.locationNameElement">
+                <fmt:param value="${locationNameElement.locationNameElementName}" />
+            </fmt:message>
+        </title>
         <html:base/>
         <%@ include file="../../include/environment.jsp" %>
     </head>
@@ -34,11 +38,16 @@
                 <c:if test="${warehouseResultsCount > 0}">
                     <a href="<c:url value="/action/Warehouse/Warehouse/Result" />"><fmt:message key="navigation.results" /></a> &gt;&gt;
                 </c:if>
-                <c:url var="inventoryLocationGroupsUrl" value="/action/Inventory/InventoryLocationGroup/Main">
-                    <c:param name="WarehouseName" value="${inventoryLocationGroup.warehouse.warehouseName}" />
+                <c:url var="locationTypesUrl" value="/action/Warehouse/LocationType/Main">
+                    <c:param name="WarehouseName" value="${locationNameElement.locationType.warehouse.warehouseName}" />
                 </c:url>
-                <a href="${inventoryLocationGroupsUrl}">Inventory Location Groups</a> &gt;&gt;
-                Delete (<c:out value="${inventoryLocationGroup.inventoryLocationGroupName}" />)
+                <a href="${locationTypesUrl}"><fmt:message key="navigation.locationTypes" /></a> &gt;&gt;
+                <c:url var="locationNameElementsUrl" value="/action/Warehouse/LocationNameElement/Main">
+                    <c:param name="WarehouseName" value="${locationNameElement.locationType.warehouse.warehouseName}" />
+                    <c:param name="LocationTypeName" value="${locationNameElement.locationType.locationTypeName}" />
+                </c:url>
+                <a href="${locationNameElementsUrl}"><fmt:message key="navigation.locationNameElements" /></a> &gt;&gt;
+                Delete (<c:out value="${locationNameElement.locationNameElementName}" />)
             </h2>
         </div>
         <div id="Content">
@@ -49,8 +58,8 @@
                     </et:executionErrors>
                 </c:when>
                 <c:otherwise>
-                    <p>You are about to delete the <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" />, &quot;<c:out value="${inventoryLocationGroup.description}" />.&quot;</p>
-                    <html:form action="/Inventory/InventoryLocationGroup/Delete" method="POST">
+                    <p>You are about to delete the <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" />, &quot;<c:out value="${locationNameElement.description}" />.&quot;</p>
+                    <html:form action="/Warehouse/LocationNameElement/Delete" method="POST">
                         <table>
                             <tr>
                                 <td align=right><fmt:message key="label.confirmDelete" />:</td>
@@ -64,7 +73,8 @@
                         </table>
                         <html:submit value="Delete" onclick="onSubmitDisable(this);" />&nbsp;<html:cancel onclick="onSubmitDisable(this);" /><html:hidden property="submitButton" />
                         <html:hidden property="warehouseName" />
-                        <html:hidden property="inventoryLocationGroupName" />
+                        <html:hidden property="locationTypeName" />
+                        <html:hidden property="locationNameElementName" />
                     </html:form>
                 </c:otherwise>
             </c:choose>
