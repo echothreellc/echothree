@@ -20,7 +20,7 @@
 
 <html:html xhtml="true">
     <head>
-        <title>Review (<c:out value="${inventoryLocationGroup.inventoryLocationGroupName}" />)</title>
+        <title>Inventory Location Groups</title>
         <html:base/>
         <%@ include file="../../include/environment.jsp" %>
     </head>
