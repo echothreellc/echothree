@@ -41,7 +41,7 @@
                     </et:executionErrors>
                 </c:when>
                 <c:otherwise>
-                    <p>You are about to delete the <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" />, &quot;<c:out value="${searchKind.description}" />.&quot;</p>
+                    <p>You are about to delete the <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" /> &quot;<c:out value="${searchKind.description}" />.&quot;</p>
                     <html:form action="/Configuration/SearchKind/Delete" method="POST">
                         <table>
                             <tr>

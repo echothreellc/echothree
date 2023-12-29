@@ -41,7 +41,7 @@
                     </et:executionErrors>
                 </c:when>
                 <c:otherwise>
-                    <p>You are about to delete the <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" />,
+                    <p>You are about to delete the <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" />
                         &quot;<c:out value="${source.offerUse.offer.description}" />:<c:out value="${source.offerUse.use.description}" />&quot;
                         (<c:out value="${source.offerUse.offer.offerName}" />:<c:out value="${source.offerUse.use.useName}" />).
                     </p>

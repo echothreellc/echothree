@@ -57,7 +57,7 @@
             <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" />,
             <c:choose>
                 <c:when test="${comment.description == null}">
-                    <c:out value="${comment.commentName}" />.
+                    &quot;<c:out value="${comment.commentName}" />.&quot;
                 </c:when>
                 <c:otherwise>
                     &quot;<c:out value="${comment.description}" />.&quot;

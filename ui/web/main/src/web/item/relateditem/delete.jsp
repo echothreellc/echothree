@@ -61,7 +61,7 @@
                     </et:executionErrors>
                 </c:when>
                 <c:otherwise>
-                    <p>You are about to delete the <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" />, &quot;<c:out value="${relatedItem.toItem.description}" />.&quot;</p>
+                    <p>You are about to delete the <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" /> &quot;<c:out value="${relatedItem.toItem.description}" />.&quot;</p>
                     <html:form action="/Item/RelatedItem/Delete" method="POST">
                         <table>
                             <tr>

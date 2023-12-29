@@ -45,7 +45,7 @@
                     </et:executionErrors>
                 </c:when>
                 <c:otherwise>
-                    <p>You are about to delete the <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" />, &quot;<c:out value="${forumMessage.forumMessageParts.map['TITLE'].string}" />.&quot;</p>
+                    <p>You are about to delete the <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" /> &quot;<c:out value="${forumMessage.forumMessageParts.map['TITLE'].string}" />.&quot;</p>
                     <html:form action="/Forum/ForumMessage/Delete" method="POST">
                         <table>
                             <tr>

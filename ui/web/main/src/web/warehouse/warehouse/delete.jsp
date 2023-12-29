@@ -45,7 +45,7 @@
                     </et:executionErrors>
                 </c:when>
                 <c:otherwise>
-                    <p>You are about to delete the <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" />,
+                    <p>You are about to delete the <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" />
                         <c:choose>
                             <c:when test="${warehouse.partyGroup.name != null}">&quot;<c:out value="${warehouse.partyGroup.name}" />.&quot</c:when>
                             <c:otherwise>&quot;<c:out value="${warehouse.warehouseName}" />.&quot</c:otherwise>

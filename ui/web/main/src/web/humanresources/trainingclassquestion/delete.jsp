@@ -50,7 +50,7 @@
                     </et:executionErrors>
                 </c:when>
                 <c:otherwise>
-                    <p>You are about to delete the <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" />, &quot;<c:out value="${trainingClassQuestion.trainingClassQuestionName}" />.&quot;</p>
+                    <p>You are about to delete the <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" /> &quot;<c:out value="${trainingClassQuestion.trainingClassQuestionName}" />.&quot;</p>
                     <html:form action="/HumanResources/TrainingClassQuestion/Delete" method="POST">
                         <table>
                             <tr>

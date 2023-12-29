@@ -44,7 +44,7 @@
                     </et:executionErrors>
                 </c:when>
                 <c:otherwise>
-                    <p>You are about to delete the <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" />, &quot;<c:out value="${securityRoleGroup.description}" />.&quot;</p>
+                    <p>You are about to delete the <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" /> &quot;<c:out value="${securityRoleGroup.description}" />.&quot;</p>
                     <html:form action="/Configuration/SecurityRoleGroup/Delete" method="POST">
                         <table>
                             <tr>

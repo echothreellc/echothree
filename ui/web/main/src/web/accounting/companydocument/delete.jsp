@@ -49,7 +49,7 @@
                     </et:executionErrors>
                 </c:when>
                 <c:otherwise>
-                    <p>You are about to delete the <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" />,
+                    <p>You are about to delete the <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" />
                         <c:choose>
                             <c:when test="${partyDocument.document.description == null}">
                                 <c:out value="${partyDocument.document.documentName}" />.

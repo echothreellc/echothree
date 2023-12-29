@@ -57,7 +57,7 @@
                     </et:executionErrors>
                 </c:when>
                 <c:otherwise>
-                    <p>You are about to delete the <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" />,
+                    <p>You are about to delete the <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" />
                     &quot;<c:out value="${partyPrinterGroupUse.printerGroupUseType.description}" />.&quot;
                     </p>
                     <html:form action="/Warehouse/WarehousePrinterGroupUse/Delete" method="POST">
