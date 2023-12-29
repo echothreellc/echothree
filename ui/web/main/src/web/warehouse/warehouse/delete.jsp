@@ -20,7 +20,7 @@
 
 <html:html xhtml="true">
     <head>
-        <title>Training Classes</title>
+        <title><fmt:message key="pageTitle.warehouses" /></title>
         <html:base/>
         <%@ include file="../../include/environment.jsp" %>
     </head>

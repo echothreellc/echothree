@@ -20,7 +20,7 @@
 
 <html:html xhtml="true">
     <head>
-        <title><fmt:message key="pageTitle.locations" /></title>
+        <title>Review (<c:out value="${inventoryLocationGroup.inventoryLocationGroupName}" />)</title>
         <html:base/>
         <%@ include file="../../include/environment.jsp" %>
     </head>
@@ -34,11 +34,11 @@
                 <c:if test="${warehouseResultsCount > 0}">
                     <a href="<c:url value="/action/Warehouse/Warehouse/Result" />"><fmt:message key="navigation.results" /></a> &gt;&gt;
                 </c:if>
-                <c:url var="locationsUrl" value="/action/Warehouse/Location/Main">
-                    <c:param name="WarehouseName" value="${location.warehouse.warehouseName}" />
+                <c:url var="inventoryLocationGroupsUrl" value="/action/Inventory/InventoryLocationGroup/Main">
+                    <c:param name="WarehouseName" value="${inventoryLocationGroup.warehouse.warehouseName}" />
                 </c:url>
-                <a href="${locationsUrl}"><fmt:message key="navigation.locations" /></a> &gt;&gt;
-                Delete (<c:out value="${location.locationName}" />)
+                <a href="${inventoryLocationGroupsUrl}">Inventory Location Groups</a> &gt;&gt;
+                Delete (<c:out value="${inventoryLocationGroup.inventoryLocationGroupName}" />)
             </h2>
         </div>
         <div id="Content">
@@ -49,8 +49,8 @@
                     </et:executionErrors>
                 </c:when>
                 <c:otherwise>
-                    <p>You are about to delete the <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" />, &quot;<c:out value="${location.description}" />.&quot;</p>
-                    <html:form action="/Warehouse/Location/Delete" method="POST">
+                    <p>You are about to delete the <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" />, &quot;<c:out value="${inventoryLocationGroup.description}" />.&quot;</p>
+                    <html:form action="/Inventory/InventoryLocationGroup/Delete" method="POST">
                         <table>
                             <tr>
                                 <td align=right><fmt:message key="label.confirmDelete" />:</td>
@@ -64,7 +64,7 @@
                         </table>
                         <html:submit value="Delete" onclick="onSubmitDisable(this);" />&nbsp;<html:cancel onclick="onSubmitDisable(this);" /><html:hidden property="submitButton" />
                         <html:hidden property="warehouseName" />
-                        <html:hidden property="locationName" />
+                        <html:hidden property="inventoryLocationGroupName" />
                     </html:form>
                 </c:otherwise>
             </c:choose>

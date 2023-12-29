@@ -37,7 +37,7 @@
                 <c:url var="inventoryLocationGroupsUrl" value="/action/Inventory/InventoryLocationGroup/Main">
                     <c:param name="WarehouseName" value="${inventoryLocationGroup.warehouse.warehouseName}" />
                 </c:url>
-                <a href="${inventoryLocationGroupsUrl}">Location Types</a> &gt;&gt;
+                <a href="${inventoryLocationGroupsUrl}">Inventory Location Groups</a> &gt;&gt;
                 Review (<c:out value="${inventoryLocationGroup.inventoryLocationGroupName}" />)
             </h2>
         </div>
