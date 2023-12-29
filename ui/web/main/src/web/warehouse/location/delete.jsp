@@ -20,7 +20,7 @@
 
 <html:html xhtml="true">
     <head>
-        <title>Training Class Sections</title>
+        <title><fmt:message key="pageTitle.locations" /></title>
         <html:base/>
         <%@ include file="../../include/environment.jsp" %>
     </head>
