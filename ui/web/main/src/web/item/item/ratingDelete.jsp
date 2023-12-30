@@ -43,7 +43,7 @@
         </div>
         <div id="Content">
             <p>You are about to delete the <c:out value="${fn:toLowerCase(rating.ratingTypeListItem.ratingType.description)}" />
-            <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" />, &quot;<c:out value="${rating.ratingName}" />.&quot;</p>
+            <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" /> &quot;<c:out value="${rating.ratingName}" />.&quot;</p>
             <et:executionErrors id="errorMessage">
                 <p class="executionErrors"><c:out value="${errorMessage}" /></p><br />
             </et:executionErrors>

@@ -39,7 +39,7 @@
         </div>
         <div id="Content">
             <p>You are about to delete the <c:out value="${fn:toLowerCase(comment.commentType.description)}" />
-            <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" />,
+            <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" />
             <c:choose>
                 <c:when test="${comment.description == null}">
                     &quot;<c:out value="${comment.commentName}" />.&quot;

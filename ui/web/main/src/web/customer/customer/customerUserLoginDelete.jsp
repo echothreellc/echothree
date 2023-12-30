@@ -42,7 +42,7 @@
             </h2>
         </div>
         <div id="Content">
-            <p>You are about to delete the <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" />, &quot;<c:out value="${customer.userLogin.username}" />.&quot;</p>
+            <p>You are about to delete the <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" /> &quot;<c:out value="${customer.userLogin.username}" />.&quot;</p>
             <et:executionErrors id="errorMessage">
                 <p class="executionErrors"><c:out value="${errorMessage}" /></p><br />
             </et:executionErrors>
