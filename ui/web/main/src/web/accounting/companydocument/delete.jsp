@@ -52,7 +52,7 @@
                     <p>You are about to delete the <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" />
                         <c:choose>
                             <c:when test="${partyDocument.document.description == null}">
-                                <c:out value="${partyDocument.document.documentName}" />.
+                                &quot;<c:out value="${partyDocument.document.documentName}" />.&quot;
                             </c:when>
                             <c:otherwise>
                                 &quot;<c:out value="${partyDocument.document.description}" />.&quot;
