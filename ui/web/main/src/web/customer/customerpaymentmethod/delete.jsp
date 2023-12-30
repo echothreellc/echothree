@@ -53,10 +53,10 @@
                     </et:executionErrors>
                 </c:when>
                 <c:otherwise>
-                    <p>You are about to delete the <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" />,
+                    <p>You are about to delete the <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" />
                         <c:choose>
                             <c:when test="${partyPaymentMethod.description == null}">
-                                <c:out value="${partyPaymentMethod.partyPaymentMethodName}" />.
+                                &quot;<c:out value="${partyPaymentMethod.partyPaymentMethodName}" />.&quot;
                             </c:when>
                             <c:otherwise>
                                 &quot;<c:out value="${partyPaymentMethod.description}" />.&quot;

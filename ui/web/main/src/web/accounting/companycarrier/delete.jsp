@@ -49,7 +49,7 @@
                     </et:executionErrors>
                 </c:when>
                 <c:otherwise>
-                    <p>You are about to delete the <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" />,
+                    <p>You are about to delete the <c:out value="${fn:toLowerCase(partyEntityType.entityType.description)}" />
                     &quot;<c:out value="${partyCarrier.carrier.partyGroup.name}" />.&quot;
                     </p>
                     <html:form action="/Accounting/CompanyCarrier/Delete" method="POST">
