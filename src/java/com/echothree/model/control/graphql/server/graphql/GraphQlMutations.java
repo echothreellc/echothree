@@ -7557,7 +7557,7 @@ public interface GraphQlMutations {
     @GraphQLRelayMutation
     static MutationResultWithIdObject createWarehouseType(final DataFetchingEnvironment env,
             @GraphQLName("warehouseTypeName") @GraphQLNonNull final String warehouseTypeName,
-            @GraphQLName("priority") final String priority,
+            @GraphQLName("priority") @GraphQLNonNull final String priority,
             @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
             @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
             @GraphQLName("description") final String description) {
