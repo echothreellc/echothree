@@ -2350,6 +2350,30 @@
         <securityRoleGroup securityRoleGroupName="WarehouseComponent" parentSecurityRoleGroupName="ROOT" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Warehouse Component" />
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="WarehouseType" parentSecurityRoleGroupName="WarehouseComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Warehouse Type" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Warehouse Type Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Warehouse Type Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Warehouse Type Delete" />
+            </securityRole>
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Warehouse Type List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Warehouse Type Review" />
+            </securityRole>
+            <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Warehouse Type Choices" />
+            </securityRole>
+            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Warehouse Type Description" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="Warehouse" parentSecurityRoleGroupName="WarehouseComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Warehouse" />
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
@@ -8385,6 +8409,13 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="VendorItemCost" securityRoleName="Delete" />
             <partySecurityRoleTemplateRole securityRoleGroupName="VendorItemCost" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="VendorItemCost" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="WarehouseType" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="WarehouseType" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="WarehouseType" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="WarehouseType" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="WarehouseType" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="WarehouseType" securityRoleName="Choices" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="WarehouseType" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Warehouse" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Warehouse" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Warehouse" securityRoleName="Delete" />

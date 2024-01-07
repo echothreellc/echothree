@@ -198,6 +198,7 @@ import com.echothree.ui.cli.dataloader.util.data.handler.vendor.ItemPurchasingCa
 import com.echothree.ui.cli.dataloader.util.data.handler.vendor.VendorTypesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.vendor.VendorsHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.warehouse.LocationUseTypesHandler;
+import com.echothree.ui.cli.dataloader.util.data.handler.warehouse.WarehouseTypesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.warehouse.WarehousesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.wishlist.WishlistTypesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.workeffort.WorkEffortTypesHandler;
@@ -420,6 +421,8 @@ public class InitialDataHandler
             initialDataParser.pushHandler(new PicklistTypesHandler(initialDataParser, this));
         } else if(localName.equals("locationUseTypes")) {
             initialDataParser.pushHandler(new LocationUseTypesHandler(initialDataParser, this));
+        } else if(localName.equals("warehouseTypes")) {
+            initialDataParser.pushHandler(new WarehouseTypesHandler(initialDataParser, this));
         } else if(localName.equals("warehouses")) {
             initialDataParser.pushHandler(new WarehousesHandler(initialDataParser, this));
         } else if(localName.equals("inventoryConditions")) {
