@@ -712,6 +712,7 @@ import com.echothree.model.data.vendor.server.entity.VendorItemCost;
 import com.echothree.model.data.vendor.server.entity.VendorType;
 import com.echothree.model.data.warehouse.common.LocationUseTypeConstants;
 import com.echothree.model.data.warehouse.common.WarehouseConstants;
+import com.echothree.model.data.warehouse.common.WarehouseTypeConstants;
 import com.echothree.model.data.warehouse.server.entity.LocationUseType;
 import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.model.data.warehouse.server.entity.WarehouseType;
@@ -6465,29 +6466,32 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("warehouseTypes")
-    static Collection<WarehouseTypeObject> warehouseTypes(final DataFetchingEnvironment env) {
-        Collection<WarehouseType> warehouseTypes;
-        Collection<WarehouseTypeObject> warehouseTypeObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<WarehouseTypeObject> warehouseTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<WarehouseTypeObject> data;
 
         try {
-            var commandForm = WarehouseUtil.getHome().getGetWarehouseTypesForm();
+            var warehouseControl = Session.getModelController(WarehouseControl.class);
+            var totalCount = warehouseControl.countWarehouseTypes();
 
-            warehouseTypes = new GetWarehouseTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            try(var objectLimiter = new ObjectLimiter(env, WarehouseTypeConstants.COMPONENT_VENDOR_NAME, WarehouseTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var commandForm = WarehouseUtil.getHome().getGetWarehouseTypesForm();
+                var entities = new GetWarehouseTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+
+                if(entities == null) {
+                    data = Connections.emptyConnection();
+                } else {
+                    var warehouseTypes = entities.stream().map(WarehouseTypeObject::new).collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, warehouseTypes);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(warehouseTypes == null) {
-            warehouseTypeObjects = emptyList();
-        } else {
-            warehouseTypeObjects = new ArrayList<>(warehouseTypes.size());
-
-            warehouseTypes.stream()
-                    .map(WarehouseTypeObject::new)
-                    .forEachOrdered(warehouseTypeObjects::add);
-        }
-
-        return warehouseTypeObjects;
+        return data;
     }
 
     @GraphQLField
