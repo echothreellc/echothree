@@ -10,6 +10,6 @@
                 </replicated-cache>
                 <replicated-cache name="security">
                     <transaction locking="OPTIMISTIC" mode="NON_XA"/>
-                    <expiration lifespan="480000" max-idle="240000"/>
+                    <expiration interval="-1" lifespan="-1" max-idle="-1"/>
                 </replicated-cache>
             </cache-container>
