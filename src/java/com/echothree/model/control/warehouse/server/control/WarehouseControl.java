@@ -25,6 +25,7 @@ import com.echothree.model.control.warehouse.common.choice.LocationChoicesBean;
 import com.echothree.model.control.warehouse.common.choice.LocationStatusChoicesBean;
 import com.echothree.model.control.warehouse.common.choice.LocationTypeChoicesBean;
 import com.echothree.model.control.warehouse.common.choice.WarehouseChoicesBean;
+import com.echothree.model.control.warehouse.common.choice.WarehouseTypeChoicesBean;
 import com.echothree.model.control.warehouse.common.transfer.LocationCapacityTransfer;
 import com.echothree.model.control.warehouse.common.transfer.LocationDescriptionTransfer;
 import com.echothree.model.control.warehouse.common.transfer.LocationNameElementDescriptionTransfer;
@@ -35,10 +36,13 @@ import com.echothree.model.control.warehouse.common.transfer.LocationTypeTransfe
 import com.echothree.model.control.warehouse.common.transfer.LocationVolumeTransfer;
 import com.echothree.model.control.warehouse.common.transfer.WarehouseResultTransfer;
 import com.echothree.model.control.warehouse.common.transfer.WarehouseTransfer;
+import com.echothree.model.control.warehouse.common.transfer.WarehouseTypeDescriptionTransfer;
+import com.echothree.model.control.warehouse.common.transfer.WarehouseTypeTransfer;
 import com.echothree.model.control.warehouse.common.workflow.LocationStatusConstants;
 import com.echothree.model.control.warehouse.server.graphql.WarehouseObject;
 import com.echothree.model.control.warehouse.server.transfer.LocationCapacityTransferCache;
 import com.echothree.model.control.warehouse.server.transfer.LocationNameElementTransferCache;
+import com.echothree.model.control.warehouse.server.transfer.WarehouseTypeTransferCache;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.inventory.common.pk.InventoryLocationGroupPK;
 import com.echothree.model.data.inventory.server.entity.InventoryLocationGroup;
@@ -54,6 +58,7 @@ import com.echothree.model.data.warehouse.common.pk.LocationNameElementPK;
 import com.echothree.model.data.warehouse.common.pk.LocationPK;
 import com.echothree.model.data.warehouse.common.pk.LocationTypePK;
 import com.echothree.model.data.warehouse.common.pk.LocationUseTypePK;
+import com.echothree.model.data.warehouse.common.pk.WarehouseTypePK;
 import com.echothree.model.data.warehouse.server.entity.Location;
 import com.echothree.model.data.warehouse.server.entity.LocationCapacity;
 import com.echothree.model.data.warehouse.server.entity.LocationDescription;
@@ -67,6 +72,9 @@ import com.echothree.model.data.warehouse.server.entity.LocationTypeDetail;
 import com.echothree.model.data.warehouse.server.entity.LocationUseType;
 import com.echothree.model.data.warehouse.server.entity.LocationVolume;
 import com.echothree.model.data.warehouse.server.entity.Warehouse;
+import com.echothree.model.data.warehouse.server.entity.WarehouseType;
+import com.echothree.model.data.warehouse.server.entity.WarehouseTypeDescription;
+import com.echothree.model.data.warehouse.server.entity.WarehouseTypeDetail;
 import com.echothree.model.data.warehouse.server.factory.LocationCapacityFactory;
 import com.echothree.model.data.warehouse.server.factory.LocationDescriptionFactory;
 import com.echothree.model.data.warehouse.server.factory.LocationDetailFactory;
@@ -79,6 +87,9 @@ import com.echothree.model.data.warehouse.server.factory.LocationTypeDetailFacto
 import com.echothree.model.data.warehouse.server.factory.LocationTypeFactory;
 import com.echothree.model.data.warehouse.server.factory.LocationVolumeFactory;
 import com.echothree.model.data.warehouse.server.factory.WarehouseFactory;
+import com.echothree.model.data.warehouse.server.factory.WarehouseTypeDescriptionFactory;
+import com.echothree.model.data.warehouse.server.factory.WarehouseTypeDetailFactory;
+import com.echothree.model.data.warehouse.server.factory.WarehouseTypeFactory;
 import com.echothree.model.data.warehouse.server.value.LocationCapacityValue;
 import com.echothree.model.data.warehouse.server.value.LocationDescriptionValue;
 import com.echothree.model.data.warehouse.server.value.LocationDetailValue;
@@ -88,6 +99,8 @@ import com.echothree.model.data.warehouse.server.value.LocationNameElementValue;
 import com.echothree.model.data.warehouse.server.value.LocationTypeDescriptionValue;
 import com.echothree.model.data.warehouse.server.value.LocationTypeDetailValue;
 import com.echothree.model.data.warehouse.server.value.LocationVolumeValue;
+import com.echothree.model.data.warehouse.server.value.WarehouseTypeDescriptionValue;
+import com.echothree.model.data.warehouse.server.value.WarehouseTypeDetailValue;
 import com.echothree.model.data.warehouse.server.value.WarehouseValue;
 import com.echothree.model.data.workflow.server.entity.WorkflowDestination;
 import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
@@ -102,8 +115,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class WarehouseControl
@@ -113,12 +129,444 @@ public class WarehouseControl
     public WarehouseControl() {
         super();
     }
-    
+
+    // --------------------------------------------------------------------------------
+    //   Warehouse Types
+    // --------------------------------------------------------------------------------
+
+    public WarehouseType createWarehouseType(String warehouseTypeName, Integer priority, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
+        WarehouseType defaultWarehouseType = getDefaultWarehouseType();
+        boolean defaultFound = defaultWarehouseType != null;
+
+        if(defaultFound && isDefault) {
+            WarehouseTypeDetailValue defaultWarehouseTypeDetailValue = getDefaultWarehouseTypeDetailValueForUpdate();
+
+            defaultWarehouseTypeDetailValue.setIsDefault(Boolean.FALSE);
+            updateWarehouseTypeFromValue(defaultWarehouseTypeDetailValue, false, createdBy);
+        } else if(!defaultFound) {
+            isDefault = Boolean.TRUE;
+        }
+
+        WarehouseType warehouseType = WarehouseTypeFactory.getInstance().create();
+        WarehouseTypeDetail warehouseTypeDetail = WarehouseTypeDetailFactory.getInstance().create(warehouseType, warehouseTypeName, priority, isDefault, sortOrder,
+                session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+        // Convert to R/W
+        warehouseType = WarehouseTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                warehouseType.getPrimaryKey());
+        warehouseType.setActiveDetail(warehouseTypeDetail);
+        warehouseType.setLastDetail(warehouseTypeDetail);
+        warehouseType.store();
+
+        sendEvent(warehouseType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+
+        return warehouseType;
+    }
+
+    public long countWarehouseTypes() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM warehousetypes, warehousetypedetails " +
+                        "WHERE whsetyp_activedetailid = whsetypdt_warehousetypedetailid");
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.WarehouseType */
+    public WarehouseType getWarehouseTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new WarehouseTypePK(entityInstance.getEntityUniqueId());
+
+        return WarehouseTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public WarehouseType getWarehouseTypeByEntityInstance(EntityInstance entityInstance) {
+        return getWarehouseTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public WarehouseType getWarehouseTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getWarehouseTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    private static final Map<EntityPermission, String> getWarehouseTypeByNameQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ "
+                        + "FROM warehousetypes, warehousetypedetails "
+                        + "WHERE whsetyp_activedetailid = whsetypdt_warehousetypedetailid AND whsetypdt_warehousetypename = ?");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ "
+                        + "FROM warehousetypes, warehousetypedetails "
+                        + "WHERE whsetyp_activedetailid = whsetypdt_warehousetypedetailid AND whsetypdt_warehousetypename = ? "
+                        + "FOR UPDATE");
+        getWarehouseTypeByNameQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    public WarehouseType getWarehouseTypeByName(String warehouseTypeName, EntityPermission entityPermission) {
+        return WarehouseTypeFactory.getInstance().getEntityFromQuery(entityPermission, getWarehouseTypeByNameQueries,
+                warehouseTypeName);
+    }
+
+    public WarehouseType getWarehouseTypeByName(String warehouseTypeName) {
+        return getWarehouseTypeByName(warehouseTypeName, EntityPermission.READ_ONLY);
+    }
+
+    public WarehouseType getWarehouseTypeByNameForUpdate(String warehouseTypeName) {
+        return getWarehouseTypeByName(warehouseTypeName, EntityPermission.READ_WRITE);
+    }
+
+    public WarehouseTypeDetailValue getWarehouseTypeDetailValueForUpdate(WarehouseType warehouseType) {
+        return warehouseType == null? null: warehouseType.getLastDetailForUpdate().getWarehouseTypeDetailValue().clone();
+    }
+
+    public WarehouseTypeDetailValue getWarehouseTypeDetailValueByNameForUpdate(String warehouseTypeName) {
+        return getWarehouseTypeDetailValueForUpdate(getWarehouseTypeByNameForUpdate(warehouseTypeName));
+    }
+
+    private static final Map<EntityPermission, String> getDefaultWarehouseTypeQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ "
+                        + "FROM warehousetypes, warehousetypedetails "
+                        + "WHERE whsetyp_activedetailid = whsetypdt_warehousetypedetailid AND whsetypdt_isdefault = 1");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ "
+                        + "FROM warehousetypes, warehousetypedetails "
+                        + "WHERE whsetyp_activedetailid = whsetypdt_warehousetypedetailid AND whsetypdt_isdefault = 1 "
+                        + "FOR UPDATE");
+        getDefaultWarehouseTypeQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    public WarehouseType getDefaultWarehouseType(EntityPermission entityPermission) {
+        return WarehouseTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultWarehouseTypeQueries);
+    }
+
+    public WarehouseType getDefaultWarehouseType() {
+        return getDefaultWarehouseType(EntityPermission.READ_ONLY);
+    }
+
+    public WarehouseType getDefaultWarehouseTypeForUpdate() {
+        return getDefaultWarehouseType(EntityPermission.READ_WRITE);
+    }
+
+    public WarehouseTypeDetailValue getDefaultWarehouseTypeDetailValueForUpdate() {
+        return getDefaultWarehouseType(EntityPermission.READ_WRITE).getLastDetailForUpdate().getWarehouseTypeDetailValue();
+    }
+
+    private static final Map<EntityPermission, String> getWarehouseTypesQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ "
+                        + "FROM warehousetypes, warehousetypedetails "
+                        + "WHERE whsetyp_activedetailid = whsetypdt_warehousetypedetailid "
+                        + "ORDER BY whsetypdt_sortorder, whsetypdt_warehousetypename "
+                        + "_LIMIT_");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ "
+                        + "FROM warehousetypes, warehousetypedetails "
+                        + "WHERE whsetyp_activedetailid = whsetypdt_warehousetypedetailid "
+                        + "FOR UPDATE");
+        getWarehouseTypesQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    private List<WarehouseType> getWarehouseTypes(EntityPermission entityPermission) {
+        return WarehouseTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, getWarehouseTypesQueries);
+    }
+
+    public List<WarehouseType> getWarehouseTypes() {
+        return getWarehouseTypes(EntityPermission.READ_ONLY);
+    }
+
+    public List<WarehouseType> getWarehouseTypesForUpdate() {
+        return getWarehouseTypes(EntityPermission.READ_WRITE);
+    }
+
+    public WarehouseTypeChoicesBean getWarehouseTypeChoices(String defaultWarehouseTypeChoice, Language language, boolean allowNullChoice) {
+        List<WarehouseType> warehouseTypes = getWarehouseTypes();
+        var size = warehouseTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
+        String defaultValue = null;
+
+        if(allowNullChoice) {
+            labels.add("");
+            values.add("");
+
+            if(defaultWarehouseTypeChoice == null) {
+                defaultValue = "";
+            }
+        }
+
+        for(var warehouseType : warehouseTypes) {
+            WarehouseTypeDetail warehouseTypeDetail = warehouseType.getLastDetail();
+
+            var label = getBestWarehouseTypeDescription(warehouseType, language);
+            var value = warehouseTypeDetail.getWarehouseTypeName();
+
+            labels.add(label == null? value: label);
+            values.add(value);
+
+            var usingDefaultChoice = defaultWarehouseTypeChoice != null && defaultWarehouseTypeChoice.equals(value);
+            if(usingDefaultChoice || (defaultValue == null && warehouseTypeDetail.getIsDefault())) {
+                defaultValue = value;
+            }
+        }
+
+        return new WarehouseTypeChoicesBean(labels, values, defaultValue);
+    }
+
+    public WarehouseTypeTransfer getWarehouseTypeTransfer(UserVisit userVisit, WarehouseType warehouseType) {
+        return getWarehouseTransferCaches(userVisit).getWarehouseTypeTransferCache().getTransfer(warehouseType);
+    }
+
+    public List<WarehouseTypeTransfer> getWarehouseTypeTransfers(UserVisit userVisit, Collection<WarehouseType> warehouseTypes) {
+        List<WarehouseTypeTransfer> warehouseTypeTransfers = new ArrayList<>(warehouseTypes.size());
+        WarehouseTypeTransferCache warehouseTypeTransferCache = getWarehouseTransferCaches(userVisit).getWarehouseTypeTransferCache();
+
+        warehouseTypes.forEach((warehouseType) ->
+                warehouseTypeTransfers.add(warehouseTypeTransferCache.getTransfer(warehouseType))
+        );
+
+        return warehouseTypeTransfers;
+    }
+
+    public List<WarehouseTypeTransfer> getWarehouseTypeTransfers(UserVisit userVisit) {
+        return getWarehouseTypeTransfers(userVisit, getWarehouseTypes());
+    }
+
+    private void updateWarehouseTypeFromValue(WarehouseTypeDetailValue warehouseTypeDetailValue, boolean checkDefault, BasePK updatedBy) {
+        WarehouseType warehouseType = WarehouseTypeFactory.getInstance().getEntityFromPK(session,
+                EntityPermission.READ_WRITE, warehouseTypeDetailValue.getWarehouseTypePK());
+        WarehouseTypeDetail warehouseTypeDetail = warehouseType.getActiveDetailForUpdate();
+
+        warehouseTypeDetail.setThruTime(session.START_TIME_LONG);
+        warehouseTypeDetail.store();
+
+        WarehouseTypePK warehouseTypePK = warehouseTypeDetail.getWarehouseTypePK();
+        String warehouseTypeName = warehouseTypeDetailValue.getWarehouseTypeName();
+        Integer priority = warehouseTypeDetailValue.getPriority();
+        Boolean isDefault = warehouseTypeDetailValue.getIsDefault();
+        Integer sortOrder = warehouseTypeDetailValue.getSortOrder();
+
+        if(checkDefault) {
+            WarehouseType defaultWarehouseType = getDefaultWarehouseType();
+            boolean defaultFound = defaultWarehouseType != null && !defaultWarehouseType.equals(warehouseType);
+
+            if(isDefault && defaultFound) {
+                // If I'm the default, and a default already existed...
+                WarehouseTypeDetailValue defaultWarehouseTypeDetailValue = getDefaultWarehouseTypeDetailValueForUpdate();
+
+                defaultWarehouseTypeDetailValue.setIsDefault(Boolean.FALSE);
+                updateWarehouseTypeFromValue(defaultWarehouseTypeDetailValue, false, updatedBy);
+            } else if(!isDefault && !defaultFound) {
+                // If I'm not the default, and no other default exists...
+                isDefault = Boolean.TRUE;
+            }
+        }
+
+        warehouseTypeDetail = WarehouseTypeDetailFactory.getInstance().create(warehouseTypePK, warehouseTypeName, priority,
+                isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+        warehouseType.setActiveDetail(warehouseTypeDetail);
+        warehouseType.setLastDetail(warehouseTypeDetail);
+        warehouseType.store();
+
+        sendEvent(warehouseTypePK, EventTypes.MODIFY, null, null, updatedBy);
+    }
+
+    public void updateWarehouseTypeFromValue(WarehouseTypeDetailValue warehouseTypeDetailValue, BasePK updatedBy) {
+        updateWarehouseTypeFromValue(warehouseTypeDetailValue, true, updatedBy);
+    }
+
+    public void deleteWarehouseType(WarehouseType warehouseType, BasePK deletedBy) {
+        deleteWarehouseTypeDescriptionsByWarehouseType(warehouseType, deletedBy);
+
+        WarehouseTypeDetail warehouseTypeDetail = warehouseType.getLastDetailForUpdate();
+        warehouseTypeDetail.setThruTime(session.START_TIME_LONG);
+        warehouseType.setActiveDetail(null);
+        warehouseType.store();
+
+        // Check for default, and pick one if necessary
+        WarehouseType defaultWarehouseType = getDefaultWarehouseType();
+        if(defaultWarehouseType == null) {
+            List<WarehouseType> warehouseTypes = getWarehouseTypesForUpdate();
+
+            if(!warehouseTypes.isEmpty()) {
+                Iterator<WarehouseType> iter = warehouseTypes.iterator();
+                if(iter.hasNext()) {
+                    defaultWarehouseType = iter.next();
+                }
+                WarehouseTypeDetailValue warehouseTypeDetailValue = Objects.requireNonNull(defaultWarehouseType).getLastDetailForUpdate().getWarehouseTypeDetailValue().clone();
+
+                warehouseTypeDetailValue.setIsDefault(Boolean.TRUE);
+                updateWarehouseTypeFromValue(warehouseTypeDetailValue, false, deletedBy);
+            }
+        }
+
+        sendEvent(warehouseType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+    }
+
+    // --------------------------------------------------------------------------------
+    //   Warehouse Type Descriptions
+    // --------------------------------------------------------------------------------
+
+    public WarehouseTypeDescription createWarehouseTypeDescription(WarehouseType warehouseType, Language language, String description,
+            BasePK createdBy) {
+        WarehouseTypeDescription warehouseTypeDescription = WarehouseTypeDescriptionFactory.getInstance().create(warehouseType,
+                language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+        sendEvent(warehouseType.getPrimaryKey(), EventTypes.MODIFY, warehouseTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+
+        return warehouseTypeDescription;
+    }
+
+    private static final Map<EntityPermission, String> getWarehouseTypeDescriptionQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ "
+                        + "FROM warehousetypedescriptions "
+                        + "WHERE whsetypd_whsetyp_warehousetypeid = ? AND whsetypd_lang_languageid = ? AND whsetypd_thrutime = ?");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ "
+                        + "FROM warehousetypedescriptions "
+                        + "WHERE whsetypd_whsetyp_warehousetypeid = ? AND whsetypd_lang_languageid = ? AND whsetypd_thrutime = ? "
+                        + "FOR UPDATE");
+        getWarehouseTypeDescriptionQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    private WarehouseTypeDescription getWarehouseTypeDescription(WarehouseType warehouseType, Language language, EntityPermission entityPermission) {
+        return WarehouseTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, getWarehouseTypeDescriptionQueries,
+                warehouseType, language, Session.MAX_TIME);
+    }
+
+    public WarehouseTypeDescription getWarehouseTypeDescription(WarehouseType warehouseType, Language language) {
+        return getWarehouseTypeDescription(warehouseType, language, EntityPermission.READ_ONLY);
+    }
+
+    public WarehouseTypeDescription getWarehouseTypeDescriptionForUpdate(WarehouseType warehouseType, Language language) {
+        return getWarehouseTypeDescription(warehouseType, language, EntityPermission.READ_WRITE);
+    }
+
+    public WarehouseTypeDescriptionValue getWarehouseTypeDescriptionValue(WarehouseTypeDescription warehouseTypeDescription) {
+        return warehouseTypeDescription == null? null: warehouseTypeDescription.getWarehouseTypeDescriptionValue().clone();
+    }
+
+    public WarehouseTypeDescriptionValue getWarehouseTypeDescriptionValueForUpdate(WarehouseType warehouseType, Language language) {
+        return getWarehouseTypeDescriptionValue(getWarehouseTypeDescriptionForUpdate(warehouseType, language));
+    }
+
+    private static final Map<EntityPermission, String> getWarehouseTypeDescriptionsByWarehouseTypeQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ "
+                        + "FROM warehousetypedescriptions, languages "
+                        + "WHERE whsetypd_whsetyp_warehousetypeid = ? AND whsetypd_thrutime = ? AND whsetypd_lang_languageid = lang_languageid "
+                        + "ORDER BY lang_sortorder, lang_languageisoname");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ "
+                        + "FROM warehousetypedescriptions "
+                        + "WHERE whsetypd_whsetyp_warehousetypeid = ? AND whsetypd_thrutime = ? "
+                        + "FOR UPDATE");
+        getWarehouseTypeDescriptionsByWarehouseTypeQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    private List<WarehouseTypeDescription> getWarehouseTypeDescriptionsByWarehouseType(WarehouseType warehouseType, EntityPermission entityPermission) {
+        return WarehouseTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, getWarehouseTypeDescriptionsByWarehouseTypeQueries,
+                warehouseType, Session.MAX_TIME);
+    }
+
+    public List<WarehouseTypeDescription> getWarehouseTypeDescriptionsByWarehouseType(WarehouseType warehouseType) {
+        return getWarehouseTypeDescriptionsByWarehouseType(warehouseType, EntityPermission.READ_ONLY);
+    }
+
+    public List<WarehouseTypeDescription> getWarehouseTypeDescriptionsByWarehouseTypeForUpdate(WarehouseType warehouseType) {
+        return getWarehouseTypeDescriptionsByWarehouseType(warehouseType, EntityPermission.READ_WRITE);
+    }
+
+    public String getBestWarehouseTypeDescription(WarehouseType warehouseType, Language language) {
+        String description;
+        WarehouseTypeDescription warehouseTypeDescription = getWarehouseTypeDescription(warehouseType, language);
+
+        if(warehouseTypeDescription == null && !language.getIsDefault()) {
+            warehouseTypeDescription = getWarehouseTypeDescription(warehouseType, getPartyControl().getDefaultLanguage());
+        }
+
+        if(warehouseTypeDescription == null) {
+            description = warehouseType.getLastDetail().getWarehouseTypeName();
+        } else {
+            description = warehouseTypeDescription.getDescription();
+        }
+
+        return description;
+    }
+
+    public WarehouseTypeDescriptionTransfer getWarehouseTypeDescriptionTransfer(UserVisit userVisit, WarehouseTypeDescription warehouseTypeDescription) {
+        return getWarehouseTransferCaches(userVisit).getWarehouseTypeDescriptionTransferCache().getTransfer(warehouseTypeDescription);
+    }
+
+    public List<WarehouseTypeDescriptionTransfer> getWarehouseTypeDescriptionTransfersByWarehouseType(UserVisit userVisit, WarehouseType warehouseType) {
+        List<WarehouseTypeDescription> warehouseTypeDescriptions = getWarehouseTypeDescriptionsByWarehouseType(warehouseType);
+        List<WarehouseTypeDescriptionTransfer> warehouseTypeDescriptionTransfers = new ArrayList<>(warehouseTypeDescriptions.size());
+
+        warehouseTypeDescriptions.forEach((warehouseTypeDescription) ->
+                warehouseTypeDescriptionTransfers.add(getWarehouseTransferCaches(userVisit).getWarehouseTypeDescriptionTransferCache().getTransfer(warehouseTypeDescription))
+        );
+
+        return warehouseTypeDescriptionTransfers;
+    }
+
+    public void updateWarehouseTypeDescriptionFromValue(WarehouseTypeDescriptionValue warehouseTypeDescriptionValue, BasePK updatedBy) {
+        if(warehouseTypeDescriptionValue.hasBeenModified()) {
+            WarehouseTypeDescription warehouseTypeDescription = WarehouseTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                    warehouseTypeDescriptionValue.getPrimaryKey());
+
+            warehouseTypeDescription.setThruTime(session.START_TIME_LONG);
+            warehouseTypeDescription.store();
+
+            WarehouseType warehouseType = warehouseTypeDescription.getWarehouseType();
+            Language language = warehouseTypeDescription.getLanguage();
+            String description = warehouseTypeDescriptionValue.getDescription();
+
+            warehouseTypeDescription = WarehouseTypeDescriptionFactory.getInstance().create(warehouseType, language, description,
+                    session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+            sendEvent(warehouseType.getPrimaryKey(), EventTypes.MODIFY, warehouseTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+        }
+    }
+
+    public void deleteWarehouseTypeDescription(WarehouseTypeDescription warehouseTypeDescription, BasePK deletedBy) {
+        warehouseTypeDescription.setThruTime(session.START_TIME_LONG);
+
+        sendEvent(warehouseTypeDescription.getWarehouseTypePK(), EventTypes.MODIFY, warehouseTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+
+    }
+
+    public void deleteWarehouseTypeDescriptionsByWarehouseType(WarehouseType warehouseType, BasePK deletedBy) {
+        List<WarehouseTypeDescription> warehouseTypeDescriptions = getWarehouseTypeDescriptionsByWarehouseTypeForUpdate(warehouseType);
+
+        warehouseTypeDescriptions.forEach((warehouseTypeDescription) ->
+                deleteWarehouseTypeDescription(warehouseTypeDescription, deletedBy)
+        );
+    }
+
     // --------------------------------------------------------------------------------
     //   Warehouses
     // --------------------------------------------------------------------------------
     
-    public Warehouse createWarehouse(Party party, String warehouseName, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
+    public Warehouse createWarehouse(Party party, String warehouseName, WarehouseType warehouseType, Boolean isDefault,
+            Integer sortOrder, BasePK createdBy) {
         Warehouse defaultWarehouse = getDefaultWarehouse();
         boolean defaultFound = defaultWarehouse != null;
         
@@ -131,7 +579,7 @@ public class WarehouseControl
             isDefault = Boolean.TRUE;
         }
         
-        Warehouse warehouse = WarehouseFactory.getInstance().create(party, warehouseName, isDefault, sortOrder,
+        Warehouse warehouse = WarehouseFactory.getInstance().create(party, warehouseName, warehouseType, isDefault, sortOrder,
                 session.START_TIME_LONG, Session.MAX_TIME_LONG);
         
         sendEvent(party.getPrimaryKey(), EventTypes.MODIFY, warehouse.getPrimaryKey(), null, createdBy);
@@ -381,6 +829,7 @@ public class WarehouseControl
             
             PartyPK partyPK = warehouse.getPartyPK();
             String warehouseName = warehouseValue.getWarehouseName();
+            WarehouseTypePK warehouseTypePK = warehouseValue.getWarehouseTypePK();
             Boolean isDefault = warehouseValue.getIsDefault();
             Integer sortOrder = warehouseValue.getSortOrder();
             
@@ -400,7 +849,7 @@ public class WarehouseControl
                 }
             }
             
-            warehouse = WarehouseFactory.getInstance().create(partyPK, warehouseName, isDefault, sortOrder,
+            warehouse = WarehouseFactory.getInstance().create(partyPK, warehouseName, warehouseTypePK, isDefault, sortOrder,
                     session.START_TIME_LONG, Session.MAX_TIME_LONG);
             
             sendEvent(partyPK, EventTypes.MODIFY, warehouse.getPrimaryKey(), null, updatedBy);

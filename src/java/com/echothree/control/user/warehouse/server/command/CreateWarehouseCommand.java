@@ -26,6 +26,7 @@ import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.warehouse.server.logic.WarehouseLogic;
+import com.echothree.model.control.warehouse.server.logic.WarehouseTypeLogic;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -57,6 +58,7 @@ public class CreateWarehouseCommand
 
         FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("WarehouseName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("WarehouseTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Name", FieldType.STRING, false, 1L, 60L),
                 new FieldDefinition("PreferredLanguageIsoName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("PreferredCurrencyIsoName", FieldType.ENTITY_NAME, false, null, null),
@@ -122,29 +124,33 @@ public class CreateWarehouseCommand
                                     var shippingManifestPrinterGroup = printerControl.getPrinterGroupByName(shippingManifestPrinterGroupName);
 
                                     if(shippingManifestPrinterGroup != null) {
-                                        var warehouseName = form.getWarehouseName();
-                                        var name = form.getName();
-                                        var isDefault = Boolean.valueOf(form.getIsDefault());
-                                        var sortOrder = Integer.valueOf(form.getSortOrder());
-                                        var createdBy = getPartyPK();
-
-                                        warehouse = WarehouseLogic.getInstance().createWarehouse(this, warehouseName,
-                                                preferredLanguage, preferredCurrency, preferredTimeZone, preferredDateTimeFormat,
-                                                name, isDefault, sortOrder, createdBy);
+                                        var warehouseType = WarehouseTypeLogic.getInstance().getWarehouseTypeByName(this, form.getWarehouseTypeName());
 
                                         if(!hasExecutionErrors()) {
-                                            var party = warehouse.getParty();
-                                            var printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(PrinterConstants.PrinterGroupUseType_WAREHOUSE_INVENTORY_MOVE);
-                                            printerControl.createPartyPrinterGroupUse(party, printerGroupUseType, inventoryMovePrinterGroup, createdBy);
+                                            var warehouseName = form.getWarehouseName();
+                                            var name = form.getName();
+                                            var isDefault = Boolean.valueOf(form.getIsDefault());
+                                            var sortOrder = Integer.valueOf(form.getSortOrder());
+                                            var createdBy = getPartyPK();
 
-                                            printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(PrinterConstants.PrinterGroupUseType_WAREHOUSE_PACKING_LIST);
-                                            printerControl.createPartyPrinterGroupUse(party, printerGroupUseType, packingListPrinterGroup, createdBy);
+                                            warehouse = WarehouseLogic.getInstance().createWarehouse(this, warehouseName,
+                                                    warehouseType, preferredLanguage, preferredCurrency, preferredTimeZone,
+                                                    preferredDateTimeFormat, name, isDefault, sortOrder, createdBy);
 
-                                            printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(PrinterConstants.PrinterGroupUseType_WAREHOUSE_PICKLIST);
-                                            printerControl.createPartyPrinterGroupUse(party, printerGroupUseType, picklistPrinterGroup, createdBy);
+                                            if(!hasExecutionErrors()) {
+                                                var party = warehouse.getParty();
+                                                var printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(PrinterConstants.PrinterGroupUseType_WAREHOUSE_INVENTORY_MOVE);
+                                                printerControl.createPartyPrinterGroupUse(party, printerGroupUseType, inventoryMovePrinterGroup, createdBy);
 
-                                            printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(PrinterConstants.PrinterGroupUseType_WAREHOUSE_SHIPPING_MANIFEST);
-                                            printerControl.createPartyPrinterGroupUse(party, printerGroupUseType, shippingManifestPrinterGroup, createdBy);
+                                                printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(PrinterConstants.PrinterGroupUseType_WAREHOUSE_PACKING_LIST);
+                                                printerControl.createPartyPrinterGroupUse(party, printerGroupUseType, packingListPrinterGroup, createdBy);
+
+                                                printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(PrinterConstants.PrinterGroupUseType_WAREHOUSE_PICKLIST);
+                                                printerControl.createPartyPrinterGroupUse(party, printerGroupUseType, picklistPrinterGroup, createdBy);
+
+                                                printerGroupUseType = printerControl.getPrinterGroupUseTypeByName(PrinterConstants.PrinterGroupUseType_WAREHOUSE_SHIPPING_MANIFEST);
+                                                printerControl.createPartyPrinterGroupUse(party, printerGroupUseType, shippingManifestPrinterGroup, createdBy);
+                                            }
                                         }
                                     } else {
                                         addExecutionError(ExecutionErrors.UnknownShippingManifestPrinterGroupName.name(), shippingManifestPrinterGroupName);

@@ -25,6 +25,7 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.schema.DataFetchingEnvironment;
 
 @GraphQLDescription("warehouse object")
 @GraphQLName("Warehouse")
@@ -58,6 +59,14 @@ public class WarehouseObject
     @GraphQLNonNull
     public String getWarehouseName() {
         return getWarehouse().getWarehouseName();
+    }
+
+    @GraphQLField
+    @GraphQLDescription("warehouse type")
+    @GraphQLNonNull
+    public WarehouseTypeObject getWarehouseType(final DataFetchingEnvironment env) {
+        return WarehouseSecurityUtils.getHasWarehouseTypeAccess(env) ?
+                new WarehouseTypeObject(getWarehouse().getWarehouseType()) : null;
     }
 
     @GraphQLField

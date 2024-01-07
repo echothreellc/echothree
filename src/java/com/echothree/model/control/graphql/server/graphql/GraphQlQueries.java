@@ -312,6 +312,8 @@ import com.echothree.control.user.warehouse.common.WarehouseUtil;
 import com.echothree.control.user.warehouse.server.command.GetLocationUseTypeCommand;
 import com.echothree.control.user.warehouse.server.command.GetLocationUseTypesCommand;
 import com.echothree.control.user.warehouse.server.command.GetWarehouseCommand;
+import com.echothree.control.user.warehouse.server.command.GetWarehouseTypeCommand;
+import com.echothree.control.user.warehouse.server.command.GetWarehouseTypesCommand;
 import com.echothree.control.user.warehouse.server.command.GetWarehousesCommand;
 import com.echothree.control.user.wishlist.common.WishlistUtil;
 import com.echothree.control.user.wishlist.server.command.GetWishlistPrioritiesCommand;
@@ -517,6 +519,7 @@ import com.echothree.model.control.warehouse.server.control.LocationUseTypeContr
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.control.warehouse.server.graphql.LocationUseTypeObject;
 import com.echothree.model.control.warehouse.server.graphql.WarehouseObject;
+import com.echothree.model.control.warehouse.server.graphql.WarehouseTypeObject;
 import com.echothree.model.control.wishlist.server.control.WishlistControl;
 import com.echothree.model.control.wishlist.server.graphql.WishlistPriorityObject;
 import com.echothree.model.control.wishlist.server.graphql.WishlistTypeObject;
@@ -711,6 +714,7 @@ import com.echothree.model.data.warehouse.common.LocationUseTypeConstants;
 import com.echothree.model.data.warehouse.common.WarehouseConstants;
 import com.echothree.model.data.warehouse.server.entity.LocationUseType;
 import com.echothree.model.data.warehouse.server.entity.Warehouse;
+import com.echothree.model.data.warehouse.server.entity.WarehouseType;
 import com.echothree.model.data.wishlist.common.WishlistTypeConstants;
 import com.echothree.model.data.wishlist.server.entity.WishlistPriority;
 import com.echothree.model.data.wishlist.server.entity.WishlistType;
@@ -6436,6 +6440,54 @@ public interface GraphQlQueries {
         }
 
         return departmentObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("warehouseType")
+    static WarehouseTypeObject warehouseType(final DataFetchingEnvironment env,
+            @GraphQLName("warehouseTypeName") final String warehouseTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        WarehouseType warehouseType;
+
+        try {
+            var commandForm = WarehouseUtil.getHome().getGetWarehouseTypeForm();
+
+            commandForm.setWarehouseTypeName(warehouseTypeName);
+            commandForm.setUlid(id);
+
+            warehouseType = new GetWarehouseTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return warehouseType == null ? null : new WarehouseTypeObject(warehouseType);
+    }
+
+    @GraphQLField
+    @GraphQLName("warehouseTypes")
+    static Collection<WarehouseTypeObject> warehouseTypes(final DataFetchingEnvironment env) {
+        Collection<WarehouseType> warehouseTypes;
+        Collection<WarehouseTypeObject> warehouseTypeObjects;
+
+        try {
+            var commandForm = WarehouseUtil.getHome().getGetWarehouseTypesForm();
+
+            warehouseTypes = new GetWarehouseTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(warehouseTypes == null) {
+            warehouseTypeObjects = emptyList();
+        } else {
+            warehouseTypeObjects = new ArrayList<>(warehouseTypes.size());
+
+            warehouseTypes.stream()
+                    .map(WarehouseTypeObject::new)
+                    .forEachOrdered(warehouseTypeObjects::add);
+        }
+
+        return warehouseTypeObjects;
     }
 
     @GraphQLField

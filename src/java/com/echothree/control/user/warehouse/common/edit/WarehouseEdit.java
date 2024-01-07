@@ -17,10 +17,11 @@
 package com.echothree.control.user.warehouse.common.edit;
 
 import com.echothree.control.user.warehouse.common.spec.WarehouseSpec;
+import com.echothree.control.user.warehouse.common.spec.WarehouseTypeSpec;
 import com.echothree.util.common.form.BaseEdit;
 
 public interface WarehouseEdit
-        extends BaseEdit, WarehouseSpec {
+        extends BaseEdit, WarehouseSpec, WarehouseTypeSpec {
     
     String getName();
     void setName(String name);
