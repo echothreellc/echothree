@@ -1,5 +1,22 @@
 # Changelog
 
+## 2024-01-07-01
+
+* Add Warehouse Types [845](https://gitlab.echothree.com/echothree/echothree/-/issues/845)
+* Adding Location with Null Validation for Location Name Element Always Fails [856](https://gitlab.echothree.com/echothree/echothree/-/issues/856)
+* Add Confirmation When Deleting Locations [857](https://gitlab.echothree.com/echothree/echothree/-/issues/857)
+* Add Confirmation When Deleting Location Name Elements [858](https://gitlab.echothree.com/echothree/echothree/-/issues/858)
+* Add Confirmation When Deleting Location Types [859](https://gitlab.echothree.com/echothree/echothree/-/issues/859)
+* Add Confirmation When Deleting Inventory Location Groups [860](https://gitlab.echothree.com/echothree/echothree/-/issues/860)
+* Add Confirmation When Deleting Warehouses [861](https://gitlab.echothree.com/echothree/echothree/-/issues/861)
+* 2024 Copyright Update [1057](https://gitlab.echothree.com/echothree/echothree/-/issues/1057)
+* kafka-clients 3.6.1 Upgrade [1062](https://gitlab.echothree.com/echothree/echothree/-/issues/1062)
+* cucumber-java8/cucumber-junit 7.15.0 Upgrade [1063](https://gitlab.echothree.com/echothree/echothree/-/issues/1063)
+* Remove Unnecessary BaseForm and BaseResult Casts [1064](https://gitlab.echothree.com/echothree/echothree/-/issues/1064)
+* Guava 33.0.0-jre Upgrade [1065](https://gitlab.echothree.com/echothree/echothree/-/issues/1065)
+* Remove Extra Commas and Adding Missing Quotes on Delete Pages [1068](https://gitlab.echothree.com/echothree/echothree/-/issues/1068)
+* Prevent Security Cache from Expiring Keys [1082](https://gitlab.echothree.com/echothree/echothree/-/issues/1082)
+
 ## 2023-12-24-01
 
 * Encapsulate Amounts/Prices/Costs in Objects for GraphQL [1058](https://gitlab.echothree.com/echothree/echothree/-/issues/1058)
