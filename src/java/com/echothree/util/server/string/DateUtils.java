@@ -79,31 +79,19 @@ public class DateUtils {
     }
     
     protected String formatDateUsingShortDateFormat(UserVisit userVisit, DateTimeFormat dateTimeFormat, Date time) {
-        String result = null;
+        var sdfShortDateFormat = new SimpleDateFormat(dateTimeFormat.getLastDetail().getJavaShortDateFormat());
 
-        if(dateTimeFormat != null) {
-            var sdfShortDateFormat = new SimpleDateFormat(dateTimeFormat.getLastDetail().getJavaShortDateFormat());
+        sdfShortDateFormat.setTimeZone(getJavaTimeZone(userVisit));
 
-            sdfShortDateFormat.setTimeZone(getJavaTimeZone(userVisit));
-
-            result = sdfShortDateFormat.format(time);
-        }
-
-        return result;
+        return sdfShortDateFormat.format(time);
     }
     
     protected String formatTimeUsingTimeFormatSeconds(UserVisit userVisit, DateTimeFormat dateTimeFormat, Date time) {
-        String result = null;
+        var sdfTimeFormatSeconds = new SimpleDateFormat(dateTimeFormat.getLastDetail().getJavaTimeFormatSeconds());
 
-        if(dateTimeFormat != null) {
-            var sdfTimeFormatSeconds = new SimpleDateFormat(dateTimeFormat.getLastDetail().getJavaTimeFormatSeconds());
+        sdfTimeFormatSeconds.setTimeZone(getJavaTimeZone(userVisit));
 
-            sdfTimeFormatSeconds.setTimeZone(getJavaTimeZone(userVisit));
-
-            result = sdfTimeFormatSeconds.format(time);
-        }
-
-        return result;
+        return sdfTimeFormatSeconds.format(time);
     }
     
     public String formatTypicalDateTime(UserVisit userVisit, DateTimeFormat dateTimeFormat, Date time) {
