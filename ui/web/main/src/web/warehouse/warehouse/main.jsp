@@ -91,6 +91,9 @@
                         <display:column titleKey="columnTitle.description" media="html" sortable="true" sortProperty="partyGroup.name">
                             <et:appearance appearance="${warehouse.entityInstance.entityAppearance.appearance}"><c:out value="${warehouse.partyGroup.name}" /></et:appearance>
                         </display:column>
+                        <display:column titleKey="columnTitle.type" media="html" sortable="true" sortProperty="warehouse.warehouseType.description">
+                            <et:appearance appearance="${warehouse.warehouseType.entityInstance.entityAppearance.appearance}"><c:out value="${warehouse.warehouseType.description}" /></et:appearance>
+                        </display:column>
                         <display:column property="sortOrder" titleKey="columnTitle.sortOrder" media="html" sortable="true" sortProperty="sortOrder" />
                         <display:column titleKey="columnTitle.default" media="html" sortable="true" sortProperty="isDefault">
                             <c:choose>
@@ -144,6 +147,7 @@
                             </display:column>
                         </et:hasSecurityRole>
                         <display:column property="warehouseName" titleKey="columnTitle.name" media="csv excel pdf rtf xml" />
+                        <display:column property="warehouseType.warehouseTypeName" titleKey="columnTitle.type" media="csv excel pdf rtf xml" />
                         <display:column property="partyGroup.name" titleKey="columnTitle.description" media="csv excel pdf rtf xml" />
                         <display:column property="sortOrder" titleKey="columnTitle.sortOrder" media="csv excel pdf rtf xml" />
                         <display:column property="isDefault" titleKey="columnTitle.default" media="csv excel pdf rtf xml" />
@@ -187,6 +191,9 @@
                         </display:column>
                         <display:column titleKey="columnTitle.description">
                             <et:appearance appearance="${warehouse.entityInstance.entityAppearance.appearance}"><c:out value="${warehouse.partyGroup.name}" /></et:appearance>
+                        </display:column>
+                        <display:column titleKey="columnTitle.type">
+                            <et:appearance appearance="${warehouse.warehouseType.entityInstance.entityAppearance.appearance}"><c:out value="${warehouse.warehouseType.description}" /></et:appearance>
                         </display:column>
                         <display:column property="sortOrder" titleKey="columnTitle.sortOrder" />
                         <display:column titleKey="columnTitle.default">

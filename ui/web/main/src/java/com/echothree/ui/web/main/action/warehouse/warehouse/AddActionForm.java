@@ -19,7 +19,11 @@ package com.echothree.ui.web.main.action.warehouse.warehouse;
 import com.echothree.control.user.printer.common.PrinterUtil;
 import com.echothree.control.user.printer.common.form.GetPrinterGroupChoicesForm;
 import com.echothree.control.user.printer.common.result.GetPrinterGroupChoicesResult;
+import com.echothree.control.user.warehouse.common.WarehouseUtil;
+import com.echothree.control.user.warehouse.common.form.GetWarehouseTypeChoicesForm;
+import com.echothree.control.user.warehouse.common.result.GetWarehouseTypeChoicesResult;
 import com.echothree.model.control.printer.common.choice.PrinterGroupChoicesBean;
+import com.echothree.model.control.warehouse.common.choice.WarehouseTypeChoicesBean;
 import com.echothree.util.common.command.CommandResult;
 import com.echothree.util.common.command.ExecutionResult;
 import com.echothree.view.client.web.struts.BasePartyActionForm;
@@ -33,13 +37,15 @@ import org.apache.struts.util.LabelValueBean;
 @SproutForm(name="WarehouseAdd")
 public class AddActionForm
         extends BasePartyActionForm {
-    
+
+    private WarehouseTypeChoicesBean warehouseTypeChoices;
     private PrinterGroupChoicesBean inventoryMovePrinterGroupChoices;
     private PrinterGroupChoicesBean picklistPrinterGroupChoices;
     private PrinterGroupChoicesBean packingListPrinterGroupChoices;
     private PrinterGroupChoicesBean shippingManifestPrinterGroupChoices;
     
     private String warehouseName;
+    private String warehouseTypeChoice;
     private Boolean isDefault;
     private String sortOrder;
     private String name;
@@ -47,7 +53,26 @@ public class AddActionForm
     private String picklistPrinterGroupChoice;
     private String packingListPrinterGroupChoice;
     private String shippingManifestPrinterGroupChoice;
-    
+
+    private void setupWarehouseTypeChoices()
+            throws NamingException {
+        if(warehouseTypeChoices == null) {
+            var form = WarehouseUtil.getHome().getGetWarehouseTypeChoicesForm();
+
+            form.setDefaultWarehouseTypeChoice(warehouseTypeChoice);
+            form.setAllowNullChoice(Boolean.FALSE.toString());
+
+            var commandResult = WarehouseUtil.getHome().getWarehouseTypeChoices(userVisitPK, form);
+            var executionResult = commandResult.getExecutionResult();
+            var result = (GetWarehouseTypeChoicesResult)executionResult.getResult();
+            warehouseTypeChoices = result.getWarehouseTypeChoices();
+
+            if(warehouseTypeChoice == null) {
+                warehouseTypeChoice = warehouseTypeChoices.getDefaultValue();
+            }
+        }
+    }
+
     private void setupInventoryMovePrinterGroupChoices() {
         if(inventoryMovePrinterGroupChoices == null) {
             try {
@@ -143,7 +168,30 @@ public class AddActionForm
     public void setWarehouseName(String warehouseName) {
         this.warehouseName = warehouseName;
     }
-    
+
+    public List<LabelValueBean> getWarehouseTypeChoices()
+            throws NamingException {
+        List<LabelValueBean> choices = null;
+
+        setupWarehouseTypeChoices();
+        if(warehouseTypeChoices != null) {
+            choices = convertChoices(warehouseTypeChoices);
+        }
+
+        return choices;
+    }
+
+    public void setWarehouseTypeChoice(String warehouseTypeChoice) {
+        this.warehouseTypeChoice = warehouseTypeChoice;
+    }
+
+    public String getWarehouseTypeChoice()
+            throws NamingException {
+        setupWarehouseTypeChoices();
+
+        return warehouseTypeChoice;
+    }
+
     public Boolean getIsDefault() {
         return isDefault;
     }
