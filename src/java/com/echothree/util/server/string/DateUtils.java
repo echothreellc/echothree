@@ -79,23 +79,35 @@ public class DateUtils {
     }
     
     protected String formatDateUsingShortDateFormat(UserVisit userVisit, DateTimeFormat dateTimeFormat, Date time) {
-        var sdfShortDateFormat = new SimpleDateFormat(dateTimeFormat.getLastDetail().getJavaShortDateFormat());
+        String result = null;
 
-        sdfShortDateFormat.setTimeZone(getJavaTimeZone(userVisit));
-        
-        return sdfShortDateFormat.format(time);
+        if(dateTimeFormat != null) {
+            var sdfShortDateFormat = new SimpleDateFormat(dateTimeFormat.getLastDetail().getJavaShortDateFormat());
+
+            sdfShortDateFormat.setTimeZone(getJavaTimeZone(userVisit));
+
+            result = sdfShortDateFormat.format(time);
+        }
+
+        return result;
     }
     
     protected String formatTimeUsingTimeFormatSeconds(UserVisit userVisit, DateTimeFormat dateTimeFormat, Date time) {
-        var sdfTimeFormatSeconds = new SimpleDateFormat(dateTimeFormat.getLastDetail().getJavaTimeFormatSeconds());
+        String result = null;
 
-        sdfTimeFormatSeconds.setTimeZone(getJavaTimeZone(userVisit));
-        
-        return sdfTimeFormatSeconds.format(time);
+        if(dateTimeFormat != null) {
+            var sdfTimeFormatSeconds = new SimpleDateFormat(dateTimeFormat.getLastDetail().getJavaTimeFormatSeconds());
+
+            sdfTimeFormatSeconds.setTimeZone(getJavaTimeZone(userVisit));
+
+            result = sdfTimeFormatSeconds.format(time);
+        }
+
+        return result;
     }
     
     public String formatTypicalDateTime(UserVisit userVisit, DateTimeFormat dateTimeFormat, Date time) {
-        return formatDateUsingShortDateFormat(userVisit, dateTimeFormat, time) + ' ' + formatTimeUsingTimeFormatSeconds(userVisit, dateTimeFormat, time);
+        return time == null || dateTimeFormat == null ? null : formatDateUsingShortDateFormat(userVisit, dateTimeFormat, time) + ' ' + formatTimeUsingTimeFormatSeconds(userVisit, dateTimeFormat, time);
     }
     
     public String formatTypicalDateTime(UserVisit userVisit, Date time) {
@@ -103,7 +115,7 @@ public class DateUtils {
     }
     
     public String formatTypicalDateTime(UserVisit userVisit, DateTimeFormat dateTimeFormat, Long time) {
-        return time == null? null: formatTypicalDateTime(userVisit, dateTimeFormat, new Date(time));
+        return time == null || dateTimeFormat == null ? null : formatTypicalDateTime(userVisit, dateTimeFormat, new Date(time));
     }
     
     public String formatTypicalDateTime(UserVisit userVisit, Long time) {
