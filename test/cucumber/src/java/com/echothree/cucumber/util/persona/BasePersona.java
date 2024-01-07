@@ -222,18 +222,22 @@ import com.echothree.control.user.warehouse.common.edit.LocationEdit;
 import com.echothree.control.user.warehouse.common.edit.LocationNameElementEdit;
 import com.echothree.control.user.warehouse.common.edit.LocationTypeEdit;
 import com.echothree.control.user.warehouse.common.edit.WarehouseEdit;
+import com.echothree.control.user.warehouse.common.edit.WarehouseTypeEdit;
 import com.echothree.control.user.warehouse.common.form.CreateLocationForm;
 import com.echothree.control.user.warehouse.common.form.CreateLocationNameElementForm;
 import com.echothree.control.user.warehouse.common.form.CreateLocationTypeForm;
 import com.echothree.control.user.warehouse.common.form.CreateWarehouseForm;
+import com.echothree.control.user.warehouse.common.form.CreateWarehouseTypeForm;
 import com.echothree.control.user.warehouse.common.form.DeleteLocationForm;
 import com.echothree.control.user.warehouse.common.form.DeleteLocationNameElementForm;
 import com.echothree.control.user.warehouse.common.form.DeleteLocationTypeForm;
 import com.echothree.control.user.warehouse.common.form.DeleteWarehouseForm;
+import com.echothree.control.user.warehouse.common.form.DeleteWarehouseTypeForm;
 import com.echothree.control.user.warehouse.common.form.SetLocationStatusForm;
 import com.echothree.control.user.warehouse.common.spec.LocationNameElementSpec;
 import com.echothree.control.user.warehouse.common.spec.LocationSpec;
 import com.echothree.control.user.warehouse.common.spec.LocationTypeSpec;
+import com.echothree.control.user.warehouse.common.spec.WarehouseTypeSpec;
 import com.echothree.control.user.warehouse.common.spec.WarehouseUniversalSpec;
 import com.echothree.cucumber.authentication.UserVisits;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
@@ -595,6 +599,11 @@ public class BasePersona {
     public String lastVendorName;
 
     // Warehouse
+    public CreateWarehouseTypeForm createWarehouseTypeForm;
+    public DeleteWarehouseTypeForm deleteWarehouseTypeForm;
+    public WarehouseTypeSpec warehouseTypeSpec;
+    public WarehouseTypeEdit warehouseTypeEdit;
+
     public CreateWarehouseForm createWarehouseForm;
     public DeleteWarehouseForm deleteWarehouseForm;
     public WarehouseUniversalSpec warehouseUniversalSpec;
@@ -616,6 +625,7 @@ public class BasePersona {
     public LocationSpec locationSpec;
     public LocationEdit locationEdit;
 
+    public String lastWarehouseTypeName;
     public String lastWarehouseName;
     public String lastLocationTypeName;
     public String lastLocationNameElementName;

@@ -189,6 +189,21 @@ public class WarehouseSteps
                     warehouseEdit.setWarehouseName(warehouseName);
                 });
 
+        And("^the user sets the warehouse's warehouse type name to \"([^\"]*)\"$",
+                (String warehouseType) -> {
+                    var persona = CurrentPersona.persona;
+                    var createWarehouseForm = persona.createWarehouseForm;
+                    var warehouseEdit = persona.warehouseEdit;
+
+                    assertThat(createWarehouseForm != null || warehouseEdit != null).isTrue();
+
+                    if(createWarehouseForm != null) {
+                        createWarehouseForm.setWarehouseTypeName(warehouseType);
+                    } else {
+                        warehouseEdit.setWarehouseTypeName(warehouseType);
+                    }
+                });
+
         And("^the user sets the warehouse to (be|not be) the default$",
                 (String isDefault) -> {
                     var persona = CurrentPersona.persona;
