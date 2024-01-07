@@ -16,6 +16,7 @@
 /subsystem=infinispan/cache-container=echothree/replicated-cache=security:add
 /subsystem=infinispan/cache-container=echothree/replicated-cache=security/component=transaction:write-attribute(name=locking,value=OPTIMISTIC)
 /subsystem=infinispan/cache-container=echothree/replicated-cache=security/component=transaction:write-attribute(name=mode,value=NON_XA)
-/subsystem=infinispan/cache-container=echothree/replicated-cache=security/component=expiration:write-attribute(name=lifespan,value=480000)
-/subsystem=infinispan/cache-container=echothree/replicated-cache=security/component=expiration:write-attribute(name=max-idle,value=240000)
+/subsystem=infinispan/cache-container=echothree/replicated-cache=security/component=expiration:write-attribute(name=interval,value=-1)
+/subsystem=infinispan/cache-container=echothree/replicated-cache=security/component=expiration:write-attribute(name=lifespan,value=-1)
+/subsystem=infinispan/cache-container=echothree/replicated-cache=security/component=expiration:write-attribute(name=max-idle,value=-1)
 
