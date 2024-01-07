@@ -44,6 +44,11 @@ ALTER TABLE warehousetypedescriptions ADD PRIMARY KEY (whsetypd_warehousetypedes
 ALTER TABLE warehousetypedescriptions ADD UNIQUE KEY index1_idx (whsetypd_whsetyp_warehousetypeid, whsetypd_lang_languageid, whsetypd_thrutime);
 ALTER TABLE warehousetypedescriptions ADD KEY index2_idx (whsetypd_whsetyp_warehousetypeid, whsetypd_thrutime);
 ALTER TABLE warehousetypedescriptions ADD KEY index3_idx (whsetypd_lang_languageid, whsetypd_thrutime);
+
+ALTER TABLE warehousetypes ADD CONSTRAINT whsetyp_activedetailid_fk FOREIGN KEY (whsetyp_activedetailid) REFERENCES warehousetypedetails(whsetypdt_warehousetypedetailid) ON DELETE CASCADE;
+ALTER TABLE warehousetypes ADD CONSTRAINT whsetyp_lastdetailid_fk FOREIGN KEY (whsetyp_lastdetailid) REFERENCES warehousetypedetails(whsetypdt_warehousetypedetailid) ON DELETE CASCADE;
+ALTER TABLE warehousetypedetails ADD CONSTRAINT whsetypdt_whsetyp_warehousetypeid_fk FOREIGN KEY (whsetypdt_whsetyp_warehousetypeid) REFERENCES warehousetypes(whsetyp_warehousetypeid) ON DELETE CASCADE;
+ALTER TABLE warehousetypedescriptions ADD CONSTRAINT whsetypd_whsetyp_warehousetypeid_fk FOREIGN KEY (whsetypd_whsetyp_warehousetypeid) REFERENCES warehousetypes(whsetyp_warehousetypeid) ON DELETE CASCADE;
 ALTER TABLE warehousetypedescriptions ADD CONSTRAINT whsetypd_lang_languageid_fk FOREIGN KEY (whsetypd_lang_languageid) REFERENCES languages(lang_languageid) ON DELETE CASCADE;
 
 ALTER TABLE warehouses ADD COLUMN whse_whsetyp_warehousetypeid BIGINT NOT NULL;
