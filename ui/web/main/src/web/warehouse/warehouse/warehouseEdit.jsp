@@ -60,6 +60,17 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td align=right><fmt:message key="label.warehouseType" />:</td>
+                                <td>
+                                    <html:select property="warehouseTypeChoice">
+                                        <html:optionsCollection property="warehouseTypeChoices" />
+                                    </html:select> (*)
+                                    <et:validationErrors id="errorMessage" property="WarehouseTypeName">
+                                        <p><c:out value="${errorMessage}" /></p>
+                                    </et:validationErrors>
+                                </td>
+                            </tr>
+                            <tr>
                                 <td align=right><fmt:message key="label.description" />:</td>
                                 <td>
                                     <html:text size="40" property="name" maxlength="60" />
@@ -135,7 +146,7 @@
                                 <td>
                                     <html:select property="inventoryMovePrinterGroupChoice">
                                         <html:optionsCollection property="inventoryMovePrinterGroupChoices" />
-                                    </html:select>
+                                    </html:select> (*)
                                     <et:validationErrors id="errorMessage" property="InventoryMovePrinterGroupName">
                                         <p><c:out value="${errorMessage}" /></p>
                                     </et:validationErrors>
@@ -146,7 +157,7 @@
                                 <td>
                                     <html:select property="picklistPrinterGroupChoice">
                                         <html:optionsCollection property="picklistPrinterGroupChoices" />
-                                    </html:select>
+                                    </html:select> (*)
                                     <et:validationErrors id="errorMessage" property="PicklistPrinterGroupName">
                                         <p><c:out value="${errorMessage}" /></p>
                                     </et:validationErrors>
@@ -157,7 +168,7 @@
                                 <td>
                                     <html:select property="packingListPrinterGroupChoice">
                                         <html:optionsCollection property="packingListPrinterGroupChoices" />
-                                    </html:select>
+                                    </html:select> (*)
                                     <et:validationErrors id="errorMessage" property="PackingListPrinterGroupName">
                                         <p><c:out value="${errorMessage}" /></p>
                                     </et:validationErrors>
@@ -168,7 +179,7 @@
                                 <td>
                                     <html:select property="shippingManifestPrinterGroupChoice">
                                         <html:optionsCollection property="shippingManifestPrinterGroupChoices" />
-                                    </html:select>
+                                    </html:select> (*)
                                     <et:validationErrors id="errorMessage" property="ShippingManifestPrinterGroupName">
                                         <p><c:out value="${errorMessage}" /></p>
                                     </et:validationErrors>

@@ -360,6 +360,7 @@ public enum SecurityRoleGroups {
     VendorType,
     Warehouse,
     WarehouseAlias,
+    WarehouseType,
     Wishlist,
     WishlistType,
     WorkEffortType,

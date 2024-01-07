@@ -31,6 +31,7 @@ import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.control.warehouse.server.logic.WarehouseLogic;
+import com.echothree.model.control.warehouse.server.logic.WarehouseTypeLogic;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
@@ -44,6 +45,7 @@ import com.echothree.model.data.printer.server.entity.PrinterGroup;
 import com.echothree.model.data.printer.server.entity.PrinterGroupUseType;
 import com.echothree.model.data.printer.server.value.PartyPrinterGroupUseValue;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
+import com.echothree.model.data.warehouse.server.entity.WarehouseType;
 import com.echothree.model.data.warehouse.server.value.WarehouseValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -81,6 +83,7 @@ public class EditWarehouseCommand
         
         EDIT_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("WarehouseName", FieldType.ENTITY_NAME, true, null, null),
+                new FieldDefinition("WarehouseTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("Name", FieldType.STRING, false, 1L, 60L),
                 new FieldDefinition("PreferredLanguageIsoName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("PreferredCurrencyIsoName", FieldType.ENTITY_NAME, false, null, null),
@@ -143,6 +146,7 @@ public class EditWarehouseCommand
         var dateTimeFormat = partyDetail.getPreferredDateTimeFormat();
 
         edit.setWarehouseName(warehouse.getWarehouseName());
+        edit.setWarehouseTypeName(warehouse.getWarehouseType().getLastDetail().getWarehouseTypeName());
         edit.setName(partyGroup == null? null: partyGroup.getName());
         edit.setPreferredLanguageIsoName(preferredLanguage == null ? null : preferredLanguage.getLanguageIsoName());
         edit.setPreferredCurrencyIsoName(preferredCurrency == null ? null : preferredCurrency.getCurrencyIsoName());
@@ -156,6 +160,7 @@ public class EditWarehouseCommand
         edit.setShippingManifestPrinterGroupName(printerControl.getPartyPrinterGroupUseUsingNames(party, PrinterConstants.PrinterGroupUseType_WAREHOUSE_SHIPPING_MANIFEST).getPrinterGroup().getLastDetail().getPrinterGroupName());
     }
 
+    WarehouseType warehouseType;
     PrinterGroup inventoryMovePrinterGroup;
     PrinterGroup picklistPrinterGroup;
     PrinterGroup packingListPrinterGroup;
@@ -173,6 +178,8 @@ public class EditWarehouseCommand
         var warehouse = warehouseControl.getWarehouseForUpdate(party);
         var warehouseName = edit.getWarehouseName();
         var duplicateWarehouse = warehouseControl.getWarehouseByName(warehouseName);
+
+        warehouseType = WarehouseTypeLogic.getInstance().getWarehouseTypeByName(this, edit.getWarehouseTypeName());
 
         if(duplicateWarehouse == null || duplicateWarehouse.getPrimaryKey().equals(warehouse.getPrimaryKey())) {
             var inventoryMovePrinterGroupName = edit.getInventoryMovePrinterGroupName();
@@ -262,6 +269,7 @@ public class EditWarehouseCommand
         PartyPK updatedBy = getPartyPK();
 
         warehouseValue.setWarehouseName(edit.getWarehouseName());
+        warehouseValue.setWarehouseTypePK(warehouseType.getPrimaryKey());
         warehouseValue.setIsDefault(Boolean.valueOf(edit.getIsDefault()));
         warehouseValue.setSortOrder(Integer.valueOf(edit.getSortOrder()));
 

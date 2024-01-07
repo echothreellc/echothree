@@ -68,6 +68,7 @@ public class WarehouseEditAction
         var edit = WarehouseUtil.getHome().getWarehouseEdit();
 
         edit.setWarehouseName(actionForm.getWarehouseName());
+        edit.setWarehouseTypeName(actionForm.getWarehouseTypeChoice());
         edit.setName(actionForm.getName());
         edit.setPreferredLanguageIsoName(actionForm.getLanguageChoice());
         edit.setPreferredCurrencyIsoName(actionForm.getCurrencyChoice());
@@ -94,6 +95,7 @@ public class WarehouseEditAction
             final WarehouseUniversalSpec spec, final WarehouseEdit edit) {
         actionForm.setOriginalWarehouseName(spec.getWarehouseName());
         actionForm.setWarehouseName(edit.getWarehouseName());
+        actionForm.setWarehouseTypeChoice(edit.getWarehouseTypeName());
         actionForm.setName(edit.getName());
         actionForm.setLanguageChoice(edit.getPreferredLanguageIsoName());
         actionForm.setCurrencyChoice(edit.getPreferredCurrencyIsoName());

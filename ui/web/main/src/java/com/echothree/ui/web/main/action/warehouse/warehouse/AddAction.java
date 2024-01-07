@@ -54,6 +54,7 @@ public class AddAction
             CreateWarehouseForm commandForm = WarehouseUtil.getHome().getCreateWarehouseForm();
             
             commandForm.setWarehouseName(actionForm.getWarehouseName());
+            commandForm.setWarehouseTypeName(actionForm.getWarehouseTypeChoice());
             commandForm.setName(actionForm.getName());
             commandForm.setPreferredLanguageIsoName(actionForm.getLanguageChoice());
             commandForm.setPreferredCurrencyIsoName(actionForm.getCurrencyChoice());

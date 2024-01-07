@@ -16,6 +16,7 @@ Feature: Employee location
     When the user begins entering a new warehouse
     And the user sets the warehouse's warehouse name to "CucumberWarehouse"
     And the user sets the warehouse's name to "Cucumber Warehouse"
+    And the user sets the warehouse's warehouse type name to "DEFAULT"
     And the user sets the warehouse to not be the default
     And the user sets the warehouse's sort order to "10"
     And the user sets the warehouse's inventory move printer group name to "DEFAULT"
@@ -88,6 +89,7 @@ Feature: Employee location
     Given the employee Test begins using the application
     And the user begins entering a new warehouse
     And the user sets the warehouse's warehouse name to "CucumberWarehouse"
+    And the user sets the warehouse's warehouse type name to "DEFAULT"
     And the user sets the warehouse's name to "Cucumber Warehouse"
     And the user sets the warehouse to not be the default
     And the user sets the warehouse's sort order to "10"
@@ -141,6 +143,7 @@ Feature: Employee location
     Given the employee Test begins using the application
     When the user begins entering a new warehouse
     And the user sets the warehouse's warehouse name to "CucumberWarehouse"
+    And the user sets the warehouse's warehouse type name to "DEFAULT"
     And the user sets the warehouse's name to "Cucumber Warehouse"
     And the user sets the warehouse to not be the default
     And the user sets the warehouse's sort order to "10"
@@ -195,6 +198,7 @@ Feature: Employee location
     Given the employee Test begins using the application
     When the user begins entering a new warehouse
     And the user sets the warehouse's warehouse name to "CucumberWarehouse"
+    And the user sets the warehouse's warehouse type name to "DEFAULT"
     And the user sets the warehouse's name to "Cucumber Warehouse"
     And the user sets the warehouse to not be the default
     And the user sets the warehouse's sort order to "10"
@@ -248,6 +252,7 @@ Feature: Employee location
     Given the employee Test begins using the application
     When the user begins entering a new warehouse
     And the user sets the warehouse's warehouse name to "CucumberWarehouse"
+    And the user sets the warehouse's warehouse type name to "DEFAULT"
     And the user sets the warehouse's name to "Cucumber Warehouse"
     And the user sets the warehouse to not be the default
     And the user sets the warehouse's sort order to "10"
@@ -301,6 +306,7 @@ Feature: Employee location
     Given the employee Test begins using the application
     When the user begins entering a new warehouse
     And the user sets the warehouse's warehouse name to "CucumberWarehouse"
+    And the user sets the warehouse's warehouse type name to "DEFAULT"
     And the user sets the warehouse's name to "Cucumber Warehouse"
     And the user sets the warehouse to not be the default
     And the user sets the warehouse's sort order to "10"
@@ -362,6 +368,7 @@ Feature: Employee location
     Given the employee Test begins using the application
     When the user begins entering a new warehouse
     And the user sets the warehouse's warehouse name to "CucumberWarehouse"
+    And the user sets the warehouse's warehouse type name to "DEFAULT"
     And the user sets the warehouse's name to "Cucumber Warehouse"
     And the user sets the warehouse to not be the default
     And the user sets the warehouse's sort order to "10"
@@ -424,6 +431,7 @@ Feature: Employee location
     Given the employee Test begins using the application
     When the user begins entering a new warehouse
     And the user sets the warehouse's warehouse name to "CucumberWarehouse"
+    And the user sets the warehouse's warehouse type name to "DEFAULT"
     And the user sets the warehouse's name to "Cucumber Warehouse"
     And the user sets the warehouse to not be the default
     And the user sets the warehouse's sort order to "10"
@@ -485,6 +493,7 @@ Feature: Employee location
     Given the employee Test begins using the application
     When the user begins entering a new warehouse
     And the user sets the warehouse's warehouse name to "CucumberWarehouse"
+    And the user sets the warehouse's warehouse type name to "DEFAULT"
     And the user sets the warehouse's name to "Cucumber Warehouse"
     And the user sets the warehouse to not be the default
     And the user sets the warehouse's sort order to "10"

@@ -17,8 +17,13 @@
             <locationUseTypeDescription languageIsoName="en" description="Shrink" />
         </locationUseType>
     </locationUseTypes>
+    <warehouseTypes>
+        <warehouseType warehouseTypeName="DEFAULT" priority="1" isDefault="false" sortOrder="0">
+            <warehouseTypeDescription languageIsoName="en" description="Default" />
+        </warehouseType>
+    </warehouseTypes>
     <warehouses>
-        <warehouse warehouseName="WAREHOUSE_1" name="Warehouse 1" isDefault="true" sortOrder="0" inventoryMovePrinterGroupName="DEFAULT"
+        <warehouse warehouseName="WAREHOUSE_1" warehouseTypeName="DEFAULT" name="Warehouse 1" isDefault="true" sortOrder="0" inventoryMovePrinterGroupName="DEFAULT"
                 picklistPrinterGroupName="DEFAULT" packingListPrinterGroupName="DEFAULT" shippingManifestPrinterGroupName="DEFAULT">
             <contactMechanisms>
                 <contactPostalAddress personalTitle="Mr." firstName="Test" lastName="Company" companyName="Test Company"
@@ -146,7 +151,7 @@
                 <locationCapacity unitOfMeasureKindName="BASIC" unitOfMeasureTypeName="EACH" capacity="20" />
             </location>
         </warehouse>
-        <warehouse warehouseName="WAREHOUSE_2" name="Warehouse 2" isDefault="false" sortOrder="0" inventoryMovePrinterGroupName="DEFAULT"
+        <warehouse warehouseName="WAREHOUSE_2" warehouseTypeName="DEFAULT" name="Warehouse 2" isDefault="false" sortOrder="0" inventoryMovePrinterGroupName="DEFAULT"
                 picklistPrinterGroupName="DEFAULT" packingListPrinterGroupName="DEFAULT" shippingManifestPrinterGroupName="DEFAULT">
             <contactMechanisms>
                 <contactPostalAddress personalTitle="Mr." firstName="Test" lastName="Company" companyName="Test Company"

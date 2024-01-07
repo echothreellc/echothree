@@ -170,7 +170,9 @@ import com.echothree.control.user.vendor.common.result.EditVendorResult;
 import com.echothree.control.user.vendor.common.result.EditVendorTypeResult;
 import com.echothree.control.user.warehouse.common.WarehouseUtil;
 import com.echothree.control.user.warehouse.common.result.CreateWarehouseResult;
+import com.echothree.control.user.warehouse.common.result.CreateWarehouseTypeResult;
 import com.echothree.control.user.warehouse.common.result.EditWarehouseResult;
+import com.echothree.control.user.warehouse.common.result.EditWarehouseTypeResult;
 import com.echothree.control.user.wishlist.common.WishlistUtil;
 import com.echothree.control.user.wishlist.common.result.CreateWishlistPriorityResult;
 import com.echothree.control.user.wishlist.common.result.CreateWishlistTypeResult;
@@ -7550,10 +7552,124 @@ public interface GraphQlMutations {
         return mutationResultObject;
     }
 
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject createWarehouseType(final DataFetchingEnvironment env,
+            @GraphQLName("warehouseTypeName") @GraphQLNonNull final String warehouseTypeName,
+            @GraphQLName("priority") @GraphQLNonNull final String priority,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = WarehouseUtil.getHome().getCreateWarehouseTypeForm();
+
+            commandForm.setWarehouseTypeName(warehouseTypeName);
+            commandForm.setPriority(priority);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            var commandResult = WarehouseUtil.getHome().createWarehouseType(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateWarehouseTypeResult)commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteWarehouseType(final DataFetchingEnvironment env,
+            @GraphQLName("warehouseTypeName") @GraphQLNonNull final String warehouseTypeName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = WarehouseUtil.getHome().getDeleteWarehouseTypeForm();
+
+            commandForm.setWarehouseTypeName(warehouseTypeName);
+
+            var commandResult = WarehouseUtil.getHome().deleteWarehouseType(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject editWarehouseType(final DataFetchingEnvironment env,
+            @GraphQLName("originalWarehouseTypeName") final String originalWarehouseTypeName,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("warehouseTypeName") final String warehouseTypeName,
+            @GraphQLName("priority") final String priority,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var spec = WarehouseUtil.getHome().getWarehouseTypeUniversalSpec();
+
+            spec.setWarehouseTypeName(originalWarehouseTypeName);
+            spec.setUlid(id);
+
+            var commandForm = WarehouseUtil.getHome().getEditWarehouseTypeForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = WarehouseUtil.getHome().editWarehouseType(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditWarehouseTypeResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                mutationResultObject.setEntityInstance(result.getWarehouseType().getEntityInstance());
+
+                if(arguments.containsKey("warehouseTypeName"))
+                    edit.setWarehouseTypeName(warehouseTypeName);
+                if(arguments.containsKey("priority"))
+                    edit.setPriority(priority);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = WarehouseUtil.getHome().editWarehouseType(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
     @GraphQLField
     @GraphQLRelayMutation
     static MutationResultWithIdObject createWarehouse(final DataFetchingEnvironment env,
             @GraphQLName("warehouseName") @GraphQLNonNull final String warehouseName,
+            @GraphQLName("warehouseTypeName") @GraphQLNonNull final String warehouseTypeName,
             @GraphQLName("name") final String name,
             @GraphQLName("preferredLanguageIsoName") final String preferredLanguageIsoName,
             @GraphQLName("preferredCurrencyIsoName") final String preferredCurrencyIsoName,
@@ -7571,6 +7687,7 @@ public interface GraphQlMutations {
             var commandForm = WarehouseUtil.getHome().getCreateWarehouseForm();
 
             commandForm.setWarehouseName(warehouseName);
+            commandForm.setWarehouseTypeName(warehouseTypeName);
             commandForm.setName(name);
             commandForm.setPreferredLanguageIsoName(preferredLanguageIsoName);
             commandForm.setPreferredCurrencyIsoName(preferredCurrencyIsoName);
@@ -7605,6 +7722,7 @@ public interface GraphQlMutations {
             @GraphQLName("partyName") final String partyName,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("warehouseName") final String warehouseName,
+            @GraphQLName("warehouseTypeName") final String warehouseTypeName,
             @GraphQLName("name") final String name,
             @GraphQLName("preferredLanguageIsoName") final String preferredLanguageIsoName,
             @GraphQLName("preferredCurrencyIsoName") final String preferredCurrencyIsoName,
@@ -7642,6 +7760,8 @@ public interface GraphQlMutations {
 
                 if(arguments.containsKey("warehouseName"))
                     edit.setWarehouseName(warehouseName);
+                if(arguments.containsKey("warehouseTypeName"))
+                    edit.setWarehouseTypeName(warehouseTypeName);
                 if(arguments.containsKey("name"))
                     edit.setName(name);
                 if(arguments.containsKey("preferredLanguageIsoName"))

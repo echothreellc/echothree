@@ -100,6 +100,9 @@
                                 <display:column titleKey="columnTitle.description" media="html" sortable="true" sortProperty="warehouse.partyGroup.name">
                                     <et:appearance appearance="${warehouseResult.warehouse.entityInstance.entityAppearance.appearance}"><c:out value="${warehouseResult.warehouse.partyGroup.name}" /></et:appearance>
                                 </display:column>
+                                <display:column titleKey="columnTitle.type" media="html" sortable="true" sortProperty="warehouse.warehouseType.description">
+                                    <et:appearance appearance="${warehouseResult.warehouse.warehouseType.entityInstance.entityAppearance.appearance}"><c:out value="${warehouseResult.warehouse.warehouseType.description}" /></et:appearance>
+                                </display:column>
                                 <display:column property="warehouse.sortOrder" titleKey="columnTitle.sortOrder" media="html" sortable="true" sortProperty="warehouse.sortOrder" />
                                 <display:column titleKey="columnTitle.default" media="html" sortable="true" sortProperty="warehouse.isDefault">
                                     <c:choose>
@@ -154,6 +157,7 @@
                                 </et:hasSecurityRole>
                                 <display:column property="warehouse.warehouseName" titleKey="columnTitle.name" media="csv excel pdf rtf xml" />
                                 <display:column property="warehouse.partyGroup.name" titleKey="columnTitle.description" media="csv excel pdf rtf xml" />
+                                <display:column property="warehouse.warehouseType.warehouseTypeName" titleKey="columnTitle.type" media="csv excel pdf rtf xml" />
                                 <display:column property="warehouse.sortOrder" titleKey="columnTitle.sortOrder" media="csv excel pdf rtf xml" />
                                 <display:column property="warehouse.isDefault" titleKey="columnTitle.default" media="csv excel pdf rtf xml" />
                             </display:table>
@@ -196,6 +200,9 @@
                                 </display:column>
                                 <display:column titleKey="columnTitle.description">
                                     <et:appearance appearance="${warehouseResult.warehouse.entityInstance.entityAppearance.appearance}"><c:out value="${warehouseResult.warehouse.partyGroup.name}" /></et:appearance>
+                                </display:column>
+                                <display:column titleKey="columnTitle.type">
+                                    <et:appearance appearance="${warehouseResult.warehouse.warehouseType.entityInstance.entityAppearance.appearance}"><c:out value="${warehouseResult.warehouse.warehouseType.description}" /></et:appearance>
                                 </display:column>
                                 <display:column property="warehouse.sortOrder" titleKey="columnTitle.sortOrder" />
                                 <display:column titleKey="columnTitle.default">

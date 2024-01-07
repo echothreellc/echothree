@@ -2276,5 +2276,10 @@ public enum ExecutionErrors {
     UnknownDefaultGeoCodeScope,
     CannotDeleteGeoCodeScopeInUse,
     UnknownDefaultLocationUseType,
+    DuplicateWarehouseTypeName,
+    UnknownWarehouseTypeName,
+    UnknownDefaultWarehouseType,
+    UnknownWarehouseTypeDescription,
+    DuplicateWarehouseTypeDescription,
 
 }

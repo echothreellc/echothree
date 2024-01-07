@@ -17,9 +17,10 @@
 package com.echothree.control.user.warehouse.common.form;
 
 import com.echothree.control.user.warehouse.common.spec.WarehouseSpec;
+import com.echothree.control.user.warehouse.common.spec.WarehouseTypeSpec;
 
 public interface CreateWarehouseForm
-        extends WarehouseSpec {
+        extends WarehouseSpec, WarehouseTypeSpec {
     
     String getName();
     void setName(String name);

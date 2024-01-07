@@ -35,6 +35,7 @@ import com.echothree.model.data.party.server.entity.DateTimeFormat;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.TimeZone;
 import com.echothree.model.data.warehouse.server.entity.Warehouse;
+import com.echothree.model.data.warehouse.server.entity.WarehouseType;
 import com.echothree.model.data.warehouse.server.value.WarehouseValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
@@ -58,9 +59,10 @@ public class WarehouseLogic
         return WarehouseLogicHolder.instance;
     }
 
-    public Warehouse createWarehouse(final ExecutionErrorAccumulator eea, final String warehouseName, final Language preferredLanguage,
-            final Currency preferredCurrency, final TimeZone preferredTimeZone, final DateTimeFormat preferredDateTimeFormat,
-            final String name, final Boolean isDefault, final Integer sortOrder, final BasePK createdBy) {
+    public Warehouse createWarehouse(final ExecutionErrorAccumulator eea, final String warehouseName, final WarehouseType warehouseType,
+            final Language preferredLanguage, final Currency preferredCurrency, final TimeZone preferredTimeZone,
+            final DateTimeFormat preferredDateTimeFormat, final String name, final Boolean isDefault, final Integer sortOrder,
+            final BasePK createdBy) {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
         var warehouse = warehouseControl.getWarehouseByName(warehouseName);
 
@@ -74,7 +76,7 @@ public class WarehouseLogic
                 partyControl.createPartyGroup(party, name, createdBy);
             }
 
-            warehouse = warehouseControl.createWarehouse(party, warehouseName, isDefault, sortOrder, createdBy);
+            warehouse = warehouseControl.createWarehouse(party, warehouseName, warehouseType, isDefault, sortOrder, createdBy);
         } else {
             handleExecutionError(DuplicateWarehouseNameException.class, eea, ExecutionErrors.DuplicateWarehouseName.name(), warehouseName);
         }
