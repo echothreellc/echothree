@@ -7722,7 +7722,7 @@ public interface GraphQlMutations {
             @GraphQLName("partyName") final String partyName,
             @GraphQLName("id") @GraphQLID final String id,
             @GraphQLName("warehouseName") final String warehouseName,
-            @GraphQLName("warehouseTypeName") @GraphQLNonNull final String warehouseTypeName,
+            @GraphQLName("warehouseTypeName") final String warehouseTypeName,
             @GraphQLName("name") final String name,
             @GraphQLName("preferredLanguageIsoName") final String preferredLanguageIsoName,
             @GraphQLName("preferredCurrencyIsoName") final String preferredCurrencyIsoName,
