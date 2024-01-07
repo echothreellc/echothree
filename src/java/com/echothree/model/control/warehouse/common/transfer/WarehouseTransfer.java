@@ -30,6 +30,7 @@ public class WarehouseTransfer
         extends PartyTransfer {
     
     private String warehouseName;
+    private WarehouseTypeTransfer warehouseType;
     private Boolean isDefault;
     private Integer sortOrder;
 
@@ -37,11 +38,13 @@ public class WarehouseTransfer
     private ListWrapper<LocationTransfer> locations;
 
     /** Creates a new instance of WarehouseTransfer */
-    public WarehouseTransfer(String partyName, PartyTypeTransfer partyType, LanguageTransfer preferredLanguage, CurrencyTransfer preferredCurrency, TimeZoneTransfer preferredTimeZone,
-            DateTimeFormatTransfer preferredDateTimeFormat, PersonTransfer person, PartyGroupTransfer partyGroup, String warehouseName, Boolean isDefault, Integer sortOrder) {
+    public WarehouseTransfer(String partyName, PartyTypeTransfer partyType, LanguageTransfer preferredLanguage, CurrencyTransfer preferredCurrency,
+            TimeZoneTransfer preferredTimeZone, DateTimeFormatTransfer preferredDateTimeFormat, PersonTransfer person, PartyGroupTransfer partyGroup,
+            String warehouseName, WarehouseTypeTransfer warehouseType, Boolean isDefault, Integer sortOrder) {
         super(partyName, partyType, preferredLanguage, preferredCurrency, preferredTimeZone, preferredDateTimeFormat, person, partyGroup, null);
         
         this.warehouseName = warehouseName;
+        this.warehouseType = warehouseType;
         this.isDefault = isDefault;
         this.sortOrder = sortOrder;
     }
@@ -53,7 +56,15 @@ public class WarehouseTransfer
     public void setWarehouseName(String warehouseName) {
         this.warehouseName = warehouseName;
     }
-    
+
+    public WarehouseTypeTransfer getWarehouseType() {
+        return warehouseType;
+    }
+
+    public void setWarehouseType(WarehouseTypeTransfer warehouseType) {
+        this.warehouseType = warehouseType;
+    }
+
     public Boolean getIsDefault() {
         return isDefault;
     }

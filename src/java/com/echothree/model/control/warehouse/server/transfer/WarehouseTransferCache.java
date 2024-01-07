@@ -32,6 +32,7 @@ import com.echothree.model.control.printer.server.control.PrinterControl;
 import com.echothree.model.control.scale.server.control.ScaleControl;
 import com.echothree.model.control.warehouse.common.WarehouseOptions;
 import com.echothree.model.control.warehouse.common.transfer.WarehouseTransfer;
+import com.echothree.model.control.warehouse.common.transfer.WarehouseTypeTransfer;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.accounting.server.entity.Currency;
 import com.echothree.model.data.party.server.entity.DateTimeFormat;
@@ -45,7 +46,6 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.util.server.persistence.Session;
-import java.util.Set;
 
 public class WarehouseTransferCache
         extends BaseWarehouseTransferCache<Party, WarehouseTransfer> {
@@ -112,11 +112,13 @@ public class WarehouseTransferCache
             PartyGroupTransfer partyGroupTransfer = partyGroup == null ? null : partyControl.getPartyGroupTransfer(userVisit, partyGroup);
             Warehouse warehouse = warehouseControl.getWarehouse(party);
             String warehouseName = warehouse.getWarehouseName();
+            WarehouseTypeTransfer warehouseTypeTransfer = warehouseControl.getWarehouseTypeTransfer(userVisit, warehouse.getWarehouseType());
             Boolean isDefault = warehouse.getIsDefault();
             Integer sortOrder = warehouse.getSortOrder();
             
-            warehouseTransfer = new WarehouseTransfer(partyName, partyTypeTransfer, preferredLanguageTransfer, preferredCurrencyTransfer, preferredTimeZoneTransfer, preferredDateTimeFormatTransfer,
-                    personTransfer, partyGroupTransfer, warehouseName, isDefault, sortOrder);
+            warehouseTransfer = new WarehouseTransfer(partyName, partyTypeTransfer, preferredLanguageTransfer, preferredCurrencyTransfer,
+                    preferredTimeZoneTransfer, preferredDateTimeFormatTransfer, personTransfer, partyGroupTransfer, warehouseName,
+                    warehouseTypeTransfer, isDefault, sortOrder);
             put(party, warehouseTransfer);
 
             if(includeLocationsCount) {
