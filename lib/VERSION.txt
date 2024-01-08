@@ -5,7 +5,7 @@ cross-revalidator 1.0a
 displaytag 1.2
 Jakarta POI 3.2 (used by displaytag)
 Jaxen 1.1.1 (used by PMD)
-jQuery 3.6.1
+jQuery 3.7.1
 log4j 1.2.8
 logkit 1.2
 PMD 6.39.0
