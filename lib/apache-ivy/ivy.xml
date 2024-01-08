@@ -18,7 +18,7 @@
    under the License.    
 -->
 <ivy-module version="1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
-    <info organisation="org.apache.ivy" module="ivy" revision="2.5.1" status="release" publication="20221101102211">
+    <info organisation="org.apache.ivy" module="ivy" revision="2.5.2" status="release" publication="20230817170011">
         <description homepage="http://ant.apache.org/ivy/">
         Apache Ivy is a tool for managing (recording, tracking, resolving and reporting) project dependencies.
         </description>
@@ -41,25 +41,25 @@
     </publications>
     <!-- Definition of the version is done in version.properties -->
     <dependencies>
-        <dependency org="org.apache.ant" name="ant" rev="1.9.14" conf="default,ant"/>
-        <dependency org="org.apache.httpcomponents" name="httpclient" rev="4.5.10" conf="default,httpclient->runtime,master"/>
+        <dependency org="org.apache.ant" name="ant" rev="1.9.16" conf="default,ant"/>
+        <dependency org="org.apache.httpcomponents" name="httpclient" rev="4.5.13" conf="default,httpclient->runtime,master"/>
         <dependency org="oro" name="oro" rev="2.0.8" conf="default,oro"/>
         <dependency org="org.apache.commons" name="commons-vfs2" rev="2.2" conf="default,vfs"/>
         <dependency org="com.jcraft" name="jsch" rev="0.1.55" conf="default,sftp"/>
         <dependency org="com.jcraft" name="jsch.agentproxy" rev="0.0.9" conf="default,sftp"/>
         <dependency org="com.jcraft" name="jsch.agentproxy.connector-factory" rev="0.0.9" conf="default,sftp"/>
         <dependency org="com.jcraft" name="jsch.agentproxy.jsch" rev="0.0.9" conf="default,sftp"/>
-        <dependency org="org.bouncycastle" name="bcpg-jdk15on" rev="1.64" conf="default"/>
-        <dependency org="org.bouncycastle" name="bcprov-jdk15on" rev="1.64" conf="default"/>
+        <dependency org="org.bouncycastle" name="bcpg-jdk15on" rev="1.70" conf="default"/>
+        <dependency org="org.bouncycastle" name="bcprov-jdk15on" rev="1.70" conf="default"/>
 
         <!-- Test dependencies -->
-        <dependency org="junit" name="junit" rev="4.12" conf="test"/>
+        <dependency org="junit" name="junit" rev="4.13.2" conf="test"/>
         <dependency org="org.hamcrest" name="hamcrest-core" rev="1.3" conf="test"/>
         <dependency org="org.hamcrest" name="hamcrest-library" rev="1.3" conf="test"/>
-        <dependency org="org.apache.ant" name="ant-testutil" rev="1.9.14" conf="test" transitive="false"/>
-        <dependency org="org.apache.ant" name="ant-launcher" rev="1.9.14" conf="test" transitive="false"/>
-        <dependency org="org.apache.ant" name="ant-junit" rev="1.9.14" conf="test" transitive="false"/>
-        <dependency org="org.apache.ant" name="ant-junit4" rev="1.9.14" conf="test" transitive="false"/>
+        <dependency org="org.apache.ant" name="ant-testutil" rev="1.9.16" conf="test" transitive="false"/>
+        <dependency org="org.apache.ant" name="ant-launcher" rev="1.9.16" conf="test" transitive="false"/>
+        <dependency org="org.apache.ant" name="ant-junit" rev="1.9.16" conf="test" transitive="false"/>
+        <dependency org="org.apache.ant" name="ant-junit4" rev="1.9.16" conf="test" transitive="false"/>
         <dependency org="ant-contrib" name="ant-contrib" rev="1.0b3" conf="test" transitive="false"/>
         <dependency org="xmlunit" name="xmlunit" rev="1.6" conf="test" transitive="false"/>
 
