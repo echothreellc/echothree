@@ -66,6 +66,7 @@ public class AddAction
                 forwardKey = ForwardConstants.DISPLAY;
             }
         } else {
+            actionForm.setPriority("1");
             actionForm.setSortOrder("1");
             forwardKey = ForwardConstants.FORM;
         }
