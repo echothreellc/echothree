@@ -75,7 +75,7 @@
 <et:hasSecurityRole securityRoles="UnitOfMeasureKind.List:UnitOfMeasureKindUseType.List">
     <a href="<c:url value="/action/UnitOfMeasure/Main" />"><fmt:message key="navigation.unitsOfMeasure" /></a><br />
 </et:hasSecurityRole>
-<et:hasSecurityRole securityRole="WarehouseType.List:Warehouse.List">
+<et:hasSecurityRole securityRoles="WarehouseType.List:Warehouse.List">
     <a href="<c:url value="/action/Warehouse/Main" />"><fmt:message key="navigation.warehouses" /></a><br />
 </et:hasSecurityRole>
 <et:hasSecurityRole securityRoles="Carrier.List:ShippingMethod.List:ShipmentType.List">
