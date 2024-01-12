@@ -33,9 +33,9 @@ import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 
 @SproutAction(
-    path = "/Warehouse/WarehouseType/WarehouseTypeEdit",
+    path = "/Warehouse/WarehouseType/Edit",
     mappingClass = SecureActionMapping.class,
-    name = "WarehouseEdit",
+    name = "WarehouseTypeEdit",
     properties = {
         @SproutProperty(property = "secure", value = "true")
     },
