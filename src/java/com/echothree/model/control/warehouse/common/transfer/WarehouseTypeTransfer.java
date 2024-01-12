@@ -53,12 +53,12 @@ public class WarehouseTypeTransfer
         this.priority = priority;
     }
 
-    public Boolean getDefault() {
+    public Boolean getIsDefault() {
         return isDefault;
     }
 
-    public void setDefault(final Boolean aDefault) {
-        isDefault = aDefault;
+    public void getIsDefault(final Boolean isDefault) {
+        this.isDefault = isDefault;
     }
 
     public Integer getSortOrder() {
