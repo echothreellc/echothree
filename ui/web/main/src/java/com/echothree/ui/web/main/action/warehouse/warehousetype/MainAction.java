@@ -23,6 +23,7 @@ import com.echothree.model.data.warehouse.common.WarehouseTypeConstants;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
+import com.echothree.ui.web.main.framework.ParameterConstants;
 import com.echothree.util.common.transfer.Limit;
 import com.echothree.util.common.transfer.ListWrapper;
 import com.echothree.view.client.web.struts.sprout.annotation.SproutAction;
@@ -59,6 +60,7 @@ public class MainAction
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
         var commandForm = WarehouseUtil.getHome().getGetWarehouseTypesForm();
+        var results = request.getParameter(ParameterConstants.RESULTS);
 
         commandForm.setOptions(Set.of(
                 CoreOptions.EntityInstanceIncludeEntityAppearance,
@@ -67,11 +69,13 @@ public class MainAction
                 CoreOptions.AppearanceIncludeTextTransformations
                 ));
 
-        var offsetParameter = request.getParameter(new ParamEncoder(AttributeConstants.WAREHOUSE_TYPE).encodeParameterName(TableTagParameters.PARAMETER_PAGE));
-        var offset = offsetParameter == null ? null : (Integer.parseInt(offsetParameter) - 1) * pageSize;
-        commandForm.setLimits(Map.of(
-                WarehouseTypeConstants.ENTITY_TYPE_NAME, new Limit(Integer.toString(pageSize), offset == null ? null : offset.toString())
-                ));
+        if(results == null) {
+            var offsetParameter = request.getParameter(new ParamEncoder(AttributeConstants.WAREHOUSE_TYPE).encodeParameterName(TableTagParameters.PARAMETER_PAGE));
+            var offset = offsetParameter == null ? null : (Integer.parseInt(offsetParameter) - 1) * pageSize;
+            commandForm.setLimits(Map.of(
+                    WarehouseTypeConstants.ENTITY_TYPE_NAME, new Limit(Integer.toString(pageSize), offset == null ? null : offset.toString())
+            ));
+        }
 
         var commandResult = WarehouseUtil.getHome().getWarehouseTypes(getUserVisitPK(request), commandForm);
         if(!commandResult.hasErrors()) {
