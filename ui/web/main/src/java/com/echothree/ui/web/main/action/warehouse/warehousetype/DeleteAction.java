@@ -38,7 +38,7 @@ import javax.servlet.http.HttpServletRequest;
         @SproutProperty(property = "secure", value = "true")
     },
     forwards = {
-        @SproutForward(name = "Display", path = "/action/Warehouse/Warehouse/TypeMain", redirect = true),
+        @SproutForward(name = "Display", path = "/action/Warehouse/WarehouseType/Main", redirect = true),
         @SproutForward(name = "Form", path = "/warehouse/warehousetype/delete.jsp")
     }
 )
