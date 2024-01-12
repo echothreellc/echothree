@@ -42,12 +42,12 @@
         <div id="Content">
             <et:checkSecurityRoles securityRoles="Location.List:Event.List" />
             <c:choose>
-                <c:when test="${warehouseType.partyGroup.name != null}">
+                <c:when test="${warehouseType.description != null}">
                     <p><font size="+2"><b><et:appearance appearance="${warehouseType.entityInstance.entityAppearance.appearance}"><c:out value="${warehouseType.description}" /></et:appearance></b></font></p>
-                    <p><font size="+1"><et:appearance appearance="${warehouseType.entityInstance.entityAppearance.appearance}">${warehouseType.warehouseName}</et:appearance></font></p>
+                    <p><font size="+1"><et:appearance appearance="${warehouseType.entityInstance.entityAppearance.appearance}">${warehouseType.warehouseTypeName}</et:appearance></font></p>
                 </c:when>
                 <c:otherwise>
-                    <p><font size="+2"><b><et:appearance appearance="${warehouseType.entityInstance.entityAppearance.appearance}"><c:out value="${warehouseType.warehouseName}" /></et:appearance></b></font></p>
+                    <p><font size="+2"><b><et:appearance appearance="${warehouseType.entityInstance.entityAppearance.appearance}"><c:out value="${warehouseType.warehouseTypeName}" /></et:appearance></b></font></p>
                 </c:otherwise>
             </c:choose>
             <br />
@@ -61,7 +61,7 @@
             <c:set var="entityAttributeGroups" scope="request" value="${warehouseType.entityAttributeGroups}" />
             <c:set var="entityInstance" scope="request" value="${warehouseType.entityInstance}" />
             <c:url var="returnUrl" scope="request" value="/../action/Warehouse/WarehouseType/Review">
-                <c:param name="WarehouseTypeType" value="${warehouseType.warehouseTypeType}" />
+                <c:param name="WarehouseTypeType" value="${warehouseType.warehouseTypeName}" />
             </c:url>
             <jsp:include page="../../include/tagScopes.jsp" />
             <jsp:include page="../../include/entityAttributeGroups.jsp" />

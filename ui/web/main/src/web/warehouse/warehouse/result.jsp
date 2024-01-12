@@ -34,7 +34,8 @@
             </h2>
         </div>
         <div id="Content">
-            <et:checkSecurityRoles securityRoles="Warehouse.Create:Warehouse.Review:Event.List" />
+            <et:checkSecurityRoles securityRoles="WarehouseType.Review:Warehouse.Create:Warehouse.Review:Event.List" />
+            <et:hasSecurityRole securityRole="WarehouseType.Review" var="includeWarehouseTypeReviewUrl" />
             <et:hasSecurityRole securityRole="Warehouse.Review" var="includeReviewUrl" />
             <et:hasSecurityRole securityRole="Warehouse.Create">
                 <p><a href="<c:url value="/action/Warehouse/Warehouse/Add" />">Add Warehouse.</a></p>
@@ -101,7 +102,17 @@
                                     <et:appearance appearance="${warehouseResult.warehouse.entityInstance.entityAppearance.appearance}"><c:out value="${warehouseResult.warehouse.partyGroup.name}" /></et:appearance>
                                 </display:column>
                                 <display:column titleKey="columnTitle.type" media="html" sortable="true" sortProperty="warehouse.warehouseType.description">
-                                    <et:appearance appearance="${warehouseResult.warehouse.warehouseType.entityInstance.entityAppearance.appearance}"><c:out value="${warehouseResult.warehouse.warehouseType.description}" /></et:appearance>
+                                    <c:choose>
+                                        <c:when test="${includeWarehouseTypeReviewUrl}">
+                                            <c:url var="reviewUrl" value="/action/Warehouse/WarehouseType/Review">
+                                                <c:param name="WarehouseTypeName" value="${warehouseResult.warehouse.warehouseType.warehouseTypeName}" />
+                                            </c:url>
+                                            <a href="${reviewUrl}"><et:appearance appearance="${warehouseResult.warehouse.warehouseType.entityInstance.entityAppearance.appearance}"><c:out value="${warehouseResult.warehouse.warehouseType.description}" /></et:appearance></a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <et:appearance appearance="${warehouseResult.warehouse.warehouseType.entityInstance.entityAppearance.appearance}"><c:out value="${warehouseResult.warehouse.warehouseType.description}" /></et:appearance>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </display:column>
                                 <display:column property="warehouse.sortOrder" titleKey="columnTitle.sortOrder" media="html" sortable="true" sortProperty="warehouse.sortOrder" />
                                 <display:column titleKey="columnTitle.default" media="html" sortable="true" sortProperty="warehouse.isDefault">
@@ -202,7 +213,17 @@
                                     <et:appearance appearance="${warehouseResult.warehouse.entityInstance.entityAppearance.appearance}"><c:out value="${warehouseResult.warehouse.partyGroup.name}" /></et:appearance>
                                 </display:column>
                                 <display:column titleKey="columnTitle.type">
-                                    <et:appearance appearance="${warehouseResult.warehouse.warehouseType.entityInstance.entityAppearance.appearance}"><c:out value="${warehouseResult.warehouse.warehouseType.description}" /></et:appearance>
+                                    <c:choose>
+                                        <c:when test="${includeWarehouseTypeReviewUrl}">
+                                            <c:url var="reviewUrl" value="/action/Warehouse/WarehouseType/Review">
+                                                <c:param name="WarehouseTypeName" value="${warehouseResult.warehouse.warehouseType.warehouseTypeName}" />
+                                            </c:url>
+                                            <a href="${reviewUrl}"><et:appearance appearance="${warehouseResult.warehouse.warehouseType.entityInstance.entityAppearance.appearance}"><c:out value="${warehouseResult.warehouse.warehouseType.description}" /></et:appearance></a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <et:appearance appearance="${warehouseResult.warehouse.warehouseType.entityInstance.entityAppearance.appearance}"><c:out value="${warehouseResult.warehouse.warehouseType.description}" /></et:appearance>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </display:column>
                                 <display:column property="warehouse.sortOrder" titleKey="columnTitle.sortOrder" />
                                 <display:column titleKey="columnTitle.default">
