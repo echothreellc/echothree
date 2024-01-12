@@ -29,5 +29,10 @@ public interface WarehouseOptions {
     String WarehouseIncludeGuid = "WarehouseIncludeGuid";
     String WarehouseIncludeEntityAttributeGroups = "WarehouseIncludeEntityAttributeGroups";
     String WarehouseIncludeTagScopes = "WarehouseIncludeTagScopes";
-    
+
+    String WarehouseTypeIncludeKey = "WarehouseTypeIncludeKey";
+    String WarehouseTypeIncludeGuid = "WarehouseTypeIncludeGuid";
+    String WarehouseTypeIncludeEntityAttributeGroups = "WarehouseTypeIncludeEntityAttributeGroups";
+    String WarehouseTypeIncludeTagScopes = "WarehouseTypeIncludeTagScopes";
+
 }

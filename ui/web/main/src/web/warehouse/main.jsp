@@ -33,6 +33,7 @@
                 <jsp:param name="showAsLink" value="false"/>
             </jsp:include>
         <%@ include file="../include/breadcrumb/breadcrumbs-end.jsp" %>
+        <a href="<c:url value="/action/Warehouse/WarehouseType/Main" />"><fmt:message key="navigation.warehouseTypes" /></a>
         <a href="<c:url value="/action/Warehouse/Warehouse/Main" />"><fmt:message key="navigation.warehouses" /></a>
     <%@ include file="../include/body-end-b.jsp" %>
 </html>
