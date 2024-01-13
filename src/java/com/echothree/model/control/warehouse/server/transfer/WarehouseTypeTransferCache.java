@@ -16,6 +16,7 @@
 
 package com.echothree.model.control.warehouse.server.transfer;
 
+import com.echothree.model.control.warehouse.common.WarehouseOptions;
 import com.echothree.model.control.warehouse.common.transfer.WarehouseTypeTransfer;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
 import com.echothree.model.data.user.server.entity.UserVisit;
@@ -28,7 +29,15 @@ public class WarehouseTypeTransferCache
     /** Creates a new instance of WarehouseTypeTransferCache */
     public WarehouseTypeTransferCache(UserVisit userVisit, WarehouseControl warehouseControl) {
         super(userVisit, warehouseControl);
-        
+
+        var options = session.getOptions();
+        if(options != null) {
+            setIncludeKey(options.contains(WarehouseOptions.WarehouseTypeIncludeKey));
+            setIncludeGuid(options.contains(WarehouseOptions.WarehouseTypeIncludeGuid));
+            setIncludeEntityAttributeGroups(options.contains(WarehouseOptions.WarehouseTypeIncludeEntityAttributeGroups));
+            setIncludeTagScopes(options.contains(WarehouseOptions.WarehouseTypeIncludeTagScopes));
+        }
+
         setIncludeEntityInstance(true);
     }
 

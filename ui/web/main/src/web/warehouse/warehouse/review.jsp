@@ -44,7 +44,8 @@
             </h2>
         </div>
         <div id="Content">
-            <et:checkSecurityRoles securityRoles="Location.List:Event.List" />
+            <et:checkSecurityRoles securityRoles="WarehouseType.Review:Location.List:Event.List" />
+            <et:hasSecurityRole securityRole="WarehouseType.Review" var="includeWarehouseTypeReviewUrl" />
             <c:choose>
                 <c:when test="${warehouse.partyGroup.name != null}">
                     <p><font size="+2"><b><et:appearance appearance="${warehouse.entityInstance.entityAppearance.appearance}"><c:out value="${warehouse.partyGroup.name}" /></et:appearance></b></font></p>
@@ -56,6 +57,19 @@
             </c:choose>
             <br />
             <fmt:message key="label.warehouseName" />: ${warehouse.warehouseName}<br />
+            <fmt:message key="label.warehouseType" />:
+            <c:choose>
+                <c:when test="${includeWarehouseTypeReviewUrl}">
+                    <c:url var="reviewUrl" value="/action/Warehouse/WarehouseType/Review">
+                        <c:param name="WarehouseTypeName" value="${warehouse.warehouseType.warehouseTypeName}" />
+                    </c:url>
+                    <a href="${reviewUrl}"><et:appearance appearance="${warehouse.warehouseType.entityInstance.entityAppearance.appearance}"><c:out value="${warehouse.warehouseType.description}" /></et:appearance></a>
+                </c:when>
+                <c:otherwise>
+                    <et:appearance appearance="${warehouse.warehouseType.entityInstance.entityAppearance.appearance}"><c:out value="${warehouse.warehouseType.description}" /></et:appearance>
+                </c:otherwise>
+            </c:choose>
+            <br />
             <br />
             <br />
             <br />

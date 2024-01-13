@@ -14,28 +14,22 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.warehouse.common.transfer;
+package com.echothree.ui.web.main.action.warehouse.warehousetype;
 
-import com.echothree.util.common.transfer.BaseTransfer;
+import com.echothree.view.client.web.struts.BasePartyActionForm;
+import com.echothree.view.client.web.struts.sprout.annotation.SproutForm;
+import javax.servlet.http.HttpServletRequest;
+import org.apache.struts.action.ActionMapping;
 
-public class WarehouseTypeTransfer
-        extends BaseTransfer {
-    
+@SproutForm(name="WarehouseTypeAdd")
+public class AddActionForm
+        extends BasePartyActionForm {
+
     private String warehouseTypeName;
-    private Integer priority;
+    private String priority;
     private Boolean isDefault;
-    private Integer sortOrder;
+    private String sortOrder;
     private String description;
-    
-    /** Creates a new instance of WarehouseTypeTransfer */
-    public WarehouseTypeTransfer(String warehouseTypeName, Integer priority, Boolean isDefault, Integer sortOrder,
-            String description) {
-        this.warehouseTypeName = warehouseTypeName;
-        this.priority = priority;
-        this.isDefault = isDefault;
-        this.sortOrder = sortOrder;
-        this.description = description;
-    }
 
     public String getWarehouseTypeName() {
         return warehouseTypeName;
@@ -45,11 +39,11 @@ public class WarehouseTypeTransfer
         this.warehouseTypeName = warehouseTypeName;
     }
 
-    public Integer getPriority() {
+    public String getPriority() {
         return priority;
     }
 
-    public void setPriority(final Integer priority) {
+    public void setPriority(final String priority) {
         this.priority = priority;
     }
 
@@ -57,15 +51,15 @@ public class WarehouseTypeTransfer
         return isDefault;
     }
 
-    public void getIsDefault(final Boolean isDefault) {
+    public void setIsDefault(final Boolean isDefault) {
         this.isDefault = isDefault;
     }
 
-    public Integer getSortOrder() {
+    public String getSortOrder() {
         return sortOrder;
     }
 
-    public void setSortOrder(final Integer sortOrder) {
+    public void setSortOrder(final String sortOrder) {
         this.sortOrder = sortOrder;
     }
 
@@ -77,4 +71,11 @@ public class WarehouseTypeTransfer
         this.description = description;
     }
 
+    @Override
+    public void reset(ActionMapping mapping, HttpServletRequest request) {
+        super.reset(mapping, request);
+        
+        setIsDefault(Boolean.FALSE);
+    }
+    
 }

@@ -116,7 +116,7 @@ public class WarehouseEditAction
         var executionResult = commandResult.getExecutionResult();
         var result = (EditWarehouseResult)executionResult.getResult();
 
-        request.setAttribute(AttributeConstants.VENDOR, result.getWarehouse());
+        request.setAttribute(AttributeConstants.WAREHOUSE, result.getWarehouse());
         
         return commandResult;
     }

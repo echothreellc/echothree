@@ -449,5 +449,7 @@ public interface ParameterConstants {
     String ULID = "Ulid";
     String GRAPHQL_QUERY = "query";
     String GRAPHQL_OPERATION_NAME = "operationName";
+    String WAREHOUSE_TYPE_NAME = "WarehouseTypeName";
+    String ORIGINAL_WAREHOUSE_TYPE_NAME = "OriginalWarehouseTypeName";
     
 }
