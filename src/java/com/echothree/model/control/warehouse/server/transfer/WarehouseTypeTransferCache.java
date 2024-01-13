@@ -16,7 +16,6 @@
 
 package com.echothree.model.control.warehouse.server.transfer;
 
-import com.echothree.model.control.party.common.PartyOptions;
 import com.echothree.model.control.warehouse.common.WarehouseOptions;
 import com.echothree.model.control.warehouse.common.transfer.WarehouseTypeTransfer;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
@@ -33,8 +32,8 @@ public class WarehouseTypeTransferCache
 
         var options = session.getOptions();
         if(options != null) {
-            setIncludeKey(options.contains(PartyOptions.PartyIncludeKey) || options.contains(WarehouseOptions.WarehouseTypeIncludeKey));
-            setIncludeGuid(options.contains(PartyOptions.PartyIncludeGuid) || options.contains(WarehouseOptions.WarehouseTypeIncludeGuid));
+            setIncludeKey(options.contains(WarehouseOptions.WarehouseTypeIncludeKey));
+            setIncludeGuid(options.contains(WarehouseOptions.WarehouseTypeIncludeGuid));
             setIncludeEntityAttributeGroups(options.contains(WarehouseOptions.WarehouseTypeIncludeEntityAttributeGroups));
             setIncludeTagScopes(options.contains(WarehouseOptions.WarehouseTypeIncludeTagScopes));
         }
