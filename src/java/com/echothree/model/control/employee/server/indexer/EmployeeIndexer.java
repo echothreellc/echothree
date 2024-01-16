@@ -37,7 +37,9 @@ public class EmployeeIndexer
     
     @Override
     protected String getEntityNameFromParty(final Party party) {
-        return employeeControl.getPartyEmployee(party).getPartyEmployeeName();
+        var partyEmployee = employeeControl.getPartyEmployee(party);
+
+        return partyEmployee == null ? null : partyEmployee.getPartyEmployeeName();
     }
 
 }

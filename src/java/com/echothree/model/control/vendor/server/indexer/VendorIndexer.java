@@ -37,7 +37,9 @@ public class VendorIndexer
     
     @Override
     protected String getEntityNameFromParty(final Party party) {
-        return vendorControl.getVendor(party).getVendorName();
+        var vendor = vendorControl.getVendor(party);
+
+        return vendor == null ? null : vendor.getVendorName();
     }
 
 }
