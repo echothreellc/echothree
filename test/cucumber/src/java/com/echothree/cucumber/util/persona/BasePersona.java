@@ -97,13 +97,17 @@ import com.echothree.control.user.filter.common.spec.FilterKindSpec;
 import com.echothree.control.user.filter.common.spec.FilterSpec;
 import com.echothree.control.user.filter.common.spec.FilterStepSpec;
 import com.echothree.control.user.filter.common.spec.FilterTypeSpec;
+import com.echothree.control.user.inventory.common.edit.AllocationPriorityEdit;
 import com.echothree.control.user.inventory.common.edit.InventoryConditionEdit;
 import com.echothree.control.user.inventory.common.edit.InventoryLocationGroupEdit;
+import com.echothree.control.user.inventory.common.form.CreateAllocationPriorityForm;
 import com.echothree.control.user.inventory.common.form.CreateInventoryConditionForm;
 import com.echothree.control.user.inventory.common.form.CreateInventoryLocationGroupForm;
+import com.echothree.control.user.inventory.common.form.DeleteAllocationPriorityForm;
 import com.echothree.control.user.inventory.common.form.DeleteInventoryConditionForm;
 import com.echothree.control.user.inventory.common.form.DeleteInventoryLocationGroupForm;
 import com.echothree.control.user.inventory.common.form.SetInventoryLocationGroupStatusForm;
+import com.echothree.control.user.inventory.common.spec.AllocationPriorityUniversalSpec;
 import com.echothree.control.user.inventory.common.spec.InventoryConditionUniversalSpec;
 import com.echothree.control.user.inventory.common.spec.InventoryLocationGroupSpec;
 import com.echothree.control.user.item.common.edit.ItemAliasTypeEdit;
@@ -409,8 +413,14 @@ public class BasePersona {
     public InventoryConditionUniversalSpec inventoryConditionSpec;
     public InventoryConditionEdit inventoryConditionEdit;
 
+    public CreateAllocationPriorityForm createAllocationPriorityForm;
+    public DeleteAllocationPriorityForm deleteAllocationPriorityForm;
+    public AllocationPriorityUniversalSpec allocationPrioritySpec;
+    public AllocationPriorityEdit allocationPriorityEdit;
+
     public String lastInventoryLocationGroupName;
     public String lastInventoryConditionName;
+    public String lastAllocationPriorityName;
 
     // Item
     public CreateItemForm createItemForm;
