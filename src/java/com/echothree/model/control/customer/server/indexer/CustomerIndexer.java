@@ -39,7 +39,7 @@ public class CustomerIndexer
     protected String getEntityNameFromParty(final Party party) {
         var customer = customerControl.getCustomer(party);
 
-        return customer.getCustomerName();
+        return customer == null ? null : customer.getCustomerName();
     }
 
 }
