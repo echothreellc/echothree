@@ -37,7 +37,9 @@ public class CustomerIndexer
     
     @Override
     protected String getEntityNameFromParty(final Party party) {
-        return customerControl.getCustomer(party).getCustomerName();
+        var customer = customerControl.getCustomer(party);
+
+        return customer == null ? null : customer.getCustomerName();
     }
 
 }

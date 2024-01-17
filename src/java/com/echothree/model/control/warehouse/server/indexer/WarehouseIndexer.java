@@ -38,7 +38,9 @@ public class WarehouseIndexer
     
     @Override
     protected String getEntityNameFromParty(final Party party) {
-        return warehouseControl.getWarehouse(party).getWarehouseName();
+        var warehouse = warehouseControl.getWarehouse(party);
+
+        return warehouse == null ? null : warehouse.getWarehouseName();
     }
 
 }

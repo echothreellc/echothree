@@ -25,10 +25,7 @@ import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.party.server.entity.PartyDetail;
-import com.echothree.model.data.party.server.entity.PartyGroup;
 import com.echothree.model.data.party.server.entity.PartyType;
-import com.echothree.model.data.party.server.entity.Person;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
 import org.apache.lucene.analysis.Analyzer;
@@ -43,7 +40,8 @@ public abstract class PartyIndexer
     PartyType partyType;
     String entityNameIndexField;
     
-    protected PartyIndexer(final ExecutionErrorAccumulator eea, final Index index, final String partyTypeName, final String entityNameIndexField) {
+    protected PartyIndexer(final ExecutionErrorAccumulator eea, final Index index, final String partyTypeName,
+            final String entityNameIndexField) {
         super(eea, index);
         
         this.partyType = PartyLogic.getInstance().getPartyTypeByName(eea, partyTypeName);
@@ -61,50 +59,58 @@ public abstract class PartyIndexer
         return new PartyAnalyzer(eea, language, entityType, entityAttributes, tagScopes, partyType, entityNameIndexField);
     }
 
+    /**
+     * All PartyTypes have their own EntityName in addition to the partyName. If null is returned for this field, it
+     * likely indicates that the Party has been deleted before indexing picked it up and it will be ignored.
+     * @param party Party to return the EntityName for
+     * @return String with the EntityName, or null if it was not found
+     */
     protected abstract String getEntityNameFromParty(final Party party);
     
     @Override
     protected Document convertToDocument(final EntityInstance entityInstance, final Party party) {
-        PartyDetail partyDetail = party.getLastDetail();
+        var partyDetail = party.getLastDetail();
         Document document = null;
 
         if(partyDetail.getPartyType().equals(partyType)) {
-            PartyGroup partyGroup = partyControl.getPartyGroup(party);
-            Person person = partyControl.getPerson(party);
-            String name = partyGroup == null ? null : partyGroup.getName();
-            String entityName = getEntityNameFromParty(party);
-            var partyAliases = partyControl.getPartyAliasesByParty(party);
+            var entityName = getEntityNameFromParty(party);
 
-            document = newDocumentWithEntityInstanceFields(entityInstance, party.getPrimaryKey());
-            
-            document.add(new Field(IndexFields.partyName.name(), partyDetail.getPartyName(), FieldTypes.NOT_STORED_TOKENIZED));
-
+            // If this field is null, do not index the Party.
             if(entityName != null) {
+                var person = partyControl.getPerson(party);
+                var partyGroup = partyControl.getPartyGroup(party);
+                var name = partyGroup == null ? null : partyGroup.getName();
+                var partyAliases = partyControl.getPartyAliasesByParty(party);
+
+                document = newDocumentWithEntityInstanceFields(entityInstance, party.getPrimaryKey());
+
+                document.add(new Field(IndexFields.partyName.name(), partyDetail.getPartyName(), FieldTypes.NOT_STORED_TOKENIZED));
                 document.add(new Field(entityNameIndexField, entityName, FieldTypes.NOT_STORED_TOKENIZED));
-            }
 
-            if(name != null) {
-                document.add(new Field(IndexFields.name.name(), name, FieldTypes.NOT_STORED_TOKENIZED));
-            }
-
-            if(person != null) {
-                String firstName = person.getFirstName();
-                String middleName = person.getMiddleName();
-                String lastName = person.getLastName();
-
-                if(firstName != null) {
-                    document.add(new Field(IndexFields.firstName.name(), firstName, FieldTypes.NOT_STORED_TOKENIZED));
+                if(name != null) {
+                    document.add(new Field(IndexFields.name.name(), name, FieldTypes.NOT_STORED_TOKENIZED));
                 }
-                if(middleName != null) {
-                    document.add(new Field(IndexFields.middleName.name(), middleName, FieldTypes.NOT_STORED_TOKENIZED));
-                }
-                if(lastName != null) {
-                    document.add(new Field(IndexFields.lastName.name(), lastName, FieldTypes.NOT_STORED_TOKENIZED));
-                }
-            }
 
-            for(var partyAlias : partyAliases) {
-                document.add(new Field(partyAlias.getPartyAliasType().getLastDetail().getPartyAliasTypeName(), partyAlias.getAlias(), FieldTypes.NOT_STORED_TOKENIZED));
+                if(person != null) {
+                    var firstName = person.getFirstName();
+                    var middleName = person.getMiddleName();
+                    var lastName = person.getLastName();
+
+                    if(firstName != null) {
+                        document.add(new Field(IndexFields.firstName.name(), firstName, FieldTypes.NOT_STORED_TOKENIZED));
+                    }
+                    if(middleName != null) {
+                        document.add(new Field(IndexFields.middleName.name(), middleName, FieldTypes.NOT_STORED_TOKENIZED));
+                    }
+                    if(lastName != null) {
+                        document.add(new Field(IndexFields.lastName.name(), lastName, FieldTypes.NOT_STORED_TOKENIZED));
+                    }
+                }
+
+                for(var partyAlias : partyAliases) {
+                    document.add(new Field(partyAlias.getPartyAliasType().getLastDetail().getPartyAliasTypeName(),
+                            partyAlias.getAlias(), FieldTypes.NOT_STORED_TOKENIZED));
+                }
             }
         }
 
