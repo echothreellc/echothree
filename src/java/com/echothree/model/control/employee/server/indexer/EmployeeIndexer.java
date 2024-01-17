@@ -32,7 +32,7 @@ public class EmployeeIndexer
     
     /** Creates a new instance of EmployeeIndexer */
     public EmployeeIndexer(final ExecutionErrorAccumulator eea, final Index index) {
-        super(eea, index, PartyTypes.EMPLOYEE.name(), IndexFields.PartyEmployeeName.name());
+        super(eea, index, PartyTypes.EMPLOYEE.name(), IndexFields.partyEmployeeName.name());
     }
     
     @Override

@@ -81,7 +81,7 @@ public enum IndexFields {
     overview,
     parentContentCategoryName,
     parentSecurityRoleGroupName,
-    PartyEmployeeName,
+    partyEmployeeName,
     partyName,
     partyNames,
     partyTypeNames,

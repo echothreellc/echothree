@@ -44,7 +44,7 @@ public class EmployeeSearchEvaluator
     public EmployeeSearchEvaluator(UserVisit userVisit, SearchType searchType, SearchDefaultOperator searchDefaultOperator,
             SearchSortOrder searchSortOrder, SearchSortDirection searchSortDirection) {
         super(userVisit, searchType, searchDefaultOperator, searchSortOrder, searchSortDirection, PartyTypes.EMPLOYEE.name(),
-                IndexFields.PartyEmployeeName.name(), Indexes.EMPLOYEE.name());
+                IndexFields.partyEmployeeName.name(), Indexes.EMPLOYEE.name());
     }
     
     public EntityInstancePKHolder getEntityInstancePKHolderByEmployeeStatusWorkflowStep(WorkflowStep employeeStatusWorkflowStep) {
