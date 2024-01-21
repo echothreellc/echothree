@@ -1,5 +1,15 @@
 # Changelog
 
+## 2024-01-21-01
+
+* Add Inventory Condition Tests [1066](https://gitlab.echothree.com/echothree/echothree/-/issues/1066)
+* Add Allocation Priority Tests [1067](https://gitlab.echothree.com/echothree/echothree/-/issues/1067)
+* Add UI for Maintaining Warehouse Types [1078](https://gitlab.echothree.com/echothree/echothree/-/issues/1078)
+* Apache Ivy 2.5.2 Upgrade [1079](https://gitlab.echothree.com/echothree/echothree/-/issues/1079)
+* jQuery 3.7.1 Upgrade [1081](https://gitlab.echothree.com/echothree/echothree/-/issues/1081)
+* NPE When Indexing Warehouses [1084](https://gitlab.echothree.com/echothree/echothree/-/issues/1084)
+* IndexField partyEmployeeName Incorrectly Capitalized [1085](https://gitlab.echothree.com/echothree/echothree/-/issues/1085)
+
 ## 2024-01-07-01
 
 * Add Warehouse Types [845](https://gitlab.echothree.com/echothree/echothree/-/issues/845)
