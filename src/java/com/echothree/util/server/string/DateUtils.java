@@ -24,9 +24,10 @@ import com.echothree.util.common.string.DateFormatter;
 import com.echothree.util.common.string.DateTimeFormatType;
 import com.echothree.util.common.string.DateTimeFormatter;
 import com.echothree.util.server.persistence.Session;
-import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
-import java.util.Date;
+import java.time.LocalTime;
+import java.time.ZoneId;
 
 public class DateUtils {
     
@@ -49,8 +50,8 @@ public class DateUtils {
         
         if(date != null) {
             var userControl = Session.getModelController(UserControl.class);
-            LocalDate localDate = LocalDate.parse(date.toString(), dateTimeFormatter);
-            java.time.format.DateTimeFormatter resultDateTimeFormatter = java.time.format.DateTimeFormatter.ofPattern(userControl.getPreferredDateTimeFormatFromUserVisit(userVisit).getLastDetail().getJavaShortDateFormat());
+            var localDate = LocalDate.parse(date.toString(), dateTimeFormatter);
+            var resultDateTimeFormatter = java.time.format.DateTimeFormatter.ofPattern(userControl.getPreferredDateTimeFormatFromUserVisit(userVisit).getLastDetail().getJavaShortDateFormat());
             
             result = resultDateTimeFormatter.format(localDate);
         }
@@ -66,53 +67,51 @@ public class DateUtils {
         return getUserControl().getPreferredTimeZoneFromUserVisit(userVisit);
     }
     
-    protected String getJavaTimeZoneName(UserVisit userVisit) {
+    protected String getJavaTimeZoneName(final UserVisit userVisit) {
         return getTimeZone(userVisit).getLastDetail().getJavaTimeZoneName();
     }
     
-    protected java.util.TimeZone getJavaTimeZone(UserVisit userVisit) {
-        return java.util.TimeZone.getTimeZone(getJavaTimeZoneName(userVisit));
+    protected ZoneId getJavaTimeZone(final UserVisit userVisit) {
+        return ZoneId.of(getJavaTimeZoneName(userVisit));
     }
     
-    protected DateTimeFormat getDateTimeFormat(UserVisit userVisit) {
+    protected DateTimeFormat getDateTimeFormat(final UserVisit userVisit) {
         return getUserControl().getPreferredDateTimeFormatFromUserVisit(userVisit);
     }
     
-    protected String formatDateUsingShortDateFormat(UserVisit userVisit, DateTimeFormat dateTimeFormat, Date time) {
-        var sdfShortDateFormat = new SimpleDateFormat(dateTimeFormat.getLastDetail().getJavaShortDateFormat());
+    protected String formatDateUsingShortDateFormat(final UserVisit userVisit, final DateTimeFormat dateTimeFormat, final Instant instant) {
+        var dateTimeFormatter = java.time.format.DateTimeFormatter.ofPattern(dateTimeFormat.getLastDetail().getJavaShortDateFormat());
+        var localDate = LocalDate.ofInstant(instant, getJavaTimeZone(userVisit));
 
-        sdfShortDateFormat.setTimeZone(getJavaTimeZone(userVisit));
+        return localDate.format(dateTimeFormatter);
+    }
 
-        return sdfShortDateFormat.format(time);
+    protected String formatTimeUsingTimeFormatSeconds(final UserVisit userVisit, final DateTimeFormat dateTimeFormat, final Instant instant) {
+        var dateTimeFormatter = java.time.format.DateTimeFormatter.ofPattern(dateTimeFormat.getLastDetail().getJavaTimeFormatSeconds());
+        var localTime = LocalTime.ofInstant(instant, getJavaTimeZone(userVisit));
+
+        return localTime.format(dateTimeFormatter);
     }
     
-    protected String formatTimeUsingTimeFormatSeconds(UserVisit userVisit, DateTimeFormat dateTimeFormat, Date time) {
-        var sdfTimeFormatSeconds = new SimpleDateFormat(dateTimeFormat.getLastDetail().getJavaTimeFormatSeconds());
-
-        sdfTimeFormatSeconds.setTimeZone(getJavaTimeZone(userVisit));
-
-        return sdfTimeFormatSeconds.format(time);
+    public String formatTypicalDateTime(final UserVisit userVisit, final DateTimeFormat dateTimeFormat, final Instant instant) {
+        return instant == null || dateTimeFormat == null ? null : formatDateUsingShortDateFormat(userVisit, dateTimeFormat, instant) + ' ' + formatTimeUsingTimeFormatSeconds(userVisit, dateTimeFormat, instant);
     }
     
-    public String formatTypicalDateTime(UserVisit userVisit, DateTimeFormat dateTimeFormat, Date time) {
-        return time == null || dateTimeFormat == null ? null : formatDateUsingShortDateFormat(userVisit, dateTimeFormat, time) + ' ' + formatTimeUsingTimeFormatSeconds(userVisit, dateTimeFormat, time);
+    public String formatTypicalDateTime(final UserVisit userVisit, final Instant instant) {
+        return formatTypicalDateTime(userVisit, getDateTimeFormat(userVisit), instant);
     }
     
-    public String formatTypicalDateTime(UserVisit userVisit, Date time) {
+    public String formatTypicalDateTime(final UserVisit userVisit, final DateTimeFormat dateTimeFormat, final Long time) {
+        return time == null || dateTimeFormat == null ? null : formatTypicalDateTime(userVisit, dateTimeFormat, Instant.ofEpochMilli(time));
+    }
+    
+    public String formatTypicalDateTime(final UserVisit userVisit, final Long time) {
         return formatTypicalDateTime(userVisit, getDateTimeFormat(userVisit), time);
     }
     
-    public String formatTypicalDateTime(UserVisit userVisit, DateTimeFormat dateTimeFormat, Long time) {
-        return time == null || dateTimeFormat == null ? null : formatTypicalDateTime(userVisit, dateTimeFormat, new Date(time));
-    }
-    
-    public String formatTypicalDateTime(UserVisit userVisit, Long time) {
-        return formatTypicalDateTime(userVisit, getDateTimeFormat(userVisit), time);
-    }
-    
-    public DateFormatter getDateFormatter(UserVisit userVisit, DateTimeFormatType dtft) {
+    public DateFormatter getDateFormatter(final UserVisit userVisit, final DateTimeFormatType dtft) {
         var dtfd = getDateTimeFormat(userVisit).getLastDetail();
-        String pattern = null;
+        String pattern;
 
         switch(dtft) {
             case SHORT_DATE -> pattern = dtfd.getJavaShortDateFormat();
@@ -126,9 +125,9 @@ public class DateUtils {
         return new DateFormatter(pattern);
     }
     
-    public DateTimeFormatter getDateTimeFormatter(UserVisit userVisit, DateTimeFormatType dtft) {
+    public DateTimeFormatter getDateTimeFormatter(final UserVisit userVisit, final DateTimeFormatType dtft) {
         var dtfd = getDateTimeFormat(userVisit).getLastDetail();
-        String pattern = null;
+        String pattern;
 
         switch(dtft) {
             case SHORT_DATE -> pattern = dtfd.getJavaShortDateFormat();
@@ -138,6 +137,7 @@ public class DateUtils {
             case LONG_DATE_WITH_WEEKDAY -> pattern = dtfd.getJavaLongDateFormatWeekday();
             case TIME -> pattern = dtfd.getJavaTimeFormat();
             case TIME_WITH_SECONDS -> pattern = dtfd.getJavaTimeFormatSeconds();
+            default -> { throw new IllegalArgumentException(); }
         }
 
         return new DateTimeFormatter(getJavaTimeZoneName(userVisit), pattern);
