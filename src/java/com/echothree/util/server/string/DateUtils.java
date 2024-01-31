@@ -119,9 +119,9 @@ public class DateUtils {
             case ABBREV_DATE_WITH_WEEKDAY -> pattern = dtfd.getJavaAbbrevDateFormatWeekday();
             case LONG_DATE -> pattern = dtfd.getJavaLongDateFormat();
             case LONG_DATE_WITH_WEEKDAY -> pattern = dtfd.getJavaLongDateFormatWeekday();
-            default -> { throw new IllegalArgumentException(); }
+            default -> throw new IllegalArgumentException();
         }
-        
+
         return new DateFormatter(pattern);
     }
     
@@ -137,7 +137,7 @@ public class DateUtils {
             case LONG_DATE_WITH_WEEKDAY -> pattern = dtfd.getJavaLongDateFormatWeekday();
             case TIME -> pattern = dtfd.getJavaTimeFormat();
             case TIME_WITH_SECONDS -> pattern = dtfd.getJavaTimeFormatSeconds();
-            default -> { throw new IllegalArgumentException(); }
+            default -> throw new IllegalArgumentException();
         }
 
         return new DateTimeFormatter(getJavaTimeZoneName(userVisit), pattern);

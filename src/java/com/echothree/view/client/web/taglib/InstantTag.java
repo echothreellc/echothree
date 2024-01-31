@@ -17,13 +17,13 @@
 
 package com.echothree.view.client.web.taglib;
 
-import java.util.Date;
+import java.time.Instant;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class DateTag
+public class InstantTag
         extends BaseTag {
     
     Log log = LogFactory.getLog(this.getClass());
@@ -38,8 +38,8 @@ public class DateTag
         scope = PageContext.PAGE_SCOPE;
     }
 
-    /** Creates a new instance of DateTag */
-    public DateTag() {
+    /** Creates a new instance of InstantTag */
+    public InstantTag() {
         super();
         init();
     }
@@ -69,7 +69,7 @@ public class DateTag
     @Override
     public int doStartTag()
             throws JspException {
-        pageContext.setAttribute(var, value == null ? new Date() : new Date(value), scope);
+        pageContext.setAttribute(var, value == null ? Instant.now() : Instant.ofEpochMilli(value), scope);
 
         return SKIP_BODY;
     }

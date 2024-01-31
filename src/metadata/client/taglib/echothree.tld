@@ -6255,8 +6255,8 @@
         </attribute>
     </tag>
     <tag>
-        <name>date</name>
-        <tag-class>com.echothree.view.client.web.taglib.DateTag</tag-class>
+        <name>instant</name>
+        <tag-class>com.echothree.view.client.web.taglib.InstantTag</tag-class>
         <body-content>JSP</body-content>
         <attribute>
             <name>value</name>
