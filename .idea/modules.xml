@@ -12,7 +12,6 @@
       <module fileurl="file://$PROJECT_DIR$/service/job/job.iml" filepath="$PROJECT_DIR$/service/job/job.iml" />
       <module fileurl="file://$PROJECT_DIR$/test/junit/junit.iml" filepath="$PROJECT_DIR$/test/junit/junit.iml" />
       <module fileurl="file://$PROJECT_DIR$/ui/web/letter/letter.iml" filepath="$PROJECT_DIR$/ui/web/letter/letter.iml" />
-      <module fileurl="file://$PROJECT_DIR$/ui/cli/logging/logging.iml" filepath="$PROJECT_DIR$/ui/cli/logging/logging.iml" />
       <module fileurl="file://$PROJECT_DIR$/ui/cli/mailtransfer/mailtransfer.iml" filepath="$PROJECT_DIR$/ui/cli/mailtransfer/mailtransfer.iml" />
       <module fileurl="file://$PROJECT_DIR$/ui/web/main/main.iml" filepath="$PROJECT_DIR$/ui/web/main/main.iml" />
       <module fileurl="file://$PROJECT_DIR$/src/src.iml" filepath="$PROJECT_DIR$/src/src.iml" />
