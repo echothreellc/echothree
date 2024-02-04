@@ -6255,6 +6255,29 @@
         </attribute>
     </tag>
     <tag>
+        <name>date</name>
+        <tag-class>com.echothree.view.client.web.taglib.DateTag</tag-class>
+        <body-content>JSP</body-content>
+        <attribute>
+            <name>value</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.Long</type>
+        </attribute>
+        <attribute>
+            <name>var</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+        <attribute>
+            <name>scope</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+    </tag>
+    <tag>
         <name>instant</name>
         <tag-class>com.echothree.view.client.web.taglib.InstantTag</tag-class>
         <body-content>JSP</body-content>
