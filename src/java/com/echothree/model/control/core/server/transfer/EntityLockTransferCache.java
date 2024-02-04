@@ -18,8 +18,8 @@ package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.core.common.transfer.EntityLockTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.CoreDebugFlags;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.common.pk.EntityInstancePK;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.factory.EntityInstanceFactory;
@@ -34,7 +34,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 import javax.sql.DataSource;
 
 public class EntityLockTransferCache
@@ -115,10 +114,8 @@ public class EntityLockTransferCache
                     getLog().info("--- lockTargetEntityInstanceTransfer=" + lockTargetEntityInstanceTransfer);
                 }
 
-                Date time = new Date(lockedTime);
-                String lockedTimeString = formatTypicalDateTime(time);
-                time.setTime(expirationTime);
-                String expirationTimeString = formatTypicalDateTime(time);
+                var lockedTimeString = formatTypicalDateTime(lockedTime);
+                var expirationTimeString = formatTypicalDateTime(expirationTime);
 
                 entityLockTransfer = new EntityLockTransfer(lockTargetEntityInstanceTransfer, lockedByEntityInstanceTransfer, lockedTime, lockedTimeString, expirationTime, expirationTimeString);
             }

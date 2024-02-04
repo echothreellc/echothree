@@ -18,12 +18,9 @@ package com.echothree.model.control.core.server.transfer;
 
 import com.echothree.model.control.core.common.CoreProperties;
 import com.echothree.model.control.core.common.transfer.EntityTimeTransfer;
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.EntityTime;
 import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.util.common.form.TransferProperties;
-import java.util.Date;
-import java.util.Set;
 
 public class EntityTimeTransferCache
         extends BaseCoreTransferCache<EntityTime, EntityTimeTransfer> {
@@ -56,42 +53,21 @@ public class EntityTimeTransferCache
     }
     
     public EntityTimeTransfer getEntityTimeTransfer(EntityTime entityTime) {
-        EntityTimeTransfer entityTimeTransfer = get(entityTime);
+        var entityTimeTransfer = get(entityTime);
         
         if(entityTimeTransfer == null) {
-            Long unformattedCreatedTime = filterUnformattedCreatedTime ? null : entityTime.getCreatedTime();
-            Date time = !filterUnformattedCreatedTime || !filterUnformattedModifiedTime || !filterUnformattedDeletedTime ? new Date() : null;
-            String createdTime;
-            Long unformattedModifiedTime = filterUnformattedModifiedTime ? null : entityTime.getModifiedTime();
-            String modifiedTime;
-            Long unformattedDeletedTime = filterUnformattedDeletedTime ? null : entityTime.getDeletedTime();
-            String deletedTime;
-            
-            if(unformattedCreatedTime == null) {
-                createdTime = null;
-            } else {
-                time.setTime(unformattedCreatedTime);
-                createdTime = formatTypicalDateTime(time);
-            }
-            
-            if(unformattedModifiedTime == null) {
-                modifiedTime = null;
-            } else {
-                time.setTime(unformattedModifiedTime);
-                modifiedTime = formatTypicalDateTime(time);
-            }
-            
-            if(unformattedDeletedTime == null) {
-                deletedTime = null;
-            } else {
-                time.setTime(unformattedDeletedTime);
-                deletedTime = formatTypicalDateTime(time);
-            }
+            var unformattedCreatedTime = filterUnformattedCreatedTime ? null : entityTime.getCreatedTime();
+            var createdTime = formatTypicalDateTime(unformattedCreatedTime);
+            var unformattedModifiedTime = filterUnformattedModifiedTime ? null : entityTime.getModifiedTime();
+            var modifiedTime = formatTypicalDateTime(unformattedModifiedTime);
+            var unformattedDeletedTime = filterUnformattedDeletedTime ? null : entityTime.getDeletedTime();
+            var deletedTime = formatTypicalDateTime(unformattedDeletedTime);
             
             entityTimeTransfer = new EntityTimeTransfer(unformattedCreatedTime, createdTime, unformattedModifiedTime, modifiedTime,
                     unformattedDeletedTime, deletedTime);
             put(entityTime, entityTimeTransfer);
         }
+
         return entityTimeTransfer;
     }
     

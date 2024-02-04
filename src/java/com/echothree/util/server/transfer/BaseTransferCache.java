@@ -52,7 +52,6 @@ import com.echothree.util.server.persistence.ThreadSession;
 import com.echothree.util.server.string.DateUtils;
 import com.echothree.util.server.string.PercentUtils;
 import com.echothree.util.server.string.UnitOfMeasureUtils;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -186,11 +185,7 @@ public abstract class BaseTransferCache<K extends BaseEntity, V extends BaseTran
         
         return dateTimeFormat;
     }
-    
-    protected String formatTypicalDateTime(Date time) {
-        return DateUtils.getInstance().formatTypicalDateTime(userVisit, time);
-    }
-    
+
     protected String formatTypicalDateTime(Long time) {
         return DateUtils.getInstance().formatTypicalDateTime(userVisit, time);
     }
