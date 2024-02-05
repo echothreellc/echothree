@@ -1,5 +1,12 @@
 # Changelog
 
+## 2024-02-04-01
+
+* Migrate Usage of java.util.Date to Modern Implementation [1080](https://gitlab.echothree.com/echothree/echothree/-/issues/1080)
+* jOOQ 3.19.3 Upgrade [1086](https://gitlab.echothree.com/echothree/echothree/-/issues/1086)
+* Remove "logging" [1087](https://gitlab.echothree.com/echothree/echothree/-/issues/1087)
+* ICU4J 74.2 Upgrade [1088](https://gitlab.echothree.com/echothree/echothree/-/issues/1088)
+
 ## 2024-01-21-01
 
 * Add Inventory Condition Tests [1066](https://gitlab.echothree.com/echothree/echothree/-/issues/1066)
