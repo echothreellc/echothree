@@ -19,6 +19,7 @@ package com.echothree.view.client.web.taglib.util;
 
 import com.google.common.collect.Sets;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import javax.servlet.ServletRequest;
@@ -72,13 +73,13 @@ public class AbsoluteUrlFilter
     }
 
     private void filterElementAndAttributes(QName element, XMLAttributes attributes) {
-        Set<String> attributesSet = elementsAndAttributes.get(element.rawname.toLowerCase());
+        Set<String> attributesSet = elementsAndAttributes.get(element.rawname.toLowerCase(Locale.getDefault()));
 
         if(attributesSet != null) {
             int attributeCount = attributes.getLength();
 
             for(int i = 0; i < attributeCount; i++) {
-                if(attributesSet.contains(attributes.getQName(i).toLowerCase())) {
+                if(attributesSet.contains(attributes.getQName(i).toLowerCase(Locale.getDefault()))) {
                      attributes.setValue(i, absoluteifyUrl(attributes.getValue(i)));
                  }
             }

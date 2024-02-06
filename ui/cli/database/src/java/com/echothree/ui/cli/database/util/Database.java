@@ -19,6 +19,7 @@ package com.echothree.ui.cli.database.util;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class Database {
@@ -102,7 +103,7 @@ public class Database {
         
         myTables.add(result);
         myTablesByPlural.put(namePlural, result);
-        myTablesByPluralLowerCase.put(namePlural.toLowerCase(), result);
+        myTablesByPluralLowerCase.put(namePlural.toLowerCase(Locale.getDefault()), result);
         myTablesBySingular.put(nameSingular, result);
         myTablesByColumnPrefix.put(columnPrefix, result);
         

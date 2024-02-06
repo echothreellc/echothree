@@ -31,6 +31,7 @@ import com.echothree.model.data.user.common.pk.UserVisitPK;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import javax.naming.NamingException;
 import org.slf4j.Logger;
@@ -127,7 +128,7 @@ public class HtsParser {
             var countryList = getCountryList();
             
             countryList.forEach((countryDirectory) -> {
-                var country = getCountry(countryDirectory.toUpperCase());
+                var country = getCountry(countryDirectory.toUpperCase(Locale.getDefault()));
 
                 if(country != null) {
                     var countryName = country.getGeoCodeAliases().getMap().get(GeoConstants.GeoCodeAliasType_COUNTRY_NAME).getAlias();

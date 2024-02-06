@@ -52,6 +52,7 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 public class CreateContactTelephoneCommand
@@ -103,7 +104,7 @@ public class CreateContactTelephoneCommand
         if(party != null) {
             var geoControl = Session.getModelController(GeoControl.class);
             String countryName = form.getCountryName();
-            String countryAlias = StringUtils.getInstance().cleanStringToName(countryName).toUpperCase();
+            String countryAlias = StringUtils.getInstance().cleanStringToName(countryName).toUpperCase(Locale.getDefault());
             GeoCode countryGeoCode = geoControl.getCountryByAlias(countryAlias);
             
             if(countryGeoCode != null) {

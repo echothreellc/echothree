@@ -19,6 +19,7 @@ package com.echothree.ui.cli.database.util;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class Table {
@@ -97,7 +98,7 @@ public class Table {
     }
     
     public String getNamePluralLowerCase() {
-        return getNamePlural().toLowerCase();
+        return getNamePlural().toLowerCase(Locale.getDefault());
     }
     
     public String getNameSingular() {
@@ -109,7 +110,7 @@ public class Table {
     }
     
     public String getColumnPrefixLowerCase() {
-        return getColumnPrefix().toLowerCase();
+        return getColumnPrefix().toLowerCase(Locale.getDefault());
     }
     
     public String getChunkSize() {
@@ -135,7 +136,7 @@ public class Table {
         
         columns.add(newColumn);
         myColumns.put(attrName, newColumn);
-        myColumnsByLowerCase.put(attrName.toLowerCase(), newColumn);
+        myColumnsByLowerCase.put(attrName.toLowerCase(Locale.getDefault()), newColumn);
         
         if(newColumn.getType() == ColumnType.columnForeignKey) {
             foreignKeys.add(newColumn);
@@ -319,7 +320,7 @@ public class Table {
     
     public String getDbTableName() {
         if(dbTableName == null) {
-            dbTableName = namePlural.toLowerCase();
+            dbTableName = namePlural.toLowerCase(Locale.getDefault());
         }
         return dbTableName;
     }

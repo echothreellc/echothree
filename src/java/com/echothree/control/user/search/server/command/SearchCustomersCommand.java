@@ -54,6 +54,7 @@ import com.google.common.base.Splitter;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 public class SearchCustomersCommand
@@ -159,7 +160,7 @@ public class SearchCustomersCommand
                     if(!hasExecutionErrors()) {
                         var geoControl = Session.getModelController(GeoControl.class);
                         String countryName = form.getCountryName();
-                        String countryAlias = countryName == null ? null : StringUtils.getInstance().cleanStringToName(countryName).toUpperCase();
+                        String countryAlias = countryName == null ? null : StringUtils.getInstance().cleanStringToName(countryName).toUpperCase(Locale.getDefault());
                         GeoCode countryGeoCode = countryAlias == null ? null : geoControl.getCountryByAlias(countryAlias);
 
                         if(countryName == null || countryGeoCode != null) {

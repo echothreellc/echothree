@@ -128,6 +128,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -166,7 +167,7 @@ public class CampaignControl
     }
     
     public Campaign createCampaign(String campaignName, String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase());
+        String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
         Campaign defaultCampaign = getDefaultCampaign();
         boolean defaultFound = defaultCampaign != null;
 
@@ -259,7 +260,7 @@ public class CampaignControl
 
     private Campaign getCampaignByValue(String value, EntityPermission entityPermission) {
         return CampaignFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignByValueQueries, 
-                Sha1Utils.getInstance().hash(value.toLowerCase()));
+                Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault())));
     }
 
     public Campaign getCampaignByValue(String value) {
@@ -441,7 +442,7 @@ public class CampaignControl
             CampaignPK campaignPK = campaignDetail.getCampaignPK(); // Not updated
             String campaignName = campaignDetailValue.getCampaignName();
             var value = campaignDetailValue.getValue();
-            String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase());
+            String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
             Boolean isDefault = campaignDetailValue.getIsDefault();
             Integer sortOrder = campaignDetailValue.getSortOrder();
 
@@ -682,7 +683,7 @@ public class CampaignControl
     }
     
     public CampaignSource createCampaignSource(String campaignSourceName, String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase());
+        String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
         CampaignSource defaultCampaignSource = getDefaultCampaignSource();
         boolean defaultFound = defaultCampaignSource != null;
 
@@ -775,7 +776,7 @@ public class CampaignControl
 
     private CampaignSource getCampaignSourceByValue(String value, EntityPermission entityPermission) {
         return CampaignSourceFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignSourceByValueQueries, 
-                Sha1Utils.getInstance().hash(value.toLowerCase()));
+                Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault())));
     }
 
     public CampaignSource getCampaignSourceByValue(String value) {
@@ -957,7 +958,7 @@ public class CampaignControl
             CampaignSourcePK campaignSourcePK = campaignSourceDetail.getCampaignSourcePK(); // Not updated
             String campaignSourceName = campaignSourceDetailValue.getCampaignSourceName();
             var value = campaignSourceDetailValue.getValue();
-            String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase());
+            String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
             Boolean isDefault = campaignSourceDetailValue.getIsDefault();
             Integer sortOrder = campaignSourceDetailValue.getSortOrder();
 
@@ -1198,7 +1199,7 @@ public class CampaignControl
     }
     
     public CampaignMedium createCampaignMedium(String campaignMediumName, String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase());
+        String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
         CampaignMedium defaultCampaignMedium = getDefaultCampaignMedium();
         boolean defaultFound = defaultCampaignMedium != null;
 
@@ -1291,7 +1292,7 @@ public class CampaignControl
 
     private CampaignMedium getCampaignMediumByValue(String value, EntityPermission entityPermission) {
         return CampaignMediumFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignMediumByValueQueries, 
-                Sha1Utils.getInstance().hash(value.toLowerCase()));
+                Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault())));
     }
 
     public CampaignMedium getCampaignMediumByValue(String value) {
@@ -1473,7 +1474,7 @@ public class CampaignControl
             CampaignMediumPK campaignMediumPK = campaignMediumDetail.getCampaignMediumPK(); // Not updated
             String campaignMediumName = campaignMediumDetailValue.getCampaignMediumName();
             var value = campaignMediumDetailValue.getValue();
-            String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase());
+            String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
             Boolean isDefault = campaignMediumDetailValue.getIsDefault();
             Integer sortOrder = campaignMediumDetailValue.getSortOrder();
 
@@ -1714,7 +1715,7 @@ public class CampaignControl
     }
     
     public CampaignTerm createCampaignTerm(String campaignTermName, String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase());
+        String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
         CampaignTerm defaultCampaignTerm = getDefaultCampaignTerm();
         boolean defaultFound = defaultCampaignTerm != null;
 
@@ -1807,7 +1808,7 @@ public class CampaignControl
 
     private CampaignTerm getCampaignTermByValue(String value, EntityPermission entityPermission) {
         return CampaignTermFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignTermByValueQueries, 
-                Sha1Utils.getInstance().hash(value.toLowerCase()));
+                Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault())));
     }
 
     public CampaignTerm getCampaignTermByValue(String value) {
@@ -1989,7 +1990,7 @@ public class CampaignControl
             CampaignTermPK campaignTermPK = campaignTermDetail.getCampaignTermPK(); // Not updated
             String campaignTermName = campaignTermDetailValue.getCampaignTermName();
             var value = campaignTermDetailValue.getValue();
-            String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase());
+            String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
             Boolean isDefault = campaignTermDetailValue.getIsDefault();
             Integer sortOrder = campaignTermDetailValue.getSortOrder();
 
@@ -2230,7 +2231,7 @@ public class CampaignControl
     }
     
     public CampaignContent createCampaignContent(String campaignContentName, String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase());
+        String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
         CampaignContent defaultCampaignContent = getDefaultCampaignContent();
         boolean defaultFound = defaultCampaignContent != null;
 
@@ -2323,7 +2324,7 @@ public class CampaignControl
 
     private CampaignContent getCampaignContentByValue(String value, EntityPermission entityPermission) {
         return CampaignContentFactory.getInstance().getEntityFromQuery(entityPermission, getCampaignContentByValueQueries, 
-                Sha1Utils.getInstance().hash(value.toLowerCase()));
+                Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault())));
     }
 
     public CampaignContent getCampaignContentByValue(String value) {
@@ -2505,7 +2506,7 @@ public class CampaignControl
             CampaignContentPK campaignContentPK = campaignContentDetail.getCampaignContentPK(); // Not updated
             String campaignContentName = campaignContentDetailValue.getCampaignContentName();
             var value = campaignContentDetailValue.getValue();
-            String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase());
+            String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
             Boolean isDefault = campaignContentDetailValue.getIsDefault();
             Integer sortOrder = campaignContentDetailValue.getSortOrder();
 

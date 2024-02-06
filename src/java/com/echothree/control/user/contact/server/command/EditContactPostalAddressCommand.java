@@ -48,6 +48,7 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import org.apache.commons.codec.language.Soundex;
 
 public class EditContactPostalAddressCommand
@@ -255,7 +256,7 @@ public class EditContactPostalAddressCommand
     public void canUpdate(PartyContactMechanism partyContactMechanism) {
         var geoControl = Session.getModelController(GeoControl.class);
         var countryName = edit.getCountryName();
-        var countryAlias = StringUtils.getInstance().cleanStringToName(countryName).toUpperCase();
+        var countryAlias = StringUtils.getInstance().cleanStringToName(countryName).toUpperCase(Locale.getDefault());
 
         countryGeoCode = geoControl.getCountryByAlias(countryAlias);
 
@@ -265,7 +266,7 @@ public class EditContactPostalAddressCommand
             postalCode = edit.getPostalCode();
 
             if(postalCode != null) {
-                postalCode = postalCode.toUpperCase();
+                postalCode = postalCode.toUpperCase(Locale.getDefault());
             }
 
             if(!geoCodeCountry.getPostalCodeRequired() || postalCode != null) {
@@ -296,7 +297,7 @@ public class EditContactPostalAddressCommand
                         state = edit.getState();
 
                         if(!geoCodeCountry.getStateRequired() || state != null) {
-                            var stateAlias = state == null ? null : StringUtils.getInstance().cleanStringToName(state).toUpperCase();
+                            var stateAlias = state == null ? null : StringUtils.getInstance().cleanStringToName(state).toUpperCase(Locale.getDefault());
 
                             if(stateAlias != null) {
                                 stateGeoCode = geoControl.getStateByAlias(countryGeoCode, stateAlias);
@@ -306,7 +307,7 @@ public class EditContactPostalAddressCommand
                                 city = edit.getCity();
 
                                 if(!geoCodeCountry.getCityRequired() || city != null) {
-                                    var cityAlias = city == null ? null : StringUtils.getInstance().cleanStringToName(city).toUpperCase();
+                                    var cityAlias = city == null ? null : StringUtils.getInstance().cleanStringToName(city).toUpperCase(Locale.getDefault());
 
                                     if(stateGeoCode != null && cityAlias != null) {
                                         cityGeoCode = geoControl.getCityByAlias(stateGeoCode, cityAlias);
