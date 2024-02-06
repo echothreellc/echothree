@@ -9,7 +9,7 @@
     <dependencies>
         <dependency org="ch.qos.reload4j" name="reload4j" rev="1.2.25" conf="sources->sources" />
         <dependency org="com.google.code.gson" name="gson" rev="2.10.1" conf="sources->sources" />
-        <dependency org="com.google.errorprone" name="error_prone_core" rev="2.14.0" conf="sources->sources" />
+        <dependency org="com.google.errorprone" name="error_prone_core" rev="2.24.1" conf="sources->sources" />
         <dependency org="com.google.guava" name="failureaccess" rev="1.0.1" conf="sources->sources" />
         <dependency org="com.google.guava" name="guava" rev="33.0.0-jre" conf="sources->sources" />
         <dependency org="com.graphql-java" name="graphql-java" rev="21.3" conf="sources->sources" />
@@ -75,6 +75,7 @@
         <dependency org="org.apache.poi" name="poi" rev="3.2-FINAL" conf="sources->sources" />
         <dependency org="org.assertj" name="assertj-core" rev="3.23.1" conf="sources->sources" />
         <dependency org="org.assertj" name="assertj-guava" rev="3.5.0" conf="sources->sources" />
+        <dependency org="org.checkerframework" name="dataflow-errorprone" rev="3.42.0" conf="sources->sources" />
         <dependency org="org.freemarker" name="freemarker" rev="2.3.31" conf="sources->sources" />
         <dependency org="org.infinispan" name="infinispan-commons" rev="13.0.8.Final" conf="sources->sources" />
         <dependency org="org.infinispan" name="infinispan-core" rev="13.0.8.Final" conf="sources->sources" />
@@ -95,7 +96,7 @@
 
         <dependency org="ch.qos.reload4j" name="reload4j" rev="1.2.25" conf="javadoc->javadoc" />
         <dependency org="com.google.code.gson" name="gson" rev="2.10.1" conf="javadoc->javadoc" />
-        <dependency org="com.google.errorprone" name="error_prone_core" rev="2.14.0" conf="javadoc->javadoc" />
+        <dependency org="com.google.errorprone" name="error_prone_core" rev="2.24.1" conf="javadoc->javadoc" />
         <dependency org="com.google.guava" name="failureaccess" rev="1.0.1" conf="javadoc->javadoc" />
         <dependency org="com.google.guava" name="guava" rev="33.0.0-jre" conf="javadoc->javadoc" />
         <dependency org="com.graphql-java" name="graphql-java" rev="21.3" conf="javadoc->javadoc" />
@@ -160,6 +161,7 @@
         <dependency org="org.apache.poi" name="poi" rev="3.2-FINAL" conf="javadoc->javadoc" />
         <dependency org="org.assertj" name="assertj-core" rev="3.23.1" conf="javadoc->javadoc" />
         <dependency org="org.assertj" name="assertj-guava" rev="3.5.0" conf="javadoc->javadoc" />
+        <dependency org="org.checkerframework" name="dataflow-errorprone" rev="3.42.0" conf="javadoc->javadoc" />
         <dependency org="org.freemarker" name="freemarker" rev="2.3.31" conf="javadoc->javadoc" />
         <dependency org="org.infinispan" name="infinispan-commons" rev="13.0.8.Final" conf="javadoc->javadoc" />
         <dependency org="org.infinispan" name="infinispan-core" rev="13.0.8.Final" conf="javadoc->javadoc" />
@@ -180,7 +182,7 @@
 
         <dependency org="ch.qos.reload4j" name="reload4j" rev="1.2.25" conf="binaries->default" />
         <dependency org="com.google.code.gson" name="gson" rev="2.10.1" conf="binaries->default" />
-        <dependency org="com.google.errorprone" name="error_prone_core" rev="2.14.0" conf="binaries->default">
+        <dependency org="com.google.errorprone" name="error_prone_core" rev="2.24.1" conf="binaries->default">
             <artifact name="error_prone_core" e:classifier="with-dependencies" ext="jar"/>
         </dependency>
         <dependency org="com.google.guava" name="failureaccess" rev="1.0.1" conf="binaries->default" />
@@ -250,6 +252,7 @@
         <dependency org="org.apache.poi" name="poi" rev="3.2-FINAL" conf="binaries->default" />
         <dependency org="org.assertj" name="assertj-core" rev="3.23.1" conf="binaries->default" />
         <dependency org="org.assertj" name="assertj-guava" rev="3.5.0" conf="binaries->default" />
+        <dependency org="org.checkerframework" name="dataflow-errorprone" rev="3.42.0" conf="binaries->default" />
         <dependency org="org.freemarker" name="freemarker" rev="2.3.31" conf="binaries->default" />
         <dependency org="org.infinispan" name="infinispan-commons" rev="13.0.8.Final" conf="binaries->default" />
         <dependency org="org.infinispan" name="infinispan-core" rev="13.0.8.Final" conf="binaries->default" />
