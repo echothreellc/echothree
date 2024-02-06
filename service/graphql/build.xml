@@ -45,6 +45,12 @@
     <target name="compile" depends="prepare">
         <path id="processorpath.ref">
             <pathelement location="${build.lib.dir}/error_prone_core-with-dependencies.jar"/>
+            <pathelement location="${build.lib.dir}/error_prone_annotation.jar"/>
+            <pathelement location="${build.lib.dir}/error_prone_annotations.jar"/>
+            <pathelement location="${build.lib.dir}/error_prone_type_annotations.jar"/>
+            <pathelement location="${build.lib.dir}/error_prone_check_api.jar"/>
+            <pathelement location="${build.lib.dir}/java-diff-utils.jar"/>
+            <pathelement location="${build.lib.dir}/dataflow-errorprone.jar"/>
             <pathelement location="${build.lib.dir}/failureaccess.jar"/>
             <pathelement location="${build.lib.dir}/jFormatString.jar"/>
             <pathelement location="${build.lib.dir}/threeten-extra.jar"/>
@@ -56,7 +62,7 @@
             destdir="${service.graphql.classbindir}"
             includeAntRuntime="true"
             classpathref="build.classpath" >
-            <compilerarg line="-XDcompilePolicy=simple"/>
+            <compilerarg value="-XDcompilePolicy=simple"/>
             <compilerarg value="-processorpath"/>
             <compilerarg pathref="processorpath.ref"/>
             <!-- Begin Error Prone -->
