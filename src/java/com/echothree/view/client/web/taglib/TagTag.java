@@ -20,6 +20,7 @@ package com.echothree.view.client.web.taglib;
 import com.echothree.view.client.web.WebConstants;
 import com.echothree.view.client.web.taglib.util.HtmlFilterHolder;
 import com.echothree.view.client.web.taglib.util.HtmlTagHolder;
+import java.util.Locale;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 
@@ -62,7 +63,7 @@ public class TagTag
         if(currentHtmlFilterHolder == null) {
             throw new JspException("tag may only be used inside the body of a htmlFilter tag.");
         } else {
-            HtmlTagHolder htmlTagHolder = new HtmlTagHolder(tag.toLowerCase(), action);
+            HtmlTagHolder htmlTagHolder = new HtmlTagHolder(tag.toLowerCase(Locale.getDefault()), action);
             
             currentHtmlFilterHolder.addHtmlTagHolder(htmlTagHolder);
         }

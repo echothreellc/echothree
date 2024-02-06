@@ -17,13 +17,15 @@
 
 package com.echothree.view.client.web.taglib.util;
 
+import java.util.Locale;
+
 public enum HtmlFilterAction {
     
     ACCEPT,
     REMOVE;
     
     public static HtmlFilterAction translateHtmlFilterAction(String s) {
-        return valueOf(s.toUpperCase());
+        return valueOf(s.toUpperCase(Locale.getDefault()));
     }
     
 }

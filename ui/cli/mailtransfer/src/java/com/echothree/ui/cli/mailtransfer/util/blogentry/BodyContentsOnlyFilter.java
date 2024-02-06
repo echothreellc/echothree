@@ -16,6 +16,7 @@
 
 package com.echothree.ui.cli.mailtransfer.util.blogentry;
 
+import java.util.Locale;
 import org.apache.xerces.xni.Augmentations;
 import org.apache.xerces.xni.QName;
 import org.apache.xerces.xni.XMLAttributes;
@@ -41,7 +42,7 @@ public class BodyContentsOnlyFilter
     @Override
     public void startElement(QName element, XMLAttributes attributes, Augmentations augs)
             throws XNIException {
-        String eName = element.rawname.toLowerCase();
+        String eName = element.rawname.toLowerCase(Locale.getDefault());
 
         if(eName.equals("body")) {
             insideBody = true;
@@ -119,7 +120,7 @@ public class BodyContentsOnlyFilter
     @Override
     public void endElement(QName element, Augmentations augs)
             throws XNIException {
-        String eName = element.rawname.toLowerCase();
+        String eName = element.rawname.toLowerCase(Locale.getDefault());
 
         if(eName.equals("body")) {
             insideBody = false;

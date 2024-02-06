@@ -47,6 +47,7 @@ import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 public class EditContactTelephoneCommand
@@ -180,7 +181,7 @@ public class EditContactTelephoneCommand
     public void canUpdate(PartyContactMechanism partyContactMechanism) {
         var geoControl = Session.getModelController(GeoControl.class);
         var countryName = edit.getCountryName();
-        var countryAlias = StringUtils.getInstance().cleanStringToName(countryName).toUpperCase();
+        var countryAlias = StringUtils.getInstance().cleanStringToName(countryName).toUpperCase(Locale.getDefault());
 
         countryGeoCode = geoControl.getCountryByAlias(countryAlias);
 

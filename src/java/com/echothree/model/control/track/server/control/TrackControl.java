@@ -63,6 +63,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
@@ -101,7 +102,7 @@ public class TrackControl
     }
     
     public Track createTrack(String trackName, String value, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase());
+        String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
         Track defaultTrack = getDefaultTrack();
         boolean defaultFound = defaultTrack != null;
 
@@ -194,7 +195,7 @@ public class TrackControl
 
     private Track getTrackByValue(String value, EntityPermission entityPermission) {
         return TrackFactory.getInstance().getEntityFromQuery(entityPermission, getTrackByValueQueries, 
-                Sha1Utils.getInstance().hash(value.toLowerCase()));
+                Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault())));
     }
 
     public Track getTrackByValue(String value) {
@@ -376,7 +377,7 @@ public class TrackControl
             TrackPK trackPK = trackDetail.getTrackPK(); // Not updated
             String trackName = trackDetailValue.getTrackName();
             var value = trackDetailValue.getValue();
-            String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase());
+            String valueSha1Hash = Sha1Utils.getInstance().hash(value.toLowerCase(Locale.getDefault()));
             Boolean isDefault = trackDetailValue.getIsDefault();
             Integer sortOrder = trackDetailValue.getSortOrder();
 

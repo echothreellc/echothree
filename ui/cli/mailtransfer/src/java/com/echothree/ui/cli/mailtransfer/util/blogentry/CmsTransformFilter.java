@@ -16,6 +16,7 @@
 
 package com.echothree.ui.cli.mailtransfer.util.blogentry;
 
+import java.util.Locale;
 import org.apache.xerces.xni.Augmentations;
 import org.apache.xerces.xni.QName;
 import org.apache.xerces.xni.XMLAttributes;
@@ -36,13 +37,13 @@ public class CmsTransformFilter
     @Override
     public void emptyElement(QName element, XMLAttributes attributes, Augmentations augs)
             throws XNIException {
-        String eName = element.rawname.toLowerCase();
+        String eName = element.rawname.toLowerCase(Locale.getDefault());
 
         if(eName.equals("img")) {
             int attributeCount = attributes.getLength();
 
             for(int i = 0; i < attributeCount; i++) {
-                String aname = attributes.getQName(i).toLowerCase();
+                String aname = attributes.getQName(i).toLowerCase(Locale.getDefault());
 
                 if(aname.equalsIgnoreCase("src")) {
                     String imgSrc = attributes.getValue(i);

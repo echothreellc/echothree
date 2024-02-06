@@ -21,6 +21,7 @@ import com.google.common.html.HtmlEscapers;
 import com.ibm.icu.text.Transliterator;
 import java.util.Arrays;
 import java.util.Iterator;
+import java.util.Locale;
 
 public class StringUtils {
     
@@ -167,15 +168,15 @@ public class StringUtils {
     }
     
     public String upperCaseFirstCharacter(final String str) {
-        return str == null ? null : str.length() == 0 ? str : new StringBuilder(str.substring(0,1).toUpperCase()).append(str.substring(1)).toString();
+        return str == null ? null : str.length() == 0 ? str : new StringBuilder(str.substring(0,1).toUpperCase(Locale.getDefault())).append(str.substring(1)).toString();
     }
 
     public String lowerCaseFirstCharacter(final String str) {
-        return str == null ? null : str.length() == 0 ? str : new StringBuilder(str.substring(0,1).toLowerCase()).append(str.substring(1)).toString();
+        return str == null ? null : str.length() == 0 ? str : new StringBuilder(str.substring(0,1).toLowerCase(Locale.getDefault())).append(str.substring(1)).toString();
     }
 
     public String normalizeCase(final String str) {
-        return str == null ? null : str.length() == 0 ? str : new StringBuilder(str.substring(0,1).toUpperCase()).append(str.substring(1).toLowerCase()).toString();
+        return str == null ? null : str.length() == 0 ? str : new StringBuilder(str.substring(0,1).toUpperCase(Locale.getDefault())).append(str.substring(1).toLowerCase(Locale.getDefault())).toString();
     }
 
     // Similar to http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=5003547
@@ -252,11 +253,11 @@ public class StringUtils {
     }
 
     public boolean isAllUpperCase(String str) {
-        return str == null ? false : str.equals(str.toUpperCase());
+        return str == null ? false : str.equals(str.toUpperCase(Locale.getDefault()));
     }
 
     public boolean isAllLowerCase(String str) {
-        return str == null ? false : str.equals(str.toLowerCase());
+        return str == null ? false : str.equals(str.toLowerCase(Locale.getDefault()));
     }
 
     public boolean isAllSameCase(String str) {

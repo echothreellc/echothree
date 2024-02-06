@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import org.apache.commons.logging.Log;
@@ -143,12 +144,12 @@ public abstract class DatabaseUtilities {
      * @param tableName The table name that this SQL is for
      */
     String getCreateTableBeginning(String tableName) {
-        String dbTableName = tableName.toLowerCase();
+        String dbTableName = tableName.toLowerCase(Locale.getDefault());
         
         if(verbose && dbTableName.length() > 30)
             log.warn("table \"" + dbTableName + "\" exceeds 30 characters");
         
-        return "CREATE TABLE " + tableName.toLowerCase() + " ( ";
+        return "CREATE TABLE " + tableName.toLowerCase(Locale.getDefault()) + " ( ";
     }
     
     /** Returns a string that may represent columns that are needed by, for example,
@@ -185,7 +186,7 @@ public abstract class DatabaseUtilities {
      * column name in all lower case
      */
     String getColumnName(String columnPrefix, String columnName) {
-        return columnPrefix + "_" + columnName.toLowerCase();
+        return columnPrefix + "_" + columnName.toLowerCase(Locale.getDefault());
     }
     
     /** Returns a string that contains the column prefix, a separator character and the
@@ -198,18 +199,18 @@ public abstract class DatabaseUtilities {
         
         if(theColumn.getType() == ColumnType.columnForeignKey) {
             Table theTable = theColumn.getTable();
-            String columnPrefix = theTable.getColumnPrefix().toLowerCase();
+            String columnPrefix = theTable.getColumnPrefix().toLowerCase(Locale.getDefault());
             
             String destinationTableName = theColumn.getDestinationTable();
             Table destinationTable = theTable.getDatabase().getTable(destinationTableName);
             String destinationColumnName = theColumn.getDestinationColumn();
             //Column destinationColumn = destinationTable.getColumn(destinationColumnName);
-            String destinationColumnPrefix = destinationTable.getColumnPrefix().toLowerCase();
+            String destinationColumnPrefix = destinationTable.getColumnPrefix().toLowerCase(Locale.getDefault());
             
             boolean referencesSelf = theColumn.getTable() == destinationTable;
             boolean differingColumnName = !referencesSelf && !theColumn.getName().equals(destinationColumnName);
             String fkColumnPrefix = (referencesSelf? "": columnPrefix + "_") + (differingColumnName? "": destinationColumnPrefix + "_");
-            result = fkColumnPrefix + theColumn.getName().toLowerCase();
+            result = fkColumnPrefix + theColumn.getName().toLowerCase(Locale.getDefault());
         } else
             result = getColumnName(theColumn.getTable().getColumnPrefixLowerCase(), theColumn.getName());
         
@@ -221,7 +222,7 @@ public abstract class DatabaseUtilities {
      */
     String getColumnParameterName(Column theColumn) {
         String columnName = theColumn.getName();
-        String parameterName = columnName.substring(0, 1).toLowerCase();
+        String parameterName = columnName.substring(0, 1).toLowerCase(Locale.getDefault());
         
         if(theColumn.getType() == ColumnType.columnForeignKey)
             parameterName += columnName.substring(1, columnName.length() - 2) + "PK";
@@ -364,12 +365,12 @@ public abstract class DatabaseUtilities {
         String destinationColumnName = theColumn.getDestinationColumn();
         Column destinationColumn = destinationTable.getColumn(destinationColumnName);
         
-        String destinationColumnPrefix = destinationTable.getColumnPrefix().toLowerCase();
+        String destinationColumnPrefix = destinationTable.getColumnPrefix().toLowerCase(Locale.getDefault());
         
         boolean referencesSelf = theColumn.getTable() == destinationTable;
         boolean differingColumnName = !referencesSelf && !theColumn.getName().equals(destinationColumnName);
         String fkColumnPrefix = (referencesSelf? "": columnPrefix + "_") + (differingColumnName? "": destinationColumnPrefix + "_");
-        String fkColumnName = fkColumnPrefix + theColumn.getName().toLowerCase();
+        String fkColumnName = fkColumnPrefix + theColumn.getName().toLowerCase(Locale.getDefault());
         
         String fkResult = getColumnDefinitionWithName(destinationTable, fkColumnPrefix, fkColumnName, destinationColumn,
                 theColumn);
@@ -447,7 +448,7 @@ public abstract class DatabaseUtilities {
         if(theIndex.getType() == Index.indexPrimaryKey) {
             indexName = "PRIMARY";
         } else {
-            indexName = theIndex.getName().toLowerCase() + "_idx";
+            indexName = theIndex.getName().toLowerCase(Locale.getDefault()) + "_idx";
         }
         
         return indexName;
@@ -462,12 +463,12 @@ public abstract class DatabaseUtilities {
         String destinationTableName = theColumn.getDestinationTable();
         Table destinationTable = theColumn.getTable().getDatabase().getTable(destinationTableName);
         String destinationColumnName = theColumn.getDestinationColumn();
-        String destinationColumnPrefix = destinationTable.getColumnPrefix().toLowerCase();
+        String destinationColumnPrefix = destinationTable.getColumnPrefix().toLowerCase(Locale.getDefault());
         
         boolean referencesSelf = theColumn.getTable() == destinationTable;
         boolean differingColumnName = !referencesSelf && !theColumn.getName().equals(destinationColumnName);
         String fkColumnPrefix = (referencesSelf? "": columnPrefix + "_") + (differingColumnName? "": destinationColumnPrefix + "_");
-        String fkColumnName = fkColumnPrefix + theColumn.getName().toLowerCase();
+        String fkColumnName = fkColumnPrefix + theColumn.getName().toLowerCase(Locale.getDefault());
         
         return fkColumnName;
     }
@@ -475,7 +476,7 @@ public abstract class DatabaseUtilities {
     /** Returns a comma separated list of column names that are used in the index
      */
     String getIndexColumnList(Index theIndex) throws Exception {
-        String columnPrefix = theIndex.getTable().getColumnPrefix().toLowerCase();
+        String columnPrefix = theIndex.getTable().getColumnPrefix().toLowerCase(Locale.getDefault());
         String result = "";
         boolean afterFirst = false;
         
@@ -488,7 +489,7 @@ public abstract class DatabaseUtilities {
             if(theColumn.getType() == ColumnType.columnForeignKey)
                 result += getIndexForeignKeyColumnName(columnPrefix, theColumn);
             else
-                result += columnPrefix + "_" + theColumn.getName().toLowerCase();
+                result += columnPrefix + "_" + theColumn.getName().toLowerCase(Locale.getDefault());
         }
         
         return result;
@@ -525,8 +526,8 @@ public abstract class DatabaseUtilities {
      */
     void createMissingTable(Table theTable) throws Exception {
         String tableName = theTable.getNamePlural();
-        String tableNameLC = tableName.toLowerCase();
-        String columnPrefix = theTable.getColumnPrefix().toLowerCase();
+        String tableNameLC = tableName.toLowerCase(Locale.getDefault());
+        String columnPrefix = theTable.getColumnPrefix().toLowerCase(Locale.getDefault());
         
         StringBuilder createSQL = new StringBuilder(getCreateTableBeginning(tableNameLC));
         
@@ -715,7 +716,7 @@ public abstract class DatabaseUtilities {
         
         // Check for missing tables.
         for(Table theTable: myDatabase.getTables()) {
-            String tableName = theTable.getNamePlural().toLowerCase();
+            String tableName = theTable.getNamePlural().toLowerCase(Locale.getDefault());
             
             xmlTables.add(tableName);
             
@@ -770,7 +771,7 @@ public abstract class DatabaseUtilities {
     
     String getAlterTableAddIndex(Index theIndex, String sqlForIndex)
             throws Exception {
-        return "ALTER TABLE " + theIndex.getTable().getNamePlural().toLowerCase()  + " ADD " + sqlForIndex;
+        return "ALTER TABLE " + theIndex.getTable().getNamePlural().toLowerCase(Locale.getDefault())  + " ADD " + sqlForIndex;
     }
     
     String getAlterTableDropIndex(CurrentIndex ci)
@@ -837,15 +838,15 @@ public abstract class DatabaseUtilities {
         String destinationColumnName = theFK.getDestinationColumn();
         Column destinationColumn = destinationTable.getColumn(destinationColumnName);
         
-        String columnPrefix = theFK.getTable().getColumnPrefix().toLowerCase();
-        String destinationColumnPrefix = destinationTable.getColumnPrefix().toLowerCase();
+        String columnPrefix = theFK.getTable().getColumnPrefix().toLowerCase(Locale.getDefault());
+        String destinationColumnPrefix = destinationTable.getColumnPrefix().toLowerCase(Locale.getDefault());
         
-        String fkDestinationColumnName = destinationColumnPrefix + "_" + destinationColumn.getName().toLowerCase();
+        String fkDestinationColumnName = destinationColumnPrefix + "_" + destinationColumn.getName().toLowerCase(Locale.getDefault());
         
         boolean referencesSelf = theFK.getTable() == destinationTable;
         boolean differingColumnName = !referencesSelf && !theFK.getName().equals(destinationColumnName);
         String fkColumnPrefix = (referencesSelf? "": columnPrefix + "_") + (differingColumnName? "": destinationColumnPrefix + "_");
-        String fkSourceColumnName = fkColumnPrefix + theFK.getName().toLowerCase();
+        String fkSourceColumnName = fkColumnPrefix + theFK.getName().toLowerCase(Locale.getDefault());
         
         String sqlForFK = getForeignKeyDefinition(theFK, theFK.getTable(), fkSourceColumnName, destinationTable, fkDestinationColumnName);
         String alterSQL = getAlterTableAddForeignKey(theFK, sqlForFK);
