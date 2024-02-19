@@ -1,5 +1,11 @@
 # Changelog
 
+## 2024-02-18-01
+
+* Error Prone 2.24.1 Upgrade [1089](https://gitlab.echothree.com/echothree/echothree/-/issues/1089)
+* Correct StringCaseLocaleUsage Warnings From Error Prone [1090](https://gitlab.echothree.com/echothree/echothree/-/issues/1090)
+* Apache Lucene 9.9.2 Upgrade [1091](https://gitlab.echothree.com/echothree/echothree/-/issues/1091)
+
 ## 2024-02-04-01
 
 * Migrate Usage of java.util.Date to Modern Implementation [1080](https://gitlab.echothree.com/echothree/echothree/-/issues/1080)
