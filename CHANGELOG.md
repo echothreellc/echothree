@@ -1,5 +1,11 @@
 # Changelog
 
+## 2024-03-03-01
+
+* jOOQ 3.19.4 Upgrade [1092](https://gitlab.echothree.com/echothree/echothree/-/issues/1092)
+* MySQL and MySQL Connector/J 8.3.0 Upgrade [1093](https://gitlab.echothree.com/echothree/echothree/-/issues/1093)
+* jOOQ 3.19.5 Upgrade [1094](https://gitlab.echothree.com/echothree/echothree/-/issues/1094)
+
 ## 2024-02-18-01
 
 * Error Prone 2.24.1 Upgrade [1089](https://gitlab.echothree.com/echothree/echothree/-/issues/1089)
