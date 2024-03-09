@@ -16,14 +16,19 @@
 
 package com.echothree.model.control.customer.server.indexer;
 
+import com.echothree.model.control.customer.server.analysis.CustomerAnalyzer;
 import com.echothree.model.control.customer.server.control.CustomerControl;
 import com.echothree.model.control.index.common.IndexFields;
+import com.echothree.model.control.index.server.indexer.FieldTypes;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.indexer.PartyIndexer;
 import com.echothree.model.data.index.server.entity.Index;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
 
 public class CustomerIndexer
         extends PartyIndexer {
@@ -34,12 +39,27 @@ public class CustomerIndexer
     public CustomerIndexer(final ExecutionErrorAccumulator eea, final Index index) {
         super(eea, index, PartyTypes.CUSTOMER.name(), IndexFields.customerName.name());
     }
-    
+
+    @Override
+    protected Analyzer getAnalyzer() {
+        return new CustomerAnalyzer(eea, language, entityType, entityAttributes, tagScopes, partyType, entityNameIndexField);
+    }
+
     @Override
     protected String getEntityNameFromParty(final Party party) {
         var customer = customerControl.getCustomer(party);
 
         return customer == null ? null : customer.getCustomerName();
+    }
+
+    @Override
+    protected void addPartyFieldsToDocument(final Party party, final String entityName, final Document document) {
+        super.addPartyFieldsToDocument(party, entityName, document);
+
+        var customer = customerControl.getCustomer(party);
+        if(customer != null) {
+            document.add(new Field(IndexFields.customerTypeName.name(), customer.getCustomerType().getLastDetail().getCustomerTypeName(), FieldTypes.NOT_STORED_TOKENIZED));
+        }
     }
 
 }
