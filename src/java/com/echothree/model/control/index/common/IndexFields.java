@@ -45,6 +45,7 @@ public enum IndexFields {
     countyGeoCodeName,
     createdTime,
     customerName,
+    customerTypeName,
     deletedTime,
     description,
     emailAddress,
