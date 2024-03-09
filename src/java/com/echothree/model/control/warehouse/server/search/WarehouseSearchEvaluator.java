@@ -18,10 +18,13 @@ package com.echothree.model.control.warehouse.server.search;
 
 import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.common.Indexes;
+import com.echothree.model.control.index.server.analysis.PartyAnalyzer;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.search.PartySearchEvaluator;
 import com.echothree.model.control.search.server.search.EntityInstancePKHolder;
+import com.echothree.model.control.warehouse.server.analysis.WarehouseAnalyzer;
 import com.echothree.model.control.warehouse.server.control.WarehouseControl;
+import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.search.server.entity.SearchDefaultOperator;
 import com.echothree.model.data.search.server.entity.SearchSortDirection;
 import com.echothree.model.data.search.server.entity.SearchSortOrder;
@@ -30,6 +33,7 @@ import com.echothree.model.data.user.server.entity.UserVisit;
 import com.echothree.model.data.warehouse.server.entity.Warehouse;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.Session;
+import org.apache.lucene.analysis.Analyzer;
 
 public class WarehouseSearchEvaluator
         extends PartySearchEvaluator {
@@ -50,7 +54,12 @@ public class WarehouseSearchEvaluator
     public void setWarehouseName(String warehouseName) {
         this.warehouseName = warehouseName;
     }
-    
+
+    @Override
+    public Analyzer getAnalyzer(final ExecutionErrorAccumulator eea, final Language language) {
+        return new WarehouseAnalyzer(eea, language, entityType, partyType, entityNameIndexField);
+    }
+
     @Override
     protected EntityInstancePKHolder executeSearch(final ExecutionErrorAccumulator eea) {
         EntityInstancePKHolder resultSet = null;

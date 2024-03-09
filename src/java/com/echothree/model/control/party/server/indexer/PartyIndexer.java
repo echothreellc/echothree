@@ -37,8 +37,8 @@ public abstract class PartyIndexer
     
     PartyControl partyControl = Session.getModelController(PartyControl.class);
     
-    PartyType partyType;
-    String entityNameIndexField;
+    protected PartyType partyType;
+    protected String entityNameIndexField;
     
     protected PartyIndexer(final ExecutionErrorAccumulator eea, final Index index, final String partyTypeName,
             final String entityNameIndexField) {
@@ -66,7 +66,43 @@ public abstract class PartyIndexer
      * @return String with the EntityName, or null if it was not found
      */
     protected abstract String getEntityNameFromParty(final Party party);
-    
+
+    protected void addPartyFieldsToDocument(final Party party, final String entityName, final Document document) {
+        var partyDetail = party.getLastDetail();
+        var person = partyControl.getPerson(party);
+        var partyGroup = partyControl.getPartyGroup(party);
+        var name = partyGroup == null ? null : partyGroup.getName();
+        var partyAliases = partyControl.getPartyAliasesByParty(party);
+
+        document.add(new Field(IndexFields.partyName.name(), partyDetail.getPartyName(), FieldTypes.NOT_STORED_TOKENIZED));
+        document.add(new Field(entityNameIndexField, entityName, FieldTypes.NOT_STORED_TOKENIZED));
+
+        if(name != null) {
+            document.add(new Field(IndexFields.name.name(), name, FieldTypes.NOT_STORED_TOKENIZED));
+        }
+
+        if(person != null) {
+            var firstName = person.getFirstName();
+            var middleName = person.getMiddleName();
+            var lastName = person.getLastName();
+
+            if(firstName != null) {
+                document.add(new Field(IndexFields.firstName.name(), firstName, FieldTypes.NOT_STORED_TOKENIZED));
+            }
+            if(middleName != null) {
+                document.add(new Field(IndexFields.middleName.name(), middleName, FieldTypes.NOT_STORED_TOKENIZED));
+            }
+            if(lastName != null) {
+                document.add(new Field(IndexFields.lastName.name(), lastName, FieldTypes.NOT_STORED_TOKENIZED));
+            }
+        }
+
+        for(var partyAlias : partyAliases) {
+            document.add(new Field(partyAlias.getPartyAliasType().getLastDetail().getPartyAliasTypeName(),
+                    partyAlias.getAlias(), FieldTypes.NOT_STORED_TOKENIZED));
+        }
+    }
+
     @Override
     protected Document convertToDocument(final EntityInstance entityInstance, final Party party) {
         var partyDetail = party.getLastDetail();
@@ -77,40 +113,9 @@ public abstract class PartyIndexer
 
             // If this field is null, do not index the Party.
             if(entityName != null) {
-                var person = partyControl.getPerson(party);
-                var partyGroup = partyControl.getPartyGroup(party);
-                var name = partyGroup == null ? null : partyGroup.getName();
-                var partyAliases = partyControl.getPartyAliasesByParty(party);
-
                 document = newDocumentWithEntityInstanceFields(entityInstance, party.getPrimaryKey());
 
-                document.add(new Field(IndexFields.partyName.name(), partyDetail.getPartyName(), FieldTypes.NOT_STORED_TOKENIZED));
-                document.add(new Field(entityNameIndexField, entityName, FieldTypes.NOT_STORED_TOKENIZED));
-
-                if(name != null) {
-                    document.add(new Field(IndexFields.name.name(), name, FieldTypes.NOT_STORED_TOKENIZED));
-                }
-
-                if(person != null) {
-                    var firstName = person.getFirstName();
-                    var middleName = person.getMiddleName();
-                    var lastName = person.getLastName();
-
-                    if(firstName != null) {
-                        document.add(new Field(IndexFields.firstName.name(), firstName, FieldTypes.NOT_STORED_TOKENIZED));
-                    }
-                    if(middleName != null) {
-                        document.add(new Field(IndexFields.middleName.name(), middleName, FieldTypes.NOT_STORED_TOKENIZED));
-                    }
-                    if(lastName != null) {
-                        document.add(new Field(IndexFields.lastName.name(), lastName, FieldTypes.NOT_STORED_TOKENIZED));
-                    }
-                }
-
-                for(var partyAlias : partyAliases) {
-                    document.add(new Field(partyAlias.getPartyAliasType().getLastDetail().getPartyAliasTypeName(),
-                            partyAlias.getAlias(), FieldTypes.NOT_STORED_TOKENIZED));
-                }
+                addPartyFieldsToDocument(party, entityName, document);
             }
         }
 

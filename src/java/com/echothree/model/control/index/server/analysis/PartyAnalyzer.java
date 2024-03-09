@@ -16,15 +16,10 @@
 
 package com.echothree.model.control.index.server.analysis;
 
-import com.echothree.model.control.core.common.MimeTypeUsageTypes;
-import com.echothree.model.control.index.common.IndexConstants;
-import com.echothree.model.control.index.common.IndexFieldVariations;
 import com.echothree.model.control.index.common.IndexFields;
-import com.echothree.model.control.item.server.control.ItemControl;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityType;
-import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.tag.server.entity.TagScope;
@@ -59,17 +54,21 @@ public class PartyAnalyzer
 
         init(partyType, entityNameIndexField);
     }
-    
+
     protected Map<String, Analyzer> getPartyAliasTypeAnalyzers(final Map<String, Analyzer> fieldAnalyzers) {
         var partyControl = Session.getModelController(PartyControl.class);
 
         partyControl.getPartyAliasTypes(partyType).stream().forEach((partyAliasType)->
                 fieldAnalyzers.put(partyAliasType.getLastDetail().getPartyAliasTypeName(),
                         new WhitespaceLowerCaseAnalyzer()));
-        
+
         return fieldAnalyzers;
     }
-    
+
+    protected Map<String, Analyzer> getAdditionalAnalyzers(final Map<String, Analyzer> fieldAnalyzers) {
+        return fieldAnalyzers;
+    }
+
     @Override
     protected Map<String, Analyzer> getEntityTypeAnalyzers(final Map<String, Analyzer> fieldAnalyzers) {
         super.getEntityTypeAnalyzers(fieldAnalyzers);
@@ -77,7 +76,7 @@ public class PartyAnalyzer
         fieldAnalyzers.put(IndexFields.partyName.name(), new WhitespaceLowerCaseAnalyzer());
         fieldAnalyzers.put(entityNameIndexField, new WhitespaceLowerCaseAnalyzer());
 
-        return getPartyAliasTypeAnalyzers(fieldAnalyzers);
+        return getAdditionalAnalyzers(getPartyAliasTypeAnalyzers(fieldAnalyzers));
     }
     
 }
