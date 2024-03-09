@@ -18,7 +18,6 @@ package com.echothree.model.control.warehouse.server.search;
 
 import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.common.Indexes;
-import com.echothree.model.control.index.server.analysis.PartyAnalyzer;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.search.PartySearchEvaluator;
 import com.echothree.model.control.search.server.search.EntityInstancePKHolder;
