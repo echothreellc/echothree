@@ -74,7 +74,6 @@ public abstract class PartyIndexer
         var name = partyGroup == null ? null : partyGroup.getName();
         var partyAliases = partyControl.getPartyAliasesByParty(party);
 
-
         document.add(new Field(IndexFields.partyName.name(), partyDetail.getPartyName(), FieldTypes.NOT_STORED_TOKENIZED));
         document.add(new Field(entityNameIndexField, entityName, FieldTypes.NOT_STORED_TOKENIZED));
 
