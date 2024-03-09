@@ -107,6 +107,7 @@ public enum IndexFields {
     useName,
     useTypeName,
     vendorName,
+    vendorTypeName,
     warehouseName,
     warehouseTypeName,
 
