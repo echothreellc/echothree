@@ -1,5 +1,12 @@
 # Changelog
 
+## 2024-03-17-01
+
+* Include Field vendorTypeName When Indexing and Searching Vendors [1075](https://gitlab.echothree.com/echothree/echothree/-/issues/1075)
+* Include Field customerTypeName When Indexing and Searching Customers [1076](https://gitlab.echothree.com/echothree/echothree/-/issues/1076)
+* Include Field warehouseTypeName When Indexing and Searching Warehouses [1077](https://gitlab.echothree.com/echothree/echothree/-/issues/1077)
+* Apache Lucene 9.10.0 Upgrade [1095](https://gitlab.echothree.com/echothree/echothree/-/issues/1095)
+
 ## 2024-03-03-01
 
 * jOOQ 3.19.4 Upgrade [1092](https://gitlab.echothree.com/echothree/echothree/-/issues/1092)
