@@ -25,11 +25,13 @@ import com.echothree.model.control.party.common.exception.InvalidPartyTypeExcept
 import com.echothree.model.control.party.common.exception.UnknownPartyNameException;
 import com.echothree.model.control.party.common.exception.UnknownPartyTypeNameException;
 import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.party.server.factory.PartyFactory;
+import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
@@ -122,7 +124,33 @@ public class PartyLogic
     public Party getPartyByNameForUpdate(final ExecutionErrorAccumulator eea, final String partyName) {
         return getPartyByName(eea, partyName, EntityPermission.READ_WRITE);
     }
-    
+
+    /**
+     * Attempt to locate the Party currently executing a command by first taking a look to see if a PartyName
+     * parameter was supplied, and if it wasn't, get the Party that's associated with the UserVisit that was
+     * supplied. The result may still be null if there is no user logged in. This is useful for commands that
+     * require CUSTOMERs and VENDORSs to supply a null PartyName, but EMPLOYEEs are allowed to specify any
+     * PartyName.
+     *
+     * @param eea An optional parameter specifying the ExecutionErrorAccumulator
+     * @param userVisitPK A required parameters specifying the UserVisit
+     * @param partyName An optional parameter giving a PartyName
+     * @return A possibly non-null parameter giving the Party
+     */
+    public Party getParty(final ExecutionErrorAccumulator eea, final UserVisitPK userVisitPK, final String partyName) {
+        Party party;
+
+        if(partyName == null) {
+            var userControl = (UserControl)Session.getModelController(UserControl.class);
+
+            party = userControl.getPartyFromUserVisitPK(userVisitPK);
+        } else {
+            party = getPartyByName(eea, partyName);
+        }
+
+        return party;
+    }
+
     public Party getPartyByUlid(final ExecutionErrorAccumulator eea, final String ulid, final EntityPermission entityPermission) {
         Party party = null;
         

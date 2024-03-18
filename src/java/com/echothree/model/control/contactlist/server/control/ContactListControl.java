@@ -14,7 +14,7 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.model.control.contactlist.server;
+package com.echothree.model.control.contactlist.server.control;
 
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.contactlist.common.choice.ContactListChoicesBean;
@@ -40,8 +40,6 @@ import com.echothree.model.control.contactlist.common.transfer.PartyTypeContactL
 import com.echothree.model.control.contactlist.common.workflow.PartyContactListStatusConstants;
 import com.echothree.model.control.contactlist.server.transfer.ContactListContactMechanismPurposeTransferCache;
 import com.echothree.model.control.contactlist.server.transfer.ContactListFrequencyTransferCache;
-import com.echothree.model.control.contactlist.server.transfer.ContactListGroupTransferCache;
-import com.echothree.model.control.contactlist.server.transfer.ContactListTransferCache;
 import com.echothree.model.control.contactlist.server.transfer.ContactListTransferCaches;
 import com.echothree.model.control.contactlist.server.transfer.ContactListTypeTransferCache;
 import com.echothree.model.control.contactlist.server.transfer.CustomerTypeContactListGroupTransferCache;
@@ -726,6 +724,22 @@ public class ContactListControl
         return contactListGroup;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ContactListGroup */
+    public ContactListGroup getContactListGroupByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ContactListGroupPK(entityInstance.getEntityUniqueId());
+        var useType = ContactListGroupFactory.getInstance().getEntityFromPK(entityPermission, pk);
+
+        return useType;
+    }
+
+    public ContactListGroup getContactListGroupByEntityInstance(EntityInstance entityInstance) {
+        return getContactListGroupByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ContactListGroup getContactListGroupByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getContactListGroupByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     private static final Map<EntityPermission, String> getContactListGroupByNameQueries;
 
     static {
@@ -743,7 +757,7 @@ public class ContactListControl
         getContactListGroupByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private ContactListGroup getContactListGroupByName(String contactListGroupName, EntityPermission entityPermission) {
+    public ContactListGroup getContactListGroupByName(String contactListGroupName, EntityPermission entityPermission) {
         return ContactListGroupFactory.getInstance().getEntityFromQuery(entityPermission, getContactListGroupByNameQueries,
                 contactListGroupName);
     }
@@ -781,7 +795,7 @@ public class ContactListControl
         getDefaultContactListGroupQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private ContactListGroup getDefaultContactListGroup(EntityPermission entityPermission) {
+    public ContactListGroup getDefaultContactListGroup(EntityPermission entityPermission) {
         return ContactListGroupFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultContactListGroupQueries);
     }
 
@@ -865,16 +879,19 @@ public class ContactListControl
         return getContactListTransferCaches(userVisit).getContactListGroupTransferCache().getContactListGroupTransfer(contactListGroup);
     }
 
-    public List<ContactListGroupTransfer> getContactListGroupTransfers(UserVisit userVisit) {
-        List<ContactListGroup> contactListGroups = getContactListGroups();
-        List<ContactListGroupTransfer> contactListGroupTransfers = new ArrayList<>(contactListGroups.size());
-        ContactListGroupTransferCache contactListGroupTransferCache = getContactListTransferCaches(userVisit).getContactListGroupTransferCache();
+    public List<ContactListGroupTransfer> getContactListGroupTransfers(UserVisit userVisit, List<ContactListGroup> contactListGroups) {
+        var contactListGroupTransfers = new ArrayList<ContactListGroupTransfer>(contactListGroups.size());
+        var contactListGroupTransferCache = getContactListTransferCaches(userVisit).getContactListGroupTransferCache();
 
         contactListGroups.forEach((contactListGroup) ->
                 contactListGroupTransfers.add(contactListGroupTransferCache.getContactListGroupTransfer(contactListGroup))
         );
 
         return contactListGroupTransfers;
+    }
+
+    public List<ContactListGroupTransfer> getContactListGroupTransfers(UserVisit userVisit) {
+        return getContactListGroupTransfers(userVisit, getContactListGroups());
     }
 
     private void updateContactListGroupFromValue(ContactListGroupDetailValue contactListGroupDetailValue, boolean checkDefault, BasePK updatedBy) {
@@ -1540,6 +1557,22 @@ public class ContactListControl
         return contactList;
     }
 
+    /** Assume that the entityInstance passed to this function is a ECHOTHREE.ContactList */
+    public ContactList getContactListByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new ContactListPK(entityInstance.getEntityUniqueId());
+        var useType = ContactListFactory.getInstance().getEntityFromPK(entityPermission, pk);
+
+        return useType;
+    }
+
+    public ContactList getContactListByEntityInstance(EntityInstance entityInstance) {
+        return getContactListByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public ContactList getContactListByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getContactListByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
     private static final Map<EntityPermission, String> getContactListByNameQueries;
 
     static {
@@ -1557,7 +1590,7 @@ public class ContactListControl
         getContactListByNameQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private ContactList getContactListByName(String contactListName, EntityPermission entityPermission) {
+    public ContactList getContactListByName(String contactListName, EntityPermission entityPermission) {
         return ContactListFactory.getInstance().getEntityFromQuery(entityPermission, getContactListByNameQueries,
                 contactListName);
     }
@@ -1595,7 +1628,7 @@ public class ContactListControl
         getDefaultContactListQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private ContactList getDefaultContactList(EntityPermission entityPermission) {
+    public ContactList getDefaultContactList(EntityPermission entityPermission) {
         return ContactListFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultContactListQueries);
     }
 
@@ -1811,16 +1844,19 @@ public class ContactListControl
         return getContactListTransferCaches(userVisit).getContactListTransferCache().getContactListTransfer(contactList);
     }
 
-    public List<ContactListTransfer> getContactListTransfers(UserVisit userVisit) {
-        List<ContactList> contactLists = getContactLists();
-        List<ContactListTransfer> contactListTransfers = new ArrayList<>(contactLists.size());
-        ContactListTransferCache contactListTransferCache = getContactListTransferCaches(userVisit).getContactListTransferCache();
+    public List<ContactListTransfer> getContactListTransfers(UserVisit userVisit, List<ContactList> contactLists) {
+        var contactListTransfers = new ArrayList<ContactListTransfer>(contactLists.size());
+        var contactListTransferCache = getContactListTransferCaches(userVisit).getContactListTransferCache();
 
         contactLists.forEach((contactList) ->
                 contactListTransfers.add(contactListTransferCache.getContactListTransfer(contactList))
         );
 
         return contactListTransfers;
+    }
+
+    public List<ContactListTransfer> getContactListTransfers(UserVisit userVisit) {
+        return getContactListTransfers(userVisit, getContactLists());
     }
 
     private void updateContactListFromValue(ContactListDetailValue contactListDetailValue, boolean checkDefault, BasePK updatedBy) {
@@ -2363,6 +2399,22 @@ public class ContactListControl
         return partyTypeContactListGroup;
     }
     
+    public boolean partyTypeContactListGroupExists(PartyType partyType, ContactListGroup contactListGroup) {
+        return session.queryForInteger(
+                "SELECT COUNT(*) " +
+                "FROM partytypecontactlistgroups " +
+                "WHERE ptypclstgrp_ptyp_partytypeid = ? AND ptypclstgrp_clstgrp_contactlistgroupid = ? AND ptypclstgrp_thrutime = ?",
+                partyType, contactListGroup, Session.MAX_TIME) == 1;
+    }
+
+    public long countPartyTypeContactListGroupsByContactListGroup(ContactListGroup contactListGroup) {
+        return session.queryForLong(
+                "SELECT COUNT(*) "
+                + "FROM partytypecontactlistgroups "
+                + "WHERE ptypclstgrp_clstgrp_contactlistgroupid = ? AND ptypclstgrp_thrutime = ?",
+                contactListGroup, Session.MAX_TIME);
+    }
+
     private static final Map<EntityPermission, String> getPartyTypeContactListGroupQueries;
 
     static {
@@ -2541,6 +2593,22 @@ public class ContactListControl
         return partyTypeContactList;
     }
     
+    public boolean partyTypeContactListExists(PartyType partyType, ContactList contactList) {
+        return session.queryForInteger(
+                "SELECT COUNT(*) " +
+                "FROM partytypecontactlists " +
+                "WHERE ptypclst_ptyp_partytypeid = ? AND ptypclst_clst_contactlistid = ? AND ptypclst_thrutime = ?",
+                partyType, contactList, Session.MAX_TIME) == 1;
+    }
+
+    public long countPartyTypeContactListsByContactList(ContactList contactList) {
+        return session.queryForLong(
+                "SELECT COUNT(*) "
+                + "FROM partytypecontactlists "
+                + "WHERE ptypclst_clst_contactlistid = ? AND ptypclst_thrutime = ?",
+                contactList, Session.MAX_TIME);
+    }
+
     private static final Map<EntityPermission, String> getPartyTypeContactListQueries;
 
     static {
@@ -2720,6 +2788,22 @@ public class ContactListControl
         return customerTypeContactListGroup;
     }
 
+    public boolean customerTypeContactListGroupExists(CustomerType customerType, ContactListGroup contactListGroup) {
+        return session.queryForInteger(
+                "SELECT COUNT(*) " +
+                "FROM customertypecontactlistgroups " +
+                "WHERE cutyclstgrp_cuty_customertypeid = ? AND cutyclstgrp_clstgrp_contactlistgroupid = ? AND cutyclstgrp_thrutime = ?",
+                customerType, contactListGroup, Session.MAX_TIME) == 1;
+    }
+
+    public long countCustomerTypeContactListGroupsByContactListGroup(ContactListGroup contactListGroup) {
+        return session.queryForLong(
+                "SELECT COUNT(*) "
+                + "FROM customertypecontactlistgroups "
+                + "WHERE cutyclstgrp_clstgrp_contactlistgroupid = ? AND cutyclstgrp_thrutime = ?",
+                contactListGroup, Session.MAX_TIME);
+    }
+
     private static final Map<EntityPermission, String> getCustomerTypeContactListGroupQueries;
 
     static {
@@ -2896,6 +2980,22 @@ public class ContactListControl
         sendEvent(contactList.getPrimaryKey(), EventTypes.MODIFY, customerTypeContactList.getPrimaryKey(), EventTypes.CREATE, createdBy);
 
         return customerTypeContactList;
+    }
+
+    public boolean customerTypeContactListExists(CustomerType customerType, ContactList contactList) {
+        return session.queryForInteger(
+                "SELECT COUNT(*) " +
+                "FROM customertypecontactlists " +
+                "WHERE cutyclst_cuty_customertypeid = ? AND cutyclst_clst_contactlistid = ? AND cutyclst_thrutime = ?",
+                customerType, contactList, Session.MAX_TIME) == 1;
+    }
+
+    public long countCustomerTypeContactListsByContactList(ContactList contactList) {
+        return session.queryForLong(
+                "SELECT COUNT(*) "
+                + "FROM customertypecontactlists "
+                + "WHERE cutyclst_cuty_customertypeid = ? AND cutyclst_thrutime = ?",
+                contactList, Session.MAX_TIME);
     }
 
     private static final Map<EntityPermission, String> getCustomerTypeContactListQueries;

@@ -69,7 +69,7 @@ import com.echothree.model.control.contact.server.transfer.PostalAddressFormatDe
 import com.echothree.model.control.contact.server.transfer.PostalAddressFormatTransferCache;
 import com.echothree.model.control.contact.server.transfer.PostalAddressLineElementTransferCache;
 import com.echothree.model.control.contact.server.transfer.PostalAddressLineTransferCache;
-import com.echothree.model.control.contactlist.server.ContactListControl;
+import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.core.common.EventTypes;
 import com.echothree.model.control.invoice.server.control.InvoiceControl;
 import com.echothree.model.control.letter.server.control.LetterControl;

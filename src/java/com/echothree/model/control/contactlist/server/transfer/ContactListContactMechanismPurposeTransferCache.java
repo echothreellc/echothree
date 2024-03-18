@@ -20,7 +20,7 @@ import com.echothree.model.control.contact.common.transfer.ContactMechanismPurpo
 import com.echothree.model.control.contact.server.control.ContactControl;
 import com.echothree.model.control.contactlist.common.transfer.ContactListContactMechanismPurposeTransfer;
 import com.echothree.model.control.contactlist.common.transfer.ContactListTransfer;
-import com.echothree.model.control.contactlist.server.ContactListControl;
+import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.data.contactlist.server.entity.ContactListContactMechanismPurpose;
 import com.echothree.model.data.contactlist.server.entity.ContactListContactMechanismPurposeDetail;
 import com.echothree.model.data.user.server.entity.UserVisit;

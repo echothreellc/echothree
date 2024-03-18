@@ -17,23 +17,18 @@
 package com.echothree.control.user.contactlist.server.command;
 
 import com.echothree.control.user.contactlist.common.form.CreateContactListForm;
-import com.echothree.model.control.contactlist.server.ContactListControl;
+import com.echothree.control.user.contactlist.common.result.ContactListResultFactory;
+import com.echothree.model.control.contactlist.common.workflow.PartyContactListStatusConstants;
+import com.echothree.model.control.contactlist.server.control.ContactListControl;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
-import com.echothree.model.control.contactlist.common.workflow.PartyContactListStatusConstants;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
-import com.echothree.model.data.contactlist.server.entity.ContactList;
-import com.echothree.model.data.contactlist.server.entity.ContactListFrequency;
-import com.echothree.model.data.contactlist.server.entity.ContactListGroup;
-import com.echothree.model.data.contactlist.server.entity.ContactListType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.workflow.server.entity.Workflow;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntrance;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -76,27 +71,28 @@ public class CreateContactListCommand
     
     @Override
     protected BaseResult execute() {
+        var result = ContactListResultFactory.getCreateContactListResult();
         var contactListControl = Session.getModelController(ContactListControl.class);
-        String contactListName = form.getContactListName();
-        ContactList contactList = contactListControl.getContactListByName(contactListName);
+        var contactListName = form.getContactListName();
+        var contactList = contactListControl.getContactListByName(contactListName);
 
         if(contactList == null) {
-            String contactListGroupName = form.getContactListGroupName();
-            ContactListGroup contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
+            var contactListGroupName = form.getContactListGroupName();
+            var contactListGroup = contactListControl.getContactListGroupByName(contactListGroupName);
 
             if(contactListGroup != null) {
-                String contactListTypeName = form.getContactListTypeName();
-                ContactListType contactListType = contactListControl.getContactListTypeByName(contactListTypeName);
+                var contactListTypeName = form.getContactListTypeName();
+                var contactListType = contactListControl.getContactListTypeByName(contactListTypeName);
 
                 if(contactListType != null) {
-                    String contactListFrequencyName = form.getContactListFrequencyName();
-                    ContactListFrequency contactListFrequency = contactListFrequencyName == null ? null : contactListControl.getContactListFrequencyByName(contactListFrequencyName);
+                    var contactListFrequencyName = form.getContactListFrequencyName();
+                    var contactListFrequency = contactListFrequencyName == null ? null : contactListControl.getContactListFrequencyByName(contactListFrequencyName);
 
                     if(contactListFrequencyName == null || contactListFrequency != null) {
                         var workflowControl = Session.getModelController(WorkflowControl.class);
-                        String defaultPartyContactListStatusChoice = form.getDefaultPartyContactListStatusChoice();
+                        var defaultPartyContactListStatusChoice = form.getDefaultPartyContactListStatusChoice();
                         var workflow = workflowControl.getWorkflowByName(PartyContactListStatusConstants.Workflow_PARTY_CONTACT_LIST_STATUS);
-                        WorkflowEntrance defaultPartyContactListStatus = workflowControl.getWorkflowEntranceByName(workflow, defaultPartyContactListStatusChoice);
+                        var defaultPartyContactListStatus = workflowControl.getWorkflowEntranceByName(workflow, defaultPartyContactListStatusChoice);
 
                         if(defaultPartyContactListStatus != null) {
                             var partyPK = getPartyPK();
@@ -127,7 +123,12 @@ public class CreateContactListCommand
             addExecutionError(ExecutionErrors.DuplicateContactListName.name(), contactListName);
         }
 
-        return null;
+        if(contactList != null && !hasExecutionErrors()) {
+            result.setContactListName(contactList.getLastDetail().getContactListName());
+            result.setEntityRef(contactList.getPrimaryKey().getEntityRef());
+        }
+
+        return result;
     }
     
 }

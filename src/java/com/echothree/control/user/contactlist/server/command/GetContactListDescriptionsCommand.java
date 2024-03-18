@@ -19,7 +19,8 @@ package com.echothree.control.user.contactlist.server.command;
 import com.echothree.control.user.contactlist.common.form.GetContactListDescriptionsForm;
 import com.echothree.control.user.contactlist.common.result.ContactListResultFactory;
 import com.echothree.control.user.contactlist.common.result.GetContactListDescriptionsResult;
-import com.echothree.model.control.contactlist.server.ContactListControl;
+import com.echothree.model.control.contactlist.server.control.ContactListControl;
+import com.echothree.model.control.contactlist.server.logic.ContactListLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -70,7 +71,7 @@ public class GetContactListDescriptionsCommand
         ContactList contactList = contactListControl.getContactListByName(contactListName);
         
         if(contactList != null) {
-            result.setContactList(contactListControl.getContactListTransfer(getUserVisit(), contactList));
+            result.setContactList(ContactListLogic.getInstance().getContactListTransfer(getUserVisit(), contactList));
             result.setContactListDescriptions(contactListControl.getContactListDescriptionTransfersByContactList(getUserVisit(), contactList));
         } else {
             addExecutionError(ExecutionErrors.UnknownContactListName.name(), contactListName);
