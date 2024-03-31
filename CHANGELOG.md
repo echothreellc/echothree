@@ -1,5 +1,10 @@
 # Changelog
 
+## 2024-03-31-01
+
+* Error Prone 2.26.1 Upgrade [1096](https://gitlab.echothree.com/echothree/echothree/-/issues/1096)
+* graphql-java 21.5 Upgrade [1097](https://gitlab.echothree.com/echothree/echothree/-/issues/1097)
+
 ## 2024-03-17-01
 
 * Include Field vendorTypeName When Indexing and Searching Vendors [1075](https://gitlab.echothree.com/echothree/echothree/-/issues/1075)
