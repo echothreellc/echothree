@@ -1,5 +1,9 @@
 # Changelog
 
+## 2024-04-14-01
+
+* jOOQ 3.19.5 Upgrade [1103](https://gitlab.echothree.com/echothree/echothree/-/issues/1103)
+
 ## 2024-03-31-01
 
 * Error Prone 2.26.1 Upgrade [1096](https://gitlab.echothree.com/echothree/echothree/-/issues/1096)
