@@ -19,6 +19,5 @@ package com.echothree.model.control.core.common;
 public enum ComponentVendors {
     
     ECHO_THREE,
-    UNKNOWN
-    
+
 }
