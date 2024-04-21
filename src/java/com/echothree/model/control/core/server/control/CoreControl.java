@@ -13212,7 +13212,7 @@ public class CoreControl
 
     @Override
     public Event sendEvent(final BasePK basePK, final EventTypes eventType, final BasePK relatedBasePK,
-            final EventTypes relatedEventType, final BasePK createdByPK) {
+            final EventTypes relatedEventType, final BasePK createdByBasePK) {
         var entityInstance = getEntityInstanceByBasePK(basePK);
         Event event = null;
 
@@ -13221,7 +13221,7 @@ public class CoreControl
         } else {
             var relatedEntityInstance = relatedBasePK == null ? null : getEntityInstanceByBasePK(relatedBasePK);
             
-            event = sendEvent(entityInstance, eventType, relatedEntityInstance, relatedEventType, createdByPK);
+            event = sendEvent(entityInstance, eventType, relatedEntityInstance, relatedEventType, createdByBasePK);
         }
         
         return event;
@@ -13229,10 +13229,10 @@ public class CoreControl
     
     @Override
     public Event sendEvent(final EntityInstance entityInstance, final EventTypes eventType, final BasePK relatedBasePK,
-            final EventTypes relatedEventType, final BasePK createdByPK) {
+            final EventTypes relatedEventType, final BasePK createdByBasePK) {
         var relatedEntityInstance = relatedBasePK == null ? null : getEntityInstanceByBasePK(relatedBasePK);
         
-        return sendEvent(entityInstance, eventType, relatedEntityInstance, relatedEventType, createdByPK);
+        return sendEvent(entityInstance, eventType, relatedEntityInstance, relatedEventType, createdByBasePK);
     }
     
     // --------------------------------------------------------------------------------
