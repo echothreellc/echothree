@@ -56,6 +56,7 @@ public enum SecurityRoles {
     SecurityRole,
     Selector,
     SelectorKind,
+    Send,
     Translation,
     UserLogin,
     WorkflowStep,

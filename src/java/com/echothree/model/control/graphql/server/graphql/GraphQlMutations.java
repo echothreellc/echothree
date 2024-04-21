@@ -37,6 +37,7 @@ import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.result.CreateComponentVendorResult;
 import com.echothree.control.user.core.common.result.CreateEntityAttributeGroupResult;
 import com.echothree.control.user.core.common.result.CreateEntityAttributeResult;
+import com.echothree.control.user.core.common.result.CreateEntityInstanceResult;
 import com.echothree.control.user.core.common.result.CreateEntityListItemResult;
 import com.echothree.control.user.core.common.result.CreateEntityTypeResult;
 import com.echothree.control.user.core.common.result.EditComponentVendorResult;
@@ -3964,6 +3965,34 @@ public interface GraphQlMutations {
             }
 
             mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject createEntityInstance(final DataFetchingEnvironment env,
+            @GraphQLName("componentVendorName") @GraphQLNonNull final String componentVendorName,
+            @GraphQLName("entityTypeName") @GraphQLNonNull final String entityTypeName) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = CoreUtil.getHome().getCreateEntityInstanceForm();
+
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
+
+            var commandResult = CoreUtil.getHome().createEntityInstance(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateEntityInstanceResult)commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }

@@ -561,6 +561,9 @@
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="Event" parentSecurityRoleGroupName="CoreComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Event" />
+            <securityRole securityRoleName="Send" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Event Send" />
+            </securityRole>
             <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Event List" />
             </securityRole>
@@ -5160,6 +5163,15 @@
         </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="EntityInstance" parentSecurityRoleGroupName="CoreComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Entity Instance" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Entity Instance Create" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Entity Instance Delete" />
+            </securityRole>
+            <securityRole securityRoleName="Remove" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Entity Instance Remove" />
+            </securityRole>
             <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
                 <securityRoleDescription languageIsoName="en" description="Entity Instance List" />
             </securityRole>
@@ -7734,6 +7746,7 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityAttributeGroup" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityAttributeGroup" securityRoleName="Choices" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityAttributeGroup" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="Event" securityRoleName="Send" />
             <partySecurityRoleTemplateRole securityRoleGroupName="Event" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="FilterKind" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="FilterKind" securityRoleName="Edit" />
@@ -8970,6 +8983,9 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityType" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityType" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityType" securityRoleName="Search" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="EntityInstance" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="EntityInstance" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="EntityInstance" securityRoleName="Remove" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityInstance" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityInstance" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityAttribute" securityRoleName="Create" />
