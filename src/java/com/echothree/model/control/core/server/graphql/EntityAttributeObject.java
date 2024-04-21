@@ -71,8 +71,7 @@ public class EntityAttributeObject
     private EntityAttributeBlob entityAttributeBlob; // Optional, use getEntityAttributeBlob()
     
     private EntityAttributeBlob getEntityAttributeBlob() {
-        if(entityAttributeBlob == null
-                && isEntityAttributeTypeName(EntityAttributeTypes.BLOB.name())) {
+        if(entityAttributeBlob == null && getEntityAttributeTypeEnum() == EntityAttributeTypes.BLOB) {
             var coreControl = Session.getModelController(CoreControl.class);
     
             entityAttributeBlob = coreControl.getEntityAttributeBlob(entityAttribute);
@@ -84,8 +83,7 @@ public class EntityAttributeObject
     private EntityAttributeString entityAttributeString; // Optional, use getEntityAttributeString()
     
     private EntityAttributeString getEntityAttributeString() {
-        if(entityAttributeString == null
-                && isEntityAttributeTypeName(EntityAttributeTypes.STRING.name())) {
+        if(entityAttributeString == null && getEntityAttributeTypeEnum() == EntityAttributeTypes.STRING) {
             var coreControl = Session.getModelController(CoreControl.class);
     
             entityAttributeString = coreControl.getEntityAttributeString(entityAttribute);
@@ -97,8 +95,7 @@ public class EntityAttributeObject
     private EntityAttributeInteger entityAttributeInteger; // Optional, use getEntityAttributeInteger()
     
     private EntityAttributeInteger getEntityAttributeInteger() {
-        if(entityAttributeInteger == null
-                && isEntityAttributeTypeName(EntityAttributeTypes.INTEGER.name())) {
+        if(entityAttributeInteger == null && getEntityAttributeTypeEnum() == EntityAttributeTypes.INTEGER) {
             var coreControl = Session.getModelController(CoreControl.class);
     
             entityAttributeInteger = coreControl.getEntityAttributeInteger(entityAttribute);
@@ -110,8 +107,7 @@ public class EntityAttributeObject
     private EntityAttributeLong entityAttributeLong; // Optional, use getEntityAttributeLong()
     
     private EntityAttributeLong getEntityAttributeLong() {
-        if(entityAttributeLong == null
-                && isEntityAttributeTypeName(EntityAttributeTypes.LONG.name())) {
+        if(entityAttributeLong == null && getEntityAttributeTypeEnum() == EntityAttributeTypes.LONG) {
             var coreControl = Session.getModelController(CoreControl.class);
     
             entityAttributeLong = coreControl.getEntityAttributeLong(entityAttribute);
@@ -123,9 +119,11 @@ public class EntityAttributeObject
     private EntityAttributeNumeric entityAttributeNumeric; // Optional, use getEntityAttributeNumeric()
 
     private EntityAttributeNumeric getEntityAttributeNumeric() {
+        var entityAttributeType = getEntityAttributeTypeEnum();
+
         if(entityAttributeNumeric == null
-                && (isEntityAttributeTypeName(EntityAttributeTypes.INTEGER.name())
-                || isEntityAttributeTypeName(EntityAttributeTypes.LONG.name()))) {
+                && (entityAttributeType == EntityAttributeTypes.INTEGER
+                || entityAttributeType == EntityAttributeTypes.LONG)) {
             var coreControl = Session.getModelController(CoreControl.class);
 
             entityAttributeNumeric = coreControl.getEntityAttributeNumeric(entityAttribute);
@@ -137,9 +135,11 @@ public class EntityAttributeObject
     private EntityAttributeListItem entityAttributeListItem; // Optional, use getEntityAttributeListItem()
 
     private EntityAttributeListItem getEntityAttributeListItem() {
+        var entityAttributeType = getEntityAttributeTypeEnum();
+
         if(entityAttributeListItem == null
-                && (isEntityAttributeTypeName(EntityAttributeTypes.LISTITEM.name())
-                || isEntityAttributeTypeName(EntityAttributeTypes.MULTIPLELISTITEM.name()))) {
+                && (entityAttributeType == EntityAttributeTypes.LISTITEM
+                || entityAttributeType == EntityAttributeTypes.MULTIPLELISTITEM)) {
             var coreControl = Session.getModelController(CoreControl.class);
 
             entityAttributeListItem = coreControl.getEntityAttributeListItem(entityAttribute);
@@ -166,11 +166,17 @@ public class EntityAttributeObject
     public EntityAttributeTypeObject getEntityAttributeType(final DataFetchingEnvironment env) {
         return CoreSecurityUtils.getHasEntityAttributeTypeAccess(env) ? new EntityAttributeTypeObject(getEntityAttributeDetail().getEntityAttributeType()) : null;
     }
-    
-    protected boolean isEntityAttributeTypeName(String entityAttributeTypeName) {
-        return getEntityAttributeDetail().getEntityAttributeType().getEntityAttributeTypeName().equals(entityAttributeTypeName);
+
+    private EntityAttributeTypes entityAttributeTypeEnum = null;
+
+    protected EntityAttributeTypes getEntityAttributeTypeEnum() {
+        if(entityAttributeTypeEnum == null) {
+            entityAttributeTypeEnum = EntityAttributeTypes.valueOf(getEntityAttributeDetail().getEntityAttributeType().getEntityAttributeTypeName());
+        }
+
+        return entityAttributeTypeEnum;
     }
-    
+
     @GraphQLField
     @GraphQLDescription("track revisions")
     @GraphQLNonNull
@@ -362,10 +368,9 @@ public class EntityAttributeObject
         AttributeInterface attributeInterface = null;
 
         if(entityInstance != null) {
-            var entityAttributeType = EntityAttributeTypes.valueOf(getEntityAttributeDetail().getEntityAttributeType().getEntityAttributeTypeName());
             var coreControl = Session.getModelController(CoreControl.class);
 
-            switch(entityAttributeType) {
+            switch(getEntityAttributeTypeEnum()) {
                 // TODO: BLOB
                 case BOOLEAN -> {
                     var entityBooleanAttribute = coreControl.getEntityBooleanAttribute(entityAttribute, entityInstance);
@@ -440,10 +445,11 @@ public class EntityAttributeObject
     @GraphQLField
     @GraphQLDescription("entity list items")
     public Collection<EntityListItemObject> getEntityListItems(final DataFetchingEnvironment env) {
+        var entityAttributeType = getEntityAttributeTypeEnum();
         Collection<EntityListItemObject> entityListItemObjects = null;
 
-        if((isEntityAttributeTypeName(EntityAttributeTypes.LISTITEM.name())
-                || isEntityAttributeTypeName(EntityAttributeTypes.MULTIPLELISTITEM.name()))
+        if((entityAttributeType == EntityAttributeTypes.LISTITEM
+                || entityAttributeType == EntityAttributeTypes.MULTIPLELISTITEM)
                 && CoreSecurityUtils.getHasEntityListItemsAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
             var entityListItems = coreControl.getEntityListItems(entityAttribute);
@@ -463,7 +469,7 @@ public class EntityAttributeObject
     public Collection<EntityLongRangeObject> getEntityLongRanges(final DataFetchingEnvironment env) {
         Collection<EntityLongRangeObject> entityLongRangeObjects = null;
 
-        if(isEntityAttributeTypeName(EntityAttributeTypes.LONG.name())
+        if(getEntityAttributeTypeEnum() == EntityAttributeTypes.LONG
                 && CoreSecurityUtils.getHasEntityLongRangesAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
             var entityLongRanges = coreControl.getEntityLongRanges(entityAttribute);
@@ -483,7 +489,7 @@ public class EntityAttributeObject
     public Collection<EntityIntegerRangeObject> getEntityIntegerRanges(final DataFetchingEnvironment env) {
         Collection<EntityIntegerRangeObject> entityIntegerRangeObjects = null;
 
-        if(isEntityAttributeTypeName(EntityAttributeTypes.INTEGER.name())
+        if(getEntityAttributeTypeEnum() == EntityAttributeTypes.INTEGER
                 && CoreSecurityUtils.getHasEntityIntegerRangesAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
             var entityIntegerRanges = coreControl.getEntityIntegerRanges(entityAttribute);
