@@ -51,6 +51,7 @@ public enum SecurityRoles {
     PaymentProcessorAction,
     PaymentProcessorTransactionCode,
     PaymentProcessorTypeAction,
+    Remove,
     Review,
     Search,
     SecurityRole,
