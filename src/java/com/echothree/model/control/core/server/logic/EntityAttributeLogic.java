@@ -207,7 +207,7 @@ public class EntityAttributeLogic
             final Integer upperLimitIntegerValue, final Integer lowerLimitIntegerValue, final Integer lowerRangeIntegerValue,
             final Long upperRangeLongValue, final Long upperLimitLongValue, final Long lowerLimitLongValue,
             final Long lowerRangeLongValue, final Sequence entityListItemSequence, final UnitOfMeasureType unitOfMeasureType,
-            final Integer sortOrder, final PartyPK createdByPK, final Language language, final String description) {
+            final Integer sortOrder, final BasePK createdBy, final Language language, final String description) {
         EntityAttribute entityAttribute = null;
         var entityTypeDetail = entityType.getLastDetail();
 
@@ -225,41 +225,41 @@ public class EntityAttributeLogic
 
             if(entityAttribute == null) {
                 entityAttribute = coreControl.createEntityAttribute(entityType, entityAttributeName, entityAttributeType,
-                        trackRevisions, sortOrder, createdByPK);
+                        trackRevisions, sortOrder, createdBy);
 
                 if(description != null) {
-                    coreControl.createEntityAttributeDescription(entityAttribute, language, description, createdByPK);
+                    coreControl.createEntityAttributeDescription(entityAttribute, language, description, createdBy);
                 }
 
                 switch(EntityAttributeTypes.valueOf(entityAttributeType.getEntityAttributeTypeName())) {
                     case BLOB ->
-                            coreControl.createEntityAttributeBlob(entityAttribute, checkContentWebAddress, createdByPK);
+                            coreControl.createEntityAttributeBlob(entityAttribute, checkContentWebAddress, createdBy);
                     case STRING -> {
                         if(validationPattern != null) {
-                            coreControl.createEntityAttributeString(entityAttribute, validationPattern, createdByPK);
+                            coreControl.createEntityAttributeString(entityAttribute, validationPattern, createdBy);
                         }
                     }
                     case INTEGER -> {
                         if(upperRangeIntegerValue != null || upperLimitIntegerValue != null || lowerLimitIntegerValue != null || lowerRangeIntegerValue != null) {
                             coreControl.createEntityAttributeInteger(entityAttribute, upperRangeIntegerValue, upperLimitIntegerValue,
-                                    lowerLimitIntegerValue, lowerRangeIntegerValue, createdByPK);
+                                    lowerLimitIntegerValue, lowerRangeIntegerValue, createdBy);
                         }
                         if(unitOfMeasureType != null) {
-                            coreControl.createEntityAttributeNumeric(entityAttribute, unitOfMeasureType, createdByPK);
+                            coreControl.createEntityAttributeNumeric(entityAttribute, unitOfMeasureType, createdBy);
                         }
                     }
                     case LONG -> {
                         if(upperRangeLongValue != null || upperLimitLongValue != null || lowerLimitLongValue != null || lowerRangeLongValue != null) {
                             coreControl.createEntityAttributeLong(entityAttribute, upperRangeLongValue, upperLimitLongValue,
-                                    lowerLimitLongValue, lowerRangeLongValue, createdByPK);
+                                    lowerLimitLongValue, lowerRangeLongValue, createdBy);
                         }
                         if(unitOfMeasureType != null) {
-                            coreControl.createEntityAttributeNumeric(entityAttribute, unitOfMeasureType, createdByPK);
+                            coreControl.createEntityAttributeNumeric(entityAttribute, unitOfMeasureType, createdBy);
                         }
                     }
                     case LISTITEM, MULTIPLELISTITEM -> {
                         if(entityListItemSequence != null) {
-                            coreControl.createEntityAttributeListItem(entityAttribute, entityListItemSequence, createdByPK);
+                            coreControl.createEntityAttributeListItem(entityAttribute, entityListItemSequence, createdBy);
                         }
                     }
                     default -> {

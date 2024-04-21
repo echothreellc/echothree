@@ -13098,10 +13098,10 @@ public class CoreControl
 
     @Override
     public Event sendEvent(final EntityInstance entityInstance, final EventTypes eventTypeEnum, final EntityInstance relatedEntityInstance,
-            final EventTypes relatedEventTypeEnum, final BasePK createdByPK) {
+            final EventTypes relatedEventTypeEnum, final BasePK createdByBasePK) {
         final var eventType = getEventTypeByEventTypesFromCache(eventTypeEnum);
-        final var relatedEventType = relatedEventTypeEnum == null? null: getEventTypeByEventTypesFromCache(relatedEventTypeEnum);
-        final var createdByEntityInstance = createdByPK == null ? null : getEntityInstanceByBasePK(createdByPK);
+        final var relatedEventType = relatedEventTypeEnum == null ? null : getEventTypeByEventTypesFromCache(relatedEventTypeEnum);
+        final var createdByEntityInstance = createdByBasePK == null ? null : getEntityInstanceByBasePK(createdByBasePK);
         Event event = null;
 
         if(CoreDebugFlags.LogSentEvents) {
@@ -13144,7 +13144,7 @@ public class CoreControl
                 shouldQueueEventToSubscribers = true;
             }
             case DELETE -> {
-                deleteEntityInstanceDependencies(entityInstance, createdByPK);
+                deleteEntityInstanceDependencies(entityInstance, createdByBasePK);
                 entityTime.setDeletedTime(eventTime);
                 shouldClearCache = true;
                 shouldQueueEntityInstanceToIndexing = true;
@@ -13181,7 +13181,7 @@ public class CoreControl
         }
 
         if(!shouldSuppressEvent) {
-            final var eventGroup = createdByPK == null ? null : getActiveEventGroup(createdByPK);
+            final var eventGroup = createdByBasePK == null ? null : getActiveEventGroup(createdByBasePK);
 
             event = createEvent(eventGroup, eventTime, entityInstance, eventType, relatedEntityInstance, relatedEventType,
                     createdByEntityInstance);
@@ -13211,28 +13211,28 @@ public class CoreControl
     }
 
     @Override
-    public Event sendEvent(final BasePK entityInstancePK, final EventTypes eventType, final BasePK relatedPK,
-            final EventTypes relatedEventType, final BasePK createdByPK) {
-        var entityInstance = getEntityInstanceByBasePK(entityInstancePK);
+    public Event sendEvent(final BasePK basePK, final EventTypes eventType, final BasePK relatedBasePK,
+            final EventTypes relatedEventType, final BasePK createdByBasePK) {
+        var entityInstance = getEntityInstanceByBasePK(basePK);
         Event event = null;
 
         if(entityInstance == null) {
-            getLog().error("sendEventUsingNames: getEntityInstanceByBasePK failed on " + entityInstancePK.toString());
+            getLog().error("sendEventUsingNames: getEntityInstanceByBasePK failed on " + basePK.toString());
         } else {
-            var relatedEntityInstance = relatedPK == null? null: getEntityInstanceByBasePK(relatedPK);
+            var relatedEntityInstance = relatedBasePK == null ? null : getEntityInstanceByBasePK(relatedBasePK);
             
-            event = sendEvent(entityInstance, eventType, relatedEntityInstance, relatedEventType, createdByPK);
+            event = sendEvent(entityInstance, eventType, relatedEntityInstance, relatedEventType, createdByBasePK);
         }
         
         return event;
     }
     
     @Override
-    public Event sendEvent(final EntityInstance entityInstance, final EventTypes eventType, final BasePK relatedPK,
-            final EventTypes relatedEventType, final BasePK createdByPK) {
-        var relatedEntityInstance = relatedPK == null? null: getEntityInstanceByBasePK(relatedPK);
+    public Event sendEvent(final EntityInstance entityInstance, final EventTypes eventType, final BasePK relatedBasePK,
+            final EventTypes relatedEventType, final BasePK createdByBasePK) {
+        var relatedEntityInstance = relatedBasePK == null ? null : getEntityInstanceByBasePK(relatedBasePK);
         
-        return sendEvent(entityInstance, eventType, relatedEntityInstance, relatedEventType, createdByPK);
+        return sendEvent(entityInstance, eventType, relatedEntityInstance, relatedEventType, createdByBasePK);
     }
     
     // --------------------------------------------------------------------------------
