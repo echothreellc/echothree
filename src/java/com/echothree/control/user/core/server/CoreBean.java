@@ -134,6 +134,7 @@ import com.echothree.control.user.core.common.form.DeleteEntityCollectionAttribu
 import com.echothree.control.user.core.common.form.DeleteEntityDateAttributeForm;
 import com.echothree.control.user.core.common.form.DeleteEntityEntityAttributeForm;
 import com.echothree.control.user.core.common.form.DeleteEntityGeoPointAttributeForm;
+import com.echothree.control.user.core.common.form.DeleteEntityInstanceForm;
 import com.echothree.control.user.core.common.form.DeleteEntityIntegerAttributeForm;
 import com.echothree.control.user.core.common.form.DeleteEntityIntegerRangeDescriptionForm;
 import com.echothree.control.user.core.common.form.DeleteEntityIntegerRangeForm;
@@ -386,6 +387,7 @@ import com.echothree.control.user.core.common.form.GetTextTransformationsForm;
 import com.echothree.control.user.core.common.form.LoadBaseKeysForm;
 import com.echothree.control.user.core.common.form.LockEntityForm;
 import com.echothree.control.user.core.common.form.RemoveCacheEntryForm;
+import com.echothree.control.user.core.common.form.RemoveEntityInstanceForm;
 import com.echothree.control.user.core.common.form.SetBaseEncryptionKeyStatusForm;
 import com.echothree.control.user.core.common.form.SetDefaultAppearanceForm;
 import com.echothree.control.user.core.common.form.SetDefaultApplicationEditorForm;
@@ -526,6 +528,7 @@ import com.echothree.control.user.core.server.command.DeleteEntityCollectionAttr
 import com.echothree.control.user.core.server.command.DeleteEntityDateAttributeCommand;
 import com.echothree.control.user.core.server.command.DeleteEntityEntityAttributeCommand;
 import com.echothree.control.user.core.server.command.DeleteEntityGeoPointAttributeCommand;
+import com.echothree.control.user.core.server.command.DeleteEntityInstanceCommand;
 import com.echothree.control.user.core.server.command.DeleteEntityIntegerAttributeCommand;
 import com.echothree.control.user.core.server.command.DeleteEntityIntegerRangeCommand;
 import com.echothree.control.user.core.server.command.DeleteEntityIntegerRangeDescriptionCommand;
@@ -780,6 +783,7 @@ import com.echothree.control.user.core.server.command.LoadBaseKeysCommand;
 import com.echothree.control.user.core.server.command.LockEntityCommand;
 import com.echothree.control.user.core.server.command.ProcessQueuedEventsCommand;
 import com.echothree.control.user.core.server.command.RemoveCacheEntryCommand;
+import com.echothree.control.user.core.server.command.RemoveEntityInstanceCommand;
 import com.echothree.control.user.core.server.command.RemovedExpiredEntityLocksCommand;
 import com.echothree.control.user.core.server.command.SetBaseEncryptionKeyStatusCommand;
 import com.echothree.control.user.core.server.command.SetDefaultAppearanceCommand;
@@ -1143,6 +1147,16 @@ public class CoreBean
     @Override
     public CommandResult getEntityInstances(UserVisitPK userVisitPK, GetEntityInstancesForm form) {
         return new GetEntityInstancesCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult deleteEntityInstance(UserVisitPK userVisitPK, DeleteEntityInstanceForm form) {
+        return new DeleteEntityInstanceCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult removeEntityInstance(UserVisitPK userVisitPK, RemoveEntityInstanceForm form) {
+        return new RemoveEntityInstanceCommand(userVisitPK, form).run();
     }
 
     @Override

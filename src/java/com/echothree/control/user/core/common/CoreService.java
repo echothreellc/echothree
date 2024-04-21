@@ -133,6 +133,7 @@ import com.echothree.control.user.core.common.form.DeleteEntityCollectionAttribu
 import com.echothree.control.user.core.common.form.DeleteEntityDateAttributeForm;
 import com.echothree.control.user.core.common.form.DeleteEntityEntityAttributeForm;
 import com.echothree.control.user.core.common.form.DeleteEntityGeoPointAttributeForm;
+import com.echothree.control.user.core.common.form.DeleteEntityInstanceForm;
 import com.echothree.control.user.core.common.form.DeleteEntityIntegerAttributeForm;
 import com.echothree.control.user.core.common.form.DeleteEntityIntegerRangeDescriptionForm;
 import com.echothree.control.user.core.common.form.DeleteEntityIntegerRangeForm;
@@ -385,6 +386,7 @@ import com.echothree.control.user.core.common.form.GetTextTransformationsForm;
 import com.echothree.control.user.core.common.form.LoadBaseKeysForm;
 import com.echothree.control.user.core.common.form.LockEntityForm;
 import com.echothree.control.user.core.common.form.RemoveCacheEntryForm;
+import com.echothree.control.user.core.common.form.RemoveEntityInstanceForm;
 import com.echothree.control.user.core.common.form.SetBaseEncryptionKeyStatusForm;
 import com.echothree.control.user.core.common.form.SetDefaultAppearanceForm;
 import com.echothree.control.user.core.common.form.SetDefaultApplicationEditorForm;
@@ -577,6 +579,10 @@ public interface CoreService
     CommandResult getEntityInstance(UserVisitPK userVisitPK, GetEntityInstanceForm form);
 
     CommandResult getEntityInstances(UserVisitPK userVisitPK, GetEntityInstancesForm form);
+
+    CommandResult deleteEntityInstance(UserVisitPK userVisitPK, DeleteEntityInstanceForm form);
+
+    CommandResult removeEntityInstance(UserVisitPK userVisitPK, RemoveEntityInstanceForm form);
 
     CommandResult generateKey(UserVisitPK userVisitPK, GenerateKeyForm form);
     

@@ -242,4 +242,28 @@ public class EntityInstanceLogic
                 .append(entityInstance.getEntityUniqueId()).toString();
     }
 
+    public void deleteEntityInstance(final ExecutionErrorAccumulator eea, final EntityInstance entityInstance, final BasePK deletedBy) {
+        var componentVendorName = entityInstance.getEntityType().getLastDetail().getComponentVendor().getLastDetail().getComponentVendorName();
+
+        if(!ComponentVendors.ECHO_THREE.name().equals(componentVendorName)) {
+            var coreControl = Session.getModelController(CoreControl.class);
+
+            coreControl.sendEvent(entityInstance, EventTypes.DELETE, (EntityInstance)null, null, deletedBy);
+        } else {
+            handleExecutionError(InvalidComponentVendorException.class, eea, ExecutionErrors.InvalidComponentVendor.name(), componentVendorName);
+        }
+    }
+
+    public void removeEntityInstance(final ExecutionErrorAccumulator eea, final EntityInstance entityInstance) {
+        var componentVendorName = entityInstance.getEntityType().getLastDetail().getComponentVendor().getLastDetail().getComponentVendorName();
+
+        if(!ComponentVendors.ECHO_THREE.name().equals(componentVendorName)) {
+            var coreControl = Session.getModelController(CoreControl.class);
+
+            coreControl.removeEntityInstance(entityInstance);
+        } else {
+            handleExecutionError(InvalidComponentVendorException.class, eea, ExecutionErrors.InvalidComponentVendor.name(), componentVendorName);
+        }
+    }
+
 }
