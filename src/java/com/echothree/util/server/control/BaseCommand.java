@@ -654,28 +654,28 @@ public abstract class BaseCommand
         return getCoreControl().getEntityInstanceByBasePK(pk);
     }
     
-    protected Event sendEvent(final BasePK entityInstancePK, final EventTypes eventType, final BasePK relatedPK,
-            final EventTypes relatedEventType, final BasePK createdByPK) {
-        EntityInstance entityInstance = getEntityInstanceByBasePK(entityInstancePK);
-        EntityInstance relatedEntityInstance = relatedPK == null? null: getEntityInstanceByBasePK(relatedPK);
+    protected Event sendEvent(final BasePK basePK, final EventTypes eventType, final BasePK relatedBasePK,
+            final EventTypes relatedEventType, final BasePK createdByBasePK) {
+        var entityInstance = getEntityInstanceByBasePK(basePK);
+        var relatedEntityInstance = relatedBasePK == null ? null : getEntityInstanceByBasePK(relatedBasePK);
         
-        return sendEvent(entityInstance, eventType, relatedEntityInstance, relatedEventType, createdByPK);
+        return sendEvent(entityInstance, eventType, relatedEntityInstance, relatedEventType, createdByBasePK);
     }
     
-    protected Event sendEvent(final EntityInstance entityInstance, final EventTypes eventType, final BasePK relatedPK,
-            final EventTypes relatedEventType, final BasePK createdByPK) {
-        EntityInstance relatedEntityInstance = relatedPK == null? null: getEntityInstanceByBasePK(relatedPK);
+    protected Event sendEvent(final EntityInstance entityInstance, final EventTypes eventType, final BasePK relatedBasePK,
+            final EventTypes relatedEventType, final BasePK createdByBasePK) {
+        var relatedEntityInstance = relatedBasePK == null ? null : getEntityInstanceByBasePK(relatedBasePK);
 
-        return sendEvent(entityInstance, eventType, relatedEntityInstance, relatedEventType, createdByPK);
+        return sendEvent(entityInstance, eventType, relatedEntityInstance, relatedEventType, createdByBasePK);
     }
     
     protected Event sendEvent(final EntityInstance entityInstance, final EventTypes eventType, final EntityInstance relatedEntityInstance,
-            final EventTypes relatedEventType, final BasePK createdByPK) {
+            final EventTypes relatedEventType, final BasePK createdByBasePK) {
         Event event = null;
         
-        if(createdByPK != null) {
+        if(createdByBasePK != null) {
             event = getCoreControl().sendEvent(entityInstance, eventType, relatedEntityInstance, relatedEventType,
-                createdByPK);
+                createdByBasePK);
         }
         
         return event;
