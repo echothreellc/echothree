@@ -67,7 +67,17 @@ public class EntityAttributeObject
         
         return entityAttributeDetail;
     }
-    
+
+    private EntityAttributeTypes entityAttributeTypeEnum = null; // Optional, use getEntityAttributeTypeEnum()
+
+    protected EntityAttributeTypes getEntityAttributeTypeEnum() {
+        if(entityAttributeTypeEnum == null) {
+            entityAttributeTypeEnum = EntityAttributeTypes.valueOf(getEntityAttributeDetail().getEntityAttributeType().getEntityAttributeTypeName());
+        }
+
+        return entityAttributeTypeEnum;
+    }
+
     private EntityAttributeBlob entityAttributeBlob; // Optional, use getEntityAttributeBlob()
     
     private EntityAttributeBlob getEntityAttributeBlob() {
@@ -165,16 +175,6 @@ public class EntityAttributeObject
     @GraphQLDescription("entity attribute type")
     public EntityAttributeTypeObject getEntityAttributeType(final DataFetchingEnvironment env) {
         return CoreSecurityUtils.getHasEntityAttributeTypeAccess(env) ? new EntityAttributeTypeObject(getEntityAttributeDetail().getEntityAttributeType()) : null;
-    }
-
-    private EntityAttributeTypes entityAttributeTypeEnum = null;
-
-    protected EntityAttributeTypes getEntityAttributeTypeEnum() {
-        if(entityAttributeTypeEnum == null) {
-            entityAttributeTypeEnum = EntityAttributeTypes.valueOf(getEntityAttributeDetail().getEntityAttributeType().getEntityAttributeTypeName());
-        }
-
-        return entityAttributeTypeEnum;
     }
 
     @GraphQLField
