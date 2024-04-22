@@ -19,10 +19,8 @@ package com.echothree.model.control.graphql.server.graphql;
 import com.echothree.control.user.core.common.form.CoreFormFactory;
 import com.echothree.model.control.core.common.exception.UnknownEntityAttributeGroupNameException;
 import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.control.core.server.graphql.CoreSecurityUtils;
 import com.echothree.model.control.core.server.graphql.EntityAttributeGroupObject;
 import com.echothree.model.control.core.server.graphql.EntityInstanceObject;
-import com.echothree.model.control.core.server.graphql.EventObject;
 import com.echothree.model.control.core.server.logic.EntityAttributeGroupLogic;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
@@ -36,7 +34,6 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workflow.server.graphql.WorkflowEntityStatusObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowSecurityUtils;
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
-import com.echothree.model.data.core.common.EventConstants;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.tag.common.TagScopeConstants;
@@ -183,32 +180,6 @@ public abstract class BaseEntityInstanceObject
                 }
 
                 return new CountedObjects<>(objectLimiter, tagScopes);
-            }
-        } else {
-            return Connections.emptyConnection();
-        }
-    }
-
-    @GraphQLField
-    @GraphQLDescription("events")
-    @GraphQLNonNull
-    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
-    public CountingPaginatedData<EventObject> getEvents(final DataFetchingEnvironment env) {
-        if(CoreSecurityUtils.getHasEventsAccess(env)) {
-            var coreControl = Session.getModelController(CoreControl.class);
-            var totalCount = coreControl.countEventsByEntityInstance(getEntityInstanceByBasePK());
-
-            try(var objectLimiter = new ObjectLimiter(env, EventConstants.COMPONENT_VENDOR_NAME, EventConstants.ENTITY_TYPE_NAME, totalCount)) {
-                var entities = coreControl.getEventsByEntityInstance(getEntityInstanceByBasePK());
-                var events = new ArrayList<EventObject>(entities.size());
-
-                for(var entity : entities) {
-                    var eventobject = new EventObject(entity);
-
-                    events.add(eventobject);
-                }
-
-                return new CountedObjects<>(objectLimiter, events);
             }
         } else {
             return Connections.emptyConnection();
