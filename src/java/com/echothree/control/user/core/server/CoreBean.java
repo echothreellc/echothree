@@ -388,6 +388,7 @@ import com.echothree.control.user.core.common.form.LoadBaseKeysForm;
 import com.echothree.control.user.core.common.form.LockEntityForm;
 import com.echothree.control.user.core.common.form.RemoveCacheEntryForm;
 import com.echothree.control.user.core.common.form.RemoveEntityInstanceForm;
+import com.echothree.control.user.core.common.form.SendEventForm;
 import com.echothree.control.user.core.common.form.SetBaseEncryptionKeyStatusForm;
 import com.echothree.control.user.core.common.form.SetDefaultAppearanceForm;
 import com.echothree.control.user.core.common.form.SetDefaultApplicationEditorForm;
@@ -785,6 +786,7 @@ import com.echothree.control.user.core.server.command.ProcessQueuedEventsCommand
 import com.echothree.control.user.core.server.command.RemoveCacheEntryCommand;
 import com.echothree.control.user.core.server.command.RemoveEntityInstanceCommand;
 import com.echothree.control.user.core.server.command.RemovedExpiredEntityLocksCommand;
+import com.echothree.control.user.core.server.command.SendEventCommand;
 import com.echothree.control.user.core.server.command.SetBaseEncryptionKeyStatusCommand;
 import com.echothree.control.user.core.server.command.SetDefaultAppearanceCommand;
 import com.echothree.control.user.core.server.command.SetDefaultApplicationCommand;
@@ -1219,12 +1221,17 @@ public class CoreBean
     // -------------------------------------------------------------------------
     //   Events
     // -------------------------------------------------------------------------
-    
+
+    @Override
+    public CommandResult sendEvent(UserVisitPK userVisitPK, SendEventForm form) {
+        return new SendEventCommand(userVisitPK, form).run();
+    }
+
     @Override
     public CommandResult getEvents(UserVisitPK userVisitPK, GetEventsForm form) {
         return new GetEventsCommand(userVisitPK, form).run();
     }
-    
+
     // -------------------------------------------------------------------------
     //   Queued Events
     // -------------------------------------------------------------------------

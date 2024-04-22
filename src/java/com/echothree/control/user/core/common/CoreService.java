@@ -387,6 +387,7 @@ import com.echothree.control.user.core.common.form.LoadBaseKeysForm;
 import com.echothree.control.user.core.common.form.LockEntityForm;
 import com.echothree.control.user.core.common.form.RemoveCacheEntryForm;
 import com.echothree.control.user.core.common.form.RemoveEntityInstanceForm;
+import com.echothree.control.user.core.common.form.SendEventForm;
 import com.echothree.control.user.core.common.form.SetBaseEncryptionKeyStatusForm;
 import com.echothree.control.user.core.common.form.SetDefaultAppearanceForm;
 import com.echothree.control.user.core.common.form.SetDefaultApplicationEditorForm;
@@ -617,7 +618,9 @@ public interface CoreService
     // -------------------------------------------------------------------------
     //   Events
     // -------------------------------------------------------------------------
-    
+
+    CommandResult sendEvent(UserVisitPK userVisitPK, SendEventForm form);
+
     CommandResult getEvents(UserVisitPK userVisitPK, GetEventsForm form);
     
     // -------------------------------------------------------------------------

@@ -4054,6 +4054,34 @@ public interface GraphQlMutations {
 
     @GraphQLField
     @GraphQLRelayMutation
+    static MutationResultObject sendEvent(final DataFetchingEnvironment env,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("entityRef") final String entityRef,
+            @GraphQLName("key") final String key,
+            @GraphQLName("guid") final String guid,
+            @GraphQLName("eventTypeName") @GraphQLNonNull final String eventTypeName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = CoreUtil.getHome().getSendEventForm();
+
+            commandForm.setUlid(id);
+            commandForm.setEntityRef(entityRef);
+            commandForm.setKey(key);
+            commandForm.setGuid(guid);
+            commandForm.setEventTypeName(eventTypeName);
+
+            var commandResult = CoreUtil.getHome().sendEvent(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
     static MutationResultWithIdObject createTagScope(final DataFetchingEnvironment env,
             @GraphQLName("tagScopeName") @GraphQLNonNull final String tagScopeName,
             @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
