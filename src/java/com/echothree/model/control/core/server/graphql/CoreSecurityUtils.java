@@ -36,6 +36,7 @@ import com.echothree.control.user.core.server.command.GetEntityLongRangeCommand;
 import com.echothree.control.user.core.server.command.GetEntityLongRangesCommand;
 import com.echothree.control.user.core.server.command.GetEntityTypeCommand;
 import com.echothree.control.user.core.server.command.GetEntityTypesCommand;
+import com.echothree.control.user.core.server.command.GetEventsCommand;
 import com.echothree.control.user.core.server.command.GetMimeTypeCommand;
 import com.echothree.control.user.core.server.command.GetMimeTypeFileExtensionCommand;
 import com.echothree.control.user.core.server.command.GetMimeTypeFileExtensionsCommand;
@@ -47,6 +48,10 @@ import com.echothree.model.control.graphql.server.util.BaseGraphQl;
 import graphql.schema.DataFetchingEnvironment;
 
 public interface CoreSecurityUtils {
+
+    static boolean getHasEventsAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetEventsCommand.class);
+    }
 
     static boolean getHasEntityInstanceAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetEntityInstanceCommand.class);
