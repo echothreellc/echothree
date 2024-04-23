@@ -67,14 +67,18 @@ import com.echothree.control.user.core.common.form.CreateComponentVendorForm;
 import com.echothree.control.user.core.common.form.CreateEntityAttributeEntityAttributeGroupForm;
 import com.echothree.control.user.core.common.form.CreateEntityAttributeForm;
 import com.echothree.control.user.core.common.form.CreateEntityAttributeGroupForm;
+import com.echothree.control.user.core.common.form.CreateEntityInstanceForm;
 import com.echothree.control.user.core.common.form.CreateEntityListItemForm;
 import com.echothree.control.user.core.common.form.CreateEntityTypeForm;
 import com.echothree.control.user.core.common.form.DeleteComponentVendorForm;
 import com.echothree.control.user.core.common.form.DeleteEntityAttributeEntityAttributeGroupForm;
 import com.echothree.control.user.core.common.form.DeleteEntityAttributeForm;
 import com.echothree.control.user.core.common.form.DeleteEntityAttributeGroupForm;
+import com.echothree.control.user.core.common.form.DeleteEntityInstanceForm;
 import com.echothree.control.user.core.common.form.DeleteEntityListItemForm;
 import com.echothree.control.user.core.common.form.DeleteEntityTypeForm;
+import com.echothree.control.user.core.common.form.RemoveEntityInstanceForm;
+import com.echothree.control.user.core.common.form.SendEventForm;
 import com.echothree.control.user.core.common.spec.ComponentVendorSpec;
 import com.echothree.control.user.core.common.spec.EntityAttributeEntityAttributeGroupSpec;
 import com.echothree.control.user.core.common.spec.EntityAttributeGroupSpec;
@@ -351,6 +355,12 @@ public class BasePersona {
     public DeleteEntityAttributeEntityAttributeGroupForm deleteEntityAttributeEntityAttributeGroupForm;
     public EntityAttributeEntityAttributeGroupSpec entityAttributeEntityAttributeGroupSpec;
     public EntityAttributeEntityAttributeGroupEdit entityAttributeEntityAttributeGroupEdit;
+
+    public CreateEntityInstanceForm createEntityInstanceForm;
+    public DeleteEntityInstanceForm deleteEntityInstanceForm;
+    public RemoveEntityInstanceForm removeEntityInstanceForm;
+
+    public SendEventForm sendEventForm;
 
     public String lastComponentVendorName;
     public String lastEntityTypeName;
