@@ -135,6 +135,7 @@ import static com.echothree.model.control.core.common.workflow.BaseEncryptionKey
 import static com.echothree.model.control.core.common.workflow.EventGroupStatusConstants.WorkflowStep_EVENT_GROUP_STATUS_ACTIVE;
 import static com.echothree.model.control.core.common.workflow.EventGroupStatusConstants.Workflow_EVENT_GROUP_STATUS;
 import com.echothree.model.control.core.server.CoreDebugFlags;
+import com.echothree.model.control.core.server.database.EntityInstancesByEntityTypeWithNullDeletedTimeQuery;
 import com.echothree.model.control.core.server.eventbus.SentEvent;
 import com.echothree.model.control.core.server.eventbus.SentEventEventBus;
 import com.echothree.model.control.core.server.transfer.AppearanceDescriptionTransferCache;
@@ -780,7 +781,7 @@ public class CoreControl
     public void deleteComponentVendor(ComponentVendor componentVendor, BasePK deletedBy) {
         deleteEntityTypesByComponentVendor(componentVendor, deletedBy);
         
-        ComponentVendorDetail componentVendorDetail = componentVendor.getLastDetailForUpdate();
+        var componentVendorDetail = componentVendor.getLastDetailForUpdate();
         componentVendorDetail.setThruTime(session.START_TIME_LONG);
         componentVendor.setActiveDetail(null);
         componentVendor.store();
@@ -1058,7 +1059,8 @@ public class CoreControl
         var ratingControl = Session.getModelController(RatingControl.class);
         var tagControl = Session.getModelController(TagControl.class);
         var workflowControl = Session.getModelController(WorkflowControl.class);
-        
+
+        deleteEntityInstancesByEntityTypeWithNullDeletedTime(entityType, deletedBy);
         deleteEntityTypeDescriptionsByEntityType(entityType, deletedBy);
         deleteEntityAttributesByEntityType(entityType, deletedBy);
         deleteEntityAttributeEntityTypesByAllowedEntityType(entityType, deletedBy);
@@ -1080,7 +1082,7 @@ public class CoreControl
     }
     
     public void deleteEntityTypesByComponentVendor(ComponentVendor componentVendor, BasePK deletedBy) {
-        List<EntityType> entityTypes = getEntityTypesByComponentVendorForUpdate(componentVendor);
+        var entityTypes = getEntityTypesByComponentVendorForUpdate(componentVendor);
         
         entityTypes.forEach((entityType) -> 
                 deleteEntityType(entityType, deletedBy)
@@ -2860,7 +2862,19 @@ public class CoreControl
         deleteEntityAttributesByEntityInstance(entityInstance, deletedBy);
         deleteEntityAppearancesByEntityInstance(entityInstance, deletedBy);
     }
-    
+
+    public void deleteEntityInstance(EntityInstance entityInstance, BasePK deletedBy) {
+        // sendEvent(...) handles calling back to deleteEntityInstanceDependencies(...)
+        sendEvent(entityInstance, EventTypes.DELETE, (EntityInstance)null, null, deletedBy);
+    }
+
+    public void deleteEntityInstancesByEntityTypeWithNullDeletedTime(final EntityType entityType, final BasePK deletedBy) {
+        for(var entityInstanceResult : new EntityInstancesByEntityTypeWithNullDeletedTimeQuery().execute(entityType)) {
+            deleteEntityInstance(EntityInstanceFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                    entityInstanceResult.getEntityInstancePK()), deletedBy);
+        }
+    }
+
     public void removeEntityInstance(EntityInstance entityInstance) {
         entityInstance.remove();
     }
