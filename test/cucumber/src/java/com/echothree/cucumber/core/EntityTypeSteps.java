@@ -261,7 +261,26 @@ public class EntityTypeSteps implements En {
                         entityTypeEdit.setDescription(description);
                     }
                 });
-        
+
+        When("^the user sets the entity type's component vendor to the last component vendor added$",
+                () -> {
+                    var persona = CurrentPersona.persona;
+                    var lastComponentVendorName = persona.lastComponentVendorName;
+                    var createEntityTypeForm = persona.createEntityTypeForm;
+                    var deleteEntityTypeForm = persona.deleteEntityTypeForm;
+                    var entityTypeSpec = persona.entityTypeSpec;
+
+                    assertThat(createEntityTypeForm != null || deleteEntityTypeForm != null || entityTypeSpec != null).isTrue();
+
+                    if(createEntityTypeForm != null) {
+                        createEntityTypeForm.setComponentVendorName(lastComponentVendorName);
+                    } else if(deleteEntityTypeForm != null) {
+                        deleteEntityTypeForm.setComponentVendorName(lastComponentVendorName);
+                    } else {
+                        entityTypeSpec.setComponentVendorName(lastComponentVendorName);
+                    }
+                });
+
         When("^the user sets the entity type's name to the last entity type added$",
                 () -> {
                     var persona = CurrentPersona.persona;

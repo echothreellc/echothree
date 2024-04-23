@@ -14,13 +14,14 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.core.common.form;
+package com.echothree.control.user.core.common.spec;
 
-import com.echothree.control.user.core.common.spec.EventTypeSpec;
+import com.echothree.util.common.form.BaseSpec;
 
-public interface CreateEventTypeForm
-        extends EventTypeSpec {
+public interface EventTypeSpec
+        extends BaseSpec {
     
-    // Nothing additional beyond EventTypeSpec
-
+    String getEventTypeName();
+    void setEventTypeName(String eventTypeName);
+    
 }

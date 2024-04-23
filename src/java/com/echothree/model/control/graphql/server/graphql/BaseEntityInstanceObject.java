@@ -185,5 +185,5 @@ public abstract class BaseEntityInstanceObject
             return Connections.emptyConnection();
         }
     }
-    
+
 }

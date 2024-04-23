@@ -16,11 +16,11 @@
 
 package com.echothree.control.user.core.common.form;
 
-import com.echothree.control.user.core.common.spec.EventTypeSpec;
+import com.echothree.control.user.core.common.spec.EntityTypeSpec;
 
-public interface CreateEventTypeForm
-        extends EventTypeSpec {
+public interface CreateEntityInstanceForm
+        extends EntityTypeSpec {
     
-    // Nothing additional beyond EventTypeSpec
-
+    // Nothing additional beyond EntityTypeSpec
+    
 }

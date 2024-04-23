@@ -2281,5 +2281,7 @@ public enum ExecutionErrors {
     UnknownDefaultWarehouseType,
     UnknownWarehouseTypeDescription,
     DuplicateWarehouseTypeDescription,
+    InvalidComponentVendor,
+    InvalidEventType,
 
 }

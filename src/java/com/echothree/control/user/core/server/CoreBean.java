@@ -346,6 +346,11 @@ public class CoreBean
     // -------------------------------------------------------------------------
 
     @Override
+    public CommandResult createEntityInstance(UserVisitPK userVisitPK, CreateEntityInstanceForm form) {
+        return new CreateEntityInstanceCommand(userVisitPK, form).run();
+    }
+
+    @Override
     public CommandResult getEntityInstance(UserVisitPK userVisitPK, GetEntityInstanceForm form) {
         return new GetEntityInstanceCommand(userVisitPK, form).run();
     }
@@ -353,6 +358,16 @@ public class CoreBean
     @Override
     public CommandResult getEntityInstances(UserVisitPK userVisitPK, GetEntityInstancesForm form) {
         return new GetEntityInstancesCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult deleteEntityInstance(UserVisitPK userVisitPK, DeleteEntityInstanceForm form) {
+        return new DeleteEntityInstanceCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult removeEntityInstance(UserVisitPK userVisitPK, RemoveEntityInstanceForm form) {
+        return new RemoveEntityInstanceCommand(userVisitPK, form).run();
     }
 
     @Override
@@ -415,12 +430,17 @@ public class CoreBean
     // -------------------------------------------------------------------------
     //   Events
     // -------------------------------------------------------------------------
-    
+
+    @Override
+    public CommandResult sendEvent(UserVisitPK userVisitPK, SendEventForm form) {
+        return new SendEventCommand(userVisitPK, form).run();
+    }
+
     @Override
     public CommandResult getEvents(UserVisitPK userVisitPK, GetEventsForm form) {
         return new GetEventsCommand(userVisitPK, form).run();
     }
-    
+
     // -------------------------------------------------------------------------
     //   Queued Events
     // -------------------------------------------------------------------------

@@ -14,13 +14,15 @@
 // limitations under the License.
 // --------------------------------------------------------------------------------
 
-package com.echothree.control.user.core.common.form;
+package com.echothree.control.user.core.common.result;
 
-import com.echothree.control.user.core.common.spec.EventTypeSpec;
+import com.echothree.control.user.core.common.spec.ColorSpec;
+import com.echothree.control.user.core.common.spec.EntityRefSpec;
+import com.echothree.util.common.command.BaseResult;
 
-public interface CreateEventTypeForm
-        extends EventTypeSpec {
+public interface CreateEntityInstanceResult
+        extends EntityRefSpec, BaseResult {
     
-    // Nothing additional beyond EventTypeSpec
-
+    // Nothing additional beyond EntityRefSpec, BaseResult
+    
 }

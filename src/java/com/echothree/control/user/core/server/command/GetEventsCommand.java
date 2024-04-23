@@ -24,23 +24,25 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.model.data.core.server.entity.Event;
 import com.echothree.model.data.core.server.factory.EventFactory;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserVisit;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseSimpleCommand;
+import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class GetEventsCommand
-        extends BaseSimpleCommand<GetEventsForm> {
+        extends BaseMultipleEntitiesCommand<Event, GetEventsForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -69,10 +71,13 @@ public class GetEventsCommand
     public GetEventsCommand(UserVisitPK userVisitPK, GetEventsForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    EntityInstance entityInstance;
+    EntityInstance createdBy;
+    Long eventCount;
+
     @Override
-    protected BaseResult execute() {
-        GetEventsResult result = CoreResultFactory.getGetEventsResult();
+    protected Collection<Event> getEntities() {
         String entityRef = form.getEntityRef();
         String key = form.getKey();
         String guid = form.getGuid();
@@ -83,38 +88,60 @@ public class GetEventsCommand
         String createdByUlid = form.getCreatedByUlid();
         var parameterCount = (entityRef == null ? 0 : 1) + (key == null ? 0 : 1) + (guid == null ? 0 : 1) + (ulid == null ? 0 : 1)
                 + (createdByEntityRef == null ? 0 : 1) + (createdByKey == null ? 0 : 1) + (createdByGuid == null ? 0 : 1) + (createdByUlid == null ? 0 : 1);
-        
+        Collection<Event> entities = null;
+
         if(parameterCount == 1) {
             var coreControl = getCoreControl();
-            UserVisit userVisit = getUserVisit();
 
             if(entityRef != null || key != null || guid != null || ulid != null) {
-                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, entityRef, key, guid, ulid, null);
+                entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, entityRef, key, guid, ulid, null);
 
                 if(!hasExecutionErrors()) {
                     if(session.hasLimit(EventFactory.class)) {
-                        result.setEventCount(coreControl.countEventsByEntityInstance(entityInstance));
+                        eventCount = coreControl.countEventsByEntityInstance(entityInstance);
                     }
 
-                    result.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityInstance, false, false, false, false, false, false));
-                    result.setEvents(coreControl.getEventTransfersByEntityInstance(userVisit, entityInstance));
+                    entities = coreControl.getEventsByEntityInstance(entityInstance);
                 }
             } else {
-                EntityInstance createdBy = EntityInstanceLogic.getInstance().getEntityInstance(this, createdByEntityRef, createdByKey, createdByGuid, createdByUlid, null);
+                createdBy = EntityInstanceLogic.getInstance().getEntityInstance(this, createdByEntityRef, createdByKey, createdByGuid, createdByUlid, null);
 
                 if(!hasExecutionErrors()) {
                     if(session.hasLimit(EventFactory.class)) {
-                        result.setEventCount(coreControl.countEventsByCreatedBy(createdBy));
+                        eventCount = coreControl.countEventsByCreatedBy(createdBy);
                     }
 
-                    result.setCreatedByEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, createdBy, false, false, false, false, false, false));
-                    result.setEvents(coreControl.getEventTransfersByCreatedBy(userVisit, createdBy));
+                    entities = coreControl.getEventsByCreatedBy(createdBy);
                 }
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
-        
+
+        return entities;
+    }
+
+    @Override
+    protected BaseResult getTransfers(Collection<Event> entities) {
+        GetEventsResult result = CoreResultFactory.getGetEventsResult();
+
+        if(entities != null) {
+            var coreControl = getCoreControl();
+            UserVisit userVisit = getUserVisit();
+
+            result.setEventCount(eventCount);
+
+            if(entityInstance != null) {
+                result.setEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, entityInstance, false, false, false, false, false, false));
+            }
+
+            if(createdBy != null) {
+                result.setCreatedByEntityInstance(coreControl.getEntityInstanceTransfer(userVisit, createdBy, false, false, false, false, false, false));
+            }
+
+            result.setEvents(coreControl.getEventTransfers(userVisit, entities));
+        }
+
         return result;
     }
     

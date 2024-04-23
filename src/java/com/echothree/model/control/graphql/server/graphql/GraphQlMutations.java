@@ -34,9 +34,13 @@ import com.echothree.control.user.content.common.result.EditContentCategoryResul
 import com.echothree.control.user.content.common.result.EditContentCollectionResult;
 import com.echothree.control.user.content.common.result.EditContentPageLayoutResult;
 import com.echothree.control.user.core.common.CoreUtil;
+import com.echothree.control.user.core.common.result.CreateComponentVendorResult;
 import com.echothree.control.user.core.common.result.CreateEntityAttributeGroupResult;
 import com.echothree.control.user.core.common.result.CreateEntityAttributeResult;
+import com.echothree.control.user.core.common.result.CreateEntityInstanceResult;
 import com.echothree.control.user.core.common.result.CreateEntityListItemResult;
+import com.echothree.control.user.core.common.result.CreateEntityTypeResult;
+import com.echothree.control.user.core.common.result.EditComponentVendorResult;
 import com.echothree.control.user.core.common.result.EditEntityAttributeEntityAttributeGroupResult;
 import com.echothree.control.user.core.common.result.EditEntityAttributeGroupResult;
 import com.echothree.control.user.core.common.result.EditEntityAttributeResult;
@@ -52,6 +56,7 @@ import com.echothree.control.user.core.common.result.EditEntityLongAttributeResu
 import com.echothree.control.user.core.common.result.EditEntityNameAttributeResult;
 import com.echothree.control.user.core.common.result.EditEntityStringAttributeResult;
 import com.echothree.control.user.core.common.result.EditEntityTimeAttributeResult;
+import com.echothree.control.user.core.common.result.EditEntityTypeResult;
 import com.echothree.control.user.customer.common.CustomerUtil;
 import com.echothree.control.user.customer.common.result.CreateCustomerTypeResult;
 import com.echothree.control.user.customer.common.result.EditCustomerTypeResult;
@@ -3738,6 +3743,335 @@ public interface GraphQlMutations {
             commandForm.setDateTimeFormatName(dateTimeFormatName);
 
             var commandResult = UserUtil.getHome().setUserVisitPreferredDateTimeFormat(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject createComponentVendor(final DataFetchingEnvironment env,
+            @GraphQLName("componentVendorName") @GraphQLNonNull final String componentVendorName,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = CoreUtil.getHome().getCreateComponentVendorForm();
+
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setDescription(description);
+
+            var commandResult = CoreUtil.getHome().createComponentVendor(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateComponentVendorResult)commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteComponentVendor(final DataFetchingEnvironment env,
+            @GraphQLName("componentVendorName") @GraphQLNonNull final String componentVendorName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = CoreUtil.getHome().getDeleteComponentVendorForm();
+
+            commandForm.setComponentVendorName(componentVendorName);
+
+            var commandResult = CoreUtil.getHome().deleteComponentVendor(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject editComponentVendor(final DataFetchingEnvironment env,
+            @GraphQLName("originalComponentVendorName") @GraphQLNonNull final String originalComponentVendorName,
+            @GraphQLName("componentVendorName") final String componentVendorName,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var spec = CoreUtil.getHome().getComponentVendorSpec();
+
+            spec.setComponentVendorName(originalComponentVendorName);
+
+            var commandForm = CoreUtil.getHome().getEditComponentVendorForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = CoreUtil.getHome().editComponentVendor(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditComponentVendorResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                mutationResultObject.setEntityInstance(result.getComponentVendor().getEntityInstance());
+
+                if(arguments.containsKey("componentVendorName"))
+                    edit.setComponentVendorName(componentVendorName);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = CoreUtil.getHome().editComponentVendor(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject createEntityType(final DataFetchingEnvironment env,
+            @GraphQLName("componentVendorName") @GraphQLNonNull final String componentVendorName,
+            @GraphQLName("entityTypeName") @GraphQLNonNull final String entityTypeName,
+            @GraphQLName("keepAllHistory") @GraphQLNonNull final String keepAllHistory,
+            @GraphQLName("lockTimeout") final String lockTimeout,
+            @GraphQLName("lockTimeoutUnitOfMeasureTypeName") final String lockTimeoutUnitOfMeasureTypeName,
+            @GraphQLName("isExtensible") @GraphQLNonNull final String isExtensible,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = CoreUtil.getHome().getCreateEntityTypeForm();
+
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
+            commandForm.setKeepAllHistory(keepAllHistory);
+            commandForm.setLockTimeout(lockTimeout);
+            commandForm.setLockTimeoutUnitOfMeasureTypeName(lockTimeoutUnitOfMeasureTypeName);
+            commandForm.setIsExtensible(isExtensible);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            var commandResult = CoreUtil.getHome().createEntityType(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateEntityTypeResult)commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteEntityType(final DataFetchingEnvironment env,
+            @GraphQLName("componentVendorName") @GraphQLNonNull final String componentVendorName,
+            @GraphQLName("entityTypeName") @GraphQLNonNull final String entityTypeName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = CoreUtil.getHome().getDeleteEntityTypeForm();
+
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
+
+            var commandResult = CoreUtil.getHome().deleteEntityType(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject editEntityType(final DataFetchingEnvironment env,
+            @GraphQLName("componentVendorName") @GraphQLNonNull final String componentVendorName,
+            @GraphQLName("originalEntityTypeName") @GraphQLNonNull final String originalEntityTypeName,
+            @GraphQLName("entityTypeName") final String entityTypeName,
+            @GraphQLName("keepAllHistory") final String keepAllHistory,
+            @GraphQLName("lockTimeout") final String lockTimeout,
+            @GraphQLName("lockTimeoutUnitOfMeasureTypeName") final String lockTimeoutUnitOfMeasureTypeName,
+            @GraphQLName("isExtensible") final String isExtensible,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var spec = CoreUtil.getHome().getEntityTypeSpec();
+
+            spec.setComponentVendorName(componentVendorName);
+            spec.setEntityTypeName(originalEntityTypeName);
+
+            var commandForm = CoreUtil.getHome().getEditEntityTypeForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = CoreUtil.getHome().editEntityType(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditEntityTypeResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                mutationResultObject.setEntityInstance(result.getEntityType().getEntityInstance());
+
+                if(arguments.containsKey("entityTypeName"))
+                    edit.setEntityTypeName(entityTypeName);
+                if(arguments.containsKey("keepAllHistory"))
+                    edit.setKeepAllHistory(keepAllHistory);
+                if(arguments.containsKey("lockTimeout"))
+                    edit.setLockTimeout(lockTimeout);
+                if(arguments.containsKey("lockTimeoutUnitOfMeasureTypeName"))
+                    edit.setLockTimeoutUnitOfMeasureTypeName(lockTimeoutUnitOfMeasureTypeName);
+                if(arguments.containsKey("isExtensible"))
+                    edit.setIsExtensible(isExtensible);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = CoreUtil.getHome().editEntityType(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject createEntityInstance(final DataFetchingEnvironment env,
+            @GraphQLName("componentVendorName") @GraphQLNonNull final String componentVendorName,
+            @GraphQLName("entityTypeName") @GraphQLNonNull final String entityTypeName) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = CoreUtil.getHome().getCreateEntityInstanceForm();
+
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
+
+            var commandResult = CoreUtil.getHome().createEntityInstance(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateEntityInstanceResult)commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteEntityInstance(final DataFetchingEnvironment env,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("entityRef") final String entityRef,
+            @GraphQLName("key") final String key,
+            @GraphQLName("guid") final String guid) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = CoreUtil.getHome().getDeleteEntityInstanceForm();
+
+            commandForm.setUlid(id);
+            commandForm.setEntityRef(entityRef);
+            commandForm.setKey(key);
+            commandForm.setGuid(guid);
+
+            var commandResult = CoreUtil.getHome().deleteEntityInstance(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject removeEntityInstance(final DataFetchingEnvironment env,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("entityRef") final String entityRef,
+            @GraphQLName("key") final String key,
+            @GraphQLName("guid") final String guid) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = CoreUtil.getHome().getRemoveEntityInstanceForm();
+
+            commandForm.setUlid(id);
+            commandForm.setEntityRef(entityRef);
+            commandForm.setKey(key);
+            commandForm.setGuid(guid);
+
+            var commandResult = CoreUtil.getHome().removeEntityInstance(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject sendEvent(final DataFetchingEnvironment env,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("entityRef") final String entityRef,
+            @GraphQLName("key") final String key,
+            @GraphQLName("guid") final String guid,
+            @GraphQLName("eventTypeName") @GraphQLNonNull final String eventTypeName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = CoreUtil.getHome().getSendEventForm();
+
+            commandForm.setUlid(id);
+            commandForm.setEntityRef(entityRef);
+            commandForm.setKey(key);
+            commandForm.setGuid(guid);
+            commandForm.setEventTypeName(eventTypeName);
+
+            var commandResult = CoreUtil.getHome().sendEvent(BaseGraphQl.getUserVisitPK(env), commandForm);
             mutationResultObject.setCommandResult(commandResult);
         } catch (NamingException ex) {
             throw new RuntimeException(ex);

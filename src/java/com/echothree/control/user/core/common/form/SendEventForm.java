@@ -17,10 +17,11 @@
 package com.echothree.control.user.core.common.form;
 
 import com.echothree.control.user.core.common.spec.EventTypeSpec;
+import com.echothree.control.user.core.common.spec.UniversalEntitySpec;
 
-public interface CreateEventTypeForm
-        extends EventTypeSpec {
+public interface SendEventForm
+        extends UniversalEntitySpec, EventTypeSpec {
     
-    // Nothing additional beyond EventTypeSpec
-
+    // Nothing additional beyond UniversalEntitySpec, EventTypeSpec
+    
 }

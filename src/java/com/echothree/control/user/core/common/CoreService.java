@@ -181,9 +181,15 @@ public interface CoreService
     //   Entity Instances
     // -------------------------------------------------------------------------
 
+    CommandResult createEntityInstance(UserVisitPK userVisitPK, CreateEntityInstanceForm form);
+
     CommandResult getEntityInstance(UserVisitPK userVisitPK, GetEntityInstanceForm form);
 
     CommandResult getEntityInstances(UserVisitPK userVisitPK, GetEntityInstancesForm form);
+
+    CommandResult deleteEntityInstance(UserVisitPK userVisitPK, DeleteEntityInstanceForm form);
+
+    CommandResult removeEntityInstance(UserVisitPK userVisitPK, RemoveEntityInstanceForm form);
 
     CommandResult generateKey(UserVisitPK userVisitPK, GenerateKeyForm form);
     
@@ -218,7 +224,9 @@ public interface CoreService
     // -------------------------------------------------------------------------
     //   Events
     // -------------------------------------------------------------------------
-    
+
+    CommandResult sendEvent(UserVisitPK userVisitPK, SendEventForm form);
+
     CommandResult getEvents(UserVisitPK userVisitPK, GetEventsForm form);
     
     // -------------------------------------------------------------------------
