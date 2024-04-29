@@ -1,5 +1,15 @@
 # Changelog
 
+## 2024-04-28-01
+
+* Clarify Naming of entityInstancePK and relatedPK Parameters [1104](https://gitlab.echothree.com/echothree/echothree/-/issues/1104)
+* Remove UNKNOWN Component Vendor [1105](https://gitlab.echothree.com/echothree/echothree/-/issues/1105)
+* Eliminated Repeated Calling of getEntityAttributeTypeName() [1106](https://gitlab.echothree.com/echothree/echothree/-/issues/1106)
+* Add CreateEntityInstance, SendEvent, DeleteEntityInstance, and RemoveEntityInstance UCs [1107](https://gitlab.echothree.com/echothree/echothree/-/issues/1107)
+* cucumber-java8/cucumber-junit 7.17.0 Upgrade [1108](https://gitlab.echothree.com/echothree/echothree/-/issues/1108)
+* Guava 33.1.0-jre Upgrade [1109](https://gitlab.echothree.com/echothree/echothree/-/issues/1109)
+* ICU4J 75.1 Upgrade [1110](https://gitlab.echothree.com/echothree/echothree/-/issues/1110)
+
 ## 2024-04-14-01
 
 * jOOQ 3.19.5 Upgrade [1103](https://gitlab.echothree.com/echothree/echothree/-/issues/1103)
