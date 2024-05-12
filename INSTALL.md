@@ -15,7 +15,7 @@ deploying these applications.
 * Rocky Linux 9
 * Amazon Corretto 17 (17.0.7.7.1)
 * Apache Ant 1.10 (1.10.9)
-* MySQL 8.3 (8.3.0 Innovation)
+* MySQL 8.4 (8.4.0 Innovation)
 * WildFly 26 (26.1.3)
 
 The full version numbers in parentheses are the most recent versions used for testing.
@@ -26,9 +26,9 @@ The full version numbers in parentheses are the most recent versions used for te
 * [Downloads for Amazon Corretto 17](https://docs.aws.amazon.com/corretto/latest/corretto-17-ug/downloads-list.html)
 * [Versioned Downloads of Corretto on GitHub](https://github.com/corretto/corretto-17/releases)
 
-## MySQL 8.3
+## MySQL 8.4
 
-* [Using the MySQL Yum Repository](https://dev.mysql.com/doc/mysql-repo-excerpt/8.3/en/)
+* [Using the MySQL Yum Repository](https://dev.mysql.com/doc/mysql-repo-excerpt/8.4/en/)
 
 ## Recommended Directory Structure
 
