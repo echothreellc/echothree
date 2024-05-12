@@ -5179,6 +5179,48 @@
                 <securityRoleDescription languageIsoName="en" description="Entity Type Review" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="EntityAliasType" parentSecurityRoleGroupName="CoreComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Entity Alias Type" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Entity Alias Type Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Entity Alias Type Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Entity Alias Type Delete" />
+            </securityRole>
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Entity Alias Type List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Entity Alias Type Review" />
+            </securityRole>
+            <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Entity Alias Type Choices" />
+            </securityRole>
+            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Entity Alias Type Description" />
+            </securityRole>
+        </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="EntityAlias" parentSecurityRoleGroupName="CoreComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Entity Alias" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Entity Alias Create" />
+            </securityRole>
+            <securityRole securityRoleName="Edit" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Entity Alias Edit" />
+            </securityRole>
+            <securityRole securityRoleName="Delete" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Entity Alias Delete" />
+            </securityRole>
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Entity Alias List" />
+            </securityRole>
+            <securityRole securityRoleName="Review" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Entity Alias Review" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="EntityAttribute" parentSecurityRoleGroupName="CoreComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Entity Attribute" />
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
@@ -8988,6 +9030,18 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityInstance" securityRoleName="Remove" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityInstance" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityInstance" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="EntityAliasType" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="EntityAliasType" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="EntityAliasType" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="EntityAliasType" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="EntityAliasType" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="EntityAliasType" securityRoleName="Choices" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="EntityAliasType" securityRoleName="Description" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="EntityAlias" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="EntityAlias" securityRoleName="Edit" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="EntityAlias" securityRoleName="Delete" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="EntityAlias" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="EntityAlias" securityRoleName="Review" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityAttribute" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityAttribute" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityAttribute" securityRoleName="Delete" />
