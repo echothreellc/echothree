@@ -1,5 +1,11 @@
 # Changelog
 
+## 2024-05-12-01
+
+* graphql-java-annotations 21.2 Upgrade [1111](https://gitlab.echothree.com/echothree/echothree/-/issues/1111)
+* MySQL and MySQL Connector/J 8.4.0 Upgrade [1113](https://gitlab.echothree.com/echothree/echothree/-/issues/1113)
+* jOOQ 3.19.8 Upgrade [1114](https://gitlab.echothree.com/echothree/echothree/-/issues/1114)
+
 ## 2024-04-28-01
 
 * Clarify Naming of entityInstancePK and relatedPK Parameters [1104](https://gitlab.echothree.com/echothree/echothree/-/issues/1104)
@@ -12,7 +18,7 @@
 
 ## 2024-04-14-01
 
-* jOOQ 3.19.5 Upgrade [1103](https://gitlab.echothree.com/echothree/echothree/-/issues/1103)
+* jOOQ 3.19.7 Upgrade [1103](https://gitlab.echothree.com/echothree/echothree/-/issues/1103)
 
 ## 2024-03-31-01
 
