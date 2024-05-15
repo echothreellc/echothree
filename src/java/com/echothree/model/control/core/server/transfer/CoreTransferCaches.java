@@ -29,6 +29,8 @@ public class CoreTransferCaches
     protected CommandDescriptionTransferCache commandDescriptionTransferCache;
     protected CommandMessageTransferCache commandMessageTransferCache;
     protected CommandMessageTranslationTransferCache commandMessageTranslationTransferCache;
+    protected EntityAliasTypeTransferCache entityAliasTypeTransferCache;
+    protected EntityAliasTypeDescriptionTransferCache entityAliasTypeDescriptionTransferCache;
     protected EntityAttributeTransferCache entityAttributeTransferCache;
     protected EntityAttributeDescriptionTransferCache entityAttributeDescriptionTransferCache;
     protected EntityAttributeEntityAttributeGroupTransferCache entityAttributeEntityAttributeGroupTransferCache;
@@ -158,21 +160,35 @@ public class CoreTransferCaches
         
         return commandMessageTranslationTransferCache;
     }
-    
+
+    public EntityAliasTypeTransferCache getEntityAliasTypeTransferCache() {
+        if(entityAliasTypeTransferCache == null)
+            entityAliasTypeTransferCache = new EntityAliasTypeTransferCache(userVisit);
+
+        return entityAliasTypeTransferCache;
+    }
+
+    public EntityAliasTypeDescriptionTransferCache getEntityAliasTypeDescriptionTransferCache() {
+        if(entityAliasTypeDescriptionTransferCache == null)
+            entityAliasTypeDescriptionTransferCache = new EntityAliasTypeDescriptionTransferCache(userVisit);
+
+        return entityAliasTypeDescriptionTransferCache;
+    }
+
     public EntityAttributeTransferCache getEntityAttributeTransferCache() {
         if(entityAttributeTransferCache == null)
             entityAttributeTransferCache = new EntityAttributeTransferCache(userVisit);
-        
+
         return entityAttributeTransferCache;
     }
-    
+
     public EntityAttributeDescriptionTransferCache getEntityAttributeDescriptionTransferCache() {
         if(entityAttributeDescriptionTransferCache == null)
             entityAttributeDescriptionTransferCache = new EntityAttributeDescriptionTransferCache(userVisit);
-        
+
         return entityAttributeDescriptionTransferCache;
     }
-    
+
     public EntityAttributeEntityAttributeGroupTransferCache getEntityAttributeEntityAttributeGroupTransferCache() {
         if(entityAttributeEntityAttributeGroupTransferCache == null)
             entityAttributeEntityAttributeGroupTransferCache = new EntityAttributeEntityAttributeGroupTransferCache(userVisit);

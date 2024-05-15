@@ -71,6 +71,8 @@ import com.echothree.model.control.core.common.transfer.CommandTransfer;
 import com.echothree.model.control.core.common.transfer.ComponentVendorTransfer;
 import com.echothree.model.control.core.common.transfer.EditorDescriptionTransfer;
 import com.echothree.model.control.core.common.transfer.EditorTransfer;
+import com.echothree.model.control.core.common.transfer.EntityAliasTypeDescriptionTransfer;
+import com.echothree.model.control.core.common.transfer.EntityAliasTypeTransfer;
 import com.echothree.model.control.core.common.transfer.EntityAppearanceTransfer;
 import com.echothree.model.control.core.common.transfer.EntityAttributeDescriptionTransfer;
 import com.echothree.model.control.core.common.transfer.EntityAttributeEntityAttributeGroupTransfer;
@@ -160,6 +162,8 @@ import com.echothree.model.control.core.server.transfer.CommandMessageTypeTransf
 import com.echothree.model.control.core.server.transfer.CommandTransferCache;
 import com.echothree.model.control.core.server.transfer.EditorDescriptionTransferCache;
 import com.echothree.model.control.core.server.transfer.EditorTransferCache;
+import com.echothree.model.control.core.server.transfer.EntityAliasTypeDescriptionTransferCache;
+import com.echothree.model.control.core.server.transfer.EntityAliasTypeTransferCache;
 import com.echothree.model.control.core.server.transfer.EntityAppearanceTransferCache;
 import com.echothree.model.control.core.server.transfer.EntityAttributeDescriptionTransferCache;
 import com.echothree.model.control.core.server.transfer.EntityAttributeEntityAttributeGroupTransferCache;
@@ -228,6 +232,7 @@ import com.echothree.model.data.core.common.pk.CommandMessageTypePK;
 import com.echothree.model.data.core.common.pk.CommandPK;
 import com.echothree.model.data.core.common.pk.ComponentVendorPK;
 import com.echothree.model.data.core.common.pk.EditorPK;
+import com.echothree.model.data.core.common.pk.EntityAliasTypePK;
 import com.echothree.model.data.core.common.pk.EntityAttributeGroupPK;
 import com.echothree.model.data.core.common.pk.EntityAttributePK;
 import com.echothree.model.data.core.common.pk.EntityAttributeTypePK;
@@ -284,6 +289,9 @@ import com.echothree.model.data.core.server.entity.ComponentVersion;
 import com.echothree.model.data.core.server.entity.Editor;
 import com.echothree.model.data.core.server.entity.EditorDescription;
 import com.echothree.model.data.core.server.entity.EditorDetail;
+import com.echothree.model.data.core.server.entity.EntityAliasType;
+import com.echothree.model.data.core.server.entity.EntityAliasTypeDescription;
+import com.echothree.model.data.core.server.entity.EntityAliasTypeDetail;
 import com.echothree.model.data.core.server.entity.EntityAppearance;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityAttributeBlob;
@@ -414,6 +422,9 @@ import com.echothree.model.data.core.server.factory.ComponentVersionFactory;
 import com.echothree.model.data.core.server.factory.EditorDescriptionFactory;
 import com.echothree.model.data.core.server.factory.EditorDetailFactory;
 import com.echothree.model.data.core.server.factory.EditorFactory;
+import com.echothree.model.data.core.server.factory.EntityAliasTypeDescriptionFactory;
+import com.echothree.model.data.core.server.factory.EntityAliasTypeDetailFactory;
+import com.echothree.model.data.core.server.factory.EntityAliasTypeFactory;
 import com.echothree.model.data.core.server.factory.EntityAppearanceFactory;
 import com.echothree.model.data.core.server.factory.EntityAttributeBlobFactory;
 import com.echothree.model.data.core.server.factory.EntityAttributeDescriptionFactory;
@@ -526,6 +537,8 @@ import com.echothree.model.data.core.server.value.CommandMessageTypeDetailValue;
 import com.echothree.model.data.core.server.value.ComponentVendorDetailValue;
 import com.echothree.model.data.core.server.value.EditorDescriptionValue;
 import com.echothree.model.data.core.server.value.EditorDetailValue;
+import com.echothree.model.data.core.server.value.EntityAliasTypeDescriptionValue;
+import com.echothree.model.data.core.server.value.EntityAliasTypeDetailValue;
 import com.echothree.model.data.core.server.value.EntityAppearanceValue;
 import com.echothree.model.data.core.server.value.EntityAttributeBlobValue;
 import com.echothree.model.data.core.server.value.EntityAttributeDescriptionValue;
@@ -1062,6 +1075,7 @@ public class CoreControl
 
         deleteEntityInstancesByEntityTypeWithNullDeletedTime(entityType, deletedBy);
         deleteEntityTypeDescriptionsByEntityType(entityType, deletedBy);
+        deleteEntityAliasTypesByEntityType(entityType, deletedBy);
         deleteEntityAttributesByEntityType(entityType, deletedBy);
         deleteEntityAttributeEntityTypesByAllowedEntityType(entityType, deletedBy);
         accountingControl.deleteTransactionEntityRoleTypesByEntityType(entityType, deletedBy);
@@ -4160,6 +4174,473 @@ public class CoreControl
 
     public List<CacheEntryDependencyTransfer> getCacheEntryDependencyTransfersByCacheEntry(UserVisit userVisit, CacheEntry cacheEntry) {
         return getCacheEntryDependencyTransfers(userVisit, getCacheEntryDependenciesByCacheEntry(cacheEntry));
+    }
+
+    // --------------------------------------------------------------------------------
+    //   Entity Alias Types
+    // --------------------------------------------------------------------------------
+
+    public EntityAliasType createEntityAliasType(EntityType entityType, String entityAliasTypeName,
+            String validationPattern, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
+        EntityAliasType defaultEntityAliasType = getDefaultEntityAliasType();
+        boolean defaultFound = defaultEntityAliasType != null;
+
+        if(defaultFound && isDefault) {
+            EntityAliasTypeDetailValue defaultEntityAliasTypeDetailValue = getDefaultEntityAliasTypeDetailValueForUpdate();
+
+            defaultEntityAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
+            updateEntityAliasTypeFromValue(defaultEntityAliasTypeDetailValue, false, createdBy);
+        } else if(!defaultFound) {
+            isDefault = Boolean.TRUE;
+        }
+
+        EntityAliasType entityAliasType = EntityAliasTypeFactory.getInstance().create();
+        EntityAliasTypeDetail entityAliasTypeDetail = EntityAliasTypeDetailFactory.getInstance().create(entityAliasType, entityType,
+                entityAliasTypeName, validationPattern, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+        // Convert to R/W
+        entityAliasType = EntityAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                entityAliasType.getPrimaryKey());
+        entityAliasType.setActiveDetail(entityAliasTypeDetail);
+        entityAliasType.setLastDetail(entityAliasTypeDetail);
+        entityAliasType.store();
+
+        sendEvent(entityAliasType.getPrimaryKey(), EventTypes.CREATE, null, null, createdBy);
+
+        return entityAliasType;
+    }
+
+    /** Assume that the entityInstance passed to this function is a ECHO_THREE.EntityAliasType */
+    public EntityAliasType getEntityAliasTypeByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
+        var pk = new EntityAliasTypePK(entityInstance.getEntityUniqueId());
+
+        return EntityAliasTypeFactory.getInstance().getEntityFromPK(entityPermission, pk);
+    }
+
+    public EntityAliasType getEntityAliasTypeByEntityInstance(EntityInstance entityInstance) {
+        return getEntityAliasTypeByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public EntityAliasType getEntityAliasTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
+        return getEntityAliasTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
+    }
+
+    public EntityAliasType getEntityAliasTypeByPK(EntityAliasTypePK pk) {
+        return EntityAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_ONLY, pk);
+    }
+
+    public long countEntityAliasTypesByEntityType(EntityType entityType) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                        "FROM entityaliastypes, entityaliastypedetails " +
+                        "WHERE eniat_activedetailid = eniatdt_entityaliastypedetailid AND eniatdt_ent_entitytypeid = ?",
+                entityType);
+    }
+
+    public EntityAliasType getEntityAliasTypeByName(EntityType entityType, String entityAliasTypeName, EntityPermission entityPermission) {
+        EntityAliasType entityAliasType;
+
+        try {
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM entityaliastypes, entityaliastypedetails " +
+                        "WHERE eniat_activedetailid = eniatdt_entityaliastypedetailid " +
+                        "AND eniatdt_ent_entitytypeid = ? AND eniatdt_entityaliastypename = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM entityaliastypes, entityaliastypedetails " +
+                        "WHERE eniat_activedetailid = eniatdt_entityaliastypedetailid " +
+                        "AND eniatdt_ent_entitytypeid = ? AND eniatdt_entityaliastypename = ? " +
+                        "FOR UPDATE";
+            }
+
+            PreparedStatement ps = EntityAliasTypeFactory.getInstance().prepareStatement(query);
+
+            ps.setLong(1, entityType.getPrimaryKey().getEntityId());
+            ps.setString(2, entityAliasTypeName);
+
+            entityAliasType = EntityAliasTypeFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return entityAliasType;
+    }
+
+    public EntityAliasType getEntityAliasTypeByName(EntityType entityType, String entityAliasTypeName) {
+        return getEntityAliasTypeByName(entityType, entityAliasTypeName, EntityPermission.READ_ONLY);
+    }
+
+    public EntityAliasType getEntityAliasTypeByNameForUpdate(EntityType entityType, String entityAliasTypeName) {
+        return getEntityAliasTypeByName(entityType, entityAliasTypeName, EntityPermission.READ_WRITE);
+    }
+
+    public EntityAliasTypeDetailValue getEntityAliasTypeDetailValueForUpdate(EntityAliasType entityAliasType) {
+        return entityAliasType == null? null: entityAliasType.getLastDetailForUpdate().getEntityAliasTypeDetailValue().clone();
+    }
+
+    public EntityAliasTypeDetailValue getEntityAliasTypeDetailValueByNameForUpdate(EntityType entityType, String entityAliasTypeName) {
+        return getEntityAliasTypeDetailValueForUpdate(getEntityAliasTypeByNameForUpdate(entityType, entityAliasTypeName));
+    }
+
+    private static final Map<EntityPermission, String> getDefaultEntityAliasTypeQueries;
+
+    static {
+        Map<EntityPermission, String> queryMap = new HashMap<>(2);
+
+        queryMap.put(EntityPermission.READ_ONLY,
+                "SELECT _ALL_ " +
+                        "FROM entityaliastypes, entityaliastypedetails " +
+                        "WHERE eniat_activedetailid = eniatdt_entityaliastypedetailid " +
+                        "AND eniatdt_ent_entitytypeid = ? " +
+                        "AND eniatdt_isdefault = 1");
+        queryMap.put(EntityPermission.READ_WRITE,
+                "SELECT _ALL_ " +
+                        "FROM entityaliastypes, entityaliastypedetails " +
+                        "WHERE eniat_activedetailid = eniatdt_entityaliastypedetailid " +
+                        "AND eniatdt_ent_entitytypeid = ? " +
+                        "AND eniatdt_isdefault = 1 " +
+                        "FOR UPDATE");
+        getDefaultEntityAliasTypeQueries = Collections.unmodifiableMap(queryMap);
+    }
+
+    private EntityAliasType getDefaultEntityAliasType(EntityPermission entityPermission) {
+        return EntityAliasTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultEntityAliasTypeQueries);
+    }
+
+    public EntityAliasType getDefaultEntityAliasType() {
+        return getDefaultEntityAliasType(EntityPermission.READ_ONLY);
+    }
+
+    public EntityAliasType getDefaultEntityAliasTypeForUpdate() {
+        return getDefaultEntityAliasType(EntityPermission.READ_WRITE);
+    }
+
+    public EntityAliasTypeDetailValue getDefaultEntityAliasTypeDetailValueForUpdate() {
+        return getDefaultEntityAliasTypeForUpdate().getLastDetailForUpdate().getEntityAliasTypeDetailValue().clone();
+    }
+
+    private List<EntityAliasType> getEntityAliasTypesByEntityType(EntityType entityType, EntityPermission entityPermission) {
+        List<EntityAliasType> entityAliasTypes;
+
+        try {
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM entityaliastypes, entityaliastypedetails " +
+                        "WHERE eniat_activedetailid = eniatdt_entityaliastypedetailid " +
+                        "AND eniatdt_ent_entitytypeid = ? " +
+                        "ORDER BY eniatdt_sortorder, eniatdt_entityaliastypename " +
+                        "_LIMIT_";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM entityaliastypes, entityaliastypedetails " +
+                        "WHERE eniat_activedetailid = eniatdt_entityaliastypedetailid " +
+                        "AND eniatdt_ent_entitytypeid = ? " +
+                        "FOR UPDATE";
+            }
+
+            PreparedStatement ps = EntityAliasTypeFactory.getInstance().prepareStatement(query);
+
+            ps.setLong(1, entityType.getPrimaryKey().getEntityId());
+
+            entityAliasTypes = EntityAliasTypeFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return entityAliasTypes;
+    }
+
+    public List<EntityAliasType> getEntityAliasTypesByEntityType(EntityType entityType) {
+        return getEntityAliasTypesByEntityType(entityType, EntityPermission.READ_ONLY);
+    }
+
+    public List<EntityAliasType> getEntityAliasTypesByEntityTypeForUpdate(EntityType entityType) {
+        return getEntityAliasTypesByEntityType(entityType, EntityPermission.READ_WRITE);
+    }
+
+    public EntityAliasTypeTransfer getEntityAliasTypeTransfer(UserVisit userVisit, EntityAliasType entityAliasType, EntityInstance entityInstance) {
+        return getCoreTransferCaches(userVisit).getEntityAliasTypeTransferCache().getEntityAliasTypeTransfer(entityAliasType, entityInstance);
+    }
+
+    public List<EntityAliasTypeTransfer> getEntityAliasTypeTransfers(UserVisit userVisit, Collection<EntityAliasType> entityAliasTypes, EntityInstance entityInstance) {
+        List<EntityAliasTypeTransfer> entityAliasTypeTransfers = new ArrayList<>(entityAliasTypes.size());
+        EntityAliasTypeTransferCache entityAliasTypeTransferCache = getCoreTransferCaches(userVisit).getEntityAliasTypeTransferCache();
+
+        entityAliasTypes.forEach((entityAliasType) ->
+                entityAliasTypeTransfers.add(entityAliasTypeTransferCache.getEntityAliasTypeTransfer(entityAliasType, entityInstance))
+        );
+
+        return entityAliasTypeTransfers;
+    }
+
+    public List<EntityAliasTypeTransfer> getEntityAliasTypeTransfersByEntityType(UserVisit userVisit, EntityType entityType, EntityInstance entityInstance) {
+        return getEntityAliasTypeTransfers(userVisit, getEntityAliasTypesByEntityType(entityType), entityInstance);
+    }
+
+    private void updateEntityAliasTypeFromValue(EntityAliasTypeDetailValue entityAliasTypeDetailValue, boolean checkDefault, BasePK updatedBy) {
+        if(entityAliasTypeDetailValue.hasBeenModified()) {
+            EntityAliasType entityAliasType = EntityAliasTypeFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                    entityAliasTypeDetailValue.getEntityAliasTypePK());
+            EntityAliasTypeDetail entityAliasTypeDetail = entityAliasType.getActiveDetailForUpdate();
+
+            entityAliasTypeDetail.setThruTime(session.START_TIME_LONG);
+            entityAliasTypeDetail.store();
+
+            EntityTypePK entityTypePK = entityAliasTypeDetail.getEntityTypePK();
+            EntityAliasTypePK entityAliasTypePK = entityAliasTypeDetail.getEntityAliasTypePK(); // Not updated
+            String entityAliasTypeName = entityAliasTypeDetailValue.getEntityAliasTypeName();
+            String validationPattern = entityAliasTypeDetailValue.getValidationPattern();
+            Boolean isDefault = entityAliasTypeDetailValue.getIsDefault();
+            Integer sortOrder = entityAliasTypeDetailValue.getSortOrder();
+
+            if(checkDefault) {
+                EntityAliasType defaultEntityAliasType = getDefaultEntityAliasType();
+                boolean defaultFound = defaultEntityAliasType != null && !defaultEntityAliasType.equals(entityAliasType);
+
+                if(isDefault && defaultFound) {
+                    // If I'm the default, and a default already existed...
+                    EntityAliasTypeDetailValue defaultEntityAliasTypeDetailValue = getDefaultEntityAliasTypeDetailValueForUpdate();
+
+                    defaultEntityAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
+                    updateEntityAliasTypeFromValue(defaultEntityAliasTypeDetailValue, false, updatedBy);
+                } else if(!isDefault && !defaultFound) {
+                    // If I'm not the default, and no other default exists...
+                    isDefault = Boolean.TRUE;
+                }
+            }
+
+            entityAliasTypeDetail = EntityAliasTypeDetailFactory.getInstance().create(entityAliasTypePK, entityTypePK,
+                    entityAliasTypeName, validationPattern, isDefault, sortOrder, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+            entityAliasType.setActiveDetail(entityAliasTypeDetail);
+            entityAliasType.setLastDetail(entityAliasTypeDetail);
+
+            sendEvent(entityAliasTypePK, EventTypes.MODIFY, null, null, updatedBy);
+        }
+    }
+
+    public void updateEntityAliasTypeFromValue(EntityAliasTypeDetailValue entityAliasTypeDetailValue, BasePK updatedBy) {
+        updateEntityAliasTypeFromValue(entityAliasTypeDetailValue, true, updatedBy);
+    }
+
+    private void deleteEntityAliasType(EntityAliasType entityAliasType, boolean checkDefault, BasePK deletedBy) {
+        EntityAliasTypeDetail entityAliasTypeDetail = entityAliasType.getLastDetailForUpdate();
+
+        // TODO: deleteEntityAliasesByEntityAliasType(entityAliasType, deletedBy);
+        deleteEntityAliasTypeDescriptionsByEntityAliasType(entityAliasType, deletedBy);
+
+        entityAliasTypeDetail.setThruTime(session.START_TIME_LONG);
+        entityAliasType.setActiveDetail(null);
+        entityAliasType.store();
+
+        if(checkDefault) {
+            // Check for default, and pick one if necessary
+            EntityAliasType defaultEntityAliasType = getDefaultEntityAliasType();
+
+            if(defaultEntityAliasType == null) {
+                var entityType = entityAliasTypeDetail.getEntityType();
+                List<EntityAliasType> entityAliasTypes = getEntityAliasTypesByEntityTypeForUpdate(entityType);
+
+                if(!entityAliasTypes.isEmpty()) {
+                    Iterator<EntityAliasType> iter = entityAliasTypes.iterator();
+                    if(iter.hasNext()) {
+                        defaultEntityAliasType = iter.next();
+                    }
+                    EntityAliasTypeDetailValue entityAliasTypeDetailValue = Objects.requireNonNull(defaultEntityAliasType).getLastDetailForUpdate().getEntityAliasTypeDetailValue().clone();
+
+                    entityAliasTypeDetailValue.setIsDefault(Boolean.TRUE);
+                    updateEntityAliasTypeFromValue(entityAliasTypeDetailValue, false, deletedBy);
+                }
+            }
+        }
+
+        sendEvent(entityAliasType.getPrimaryKey(), EventTypes.DELETE, null, null, deletedBy);
+    }
+
+    public void deleteEntityAliasType(EntityAliasType entityAliasType, BasePK deletedBy) {
+        deleteEntityAliasType(entityAliasType, true, deletedBy);
+    }
+
+    private void deleteEntityAliasTypes(List<EntityAliasType> entityAliasTypes, boolean checkDefault, BasePK deletedBy) {
+        entityAliasTypes.forEach((entityAliasType) -> deleteEntityAliasType(entityAliasType, checkDefault, deletedBy));
+    }
+
+    public void deleteEntityAliasTypesByEntityType(EntityType entityType, BasePK deletedBy) {
+        deleteEntityAliasTypes(getEntityAliasTypesByEntityTypeForUpdate(entityType), false, deletedBy);
+    }
+
+    // --------------------------------------------------------------------------------
+    //   Entity Alias Type Descriptions
+    // --------------------------------------------------------------------------------
+
+    public EntityAliasTypeDescription createEntityAliasTypeDescription(EntityAliasType entityAliasType, Language language,
+            String description, BasePK createdBy) {
+        EntityAliasTypeDescription entityAliasTypeDescription = EntityAliasTypeDescriptionFactory.getInstance().create(session,
+                entityAliasType, language, description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+        sendEvent(entityAliasType.getPrimaryKey(), EventTypes.MODIFY, entityAliasTypeDescription.getPrimaryKey(), EventTypes.CREATE, createdBy);
+
+        return entityAliasTypeDescription;
+    }
+
+    private EntityAliasTypeDescription getEntityAliasTypeDescription(EntityAliasType entityAliasType, Language language,
+            EntityPermission entityPermission) {
+        EntityAliasTypeDescription entityAliasTypeDescription;
+
+        try {
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM entityaliastypedescriptions " +
+                        "WHERE eniatd_eniat_entityaliastypeid = ? AND eniatd_lang_languageid = ? AND eniatd_thrutime = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM entityaliastypedescriptions " +
+                        "WHERE eniatd_eniat_entityaliastypeid = ? AND eniatd_lang_languageid = ? AND eniatd_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+
+            PreparedStatement ps = EntityAliasTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            ps.setLong(1, entityAliasType.getPrimaryKey().getEntityId());
+            ps.setLong(2, language.getPrimaryKey().getEntityId());
+            ps.setLong(3, Session.MAX_TIME);
+
+            entityAliasTypeDescription = EntityAliasTypeDescriptionFactory.getInstance().getEntityFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return entityAliasTypeDescription;
+    }
+
+    public EntityAliasTypeDescription getEntityAliasTypeDescription(EntityAliasType entityAliasType, Language language) {
+        return getEntityAliasTypeDescription(entityAliasType, language, EntityPermission.READ_ONLY);
+    }
+
+    public EntityAliasTypeDescription getEntityAliasTypeDescriptionForUpdate(EntityAliasType entityAliasType, Language language) {
+        return getEntityAliasTypeDescription(entityAliasType, language, EntityPermission.READ_WRITE);
+    }
+
+    public EntityAliasTypeDescriptionValue getEntityAliasTypeDescriptionValue(EntityAliasTypeDescription entityAliasTypeDescription) {
+        return entityAliasTypeDescription == null? null: entityAliasTypeDescription.getEntityAliasTypeDescriptionValue().clone();
+    }
+
+    public EntityAliasTypeDescriptionValue getEntityAliasTypeDescriptionValueForUpdate(EntityAliasType entityAliasType, Language language) {
+        return getEntityAliasTypeDescriptionValue(getEntityAliasTypeDescriptionForUpdate(entityAliasType, language));
+    }
+
+    private List<EntityAliasTypeDescription> getEntityAliasTypeDescriptionsByEntityAliasType(EntityAliasType entityAliasType,
+            EntityPermission entityPermission) {
+        List<EntityAliasTypeDescription> entityAliasTypeDescriptions;
+
+        try {
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM entityaliastypedescriptions, languages " +
+                        "WHERE eniatd_eniat_entityaliastypeid = ? AND eniatd_thrutime = ? AND eniatd_lang_languageid = lang_languageid " +
+                        "ORDER BY lang_sortorder, lang_languageisoname";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM entityaliastypedescriptions " +
+                        "WHERE eniatd_eniat_entityaliastypeid = ? AND eniatd_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+
+            PreparedStatement ps = EntityAliasTypeDescriptionFactory.getInstance().prepareStatement(query);
+
+            ps.setLong(1, entityAliasType.getPrimaryKey().getEntityId());
+            ps.setLong(2, Session.MAX_TIME);
+
+            entityAliasTypeDescriptions = EntityAliasTypeDescriptionFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
+        } catch (SQLException se) {
+            throw new PersistenceDatabaseException(se);
+        }
+
+        return entityAliasTypeDescriptions;
+    }
+
+    public List<EntityAliasTypeDescription> getEntityAliasTypeDescriptionsByEntityAliasType(EntityAliasType entityAliasType) {
+        return getEntityAliasTypeDescriptionsByEntityAliasType(entityAliasType, EntityPermission.READ_ONLY);
+    }
+
+    public List<EntityAliasTypeDescription> getEntityAliasTypeDescriptionsByEntityAliasTypeForUpdate(EntityAliasType entityAliasType) {
+        return getEntityAliasTypeDescriptionsByEntityAliasType(entityAliasType, EntityPermission.READ_WRITE);
+    }
+
+    public String getBestEntityAliasTypeDescription(EntityAliasType entityAliasType, Language language) {
+        String description;
+        EntityAliasTypeDescription entityAliasTypeDescription = getEntityAliasTypeDescription(entityAliasType, language);
+
+        if(entityAliasTypeDescription == null && !language.getIsDefault()) {
+            entityAliasTypeDescription = getEntityAliasTypeDescription(entityAliasType, getPartyControl().getDefaultLanguage());
+        }
+
+        if(entityAliasTypeDescription == null) {
+            description = entityAliasType.getLastDetail().getEntityAliasTypeName();
+        } else {
+            description = entityAliasTypeDescription.getDescription();
+        }
+
+        return description;
+    }
+
+    public EntityAliasTypeDescriptionTransfer getEntityAliasTypeDescriptionTransfer(UserVisit userVisit, EntityAliasTypeDescription entityAliasTypeDescription, EntityInstance entityInstance) {
+        return getCoreTransferCaches(userVisit).getEntityAliasTypeDescriptionTransferCache().getEntityAliasTypeDescriptionTransfer(entityAliasTypeDescription, entityInstance);
+    }
+
+    public List<EntityAliasTypeDescriptionTransfer> getEntityAliasTypeDescriptionTransfersByEntityAliasType(UserVisit userVisit,
+            EntityAliasType entityAliasType, EntityInstance entityInstance) {
+        List<EntityAliasTypeDescription> entityAliasTypeDescriptions = getEntityAliasTypeDescriptionsByEntityAliasType(entityAliasType);
+        List<EntityAliasTypeDescriptionTransfer> entityAliasTypeDescriptionTransfers = new ArrayList<>(entityAliasTypeDescriptions.size());
+        EntityAliasTypeDescriptionTransferCache entityAliasTypeDescriptionTransferCache = getCoreTransferCaches(userVisit).getEntityAliasTypeDescriptionTransferCache();
+
+        entityAliasTypeDescriptions.forEach((entityAliasTypeDescription) ->
+                entityAliasTypeDescriptionTransfers.add(entityAliasTypeDescriptionTransferCache.getEntityAliasTypeDescriptionTransfer(entityAliasTypeDescription, entityInstance))
+        );
+
+        return entityAliasTypeDescriptionTransfers;
+    }
+
+    public void updateEntityAliasTypeDescriptionFromValue(EntityAliasTypeDescriptionValue entityAliasTypeDescriptionValue, BasePK updatedBy) {
+        if(entityAliasTypeDescriptionValue.hasBeenModified()) {
+            EntityAliasTypeDescription entityAliasTypeDescription = EntityAliasTypeDescriptionFactory.getInstance().getEntityFromPK(EntityPermission.READ_WRITE,
+                    entityAliasTypeDescriptionValue.getPrimaryKey());
+
+            entityAliasTypeDescription.setThruTime(session.START_TIME_LONG);
+            entityAliasTypeDescription.store();
+
+            EntityAliasType entityAliasType = entityAliasTypeDescription.getEntityAliasType();
+            Language language = entityAliasTypeDescription.getLanguage();
+            String description = entityAliasTypeDescriptionValue.getDescription();
+
+            entityAliasTypeDescription = EntityAliasTypeDescriptionFactory.getInstance().create(entityAliasType, language,
+                    description, session.START_TIME_LONG, Session.MAX_TIME_LONG);
+
+            sendEvent(entityAliasType.getPrimaryKey(), EventTypes.MODIFY, entityAliasTypeDescription.getPrimaryKey(), EventTypes.MODIFY, updatedBy);
+        }
+    }
+
+    public void deleteEntityAliasTypeDescription(EntityAliasTypeDescription entityAliasTypeDescription, BasePK deletedBy) {
+        entityAliasTypeDescription.setThruTime(session.START_TIME_LONG);
+
+        sendEvent(entityAliasTypeDescription.getEntityAliasTypePK(), EventTypes.MODIFY, entityAliasTypeDescription.getPrimaryKey(), EventTypes.DELETE, deletedBy);
+    }
+
+    public void deleteEntityAliasTypeDescriptionsByEntityAliasType(EntityAliasType entityAliasType, BasePK deletedBy) {
+        List<EntityAliasTypeDescription> entityAliasTypeDescriptions = getEntityAliasTypeDescriptionsByEntityAliasTypeForUpdate(entityAliasType);
+
+        entityAliasTypeDescriptions.forEach((entityAliasTypeDescription) ->
+                deleteEntityAliasTypeDescription(entityAliasTypeDescription, deletedBy)
+        );
     }
 
     // --------------------------------------------------------------------------------
