@@ -33,6 +33,7 @@ import com.echothree.model.control.core.common.choice.BaseEncryptionKeyStatusCho
 import com.echothree.model.control.core.common.choice.ColorChoicesBean;
 import com.echothree.model.control.core.common.choice.CommandMessageTypeChoicesBean;
 import com.echothree.model.control.core.common.choice.EditorChoicesBean;
+import com.echothree.model.control.core.common.choice.EntityAliasTypeChoicesBean;
 import com.echothree.model.control.core.common.choice.EntityAttributeGroupChoicesBean;
 import com.echothree.model.control.core.common.choice.EntityAttributeTypeChoicesBean;
 import com.echothree.model.control.core.common.choice.EntityIntegerRangeChoicesBean;
@@ -4426,6 +4427,40 @@ public class CoreControl
 
     public void updateEntityAliasTypeFromValue(EntityAliasTypeDetailValue entityAliasTypeDetailValue, BasePK updatedBy) {
         updateEntityAliasTypeFromValue(entityAliasTypeDetailValue, true, updatedBy);
+    }
+
+    public EntityAliasTypeChoicesBean getEntityAliasTypeChoices(String defaultEntityAliasTypeChoice, Language language,
+            boolean allowNullChoice, EntityType entityType) {
+        List<EntityAliasType> entityAliasTypes = getEntityAliasTypesByEntityType(entityType);
+        var size = entityAliasTypes.size();
+        var labels = new ArrayList<String>(size);
+        var values = new ArrayList<String>(size);
+        String defaultValue = null;
+
+        if(allowNullChoice) {
+            labels.add("");
+            values.add("");
+
+            if(defaultEntityAliasTypeChoice == null) {
+                defaultValue = "";
+            }
+        }
+
+        for(var entityAliasType : entityAliasTypes) {
+            EntityAliasTypeDetail entityAliasTypeDetail = entityAliasType.getLastDetail();
+            var label = getBestEntityAliasTypeDescription(entityAliasType, language);
+            var value = entityAliasTypeDetail.getEntityAliasTypeName();
+
+            labels.add(label == null? value: label);
+            values.add(value);
+
+            var usingDefaultChoice = defaultEntityAliasTypeChoice != null && defaultEntityAliasTypeChoice.equals(value);
+            if(usingDefaultChoice || (defaultValue == null && entityAliasTypeDetail.getIsDefault())) {
+                defaultValue = value;
+            }
+        }
+
+        return new EntityAliasTypeChoicesBean(labels, values, defaultValue);
     }
 
     private void deleteEntityAliasType(EntityAliasType entityAliasType, boolean checkDefault, BasePK deletedBy) {
