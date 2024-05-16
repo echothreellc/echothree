@@ -60,6 +60,8 @@ import com.echothree.control.user.core.server.command.GetColorCommand;
 import com.echothree.control.user.core.server.command.GetColorsCommand;
 import com.echothree.control.user.core.server.command.GetComponentVendorCommand;
 import com.echothree.control.user.core.server.command.GetComponentVendorsCommand;
+import com.echothree.control.user.core.server.command.GetEntityAliasTypeCommand;
+import com.echothree.control.user.core.server.command.GetEntityAliasTypesCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeGroupCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeGroupsCommand;
@@ -370,9 +372,11 @@ import com.echothree.model.control.content.server.graphql.ContentPageLayoutObjec
 import com.echothree.model.control.content.server.graphql.ContentPageObject;
 import com.echothree.model.control.content.server.graphql.ContentSectionObject;
 import com.echothree.model.control.content.server.graphql.ContentWebAddressObject;
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.graphql.AppearanceObject;
 import com.echothree.model.control.core.server.graphql.ColorObject;
 import com.echothree.model.control.core.server.graphql.ComponentVendorObject;
+import com.echothree.model.control.core.server.graphql.EntityAliasTypeObject;
 import com.echothree.model.control.core.server.graphql.EntityAttributeGroupObject;
 import com.echothree.model.control.core.server.graphql.EntityAttributeObject;
 import com.echothree.model.control.core.server.graphql.EntityAttributeTypeObject;
@@ -558,9 +562,11 @@ import com.echothree.model.data.content.server.entity.ContentPageLayout;
 import com.echothree.model.data.content.server.entity.ContentPageLayoutArea;
 import com.echothree.model.data.content.server.entity.ContentSection;
 import com.echothree.model.data.content.server.entity.ContentWebAddress;
+import com.echothree.model.data.core.common.EntityAliasTypeConstants;
 import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.core.server.entity.Color;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
+import com.echothree.model.data.core.server.entity.EntityAliasType;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
 import com.echothree.model.data.core.server.entity.EntityAttributeType;
@@ -3423,6 +3429,63 @@ public interface GraphQlQueries {
         }
 
         return appearanceObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("entityAliasType")
+    static EntityAliasTypeObject entityAliasType(final DataFetchingEnvironment env,
+            @GraphQLName("componentVendorName") final String componentVendorName,
+            @GraphQLName("entityTypeName") final String entityTypeName,
+            @GraphQLName("entityAliasTypeName") final String entityAliasTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        EntityAliasType entityAliasType;
+
+        try {
+            var commandForm = CoreUtil.getHome().getGetEntityAliasTypeForm();
+
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
+            commandForm.setEntityAliasTypeName(entityAliasTypeName);
+            commandForm.setUlid(id);
+
+            entityAliasType = new GetEntityAliasTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return entityAliasType == null ? null : new EntityAliasTypeObject(entityAliasType, null);
+    }
+
+    @GraphQLField
+    @GraphQLName("entityAliasTypes")
+    static Collection<EntityAliasTypeObject> entityAliasTypes(final DataFetchingEnvironment env,
+            @GraphQLName("componentVendorName") final String componentVendorName,
+            @GraphQLName("entityTypeName") final String entityTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        Collection<EntityAliasType> entityAliasTypes;
+        Collection<EntityAliasTypeObject> entityAliasTypeObjects;
+
+        try {
+            var commandForm = CoreUtil.getHome().getGetEntityAliasTypesForm();
+
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
+            commandForm.setUlid(id);
+
+            entityAliasTypes = new GetEntityAliasTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(entityAliasTypes == null) {
+            entityAliasTypeObjects = emptyList();
+        } else {
+            entityAliasTypeObjects = new ArrayList<>(entityAliasTypes.size());
+
+            entityAliasTypes.stream().map(e -> new EntityAliasTypeObject(e, null)).forEachOrdered(entityAliasTypeObjects::add);
+        }
+
+        return entityAliasTypeObjects;
     }
 
     @GraphQLField
