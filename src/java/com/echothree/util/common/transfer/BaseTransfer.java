@@ -17,6 +17,7 @@
 package com.echothree.util.common.transfer;
 
 import com.echothree.model.control.comment.common.transfer.CommentListWrapper;
+import com.echothree.model.control.core.common.transfer.EntityAliasTypeTransfer;
 import com.echothree.model.control.core.common.transfer.EntityAttributeGroupTransfer;
 import com.echothree.model.control.core.common.transfer.EntityInstanceTransfer;
 import com.echothree.model.control.rating.common.transfer.RatingListWrapper;
@@ -28,6 +29,7 @@ public class BaseTransfer
         implements Serializable {
     
     private EntityInstanceTransfer entityInstance;
+    private MapWrapper<EntityAliasTypeTransfer> entityAliasTypes;
     private MapWrapper<EntityAttributeGroupTransfer> entityAttributeGroups;
     private MapWrapper<TagScopeTransfer> tagScopes;
     private MapWrapper<CommentListWrapper> comments;
@@ -41,15 +43,23 @@ public class BaseTransfer
     public void setEntityInstance(EntityInstanceTransfer entityInstance) {
         this.entityInstance = entityInstance;
     }
-    
+
+    public MapWrapper<EntityAliasTypeTransfer> getEntityAliasTypes() {
+        return entityAliasTypes;
+    }
+
+    public void setEntityAliasTypes(MapWrapper<EntityAliasTypeTransfer> entityAliasTypes) {
+        this.entityAliasTypes = entityAliasTypes;
+    }
+
     public MapWrapper<EntityAttributeGroupTransfer> getEntityAttributeGroups() {
         return entityAttributeGroups;
     }
-    
+
     public void setEntityAttributeGroups(MapWrapper<EntityAttributeGroupTransfer> entityAttributeGroups) {
         this.entityAttributeGroups = entityAttributeGroups;
     }
-    
+
     public MapWrapper<TagScopeTransfer> getTagScopes() {
         return tagScopes;
     }
