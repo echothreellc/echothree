@@ -2285,5 +2285,7 @@ public enum ExecutionErrors {
     InvalidEventType,
     DuplicateEntityAliasTypeName,
     UnknownEntityAliasTypeName,
+    DuplicateEntityAliasTypeDescription,
+    UnknownEntityAliasTypeDescription,
 
 }

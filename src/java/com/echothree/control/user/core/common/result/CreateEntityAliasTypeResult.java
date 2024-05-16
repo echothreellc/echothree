@@ -22,7 +22,7 @@ import com.echothree.util.common.command.BaseResult;
 public interface CreateEntityAliasTypeResult
         extends EntityRefSpec, BaseResult {
 
-    String getEntityAttributeName();
-    void setEntityAttributeName(String entityAttributeName);
+    String getEntityAliasTypeName();
+    void setEntityAliasTypeName(String entityAliasTypeName);
 
 }

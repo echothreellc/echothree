@@ -16,11 +16,10 @@
 
 package com.echothree.control.user.core.common.form;
 
-import com.echothree.control.user.core.common.spec.EntityRefSpec;
-import com.echothree.control.user.core.common.spec.EntityTypeSpec;
+import com.echothree.control.user.core.common.spec.EntityTypeUniversalSpec;
 
 public interface GetEntityAliasTypeChoicesForm
-        extends EntityRefSpec, EntityTypeSpec {
+        extends EntityTypeUniversalSpec {
     
     String getDefaultEntityAliasTypeChoice();
     void setDefaultEntityAliasTypeChoice(String defaultEntityAliasTypeChoice);
