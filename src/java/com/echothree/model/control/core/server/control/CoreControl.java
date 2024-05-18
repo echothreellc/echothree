@@ -4183,11 +4183,11 @@ public class CoreControl
 
     public EntityAliasType createEntityAliasType(EntityType entityType, String entityAliasTypeName,
             String validationPattern, Boolean isDefault, Integer sortOrder, BasePK createdBy) {
-        EntityAliasType defaultEntityAliasType = getDefaultEntityAliasType();
+        EntityAliasType defaultEntityAliasType = getDefaultEntityAliasType(entityType);
         boolean defaultFound = defaultEntityAliasType != null;
 
         if(defaultFound && isDefault) {
-            EntityAliasTypeDetailValue defaultEntityAliasTypeDetailValue = getDefaultEntityAliasTypeDetailValueForUpdate();
+            EntityAliasTypeDetailValue defaultEntityAliasTypeDetailValue = getDefaultEntityAliasTypeDetailValueForUpdate(entityType);
 
             defaultEntityAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
             updateEntityAliasTypeFromValue(defaultEntityAliasTypeDetailValue, false, createdBy);
@@ -4307,20 +4307,21 @@ public class CoreControl
         getDefaultEntityAliasTypeQueries = Collections.unmodifiableMap(queryMap);
     }
 
-    private EntityAliasType getDefaultEntityAliasType(EntityPermission entityPermission) {
-        return EntityAliasTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultEntityAliasTypeQueries);
+    private EntityAliasType getDefaultEntityAliasType(EntityPermission entityPermission, EntityType entityType) {
+        return EntityAliasTypeFactory.getInstance().getEntityFromQuery(entityPermission, getDefaultEntityAliasTypeQueries,
+                entityType);
     }
 
-    public EntityAliasType getDefaultEntityAliasType() {
-        return getDefaultEntityAliasType(EntityPermission.READ_ONLY);
+    public EntityAliasType getDefaultEntityAliasType(EntityType entityType) {
+        return getDefaultEntityAliasType(EntityPermission.READ_ONLY, entityType);
     }
 
-    public EntityAliasType getDefaultEntityAliasTypeForUpdate() {
-        return getDefaultEntityAliasType(EntityPermission.READ_WRITE);
+    public EntityAliasType getDefaultEntityAliasTypeForUpdate(EntityType entityType) {
+        return getDefaultEntityAliasType(EntityPermission.READ_WRITE, entityType);
     }
 
-    public EntityAliasTypeDetailValue getDefaultEntityAliasTypeDetailValueForUpdate() {
-        return getDefaultEntityAliasTypeForUpdate().getLastDetailForUpdate().getEntityAliasTypeDetailValue().clone();
+    public EntityAliasTypeDetailValue getDefaultEntityAliasTypeDetailValueForUpdate(EntityType entityType) {
+        return getDefaultEntityAliasTypeForUpdate(entityType).getLastDetailForUpdate().getEntityAliasTypeDetailValue().clone();
     }
 
     private List<EntityAliasType> getEntityAliasTypesByEntityType(EntityType entityType, EntityPermission entityPermission) {
@@ -4400,12 +4401,13 @@ public class CoreControl
             Integer sortOrder = entityAliasTypeDetailValue.getSortOrder();
 
             if(checkDefault) {
-                EntityAliasType defaultEntityAliasType = getDefaultEntityAliasType();
+                var entityType = entityAliasTypeDetail.getEntityType();
+                EntityAliasType defaultEntityAliasType = getDefaultEntityAliasType(entityType);
                 boolean defaultFound = defaultEntityAliasType != null && !defaultEntityAliasType.equals(entityAliasType);
 
                 if(isDefault && defaultFound) {
                     // If I'm the default, and a default already existed...
-                    EntityAliasTypeDetailValue defaultEntityAliasTypeDetailValue = getDefaultEntityAliasTypeDetailValueForUpdate();
+                    EntityAliasTypeDetailValue defaultEntityAliasTypeDetailValue = getDefaultEntityAliasTypeDetailValueForUpdate(entityType);
 
                     defaultEntityAliasTypeDetailValue.setIsDefault(Boolean.FALSE);
                     updateEntityAliasTypeFromValue(defaultEntityAliasTypeDetailValue, false, updatedBy);
@@ -4475,7 +4477,7 @@ public class CoreControl
 
         if(checkDefault) {
             // Check for default, and pick one if necessary
-            EntityAliasType defaultEntityAliasType = getDefaultEntityAliasType();
+            EntityAliasType defaultEntityAliasType = getDefaultEntityAliasType(entityAliasTypeDetail.getEntityType());
 
             if(defaultEntityAliasType == null) {
                 var entityType = entityAliasTypeDetail.getEntityType();
