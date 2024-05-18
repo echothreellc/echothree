@@ -285,6 +285,16 @@ public interface CoreService
 
     CommandResult deleteEntityAliasTypeDescription(UserVisitPK userVisitPK, DeleteEntityAliasTypeDescriptionForm form);
 
+    // --------------------------------------------------------------------------------
+    //   Entity Aliases
+    // --------------------------------------------------------------------------------
+
+    CommandResult createEntityAlias(UserVisitPK userVisitPK, CreateEntityAliasForm form);
+
+    CommandResult editEntityAlias(UserVisitPK userVisitPK, EditEntityAliasForm form);
+
+    CommandResult deleteEntityAlias(UserVisitPK userVisitPK, DeleteEntityAliasForm form);
+
     // -------------------------------------------------------------------------
     //   Entity Attribute Groups
     // -------------------------------------------------------------------------

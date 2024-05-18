@@ -21,12 +21,16 @@ import com.echothree.control.user.core.common.spec.EntityAliasTypeUlid;
 import com.echothree.control.user.core.common.spec.EntityAliasTypeUniversalSpec;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.common.exception.DuplicateEntityAliasException;
+import com.echothree.model.control.core.common.exception.DuplicateEntityAliasTypeAliasException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityAliasTypeNameException;
+import com.echothree.model.control.core.common.exception.InvalidAliasException;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.common.exception.MismatchedEntityTypeException;
 import com.echothree.model.control.core.common.exception.UnknownEntityAliasTypeNameException;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
+import com.echothree.model.data.core.server.entity.EntityAlias;
 import com.echothree.model.data.core.server.entity.EntityAliasType;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.core.server.entity.EntityType;
@@ -40,6 +44,7 @@ import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import java.util.regex.Pattern;
 
 public class EntityAliasTypeLogic
         extends BaseLogic {
@@ -270,5 +275,47 @@ public class EntityAliasTypeLogic
 
         coreControl.deleteEntityAliasType(entityAliasType, deletedByPK);
     }
+
+    public EntityAlias createEntityAlias(final ExecutionErrorAccumulator eea, final EntityInstance entityInstance,
+            final EntityAliasType entityAliasType, final String alias, final BasePK createdBy) {
+        EntityAlias entityAlias = null;
+        var validationPattern = entityAliasType.getLastDetail().getValidationPattern();
+
+        if(validationPattern != null) {
+            var pattern = Pattern.compile(validationPattern);
+            var matcher = pattern.matcher(alias);
+
+            if(!matcher.matches()) {
+                handleExecutionError(InvalidAliasException.class, eea, ExecutionErrors.InvalidAlias.name(),
+                        EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance),
+                        entityAliasType.getLastDetail().getEntityAliasTypeName(), alias);
+            }
+        }
+
+        if(eea == null || !eea.hasExecutionErrors()) {
+            var coreControl = Session.getModelController(CoreControl.class);
+
+            entityAlias = coreControl.getEntityAlias(entityInstance, entityAliasType);
+
+            if(entityAlias == null) {
+                entityAlias = coreControl.getEntityAliasByName(entityAliasType, alias);
+
+                if(entityAlias == null) {
+                    entityAlias = coreControl.createEntityAlias(entityInstance, entityAliasType, alias, createdBy);
+                } else {
+                    handleExecutionError(DuplicateEntityAliasTypeAliasException.class, eea, ExecutionErrors.DuplicateEntityAliasTypeAlias.name(),
+                            EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance),
+                            entityAliasType.getLastDetail().getEntityAliasTypeName(), alias);
+                }
+            } else {
+                handleExecutionError(DuplicateEntityAliasException.class, eea, ExecutionErrors.DuplicateEntityAlias.name(),
+                        EntityInstanceLogic.getInstance().getEntityRefFromEntityInstance(entityInstance),
+                        entityAliasType.getLastDetail().getEntityAliasTypeName());
+            }
+        }
+
+        return entityAlias;
+    }
+
 
 }

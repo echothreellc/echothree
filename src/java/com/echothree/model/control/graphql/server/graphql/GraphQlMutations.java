@@ -41,6 +41,7 @@ import com.echothree.control.user.core.common.result.CreateEntityInstanceResult;
 import com.echothree.control.user.core.common.result.CreateEntityListItemResult;
 import com.echothree.control.user.core.common.result.CreateEntityTypeResult;
 import com.echothree.control.user.core.common.result.EditComponentVendorResult;
+import com.echothree.control.user.core.common.result.EditEntityAliasResult;
 import com.echothree.control.user.core.common.result.EditEntityAttributeEntityAttributeGroupResult;
 import com.echothree.control.user.core.common.result.EditEntityAttributeGroupResult;
 import com.echothree.control.user.core.common.result.EditEntityAttributeResult;
@@ -4370,6 +4371,94 @@ public interface GraphQlMutations {
 
             var commandResult = TagUtil.getHome().deleteEntityTag(BaseGraphQl.getUserVisitPK(env), commandForm);
             mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject createEntityAlias(final DataFetchingEnvironment env,
+            @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
+            @GraphQLName("entityAliasTypeId") @GraphQLNonNull @GraphQLID final String entityAliasTypeId,
+            @GraphQLName("alias") @GraphQLNonNull final String alias) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = CoreUtil.getHome().getCreateEntityAliasForm();
+
+            commandForm.setUlid(id);
+            commandForm.setEntityAliasTypeUlid(entityAliasTypeId);
+            commandForm.setAlias(alias);
+
+            mutationResultObject.setCommandResult(CoreUtil.getHome().createEntityAlias(BaseGraphQl.getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject editEntityAlias(final DataFetchingEnvironment env,
+            @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
+            @GraphQLName("entityAliasTypeId") @GraphQLNonNull @GraphQLID final String entityAliasTypeId,
+            @GraphQLName("alias") @GraphQLNonNull final String alias) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var spec = CoreUtil.getHome().getEntityAliasSpec();
+
+            spec.setUlid(id);
+            spec.setEntityAliasTypeUlid(entityAliasTypeId);
+
+            var commandForm = CoreUtil.getHome().getEditEntityAliasForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = CoreUtil.getHome().editEntityAlias(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditEntityAliasResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                if(arguments.containsKey("alias"))
+                    edit.setAlias(alias);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = CoreUtil.getHome().editEntityAlias(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteEntityAlias(final DataFetchingEnvironment env,
+            @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
+            @GraphQLName("entityAliasTypeId") @GraphQLNonNull @GraphQLID final String entityAliasTypeId) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = CoreUtil.getHome().getDeleteEntityAliasForm();
+
+            commandForm.setUlid(id);
+            commandForm.setEntityAliasTypeUlid(entityAliasTypeId);
+
+            mutationResultObject.setCommandResult(CoreUtil.getHome().deleteEntityAlias(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }

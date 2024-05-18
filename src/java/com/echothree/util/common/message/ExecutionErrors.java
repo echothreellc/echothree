@@ -2287,5 +2287,8 @@ public enum ExecutionErrors {
     UnknownEntityAliasTypeName,
     DuplicateEntityAliasTypeDescription,
     UnknownEntityAliasTypeDescription,
+    DuplicateEntityAlias,
+    UnknownEntityAlias,
+    DuplicateEntityAliasTypeAlias,
 
 }

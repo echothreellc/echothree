@@ -545,6 +545,25 @@ public class CoreBean
         return new DeleteEntityAliasTypeDescriptionCommand(userVisitPK, form).run();
     }
 
+    // --------------------------------------------------------------------------------
+    //   Entity Aliases
+    // --------------------------------------------------------------------------------
+
+    @Override
+    public CommandResult createEntityAlias(UserVisitPK userVisitPK, CreateEntityAliasForm form) {
+        return new CreateEntityAliasCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult editEntityAlias(UserVisitPK userVisitPK, EditEntityAliasForm form) {
+        return new EditEntityAliasCommand(userVisitPK, form).run();
+    }
+
+    @Override
+    public CommandResult deleteEntityAlias(UserVisitPK userVisitPK, DeleteEntityAliasForm form) {
+        return new DeleteEntityAliasCommand(userVisitPK, form).run();
+    }
+
     // -------------------------------------------------------------------------
     //   Entity Attribute Group Descriptions
     // -------------------------------------------------------------------------

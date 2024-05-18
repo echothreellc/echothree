@@ -31,6 +31,7 @@ public class CoreTransferCaches
     protected CommandMessageTranslationTransferCache commandMessageTranslationTransferCache;
     protected EntityAliasTypeTransferCache entityAliasTypeTransferCache;
     protected EntityAliasTypeDescriptionTransferCache entityAliasTypeDescriptionTransferCache;
+    protected EntityAliasTransferCache entityAliasTransferCache;
     protected EntityAttributeTransferCache entityAttributeTransferCache;
     protected EntityAttributeDescriptionTransferCache entityAttributeDescriptionTransferCache;
     protected EntityAttributeEntityAttributeGroupTransferCache entityAttributeEntityAttributeGroupTransferCache;
@@ -159,6 +160,13 @@ public class CoreTransferCaches
             commandMessageTranslationTransferCache = new CommandMessageTranslationTransferCache(userVisit);
         
         return commandMessageTranslationTransferCache;
+    }
+
+    public EntityAliasTransferCache getEntityAliasTransferCache() {
+        if(entityAliasTransferCache == null)
+            entityAliasTransferCache = new EntityAliasTransferCache(userVisit);
+
+        return entityAliasTransferCache;
     }
 
     public EntityAliasTypeTransferCache getEntityAliasTypeTransferCache() {
