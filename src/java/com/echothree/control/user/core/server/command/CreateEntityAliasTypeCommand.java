@@ -55,7 +55,7 @@ public class CreateEntityAliasTypeCommand
                 new FieldDefinition("Ulid", FieldType.ULID, false, null, null),
                 new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, false, null, null),
-                new FieldDefinition("EntityAliasTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityAliasTypeName", FieldType.ENTITY_NAME, true, null, null),
                 new FieldDefinition("ValidationPattern", FieldType.REGULAR_EXPRESSION, false, null, null),
                 new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
                 new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
