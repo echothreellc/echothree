@@ -4387,7 +4387,6 @@ public interface GraphQlMutations {
             @GraphQLName("componentVendorName") final String componentVendorName,
             @GraphQLName("entityTypeName") final String entityTypeName,
             @GraphQLName("entityAliasTypeName") final String entityAliasTypeName,
-            @GraphQLName("entityAliasTypeTypeName") @GraphQLNonNull final String entityAliasTypeTypeName,
             @GraphQLName("validationPattern") final String validationPattern,
             @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
             @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
