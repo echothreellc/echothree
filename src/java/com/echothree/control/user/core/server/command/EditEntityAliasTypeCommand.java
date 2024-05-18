@@ -63,9 +63,10 @@ public class EditEntityAliasTypeCommand
         );
         
         EDIT_FIELD_DEFINITIONS = List.of(
-                new FieldDefinition("EntityAliasTypeName", FieldType.ENTITY_NAME, true, null, null),
-                new FieldDefinition("IsDefault", FieldType.BOOLEAN, true, null, null),
-                new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, true, null, null),
+                new FieldDefinition("EntityAliasTypeName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("ValidationPattern", FieldType.REGULAR_EXPRESSION, false, null, null),
+                new FieldDefinition("IsDefault", FieldType.BOOLEAN, false, null, null),
+                new FieldDefinition("SortOrder", FieldType.SIGNED_INTEGER, false, null, null),
                 new FieldDefinition("Description", FieldType.STRING, false, 1L, 132L)
         );
     }
