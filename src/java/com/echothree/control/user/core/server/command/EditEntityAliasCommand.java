@@ -137,7 +137,7 @@ public class EditEntityAliasCommand
 
                                     if(entityAlias != null) {
 
-                                        var duplicateEntityAlias = coreControl.getEntityAliasByName(entityAliasType, alias);
+                                        var duplicateEntityAlias = coreControl.getEntityAliasByEntityAliasTypeAndAlias(entityAliasType, alias);
 
                                         if(duplicateEntityAlias != null && !entityAlias.equals(duplicateEntityAlias)) {
                                             addExecutionError(ExecutionErrors.DuplicateEntityAlias.name(),

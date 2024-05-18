@@ -298,7 +298,7 @@ public class EntityAliasTypeLogic
             entityAlias = coreControl.getEntityAlias(entityInstance, entityAliasType);
 
             if(entityAlias == null) {
-                entityAlias = coreControl.getEntityAliasByName(entityAliasType, alias);
+                entityAlias = coreControl.getEntityAliasByEntityAliasTypeAndAlias(entityAliasType, alias);
 
                 if(entityAlias == null) {
                     entityAlias = coreControl.createEntityAlias(entityInstance, entityAliasType, alias, createdBy);

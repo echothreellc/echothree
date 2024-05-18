@@ -4832,7 +4832,7 @@ public class CoreControl
         deleteEntityAliases(getEntityAliasesByEntityInstanceForUpdate(entityInstance), deletedBy);
     }
 
-    public EntityAlias getEntityAliasByName(EntityAliasType entityAliasType, String alias) {
+    public EntityAlias getEntityAliasByEntityAliasTypeAndAlias(EntityAliasType entityAliasType, String alias) {
         EntityAlias entityAlias;
 
         try {
