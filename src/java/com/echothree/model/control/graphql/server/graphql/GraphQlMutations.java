@@ -4459,6 +4459,8 @@ public interface GraphQlMutations {
                     edit.setEntityAliasTypeName(entityAliasTypeName);
                 if(arguments.containsKey("isDefault"))
                     edit.setIsDefault(isDefault);
+                if(arguments.containsKey("validationPattern"))
+                    edit.setValidationPattern(validationPattern);
                 if(arguments.containsKey("sortOrder"))
                     edit.setSortOrder(sortOrder);
                 if(arguments.containsKey("description"))
