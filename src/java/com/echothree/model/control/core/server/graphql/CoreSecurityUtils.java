@@ -18,6 +18,7 @@ package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.control.user.core.server.command.GetAppearanceCommand;
 import com.echothree.control.user.core.server.command.GetAppearancesCommand;
+import com.echothree.control.user.core.server.command.GetEntityAliasCommand;
 import com.echothree.control.user.core.server.command.GetEntityAliasTypeCommand;
 import com.echothree.control.user.core.server.command.GetEntityAliasTypesCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeCommand;
@@ -77,6 +78,10 @@ public interface CoreSecurityUtils {
 
     static boolean getHasEntityAliasTypesAccess(final DataFetchingEnvironment env) {
         return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetEntityAliasTypesCommand.class);
+    }
+
+    static boolean getHasEntityAliasAccess(final DataFetchingEnvironment env) {
+        return BaseGraphQl.getGraphQlExecutionContext(env).hasAccess(GetEntityAliasCommand.class);
     }
 
     static boolean getHasEntityAttributeTypeAccess(final DataFetchingEnvironment env) {

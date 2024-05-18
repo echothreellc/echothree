@@ -103,10 +103,13 @@ public class EntityAliasTypeObject
     public EntityAliasObject getEntityAlias(final DataFetchingEnvironment env) {
         EntityAliasObject entityAliasObject = null;
 
-        if(entityInstance != null) {
+        if(entityInstance != null && CoreSecurityUtils.getHasEntityAliasAccess(env)) {
             var coreControl = Session.getModelController(CoreControl.class);
+            var entityAlias = coreControl.getEntityAlias(entityInstance, entityAliasType);
 
-            // TODO
+            if(entityAlias != null) {
+                entityAliasObject = new EntityAliasObject(entityAlias);
+            }
         }
 
         return entityAliasObject;
