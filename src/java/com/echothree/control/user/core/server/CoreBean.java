@@ -555,6 +555,11 @@ public class CoreBean
     }
 
     @Override
+    public CommandResult getEntityAlias(UserVisitPK userVisitPK, GetEntityAliasForm form) {
+        return new GetEntityAliasCommand(userVisitPK, form).run();
+    }
+
+    @Override
     public CommandResult editEntityAlias(UserVisitPK userVisitPK, EditEntityAliasForm form) {
         return new EditEntityAliasCommand(userVisitPK, form).run();
     }

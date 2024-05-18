@@ -291,6 +291,8 @@ public interface CoreService
 
     CommandResult createEntityAlias(UserVisitPK userVisitPK, CreateEntityAliasForm form);
 
+    CommandResult getEntityAlias(UserVisitPK userVisitPK, GetEntityAliasForm form);
+
     CommandResult editEntityAlias(UserVisitPK userVisitPK, EditEntityAliasForm form);
 
     CommandResult deleteEntityAlias(UserVisitPK userVisitPK, DeleteEntityAliasForm form);

@@ -60,6 +60,7 @@ import com.echothree.control.user.core.server.command.GetColorCommand;
 import com.echothree.control.user.core.server.command.GetColorsCommand;
 import com.echothree.control.user.core.server.command.GetComponentVendorCommand;
 import com.echothree.control.user.core.server.command.GetComponentVendorsCommand;
+import com.echothree.control.user.core.server.command.GetEntityAliasCommand;
 import com.echothree.control.user.core.server.command.GetEntityAliasTypeCommand;
 import com.echothree.control.user.core.server.command.GetEntityAliasTypesCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeCommand;
@@ -376,6 +377,7 @@ import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.graphql.AppearanceObject;
 import com.echothree.model.control.core.server.graphql.ColorObject;
 import com.echothree.model.control.core.server.graphql.ComponentVendorObject;
+import com.echothree.model.control.core.server.graphql.EntityAliasObject;
 import com.echothree.model.control.core.server.graphql.EntityAliasTypeObject;
 import com.echothree.model.control.core.server.graphql.EntityAttributeGroupObject;
 import com.echothree.model.control.core.server.graphql.EntityAttributeObject;
@@ -566,6 +568,7 @@ import com.echothree.model.data.core.common.EntityAliasTypeConstants;
 import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.core.server.entity.Color;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
+import com.echothree.model.data.core.server.entity.EntityAlias;
 import com.echothree.model.data.core.server.entity.EntityAliasType;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
@@ -3486,6 +3489,27 @@ public interface GraphQlQueries {
         }
 
         return entityAliasTypeObjects;
+    }
+
+    @GraphQLField
+    @GraphQLName("entityAlias")
+    static EntityAliasObject entityAlias(final DataFetchingEnvironment env,
+            @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
+            @GraphQLName("entityAliasTypeId") @GraphQLNonNull @GraphQLID final String entityAliasTypeId) {
+        EntityAlias entityAlias;
+
+        try {
+            var commandForm = CoreUtil.getHome().getGetEntityAliasForm();
+
+            commandForm.setUlid(id);
+            commandForm.setEntityAliasTypeUlid(entityAliasTypeId);
+
+            entityAlias = new GetEntityAliasCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return entityAlias == null ? null : new EntityAliasObject(entityAlias);
     }
 
     @GraphQLField

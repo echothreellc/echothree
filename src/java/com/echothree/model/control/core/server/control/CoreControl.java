@@ -4789,8 +4789,8 @@ public class CoreControl
         return entityAliases;
     }
 
-    public EntityAliasTransfer getEntityAliasTransfer(UserVisit userVisit, EntityInstance entityInstance, EntityAlias entityAlias) {
-        return getCoreTransferCaches(userVisit).getEntityAliasTransferCache().getEntityAliasTransfer(entityAlias, entityInstance);
+    public EntityAliasTransfer getEntityAliasTransfer(UserVisit userVisit, EntityAlias entityAlias) {
+        return getCoreTransferCaches(userVisit).getEntityAliasTransferCache().getEntityAliasTransfer(entityAlias);
     }
 
     public void updateEntityAliasFromValue(EntityAliasValue entityAliasValue, BasePK updatedBy) {

@@ -33,11 +33,12 @@ public class EntityAliasTransferCache
         super(userVisit);
     }
     
-    public EntityAliasTransfer getEntityAliasTransfer(EntityAlias entityAlias, EntityInstance entityInstance) {
+    public EntityAliasTransfer getEntityAliasTransfer(EntityAlias entityAlias) {
         var entityAliasTransfer = get(entityAlias);
         
         if(entityAliasTransfer == null) {
-            var entityAliasType = entityInstance == null ? coreControl.getEntityAliasTypeTransfer(userVisit, entityAlias.getEntityAliasType(), entityInstance) : null;
+            var entityInstance = entityAlias.getEntityInstance();
+            var entityAliasType = coreControl.getEntityAliasTypeTransfer(userVisit, entityAlias.getEntityAliasType(), entityInstance);
             var alias = entityAlias.getAlias();
             var entityInstanceTransfer = coreControl.getEntityInstanceTransfer(userVisit, entityAlias.getEntityInstance(), false, false, false, false, false, false);
             

@@ -100,8 +100,7 @@ public class EditEntityAliasCommand
 
                                 if(entityAlias != null) {
                                     if(editMode.equals(EditMode.LOCK)) {
-                                        result.setEntityAlias(coreControl.getEntityAliasTransfer(getUserVisit(),
-                                                entityInstance, entityAlias));
+                                        result.setEntityAlias(coreControl.getEntityAliasTransfer(getUserVisit(), entityAlias));
 
                                         if(lockEntity(basePK)) {
                                             var edit = CoreEditFactory.getEntityAliasEdit();
@@ -171,7 +170,7 @@ public class EditEntityAliasCommand
                             }
 
                             if(entityAlias != null) {
-                                result.setEntityAlias(coreControl.getEntityAliasTransfer(getUserVisit(), entityInstance, entityAlias));
+                                result.setEntityAlias(coreControl.getEntityAliasTransfer(getUserVisit(), entityAlias));
                             }
                         } else {
                             addExecutionError(ExecutionErrors.MismatchedEntityType.name());
