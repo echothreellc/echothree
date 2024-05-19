@@ -4793,6 +4793,17 @@ public class CoreControl
         return getCoreTransferCaches(userVisit).getEntityAliasTransferCache().getEntityAliasTransfer(entityAlias);
     }
 
+    public List<EntityAliasTransfer> getEntityAliasTransfers(UserVisit userVisit, Collection<EntityAlias> entityAliases) {
+        var entityAliasTransfers = new ArrayList<EntityAliasTransfer>(entityAliases.size());
+        var entityAliasTransferCache = getCoreTransferCaches(userVisit).getEntityAliasTransferCache();
+
+        entityAliases.forEach((entityAlias) ->
+                entityAliasTransfers.add(entityAliasTransferCache.getEntityAliasTransfer(entityAlias))
+        );
+
+        return entityAliasTransfers;
+    }
+
     public void updateEntityAliasFromValue(EntityAliasValue entityAliasValue, BasePK updatedBy) {
         if(entityAliasValue.hasBeenModified()) {
             EntityAlias entityAlias = EntityAliasFactory.getInstance().getEntityFromValue(session, EntityPermission.READ_WRITE, entityAliasValue);
