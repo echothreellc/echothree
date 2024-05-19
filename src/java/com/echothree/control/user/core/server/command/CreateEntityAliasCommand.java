@@ -20,6 +20,8 @@ import com.echothree.control.user.core.common.form.CreateEntityAliasForm;
 import com.echothree.model.control.core.server.logic.EntityAliasTypeLogic;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
@@ -27,6 +29,7 @@ import com.echothree.util.common.validation.FieldType;
 import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -40,7 +43,9 @@ public class CreateEntityAliasCommand
     static {
         COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), null)
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
+                        new SecurityRoleDefinition(SecurityRoleGroups.EntityAlias.name(), SecurityRoles.Create.name())
+                ))
         ));
 
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
