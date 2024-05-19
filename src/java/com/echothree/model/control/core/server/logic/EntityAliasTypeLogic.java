@@ -29,6 +29,10 @@ import com.echothree.model.control.core.common.exception.InvalidParameterCountEx
 import com.echothree.model.control.core.common.exception.MismatchedEntityTypeException;
 import com.echothree.model.control.core.common.exception.UnknownEntityAliasTypeNameException;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.index.server.control.IndexControl;
+import com.echothree.model.control.queue.common.QueueTypes;
+import com.echothree.model.control.queue.server.control.QueueControl;
+import com.echothree.model.control.queue.server.logic.QueueTypeLogic;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityAlias;
 import com.echothree.model.data.core.server.entity.EntityAliasType;
@@ -38,12 +42,14 @@ import com.echothree.model.data.core.server.entity.EntityTypeDetail;
 import com.echothree.model.data.core.server.value.EntityAliasTypeDetailValue;
 import com.echothree.model.data.party.common.pk.PartyPK;
 import com.echothree.model.data.party.server.entity.Language;
+import com.echothree.model.data.queue.server.value.QueuedEntityValue;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
 import com.echothree.util.server.message.ExecutionErrorAccumulator;
 import com.echothree.util.server.persistence.EntityPermission;
 import com.echothree.util.server.persistence.Session;
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 public class EntityAliasTypeLogic
@@ -266,6 +272,24 @@ public class EntityAliasTypeLogic
             final BasePK updatedBy) {
         final var coreControl = Session.getModelController(CoreControl.class);
 
+        if(entityAliasTypeDetailValue.getEntityAliasTypeNameHasBeenModified()) {
+            final var indexControl = Session.getModelController(IndexControl.class);
+            final var entityAliasType = coreControl.getEntityAliasTypeByPK(entityAliasTypeDetailValue.getEntityAliasTypePK());
+
+            if(indexControl.countIndexTypesByEntityType(entityAliasType.getLastDetail().getEntityType()) > 0) {
+                final var queueControl = Session.getModelController(QueueControl.class);
+                final var queueTypePK = QueueTypeLogic.getInstance().getQueueTypeByName(null, QueueTypes.INDEXING.name()).getPrimaryKey();
+                final var entityAliases = coreControl.getEntityAliasesByEntityAliasType(entityAliasType);
+                final var queuedEntities = new ArrayList<QueuedEntityValue>(entityAliases.size());
+
+                for(final var entityAlias : entityAliases) {
+                    queuedEntities.add(new QueuedEntityValue(queueTypePK, entityAlias.getEntityInstancePK(), session.START_TIME_LONG));
+                }
+
+                queueControl.createQueuedEntities(queuedEntities);
+            }
+        }
+        
         coreControl.updateEntityAliasTypeFromValue(entityAliasTypeDetailValue, updatedBy);
     }
     

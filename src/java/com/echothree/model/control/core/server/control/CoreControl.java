@@ -4747,20 +4747,30 @@ public class CoreControl
         return getEntityAliasValueForUpdate(getEntityAliasForUpdate(entityInstance, entityAliasType));
     }
 
-    public List<EntityAlias> getEntityAliasesByEntityAliasTypeForUpdate(EntityAliasType entityAliasType) {
+    private List<EntityAlias> getEntityAliasesByEntityAliasType(EntityAliasType entityAliasType, EntityPermission entityPermission) {
         List<EntityAlias> entityAliases;
 
         try {
-            PreparedStatement ps = EntityAliasFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                            "FROM entityaliases " +
-                            "WHERE enial_eniat_entityaliastypeid = ? AND enial_thrutime = ? " +
-                            "FOR UPDATE");
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM entityaliases " +
+                        "WHERE enial_eniat_entityaliastypeid = ? AND enial_thrutime = ? " +
+                        "ORDER BY enial_eni_entityinstanceid";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM entityaliases " +
+                        "WHERE enial_eniat_entityaliastypeid = ? AND enial_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+
+            PreparedStatement ps = EntityAliasFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, entityAliasType.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            entityAliases = EntityAliasFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+            entityAliases = EntityAliasFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
@@ -4768,25 +4778,49 @@ public class CoreControl
         return entityAliases;
     }
 
-    public List<EntityAlias> getEntityAliasesByEntityInstanceForUpdate(EntityInstance entityInstance) {
+    public List<EntityAlias> getEntityAliasesByEntityAliasType(EntityAliasType entityAliasType) {
+        return getEntityAliasesByEntityAliasType(entityAliasType, EntityPermission.READ_ONLY);
+    }
+
+    public List<EntityAlias> getEntityAliasesByEntityAliasTypeForUpdate(EntityAliasType entityAliasType) {
+        return getEntityAliasesByEntityAliasType(entityAliasType, EntityPermission.READ_WRITE);
+    }
+
+    private List<EntityAlias> getEntityAliasesByEntityInstance(EntityInstance entityInstance, EntityPermission entityPermission) {
         List<EntityAlias> entityAliases;
 
         try {
-            PreparedStatement ps = EntityAliasFactory.getInstance().prepareStatement(
-                    "SELECT _ALL_ " +
-                            "FROM entityaliases " +
-                            "WHERE enial_eni_entityinstanceid = ? AND enial_thrutime = ? " +
-                            "FOR UPDATE");
+            String query = null;
+
+            if(entityPermission.equals(EntityPermission.READ_ONLY)) {
+                query = "SELECT _ALL_ " +
+                        "FROM entityaliases " +
+                        "WHERE enial_eni_entityinstanceid = ? AND enial_thrutime = ?";
+            } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
+                query = "SELECT _ALL_ " +
+                        "FROM entityaliases " +
+                        "WHERE enial_eni_entityinstanceid = ? AND enial_thrutime = ? " +
+                        "FOR UPDATE";
+            }
+
+            PreparedStatement ps = EntityAliasFactory.getInstance().prepareStatement(query);
 
             ps.setLong(1, entityInstance.getPrimaryKey().getEntityId());
             ps.setLong(2, Session.MAX_TIME);
 
-            entityAliases = EntityAliasFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_WRITE, ps);
+            entityAliases = EntityAliasFactory.getInstance().getEntitiesFromQuery(entityPermission, ps);
         } catch (SQLException se) {
             throw new PersistenceDatabaseException(se);
         }
 
         return entityAliases;
+    }
+    public List<EntityAlias> getEntityAliasesByEntityInstance(EntityInstance entityInstance) {
+        return getEntityAliasesByEntityInstance(entityInstance, EntityPermission.READ_ONLY);
+    }
+
+    public List<EntityAlias> getEntityAliasesByEntityInstanceForUpdate(EntityInstance entityInstance){
+        return getEntityAliasesByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
     public EntityAliasTransfer getEntityAliasTransfer(UserVisit userVisit, EntityAlias entityAlias) {
