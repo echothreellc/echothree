@@ -19,6 +19,7 @@ package com.echothree.model.control.vendor.server.analysis;
 import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.server.analysis.PartyAnalyzer;
 import com.echothree.model.control.index.server.analysis.WhitespaceLowerCaseAnalyzer;
+import com.echothree.model.data.core.server.entity.EntityAliasType;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.party.server.entity.Language;
@@ -32,10 +33,10 @@ import org.apache.lucene.analysis.Analyzer;
 public class VendorAnalyzer
         extends PartyAnalyzer {
 
-    public VendorAnalyzer(final ExecutionErrorAccumulator eea, final Language language, final EntityType entityType,
-            final List<EntityAttribute> entityAttributes, final List<TagScope> tagScopes, final PartyType partyType,
+    public VendorAnalyzer(final ExecutionErrorAccumulator eea, final Language language, final EntityType entityType, final List<EntityAliasType> entityAliasTypes, final List<EntityAttribute> entityAttributes,
+            final List<TagScope> tagScopes, final PartyType partyType,
             final String entityNameIndexField) {
-        super(eea, language, entityType, entityAttributes, tagScopes, partyType, entityNameIndexField);
+        super(eea, language, entityType, entityAliasTypes, entityAttributes, tagScopes, partyType, entityNameIndexField);
     }
 
     public VendorAnalyzer(final ExecutionErrorAccumulator eea, final Language language, final EntityType entityType,

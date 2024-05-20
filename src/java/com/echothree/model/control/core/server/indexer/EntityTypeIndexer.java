@@ -43,7 +43,7 @@ public class EntityTypeIndexer
 
     @Override
     protected Analyzer getAnalyzer() {
-        return new EntityTypeAnalyzer(eea, language, entityType, entityAttributes, tagScopes);
+        return new EntityTypeAnalyzer(eea, language, entityType, entityAliasTypes, entityAttributes, tagScopes);
     }
     
     @Override

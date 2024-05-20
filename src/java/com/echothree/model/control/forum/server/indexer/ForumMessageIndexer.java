@@ -56,7 +56,7 @@ public class ForumMessageIndexer
 
     @Override
     protected Analyzer getAnalyzer() {
-        return new ForumMessageAnalyzer(eea, language, entityType, entityAttributes, tagScopes);
+        return new ForumMessageAnalyzer(eea, language, entityType, entityAliasTypes, entityAttributes, tagScopes);
     }
     
     @Override

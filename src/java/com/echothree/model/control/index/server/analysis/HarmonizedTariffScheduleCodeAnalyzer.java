@@ -17,6 +17,7 @@
 package com.echothree.model.control.index.server.analysis;
 
 import com.echothree.model.control.index.common.IndexFields;
+import com.echothree.model.data.core.server.entity.EntityAliasType;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.party.server.entity.Language;
@@ -29,9 +30,9 @@ import org.apache.lucene.analysis.Analyzer;
 public class HarmonizedTariffScheduleCodeAnalyzer
         extends BasicAnalyzer {
     
-    public HarmonizedTariffScheduleCodeAnalyzer(final ExecutionErrorAccumulator eea, final Language language, final EntityType entityType, final List<EntityAttribute> entityAttributes,
+    public HarmonizedTariffScheduleCodeAnalyzer(final ExecutionErrorAccumulator eea, final Language language, final EntityType entityType, final List<EntityAliasType> entityAliasTypes, final List<EntityAttribute> entityAttributes,
             final List<TagScope> tagScopes) {
-        super(eea, language, entityType, entityAttributes, tagScopes);
+        super(eea, language, entityType, entityAliasTypes, entityAttributes, tagScopes);
     }
 
     public HarmonizedTariffScheduleCodeAnalyzer(final ExecutionErrorAccumulator eea, final Language language, final EntityType entityType) {

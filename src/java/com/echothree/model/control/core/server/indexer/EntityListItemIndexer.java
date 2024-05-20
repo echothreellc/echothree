@@ -45,7 +45,7 @@ public class EntityListItemIndexer
 
     @Override
     protected Analyzer getAnalyzer() {
-        return new EntityListItemAnalyzer(eea, language, entityType, entityAttributes, tagScopes);
+        return new EntityListItemAnalyzer(eea, language, entityType, entityAliasTypes, entityAttributes, tagScopes);
     }
     
     @Override

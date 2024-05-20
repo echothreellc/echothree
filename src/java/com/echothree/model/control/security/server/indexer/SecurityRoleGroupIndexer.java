@@ -47,7 +47,7 @@ public class SecurityRoleGroupIndexer
 
     @Override
     protected Analyzer getAnalyzer() {
-        return new SecurityRoleGroupAnalyzer(eea, language, entityType, entityAttributes, tagScopes);
+        return new SecurityRoleGroupAnalyzer(eea, language, entityType, entityAliasTypes, entityAttributes, tagScopes);
     }
     
     @Override

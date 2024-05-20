@@ -42,7 +42,7 @@ public class CustomerIndexer
 
     @Override
     protected Analyzer getAnalyzer() {
-        return new CustomerAnalyzer(eea, language, entityType, entityAttributes, tagScopes, partyType, entityNameIndexField);
+        return new CustomerAnalyzer(eea, language, entityType, entityAliasTypes, entityAttributes, tagScopes, partyType, entityNameIndexField);
     }
 
     @Override
