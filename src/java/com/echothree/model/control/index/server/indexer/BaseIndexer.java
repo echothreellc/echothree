@@ -22,8 +22,8 @@ import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.common.IndexSubfields;
 import com.echothree.model.control.index.common.exception.IndexIOErrorException;
-import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.index.server.analysis.BasicAnalyzer;
+import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
@@ -47,7 +47,6 @@ import com.echothree.model.data.index.server.entity.IndexStatus;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.tag.server.entity.EntityTag;
 import com.echothree.model.data.tag.server.entity.TagScope;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
@@ -128,17 +127,14 @@ public abstract class BaseIndexer<BE extends BaseEntity>
         }
     }
     
-    protected void indexWorkflowEntityStatus(final Document document, final WorkflowEntityStatus workflowEntityStatus) {
-        document.add(new Field(workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflow().getLastDetail().getWorkflowName(),
-                workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName(), FieldTypes.NOT_STORED_NOT_TOKENIZED));
-    }
-
     /** Index an EntityInstance in all of its Workflows. */
     private void indexWorkflowEntityStatuses(final Document document, final EntityInstance entityInstance) {
         workflowControl.getWorkflowsByEntityType(entityInstance.getEntityType()).stream().forEach((workflow) -> {
-            List<WorkflowEntityStatus> workflowEntityStatuses = workflowControl.getWorkflowEntityStatusesByEntityInstance(workflow, entityInstance);
+            var workflowEntityStatuses = workflowControl.getWorkflowEntityStatusesByEntityInstance(workflow, entityInstance);
+
             if (!workflowEntityStatuses.isEmpty()) {
-                StringBuilder workflowStepNamesBuilder = new StringBuilder();
+                var workflowStepNamesBuilder = new StringBuilder();
+
                 workflowEntityStatuses.forEach((workflowEntityStatus) -> {
                     if(workflowStepNamesBuilder.length() != 0) {
                         workflowStepNamesBuilder.append(' ');
@@ -146,6 +142,7 @@ public abstract class BaseIndexer<BE extends BaseEntity>
 
                     workflowStepNamesBuilder.append(workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName());
                 });
+                
                 document.add(new Field(workflow.getLastDetail().getWorkflowName(), workflowStepNamesBuilder.toString(), FieldTypes.NOT_STORED_TOKENIZED));
             }
         });
