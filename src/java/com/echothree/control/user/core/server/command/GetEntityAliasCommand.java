@@ -16,12 +16,9 @@
 
 package com.echothree.control.user.core.server.command;
 
-import com.echothree.control.user.core.common.form.DeleteEntityAliasForm;
 import com.echothree.control.user.core.common.form.GetEntityAliasForm;
-import com.echothree.control.user.core.common.form.GetEntityAliasTypeForm;
 import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.model.control.core.server.logic.EntityAliasTypeLogic;
-import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
@@ -29,10 +26,8 @@ import com.echothree.model.data.core.server.entity.EntityAlias;
 import com.echothree.model.data.core.server.entity.EntityAliasType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.BaseSingleEntityCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
@@ -58,8 +53,10 @@ public class GetEntityAliasCommand
                 new FieldDefinition("Key", FieldType.KEY, false, null, null),
                 new FieldDefinition("Guid", FieldType.GUID, false, null, null),
                 new FieldDefinition("Ulid", FieldType.ULID, false, null, null),
+                new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, false, null, null),
+                new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, false, null, null),
                 new FieldDefinition("EntityAliasTypeName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("EntityAliasTypeUlid", FieldType.ULID, false, null, null)
+                new FieldDefinition("Alias", FieldType.ENTITY_NAME, true, null, null)
         );
     }
 
@@ -70,42 +67,11 @@ public class GetEntityAliasCommand
 
     @Override
     protected EntityAlias getEntity() {
-        var parameterCount = EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+        EntityAliasType entityAliasType = EntityAliasTypeLogic.getInstance().getEntityAliasTypeByUniversalSpec(this, form);
         EntityAlias entityAlias = null;
 
-        if(parameterCount == 1) {
-            var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form);
-
-            if(!hasExecutionErrors()) {
-                var entityAliasTypeName = form.getEntityAliasTypeName();
-                var entityAliasTypeUlid = form.getEntityAliasTypeUlid();
-
-                parameterCount = (entityAliasTypeName == null ? 0 : 1) + (entityAliasTypeUlid == null ? 0 : 1);
-
-                if(parameterCount == 1) {
-                    var entityAliasType = entityAliasTypeName == null ?
-                            EntityAliasTypeLogic.getInstance().getEntityAliasTypeByUlid(this, entityAliasTypeUlid) :
-                            EntityAliasTypeLogic.getInstance().getEntityAliasTypeByName(this, entityInstance.getEntityType(), entityAliasTypeName);
-
-                    if(!hasExecutionErrors()) {
-                        if(entityInstance.getEntityType().equals(entityAliasType.getLastDetail().getEntityType())) {
-                            var coreControl = getCoreControl();
-
-                            entityAlias = coreControl.getEntityAliasForUpdate(entityInstance, entityAliasType);
-
-                            if(entityAlias == null) {
-                                addExecutionError(ExecutionErrors.UnknownEntityAlias.name());
-                            }
-                        } else {
-                            addExecutionError(ExecutionErrors.MismatchedEntityType.name());
-                        }
-                    }
-                } else {
-                    addExecutionError(ExecutionErrors.InvalidParameterCount.name());
-                }
-            }
-        } else {
-            addExecutionError(ExecutionErrors.InvalidParameterCount.name());
+        if(!hasExecutionErrors()) {
+            entityAlias = EntityAliasTypeLogic.getInstance().getEntityAliasByAlias(this, entityAliasType, form.getAlias());
         }
 
         return entityAlias;

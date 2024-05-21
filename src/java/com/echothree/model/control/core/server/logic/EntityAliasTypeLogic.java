@@ -27,6 +27,7 @@ import com.echothree.model.control.core.common.exception.DuplicateEntityAliasTyp
 import com.echothree.model.control.core.common.exception.InvalidAliasException;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.common.exception.MismatchedEntityTypeException;
+import com.echothree.model.control.core.common.exception.UnknownEntityAliasException;
 import com.echothree.model.control.core.common.exception.UnknownEntityAliasTypeNameException;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.index.server.control.IndexControl;
@@ -341,5 +342,22 @@ public class EntityAliasTypeLogic
         return entityAlias;
     }
 
+    public EntityAlias getEntityAliasByAlias(final ExecutionErrorAccumulator eea, final EntityAliasType entityAliasType,
+            final String alias) {
+        var coreControl = Session.getModelController(CoreControl.class);
+        EntityAlias entityAlias = coreControl.getEntityAliasByEntityAliasTypeAndAlias(entityAliasType, alias);
+
+        if(entityAlias == null) {
+            var entityAliasTypeDetail = entityAliasType.getLastDetail();
+            var entityTypeDetail = entityAliasTypeDetail.getEntityType().getLastDetail();
+
+            handleExecutionError(UnknownEntityAliasException.class, eea, ExecutionErrors.UnknownEntityAlias.name(),
+                    entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(),
+                    entityTypeDetail.getEntityTypeName(), entityAliasTypeDetail.getEntityAliasTypeName(),
+                    alias);
+        }
+
+        return entityAlias;
+    }
 
 }

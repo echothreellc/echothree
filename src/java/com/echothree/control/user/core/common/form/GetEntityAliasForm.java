@@ -16,11 +16,12 @@
 
 package com.echothree.control.user.core.common.form;
 
-import com.echothree.control.user.core.common.spec.EntityAliasSpec;
+import com.echothree.control.user.core.common.edit.EntityAliasEdit;
+import com.echothree.control.user.core.common.spec.EntityAliasTypeUniversalSpec;
 
 public interface GetEntityAliasForm
-        extends EntityAliasSpec {
+        extends EntityAliasTypeUniversalSpec, EntityAliasEdit {
     
-    // Nothing additional beyond EntityAliasSpec
+    // Nothing additional beyond EntityAliasTypeUniversalSpec, EntityAliasEdit
     
 }

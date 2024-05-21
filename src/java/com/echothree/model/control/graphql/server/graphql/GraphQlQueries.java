@@ -373,7 +373,6 @@ import com.echothree.model.control.content.server.graphql.ContentPageLayoutObjec
 import com.echothree.model.control.content.server.graphql.ContentPageObject;
 import com.echothree.model.control.content.server.graphql.ContentSectionObject;
 import com.echothree.model.control.content.server.graphql.ContentWebAddressObject;
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.graphql.AppearanceObject;
 import com.echothree.model.control.core.server.graphql.ColorObject;
 import com.echothree.model.control.core.server.graphql.ComponentVendorObject;
@@ -564,7 +563,6 @@ import com.echothree.model.data.content.server.entity.ContentPageLayout;
 import com.echothree.model.data.content.server.entity.ContentPageLayoutArea;
 import com.echothree.model.data.content.server.entity.ContentSection;
 import com.echothree.model.data.content.server.entity.ContentWebAddress;
-import com.echothree.model.data.core.common.EntityAliasTypeConstants;
 import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.core.server.entity.Color;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
@@ -3494,15 +3492,21 @@ public interface GraphQlQueries {
     @GraphQLField
     @GraphQLName("entityAlias")
     static EntityAliasObject entityAlias(final DataFetchingEnvironment env,
-            @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
-            @GraphQLName("entityAliasTypeId") @GraphQLNonNull @GraphQLID final String entityAliasTypeId) {
+            @GraphQLName("componentVendorName") final String componentVendorName,
+            @GraphQLName("entityTypeName") final String entityTypeName,
+            @GraphQLName("entityAliasTypeName") final String entityAliasTypeName,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("alias") @GraphQLNonNull final String alias) {
         EntityAlias entityAlias;
 
         try {
             var commandForm = CoreUtil.getHome().getGetEntityAliasForm();
 
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
+            commandForm.setEntityAliasTypeName(entityAliasTypeName);
             commandForm.setUlid(id);
-            commandForm.setEntityAliasTypeUlid(entityAliasTypeId);
+            commandForm.setAlias(alias);
 
             entityAlias = new GetEntityAliasCommand(getUserVisitPK(env), commandForm).runForGraphQl();
         } catch (NamingException ex) {
