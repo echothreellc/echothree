@@ -4757,7 +4757,7 @@ public class CoreControl
                 query = "SELECT _ALL_ " +
                         "FROM entityaliases " +
                         "WHERE enial_eniat_entityaliastypeid = ? AND enial_thrutime = ? " +
-                        "ORDER BY enial_eni_entityinstanceid";
+                        "ORDER BY enial_alias";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM entityaliases " +
