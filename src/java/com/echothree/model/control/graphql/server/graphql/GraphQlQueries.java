@@ -63,6 +63,7 @@ import com.echothree.control.user.core.server.command.GetComponentVendorsCommand
 import com.echothree.control.user.core.server.command.GetEntityAliasCommand;
 import com.echothree.control.user.core.server.command.GetEntityAliasTypeCommand;
 import com.echothree.control.user.core.server.command.GetEntityAliasTypesCommand;
+import com.echothree.control.user.core.server.command.GetEntityAliasesCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeGroupCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeGroupsCommand;
@@ -3515,6 +3516,41 @@ public interface GraphQlQueries {
 
         return entityAlias == null ? null : new EntityAliasObject(entityAlias);
     }
+
+    @GraphQLField
+    @GraphQLName("entityAliases")
+    static Collection<EntityAliasObject> entityAliases(final DataFetchingEnvironment env,
+            @GraphQLName("componentVendorName") final String componentVendorName,
+            @GraphQLName("entityTypeName") final String entityTypeName,
+            @GraphQLName("entityAliasTypeName") final String entityAliasTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        Collection<EntityAlias> entityAliases;
+        Collection<EntityAliasObject> entityAliasObjects;
+
+        try {
+            var commandForm = CoreUtil.getHome().getGetEntityAliasesForm();
+
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
+            commandForm.setEntityAliasTypeName(entityAliasTypeName);
+            commandForm.setUlid(id);
+
+            entityAliases = new GetEntityAliasesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        if(entityAliases == null) {
+            entityAliasObjects = emptyList();
+        } else {
+            entityAliasObjects = new ArrayList<>(entityAliases.size());
+
+            entityAliases.stream().map(EntityAliasObject::new).forEachOrdered(entityAliasObjects::add);
+        }
+
+        return entityAliasObjects;
+    }
+
 
     @GraphQLField
     @GraphQLName("entityAttributeGroup")
