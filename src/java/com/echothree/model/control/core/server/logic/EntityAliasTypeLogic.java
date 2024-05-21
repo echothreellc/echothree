@@ -24,6 +24,7 @@ import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.common.exception.DuplicateEntityAliasException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityAliasTypeAliasException;
 import com.echothree.model.control.core.common.exception.DuplicateEntityAliasTypeNameException;
+import com.echothree.model.control.core.common.exception.EntityTypeIsNotExtensibleException;
 import com.echothree.model.control.core.common.exception.InvalidAliasException;
 import com.echothree.model.control.core.common.exception.InvalidParameterCountException;
 import com.echothree.model.control.core.common.exception.MismatchedEntityTypeException;
@@ -71,21 +72,28 @@ public class EntityAliasTypeLogic
     public EntityAliasType createEntityAliasType(final ExecutionErrorAccumulator eea, final EntityType entityType,
             String entityAliasTypeName, final String validationPattern, final Boolean isDefault,
             final Integer sortOrder, final BasePK createdBy, final Language language, final String description) {
-        var coreControl = Session.getModelController(CoreControl.class);
-        var entityAliasType = coreControl.getEntityAliasTypeByName(entityType, entityAliasTypeName);
+        EntityAliasType entityAliasType = null;
+        var entityTypeDetail = entityType.getLastDetail();
 
-        if(entityAliasType == null) {
-            entityAliasType = coreControl.createEntityAliasType(entityType, entityAliasTypeName, validationPattern,
-                    isDefault, sortOrder, createdBy);
+        if(entityTypeDetail.getIsExtensible()) {
+            var coreControl = Session.getModelController(CoreControl.class);
 
-            if(description != null) {
-                coreControl.createEntityAliasTypeDescription(entityAliasType, language, description, createdBy);
+            entityAliasType = coreControl.getEntityAliasTypeByName(entityType, entityAliasTypeName);
+
+            if(entityAliasType == null) {
+                entityAliasType = coreControl.createEntityAliasType(entityType, entityAliasTypeName, validationPattern,
+                        isDefault, sortOrder, createdBy);
+
+                if(description != null) {
+                    coreControl.createEntityAliasTypeDescription(entityAliasType, language, description, createdBy);
+                }
+            } else {
+                handleExecutionError(DuplicateEntityAliasTypeNameException.class, eea, ExecutionErrors.DuplicateEntityAliasTypeName.name(),
+                        entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(), entityTypeDetail.getEntityTypeName(), entityAliasTypeName);
             }
         } else {
-            var entityTypeDetail = entityType.getLastDetail();
-
-            handleExecutionError(DuplicateEntityAliasTypeNameException.class, eea, ExecutionErrors.DuplicateEntityAliasTypeName.name(),
-                    entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(), entityTypeDetail.getEntityTypeName(), entityAliasTypeName);
+            handleExecutionError(EntityTypeIsNotExtensibleException.class, eea, ExecutionErrors.EntityTypeIsNotExtensible.name(),
+                    entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName(), entityTypeDetail.getEntityTypeName());
         }
 
         return entityAliasType;
