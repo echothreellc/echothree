@@ -58,12 +58,14 @@ import com.echothree.control.user.content.common.spec.ContentCollectionSpec;
 import com.echothree.control.user.content.common.spec.ContentPageSpec;
 import com.echothree.control.user.content.common.spec.ContentSectionSpec;
 import com.echothree.control.user.core.common.edit.ComponentVendorEdit;
+import com.echothree.control.user.core.common.edit.EntityAliasTypeEdit;
 import com.echothree.control.user.core.common.edit.EntityAttributeEdit;
 import com.echothree.control.user.core.common.edit.EntityAttributeEntityAttributeGroupEdit;
 import com.echothree.control.user.core.common.edit.EntityAttributeGroupEdit;
 import com.echothree.control.user.core.common.edit.EntityListItemEdit;
 import com.echothree.control.user.core.common.edit.EntityTypeEdit;
 import com.echothree.control.user.core.common.form.CreateComponentVendorForm;
+import com.echothree.control.user.core.common.form.CreateEntityAliasTypeForm;
 import com.echothree.control.user.core.common.form.CreateEntityAttributeEntityAttributeGroupForm;
 import com.echothree.control.user.core.common.form.CreateEntityAttributeForm;
 import com.echothree.control.user.core.common.form.CreateEntityAttributeGroupForm;
@@ -71,6 +73,7 @@ import com.echothree.control.user.core.common.form.CreateEntityInstanceForm;
 import com.echothree.control.user.core.common.form.CreateEntityListItemForm;
 import com.echothree.control.user.core.common.form.CreateEntityTypeForm;
 import com.echothree.control.user.core.common.form.DeleteComponentVendorForm;
+import com.echothree.control.user.core.common.form.DeleteEntityAliasTypeForm;
 import com.echothree.control.user.core.common.form.DeleteEntityAttributeEntityAttributeGroupForm;
 import com.echothree.control.user.core.common.form.DeleteEntityAttributeForm;
 import com.echothree.control.user.core.common.form.DeleteEntityAttributeGroupForm;
@@ -80,6 +83,7 @@ import com.echothree.control.user.core.common.form.DeleteEntityTypeForm;
 import com.echothree.control.user.core.common.form.RemoveEntityInstanceForm;
 import com.echothree.control.user.core.common.form.SendEventForm;
 import com.echothree.control.user.core.common.spec.ComponentVendorSpec;
+import com.echothree.control.user.core.common.spec.EntityAliasTypeUniversalSpec;
 import com.echothree.control.user.core.common.spec.EntityAttributeEntityAttributeGroupSpec;
 import com.echothree.control.user.core.common.spec.EntityAttributeGroupSpec;
 import com.echothree.control.user.core.common.spec.EntityAttributeUniversalSpec;
@@ -336,6 +340,11 @@ public class BasePersona {
     public EntityTypeSpec entityTypeSpec;
     public EntityTypeEdit entityTypeEdit;
 
+    public CreateEntityAliasTypeForm createEntityAliasTypeForm;
+    public DeleteEntityAliasTypeForm deleteEntityAliasTypeForm;
+    public EntityAliasTypeUniversalSpec entityAliasTypeUniversalSpec;
+    public EntityAliasTypeEdit entityAliasTypeEdit;
+
     public CreateEntityAttributeGroupForm createEntityAttributeGroupForm;
     public DeleteEntityAttributeGroupForm deleteEntityAttributeGroupForm;
     public EntityAttributeGroupSpec entityAttributeGroupSpec;
@@ -364,6 +373,7 @@ public class BasePersona {
 
     public String lastComponentVendorName;
     public String lastEntityTypeName;
+    public String lastEntityAliasTypeName;
     public String lastEntityAttributeGroupName;
     public String lastEntityAttributeName;
     public String lastEntityListItemName;
