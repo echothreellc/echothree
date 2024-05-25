@@ -108,6 +108,8 @@ public enum SecurityRoleGroups {
     EmployeeAvailability,
     EmployeeStatus,
     EmployeeType,
+    EntityAliasType,
+    EntityAlias,
     EntityAppearance,
     EntityAttribute,
     EntityAttributeEntityType,

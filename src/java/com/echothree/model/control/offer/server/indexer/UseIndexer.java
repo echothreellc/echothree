@@ -47,7 +47,7 @@ public class UseIndexer
 
     @Override
     protected Analyzer getAnalyzer() {
-        return new UseAnalyzer(eea, language, entityType, entityAttributes, tagScopes);
+        return new UseAnalyzer(eea, language, entityType, entityAliasTypes, entityAttributes, tagScopes);
     }
     
     @Override

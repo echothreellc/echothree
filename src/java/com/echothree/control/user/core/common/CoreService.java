@@ -252,7 +252,53 @@ public interface CoreService
     // -------------------------------------------------------------------------
     
     CommandResult createComponentVersion(UserVisitPK userVisitPK, CreateComponentVersionForm form);
-    
+
+    // -------------------------------------------------------------------------
+    //   Entity Alias Types
+    // -------------------------------------------------------------------------
+
+    CommandResult createEntityAliasType(UserVisitPK userVisitPK, CreateEntityAliasTypeForm form);
+
+    CommandResult getEntityAliasType(UserVisitPK userVisitPK, GetEntityAliasTypeForm form);
+
+    CommandResult getEntityAliasTypes(UserVisitPK userVisitPK, GetEntityAliasTypesForm form);
+
+    CommandResult getEntityAliasTypeChoices(UserVisitPK userVisitPK, GetEntityAliasTypeChoicesForm form);
+
+    CommandResult setDefaultEntityAliasType(UserVisitPK userVisitPK, SetDefaultEntityAliasTypeForm form);
+
+    CommandResult editEntityAliasType(UserVisitPK userVisitPK, EditEntityAliasTypeForm form);
+
+    CommandResult deleteEntityAliasType(UserVisitPK userVisitPK, DeleteEntityAliasTypeForm form);
+
+    // -------------------------------------------------------------------------
+    //   Entity Alias Type Descriptions
+    // -------------------------------------------------------------------------
+
+    CommandResult createEntityAliasTypeDescription(UserVisitPK userVisitPK, CreateEntityAliasTypeDescriptionForm form);
+
+    CommandResult getEntityAliasTypeDescription(UserVisitPK userVisitPK, GetEntityAliasTypeDescriptionForm form);
+
+    CommandResult getEntityAliasTypeDescriptions(UserVisitPK userVisitPK, GetEntityAliasTypeDescriptionsForm form);
+
+    CommandResult editEntityAliasTypeDescription(UserVisitPK userVisitPK, EditEntityAliasTypeDescriptionForm form);
+
+    CommandResult deleteEntityAliasTypeDescription(UserVisitPK userVisitPK, DeleteEntityAliasTypeDescriptionForm form);
+
+    // --------------------------------------------------------------------------------
+    //   Entity Aliases
+    // --------------------------------------------------------------------------------
+
+    CommandResult createEntityAlias(UserVisitPK userVisitPK, CreateEntityAliasForm form);
+
+    CommandResult getEntityAlias(UserVisitPK userVisitPK, GetEntityAliasForm form);
+
+    CommandResult getEntityAliases(UserVisitPK userVisitPK, GetEntityAliasesForm form);
+
+    CommandResult editEntityAlias(UserVisitPK userVisitPK, EditEntityAliasForm form);
+
+    CommandResult deleteEntityAlias(UserVisitPK userVisitPK, DeleteEntityAliasForm form);
+
     // -------------------------------------------------------------------------
     //   Entity Attribute Groups
     // -------------------------------------------------------------------------

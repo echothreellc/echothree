@@ -44,6 +44,7 @@ import com.echothree.control.user.item.common.spec.ItemSpecFactory;
 import com.echothree.ui.cli.dataloader.util.data.InitialDataParser;
 import com.echothree.ui.cli.dataloader.util.data.handler.BaseHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.comment.CommentsHandler;
+import com.echothree.ui.cli.dataloader.util.data.handler.core.EntityAliasesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.core.EntityAttributesHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.rating.RatingsHandler;
 import com.echothree.ui.cli.dataloader.util.data.handler.tag.EntityTagsHandler;
@@ -217,6 +218,8 @@ public class ItemHandler
             initialDataParser.pushHandler(new CommentsHandler(initialDataParser, this, entityRef));
         } else if(localName.equals("ratings")) {
             initialDataParser.pushHandler(new RatingsHandler(initialDataParser, this, entityRef));
+        } else if(localName.equals("entityAliases")) {
+            initialDataParser.pushHandler(new EntityAliasesHandler(initialDataParser, this, entityRef));
         } else if(localName.equals("entityAttributes")) {
             initialDataParser.pushHandler(new EntityAttributesHandler(initialDataParser, this, entityRef));
         } else if(localName.equals("entityTags")) {

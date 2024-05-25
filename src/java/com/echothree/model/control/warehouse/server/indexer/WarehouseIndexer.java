@@ -42,7 +42,7 @@ public class WarehouseIndexer
 
     @Override
     protected Analyzer getAnalyzer() {
-        return new WarehouseAnalyzer(eea, language, entityType, entityAttributes, tagScopes, partyType, entityNameIndexField);
+        return new WarehouseAnalyzer(eea, language, entityType, entityAliasTypes, entityAttributes, tagScopes, partyType, entityNameIndexField);
     }
 
     @Override

@@ -2283,5 +2283,12 @@ public enum ExecutionErrors {
     DuplicateWarehouseTypeDescription,
     InvalidComponentVendor,
     InvalidEventType,
+    DuplicateEntityAliasTypeName,
+    UnknownEntityAliasTypeName,
+    DuplicateEntityAliasTypeDescription,
+    UnknownEntityAliasTypeDescription,
+    DuplicateEntityAlias,
+    UnknownEntityAlias,
+    DuplicateEntityAliasTypeAlias,
 
 }

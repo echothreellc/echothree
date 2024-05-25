@@ -48,7 +48,7 @@ public class ContentCategoryIndexer
 
     @Override
     protected Analyzer getAnalyzer() {
-        return new ContentCategoryAnalyzer(eea, language, entityType, entityAttributes, tagScopes);
+        return new ContentCategoryAnalyzer(eea, language, entityType, entityAliasTypes, entityAttributes, tagScopes);
     }
     
     @Override

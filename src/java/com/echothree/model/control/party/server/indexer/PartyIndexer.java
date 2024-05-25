@@ -56,7 +56,7 @@ public abstract class PartyIndexer
 
     @Override
     protected Analyzer getAnalyzer() {
-        return new PartyAnalyzer(eea, language, entityType, entityAttributes, tagScopes, partyType, entityNameIndexField);
+        return new PartyAnalyzer(eea, language, entityType, entityAliasTypes, entityAttributes, tagScopes, partyType, entityNameIndexField);
     }
 
     /**

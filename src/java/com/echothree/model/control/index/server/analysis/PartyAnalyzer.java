@@ -18,6 +18,7 @@ package com.echothree.model.control.index.server.analysis;
 
 import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.data.core.server.entity.EntityAliasType;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.party.server.entity.Language;
@@ -40,10 +41,9 @@ public class PartyAnalyzer
         this.entityNameIndexField = entityNameIndexField;
     }
 
-    public PartyAnalyzer(final ExecutionErrorAccumulator eea, final Language language, final EntityType entityType,
-            final List<EntityAttribute> entityAttributes, final List<TagScope> tagScopes, final PartyType partyType,
-            final String entityNameIndexField) {
-        super(eea, language, entityType, entityAttributes, tagScopes);
+    public PartyAnalyzer(final ExecutionErrorAccumulator eea, final Language language, final EntityType entityType, final List<EntityAliasType> entityAliasTypes, final List<EntityAttribute> entityAttributes,
+            final List<TagScope> tagScopes, final PartyType partyType, final String entityNameIndexField) {
+        super(eea, language, entityType, entityAliasTypes, entityAttributes, tagScopes);
 
         init(partyType, entityNameIndexField);
     }

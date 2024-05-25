@@ -19,6 +19,8 @@ package com.echothree.model.control.graphql.server.graphql;
 import com.echothree.control.user.core.common.form.CoreFormFactory;
 import com.echothree.model.control.core.common.exception.UnknownEntityAttributeGroupNameException;
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.core.server.graphql.CoreSecurityUtils;
+import com.echothree.model.control.core.server.graphql.EntityAliasTypeObject;
 import com.echothree.model.control.core.server.graphql.EntityAttributeGroupObject;
 import com.echothree.model.control.core.server.graphql.EntityInstanceObject;
 import com.echothree.model.control.core.server.logic.EntityAttributeGroupLogic;
@@ -34,6 +36,7 @@ import com.echothree.model.control.workflow.server.control.WorkflowControl;
 import com.echothree.model.control.workflow.server.graphql.WorkflowEntityStatusObject;
 import com.echothree.model.control.workflow.server.graphql.WorkflowSecurityUtils;
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
+import com.echothree.model.data.core.common.EntityAliasTypeConstants;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.tag.common.TagScopeConstants;
@@ -113,6 +116,32 @@ public abstract class BaseEntityInstanceObject
     public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
         // Allow user to see the EntityInstanceObject regardless of permissions for the GetEntityInstance UC.
         return new EntityInstanceObject(getEntityInstanceByBasePK());
+    }
+
+    @GraphQLField
+    @GraphQLDescription("entity alias types")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<EntityAliasTypeObject> getEntityAliasTypes(final DataFetchingEnvironment env) {
+        if(CoreSecurityUtils.getHasEntityAliasTypesAccess(env)) {
+            var coreControl = Session.getModelController(CoreControl.class);
+            var totalCount = coreControl.countEntityAliasTypesByEntityType(getEntityInstanceByBasePK().getEntityType());
+
+            try(var objectLimiter = new ObjectLimiter(env, EntityAliasTypeConstants.COMPONENT_VENDOR_NAME, EntityAliasTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = coreControl.getEntityAliasTypesByEntityType(getEntityInstanceByBasePK().getEntityType());
+                var entityAliasTypes = new ArrayList<EntityAliasTypeObject>(entities.size());
+
+                for(var entity : entities) {
+                    var entityAliasTypeObject = new EntityAliasTypeObject(entity, entityInstance);
+
+                    entityAliasTypes.add(entityAliasTypeObject);
+                }
+
+                return new CountedObjects<>(objectLimiter, entityAliasTypes);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
     }
 
     @GraphQLField

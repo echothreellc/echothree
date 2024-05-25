@@ -35,12 +35,15 @@ import com.echothree.control.user.content.common.result.EditContentCollectionRes
 import com.echothree.control.user.content.common.result.EditContentPageLayoutResult;
 import com.echothree.control.user.core.common.CoreUtil;
 import com.echothree.control.user.core.common.result.CreateComponentVendorResult;
+import com.echothree.control.user.core.common.result.CreateEntityAliasTypeResult;
 import com.echothree.control.user.core.common.result.CreateEntityAttributeGroupResult;
 import com.echothree.control.user.core.common.result.CreateEntityAttributeResult;
 import com.echothree.control.user.core.common.result.CreateEntityInstanceResult;
 import com.echothree.control.user.core.common.result.CreateEntityListItemResult;
 import com.echothree.control.user.core.common.result.CreateEntityTypeResult;
 import com.echothree.control.user.core.common.result.EditComponentVendorResult;
+import com.echothree.control.user.core.common.result.EditEntityAliasResult;
+import com.echothree.control.user.core.common.result.EditEntityAliasTypeResult;
 import com.echothree.control.user.core.common.result.EditEntityAttributeEntityAttributeGroupResult;
 import com.echothree.control.user.core.common.result.EditEntityAttributeGroupResult;
 import com.echothree.control.user.core.common.result.EditEntityAttributeResult;
@@ -4370,6 +4373,220 @@ public interface GraphQlMutations {
 
             var commandResult = TagUtil.getHome().deleteEntityTag(BaseGraphQl.getUserVisitPK(env), commandForm);
             mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultWithIdObject createEntityAliasType(final DataFetchingEnvironment env,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("componentVendorName") final String componentVendorName,
+            @GraphQLName("entityTypeName") final String entityTypeName,
+            @GraphQLName("entityAliasTypeName") final String entityAliasTypeName,
+            @GraphQLName("validationPattern") final String validationPattern,
+            @GraphQLName("isDefault") @GraphQLNonNull final String isDefault,
+            @GraphQLName("sortOrder") @GraphQLNonNull final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultWithIdObject();
+
+        try {
+            var commandForm = CoreUtil.getHome().getCreateEntityAliasTypeForm();
+
+            commandForm.setUlid(id);
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
+            commandForm.setEntityAliasTypeName(entityAliasTypeName);
+            commandForm.setValidationPattern(validationPattern);
+            commandForm.setIsDefault(isDefault);
+            commandForm.setSortOrder(sortOrder);
+            commandForm.setDescription(description);
+
+            var commandResult = CoreUtil.getHome().createEntityAliasType(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+
+            if(!commandResult.hasErrors()) {
+                var result = (CreateEntityAliasTypeResult)commandResult.getExecutionResult().getResult();
+
+                mutationResultObject.setEntityInstanceFromEntityRef(result.getEntityRef());
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject editEntityAliasType(final DataFetchingEnvironment env,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("componentVendorName") final String componentVendorName,
+            @GraphQLName("entityTypeName") final String entityTypeName,
+            @GraphQLName("originalEntityAliasTypeName") final String originalEntityAliasTypeName,
+            @GraphQLName("entityAliasTypeName") final String entityAliasTypeName,
+            @GraphQLName("validationPattern") final String validationPattern,
+            @GraphQLName("isDefault") final String isDefault,
+            @GraphQLName("sortOrder") final String sortOrder,
+            @GraphQLName("description") final String description) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var spec = CoreUtil.getHome().getEntityAliasTypeUniversalSpec();
+
+            spec.setUlid(id);
+            spec.setComponentVendorName(componentVendorName);
+            spec.setEntityTypeName(entityTypeName);
+            spec.setEntityAliasTypeName(originalEntityAliasTypeName);
+
+            var commandForm = CoreUtil.getHome().getEditEntityAliasTypeForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = CoreUtil.getHome().editEntityAliasType(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditEntityAliasTypeResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                if(arguments.containsKey("entityAliasTypeName"))
+                    edit.setEntityAliasTypeName(entityAliasTypeName);
+                if(arguments.containsKey("isDefault"))
+                    edit.setIsDefault(isDefault);
+                if(arguments.containsKey("validationPattern"))
+                    edit.setValidationPattern(validationPattern);
+                if(arguments.containsKey("sortOrder"))
+                    edit.setSortOrder(sortOrder);
+                if(arguments.containsKey("description"))
+                    edit.setDescription(description);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = CoreUtil.getHome().editEntityAliasType(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteEntityAliasType(final DataFetchingEnvironment env,
+            @GraphQLName("id") @GraphQLID final String id,
+            @GraphQLName("componentVendorName") final String componentVendorName,
+            @GraphQLName("entityTypeName") final String entityTypeName,
+            @GraphQLName("entityAliasTypeName") final String entityAliasTypeName) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = CoreUtil.getHome().getDeleteEntityAliasTypeForm();
+
+            commandForm.setUlid(id);
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
+            commandForm.setEntityAliasTypeName(entityAliasTypeName);
+
+            var commandResult = CoreUtil.getHome().deleteEntityAliasType(BaseGraphQl.getUserVisitPK(env), commandForm);
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject createEntityAlias(final DataFetchingEnvironment env,
+            @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
+            @GraphQLName("entityAliasTypeId") @GraphQLNonNull @GraphQLID final String entityAliasTypeId,
+            @GraphQLName("alias") @GraphQLNonNull final String alias) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = CoreUtil.getHome().getCreateEntityAliasForm();
+
+            commandForm.setUlid(id);
+            commandForm.setEntityAliasTypeUlid(entityAliasTypeId);
+            commandForm.setAlias(alias);
+
+            mutationResultObject.setCommandResult(CoreUtil.getHome().createEntityAlias(BaseGraphQl.getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject editEntityAlias(final DataFetchingEnvironment env,
+            @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
+            @GraphQLName("entityAliasTypeId") @GraphQLNonNull @GraphQLID final String entityAliasTypeId,
+            @GraphQLName("alias") @GraphQLNonNull final String alias) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var spec = CoreUtil.getHome().getEntityAliasSpec();
+
+            spec.setUlid(id);
+            spec.setEntityAliasTypeUlid(entityAliasTypeId);
+
+            var commandForm = CoreUtil.getHome().getEditEntityAliasForm();
+
+            commandForm.setSpec(spec);
+            commandForm.setEditMode(EditMode.LOCK);
+
+            var commandResult = CoreUtil.getHome().editEntityAlias(BaseGraphQl.getUserVisitPK(env), commandForm);
+
+            if(!commandResult.hasErrors()) {
+                var executionResult = commandResult.getExecutionResult();
+                var result = (EditEntityAliasResult)executionResult.getResult();
+                Map<String, Object> arguments = env.getArgument("input");
+                var edit = result.getEdit();
+
+                if(arguments.containsKey("alias"))
+                    edit.setAlias(alias);
+
+                commandForm.setEdit(edit);
+                commandForm.setEditMode(EditMode.UPDATE);
+
+                commandResult = CoreUtil.getHome().editEntityAlias(BaseGraphQl.getUserVisitPK(env), commandForm);
+            }
+
+            mutationResultObject.setCommandResult(commandResult);
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
+    static MutationResultObject deleteEntityAlias(final DataFetchingEnvironment env,
+            @GraphQLName("id") @GraphQLNonNull @GraphQLID final String id,
+            @GraphQLName("entityAliasTypeId") @GraphQLNonNull @GraphQLID final String entityAliasTypeId) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = CoreUtil.getHome().getDeleteEntityAliasForm();
+
+            commandForm.setUlid(id);
+            commandForm.setEntityAliasTypeUlid(entityAliasTypeId);
+
+            mutationResultObject.setCommandResult(CoreUtil.getHome().deleteEntityAlias(BaseGraphQl.getUserVisitPK(env), commandForm));
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }

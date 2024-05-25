@@ -47,7 +47,7 @@ public class OfferIndexer
 
     @Override
     protected Analyzer getAnalyzer() {
-        return new OfferAnalyzer(eea, language, entityType, entityAttributes, tagScopes);
+        return new OfferAnalyzer(eea, language, entityType, entityAliasTypes, entityAttributes, tagScopes);
     }
     
     @Override

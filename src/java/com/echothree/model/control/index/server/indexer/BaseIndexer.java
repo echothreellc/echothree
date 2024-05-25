@@ -22,10 +22,11 @@ import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.index.common.IndexSubfields;
 import com.echothree.model.control.index.common.exception.IndexIOErrorException;
-import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.index.server.analysis.BasicAnalyzer;
+import com.echothree.model.control.index.server.control.IndexControl;
 import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
+import com.echothree.model.data.core.server.entity.EntityAliasType;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityAttributeDetail;
 import com.echothree.model.data.core.server.entity.EntityClobAttribute;
@@ -47,7 +48,6 @@ import com.echothree.model.data.index.server.entity.IndexStatus;
 import com.echothree.model.data.party.server.entity.Language;
 import com.echothree.model.data.tag.server.entity.EntityTag;
 import com.echothree.model.data.tag.server.entity.TagScope;
-import com.echothree.model.data.workflow.server.entity.WorkflowEntityStatus;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.persistence.BasePK;
 import com.echothree.util.server.control.BaseLogic;
@@ -89,6 +89,7 @@ public abstract class BaseIndexer<BE extends BaseEntity>
     protected Language language;
     protected EntityType entityType;
     protected IndexStatus indexStatus;
+    protected List<EntityAliasType> entityAliasTypes;
     protected List<EntityAttribute> entityAttributes;
     protected List<TagScope> tagScopes;
     
@@ -110,6 +111,7 @@ public abstract class BaseIndexer<BE extends BaseEntity>
             this.language = indexDetail.getLanguage();
             this.entityType = indexDetail.getIndexType().getLastDetail().getEntityType();
             this.indexStatus = indexControl.getIndexStatusForUpdate(index);
+            this.entityAliasTypes = coreControl.getEntityAliasTypesByEntityType(entityType);
             this.entityAttributes = coreControl.getEntityAttributesByEntityType(entityType);
             this.tagScopes = tagControl.getTagScopesByEntityType(entityType);
 
@@ -128,17 +130,14 @@ public abstract class BaseIndexer<BE extends BaseEntity>
         }
     }
     
-    protected void indexWorkflowEntityStatus(final Document document, final WorkflowEntityStatus workflowEntityStatus) {
-        document.add(new Field(workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflow().getLastDetail().getWorkflowName(),
-                workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName(), FieldTypes.NOT_STORED_NOT_TOKENIZED));
-    }
-
     /** Index an EntityInstance in all of its Workflows. */
     private void indexWorkflowEntityStatuses(final Document document, final EntityInstance entityInstance) {
         workflowControl.getWorkflowsByEntityType(entityInstance.getEntityType()).stream().forEach((workflow) -> {
-            List<WorkflowEntityStatus> workflowEntityStatuses = workflowControl.getWorkflowEntityStatusesByEntityInstance(workflow, entityInstance);
+            var workflowEntityStatuses = workflowControl.getWorkflowEntityStatusesByEntityInstance(workflow, entityInstance);
+
             if (!workflowEntityStatuses.isEmpty()) {
-                StringBuilder workflowStepNamesBuilder = new StringBuilder();
+                var workflowStepNamesBuilder = new StringBuilder();
+
                 workflowEntityStatuses.forEach((workflowEntityStatus) -> {
                     if(workflowStepNamesBuilder.length() != 0) {
                         workflowStepNamesBuilder.append(' ');
@@ -146,6 +145,7 @@ public abstract class BaseIndexer<BE extends BaseEntity>
 
                     workflowStepNamesBuilder.append(workflowEntityStatus.getWorkflowStep().getLastDetail().getWorkflowStepName());
                 });
+
                 document.add(new Field(workflow.getLastDetail().getWorkflowName(), workflowStepNamesBuilder.toString(), FieldTypes.NOT_STORED_TOKENIZED));
             }
         });
@@ -171,6 +171,18 @@ public abstract class BaseIndexer<BE extends BaseEntity>
                 document.add(new LongPoint(IndexFields.deletedTime.name(), deletedTime));
             }
         }
+    }
+
+    private void indexEntityAliases(final Document document, final EntityInstance entityInstance) {
+        var entityAliases = coreControl.getEntityAliasesByEntityInstance(entityInstance);
+
+        for(var entityAlias : entityAliases) {
+            var fieldName = entityAlias.getEntityAliasType().getLastDetail().getEntityAliasTypeName();
+            var alias = entityAlias.getAlias();
+
+            document.add(new Field(fieldName, alias, FieldTypes.NOT_STORED_NOT_TOKENIZED));
+        }
+
     }
 
     private void indexEntityAttributes(final Document document, final EntityInstance entityInstance) {
@@ -344,6 +356,7 @@ public abstract class BaseIndexer<BE extends BaseEntity>
 
         indexWorkflowEntityStatuses(document, entityInstance);
         indexEntityTimes(document, entityInstance);
+        indexEntityAliases(document, entityInstance);
         indexEntityAttributes(document, entityInstance);
         indexEntityTags(document, entityInstance);
         indexEntityAppearance(document, entityInstance);
@@ -490,7 +503,7 @@ public abstract class BaseIndexer<BE extends BaseEntity>
     }
     
     protected Analyzer getAnalyzer() {
-        return new BasicAnalyzer(eea, language, entityType, entityAttributes, tagScopes);
+        return new BasicAnalyzer(eea, language, entityType, entityAliasTypes, entityAttributes, tagScopes);
     }
 
     protected abstract BE getEntity(final EntityInstance entityInstance);

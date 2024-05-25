@@ -49,7 +49,7 @@ public class HarmonizedTariffScheduleCodeIndexer
 
     @Override
     protected Analyzer getAnalyzer() {
-        return new HarmonizedTariffScheduleCodeAnalyzer(eea, language, entityType, entityAttributes, tagScopes);
+        return new HarmonizedTariffScheduleCodeAnalyzer(eea, language, entityType, entityAliasTypes, entityAttributes, tagScopes);
     }
     
     @Override

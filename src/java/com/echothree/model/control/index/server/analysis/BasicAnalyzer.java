@@ -23,6 +23,7 @@ import com.echothree.model.control.index.server.indexer.IndexerDebugFlags;
 import com.echothree.model.control.party.common.Languages;
 import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.control.workflow.server.control.WorkflowControl;
+import com.echothree.model.data.core.server.entity.EntityAliasType;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.party.server.entity.Language;
@@ -51,16 +52,19 @@ public class BasicAnalyzer
 
     private ExecutionErrorAccumulator eea;
     private EntityType entityType;
+    private List<EntityAliasType> entityAliasTypes;
     private List<EntityAttribute> entityAttributes;
     private List<TagScope> tagScopes;
 
     private Analyzer defaultAnalyzer;
     private Map<String, Analyzer> cachedFieldAnalyzers = null;
 
-    private void init(final ExecutionErrorAccumulator eea, final Language language, final EntityType entityType, final List<EntityAttribute> entityAttributes,
+    private void init(final ExecutionErrorAccumulator eea, final Language language, final EntityType entityType,
+            final List<EntityAliasType> entityAliasTypes, final List<EntityAttribute> entityAttributes,
             final List<TagScope> tagScopes) {
         this.eea = eea;
         this.entityType = entityType;
+        this.entityAliasTypes = entityAliasTypes;
         this.entityAttributes = entityAttributes;
         this.tagScopes = tagScopes;
 
@@ -82,11 +86,12 @@ public class BasicAnalyzer
         }
     }
     
-    public BasicAnalyzer(final ExecutionErrorAccumulator eea, final Language language, final EntityType entityType, final List<EntityAttribute> entityAttributes,
+    public BasicAnalyzer(final ExecutionErrorAccumulator eea, final Language language, final EntityType entityType,
+            final List<EntityAliasType> entityAliasTypes, final List<EntityAttribute> entityAttributes,
             final List<TagScope> tagScopes) {
         super(AnalyzerWrapper.PER_FIELD_REUSE_STRATEGY);
         
-        init(eea, language, entityType, entityAttributes, tagScopes);
+        init(eea, language, entityType, entityAliasTypes, entityAttributes, tagScopes);
     }
 
     public BasicAnalyzer(final ExecutionErrorAccumulator eea, final Language language, final EntityType entityType) {
@@ -95,7 +100,8 @@ public class BasicAnalyzer
         var coreControl = Session.getModelController(CoreControl.class);
         var tagControl = Session.getModelController(TagControl.class);
         
-        init(eea, language, entityType, coreControl.getEntityAttributesByEntityType(entityType), tagControl.getTagScopesByEntityType(entityType));
+        init(eea, language, entityType, coreControl.getEntityAliasTypesByEntityType(entityType),
+                coreControl.getEntityAttributesByEntityType(entityType), tagControl.getTagScopesByEntityType(entityType));
     }
 
     @Override
@@ -144,8 +150,21 @@ public class BasicAnalyzer
         return selectedAnalyzer == null ? new StandardAnalyzer() : selectedAnalyzer;
     }
 
+    private Map<String, Analyzer> getEntityAliasesFieldAnalyzers(final List<EntityAliasType> entityAliasTypes, final Map<String, Analyzer> fieldAnalyzers) {
+        entityAliasTypes.stream().map(EntityAliasType::getLastDetail).forEach((entityAliasTypeDetail) -> {
+            var fieldName = entityAliasTypeDetail.getEntityAliasTypeName();
+            if(IndexerDebugFlags.LogBaseAnalyzer) {
+                log.info("--- fieldName = " + fieldName);
+            }
+
+            fieldAnalyzers.put(fieldName, new WhitespaceLowerCaseAnalyzer());
+        });
+
+        return fieldAnalyzers;
+    }
+
     private Map<String, Analyzer> getEntityAttributeFieldAnalyzers(final List<EntityAttribute> entityAttributes, final Map<String, Analyzer> fieldAnalyzers) {
-        entityAttributes.stream().map((entityAttribute) -> entityAttribute.getLastDetail()).forEach((entityAttributeDetail) -> {
+        entityAttributes.stream().map(EntityAttribute::getLastDetail).forEach((entityAttributeDetail) -> {
             String fieldName = entityAttributeDetail.getEntityAttributeName();
             String entityAttributeTypeName = entityAttributeDetail.getEntityAttributeType().getEntityAttributeTypeName();
             if(IndexerDebugFlags.LogBaseAnalyzer) {
@@ -213,7 +232,9 @@ public class BasicAnalyzer
 
     private Map<String, Analyzer> getFieldAnalyzers(final ExecutionErrorAccumulator eea, final EntityType entityType,
             final List<EntityAttribute> entityAttributes, final List<TagScope> tagScopes) {
-        return getEntityTypeAnalyzers(getAppearanceFieldAnalyzers(getWorkflowFieldAnalyzers(entityType, getTagScopeFieldAnalyzers(tagScopes, getEntityAttributeFieldAnalyzers(entityAttributes, new HashMap<>())))));
+        return getEntityTypeAnalyzers(getAppearanceFieldAnalyzers(getWorkflowFieldAnalyzers(entityType,
+                getTagScopeFieldAnalyzers(tagScopes, getEntityAliasesFieldAnalyzers(entityAliasTypes,
+                        getEntityAttributeFieldAnalyzers(entityAttributes, new HashMap<>()))))));
     }
     
 }

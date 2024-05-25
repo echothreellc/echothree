@@ -42,7 +42,7 @@ public class VendorIndexer
 
     @Override
     protected Analyzer getAnalyzer() {
-        return new VendorAnalyzer(eea, language, entityType, entityAttributes, tagScopes, partyType, entityNameIndexField);
+        return new VendorAnalyzer(eea, language, entityType, entityAliasTypes, entityAttributes, tagScopes, partyType, entityNameIndexField);
     }
 
     @Override

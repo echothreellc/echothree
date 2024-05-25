@@ -70,7 +70,7 @@ public class ItemIndexer
 
     @Override
     protected Analyzer getAnalyzer() {
-        return new ItemAnalyzer(eea, language, entityType, entityAttributes, tagScopes);
+        return new ItemAnalyzer(eea, language, entityType, entityAliasTypes, entityAttributes, tagScopes);
     }
     
     @Override

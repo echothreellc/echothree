@@ -88,6 +88,15 @@
             <entityType entityTypeName="CommandMessageTranslation" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Command Message Translation" />
             </entityType>
+            <entityType entityTypeName="EntityAliasType" keepAllHistory="false" isExtensible="true" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Alias Type" />
+            </entityType>
+            <entityType entityTypeName="EntityAliasTypeDescription" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Alias Type Description" />
+            </entityType>
+            <entityType entityTypeName="EntityAlias" keepAllHistory="false" isExtensible="false" sortOrder="1">
+                <entityTypeDescription languageIsoName="en" description="Entity Alias" />
+            </entityType>
             <entityType entityTypeName="EntityAttributeGroup" keepAllHistory="false" isExtensible="false" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Entity Attribute Group" />
             </entityType>

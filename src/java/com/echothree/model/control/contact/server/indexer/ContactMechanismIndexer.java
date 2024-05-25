@@ -66,7 +66,7 @@ public class ContactMechanismIndexer
 
     @Override
     protected Analyzer getAnalyzer() {
-        return new ContactMechanismAnalyzer(eea, language, entityType, entityAttributes, tagScopes);
+        return new ContactMechanismAnalyzer(eea, language, entityType, entityAliasTypes, entityAttributes, tagScopes);
     }
     
     @Override

@@ -25,6 +25,11 @@
             <entityType entityTypeName="Item" keepAllHistory="false" isExtensible="true" sortOrder="1">
                 <entityTypeDescription languageIsoName="en" description="Item" />
                 <!--
+                <entityAliasType entityAliasTypeName="TEST_ENTITY_ALIAS_TYPE" validationPattern="^[0-9][0-9][0-9][0-9]$" isDefault="true" sortOrder="1">
+                    <entityAliasTypeDescription languageIsoName="en" description="Test Entity Alias Type" />
+                </entityAliasType>
+                -->
+                <!--
                 <entityAttribute entityAttributeName="EXAMPLE_NAME" entityAttributeTypeName="NAME" trackRevisions="true"
                                  checkContentWebAddress="false" sortOrder="1">
                     <entityAttributeDescription languageIsoName="en" description="Example Name" />

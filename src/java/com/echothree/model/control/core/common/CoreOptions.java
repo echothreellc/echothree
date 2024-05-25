@@ -71,4 +71,6 @@ public interface CoreOptions {
     String EntityVisitIncludeVisitedEntityInstance = "EntityVisitIncludeVisitedEntityInstance";
     String EntityVisitIncludeVisitedTime = "EntityVisitIncludeVisitedTime";
 
+    String EntityAliasTypeIncludeAlias = "EntityAliasTypeIncludeAlias";
+
 }

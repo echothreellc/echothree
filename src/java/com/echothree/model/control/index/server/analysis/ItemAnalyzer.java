@@ -21,6 +21,7 @@ import com.echothree.model.control.index.common.IndexConstants;
 import com.echothree.model.control.index.common.IndexFieldVariations;
 import com.echothree.model.control.index.common.IndexFields;
 import com.echothree.model.control.item.server.control.ItemControl;
+import com.echothree.model.data.core.server.entity.EntityAliasType;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.core.server.entity.MimeTypeUsageType;
@@ -35,9 +36,9 @@ import org.apache.lucene.analysis.Analyzer;
 public class ItemAnalyzer
         extends BasicAnalyzer {
     
-    public ItemAnalyzer(final ExecutionErrorAccumulator eea, final Language language, final EntityType entityType, final List<EntityAttribute> entityAttributes,
+    public ItemAnalyzer(final ExecutionErrorAccumulator eea, final Language language, final EntityType entityType, final List<EntityAliasType> entityAliasTypes, final List<EntityAttribute> entityAttributes,
             final List<TagScope> tagScopes) {
-        super(eea, language, entityType, entityAttributes, tagScopes);
+        super(eea, language, entityType, entityAliasTypes, entityAttributes, tagScopes);
     }
 
     public ItemAnalyzer(final ExecutionErrorAccumulator eea, final Language language, final EntityType entityType) {
