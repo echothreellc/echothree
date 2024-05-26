@@ -54,7 +54,7 @@ public class UserSessionTest
                 }
                 """);
 
-        assertThat(getLong(userSessionBody, "data.userSession.identityVerifiedTime.unformattedTime")).isNotNull();
+        assertThat(getLong(userSessionBody, "data.userSession.identityVerifiedTime.unformattedTime")).isNotZero();
     }
 
 }
