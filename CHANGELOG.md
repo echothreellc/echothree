@@ -1,5 +1,10 @@
 # Changelog
 
+## 2024-05-26-01
+
+* Add Entity Alias Types and Entity Aliases [1112](https://gitlab.echothree.com/echothree/echothree/-/issues/1112)
+* Error Prone 2.27.1 Upgrade [1117](https://gitlab.echothree.com/echothree/echothree/-/issues/1117)
+
 ## 2024-05-12-01
 
 * graphql-java-annotations 21.2 Upgrade [1111](https://gitlab.echothree.com/echothree/echothree/-/issues/1111)
