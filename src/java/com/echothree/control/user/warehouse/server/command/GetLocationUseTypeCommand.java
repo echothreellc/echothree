@@ -76,7 +76,7 @@ public class GetLocationUseTypeCommand
     }
 
     @Override
-    protected BaseResult getTransfer(LocationUseType entity) {
+    protected BaseResult getResult(LocationUseType entity) {
         var result = WarehouseResultFactory.getGetLocationUseTypeResult();
 
         if(entity != null) {

@@ -66,7 +66,7 @@ public class GetFilterAdjustmentSourceCommand
     }
 
     @Override
-    protected BaseResult getTransfer(FilterAdjustmentSource filterAdjustmentSource) {
+    protected BaseResult getResult(FilterAdjustmentSource filterAdjustmentSource) {
         var filterControl = Session.getModelController(FilterControl.class);
         var result = FilterResultFactory.getGetFilterAdjustmentSourceResult();
 

@@ -76,7 +76,7 @@ public class GetCustomerTypeCommand
     }
 
     @Override
-    protected BaseResult getTransfer(CustomerType customerType) {
+    protected BaseResult getResult(CustomerType customerType) {
         var customerControl = Session.getModelController(CustomerControl.class);
         var result = CustomerResultFactory.getGetCustomerTypeResult();
 

@@ -25,22 +25,44 @@ import com.echothree.util.server.persistence.BaseEntity;
 import java.util.Collection;
 import java.util.List;
 
-public abstract class BaseMultipleEntitiesCommand<BE extends BaseEntity, F extends BaseForm>
+public abstract class BasePaginatedMultipleEntitiesCommand<BE extends BaseEntity, F extends BaseForm>
         extends BaseSimpleCommand<F>
         implements GraphQlSecurityCommand {
-    
-    protected BaseMultipleEntitiesCommand(UserVisitPK userVisitPK, F form, CommandSecurityDefinition commandSecurityDefinition,
+
+    protected BasePaginatedMultipleEntitiesCommand(UserVisitPK userVisitPK, F form, CommandSecurityDefinition commandSecurityDefinition,
             List<FieldDefinition> formFieldDefinitions, boolean allowLimits) {
         super(userVisitPK, form, commandSecurityDefinition, formFieldDefinitions, allowLimits);
     }
-    
+
+    private boolean formHandled = false;
+
+    protected abstract void handleForm();
+    protected abstract Long getTotalEntities();
     protected abstract Collection<BE> getEntities();
     protected abstract BaseResult getResult(Collection<BE> entities);
+
+    public Long getTotalEntitiesForGraphQl() {
+        Long totalEntities = null;
+
+        if(formHandled || canQueryByGraphQl()) { // formHandled == true avoids call to canQueryByGraphQl()
+            if(!formHandled) {
+                handleForm();
+                formHandled = true;
+            }
+            totalEntities = getTotalEntities();
+        }
+
+        return totalEntities;
+    }
 
     public Collection<BE> getEntitiesForGraphQl() {
         Collection<BE> entities = null;
 
-        if(canQueryByGraphQl()) {
+        if(formHandled || canQueryByGraphQl()) { // formHandled == true avoids call to canQueryByGraphQl()
+            if(!formHandled) {
+                handleForm();
+                formHandled = true;
+            }
             entities = getEntities();
         }
         
@@ -54,6 +76,7 @@ public abstract class BaseMultipleEntitiesCommand<BE extends BaseEntity, F exten
 
     @Override
     protected final BaseResult execute() {
+        handleForm();
         var entities = getEntities();
         
         return getResult(entities);

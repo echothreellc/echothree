@@ -76,7 +76,7 @@ public class GetReturnKindCommand
     }
 
     @Override
-    protected BaseResult getTransfer(ReturnKind returnKind) {
+    protected BaseResult getResult(ReturnKind returnKind) {
         var returnControl = Session.getModelController(ReturnPolicyControl.class);
         var result = ReturnPolicyResultFactory.getGetReturnKindResult();
 

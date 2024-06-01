@@ -65,7 +65,7 @@ public class GetItemAliasTypeCommand
     }
 
     @Override
-    protected BaseResult getTransfer(ItemAliasType itemAliasType) {
+    protected BaseResult getResult(ItemAliasType itemAliasType) {
         var itemAliasTypeControl = Session.getModelController(ItemControl.class);
         var result = ItemResultFactory.getGetItemAliasTypeResult();
 

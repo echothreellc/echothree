@@ -83,7 +83,7 @@ public class GetItemDescriptionTypesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<ItemDescriptionType> entities) {
+    protected BaseResult getResult(Collection<ItemDescriptionType> entities) {
         var result = ItemResultFactory.getGetItemDescriptionTypesResult();
 
         if(entities != null) {

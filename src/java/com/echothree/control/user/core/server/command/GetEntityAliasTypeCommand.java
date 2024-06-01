@@ -69,7 +69,7 @@ public class GetEntityAliasTypeCommand
     }
     
     @Override
-    protected BaseResult getTransfer(EntityAliasType entityAliasType) {
+    protected BaseResult getResult(EntityAliasType entityAliasType) {
         var coreControl = getCoreControl();
         var result = CoreResultFactory.getGetEntityAliasTypeResult();
 

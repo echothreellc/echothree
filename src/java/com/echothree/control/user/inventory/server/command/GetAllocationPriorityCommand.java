@@ -76,7 +76,7 @@ public class GetAllocationPriorityCommand
     }
 
     @Override
-    protected BaseResult getTransfer(AllocationPriority entity) {
+    protected BaseResult getResult(AllocationPriority entity) {
         var inventoryControl = Session.getModelController(InventoryControl.class);
         var result = InventoryResultFactory.getGetAllocationPriorityResult();
 

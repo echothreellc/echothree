@@ -79,7 +79,7 @@ public class GetOrderPriorityCommand
     }
 
     @Override
-    protected BaseResult getTransfer(OrderPriority orderPriority) {
+    protected BaseResult getResult(OrderPriority orderPriority) {
         var orderPriorityControl = Session.getModelController(OrderPriorityControl.class);
         var result = OrderResultFactory.getGetOrderPriorityResult();
 

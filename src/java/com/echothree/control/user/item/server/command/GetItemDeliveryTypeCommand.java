@@ -85,7 +85,7 @@ public class GetItemDeliveryTypeCommand
     }
 
     @Override
-    protected BaseResult getTransfer(ItemDeliveryType itemDeliveryType) {
+    protected BaseResult getResult(ItemDeliveryType itemDeliveryType) {
         var itemControl = Session.getModelController(ItemControl.class);
         var result = ItemResultFactory.getGetItemDeliveryTypeResult();
 

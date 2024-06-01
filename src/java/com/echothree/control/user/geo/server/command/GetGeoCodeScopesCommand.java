@@ -65,7 +65,7 @@ public class GetGeoCodeScopesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<GeoCodeScope> entities) {
+    protected BaseResult getResult(Collection<GeoCodeScope> entities) {
         var result = GeoResultFactory.getGetGeoCodeScopesResult();
 
         if(entities != null) {

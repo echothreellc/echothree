@@ -77,7 +77,7 @@ public class GetItemImageTypeCommand
     }
 
     @Override
-    protected BaseResult getTransfer(ItemImageType itemImageType) {
+    protected BaseResult getResult(ItemImageType itemImageType) {
         var itemImageTypeControl = Session.getModelController(ItemControl.class);
         var result = ItemResultFactory.getGetItemImageTypeResult();
 

@@ -119,7 +119,7 @@ public class GetCustomerCommand
     }
 
     @Override
-    protected BaseResult getTransfer(Customer customer) {
+    protected BaseResult getResult(Customer customer) {
         var result = CustomerResultFactory.getGetCustomerResult();
 
         if(customer != null) {

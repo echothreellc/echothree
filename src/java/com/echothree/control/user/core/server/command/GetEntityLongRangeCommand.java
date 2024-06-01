@@ -93,7 +93,7 @@ public class GetEntityLongRangeCommand
     }
 
     @Override
-    protected BaseResult getTransfer(EntityLongRange entityLongRange) {
+    protected BaseResult getResult(EntityLongRange entityLongRange) {
         var result = CoreResultFactory.getGetEntityLongRangeResult();
 
         if(entityLongRange != null) {

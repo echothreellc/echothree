@@ -79,7 +79,7 @@ public class GetFilterAdjustmentsCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<FilterAdjustment> entities) {
+    protected BaseResult getResult(Collection<FilterAdjustment> entities) {
         var result = FilterResultFactory.getGetFilterAdjustmentsResult();
 
         if(entities != null) {

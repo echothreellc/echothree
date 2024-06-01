@@ -105,7 +105,7 @@ public class GetEntityTagsCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<EntityTag> entities) {
+    protected BaseResult getResult(Collection<EntityTag> entities) {
         var result = TagResultFactory.getGetEntityTagsResult();
 
         if(entities != null) {

@@ -82,7 +82,7 @@ public class GetWorkflowDestinationsCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<WorkflowDestination> entities) {
+    protected BaseResult getResult(Collection<WorkflowDestination> entities) {
         var result = WorkflowResultFactory.getGetWorkflowDestinationsResult();
 
         if(entities != null) {

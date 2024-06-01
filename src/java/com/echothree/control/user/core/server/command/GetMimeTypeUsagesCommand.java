@@ -69,7 +69,7 @@ public class GetMimeTypeUsagesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<MimeTypeUsage> entities) {
+    protected BaseResult getResult(Collection<MimeTypeUsage> entities) {
         GetMimeTypeUsagesResult result = CoreResultFactory.getGetMimeTypeUsagesResult();
 
         if(entities != null) {

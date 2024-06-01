@@ -71,7 +71,7 @@ public class GetAppearanceCommand
     }
 
     @Override
-    protected BaseResult getTransfer(Appearance appearance) {
+    protected BaseResult getResult(Appearance appearance) {
         var result = CoreResultFactory.getGetAppearanceResult();
 
         if(appearance != null) {

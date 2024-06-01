@@ -54,7 +54,7 @@ public class GetRecoveryQuestionsCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<RecoveryQuestion> entities) {
+    protected BaseResult getResult(Collection<RecoveryQuestion> entities) {
         GetRecoveryQuestionsResult result = UserResultFactory.getGetRecoveryQuestionsResult();
         UserControl userControl = getUserControl();
         

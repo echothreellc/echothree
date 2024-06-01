@@ -92,7 +92,7 @@ public class GetItemPriceCommand
     }
 
     @Override
-    protected BaseResult getTransfer(ItemPrice entity) {
+    protected BaseResult getResult(ItemPrice entity) {
         var result = ItemResultFactory.getGetItemPriceResult();
 
         if(entity != null) {

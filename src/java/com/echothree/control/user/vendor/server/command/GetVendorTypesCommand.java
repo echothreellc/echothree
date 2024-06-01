@@ -65,7 +65,7 @@ public class GetVendorTypesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<VendorType> entities) {
+    protected BaseResult getResult(Collection<VendorType> entities) {
         var result = VendorResultFactory.getGetVendorTypesResult();
 
         if(entities != null) {

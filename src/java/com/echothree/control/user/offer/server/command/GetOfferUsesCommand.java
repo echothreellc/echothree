@@ -102,7 +102,7 @@ public class GetOfferUsesCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<OfferUse> entities) {
+    protected BaseResult getResult(Collection<OfferUse> entities) {
         var result = OfferResultFactory.getGetOfferUsesResult();
         
         if(entities != null) {

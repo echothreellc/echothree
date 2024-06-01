@@ -68,7 +68,7 @@ public class GetSequenceChecksumTypesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<SequenceChecksumType> entities) {
+    protected BaseResult getResult(Collection<SequenceChecksumType> entities) {
         var result = SequenceResultFactory.getGetSequenceChecksumTypesResult();
         var sequenceControl = Session.getModelController(SequenceControl.class);
 

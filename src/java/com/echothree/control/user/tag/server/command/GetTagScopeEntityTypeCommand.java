@@ -88,7 +88,7 @@ public class GetTagScopeEntityTypeCommand
     }
 
     @Override
-    protected BaseResult getTransfer(TagScopeEntityType tagScopeEntityType) {
+    protected BaseResult getResult(TagScopeEntityType tagScopeEntityType) {
         var result = TagResultFactory.getGetTagScopeEntityTypeResult();
 
         if(tagScopeEntityType != null) {

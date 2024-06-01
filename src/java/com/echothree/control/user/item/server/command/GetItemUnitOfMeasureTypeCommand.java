@@ -73,7 +73,7 @@ public class GetItemUnitOfMeasureTypeCommand
     }
 
     @Override
-    protected BaseResult getTransfer(ItemUnitOfMeasureType entity) {
+    protected BaseResult getResult(ItemUnitOfMeasureType entity) {
         var result = ItemResultFactory.getGetItemUnitOfMeasureTypeResult();
 
         if(entity != null) {

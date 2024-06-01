@@ -85,7 +85,7 @@ public class GetItemPriceTypeCommand
     }
 
     @Override
-    protected BaseResult getTransfer(ItemPriceType itemPriceType) {
+    protected BaseResult getResult(ItemPriceType itemPriceType) {
         var itemControl = Session.getModelController(ItemControl.class);
         var result = ItemResultFactory.getGetItemPriceTypeResult();
 

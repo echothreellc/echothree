@@ -52,7 +52,7 @@ public class GetSearchCheckSpellingActionTypesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<SearchCheckSpellingActionType> entities) {
+    protected BaseResult getResult(Collection<SearchCheckSpellingActionType> entities) {
         var result = SearchResultFactory.getGetSearchCheckSpellingActionTypesResult();
 
         if(entities != null) {

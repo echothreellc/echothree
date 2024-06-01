@@ -66,7 +66,7 @@ public class GetContentCollectionCommand
     }
     
     @Override
-    protected BaseResult getTransfer(ContentCollection contentCollection) {
+    protected BaseResult getResult(ContentCollection contentCollection) {
         GetContentCollectionResult result = ContentResultFactory.getGetContentCollectionResult();
         
         if(contentCollection != null) {

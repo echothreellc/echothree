@@ -70,7 +70,7 @@ public class GetWorkflowEntranceCommand
     }
 
     @Override
-    protected BaseResult getTransfer(WorkflowEntrance workflowEntrance) {
+    protected BaseResult getResult(WorkflowEntrance workflowEntrance) {
         var result = WorkflowResultFactory.getGetWorkflowEntranceResult();
 
         if(workflowEntrance != null) {

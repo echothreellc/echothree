@@ -85,7 +85,7 @@ public class GetContentPageAreasCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<ContentPageArea> entities) {
+    protected BaseResult getResult(Collection<ContentPageArea> entities) {
         GetContentPageAreasResult result = ContentResultFactory.getGetContentPageAreasResult();
                 
         if(entities != null) {

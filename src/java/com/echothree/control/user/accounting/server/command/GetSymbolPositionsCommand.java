@@ -55,7 +55,7 @@ public class GetSymbolPositionsCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<SymbolPosition> entities) {
+    protected BaseResult getResult(Collection<SymbolPosition> entities) {
         GetSymbolPositionsResult result = AccountingResultFactory.getGetSymbolPositionsResult();
         var accountingControl = Session.getModelController(AccountingControl.class);
         

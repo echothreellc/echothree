@@ -87,7 +87,7 @@ public class GetWorkflowEntranceSecurityRolesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<WorkflowEntranceSecurityRole> entities) {
+    protected BaseResult getResult(Collection<WorkflowEntranceSecurityRole> entities) {
         var result = WorkflowResultFactory.getGetWorkflowEntranceSecurityRolesResult();
 
         if(entities != null) {

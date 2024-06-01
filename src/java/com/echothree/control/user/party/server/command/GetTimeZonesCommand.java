@@ -55,7 +55,7 @@ public class GetTimeZonesCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<TimeZone> entities) {
+    protected BaseResult getResult(Collection<TimeZone> entities) {
         GetTimeZonesResult result = PartyResultFactory.getGetTimeZonesResult();
         var partyControl = Session.getModelController(PartyControl.class);
         

@@ -78,7 +78,7 @@ public class GetGeoCodeCommand
     }
 
     @Override
-    protected BaseResult getTransfer(GeoCode entity) {
+    protected BaseResult getResult(GeoCode entity) {
         var result = GeoResultFactory.getGetGeoCodeResult();
 
         if(entity != null) {

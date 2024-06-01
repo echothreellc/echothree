@@ -102,7 +102,7 @@ public class GetPartyAliasesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<PartyAlias> entities) {
+    protected BaseResult getResult(Collection<PartyAlias> entities) {
         var result = PartyResultFactory.getGetPartyAliasesResult();
 
         if(entities != null) {

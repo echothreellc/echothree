@@ -72,7 +72,7 @@ public class GetEntityTypeCommand
     }
 
     @Override
-    protected BaseResult getTransfer(EntityType entityType) {
+    protected BaseResult getResult(EntityType entityType) {
         var result = CoreResultFactory.getGetEntityTypeResult();
 
         if(entityType != null) {

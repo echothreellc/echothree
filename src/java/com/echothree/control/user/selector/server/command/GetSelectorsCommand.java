@@ -75,7 +75,7 @@ public class GetSelectorsCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<Selector> entities) {
+    protected BaseResult getResult(Collection<Selector> entities) {
         var result = SelectorResultFactory.getGetSelectorsResult();
 
         if(entities != null) {

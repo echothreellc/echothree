@@ -70,7 +70,7 @@ public class GetSequenceEncoderTypeCommand
     }
 
     @Override
-    protected BaseResult getTransfer(SequenceEncoderType sequenceEncoderType) {
+    protected BaseResult getResult(SequenceEncoderType sequenceEncoderType) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
         var result = SequenceResultFactory.getGetSequenceEncoderTypeResult();
 

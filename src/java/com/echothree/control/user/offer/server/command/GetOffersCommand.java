@@ -69,7 +69,7 @@ public class GetOffersCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<Offer> entities) {
+    protected BaseResult getResult(Collection<Offer> entities) {
         GetOffersResult result = OfferResultFactory.getGetOffersResult();
         var offerControl = Session.getModelController(OfferControl.class);
 

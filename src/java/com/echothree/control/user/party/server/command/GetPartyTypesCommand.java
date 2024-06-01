@@ -67,7 +67,7 @@ public class GetPartyTypesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<PartyType> entities) {
+    protected BaseResult getResult(Collection<PartyType> entities) {
         var result = PartyResultFactory.getGetPartyTypesResult();
 
         if(entities != null) {

@@ -83,7 +83,7 @@ public class GetSequencesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<Sequence> entities) {
+    protected BaseResult getResult(Collection<Sequence> entities) {
         var result = SequenceResultFactory.getGetSequencesResult();
 
         if(entities != null) {

@@ -94,7 +94,7 @@ public class GetContentPageLayoutAreaCommand
     }
     
     @Override
-    protected BaseResult getTransfer(ContentPageLayoutArea contentPageLayoutArea) {
+    protected BaseResult getResult(ContentPageLayoutArea contentPageLayoutArea) {
         GetContentPageLayoutAreaResult result = ContentResultFactory.getGetContentPageLayoutAreaResult();
 
         if (contentPageLayoutArea != null) {

@@ -83,7 +83,7 @@ public class GetSecurityRoleGroupsCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<SecurityRoleGroup> entities) {
+    protected BaseResult getResult(Collection<SecurityRoleGroup> entities) {
         var result = SecurityResultFactory.getGetSecurityRoleGroupsResult();
         var securityControl = Session.getModelController(SecurityControl.class);
         var userVisit = getUserVisit();

@@ -82,7 +82,7 @@ public class GetWorkflowEntityStatusesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<WorkflowEntityStatus> entities) {
+    protected BaseResult getResult(Collection<WorkflowEntityStatus> entities) {
         var result = WorkflowResultFactory.getGetWorkflowEntityStatusesResult();
 
         if(entities != null) {

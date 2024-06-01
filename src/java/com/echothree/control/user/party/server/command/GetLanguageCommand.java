@@ -95,7 +95,7 @@ public class GetLanguageCommand
     }
     
     @Override
-    protected BaseResult getTransfer(Language language) {
+    protected BaseResult getResult(Language language) {
         var partyControl = Session.getModelController(PartyControl.class);
         GetLanguageResult result = PartyResultFactory.getGetLanguageResult();
 

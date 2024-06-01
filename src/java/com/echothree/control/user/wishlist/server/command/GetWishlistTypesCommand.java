@@ -51,7 +51,7 @@ public class GetWishlistTypesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<WishlistType> entities) {
+    protected BaseResult getResult(Collection<WishlistType> entities) {
         var result = WishlistResultFactory.getGetWishlistTypesResult();
 
         if(entities != null) {

@@ -102,7 +102,7 @@ public class GetEntityListItemCommand
     }
     
     @Override
-    protected BaseResult getTransfer(EntityListItem entityListItem) {
+    protected BaseResult getResult(EntityListItem entityListItem) {
         GetEntityListItemResult result = CoreResultFactory.getGetEntityListItemResult();
 
         if(entityListItem != null) {

@@ -66,7 +66,7 @@ public class GetItemImageTypesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<ItemImageType> entities) {
+    protected BaseResult getResult(Collection<ItemImageType> entities) {
         var result = ItemResultFactory.getGetItemImageTypesResult();
 
         if(entities != null) {

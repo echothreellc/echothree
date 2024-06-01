@@ -87,7 +87,7 @@ public class GetColorCommand
     }
     
     @Override
-    protected BaseResult getTransfer(Color color) {
+    protected BaseResult getResult(Color color) {
         var coreControl = getCoreControl();
         GetColorResult result = CoreResultFactory.getGetColorResult();
 

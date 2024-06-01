@@ -65,7 +65,7 @@ public class GetItemDescriptionTypeCommand
     }
 
     @Override
-    protected BaseResult getTransfer(ItemDescriptionType itemDescriptionType) {
+    protected BaseResult getResult(ItemDescriptionType itemDescriptionType) {
         var itemDescriptionTypeControl = Session.getModelController(ItemControl.class);
         var result = ItemResultFactory.getGetItemDescriptionTypeResult();
 

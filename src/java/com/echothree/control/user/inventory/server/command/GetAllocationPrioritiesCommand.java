@@ -64,7 +64,7 @@ public class GetAllocationPrioritiesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<AllocationPriority> entities) {
+    protected BaseResult getResult(Collection<AllocationPriority> entities) {
         var result = InventoryResultFactory.getGetAllocationPrioritiesResult();
 
         if(entities != null) {

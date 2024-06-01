@@ -67,7 +67,7 @@ public class GetMimeTypesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<MimeType> entities) {
+    protected BaseResult getResult(Collection<MimeType> entities) {
         var coreControl = getCoreControl();
         GetMimeTypesResult result = CoreResultFactory.getGetMimeTypesResult();
 

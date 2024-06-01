@@ -63,7 +63,7 @@ public class GetOrderTypeCommand
     }
 
     @Override
-    protected BaseResult getTransfer(OrderType itemAliasType) {
+    protected BaseResult getResult(OrderType itemAliasType) {
         var orderTypeControl = Session.getModelController(OrderTypeControl.class);
         var result = OrderResultFactory.getGetOrderTypeResult();
 

@@ -76,7 +76,7 @@ public class GetSecurityRoleGroupCommand
     }
 
     @Override
-    protected BaseResult getTransfer(SecurityRoleGroup securityRoleGroup) {
+    protected BaseResult getResult(SecurityRoleGroup securityRoleGroup) {
         var result = SecurityResultFactory.getGetSecurityRoleGroupResult();
 
         if(securityRoleGroup != null) {

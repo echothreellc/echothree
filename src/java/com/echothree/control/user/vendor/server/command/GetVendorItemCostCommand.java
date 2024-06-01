@@ -153,7 +153,7 @@ public class GetVendorItemCostCommand
     }
 
     @Override
-    protected BaseResult getTransfer(VendorItemCost entity) {
+    protected BaseResult getResult(VendorItemCost entity) {
         var vendorControl = Session.getModelController(VendorControl.class);
         var result = VendorResultFactory.getGetVendorItemCostResult();
 

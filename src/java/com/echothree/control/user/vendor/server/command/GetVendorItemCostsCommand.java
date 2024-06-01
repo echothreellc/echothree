@@ -93,7 +93,7 @@ public class GetVendorItemCostsCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<VendorItemCost> entities) {
+    protected BaseResult getResult(Collection<VendorItemCost> entities) {
         var result = VendorResultFactory.getGetVendorItemCostsResult();
 
         if(entities != null) {

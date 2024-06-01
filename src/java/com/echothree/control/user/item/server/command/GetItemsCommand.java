@@ -65,7 +65,7 @@ public class GetItemsCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<Item> entities) {
+    protected BaseResult getResult(Collection<Item> entities) {
         var result = ItemResultFactory.getGetItemsResult();
 
         if(entities != null) {

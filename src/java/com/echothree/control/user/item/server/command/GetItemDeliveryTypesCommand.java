@@ -52,7 +52,7 @@ public class GetItemDeliveryTypesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<ItemDeliveryType> entities) {
+    protected BaseResult getResult(Collection<ItemDeliveryType> entities) {
         var result = ItemResultFactory.getGetItemDeliveryTypesResult();
         var itemControl = Session.getModelController(ItemControl.class);
         var userVisit = getUserVisit();

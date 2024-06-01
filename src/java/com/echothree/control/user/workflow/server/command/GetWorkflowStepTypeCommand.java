@@ -76,7 +76,7 @@ public class GetWorkflowStepTypeCommand
     }
 
     @Override
-    protected BaseResult getTransfer(WorkflowStepType workflowStepType) {
+    protected BaseResult getResult(WorkflowStepType workflowStepType) {
         var result = WorkflowResultFactory.getGetWorkflowStepTypeResult();
         var workflowControl = Session.getModelController(WorkflowControl.class);
 

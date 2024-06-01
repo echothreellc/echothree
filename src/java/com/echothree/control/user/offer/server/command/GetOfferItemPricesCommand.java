@@ -109,7 +109,7 @@ public class GetOfferItemPricesCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<OfferItemPrice> entities) {
+    protected BaseResult getResult(Collection<OfferItemPrice> entities) {
         GetOfferItemPricesResult result = OfferResultFactory.getGetOfferItemPricesResult();
         
         if (entities != null) {

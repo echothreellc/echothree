@@ -23,11 +23,12 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.EntityInstance;
+import com.echothree.model.data.core.server.entity.EntityType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -37,7 +38,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class GetEntityInstancesCommand
-        extends BaseMultipleEntitiesCommand<EntityInstance, GetEntityInstancesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<EntityInstance, GetEntityInstancesForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -60,12 +61,24 @@ public class GetEntityInstancesCommand
     public GetEntityInstancesCommand(UserVisitPK userVisitPK, GetEntityInstancesForm form) {
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    EntityType entityType;
+
     @Override
-    protected Collection<EntityInstance> getEntities() {
+    protected void handleForm() {
         var componentVendorName = form.getComponentVendorName();
         var entityTypeName = form.getEntityTypeName();
-        var entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, componentVendorName, entityTypeName);
+
+        entityType = EntityTypeLogic.getInstance().getEntityTypeByName(this, componentVendorName, entityTypeName);
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null : getCoreControl().countEntityInstancesByEntityType(entityType);
+    }
+
+    @Override
+    protected Collection<EntityInstance> getEntities() {
         Collection<EntityInstance> entities = null;
 
         if(!hasExecutionErrors()) {
@@ -76,7 +89,7 @@ public class GetEntityInstancesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<EntityInstance> entities) {
+    protected BaseResult getResult(Collection<EntityInstance> entities) {
         var result = CoreResultFactory.getGetEntityInstancesResult();
 
         if(entities != null) {

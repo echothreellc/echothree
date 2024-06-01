@@ -65,6 +65,8 @@ import com.echothree.control.user.core.server.command.GetEntityAliasTypeCommand;
 import com.echothree.control.user.core.server.command.GetEntityAliasTypesCommand;
 import com.echothree.control.user.core.server.command.GetEntityAliasesCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeCommand;
+import com.echothree.control.user.core.server.command.GetEntityAttributeEntityAttributeGroupCommand;
+import com.echothree.control.user.core.server.command.GetEntityAttributeEntityAttributeGroupsCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeGroupCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeGroupsCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeTypeCommand;
@@ -379,6 +381,7 @@ import com.echothree.model.control.core.server.graphql.ColorObject;
 import com.echothree.model.control.core.server.graphql.ComponentVendorObject;
 import com.echothree.model.control.core.server.graphql.EntityAliasObject;
 import com.echothree.model.control.core.server.graphql.EntityAliasTypeObject;
+import com.echothree.model.control.core.server.graphql.EntityAttributeEntityAttributeGroupObject;
 import com.echothree.model.control.core.server.graphql.EntityAttributeGroupObject;
 import com.echothree.model.control.core.server.graphql.EntityAttributeObject;
 import com.echothree.model.control.core.server.graphql.EntityAttributeTypeObject;
@@ -564,12 +567,21 @@ import com.echothree.model.data.content.server.entity.ContentPageLayout;
 import com.echothree.model.data.content.server.entity.ContentPageLayoutArea;
 import com.echothree.model.data.content.server.entity.ContentSection;
 import com.echothree.model.data.content.server.entity.ContentWebAddress;
+import com.echothree.model.data.core.common.ComponentVendorConstants;
+import com.echothree.model.data.core.common.EntityAliasConstants;
+import com.echothree.model.data.core.common.EntityAliasTypeConstants;
+import com.echothree.model.data.core.common.EntityAttributeConstants;
+import com.echothree.model.data.core.common.EntityAttributeEntityAttributeGroupConstants;
+import com.echothree.model.data.core.common.EntityAttributeGroupConstants;
+import com.echothree.model.data.core.common.EntityInstanceConstants;
+import com.echothree.model.data.core.common.EntityTypeConstants;
 import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.core.server.entity.Color;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityAlias;
 import com.echothree.model.data.core.server.entity.EntityAliasType;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
+import com.echothree.model.data.core.server.entity.EntityAttributeEntityAttributeGroup;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
 import com.echothree.model.data.core.server.entity.EntityAttributeType;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -771,7 +783,7 @@ public interface GraphQlQueries {
             commandForm.setSearchResultActionTypeName(searchResultActionTypeName);
             commandForm.setUlid(id);
 
-            searchResultActionType = new GetSearchResultActionTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            searchResultActionType = new GetSearchResultActionTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -792,7 +804,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, SearchResultActionTypeConstants.COMPONENT_VENDOR_NAME, SearchResultActionTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = SearchUtil.getHome().getGetSearchResultActionTypesForm();
-                var entities = new GetSearchResultActionTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetSearchResultActionTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -822,7 +834,7 @@ public interface GraphQlQueries {
             commandForm.setSearchCheckSpellingActionTypeName(searchCheckSpellingActionTypeName);
             commandForm.setUlid(id);
 
-            searchCheckSpellingActionType = new GetSearchCheckSpellingActionTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            searchCheckSpellingActionType = new GetSearchCheckSpellingActionTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -843,7 +855,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, SearchCheckSpellingActionTypeConstants.COMPONENT_VENDOR_NAME, SearchCheckSpellingActionTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = SearchUtil.getHome().getGetSearchCheckSpellingActionTypesForm();
-                var entities = new GetSearchCheckSpellingActionTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetSearchCheckSpellingActionTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -873,7 +885,7 @@ public interface GraphQlQueries {
             commandForm.setWorkflowName(workflowName);
             commandForm.setUlid(id);
 
-            workflow = new GetWorkflowCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            workflow = new GetWorkflowCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -893,7 +905,7 @@ public interface GraphQlQueries {
 
             commandForm.setSelectorKindName(selectorKindName);
 
-            workflows = new GetWorkflowsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            workflows = new GetWorkflowsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -926,7 +938,7 @@ public interface GraphQlQueries {
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
 
-            workflowEntityType = new GetWorkflowEntityTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            workflowEntityType = new GetWorkflowEntityTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -950,7 +962,7 @@ public interface GraphQlQueries {
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
 
-            workflowEntityTypes = new GetWorkflowEntityTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            workflowEntityTypes = new GetWorkflowEntityTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -981,7 +993,7 @@ public interface GraphQlQueries {
             commandForm.setWorkflowName(workflowName);
             commandForm.setSelectorKindName(selectorKindName);
 
-            workflowSelectorKind = new GetWorkflowSelectorKindCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            workflowSelectorKind = new GetWorkflowSelectorKindCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1003,7 +1015,7 @@ public interface GraphQlQueries {
             commandForm.setWorkflowName(workflowName);
             commandForm.setSelectorKindName(selectorKindName);
 
-            workflowSelectorKinds = new GetWorkflowSelectorKindsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            workflowSelectorKinds = new GetWorkflowSelectorKindsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1036,7 +1048,7 @@ public interface GraphQlQueries {
             commandForm.setWorkflowStepName(workflowStepName);
             commandForm.setUlid(id);
 
-            workflowStep = new GetWorkflowStepCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            workflowStep = new GetWorkflowStepCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1056,7 +1068,7 @@ public interface GraphQlQueries {
 
             commandForm.setWorkflowName(workflowName);
 
-            workflowSteps = new GetWorkflowStepsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            workflowSteps = new GetWorkflowStepsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1091,7 +1103,7 @@ public interface GraphQlQueries {
             commandForm.setWorkflowDestinationName(workflowDestinationName);
             commandForm.setUlid(id);
 
-            workflowDestination = new GetWorkflowDestinationCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            workflowDestination = new GetWorkflowDestinationCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1113,7 +1125,7 @@ public interface GraphQlQueries {
             commandForm.setWorkflowName(workflowName);
             commandForm.setWorkflowStepName(workflowStepName);
 
-            workflowDestinations = new GetWorkflowDestinationsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            workflowDestinations = new GetWorkflowDestinationsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1150,7 +1162,7 @@ public interface GraphQlQueries {
             commandForm.setDestinationWorkflowName(destinationWorkflowName);
             commandForm.setDestinationWorkflowStepName(destinationWorkflowStepName);
 
-            workflowDestinationStep = new GetWorkflowDestinationStepCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            workflowDestinationStep = new GetWorkflowDestinationStepCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1174,7 +1186,7 @@ public interface GraphQlQueries {
             commandForm.setWorkflowStepName(workflowStepName);
             commandForm.setWorkflowDestinationName(workflowDestinationName);
 
-            workflowDestinationSteps = new GetWorkflowDestinationStepsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            workflowDestinationSteps = new GetWorkflowDestinationStepsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1209,7 +1221,7 @@ public interface GraphQlQueries {
             commandForm.setWorkflowDestinationName(workflowDestinationName);
             commandForm.setPartyTypeName(partyTypeName);
 
-            workflowDestinationPartyType = new GetWorkflowDestinationPartyTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            workflowDestinationPartyType = new GetWorkflowDestinationPartyTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1233,7 +1245,7 @@ public interface GraphQlQueries {
             commandForm.setWorkflowStepName(workflowStepName);
             commandForm.setWorkflowDestinationName(workflowDestinationName);
 
-            workflowDestinationPartyTypes = new GetWorkflowDestinationPartyTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            workflowDestinationPartyTypes = new GetWorkflowDestinationPartyTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1270,7 +1282,7 @@ public interface GraphQlQueries {
             commandForm.setPartyTypeName(partyTypeName);
             commandForm.setSecurityRoleName(securityRoleName);
 
-            workflowDestinationSecurityRole = new GetWorkflowDestinationSecurityRoleCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            workflowDestinationSecurityRole = new GetWorkflowDestinationSecurityRoleCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1296,7 +1308,7 @@ public interface GraphQlQueries {
             commandForm.setWorkflowDestinationName(workflowDestinationName);
             commandForm.setPartyTypeName(partyTypeName);
 
-            workflowDestinationSecurityRoles = new GetWorkflowDestinationSecurityRolesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            workflowDestinationSecurityRoles = new GetWorkflowDestinationSecurityRolesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1331,7 +1343,7 @@ public interface GraphQlQueries {
             commandForm.setWorkflowDestinationName(workflowDestinationName);
             commandForm.setSelectorName(selectorName);
 
-            workflowDestinationSelector = new GetWorkflowDestinationSelectorCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            workflowDestinationSelector = new GetWorkflowDestinationSelectorCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1355,7 +1367,7 @@ public interface GraphQlQueries {
             commandForm.setWorkflowStepName(workflowStepName);
             commandForm.setWorkflowDestinationName(workflowDestinationName);
 
-            workflowDestinationSelectors = new GetWorkflowDestinationSelectorsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            workflowDestinationSelectors = new GetWorkflowDestinationSelectorsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1388,7 +1400,7 @@ public interface GraphQlQueries {
             commandForm.setWorkflowEntranceName(workflowEntranceName);
             commandForm.setUlid(id);
 
-            workflowEntrance = new GetWorkflowEntranceCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            workflowEntrance = new GetWorkflowEntranceCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1408,7 +1420,7 @@ public interface GraphQlQueries {
 
             commandForm.setWorkflowName(workflowName);
 
-            workflowEntrances = new GetWorkflowEntrancesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            workflowEntrances = new GetWorkflowEntrancesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1443,7 +1455,7 @@ public interface GraphQlQueries {
             commandForm.setEntranceWorkflowName(entranceWorkflowName);
             commandForm.setEntranceWorkflowStepName(entranceWorkflowStepName);
 
-            workflowEntranceStep = new GetWorkflowEntranceStepCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            workflowEntranceStep = new GetWorkflowEntranceStepCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1465,7 +1477,7 @@ public interface GraphQlQueries {
             commandForm.setWorkflowName(workflowName);
             commandForm.setWorkflowEntranceName(workflowEntranceName);
 
-            workflowEntranceSteps = new GetWorkflowEntranceStepsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            workflowEntranceSteps = new GetWorkflowEntranceStepsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1498,7 +1510,7 @@ public interface GraphQlQueries {
             commandForm.setWorkflowEntranceName(workflowEntranceName);
             commandForm.setPartyTypeName(partyTypeName);
 
-            workflowEntrancePartyType = new GetWorkflowEntrancePartyTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            workflowEntrancePartyType = new GetWorkflowEntrancePartyTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1520,7 +1532,7 @@ public interface GraphQlQueries {
             commandForm.setWorkflowName(workflowName);
             commandForm.setWorkflowEntranceName(workflowEntranceName);
 
-            workflowEntrancePartyTypes = new GetWorkflowEntrancePartyTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            workflowEntrancePartyTypes = new GetWorkflowEntrancePartyTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1555,7 +1567,7 @@ public interface GraphQlQueries {
             commandForm.setPartyTypeName(partyTypeName);
             commandForm.setSecurityRoleName(securityRoleName);
 
-            workflowEntranceSecurityRole = new GetWorkflowEntranceSecurityRoleCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            workflowEntranceSecurityRole = new GetWorkflowEntranceSecurityRoleCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1579,7 +1591,7 @@ public interface GraphQlQueries {
             commandForm.setWorkflowEntranceName(workflowEntranceName);
             commandForm.setPartyTypeName(partyTypeName);
 
-            workflowEntranceSecurityRoles = new GetWorkflowEntranceSecurityRolesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            workflowEntranceSecurityRoles = new GetWorkflowEntranceSecurityRolesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1612,7 +1624,7 @@ public interface GraphQlQueries {
             commandForm.setWorkflowEntranceName(workflowEntranceName);
             commandForm.setSelectorName(selectorName);
 
-            workflowEntranceSelector = new GetWorkflowEntranceSelectorCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            workflowEntranceSelector = new GetWorkflowEntranceSelectorCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1634,7 +1646,7 @@ public interface GraphQlQueries {
             commandForm.setWorkflowName(workflowName);
             commandForm.setWorkflowEntranceName(workflowEntranceName);
 
-            workflowEntranceSelectors = new GetWorkflowEntranceSelectorsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            workflowEntranceSelectors = new GetWorkflowEntranceSelectorsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1665,7 +1677,7 @@ public interface GraphQlQueries {
             commandForm.setWorkflowStepTypeName(workflowStepTypeName);
             commandForm.setUlid(id);
 
-            workflowStepType = new GetWorkflowStepTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            workflowStepType = new GetWorkflowStepTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1682,7 +1694,7 @@ public interface GraphQlQueries {
         try {
             var commandForm = WorkflowUtil.getHome().getGetWorkflowStepTypesForm();
 
-            workflowStepTypes = new GetWorkflowStepTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            workflowStepTypes = new GetWorkflowStepTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1715,7 +1727,7 @@ public interface GraphQlQueries {
             commandForm.setSequenceName(sequenceName);
             commandForm.setUlid(id);
 
-            sequence = new GetSequenceCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            sequence = new GetSequenceCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1735,7 +1747,7 @@ public interface GraphQlQueries {
 
             commandForm.setSequenceTypeName(sequenceTypeName);
 
-            sequences = new GetSequencesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            sequences = new GetSequencesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1766,7 +1778,7 @@ public interface GraphQlQueries {
             commandForm.setSequenceTypeName(sequenceTypeName);
             commandForm.setUlid(id);
 
-            sequenceType = new GetSequenceTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            sequenceType = new GetSequenceTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1783,7 +1795,7 @@ public interface GraphQlQueries {
         try {
             var commandForm = SequenceUtil.getHome().getGetSequenceTypesForm();
 
-            sequenceTypes = new GetSequenceTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            sequenceTypes = new GetSequenceTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1812,7 +1824,7 @@ public interface GraphQlQueries {
 
             commandForm.setSequenceChecksumTypeName(sequenceChecksumTypeName);
 
-            sequenceChecksumType = new GetSequenceChecksumTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            sequenceChecksumType = new GetSequenceChecksumTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1829,7 +1841,7 @@ public interface GraphQlQueries {
         try {
             var commandForm = SequenceUtil.getHome().getGetSequenceChecksumTypesForm();
 
-            sequenceChecksumTypes = new GetSequenceChecksumTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            sequenceChecksumTypes = new GetSequenceChecksumTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1858,7 +1870,7 @@ public interface GraphQlQueries {
 
             commandForm.setSequenceEncoderTypeName(sequenceEncoderTypeName);
 
-            sequenceEncoderType = new GetSequenceEncoderTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            sequenceEncoderType = new GetSequenceEncoderTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1875,7 +1887,7 @@ public interface GraphQlQueries {
         try {
             var commandForm = SequenceUtil.getHome().getGetSequenceEncoderTypesForm();
 
-            sequenceEncoderTypes = new GetSequenceEncoderTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            sequenceEncoderTypes = new GetSequenceEncoderTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1906,7 +1918,7 @@ public interface GraphQlQueries {
             commandForm.setSelectorKindName(selectorKindName);
             commandForm.setUlid(id);
 
-            selectorKind = new GetSelectorKindCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            selectorKind = new GetSelectorKindCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1923,7 +1935,7 @@ public interface GraphQlQueries {
         try {
             var commandForm = SelectorUtil.getHome().getGetSelectorKindsForm();
 
-            selectorKinds = new GetSelectorKindsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            selectorKinds = new GetSelectorKindsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1956,7 +1968,7 @@ public interface GraphQlQueries {
             commandForm.setSelectorTypeName(selectorTypeName);
             commandForm.setUlid(id);
 
-            selectorType = new GetSelectorTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            selectorType = new GetSelectorTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -1976,7 +1988,7 @@ public interface GraphQlQueries {
 
             commandForm.setSelectorKindName(selectorKindName);
 
-            selectorTypes = new GetSelectorTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            selectorTypes = new GetSelectorTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2011,7 +2023,7 @@ public interface GraphQlQueries {
             commandForm.setSelectorName(selectorName);
             commandForm.setUlid(id);
 
-            selector = new GetSelectorCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            selector = new GetSelectorCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2033,7 +2045,7 @@ public interface GraphQlQueries {
             commandForm.setSelectorKindName(selectorKindName);
             commandForm.setSelectorTypeName(selectorTypeName);
 
-            selectors = new GetSelectorsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            selectors = new GetSelectorsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2064,7 +2076,7 @@ public interface GraphQlQueries {
             commandForm.setFilterKindName(filterKindName);
             commandForm.setUlid(id);
 
-            filterKind = new GetFilterKindCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            filterKind = new GetFilterKindCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2081,7 +2093,7 @@ public interface GraphQlQueries {
         try {
             var commandForm = FilterUtil.getHome().getGetFilterKindsForm();
 
-            filterKinds = new GetFilterKindsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            filterKinds = new GetFilterKindsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2114,7 +2126,7 @@ public interface GraphQlQueries {
             commandForm.setFilterTypeName(filterTypeName);
             commandForm.setUlid(id);
 
-            filterType = new GetFilterTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            filterType = new GetFilterTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2134,7 +2146,7 @@ public interface GraphQlQueries {
 
             commandForm.setFilterKindName(filterKindName);
 
-            filterTypes = new GetFilterTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            filterTypes = new GetFilterTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2169,7 +2181,7 @@ public interface GraphQlQueries {
             commandForm.setFilterName(filterName);
             commandForm.setUlid(id);
 
-            filter = new GetFilterCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            filter = new GetFilterCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2191,7 +2203,7 @@ public interface GraphQlQueries {
             commandForm.setFilterKindName(filterKindName);
             commandForm.setFilterTypeName(filterTypeName);
 
-            filters = new GetFiltersCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            filters = new GetFiltersCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2228,7 +2240,7 @@ public interface GraphQlQueries {
             commandForm.setFilterStepName(filterStepName);
             commandForm.setUlid(id);
 
-            filterStep = new GetFilterStepCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            filterStep = new GetFilterStepCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2252,7 +2264,7 @@ public interface GraphQlQueries {
             commandForm.setFilterTypeName(filterTypeName);
             commandForm.setFilterName(filterName);
 
-            filterSteps = new GetFilterStepsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            filterSteps = new GetFilterStepsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2281,7 +2293,7 @@ public interface GraphQlQueries {
 
             commandForm.setFilterAdjustmentSourceName(filterAdjustmentSourceName);
 
-            filterAdjustmentSource = new GetFilterAdjustmentSourceCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            filterAdjustmentSource = new GetFilterAdjustmentSourceCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2298,7 +2310,7 @@ public interface GraphQlQueries {
         try {
             var commandForm = FilterUtil.getHome().getGetFilterAdjustmentSourcesForm();
 
-            filterAdjustmentSources = new GetFilterAdjustmentSourcesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            filterAdjustmentSources = new GetFilterAdjustmentSourcesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2327,7 +2339,7 @@ public interface GraphQlQueries {
 
             commandForm.setFilterAdjustmentTypeName(filterAdjustmentTypeName);
 
-            filterAdjustmentType = new GetFilterAdjustmentTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            filterAdjustmentType = new GetFilterAdjustmentTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2344,7 +2356,7 @@ public interface GraphQlQueries {
         try {
             var commandForm = FilterUtil.getHome().getGetFilterAdjustmentTypesForm();
 
-            filterAdjustmentTypes = new GetFilterAdjustmentTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            filterAdjustmentTypes = new GetFilterAdjustmentTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2377,7 +2389,7 @@ public interface GraphQlQueries {
             commandForm.setFilterAdjustmentName(filterAdjustmentName);
             commandForm.setUlid(id);
 
-            filterAdjustment = new GetFilterAdjustmentCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            filterAdjustment = new GetFilterAdjustmentCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2397,7 +2409,7 @@ public interface GraphQlQueries {
 
             commandForm.setFilterKindName(filterKindName);
 
-            filterAdjustments = new GetFilterAdjustmentsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            filterAdjustments = new GetFilterAdjustmentsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2436,7 +2448,7 @@ public interface GraphQlQueries {
             commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
             commandForm.setCurrencyIsoName(currencyIsoName);
 
-            filterAdjustmentAmount = new GetFilterAdjustmentAmountCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            filterAdjustmentAmount = new GetFilterAdjustmentAmountCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2458,7 +2470,7 @@ public interface GraphQlQueries {
             commandForm.setFilterKindName(filterKindName);
             commandForm.setFilterAdjustmentName(filterAdjustmentName);
 
-            filterAdjustmentAmounts = new GetFilterAdjustmentAmountsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            filterAdjustmentAmounts = new GetFilterAdjustmentAmountsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2497,7 +2509,7 @@ public interface GraphQlQueries {
             commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
             commandForm.setCurrencyIsoName(currencyIsoName);
 
-            filterAdjustmentFixedAmount = new GetFilterAdjustmentFixedAmountCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            filterAdjustmentFixedAmount = new GetFilterAdjustmentFixedAmountCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2519,7 +2531,7 @@ public interface GraphQlQueries {
             commandForm.setFilterKindName(filterKindName);
             commandForm.setFilterAdjustmentName(filterAdjustmentName);
 
-            filterAdjustmentFixedAmounts = new GetFilterAdjustmentFixedAmountsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            filterAdjustmentFixedAmounts = new GetFilterAdjustmentFixedAmountsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2558,7 +2570,7 @@ public interface GraphQlQueries {
             commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
             commandForm.setCurrencyIsoName(currencyIsoName);
 
-            filterAdjustmentPercent = new GetFilterAdjustmentPercentCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            filterAdjustmentPercent = new GetFilterAdjustmentPercentCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2580,7 +2592,7 @@ public interface GraphQlQueries {
             commandForm.setFilterKindName(filterKindName);
             commandForm.setFilterAdjustmentName(filterAdjustmentName);
 
-            filterAdjustmentPercents = new GetFilterAdjustmentPercentsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            filterAdjustmentPercents = new GetFilterAdjustmentPercentsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2611,7 +2623,7 @@ public interface GraphQlQueries {
             commandForm.setOfferName(offerName);
             commandForm.setUseName(useName);
 
-            offerUse = new GetOfferUseCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            offerUse = new GetOfferUseCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2633,7 +2645,7 @@ public interface GraphQlQueries {
             commandForm.setOfferName(offerName);
             commandForm.setUseName(useName);
 
-            offerUses = new GetOfferUsesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            offerUses = new GetOfferUsesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2664,7 +2676,7 @@ public interface GraphQlQueries {
             commandForm.setOfferName(offerName);
             commandForm.setUlid(id);
 
-            offer = new GetOfferCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            offer = new GetOfferCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2681,7 +2693,7 @@ public interface GraphQlQueries {
         try {
             var commandForm = OfferUtil.getHome().getGetOffersForm();
 
-            offers = new GetOffersCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            offers = new GetOffersCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2714,7 +2726,7 @@ public interface GraphQlQueries {
             commandForm.setItemName(itemName);
             commandForm.setUlid(id);
 
-            offerItem = new GetOfferItemCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            offerItem = new GetOfferItemCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2734,7 +2746,7 @@ public interface GraphQlQueries {
 
             commandForm.setOfferName(offerName);
 
-            offerItem = new GetOfferItemsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            offerItem = new GetOfferItemsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2771,7 +2783,7 @@ public interface GraphQlQueries {
             commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
             commandForm.setCurrencyIsoName(currencyIsoName);
 
-            offerItemPrice = new GetOfferItemPriceCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            offerItemPrice = new GetOfferItemPriceCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2793,7 +2805,7 @@ public interface GraphQlQueries {
             commandForm.setOfferName(offerName);
             commandForm.setItemName(itemName);
 
-            offerItemPrice = new GetOfferItemPricesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            offerItemPrice = new GetOfferItemPricesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2824,7 +2836,7 @@ public interface GraphQlQueries {
             commandForm.setUseName(useName);
             commandForm.setUlid(id);
 
-            use = new GetUseCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            use = new GetUseCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2841,7 +2853,7 @@ public interface GraphQlQueries {
         try {
             var commandForm = OfferUtil.getHome().getGetUsesForm();
 
-            uses = new GetUsesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            uses = new GetUsesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2872,7 +2884,7 @@ public interface GraphQlQueries {
             commandForm.setOfferNameElementName(offerNameElementName);
             commandForm.setUlid(id);
 
-            offerNameElement = new GetOfferNameElementCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            offerNameElement = new GetOfferNameElementCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2889,7 +2901,7 @@ public interface GraphQlQueries {
         try {
             var commandForm = OfferUtil.getHome().getGetOfferNameElementsForm();
 
-            offerNameElements = new GetOfferNameElementsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            offerNameElements = new GetOfferNameElementsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2920,7 +2932,7 @@ public interface GraphQlQueries {
             commandForm.setUseNameElementName(useNameElementName);
             commandForm.setUlid(id);
 
-            useNameElement = new GetUseNameElementCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            useNameElement = new GetUseNameElementCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2937,7 +2949,7 @@ public interface GraphQlQueries {
         try {
             var commandForm = OfferUtil.getHome().getGetUseNameElementsForm();
 
-            useNameElements = new GetUseNameElementsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            useNameElements = new GetUseNameElementsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2968,7 +2980,7 @@ public interface GraphQlQueries {
             commandForm.setUseTypeName(useTypeName);
             commandForm.setUlid(id);
 
-            useType = new GetUseTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            useType = new GetUseTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -2985,7 +2997,7 @@ public interface GraphQlQueries {
         try {
             var commandForm = OfferUtil.getHome().getGetUseTypesForm();
 
-            useTypes = new GetUseTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            useTypes = new GetUseTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -3016,7 +3028,7 @@ public interface GraphQlQueries {
             commandForm.setFreeOnBoardName(freeOnBoardName);
             commandForm.setUlid(id);
 
-            freeOnBoard = new GetFreeOnBoardCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            freeOnBoard = new GetFreeOnBoardCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -3033,7 +3045,7 @@ public interface GraphQlQueries {
         try {
             var commandForm = ShipmentUtil.getHome().getGetFreeOnBoardsForm();
 
-            freeOnBoards = new GetFreeOnBoardsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            freeOnBoards = new GetFreeOnBoardsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -3066,7 +3078,7 @@ public interface GraphQlQueries {
             commandForm.setPaymentProcessorTypeCodeTypeName(paymentProcessorTypeCodeTypeName);
             commandForm.setUlid(id);
 
-            paymentProcessorTypeCodeType = new GetPaymentProcessorTypeCodeTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            paymentProcessorTypeCodeType = new GetPaymentProcessorTypeCodeTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -3091,7 +3103,7 @@ public interface GraphQlQueries {
             commandForm.setPaymentProcessorTypeCodeName(paymentProcessorTypeCodeName);
             commandForm.setUlid(id);
 
-            paymentProcessorTypeCode = new GetPaymentProcessorTypeCodeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            paymentProcessorTypeCode = new GetPaymentProcessorTypeCodeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -3112,7 +3124,7 @@ public interface GraphQlQueries {
             commandForm.setPaymentProcessorTransactionName(paymentProcessorTransactionName);
             commandForm.setUlid(id);
 
-            paymentProcessorTransaction = new GetPaymentProcessorTransactionCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            paymentProcessorTransaction = new GetPaymentProcessorTransactionCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -3129,7 +3141,7 @@ public interface GraphQlQueries {
         try {
             var commandForm = PaymentUtil.getHome().getGetPaymentProcessorTransactionsForm();
 
-            paymentProcessorTransactions = new GetPaymentProcessorTransactionsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            paymentProcessorTransactions = new GetPaymentProcessorTransactionsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -3160,7 +3172,7 @@ public interface GraphQlQueries {
             commandForm.setPaymentProcessorName(paymentProcessorName);
             commandForm.setUlid(id);
 
-            paymentProcessor = new GetPaymentProcessorCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            paymentProcessor = new GetPaymentProcessorCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -3177,7 +3189,7 @@ public interface GraphQlQueries {
         try {
             var commandForm = PaymentUtil.getHome().getGetPaymentProcessorsForm();
 
-            paymentProcessors = new GetPaymentProcessorsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            paymentProcessors = new GetPaymentProcessorsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -3208,7 +3220,7 @@ public interface GraphQlQueries {
             commandForm.setPaymentProcessorTypeName(paymentProcessorTypeName);
             commandForm.setUlid(id);
 
-            paymentProcessorType = new GetPaymentProcessorTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            paymentProcessorType = new GetPaymentProcessorTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -3225,7 +3237,7 @@ public interface GraphQlQueries {
         try {
             var commandForm = PaymentUtil.getHome().getGetPaymentProcessorTypesForm();
 
-            paymentProcessorTypes = new GetPaymentProcessorTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            paymentProcessorTypes = new GetPaymentProcessorTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -3256,7 +3268,7 @@ public interface GraphQlQueries {
             commandForm.setPaymentMethodTypeName(paymentMethodTypeName);
             commandForm.setUlid(id);
 
-            paymentMethodType = new GetPaymentMethodTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            paymentMethodType = new GetPaymentMethodTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -3273,7 +3285,7 @@ public interface GraphQlQueries {
         try {
             var commandForm = PaymentUtil.getHome().getGetPaymentMethodTypesForm();
 
-            paymentMethodTypes = new GetPaymentMethodTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            paymentMethodTypes = new GetPaymentMethodTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -3304,7 +3316,7 @@ public interface GraphQlQueries {
             commandForm.setPaymentProcessorResultCodeName(paymentProcessorResultCodeName);
             commandForm.setUlid(id);
 
-            paymentProcessorResultCode = new GetPaymentProcessorResultCodeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            paymentProcessorResultCode = new GetPaymentProcessorResultCodeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -3321,7 +3333,7 @@ public interface GraphQlQueries {
         try {
             var commandForm = PaymentUtil.getHome().getGetPaymentProcessorResultCodesForm();
 
-            paymentProcessorResultCodes = new GetPaymentProcessorResultCodesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            paymentProcessorResultCodes = new GetPaymentProcessorResultCodesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -3352,7 +3364,7 @@ public interface GraphQlQueries {
             commandForm.setPaymentProcessorActionTypeName(paymentProcessorActionTypeName);
             commandForm.setUlid(id);
 
-            paymentProcessorActionType = new GetPaymentProcessorActionTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            paymentProcessorActionType = new GetPaymentProcessorActionTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -3369,7 +3381,7 @@ public interface GraphQlQueries {
         try {
             var commandForm = PaymentUtil.getHome().getGetPaymentProcessorActionTypesForm();
 
-            paymentProcessorActionTypes = new GetPaymentProcessorActionTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            paymentProcessorActionTypes = new GetPaymentProcessorActionTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -3400,7 +3412,7 @@ public interface GraphQlQueries {
             commandForm.setAppearanceName(appearanceName);
             commandForm.setUlid(id);
 
-            appearance = new GetAppearanceCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            appearance = new GetAppearanceCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -3417,7 +3429,7 @@ public interface GraphQlQueries {
         try {
             var commandForm = CoreUtil.getHome().getGetAppearancesForm();
 
-            appearances = new GetAppearancesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            appearances = new GetAppearancesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -3450,7 +3462,7 @@ public interface GraphQlQueries {
             commandForm.setEntityAliasTypeName(entityAliasTypeName);
             commandForm.setUlid(id);
 
-            entityAliasType = new GetEntityAliasTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            entityAliasType = new GetEntityAliasTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -3460,34 +3472,42 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("entityAliasTypes")
-    static Collection<EntityAliasTypeObject> entityAliasTypes(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<EntityAliasTypeObject> entityAliasTypes(final DataFetchingEnvironment env,
             @GraphQLName("componentVendorName") final String componentVendorName,
             @GraphQLName("entityTypeName") final String entityTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
-        Collection<EntityAliasType> entityAliasTypes;
-        Collection<EntityAliasTypeObject> entityAliasTypeObjects;
+        CountingPaginatedData<EntityAliasTypeObject> data;
 
         try {
             var commandForm = CoreUtil.getHome().getGetEntityAliasTypesForm();
+            var command = new GetEntityAliasTypesCommand(getUserVisitPK(env), commandForm);
 
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
             commandForm.setUlid(id);
 
-            entityAliasTypes = new GetEntityAliasTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, EntityAliasTypeConstants.COMPONENT_VENDOR_NAME, EntityAliasTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var entityAliasTypes = entities.stream()
+                            .map(entityAliasType -> new EntityAliasTypeObject(entityAliasType, null))
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, entityAliasTypes);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(entityAliasTypes == null) {
-            entityAliasTypeObjects = emptyList();
-        } else {
-            entityAliasTypeObjects = new ArrayList<>(entityAliasTypes.size());
-
-            entityAliasTypes.stream().map(e -> new EntityAliasTypeObject(e, null)).forEachOrdered(entityAliasTypeObjects::add);
-        }
-
-        return entityAliasTypeObjects;
+        return data;
     }
 
     @GraphQLField
@@ -3509,7 +3529,7 @@ public interface GraphQlQueries {
             commandForm.setUlid(id);
             commandForm.setAlias(alias);
 
-            entityAlias = new GetEntityAliasCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            entityAlias = new GetEntityAliasCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -3519,36 +3539,44 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("entityAliases")
-    static Collection<EntityAliasObject> entityAliases(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<EntityAliasObject> entityAliases(final DataFetchingEnvironment env,
             @GraphQLName("componentVendorName") final String componentVendorName,
             @GraphQLName("entityTypeName") final String entityTypeName,
             @GraphQLName("entityAliasTypeName") final String entityAliasTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
-        Collection<EntityAlias> entityAliases;
-        Collection<EntityAliasObject> entityAliasObjects;
+        CountingPaginatedData<EntityAliasObject> data;
 
         try {
             var commandForm = CoreUtil.getHome().getGetEntityAliasesForm();
+            var command = new GetEntityAliasesCommand(getUserVisitPK(env), commandForm);
 
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
             commandForm.setEntityAliasTypeName(entityAliasTypeName);
             commandForm.setUlid(id);
 
-            entityAliases = new GetEntityAliasesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, EntityAliasConstants.COMPONENT_VENDOR_NAME, EntityAliasConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var entityAliases = entities.stream()
+                            .map(EntityAliasObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, entityAliases);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(entityAliases == null) {
-            entityAliasObjects = emptyList();
-        } else {
-            entityAliasObjects = new ArrayList<>(entityAliases.size());
-
-            entityAliases.stream().map(EntityAliasObject::new).forEachOrdered(entityAliasObjects::add);
-        }
-
-        return entityAliasObjects;
+        return data;
     }
 
 
@@ -3565,7 +3593,7 @@ public interface GraphQlQueries {
             commandForm.setEntityAttributeGroupName(entityAttributeGroupName);
             commandForm.setUlid(id);
 
-            entityAttributeGroup = new GetEntityAttributeGroupCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            entityAttributeGroup = new GetEntityAttributeGroupCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -3575,27 +3603,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("entityAttributeGroups")
-    static Collection<EntityAttributeGroupObject> entityAttributeGroups(final DataFetchingEnvironment env) {
-        Collection<EntityAttributeGroup> entityAttributeGroups;
-        Collection<EntityAttributeGroupObject> entityAttributeGroupObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<EntityAttributeGroupObject> entityAttributeGroups(final DataFetchingEnvironment env) {
+        CountingPaginatedData<EntityAttributeGroupObject> data;
 
         try {
             var commandForm = CoreUtil.getHome().getGetEntityAttributeGroupsForm();
+            var command = new GetEntityAttributeGroupsCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            entityAttributeGroups = new GetEntityAttributeGroupsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, EntityAttributeGroupConstants.COMPONENT_VENDOR_NAME, EntityAttributeGroupConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var entityAttributeGroups = entities.stream()
+                            .map(entityAttributeGroup -> new EntityAttributeGroupObject(entityAttributeGroup, null))
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, entityAttributeGroups);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(entityAttributeGroups == null) {
-            entityAttributeGroupObjects = emptyList();
-        } else {
-            entityAttributeGroupObjects = new ArrayList<>(entityAttributeGroups.size());
-
-            entityAttributeGroups.stream().map(e -> new EntityAttributeGroupObject(e, null)).forEachOrdered(entityAttributeGroupObjects::add);
-        }
-
-        return entityAttributeGroupObjects;
+        return data;
     }
 
     @GraphQLField
@@ -3615,7 +3650,7 @@ public interface GraphQlQueries {
             commandForm.setEntityAttributeName(entityAttributeName);
             commandForm.setUlid(id);
 
-            entityAttribute = new GetEntityAttributeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            entityAttribute = new GetEntityAttributeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -3625,36 +3660,111 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("entityAttributes")
-    static Collection<EntityAttributeObject> entityAttributes(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<EntityAttributeObject> entityAttributes(final DataFetchingEnvironment env,
             @GraphQLName("componentVendorName") final String componentVendorName,
             @GraphQLName("entityTypeName") final String entityTypeName,
             @GraphQLName("entityAttributeTypeNames") final String entityAttributeTypeNames,
             @GraphQLName("id") @GraphQLID final String id) {
-        Collection<EntityAttribute> entityAttributes;
-        Collection<EntityAttributeObject> entityAttributeObjects;
+        CountingPaginatedData<EntityAttributeObject> data;
 
         try {
             var commandForm = CoreUtil.getHome().getGetEntityAttributesForm();
+            var command = new GetEntityAttributesCommand(getUserVisitPK(env), commandForm);
 
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
             commandForm.setEntityAttributeTypeNames(entityAttributeTypeNames);
             commandForm.setUlid(id);
 
-            entityAttributes = new GetEntityAttributesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, EntityAttributeConstants.COMPONENT_VENDOR_NAME, EntityAttributeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var entityAttributes = entities.stream()
+                            .map(entityAttribute -> new EntityAttributeObject(entityAttribute, null))
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, entityAttributes);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(entityAttributes == null) {
-            entityAttributeObjects = emptyList();
-        } else {
-            entityAttributeObjects = new ArrayList<>(entityAttributes.size());
+        return data;
+    }
 
-            entityAttributes.stream().map(e -> new EntityAttributeObject(e, null)).forEachOrdered(entityAttributeObjects::add);
+    @GraphQLField
+    @GraphQLName("entityAttributeEntityAttributeGroup")
+    static EntityAttributeEntityAttributeGroupObject entityAttributeEntityAttributeGroup(final DataFetchingEnvironment env,
+            @GraphQLName("componentVendorName") @GraphQLNonNull final String componentVendorName,
+            @GraphQLName("entityTypeName") @GraphQLNonNull final String entityTypeName,
+            @GraphQLName("entityAttributeName") @GraphQLNonNull final String entityAttributeName,
+            @GraphQLName("entityAttributeGroupName") @GraphQLNonNull final String entityAttributeGroupName) {
+        EntityAttributeEntityAttributeGroup entityAttributeEntityAttributeGroup;
+
+        try {
+            var commandForm = CoreUtil.getHome().getGetEntityAttributeEntityAttributeGroupForm();
+
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
+            commandForm.setEntityAttributeName(entityAttributeName);
+            commandForm.setEntityAttributeGroupName(entityAttributeGroupName);
+
+            entityAttributeEntityAttributeGroup = new GetEntityAttributeEntityAttributeGroupCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
         }
 
-        return entityAttributeObjects;
+        return entityAttributeEntityAttributeGroup == null ? null : new EntityAttributeEntityAttributeGroupObject(entityAttributeEntityAttributeGroup);
+    }
+
+    @GraphQLField
+    @GraphQLName("entityAttributeEntityAttributeGroups")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<EntityAttributeEntityAttributeGroupObject> entityAttributeEntityAttributeGroups(final DataFetchingEnvironment env,
+            @GraphQLName("componentVendorName") final String componentVendorName,
+            @GraphQLName("entityTypeName") final String entityTypeName,
+            @GraphQLName("entityAttributeName") final String entityAttributeName,
+            @GraphQLName("entityAttributeGroupName") final String entityAttributeGroupName) {
+        CountingPaginatedData<EntityAttributeEntityAttributeGroupObject> data;
+
+        try {
+            var commandForm = CoreUtil.getHome().getGetEntityAttributeEntityAttributeGroupsForm();
+            var command = new GetEntityAttributeEntityAttributeGroupsCommand(getUserVisitPK(env), commandForm);
+
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
+            commandForm.setEntityAttributeName(entityAttributeName);
+            commandForm.setEntityAttributeGroupName(entityAttributeGroupName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, EntityAttributeEntityAttributeGroupConstants.COMPONENT_VENDOR_NAME, EntityAttributeEntityAttributeGroupConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var entityAttributeEntityAttributeGroups = entities.stream()
+                            .map(EntityAttributeEntityAttributeGroupObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, entityAttributeEntityAttributeGroups);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
     }
 
     @GraphQLField
@@ -3674,7 +3784,7 @@ public interface GraphQlQueries {
             commandForm.setKey(key);
             commandForm.setGuid(guid);
 
-            entityInstance = new GetEntityInstanceCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            entityInstance = new GetEntityInstanceCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -3684,32 +3794,40 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("entityInstances")
-    static Collection<EntityInstanceObject> entityInstances(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<EntityInstanceObject> entityInstances(final DataFetchingEnvironment env,
             @GraphQLName("componentVendorName") @GraphQLNonNull final String componentVendorName,
             @GraphQLName("entityTypeName") @GraphQLNonNull final String entityTypeName) {
-        Collection<EntityInstance> entityInstances;
-        Collection<EntityInstanceObject> entityInstanceObjects;
+        CountingPaginatedData<EntityInstanceObject> data;
 
         try {
             var commandForm = CoreUtil.getHome().getGetEntityInstancesForm();
+            var command = new GetEntityInstancesCommand(getUserVisitPK(env), commandForm);
 
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
 
-            entityInstances = new GetEntityInstancesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, EntityInstanceConstants.COMPONENT_VENDOR_NAME, EntityInstanceConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var entityInstances = entities.stream()
+                            .map(EntityInstanceObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, entityInstances);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(entityInstances == null) {
-            entityInstanceObjects = emptyList();
-        } else {
-            entityInstanceObjects = new ArrayList<>(entityInstances.size());
-
-            entityInstances.stream().map(EntityInstanceObject::new).forEachOrdered(entityInstanceObjects::add);
-        }
-
-        return entityInstanceObjects;
+        return data;
     }
 
     @GraphQLField
@@ -3727,7 +3845,7 @@ public interface GraphQlQueries {
             commandForm.setEntityTypeName(entityTypeName);
             commandForm.setUlid(id);
 
-            entityType = new GetEntityTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            entityType = new GetEntityTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -3737,30 +3855,38 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("entityTypes")
-    static Collection<EntityTypeObject> entityTypes(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<EntityTypeObject> entityTypes(final DataFetchingEnvironment env,
             @GraphQLName("componentVendorName") final String componentVendorName) {
-        Collection<EntityType> entityTypes;
-        Collection<EntityTypeObject> entityTypeObjects;
+        CountingPaginatedData<EntityTypeObject> data;
 
         try {
             var commandForm = CoreUtil.getHome().getGetEntityTypesForm();
+            var command = new GetEntityTypesCommand(getUserVisitPK(env), commandForm);
 
             commandForm.setComponentVendorName(componentVendorName);
 
-            entityTypes = new GetEntityTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, EntityTypeConstants.COMPONENT_VENDOR_NAME, EntityTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var entityTypes = entities.stream()
+                            .map(EntityTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, entityTypes);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(entityTypes == null) {
-            entityTypeObjects = emptyList();
-        } else {
-            entityTypeObjects = new ArrayList<>(entityTypes.size());
-
-            entityTypes.stream().map(EntityTypeObject::new).forEachOrdered(entityTypeObjects::add);
-        }
-
-        return entityTypeObjects;
+        return data;
     }
 
     @GraphQLField
@@ -3776,7 +3902,7 @@ public interface GraphQlQueries {
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setUlid(id);
 
-            componentVendor = new GetComponentVendorCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            componentVendor = new GetComponentVendorCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -3786,27 +3912,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("componentVendors")
-    static Collection<ComponentVendorObject> componentVendors(final DataFetchingEnvironment env) {
-        Collection<ComponentVendor> componentVendors;
-        Collection<ComponentVendorObject> componentVendorObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<ComponentVendorObject> componentVendors(final DataFetchingEnvironment env) {
+        CountingPaginatedData<ComponentVendorObject> data;
 
         try {
             var commandForm = CoreUtil.getHome().getGetComponentVendorsForm();
+            var command = new GetComponentVendorsCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            componentVendors = new GetComponentVendorsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, ComponentVendorConstants.COMPONENT_VENDOR_NAME, ComponentVendorConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var componentVendors = entities.stream()
+                            .map(ComponentVendorObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, componentVendors);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(componentVendors == null) {
-            componentVendorObjects = emptyList();
-        } else {
-            componentVendorObjects = new ArrayList<>(componentVendors.size());
-
-            componentVendors.stream().map(ComponentVendorObject::new).forEachOrdered(componentVendorObjects::add);
-        }
-
-        return componentVendorObjects;
+        return data;
     }
 
     @GraphQLField
@@ -3822,7 +3955,7 @@ public interface GraphQlQueries {
             commandForm.setInventoryConditionName(inventoryConditionName);
             commandForm.setUlid(id);
 
-            inventoryCondition = new GetInventoryConditionCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            inventoryCondition = new GetInventoryConditionCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -3843,7 +3976,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, InventoryConditionConstants.COMPONENT_VENDOR_NAME, InventoryConditionConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = InventoryUtil.getHome().getGetInventoryConditionsForm();
-                var entities = new GetInventoryConditionsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetInventoryConditionsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -3875,7 +4008,7 @@ public interface GraphQlQueries {
             commandForm.setAllocationPriorityName(allocationPriorityName);
             commandForm.setUlid(id);
 
-            allocationPriority = new GetAllocationPriorityCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            allocationPriority = new GetAllocationPriorityCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -3896,7 +4029,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, AllocationPriorityConstants.COMPONENT_VENDOR_NAME, AllocationPriorityConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = InventoryUtil.getHome().getGetAllocationPrioritiesForm();
-                var entities = new GetAllocationPrioritiesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetAllocationPrioritiesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -3928,7 +4061,7 @@ public interface GraphQlQueries {
             commandForm.setLotName(lotName);
             commandForm.setUlid(id);
 
-            lot = new GetLotCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            lot = new GetLotCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -3949,7 +4082,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, LotConstants.COMPONENT_VENDOR_NAME, LotConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = InventoryUtil.getHome().getGetLotsForm();
-                var entities = new GetLotsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetLotsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -3981,7 +4114,7 @@ public interface GraphQlQueries {
             commandForm.setContentPageLayoutName(contentPageLayoutName);
             commandForm.setUlid(id);
 
-            contentPageLayout = new GetContentPageLayoutCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            contentPageLayout = new GetContentPageLayoutCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -3998,7 +4131,7 @@ public interface GraphQlQueries {
         try {
             var commandForm = ContentUtil.getHome().getGetContentPageLayoutsForm();
 
-            contentPageLayouts = new GetContentPageLayoutsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            contentPageLayouts = new GetContentPageLayoutsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -4033,7 +4166,7 @@ public interface GraphQlQueries {
             commandForm.setContentPageName(contentPageName);
             commandForm.setSortOrder(sortOrder);
 
-            contentPageLayoutArea = new GetContentPageLayoutAreaCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            contentPageLayoutArea = new GetContentPageLayoutAreaCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -4057,7 +4190,7 @@ public interface GraphQlQueries {
             commandForm.setContentSectionName(contentSectionName);
             commandForm.setContentPageName(contentPageName);
 
-            contentPageLayoutAreas = new GetContentPageLayoutAreasCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            contentPageLayoutAreas = new GetContentPageLayoutAreasCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -4088,7 +4221,7 @@ public interface GraphQlQueries {
             commandForm.setContentPageAreaTypeName(contentPageAreaTypeName);
             commandForm.setUlid(id);
 
-            contentPageAreaType = new GetContentPageAreaTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            contentPageAreaType = new GetContentPageAreaTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -4105,7 +4238,7 @@ public interface GraphQlQueries {
         try {
             var commandForm = ContentUtil.getHome().getGetContentPageAreaTypesForm();
 
-            contentPageAreaTypes = new GetContentPageAreaTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            contentPageAreaTypes = new GetContentPageAreaTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -4134,7 +4267,7 @@ public interface GraphQlQueries {
 
             commandForm.setContentWebAddressName(contentWebAddressName);
 
-            contentWebAddress = new GetContentWebAddressCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            contentWebAddress = new GetContentWebAddressCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -4151,7 +4284,7 @@ public interface GraphQlQueries {
         try {
             var commandForm = ContentUtil.getHome().getGetContentWebAddressesForm();
 
-            contentWebAddresses = new GetContentWebAddressesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            contentWebAddresses = new GetContentWebAddressesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -4180,7 +4313,7 @@ public interface GraphQlQueries {
 
             commandForm.setContentCollectionName(contentCollectionName);
 
-            contentCollection = new GetContentCollectionCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            contentCollection = new GetContentCollectionCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -4197,7 +4330,7 @@ public interface GraphQlQueries {
         try {
             var commandForm = ContentUtil.getHome().getGetContentCollectionsForm();
 
-            contentCollections = new GetContentCollectionsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            contentCollections = new GetContentCollectionsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -4236,7 +4369,7 @@ public interface GraphQlQueries {
             commandForm.setAssociateName(associateName);
             commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
 
-            contentSection = new GetContentSectionCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            contentSection = new GetContentSectionCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -4266,7 +4399,7 @@ public interface GraphQlQueries {
             commandForm.setAssociateName(associateName);
             commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
 
-            contentSections = new GetContentSectionsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            contentSections = new GetContentSectionsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -4307,7 +4440,7 @@ public interface GraphQlQueries {
             commandForm.setAssociateName(associateName);
             commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
 
-            contentPage = new GetContentPageCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            contentPage = new GetContentPageCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -4337,7 +4470,7 @@ public interface GraphQlQueries {
             commandForm.setAssociateName(associateName);
             commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
 
-            contentPages = new GetContentPagesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            contentPages = new GetContentPagesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -4374,7 +4507,7 @@ public interface GraphQlQueries {
             commandForm.setSortOrder(sortOrder);
             commandForm.setLanguageIsoName(languageIsoName);
 
-            contentPageArea = new GetContentPageAreaCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            contentPageArea = new GetContentPageAreaCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -4398,7 +4531,7 @@ public interface GraphQlQueries {
             commandForm.setContentSectionName(contentSectionName);
             commandForm.setContentPageName(contentPageName);
 
-            contentPageAreas = new GetContentPageAreasCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            contentPageAreas = new GetContentPageAreasCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -4437,7 +4570,7 @@ public interface GraphQlQueries {
             commandForm.setAssociateName(associateName);
             commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
 
-            contentCatalog = new GetContentCatalogCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            contentCatalog = new GetContentCatalogCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -4465,7 +4598,7 @@ public interface GraphQlQueries {
             commandForm.setAssociateName(associateName);
             commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
 
-            contentCatalogs = new GetContentCatalogsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            contentCatalogs = new GetContentCatalogsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -4512,7 +4645,7 @@ public interface GraphQlQueries {
             commandForm.setAssociateName(associateName);
             commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
 
-            contentCatalogItem = new GetContentCatalogItemCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            contentCatalogItem = new GetContentCatalogItemCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -4542,7 +4675,7 @@ public interface GraphQlQueries {
             commandForm.setAssociateName(associateName);
             commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
 
-            contentCatalogItems = new GetContentCatalogItemsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            contentCatalogItems = new GetContentCatalogItemsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -4583,7 +4716,7 @@ public interface GraphQlQueries {
             commandForm.setAssociateName(associateName);
             commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
 
-            contentCategory = new GetContentCategoryCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            contentCategory = new GetContentCategoryCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -4615,7 +4748,7 @@ public interface GraphQlQueries {
             commandForm.setAssociateName(associateName);
             commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
 
-            contentCategories = new GetContentCategoriesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            contentCategories = new GetContentCategoriesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -4664,7 +4797,7 @@ public interface GraphQlQueries {
             commandForm.setAssociateName(associateName);
             commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
 
-            contentCategoryItem = new GetContentCategoryItemCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            contentCategoryItem = new GetContentCategoryItemCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -4696,7 +4829,7 @@ public interface GraphQlQueries {
             commandForm.setAssociateName(associateName);
             commandForm.setAssociatePartyContactMechanismName(associatePartyContactMechanismName);
 
-            contentCategoryItems = new GetContentCategoryItemsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            contentCategoryItems = new GetContentCategoryItemsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -4725,7 +4858,7 @@ public interface GraphQlQueries {
 
             commandForm.setFileExtension(fileExtension);
 
-            mimeTypeFileExtension = new GetMimeTypeFileExtensionCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            mimeTypeFileExtension = new GetMimeTypeFileExtensionCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -4742,7 +4875,7 @@ public interface GraphQlQueries {
         try {
             var commandForm = CoreUtil.getHome().getGetMimeTypeFileExtensionsForm();
 
-            mimeTypeFileExtensions = new GetMimeTypeFileExtensionsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            mimeTypeFileExtensions = new GetMimeTypeFileExtensionsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -4771,7 +4904,7 @@ public interface GraphQlQueries {
 
             commandForm.setMimeTypeUsageTypeName(mimeTypeUsageTypeName);
 
-            mimeTypeUsageType = new GetMimeTypeUsageTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            mimeTypeUsageType = new GetMimeTypeUsageTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -4788,7 +4921,7 @@ public interface GraphQlQueries {
         try {
             var commandForm = CoreUtil.getHome().getGetMimeTypeUsageTypesForm();
 
-            mimeTypeUsageTypes = new GetMimeTypeUsageTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            mimeTypeUsageTypes = new GetMimeTypeUsageTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -4817,7 +4950,7 @@ public interface GraphQlQueries {
 
             commandForm.setMimeTypeName(mimeTypeName);
 
-            mimeType = new GetMimeTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            mimeType = new GetMimeTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -4837,7 +4970,7 @@ public interface GraphQlQueries {
 
             commandForm.setMimeTypeUsageTypeName(mimeTypeUsageTypeName);
 
-            mimeTypes = new GetMimeTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            mimeTypes = new GetMimeTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -4866,7 +4999,7 @@ public interface GraphQlQueries {
 
             commandForm.setQueueTypeName(queueTypeName);
 
-            queueType = new GetQueueTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            queueType = new GetQueueTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -4883,7 +5016,7 @@ public interface GraphQlQueries {
         try {
             var commandForm = QueueUtil.getHome().getGetQueueTypesForm();
 
-            queueTypes = new GetQueueTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            queueTypes = new GetQueueTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -4914,7 +5047,7 @@ public interface GraphQlQueries {
             commandForm.setUnitOfMeasureKindUseTypeName(unitOfMeasureKindUseTypeName);
             commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
 
-            unitOfMeasureKindUse = new GetUnitOfMeasureKindUseCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            unitOfMeasureKindUse = new GetUnitOfMeasureKindUseCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -4936,7 +5069,7 @@ public interface GraphQlQueries {
             commandForm.setUnitOfMeasureKindUseTypeName(unitOfMeasureKindUseTypeName);
             commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
 
-            unitOfMeasureKindUses = new GetUnitOfMeasureKindUsesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            unitOfMeasureKindUses = new GetUnitOfMeasureKindUsesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -4967,7 +5100,7 @@ public interface GraphQlQueries {
             commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
             commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
 
-            unitOfMeasureType = new GetUnitOfMeasureTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            unitOfMeasureType = new GetUnitOfMeasureTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -4987,7 +5120,7 @@ public interface GraphQlQueries {
 
             commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
 
-            unitOfMeasureTypes = new GetUnitOfMeasureTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            unitOfMeasureTypes = new GetUnitOfMeasureTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -5016,7 +5149,7 @@ public interface GraphQlQueries {
 
             commandForm.setUnitOfMeasureKindName(unitOfMeasureKindName);
 
-            unitOfMeasureKind = new GetUnitOfMeasureKindCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            unitOfMeasureKind = new GetUnitOfMeasureKindCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -5037,7 +5170,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, UnitOfMeasureKindConstants.COMPONENT_VENDOR_NAME, UnitOfMeasureKindConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = UomUtil.getHome().getGetUnitOfMeasureKindsForm();
-                var entities = new GetUnitOfMeasureKindsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetUnitOfMeasureKindsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -5065,7 +5198,7 @@ public interface GraphQlQueries {
 
             commandForm.setUnitOfMeasureKindUseTypeName(unitOfMeasureKindUseTypeName);
 
-            unitOfMeasureKindUseType = new GetUnitOfMeasureKindUseTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            unitOfMeasureKindUseType = new GetUnitOfMeasureKindUseTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -5082,7 +5215,7 @@ public interface GraphQlQueries {
         try {
             var commandForm = UomUtil.getHome().getGetUnitOfMeasureKindUseTypesForm();
 
-            unitOfMeasureKindUseTypes = new GetUnitOfMeasureKindUseTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            unitOfMeasureKindUseTypes = new GetUnitOfMeasureKindUseTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -5111,7 +5244,7 @@ public interface GraphQlQueries {
 
             commandForm.setEntityAttributeTypeName(entityAttributeTypeName);
 
-            entityAttributeType = new GetEntityAttributeTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            entityAttributeType = new GetEntityAttributeTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -5128,7 +5261,7 @@ public interface GraphQlQueries {
         try {
             var commandForm = CoreUtil.getHome().getGetEntityAttributeTypesForm();
 
-            entityAttributeTypes = new GetEntityAttributeTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            entityAttributeTypes = new GetEntityAttributeTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -5291,7 +5424,7 @@ public interface GraphQlQueries {
             commandForm.setColorName(colorName);
             commandForm.setUlid(id);
 
-            color = new GetColorCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            color = new GetColorCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -5308,7 +5441,7 @@ public interface GraphQlQueries {
         try {
             var commandForm = CoreUtil.getHome().getGetColorsForm();
 
-            colors = new GetColorsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            colors = new GetColorsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -5339,7 +5472,7 @@ public interface GraphQlQueries {
             commandForm.setFontStyleName(fontStyleName);
             commandForm.setUlid(id);
 
-            fontStyle = new GetFontStyleCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            fontStyle = new GetFontStyleCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -5356,7 +5489,7 @@ public interface GraphQlQueries {
         try {
             var commandForm = CoreUtil.getHome().getGetFontStylesForm();
 
-            fontStyles = new GetFontStylesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            fontStyles = new GetFontStylesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -5387,7 +5520,7 @@ public interface GraphQlQueries {
             commandForm.setFontWeightName(fontWeightName);
             commandForm.setUlid(id);
 
-            fontWeight = new GetFontWeightCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            fontWeight = new GetFontWeightCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -5404,7 +5537,7 @@ public interface GraphQlQueries {
         try {
             var commandForm = CoreUtil.getHome().getGetFontWeightsForm();
 
-            fontWeights = new GetFontWeightsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            fontWeights = new GetFontWeightsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -5435,7 +5568,7 @@ public interface GraphQlQueries {
             commandForm.setTextDecorationName(textDecorationName);
             commandForm.setUlid(id);
 
-            textDecoration = new GetTextDecorationCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            textDecoration = new GetTextDecorationCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -5452,7 +5585,7 @@ public interface GraphQlQueries {
         try {
             var commandForm = CoreUtil.getHome().getGetTextDecorationsForm();
 
-            textDecorations = new GetTextDecorationsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            textDecorations = new GetTextDecorationsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -5483,7 +5616,7 @@ public interface GraphQlQueries {
             commandForm.setTextTransformationName(textTransformationName);
             commandForm.setUlid(id);
 
-            textTransformation = new GetTextTransformationCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            textTransformation = new GetTextTransformationCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -5500,7 +5633,7 @@ public interface GraphQlQueries {
         try {
             var commandForm = CoreUtil.getHome().getGetTextTransformationsForm();
 
-            textTransformations = new GetTextTransformationsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            textTransformations = new GetTextTransformationsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -5533,7 +5666,7 @@ public interface GraphQlQueries {
             commandForm.setUlid(id);
 
             GetUserLoginCommand getUserLoginCommand = new GetUserLoginCommand(getUserVisitPK(env), commandForm);
-            userLogin = getUserLoginCommand.runForGraphQl();
+            userLogin = getUserLoginCommand.getEntityForGraphQl();
             foundByUsernameUserLogin = getUserLoginCommand.foundByUsernameUserLogin;
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
@@ -5557,7 +5690,7 @@ public interface GraphQlQueries {
             commandForm.setUlid(id);
             commandForm.setUsername(username);
 
-            recoveryQuestion = new GetRecoveryQuestionCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            recoveryQuestion = new GetRecoveryQuestionCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -5574,7 +5707,7 @@ public interface GraphQlQueries {
         try {
             var commandForm = UserUtil.getHome().getGetRecoveryQuestionsForm();
 
-            recoveryQuestions = new GetRecoveryQuestionsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            recoveryQuestions = new GetRecoveryQuestionsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -5621,7 +5754,7 @@ public interface GraphQlQueries {
             commandForm.setCurrencyIsoName(currencyIsoName);
             commandForm.setUlid(id);
 
-            currency = new GetCurrencyCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            currency = new GetCurrencyCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -5642,7 +5775,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, CurrencyConstants.COMPONENT_VENDOR_NAME, CurrencyConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = AccountingUtil.getHome().getGetCurrenciesForm();
-                var entities = new GetCurrenciesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetCurrenciesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -5672,7 +5805,7 @@ public interface GraphQlQueries {
             commandForm.setLanguageIsoName(languageIsoName);
             commandForm.setUlid(id);
 
-            language = new GetLanguageCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            language = new GetLanguageCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -5693,7 +5826,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, LanguageConstants.COMPONENT_VENDOR_NAME, LanguageConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = PartyUtil.getHome().getGetLanguagesForm();
-                var entities = new GetLanguagesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetLanguagesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -5723,7 +5856,7 @@ public interface GraphQlQueries {
             commandForm.setDateTimeFormatName(dateTimeFormatName);
             commandForm.setUlid(id);
 
-            dateTimeFormat = new GetDateTimeFormatCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            dateTimeFormat = new GetDateTimeFormatCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -5744,7 +5877,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, DateTimeFormatConstants.COMPONENT_VENDOR_NAME, DateTimeFormatConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = PartyUtil.getHome().getGetDateTimeFormatsForm();
-                var entities = new GetDateTimeFormatsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetDateTimeFormatsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -5774,7 +5907,7 @@ public interface GraphQlQueries {
             commandForm.setJavaTimeZoneName(javaTimeZoneName);
             commandForm.setUlid(id);
 
-            timeZone = new GetTimeZoneCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            timeZone = new GetTimeZoneCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -5795,7 +5928,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, TimeZoneConstants.COMPONENT_VENDOR_NAME, TimeZoneConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = PartyUtil.getHome().getGetTimeZonesForm();
-                var entities = new GetTimeZonesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetTimeZonesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -5825,7 +5958,7 @@ public interface GraphQlQueries {
             commandForm.setCustomerTypeName(customerTypeName);
             commandForm.setUlid(id);
 
-            customerType = new GetCustomerTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            customerType = new GetCustomerTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -5846,7 +5979,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, CustomerTypeConstants.COMPONENT_VENDOR_NAME, CustomerTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = CustomerUtil.getHome().getGetCustomerTypesForm();
-                var entities = new GetCustomerTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetCustomerTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -5878,7 +6011,7 @@ public interface GraphQlQueries {
             commandForm.setPartyName(partyName);
             commandForm.setUlid(id);
 
-            customer = new GetCustomerCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            customer = new GetCustomerCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -5899,7 +6032,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, CustomerConstants.COMPONENT_VENDOR_NAME, CustomerConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = CustomerUtil.getHome().getGetCustomersForm();
-                var entities = new GetCustomersCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetCustomersCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -5931,7 +6064,7 @@ public interface GraphQlQueries {
             commandForm.setPartyName(partyName);
             commandForm.setUlid(id);
 
-            partyEmployee = new GetEmployeeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            partyEmployee = new GetEmployeeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -5952,7 +6085,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, PartyEmployeeConstants.COMPONENT_VENDOR_NAME, PartyEmployeeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = EmployeeUtil.getHome().getGetEmployeesForm();
-                var entities = new GetEmployeesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetEmployeesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -5982,7 +6115,7 @@ public interface GraphQlQueries {
             commandForm.setVendorTypeName(vendorTypeName);
             commandForm.setUlid(id);
 
-            vendorType = new GetVendorTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            vendorType = new GetVendorTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -6003,7 +6136,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, VendorTypeConstants.COMPONENT_VENDOR_NAME, VendorTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = VendorUtil.getHome().getGetVendorTypesForm();
-                var entities = new GetVendorTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetVendorTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -6035,7 +6168,7 @@ public interface GraphQlQueries {
             commandForm.setPartyName(partyName);
             commandForm.setUlid(id);
 
-            vendor = new GetVendorCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            vendor = new GetVendorCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -6056,7 +6189,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, VendorConstants.COMPONENT_VENDOR_NAME, VendorConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = VendorUtil.getHome().getGetVendorsForm();
-                var entities = new GetVendorsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetVendorsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -6090,7 +6223,7 @@ public interface GraphQlQueries {
             commandForm.setVendorItemName(vendorItemName);
             commandForm.setUlid(id);
 
-            vendorItem = new GetVendorItemCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            vendorItem = new GetVendorItemCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -6112,7 +6245,7 @@ public interface GraphQlQueries {
             commandForm.setVendorName(vendorName);
             commandForm.setItemName(itemName);
 
-            vendorItems = new GetVendorItemsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            vendorItems = new GetVendorItemsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -6149,7 +6282,7 @@ public interface GraphQlQueries {
             commandForm.setInventoryConditionName(inventoryConditionName);
             commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
 
-            vendorItemCost = new GetVendorItemCostCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            vendorItemCost = new GetVendorItemCostCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -6171,7 +6304,7 @@ public interface GraphQlQueries {
             commandForm.setVendorName(vendorName);
             commandForm.setVendorItemName(vendorItemName);
 
-            vendorItemCosts = new GetVendorItemCostsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            vendorItemCosts = new GetVendorItemCostsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -6202,7 +6335,7 @@ public interface GraphQlQueries {
             commandForm.setPartyTypeName(partyTypeName);
             commandForm.setUlid(id);
 
-            partyType = new GetPartyTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            partyType = new GetPartyTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -6223,7 +6356,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, PartyTypeConstants.COMPONENT_VENDOR_NAME, PartyTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = PartyUtil.getHome().getGetPartyTypesForm();
-                var entities = new GetPartyTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetPartyTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -6255,7 +6388,7 @@ public interface GraphQlQueries {
             commandForm.setPartyAliasTypeName(partyAliasTypeName);
             commandForm.setUlid(id);
 
-            partyAliasType = new GetPartyAliasTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            partyAliasType = new GetPartyAliasTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -6275,7 +6408,7 @@ public interface GraphQlQueries {
 
             commandForm.setPartyTypeName(partyTypeName);
 
-            partyAliasTypes = new GetPartyAliasTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            partyAliasTypes = new GetPartyAliasTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -6310,7 +6443,7 @@ public interface GraphQlQueries {
             commandForm.setPartyAliasTypeName(partyAliasTypeName);
             commandForm.setAlias(alias);
 
-            partyAlias = new GetPartyAliasCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            partyAlias = new GetPartyAliasCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -6334,7 +6467,7 @@ public interface GraphQlQueries {
             commandForm.setPartyTypeName(partyTypeName);
             commandForm.setPartyAliasTypeName(partyAliasTypeName);
 
-            partyAliases = new GetPartyAliasesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            partyAliases = new GetPartyAliasesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -6365,7 +6498,7 @@ public interface GraphQlQueries {
             commandForm.setPartyName(partyName);
             commandForm.setUlid(id);
 
-            party = new GetPartyCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            party = new GetPartyCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -6386,7 +6519,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, PartyConstants.COMPONENT_VENDOR_NAME, PartyConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = PartyUtil.getHome().getGetPartiesForm();
-                var entities = new GetPartiesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetPartiesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -6418,7 +6551,7 @@ public interface GraphQlQueries {
             commandForm.setPartyName(partyName);
             commandForm.setUlid(id);
 
-            company = new GetCompanyCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            company = new GetCompanyCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -6439,7 +6572,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, PartyCompanyConstants.COMPONENT_VENDOR_NAME, PartyCompanyConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = PartyUtil.getHome().getGetCompaniesForm();
-                var entities = new GetCompaniesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetCompaniesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -6473,7 +6606,7 @@ public interface GraphQlQueries {
             commandForm.setPartyName(partyName);
             commandForm.setUlid(id);
 
-            division = new GetDivisionCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            division = new GetDivisionCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -6493,7 +6626,7 @@ public interface GraphQlQueries {
 
             commandForm.setCompanyName(companyName);
 
-            partyDivisions = new GetDivisionsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            partyDivisions = new GetDivisionsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -6530,7 +6663,7 @@ public interface GraphQlQueries {
             commandForm.setPartyName(partyName);
             commandForm.setUlid(id);
 
-            department = new GetDepartmentCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            department = new GetDepartmentCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -6552,7 +6685,7 @@ public interface GraphQlQueries {
             commandForm.setCompanyName(companyName);
             commandForm.setDivisionName(divisionName);
 
-            partyDepartments = new GetDepartmentsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            partyDepartments = new GetDepartmentsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -6583,7 +6716,7 @@ public interface GraphQlQueries {
             commandForm.setWarehouseTypeName(warehouseTypeName);
             commandForm.setUlid(id);
 
-            warehouseType = new GetWarehouseTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            warehouseType = new GetWarehouseTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -6604,7 +6737,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, WarehouseTypeConstants.COMPONENT_VENDOR_NAME, WarehouseTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = WarehouseUtil.getHome().getGetWarehouseTypesForm();
-                var entities = new GetWarehouseTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetWarehouseTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -6636,7 +6769,7 @@ public interface GraphQlQueries {
             commandForm.setPartyName(partyName);
             commandForm.setUlid(id);
 
-            warehouse = new GetWarehouseCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            warehouse = new GetWarehouseCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -6657,7 +6790,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, WarehouseConstants.COMPONENT_VENDOR_NAME, WarehouseConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = WarehouseUtil.getHome().getGetWarehousesForm();
-                var entities = new GetWarehousesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetWarehousesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -6687,7 +6820,7 @@ public interface GraphQlQueries {
             commandForm.setLocationUseTypeName(locationUseTypeName);
             commandForm.setUlid(id);
 
-            locationUseType = new GetLocationUseTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            locationUseType = new GetLocationUseTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -6708,7 +6841,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, LocationUseTypeConstants.COMPONENT_VENDOR_NAME, LocationUseTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = WarehouseUtil.getHome().getGetLocationUseTypesForm();
-                var entities = new GetLocationUseTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetLocationUseTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -6738,7 +6871,7 @@ public interface GraphQlQueries {
             commandForm.setCancellationKindName(cancellationKindName);
             commandForm.setUlid(id);
 
-            cancellationKind = new GetCancellationKindCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            cancellationKind = new GetCancellationKindCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -6759,7 +6892,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, CancellationKindConstants.COMPONENT_VENDOR_NAME, CancellationKindConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = CancellationPolicyUtil.getHome().getGetCancellationKindsForm();
-                var entities = new GetCancellationKindsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetCancellationKindsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -6791,7 +6924,7 @@ public interface GraphQlQueries {
             commandForm.setCancellationPolicyName(cancellationPolicyName);
             commandForm.setUlid(id);
 
-            cancellationPolicy = new GetCancellationPolicyCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            cancellationPolicy = new GetCancellationPolicyCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -6811,7 +6944,7 @@ public interface GraphQlQueries {
 
             commandForm.setCancellationKindName(cancellationKindName);
 
-            cancellationPolicies = new GetCancellationPoliciesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            cancellationPolicies = new GetCancellationPoliciesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -6842,7 +6975,7 @@ public interface GraphQlQueries {
             commandForm.setReturnKindName(returnKindName);
             commandForm.setUlid(id);
 
-            returnKind = new GetReturnKindCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            returnKind = new GetReturnKindCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -6863,7 +6996,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, ReturnKindConstants.COMPONENT_VENDOR_NAME, ReturnKindConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = ReturnPolicyUtil.getHome().getGetReturnKindsForm();
-                var entities = new GetReturnKindsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetReturnKindsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -6895,7 +7028,7 @@ public interface GraphQlQueries {
             commandForm.setReturnPolicyName(returnPolicyName);
             commandForm.setUlid(id);
 
-            returnPolicy = new GetReturnPolicyCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            returnPolicy = new GetReturnPolicyCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -6915,7 +7048,7 @@ public interface GraphQlQueries {
 
             commandForm.setReturnKindName(returnKindName);
 
-            returnPolicies = new GetReturnPoliciesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            returnPolicies = new GetReturnPoliciesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -6948,7 +7081,7 @@ public interface GraphQlQueries {
             commandForm.setItemNameOrAlias(itemNameOrAlias);
             commandForm.setUlid(id);
 
-            item = new GetItemCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            item = new GetItemCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -6969,7 +7102,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, ItemConstants.COMPONENT_VENDOR_NAME, ItemConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = ItemUtil.getHome().getGetItemsForm();
-                var entities = new GetItemsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetItemsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -6999,7 +7132,7 @@ public interface GraphQlQueries {
             commandForm.setItemName(itemName);
             commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
 
-            itemUnitOfMeasureType = new GetItemUnitOfMeasureTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            itemUnitOfMeasureType = new GetItemUnitOfMeasureTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -7021,7 +7154,7 @@ public interface GraphQlQueries {
             commandForm.setItemName(itemName);
             commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
 
-            itemUnitOfMeasureType = new GetItemUnitOfMeasureTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            itemUnitOfMeasureType = new GetItemUnitOfMeasureTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -7059,7 +7192,7 @@ public interface GraphQlQueries {
             commandForm.setUlid(id);
             commandForm.setReferrer(referrer);
 
-            itemDescription = new GetItemDescriptionCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            itemDescription = new GetItemDescriptionCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -7083,7 +7216,7 @@ public interface GraphQlQueries {
             commandForm.setItemDescriptionTypeUseTypeName(itemDescriptionTypeUseTypeName);
             commandForm.setLanguageIsoName(languageIsoName);
 
-            itemDescriptions = new GetItemDescriptionsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            itemDescriptions = new GetItemDescriptionsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -7114,7 +7247,7 @@ public interface GraphQlQueries {
             commandForm.setItemTypeName(itemTypeName);
             commandForm.setUlid(id);
 
-            itemType = new GetItemTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            itemType = new GetItemTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -7135,7 +7268,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, ItemTypeConstants.COMPONENT_VENDOR_NAME, ItemTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = ItemUtil.getHome().getGetItemTypesForm();
-                var entities = new GetItemTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetItemTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -7165,7 +7298,7 @@ public interface GraphQlQueries {
             commandForm.setItemUseTypeName(itemUseTypeName);
             commandForm.setUlid(id);
 
-            itemUseType = new GetItemUseTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            itemUseType = new GetItemUseTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -7186,7 +7319,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, ItemUseTypeConstants.COMPONENT_VENDOR_NAME, ItemUseTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = ItemUtil.getHome().getGetItemUseTypesForm();
-                var entities = new GetItemUseTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetItemUseTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -7216,7 +7349,7 @@ public interface GraphQlQueries {
             commandForm.setItemPriceTypeName(itemPriceTypeName);
             commandForm.setUlid(id);
 
-            itemPriceType = new GetItemPriceTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            itemPriceType = new GetItemPriceTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -7237,7 +7370,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, ItemPriceTypeConstants.COMPONENT_VENDOR_NAME, ItemPriceTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = ItemUtil.getHome().getGetItemPriceTypesForm();
-                var entities = new GetItemPriceTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetItemPriceTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -7267,7 +7400,7 @@ public interface GraphQlQueries {
             commandForm.setItemDeliveryTypeName(itemDeliveryTypeName);
             commandForm.setUlid(id);
 
-            itemDeliveryType = new GetItemDeliveryTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            itemDeliveryType = new GetItemDeliveryTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -7288,7 +7421,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, ItemDeliveryTypeConstants.COMPONENT_VENDOR_NAME, ItemDeliveryTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = ItemUtil.getHome().getGetItemDeliveryTypesForm();
-                var entities = new GetItemDeliveryTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetItemDeliveryTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -7318,7 +7451,7 @@ public interface GraphQlQueries {
             commandForm.setItemInventoryTypeName(itemInventoryTypeName);
             commandForm.setUlid(id);
 
-            itemInventoryType = new GetItemInventoryTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            itemInventoryType = new GetItemInventoryTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -7339,7 +7472,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, ItemInventoryTypeConstants.COMPONENT_VENDOR_NAME, ItemInventoryTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = ItemUtil.getHome().getGetItemInventoryTypesForm();
-                var entities = new GetItemInventoryTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetItemInventoryTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -7373,7 +7506,7 @@ public interface GraphQlQueries {
             commandForm.setUnitOfMeasureTypeName(unitOfMeasureTypeName);
             commandForm.setCurrencyIsoName(currencyIsoName);
 
-            itemPrice = new GetItemPriceCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            itemPrice = new GetItemPriceCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -7393,7 +7526,7 @@ public interface GraphQlQueries {
 
             commandForm.setItemName(itemName);
 
-            itemPrice = new GetItemPricesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            itemPrice = new GetItemPricesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -7424,7 +7557,7 @@ public interface GraphQlQueries {
             commandForm.setItemAliasChecksumTypeName(itemAliasChecksumTypeName);
             commandForm.setUlid(id);
 
-            itemAliasChecksumType = new GetItemAliasChecksumTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            itemAliasChecksumType = new GetItemAliasChecksumTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -7445,7 +7578,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, ItemAliasChecksumTypeConstants.COMPONENT_VENDOR_NAME, ItemAliasChecksumTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = ItemUtil.getHome().getGetItemAliasChecksumTypesForm();
-                var entities = new GetItemAliasChecksumTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetItemAliasChecksumTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -7473,7 +7606,7 @@ public interface GraphQlQueries {
 
             commandForm.setAlias(alias);
 
-            itemAlias = new GetItemAliasCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            itemAlias = new GetItemAliasCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -7493,7 +7626,7 @@ public interface GraphQlQueries {
 
             commandForm.setItemName(itemName);
 
-            itemAlias = new GetItemAliasesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            itemAlias = new GetItemAliasesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -7524,7 +7657,7 @@ public interface GraphQlQueries {
             commandForm.setItemCategoryName(itemCategoryName);
             commandForm.setUlid(id);
 
-            itemCategory = new GetItemCategoryCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            itemCategory = new GetItemCategoryCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -7544,7 +7677,7 @@ public interface GraphQlQueries {
 
             commandForm.setParentItemCategoryName(parentItemCategoryName);
 
-            itemCategories = new GetItemCategoriesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            itemCategories = new GetItemCategoriesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -7575,7 +7708,7 @@ public interface GraphQlQueries {
             commandForm.setItemAccountingCategoryName(itemAccountingCategoryName);
             commandForm.setUlid(id);
 
-            itemAccountingCategory = new GetItemAccountingCategoryCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            itemAccountingCategory = new GetItemAccountingCategoryCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -7596,7 +7729,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, ItemAccountingCategoryConstants.COMPONENT_VENDOR_NAME, ItemAccountingCategoryConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = AccountingUtil.getHome().getGetItemAccountingCategoriesForm();
-                var entities = new GetItemAccountingCategoriesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetItemAccountingCategoriesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -7626,7 +7759,7 @@ public interface GraphQlQueries {
             commandForm.setGlAccountName(glAccountName);
             commandForm.setUlid(id);
 
-            glAccount = new GetGlAccountCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            glAccount = new GetGlAccountCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -7646,7 +7779,7 @@ public interface GraphQlQueries {
 
             commandForm.setGlAccountCategoryName(glAccountCategoryName);
 
-            glAccounts = new GetGlAccountsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            glAccounts = new GetGlAccountsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -7677,7 +7810,7 @@ public interface GraphQlQueries {
             commandForm.setItemPurchasingCategoryName(itemPurchasingCategoryName);
             commandForm.setUlid(id);
 
-            itemPurchasingCategory = new GetItemPurchasingCategoryCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            itemPurchasingCategory = new GetItemPurchasingCategoryCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -7698,7 +7831,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, ItemPurchasingCategoryConstants.COMPONENT_VENDOR_NAME, ItemPurchasingCategoryConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = VendorUtil.getHome().getGetItemPurchasingCategoriesForm();
-                var entities = new GetItemPurchasingCategoriesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetItemPurchasingCategoriesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -7728,7 +7861,7 @@ public interface GraphQlQueries {
             commandForm.setItemDescriptionTypeName(itemDescriptionTypeName);
             commandForm.setUlid(id);
 
-            itemDescriptionType = new GetItemDescriptionTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            itemDescriptionType = new GetItemDescriptionTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -7748,7 +7881,7 @@ public interface GraphQlQueries {
 
             commandForm.setParentItemDescriptionTypeName(parentItemDescriptionTypeName);
 
-            itemDescriptionTypes = new GetItemDescriptionTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            itemDescriptionTypes = new GetItemDescriptionTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -7779,7 +7912,7 @@ public interface GraphQlQueries {
             commandForm.setItemImageTypeName(itemImageTypeName);
             commandForm.setUlid(id);
 
-            itemImageType = new GetItemImageTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            itemImageType = new GetItemImageTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -7800,7 +7933,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, ItemImageTypeConstants.COMPONENT_VENDOR_NAME, ItemImageTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = ItemUtil.getHome().getGetItemImageTypesForm();
-                var entities = new GetItemImageTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetItemImageTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -7830,7 +7963,7 @@ public interface GraphQlQueries {
             commandForm.setItemDescriptionTypeUseTypeName(itemDescriptionTypeUseTypeName);
             commandForm.setUlid(id);
 
-            itemDescriptionTypeUseType = new GetItemDescriptionTypeUseTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            itemDescriptionTypeUseType = new GetItemDescriptionTypeUseTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -7851,7 +7984,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, ItemDescriptionTypeUseTypeConstants.COMPONENT_VENDOR_NAME, ItemDescriptionTypeUseTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = ItemUtil.getHome().getGetItemDescriptionTypeUseTypesForm();
-                var entities = new GetItemDescriptionTypeUseTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetItemDescriptionTypeUseTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -7881,7 +8014,7 @@ public interface GraphQlQueries {
             commandForm.setItemDescriptionTypeUseTypeName(itemDescriptionTypeUseTypeName);
             commandForm.setItemDescriptionTypeName(itemDescriptionTypeName);
 
-            itemDescriptionTypeUse = new GetItemDescriptionTypeUseCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            itemDescriptionTypeUse = new GetItemDescriptionTypeUseCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -7903,7 +8036,7 @@ public interface GraphQlQueries {
             commandForm.setItemDescriptionTypeUseTypeName(itemDescriptionTypeUseTypeName);
             commandForm.setItemDescriptionTypeName(itemDescriptionTypeName);
 
-            itemDescriptionTypeUse = new GetItemDescriptionTypeUsesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            itemDescriptionTypeUse = new GetItemDescriptionTypeUsesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -7934,7 +8067,7 @@ public interface GraphQlQueries {
             commandForm.setItemAliasTypeName(itemAliasTypeName);
             commandForm.setUlid(id);
 
-            itemAliasType = new GetItemAliasTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            itemAliasType = new GetItemAliasTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -7955,7 +8088,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, ItemAliasTypeConstants.COMPONENT_VENDOR_NAME, ItemAliasTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = ItemUtil.getHome().getGetItemAliasTypesForm();
-                var entities = new GetItemAliasTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetItemAliasTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -7985,7 +8118,7 @@ public interface GraphQlQueries {
             commandForm.setRelatedItemTypeName(relatedItemTypeName);
             commandForm.setUlid(id);
 
-            relatedItemType = new GetRelatedItemTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            relatedItemType = new GetRelatedItemTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -8006,7 +8139,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, RelatedItemTypeConstants.COMPONENT_VENDOR_NAME, RelatedItemTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = ItemUtil.getHome().getGetRelatedItemTypesForm();
-                var entities = new GetRelatedItemTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetRelatedItemTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -8040,7 +8173,7 @@ public interface GraphQlQueries {
             commandForm.setFromItemName(fromItemName);
             commandForm.setToItemName(toItemName);
 
-            relatedItem = new GetRelatedItemCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            relatedItem = new GetRelatedItemCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -8064,7 +8197,7 @@ public interface GraphQlQueries {
             commandForm.setFromItemName(fromItemName);
             commandForm.setToItemName(toItemName);
 
-            relatedItems = new GetRelatedItemsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            relatedItems = new GetRelatedItemsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -8095,7 +8228,7 @@ public interface GraphQlQueries {
             commandForm.setOrderTypeName(orderTypeName);
             commandForm.setUlid(id);
 
-            orderType = new GetOrderTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            orderType = new GetOrderTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -8116,7 +8249,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, OrderTypeConstants.COMPONENT_VENDOR_NAME, OrderTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = OrderUtil.getHome().getGetOrderTypesForm();
-                var entities = new GetOrderTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetOrderTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -8150,7 +8283,7 @@ public interface GraphQlQueries {
             commandForm.setOrderPriorityName(orderPriorityName);
             commandForm.setUlid(id);
 
-            orderPriority = new GetOrderPriorityCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            orderPriority = new GetOrderPriorityCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -8170,7 +8303,7 @@ public interface GraphQlQueries {
 
             commandForm.setOrderTypeName(orderTypeName);
 
-            orderPriorities = new GetOrderPrioritiesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            orderPriorities = new GetOrderPrioritiesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -8203,7 +8336,7 @@ public interface GraphQlQueries {
             commandForm.setOrderTimeTypeName(orderTimeTypeName);
             commandForm.setUlid(id);
 
-            orderTimeType = new GetOrderTimeTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            orderTimeType = new GetOrderTimeTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -8223,7 +8356,7 @@ public interface GraphQlQueries {
 
             commandForm.setOrderTypeName(orderTypeName);
 
-            orderTimeTypes = new GetOrderTimeTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            orderTimeTypes = new GetOrderTimeTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -8254,7 +8387,7 @@ public interface GraphQlQueries {
             commandForm.setWishlistTypeName(wishlistTypeName);
             commandForm.setUlid(id);
 
-            wishlistType = new GetWishlistTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            wishlistType = new GetWishlistTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -8275,7 +8408,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, WishlistTypeConstants.COMPONENT_VENDOR_NAME, WishlistTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = WishlistUtil.getHome().getGetWishlistTypesForm();
-                var entities = new GetWishlistTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetWishlistTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -8309,7 +8442,7 @@ public interface GraphQlQueries {
             commandForm.setWishlistPriorityName(wishlistPriorityName);
             commandForm.setUlid(id);
 
-            wishlistPriority = new GetWishlistPriorityCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            wishlistPriority = new GetWishlistPriorityCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -8329,7 +8462,7 @@ public interface GraphQlQueries {
 
             commandForm.setWishlistTypeName(wishlistTypeName);
 
-            wishlistPriorities = new GetWishlistPrioritiesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            wishlistPriorities = new GetWishlistPrioritiesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -8360,7 +8493,7 @@ public interface GraphQlQueries {
             commandForm.setTermTypeName(termTypeName);
             commandForm.setUlid(id);
 
-            termType = new GetTermTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            termType = new GetTermTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -8381,7 +8514,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, TermTypeConstants.COMPONENT_VENDOR_NAME, TermTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = TermUtil.getHome().getGetTermTypesForm();
-                var entities = new GetTermTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetTermTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -8411,7 +8544,7 @@ public interface GraphQlQueries {
             commandForm.setTermName(termName);
             commandForm.setUlid(id);
 
-            term = new GetTermCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            term = new GetTermCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -8432,7 +8565,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, TermConstants.COMPONENT_VENDOR_NAME, TermConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = TermUtil.getHome().getGetTermsForm();
-                var entities = new GetTermsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetTermsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -8462,7 +8595,7 @@ public interface GraphQlQueries {
             commandForm.setSecurityRoleGroupName(securityRoleGroupName);
             commandForm.setUlid(id);
 
-            securityRoleGroup = new GetSecurityRoleGroupCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            securityRoleGroup = new GetSecurityRoleGroupCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -8482,7 +8615,7 @@ public interface GraphQlQueries {
 
             commandForm.setParentSecurityRoleGroupName(parentSecurityRoleGroupName);
 
-            securityRoleGroups = new GetSecurityRoleGroupsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            securityRoleGroups = new GetSecurityRoleGroupsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -8515,7 +8648,7 @@ public interface GraphQlQueries {
             commandForm.setSecurityRoleName(securityRoleName);
             commandForm.setUlid(id);
 
-            securityRole = new GetSecurityRoleCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            securityRole = new GetSecurityRoleCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -8535,7 +8668,7 @@ public interface GraphQlQueries {
 
             commandForm.setSecurityRoleGroupName(securityRoleGroupName);
 
-            securityRoles = new GetSecurityRolesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            securityRoles = new GetSecurityRolesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -8566,7 +8699,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, PersonalTitleConstants.COMPONENT_VENDOR_NAME, PersonalTitleConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = PartyUtil.getHome().getGetPersonalTitlesForm();
-                var entities = new GetPersonalTitlesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetPersonalTitlesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -8596,7 +8729,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, NameSuffixConstants.COMPONENT_VENDOR_NAME, NameSuffixConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = PartyUtil.getHome().getGetNameSuffixesForm();
-                var entities = new GetNameSuffixesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetNameSuffixesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -8626,7 +8759,7 @@ public interface GraphQlQueries {
             commandForm.setTagScopeName(tagScopeName);
             commandForm.setUlid(id);
 
-            tagScope = new GetTagScopeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            tagScope = new GetTagScopeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -8647,7 +8780,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, TagScopeConstants.COMPONENT_VENDOR_NAME, TagScopeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = TagUtil.getHome().getGetTagScopesForm();
-                var entities = new GetTagScopesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetTagScopesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -8685,7 +8818,7 @@ public interface GraphQlQueries {
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
 
-            tagScopeEntityType = new GetTagScopeEntityTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            tagScopeEntityType = new GetTagScopeEntityTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -8709,7 +8842,7 @@ public interface GraphQlQueries {
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
 
-            tagScopeEntityTypes = new GetTagScopeEntityTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            tagScopeEntityTypes = new GetTagScopeEntityTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -8740,7 +8873,7 @@ public interface GraphQlQueries {
             commandForm.setTagName(tagName);
             commandForm.setUlid(id);
 
-            tag = new GetTagCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            tag = new GetTagCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -8760,7 +8893,7 @@ public interface GraphQlQueries {
 
             commandForm.setTagScopeName(tagScopeName);
 
-            tags = new GetTagsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            tags = new GetTagsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -8791,7 +8924,7 @@ public interface GraphQlQueries {
             commandForm.setTagScopeName(tagScopeName);
             commandForm.setTagName(tagName);
 
-            entityTag = new GetEntityTagCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            entityTag = new GetEntityTagCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -8815,7 +8948,7 @@ public interface GraphQlQueries {
             commandForm.setTagScopeName(tagScopeName);
             commandForm.setTagName(tagName);
 
-            entityTags = new GetEntityTagsCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            entityTags = new GetEntityTagsCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -8844,7 +8977,7 @@ public interface GraphQlQueries {
             commandForm.setGeoCodeTypeName(geoCodeTypeName);
             commandForm.setUlid(id);
 
-            geoCodeType = new GetGeoCodeTypeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            geoCodeType = new GetGeoCodeTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -8865,7 +8998,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, GeoCodeTypeConstants.COMPONENT_VENDOR_NAME, GeoCodeTypeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = GeoUtil.getHome().getGetGeoCodeTypesForm();
-                var entities = new GetGeoCodeTypesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetGeoCodeTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -8895,7 +9028,7 @@ public interface GraphQlQueries {
             commandForm.setGeoCodeScopeName(geoCodeScopeName);
             commandForm.setUlid(id);
 
-            geoCodeScope = new GetGeoCodeScopeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            geoCodeScope = new GetGeoCodeScopeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
@@ -8916,7 +9049,7 @@ public interface GraphQlQueries {
 
             try(var objectLimiter = new ObjectLimiter(env, GeoCodeScopeConstants.COMPONENT_VENDOR_NAME, GeoCodeScopeConstants.ENTITY_TYPE_NAME, totalCount)) {
                 var commandForm = GeoUtil.getHome().getGetGeoCodeScopesForm();
-                var entities = new GetGeoCodeScopesCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+                var entities = new GetGeoCodeScopesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
 
                 if(entities == null) {
                     data = Connections.emptyConnection();
@@ -8946,7 +9079,7 @@ public interface GraphQlQueries {
             commandForm.setGeoCodeName(geoCodeName);
             commandForm.setUlid(id);
 
-            geoCode = new GetGeoCodeCommand(getUserVisitPK(env), commandForm).runForGraphQl();
+            geoCode = new GetGeoCodeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }

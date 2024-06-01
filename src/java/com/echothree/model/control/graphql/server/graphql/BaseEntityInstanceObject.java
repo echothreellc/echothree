@@ -37,6 +37,7 @@ import com.echothree.model.control.workflow.server.graphql.WorkflowEntityStatusO
 import com.echothree.model.control.workflow.server.graphql.WorkflowSecurityUtils;
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
 import com.echothree.model.data.core.common.EntityAliasTypeConstants;
+import com.echothree.model.data.core.common.EntityAttributeGroupConstants;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.tag.common.TagScopeConstants;
@@ -51,7 +52,6 @@ import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
-import java.util.List;
 
 public abstract class BaseEntityInstanceObject
         extends BaseObject {
@@ -146,21 +146,26 @@ public abstract class BaseEntityInstanceObject
 
     @GraphQLField
     @GraphQLDescription("entity attribute groups")
-    public List<EntityAttributeGroupObject> getEntityAttributeGroups() {
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<EntityAttributeGroupObject> getEntityAttributeGroups(final DataFetchingEnvironment env) {
         var entityInstance = getEntityInstanceByBasePK();
 
         if(entityInstance != null) {
             var coreControl = Session.getModelController(CoreControl.class);
             var entityType = entityInstance.getEntityType();
+            var totalCount = coreControl.countEntityAttributeGroupsByEntityType(entityType);
 
             // Allow user to see all EntityAttributeGroups that have Entity Attributes in them
             // for the current object, regardless of permissions for the GetEntityAttributeGroups UC.
-            var entities = coreControl.getEntityAttributeGroupsByEntityType(entityType);
-            var entityAttributeGroups = new ArrayList<EntityAttributeGroupObject>(entities.size());
+            try(var objectLimiter = new ObjectLimiter(env, EntityAttributeGroupConstants.COMPONENT_VENDOR_NAME, EntityAttributeGroupConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = coreControl.getEntityAttributeGroupsByEntityType(entityType);
+                var entityAttributeGroups = new ArrayList<EntityAttributeGroupObject>(entities.size());
 
-            entities.forEach((entity) -> entityAttributeGroups.add(new EntityAttributeGroupObject(entity, entityInstance)));
+                entities.forEach((entity) -> entityAttributeGroups.add(new EntityAttributeGroupObject(entity, entityInstance)));
 
-            return entityAttributeGroups;
+                return new CountedObjects<>(objectLimiter, entityAttributeGroups);
+            }
         } else {
             return null;
         }
@@ -171,8 +176,8 @@ public abstract class BaseEntityInstanceObject
     public EntityAttributeGroupObject getEntityAttributeGroup(
             @GraphQLName("entityAttributeGroupName") @GraphQLNonNull final String entityAttributeGroupName) {
         var entityInstance = getEntityInstanceByBasePK();
-
         EntityAttributeGroup entityAttributeGroup;
+
         try {
             var form = CoreFormFactory.getGetEntityAttributeGroupForm();
 

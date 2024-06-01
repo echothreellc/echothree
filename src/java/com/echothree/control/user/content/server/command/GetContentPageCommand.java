@@ -122,7 +122,7 @@ public class GetContentPageCommand
     }
     
     @Override
-    protected BaseResult getTransfer(ContentPage contentPage) {
+    protected BaseResult getResult(ContentPage contentPage) {
         GetContentPageResult result = ContentResultFactory.getGetContentPageResult();
 
         if (contentPage != null) {

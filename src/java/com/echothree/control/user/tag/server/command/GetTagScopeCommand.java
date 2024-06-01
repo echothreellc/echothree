@@ -78,7 +78,7 @@ public class GetTagScopeCommand
     }
 
     @Override
-    protected BaseResult getTransfer(TagScope tagScope) {
+    protected BaseResult getResult(TagScope tagScope) {
         var tagControl = Session.getModelController(TagControl.class);
         var result = TagResultFactory.getGetTagScopeResult();
 

@@ -85,7 +85,7 @@ public class GetItemUseTypeCommand
     }
 
     @Override
-    protected BaseResult getTransfer(ItemUseType itemUseType) {
+    protected BaseResult getResult(ItemUseType itemUseType) {
         var itemControl = Session.getModelController(ItemControl.class);
         var result = ItemResultFactory.getGetItemUseTypeResult();
 

@@ -65,7 +65,7 @@ public class GetContentWebAddressCommand
     }
     
     @Override
-    protected BaseResult getTransfer(ContentWebAddress contentWebAddress) {
+    protected BaseResult getResult(ContentWebAddress contentWebAddress) {
         GetContentWebAddressResult result = ContentResultFactory.getGetContentWebAddressResult();
         
         if(contentWebAddress != null) {

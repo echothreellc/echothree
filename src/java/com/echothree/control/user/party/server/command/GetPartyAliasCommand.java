@@ -113,7 +113,7 @@ public class GetPartyAliasCommand
     }
 
     @Override
-    protected BaseResult getTransfer(PartyAlias partyAlias) {
+    protected BaseResult getResult(PartyAlias partyAlias) {
         var result = PartyResultFactory.getGetPartyAliasResult();
 
         if(partyAlias != null) {

@@ -79,7 +79,7 @@ public class GetOfferNameElementCommand
     }
     
     @Override
-    protected BaseResult getTransfer(OfferNameElement offerNameElement) {
+    protected BaseResult getResult(OfferNameElement offerNameElement) {
         var offerNameElementControl = Session.getModelController(OfferNameElementControl.class);
         GetOfferNameElementResult result = OfferResultFactory.getGetOfferNameElementResult();
 

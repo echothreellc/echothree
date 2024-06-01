@@ -78,7 +78,7 @@ public class GetFilterCommand
     }
 
     @Override
-    protected BaseResult getTransfer(Filter filter) {
+    protected BaseResult getResult(Filter filter) {
         var result = FilterResultFactory.getGetFilterResult();
 
         if(filter != null) {

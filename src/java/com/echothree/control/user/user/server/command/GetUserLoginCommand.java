@@ -142,7 +142,7 @@ public class GetUserLoginCommand
     }
     
     @Override
-    protected BaseResult getTransfer(UserLogin userLogin) {
+    protected BaseResult getResult(UserLogin userLogin) {
         UserControl userControl = getUserControl();
         GetUserLoginResult result = UserResultFactory.getGetUserLoginResult();
 

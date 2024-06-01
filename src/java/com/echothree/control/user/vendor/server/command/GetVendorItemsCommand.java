@@ -104,7 +104,7 @@ public class GetVendorItemsCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<VendorItem> entities) {
+    protected BaseResult getResult(Collection<VendorItem> entities) {
         var result = VendorResultFactory.getGetVendorItemsResult();
 
         if(entities != null) {

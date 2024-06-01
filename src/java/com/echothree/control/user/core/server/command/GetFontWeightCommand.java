@@ -87,7 +87,7 @@ public class GetFontWeightCommand
     }
     
     @Override
-    protected BaseResult getTransfer(FontWeight fontWeight) {
+    protected BaseResult getResult(FontWeight fontWeight) {
         var coreControl = getCoreControl();
         GetFontWeightResult result = CoreResultFactory.getGetFontWeightResult();
 

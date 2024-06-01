@@ -139,7 +139,7 @@ public class GetContentCategoryItemsCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<ContentCategoryItem> entities) {
+    protected BaseResult getResult(Collection<ContentCategoryItem> entities) {
         GetContentCategoryItemsResult result = ContentResultFactory.getGetContentCategoryItemsResult();
 
         if(entities != null) {

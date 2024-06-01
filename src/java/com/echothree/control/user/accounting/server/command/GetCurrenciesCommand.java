@@ -55,7 +55,7 @@ public class GetCurrenciesCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<Currency> entities) {
+    protected BaseResult getResult(Collection<Currency> entities) {
         GetCurrenciesResult result = AccountingResultFactory.getGetCurrenciesResult();
         var accountingControl = Session.getModelController(AccountingControl.class);
         

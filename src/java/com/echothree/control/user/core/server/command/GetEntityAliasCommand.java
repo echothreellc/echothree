@@ -78,7 +78,7 @@ public class GetEntityAliasCommand
     }
 
     @Override
-    protected BaseResult getTransfer(EntityAlias entityAlias) {
+    protected BaseResult getResult(EntityAlias entityAlias) {
         var coreControl = getCoreControl();
         var result = CoreResultFactory.getGetEntityAliasResult();
 

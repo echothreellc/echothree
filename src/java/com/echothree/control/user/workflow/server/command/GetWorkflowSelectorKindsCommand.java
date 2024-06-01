@@ -103,7 +103,7 @@ public class GetWorkflowSelectorKindsCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<WorkflowSelectorKind> entities) {
+    protected BaseResult getResult(Collection<WorkflowSelectorKind> entities) {
         var result = WorkflowResultFactory.getGetWorkflowSelectorKindsResult();
 
         if(entities != null) {

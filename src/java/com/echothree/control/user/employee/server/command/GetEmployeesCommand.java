@@ -65,7 +65,7 @@ public class GetEmployeesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<PartyEmployee> entities) {
+    protected BaseResult getResult(Collection<PartyEmployee> entities) {
         var result = EmployeeResultFactory.getGetEmployeesResult();
 
         if(entities != null) {

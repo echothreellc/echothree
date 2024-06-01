@@ -144,7 +144,7 @@ public class GetCountyCommand
     }
 
     @Override
-    protected BaseResult getTransfer(GeoCode entity) {
+    protected BaseResult getResult(GeoCode entity) {
         var result = GeoResultFactory.getGetCountyResult();
 
         if(entity != null) {

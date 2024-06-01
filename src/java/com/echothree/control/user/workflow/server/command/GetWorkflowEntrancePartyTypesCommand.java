@@ -85,7 +85,7 @@ public class GetWorkflowEntrancePartyTypesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<WorkflowEntrancePartyType> entities) {
+    protected BaseResult getResult(Collection<WorkflowEntrancePartyType> entities) {
         var result = WorkflowResultFactory.getGetWorkflowEntrancePartyTypesResult();
 
         if(entities != null) {

@@ -88,7 +88,7 @@ public class GetSelectorCommand
     }
 
     @Override
-    protected BaseResult getTransfer(Selector selector) {
+    protected BaseResult getResult(Selector selector) {
         var selectorControl = Session.getModelController(SelectorControl.class);
         var result = SelectorResultFactory.getGetSelectorResult();
 

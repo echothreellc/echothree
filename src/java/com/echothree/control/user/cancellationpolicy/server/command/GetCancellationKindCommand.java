@@ -76,7 +76,7 @@ public class GetCancellationKindCommand
     }
 
     @Override
-    protected BaseResult getTransfer(CancellationKind cancellationKind) {
+    protected BaseResult getResult(CancellationKind cancellationKind) {
         var cancellationControl = Session.getModelController(CancellationPolicyControl.class);
         var result = CancellationPolicyResultFactory.getGetCancellationKindResult();
 

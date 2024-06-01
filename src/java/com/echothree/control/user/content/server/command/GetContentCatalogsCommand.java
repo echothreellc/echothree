@@ -103,7 +103,7 @@ public class GetContentCatalogsCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<ContentCatalog> entities) {
+    protected BaseResult getResult(Collection<ContentCatalog> entities) {
         GetContentCatalogsResult result = ContentResultFactory.getGetContentCatalogsResult();
         
         if(entities != null) {

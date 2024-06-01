@@ -68,7 +68,7 @@ public class GetSequenceTypesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<SequenceType> entities) {
+    protected BaseResult getResult(Collection<SequenceType> entities) {
         var result = SequenceResultFactory.getGetSequenceTypesResult();
         var sequenceControl = Session.getModelController(SequenceControl.class);
 

@@ -55,7 +55,7 @@ public class GetNameSuffixesCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<NameSuffix> entities) {
+    protected BaseResult getResult(Collection<NameSuffix> entities) {
         GetNameSuffixesResult result = PartyResultFactory.getGetNameSuffixesResult();
         var partyControl = Session.getModelController(PartyControl.class);
         

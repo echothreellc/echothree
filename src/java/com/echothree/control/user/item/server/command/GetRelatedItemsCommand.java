@@ -125,7 +125,7 @@ public class GetRelatedItemsCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<RelatedItem> entities) {
+    protected BaseResult getResult(Collection<RelatedItem> entities) {
         var result = ItemResultFactory.getGetRelatedItemsResult();
 
         if(entities != null) {

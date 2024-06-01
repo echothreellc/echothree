@@ -76,7 +76,7 @@ public class GetFilterKindCommand
     }
 
     @Override
-    protected BaseResult getTransfer(FilterKind filterKind) {
+    protected BaseResult getResult(FilterKind filterKind) {
         var filterControl = Session.getModelController(FilterControl.class);
         var result = FilterResultFactory.getGetFilterKindResult();
 

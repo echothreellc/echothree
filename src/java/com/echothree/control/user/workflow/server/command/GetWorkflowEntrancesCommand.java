@@ -80,7 +80,7 @@ public class GetWorkflowEntrancesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<WorkflowEntrance> entities) {
+    protected BaseResult getResult(Collection<WorkflowEntrance> entities) {
         var result = WorkflowResultFactory.getGetWorkflowEntrancesResult();
 
         if(entities != null) {

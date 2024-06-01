@@ -68,7 +68,7 @@ public class GetSourcesCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<Source> entities) {
+    protected BaseResult getResult(Collection<Source> entities) {
         GetSourcesResult result = OfferResultFactory.getGetSourcesResult();
         var sourceControl = Session.getModelController(SourceControl.class);
         

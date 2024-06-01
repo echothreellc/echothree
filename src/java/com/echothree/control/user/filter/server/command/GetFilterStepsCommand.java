@@ -85,7 +85,7 @@ public class GetFilterStepsCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<FilterStep> entities) {
+    protected BaseResult getResult(Collection<FilterStep> entities) {
         var result = FilterResultFactory.getGetFilterStepsResult();
 
         if(entities != null) {

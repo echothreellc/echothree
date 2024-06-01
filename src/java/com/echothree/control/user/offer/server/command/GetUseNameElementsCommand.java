@@ -69,7 +69,7 @@ public class GetUseNameElementsCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<UseNameElement> entities) {
+    protected BaseResult getResult(Collection<UseNameElement> entities) {
         GetUseNameElementsResult result = OfferResultFactory.getGetUseNameElementsResult();
         var useNameElementControl = Session.getModelController(UseNameElementControl.class);
         

@@ -69,7 +69,7 @@ public class GetUsesCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<Use> entities) {
+    protected BaseResult getResult(Collection<Use> entities) {
         GetUsesResult result = OfferResultFactory.getGetUsesResult();
         var useControl = Session.getModelController(UseControl.class);
         

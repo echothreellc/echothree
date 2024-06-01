@@ -81,7 +81,7 @@ public class GetCompanyCommand
     }
 
     @Override
-    protected BaseResult getTransfer(PartyCompany partyCompany) {
+    protected BaseResult getResult(PartyCompany partyCompany) {
         var result = PartyResultFactory.getGetCompanyResult();
 
         if(partyCompany != null) {

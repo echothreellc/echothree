@@ -683,6 +683,13 @@ public class CoreControl
         return getComponentVendorByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
+    public long countComponentVendors() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM componentvendors, componentvendordetails " +
+                "WHERE cvnd_activedetailid = cvndd_componentvendordetailid");
+    }
+
     public ComponentVendor getComponentVendorByName(String componentVendorName, EntityPermission entityPermission) {
         ComponentVendor componentVendor;
         
@@ -749,7 +756,8 @@ public class CoreControl
                 "SELECT _ALL_ " +
                 "FROM componentvendors, componentvendordetails " +
                 "WHERE cvnd_activedetailid = cvndd_componentvendordetailid " +
-                "ORDER BY cvndd_componentvendorname");
+                "ORDER BY cvndd_componentvendorname " +
+                "_LIMIT_");
         
         return ComponentVendorFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
@@ -4699,6 +4707,23 @@ public class CoreControl
         return entityAlias;
     }
 
+    public long countEntityAliasesByEntityInstance(EntityInstance entityInstance) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM entityaliases " +
+                "WHERE enial_eni_entityinstanceid = ? AND enial_thrutime = ?",
+                entityInstance, Session.MAX_TIME);
+    }
+
+    public long countEntityAliasesByEntityAliasType(EntityAliasType entityAliasType) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM entityaliases " +
+                "WHERE enial_eniat_entityaliastypeid = ? AND enial_thrutime = ?",
+                entityAliasType, Session.MAX_TIME);
+    }
+
+
     private EntityAlias getEntityAlias(EntityInstance entityInstance, EntityAliasType entityAliasType,
             EntityPermission entityPermission) {
         EntityAlias entityAlias;
@@ -4757,7 +4782,8 @@ public class CoreControl
                 query = "SELECT _ALL_ " +
                         "FROM entityaliases " +
                         "WHERE enial_eniat_entityaliastypeid = ? AND enial_thrutime = ? " +
-                        "ORDER BY enial_alias";
+                        "ORDER BY enial_alias " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM entityaliases " +
@@ -4795,7 +4821,8 @@ public class CoreControl
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
                         "FROM entityaliases " +
-                        "WHERE enial_eni_entityinstanceid = ? AND enial_thrutime = ?";
+                        "WHERE enial_eni_entityinstanceid = ? AND enial_thrutime = ? " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM entityaliases " +
@@ -4945,7 +4972,25 @@ public class CoreControl
     public EntityAttributeGroup getEntityAttributeGroupByEntityInstanceForUpdate(EntityInstance entityInstance) {
         return getEntityAttributeGroupByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
-    
+
+    public long countEntityAttributeGroups() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM entityattributegroups, entityattributegroupdetails " +
+                "WHERE enagp_activedetailid = enagpdt_entityattributegroupdetailid");
+    }
+
+    public long countEntityAttributeGroupsByEntityType(EntityType entityType) {
+        return session.queryForLong(
+                "SELECT COUNT(*) OVER() " +
+                "FROM entityattributegroups, entityattributegroupdetails, entityattributeentityattributegroups, entityattributes, entityattributedetails " +
+                "WHERE enagp_lastdetailid = enagpdt_entityattributegroupdetailid " +
+                "AND enagp_entityattributegroupid = enaenagp_enagp_entityattributegroupid AND enaenagp_ena_entityattributeid = ena_entityattributeid AND enaenagp_thrutime = ? " +
+                "AND ena_lastdetailid = enadt_entityattributedetailid AND enadt_ent_entitytypeid = ? " +
+                "GROUP BY enagp_entityattributegroupid",
+                Session.MAX_TIME, entityType);
+    }
+
     private List<EntityAttributeGroup> getEntityAttributeGroups(EntityPermission entityPermission) {
         String query = null;
         
@@ -4988,7 +5033,8 @@ public class CoreControl
                         + "AND enagp_entityattributegroupid = enaenagp_enagp_entityattributegroupid AND enaenagp_ena_entityattributeid = ena_entityattributeid AND enaenagp_thrutime = ? "
                         + "AND ena_lastdetailid = enadt_entityattributedetailid AND enadt_ent_entitytypeid = ? "
                         + "GROUP BY enagp_entityattributegroupid "
-                        + "ORDER BY enagpdt_sortorder, enagpdt_entityattributegroupname";
+                        + "ORDER BY enagpdt_sortorder, enagpdt_entityattributegroupname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ "
                         + "FROM entityattributegroups, entityattributegroupdetails, entityattributeentityattributegroups, entityattributes, entityattributedetails "
@@ -5444,6 +5490,25 @@ public class CoreControl
                 entityType);
     }
 
+    public long countEntityAttributesByEntityTypeAndEntityAttributeType(EntityType entityType, EntityAttributeType entityAttributeType) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM entityattributes, entityattributedetails " +
+                "WHERE ena_activedetailid = enadt_entityattributedetailid " +
+                "AND enadt_ent_entitytypeid = ? AND enadt_enat_entityattributetypeid = ?",
+                entityType, entityAttributeType);
+    }
+
+    public long countEntityAttributesByEntityAttributeGroupAndEntityType(EntityAttributeGroup entityAttributeGroup, EntityType entityType) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM entityattributeentityattributegroups, entityattributes, entityattributedetails " +
+                "WHERE enaenagp_enagp_entityattributegroupid = ? AND enaenagp_thrutime = ? " +
+                "AND enaenagp_ena_entityattributeid = ena_entityattributeid " +
+                "AND ena_lastdetailid = enadt_entityattributedetailid AND enadt_ent_entitytypeid = ?",
+                entityAttributeGroup, Session.MAX_TIME, entityType);
+    }
+
     public EntityAttribute getEntityAttributeByName(EntityType entityType, String entityAttributeName, EntityPermission entityPermission) {
         EntityAttribute entityAttribute;
         
@@ -5545,7 +5610,8 @@ public class CoreControl
                         "FROM entityattributes, entityattributedetails " +
                         "WHERE ena_activedetailid = enadt_entityattributedetailid " +
                         "AND enadt_ent_entitytypeid = ? AND enadt_enat_entityattributetypeid = ? " +
-                        "ORDER BY enadt_sortorder, enadt_entityattributename";
+                        "ORDER BY enadt_sortorder, enadt_entityattributename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM entityattributes, entityattributedetails " +
@@ -5590,7 +5656,8 @@ public class CoreControl
                         + "WHERE enaenagp_enagp_entityattributegroupid = ? AND enaenagp_thrutime = ? "
                         + "AND enaenagp_ena_entityattributeid = ena_entityattributeid "
                         + "AND ena_lastdetailid = enadt_entityattributedetailid AND enadt_ent_entitytypeid = ? "
-                        + "ORDER BY enaenagp_sortorder, enadt_sortorder, enadt_entityattributename";
+                        + "ORDER BY enaenagp_sortorder, enadt_sortorder, enadt_entityattributename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ "
                         + "FROM entityattributeentityattributegroups, entityattributes, entityattributedetails "
@@ -6601,7 +6668,8 @@ public class CoreControl
                         + "FROM entityattributeentityattributegroups, entityattributegroups, entityattributegroupdetails "
                         + "WHERE enaenagp_ena_entityattributeid = ? AND enaenagp_thrutime = ? "
                         + "AND enaenagp_enagp_entityattributegroupid = enagp_entityattributegroupid AND enagp_lastdetailid = enagpdt_entityattributegroupdetailid "
-                        + "ORDER BY enaenagp_sortorder, enagpdt_sortorder, enagpdt_entityattributegroupname";
+                        + "ORDER BY enaenagp_sortorder, enagpdt_sortorder, enagpdt_entityattributegroupname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ "
                         + "FROM entityattributeentityattributegroups "
@@ -6642,7 +6710,8 @@ public class CoreControl
                         + "FROM entityattributeentityattributegroups, entityattributegroups, entityattributegroupdetails "
                         + "WHERE enaenagp_enagp_entityattributegroupid = ? AND enaenagp_thrutime = ? "
                         + "AND enaenagp_enagp_entityattributegroupid = enagp_entityattributegroupid AND enagp_lastdetailid = enagpdt_entityattributegroupdetailid "
-                        + "ORDER BY enaenagp_sortorder, enagpdt_sortorder, enagpdt_entityattributegroupname";
+                        + "ORDER BY enaenagp_sortorder, enagpdt_sortorder, enagpdt_entityattributegroupname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ "
                         + "FROM entityattributeentityattributegroups "

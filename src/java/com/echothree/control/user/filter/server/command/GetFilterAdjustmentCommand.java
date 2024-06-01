@@ -78,7 +78,7 @@ public class GetFilterAdjustmentCommand
     }
 
     @Override
-    protected BaseResult getTransfer(FilterAdjustment filterAdjustment) {
+    protected BaseResult getResult(FilterAdjustment filterAdjustment) {
         var result = FilterResultFactory.getGetFilterAdjustmentResult();
 
         if(filterAdjustment != null) {

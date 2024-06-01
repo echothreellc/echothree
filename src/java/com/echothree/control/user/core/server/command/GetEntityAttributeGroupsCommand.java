@@ -25,7 +25,7 @@ import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -33,7 +33,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class GetEntityAttributeGroupsCommand
-        extends BaseMultipleEntitiesCommand<EntityAttributeGroup, GetEntityAttributeGroupsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<EntityAttributeGroup, GetEntityAttributeGroupsForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -56,14 +56,22 @@ public class GetEntityAttributeGroupsCommand
     }
 
     @Override
-    protected Collection<EntityAttributeGroup> getEntities() {
-        var coreControl = getCoreControl();
-
-        return coreControl.getEntityAttributeGroups();
+    protected void handleForm() {
+        // No form fields.
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<EntityAttributeGroup> entities) {
+    protected Long getTotalEntities() {
+        return getCoreControl().countEntityAttributeGroups();
+    }
+
+    @Override
+    protected Collection<EntityAttributeGroup> getEntities() {
+        return getCoreControl().getEntityAttributeGroups();
+    }
+
+    @Override
+    protected BaseResult getResult(Collection<EntityAttributeGroup> entities) {
         var result = CoreResultFactory.getGetEntityAttributeGroupsResult();
 
         if(entities != null) {

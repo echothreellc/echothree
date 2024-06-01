@@ -23,11 +23,12 @@ import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
 import com.echothree.model.control.security.common.SecurityRoles;
 import com.echothree.model.data.core.server.entity.EntityAlias;
+import com.echothree.model.data.core.server.entity.EntityAliasType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -35,7 +36,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class GetEntityAliasesCommand
-        extends BaseMultipleEntitiesCommand<EntityAlias, GetEntityAliasesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<EntityAlias, GetEntityAliasesForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -64,22 +65,35 @@ public class GetEntityAliasesCommand
         super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, true);
     }
 
+    EntityAliasType entityAliasType;
+
+    @Override
+    protected void handleForm() {
+        entityAliasType = EntityAliasTypeLogic.getInstance().getEntityAliasTypeByUniversalSpec(this, form);
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return hasExecutionErrors() ? null :
+                getCoreControl().countEntityAliasesByEntityAliasType(entityAliasType);
+    }
+
+
     @Override
     protected Collection<EntityAlias> getEntities() {
         Collection<EntityAlias> entityAliass = null;
-        var entity = EntityAliasTypeLogic.getInstance().getEntityAliasTypeByUniversalSpec(this, form);
 
         if(!hasExecutionErrors()) {
             var coreControl = getCoreControl();
 
-            entityAliass = coreControl.getEntityAliasesByEntityAliasType(entity);
+            entityAliass = coreControl.getEntityAliasesByEntityAliasType(entityAliasType);
         }
 
         return entityAliass;
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<EntityAlias> entities) {
+    protected BaseResult getResult(Collection<EntityAlias> entities) {
         var result = CoreResultFactory.getGetEntityAliasesResult();
 
         if(entities != null) {

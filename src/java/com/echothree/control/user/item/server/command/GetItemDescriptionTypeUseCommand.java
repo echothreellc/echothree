@@ -90,7 +90,7 @@ public class GetItemDescriptionTypeUseCommand
     }
 
     @Override
-    protected BaseResult getTransfer(ItemDescriptionTypeUse itemDescriptionTypeUse) {
+    protected BaseResult getResult(ItemDescriptionTypeUse itemDescriptionTypeUse) {
         var result = ItemResultFactory.getGetItemDescriptionTypeUseResult();
 
         if(itemDescriptionTypeUse != null) {

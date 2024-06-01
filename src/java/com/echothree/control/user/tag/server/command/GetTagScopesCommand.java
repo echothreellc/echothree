@@ -67,7 +67,7 @@ public class GetTagScopesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<TagScope> entities) {
+    protected BaseResult getResult(Collection<TagScope> entities) {
         var result = TagResultFactory.getGetTagScopesResult();
         var tagControl = Session.getModelController(TagControl.class);
 

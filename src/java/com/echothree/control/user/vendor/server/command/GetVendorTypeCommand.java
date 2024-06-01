@@ -76,7 +76,7 @@ public class GetVendorTypeCommand
     }
 
     @Override
-    protected BaseResult getTransfer(VendorType vendorType) {
+    protected BaseResult getResult(VendorType vendorType) {
         var vendorControl = Session.getModelController(VendorControl.class);
         var result = VendorResultFactory.getGetVendorTypeResult();
 

@@ -81,7 +81,7 @@ public class GetReturnPoliciesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<ReturnPolicy> entities) {
+    protected BaseResult getResult(Collection<ReturnPolicy> entities) {
         var result = ReturnPolicyResultFactory.getGetReturnPoliciesResult();
 
         if(entities != null) {

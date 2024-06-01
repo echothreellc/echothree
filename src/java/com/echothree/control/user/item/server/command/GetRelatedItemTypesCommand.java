@@ -54,7 +54,7 @@ public class GetRelatedItemTypesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<RelatedItemType> entities) {
+    protected BaseResult getResult(Collection<RelatedItemType> entities) {
         var result = ItemResultFactory.getGetRelatedItemTypesResult();
 
         if(entities != null) {

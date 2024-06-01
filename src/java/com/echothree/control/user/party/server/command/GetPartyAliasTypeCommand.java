@@ -77,7 +77,7 @@ public class GetPartyAliasTypeCommand
     }
 
     @Override
-    protected BaseResult getTransfer(PartyAliasType partyAliasType) {
+    protected BaseResult getResult(PartyAliasType partyAliasType) {
         var partyControl = Session.getModelController(PartyControl.class);
         var result = PartyResultFactory.getGetPartyAliasTypeResult();
 

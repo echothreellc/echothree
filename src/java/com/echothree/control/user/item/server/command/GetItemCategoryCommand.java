@@ -102,7 +102,7 @@ public class GetItemCategoryCommand
     }
     
     @Override
-    protected BaseResult getTransfer(ItemCategory itemCategory) {
+    protected BaseResult getResult(ItemCategory itemCategory) {
         var itemControl = Session.getModelController(ItemControl.class);
         GetItemCategoryResult result = ItemResultFactory.getGetItemCategoryResult();
 

@@ -177,7 +177,7 @@ public class GetRecoveryQuestionCommand
     }
     
     @Override
-    protected BaseResult getTransfer(RecoveryQuestion recoveryQuestion) {
+    protected BaseResult getResult(RecoveryQuestion recoveryQuestion) {
         UserControl userControl = getUserControl();
         GetRecoveryQuestionResult result = UserResultFactory.getGetRecoveryQuestionResult();
 

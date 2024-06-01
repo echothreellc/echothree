@@ -118,7 +118,7 @@ public class GetCityCommand
     }
 
     @Override
-    protected BaseResult getTransfer(GeoCode entity) {
+    protected BaseResult getResult(GeoCode entity) {
         var result = GeoResultFactory.getGetCityResult();
 
         if(entity != null) {

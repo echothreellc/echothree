@@ -103,7 +103,7 @@ public class GetZipCodeCommand
     }
 
     @Override
-    protected BaseResult getTransfer(GeoCode entity) {
+    protected BaseResult getResult(GeoCode entity) {
         var result = GeoResultFactory.getGetZipCodeResult();
 
         if(entity != null) {

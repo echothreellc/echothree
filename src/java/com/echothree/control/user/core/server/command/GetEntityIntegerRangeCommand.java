@@ -92,7 +92,7 @@ public class GetEntityIntegerRangeCommand
     }
 
     @Override
-    protected BaseResult getTransfer(EntityIntegerRange entityIntegerRange) {
+    protected BaseResult getResult(EntityIntegerRange entityIntegerRange) {
         var result = CoreResultFactory.getGetEntityIntegerRangeResult();
 
         if(entityIntegerRange != null) {

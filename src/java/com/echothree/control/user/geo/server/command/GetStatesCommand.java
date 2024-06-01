@@ -84,7 +84,7 @@ public class GetStatesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<GeoCode> entities) {
+    protected BaseResult getResult(Collection<GeoCode> entities) {
         var result = GeoResultFactory.getGetStatesResult();
 
         if(entities != null) {

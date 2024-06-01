@@ -68,7 +68,7 @@ public class GetContentWebAddressesCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<ContentWebAddress> entities) {
+    protected BaseResult getResult(Collection<ContentWebAddress> entities) {
         var contentControl = Session.getModelController(ContentControl.class);
         GetContentWebAddressesResult result = ContentResultFactory.getGetContentWebAddressesResult();
         

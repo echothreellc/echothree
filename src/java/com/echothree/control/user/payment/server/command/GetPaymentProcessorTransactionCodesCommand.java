@@ -79,7 +79,7 @@ public class GetPaymentProcessorTransactionCodesCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<PaymentProcessorTransactionCode> entities) {
+    protected BaseResult getResult(Collection<PaymentProcessorTransactionCode> entities) {
         GetPaymentProcessorTransactionCodesResult result = PaymentResultFactory.getGetPaymentProcessorTransactionCodesResult();
         var paymentProcessorTransactionCodeControl = Session.getModelController(PaymentProcessorTransactionCodeControl.class);
         
