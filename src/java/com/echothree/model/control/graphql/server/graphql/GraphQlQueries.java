@@ -374,7 +374,6 @@ import com.echothree.model.control.content.server.graphql.ContentPageLayoutObjec
 import com.echothree.model.control.content.server.graphql.ContentPageObject;
 import com.echothree.model.control.content.server.graphql.ContentSectionObject;
 import com.echothree.model.control.content.server.graphql.ContentWebAddressObject;
-import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.graphql.AppearanceObject;
 import com.echothree.model.control.core.server.graphql.ColorObject;
 import com.echothree.model.control.core.server.graphql.ComponentVendorObject;
@@ -567,6 +566,7 @@ import com.echothree.model.data.content.server.entity.ContentSection;
 import com.echothree.model.data.content.server.entity.ContentWebAddress;
 import com.echothree.model.data.core.common.ComponentVendorConstants;
 import com.echothree.model.data.core.common.EntityInstanceConstants;
+import com.echothree.model.data.core.common.EntityTypeConstants;
 import com.echothree.model.data.core.server.entity.Appearance;
 import com.echothree.model.data.core.server.entity.Color;
 import com.echothree.model.data.core.server.entity.ComponentVendor;
@@ -3748,30 +3748,38 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("entityTypes")
-    static Collection<EntityTypeObject> entityTypes(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<EntityTypeObject> entityTypes(final DataFetchingEnvironment env,
             @GraphQLName("componentVendorName") final String componentVendorName) {
-        Collection<EntityType> entityTypes;
-        Collection<EntityTypeObject> entityTypeObjects;
+        CountingPaginatedData<EntityTypeObject> data;
 
         try {
             var commandForm = CoreUtil.getHome().getGetEntityTypesForm();
+            var command = new GetEntityTypesCommand(getUserVisitPK(env), commandForm);
 
             commandForm.setComponentVendorName(componentVendorName);
 
-            entityTypes = new GetEntityTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, EntityTypeConstants.COMPONENT_VENDOR_NAME, EntityTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var allocationPriorities = entities.stream()
+                            .map(EntityTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, allocationPriorities);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(entityTypes == null) {
-            entityTypeObjects = emptyList();
-        } else {
-            entityTypeObjects = new ArrayList<>(entityTypes.size());
-
-            entityTypes.stream().map(EntityTypeObject::new).forEachOrdered(entityTypeObjects::add);
-        }
-
-        return entityTypeObjects;
+        return data;
     }
 
     @GraphQLField
