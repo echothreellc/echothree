@@ -4707,6 +4707,23 @@ public class CoreControl
         return entityAlias;
     }
 
+    public long countEntityAliasesByEntityInstance(EntityInstance entityInstance) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM entityaliases " +
+                "WHERE enial_eni_entityinstanceid = ? AND enial_thrutime = ?",
+                entityInstance, Session.MAX_TIME);
+    }
+
+    public long countEntityAliasesByEntityAliasType(EntityAliasType entityAliasType) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM entityaliases " +
+                "WHERE enial_eniat_entityaliastypeid = ? AND enial_thrutime = ?",
+                entityAliasType, Session.MAX_TIME);
+    }
+
+
     private EntityAlias getEntityAlias(EntityInstance entityInstance, EntityAliasType entityAliasType,
             EntityPermission entityPermission) {
         EntityAlias entityAlias;
@@ -4765,7 +4782,8 @@ public class CoreControl
                 query = "SELECT _ALL_ " +
                         "FROM entityaliases " +
                         "WHERE enial_eniat_entityaliastypeid = ? AND enial_thrutime = ? " +
-                        "ORDER BY enial_alias";
+                        "ORDER BY enial_alias " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM entityaliases " +
@@ -4803,7 +4821,8 @@ public class CoreControl
             if(entityPermission.equals(EntityPermission.READ_ONLY)) {
                 query = "SELECT _ALL_ " +
                         "FROM entityaliases " +
-                        "WHERE enial_eni_entityinstanceid = ? AND enial_thrutime = ?";
+                        "WHERE enial_eni_entityinstanceid = ? AND enial_thrutime = ? " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM entityaliases " +

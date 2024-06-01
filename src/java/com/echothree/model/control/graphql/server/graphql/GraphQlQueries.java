@@ -565,6 +565,7 @@ import com.echothree.model.data.content.server.entity.ContentPageLayoutArea;
 import com.echothree.model.data.content.server.entity.ContentSection;
 import com.echothree.model.data.content.server.entity.ContentWebAddress;
 import com.echothree.model.data.core.common.ComponentVendorConstants;
+import com.echothree.model.data.core.common.EntityAliasConstants;
 import com.echothree.model.data.core.common.EntityAliasTypeConstants;
 import com.echothree.model.data.core.common.EntityInstanceConstants;
 import com.echothree.model.data.core.common.EntityTypeConstants;
@@ -3531,36 +3532,44 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("entityAliases")
-    static Collection<EntityAliasObject> entityAliases(final DataFetchingEnvironment env,
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<EntityAliasObject> entityAliases(final DataFetchingEnvironment env,
             @GraphQLName("componentVendorName") final String componentVendorName,
             @GraphQLName("entityTypeName") final String entityTypeName,
             @GraphQLName("entityAliasTypeName") final String entityAliasTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
-        Collection<EntityAlias> entityAliases;
-        Collection<EntityAliasObject> entityAliasObjects;
+        CountingPaginatedData<EntityAliasObject> data;
 
         try {
             var commandForm = CoreUtil.getHome().getGetEntityAliasesForm();
+            var command = new GetEntityAliasesCommand(getUserVisitPK(env), commandForm);
 
             commandForm.setComponentVendorName(componentVendorName);
             commandForm.setEntityTypeName(entityTypeName);
             commandForm.setEntityAliasTypeName(entityAliasTypeName);
             commandForm.setUlid(id);
 
-            entityAliases = new GetEntityAliasesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, EntityAliasConstants.COMPONENT_VENDOR_NAME, EntityAliasConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var entityAliases = entities.stream()
+                            .map(EntityAliasObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, entityAliases);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(entityAliases == null) {
-            entityAliasObjects = emptyList();
-        } else {
-            entityAliasObjects = new ArrayList<>(entityAliases.size());
-
-            entityAliases.stream().map(EntityAliasObject::new).forEachOrdered(entityAliasObjects::add);
-        }
-
-        return entityAliasObjects;
+        return data;
     }
 
 
