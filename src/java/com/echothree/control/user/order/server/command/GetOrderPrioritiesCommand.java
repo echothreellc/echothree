@@ -77,7 +77,7 @@ public class GetOrderPrioritiesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<OrderPriority> entities) {
+    protected BaseResult getResult(Collection<OrderPriority> entities) {
         var result = OrderResultFactory.getGetOrderPrioritiesResult();
 
         if(entities != null) {

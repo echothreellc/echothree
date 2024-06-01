@@ -66,7 +66,7 @@ public class GetItemDescriptionTypeUseTypesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<ItemDescriptionTypeUseType> entities) {
+    protected BaseResult getResult(Collection<ItemDescriptionTypeUseType> entities) {
         var result = ItemResultFactory.getGetItemDescriptionTypeUseTypesResult();
 
         if(entities != null) {

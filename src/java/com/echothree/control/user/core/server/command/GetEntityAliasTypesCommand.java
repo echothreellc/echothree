@@ -78,7 +78,7 @@ public class GetEntityAliasTypesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<EntityAliasType> entities) {
+    protected BaseResult getResult(Collection<EntityAliasType> entities) {
         var result = CoreResultFactory.getGetEntityAliasTypesResult();
 
         if(entities != null) {

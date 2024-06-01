@@ -67,7 +67,7 @@ public class GetColorsCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<Color> entities) {
+    protected BaseResult getResult(Collection<Color> entities) {
         GetColorsResult result = CoreResultFactory.getGetColorsResult();
         var coreControl = getCoreControl();
         UserVisit userVisit = getUserVisit();

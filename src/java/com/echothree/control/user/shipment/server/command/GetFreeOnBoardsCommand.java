@@ -55,7 +55,7 @@ public class GetFreeOnBoardsCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<FreeOnBoard> entities) {
+    protected BaseResult getResult(Collection<FreeOnBoard> entities) {
         GetFreeOnBoardsResult result = ShipmentResultFactory.getGetFreeOnBoardsResult();
         var freeOnBoardControl = Session.getModelController(FreeOnBoardControl.class);
         

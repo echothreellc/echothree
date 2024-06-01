@@ -83,7 +83,7 @@ public class GetDepartmentsCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<PartyDepartment> entities) {
+    protected BaseResult getResult(Collection<PartyDepartment> entities) {
         var result = PartyResultFactory.getGetDepartmentsResult();
 
         if(entities != null) {

@@ -69,7 +69,7 @@ public class GetSelectorKindsCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<SelectorKind> entities) {
+    protected BaseResult getResult(Collection<SelectorKind> entities) {
         GetSelectorKindsResult result = SelectorResultFactory.getGetSelectorKindsResult();
         var selectorControl = Session.getModelController(SelectorControl.class);
 

@@ -55,7 +55,7 @@ public class GetPaymentProcessorTypesCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<PaymentProcessorType> entities) {
+    protected BaseResult getResult(Collection<PaymentProcessorType> entities) {
         GetPaymentProcessorTypesResult result = PaymentResultFactory.getGetPaymentProcessorTypesResult();
         var paymentProcessorTypeControl = Session.getModelController(PaymentProcessorTypeControl.class);
         

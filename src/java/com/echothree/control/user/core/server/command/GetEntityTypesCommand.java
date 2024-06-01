@@ -87,7 +87,7 @@ public class GetEntityTypesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<EntityType> entities) {
+    protected BaseResult getResult(Collection<EntityType> entities) {
         var result = CoreResultFactory.getGetEntityTypesResult();
 
         if(entities != null) {

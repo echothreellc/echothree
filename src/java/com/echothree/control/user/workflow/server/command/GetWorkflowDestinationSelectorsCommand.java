@@ -87,7 +87,7 @@ public class GetWorkflowDestinationSelectorsCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<WorkflowDestinationSelector> entities) {
+    protected BaseResult getResult(Collection<WorkflowDestinationSelector> entities) {
         var result = WorkflowResultFactory.getGetWorkflowDestinationSelectorsResult();
 
         if(entities != null) {

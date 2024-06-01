@@ -66,7 +66,7 @@ public class GetOrderTypesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<OrderType> entities) {
+    protected BaseResult getResult(Collection<OrderType> entities) {
         var result = OrderResultFactory.getGetOrderTypesResult();
 
         if(entities != null) {

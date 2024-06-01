@@ -81,7 +81,7 @@ public class GetCancellationPoliciesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<CancellationPolicy> entities) {
+    protected BaseResult getResult(Collection<CancellationPolicy> entities) {
         var result = CancellationPolicyResultFactory.getGetCancellationPoliciesResult();
 
         if(entities != null) {

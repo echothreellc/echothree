@@ -67,7 +67,7 @@ public class GetFontWeightsCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<FontWeight> entities) {
+    protected BaseResult getResult(Collection<FontWeight> entities) {
         GetFontWeightsResult result = CoreResultFactory.getGetFontWeightsResult();
         var coreControl = getCoreControl();
         UserVisit userVisit = getUserVisit();

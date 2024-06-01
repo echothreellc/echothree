@@ -63,7 +63,7 @@ public class GetWishlistPrioritiesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<WishlistPriority> entities) {
+    protected BaseResult getResult(Collection<WishlistPriority> entities) {
         var result = WishlistResultFactory.getGetWishlistPrioritiesResult();
 
         if(entities != null) {

@@ -108,7 +108,7 @@ public class GetEntityAttributesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<EntityAttribute> entities) {
+    protected BaseResult getResult(Collection<EntityAttribute> entities) {
         var result = CoreResultFactory.getGetEntityAttributesResult();
 
         if(entities != null) {

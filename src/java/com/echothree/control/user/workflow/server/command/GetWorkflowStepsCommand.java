@@ -82,7 +82,7 @@ public class GetWorkflowStepsCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<WorkflowStep> entities) {
+    protected BaseResult getResult(Collection<WorkflowStep> entities) {
         var result = WorkflowResultFactory.getGetWorkflowStepsResult();
 
         if(entities != null) {

@@ -71,7 +71,7 @@ public class GetContentForumsCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<ContentForum> entities) {
+    protected BaseResult getResult(Collection<ContentForum> entities) {
         GetContentForumsResult result = ContentResultFactory.getGetContentForumsResult();
         
         if(entities != null) {

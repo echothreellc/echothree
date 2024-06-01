@@ -92,7 +92,7 @@ public class GetCountiesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<GeoCode> entities) {
+    protected BaseResult getResult(Collection<GeoCode> entities) {
         var result = GeoResultFactory.getGetCountiesResult();
 
         if(entities != null) {

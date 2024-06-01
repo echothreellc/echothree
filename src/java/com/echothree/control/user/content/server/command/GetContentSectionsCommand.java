@@ -116,7 +116,7 @@ public class GetContentSectionsCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<ContentSection> entities) {
+    protected BaseResult getResult(Collection<ContentSection> entities) {
         GetContentSectionsResult result = ContentResultFactory.getGetContentSectionsResult();
         
         if(entities != null) {

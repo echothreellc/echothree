@@ -75,7 +75,7 @@ public class GetFiltersCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<Filter> entities) {
+    protected BaseResult getResult(Collection<Filter> entities) {
         var result = FilterResultFactory.getGetFiltersResult();
 
         if(entities != null) {

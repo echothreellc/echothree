@@ -51,7 +51,7 @@ public class GetInventoryConditionsCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<InventoryCondition> entities) {
+    protected BaseResult getResult(Collection<InventoryCondition> entities) {
         var result = InventoryResultFactory.getGetInventoryConditionsResult();
 
         if(entities != null) {

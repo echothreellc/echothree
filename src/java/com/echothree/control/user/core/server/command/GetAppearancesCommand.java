@@ -65,7 +65,7 @@ public class GetAppearancesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<Appearance> entities) {
+    protected BaseResult getResult(Collection<Appearance> entities) {
         var result = CoreResultFactory.getGetAppearancesResult();
 
         if(entities != null) {

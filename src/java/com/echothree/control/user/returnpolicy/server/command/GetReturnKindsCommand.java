@@ -66,7 +66,7 @@ public class GetReturnKindsCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<ReturnKind> entities) {
+    protected BaseResult getResult(Collection<ReturnKind> entities) {
         var result = ReturnPolicyResultFactory.getGetReturnKindsResult();
 
         if(entities != null) {

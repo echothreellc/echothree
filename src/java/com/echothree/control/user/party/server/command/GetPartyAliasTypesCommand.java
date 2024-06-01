@@ -76,7 +76,7 @@ public class GetPartyAliasTypesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<PartyAliasType> entities) {
+    protected BaseResult getResult(Collection<PartyAliasType> entities) {
         var result = PartyResultFactory.getGetPartyAliasTypesResult();
 
         if(entities != null) {

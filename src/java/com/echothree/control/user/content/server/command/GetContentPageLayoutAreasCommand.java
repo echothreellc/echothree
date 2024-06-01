@@ -86,7 +86,7 @@ public class GetContentPageLayoutAreasCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<ContentPageLayoutArea> entities) {
+    protected BaseResult getResult(Collection<ContentPageLayoutArea> entities) {
         GetContentPageLayoutAreasResult result = ContentResultFactory.getGetContentPageLayoutAreasResult();
         
         if(entities != null) {

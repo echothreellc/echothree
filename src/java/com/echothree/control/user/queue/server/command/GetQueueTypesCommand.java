@@ -69,7 +69,7 @@ public class GetQueueTypesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<QueueType> entities) {
+    protected BaseResult getResult(Collection<QueueType> entities) {
         GetQueueTypesResult result = QueueResultFactory.getGetQueueTypesResult();
         var queueControl = Session.getModelController(QueueControl.class);
         UserVisit userVisit = getUserVisit();

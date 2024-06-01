@@ -116,7 +116,7 @@ public class GetOfferChainTypesCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<OfferChainType> entities) {
+    protected BaseResult getResult(Collection<OfferChainType> entities) {
         GetOfferChainTypesResult result = OfferResultFactory.getGetOfferChainTypesResult();
 
         if(entities != null) {

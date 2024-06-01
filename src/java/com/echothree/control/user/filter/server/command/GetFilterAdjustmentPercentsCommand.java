@@ -84,7 +84,7 @@ public class GetFilterAdjustmentPercentsCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<FilterAdjustmentPercent> entities) {
+    protected BaseResult getResult(Collection<FilterAdjustmentPercent> entities) {
         var result = FilterResultFactory.getGetFilterAdjustmentPercentsResult();
 
         if(entities != null) {

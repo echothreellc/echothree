@@ -65,7 +65,7 @@ public class GetGeoCodeTypesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<GeoCodeType> entities) {
+    protected BaseResult getResult(Collection<GeoCodeType> entities) {
         var result = GeoResultFactory.getGetGeoCodeTypesResult();
 
         if(entities != null) {

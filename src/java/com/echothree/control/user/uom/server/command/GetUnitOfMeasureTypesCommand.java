@@ -68,7 +68,7 @@ public class GetUnitOfMeasureTypesCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<UnitOfMeasureType> entities) {
+    protected BaseResult getResult(Collection<UnitOfMeasureType> entities) {
         GetUnitOfMeasureTypesResult result = UomResultFactory.getGetUnitOfMeasureTypesResult();
         var uomControl = Session.getModelController(UomControl.class);
         

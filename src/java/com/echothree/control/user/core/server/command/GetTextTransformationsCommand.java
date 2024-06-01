@@ -67,7 +67,7 @@ public class GetTextTransformationsCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<TextTransformation> entities) {
+    protected BaseResult getResult(Collection<TextTransformation> entities) {
         GetTextTransformationsResult result = CoreResultFactory.getGetTextTransformationsResult();
         var coreControl = getCoreControl();
         UserVisit userVisit = getUserVisit();

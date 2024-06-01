@@ -68,7 +68,7 @@ public class GetItemPurchasingCategoriesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<ItemPurchasingCategory> entities) {
+    protected BaseResult getResult(Collection<ItemPurchasingCategory> entities) {
         var result = VendorResultFactory.getGetItemPurchasingCategoriesResult();
 
         if(entities != null) {

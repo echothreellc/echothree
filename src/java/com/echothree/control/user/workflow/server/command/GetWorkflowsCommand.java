@@ -86,7 +86,7 @@ public class GetWorkflowsCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<Workflow> entities) {
+    protected BaseResult getResult(Collection<Workflow> entities) {
         var result = WorkflowResultFactory.getGetWorkflowsResult();
 
         if(entities != null) {

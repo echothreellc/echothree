@@ -68,7 +68,7 @@ public class GetItemAliasesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<ItemAlias> entities) {
+    protected BaseResult getResult(Collection<ItemAlias> entities) {
         var result = ItemResultFactory.getGetItemAliasesResult();
 
         if(entities != null) {

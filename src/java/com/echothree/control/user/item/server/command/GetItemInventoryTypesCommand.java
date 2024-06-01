@@ -52,7 +52,7 @@ public class GetItemInventoryTypesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<ItemInventoryType> entities) {
+    protected BaseResult getResult(Collection<ItemInventoryType> entities) {
         var result = ItemResultFactory.getGetItemInventoryTypesResult();
         var itemControl = Session.getModelController(ItemControl.class);
         var userVisit = getUserVisit();

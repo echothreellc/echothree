@@ -79,7 +79,7 @@ public class GetEntityAliasesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<EntityAlias> entities) {
+    protected BaseResult getResult(Collection<EntityAlias> entities) {
         var result = CoreResultFactory.getGetEntityAliasesResult();
 
         if(entities != null) {

@@ -94,7 +94,7 @@ public class GetEntityListItemsCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<EntityListItem> entities) {
+    protected BaseResult getResult(Collection<EntityListItem> entities) {
             var coreControl = getCoreControl();
         GetEntityListItemsResult result = CoreResultFactory.getGetEntityListItemsResult();
         

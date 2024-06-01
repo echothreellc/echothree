@@ -85,7 +85,7 @@ public class GetGlAccountsCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<GlAccount> entities) {
+    protected BaseResult getResult(Collection<GlAccount> entities) {
         var result = AccountingResultFactory.getGetGlAccountsResult();
 
         if(entities != null) {

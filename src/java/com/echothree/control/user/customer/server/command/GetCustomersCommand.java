@@ -65,7 +65,7 @@ public class GetCustomersCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<Customer> entities) {
+    protected BaseResult getResult(Collection<Customer> entities) {
         var result = CustomerResultFactory.getGetCustomersResult();
 
         if(entities != null) {

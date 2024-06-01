@@ -53,7 +53,7 @@ public abstract class BaseSingleEntityCommand<BE extends BaseEntity, F extends B
 
     @Override
     protected final BaseResult execute() {
-        BE entity = getEntity();
+        var entity = getEntity();
         
         return getResult(entity);
     }

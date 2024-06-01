@@ -66,7 +66,7 @@ public class GetComponentVendorsCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<ComponentVendor> entities) {
+    protected BaseResult getResult(Collection<ComponentVendor> entities) {
         var result = CoreResultFactory.getGetComponentVendorsResult();
 
         if(entities != null) {

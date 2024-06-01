@@ -122,7 +122,7 @@ public class GetEventsCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<Event> entities) {
+    protected BaseResult getResult(Collection<Event> entities) {
         GetEventsResult result = CoreResultFactory.getGetEventsResult();
 
         if(entities != null) {

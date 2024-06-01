@@ -67,7 +67,7 @@ public class GetTextDecorationsCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<TextDecoration> entities) {
+    protected BaseResult getResult(Collection<TextDecoration> entities) {
         GetTextDecorationsResult result = CoreResultFactory.getGetTextDecorationsResult();
         var coreControl = getCoreControl();
         UserVisit userVisit = getUserVisit();

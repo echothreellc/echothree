@@ -68,7 +68,7 @@ public class GetContentPageAreaTypesCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<ContentPageAreaType> entities) {
+    protected BaseResult getResult(Collection<ContentPageAreaType> entities) {
         GetContentPageAreaTypesResult result = ContentResultFactory.getGetContentPageAreaTypesResult();
         var contentControl = Session.getModelController(ContentControl.class);
         

@@ -65,7 +65,7 @@ public class GetItemAccountingCategoriesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<ItemAccountingCategory> entities) {
+    protected BaseResult getResult(Collection<ItemAccountingCategory> entities) {
         var result = AccountingResultFactory.getGetItemAccountingCategoriesResult();
 
         if(entities != null) {

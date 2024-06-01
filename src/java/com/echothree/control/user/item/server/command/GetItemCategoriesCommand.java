@@ -85,7 +85,7 @@ public class GetItemCategoriesCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<ItemCategory> entities) {
+    protected BaseResult getResult(Collection<ItemCategory> entities) {
         GetItemCategoriesResult result = ItemResultFactory.getGetItemCategoriesResult();
         var itemControl = Session.getModelController(ItemControl.class);
         UserVisit userVisit = getUserVisit();

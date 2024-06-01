@@ -68,7 +68,7 @@ public class GetContentCollectionsCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<ContentCollection> entities) {
+    protected BaseResult getResult(Collection<ContentCollection> entities) {
         var contentControl = Session.getModelController(ContentControl.class);
         GetContentCollectionsResult result = ContentResultFactory.getGetContentCollectionsResult();
         

@@ -69,7 +69,7 @@ public class GetCountriesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<GeoCode> entities) {
+    protected BaseResult getResult(Collection<GeoCode> entities) {
         var result = GeoResultFactory.getGetCountriesResult();
 
         if(entities != null) {

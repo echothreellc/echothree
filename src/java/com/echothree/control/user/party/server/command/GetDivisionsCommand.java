@@ -84,7 +84,7 @@ public class GetDivisionsCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<PartyDivision> entities) {
+    protected BaseResult getResult(Collection<PartyDivision> entities) {
         var result = PartyResultFactory.getGetDivisionsResult();
 
         if(entities != null) {

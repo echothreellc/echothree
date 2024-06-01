@@ -55,7 +55,7 @@ public class GetPersonalTitlesCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<PersonalTitle> entities) {
+    protected BaseResult getResult(Collection<PersonalTitle> entities) {
         GetPersonalTitlesResult result = PartyResultFactory.getGetPersonalTitlesResult();
         var partyControl = Session.getModelController(PartyControl.class);
         

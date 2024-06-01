@@ -83,7 +83,7 @@ public class GetTagsCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<Tag> entities) {
+    protected BaseResult getResult(Collection<Tag> entities) {
         var result = TagResultFactory.getGetTagsResult();
 
         if(entities != null) {

@@ -53,7 +53,7 @@ public class GetEntityAttributeTypesCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<EntityAttributeType> entities) {
+    protected BaseResult getResult(Collection<EntityAttributeType> entities) {
         GetEntityAttributeTypesResult result = CoreResultFactory.getGetEntityAttributeTypesResult();
         var coreControl = getCoreControl();
         

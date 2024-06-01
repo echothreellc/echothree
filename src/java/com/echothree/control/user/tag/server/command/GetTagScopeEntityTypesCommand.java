@@ -103,7 +103,7 @@ public class GetTagScopeEntityTypesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<TagScopeEntityType> entities) {
+    protected BaseResult getResult(Collection<TagScopeEntityType> entities) {
         var result = TagResultFactory.getGetTagScopeEntityTypesResult();
 
         if(entities != null) {

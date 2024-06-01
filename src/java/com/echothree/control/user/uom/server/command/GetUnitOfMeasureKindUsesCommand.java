@@ -90,7 +90,7 @@ public class GetUnitOfMeasureKindUsesCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<UnitOfMeasureKindUse> entities) {
+    protected BaseResult getResult(Collection<UnitOfMeasureKindUse> entities) {
         GetUnitOfMeasureKindUsesResult result = UomResultFactory.getGetUnitOfMeasureKindUsesResult();
         
         if(entities != null) {

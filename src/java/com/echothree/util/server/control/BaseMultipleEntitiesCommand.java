@@ -35,9 +35,9 @@ public abstract class BaseMultipleEntitiesCommand<BE extends BaseEntity, F exten
     }
     
     protected abstract Collection<BE> getEntities();
-    protected abstract BaseResult getTransfers(Collection<BE> entities);
+    protected abstract BaseResult getResult(Collection<BE> entities);
 
-    public Collection<BE> runForGraphQl() {
+    public Collection<BE> getEntitiesForGraphQl() {
         Collection<BE> entities = null;
 
         if(canQueryByGraphQl()) {
@@ -54,9 +54,9 @@ public abstract class BaseMultipleEntitiesCommand<BE extends BaseEntity, F exten
 
     @Override
     protected final BaseResult execute() {
-        Collection<BE> entities = getEntities();
+        var entities = getEntities();
         
-        return getTransfers(entities);
+        return getResult(entities);
     }
     
 }

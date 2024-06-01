@@ -52,7 +52,7 @@ public class GetMimeTypeFileExtensionsCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<MimeTypeFileExtension> entities) {
+    protected BaseResult getResult(Collection<MimeTypeFileExtension> entities) {
         var coreControl = getCoreControl();
         GetMimeTypeFileExtensionsResult result = CoreResultFactory.getGetMimeTypeFileExtensionsResult();
 

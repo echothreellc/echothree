@@ -54,7 +54,7 @@ public class GetTermsCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<Term> entities) {
+    protected BaseResult getResult(Collection<Term> entities) {
         var result = TermResultFactory.getGetTermsResult();
         var termControl = Session.getModelController(TermControl.class);
 

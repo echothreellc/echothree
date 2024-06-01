@@ -81,7 +81,7 @@ public class GetOfferItemsCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<OfferItem> entities) {
+    protected BaseResult getResult(Collection<OfferItem> entities) {
         var result = OfferResultFactory.getGetOfferItemsResult();
         
         if(entities != null) {

@@ -68,7 +68,7 @@ public class GetFilterKindsCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<FilterKind> entities) {
+    protected BaseResult getResult(Collection<FilterKind> entities) {
         var result = FilterResultFactory.getGetFilterKindsResult();
 
         if(entities != null) {

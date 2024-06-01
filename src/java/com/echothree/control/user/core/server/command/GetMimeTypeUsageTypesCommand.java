@@ -52,7 +52,7 @@ public class GetMimeTypeUsageTypesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<MimeTypeUsageType> entities) {
+    protected BaseResult getResult(Collection<MimeTypeUsageType> entities) {
         var coreControl = getCoreControl();
         GetMimeTypeUsageTypesResult result = CoreResultFactory.getGetMimeTypeUsageTypesResult();
 

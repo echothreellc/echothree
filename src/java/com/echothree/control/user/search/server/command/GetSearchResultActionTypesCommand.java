@@ -67,7 +67,7 @@ public class GetSearchResultActionTypesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<SearchResultActionType> entities) {
+    protected BaseResult getResult(Collection<SearchResultActionType> entities) {
         var result = SearchResultFactory.getGetSearchResultActionTypesResult();
 
         if(entities != null) {

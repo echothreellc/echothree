@@ -105,7 +105,7 @@ public class GetEntityIntegerRangesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<EntityIntegerRange> entities) {
+    protected BaseResult getResult(Collection<EntityIntegerRange> entities) {
         var result = CoreResultFactory.getGetEntityIntegerRangesResult();
 
         if(entities != null) {

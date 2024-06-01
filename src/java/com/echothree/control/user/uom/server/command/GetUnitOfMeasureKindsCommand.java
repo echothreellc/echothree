@@ -54,7 +54,7 @@ public class GetUnitOfMeasureKindsCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<UnitOfMeasureKind> entities) {
+    protected BaseResult getResult(Collection<UnitOfMeasureKind> entities) {
         GetUnitOfMeasureKindsResult result = UomResultFactory.getGetUnitOfMeasureKindsResult();
         var uomControl = Session.getModelController(UomControl.class);
         

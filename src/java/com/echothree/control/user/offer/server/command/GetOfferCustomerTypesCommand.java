@@ -106,7 +106,7 @@ public class GetOfferCustomerTypesCommand
     }
     
     @Override
-    protected BaseResult getTransfers(Collection<OfferCustomerType> entities) {
+    protected BaseResult getResult(Collection<OfferCustomerType> entities) {
         GetOfferCustomerTypesResult result = OfferResultFactory.getGetOfferCustomerTypesResult();
         
         if(entities != null) {

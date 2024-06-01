@@ -65,7 +65,7 @@ public class GetCompaniesCommand
     }
 
     @Override
-    protected BaseResult getTransfers(Collection<PartyCompany> entities) {
+    protected BaseResult getResult(Collection<PartyCompany> entities) {
         var result = PartyResultFactory.getGetCompaniesResult();
 
         if(entities != null) {
