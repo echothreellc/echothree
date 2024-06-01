@@ -3613,11 +3613,11 @@ public interface GraphQlQueries {
                 try(var objectLimiter = new ObjectLimiter(env, EntityAttributeGroupConstants.COMPONENT_VENDOR_NAME, EntityAttributeGroupConstants.ENTITY_TYPE_NAME, totalEntities)) {
                     var entities = command.getEntitiesForGraphQl();
 
-                    var allocationPriorities = entities.stream()
+                    var entityAttributeGroups = entities.stream()
                             .map(entityAttributeGroup -> new EntityAttributeGroupObject(entityAttributeGroup, null))
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-                    data = new CountedObjects<>(objectLimiter, allocationPriorities);
+                    data = new CountedObjects<>(objectLimiter, entityAttributeGroups);
                 }
             }
         } catch (NamingException ex) {
@@ -3735,11 +3735,11 @@ public interface GraphQlQueries {
                 try(var objectLimiter = new ObjectLimiter(env, EntityInstanceConstants.COMPONENT_VENDOR_NAME, EntityInstanceConstants.ENTITY_TYPE_NAME, totalEntities)) {
                     var entities = command.getEntitiesForGraphQl();
 
-                    var allocationPriorities = entities.stream()
+                    var entityInstances = entities.stream()
                             .map(EntityInstanceObject::new)
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-                    data = new CountedObjects<>(objectLimiter, allocationPriorities);
+                    data = new CountedObjects<>(objectLimiter, entityInstances);
                 }
             }
         } catch (NamingException ex) {
@@ -3794,11 +3794,11 @@ public interface GraphQlQueries {
                 try(var objectLimiter = new ObjectLimiter(env, EntityTypeConstants.COMPONENT_VENDOR_NAME, EntityTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
                     var entities = command.getEntitiesForGraphQl();
 
-                    var allocationPriorities = entities.stream()
+                    var entityTypes = entities.stream()
                             .map(EntityTypeObject::new)
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-                    data = new CountedObjects<>(objectLimiter, allocationPriorities);
+                    data = new CountedObjects<>(objectLimiter, entityTypes);
                 }
             }
         } catch (NamingException ex) {
@@ -3847,11 +3847,11 @@ public interface GraphQlQueries {
                 try(var objectLimiter = new ObjectLimiter(env, ComponentVendorConstants.COMPONENT_VENDOR_NAME, ComponentVendorConstants.ENTITY_TYPE_NAME, totalEntities)) {
                     var entities = command.getEntitiesForGraphQl();
 
-                    var allocationPriorities = entities.stream()
+                    var componentVendors = entities.stream()
                             .map(ComponentVendorObject::new)
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
-                    data = new CountedObjects<>(objectLimiter, allocationPriorities);
+                    data = new CountedObjects<>(objectLimiter, componentVendors);
                 }
             }
         } catch (NamingException ex) {
