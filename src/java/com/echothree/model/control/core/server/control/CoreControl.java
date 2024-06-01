@@ -4980,6 +4980,17 @@ public class CoreControl
                 "WHERE enagp_activedetailid = enagpdt_entityattributegroupdetailid");
     }
 
+    public long countEntityAttributeGroupsByEntityType(EntityType entityType) {
+        return session.queryForLong(
+                "SELECT COUNT(*) OVER() " +
+                "FROM entityattributegroups, entityattributegroupdetails, entityattributeentityattributegroups, entityattributes, entityattributedetails " +
+                "WHERE enagp_lastdetailid = enagpdt_entityattributegroupdetailid " +
+                "AND enagp_entityattributegroupid = enaenagp_enagp_entityattributegroupid AND enaenagp_ena_entityattributeid = ena_entityattributeid AND enaenagp_thrutime = ? " +
+                "AND ena_lastdetailid = enadt_entityattributedetailid AND enadt_ent_entitytypeid = ? " +
+                "GROUP BY enagp_entityattributegroupid",
+                Session.MAX_TIME, entityType);
+    }
+
     private List<EntityAttributeGroup> getEntityAttributeGroups(EntityPermission entityPermission) {
         String query = null;
         
@@ -5022,7 +5033,8 @@ public class CoreControl
                         + "AND enagp_entityattributegroupid = enaenagp_enagp_entityattributegroupid AND enaenagp_ena_entityattributeid = ena_entityattributeid AND enaenagp_thrutime = ? "
                         + "AND ena_lastdetailid = enadt_entityattributedetailid AND enadt_ent_entitytypeid = ? "
                         + "GROUP BY enagp_entityattributegroupid "
-                        + "ORDER BY enagpdt_sortorder, enagpdt_entityattributegroupname";
+                        + "ORDER BY enagpdt_sortorder, enagpdt_entityattributegroupname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ "
                         + "FROM entityattributegroups, entityattributegroupdetails, entityattributeentityattributegroups, entityattributes, entityattributedetails "
