@@ -683,6 +683,13 @@ public class CoreControl
         return getComponentVendorByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
 
+    public long countComponentVendors() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM componentvendors, componentvendordetails " +
+                "WHERE cvnd_activedetailid = cvndd_componentvendordetailid");
+    }
+
     public ComponentVendor getComponentVendorByName(String componentVendorName, EntityPermission entityPermission) {
         ComponentVendor componentVendor;
         
@@ -749,7 +756,8 @@ public class CoreControl
                 "SELECT _ALL_ " +
                 "FROM componentvendors, componentvendordetails " +
                 "WHERE cvnd_activedetailid = cvndd_componentvendordetailid " +
-                "ORDER BY cvndd_componentvendorname");
+                "ORDER BY cvndd_componentvendorname " +
+                "_LIMIT_");
         
         return ComponentVendorFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
