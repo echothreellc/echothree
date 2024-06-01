@@ -5478,6 +5478,15 @@ public class CoreControl
                 entityType);
     }
 
+    public long countEntityAttributesByEntityTypeAndEntityAttributeType(EntityType entityType, EntityAttributeType entityAttributeType) {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM entityattributes, entityattributedetails " +
+                "WHERE ena_activedetailid = enadt_entityattributedetailid " +
+                "AND enadt_ent_entitytypeid = ? AND enadt_enat_entityattributetypeid = ?",
+                entityType, entityAttributeType);
+    }
+
     public EntityAttribute getEntityAttributeByName(EntityType entityType, String entityAttributeName, EntityPermission entityPermission) {
         EntityAttribute entityAttribute;
         
@@ -5579,7 +5588,8 @@ public class CoreControl
                         "FROM entityattributes, entityattributedetails " +
                         "WHERE ena_activedetailid = enadt_entityattributedetailid " +
                         "AND enadt_ent_entitytypeid = ? AND enadt_enat_entityattributetypeid = ? " +
-                        "ORDER BY enadt_sortorder, enadt_entityattributename";
+                        "ORDER BY enadt_sortorder, enadt_entityattributename " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ " +
                         "FROM entityattributes, entityattributedetails " +
