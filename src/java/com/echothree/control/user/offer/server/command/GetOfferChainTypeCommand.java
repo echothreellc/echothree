@@ -100,7 +100,7 @@ public class GetOfferChainTypeCommand
     }
     
     @Override
-    protected BaseResult getTransfer(OfferChainType offerChainType) {
+    protected BaseResult getResult(OfferChainType offerChainType) {
         var offerControl = Session.getModelController(OfferControl.class);
         var result = OfferResultFactory.getGetOfferChainTypeResult();
 

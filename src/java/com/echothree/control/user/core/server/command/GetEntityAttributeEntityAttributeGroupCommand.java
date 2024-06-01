@@ -91,7 +91,7 @@ public class GetEntityAttributeEntityAttributeGroupCommand
     }
 
     @Override
-    protected BaseResult getTransfer(EntityAttributeEntityAttributeGroup entity) {
+    protected BaseResult getResult(EntityAttributeEntityAttributeGroup entity) {
         var result = CoreResultFactory.getGetEntityAttributeEntityAttributeGroupResult();
 
         if(entity != null) {

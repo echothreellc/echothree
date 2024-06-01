@@ -79,7 +79,7 @@ public class GetFilterStepCommand
     }
 
     @Override
-    protected BaseResult getTransfer(FilterStep filterStep) {
+    protected BaseResult getResult(FilterStep filterStep) {
         var result = FilterResultFactory.getGetFilterStepResult();
 
         if(filterStep != null) {

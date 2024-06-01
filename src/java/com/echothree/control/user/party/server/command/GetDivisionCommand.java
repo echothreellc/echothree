@@ -81,7 +81,7 @@ public class GetDivisionCommand
     }
 
     @Override
-    protected BaseResult getTransfer(PartyDivision partyDivision) {
+    protected BaseResult getResult(PartyDivision partyDivision) {
         var result = PartyResultFactory.getGetDivisionResult();
 
         if(partyDivision != null) {

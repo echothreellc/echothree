@@ -87,7 +87,7 @@ public class GetTextDecorationCommand
     }
     
     @Override
-    protected BaseResult getTransfer(TextDecoration textDecoration) {
+    protected BaseResult getResult(TextDecoration textDecoration) {
         var coreControl = getCoreControl();
         GetTextDecorationResult result = CoreResultFactory.getGetTextDecorationResult();
 

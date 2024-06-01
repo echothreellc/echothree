@@ -95,7 +95,7 @@ public class GetDateTimeFormatCommand
     }
     
     @Override
-    protected BaseResult getTransfer(DateTimeFormat dateTimeFormat) {
+    protected BaseResult getResult(DateTimeFormat dateTimeFormat) {
         var partyControl = Session.getModelController(PartyControl.class);
         GetDateTimeFormatResult result = PartyResultFactory.getGetDateTimeFormatResult();
 

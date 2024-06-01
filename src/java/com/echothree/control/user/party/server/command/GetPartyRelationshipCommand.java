@@ -108,7 +108,7 @@ public class GetPartyRelationshipCommand
     }
 
     @Override
-    protected BaseResult getTransfer(PartyRelationship partyRelationship) {
+    protected BaseResult getResult(PartyRelationship partyRelationship) {
         var result = PartyResultFactory.getGetPartyRelationshipResult();
 
         if(partyRelationship != null) {

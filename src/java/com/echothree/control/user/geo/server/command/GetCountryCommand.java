@@ -202,7 +202,7 @@ public class GetCountryCommand
     }
 
     @Override
-    protected BaseResult getTransfer(GeoCode entity) {
+    protected BaseResult getResult(GeoCode entity) {
         var result = GeoResultFactory.getGetCountryResult();
 
         if(entity != null) {

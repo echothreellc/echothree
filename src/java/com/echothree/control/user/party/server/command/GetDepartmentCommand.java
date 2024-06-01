@@ -81,7 +81,7 @@ public class GetDepartmentCommand
     }
 
     @Override
-    protected BaseResult getTransfer(PartyDepartment partyDepartment) {
+    protected BaseResult getResult(PartyDepartment partyDepartment) {
         var result = PartyResultFactory.getGetDepartmentResult();
 
         if(partyDepartment != null) {

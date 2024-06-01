@@ -107,7 +107,7 @@ public class GetPartyCommand
     }
 
     @Override
-    protected BaseResult getTransfer(Party party) {
+    protected BaseResult getResult(Party party) {
         var result = PartyResultFactory.getGetPartyResult();
 
         if(party != null) {

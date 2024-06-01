@@ -76,7 +76,7 @@ public class GetWarehouseTypeCommand
     }
 
     @Override
-    protected BaseResult getTransfer(WarehouseType warehouseType) {
+    protected BaseResult getResult(WarehouseType warehouseType) {
         var warehouseControl = Session.getModelController(WarehouseControl.class);
         var result = WarehouseResultFactory.getGetWarehouseTypeResult();
 

@@ -85,7 +85,7 @@ public class GetItemInventoryTypeCommand
     }
 
     @Override
-    protected BaseResult getTransfer(ItemInventoryType itemInventoryType) {
+    protected BaseResult getResult(ItemInventoryType itemInventoryType) {
         var itemControl = Session.getModelController(ItemControl.class);
         var result = ItemResultFactory.getGetItemInventoryTypeResult();
 

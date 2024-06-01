@@ -78,7 +78,7 @@ public class GetItemPurchasingCategoryCommand
     }
 
     @Override
-    protected BaseResult getTransfer(ItemPurchasingCategory itemPurchasingCategory) {
+    protected BaseResult getResult(ItemPurchasingCategory itemPurchasingCategory) {
         var vendorControl = Session.getModelController(VendorControl.class);
         var result = VendorResultFactory.getGetItemPurchasingCategoryResult();
 

@@ -74,7 +74,7 @@ public class GetWorkflowEntranceSelectorCommand
     }
 
     @Override
-    protected BaseResult getTransfer(WorkflowEntranceSelector entity) {
+    protected BaseResult getResult(WorkflowEntranceSelector entity) {
         var result = WorkflowResultFactory.getGetWorkflowEntranceSelectorResult();
 
         if(entity != null) {

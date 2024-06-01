@@ -66,7 +66,7 @@ public class GetWishlistPriorityCommand
     }
 
     @Override
-    protected BaseResult getTransfer(WishlistPriority wishlistPriority) {
+    protected BaseResult getResult(WishlistPriority wishlistPriority) {
         var wishlistControl = Session.getModelController(WishlistControl.class);
         var result = WishlistResultFactory.getGetWishlistPriorityResult();
 

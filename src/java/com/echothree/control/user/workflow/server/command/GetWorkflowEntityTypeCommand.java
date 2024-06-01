@@ -73,7 +73,7 @@ public class GetWorkflowEntityTypeCommand
     }
 
     @Override
-    protected BaseResult getTransfer(WorkflowEntityType entity) {
+    protected BaseResult getResult(WorkflowEntityType entity) {
         var result = WorkflowResultFactory.getGetWorkflowEntityTypeResult();
 
         if(entity != null) {

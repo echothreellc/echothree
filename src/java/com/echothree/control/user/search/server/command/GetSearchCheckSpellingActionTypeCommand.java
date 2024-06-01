@@ -63,7 +63,7 @@ public class GetSearchCheckSpellingActionTypeCommand
     }
 
     @Override
-    protected BaseResult getTransfer(SearchCheckSpellingActionType searchCheckSpellingActionType) {
+    protected BaseResult getResult(SearchCheckSpellingActionType searchCheckSpellingActionType) {
         var result = SearchResultFactory.getGetSearchCheckSpellingActionTypeResult();
 
         if(searchCheckSpellingActionType != null) {

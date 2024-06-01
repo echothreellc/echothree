@@ -77,7 +77,7 @@ public class GetOfferUseCommand
     }
     
     @Override
-    protected BaseResult getTransfer(OfferUse offerUse) {
+    protected BaseResult getResult(OfferUse offerUse) {
         var result = OfferResultFactory.getGetOfferUseResult();
 
         if(offerUse != null) {

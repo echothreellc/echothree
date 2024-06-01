@@ -77,7 +77,7 @@ public class GetOfferItemCommand
     }
     
     @Override
-    protected BaseResult getTransfer(OfferItem offerItem) {
+    protected BaseResult getResult(OfferItem offerItem) {
         var offerItemControl = Session.getModelController(OfferItemControl.class);
         var result = OfferResultFactory.getGetOfferItemResult();
 

@@ -76,7 +76,7 @@ public class GetItemAccountingCategoryCommand
     }
 
     @Override
-    protected BaseResult getTransfer(ItemAccountingCategory entity) {
+    protected BaseResult getResult(ItemAccountingCategory entity) {
         var accountingControl = Session.getModelController(AccountingControl.class);
         var result = AccountingResultFactory.getGetItemAccountingCategoryResult();
 

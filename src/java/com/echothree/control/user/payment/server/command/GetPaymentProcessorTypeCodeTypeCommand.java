@@ -76,7 +76,7 @@ public class GetPaymentProcessorTypeCodeTypeCommand
     }
 
     @Override
-    protected BaseResult getTransfer(PaymentProcessorTypeCodeType paymentProcessorTypeCodeType) {
+    protected BaseResult getResult(PaymentProcessorTypeCodeType paymentProcessorTypeCodeType) {
         var paymentProcessorTypeCodeTypeControl = Session.getModelController(PaymentProcessorTypeCodeTypeControl.class);
         var result = PaymentResultFactory.getGetPaymentProcessorTypeCodeTypeResult();
 

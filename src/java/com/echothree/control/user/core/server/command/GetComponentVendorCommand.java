@@ -71,7 +71,7 @@ public class GetComponentVendorCommand
     }
     
     @Override
-    protected BaseResult getTransfer(ComponentVendor componentVendor) {
+    protected BaseResult getResult(ComponentVendor componentVendor) {
         var result = CoreResultFactory.getGetComponentVendorResult();
         
         if(componentVendor != null) {

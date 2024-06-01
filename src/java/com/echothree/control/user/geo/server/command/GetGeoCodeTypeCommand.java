@@ -76,7 +76,7 @@ public class GetGeoCodeTypeCommand
     }
 
     @Override
-    protected BaseResult getTransfer(GeoCodeType entity) {
+    protected BaseResult getResult(GeoCodeType entity) {
         var geoControl = Session.getModelController(GeoControl.class);
         var result = GeoResultFactory.getGetGeoCodeTypeResult();
 

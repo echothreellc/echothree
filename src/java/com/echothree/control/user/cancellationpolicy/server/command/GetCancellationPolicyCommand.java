@@ -64,7 +64,7 @@ public class GetCancellationPolicyCommand
     }
 
     @Override
-    protected BaseResult getTransfer(CancellationPolicy cancellationPolicy) {
+    protected BaseResult getResult(CancellationPolicy cancellationPolicy) {
         var result = CancellationPolicyResultFactory.getGetCancellationPolicyResult();
 
         if(cancellationPolicy != null) {

@@ -80,7 +80,7 @@ public class GetLotCommand
     }
     
     @Override
-    protected BaseResult getTransfer(Lot lot) {
+    protected BaseResult getResult(Lot lot) {
         var lotControl = Session.getModelController(LotControl.class);
         var result = InventoryResultFactory.getGetLotResult();
 

@@ -79,7 +79,7 @@ public class GetUseNameElementCommand
     }
     
     @Override
-    protected BaseResult getTransfer(UseNameElement useNameElement) {
+    protected BaseResult getResult(UseNameElement useNameElement) {
         var useNameElementControl = Session.getModelController(UseNameElementControl.class);
         GetUseNameElementResult result = OfferResultFactory.getGetUseNameElementResult();
 

@@ -76,7 +76,7 @@ public class GetPartyTypeCommand
     }
 
     @Override
-    protected BaseResult getTransfer(PartyType partyType) {
+    protected BaseResult getResult(PartyType partyType) {
         var partyControl = Session.getModelController(PartyControl.class);
         var result = PartyResultFactory.getGetPartyTypeResult();
 

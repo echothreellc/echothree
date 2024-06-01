@@ -118,7 +118,7 @@ public class GetEmployeeCommand
     }
 
     @Override
-    protected BaseResult getTransfer(PartyEmployee partyEmployee) {
+    protected BaseResult getResult(PartyEmployee partyEmployee) {
         var result = EmployeeResultFactory.getGetEmployeeResult();
 
         if(partyEmployee != null) {

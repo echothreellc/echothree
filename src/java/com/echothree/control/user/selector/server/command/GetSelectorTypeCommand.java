@@ -87,7 +87,7 @@ public class GetSelectorTypeCommand
     }
 
     @Override
-    protected BaseResult getTransfer(SelectorType selectorType) {
+    protected BaseResult getResult(SelectorType selectorType) {
         var selectorControl = Session.getModelController(SelectorControl.class);
         var result = SelectorResultFactory.getGetSelectorTypeResult();
 

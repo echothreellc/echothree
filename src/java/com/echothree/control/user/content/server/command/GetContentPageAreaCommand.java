@@ -112,7 +112,7 @@ public class GetContentPageAreaCommand
     }
     
     @Override
-    protected BaseResult getTransfer(ContentPageArea contentPageArea) {
+    protected BaseResult getResult(ContentPageArea contentPageArea) {
         GetContentPageAreaResult result = ContentResultFactory.getGetContentPageAreaResult();
 
         if (contentPageArea != null) {

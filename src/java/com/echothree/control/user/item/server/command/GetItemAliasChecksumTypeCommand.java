@@ -85,7 +85,7 @@ public class GetItemAliasChecksumTypeCommand
     }
 
     @Override
-    protected BaseResult getTransfer(ItemAliasChecksumType itemAliasChecksumType) {
+    protected BaseResult getResult(ItemAliasChecksumType itemAliasChecksumType) {
         var itemControl = Session.getModelController(ItemControl.class);
         var result = ItemResultFactory.getGetItemAliasChecksumTypeResult();
 

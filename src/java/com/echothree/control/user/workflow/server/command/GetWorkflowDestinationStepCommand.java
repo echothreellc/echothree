@@ -78,7 +78,7 @@ public class GetWorkflowDestinationStepCommand
     }
 
     @Override
-    protected BaseResult getTransfer(WorkflowDestinationStep entity) {
+    protected BaseResult getResult(WorkflowDestinationStep entity) {
         var result = WorkflowResultFactory.getGetWorkflowDestinationStepResult();
 
         if(entity != null) {

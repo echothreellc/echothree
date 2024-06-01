@@ -106,7 +106,7 @@ public class GetFilterAdjustmentFixedAmountCommand
     }
 
     @Override
-    protected BaseResult getTransfer(FilterAdjustmentFixedAmount entity) {
+    protected BaseResult getResult(FilterAdjustmentFixedAmount entity) {
         var result = FilterResultFactory.getGetFilterAdjustmentFixedAmountResult();
 
         if(entity != null) {

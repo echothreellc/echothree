@@ -62,7 +62,7 @@ public class GetTermCommand
     }
 
     @Override
-    protected BaseResult getTransfer(Term term) {
+    protected BaseResult getResult(Term term) {
         var result = TermResultFactory.getGetTermResult();
         var termControl = Session.getModelController(TermControl.class);
 

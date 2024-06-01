@@ -79,7 +79,7 @@ public class GetSequenceCommand
     }
 
     @Override
-    protected BaseResult getTransfer(Sequence sequence) {
+    protected BaseResult getResult(Sequence sequence) {
         var sequenceControl = Session.getModelController(SequenceControl.class);
         var result = SequenceResultFactory.getGetSequenceResult();
 

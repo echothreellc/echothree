@@ -95,7 +95,7 @@ public class GetTimeZoneCommand
     }
     
     @Override
-    protected BaseResult getTransfer(TimeZone timeZone) {
+    protected BaseResult getResult(TimeZone timeZone) {
         var partyControl = Session.getModelController(PartyControl.class);
         GetTimeZoneResult result = PartyResultFactory.getGetTimeZoneResult();
 

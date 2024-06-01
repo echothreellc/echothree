@@ -123,7 +123,7 @@ public class GetContentCategoryCommand
     }
     
     @Override
-    protected BaseResult getTransfer(ContentCategory contentCategory) {
+    protected BaseResult getResult(ContentCategory contentCategory) {
         GetContentCategoryResult result = ContentResultFactory.getGetContentCategoryResult();
 
         if (contentCategory != null) {

@@ -71,7 +71,7 @@ public class GetWorkflowDestinationCommand
     }
 
     @Override
-    protected BaseResult getTransfer(WorkflowDestination workflowDestination) {
+    protected BaseResult getResult(WorkflowDestination workflowDestination) {
         var result = WorkflowResultFactory.getGetWorkflowDestinationResult();
 
         if(workflowDestination != null) {

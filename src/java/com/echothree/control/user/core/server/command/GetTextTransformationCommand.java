@@ -87,7 +87,7 @@ public class GetTextTransformationCommand
     }
     
     @Override
-    protected BaseResult getTransfer(TextTransformation textTransformation) {
+    protected BaseResult getResult(TextTransformation textTransformation) {
         var coreControl = getCoreControl();
         GetTextTransformationResult result = CoreResultFactory.getGetTextTransformationResult();
 

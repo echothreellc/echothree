@@ -80,7 +80,7 @@ public class GetSearchResultActionTypeCommand
     }
 
     @Override
-    protected BaseResult getTransfer(SearchResultActionType searchResultActionType) {
+    protected BaseResult getResult(SearchResultActionType searchResultActionType) {
         var searchControl = Session.getModelController(SearchControl.class);
         var result = SearchResultFactory.getGetSearchResultActionTypeResult();
 

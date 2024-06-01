@@ -70,7 +70,7 @@ public class GetEntityInstanceCommand
     }
 
     @Override
-    protected BaseResult getTransfer(EntityInstance entityInstance) {
+    protected BaseResult getResult(EntityInstance entityInstance) {
         var result = CoreResultFactory.getGetEntityInstanceResult();
 
         if(entityInstance != null) {

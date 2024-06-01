@@ -87,7 +87,7 @@ public class GetFontStyleCommand
     }
     
     @Override
-    protected BaseResult getTransfer(FontStyle fontStyle) {
+    protected BaseResult getResult(FontStyle fontStyle) {
         var coreControl = getCoreControl();
         GetFontStyleResult result = CoreResultFactory.getGetFontStyleResult();
 

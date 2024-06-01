@@ -83,7 +83,7 @@ public class GetEntityTagCommand
     }
 
     @Override
-    protected BaseResult getTransfer(EntityTag entityTag) {
+    protected BaseResult getResult(EntityTag entityTag) {
         var result = TagResultFactory.getGetEntityTagResult();
 
         if(entityTag != null) {

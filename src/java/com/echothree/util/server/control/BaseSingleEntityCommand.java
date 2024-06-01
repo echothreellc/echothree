@@ -34,9 +34,9 @@ public abstract class BaseSingleEntityCommand<BE extends BaseEntity, F extends B
     }
     
     protected abstract BE getEntity();
-    protected abstract BaseResult getTransfer(BE entity);
+    protected abstract BaseResult getResult(BE entity);
 
-    public BE runForGraphQl() {
+    public BE getEntityForGraphQl() {
         BE entity = null;
 
         if(canQueryByGraphQl()) {
@@ -55,7 +55,7 @@ public abstract class BaseSingleEntityCommand<BE extends BaseEntity, F extends B
     protected final BaseResult execute() {
         BE entity = getEntity();
         
-        return getTransfer(entity);
+        return getResult(entity);
     }
     
 }

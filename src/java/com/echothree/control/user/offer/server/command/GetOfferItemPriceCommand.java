@@ -153,7 +153,7 @@ public class GetOfferItemPriceCommand
     }
     
     @Override
-    protected BaseResult getTransfer(OfferItemPrice offerItemPrice) {
+    protected BaseResult getResult(OfferItemPrice offerItemPrice) {
         GetOfferItemPriceResult result = OfferResultFactory.getGetOfferItemPriceResult();
 
         if(offerItemPrice != null) {

@@ -79,7 +79,7 @@ public class GetUseCommand
     }
     
     @Override
-    protected BaseResult getTransfer(Use use) {
+    protected BaseResult getResult(Use use) {
         var result = OfferResultFactory.getGetUseResult();
         
         if(use != null) {

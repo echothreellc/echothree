@@ -76,7 +76,7 @@ public class GetGlAccountCommand
     }
 
     @Override
-    protected BaseResult getTransfer(GlAccount entity) {
+    protected BaseResult getResult(GlAccount entity) {
         var accountingControl = Session.getModelController(AccountingControl.class);
         var result = AccountingResultFactory.getGetGlAccountResult();
 

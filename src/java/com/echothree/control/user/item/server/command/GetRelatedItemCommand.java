@@ -86,7 +86,7 @@ public class GetRelatedItemCommand
     }
 
     @Override
-    protected BaseResult getTransfer(RelatedItem relatedItem) {
+    protected BaseResult getResult(RelatedItem relatedItem) {
         var result = ItemResultFactory.getGetRelatedItemResult();
 
         if(relatedItem != null) {

@@ -63,7 +63,7 @@ public class GetWishlistTypeCommand
     }
 
     @Override
-    protected BaseResult getTransfer(WishlistType itemAliasType) {
+    protected BaseResult getResult(WishlistType itemAliasType) {
         var wishlistControl = Session.getModelController(WishlistControl.class);
         var result = WishlistResultFactory.getGetWishlistTypeResult();
 

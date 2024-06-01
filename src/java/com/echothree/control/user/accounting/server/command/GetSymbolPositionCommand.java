@@ -95,7 +95,7 @@ public class GetSymbolPositionCommand
     }
     
     @Override
-    protected BaseResult getTransfer(SymbolPosition symbolPosition) {
+    protected BaseResult getResult(SymbolPosition symbolPosition) {
         var accountingControl = Session.getModelController(AccountingControl.class);
         GetSymbolPositionResult result = AccountingResultFactory.getGetSymbolPositionResult();
 

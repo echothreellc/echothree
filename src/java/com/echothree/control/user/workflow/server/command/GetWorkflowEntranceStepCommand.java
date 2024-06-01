@@ -76,7 +76,7 @@ public class GetWorkflowEntranceStepCommand
     }
 
     @Override
-    protected BaseResult getTransfer(WorkflowEntranceStep entity) {
+    protected BaseResult getResult(WorkflowEntranceStep entity) {
         var result = WorkflowResultFactory.getGetWorkflowEntranceStepResult();
 
         if(entity != null) {

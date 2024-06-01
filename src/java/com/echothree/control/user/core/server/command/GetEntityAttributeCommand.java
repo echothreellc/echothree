@@ -56,7 +56,7 @@ public class GetEntityAttributeCommand
     }
     
     @Override
-    protected BaseResult getTransfer(EntityAttribute entityAttribute) {
+    protected BaseResult getResult(EntityAttribute entityAttribute) {
         var coreControl = getCoreControl();
         var result = CoreResultFactory.getGetEntityAttributeResult();
 

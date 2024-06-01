@@ -191,7 +191,7 @@ public class GetContentCatalogItemCommand
     }
     
     @Override
-    protected BaseResult getTransfer(ContentCatalogItem contentCatalogItem) {
+    protected BaseResult getResult(ContentCatalogItem contentCatalogItem) {
         GetContentCatalogItemResult result = ContentResultFactory.getGetContentCatalogItemResult();
 
         if (contentCatalogItem != null) {

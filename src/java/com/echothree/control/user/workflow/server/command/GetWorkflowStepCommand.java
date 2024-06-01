@@ -59,7 +59,7 @@ public class GetWorkflowStepCommand
     }
 
     @Override
-    protected BaseResult getTransfer(WorkflowStep workflowStep) {
+    protected BaseResult getResult(WorkflowStep workflowStep) {
         var result = WorkflowResultFactory.getGetWorkflowStepResult();
 
         if(workflowStep != null) {

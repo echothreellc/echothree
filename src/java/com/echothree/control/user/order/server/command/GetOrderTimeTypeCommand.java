@@ -79,7 +79,7 @@ public class GetOrderTimeTypeCommand
     }
 
     @Override
-    protected BaseResult getTransfer(OrderTimeType orderTimeType) {
+    protected BaseResult getResult(OrderTimeType orderTimeType) {
         var orderTimeControl = Session.getModelController(OrderTimeControl.class);
         var result = OrderResultFactory.getGetOrderTimeTypeResult();
 

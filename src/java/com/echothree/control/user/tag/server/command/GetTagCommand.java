@@ -79,7 +79,7 @@ public class GetTagCommand
     }
 
     @Override
-    protected BaseResult getTransfer(Tag tag) {
+    protected BaseResult getResult(Tag tag) {
         var tagControl = Session.getModelController(TagControl.class);
         var result = TagResultFactory.getGetTagResult();
 

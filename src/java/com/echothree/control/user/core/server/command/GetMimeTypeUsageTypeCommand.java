@@ -61,7 +61,7 @@ public class GetMimeTypeUsageTypeCommand
     }
 
     @Override
-    protected BaseResult getTransfer(MimeTypeUsageType mimeTypeUsageType) {
+    protected BaseResult getResult(MimeTypeUsageType mimeTypeUsageType) {
         var coreControl = getCoreControl();
         GetMimeTypeUsageTypeResult result = CoreResultFactory.getGetMimeTypeUsageTypeResult();
 

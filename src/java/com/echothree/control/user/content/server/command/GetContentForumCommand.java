@@ -84,7 +84,7 @@ public class GetContentForumCommand
     }
     
     @Override
-    protected BaseResult getTransfer(ContentForum contentForum) {
+    protected BaseResult getResult(ContentForum contentForum) {
         GetContentForumResult result = ContentResultFactory.getGetContentForumResult();
                 
         if(contentForum != null) {

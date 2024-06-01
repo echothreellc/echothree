@@ -88,7 +88,7 @@ public class GetItemCommand
     }
     
     @Override
-    protected BaseResult getTransfer(Item item) {
+    protected BaseResult getResult(Item item) {
         var itemControl = Session.getModelController(ItemControl.class);
         GetItemResult result = ItemResultFactory.getGetItemResult();
 

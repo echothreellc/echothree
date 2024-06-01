@@ -112,7 +112,7 @@ public class GetContentSectionCommand
     }
     
     @Override
-    protected BaseResult getTransfer(ContentSection contentSection) {
+    protected BaseResult getResult(ContentSection contentSection) {
         GetContentSectionResult result = ContentResultFactory.getGetContentSectionResult();
         
         if(contentSection != null) {

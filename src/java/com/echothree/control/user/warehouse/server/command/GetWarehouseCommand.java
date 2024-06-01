@@ -77,7 +77,7 @@ public class GetWarehouseCommand
     }
 
     @Override
-    protected BaseResult getTransfer(Warehouse entity) {
+    protected BaseResult getResult(Warehouse entity) {
         var result = WarehouseResultFactory.getGetWarehouseResult();
 
         if(entity != null) {

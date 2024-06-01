@@ -118,7 +118,7 @@ public class GetVendorCommand
     }
 
     @Override
-    protected BaseResult getTransfer(Vendor vendor) {
+    protected BaseResult getResult(Vendor vendor) {
         var result = VendorResultFactory.getGetVendorResult();
 
         if(vendor != null) {
