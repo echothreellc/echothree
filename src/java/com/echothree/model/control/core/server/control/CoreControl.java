@@ -4972,7 +4972,14 @@ public class CoreControl
     public EntityAttributeGroup getEntityAttributeGroupByEntityInstanceForUpdate(EntityInstance entityInstance) {
         return getEntityAttributeGroupByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
-    
+
+    public long countEntityAttributeGroups() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM entityattributegroups, entityattributegroupdetails " +
+                "WHERE enagp_activedetailid = enagpdt_entityattributegroupdetailid");
+    }
+
     private List<EntityAttributeGroup> getEntityAttributeGroups(EntityPermission entityPermission) {
         String query = null;
         
