@@ -376,17 +376,17 @@ public class Session {
             setQueryParams(ps, params);
             
             ps.executeQuery();
-            try (ResultSet rs = ps.getResultSet()) {
+            try(ResultSet rs = ps.getResultSet()) {
                 if(rs.next()) {
                     result = rs.getLong(1);
-                }
 
-                if(rs.wasNull()) {
-                    result = null;
-                }
+                    if(rs.wasNull()) {
+                        result = null;
+                    }
 
-                if(rs.next()) {
-                    throw new PersistenceDatabaseException("queryForLong result contains multiple longs");
+                    if(rs.next()) {
+                        throw new PersistenceDatabaseException("queryForLong result contains multiple longs");
+                    }
                 }
             } catch (SQLException se) {
                 throw new PersistenceDatabaseException(se);
