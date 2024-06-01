@@ -18,8 +18,15 @@ package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.graphql.server.graphql.BaseEntityInstanceObject;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
 import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.user.server.control.UserControl;
+import com.echothree.model.data.core.common.EntityAttributeConstants;
+import com.echothree.model.data.core.common.EventConstants;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroupDetail;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -28,6 +35,7 @@ import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -89,18 +97,31 @@ public class EntityAttributeGroupObject
         return coreControl.getBestEntityAttributeGroupDescription(entityAttributeGroup, userControl.getPreferredLanguageFromUserVisit(BaseGraphQl.getUserVisit(env)));
     }
 
+
     @GraphQLField
     @GraphQLDescription("entity attributes")
-    public List<EntityAttributeObject> getEntityAttributes() {
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<EntityAttributeObject> getEntityAttributes(final DataFetchingEnvironment env) {
         if(entityInstance != null) {
-            var coreControl = Session.getModelController(CoreControl.class);
-            var entities = coreControl.getEntityAttributesByEntityAttributeGroupAndEntityType(entityAttributeGroup,
-                    entityInstance.getEntityType());
-            var entityAttributes = new ArrayList<EntityAttributeObject>(entities.size());
+//            if(CoreSecurityUtils.getHasEntityAttributesAccess(env)) {
+                var coreControl = Session.getModelController(CoreControl.class);
+                var entityType = entityInstance.getEntityType();
+                var totalCount = coreControl.countEntityAttributesByEntityAttributeGroupAndEntityType(entityAttributeGroup,
+                        entityType);
 
-            entities.forEach((entity) -> entityAttributes.add(new EntityAttributeObject(entity, entityInstance)));
+                try(var objectLimiter = new ObjectLimiter(env, EntityAttributeConstants.COMPONENT_VENDOR_NAME, EntityAttributeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                    var entities = coreControl.getEntityAttributesByEntityAttributeGroupAndEntityType(entityAttributeGroup,
+                            entityType);
+                    var entityAttributes = new ArrayList<EntityAttributeObject>(entities.size());
 
-            return entityAttributes;
+                    entities.forEach((entity) -> entityAttributes.add(new EntityAttributeObject(entity, entityInstance)));
+
+                    return new CountedObjects<>(objectLimiter, entityAttributes);
+                }
+//            } else {
+//                return Connections.emptyConnection();
+//            }
         } else {
             return null;
         }
