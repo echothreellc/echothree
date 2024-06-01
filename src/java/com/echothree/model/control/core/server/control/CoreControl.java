@@ -6645,7 +6645,8 @@ public class CoreControl
                         + "FROM entityattributeentityattributegroups, entityattributegroups, entityattributegroupdetails "
                         + "WHERE enaenagp_ena_entityattributeid = ? AND enaenagp_thrutime = ? "
                         + "AND enaenagp_enagp_entityattributegroupid = enagp_entityattributegroupid AND enagp_lastdetailid = enagpdt_entityattributegroupdetailid "
-                        + "ORDER BY enaenagp_sortorder, enagpdt_sortorder, enagpdt_entityattributegroupname";
+                        + "ORDER BY enaenagp_sortorder, enagpdt_sortorder, enagpdt_entityattributegroupname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ "
                         + "FROM entityattributeentityattributegroups "
@@ -6686,7 +6687,8 @@ public class CoreControl
                         + "FROM entityattributeentityattributegroups, entityattributegroups, entityattributegroupdetails "
                         + "WHERE enaenagp_enagp_entityattributegroupid = ? AND enaenagp_thrutime = ? "
                         + "AND enaenagp_enagp_entityattributegroupid = enagp_entityattributegroupid AND enagp_lastdetailid = enagpdt_entityattributegroupdetailid "
-                        + "ORDER BY enaenagp_sortorder, enagpdt_sortorder, enagpdt_entityattributegroupname";
+                        + "ORDER BY enaenagp_sortorder, enagpdt_sortorder, enagpdt_entityattributegroupname " +
+                        "_LIMIT_";
             } else if(entityPermission.equals(EntityPermission.READ_WRITE)) {
                 query = "SELECT _ALL_ "
                         + "FROM entityattributeentityattributegroups "

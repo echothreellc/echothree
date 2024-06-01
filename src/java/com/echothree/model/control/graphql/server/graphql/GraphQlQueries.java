@@ -65,6 +65,8 @@ import com.echothree.control.user.core.server.command.GetEntityAliasTypeCommand;
 import com.echothree.control.user.core.server.command.GetEntityAliasTypesCommand;
 import com.echothree.control.user.core.server.command.GetEntityAliasesCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeCommand;
+import com.echothree.control.user.core.server.command.GetEntityAttributeEntityAttributeGroupCommand;
+import com.echothree.control.user.core.server.command.GetEntityAttributeEntityAttributeGroupsCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeGroupCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeGroupsCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeTypeCommand;
@@ -379,6 +381,7 @@ import com.echothree.model.control.core.server.graphql.ColorObject;
 import com.echothree.model.control.core.server.graphql.ComponentVendorObject;
 import com.echothree.model.control.core.server.graphql.EntityAliasObject;
 import com.echothree.model.control.core.server.graphql.EntityAliasTypeObject;
+import com.echothree.model.control.core.server.graphql.EntityAttributeEntityAttributeGroupObject;
 import com.echothree.model.control.core.server.graphql.EntityAttributeGroupObject;
 import com.echothree.model.control.core.server.graphql.EntityAttributeObject;
 import com.echothree.model.control.core.server.graphql.EntityAttributeTypeObject;
@@ -568,6 +571,7 @@ import com.echothree.model.data.core.common.ComponentVendorConstants;
 import com.echothree.model.data.core.common.EntityAliasConstants;
 import com.echothree.model.data.core.common.EntityAliasTypeConstants;
 import com.echothree.model.data.core.common.EntityAttributeConstants;
+import com.echothree.model.data.core.common.EntityAttributeEntityAttributeGroupConstants;
 import com.echothree.model.data.core.common.EntityAttributeGroupConstants;
 import com.echothree.model.data.core.common.EntityInstanceConstants;
 import com.echothree.model.data.core.common.EntityTypeConstants;
@@ -577,6 +581,7 @@ import com.echothree.model.data.core.server.entity.ComponentVendor;
 import com.echothree.model.data.core.server.entity.EntityAlias;
 import com.echothree.model.data.core.server.entity.EntityAliasType;
 import com.echothree.model.data.core.server.entity.EntityAttribute;
+import com.echothree.model.data.core.server.entity.EntityAttributeEntityAttributeGroup;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
 import com.echothree.model.data.core.server.entity.EntityAttributeType;
 import com.echothree.model.data.core.server.entity.EntityInstance;
@@ -3686,6 +3691,73 @@ public interface GraphQlQueries {
                             .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
 
                     data = new CountedObjects<>(objectLimiter, entityAttributes);
+                }
+            }
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return data;
+    }
+
+    @GraphQLField
+    @GraphQLName("entityAttributeEntityAttributeGroup")
+    static EntityAttributeEntityAttributeGroupObject entityAttributeEntityAttributeGroup(final DataFetchingEnvironment env,
+            @GraphQLName("componentVendorName") @GraphQLNonNull final String componentVendorName,
+            @GraphQLName("entityTypeName") @GraphQLNonNull final String entityTypeName,
+            @GraphQLName("entityAttributeName") @GraphQLNonNull final String entityAttributeName,
+            @GraphQLName("entityAttributeGroupName") @GraphQLNonNull final String entityAttributeGroupName) {
+        EntityAttributeEntityAttributeGroup entityAttributeEntityAttributeGroup;
+
+        try {
+            var commandForm = CoreUtil.getHome().getGetEntityAttributeEntityAttributeGroupForm();
+
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
+            commandForm.setEntityAttributeName(entityAttributeName);
+            commandForm.setEntityAttributeGroupName(entityAttributeGroupName);
+
+            entityAttributeEntityAttributeGroup = new GetEntityAttributeEntityAttributeGroupCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return entityAttributeEntityAttributeGroup == null ? null : new EntityAttributeEntityAttributeGroupObject(entityAttributeEntityAttributeGroup);
+    }
+
+    @GraphQLField
+    @GraphQLName("entityAttributeEntityAttributeGroups")
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<EntityAttributeEntityAttributeGroupObject> entityAttributeEntityAttributeGroups(final DataFetchingEnvironment env,
+            @GraphQLName("componentVendorName") final String componentVendorName,
+            @GraphQLName("entityTypeName") final String entityTypeName,
+            @GraphQLName("entityAttributeName") final String entityAttributeName,
+            @GraphQLName("entityAttributeGroupName") final String entityAttributeGroupName) {
+        CountingPaginatedData<EntityAttributeEntityAttributeGroupObject> data;
+
+        try {
+            var commandForm = CoreUtil.getHome().getGetEntityAttributeEntityAttributeGroupsForm();
+            var command = new GetEntityAttributeEntityAttributeGroupsCommand(getUserVisitPK(env), commandForm);
+
+            commandForm.setComponentVendorName(componentVendorName);
+            commandForm.setEntityTypeName(entityTypeName);
+            commandForm.setEntityAttributeName(entityAttributeName);
+            commandForm.setEntityAttributeGroupName(entityAttributeGroupName);
+
+            var totalEntities = command.getTotalEntitiesForGraphQl();
+
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, EntityAttributeEntityAttributeGroupConstants.COMPONENT_VENDOR_NAME, EntityAttributeEntityAttributeGroupConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var entityAttributeEntityAttributeGroups = entities.stream()
+                            .map(EntityAttributeEntityAttributeGroupObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, entityAttributeEntityAttributeGroups);
                 }
             }
         } catch (NamingException ex) {

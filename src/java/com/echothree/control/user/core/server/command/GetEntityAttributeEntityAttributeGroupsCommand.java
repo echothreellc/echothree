@@ -30,36 +30,33 @@ import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
-import com.echothree.util.server.persistence.EntityPermission;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class GetEntityAttributeEntityAttributeGroupsCommand
-        extends BaseMultipleEntitiesCommand<EntityAttributeEntityAttributeGroup, GetEntityAttributeEntityAttributeGroupsForm> {
+        extends BasePaginatedMultipleEntitiesCommand<EntityAttributeEntityAttributeGroup, GetEntityAttributeEntityAttributeGroupsForm> {
 
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
-        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(List.of(
                 new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
-                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), List.of(
                         new SecurityRoleDefinition(SecurityRoleGroups.EntityAttribute.name(), SecurityRoles.EntityAttributeEntityAttributeGroup.name())
-                        )))
-                )));
+                ))
+        ));
         
-        FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
+        FORM_FIELD_DEFINITIONS = List.of(
                 new FieldDefinition("ComponentVendorName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityTypeName", FieldType.ENTITY_TYPE_NAME, false, null, null),
                 new FieldDefinition("EntityAttributeName", FieldType.ENTITY_NAME, false, null, null),
                 new FieldDefinition("EntityAttributeGroupName", FieldType.ENTITY_NAME, false, null, null)
-                ));
+        );
     }
     
     /** Creates a new instance of GetEntityAttributeEntityAttributeGroupsCommand */
@@ -71,33 +68,54 @@ public class GetEntityAttributeEntityAttributeGroupsCommand
     EntityAttributeGroup entityAttributeGroup;
 
     @Override
-    protected Collection<EntityAttributeEntityAttributeGroup> getEntities() {
+    protected void handleForm() {
         var componentVendorName = form.getComponentVendorName();
         var entityTypeName = form.getEntityTypeName();
         var entityAttributeName = form.getEntityAttributeName();
         var entityAttributeGroupName = form.getEntityAttributeGroupName();
         var parameterCount = ((componentVendorName != null) && (entityTypeName != null) && (entityAttributeName != null) ? 1 : 0)
                 + (entityAttributeGroupName != null ? 1 : 0);
-        Collection<EntityAttributeEntityAttributeGroup> result = null;
 
         if(parameterCount == 1) {
-            var coreControl = getCoreControl();
-
             if(entityAttributeGroupName == null) {
                 entityAttribute = EntityAttributeLogic.getInstance().getEntityAttributeByName(this, componentVendorName, entityTypeName, entityAttributeName);
-
-                if(!hasExecutionErrors()) {
-                    result = coreControl.getEntityAttributeEntityAttributeGroupsByEntityAttribute(entityAttribute, EntityPermission.READ_ONLY);
-                }
-            } else {
+            } else { // entityAttributeGroup
                 entityAttributeGroup = EntityAttributeLogic.getInstance().getEntityAttributeGroupByName(this, entityAttributeGroupName);
-
-                if(!hasExecutionErrors()) {
-                    result = coreControl.getEntityAttributeEntityAttributeGroupsByEntityAttributeGroup(entityAttributeGroup, EntityPermission.READ_ONLY);
-                }
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
+        }
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        Long totalEntities = null;
+
+        if(!hasExecutionErrors()) {
+            var coreControl = getCoreControl();
+
+            if(entityAttribute != null) {
+                totalEntities = coreControl.countEntityAttributeEntityAttributeGroupsByEntityAttribute(entityAttribute);
+            } else {
+                totalEntities = coreControl.countEntityAttributeEntityAttributeGroupsByEntityAttributeGroup(entityAttributeGroup);
+            }
+        }
+
+        return totalEntities;
+    }
+
+    @Override
+    protected Collection<EntityAttributeEntityAttributeGroup> getEntities() {
+        Collection<EntityAttributeEntityAttributeGroup> result = null;
+
+        if(!hasExecutionErrors()) {
+            var coreControl = getCoreControl();
+
+            if(entityAttribute != null) {
+                result = coreControl.getEntityAttributeEntityAttributeGroupsByEntityAttribute(entityAttribute);
+            } else { // entityAttributeGroup
+                result = coreControl.getEntityAttributeEntityAttributeGroupsByEntityAttributeGroup(entityAttributeGroup);
+            }
         }
 
         return result;
