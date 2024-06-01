@@ -4981,7 +4981,7 @@ public class CoreControl
     }
 
     public long countEntityAttributeGroupsByEntityType(EntityType entityType) {
-        return session.queryForLong(
+        var count = session.queryForLong(
                 "SELECT COUNT(*) OVER() " +
                 "FROM entityattributegroups, entityattributegroupdetails, entityattributeentityattributegroups, entityattributes, entityattributedetails " +
                 "WHERE enagp_lastdetailid = enagpdt_entityattributegroupdetailid " +
@@ -4989,6 +4989,8 @@ public class CoreControl
                 "AND ena_lastdetailid = enadt_entityattributedetailid AND enadt_ent_entitytypeid = ? " +
                 "GROUP BY enagp_entityattributegroupid",
                 Session.MAX_TIME, entityType);
+
+        return count == null ? 0L : count;
     }
 
     private List<EntityAttributeGroup> getEntityAttributeGroups(EntityPermission entityPermission) {
