@@ -44,7 +44,7 @@ public abstract class BasePaginatedMultipleEntitiesCommand<BE extends BaseEntity
     public Long getTotalEntitiesForGraphQl() {
         Long totalEntities = null;
 
-        if(formHandled || canQueryByGraphQl()) {
+        if(formHandled || canQueryByGraphQl()) { // formHandled == true avoids call to canQueryByGraphQl()
             if(!formHandled) {
                 handleForm();
                 formHandled = true;
@@ -58,7 +58,7 @@ public abstract class BasePaginatedMultipleEntitiesCommand<BE extends BaseEntity
     public Collection<BE> getEntitiesForGraphQl() {
         Collection<BE> entities = null;
 
-        if(formHandled || canQueryByGraphQl()) {
+        if(formHandled || canQueryByGraphQl()) { // formHandled == true avoids call to canQueryByGraphQl()
             if(!formHandled) {
                 handleForm();
                 formHandled = true;
