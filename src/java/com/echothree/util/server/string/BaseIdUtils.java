@@ -16,27 +16,24 @@
 
 package com.echothree.util.server.string;
 
+import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.fasterxml.uuid.Generators;
-import java.util.UUID;
+import com.echothree.util.server.persistence.Session;
+import com.echothree.util.server.persistence.ThreadSession;
 
-public class GuidUtils
-        extends BaseIdUtils {
-    
-    private GuidUtils() {
-        super();
-    }
-    
-    private static class GuidUtilsHolder {
-        static GuidUtils instance = new GuidUtils();
-    }
-    
-    public static GuidUtils getInstance() {
-        return GuidUtilsHolder.instance;
-    }
+public abstract class BaseIdUtils {
 
-    public String generateGuid(EntityInstance entityInstance) {
-        return Generators.timeBasedEpochGenerator().construct(getEntityInstanceCreatedTime(entityInstance)).toString();
+    protected Long getEntityInstanceCreatedTime(EntityInstance entityInstance) {
+        var coreControl = Session.getModelController(CoreControl.class);
+        var entityTime = coreControl.getEntityTime(entityInstance);
+
+        if(entityTime == null) {
+            var session = ThreadSession.currentSession();
+
+            entityTime = coreControl.createEntityTime(entityInstance, session.START_TIME, null, null);
+        }
+
+        return entityTime.getCreatedTime();
     }
 
 }
