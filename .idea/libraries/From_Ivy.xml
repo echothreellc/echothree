@@ -140,6 +140,7 @@
       <root url="jar://$PROJECT_DIR$/build/lib/kafka-jca-api.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/avro-tools.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib/avro.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib/java-uuid-generator.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/antlr4-runtime-javadoc.jar!/" />
@@ -209,6 +210,7 @@
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/kafka-clients-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/avro-javadoc.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-javadoc/avro-tools-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-javadoc/java-uuid-generator-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
       <root url="jar://$PROJECT_DIR$/build/lib-sources/activation-sources.jar!/" />
@@ -293,6 +295,7 @@
       <root url="jar://$PROJECT_DIR$/build/lib-sources/kafka-jca-api-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/avro-sources.jar!/" />
       <root url="jar://$PROJECT_DIR$/build/lib-sources/avro-tools-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/build/lib-sources/java-uuid-generator-sources.jar!/" />
     </SOURCES>
   </library>
 </component>
