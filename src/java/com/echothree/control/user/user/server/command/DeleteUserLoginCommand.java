@@ -16,29 +16,22 @@
 
 package com.echothree.control.user.user.server.command;
 
+import com.echothree.control.user.authentication.server.command.BaseLoginCommand;
 import com.echothree.control.user.user.common.form.DeleteUserLoginForm;
 import com.echothree.model.control.core.common.ComponentVendors;
 import com.echothree.model.control.core.common.EntityTypes;
 import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
-import static com.echothree.model.control.party.common.PartyTypes.CUSTOMER;
-import static com.echothree.model.control.party.common.PartyTypes.EMPLOYEE;
-import static com.echothree.model.control.party.common.PartyTypes.VENDOR;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.party.server.logic.PartyLogic;
 import com.echothree.model.control.security.common.SecurityRoleGroups;
-import static com.echothree.model.control.security.common.SecurityRoleGroups.Customer;
-import static com.echothree.model.control.security.common.SecurityRoleGroups.Employee;
-import static com.echothree.model.control.security.common.SecurityRoleGroups.Vendor;
 import com.echothree.model.control.security.common.SecurityRoles;
 import static com.echothree.model.control.security.common.SecurityRoles.UserLogin;
 import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.control.user.server.control.UserControl;
 import com.echothree.model.control.user.server.logic.UserKeyLogic;
 import com.echothree.model.control.user.server.logic.UserSessionLogic;
-import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.party.server.entity.Party;
-import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserLogin;
 import com.echothree.util.common.command.BaseResult;
@@ -46,7 +39,6 @@ import com.echothree.util.common.message.ExecutionErrors;
 import com.echothree.util.common.message.SecurityMessages;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.server.control.BaseSimpleCommand;
 import com.echothree.util.server.control.CommandSecurityDefinition;
 import com.echothree.util.server.control.PartyTypeDefinition;
 import com.echothree.util.server.control.SecurityRoleDefinition;
@@ -56,7 +48,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class DeleteUserLoginCommand
-        extends BaseSimpleCommand<DeleteUserLoginForm> {
+        extends BaseLoginCommand<DeleteUserLoginForm> {
     
     private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -82,7 +74,7 @@ public class DeleteUserLoginCommand
     
     /** Creates a new instance of DeleteUserLoginCommand */
     public DeleteUserLoginCommand(UserVisitPK userVisitPK, DeleteUserLoginForm form) {
-        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS, false);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS);
     }
     
     @Override
@@ -106,17 +98,8 @@ public class DeleteUserLoginCommand
             }
             
             if(!hasExecutionErrors()) {
-                PartyType partyType = party.getLastDetail().getPartyType();
-                String securityRoleGroupName = null;
-                var partyTypeName = partyType.getPartyTypeName();
-
-                if(partyTypeName.equals(CUSTOMER.name())) {
-                    securityRoleGroupName = Customer.name();
-                } else if(partyTypeName.equals(EMPLOYEE.name())) {
-                    securityRoleGroupName = Employee.name();
-                } else if(partyTypeName.equals(VENDOR.name())) {
-                    securityRoleGroupName = Vendor.name();
-                }
+                var partyType = party.getLastDetail().getPartyType();
+                var securityRoleGroupName = getSecurityRoleGroupName(partyType);
 
                 if(securityRoleGroupName != null 
                         && SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, getParty(), securityRoleGroupName, UserLogin.name())) {

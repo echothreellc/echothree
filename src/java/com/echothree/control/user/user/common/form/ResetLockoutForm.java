@@ -16,14 +16,11 @@
 
 package com.echothree.control.user.user.common.form;
 
-import com.echothree.control.user.customer.common.spec.CustomerSpec;
-import com.echothree.control.user.party.common.spec.EmployeeSpec;
-import com.echothree.control.user.party.common.spec.PartySpec;
-import com.echothree.control.user.vendor.common.spec.VendorSpec;
+import com.echothree.control.user.party.common.spec.PartyUniversalSpec;
 
 public interface ResetLockoutForm
-        extends PartySpec, EmployeeSpec, CustomerSpec, VendorSpec {
+        extends PartyUniversalSpec {
     
-    // Nothing additional beyond PartySpec, EmployeeSpec, CustomerSpec, VendorSpec
+    // Nothing additional beyond PartyUniversalSpec
     
 }
