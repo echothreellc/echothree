@@ -18,7 +18,6 @@ package com.echothree.util.server.string;
 
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.fasterxml.uuid.Generators;
-import java.util.UUID;
 
 public class GuidUtils
         extends BaseIdUtils {
