@@ -38,7 +38,7 @@ public class UlidUtils {
     }
     
     public String generateUlid(EntityInstance entityInstance) {
-        return ULID.randomULID().toString();
+        return ULID.randomULID(entityInstance).toString();
     }
     
 }
