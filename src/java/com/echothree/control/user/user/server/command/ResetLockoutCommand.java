@@ -18,23 +18,26 @@ package com.echothree.control.user.user.server.command;
 
 import com.echothree.control.user.authentication.server.command.BaseLoginCommand;
 import com.echothree.control.user.user.common.form.ResetLockoutForm;
-import com.echothree.model.control.customer.server.control.CustomerControl;
-import com.echothree.model.control.employee.server.control.EmployeeControl;
+import com.echothree.model.control.core.common.ComponentVendors;
+import com.echothree.model.control.core.common.EntityTypes;
+import com.echothree.model.control.core.server.logic.EntityInstanceLogic;
 import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.model.control.party.server.control.PartyControl;
 import com.echothree.model.control.party.server.logic.PartyLogic;
-import com.echothree.model.control.user.server.control.UserControl;
-import com.echothree.model.control.vendor.server.control.VendorControl;
-import com.echothree.model.data.customer.server.entity.Customer;
-import com.echothree.model.data.employee.server.entity.PartyEmployee;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import com.echothree.model.control.security.common.SecurityRoles;
+import static com.echothree.model.control.security.common.SecurityRoles.UserLogin;
+import com.echothree.model.control.security.server.logic.SecurityRoleLogic;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.model.data.user.server.entity.UserLoginStatus;
-import com.echothree.model.data.vendor.server.entity.Vendor;
+import com.echothree.util.common.command.BaseResult;
 import com.echothree.util.common.message.ExecutionErrors;
+import com.echothree.util.common.message.SecurityMessages;
 import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.validation.FieldType;
-import com.echothree.util.common.command.BaseResult;
+import com.echothree.util.server.control.CommandSecurityDefinition;
+import com.echothree.util.server.control.PartyTypeDefinition;
+import com.echothree.util.server.control.SecurityRoleDefinition;
 import com.echothree.util.server.persistence.Session;
 import java.util.Arrays;
 import java.util.Collections;
@@ -42,94 +45,86 @@ import java.util.List;
 
 public class ResetLockoutCommand
         extends BaseLoginCommand<ResetLockoutForm> {
-    
+
+    private final static CommandSecurityDefinition COMMAND_SECURITY_DEFINITION;
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
     
     static {
+        COMMAND_SECURITY_DEFINITION = new CommandSecurityDefinition(Collections.unmodifiableList(Arrays.asList(
+                new PartyTypeDefinition(PartyTypes.UTILITY.name(), null),
+                new PartyTypeDefinition(PartyTypes.EMPLOYEE.name(), Collections.unmodifiableList(Arrays.asList(
+                        new SecurityRoleDefinition(SecurityRoleGroups.Customer.name(), SecurityRoles.UserLogin.name()),
+                        new SecurityRoleDefinition(SecurityRoleGroups.Employee.name(), SecurityRoles.UserLogin.name()),
+                        new SecurityRoleDefinition(SecurityRoleGroups.Vendor.name(), SecurityRoles.UserLogin.name())
+                )))
+        )));
+
         FORM_FIELD_DEFINITIONS = Collections.unmodifiableList(Arrays.asList(
                 new FieldDefinition("PartyName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("EmployeeName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("CustomerName", FieldType.ENTITY_NAME, false, null, null),
-                new FieldDefinition("VendorName", FieldType.ENTITY_NAME, false, null, null)
-                ));
+                new FieldDefinition("EntityRef", FieldType.ENTITY_REF, false, null, null),
+                new FieldDefinition("Key", FieldType.KEY, false, null, null),
+                new FieldDefinition("Guid", FieldType.GUID, false, null, null),
+                new FieldDefinition("Ulid", FieldType.ULID, false, null, null)
+        ));
     }
     
     /** Creates a new instance of ResetLockoutCommand */
     public ResetLockoutCommand(UserVisitPK userVisitPK, ResetLockoutForm form) {
-        super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS);
+        super(userVisitPK, form, COMMAND_SECURITY_DEFINITION, FORM_FIELD_DEFINITIONS);
     }
-    
+
     @Override
     protected BaseResult execute() {
-        String partyName = form.getPartyName();
-        String employeeName = form.getEmployeeName();
-        String customerName = form.getCustomerName();
-        String vendorName = form.getVendorName();
-        var parameterCount = (partyName == null ? 0 : 1) + (employeeName == null ? 0 : 1) + (customerName == null ? 0 : 1) + (vendorName == null ? 0 : 1);
-        
+        var partyName = form.getPartyName();
+        var parameterCount = (partyName == null ? 0 : 1) + EntityInstanceLogic.getInstance().countPossibleEntitySpecs(form);
+
         if(parameterCount == 1) {
-            UserControl userControl = getUserControl();
             Party party = null;
-            
-            if(employeeName != null) {
-                var employeeControl = Session.getModelController(EmployeeControl.class);
-                PartyEmployee partyEmployee = employeeControl.getPartyEmployeeByName(employeeName);
-                
-                if(partyEmployee != null) {
-                    party = partyEmployee.getParty();
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownEmployeeName.name(), employeeName);
-                }
-            } else if(partyName != null) {
+
+            if(partyName == null) {
                 var partyControl = Session.getModelController(PartyControl.class);
-                
-                party = partyControl.getPartyByName(partyName);
-                if(party == null) {
-                    addExecutionError(ExecutionErrors.UnknownPartyName.name(), partyName);
-                }
-            } else if(customerName != null) {
-                var customerControl = Session.getModelController(CustomerControl.class);
-                Customer customer = customerControl.getCustomerByName(customerName);
-                
-                if(customer != null) {
-                    party = customer.getParty();
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownCustomerName.name(), customerName);
-                }
-            } else if(vendorName != null) {
-                var vendorControl = Session.getModelController(VendorControl.class);
-                Vendor vendor = vendorControl.getVendorByName(vendorName);
-                
-                if(vendor != null) {
-                    party = vendor.getParty();
-                } else {
-                    addExecutionError(ExecutionErrors.UnknownVendorName.name(), vendorName);
-                }
-            } else {
-                party = getParty();
-            }
-            
-            if(!hasExecutionErrors()) {
-                PartyLogic.getInstance().checkPartyType(this, party, PartyTypes.EMPLOYEE.name(), PartyTypes.CUSTOMER.name(),
-                        PartyTypes.VENDOR.name());
+                var entityInstance = EntityInstanceLogic.getInstance().getEntityInstance(this, form, ComponentVendors.ECHO_THREE.name(),
+                        EntityTypes.Party.name());
 
                 if(!hasExecutionErrors()) {
-                    UserLoginStatus userLoginStatus = userControl.getUserLoginStatusForUpdate(party);
+                    party = partyControl.getPartyByEntityInstanceForUpdate(entityInstance);
+                }
+            } else {
+                party = PartyLogic.getInstance().getPartyByName(this, form.getPartyName());
+            }
 
-                    if(userLoginStatus != null) {
-                        clearLoginFailures(userLoginStatus);
+            if(!hasExecutionErrors()) {
+                var partyType = party.getLastDetail().getPartyType();
+                var securityRoleGroupName = getSecurityRoleGroupName(partyType);
 
-                        // TODO: Create audit trail
-                    } else {
-                        addExecutionError(ExecutionErrors.UnknownUserLogin.name());
+                if(securityRoleGroupName != null
+                        && SecurityRoleLogic.getInstance().hasSecurityRoleUsingNames(this, getParty(), securityRoleGroupName, UserLogin.name())) {
+                    if(!hasExecutionErrors()) {
+                        if(partyType.getAllowUserLogins()) {
+                            var userControl = getUserControl();
+                            var userLoginStatus = userControl.getUserLoginStatusForUpdate(party);
+
+                            if(userLoginStatus != null) {
+                                clearLoginFailures(userLoginStatus);
+
+                                // TODO: Create audit trail
+                            } else {
+                                addExecutionError(ExecutionErrors.UnknownUserLogin.name());
+                            }
+                        } else {
+                            addExecutionError(ExecutionErrors.InvalidPartyType.name(), partyType.getPartyTypeName());
+                        }
                     }
+                } else {
+                    addSecurityMessage(SecurityMessages.InsufficientSecurity.name());
                 }
             }
         } else {
             addExecutionError(ExecutionErrors.InvalidParameterCount.name());
         }
-        
+
         return null;
     }
-    
+
+
 }

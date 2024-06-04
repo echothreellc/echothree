@@ -19,7 +19,12 @@ package com.echothree.control.user.authentication.server.command;
 import com.echothree.model.control.contact.common.ContactMechanismPurposes;
 import com.echothree.model.control.contact.common.ContactMechanismTypes;
 import com.echothree.model.control.contact.server.control.ContactControl;
+import static com.echothree.model.control.party.common.PartyTypes.CUSTOMER;
+import static com.echothree.model.control.party.common.PartyTypes.EMPLOYEE;
+import static com.echothree.model.control.party.common.PartyTypes.VENDOR;
 import com.echothree.model.control.party.server.control.PartyControl;
+import com.echothree.model.control.security.common.SecurityRoleGroups;
+import static com.echothree.model.control.security.common.SecurityRoleGroups.Employee;
 import com.echothree.model.control.sequence.common.SequenceTypes;
 import com.echothree.model.control.sequence.server.logic.SequenceGeneratorLogic;
 import com.echothree.model.control.uom.common.UomConstants;
@@ -27,6 +32,7 @@ import com.echothree.model.control.uom.server.control.UomControl;
 import com.echothree.model.control.user.common.UserConstants;
 import com.echothree.model.data.party.server.entity.Party;
 import com.echothree.model.data.party.server.entity.PartyRelationship;
+import com.echothree.model.data.party.server.entity.PartyType;
 import com.echothree.model.data.uom.server.entity.UnitOfMeasureKind;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
 import com.echothree.model.data.user.server.entity.UserLoginPasswordString;
@@ -133,6 +139,21 @@ public abstract class BaseLoginCommand<F extends BaseForm>
         }
         
         return result != null;
+    }
+
+    protected String getSecurityRoleGroupName(final PartyType partyType) {
+        String securityRoleGroupName = null;
+        var partyTypeName = partyType.getPartyTypeName();
+
+        if(partyTypeName.equals(CUSTOMER.name())) {
+            securityRoleGroupName = SecurityRoleGroups.Customer.name();
+        } else if(partyTypeName.equals(EMPLOYEE.name())) {
+            securityRoleGroupName = Employee.name();
+        } else if(partyTypeName.equals(VENDOR.name())) {
+            securityRoleGroupName = SecurityRoleGroups.Vendor.name();
+        }
+
+        return securityRoleGroupName;
     }
 
     protected void clearLoginFailures(final UserLoginStatus userLoginStatus) {
