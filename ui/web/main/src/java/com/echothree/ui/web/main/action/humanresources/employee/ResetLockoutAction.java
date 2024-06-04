@@ -17,7 +17,6 @@
 package com.echothree.ui.web.main.action.humanresources.employee;
 
 import com.echothree.control.user.user.common.UserUtil;
-import com.echothree.control.user.user.common.form.ResetLockoutForm;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
 import com.echothree.ui.web.main.framework.ParameterConstants;
@@ -47,10 +46,10 @@ public class ResetLockoutAction
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
-        String returnUrl = request.getParameter(ParameterConstants.RETURN_URL);
-        ResetLockoutForm commandForm = UserUtil.getHome().getResetLockoutForm();
+        var returnUrl = request.getParameter(ParameterConstants.RETURN_URL);
+        var commandForm = UserUtil.getHome().getResetLockoutForm();
         
-        commandForm.setEmployeeName(request.getParameter(ParameterConstants.EMPLOYEE_NAME));
+        commandForm.setPartyName(request.getParameter(ParameterConstants.PARTY_NAME));
         
         UserUtil.getHome().resetLockout(getUserVisitPK(request), commandForm);
         

@@ -131,7 +131,7 @@
                                     </c:choose>
                                     <a href="${changePasswordUrl}">Change Password</a><br />
                                     <c:url var="resetLockoutUrl" value="/action/HumanResources/Employee/ResetLockout">
-                                        <c:param name="EmployeeName" value="${employeeResult.employee.employeeName}" />
+                                        <c:param name="PartyName" value="${employeeResult.employee.partyName}" />
                                         <c:param name="ReturnUrl" value="Result" />
                                     </c:url>
                                     <a href="${resetLockoutUrl}">Reset Lockout</a>
@@ -271,7 +271,7 @@
                                     </c:choose>
                                     <a href="${changePasswordUrl}">Change Password</a><br />
                                     <c:url var="resetLockoutUrl" value="/action/HumanResources/Employee/ResetLockout">
-                                        <c:param name="EmployeeName" value="${employeeResult.employee.employeeName}" />
+                                        <c:param name="PartyName" value="${employeeResult.employee.partyName}" />
                                         <c:param name="ReturnUrl" value="Result" />
                                     </c:url>
                                     <a href="${resetLockoutUrl}">Reset Lockout</a>
