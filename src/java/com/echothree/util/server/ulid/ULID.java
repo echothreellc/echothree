@@ -42,11 +42,7 @@
 
 package com.echothree.util.server.ulid;
 
-import com.echothree.model.control.core.server.control.CoreControl;
-import com.echothree.model.data.core.server.entity.EntityInstance;
-import com.echothree.model.data.core.server.entity.EntityTime;
 import com.echothree.util.server.persistence.EncryptionUtils;
-import com.echothree.util.server.persistence.Session;
 import com.google.common.primitives.Longs;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -140,24 +136,16 @@ public class ULID {
         return new String(ulid);
     }
     
-    private static String generateUlid() {
-        return encodeTimeAndRandom(getTime(null), getRandom());
-    }
-        
-    private static String generateUlid(EntityInstance entityInstance) {
-        var coreControl = Session.getModelController(CoreControl.class);
-        EntityTime entityTime = coreControl.getEntityTime(entityInstance);
-        Long time = entityTime == null ? null : entityTime.getCreatedTime();
-        
+    private static String generateUlid(Long time) {
         return encodeTimeAndRandom(getTime(time), getRandom());
     }
-        
+
     public static ULID randomULID() {
-        return new ULID(generateUlid());
+        return new ULID(generateUlid(null));
     }
     
-    public static ULID randomULID(EntityInstance entityInstance) {
-        return new ULID(generateUlid(entityInstance));
+    public static ULID randomULID(Long time) {
+        return new ULID(generateUlid(time));
     }
     
     public static ULID fromString(String ulid) {

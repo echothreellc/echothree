@@ -2616,7 +2616,7 @@ public class CoreControl
             // Keep generating GUIDs until a unique one is found...
             EntityInstance duplicateEntityInstance;
             do {
-                guid = GuidUtils.getInstance().generateGuid();
+                guid = GuidUtils.getInstance().generateGuid(entityInstance);
                 duplicateEntityInstance = getEntityInstanceByGuid(guid);
             } while(duplicateEntityInstance != null);
             

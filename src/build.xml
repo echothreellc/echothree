@@ -349,6 +349,7 @@
                 <include name="icu4j.jar" />
                 <include name="itext.jar" />
                 <include name="java-dataloader.jar"/>
+                <include name="java-uuid-generator.jar"/>
                 <include name="jooq.jar"/>
                 <include name="juel-impl.jar"/>
                 <include name="lucene-analysis-common.jar" />

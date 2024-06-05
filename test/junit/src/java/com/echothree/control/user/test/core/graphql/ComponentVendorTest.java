@@ -30,12 +30,16 @@ public class ComponentVendorTest
         var componentVendorsBody = executeUsingPost("""
                 query {
                     componentVendors {
-                        componentVendorName
+                        edges {
+                            node {
+                                componentVendorName
+                            }
+                        }
                     }
                 }
         """);
 
-        assertThat(getList(componentVendorsBody, "data.componentVendors")).size().isEqualTo(0);
+        assertThat(getList(componentVendorsBody, "data.componentVendors.edges")).size().isEqualTo(0);
     }
 
     @Test
@@ -70,12 +74,16 @@ public class ComponentVendorTest
         var componentVendorsBody = executeUsingPost("""
                 query {
                     componentVendors {
-                        componentVendorName
+                        edges {
+                            node {
+                                componentVendorName
+                            }
+                        }
                     }
                 }
                 """);
 
-        assertThat(getList(componentVendorsBody, "data.componentVendors")).size().isGreaterThan(0);
+        assertThat(getList(componentVendorsBody, "data.componentVendors.edges")).size().isGreaterThan(0);
     }
 
     @Test

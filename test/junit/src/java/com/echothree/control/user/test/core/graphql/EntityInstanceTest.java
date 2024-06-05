@@ -72,12 +72,16 @@ public class EntityInstanceTest
         var entityInstancesBody = executeUsingPost("""
                 query {
                     entityInstances(componentVendorName: "%s", entityTypeName: "%s") {
-                        ulid
+                        edges {
+                            node {
+                                ulid
+                            }
+                        }
                     }
                 }
                 """.formatted(ComponentVendors.ECHO_THREE, EntityTypes.GlAccount));
 
-        assertThat(getList(entityInstancesBody, "data.entityInstances")).size().isEqualTo(0);
+        assertThat(getList(entityInstancesBody, "data.entityInstances.edges")).size().isEqualTo(0);
     }
 
     @Test
@@ -98,12 +102,16 @@ public class EntityInstanceTest
         var entityInstancesBody = executeUsingPost("""
                 query {
                     entityInstances(componentVendorName: "%s", entityTypeName: "%s") {
-                       ulid
+                        edges {
+                            node {
+                                ulid
+                            }
+                        }
                     }
                 }
                 """.formatted(ComponentVendors.ECHO_THREE, EntityTypes.GlAccount));
 
-        assertThat(getList(entityInstancesBody, "data.entityInstances")).size().isGreaterThan(0);
+        assertThat(getList(entityInstancesBody, "data.entityInstances.edges")).size().isGreaterThan(0);
     }
 
     @Test
