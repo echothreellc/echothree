@@ -32,12 +32,12 @@ public class GraphQlSchemaUtils {
         buildSchema();
     }
     
-    private static class GraphQlUtilsHolder {
+    private static class GraphQlSchemaUtilsHolder {
         static GraphQlSchemaUtils instance = new GraphQlSchemaUtils();
     }
     
     public static GraphQlSchemaUtils getInstance() {
-        return GraphQlUtilsHolder.instance;
+        return GraphQlSchemaUtilsHolder.instance;
     }
     
     private void buildSchema() {
