@@ -31,12 +31,16 @@ public class EntityTypeTest
         var entityTypesBody = executeUsingPost("""
                 query {
                     entityTypes(componentVendorName: "%s") {
-                        entityTypeName
+                        edges {
+                            node {
+                                entityTypeName
+                            }
+                        }
                     }
                 }
                 """.formatted(ComponentVendors.ECHO_THREE));
 
-        assertThat(getList(entityTypesBody, "data.entityTypes")).size().isEqualTo(0);
+        assertThat(getList(entityTypesBody, "data.entityTypes.edges")).size().isEqualTo(0);
     }
 
     @Test
@@ -71,12 +75,16 @@ public class EntityTypeTest
         var entityTypesBody = executeUsingPost("""
                 query {
                     entityTypes(componentVendorName: "%s") {
-                        entityTypeName
+                        edges {
+                            node {
+                                entityTypeName
+                            }
+                        }
                     }
                 }
                 """.formatted(ComponentVendors.ECHO_THREE));
 
-        assertThat(getList(entityTypesBody, "data.entityTypes")).size().isGreaterThan(0);
+        assertThat(getList(entityTypesBody, "data.entityTypes.edges")).size().isGreaterThan(0);
     }
 
     @Test

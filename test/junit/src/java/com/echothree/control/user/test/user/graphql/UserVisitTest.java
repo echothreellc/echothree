@@ -42,10 +42,10 @@ public class UserVisitTest
                             description
                         }
                         lastCommandTime {
-                          unformattedTime
+                            unformattedTime
                         }
                 	    retainUntilTime {
-                          unformattedTime
+                            unformattedTime
                         }
                     }
                 }
@@ -56,7 +56,7 @@ public class UserVisitTest
         assertThat(getString(userVisitBody, "data.userVisit.preferredTimeZone.description")).isNotNull();
         assertThat(getString(userVisitBody, "data.userVisit.preferredDateTimeFormat.description")).isNotNull();
         assertThat(getLong(userVisitBody, "data.userVisit.lastCommandTime.unformattedTime")).isNotZero();
-        assertThat(getLong(userVisitBody, "data.userVisit.retainUntilTime.unformattedTime")).isNotZero();
+        assertThat(getObject(userVisitBody, "data.userVisit.retainUntilTime")).isNull();
     }
 
 }
