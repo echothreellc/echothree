@@ -6781,6 +6781,27 @@ public interface GraphQlMutations {
 
     @GraphQLField
     @GraphQLRelayMutation
+    static MutationResultObject resetLockout(final DataFetchingEnvironment env,
+            @GraphQLName("partyName") final String partyName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        var mutationResultObject = new MutationResultObject();
+
+        try {
+            var commandForm = UserUtil.getHome().getResetLockoutForm();
+
+            commandForm.setPartyName(partyName);
+            commandForm.setUlid(id);
+
+            mutationResultObject.setCommandResult(UserUtil.getHome().resetLockout(BaseGraphQl.getUserVisitPK(env), commandForm));
+        } catch (NamingException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return mutationResultObject;
+    }
+
+    @GraphQLField
+    @GraphQLRelayMutation
     static MutationResultWithIdObject createItemCategory(final DataFetchingEnvironment env,
             @GraphQLName("itemCategoryName") @GraphQLNonNull final String itemCategoryName,
             @GraphQLName("parentItemCategoryName") final String parentItemCategoryName,
