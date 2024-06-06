@@ -130,11 +130,13 @@
                                         </c:otherwise>
                                     </c:choose>
                                     <a href="${changePasswordUrl}">Change Password</a><br />
-                                    <c:url var="resetLockoutUrl" value="/action/HumanResources/Employee/ResetLockout">
-                                        <c:param name="PartyName" value="${employeeResult.employee.partyName}" />
-                                        <c:param name="ReturnUrl" value="Result" />
-                                    </c:url>
-                                    <a href="${resetLockoutUrl}">Reset Lockout</a>
+                                    <c:if test="${employeeResult.employee.userLogin.failureCount > partyType.partyTypeLockoutPolicy.lockoutFailureCount}">
+                                        <c:url var="resetLockoutUrl" value="/action/HumanResources/Employee/ResetLockout">
+                                            <c:param name="PartyName" value="${employeeResult.employee.partyName}" />
+                                            <c:param name="ReturnUrl" value="Result" />
+                                        </c:url>
+                                        <a href="${resetLockoutUrl}">Reset Lockout</a>
+                                    </c:if>
                                 </display:column>
                                 <display:column media="html">
                                     <c:url var="employeeContactMechanismsUrl" value="/action/HumanResources/EmployeeContactMechanism/Main">
@@ -270,11 +272,13 @@
                                         </c:otherwise>
                                     </c:choose>
                                     <a href="${changePasswordUrl}">Change Password</a><br />
-                                    <c:url var="resetLockoutUrl" value="/action/HumanResources/Employee/ResetLockout">
-                                        <c:param name="PartyName" value="${employeeResult.employee.partyName}" />
-                                        <c:param name="ReturnUrl" value="Result" />
-                                    </c:url>
-                                    <a href="${resetLockoutUrl}">Reset Lockout</a>
+                                    <c:if test="${employeeResult.employee.userLogin.failureCount > partyType.partyTypeLockoutPolicy.lockoutFailureCount}">
+                                        <c:url var="resetLockoutUrl" value="/action/HumanResources/Employee/ResetLockout">
+                                            <c:param name="PartyName" value="${employeeResult.employee.partyName}" />
+                                            <c:param name="ReturnUrl" value="Result" />
+                                        </c:url>
+                                        <a href="${resetLockoutUrl}">Reset Lockout</a>
+                                    </c:if>
                                 </display:column>
                                 <display:column>
                                     <c:url var="employeeContactMechanismsUrl" value="/action/HumanResources/EmployeeContactMechanism/Main">
