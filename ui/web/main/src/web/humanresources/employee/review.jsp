@@ -169,11 +169,13 @@
                 </c:otherwise>
             </c:choose>
             <a href="${changePasswordUrl}">Change Password</a><br />
-            <c:url var="resetLockoutUrl" value="/action/HumanResources/Employee/ResetLockout">
-                <c:param name="EmployeeName" value="${employee.employeeName}" />
-                <c:param name="ReturnUrl" value="${returnUrl}" />
-            </c:url>
-            <a href="${resetLockoutUrl}">Reset Lockout</a><br />
+            <c:if test="${employee.userLogin.failureCount > partyType.partyTypeLockoutPolicy.lockoutFailureCount}">
+                <c:url var="resetLockoutUrl" value="/action/HumanResources/Employee/ResetLockout">
+                    <c:param name="PartyName" value="${employee.partyName}" />
+                    <c:param name="ReturnUrl" value="${returnUrl}" />
+                </c:url>
+                <a href="${resetLockoutUrl}">Reset Lockout</a><br />
+            </c:if>
             <br /><br />
             <h2>Responsibilities</h2>
             <c:url var="addUrl" value="/action/HumanResources/PartyResponsibility/Add">

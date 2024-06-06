@@ -19,12 +19,15 @@ package com.echothree.ui.web.main.action.humanresources.employee;
 import com.echothree.control.user.employee.common.EmployeeUtil;
 import com.echothree.control.user.employee.common.form.GetEmployeeForm;
 import com.echothree.control.user.employee.common.result.GetEmployeeResult;
+import com.echothree.control.user.party.common.PartyUtil;
+import com.echothree.control.user.party.common.result.GetPartyTypeResult;
 import com.echothree.model.control.comment.common.CommentOptions;
 import com.echothree.model.control.contact.common.ContactOptions;
 import com.echothree.model.control.core.common.CoreOptions;
 import com.echothree.model.control.employee.common.EmployeeOptions;
 import com.echothree.model.control.employee.common.transfer.EmployeeTransfer;
 import com.echothree.model.control.party.common.PartyOptions;
+import com.echothree.model.control.party.common.PartyTypes;
 import com.echothree.ui.web.main.framework.AttributeConstants;
 import com.echothree.ui.web.main.framework.ForwardConstants;
 import com.echothree.ui.web.main.framework.MainBaseAction;
@@ -38,6 +41,7 @@ import com.echothree.view.client.web.struts.sprout.annotation.SproutProperty;
 import com.echothree.view.client.web.struts.sslext.config.SecureActionMapping;
 import java.util.HashSet;
 import java.util.Set;
+import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.struts.action.ActionForm;
@@ -56,7 +60,24 @@ import org.apache.struts.action.ActionMapping;
 )
 public class ReviewAction
         extends MainBaseAction<ActionForm> {
-    
+
+    public void setupPartyType(HttpServletRequest request)
+            throws NamingException {
+        var commandForm = PartyUtil.getHome().getGetPartyTypeForm();
+
+        commandForm.setPartyTypeName(PartyTypes.EMPLOYEE.name());
+
+        Set<String> options = new HashSet<>();
+        options.add(PartyOptions.PartyTypeIncludeLockoutPolicy);
+        commandForm.setOptions(options);
+
+        var commandResult = PartyUtil.getHome().getPartyType(getUserVisitPK(request), commandForm);
+        var executionResult = commandResult.getExecutionResult();
+        var result = (GetPartyTypeResult)executionResult.getResult();
+
+        request.setAttribute(AttributeConstants.PARTY_TYPE, result.getPartyType());
+    }
+
     @Override
     public ActionForward executeAction(ActionMapping mapping, ActionForm form, HttpServletRequest request, HttpServletResponse response)
             throws Exception {
@@ -92,11 +113,12 @@ public class ReviewAction
         ExecutionResult executionResult = commandResult.getExecutionResult();
         GetEmployeeResult result = (GetEmployeeResult)executionResult.getResult();
         EmployeeTransfer employee = result.getEmployee();
-        
+
         if(employee == null) {
             forwardKey = ForwardConstants.ERROR_404;
         } else {
             request.setAttribute(AttributeConstants.EMPLOYEE, employee);
+            setupPartyType(request);
             forwardKey = ForwardConstants.DISPLAY;
         }
         
