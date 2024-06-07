@@ -202,7 +202,6 @@ public abstract class BaseEntityInstanceObject
             @GraphQLName("id") @GraphQLID final String id) {
         var entityInstance = getEntityInstanceByBasePK();
         var commandForm = CoreFormFactory.getGetEntityAttributeForm();
-        EntityAttribute entityAttribute;
 
         if(entityAttributeName != null) {
             var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
@@ -214,8 +213,7 @@ public abstract class BaseEntityInstanceObject
 
         commandForm.setUlid(id);
 
-        entityAttribute = new GetEntityAttributeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
-
+        var entityAttribute = new GetEntityAttributeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         if(entityInstance != null && entityAttribute != null) {
             return new EntityAttributeObject(entityAttribute, entityInstance);
         } else {
