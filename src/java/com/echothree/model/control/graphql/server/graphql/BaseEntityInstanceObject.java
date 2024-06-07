@@ -18,7 +18,6 @@ package com.echothree.model.control.graphql.server.graphql;
 
 import com.echothree.control.user.core.common.form.CoreFormFactory;
 import com.echothree.control.user.core.server.command.GetEntityAliasTypeCommand;
-import com.echothree.model.control.core.common.exception.UnknownEntityAliasTypeNameException;
 import com.echothree.model.control.core.common.exception.UnknownEntityAttributeGroupNameException;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.graphql.CoreSecurityUtils;
@@ -41,7 +40,6 @@ import com.echothree.model.control.workflow.server.graphql.WorkflowSecurityUtils
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
 import com.echothree.model.data.core.common.EntityAliasTypeConstants;
 import com.echothree.model.data.core.common.EntityAttributeGroupConstants;
-import com.echothree.model.data.core.server.entity.EntityAliasType;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.tag.common.TagScopeConstants;
@@ -154,26 +152,19 @@ public abstract class BaseEntityInstanceObject
             @GraphQLName("entityAliasTypeName") final String entityAliasTypeName,
             @GraphQLName("id") @GraphQLID final String id) {
         var entityInstance = getEntityInstanceByBasePK();
-        EntityAliasType entityAliasType;
+        var commandForm = CoreFormFactory.getGetEntityAliasTypeForm();
 
-        try {
-            var commandForm = CoreFormFactory.getGetEntityAliasTypeForm();
+        if(entityAliasTypeName != null) {
+            var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
 
-            if(entityAliasTypeName != null) {
-                var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
-
-                commandForm.setComponentVendorName(entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName());
-                commandForm.setEntityTypeName(entityTypeDetail.getEntityTypeName());
-                commandForm.setEntityAliasTypeName(entityAliasTypeName);
-            }
-
-            commandForm.setUlid(id);
-
-            entityAliasType = new GetEntityAliasTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
-        } catch(UnknownEntityAliasTypeNameException ueagne) {
-            entityAliasType = null;
+            commandForm.setComponentVendorName(entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName());
+            commandForm.setEntityTypeName(entityTypeDetail.getEntityTypeName());
+            commandForm.setEntityAliasTypeName(entityAliasTypeName);
         }
 
+        commandForm.setUlid(id);
+
+        var entityAliasType = new GetEntityAliasTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
         if(entityInstance != null && entityAliasType != null) {
             return new EntityAliasTypeObject(entityAliasType, entityInstance);
         } else {
