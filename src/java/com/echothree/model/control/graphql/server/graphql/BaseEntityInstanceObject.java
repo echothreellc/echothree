@@ -17,17 +17,19 @@
 package com.echothree.model.control.graphql.server.graphql;
 
 import com.echothree.control.user.core.common.form.CoreFormFactory;
-import com.echothree.model.control.core.common.exception.UnknownEntityAttributeGroupNameException;
+import com.echothree.control.user.core.server.command.GetEntityAttributeCommand;
+import com.echothree.control.user.core.server.command.GetEntityAttributeGroupCommand;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.graphql.CoreSecurityUtils;
 import com.echothree.model.control.core.server.graphql.EntityAliasTypeObject;
 import com.echothree.model.control.core.server.graphql.EntityAttributeGroupObject;
+import com.echothree.model.control.core.server.graphql.EntityAttributeObject;
 import com.echothree.model.control.core.server.graphql.EntityInstanceObject;
-import com.echothree.model.control.core.server.logic.EntityAttributeGroupLogic;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import static com.echothree.model.control.graphql.server.util.BaseGraphQl.getUserVisitPK;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.control.tag.server.graphql.TagScopeObject;
@@ -38,6 +40,7 @@ import com.echothree.model.control.workflow.server.graphql.WorkflowSecurityUtils
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
 import com.echothree.model.data.core.common.EntityAliasTypeConstants;
 import com.echothree.model.data.core.common.EntityAttributeGroupConstants;
+import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.tag.common.TagScopeConstants;
@@ -167,28 +170,54 @@ public abstract class BaseEntityInstanceObject
                 return new CountedObjects<>(objectLimiter, entityAttributeGroups);
             }
         } else {
-            return null;
+            return Connections.emptyConnection();
         }
     }
 
     @GraphQLField
     @GraphQLDescription("entity attribute group")
-    public EntityAttributeGroupObject getEntityAttributeGroup(
-            @GraphQLName("entityAttributeGroupName") @GraphQLNonNull final String entityAttributeGroupName) {
+    public EntityAttributeGroupObject getEntityAttributeGroup(final DataFetchingEnvironment env,
+            @GraphQLName("entityAttributeGroupName") final String entityAttributeGroupName,
+            @GraphQLName("id") @GraphQLID final String id) {
         var entityInstance = getEntityInstanceByBasePK();
+        var commandForm = CoreFormFactory.getGetEntityAttributeGroupForm();
         EntityAttributeGroup entityAttributeGroup;
 
-        try {
-            var form = CoreFormFactory.getGetEntityAttributeGroupForm();
+        commandForm.setEntityAttributeGroupName(entityAttributeGroupName);
+        commandForm.setUlid(id);
 
-            form.setEntityAttributeGroupName(entityAttributeGroupName);
-            entityAttributeGroup = EntityAttributeGroupLogic.getInstance().getEntityAttributeGroupByUniversalSpec(null, form);
-        } catch (UnknownEntityAttributeGroupNameException ueagne) {
-            entityAttributeGroup = null;
-        }
+        entityAttributeGroup = new GetEntityAttributeGroupCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
 
         if(entityInstance != null && entityAttributeGroup != null) {
             return new EntityAttributeGroupObject(entityAttributeGroup, entityInstance);
+        } else {
+            return null;
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("entity attribute")
+    public EntityAttributeObject getEntityAttribute(final DataFetchingEnvironment env,
+            @GraphQLName("entityAttributeName") final String entityAttributeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        var entityInstance = getEntityInstanceByBasePK();
+        var commandForm = CoreFormFactory.getGetEntityAttributeForm();
+        EntityAttribute entityAttribute;
+
+        if(entityAttributeName != null) {
+            var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
+
+            commandForm.setComponentVendorName(entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName());
+            commandForm.setEntityTypeName(entityTypeDetail.getEntityTypeName());
+            commandForm.setEntityAttributeName(entityAttributeName);
+        }
+
+        commandForm.setUlid(id);
+
+        entityAttribute = new GetEntityAttributeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
+
+        if(entityInstance != null && entityAttribute != null) {
+            return new EntityAttributeObject(entityAttribute, entityInstance);
         } else {
             return null;
         }
