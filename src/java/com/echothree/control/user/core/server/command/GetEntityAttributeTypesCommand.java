@@ -21,16 +21,16 @@ import com.echothree.control.user.core.common.result.CoreResultFactory;
 import com.echothree.control.user.core.common.result.GetEntityAttributeTypesResult;
 import com.echothree.model.data.core.server.entity.EntityAttributeType;
 import com.echothree.model.data.user.common.pk.UserVisitPK;
-import com.echothree.util.common.validation.FieldDefinition;
 import com.echothree.util.common.command.BaseResult;
-import com.echothree.util.server.control.BaseMultipleEntitiesCommand;
+import com.echothree.util.common.validation.FieldDefinition;
+import com.echothree.util.server.control.BasePaginatedMultipleEntitiesCommand;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
 public class GetEntityAttributeTypesCommand
-        extends BaseMultipleEntitiesCommand<EntityAttributeType, GetEntityAttributeTypesForm> {
+        extends BasePaginatedMultipleEntitiesCommand<EntityAttributeType, GetEntityAttributeTypesForm> {
     
     // No COMMAND_SECURITY_DEFINITION, anyone may execute this command.
     private final static List<FieldDefinition> FORM_FIELD_DEFINITIONS;
@@ -44,7 +44,17 @@ public class GetEntityAttributeTypesCommand
     public GetEntityAttributeTypesCommand(UserVisitPK userVisitPK, GetEntityAttributeTypesForm form) {
         super(userVisitPK, form, null, FORM_FIELD_DEFINITIONS, true);
     }
-    
+
+    @Override
+    protected void handleForm() {
+        // No form fields.
+    }
+
+    @Override
+    protected Long getTotalEntities() {
+        return getCoreControl().countEntityAttributeTypes();
+    }
+
     @Override
     protected Collection<EntityAttributeType> getEntities() {
         var coreControl = getCoreControl();

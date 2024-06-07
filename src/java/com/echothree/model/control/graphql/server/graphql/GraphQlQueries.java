@@ -573,6 +573,7 @@ import com.echothree.model.data.core.common.EntityAliasTypeConstants;
 import com.echothree.model.data.core.common.EntityAttributeConstants;
 import com.echothree.model.data.core.common.EntityAttributeEntityAttributeGroupConstants;
 import com.echothree.model.data.core.common.EntityAttributeGroupConstants;
+import com.echothree.model.data.core.common.EntityAttributeTypeConstants;
 import com.echothree.model.data.core.common.EntityInstanceConstants;
 import com.echothree.model.data.core.common.EntityTypeConstants;
 import com.echothree.model.data.core.server.entity.Appearance;
@@ -5254,29 +5255,34 @@ public interface GraphQlQueries {
 
     @GraphQLField
     @GraphQLName("entityAttributeTypes")
-    static Collection<EntityAttributeTypeObject> entityAttributeTypes(final DataFetchingEnvironment env) {
-        Collection<EntityAttributeType> entityAttributeTypes;
-        Collection<EntityAttributeTypeObject> entityAttributeTypeObjects;
+    @GraphQLNonNull
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    static CountingPaginatedData<EntityAttributeTypeObject> entityAttributeTypes(final DataFetchingEnvironment env) {
+        CountingPaginatedData<EntityAttributeTypeObject> data;
 
         try {
             var commandForm = CoreUtil.getHome().getGetEntityAttributeTypesForm();
+            var command = new GetEntityAttributeTypesCommand(getUserVisitPK(env), commandForm);
+            var totalEntities = command.getTotalEntitiesForGraphQl();
 
-            entityAttributeTypes = new GetEntityAttributeTypesCommand(getUserVisitPK(env), commandForm).getEntitiesForGraphQl();
+            if(totalEntities == null) {
+                data = Connections.emptyConnection();
+            } else {
+                try(var objectLimiter = new ObjectLimiter(env, EntityAttributeTypeConstants.COMPONENT_VENDOR_NAME, EntityAttributeTypeConstants.ENTITY_TYPE_NAME, totalEntities)) {
+                    var entities = command.getEntitiesForGraphQl();
+
+                    var entityAttributeTypes = entities.stream()
+                            .map(EntityAttributeTypeObject::new)
+                            .collect(Collectors.toCollection(() -> new ArrayList<>(entities.size())));
+
+                    data = new CountedObjects<>(objectLimiter, entityAttributeTypes);
+                }
+            }
         } catch (NamingException ex) {
             throw new RuntimeException(ex);
         }
 
-        if(entityAttributeTypes == null) {
-            entityAttributeTypeObjects = emptyList();
-        } else {
-            entityAttributeTypeObjects = new ArrayList<>(entityAttributeTypes.size());
-
-            entityAttributeTypes.stream()
-                    .map(EntityAttributeTypeObject::new)
-                    .forEachOrdered(entityAttributeTypeObjects::add);
-        }
-
-        return entityAttributeTypeObjects;
+        return data;
     }
 
     @GraphQLField
