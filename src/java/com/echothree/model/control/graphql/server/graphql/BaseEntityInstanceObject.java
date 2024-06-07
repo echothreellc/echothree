@@ -17,8 +17,11 @@
 package com.echothree.model.control.graphql.server.graphql;
 
 import com.echothree.control.user.core.common.form.CoreFormFactory;
+import com.echothree.control.user.core.server.command.GetEntityAliasTypeCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeCommand;
 import com.echothree.control.user.core.server.command.GetEntityAttributeGroupCommand;
+import com.echothree.control.user.tag.common.form.TagFormFactory;
+import com.echothree.control.user.tag.server.command.GetTagScopeCommand;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.graphql.CoreSecurityUtils;
 import com.echothree.model.control.core.server.graphql.EntityAliasTypeObject;
@@ -40,7 +43,6 @@ import com.echothree.model.control.workflow.server.graphql.WorkflowSecurityUtils
 import com.echothree.model.control.workflow.server.logic.WorkflowLogic;
 import com.echothree.model.data.core.common.EntityAliasTypeConstants;
 import com.echothree.model.data.core.common.EntityAttributeGroupConstants;
-import com.echothree.model.data.core.server.entity.EntityAttribute;
 import com.echothree.model.data.core.server.entity.EntityAttributeGroup;
 import com.echothree.model.data.core.server.entity.EntityInstance;
 import com.echothree.model.data.tag.common.TagScopeConstants;
@@ -148,6 +150,32 @@ public abstract class BaseEntityInstanceObject
     }
 
     @GraphQLField
+    @GraphQLDescription("entity alias type")
+    public EntityAliasTypeObject getEntityAliasType(final DataFetchingEnvironment env,
+            @GraphQLName("entityAliasTypeName") final String entityAliasTypeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        var entityInstance = getEntityInstanceByBasePK();
+        var commandForm = CoreFormFactory.getGetEntityAliasTypeForm();
+
+        if(entityAliasTypeName != null) {
+            var entityTypeDetail = entityInstance.getEntityType().getLastDetail();
+
+            commandForm.setComponentVendorName(entityTypeDetail.getComponentVendor().getLastDetail().getComponentVendorName());
+            commandForm.setEntityTypeName(entityTypeDetail.getEntityTypeName());
+            commandForm.setEntityAliasTypeName(entityAliasTypeName);
+        }
+
+        commandForm.setUlid(id);
+
+        var entityAliasType = new GetEntityAliasTypeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
+        if(entityInstance != null && entityAliasType != null) {
+            return new EntityAliasTypeObject(entityAliasType, entityInstance);
+        } else {
+            return null;
+        }
+    }
+
+    @GraphQLField
     @GraphQLDescription("entity attribute groups")
     @GraphQLNonNull
     @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
@@ -244,6 +272,25 @@ public abstract class BaseEntityInstanceObject
             }
         } else {
             return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("tag scope")
+    public TagScopeObject getTagScope(final DataFetchingEnvironment env,
+            @GraphQLName("tagScopeName") final String tagScopeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        var entityInstance = getEntityInstanceByBasePK();
+        var commandForm = TagFormFactory.getGetTagScopeForm();
+
+        commandForm.setTagScopeName(tagScopeName);
+        commandForm.setUlid(id);
+
+        var tagScope = new GetTagScopeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
+        if(entityInstance != null && tagScope != null) {
+            return new TagScopeObject(tagScope, entityInstance);
+        } else {
+            return null;
         }
     }
 
