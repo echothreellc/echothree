@@ -17,6 +17,8 @@
 package com.echothree.model.control.graphql.server.graphql;
 
 import com.echothree.control.user.core.common.form.CoreFormFactory;
+import com.echothree.control.user.tag.common.form.TagFormFactory;
+import com.echothree.control.user.tag.server.command.GetTagScopeCommand;
 import com.echothree.model.control.core.common.exception.UnknownEntityAttributeGroupNameException;
 import com.echothree.model.control.core.server.control.CoreControl;
 import com.echothree.model.control.core.server.graphql.CoreSecurityUtils;
@@ -28,6 +30,7 @@ import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
 import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import static com.echothree.model.control.graphql.server.util.BaseGraphQl.getUserVisitPK;
 import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
 import com.echothree.model.control.tag.server.control.TagControl;
 import com.echothree.model.control.tag.server.graphql.TagScopeObject;
@@ -217,6 +220,25 @@ public abstract class BaseEntityInstanceObject
             }
         } else {
             return Connections.emptyConnection();
+        }
+    }
+
+    @GraphQLField
+    @GraphQLDescription("tag scope")
+    public TagScopeObject getTagScope(final DataFetchingEnvironment env,
+            @GraphQLName("tagScopeName") final String tagScopeName,
+            @GraphQLName("id") @GraphQLID final String id) {
+        var entityInstance = getEntityInstanceByBasePK();
+        var commandForm = TagFormFactory.getGetTagScopeForm();
+
+        commandForm.setTagScopeName(tagScopeName);
+        commandForm.setUlid(id);
+
+        var tagScope = new GetTagScopeCommand(getUserVisitPK(env), commandForm).getEntityForGraphQl();
+        if(entityInstance != null && tagScope != null) {
+            return new TagScopeObject(tagScope, entityInstance);
+        } else {
+            return null;
         }
     }
 
