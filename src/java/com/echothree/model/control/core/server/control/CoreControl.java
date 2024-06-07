@@ -3073,7 +3073,13 @@ public class CoreControl
     public EntityAttributeType getEntityAttributeTypeByEntityInstanceForUpdate(EntityInstance entityInstance) {
         return getEntityAttributeTypeByEntityInstance(entityInstance, EntityPermission.READ_WRITE);
     }
-    
+
+    public long countEntityAttributeTypes() {
+        return session.queryForLong(
+                "SELECT COUNT(*) " +
+                "FROM entityattributetypes ");
+    }
+
     public EntityAttributeType getEntityAttributeTypeByName(String entityAttributeTypeName) {
         EntityAttributeType entityAttributeType;
         
@@ -3097,7 +3103,8 @@ public class CoreControl
         PreparedStatement ps = EntityAttributeTypeFactory.getInstance().prepareStatement(
                 "SELECT _ALL_ " +
                 "FROM entityattributetypes " +
-                "ORDER BY enat_entityattributetypename");
+                "ORDER BY enat_entityattributetypename " +
+                "_LIMIT_");
         
         return EntityAttributeTypeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, ps);
     }
