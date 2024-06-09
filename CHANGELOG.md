@@ -1,5 +1,21 @@
 # Changelog
 
+## 2024-06-09-01
+
+* GraphQL Pagination Prototype [197](https://gitlab.echothree.com/echothree/echothree/-/issues/197)
+* queryForLong(...) Fails With NPE When No Rows Returned [1118](https://gitlab.echothree.com/echothree/echothree/-/issues/1118)
+* Convert GetEntityAttributeTypes UC to Use BasePaginatedMultipleEntitiesCommand [1141](https://gitlab.echothree.com/echothree/echothree/-/issues/1141)
+* Add Security to ResetLockout UC [1281](https://gitlab.echothree.com/echothree/echothree/-/issues/1281)
+* Add resetLockout Mutation [1282](https://gitlab.echothree.com/echothree/echothree/-/issues/1282)
+* Suppress Display of "Reset Lockout" If Account Not Locked [1283](https://gitlab.echothree.com/echothree/echothree/-/issues/1283)
+* Implement UUID v7 [1284](https://gitlab.echothree.com/echothree/echothree/-/issues/1284)
+* UlidUtils.generateUlid(EntityInstance entityInstance) Not Using Entity Instance [1285](https://gitlab.echothree.com/echothree/echothree/-/issues/1285)
+* Remove Jenkinsfile [1286](https://gitlab.echothree.com/echothree/echothree/-/issues/1286)
+* Add Specific Entity Alias Type as a Field to Base Entity Instance Object [1291](https://gitlab.echothree.com/echothree/echothree/-/issues/1291)
+* Add Specific Entity Attribute as a Field to Base Entity Instance Object [1292](https://gitlab.echothree.com/echothree/echothree/-/issues/1292)
+* Add Specific Tag Scope as a Field to Base Entity Instance Object [1293](https://gitlab.echothree.com/echothree/echothree/-/issues/1293)
+* Apache Lucene 9.11.0 Upgrade [1294](https://gitlab.echothree.com/echothree/echothree/-/issues/1294)
+
 ## 2024-05-26-01
 
 * Add Entity Alias Types and Entity Aliases [1112](https://gitlab.echothree.com/echothree/echothree/-/issues/1112)
