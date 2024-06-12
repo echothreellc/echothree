@@ -5221,6 +5221,21 @@
                 <securityRoleDescription languageIsoName="en" description="Entity Alias Review" />
             </securityRole>
         </securityRoleGroup>
+        <securityRoleGroup securityRoleGroupName="EntityAttributeType" parentSecurityRoleGroupName="CoreComponent" isDefault="false" sortOrder="1">
+            <securityRoleGroupDescription languageIsoName="en" description="Entity Attribute Type" />
+            <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Entity Attribute Type Create" />
+            </securityRole>
+            <securityRole securityRoleName="List" isDefault="true" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Entity Attribute Type List" />
+            </securityRole>
+            <securityRole securityRoleName="Choices" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Entity Attribute Type Choices" />
+            </securityRole>
+            <securityRole securityRoleName="Description" isDefault="false" sortOrder="1">
+                <securityRoleDescription languageIsoName="en" description="Entity Attribute Type Description" />
+            </securityRole>
+        </securityRoleGroup>
         <securityRoleGroup securityRoleGroupName="EntityAttribute" parentSecurityRoleGroupName="CoreComponent" isDefault="false" sortOrder="1">
             <securityRoleGroupDescription languageIsoName="en" description="Entity Attribute" />
             <securityRole securityRoleName="Create" isDefault="false" sortOrder="1">
@@ -9042,6 +9057,10 @@
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityAlias" securityRoleName="Delete" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityAlias" securityRoleName="List" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityAlias" securityRoleName="Review" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="EntityAttributeType" securityRoleName="Create" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="EntityAttributeType" securityRoleName="List" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="EntityAttributeType" securityRoleName="Choices" />
+            <partySecurityRoleTemplateRole securityRoleGroupName="EntityAttributeType" securityRoleName="Description" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityAttribute" securityRoleName="Create" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityAttribute" securityRoleName="Edit" />
             <partySecurityRoleTemplateRole securityRoleGroupName="EntityAttribute" securityRoleName="Delete" />
