@@ -114,6 +114,7 @@ public enum SecurityRoleGroups {
     EntityAttribute,
     EntityAttributeEntityType,
     EntityAttributeGroup,
+    EntityAttributeType,
     EntityListItem,
     EntityInstance,
     EntityIntegerRange,
