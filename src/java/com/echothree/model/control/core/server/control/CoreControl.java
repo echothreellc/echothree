@@ -10717,6 +10717,7 @@ public class CoreControl
         return EntityBooleanAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityBooleanAttributeHistoryQueries,
                 entityAttribute, entityInstance);
     }
+    
     private EntityBooleanAttribute getEntityBooleanAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             EntityPermission entityPermission) {
         EntityBooleanAttribute entityBooleanAttribute;
