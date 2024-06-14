@@ -16,42 +16,60 @@
 
 package com.echothree.model.control.core.server.graphql;
 
-import com.echothree.model.control.graphql.server.util.BaseGraphQl;
+import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.graphql.server.graphql.count.Connections;
+import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
+import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
+import com.echothree.model.control.graphql.server.graphql.count.CountingPaginatedData;
+import com.echothree.model.control.graphql.server.util.count.ObjectLimiter;
+import com.echothree.model.data.core.common.EntityBooleanAttributeConstants;
 import com.echothree.model.data.core.server.entity.EntityBooleanAttribute;
+import com.echothree.util.server.persistence.Session;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
+import graphql.annotations.connection.GraphQLConnection;
 import graphql.schema.DataFetchingEnvironment;
+import java.util.ArrayList;
 
 @GraphQLDescription("entity boolean attribute object")
 @GraphQLName("EntityBooleanAttribute")
 public class EntityBooleanAttributeObject
-        implements BaseGraphQl, AttributeInterface {
-    
-    private final EntityBooleanAttribute entityBooleanAttribute; // Always Present
+        extends BaseEntityBooleanAttributeObject
+        implements AttributeInterface {
     
     public EntityBooleanAttributeObject(EntityBooleanAttribute entityBooleanAttribute) {
-        this.entityBooleanAttribute = entityBooleanAttribute;
+        super(entityBooleanAttribute);
     }
 
     @GraphQLField
-    @GraphQLDescription("entity attribute")
-    public EntityAttributeObject getEntityAttribute(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getHasEntityAttributeAccess(env) ? new EntityAttributeObject(entityBooleanAttribute.getEntityAttribute(), entityBooleanAttribute.getEntityInstance()) : null;
-    }
-
-    @GraphQLField
-    @GraphQLDescription("entity instance")
-    public EntityInstanceObject getEntityInstance(final DataFetchingEnvironment env) {
-        return CoreSecurityUtils.getHasEntityInstanceAccess(env) ? new EntityInstanceObject(entityBooleanAttribute.getEntityInstance()) : null;
-    }
-
-    @GraphQLField
-    @GraphQLDescription("boolean attribute")
+    @GraphQLDescription("history")
     @GraphQLNonNull
-    public Boolean getBooleanAttribute() {
-        return entityBooleanAttribute.getBooleanAttribute();
+    @GraphQLConnection(connectionFetcher = CountingDataConnectionFetcher.class)
+    public CountingPaginatedData<EntityBooleanAttributeHistoryObject> getHistory(final DataFetchingEnvironment env) {
+        if(true) { // TODO: Security Check
+            var coreControl = Session.getModelController(CoreControl.class);
+            var entityAttribute = entityBooleanAttribute.getEntityAttribute();
+            var entityInstance = entityBooleanAttribute.getEntityInstance();
+            var totalCount = coreControl.countEntityBooleanAttributeHistory(entityAttribute, entityInstance);
+
+            try(var objectLimiter = new ObjectLimiter(env, EntityBooleanAttributeConstants.COMPONENT_VENDOR_NAME, EntityBooleanAttributeConstants.ENTITY_TYPE_NAME, totalCount)) {
+                var entities = coreControl.getEntityBooleanAttributeHistory(entityAttribute, entityInstance);
+                var entityObjects = new ArrayList<EntityBooleanAttributeHistoryObject>(entities.size());
+
+                for(var entity : entities) {
+                    var entityObject = new EntityBooleanAttributeHistoryObject(entity);
+
+                    entityObjects.add(entityObject);
+                }
+
+                return new CountedObjects<>(objectLimiter, entityObjects);
+            }
+        } else {
+            return Connections.emptyConnection();
+        }
     }
-    
+
+
 }
