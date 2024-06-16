@@ -17,6 +17,7 @@
 package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.model.control.core.server.control.CoreControl;
+import com.echothree.model.control.graphql.server.graphql.HistoryInterface;
 import com.echothree.model.control.graphql.server.graphql.count.Connections;
 import com.echothree.model.control.graphql.server.graphql.count.CountedObjects;
 import com.echothree.model.control.graphql.server.graphql.count.CountingDataConnectionFetcher;
@@ -37,12 +38,13 @@ import java.util.ArrayList;
 @GraphQLName("EntityBooleanAttribute")
 public class EntityBooleanAttributeObject
         extends BaseEntityBooleanAttributeObject
-        implements AttributeInterface {
+        implements AttributeInterface, HistoryInterface<EntityBooleanAttributeHistoryObject> {
     
     public EntityBooleanAttributeObject(EntityBooleanAttribute entityBooleanAttribute) {
         super(entityBooleanAttribute);
     }
 
+    @Override
     @GraphQLField
     @GraphQLDescription("history")
     @GraphQLNonNull
@@ -70,6 +72,5 @@ public class EntityBooleanAttributeObject
             return Connections.emptyConnection();
         }
     }
-
 
 }

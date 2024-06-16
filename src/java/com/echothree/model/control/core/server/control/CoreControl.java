@@ -10692,24 +10692,24 @@ public class CoreControl
     }
 
     public long countEntityBooleanAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance) {
-        return session.queryForLong(
-                "SELECT COUNT(*) " +
-                        "FROM entitybooleanattributes " +
-                        "WHERE enbla_ena_entityattributeid = ? AND enbla_eni_entityinstanceid = ?",
-                entityAttribute, entityInstance);
+        return session.queryForLong("""
+                    SELECT COUNT(*)
+                    FROM entitybooleanattributes
+                    WHERE enbla_ena_entityattributeid = ? AND enbla_eni_entityinstanceid = ?
+                    """, entityAttribute, entityInstance);
     }
 
     private static final Map<EntityPermission, String> getEntityBooleanAttributeHistoryQueries;
 
     static {
-        Map<EntityPermission, String> queryMap = new HashMap<>(1);
-
-        queryMap.put(EntityPermission.READ_ONLY,
-                "SELECT _ALL_ "
-                + "FROM entitybooleanattributes "
-                + "WHERE enbla_ena_entityattributeid = ? AND enbla_eni_entityinstanceid = ? "
-                + "ORDER BY enbla_thrutime "
-                + "_LIMIT_");
+        Map<EntityPermission, String> queryMap = Map.of(
+                EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM entitybooleanattributes
+                WHERE enbla_ena_entityattributeid = ? AND enbla_eni_entityinstanceid = ?
+                ORDER BY enbla_thrutime
+                _LIMIT_
+                """);
         getEntityBooleanAttributeHistoryQueries = Collections.unmodifiableMap(queryMap);
     }
 
@@ -11877,7 +11877,35 @@ public class CoreControl
         
         return entityStringAttribute;
     }
-    
+
+    public long countEntityStringAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance,
+            Language language) {
+        return session.queryForLong("""
+                    SELECT COUNT(*)
+                    FROM entitystringattributes
+                    WHERE ensa_ena_entityattributeid = ? AND ensa_eni_entityinstanceid = ? AND ensa_lang_languageid = ?
+                    """, entityAttribute, entityInstance, language);
+    }
+
+    private static final Map<EntityPermission, String> getEntityStringAttributeHistoryQueries;
+
+    static {
+        getEntityStringAttributeHistoryQueries = Map.of(
+                EntityPermission.READ_ONLY, """
+                SELECT _ALL_
+                FROM entitystringattributes
+                WHERE ensa_ena_entityattributeid = ? AND ensa_eni_entityinstanceid = ? AND ensa_lang_languageid = ?
+                ORDER BY ensa_thrutime
+                _LIMIT_
+                """);
+    }
+
+    public List<EntityStringAttribute> getEntityStringAttributeHistory(EntityAttribute entityAttribute, EntityInstance entityInstance,
+            Language language) {
+        return EntityStringAttributeFactory.getInstance().getEntitiesFromQuery(EntityPermission.READ_ONLY, getEntityStringAttributeHistoryQueries,
+                entityAttribute, entityInstance, language);
+    }
+
     private EntityStringAttribute getEntityStringAttribute(EntityAttribute entityAttribute, EntityInstance entityInstance,
             Language language, EntityPermission entityPermission) {
         EntityStringAttribute entityStringAttribute;

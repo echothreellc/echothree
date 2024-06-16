@@ -18,21 +18,21 @@ package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.TimeObject;
 import com.echothree.model.control.graphql.server.graphql.VersionInterface;
-import com.echothree.model.data.core.server.entity.EntityBooleanAttribute;
+import com.echothree.model.data.core.server.entity.EntityStringAttribute;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
 import graphql.annotations.annotationTypes.GraphQLName;
 import graphql.annotations.annotationTypes.GraphQLNonNull;
 import graphql.schema.DataFetchingEnvironment;
 
-@GraphQLDescription("entity boolean attribute history object")
-@GraphQLName("EntityBooleanAttributeHistory")
-public class EntityBooleanAttributeHistoryObject
-        extends BaseEntityBooleanAttributeObject
+@GraphQLDescription("entity string attribute history object")
+@GraphQLName("EntityStringAttributeHistory")
+public class EntityStringAttributeHistoryObject
+        extends BaseEntityStringAttributeObject
         implements VersionInterface {
 
-    public EntityBooleanAttributeHistoryObject(EntityBooleanAttribute entityBooleanAttribute) {
-        super(entityBooleanAttribute);
+    public EntityStringAttributeHistoryObject(EntityStringAttribute entityStringAttribute) {
+        super(entityStringAttribute);
     }
 
     @Override
@@ -40,7 +40,7 @@ public class EntityBooleanAttributeHistoryObject
     @GraphQLDescription("from time")
     @GraphQLNonNull
     public TimeObject getFromTime(final DataFetchingEnvironment env) {
-        return new TimeObject(entityBooleanAttribute.getFromTime());
+        return new TimeObject(entityStringAttribute.getFromTime());
     }
 
     @Override
@@ -48,7 +48,7 @@ public class EntityBooleanAttributeHistoryObject
     @GraphQLDescription("thru time")
     @GraphQLNonNull
     public TimeObject getThruTime(final DataFetchingEnvironment env) {
-        return new TimeObject(entityBooleanAttribute.getThruTime());
+        return new TimeObject(entityStringAttribute.getThruTime());
     }
 
 }
