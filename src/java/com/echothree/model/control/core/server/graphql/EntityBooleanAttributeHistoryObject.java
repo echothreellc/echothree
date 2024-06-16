@@ -17,6 +17,7 @@
 package com.echothree.model.control.core.server.graphql;
 
 import com.echothree.model.control.graphql.server.graphql.TimeObject;
+import com.echothree.model.control.graphql.server.graphql.VersionInterface;
 import com.echothree.model.data.core.server.entity.EntityBooleanAttribute;
 import graphql.annotations.annotationTypes.GraphQLDescription;
 import graphql.annotations.annotationTypes.GraphQLField;
@@ -27,12 +28,14 @@ import graphql.schema.DataFetchingEnvironment;
 @GraphQLDescription("entity boolean attribute history object")
 @GraphQLName("EntityBooleanAttributeHistory")
 public class EntityBooleanAttributeHistoryObject
-        extends BaseEntityBooleanAttributeObject {
+        extends BaseEntityBooleanAttributeObject
+        implements VersionInterface {
 
     public EntityBooleanAttributeHistoryObject(EntityBooleanAttribute entityBooleanAttribute) {
         super(entityBooleanAttribute);
     }
 
+    @Override
     @GraphQLField
     @GraphQLDescription("from time")
     @GraphQLNonNull
@@ -40,6 +43,7 @@ public class EntityBooleanAttributeHistoryObject
         return new TimeObject(entityBooleanAttribute.getFromTime());
     }
 
+    @Override
     @GraphQLField
     @GraphQLDescription("thru time")
     @GraphQLNonNull
