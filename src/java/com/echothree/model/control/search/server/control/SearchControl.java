@@ -1161,7 +1161,7 @@ public class SearchControl
                 FROM searchcheckspellingactiontypes, searchcheckspellingactiontypedetails
                 WHERE srchcksacttyp_activedetailid = srchcksacttypdt_searchcheckspellingactiontypedetailid
                 AND srchcksacttypdt_searchcheckspellingactiontypename = ?
-                FOR UPDATE"
+                FOR UPDATE
                 """);
     }
 
