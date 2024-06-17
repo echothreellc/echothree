@@ -77,7 +77,7 @@ public class EventObject
     public EntityInstanceObject getRelatedEntityInstance(final DataFetchingEnvironment env) {
         var relatedEntityInstance = event.getRelatedEntityInstance();
 
-        return relatedEntityInstance != null && CoreSecurityUtils.getHasEntityInstanceAccess(env) ? null : new EntityInstanceObject(relatedEntityInstance);
+        return relatedEntityInstance != null && CoreSecurityUtils.getHasEntityInstanceAccess(env) ? new EntityInstanceObject(relatedEntityInstance) : null;
     }
 
     @GraphQLField
@@ -93,7 +93,7 @@ public class EventObject
     public EntityInstanceObject getCreatedBy(final DataFetchingEnvironment env) {
         var createdBy = event.getCreatedBy();
 
-        return createdBy == null && CoreSecurityUtils.getHasEntityInstanceAccess(env) ? null : new EntityInstanceObject(createdBy);
+        return createdBy != null && CoreSecurityUtils.getHasEntityInstanceAccess(env) ? new EntityInstanceObject(createdBy) : null;
     }
 
 }
